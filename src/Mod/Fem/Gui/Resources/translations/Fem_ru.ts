@@ -1234,6 +1234,21 @@
     </message>
   </context>
   <context>
+    <name>CmdFemCreateFromShape</name>
+    <message>
+      <source>Fem</source>
+      <translation>МКЭ (метод конечных элементов)</translation>
+    </message>
+    <message>
+      <source>Create FEM mesh</source>
+      <translation>Создать МКЭ сетку</translation>
+    </message>
+    <message>
+      <source>Create FEM mesh from shape</source>
+      <translation>Создать МКЭ сетку из формы</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -1393,6 +1408,29 @@
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>Каталог пользователя</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::HypothesisWidget</name>
+    <message>
+      <source>Hypothesis</source>
+      <translation>Гипотеза</translation>
+    </message>
+    <message>
+      <source>Quadrangle</source>
+      <translation>Четырехугольник</translation>
+    </message>
+    <message>
+      <source>Maximum length</source>
+      <translation>Максимальная длина</translation>
+    </message>
+    <message>
+      <source>Local length</source>
+      <translation>Локальная длина</translation>
+    </message>
+    <message>
+      <source>Maximum element area</source>
+      <translation>Максимальная площадь элемента</translation>
     </message>
   </context>
   <context>
@@ -1670,6 +1708,18 @@
       <source>Only faces and edges can be picked</source>
       <translation>Можно выбрать только грани и края</translation>
     </message>
+    <message>
+      <source>Point load [N]</source>
+      <translation type="unfinished">Point load [N]</translation>
+    </message>
+    <message>
+      <source>Line load [N/mm]</source>
+      <translation type="unfinished">Line load [N/mm]</translation>
+    </message>
+    <message>
+      <source>Area load [N/mm²]</source>
+      <translation type="unfinished">Area load [N/mm²]</translation>
+    </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
@@ -1876,6 +1926,14 @@
       <translation>Время:</translation>
     </message>
     <message>
+      <source>Write Calculix Input File</source>
+      <translation type="unfinished">Write Calculix Input File</translation>
+    </message>
+    <message>
+      <source>Edit Calculix Input File</source>
+      <translation type="unfinished">Edit Calculix Input File</translation>
+    </message>
+    <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
       <translation>Механический материал</translation>
@@ -1945,6 +2003,14 @@
       <source>MatWeb database...</source>
       <translation>База данных MatWeb...</translation>
     </message>
+    <message>
+      <source>0 kg/m^3</source>
+      <translation type="unfinished">0 kg/m^3</translation>
+    </message>
+    <message>
+      <source>Pa</source>
+      <translation>ПА</translation>
+    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -2006,6 +2072,26 @@
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
       <translation>Изменить граничное условие</translation>
+    </message>
+    <message>
+      <source>Combo View</source>
+      <translation>Комбо панель</translation>
+    </message>
+    <message>
+      <source>combiTab</source>
+      <translation>combiTab</translation>
+    </message>
+    <message>
+      <source>qt_tabwidget_stackedwidget</source>
+      <translation>qt_tabwidget_stackedwidget</translation>
+    </message>
+    <message>
+      <source>ShaftWizard</source>
+      <translation>ShaftWizard</translation>
+    </message>
+    <message>
+      <source>ShaftWizardLayout</source>
+      <translation type="unfinished">ShaftWizardLayout</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -2107,7 +2193,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="135"/>
       <source>Displacement</source>
-      <translation>Смещение</translation>
+      <translation>Водоизмещение</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="143"/>
@@ -2123,6 +2209,14 @@
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
       <translation>Максимум:</translation>
+    </message>
+    <message>
+      <source>Colors</source>
+      <translation>Цвета</translation>
+    </message>
+    <message>
+      <source>mm</source>
+      <translation>мм</translation>
     </message>
   </context>
   <context>

@@ -56,7 +56,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="291"/>
       <source>Settings</source>
-      <translation>Axustes</translation>
+      <translation type="unfinished">Settings</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="292"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
-      <translation>Indeterminado</translation>
+      <translation type="unfinished">Undefined</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>

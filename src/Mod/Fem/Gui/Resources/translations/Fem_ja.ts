@@ -1231,6 +1231,21 @@
     </message>
   </context>
   <context>
+    <name>CmdFemCreateFromShape</name>
+    <message>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
+    </message>
+    <message>
+      <source>Create FEM mesh</source>
+      <translation>有限要素メッシュを作成します。</translation>
+    </message>
+    <message>
+      <source>Create FEM mesh from shape</source>
+      <translation>形状から有限要素メッシュを作成する</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -1390,6 +1405,29 @@
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>ユーザー ディレクトリ</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::HypothesisWidget</name>
+    <message>
+      <source>Hypothesis</source>
+      <translation>仮定</translation>
+    </message>
+    <message>
+      <source>Quadrangle</source>
+      <translation>四辺形</translation>
+    </message>
+    <message>
+      <source>Maximum length</source>
+      <translation>最大長</translation>
+    </message>
+    <message>
+      <source>Local length</source>
+      <translation>ローカルの長さ</translation>
+    </message>
+    <message>
+      <source>Maximum element area</source>
+      <translation>最大要素エリア</translation>
     </message>
   </context>
   <context>
@@ -1667,6 +1705,18 @@
       <source>Only faces and edges can be picked</source>
       <translation>面やエッジだけを選択できます。</translation>
     </message>
+    <message>
+      <source>Point load [N]</source>
+      <translation>点荷重 [N]</translation>
+    </message>
+    <message>
+      <source>Line load [N/mm]</source>
+      <translation>線荷重 [N/mm]</translation>
+    </message>
+    <message>
+      <source>Area load [N/mm²]</source>
+      <translation>面荷重 [N/mm ²]</translation>
+    </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
@@ -1873,6 +1923,14 @@
       <translation>時間：</translation>
     </message>
     <message>
+      <source>Write Calculix Input File</source>
+      <translation>Calculix 入力ファイルを書き込みする</translation>
+    </message>
+    <message>
+      <source>Edit Calculix Input File</source>
+      <translation>Calculix 入力ファイルを編集</translation>
+    </message>
+    <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
       <translation>機械材料</translation>
@@ -1942,6 +2000,14 @@
       <source>MatWeb database...</source>
       <translation>MatWebデータベース...</translation>
     </message>
+    <message>
+      <source>0 kg/m^3</source>
+      <translation>0 kg/m ^3</translation>
+    </message>
+    <message>
+      <source>Pa</source>
+      <translation>Pa</translation>
+    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -2003,6 +2069,26 @@
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
       <translation>拘束を編集</translation>
+    </message>
+    <message>
+      <source>Combo View</source>
+      <translation>コンボビュー</translation>
+    </message>
+    <message>
+      <source>combiTab</source>
+      <translation>combiTab</translation>
+    </message>
+    <message>
+      <source>qt_tabwidget_stackedwidget</source>
+      <translation>qt_tabwidget_stackedwidget</translation>
+    </message>
+    <message>
+      <source>ShaftWizard</source>
+      <translation>軸ウィザード</translation>
+    </message>
+    <message>
+      <source>ShaftWizardLayout</source>
+      <translation>ShaftWizardLayout</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -2120,6 +2206,14 @@
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
       <translation>スライダー最大値:</translation>
+    </message>
+    <message>
+      <source>Colors</source>
+      <translation>色</translation>
+    </message>
+    <message>
+      <source>mm</source>
+      <translation>mm</translation>
     </message>
   </context>
   <context>

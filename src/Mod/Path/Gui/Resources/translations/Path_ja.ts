@@ -815,7 +815,7 @@
       <translation>ドラフト ShapeString 周りの彫刻パスを作成</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngrave.py" line="156"/>
+      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
       <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
       <translation>ジョブベースオブジェクトに彫刻要素がありません。彫刻工程は何も出力しません。</translation>
     </message>
@@ -1107,7 +1107,7 @@
     <message>
       <location filename="../../../PathScripts/PathJobDlg.py" line="53"/>
       <source>2D</source>
-      <translation>2D</translation>
+      <translation type="unfinished">2D</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobDlg.py" line="54"/>
@@ -1945,32 +1945,32 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
       <source>DragKnife Dress-up</source>
       <translation>ドラッグナイフ・ドレスアップ</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="471"/>
       <source>Modifies a path to add dragknife corner actions</source>
       <translation>ドラッグナイフ・コーナーアクションを追加するためにパスを変更軌道、パス</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="485"/>
       <source>Please select one path object</source>
       <translation>パスオブジェクトをひとつ選択してください</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="489"/>
       <source>The selected object is not a path</source>
       <translation>選択されたオブジェクトはパスではありません</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="493"/>
       <source>Please select a Path object</source>
       <translation>パスオブジェクトを選択して下さい</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="498"/>
       <source>Create Dress-up</source>
       <translation>ドレスアップを作成</translation>
     </message>
@@ -2518,7 +2518,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="TooltableEditor.py" line="391"/>
       <source>Export...</source>
-      <translation>エクスポート...</translation>
+      <translation type="unfinished">Export...</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="392"/>

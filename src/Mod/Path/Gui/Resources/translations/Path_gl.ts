@@ -815,7 +815,7 @@
       <translation>Crea un percorrido gravado baseado nun TextoForma de bosquexo</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngrave.py" line="156"/>
+      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
       <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
       <translation>O Obxecto Base de Traballo non ten ningún elemento gravable. A operación de gravado non producirá ningunha saída.</translation>
     </message>
@@ -1945,32 +1945,32 @@ Se é necesario axustar o xogo FinalDepth manualmente por favor escolma unha opc
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
       <source>DragKnife Dress-up</source>
       <translation>Aspecto coitelo arrastrado</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="471"/>
       <source>Modifies a path to add dragknife corner actions</source>
       <translation>Modifica un percorrido para engadir accións de coitelo arrastrado na esquina</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="485"/>
       <source>Please select one path object</source>
       <translation>Por favor, escolme un obxecto traxectoria</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="489"/>
       <source>The selected object is not a path</source>
       <translation>O obxecto escolmado non é unha traxectoria</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="493"/>
       <source>Please select a Path object</source>
       <translation>Por favor, escolme un obxecto traxectoria</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="498"/>
       <source>Create Dress-up</source>
       <translation>Crear aspecto</translation>
     </message>
@@ -2133,7 +2133,7 @@ Se é necesario axustar o xogo FinalDepth manualmente por favor escolma unha opc
     <message>
       <location filename="PathJob.py" line="347"/>
       <source>All Files (*.*)</source>
-      <translation>Tódolos ficheiros (*.*)</translation>
+      <translation type="unfinished">All Files (*.*)</translation>
     </message>
   </context>
   <context>
@@ -2633,7 +2633,7 @@ Se é necesario axustar o xogo FinalDepth manualmente por favor escolma unha opc
     <message>
       <location filename="TooltableEditor.py" line="415"/>
       <source>Undefined</source>
-      <translation>Indeterminado</translation>
+      <translation type="unfinished">Undefined</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="416"/>
@@ -3192,7 +3192,7 @@ Se é necesario axustar o xogo FinalDepth manualmente por favor escolma unha opc
     <message>
       <location filename="PathJob.py" line="341"/>
       <source>All Files (*.*)</source>
-      <translation>Tódolos ficheiros (*.*)</translation>
+      <translation type="unfinished">All Files (*.*)</translation>
     </message>
   </context>
   <context>

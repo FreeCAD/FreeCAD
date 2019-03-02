@@ -69,6 +69,10 @@
       <source>Create a planar image in the 3D space</source>
       <translation>3B uzayda düzlemsel bir resim oluştur</translation>
     </message>
+    <message>
+      <source>create a planar image in the 3D space</source>
+      <translation>3B uzayda düzlemsel bir resim oluştur</translation>
+    </message>
   </context>
   <context>
     <name>CmdImageOpen</name>
@@ -162,66 +166,90 @@
   <context>
     <name>ImageGui::ImageView</name>
     <message>
-      <location filename="../../ImageView.cpp" line="111"/>
+      <location filename="../../ImageView.cpp" line="107"/>
       <source>&amp;Fit image</source>
       <translation>&amp;Resmi sığdır</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="113"/>
+      <location filename="../../ImageView.cpp" line="109"/>
       <source>Stretch the image to fit the view</source>
       <translation>Resmi, görünüme sığacak şekilde uzat</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="117"/>
+      <location filename="../../ImageView.cpp" line="113"/>
       <source>&amp;1:1 scale</source>
       <translation>&amp;1:1 oran</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="119"/>
+      <location filename="../../ImageView.cpp" line="115"/>
       <source>Display the image at a 1:1 scale</source>
       <translation>Birebir oranla resmi görüntüle</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="128"/>
+      <location filename="../../ImageView.cpp" line="124"/>
       <source>Standard</source>
       <translation>Standart</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="146"/>
+      <location filename="../../ImageView.cpp" line="142"/>
       <source>Ready...</source>
       <translation>Hazır...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="539"/>
+      <location filename="../../ImageView.cpp" line="532"/>
       <source>grey</source>
       <translation>gri</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="540"/>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="558"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="573"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="589"/>
-      <location filename="../../ImageView.cpp" line="600"/>
-      <location filename="../../ImageView.cpp" line="605"/>
+      <location filename="../../ImageView.cpp" line="533"/>
+      <location filename="../../ImageView.cpp" line="536"/>
+      <location filename="../../ImageView.cpp" line="546"/>
+      <location filename="../../ImageView.cpp" line="551"/>
+      <location filename="../../ImageView.cpp" line="561"/>
+      <location filename="../../ImageView.cpp" line="566"/>
+      <location filename="../../ImageView.cpp" line="577"/>
+      <location filename="../../ImageView.cpp" line="582"/>
+      <location filename="../../ImageView.cpp" line="593"/>
+      <location filename="../../ImageView.cpp" line="598"/>
       <source>zoom</source>
       <translation>yakınlaş</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="600"/>
+      <location filename="../../ImageView.cpp" line="536"/>
+      <location filename="../../ImageView.cpp" line="546"/>
+      <location filename="../../ImageView.cpp" line="561"/>
+      <location filename="../../ImageView.cpp" line="577"/>
+      <location filename="../../ImageView.cpp" line="593"/>
       <source>outside image</source>
       <translation>dış görünüm</translation>
+    </message>
+    <message>
+      <source>&amp;Original color</source>
+      <translation>&amp;Öz renk</translation>
+    </message>
+    <message>
+      <source>Display the image with its original color(s)</source>
+      <translation>Resmi kendi öz renk değer(ler)iyle görüntüle</translation>
+    </message>
+    <message>
+      <source>&amp;Brightened color</source>
+      <translation>&amp;Aydınlatılmış renk</translation>
+    </message>
+    <message>
+      <source>Display the image with brightened color(s)</source>
+      <translation>Resmi aydınlatılmış renk(ler) ile görüntüle</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
+    <message>
+      <source>Image viewer</source>
+      <translation>Resim görüntüleyeci</translation>
+    </message>
+    <message>
+      <source>Images (*.png *.xpm *.jpg *.bmp)</source>
+      <translation>Resimler (*.png *.xpm *.jpg *.bmp)</translation>
+    </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <location filename="../../Command.cpp" line="115"/>
@@ -248,6 +276,14 @@
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
+      <translation>Seçilen resim yüklenemedi</translation>
+    </message>
+    <message>
+      <source>Error open image</source>
+      <translation>Resim açarken hata</translation>
+    </message>
+    <message>
+      <source>Could not load the choosen image</source>
       <translation>Seçilen resim yüklenemedi</translation>
     </message>
   </context>

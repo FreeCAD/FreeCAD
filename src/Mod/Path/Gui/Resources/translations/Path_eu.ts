@@ -11,27 +11,27 @@
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="73"/>
       <source>The direction along which dropcutter lines are created</source>
-      <translation>Erortze-ebakigailuaren lerroan zein norabidetan sortuko diren</translation>
+      <translation type="unfinished">The direction along which dropcutter lines are created</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="74"/>
       <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
-      <translation>Eragiketa objektu gordinak ala oinarri-objektuaren muga-kutxak mugatuko duen</translation>
+      <translation type="unfinished">Should the operation be limited by the stock object or by the bounding box of the base object</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="75"/>
       <source>Additional offset to the selected bounding box</source>
-      <translation>Hautatutako muga-kutxaren desplazamendu gehigarria</translation>
+      <translation type="unfinished">Additional offset to the selected bounding box</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="76"/>
       <source>Step over percentage of the drop cutter path</source>
-      <translation>Erortze-ebakigailuaren bidearen ehunekoaren gaineko urratsa</translation>
+      <translation type="unfinished">Step over percentage of the drop cutter path</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="77"/>
       <source>Z-axis offset from the surface of the object</source>
-      <translation>Z ardatzeko desplazamendua objektuaren azaleratik</translation>
+      <translation type="unfinished">Z-axis offset from the surface of the object</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="78"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="79"/>
       <source>Enable optimization which removes unnecessary points from G-Code output</source>
-      <translation>Gaitu optimizazioa, beharrezkoak ez diren puntuak G-Code irteeratik kentzeko</translation>
+      <translation type="unfinished">Enable optimization which removes unnecessary points from G-Code output</translation>
     </message>
     <message>
       <location filename="PathCopy.py" line="45"/>
@@ -639,7 +639,7 @@
     <message>
       <location filename="../../../InitGui.py" line="91"/>
       <source>Engraving Operations</source>
-      <translation>Grabatze-eragiketak</translation>
+      <translation type="unfinished">Engraving Operations</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="100"/>
@@ -814,7 +814,7 @@
       <translation>Grabazio-bide bat sortzen du zirriborroko testu-forma baten inguruan</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngrave.py" line="156"/>
+      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
       <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
       <translation>Lanaren oinarri-objektuak ez du grabatuko den elementurik. Grabazio-eragiketak ez du irteerarik emango.</translation>
     </message>
@@ -842,7 +842,7 @@
     <message>
       <location filename="PathMillFace.py" line="352"/>
       <source>Create a Facing Operation from a model or face</source>
-      <translation>Aurpegia sortzeko eragiketa bat, eredu batetik edo beste aurpegi batetik abiatuta</translation>
+      <translation type="unfinished">Create a Facing Operation from a model or face</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="367"/>
@@ -857,7 +857,7 @@
     <message>
       <location filename="../../../PathScripts/PathMillFaceGui.py" line="45"/>
       <source>Create a Facing Operation from a model or face</source>
-      <translation>Aurpegia sortzeko eragiketa bat, eredu batetik edo beste aurpegi batetik abiatuta</translation>
+      <translation type="unfinished">Create a Facing Operation from a model or face</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="171"/>
@@ -902,7 +902,7 @@
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="548"/>
       <source>%s not support for flipping</source>
-      <translation>%s ez da onartzen iraulketarako</translation>
+      <translation type="unfinished">%s not support for flipping</translation>
     </message>
   </context>
   <context>
@@ -1189,7 +1189,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="112"/>
       <source>Holds the max Z value of Stock</source>
-      <translation>Pieza gordinaren Z balio maximoa du</translation>
+      <translation type="unfinished">Holds the max Z value of Stock</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="545"/>
@@ -1294,7 +1294,7 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     <message>
       <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
       <source>Adaptive clearing and profiling</source>
-      <translation>Garbitze eta profilatze moldakorra</translation>
+      <translation type="unfinished">Adaptive clearing and profiling</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketBaseGui.py" line="70"/>
@@ -1944,32 +1944,32 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
       <source>DragKnife Dress-up</source>
       <translation>Arraste-hortzeko jantzia</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="471"/>
       <source>Modifies a path to add dragknife corner actions</source>
       <translation>Bide bat aldatzen du arraste-hortz erako izkina-ekintzak gehitzeko</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="485"/>
       <source>Please select one path object</source>
       <translation>Hautatu bide-objektu bat</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="489"/>
       <source>The selected object is not a path</source>
       <translation>Hautatutako objektua ez da bide bat</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="493"/>
       <source>Please select a Path object</source>
       <translation>Hautatu bide-objektu bat</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="498"/>
       <source>Create Dress-up</source>
       <translation>Sortu jantzia</translation>
     </message>
@@ -2780,7 +2780,7 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     <message>
       <location filename="../../../PathScripts/PathSetupSheetGui.py" line="345"/>
       <source>Edit SetupSheet</source>
-      <translation>Editatu konfigurazio-orria</translation>
+      <translation type="unfinished">Edit SetupSheet</translation>
     </message>
   </context>
   <context>

@@ -11,17 +11,17 @@
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="73"/>
       <source>The direction along which dropcutter lines are created</source>
-      <translation>沿落刀线创建的方向</translation>
+      <translation type="unfinished">The direction along which dropcutter lines are created</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="74"/>
       <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
-      <translation>操作被工件对象或者基础对象的边界框限制</translation>
+      <translation type="unfinished">Should the operation be limited by the stock object or by the bounding box of the base object</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="75"/>
       <source>Additional offset to the selected bounding box</source>
-      <translation>基于选定边界框的额外偏移</translation>
+      <translation type="unfinished">Additional offset to the selected bounding box</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="76"/>
@@ -815,7 +815,7 @@
       <translation>在草稿 ShapeString 周围创建雕刻路径</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngrave.py" line="156"/>
+      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
       <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
       <translation>作业基对象没有可供雕刻的元素。 雕刻操作将不会产生输出。</translation>
     </message>
@@ -1945,32 +1945,32 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
       <source>DragKnife Dress-up</source>
       <translation>拖刀修整</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="471"/>
       <source>Modifies a path to add dragknife corner actions</source>
       <translation>修改添加 dragknife 角动作的路径</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="485"/>
       <source>Please select one path object</source>
       <translation>请选择一个路径对象</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="489"/>
       <source>The selected object is not a path</source>
       <translation>所选对象不是路径</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="493"/>
       <source>Please select a Path object</source>
       <translation>请选择路径对象</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="498"/>
       <source>Create Dress-up</source>
       <translation>创建修整</translation>
     </message>

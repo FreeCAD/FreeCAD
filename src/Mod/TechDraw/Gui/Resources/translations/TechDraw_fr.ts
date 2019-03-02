@@ -543,7 +543,7 @@
     <message>
       <location filename="../../Command.cpp" line="743"/>
       <source>Select 1 Clip group and 1 View.</source>
-      <translation>Sélectionnez un groupe Clip et une vue.</translation>
+      <translation type="unfinished">Select 1 Clip group and 1 View.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="759"/>
@@ -553,7 +553,7 @@
     <message>
       <location filename="../../Command.cpp" line="764"/>
       <source>Select exactly one Clip group.</source>
-      <translation>Sélectionner seulement un groupe d'objets.</translation>
+      <translation type="unfinished">Select exactly one Clip group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
@@ -693,12 +693,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1082"/>
       <source>No View of a Part in selection.</source>
-      <translation>Aucune vue dans la sélection.</translation>
+      <translation type="unfinished">No View of a Part in selection.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
       <source>No Feature with Shape in selection.</source>
-      <translation>Aucune fonctionnalité avec Shape dans la sélection.</translation>
+      <translation type="unfinished">No Feature with Shape in selection.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>

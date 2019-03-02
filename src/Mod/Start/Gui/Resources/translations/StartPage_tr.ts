@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>Bu bölüm geliştiriciler için malzeme içerir: FreeCAD'i nasıl derleyeceğinizi, FreeCAD kaynak kodunun nasıl yapılandırıldığını + içinde nasıl gezinileceğini, yeni çalışma tezgahlarının nasıl geliştirileceğini ve / veya FreeCAD'in kendi uygulamasına nasıl yerleştirileceğini.</translation>
+      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -223,7 +223,7 @@
       <translation>Başlangıç sayfası</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="545"/>
+      <location filename="../../../StartPage/StartPage.py" line="542"/>
       <source>Start page</source>
       <translation>Başlangıç sayfası</translation>
     </message>

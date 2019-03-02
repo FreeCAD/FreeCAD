@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Seçilen hücrelerin içeriğini dikey olarak merkeze hizalayın</translation>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -223,14 +223,14 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation>Seçili hücrelerde metnin altını çiz</translation>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation>Özel Renk</translation>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

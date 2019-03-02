@@ -276,7 +276,7 @@
     <message>
       <location filename="../../../PathScripts/PathProfileBase.py" line="59"/>
       <source>Make True, if using Cutter Radius Compensation</source>
-      <translation>Torne verdadeiro, se está usando a compensação do raio do cortador</translation>
+      <translation type="unfinished">Make True, if using Cutter Radius Compensation</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileBase.py" line="61"/>
@@ -639,7 +639,7 @@
     <message>
       <location filename="../../../InitGui.py" line="91"/>
       <source>Engraving Operations</source>
-      <translation>Operação de gravura</translation>
+      <translation type="unfinished">Engraving Operations</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="100"/>
@@ -815,7 +815,7 @@
       <translation>Cria uma trajetória de entalhe em torno de um ShapeString</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngrave.py" line="156"/>
+      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
       <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
       <translation>O objeto base de trabalho não possui nenhum elemento entalhavel.  A operação de entalhar não produzirá nenhuma saída.</translation>
     </message>
@@ -954,7 +954,7 @@
     <message>
       <location filename="PathHelix.py" line="450"/>
       <source>Creates a helix cut from selected circles</source>
-      <translation>Criar um corte helicoidal para os círculos selecionados</translation>
+      <translation type="unfinished">Creates a helix cut from selected circles</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="464"/>
@@ -1062,7 +1062,7 @@
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="99"/>
       <source>An optional description for this job</source>
-      <translation>Uma descrição opcional para este trabalho</translation>
+      <translation type="unfinished">An optional description for this job</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="100"/>
@@ -1190,7 +1190,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="112"/>
       <source>Holds the max Z value of Stock</source>
-      <translation>Mantem o valor Z máximo de Stock (Estoque)</translation>
+      <translation type="unfinished">Holds the max Z value of Stock</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="545"/>
@@ -1246,8 +1246,8 @@
       <location filename="../../../PathScripts/PathOpGui.py" line="641"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
-      <translation>A profundidade final (FinalDepth) não pode ser modificada para esta operação.
-Se for necessário definir a profundidade final (FinalDepth) manualmente, selecione uma operação diferente.</translation>
+      <translation type="unfinished">FinalDepth cannot be modified for this operation.
+If it is necessary to set the FinalDepth manually please select a different operation.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOpGui.py" line="660"/>
@@ -1355,7 +1355,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
       <source>Profile based on face or faces</source>
-      <translation>Perfil baseado em face ou faces</translation>
+      <translation type="unfinished">Profile based on face or faces</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="54"/>
@@ -1549,12 +1549,12 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="153"/>
       <source>Length of this stock box</source>
-      <translation>Comprimento desta caixa de Stock (Estoque)</translation>
+      <translation type="unfinished">Length of this stock box</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="154"/>
       <source>Width of this stock box</source>
-      <translation>Largura desta caixa de Stock (Estoque)</translation>
+      <translation type="unfinished">Width of this stock box</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="155"/>
@@ -1945,32 +1945,32 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
       <source>DragKnife Dress-up</source>
       <translation>Corte tangencial da trajetória adicional</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="471"/>
       <source>Modifies a path to add dragknife corner actions</source>
       <translation>Editar uma trajetória para adicionar movimentos de ângulo para cortes tangenciais</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="485"/>
       <source>Please select one path object</source>
       <translation>Por favor selecione uma trajetória</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="489"/>
       <source>The selected object is not a path</source>
       <translation>O objeto selecionado não é uma trajetória</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="493"/>
       <source>Please select a Path object</source>
       <translation>Por favor selecione uma trajetória</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="498"/>
       <source>Create Dress-up</source>
       <translation>Criar trajetória adicional (Dress-up)</translation>
     </message>
@@ -2318,7 +2318,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="140"/>
       <source>A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</source>
-      <translation>Um Controlador de Ferramentas não foi encontrado. Valores padrão são usados, o que é perigoso. Por favor, adicione um Controlador de Ferramentas.</translation>
+      <translation type="unfinished">A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="144"/>

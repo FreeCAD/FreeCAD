@@ -543,17 +543,17 @@
     <message>
       <location filename="../../Command.cpp" line="743"/>
       <source>Select 1 Clip group and 1 View.</source>
-      <translation>Seleccione 1 grupo de recorte y 1 Vista.</translation>
+      <translation type="unfinished">Select 1 Clip group and 1 View.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="759"/>
       <source>Select exactly one View to add to group.</source>
-      <translation>Seleccione exactamente una vista para añadir al grupo.</translation>
+      <translation type="unfinished">Select exactly one View to add to group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
       <source>Select exactly one Clip group.</source>
-      <translation>Seleccione exactamente un único grupo de Clip.</translation>
+      <translation type="unfinished">Select exactly one Clip group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
@@ -563,7 +563,7 @@
     <message>
       <location filename="../../Command.cpp" line="827"/>
       <source>Select exactly one View to remove from Group.</source>
-      <translation>Seleccione exactamente una vista para eliminar del grupo.</translation>
+      <translation type="unfinished">Select exactly one View to remove from Group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="847"/>
@@ -589,7 +589,7 @@
     <message>
       <location filename="../../Command.cpp" line="1030"/>
       <source>There is no Section Plane in selection.</source>
-      <translation>No hay ningún plano de la sección en la selección.</translation>
+      <translation type="unfinished">There is no Section Plane in selection.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>
@@ -625,7 +625,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="203"/>
       <source>Can not make a Dimension from this selection</source>
-      <translation>No puede hacer una cota desde esta selección</translation>
+      <translation type="unfinished">Can not make a Dimension from this selection</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
@@ -651,7 +651,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="917"/>
       <source>Need three points to make a 3 point Angle Dimension</source>
-      <translation>Necesita tres puntos para hacer una cota de ángulo de 3 puntos</translation>
+      <translation type="unfinished">Need three points to make a 3 point Angle Dimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1003"/>
@@ -693,12 +693,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1082"/>
       <source>No View of a Part in selection.</source>
-      <translation>Sin vista de un objeto Part en la selección.</translation>
+      <translation type="unfinished">No View of a Part in selection.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
       <source>No Feature with Shape in selection.</source>
-      <translation>No hay ninguna operación asociada a una Forma en la selección.</translation>
+      <translation type="unfinished">No Feature with Shape in selection.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
@@ -858,7 +858,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
       <source>TechDraw Dimensions</source>
-      <translation>Cotas de TechDraw</translation>
+      <translation type="unfinished">TechDraw Dimensions</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
@@ -1083,7 +1083,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
       <source>TechDraw General</source>
-      <translation>TechDraw general</translation>
+      <translation type="unfinished">TechDraw General</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
@@ -1228,7 +1228,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
       <source>Editable Text Marker Size</source>
-      <translation>Tamaño del marcador de texto editable</translation>
+      <translation type="unfinished">Editable Text Marker Size</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="707"/>
@@ -1238,7 +1238,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="723"/>
       <source>Size of editable text marker in Templates (green dot).</source>
-      <translation>Tamaño del marcador de texto editable en Plantillas (punto verde).</translation>
+      <translation type="unfinished">Size of editable text marker in Templates (green dot).</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="649"/>
@@ -1297,7 +1297,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="653"/>
       <source>Can not open file %1 for writing.</source>
-      <translation>No se puede abrir el archivo %1 para la escritura.</translation>
+      <translation type="unfinished">Can not open file %1 for writing.</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1221"/>
@@ -1310,12 +1310,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../QGVPage.cpp" line="580"/>
       <source>Drawing page:</source>
-      <translation>Página de dibujo:</translation>
+      <translation type="unfinished">Drawing page:</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="582"/>
       <source> exported from FreeCAD document:</source>
-      <translation> exportado desde documento de FreeCAD:</translation>
+      <translation type="unfinished"> exported from FreeCAD document:</translation>
     </message>
   </context>
   <context>
@@ -1510,7 +1510,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskProjGroup.ui" line="230"/>
       <source>Current primary view direction</source>
-      <translation>Dirección actual de la vista principal</translation>
+      <translation type="unfinished">Current primary view direction</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="243"/>

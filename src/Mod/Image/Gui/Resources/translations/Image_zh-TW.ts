@@ -69,6 +69,10 @@
       <source>Create a planar image in the 3D space</source>
       <translation>於3D空間建立平面影像</translation>
     </message>
+    <message>
+      <source>create a planar image in the 3D space</source>
+      <translation type="unfinished">create a planar image in the 3D space</translation>
+    </message>
   </context>
   <context>
     <name>CmdImageOpen</name>
@@ -162,66 +166,90 @@
   <context>
     <name>ImageGui::ImageView</name>
     <message>
-      <location filename="../../ImageView.cpp" line="111"/>
+      <location filename="../../ImageView.cpp" line="107"/>
       <source>&amp;Fit image</source>
       <translation>符合圖片尺寸(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="113"/>
+      <location filename="../../ImageView.cpp" line="109"/>
       <source>Stretch the image to fit the view</source>
       <translation>延伸影像符合頁面大小</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="117"/>
+      <location filename="../../ImageView.cpp" line="113"/>
       <source>&amp;1:1 scale</source>
       <translation>&amp;1:1 比例</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="119"/>
+      <location filename="../../ImageView.cpp" line="115"/>
       <source>Display the image at a 1:1 scale</source>
       <translation>在1:1的比例顯示影像</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="128"/>
+      <location filename="../../ImageView.cpp" line="124"/>
       <source>Standard</source>
       <translation>標準</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="146"/>
+      <location filename="../../ImageView.cpp" line="142"/>
       <source>Ready...</source>
       <translation>準備...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="539"/>
+      <location filename="../../ImageView.cpp" line="532"/>
       <source>grey</source>
       <translation>灰色</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="540"/>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="558"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="573"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="589"/>
-      <location filename="../../ImageView.cpp" line="600"/>
-      <location filename="../../ImageView.cpp" line="605"/>
+      <location filename="../../ImageView.cpp" line="533"/>
+      <location filename="../../ImageView.cpp" line="536"/>
+      <location filename="../../ImageView.cpp" line="546"/>
+      <location filename="../../ImageView.cpp" line="551"/>
+      <location filename="../../ImageView.cpp" line="561"/>
+      <location filename="../../ImageView.cpp" line="566"/>
+      <location filename="../../ImageView.cpp" line="577"/>
+      <location filename="../../ImageView.cpp" line="582"/>
+      <location filename="../../ImageView.cpp" line="593"/>
+      <location filename="../../ImageView.cpp" line="598"/>
       <source>zoom</source>
       <translation>縮放</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="600"/>
+      <location filename="../../ImageView.cpp" line="536"/>
+      <location filename="../../ImageView.cpp" line="546"/>
+      <location filename="../../ImageView.cpp" line="561"/>
+      <location filename="../../ImageView.cpp" line="577"/>
+      <location filename="../../ImageView.cpp" line="593"/>
       <source>outside image</source>
       <translation>外部影像</translation>
+    </message>
+    <message>
+      <source>&amp;Original color</source>
+      <translation>原始顏色</translation>
+    </message>
+    <message>
+      <source>Display the image with its original color(s)</source>
+      <translation type="unfinished">Display the image with its original color(s)</translation>
+    </message>
+    <message>
+      <source>&amp;Brightened color</source>
+      <translation type="unfinished">&amp;Brightened color</translation>
+    </message>
+    <message>
+      <source>Display the image with brightened color(s)</source>
+      <translation type="unfinished">Display the image with brightened color(s)</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
+    <message>
+      <source>Image viewer</source>
+      <translation>影像檢視器</translation>
+    </message>
+    <message>
+      <source>Images (*.png *.xpm *.jpg *.bmp)</source>
+      <translation>影像（*.PNG *.JPG *.XPM *.BMP）</translation>
+    </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <location filename="../../Command.cpp" line="115"/>
@@ -249,6 +277,14 @@
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
       <translation type="unfinished">Could not load the chosen image</translation>
+    </message>
+    <message>
+      <source>Error open image</source>
+      <translation>開啟影像錯誤</translation>
+    </message>
+    <message>
+      <source>Could not load the choosen image</source>
+      <translation>無法載入選擇影像</translation>
     </message>
   </context>
   <context>

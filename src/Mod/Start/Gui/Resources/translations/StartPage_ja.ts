@@ -223,7 +223,7 @@
       <translation>スタートページ</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="545"/>
+      <location filename="../../../StartPage/StartPage.py" line="542"/>
       <source>Start page</source>
       <translation>スタートページ</translation>
     </message>
@@ -238,7 +238,7 @@
     <message>
       <location filename="../../Command.cpp" line="45"/>
       <source>Start Page</source>
-      <translation>スタートページ</translation>
+      <translation type="unfinished">Start Page</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="46"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="126"/>
       <source>Show notepad</source>
-      <translation>メモ帳を表示</translation>
+      <translation type="unfinished">Show notepad</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
@@ -311,7 +311,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="155"/>
       <source>Fonts and colors</source>
-      <translation>フォント及び色</translation>
+      <translation type="unfinished">Fonts and colors</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="167"/>

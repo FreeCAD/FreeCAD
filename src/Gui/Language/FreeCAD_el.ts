@@ -127,10 +127,6 @@
       <translation>Κίνηση Σφαίρας Γραφικών</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation type="unfinished">Global Sensitivity:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Λειτουργία Κυρίων Αξόνων</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Αντιστροφή</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Καθολική Ευαισθησία:</translation>
     </message>
   </context>
   <context>
@@ -294,13 +294,13 @@
       <translation>Πιέστε το μεσαίο πλήκτρο του ποντικιού</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation type="unfinished">Press middle and left or right mouse button</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation type="unfinished">Press middle+left or middle+right button</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation type="unfinished">Scroll middle mouse button or keep middle button pressed
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
@@ -400,6 +400,21 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Βιβλιοθήκες</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Αυτό το λογισμικό χρησιμοποιεί συνιστώσες ανοικτού κώδικα των οποίων η πνευματική ιδιοκτησία και τα δικαιώματα ιδιοκτησίας ανήκουν στους αντίστοιχους ιδιοκτήτες τους:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Άδεια</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
       <source>Button %1</source>
@@ -408,6 +423,37 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>Out Of Range</source>
       <translation>Εκτός Εύρους</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Ρυθμίσεις της κάμερας</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Προσανατολισμός</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation type="unfinished">Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation type="unfinished">Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation type="unfinished">Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation type="unfinished">Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Τωρινή προβολή</translation>
     </message>
   </context>
   <context>
@@ -814,10 +860,10 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
+Do you want to override it?</source>
       <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</translation>
+Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -1338,6 +1384,14 @@ Please define another shortcut.</translation>
       <source>Rename</source>
       <translation>Μετονομασία</translation>
     </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>Διπλογραφή</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>Πρόσθετα...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
@@ -1406,6 +1460,20 @@ This file already exists.</source>
 Perhaps a file permission error?</source>
       <translation>Αποτυχία μετονομασίας σε '%1'.
 Ίσως υπάρχει κάποιο σφάλμα άδειας αρχείου;</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Διπλογραφή της Μακροεντολής</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Αποτυχία Κατά τη Διπλογραφή</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>Αποτυχία κατά την διπλογραφή στο '%1'.
+Μήπως υπάρχει κάποιο σφάλμα στα δικαιώματα του αρχείου;</translation>
     </message>
   </context>
   <context>
@@ -1981,8 +2049,52 @@ Specify another directory, please.</source>
       <translation>Προοπτική αποτύπωση</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object (experimental)</translation>
+      <source>Show navigation cube</source>
+      <translation>Εμφανίστε τον κύβο πλοήγησης</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Γωνία</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Πάνω αριστερά</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Πάνω δεξιά</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Κάτω αριστερά</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Κάτω δεξιά</translation>
+    </message>
+    <message>
+      <source>Use OpenGL Vertex Buffer Object</source>
+      <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
+    </message>
+    <message>
+      <source>New Document Camera Orientation</source>
+      <translation>Προσανατολισμός της Κάμερας στα Νέα Έγγραφα</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
+      <translation type="unfinished">Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation type="unfinished">Disable touchscreen tilt gesture</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Σύρσιμο στον δρομέα</translation>
+    </message>
+    <message>
+      <source>Marker size:</source>
+      <translation>Μέγεθος του δείκτη:</translation>
     </message>
   </context>
   <context>
@@ -1994,6 +2106,70 @@ Specify another directory, please.</source>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Ανοίξτε ένα νέο πρόγραμμα προβολής ή πραγματοποιήστε επανεκκίνηση %1 για να εφαρμόσετε τις αλλαγές anti-aliasing.</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation type="unfinished">7px</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation type="unfinished">9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation type="unfinished">11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation type="unfinished">13px</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation type="unfinished">15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Ισομετρική</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Διμετρική</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Τριμετρική</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Πάνω</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Εμπρόσθια</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Αριστερά</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Δεξιά</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Οπίσθια</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Κάτω</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Επιλογή</translation>
     </message>
   </context>
   <context>
@@ -2623,6 +2799,46 @@ Specify another directory, please.</source>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>Μετρικό σύστημα μικρών εξαρτημάτων &amp; CNC (χιλιοστά, χιλιοστά/λεπτά)</translation>
     </message>
+    <message>
+      <source>Imperial Civil (ft/ft^2/ft^3)</source>
+      <translation type="unfinished">Imperial Civil (ft/ft^2/ft^3)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation>Ελάχιστο κλάσμα των ιντσών:</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Το ελάχιστο κλάσμα, που θα προβάλλεται, όταν θα είναι σε ίντσες.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128"</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2663,8 +2879,20 @@ Specify another directory, please.</source>
       <translation>Διαλέξτε ακτίνα (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation>Ορίζει την περιοχή σύγχυσης για τη διαλογή στοιχείων σε τρισδιάστατη προβολή. Η επιλογή μεγαλύτερης τιμής διευκολύνει την διαλογή, αλλά θα καταστήσει την επιλογή κάποιων μικρών χαρακτηριστικών αδύνατη.</translation>
+    </message>
+    <message>
+      <source>Tree View</source>
+      <translation>Προβολή Δενδροδιαγράμματος</translation>
+    </message>
+    <message>
+      <source>Object being edited</source>
+      <translation>Πραγματοποιείται επεξεργασία αντικειμένου</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Ενεργό δοχείο</translation>
     </message>
   </context>
   <context>
@@ -2853,10 +3081,6 @@ Specify another directory, please.</source>
       <translation>Είστε βέβαιοι πως θέλετε να διαγράψετε όλα τα προσωρινά ευρετήρια;</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directory you won't be able to recover any files afterwards.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Ολοκληρώθηκε</translation>
     </message>
@@ -2871,6 +3095,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Πιέστε την επιλογή 'Εκκίνηση Ανάκτησης' για να εκκινήσετε τη διαδικασία ανάκτησης του εγγράφου που αναφέρεται παρακάτω.
 
 Η στήλη 'Κατάσταση' δείχνει αν ήταν δυνατή η ανάκτηση του εγγράφου.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3204,14 +3432,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Άξονας περιστροφής με γωνία</translation>
     </message>
     <message>
-      <source>Apply placement changes immediately</source>
-      <translation type="unfinished">Apply placement changes immediately</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation type="unfinished">Apply incremental changes to object placement</translation>
-    </message>
-    <message>
       <source>Apply</source>
       <translation type="unfinished">Apply</translation>
     </message>
@@ -3238,6 +3458,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Use center of mass</source>
       <translation>Χρήση του κέντρου μάζας</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation>Αξονική:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation>Εφαρμογή της αξονικής</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation type="unfinished">Shift click for opposite direction</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>Επιλεγμένα σημεία</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation>Εφαρμογή σταδιακών αλλαγών</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation type="unfinished">Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</translation>
     </message>
   </context>
   <context>
@@ -3351,10 +3595,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>CombiView</source>
       <translation>Συνδυασμένη Προβολή</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Έργο</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -3636,20 +3876,20 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation type="unfinished">Tap. Or click left mouse button.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers. Or press right mouse button.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -3934,29 +4174,27 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation type="unfinished">Tap. Or click left mouse button.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers. Or press ALT + middle mouse button.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation type="unfinished">Download started...
-</translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -4035,6 +4273,13 @@ How do you want to proceed?</source>
     <message>
       <source>Change the linked objects</source>
       <translation>Αλλαγή των συνδεδεμένων αντικειμένων</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit %1</source>
+      <translation>Επεξεργασία του %1</translation>
     </message>
   </context>
   <context>
@@ -4415,6 +4660,13 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Αναζήτηση</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
@@ -4479,6 +4731,14 @@ Do you want to specify another directory?</source>
     <message>
       <source>%1, Internal name: %2</source>
       <translation>%1, Εσωτερικό όνομα: %2</translation>
+    </message>
+    <message>
+      <source>Search...</source>
+      <translation>Αναζήτηση...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>Αναζήτηση για αντικείμενα</translation>
     </message>
   </context>
   <context>
@@ -5038,24 +5298,40 @@ Be aware the point where you click matters.</source>
       <translation>Σημείο Τομής Αξόνων</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation type="unfinished"> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation type="unfinished">Translation: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation type="unfinished">Rotation: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Διαγραφή περιεχομένου ομάδας;</translation>
     </message>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>Το %1 δεν είναι άδειο, να διαγραφεί και το περιεχόμενό του;</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Αποτυχία εξαγωγής</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Χωρισμός</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation type="unfinished">%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Μετάφραση:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Περιστροφή:</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation>Εναλλαγή του ενεργού αντικείμενου</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Επεξεργασία του κειμένου</translation>
     </message>
   </context>
   <context>
@@ -5782,12 +6058,12 @@ Be aware the point where you click matters.</source>
       <translation>Συγχώνευση έργου</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation type="unfinished">%1 document (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Αδυναμία συγχώνευσης του έργου με το ίδιο έργο.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>έγγραφο %1 (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6463,21 +6739,6 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Καθιερωμένη Προβολή</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Αξονομετρική</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation type="unfinished">Set to axonometric view</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6503,8 +6764,23 @@ Be aware the point where you click matters.</source>
       <translation>Δημιουργήστε νέα προβολή</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation type="unfinished">Creates a new  view window for the active document</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation>Δημιουργεί ένα νέο παράθυρο προβολής για το ενεργό έγγραφο</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Καθιερωμένη Προβολή</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Διμετρική</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Ορισμός σε διμετρική προβολή</translation>
     </message>
   </context>
   <context>
@@ -6595,6 +6871,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to front view</source>
       <translation>Ορισμός εμπρόσθιας προβολής</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Καθιερωμένη Προβολή</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Ισομετρική</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Ορισμός σε ισομετρική προβολή</translation>
     </message>
   </context>
   <context>
@@ -6778,6 +7069,21 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Καθιερωμένη Προβολή</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Τριμετρική</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Ορισμός σε τριμετρική προβολή</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewVR</name>
     <message>
       <source>Standard-View</source>
@@ -6894,6 +7200,66 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Προβολή</translation>
+    </message>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>Σύμπτυξη/Επέκταση</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>Επέκταση του ενεργού εγγράφου, και σύμπτυξη όλων των άλλων</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Προβολή</translation>
+    </message>
+    <message>
+      <source>Multi Document</source>
+      <translation>Πολύ-Έγγραφο</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Εμφάνιση όλων των εγγράφων στην προβολή δέντρου</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Προβολή</translation>
+    </message>
+    <message>
+      <source>Single Document</source>
+      <translation>Μονό Έγγραφο</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Εμφάνιση μόνο του ενεργού εγγράφου, στην προβολή σαν δέντρο</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeViewDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Προβολή</translation>
+    </message>
+    <message>
+      <source>Document Tree</source>
+      <translation>Δένδρο του Εγγράφου</translation>
+    </message>
+    <message>
+      <source>Set visibility of inactive documents in tree view</source>
+      <translation>Καθόρισε την εμφάνιση των ανενεργών εγγράφων, στην προβολή σαν δέντρο</translation>
+    </message>
+  </context>
+  <context>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
@@ -7004,20 +7370,20 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>Object dependencies</source>
-      <translation>Εξαρτήσεις αντικειμένου</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
-
-</source>
-      <translation type="unfinished">The following, referencing objects might break.
-
-Are you sure you want to continue?
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
+    </message>
+    <message>
+      <source>Delete Selection Issues</source>
+      <translation>Διαγραφή Καταγραφών Επιλογής</translation>
     </message>
   </context>
   <context>
@@ -7119,6 +7485,50 @@ Do you want to duplicate them, too?</source>
     <message>
       <source>Do you want to continue?</source>
       <translation>Θέλετε να συνεχίσετε;</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>Ισομετρική</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>Ορισμός χειριστή NaviCube σε Ισομετρική λειτουργία</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Ορθογραφική</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Ορισμός Προβολής σε Ορθογραφική λειτουργία</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Προοπτική</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Ορισμός Προβολής σε Προοπτική λειτουργία</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Εστίαση για προσαρμογή</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Εστίαση ώστε το μοντέλο να γεμίζει την προβολή</translation>
     </message>
   </context>
   <context>

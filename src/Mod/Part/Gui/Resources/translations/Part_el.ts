@@ -4,57 +4,57 @@
   <context>
     <name>AttachmentEditor</name>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="95"/>
       <source>No object named {name}</source>
       <translation type="unfinished">No object named {name}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="98"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="99"/>
       <source>Failed to parse link (more than one colon encountered)</source>
       <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="205"/>
       <source>Object {name} is neither movable nor attachable, can't edit attachment</source>
       <translation type="unfinished">Object {name} is neither movable nor attachable, can't edit attachment</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="212"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="213"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
       <translation type="unfinished">{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="230"/>
       <source>Attachment</source>
       <translation>Συνημμένο</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="219"/>
       <source>Continue</source>
       <translation>Συνεχίστε</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="263"/>
       <source>Edit attachment of {feat}</source>
       <translation type="unfinished">Edit attachment of {feat}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="349"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="350"/>
       <source>Ignored. Can't attach object to itself!</source>
       <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="353"/>
       <source>{obj1} depends on object being attached, can't use it for attachment</source>
       <translation type="unfinished">{obj1} depends on object being attached, can't use it for attachment</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="497"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="498"/>
       <source>{mode} (add {morerefs})</source>
       <translation type="unfinished">{mode} (add {morerefs})</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="500"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="501"/>
       <source>{mode} (add more references)</source>
       <translation type="unfinished">{mode} (add more references)</translation>
     </message>
@@ -149,6 +149,19 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
   </context>
   <context>
     <name>Part_ExplodeCompound</name>
@@ -206,11 +219,6 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <source>Embed object</source>
       <translation type="unfinished">Embed object</translation>
     </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
-      <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
-    </message>
   </context>
   <context>
     <name>Part_JoinFeatures</name>
@@ -252,24 +260,26 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
       <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</translation>
     </message>
-  </context>
-  <context>
-    <name>Part_MakeTube</name>
     <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation type="unfinished">Select at least two objects, or one or more compounds, first!</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
+      <source>Embed object</source>
+      <translation type="unfinished">Embed object</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</translation>
     </message>
   </context>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="407"/>
       <source>Computing the result failed with an error: 
 
 {err}
@@ -282,7 +292,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="440"/>
       <source>Bad selection</source>
       <translation>Μη επιτρεπτή επιλογή</translation>
     </message>
@@ -297,9 +307,42 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <translation type="unfinished">Boolean Fragments</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation type="unfinished">Split objects where they intersect</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="439"/>
+      <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation type="unfinished">Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation type="unfinished">Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Συνεχίστε</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation type="unfinished">Boolean Fragments</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
+      <source>Boolean XOR</source>
+      <translation type="unfinished">Boolean XOR</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
@@ -327,9 +370,29 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <translation type="unfinished">Slice apart</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Part_BooleanFragments: split objects where they intersect</source>
+      <translation type="unfinished">Part_BooleanFragments: split objects where they intersect</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
+      <source>Slice</source>
+      <translation type="unfinished">Slice</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="297"/>
+      <source>Part_Slice: split object by intersections with other objects</source>
+      <translation type="unfinished">Part_Slice: split object by intersections with other objects</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
       <source>Split object by intersections with other objects.</source>
       <translation type="unfinished">Split object by intersections with other objects.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="431"/>
+      <source>Part_XOR: remove intersection fragments</source>
+      <translation type="unfinished">Part_XOR: remove intersection fragments</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
@@ -340,6 +403,14 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
       <translation type="unfinished">Remove intersection fragments</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation type="unfinished">Creates a tube</translation>
     </message>
   </context>
   <context>
@@ -599,6 +670,16 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Σημείο στο δεύτερο αντικείμενο αναφοράς που βρίσκεται εγγύτερα στο πρώτο αντικείμενο αναφοράς.</translation>
     </message>
+    <message>
+      <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
+      <comment>AttachmentPoint mode tooltip</comment>
+      <translation>Τοποθετείται σημείο στην ακμή, η τιμή της παραμέτρου MapPathParametr καθορίζει την ακριβή θέση. Επιπλέον, είναι δυνατή η σύνδεση με κάποια κορυφή για την δημιουργία προβολής.</translation>
+    </message>
+    <message>
+      <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
+      <comment>AttachmentPoint mode tooltip</comment>
+      <translation>Κέντρο του εγγύτατου κύκλου μιας ακμής. Προαιρετική σύνδεση με κάποια κορυφή καθορίζει την ακριβή θέση.</translation>
+    </message>
   </context>
   <context>
     <name>Attacher1D</name>
@@ -844,6 +925,11 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Γραμμή παράλληλη σε επιφάνεια σε σημείο που ορίζεται από κορυφή.</translation>
     </message>
+    <message>
+      <source>Normal</source>
+      <comment>AttachmentLine mode caption</comment>
+      <translation>Κανονικό</translation>
+    </message>
   </context>
   <context>
     <name>Attacher2D</name>
@@ -1040,6 +1126,16 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Το επίπεδο κατασκευάζεται με βάση τον δεύτερο και τον τρίτο κύριο άξονα αδράνειας (διέρχεται από το κέντρο μάζας).</translation>
+    </message>
+    <message>
+      <source>Attachment is disabled. Plane can be moved by editing Placement property.</source>
+      <comment>AttachmentPlane mode tooltip</comment>
+      <translation>Το συνημμένο είναι απενεργοποιημένο. Το επίπεδο μπορεί να μετακινηθεί πραγματοποιώντας επεξεργασία της ιδιότητας Τοποθέτησης.</translation>
+    </message>
+    <message>
+      <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
+      <comment>AttachmentPlane mode tooltip</comment>
+      <translation>Το επίπεδο είναι κάθετο στην ακμή, και ο άξονας Y ταυτίζεται με τον άξονα του εγγύτατου κύκλου. Προαιρετική σύνδεση με κάποια κορυφή καθορίζει την ακριβή θέση.</translation>
     </message>
   </context>
   <context>
@@ -1372,6 +1468,11 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ταύτιση της αρχής των αξόνων με την πρώτη Κορυφή. Ευθυγράμμιση των αξόνων κατακορύφου και οριζοντίου επιπέδου με φορά προς την κορυφή/κατά μήκος της γραμμής.</translation>
     </message>
+    <message>
+      <source>Attachment is disabled. CS can be moved by editing Placement property.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation>Το συνημμένο είναι απενεργοποιημένο. Το Σύστημα Συντεταγμένων μπορεί να μετακινηθεί πραγματοποιώντας επεξεργασία της ιδιότητας Τοποθέτησης.</translation>
+    </message>
   </context>
   <context>
     <name>BlockDefinition</name>
@@ -1487,36 +1588,33 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <source>Reference</source>
       <translation>Αναφορά</translation>
     </message>
-  </context>
-  <context>
-    <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2355"/>
-      <source>Part</source>
-      <translation>Εξάρτημα</translation>
+      <source>Apply</source>
+      <translation type="unfinished">Apply</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
-      <location filename="../../Command.cpp" line="2357"/>
-      <location filename="../../Command.cpp" line="2359"/>
-      <source>Box selection</source>
-      <translation>Επιλογή με τη χρήση πλαισίου</translation>
+      <source>Cancel</source>
+      <translation>Ακύρωση</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>ΟΚ</translation>
     </message>
   </context>
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2104"/>
+      <location filename="../../Command.cpp" line="1983"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2105"/>
+      <location filename="../../Command.cpp" line="1984"/>
       <source>Check Geometry</source>
       <translation>Έλεγχος Γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2106"/>
+      <location filename="../../Command.cpp" line="1985"/>
       <source>Analyzes Geometry For Errors</source>
       <translation>Αναλύει την Γεωμετρία Για τον Εντοπισμό Σφαλμάτων</translation>
     </message>
@@ -1524,17 +1622,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2138"/>
+      <location filename="../../Command.cpp" line="2017"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2139"/>
+      <location filename="../../Command.cpp" line="2018"/>
       <source>Color per face</source>
       <translation>Χρώμα ανά όψη</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2140"/>
+      <location filename="../../Command.cpp" line="2019"/>
       <source>Set color per face</source>
       <translation>Ορίστε χρώμα για κάθε όψη</translation>
     </message>
@@ -1542,13 +1640,13 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdMeasureAngular</name>
     <message>
-      <location filename="../../Command.cpp" line="2204"/>
+      <location filename="../../Command.cpp" line="2083"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2205"/>
-      <location filename="../../Command.cpp" line="2206"/>
+      <location filename="../../Command.cpp" line="2084"/>
+      <location filename="../../Command.cpp" line="2085"/>
       <source>Measure Angular</source>
       <translation>Γωνιακή Μέτρηση</translation>
     </message>
@@ -1556,13 +1654,13 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdMeasureClearAll</name>
     <message>
-      <location filename="../../Command.cpp" line="2233"/>
+      <location filename="../../Command.cpp" line="2112"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2234"/>
-      <location filename="../../Command.cpp" line="2235"/>
+      <location filename="../../Command.cpp" line="2113"/>
+      <location filename="../../Command.cpp" line="2114"/>
       <source>Clear All</source>
       <translation>Εκκαθάριση όλων</translation>
     </message>
@@ -1570,13 +1668,13 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdMeasureLinear</name>
     <message>
-      <location filename="../../Command.cpp" line="2175"/>
+      <location filename="../../Command.cpp" line="2054"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2176"/>
-      <location filename="../../Command.cpp" line="2177"/>
+      <location filename="../../Command.cpp" line="2055"/>
+      <location filename="../../Command.cpp" line="2056"/>
       <source>Measure Linear</source>
       <translation>Γραμμική Μέτρηση</translation>
     </message>
@@ -1584,13 +1682,13 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdMeasureToggle3d</name>
     <message>
-      <location filename="../../Command.cpp" line="2297"/>
+      <location filename="../../Command.cpp" line="2176"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2298"/>
-      <location filename="../../Command.cpp" line="2299"/>
+      <location filename="../../Command.cpp" line="2177"/>
+      <location filename="../../Command.cpp" line="2178"/>
       <source>Toggle 3d</source>
       <translation>Εναλλαγή τρισδιάστατης προβολής</translation>
     </message>
@@ -1598,13 +1696,13 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdMeasureToggleAll</name>
     <message>
-      <location filename="../../Command.cpp" line="2262"/>
+      <location filename="../../Command.cpp" line="2141"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2263"/>
-      <location filename="../../Command.cpp" line="2264"/>
+      <location filename="../../Command.cpp" line="2142"/>
+      <location filename="../../Command.cpp" line="2143"/>
       <source>Toggle All</source>
       <translation>Εναλλαγή Όλων</translation>
     </message>
@@ -1612,13 +1710,13 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdMeasureToggleDelta</name>
     <message>
-      <location filename="../../Command.cpp" line="2326"/>
+      <location filename="../../Command.cpp" line="2205"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2327"/>
-      <location filename="../../Command.cpp" line="2328"/>
+      <location filename="../../Command.cpp" line="2206"/>
+      <location filename="../../Command.cpp" line="2207"/>
       <source>Toggle Delta</source>
       <translation>Εναλλαγή εμφάνισης/απόκρυψης μετρήσεων Delta</translation>
     </message>
@@ -1626,17 +1724,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1274"/>
+      <location filename="../../Command.cpp" line="1153"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1275"/>
+      <location filename="../../Command.cpp" line="1154"/>
       <source>Boolean...</source>
       <translation>Χρήση Λειτουργιών Boole...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1276"/>
+      <location filename="../../Command.cpp" line="1155"/>
       <source>Run a boolean operation with two shapes selected</source>
       <translation>Εκτέλεση μιας πράξης Άλγεβρας Boole με δύο επιλεγμένα σχήματα</translation>
     </message>
@@ -1660,21 +1758,29 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <source>Create a cube solid</source>
       <translation>Δημιουργήστε έναν στερεό κύβο</translation>
     </message>
+    <message>
+      <source>Box</source>
+      <translation type="unfinished">Box</translation>
+    </message>
+    <message>
+      <source>Create a box solid</source>
+      <translation type="unfinished">Create a box solid</translation>
+    </message>
   </context>
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="135"/>
+      <location filename="../../Command.cpp" line="133"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="136"/>
+      <location filename="../../Command.cpp" line="134"/>
       <source>Box fix 1</source>
       <translation>Box fix 1</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="137"/>
+      <location filename="../../Command.cpp" line="135"/>
       <source>Create a box solid without dialog</source>
       <translation>Δημιουργήστε ένα στερεό πλαίσιο χωρίς παράθυρο διαλόγου</translation>
     </message>
@@ -1682,17 +1788,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartBox3</name>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Box fix 2</source>
       <translation>Box fix 2</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="178"/>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Create a box solid without dialog</source>
       <translation>Δημιουργήστε ένα στερεό πλαίσιο χωρίς παράθυρο διαλόγου</translation>
     </message>
@@ -1700,17 +1806,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1535"/>
+      <location filename="../../Command.cpp" line="1414"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1536"/>
+      <location filename="../../Command.cpp" line="1415"/>
       <source>Shape builder...</source>
       <translation>Πρόγραμμα Κατασκευής Σχημάτων...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1537"/>
+      <location filename="../../Command.cpp" line="1416"/>
       <source>Advanced utility to create shapes</source>
       <translation>Προχωρημένη βοηθητική εφαρμογή για τη δημιουργία σχημάτων</translation>
     </message>
@@ -1718,17 +1824,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1439"/>
+      <location filename="../../Command.cpp" line="1318"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1440"/>
+      <location filename="../../Command.cpp" line="1319"/>
       <source>Chamfer...</source>
       <translation type="unfinished">Chamfer...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1441"/>
+      <location filename="../../Command.cpp" line="1320"/>
       <source>Chamfer the selected edges of a shape</source>
       <translation>Λοξότμηση των επιλεγμένων ακμών ενός σχήματος</translation>
     </message>
@@ -1736,53 +1842,35 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location filename="../../Command.cpp" line="349"/>
+      <location filename="../../Command.cpp" line="347"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="350"/>
+      <location filename="../../Command.cpp" line="348"/>
       <source>Intersection</source>
       <translation>Σημείο τομής</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="351"/>
+      <location filename="../../Command.cpp" line="349"/>
       <source>Make an intersection of two shapes</source>
       <translation>Δημιουργήστε μια τομή δύο σχημάτων</translation>
     </message>
   </context>
   <context>
-    <name>CmdPartCompCompoundTools</name>
-    <message>
-      <location filename="../../Command.cpp" line="782"/>
-      <source>Part</source>
-      <translation>Εξάρτημα</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="783"/>
-      <source>Counpound tools</source>
-      <translation type="unfinished">Counpound tools</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="784"/>
-      <source>Compound tools: working with lists of shapes.</source>
-      <translation type="unfinished">Compound tools: working with lists of shapes.</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdPartCompJoinFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="554"/>
+      <location filename="../../Command.cpp" line="552"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="555"/>
+      <location filename="../../Command.cpp" line="553"/>
       <source>Join objects...</source>
       <translation>Ένωση αντικειμένων...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="556"/>
+      <location filename="../../Command.cpp" line="554"/>
       <source>Join walled objects</source>
       <translation>Ένωση περιτειχισμένων αντικειμένων</translation>
     </message>
@@ -1790,17 +1878,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1720"/>
+      <location filename="../../Command.cpp" line="1599"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1721"/>
+      <location filename="../../Command.cpp" line="1600"/>
       <source>Offset:</source>
       <translation type="unfinished">Offset:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1722"/>
+      <location filename="../../Command.cpp" line="1601"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>Εργαλεία μετατόπισης σχημάτων (κατασκευή παράλληλων σχημάτων)</translation>
     </message>
@@ -1808,17 +1896,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="660"/>
+      <location filename="../../Command.cpp" line="659"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="661"/>
+      <location filename="../../Command.cpp" line="660"/>
       <source>Split objects...</source>
       <translation>Διαίρεση αντικειμένων...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="662"/>
+      <location filename="../../Command.cpp" line="661"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
       <translation>Εργαλεία διαίρεσης σχημάτων. Εργαλεία δημιουργίας σύνθετων στερεών. Απαιτείται η έκδοση OCC 6.9.0 ή κάποια μεταγενέστερη.</translation>
     </message>
@@ -1826,17 +1914,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="889"/>
+      <location filename="../../Command.cpp" line="768"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="890"/>
+      <location filename="../../Command.cpp" line="769"/>
       <source>Make compound</source>
       <translation>Δημιουργία σύνθετου σχήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="891"/>
+      <location filename="../../Command.cpp" line="770"/>
       <source>Make a compound of several shapes</source>
       <translation>Δημιουργία ενός σύνθετου σχήματος από διάφορα σχήματα</translation>
     </message>
@@ -1864,17 +1952,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1374"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1375"/>
       <source>Cross-sections...</source>
       <translation>Ορθογώνιες διατομές...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1497"/>
+      <location filename="../../Command.cpp" line="1376"/>
       <source>Cross-sections</source>
       <translation>Ορθογώνιες διατομές</translation>
     </message>
@@ -1882,17 +1970,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location filename="../../Command.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cut</source>
       <translation>Περικοπή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>Make a cut of two shapes</source>
       <translation>Περικοπή δύο σχημάτων</translation>
     </message>
@@ -1918,37 +2006,19 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     </message>
   </context>
   <context>
-    <name>CmdPartDefeaturing</name>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="271"/>
-      <source>Part</source>
-      <translation>Εξάρτημα</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="272"/>
-      <source>Defeaturing</source>
-      <translation type="unfinished">Defeaturing</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="273"/>
-      <source>Remove feature from a shape</source>
-      <translation type="unfinished">Remove feature from a shape</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="1047"/>
+      <location filename="../../Command.cpp" line="926"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1048"/>
+      <location filename="../../Command.cpp" line="927"/>
       <source>Export CAD...</source>
       <translation>Εξαγωγή Αρχείου CAD...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1049"/>
+      <location filename="../../Command.cpp" line="928"/>
       <source>Exports to a CAD file</source>
       <translation>Πραγματοποιεί εξαγωγή σε ένα αρχείο CAD</translation>
     </message>
@@ -1956,17 +2026,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1305"/>
+      <location filename="../../Command.cpp" line="1184"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1306"/>
+      <location filename="../../Command.cpp" line="1185"/>
       <source>Extrude...</source>
       <translation>Επέκταση...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1307"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <source>Extrude a selected sketch</source>
       <translation>Επέκταση ενός επιλεγμένου σκαριφήματος</translation>
     </message>
@@ -1974,17 +2044,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1411"/>
+      <location filename="../../Command.cpp" line="1290"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1412"/>
+      <location filename="../../Command.cpp" line="1291"/>
       <source>Fillet...</source>
       <translation>Στρογγύλεμα...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1413"/>
+      <location filename="../../Command.cpp" line="1292"/>
       <source>Fillet the selected edges of a shape</source>
       <translation>Στρογγύλεμα των επιλεγμένων ακμών ενός σχήματος</translation>
     </message>
@@ -1992,17 +2062,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location filename="../../Command.cpp" line="451"/>
+      <location filename="../../Command.cpp" line="449"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="450"/>
       <source>Union</source>
       <translation>Ένωση</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="451"/>
       <source>Make a union of several shapes</source>
       <translation>Δημιουργήστε μια ένωση διαφόρων σχημάτων</translation>
     </message>
@@ -2010,17 +2080,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location filename="../../Command.cpp" line="987"/>
+      <location filename="../../Command.cpp" line="866"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="988"/>
+      <location filename="../../Command.cpp" line="867"/>
       <source>Import CAD...</source>
       <translation>Εισαγωγή CAD...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="989"/>
+      <location filename="../../Command.cpp" line="868"/>
       <source>Imports a CAD file</source>
       <translation>Πραγματοποιεί εισαγωγή ενός αρχείου CAD</translation>
     </message>
@@ -2028,17 +2098,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="1094"/>
+      <location filename="../../Command.cpp" line="973"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1095"/>
+      <location filename="../../Command.cpp" line="974"/>
       <source>Import curve network...</source>
       <translation>Εισαγωγή δικτύου καμπύλων...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1096"/>
+      <location filename="../../Command.cpp" line="975"/>
       <source>Import a curve network</source>
       <translation>Εισαγωγή ενός δικτύου καμπύλων</translation>
     </message>
@@ -2046,53 +2116,69 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1564"/>
+      <location filename="../../Command.cpp" line="1443"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1565"/>
+      <location filename="../../Command.cpp" line="1444"/>
       <source>Loft...</source>
       <translation>Παρεμβολή ορθογώνιων διατομών...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1566"/>
+      <location filename="../../Command.cpp" line="1445"/>
       <source>Utility to loft</source>
       <translation>Βοηθητική εφαρμογή για την παρεμβολή ορθογώνιων διατομών</translation>
+    </message>
+    <message>
+      <source>Advanced utility to lofts</source>
+      <translation>Προηγμένο βοηθητικό πρόγραμμα για τα lofts</translation>
     </message>
   </context>
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1333"/>
+      <location filename="../../Command.cpp" line="1212"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1334"/>
+      <location filename="../../Command.cpp" line="1213"/>
       <source>Make face from wires</source>
       <translation>Δημιουργία όψης από σύρματα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1335"/>
-      <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation type="unfinished">Make face from set of wires (e.g. from a sketch)</translation>
+      <location filename="../../Command.cpp" line="1214"/>
+      <source>Part_MakeFace: Make face from set of wires (e.g. from a sketch)</source>
+      <translation>Part_MakeFace: Δημιουργία όψης από ένα σύνολο συρμάτων (π.χ. από κάποιο σκαρίφημα)</translation>
+    </message>
+    <message>
+      <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
+      <translation>Part_MakeFace: Δημιουργία όψης από ένα σύνολο συρμάτων (π.χ., από κάποιο σκαρίφημα).</translation>
+    </message>
+    <message>
+      <source>Make face from sketch</source>
+      <translation>Κάνει πρόσωπο από το σκίτσο</translation>
+    </message>
+    <message>
+      <source>Make face from selected sketches</source>
+      <translation>Κάνει το πρόσωπό από επιλεγμένο σκίτσα</translation>
     </message>
   </context>
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1142"/>
+      <location filename="../../Command.cpp" line="1021"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../Command.cpp" line="1022"/>
       <source>Convert to solid</source>
       <translation>Μετατροπή σε στέρεο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1144"/>
+      <location filename="../../Command.cpp" line="1023"/>
       <source>Create solid from a shell or compound</source>
       <translation>Δημιουργία στέρεου από ένα κέλυφος ή σύνθετο σχήμα</translation>
     </message>
@@ -2100,17 +2186,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1467"/>
+      <location filename="../../Command.cpp" line="1346"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1468"/>
+      <location filename="../../Command.cpp" line="1347"/>
       <source>Mirroring...</source>
       <translation>Κατοπτρισμός...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1469"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Mirroring a selected shape</source>
       <translation>Κατοπτρισμός ενός επιλεγμένου σχήματος</translation>
     </message>
@@ -2118,53 +2204,61 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1622"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1623"/>
+      <location filename="../../Command.cpp" line="1502"/>
       <source>3D Offset...</source>
       <translation>Μετατόπιση στον Τρισδιάστατο Χώρο...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1624"/>
-      <source>Utility to offset in 3D</source>
-      <translation type="unfinished">Utility to offset in 3D</translation>
+      <location filename="../../Command.cpp" line="1503"/>
+      <source>Part_Offset: Utility to offset in 3D</source>
+      <translation>Part_Offset: Βοηθητική εφαρμογή για την μετατόπιση αντικειμένου στον Τρισδιάστατο Χώρο</translation>
+    </message>
+    <message>
+      <source>Offset...</source>
+      <translation>Μετατόπιση...</translation>
+    </message>
+    <message>
+      <source>Utility to offset</source>
+      <translation>Εργαλείο για τη μετατόπιση</translation>
     </message>
   </context>
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1672"/>
+      <location filename="../../Command.cpp" line="1551"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1673"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>2D Offset...</source>
       <translation>Μετατόπιση στον Δισδιάστατο Χώρο...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1674"/>
-      <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <location filename="../../Command.cpp" line="1553"/>
+      <source>Part_Offset2D: Utility to offset planar shapes</source>
+      <translation>Part_Offset2D: Βοηθητική εφαρμογή για την μετατόπιση επιπέδων σχημάτων</translation>
     </message>
   </context>
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="87"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="90"/>
+      <location filename="../../Command.cpp" line="88"/>
       <source>Pick curve network</source>
       <translation>Διαλέξτε δίκτυο καμπύλων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="91"/>
+      <location filename="../../Command.cpp" line="89"/>
       <source>Pick a curve network</source>
       <translation>Διαλέξτε ένα δίκτυο καμπύλων</translation>
     </message>
@@ -2172,17 +2266,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartPrimitives</name>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="218"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Create primitives...</source>
       <translation>Δημιουργία θεμελιακών στοιχείων...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="219"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Creation of parametrized geometric primitives</source>
       <translation>Δημιουργία παραμετροποιημένων γεωμετρικών θεμελιακών στοιχείων</translation>
     </message>
@@ -2190,17 +2284,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartRefineShape</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="218"/>
+      <location filename="../../CommandSimple.cpp" line="217"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="219"/>
+      <location filename="../../CommandSimple.cpp" line="218"/>
       <source>Refine shape</source>
       <translation>Τελειοποίηση σχήματος</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="220"/>
+      <location filename="../../CommandSimple.cpp" line="219"/>
       <source>Refine the copy of a shape</source>
       <translation>Τελειοποίηση του αντιγράφου ενός σχήματος</translation>
     </message>
@@ -2208,17 +2302,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1220"/>
+      <location filename="../../Command.cpp" line="1099"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1221"/>
+      <location filename="../../Command.cpp" line="1100"/>
       <source>Reverse shapes</source>
       <translation>Αντιστροφή σχημάτων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1222"/>
+      <location filename="../../Command.cpp" line="1101"/>
       <source>Reverse orientation of shapes</source>
       <translation>Αντίστροφη προσανατολισμού των σχημάτων</translation>
     </message>
@@ -2226,17 +2320,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1383"/>
+      <location filename="../../Command.cpp" line="1262"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1384"/>
+      <location filename="../../Command.cpp" line="1263"/>
       <source>Revolve...</source>
       <translation>Περιφορά...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1385"/>
+      <location filename="../../Command.cpp" line="1264"/>
       <source>Revolve a selected shape</source>
       <translation>Περιφορά ενός επιλεγμένου σχήματος</translation>
     </message>
@@ -2244,35 +2338,39 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="1988"/>
+      <location filename="../../Command.cpp" line="1867"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1989"/>
+      <location filename="../../Command.cpp" line="1868"/>
       <source>Create ruled surface</source>
       <translation>Δημιουργήστε ευθειογενή επιφάνεια</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1990"/>
+      <location filename="../../Command.cpp" line="1869"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
       <translation>Δημιουργήσετε μια ευθειογενή επιφάνεια από δύο Ακμές ή από δύο σύρματα</translation>
+    </message>
+    <message>
+      <source>Create a ruled surface from two curves</source>
+      <translation>Δημιουργία επιφάνειας απο δύο καμπύλες</translation>
     </message>
   </context>
   <context>
     <name>CmdPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="940"/>
+      <location filename="../../Command.cpp" line="819"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="941"/>
+      <location filename="../../Command.cpp" line="820"/>
       <source>Section</source>
       <translation>Τομή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="942"/>
+      <location filename="../../Command.cpp" line="821"/>
       <source>Make a section of two shapes</source>
       <translation>Δημιουργία μιας τομής δύο σχημάτων</translation>
     </message>
@@ -2354,17 +2452,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1593"/>
+      <location filename="../../Command.cpp" line="1472"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1594"/>
+      <location filename="../../Command.cpp" line="1473"/>
       <source>Sweep...</source>
       <translation>Σάρωση...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1595"/>
+      <location filename="../../Command.cpp" line="1474"/>
       <source>Utility to sweep</source>
       <translation>Βοηθητική εφαρμογή για την σάρωση</translation>
     </message>
@@ -2372,33 +2470,33 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="1813"/>
+      <location filename="../../Command.cpp" line="1692"/>
       <source>Part</source>
       <translation>Εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1814"/>
+      <location filename="../../Command.cpp" line="1693"/>
       <source>Thickness...</source>
       <translation>Πάχος...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1815"/>
+      <location filename="../../Command.cpp" line="1694"/>
       <source>Utility to apply a thickness</source>
       <translation>Βοηθητική εφαρμογή για την πρόσδοση πάχους</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1827"/>
-      <location filename="../../Command.cpp" line="1847"/>
+      <location filename="../../Command.cpp" line="1706"/>
+      <location filename="../../Command.cpp" line="1726"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1828"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Selected one or more faces of a shape</source>
       <translation>Επιλέχθηκαν μια ή περισσότερες όψεις ενός σχήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1848"/>
+      <location filename="../../Command.cpp" line="1727"/>
       <source>Selected shape is not a solid</source>
       <translation>Το επιλεγμένο σχήμα δεν είναι στερεό</translation>
     </message>
@@ -2421,6 +2519,35 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../CommandParametric.cpp" line="212"/>
       <source>Create a torus solid</source>
       <translation>Δημιουργήστε έναν στερεό τόρο</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgExtrusion</name>
+    <message>
+      <source>Select a shape for extrusion, first.</source>
+      <translation type="unfinished">Select a shape for extrusion, first.</translation>
+    </message>
+    <message>
+      <source>The document '%1' doesn't exist.</source>
+      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgRevolution</name>
+    <message>
+      <source>Select a shape for revolution, first.</source>
+      <translation type="unfinished">Select a shape for revolution, first.</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgSettings3DViewPart</name>
+    <message>
+      <source>Deviation</source>
+      <translation type="unfinished">Deviation</translation>
+    </message>
+    <message>
+      <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
+      <translation type="unfinished">Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
     </message>
   </context>
   <context>
@@ -2504,6 +2631,14 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="328"/>
       <source>Flip sides</source>
       <translation>Αντιστροφή πλευρών</translation>
+    </message>
+    <message>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>Κατοπτρισμός της ιδιότητας τοποθέτησης συνημμένου. Η επιπλέον τοποθέτηση είναι εκφρασμένη στον τοπικό χώρο του αντικειμένου που επισυνάπτεται.</translation>
+    </message>
+    <message>
+      <source>Extra placement:</source>
+      <translation>Επιπλέον τοποθέτηση:</translation>
     </message>
   </context>
   <context>
@@ -2728,7 +2863,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
-      <location filename="../../DlgExtrusion.cpp" line="207"/>
+      <location filename="../../DlgExtrusion.cpp" line="198"/>
       <source>Select</source>
       <translation>Επιλέξτε</translation>
     </message>
@@ -2819,18 +2954,38 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <translation>Σχήμα</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="181"/>
+      <source>Length:</source>
+      <translation>Μήκος:</translation>
+    </message>
+    <message>
+      <source>3D view</source>
+      <translation>Προεπισκόπηση 3Δ</translation>
+    </message>
+    <message>
+      <source>Note:This option works for planes only</source>
+      <translation>Σημ.Η επιλογή λειτουργεί μόνο σε επίπεδα</translation>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Select a shape for extrusion, first.</source>
+      <translation type="unfinished">Select a shape for extrusion, first.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.cpp" line="172"/>
       <source>Selecting...</source>
       <translation>Πραγματοποιείται επιλογή...</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="422"/>
+      <location filename="../../DlgExtrusion.cpp" line="413"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="470"/>
-      <location filename="../../DlgExtrusion.cpp" line="475"/>
+      <location filename="../../DlgExtrusion.cpp" line="461"/>
+      <location filename="../../DlgExtrusion.cpp" line="466"/>
       <source>Creating Extrusion failed.
 
 %1</source>
@@ -2839,31 +2994,31 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="542"/>
+      <location filename="../../DlgExtrusion.cpp" line="533"/>
       <source>Object not found: %1</source>
       <translation>Το αντικείμενο δεν βρέθηκε: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="604"/>
+      <location filename="../../DlgExtrusion.cpp" line="595"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
       <translation>Δεν έχουν επιλεχθεί σχήματα για επέκταση. Επιλέξτε πρώτα κάποιο σχήμα.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="625"/>
-      <source>Extrusion direction link is invalid.
+      <location filename="../../DlgExtrusion.cpp" line="616"/>
+      <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation type="unfinished">Extrusion direction link is invalid.
+      <translation>Ο σύνδεσμος άξονα περιφοράς είναι μη έγκυρος.
 
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="627"/>
+      <location filename="../../DlgExtrusion.cpp" line="618"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Η λειτουργία κατεύθυνσης συνιστάται για τη χρήση μιας ακμής, αλλά καμία ακμή δεν είναι συνδεδεμένη.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="650"/>
+      <location filename="../../DlgExtrusion.cpp" line="641"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
@@ -2872,14 +3027,22 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="660"/>
+      <location filename="../../DlgExtrusion.cpp" line="651"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
       <translation>Η κατεύθυνση επέκτασης έχει μηδενικό μήκος. Πρέπει να είναι μη μηδενική.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="671"/>
+      <location filename="../../DlgExtrusion.cpp" line="662"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Το συνολικό μήκος επέκτασης είναι μηδέν (μήκος1 == -μήκος2). Πρέπει να είναι μη μηδενικό.</translation>
+    </message>
+    <message>
+      <source>Succeeded</source>
+      <translation>Επιτεύχθηκε</translation>
+    </message>
+    <message>
+      <source>Failed</source>
+      <translation>Απέτυχε</translation>
     </message>
   </context>
   <context>
@@ -3119,6 +3282,10 @@ Please check one or more edge entities first.</source>
       <source>Author</source>
       <translation>Συγγραφέας</translation>
     </message>
+    <message>
+      <source>Enable B-REP mode</source>
+      <translation>Ενεργοποίηση της λειτουργίας B-REP</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgImportExportStep</name>
@@ -3250,6 +3417,14 @@ Please check one or more edge entities first.</source>
       <source>Length:</source>
       <translation>Μήκος:</translation>
     </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Ακύρωση</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>ΟΚ</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgPartCylinder</name>
@@ -3298,6 +3473,14 @@ Please check one or more edge entities first.</source>
       <source>Radius:</source>
       <translation>Ακτίνα:</translation>
     </message>
+    <message>
+      <source>OK</source>
+      <translation>ΟΚ</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Ακύρωση</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgPartImportIges</name>
@@ -3316,9 +3499,25 @@ Please check one or more edge entities first.</source>
       <source>...</source>
       <translation>...</translation>
     </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Ακύρωση</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>ΟΚ</translation>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgPartImportIgesImp</name>
+    <message>
+      <source>IGES (*.igs *.iges);;All Files (*.*)</source>
+      <translation>IGES (*.igs *.iges);;Όλα τα αρχεία (*.*)</translation>
+    </message>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="71"/>
       <source>IGES</source>
@@ -3347,9 +3546,25 @@ Please check one or more edge entities first.</source>
       <source>...</source>
       <translation>...</translation>
     </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Ακύρωση</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>ΟΚ</translation>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgPartImportStepImp</name>
+    <message>
+      <source>STEP (*.stp *.step);;All Files (*.*)</source>
+      <translation>STEP (*.stp *.step);;Όλα τα αρχεία (*.*)</translation>
+    </message>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="70"/>
       <source>STEP</source>
@@ -3370,79 +3585,79 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
-      <location filename="../../DlgPrimitives.cpp" line="385"/>
+      <location filename="../../DlgPrimitives.cpp" line="384"/>
       <source>Plane</source>
       <translation>Επίπεδο</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="42"/>
-      <location filename="../../DlgPrimitives.cpp" line="401"/>
+      <location filename="../../DlgPrimitives.cpp" line="400"/>
       <source>Box</source>
       <translation type="unfinished">Box</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
-      <location filename="../../DlgPrimitives.cpp" line="417"/>
+      <location filename="../../DlgPrimitives.cpp" line="416"/>
       <source>Cylinder</source>
       <translation>Κύλινδρος</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="60"/>
-      <location filename="../../DlgPrimitives.cpp" line="435"/>
+      <location filename="../../DlgPrimitives.cpp" line="434"/>
       <source>Cone</source>
       <translation>Κώνος</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="69"/>
-      <location filename="../../DlgPrimitives.cpp" line="453"/>
+      <location filename="../../DlgPrimitives.cpp" line="452"/>
       <source>Sphere</source>
       <translation>Σφαίρα</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
-      <location filename="../../DlgPrimitives.cpp" line="475"/>
+      <location filename="../../DlgPrimitives.cpp" line="474"/>
       <source>Ellipsoid</source>
       <translation>Ελλειψοειδές</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="87"/>
-      <location filename="../../DlgPrimitives.cpp" line="495"/>
+      <location filename="../../DlgPrimitives.cpp" line="494"/>
       <source>Torus</source>
       <translation>Τόρος</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
-      <location filename="../../DlgPrimitives.cpp" line="511"/>
+      <location filename="../../DlgPrimitives.cpp" line="510"/>
       <source>Prism</source>
       <translation>Πρίσμα</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="105"/>
-      <location filename="../../DlgPrimitives.cpp" line="541"/>
+      <location filename="../../DlgPrimitives.cpp" line="540"/>
       <source>Wedge</source>
       <translation>Σφήνα</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="114"/>
-      <location filename="../../DlgPrimitives.cpp" line="562"/>
+      <location filename="../../DlgPrimitives.cpp" line="561"/>
       <source>Helix</source>
       <translation>Έλικα</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="123"/>
-      <location filename="../../DlgPrimitives.cpp" line="578"/>
+      <location filename="../../DlgPrimitives.cpp" line="577"/>
       <source>Spiral</source>
       <translation>Σπειροειδές</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="132"/>
-      <location filename="../../DlgPrimitives.cpp" line="594"/>
+      <location filename="../../DlgPrimitives.cpp" line="593"/>
       <source>Circle</source>
       <translation>Κύκλος</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="141"/>
-      <location filename="../../DlgPrimitives.cpp" line="612"/>
+      <location filename="../../DlgPrimitives.cpp" line="611"/>
       <source>Ellipse</source>
       <translation>Έλλειψη</translation>
     </message>
@@ -3453,13 +3668,13 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="159"/>
-      <location filename="../../DlgPrimitives.cpp" line="650"/>
+      <location filename="../../DlgPrimitives.cpp" line="649"/>
       <source>Line</source>
       <translation>Γραμμή</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="168"/>
-      <location filename="../../DlgPrimitives.cpp" line="664"/>
+      <location filename="../../DlgPrimitives.cpp" line="663"/>
       <source>Regular polygon</source>
       <translation>Κανονικό πολύγωνο</translation>
     </message>
@@ -3672,26 +3887,126 @@ Please check one or more edge entities first.</source>
       <translation>Σημείο εκκίνησης</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="369"/>
-      <location filename="../../DlgPrimitives.cpp" line="668"/>
-      <location filename="../../DlgPrimitives.cpp" line="676"/>
+      <source>Primitive</source>
+      <translation type="unfinished">Primitive</translation>
+    </message>
+    <message>
+      <source>X min</source>
+      <translation type="unfinished">X min</translation>
+    </message>
+    <message>
+      <source>x max</source>
+      <translation type="unfinished">x max</translation>
+    </message>
+    <message>
+      <source>Y min</source>
+      <translation type="unfinished">Y min</translation>
+    </message>
+    <message>
+      <source>Y max</source>
+      <translation type="unfinished">Y max</translation>
+    </message>
+    <message>
+      <source>Z min</source>
+      <translation type="unfinished">Z min</translation>
+    </message>
+    <message>
+      <source>Z max</source>
+      <translation type="unfinished">Z max</translation>
+    </message>
+    <message>
+      <source>X2 min</source>
+      <translation type="unfinished">X2 min</translation>
+    </message>
+    <message>
+      <source>X2 max</source>
+      <translation type="unfinished">X2 max</translation>
+    </message>
+    <message>
+      <source>Z2 min</source>
+      <translation type="unfinished">Z2 min</translation>
+    </message>
+    <message>
+      <source>Z2 max</source>
+      <translation type="unfinished">Z2 max</translation>
+    </message>
+    <message>
+      <source>Angle - 0 for cyl</source>
+      <translation type="unfinished">Angle - 0 for cyl</translation>
+    </message>
+    <message>
+      <source>Angle0</source>
+      <translation type="unfinished">Angle0</translation>
+    </message>
+    <message>
+      <source>Angle1</source>
+      <translation type="unfinished">Angle1</translation>
+    </message>
+    <message>
+      <source>X Axis Value:</source>
+      <translation type="unfinished">X Axis Value:</translation>
+    </message>
+    <message>
+      <source>Y Axis Value:</source>
+      <translation type="unfinished">Y Axis Value:</translation>
+    </message>
+    <message>
+      <source>Z Axis Value:</source>
+      <translation type="unfinished">Z Axis Value:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.cpp" line="368"/>
+      <location filename="../../DlgPrimitives.cpp" line="667"/>
+      <location filename="../../DlgPrimitives.cpp" line="675"/>
       <source>Create %1</source>
       <translation>Δημιουργία %1</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="370"/>
+      <location filename="../../DlgPrimitives.cpp" line="369"/>
       <source>No active document</source>
       <translation>Κανένα ενεργό έγγραφο</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="628"/>
+      <location filename="../../DlgPrimitives.cpp" line="627"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="856"/>
+      <location filename="../../DlgPrimitives.cpp" line="855"/>
       <source>&amp;Create</source>
       <translation>Δημιουργία</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation type="unfinished">Position</translation>
+    </message>
+    <message>
+      <source>Direction:</source>
+      <translation type="unfinished">Direction:</translation>
+    </message>
+    <message>
+      <source>U parametric:</source>
+      <translation type="unfinished">U parametric:</translation>
+    </message>
+    <message>
+      <source>V parametric:</source>
+      <translation type="unfinished">V parametric:</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Κλείσιμ&amp;ο</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation type="unfinished">Alt+O</translation>
+    </message>
+    <message>
+      <source>3D View</source>
+      <translation>Τρισδιάστατη Προβολή</translation>
     </message>
   </context>
   <context>
@@ -3764,7 +4079,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="305"/>
-      <location filename="../../DlgRevolution.cpp" line="448"/>
+      <location filename="../../DlgRevolution.cpp" line="440"/>
       <source>Select reference</source>
       <translation>Επιλέξτε αναφορά</translation>
     </message>
@@ -3779,19 +4094,43 @@ Please check one or more edge entities first.</source>
       <translation>Συμμετρική γωνία</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="173"/>
+      <source>If checked, revolving wires will produce solids. If not, revolving a wire yeilds a shell.</source>
+      <translation>Αν έχει επιλεχθεί, η περιφορά συρμάτων θα δημιουργεί στερεά. Αν όχι, η περιφορά ενός σύρματος θα αποδίδει ένα κέλυφος.</translation>
+    </message>
+    <message>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+    <message>
+      <source>Axis:</source>
+      <translation>Άξονας:</translation>
+    </message>
+    <message>
+      <source>Select line in 3D view</source>
+      <translation>Επιλέξτε τη γραμμή στην τρισδιάστατη προβολή</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="172"/>
       <source>Object not found: %1</source>
       <translation>Το αντικείμενο δεν βρέθηκε: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="254"/>
+      <location filename="../../DlgRevolution.cpp" line="253"/>
       <source>Select a shape for revolution, first.</source>
       <translation type="unfinished">Select a shape for revolution, first.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="270"/>
-      <location filename="../../DlgRevolution.cpp" line="275"/>
-      <location filename="../../DlgRevolution.cpp" line="280"/>
+      <location filename="../../DlgRevolution.cpp" line="269"/>
+      <location filename="../../DlgRevolution.cpp" line="274"/>
+      <location filename="../../DlgRevolution.cpp" line="279"/>
       <source>Revolution axis link is invalid.
 
 %1</source>
@@ -3800,18 +4139,18 @@ Please check one or more edge entities first.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="289"/>
+      <location filename="../../DlgRevolution.cpp" line="288"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
       <translation>Η διεύθυνση του άξονα περιστροφής είναι μηδενικού μήκους. Πρέπει να είναι μη μηδενική.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="299"/>
+      <location filename="../../DlgRevolution.cpp" line="298"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
       <translation>Το εύρος γωνίας περιφοράς είναι μηδέν. Πρέπει να είναι μη μηδενικό.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="428"/>
-      <location filename="../../DlgRevolution.cpp" line="432"/>
+      <location filename="../../DlgRevolution.cpp" line="420"/>
+      <location filename="../../DlgRevolution.cpp" line="424"/>
       <source>Creating Revolve failed.
 
 %1</source>
@@ -3820,13 +4159,33 @@ Please check one or more edge entities first.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="444"/>
+      <location filename="../../DlgRevolution.cpp" line="436"/>
       <source>Selecting... (line or arc)</source>
       <translation>Πραγματοποιείται επιλογή... (γραμμής ή τόξου)</translation>
     </message>
   </context>
   <context>
     <name>PartGui::DlgSettings3DViewPart</name>
+    <message>
+      <source>View accuracy / Performance</source>
+      <translation>Προβολή της ακρίβειας / Απόδοσης</translation>
+    </message>
+    <message>
+      <source>View smoothing</source>
+      <translation>Προβολή της εξομάλυνσης</translation>
+    </message>
+    <message>
+      <source>Using high-quality normals</source>
+      <translation type="unfinished">Using high-quality normals</translation>
+    </message>
+    <message>
+      <source>This will slow down render speed but will lead to nicer results</source>
+      <translation>Αυτό θα μειώσει την ταχύτητα της αποτύπωσης, θα δημιουργήσει,, όμως, ομορφότερα αποτελέσματα</translation>
+    </message>
+    <message>
+      <source>Defines the appearance of surfaces</source>
+      <translation>Προσδιορίζει την εμφάνιση των επιφανειών</translation>
+    </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="14"/>
       <source>Shape view</source>
@@ -3849,8 +4208,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="90"/>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Ψηφίδωση&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Καθορίζει την μέγιστη απόκλιση του ψηφιοποιημένου πλέγματος από την επιφάνεια. Όσο χαμηλότερη είναι αυτή η τιμή τόσο χαμηλότερη είναι η ταχύτητα αποτύπωσης και τόσο πιο ελκυστικό το οπτικό αποτέλεσμα.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="93"/>
@@ -3868,12 +4227,28 @@ Please check one or more edge entities first.</source>
       <translation> °</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="69"/>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Do not define normal per vertex</source>
+      <translation type="unfinished">Do not define normal per vertex</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="64"/>
       <source>Deviation</source>
       <translation type="unfinished">Deviation</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="70"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="65"/>
       <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
       <translation type="unfinished">Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
     </message>
@@ -3915,6 +4290,26 @@ Please check one or more edge entities first.</source>
       <source>Add name of base object</source>
       <translation>Προσθήκη ονόματος του αντικειμένου βάσης</translation>
     </message>
+    <message>
+      <source>Export</source>
+      <translation>Εξαγωγή</translation>
+    </message>
+    <message>
+      <source>Millimeter</source>
+      <translation>Χιλιοστόμετρα</translation>
+    </message>
+    <message>
+      <source>Meter</source>
+      <translation>Μέτρα</translation>
+    </message>
+    <message>
+      <source>Inch</source>
+      <translation>Ίντσες</translation>
+    </message>
+    <message>
+      <source>Units for export of STEP/IGES</source>
+      <translation>Μονάδες για εξαγωγή των STEP/IGES</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgSettingsObjectColor</name>
@@ -3930,74 +4325,69 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
-      <source>Default vertex color</source>
-      <translation>Προεπιλεγμένο χρώμα κορυφής</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="47"/>
-      <source>Bounding box color</source>
-      <translation>Χρώμα πλαισίου οριοθέτησης</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="60"/>
       <source>Default shape color</source>
       <translation>Προεπιλεγμένο χρώμα σχήματος</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="67"/>
-      <location filename="../../DlgSettingsObjectColor.ui" line="210"/>
-      <source>The default line color for new shapes</source>
-      <translation>Το προεπιλεγμένο χρώμα γραμμής για νέα σχήματα</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="87"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="41"/>
       <source>The default color for new shapes</source>
       <translation>Το προεπιλεγμένο χρώμα για νέα σχήματα</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsObjectColor.ui" line="67"/>
+      <source>Default line color</source>
+      <translation>Προεπιλεγμένο χρώμα γραμμής</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsObjectColor.ui" line="74"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="142"/>
+      <source>The default line color for new shapes</source>
+      <translation>Το προεπιλεγμένο χρώμα γραμμής για νέα σχήματα</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsObjectColor.ui" line="100"/>
+      <source>Default line width</source>
+      <translation>Προεπιλεγμένο πλάτος γραμμής</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="107"/>
-      <location filename="../../DlgSettingsObjectColor.ui" line="129"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="175"/>
       <source>The default line thickness for new shapes</source>
       <translation>Το προεπιλεγμένο πάχος γραμμής για νέα σχήματα</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="110"/>
-      <location filename="../../DlgSettingsObjectColor.ui" line="132"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="178"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
-      <source>The color of bounding boxes in the 3D view</source>
-      <translation>Το χρώμα των πλαισίων οριοθέτησης στην Τρισδιάστατη προβολή</translation>
+      <location filename="../../DlgSettingsObjectColor.ui" line="135"/>
+      <source>Default vertex color</source>
+      <translation>Προεπιλεγμένο χρώμα κορυφής</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="177"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="168"/>
       <source>Default vertex size</source>
       <translation>Προεπιλεγμένο μέγεθος κορυφής</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="190"/>
-      <source>Default line width</source>
-      <translation>Προεπιλεγμένο πλάτος γραμμής</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="203"/>
-      <source>Default line color</source>
-      <translation>Προεπιλεγμένο χρώμα γραμμής</translation>
+      <source>Bounding box color</source>
+      <translation>Χρώμα πλαισίου οριοθέτησης</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
-      <source>Random shape color</source>
-      <translation type="unfinished">Random shape color</translation>
+      <location filename="../../DlgSettingsObjectColor.ui" line="210"/>
+      <source>The color of bounding boxes in the 3D view</source>
+      <translation>Το χρώμα των πλαισίων οριοθέτησης στην Τρισδιάστατη προβολή</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="248"/>
       <source>Annotations</source>
       <translation>Περιγραφές</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="275"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="262"/>
       <source>Default text color</source>
       <translation>Προεπιλεγμένο χρώμα κειμένου</translation>
     </message>
@@ -4005,12 +4395,12 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::FaceColors</name>
     <message>
-      <location filename="../../TaskFaceColors.cpp" line="416"/>
+      <location filename="../../TaskFaceColors.cpp" line="395"/>
       <source>Face colors</source>
       <translation>Χρώματα όψεων</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceColors.cpp" line="416"/>
+      <location filename="../../TaskFaceColors.cpp" line="395"/>
       <source>Do you really want to cancel?</source>
       <translation>Θέλετε πραγματικά να κάνετε ακύρωση;</translation>
     </message>
@@ -4036,39 +4426,51 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="80"/>
+      <source>Vertex/Wire</source>
+      <translation type="unfinished">Vertex/Wire</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLoft.cpp" line="75"/>
       <source>Available profiles</source>
       <translation>Διαθέσιμα προφίλ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="81"/>
+      <location filename="../../TaskLoft.cpp" line="76"/>
       <source>Selected profiles</source>
       <translation>Επιλεγμένα προφίλ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="180"/>
+      <location filename="../../TaskLoft.cpp" line="158"/>
       <source>Too few elements</source>
       <translation>Πολύ λίγα στοιχεία</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="180"/>
+      <location filename="../../TaskLoft.cpp" line="158"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
       <translation>Απαιτούνται τουλάχιστον δύο κορυφές, ακμές, σύρματα ή όψεις.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="214"/>
+      <location filename="../../TaskLoft.cpp" line="191"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="243"/>
+      <location filename="../../TaskLoft.cpp" line="220"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Κορυφή/Ακμή/Σύρμα/Όψη</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="244"/>
+      <location filename="../../TaskLoft.cpp" line="221"/>
       <source>Loft</source>
       <translation>Παρεμβολή ορθογώνιων διατομών</translation>
+    </message>
+    <message>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation type="unfinished">At least two vertices, edges or wires are required.</translation>
+    </message>
+    <message>
+      <source>At least two vertices or wires are required.</source>
+      <translation type="unfinished">At least two vertices or wires are required.</translation>
     </message>
   </context>
   <context>
@@ -4124,12 +4526,16 @@ Please check one or more edge entities first.</source>
       <translation>z</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="124"/>
+      <source>Base point:</source>
+      <translation>Σημείο βάσης:</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.cpp" line="123"/>
       <source>Select a shape for mirroring, first.</source>
       <translation>Επιλέξτε πρώτα ένα σχήμα για κατοπτρισμό.</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="131"/>
+      <location filename="../../Mirroring.cpp" line="130"/>
       <source>No such document '%1'.</source>
       <translation>Δεν υπάρχει τέτοιο έγγραφο '%1'.</translation>
     </message>
@@ -4145,17 +4551,17 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="340"/>
       <source>Name</source>
       <translation>Όνομα</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="346"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="342"/>
       <source>Type</source>
       <translation>Τύπος</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="348"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
       <source>Error</source>
       <translation>Σφάλμα</translation>
     </message>
@@ -4163,72 +4569,69 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="208"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="227"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="255"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="296"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="348"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="400"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="463"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="204"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="223"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="251"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="303"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="355"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="418"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="208"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="227"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="204"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="223"/>
       <source>Select two vertices</source>
       <translation>Επιλέξτε δύο κορυφές</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="255"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="348"/>
-      <source>Select one or more edges</source>
-      <translation>Επιλέξτε μία ή περισσότερες ακμές</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="296"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="251"/>
       <source>Select three or more vertices</source>
       <translation>Επιλέξτε τρεις ή περισσότερες κορυφές</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="400"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="303"/>
+      <source>Select one or more edges</source>
+      <translation>Επιλέξτε μία ή περισσότερες ακμές</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.cpp" line="355"/>
       <source>Select two or more faces</source>
       <translation>Επιλέξτε δύο ή περισσότερες όψεις</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="463"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="418"/>
       <source>Select only one part object</source>
       <translation>Επιλέξτε μόνο ένα εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="515"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="470"/>
       <source>Select two vertices to create an edge</source>
       <translation>Επιλέξτε δύο κορυφές για τη δημιουργία μιας ακμής</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="522"/>
-      <source>Select adjacent edges</source>
-      <translation type="unfinished">Select adjacent edges</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="529"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="477"/>
       <source>Select a list of vertices</source>
       <translation>Επιλέξτε μια λίστα κορυφών</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="536"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Select a closed set of edges</source>
       <translation>Επιλέξτε μια κλειστή ομάδα ακμών</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="543"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="491"/>
       <source>Select adjacent faces</source>
       <translation>Επιλέξτε παρακείμενες όψεις</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="550"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="498"/>
       <source>All shape types can be selected</source>
       <translation>Όλοι οι τύποι σχημάτων μπορούν να επιλεχθούν</translation>
+    </message>
+    <message>
+      <source>Select three or more edges</source>
+      <translation type="unfinished">Select three or more edges</translation>
     </message>
   </context>
   <context>
@@ -4244,67 +4647,75 @@ Please check one or more edge entities first.</source>
       <translation>Επιλεγμένα προφίλ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="282"/>
-      <location filename="../../TaskSweep.cpp" line="414"/>
-      <location filename="../../TaskSweep.cpp" line="422"/>
+      <location filename="../../TaskSweep.cpp" line="265"/>
+      <location filename="../../TaskSweep.cpp" line="396"/>
+      <location filename="../../TaskSweep.cpp" line="404"/>
       <source>Sweep path</source>
       <translation>Διαδρομή σάρωσης</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="282"/>
+      <location filename="../../TaskSweep.cpp" line="265"/>
       <source>Select one or more connected edges you want to sweep along.</source>
       <translation>Επιλέξτε μια ή περισσότερες ακμές κατά μήκος των οποίων θέλετε να πραγματοποιήσετε σάρωση.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="310"/>
+      <location filename="../../TaskSweep.cpp" line="293"/>
       <source>Too few elements</source>
       <translation>Πολύ λίγα στοιχεία</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="310"/>
+      <location filename="../../TaskSweep.cpp" line="293"/>
       <source>At least one edge or wire is required.</source>
       <translation>Απαιτείται τουλάχιστον μία ακμή ή ένα σύρμα.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="317"/>
+      <location filename="../../TaskSweep.cpp" line="300"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="317"/>
+      <location filename="../../TaskSweep.cpp" line="300"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>Το '%1' δεν μπορεί να χρησιμοποιηθεί ως προφίλ και διαδρομή.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="355"/>
+      <location filename="../../TaskSweep.cpp" line="337"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="388"/>
+      <location filename="../../TaskSweep.cpp" line="370"/>
       <source>Done</source>
       <translation>Έγινε</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="390"/>
+      <location filename="../../TaskSweep.cpp" line="372"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
       <translation>Επιλέξτε μια ή περισσότερες συνδεδεμένες ακμές στην τρισδιάστατη προβολή και πιέστε την επιλογή 'Έγινε'</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="414"/>
-      <location filename="../../TaskSweep.cpp" line="422"/>
+      <location filename="../../TaskSweep.cpp" line="396"/>
+      <location filename="../../TaskSweep.cpp" line="404"/>
       <source>The selected sweep path is invalid.</source>
       <translation>Η επιλεγμένη διαδρομή σάρωσης είναι μη έγκυρη.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="434"/>
+      <location filename="../../TaskSweep.cpp" line="416"/>
       <source>Vertex/Wire</source>
       <translation type="unfinished">Vertex/Wire</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="435"/>
+      <location filename="../../TaskSweep.cpp" line="417"/>
       <source>Sweep</source>
       <translation>Σάρωση</translation>
+    </message>
+    <message>
+      <source>Vertex/Edge/Wire/Face</source>
+      <translation>Κορυφή/Ακμή/Σύρμα/Όψη</translation>
+    </message>
+    <message>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation type="unfinished">Select an edge or wire you want to sweep along.</translation>
     </message>
   </context>
   <context>
@@ -4351,7 +4762,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="319"/>
+      <location filename="../../TaskAttacher.cpp" line="302"/>
       <source>Attachment Offset:</source>
       <translation>Μετατόπιση Συνημμένου:</translation>
     </message>
@@ -4391,85 +4802,113 @@ Please check one or more edge entities first.</source>
       <translation>Αντιστροφή πλευρών</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="302"/>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>Κατοπτρισμός της ιδιότητας τοποθέτησης συνημμένου. Η επιπλέον τοποθέτηση είναι εκφρασμένη στον τοπικό χώρο του αντικειμένου που επισυνάπτεται.</translation>
+    </message>
+    <message>
+      <source>Extra placement:</source>
+      <translation>Επιπλέον τοποθέτηση:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="285"/>
       <source>OCC error: %1</source>
       <translation>Σφάλμα OCC: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="304"/>
+      <location filename="../../TaskAttacher.cpp" line="287"/>
       <source>unknown error</source>
       <translation>άγνωστο σφάλμα</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="307"/>
+      <location filename="../../TaskAttacher.cpp" line="290"/>
       <source>Attachment mode failed: %1</source>
       <translation>Η λειτουργία συνημμένων απέτυχε: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="311"/>
+      <location filename="../../TaskAttacher.cpp" line="294"/>
       <source>Not attached</source>
       <translation>Δεν επισυνάπτεται</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="315"/>
+      <location filename="../../TaskAttacher.cpp" line="298"/>
       <source>Attached with mode %1</source>
       <translation>Επισυνάπτεται με τη χρήση της λειτουργίας %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="319"/>
+      <location filename="../../TaskAttacher.cpp" line="302"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Μετατόπιση Συνημμένων (ανενεργή - δεν επισυνάπτεται):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="618"/>
+      <location filename="../../TaskAttacher.cpp" line="578"/>
       <source>Face</source>
       <translation>Όψη</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="623"/>
+      <location filename="../../TaskAttacher.cpp" line="583"/>
       <source>Edge</source>
       <translation>Ακμή</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="628"/>
+      <location filename="../../TaskAttacher.cpp" line="588"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="690"/>
+      <location filename="../../TaskAttacher.cpp" line="647"/>
       <source>Selecting...</source>
       <translation>Πραγματοποιείται επιλογή...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="694"/>
+      <location filename="../../TaskAttacher.cpp" line="651"/>
       <source>Reference%1</source>
       <translation>Αναφορά%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="740"/>
+      <location filename="../../TaskAttacher.cpp" line="694"/>
       <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
       <translation>Δεν είναι επεξεργάσιμο καθώς η ιδιότητα περιστροφής της Μετατόπισης Συνημμένων περιορίζεται από εκφράσεις.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="804"/>
-      <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <location filename="../../TaskAttacher.cpp" line="755"/>
+      <source>
+
+Reference combinations:
+</source>
+      <translation>
+
+Συνδυασμοί αναφορών:
+</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="821"/>
+      <location filename="../../TaskAttacher.cpp" line="772"/>
       <source>%1 (add %2)</source>
       <translation>%1 (προσθήκη του %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="826"/>
+      <location filename="../../TaskAttacher.cpp" line="777"/>
       <source>%1 (add more references)</source>
       <translation>%1 (προσθήκη περισσοτέρων αναφορών)</translation>
+    </message>
+    <message>
+      <source>Extra placement (inactive - not attached):</source>
+      <translation>Επιπλέον τοποθέτηση (ανενεργή - δεν επισυνάπτεται):</translation>
+    </message>
+    <message>
+      <source>Not editable because rotation part of superplacement is bound by expressions.</source>
+      <translation>Δεν είναι επεξεργάσιμο καθώς η ιδιότητα περιστροφής της Τοποθέτησης Συνημμένων περιορίζεται από εκφράσεις.</translation>
+    </message>
+    <message>
+      <source>Reference combinations:
+</source>
+      <translation>Συνδυασμοί αναφορών:
+</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="942"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="916"/>
       <source>Shape Content</source>
       <translation>Περιεχόμενο Σχήματος</translation>
     </message>
@@ -4477,20 +4916,178 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="385"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="381"/>
       <source>Check Geometry</source>
       <translation>Έλεγχος Γεωμετρίας</translation>
     </message>
+  </context>
+  <context>
+    <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="421"/>
-      <source>Check geometry</source>
-      <translation type="unfinished">Check geometry</translation>
+      <source>Hint</source>
+      <translation type="unfinished">Hint</translation>
+    </message>
+    <message>
+      <source>Select Control.</source>
+      <translation type="unfinished">Select Control.</translation>
+    </message>
+    <message>
+      <source>Control</source>
+      <translation type="unfinished">Control</translation>
+    </message>
+    <message>
+      <source>Dynamic</source>
+      <translation type="unfinished">Dynamic</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation type="unfinished">Align</translation>
+    </message>
+    <message>
+      <source>Value</source>
+      <translation>Τιμή</translation>
+    </message>
+    <message>
+      <source>Special</source>
+      <translation type="unfinished">Special</translation>
+    </message>
+    <message>
+      <source>Command</source>
+      <translation>Εντολή</translation>
+    </message>
+    <message>
+      <source>Stretch</source>
+      <translation type="unfinished">Stretch</translation>
+    </message>
+    <message>
+      <source>Move</source>
+      <translation>Μετακινήστε</translation>
+    </message>
+    <message>
+      <source>Rotate</source>
+      <translation>Περιστρέψτε</translation>
+    </message>
+    <message>
+      <source>Offset</source>
+      <translation>Μετατοπίστε</translation>
+    </message>
+    <message>
+      <source>Orient</source>
+      <translation type="unfinished">Orient</translation>
+    </message>
+    <message>
+      <source>Match</source>
+      <translation type="unfinished">Match</translation>
+    </message>
+    <message>
+      <source>Surround</source>
+      <translation type="unfinished">Surround</translation>
+    </message>
+    <message>
+      <source>dummy</source>
+      <translation type="unfinished">dummy</translation>
+    </message>
+    <message>
+      <source>X Axis</source>
+      <translation type="unfinished">X Axis</translation>
+    </message>
+    <message>
+      <source>Y Axis</source>
+      <translation type="unfinished">Y Axis</translation>
+    </message>
+    <message>
+      <source>Z Axis</source>
+      <translation type="unfinished">Z Axis</translation>
+    </message>
+    <message>
+      <source>Increment</source>
+      <translation type="unfinished">Increment</translation>
+    </message>
+    <message>
+      <source>.125</source>
+      <translation type="unfinished">.125</translation>
+    </message>
+    <message>
+      <source>.500</source>
+      <translation type="unfinished">.500</translation>
+    </message>
+    <message>
+      <source>1.000</source>
+      <translation type="unfinished">1.000</translation>
+    </message>
+    <message>
+      <source>5.000</source>
+      <translation type="unfinished">5.000</translation>
+    </message>
+    <message>
+      <source>10.000</source>
+      <translation type="unfinished">10.000</translation>
+    </message>
+    <message>
+      <source>Drag arrows to stretch box by increment</source>
+      <translation type="unfinished">Drag arrows to stretch box by increment</translation>
+    </message>
+    <message>
+      <source>Drag arrows to move box by increment</source>
+      <translation type="unfinished">Drag arrows to move box by increment</translation>
+    </message>
+    <message>
+      <source>Not implemented yet</source>
+      <translation type="unfinished">Not implemented yet</translation>
+    </message>
+    <message>
+      <source>Drag arrows to offset checked axes by increment</source>
+      <translation type="unfinished">Drag arrows to offset checked axes by increment</translation>
+    </message>
+    <message>
+      <source>Select dragger for stretch by align</source>
+      <translation type="unfinished">Select dragger for stretch by align</translation>
+    </message>
+    <message>
+      <source>Select dragger for move by align</source>
+      <translation type="unfinished">Select dragger for move by align</translation>
+    </message>
+    <message>
+      <source>Select dragger for stretch by value</source>
+      <translation type="unfinished">Select dragger for stretch by value</translation>
+    </message>
+    <message>
+      <source>Select dragger for move by value</source>
+      <translation type="unfinished">Select dragger for move by value</translation>
+    </message>
+    <message>
+      <source>1.0</source>
+      <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+      <source>Enter Value</source>
+      <translation type="unfinished">Enter Value</translation>
+    </message>
+    <message>
+      <source>Select box to match</source>
+      <translation type="unfinished">Select box to match</translation>
+    </message>
+    <message>
+      <source>Select a point</source>
+      <translation type="unfinished">Select a point</translation>
+    </message>
+    <message>
+      <source>0.0</source>
+      <translation type="unfinished">0.0</translation>
+    </message>
+    <message>
+      <source>Select dragger to align</source>
+      <translation type="unfinished">Select dragger to align</translation>
+    </message>
+    <message>
+      <source>Select dragger to modify</source>
+      <translation type="unfinished">Select dragger to modify</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1057"/>
+      <location filename="../../TaskAttacher.cpp" line="994"/>
       <source>Datum dialog: Input error</source>
       <translation>Παράθυρο διαλόγου περιορισμών διαστάσεων: Σφάλμα εισαγωγής</translation>
     </message>
@@ -4544,6 +5141,42 @@ Please check one or more edge entities first.</source>
       <location filename="../../TaskLoft.ui" line="50"/>
       <source>Closed</source>
       <translation>Κλειστό</translation>
+    </message>
+    <message>
+      <source>Vertex/Wire</source>
+      <translation type="unfinished">Vertex/Wire</translation>
+    </message>
+    <message>
+      <source>Move right</source>
+      <translation>Μετακίνηση δεξιά</translation>
+    </message>
+    <message>
+      <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Μετακίνηση του επιλεγμένου αντικειμένου ένα επίπεδο κάτω.&lt;/b&gt;&lt;p&gt;Αυτό θα αλλάξει και το επίπεδο του γονικού αντικειμένου.&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>Move left</source>
+      <translation>Μετακίνηση αριστερά</translation>
+    </message>
+    <message>
+      <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Μετακίνηση του επιλεγμένου αντικειμένου ένα επίπεδο πάνω.&lt;/b&gt;&lt;p&gt;Αυτό θα αλλάξει και το επίπεδο του γονικού αντικειμένου.&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>Move up</source>
+      <translation>Μετακίνηση πάνω</translation>
+    </message>
+    <message>
+      <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Μετακίνηση του επιλεγμένου αντικειμένου προς τα πάνω.&lt;/b&gt;&lt;p&gt;Το αντικείμενο θα μετακινηθεί εντός του ιδίου ιεραρχικού επιπέδου.&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Μετακίνηση κάτω</translation>
+    </message>
+    <message>
+      <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Μετακίνηση του επιλεγμένου αντικειμένου προς τα κάτω.&lt;/b&gt;&lt;p&gt;Το αντικείμενο θα μετακινηθεί εντός του ιδίου ιεραρχικού επιπέδου.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -4626,23 +5259,23 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
-      <source>Face from vertices</source>
-      <translation>Όψη από κορυφές</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.ui" line="33"/>
-      <source>Shell from faces</source>
-      <translation>Κέλυφος από όψεις</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Edge from vertices</source>
       <translation>Ακμή από κορυφές</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.ui" line="47"/>
+      <location filename="../../TaskShapeBuilder.ui" line="33"/>
+      <source>Face from vertices</source>
+      <translation>Όψη από κορυφές</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Face from edges</source>
       <translation>Όψη από ακμές</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.ui" line="47"/>
+      <source>Shell from faces</source>
+      <translation>Κέλυφος από όψεις</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="54"/>
@@ -4669,11 +5302,6 @@ Please check one or more edge entities first.</source>
       <source>Create</source>
       <translation>Δημιουργήστε</translation>
     </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.ui" line="116"/>
-      <source>Wire from edges</source>
-      <translation type="unfinished">Wire from edges</translation>
-    </message>
   </context>
   <context>
     <name>PartGui::TaskSweep</name>
@@ -4698,7 +5326,7 @@ Please check one or more edge entities first.</source>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="464"/>
+      <location filename="../../TaskSweep.cpp" line="446"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Επιλέξτε ένα ή περισσότερα προφίλ και στη συνέχεια επιλέξτε μια ακμή ή ένα σύρμα στην Τρισδιάστατη προβολή ως διαδρομή σάρωσης.</translation>
@@ -4762,12 +5390,12 @@ in the 3D view for the sweep path.</source>
       <translation>Υποστηρίζει τη δημιουργία επιπέδων όψεων με οπές, αλλά χωρίς ανεξάρτητες σχεδιαστικές οντότητες εντός των οπών.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="515"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="506"/>
       <source>Part Extrude facemaker</source>
       <translation>Αλγόριθμος δημιουργίας όψεων με τη χρήση Επέκτασης Εξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="520"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="511"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Υποστηρίζει τη δημιουργία όψεων με οπές, δεν υποστηρίζει την ένθεση αντικειμένων.</translation>
     </message>
@@ -4775,49 +5403,32 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppPartGui.cpp" line="210"/>
-      <location filename="../../AppPartGui.cpp" line="211"/>
-      <source>Part design</source>
-      <translation>Σχεδίαση Εξαρτήματος</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="212"/>
-      <location filename="../../AppPartGui.cpp" line="213"/>
-      <source>Import-Export</source>
-      <translation>Εισαγωγή-Εξαγωγή</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="214"/>
-      <source>Display</source>
-      <translation>Απεικόνιση</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="284"/>
-      <location filename="../../Command.cpp" line="381"/>
-      <location filename="../../Command.cpp" line="483"/>
-      <location filename="../../Command.cpp" line="902"/>
-      <location filename="../../Command.cpp" line="953"/>
-      <location filename="../../Command.cpp" line="2074"/>
+      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="379"/>
+      <location filename="../../Command.cpp" line="481"/>
+      <location filename="../../Command.cpp" line="781"/>
+      <location filename="../../Command.cpp" line="832"/>
+      <location filename="../../Command.cpp" line="1953"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="285"/>
-      <location filename="../../Command.cpp" line="954"/>
+      <location filename="../../Command.cpp" line="283"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Select two shapes please.</source>
       <translation>Επιλέξτε δύο σχήματα παρακαλώ.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="295"/>
-      <location filename="../../Command.cpp" line="397"/>
-      <location filename="../../Command.cpp" line="499"/>
+      <location filename="../../Command.cpp" line="293"/>
+      <location filename="../../Command.cpp" line="395"/>
+      <location filename="../../Command.cpp" line="497"/>
       <source>Non-solids selected</source>
       <translation>Επιλέχτηκαν μη στερεά</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="296"/>
-      <location filename="../../Command.cpp" line="398"/>
-      <location filename="../../Command.cpp" line="500"/>
+      <location filename="../../Command.cpp" line="294"/>
+      <location filename="../../Command.cpp" line="396"/>
+      <location filename="../../Command.cpp" line="498"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
       <translation>Η χρήση μη στερεών για πράξεις άλγεβρας Boole ενδέχεται να οδηγήσει σε απρόσμενα αποτελέσματα. 
@@ -4825,34 +5436,54 @@ Do you want to continue?</source>
 Θέλετε να συνεχίσετε;</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="382"/>
+      <location filename="../../Command.cpp" line="380"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
       <translation>Επιλέξτε δύο ή περισσότερα σχήματα, παρακαλώ. Ή επιλέξτε ένα σύνθετο σχήμα που να περιέχει δύο ή περισσότερα σχήματα για να υπολογίσετε την τομή τους.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="484"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
       <translation>Επιλέξτε δύο ή περισσότερα σχήματα, παρακαλώ. Ή επιλέξτε ένα σύνθετο σχήμα που να περιέχει δύο ή περισσότερα σχήματα προς συγχώνευση.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="903"/>
+      <location filename="../../Command.cpp" line="782"/>
       <source>Select one shape or more, please.</source>
       <translation>Επιλέξτε ένα ή περισσότερα σχήματα, παρακαλώ.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1107"/>
+      <location filename="../../Command.cpp" line="986"/>
       <source>All CAD Files</source>
       <translation>Όλα τα Αρχεία CAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1112"/>
+      <location filename="../../Command.cpp" line="991"/>
       <source>All Files</source>
       <translation>Όλα τα Αρχεία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2075"/>
+      <location filename="../../Command.cpp" line="1954"/>
       <source>You have to select either two edges or two wires.</source>
       <translation>Θα πρέπει να επιλέξετε είτε δύο ακμές είτε δύο σύρματα.</translation>
+    </message>
+    <message>
+      <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
+      <translation>Όλα τα αρχεία CAD (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
+    </message>
+    <message>
+      <source>STEP (*.stp *.step)</source>
+      <translation>STEP (*.stp *.step)</translation>
+    </message>
+    <message>
+      <source>IGES (*.igs *.iges)</source>
+      <translation>IGES (*.igs *.iges)</translation>
+    </message>
+    <message>
+      <source>BREP (*.brp *.brep)</source>
+      <translation>BREP (*.brp *.brep)</translation>
+    </message>
+    <message>
+      <source>All Files (*.*)</source>
+      <translation>Όλα τα αρχεία (*.*)</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="120"/>
@@ -4865,369 +5496,394 @@ Do you want to continue?</source>
       <translation>Εισαγωγή ανοχής για την ένωση σχήματος:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="71"/>
-      <location filename="../../TaskAttacher.cpp" line="104"/>
-      <source>No reference selected</source>
-      <translation>Δεν επιλέχθηκε κανένα αντικείμενο αναφοράς</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="80"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
-      <source>Face</source>
-      <translation>Όψη</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="83"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
-      <source>Edge</source>
-      <translation>Ακμή</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="86"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
-      <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
-      <source>Compound</source>
-      <translation>Σύνθετο</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
-      <source>Compound Solid</source>
-      <translation>Σύνθετο Στερεό</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
-      <source>Solid</source>
-      <translation>Στερεό</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
-      <source>Shell</source>
-      <translation>Κέλυφος</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
-      <source>Wire</source>
-      <translation>Σύρμα</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
-      <source>Shape</source>
-      <translation>Σχήμα</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
-      <source>No Error</source>
-      <translation>Κανένα Σφάλμα</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
-      <source>Invalid Point On Curve</source>
-      <translation>Μη Έγκυρο Σημείο Στην Καμπύλη</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
-      <source>Invalid Point On Curve On Surface</source>
-      <translation>Μη Έγκυρο Σημείο Στην Καμπύλη Στην Επιφάνεια</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
-      <source>Invalid Point On Surface</source>
-      <translation>Μη Έγκυρο Σημείο Στην Επιφάνεια</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
-      <source>No 3D Curve</source>
-      <translation>Καμία Τρισδιάστατη Καμπύλη</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
-      <source>Multiple 3D Curve</source>
-      <translation>Πολλαπλές Τρισδιάστατες Καμπύλες</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
-      <source>Invalid 3D Curve</source>
-      <translation>Μη Έγκυρη Τρισδιάστατη Καμπύλη</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
-      <source>No Curve On Surface</source>
-      <translation>Καμία Καμπύλη Στην Επιφάνεια</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
-      <source>Invalid Curve On Surface</source>
-      <translation>Μη Έγκυρη Καμπύλη Στην Επιφάνεια</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
-      <source>Invalid Curve On Closed Surface</source>
-      <translation>Μη Έγκυρη Καμπύλη Στην Κλειστή Επιφάνεια</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
-      <source>Invalid Same Range Flag</source>
-      <translation>Ένδειξη Μη Έγκυρου Ισοδύναμου Εύρους</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
-      <source>Invalid Same Parameter Flag</source>
-      <translation>Ένδειξη Μη Έγκυρης Ίδιας Παραμέτρου</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
-      <source>Invalid Degenerated Flag</source>
-      <translation>Ένδειξη Μη Έγκυρου Εκφυλισμού</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
-      <source>Free Edge</source>
-      <translation>Ελεύθερη Ακμή</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
-      <source>Invalid MultiConnexity</source>
-      <translation>Μη Έγκυρη Πολλαπλή Συνδετικότητα</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
-      <source>Invalid Range</source>
-      <translation>Μη Έγκυρο Εύρος</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
-      <source>Empty Wire</source>
-      <translation>Κενό Σύρμα</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
-      <source>Redundant Edge</source>
-      <translation>Πλεονάζουσα Ακμή</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
-      <source>Self Intersecting Wire</source>
-      <translation>Σύρμα Με Αυτοτομές</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
-      <source>No Surface</source>
-      <translation>Καμία Επιφάνεια</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
-      <source>Invalid Wire</source>
-      <translation>Μη έγκυρο Σύρμα</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
-      <source>Redundant Wire</source>
-      <translation>Πλεονάζον Σύρμα</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
-      <source>Intersecting Wires</source>
-      <translation>Διασταυρούμενα Σύρματα</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
-      <source>Invalid Imbrication Of Wires</source>
-      <translation>Μη έγκυρος εγκιβωτισμός των Συρμάτων</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
-      <source>Empty Shell</source>
-      <translation>Κενό Κέλυφος</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
-      <source>Redundant Face</source>
-      <translation>Πλεονάζουσα όψη</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
-      <source>Unorientable Shape</source>
-      <translation>Απροσδιόριστο Σχήμα</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
-      <source>Not Closed</source>
-      <translation>Δεν Έχει Κλείσει</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
-      <source>Not Connected</source>
-      <translation>Δεν Έχει Συνδεθεί</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
-      <source>Sub Shape Not In Shape</source>
-      <translation>Το Δευτερεύον Σχήμα Δεν Είναι Εντός Του Σχήματος</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
-      <source>Bad Orientation</source>
-      <translation>Εσφαλμένος Προσανατολισμός</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
-      <source>Bad Orientation Of Sub Shape</source>
-      <translation>Εσφαλμένος Προσανατολισμός Του Δευτερεύοντος Σχήματος</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
-      <source>Invalid Tolerance Value</source>
-      <translation>Μη Έγκυρη Τιμή Ανοχής</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
-      <source>Check Failed</source>
-      <translation>Ο Έλεγχος Απέτυχε</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
-      <source>No Result</source>
-      <translation>Κανένα Αποτέλεσμα</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
-      <source>Out Of Enum Range: </source>
-      <translation>Εκτός Του Εύρους Απαρίθμησης: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>BOPAlgo CheckUnknown</source>
-      <translation>BOPAlgo ΈλεγχοςΑγνώστων</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>BOPAlgo BadType</source>
-      <translation>BOPAlgo ΕσφαλμένοςΤύπος</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>BOPAlgo SelfIntersect</source>
-      <translation>BOPAlgo Αυτοτομή</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>BOPAlgo TooSmallEdge</source>
-      <translation>BOPAlgo ΠολύΜικρήΑκμή</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>BOPAlgo NonRecoverableFace</source>
-      <translation>BOPAlgo ΜηΑνακτήσιμηΌψη</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation>BOPAlgo ΑσυμβατότηταΚορυφής</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation>BOPAlgo ΑσυμβατότηταΑκμής</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>BOPAlgo ΑσυμβατότηταΌψης</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>BOPAlgo OperationAborted</source>
-      <translation>BOPAlgo ΗΛειτουργίαΔιεκόπη</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>BOPAlgo GeomAbs_C0</source>
-      <translation>BOPAlgo GeomAbs_C0</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo_ΜηΈγκυρηΚαμπύληΣτηνΕπιφάνεια</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
-      <source>BOPAlgo NotValid</source>
-      <translation>BOPAlgo ΜηΈγκυρο</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="463"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="659"/>
-      <source>Invalid</source>
-      <translation>Μη έγκυρο</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="556"/>
-      <location filename="../../TaskDimension.cpp" line="1602"/>
-      <source>Selections</source>
-      <translation>Επιλογές</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="563"/>
-      <location filename="../../TaskDimension.cpp" line="1609"/>
-      <source>Control</source>
-      <translation type="unfinished">Control</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1340"/>
-      <source>Reset Dialog</source>
-      <translation>Επαναφορά του Παραθύρου Διαλόγου</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1344"/>
-      <source>Toggle 3d</source>
-      <translation>Εναλλαγή τρισδιάστατης προβολής</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1349"/>
-      <source>Toggle Delta</source>
-      <translation>Εναλλαγή εμφάνισης/απόκρυψης μετρήσεων Delta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1354"/>
-      <source>Clear All</source>
-      <translation>Εκκαθάριση όλων</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderExt.cpp" line="847"/>
-      <source>Set colors...</source>
-      <translation>Ορίστε χρώματα...</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="79"/>
+      <location filename="../../ViewProviderMirror.cpp" line="78"/>
       <source>Edit mirror plane</source>
       <translation>Επεξεργασία επιπέδου κατοπτρισμού</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="276"/>
+      <location filename="../../ViewProviderMirror.cpp" line="275"/>
       <source>Edit fillet edges</source>
       <translation>Επεξεργασία στρογγυλέματος ακμών</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="379"/>
+      <location filename="../../ViewProviderMirror.cpp" line="378"/>
       <source>Edit chamfer edges</source>
       <translation>Επεξεργασία ακμών λοξότμησης</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="520"/>
+      <location filename="../../ViewProviderMirror.cpp" line="519"/>
       <source>Edit offset</source>
       <translation>Επεξεργασία μετατόπισης</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="606"/>
+      <location filename="../../ViewProviderMirror.cpp" line="605"/>
       <source>Edit thickness</source>
       <translation>Επεξεργασία πάχους</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpline.cpp" line="81"/>
+      <source>Transform</source>
+      <translation type="unfinished">Transform</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="209"/>
+      <location filename="../../AppPartGui.cpp" line="210"/>
+      <source>Part design</source>
+      <translation>Σχεδίαση Εξαρτήματος</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="211"/>
+      <location filename="../../AppPartGui.cpp" line="212"/>
+      <source>Import-Export</source>
+      <translation>Εισαγωγή-Εξαγωγή</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="213"/>
+      <source>Display</source>
+      <translation>Απεικόνιση</translation>
+    </message>
+    <message>
+      <source>Select two shapes or more, please.</source>
+      <translation>Παρακαλώ, επέλεξε δύο, ή περισσότερα, σχήματα.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderExt.cpp" line="840"/>
+      <source>Set colors...</source>
+      <translation>Ορίστε χρώματα...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="74"/>
+      <source>Compound</source>
+      <translation>Σύνθετο</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="75"/>
+      <source>Compound Solid</source>
+      <translation>Σύνθετο Στερεό</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="76"/>
+      <source>Solid</source>
+      <translation>Στερεό</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="77"/>
+      <source>Shell</source>
+      <translation>Κέλυφος</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+      <source>Wire</source>
+      <translation>Σύρμα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <source>Shape</source>
+      <translation>Σχήμα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="97"/>
+      <source>No Error</source>
+      <translation>Κανένα Σφάλμα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="98"/>
+      <source>Invalid Point On Curve</source>
+      <translation>Μη Έγκυρο Σημείο Στην Καμπύλη</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="99"/>
+      <source>Invalid Point On Curve On Surface</source>
+      <translation>Μη Έγκυρο Σημείο Στην Καμπύλη Στην Επιφάνεια</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="100"/>
+      <source>Invalid Point On Surface</source>
+      <translation>Μη Έγκυρο Σημείο Στην Επιφάνεια</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+      <source>No 3D Curve</source>
+      <translation>Καμία Τρισδιάστατη Καμπύλη</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+      <source>Multiple 3D Curve</source>
+      <translation>Πολλαπλές Τρισδιάστατες Καμπύλες</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
+      <source>Invalid 3D Curve</source>
+      <translation>Μη Έγκυρη Τρισδιάστατη Καμπύλη</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+      <source>No Curve On Surface</source>
+      <translation>Καμία Καμπύλη Στην Επιφάνεια</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
+      <source>Invalid Curve On Surface</source>
+      <translation>Μη Έγκυρη Καμπύλη Στην Επιφάνεια</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <source>Invalid Curve On Closed Surface</source>
+      <translation>Μη Έγκυρη Καμπύλη Στην Κλειστή Επιφάνεια</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <source>Invalid Same Range Flag</source>
+      <translation>Ένδειξη Μη Έγκυρου Ισοδύναμου Εύρους</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <source>Invalid Same Parameter Flag</source>
+      <translation>Ένδειξη Μη Έγκυρης Ίδιας Παραμέτρου</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <source>Invalid Degenerated Flag</source>
+      <translation>Ένδειξη Μη Έγκυρου Εκφυλισμού</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <source>Free Edge</source>
+      <translation>Ελεύθερη Ακμή</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <source>Invalid MultiConnexity</source>
+      <translation>Μη Έγκυρη Πολλαπλή Συνδετικότητα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
+      <source>Invalid Range</source>
+      <translation>Μη Έγκυρο Εύρος</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <source>Empty Wire</source>
+      <translation>Κενό Σύρμα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
+      <source>Redundant Edge</source>
+      <translation>Πλεονάζουσα Ακμή</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <source>Self Intersecting Wire</source>
+      <translation>Σύρμα Με Αυτοτομές</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <source>No Surface</source>
+      <translation>Καμία Επιφάνεια</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <source>Invalid Wire</source>
+      <translation>Μη έγκυρο Σύρμα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <source>Redundant Wire</source>
+      <translation>Πλεονάζον Σύρμα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <source>Intersecting Wires</source>
+      <translation>Διασταυρούμενα Σύρματα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <source>Invalid Imbrication Of Wires</source>
+      <translation>Μη έγκυρος εγκιβωτισμός των Συρμάτων</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <source>Empty Shell</source>
+      <translation>Κενό Κέλυφος</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <source>Redundant Face</source>
+      <translation>Πλεονάζουσα όψη</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <source>Unorientable Shape</source>
+      <translation>Απροσδιόριστο Σχήμα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <source>Not Closed</source>
+      <translation>Δεν Έχει Κλείσει</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <source>Not Connected</source>
+      <translation>Δεν Έχει Συνδεθεί</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <source>Sub Shape Not In Shape</source>
+      <translation>Το Δευτερεύον Σχήμα Δεν Είναι Εντός Του Σχήματος</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <source>Bad Orientation</source>
+      <translation>Εσφαλμένος Προσανατολισμός</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <source>Bad Orientation Of Sub Shape</source>
+      <translation>Εσφαλμένος Προσανατολισμός Του Δευτερεύοντος Σχήματος</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <source>Invalid Tolerance Value</source>
+      <translation>Μη Έγκυρη Τιμή Ανοχής</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <source>Check Failed</source>
+      <translation>Ο Έλεγχος Απέτυχε</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="140"/>
+      <source>No Result</source>
+      <translation>Κανένα Αποτέλεσμα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
+      <source>Out Of Enum Range: </source>
+      <translation>Εκτός Του Εύρους Απαρίθμησης: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="156"/>
+      <source>BOPAlgo CheckUnknown</source>
+      <translation>BOPAlgo ΈλεγχοςΑγνώστων</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="157"/>
+      <source>BOPAlgo BadType</source>
+      <translation>BOPAlgo ΕσφαλμένοςΤύπος</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="158"/>
+      <source>BOPAlgo SelfIntersect</source>
+      <translation>BOPAlgo Αυτοτομή</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="159"/>
+      <source>BOPAlgo TooSmallEdge</source>
+      <translation>BOPAlgo ΠολύΜικρήΑκμή</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
+      <source>BOPAlgo NonRecoverableFace</source>
+      <translation>BOPAlgo ΜηΑνακτήσιμηΌψη</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
+      <source>BOPAlgo IncompatibilityOfVertex</source>
+      <translation>BOPAlgo ΑσυμβατότηταΚορυφής</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+      <source>BOPAlgo IncompatibilityOfEdge</source>
+      <translation>BOPAlgo ΑσυμβατότηταΑκμής</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+      <source>BOPAlgo IncompatibilityOfFace</source>
+      <translation>BOPAlgo ΑσυμβατότηταΌψης</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <source>BOPAlgo OperationAborted</source>
+      <translation>BOPAlgo ΗΛειτουργίαΔιεκόπη</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <source>BOPAlgo GeomAbs_C0</source>
+      <translation>BOPAlgo GeomAbs_C0</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <source>BOPAlgo_InvalidCurveOnSurface</source>
+      <translation>BOPAlgo_ΜηΈγκυρηΚαμπύληΣτηνΕπιφάνεια</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
+      <source>BOPAlgo NotValid</source>
+      <translation>BOPAlgo ΜηΈγκυρο</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="452"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="633"/>
+      <source>Invalid</source>
+      <translation>Μη έγκυρο</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="70"/>
+      <location filename="../../TaskAttacher.cpp" line="103"/>
+      <source>No reference selected</source>
+      <translation>Δεν επιλέχθηκε κανένα αντικείμενο αναφοράς</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="79"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+      <source>Face</source>
+      <translation>Όψη</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="82"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <source>Edge</source>
+      <translation>Ακμή</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="85"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <source>Vertex</source>
+      <translation type="unfinished">Vertex</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="552"/>
+      <location filename="../../TaskDimension.cpp" line="1598"/>
+      <source>Selections</source>
+      <translation>Επιλογές</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="559"/>
+      <location filename="../../TaskDimension.cpp" line="1605"/>
+      <source>Control</source>
+      <translation type="unfinished">Control</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1336"/>
+      <source>Reset Dialog</source>
+      <translation>Επαναφορά του Παραθύρου Διαλόγου</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1340"/>
+      <source>Toggle 3d</source>
+      <translation>Εναλλαγή τρισδιάστατης προβολής</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1345"/>
+      <source>Toggle Delta</source>
+      <translation>Εναλλαγή εμφάνισης/απόκρυψης μετρήσεων Delta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1350"/>
+      <source>Clear All</source>
+      <translation>Εκκαθάριση όλων</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpline.cpp" line="80"/>
       <source>Show control points</source>
       <translation>Εμφάνιση σημείων ελέγχου</translation>
     </message>
@@ -5263,26 +5919,6 @@ Do you want to continue?</source>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Boolean</source>
       <translation>Χρήση Λειτουργιών Boole</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="43"/>
-      <source>Primitives</source>
-      <translation>Θεμελιακά στοιχεία</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="44"/>
-      <source>Join</source>
-      <translation type="unfinished">Join</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="45"/>
-      <source>Split</source>
-      <translation>Χωρισμός</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="46"/>
-      <source>Compound</source>
-      <translation>Σύνθετο</translation>
     </message>
   </context>
 </TS>

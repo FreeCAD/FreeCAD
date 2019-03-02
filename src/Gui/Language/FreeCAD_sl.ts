@@ -127,10 +127,6 @@
       <translation>Gibanje miške 3D</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Splošna občutljivost:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Prevladujoča os</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Obrni</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Vsezajemajoča občutljivost:</translation>
     </message>
   </context>
   <context>
@@ -294,14 +294,14 @@
       <translation>Pritisnite srednjmiškin gumb</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Pritisnite srednji in levi oz. desni miškin gumb</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation>Pritisnite srednji+levi ali srednji+desni gumb</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Zavrtite srednji gumb na miški ali ga pridržite, medtem ko
-kliknete na levi ali desni gumb in premikate miško gor in dol</translation>
+      <translation>Zavrtite srednji gumb na miški ali ga spustite, medtem ko
+kliknete na levi ali desni gumb in premikate miško gor oz. dol</translation>
     </message>
   </context>
   <context>
@@ -400,6 +400,21 @@ kliknete na levi ali desni gumb in premikate miško gor in dol</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Knjižnice</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Ta programska oprema uporablja odprtokodne dele katerih avtorske pravice in ostale pravice pripadajo njihovim lastnikom:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Licenca</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
       <source>Button %1</source>
@@ -408,6 +423,37 @@ kliknete na levi ali desni gumb in premikate miško gor in dol</translation>
     <message>
       <source>Out Of Range</source>
       <translation>Zunaj obsega</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Nastavitve kamere</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Usmerjenost</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Trenutni pogled</translation>
     </message>
   </context>
   <context>
@@ -814,10 +860,10 @@ kliknete na levi ali desni gumb in premikate miško gor in dol</translation>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
-      <translation>Bližnjica '%1' je že dodeljena '%2'.
+Do you want to override it?</source>
+      <translation>Bližnica "%1" je že vezana na "%2".
 
-Določite drugo bližnjico.</translation>
+Želite to povoziti?</translation>
     </message>
   </context>
   <context>
@@ -1338,6 +1384,14 @@ Določite drugo bližnjico.</translation>
       <source>Rename</source>
       <translation>Preimenuj</translation>
     </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>Podvoji</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>Dodatki ...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
@@ -1404,6 +1458,20 @@ This file already exists.</source>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Preimenovanje v '%1' ni uspelo.
+Mogoče je napaka pri dostopu do datoteke?</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Podvoji Makro</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Podvojevanje ni uspelo</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>Podvajanje v '%1' ni uspelo.
 Mogoče je napaka pri dostopu do datoteke?</translation>
     </message>
   </context>
@@ -1980,8 +2048,52 @@ Navedite drugo mapo.</translation>
       <translation>Izris v p&amp;erspektivi</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation>Uporabi OpenGL Vertex Buffer Object (poskusno)</translation>
+      <source>Show navigation cube</source>
+      <translation>Pokaži krmilno kocko</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Vogal</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Zgornji levi</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Zgornji desni</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Spodnji levi</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Spodnji desni</translation>
+    </message>
+    <message>
+      <source>Use OpenGL Vertex Buffer Object</source>
+      <translation>Uporabi medpomnilnik oglišč OpenGL</translation>
+    </message>
+    <message>
+      <source>New Document Camera Orientation</source>
+      <translation>Pogled kamere novega dokumenta</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
+      <translation>Prepreči nagibanje pogleda pri prstnem zumanju. Vpliva le na slog krmarjenja s kretnjami. S to nastavitvijo nagibanje miške ni onemogočeno.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>Onemogoči potezo nagiba zaslona na dotik</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Povleci h kazalki</translation>
+    </message>
+    <message>
+      <source>Marker size:</source>
+      <translation>Velikost oznake:</translation>
     </message>
   </context>
   <context>
@@ -1993,6 +2105,70 @@ Navedite drugo mapo.</translation>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Odprite nov pregledovalnik ali ponovno zaženite %1, da uporabite spremembe glajenja robov.</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation>7px</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation>9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation>11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation>13px</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation>15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Izometrična</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrična</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrična</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Zgoraj</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Spredaj</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Levo</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Desno</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Zadaj</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Spodaj</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Po meri</translation>
     </message>
   </context>
   <context>
@@ -2621,6 +2797,46 @@ Navedite drugo mapo.</translation>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>Metrični majhni deli in CNC (mm, mm/min)</translation>
     </message>
+    <message>
+      <source>Imperial Civil (ft/ft^2/ft^3)</source>
+      <translation>Imperial Civil (ft/ft^2/ft^3)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation>Najmanjši del palca (inch):</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Najmanjši del palca, ki se prikaže.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128"</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2661,8 +2877,20 @@ Navedite drugo mapo.</translation>
       <translation>Izberi polmer (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
       <translation>Nastavi obseg možne pomote pri izbiranju predmetov v pogledu 3D. Pri večji vrednosti je izbiranje predmetov lažje, vendar je potem nemogoče izbrati nekatere majhne dele.</translation>
+    </message>
+    <message>
+      <source>Tree View</source>
+      <translation>Drevesni pogled</translation>
+    </message>
+    <message>
+      <source>Object being edited</source>
+      <translation>Objekt v urejanju</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Dejavni vsebnik</translation>
     </message>
   </context>
   <context>
@@ -2851,10 +3079,6 @@ Navedite drugo mapo.</translation>
       <translation>Ali ste prepričani, da želite izbrisati vse prehodne mape?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Če bodo izbrisani vsi začasni imeniki, potem ne boste mogli obnoviti datotek.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Končano</translation>
     </message>
@@ -2867,6 +3091,10 @@ Navedite drugo mapo.</translation>
 
 The 'Status' column shows whether the document could be recovered.</source>
       <translation>Pritisnite 'Začni Obnovo', da začnete postopek obnovitve dokumentov, navedenih spodaj. V stolpcu »Stanje« je navedeno, ali je dokument mogoče obnoviti.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation>Če bodo izbrisani vsi začasni imeniki, potem ne boste mogli obnoviti datotek.</translation>
     </message>
   </context>
   <context>
@@ -3200,16 +3428,8 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Os sukanja s kotom</translation>
     </message>
     <message>
-      <source>Apply placement changes immediately</source>
-      <translation>Takoj uporabi spremembe postavitve</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation>Uporabi prirastne spremembe postavitve pedmeta</translation>
-    </message>
-    <message>
       <source>Apply</source>
-      <translation>Uveljavi</translation>
+      <translation type="unfinished">Apply</translation>
     </message>
     <message>
       <source>Reset</source>
@@ -3234,6 +3454,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Use center of mass</source>
       <translation>Uporabi težišče</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation>Osni:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation>Uporabi osno</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Klikni Shift za nasprotno smer</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>Izbrane točke</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation>Potrdi postopne spremembe</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Izberite 1, 2 ali 3 točke preden kliknete ta gumb.  Točka je lahko na ogljišču, ploskvi ali na robu.  Če bo na ploskvi ali robu, bo uporabljena točka na položaju miške na ploskvi ali robu.  Če je izbrana 1 točka, bo uporabljena kot središče sukanja.  Če sta izbrani 2 točki, bo točka na sredini med njima središče sukanja in ustvarjena bo nova os po meri, če bo potrebno.  Če so izbrane 3 točke, prva točka postane središče vrtenja in leži na vektorju, ki je pravokoten na ravnino, določeno s 3 točkami.  Nekateri podatki o razdaljah in kotih so podani v pogledu poročil, ki je lahko uporaben pri poravnavi objektov.  Za lažjo uporabo se s Shiftom + klik ustrezna razdalja ali kot kopira v odložišče.</translation>
     </message>
   </context>
   <context>
@@ -3324,7 +3568,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Preoblikuj</translation>
+      <translation type="unfinished">Transform</translation>
     </message>
   </context>
   <context>
@@ -3347,10 +3591,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>CombiView</source>
       <translation>Sestavljen pogled</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Projekt</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -3632,19 +3872,19 @@ Ali želite shraniti spremembe?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
+      <source>Tap OR click left mouse button.</source>
       <translation>Tapnite ali kliknite z levim miškinim gumbom.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
       <translation>Povlecite po zaslonu z dvema prstoma ali kliknite z desnim miškinim gumbom.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Povlecite po zaslonu z enim prstom ali kliknite z levim miškinim gumbom. V očrtovalniku ali drugih načinih urejanja pridržite tudi tipko Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>Povlecite po zaslonu z enim prstom ali kliknite z levim miškinim gumbom. V očrtovalniku in drugih načinih urejanja pridržite še tipko Alt.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
       <translation>Uščipnite (na zaslonu dva prsta povlecite skupaj ali narazen), zavrtite miškino kolesce ali na tipkovnici pritisnite Stran ↑/Stran ↓.</translation>
     </message>
   </context>
@@ -3930,29 +4170,27 @@ Kako želite nadaljevati?</translation>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
+      <source>Tap OR click left mouse button.</source>
       <translation>Tapnite ali kliknite z levim miškinim gumbom.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
       <translation>Povlecite po zaslonu z dvema prstoma ali pritisnite Alt + srednji miškin gumb.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
       <translation>Povlecite po zaslonu z enim prstom ali pritisnite Alt + levi miškin gumb. V očrtovalniku in drugih načinih urejanja pridržite še gumb Alt.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Uščipnite (na zaslonu dva prsta povlecite skupaj ali narazen), zavrtite miškino kolesce, pritisnite Alt + desni miškin gumb ali na tipkovnici pritisnite Stran ↑/Stran ↓.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>Uščipnite (na zaslonu dva prsta povlecite skupaj ali narazen), zavrtite miškino kolesce, pritisnite Alt + desni gumb miškin gumb ali na tipkovnici pritisnite Stran ↑/Stran ↓.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Prenos se je začel …
-</translation>
+      <source>Download started...</source>
+      <translation>Prenos se je začel …</translation>
     </message>
   </context>
   <context>
@@ -4031,6 +4269,13 @@ Kako želite nadaljevati?</translation>
     <message>
       <source>Change the linked objects</source>
       <translation>Spremeni povezane predmete</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit %1</source>
+      <translation>Uredi %1</translation>
     </message>
   </context>
   <context>
@@ -4412,6 +4657,13 @@ Ali želite navesti drugo mapo?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Poišči</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
@@ -4476,6 +4728,14 @@ Ali želite navesti drugo mapo?</translation>
     <message>
       <source>%1, Internal name: %2</source>
       <translation>%1, Notranje ime: %2</translation>
+    </message>
+    <message>
+      <source>Search...</source>
+      <translation>Poišči...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>Išči predmete</translation>
     </message>
   </context>
   <context>
@@ -4566,55 +4826,55 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
       <source>0.1 mm</source>
-      <translation>0,1 mm</translation>
+      <translation type="unfinished">0.1 mm</translation>
     </message>
     <message>
       <source>0.5 mm</source>
-      <translation>0,5 mm</translation>
+      <translation type="unfinished">0.5 mm</translation>
     </message>
     <message>
       <source>1 mm</source>
-      <translation>1 mm</translation>
+      <translation type="unfinished">1 mm</translation>
     </message>
     <message>
       <source>2 mm</source>
-      <translation>2 mm</translation>
+      <translation type="unfinished">2 mm</translation>
     </message>
     <message>
       <source>5 mm</source>
-      <translation>5 mm</translation>
+      <translation type="unfinished">5 mm</translation>
     </message>
     <message>
       <source>10 mm</source>
-      <translation>10 mm</translation>
+      <translation type="unfinished">10 mm</translation>
     </message>
     <message>
       <source>20 mm</source>
-      <translation>20 mm</translation>
+      <translation type="unfinished">20 mm</translation>
     </message>
     <message>
       <source>50 mm</source>
-      <translation>50 mm</translation>
+      <translation type="unfinished">50 mm</translation>
     </message>
     <message>
       <source>100 mm</source>
-      <translation>100 mm</translation>
+      <translation type="unfinished">100 mm</translation>
     </message>
     <message>
       <source>200 mm</source>
-      <translation>200 mm</translation>
+      <translation type="unfinished">200 mm</translation>
     </message>
     <message>
       <source>500 mm</source>
-      <translation>500 mm</translation>
+      <translation type="unfinished">500 mm</translation>
     </message>
     <message>
       <source>1 m</source>
-      <translation>1 m</translation>
+      <translation type="unfinished">1 m</translation>
     </message>
     <message>
       <source>2 m</source>
-      <translation>2 m</translation>
+      <translation type="unfinished">2 m</translation>
     </message>
     <message>
       <source>5 m </source>
@@ -4991,7 +5251,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Preoblikuj</translation>
+      <translation type="unfinished">Transform</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
@@ -5034,24 +5294,40 @@ Upoštevajte, da je mesto klika pomembno.</translation>
       <translation>Izhodišče</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Vzporedni premik: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Sukanje: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Izbriši vsebino skupine?</translation>
     </message>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>%1 ni prazna, izbrišem tudi njeno vsebino?</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Izvažanje spodletelo</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Razdeli</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation>%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Vzporedni premik:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Sukanje:</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation>Preklopi dejavni del</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Uredi besedilo</translation>
     </message>
   </context>
   <context>
@@ -5778,12 +6054,12 @@ Upoštevajte, da je mesto klika pomembno.</translation>
       <translation>Združi projekt</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>Dokument %1 (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Projekta ni mogoče združiti s samim seboj.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>Dokument %1 (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6391,7 +6667,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Preoblikuj</translation>
+      <translation type="unfinished">Transform</translation>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
@@ -6459,21 +6735,6 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Običajni pogled</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Aksonometrično</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Nastavi na aksonometričen pogled</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6499,8 +6760,23 @@ Upoštevajte, da je mesto klika pomembno.</translation>
       <translation>Ustvari nov pogled</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Ustvari novo okno pogleda za dejavni dokument</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation>Ustvari okno z novim pogledom za dejavni dokument</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Običajni pogled</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrična</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Nastavi na dimetričen pogled</translation>
     </message>
   </context>
   <context>
@@ -6591,6 +6867,21 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     <message>
       <source>Set to front view</source>
       <translation>Nastavi na sprednji pogled</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Običajni pogled</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Izometrična</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Nastavi na izometričen pogled</translation>
     </message>
   </context>
   <context>
@@ -6774,6 +7065,21 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Običajni pogled</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrična</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Nastavi na trimetričen pogled</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewVR</name>
     <message>
       <source>Standard-View</source>
@@ -6890,6 +7196,66 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
   </context>
   <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Pogled</translation>
+    </message>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>Zloži/Razširi</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>Razširi dejavni dokument in zloži vse ostale</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Pogled</translation>
+    </message>
+    <message>
+      <source>Multi Document</source>
+      <translation>Večkraten Dokument</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Prikaži vse dokumente v drevesnem pogledu</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Pogled</translation>
+    </message>
+    <message>
+      <source>Single Document</source>
+      <translation>En dokument</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Prikaži samo dejavni dokument v drevesnem pogledu</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeViewDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Pogled</translation>
+    </message>
+    <message>
+      <source>Document Tree</source>
+      <translation>Drevo Dokumenta</translation>
+    </message>
+    <message>
+      <source>Set visibility of inactive documents in tree view</source>
+      <translation>Nastavi vidnost nedejavnega dokumenta v drevesnem pogledu</translation>
+    </message>
+  </context>
+  <context>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
@@ -7000,20 +7366,20 @@ Upoštevajte, da je mesto klika pomembno.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>Object dependencies</source>
-      <translation>Odvisnosti predmetov</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation>Ti predmeti so povezani s predmeti, ki so bili označeni za izbris in se lahko poškodujejo.</translation>
     </message>
     <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
-
-</source>
-      <translation>Sledeči sklicevani predmeti bodo lahko okvarjeni.
-
-Ali želite vseeno nadaljevati?
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Ti predmeti so označeni za izbris, vendar niso v dejavnem dokumentu.</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Ali ste prepričani, da želite nadaljevati?</translation>
+    </message>
+    <message>
+      <source>Delete Selection Issues</source>
+      <translation>Izbriši probleme Izbire</translation>
     </message>
   </context>
   <context>
@@ -7114,6 +7480,50 @@ Do you want to duplicate them, too?</source>
     <message>
       <source>Do you want to continue?</source>
       <translation>Ali želite nadaljevati?</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>Izometrična</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>Nastavi krmilno kocko na Izometrični način</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Pravokotno</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Nastavi pogled na pravokotni način</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Perspektiva</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Nastavi pogled na perspektivni način</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Prilagodi povečavo</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Povečaja ali pomanjšaj, da se prilega pogledu</translation>
     </message>
   </context>
   <context>

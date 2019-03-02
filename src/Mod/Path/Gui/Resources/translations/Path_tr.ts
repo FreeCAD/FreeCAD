@@ -276,7 +276,7 @@
     <message>
       <location filename="../../../PathScripts/PathProfileBase.py" line="59"/>
       <source>Make True, if using Cutter Radius Compensation</source>
-      <translation>Kesici Yarıçap dengelemesi kullanıyorsanız, Gerçekleştirin</translation>
+      <translation type="unfinished">Make True, if using Cutter Radius Compensation</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileBase.py" line="61"/>
@@ -639,7 +639,7 @@
     <message>
       <location filename="../../../InitGui.py" line="91"/>
       <source>Engraving Operations</source>
-      <translation>Oymacılık İşlemleri</translation>
+      <translation type="unfinished">Engraving Operations</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="100"/>
@@ -815,7 +815,7 @@
       <translation>Bir ShapeString Taslağı çevresinde bir Gravür Yolu Oluşturur</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngrave.py" line="156"/>
+      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
       <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
       <translation>İş Bankası Nesnesinin gravürü yapılabilecek bir öğesi yoktur. Gravür işlemi hiçbir sonuç çıkarmaz.</translation>
     </message>
@@ -954,7 +954,7 @@
     <message>
       <location filename="PathHelix.py" line="450"/>
       <source>Creates a helix cut from selected circles</source>
-      <translation>Seçili çemberlerden bir helis kesimi oluşturur</translation>
+      <translation type="unfinished">Creates a helix cut from selected circles</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="464"/>
@@ -1062,7 +1062,7 @@
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="99"/>
       <source>An optional description for this job</source>
-      <translation>Bu iş için isteğe bağlı bir açıklama</translation>
+      <translation type="unfinished">An optional description for this job</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="100"/>
@@ -1190,7 +1190,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="112"/>
       <source>Holds the max Z value of Stock</source>
-      <translation>Malzemenin en büyük Z değerini tutar</translation>
+      <translation type="unfinished">Holds the max Z value of Stock</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="545"/>
@@ -1246,8 +1246,8 @@
       <location filename="../../../PathScripts/PathOpGui.py" line="641"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
-      <translation>FinalDepth bu işlem için değiştirilemez.
-FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem seçin.</translation>
+      <translation type="unfinished">FinalDepth cannot be modified for this operation.
+If it is necessary to set the FinalDepth manually please select a different operation.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOpGui.py" line="660"/>
@@ -1355,7 +1355,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
       <source>Profile based on face or faces</source>
-      <translation>Yüzey veya yüzeylere dayalı profil</translation>
+      <translation type="unfinished">Profile based on face or faces</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="54"/>
@@ -1549,12 +1549,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="153"/>
       <source>Length of this stock box</source>
-      <translation>Bu stok kutusunun uzunluğu</translation>
+      <translation type="unfinished">Length of this stock box</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="154"/>
       <source>Width of this stock box</source>
-      <translation>Bu stok kutusunun genişliği</translation>
+      <translation type="unfinished">Width of this stock box</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="155"/>
@@ -1945,32 +1945,32 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
       <source>DragKnife Dress-up</source>
       <translation>DragKnife Giydirme</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="471"/>
       <source>Modifies a path to add dragknife corner actions</source>
       <translation>Dragknife köşe eylemleri eklemek için bir yolu değiştirir</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="485"/>
       <source>Please select one path object</source>
       <translation>Lütfen bir yol nesnesi seçin</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="489"/>
       <source>The selected object is not a path</source>
       <translation>Seçilen nesne bir yol değil</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="493"/>
       <source>Please select a Path object</source>
       <translation>Lütfen bir Yol nesnesi seçin</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="498"/>
       <source>Create Dress-up</source>
       <translation>Giydirme</translation>
     </message>
@@ -2318,7 +2318,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="140"/>
       <source>A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</source>
-      <translation>Bir Araç Denetleyicisi bulunamadı. Varsayılan değerlerin kullanılması riskli olabilir. Lütfen bir Araç Denetleyicisi ekleyin.</translation>
+      <translation type="unfinished">A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="144"/>
@@ -2633,7 +2633,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="TooltableEditor.py" line="415"/>
       <source>Undefined</source>
-      <translation>Tanımlanmamış</translation>
+      <translation type="unfinished">Undefined</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="416"/>

@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Centrera innehållet i markerade celler vertikalt</translation>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -114,11 +114,11 @@
     </message>
     <message>
       <source>Export spreadsheet</source>
-      <translation>Exportera kalkylblad</translation>
+      <translation>Exportera kalkylark</translation>
     </message>
     <message>
       <source>Export spreadsheet to CSV file</source>
-      <translation>Exportera kalkylblad till CSV-fil</translation>
+      <translation>Exportera kalkylark till CSV-fil</translation>
     </message>
   </context>
   <context>
@@ -129,11 +129,11 @@
     </message>
     <message>
       <source>Import spreadsheet</source>
-      <translation>Importera kalkylblad</translation>
+      <translation>Importera kalkylark</translation>
     </message>
     <message>
       <source>Import CSV file into spreadsheet</source>
-      <translation>Importera CSV-fil till kalkylblad</translation>
+      <translation>Importera CSV-fil till kalkylark</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells in spreadsheet</source>
-      <translation>Sammanfoga markerade celler i kalkylblad</translation>
+      <translation>Sammanfoga markerade celler i kalkylark</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells in spreadsheet</source>
-      <translation>Dela upp tidigare sammanfogade celler i kalkylblad</translation>
+      <translation>Dela upp tidigare sammanfogade celler i kalkylark</translation>
     </message>
   </context>
   <context>
@@ -223,14 +223,14 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation>Stryk under text i markerade celler</translation>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation>Anpassad färg</translation>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

@@ -723,7 +723,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="375"/>
       <source>Create a page to insert.</source>
-      <translation>Crea unha páxina a insire.</translation>
+      <translation type="unfinished">Create a page to insert.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="382"/>
@@ -770,7 +770,7 @@
       <location filename="../../MDIViewPage.cpp" line="545"/>
       <location filename="../../MDIViewPage.cpp" line="791"/>
       <source>All Files (*.*)</source>
-      <translation>Tódolos ficheiros (*.*)</translation>
+      <translation type="unfinished">All Files (*.*)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="546"/>
@@ -780,7 +780,7 @@
     <message>
       <location filename="../../MDIViewPage.cpp" line="790"/>
       <source>SVG (*.svg)</source>
-      <translation>SVG (*.svg)</translation>
+      <translation type="unfinished">SVG (*.svg)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="792"/>

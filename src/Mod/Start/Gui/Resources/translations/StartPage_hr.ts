@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>Ovo poglavlje sadrži dokumentaciju za programere: kako sastaviti ( kompilirati) FreeCAD, o strukturi FreeCAD-a, izvornom kodu i kako se kretati u njemu i kako razvijati nove radne površine, ili integrirati FreeCAD u vlastite aplikacije.</translation>
+      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -223,7 +223,7 @@
       <translation>Početna stranica</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="545"/>
+      <location filename="../../../StartPage/StartPage.py" line="542"/>
       <source>Start page</source>
       <translation>Početna stranica</translation>
     </message>

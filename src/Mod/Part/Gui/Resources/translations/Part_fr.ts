@@ -4,57 +4,57 @@
   <context>
     <name>AttachmentEditor</name>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="95"/>
       <source>No object named {name}</source>
       <translation>Aucun objet nommé {name}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="98"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="99"/>
       <source>Failed to parse link (more than one colon encountered)</source>
       <translation>Échec de l'analyse du lien (plusieurs deux-points ont été rencontrés)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="205"/>
       <source>Object {name} is neither movable nor attachable, can't edit attachment</source>
       <translation>L'objet {name} n’est pas mobile et ne peut être accroché, modification de l'accrochage impossible</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="212"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="213"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
       <translation>{obj} ne peut être accroché. Vous pouvez toujours utiliser la boîte de dialogue d'accrochage pour aligner l'objet, mais l'accrochage ne sera pas paramétrique.</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="230"/>
       <source>Attachment</source>
       <translation>Accrochage</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="219"/>
       <source>Continue</source>
       <translation>Continuer</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="263"/>
       <source>Edit attachment of {feat}</source>
       <translation>Modifier l'accrochage de {feat}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="349"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="350"/>
       <source>Ignored. Can't attach object to itself!</source>
       <translation>Ignoré. Impossible d'accrocher un objet à lui-même!</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="353"/>
       <source>{obj1} depends on object being attached, can't use it for attachment</source>
       <translation>{obj1} dépend de l'objet en cours d'accrochage, ne peut pas l'utiliser pour l'accrochage</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="497"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="498"/>
       <source>{mode} (add {morerefs})</source>
       <translation>{mode} (ajouter {morerefs})</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="500"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="501"/>
       <source>{mode} (add more references)</source>
       <translation>{mode} (ajouter plus de références)</translation>
     </message>
@@ -149,6 +149,19 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 
 Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « Annuler » pour annuler.</translation>
     </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Le calcul du résultat a échoué avec une erreur : 
+
+{err}
+
+Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « Annuler » pour annuler.</translation>
+    </message>
   </context>
   <context>
     <name>Part_ExplodeCompound</name>
@@ -206,11 +219,6 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <source>Embed object</source>
       <translation>Intégrer l'objet</translation>
     </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
-      <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation>Fusionne un objet dans un autre en prenant soin de préserver les cavités.</translation>
-    </message>
   </context>
   <context>
     <name>Part_JoinFeatures</name>
@@ -252,24 +260,26 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
       <translation>Sélectionnez l'objet dans lequel effectuer une découpe, puis l'objet à insérer dans la découpe et lancez cet outil.</translation>
     </message>
-  </context>
-  <context>
-    <name>Part_MakeTube</name>
     <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation>Créer un tube</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation>En premier lieu, sélectionnez au moins deux objets, ou un ou plusieurs composés !</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation>Créer un tube</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
+      <source>Embed object</source>
+      <translation>Intégrer l'objet</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation>Sélectionnez l'objet dans lequel effectuer une découpe, puis l'objet à insérer dans la découpe et lancez cet outil.</translation>
     </message>
   </context>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="407"/>
       <source>Computing the result failed with an error: 
 
 {err}
@@ -282,7 +292,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « Annuler » pour annuler.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="440"/>
       <source>Bad selection</source>
       <translation>Sélection non valide</translation>
     </message>
@@ -297,9 +307,42 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <translation>Fragments Booléens</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Diviser les objets où ils se croisent</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="439"/>
+      <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>En premier lieu, sélectionnez au moins deux objets, ou un ou plusieurs composés ! Si un seul composé est sélectionné, les formes composées seront intersectées les unes avec les autres (sinon, les composés avec auto-intersections ne sont pas valides).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Le calcul du résultat a échoué avec une erreur : 
+
+{err}
+
+Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « Annuler » pour annuler.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>En premier lieu, sélectionnez au moins deux objets ! Le premier est l'objet à couper; les autres objets seront utilisés pour la coupe.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Continuer</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragments Booléens</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
+      <source>Boolean XOR</source>
+      <translation>Booléen XOR</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
@@ -327,9 +370,29 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <translation>Trancher</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Part_BooleanFragments: split objects where they intersect</source>
+      <translation>Fragments Booléens : diviser les objets sectionnés où ils se croisent</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
+      <source>Slice</source>
+      <translation>Trancher</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="297"/>
+      <source>Part_Slice: split object by intersections with other objects</source>
+      <translation>Diviser un objet par l'intersection avec d'autres objets</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
       <source>Split object by intersections with other objects.</source>
       <translation>Séparer l'objet par intersection avec d'autres objets.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="431"/>
+      <source>Part_XOR: remove intersection fragments</source>
+      <translation>Enlever les fragments d'intersection</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
@@ -340,6 +403,14 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
       <translation>Supprimer les fragments d'intersection</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation>Créer un tube</translation>
     </message>
   </context>
   <context>
@@ -599,6 +670,16 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Le point sur la seconde référence qui est le plus proche de la première référence.</translation>
     </message>
+    <message>
+      <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
+      <comment>AttachmentPoint mode tooltip</comment>
+      <translation>Le point est placé sur l’arête, la position exacte est contrôlée par MapPathParameter. De plus, un sommet peut être lié pour permettre une projection.</translation>
+    </message>
+    <message>
+      <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
+      <comment>AttachmentPoint mode tooltip</comment>
+      <translation>Centre du cercle osculateur (centre de courbure) d’une arête. Un lien facultatif vers un sommet définit où.</translation>
+    </message>
   </context>
   <context>
     <name>Attacher1D</name>
@@ -844,6 +925,11 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Ligne perpendiculaire à la surface au point défini par un vertex.</translation>
     </message>
+    <message>
+      <source>Normal</source>
+      <comment>AttachmentLine mode caption</comment>
+      <translation>Normal</translation>
+    </message>
   </context>
   <context>
     <name>Attacher2D</name>
@@ -1040,6 +1126,16 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Plan construit sur les deuxième et troisième des axes principaux d’inertie (passe par le centre de masse).</translation>
+    </message>
+    <message>
+      <source>Attachment is disabled. Plane can be moved by editing Placement property.</source>
+      <comment>AttachmentPlane mode tooltip</comment>
+      <translation>L'accrochage est désactivé. Le plan peut être déplacé en modifiant la propriété Placement.</translation>
+    </message>
+    <message>
+      <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
+      <comment>AttachmentPlane mode tooltip</comment>
+      <translation>Le plan est perpendiculaire à l'arête, et l'axe Y correspond à l'axe du cercle osculateur. Un lien facultatif à un sommet définit où.</translation>
     </message>
   </context>
   <context>
@@ -1372,6 +1468,11 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <comment>Attachment3D mode tooltip</comment>
       <translation>Faire correspondre l'origine avec le premier sommet. Aligner les axes des plans vertical et horizontal avec un sommet ou le long d'une ligne.</translation>
     </message>
+    <message>
+      <source>Attachment is disabled. CS can be moved by editing Placement property.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation>L'accrochage est désactivé. Le système de coordonnées peut être déplacé en modifiant la propriété Placement.</translation>
+    </message>
   </context>
   <context>
     <name>BlockDefinition</name>
@@ -1487,36 +1588,33 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <source>Reference</source>
       <translation>Référence</translation>
     </message>
-  </context>
-  <context>
-    <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2355"/>
-      <source>Part</source>
-      <translation>Pièce</translation>
+      <source>Apply</source>
+      <translation>Appliquer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
-      <location filename="../../Command.cpp" line="2357"/>
-      <location filename="../../Command.cpp" line="2359"/>
-      <source>Box selection</source>
-      <translation>Sélection par boîte</translation>
+      <source>Cancel</source>
+      <translation>Annuler</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>Valider</translation>
     </message>
   </context>
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2104"/>
+      <location filename="../../Command.cpp" line="1983"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2105"/>
+      <location filename="../../Command.cpp" line="1984"/>
       <source>Check Geometry</source>
       <translation>Vérifier la géométrie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2106"/>
+      <location filename="../../Command.cpp" line="1985"/>
       <source>Analyzes Geometry For Errors</source>
       <translation>Analyse la géométrie</translation>
     </message>
@@ -1524,17 +1622,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2138"/>
+      <location filename="../../Command.cpp" line="2017"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2139"/>
+      <location filename="../../Command.cpp" line="2018"/>
       <source>Color per face</source>
       <translation>Couleur par face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2140"/>
+      <location filename="../../Command.cpp" line="2019"/>
       <source>Set color per face</source>
       <translation>Définir la couleur des faces</translation>
     </message>
@@ -1542,13 +1640,13 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdMeasureAngular</name>
     <message>
-      <location filename="../../Command.cpp" line="2204"/>
+      <location filename="../../Command.cpp" line="2083"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2205"/>
-      <location filename="../../Command.cpp" line="2206"/>
+      <location filename="../../Command.cpp" line="2084"/>
+      <location filename="../../Command.cpp" line="2085"/>
       <source>Measure Angular</source>
       <translation>Mesure angulaire</translation>
     </message>
@@ -1556,13 +1654,13 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdMeasureClearAll</name>
     <message>
-      <location filename="../../Command.cpp" line="2233"/>
+      <location filename="../../Command.cpp" line="2112"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2234"/>
-      <location filename="../../Command.cpp" line="2235"/>
+      <location filename="../../Command.cpp" line="2113"/>
+      <location filename="../../Command.cpp" line="2114"/>
       <source>Clear All</source>
       <translation>Tout effacer</translation>
     </message>
@@ -1570,13 +1668,13 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdMeasureLinear</name>
     <message>
-      <location filename="../../Command.cpp" line="2175"/>
+      <location filename="../../Command.cpp" line="2054"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2176"/>
-      <location filename="../../Command.cpp" line="2177"/>
+      <location filename="../../Command.cpp" line="2055"/>
+      <location filename="../../Command.cpp" line="2056"/>
       <source>Measure Linear</source>
       <translation>Mesure linéaire</translation>
     </message>
@@ -1584,13 +1682,13 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdMeasureToggle3d</name>
     <message>
-      <location filename="../../Command.cpp" line="2297"/>
+      <location filename="../../Command.cpp" line="2176"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2298"/>
-      <location filename="../../Command.cpp" line="2299"/>
+      <location filename="../../Command.cpp" line="2177"/>
+      <location filename="../../Command.cpp" line="2178"/>
       <source>Toggle 3d</source>
       <translation>Basculer 3D</translation>
     </message>
@@ -1598,13 +1696,13 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdMeasureToggleAll</name>
     <message>
-      <location filename="../../Command.cpp" line="2262"/>
+      <location filename="../../Command.cpp" line="2141"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2263"/>
-      <location filename="../../Command.cpp" line="2264"/>
+      <location filename="../../Command.cpp" line="2142"/>
+      <location filename="../../Command.cpp" line="2143"/>
       <source>Toggle All</source>
       <translation>Basculer tous</translation>
     </message>
@@ -1612,13 +1710,13 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdMeasureToggleDelta</name>
     <message>
-      <location filename="../../Command.cpp" line="2326"/>
+      <location filename="../../Command.cpp" line="2205"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2327"/>
-      <location filename="../../Command.cpp" line="2328"/>
+      <location filename="../../Command.cpp" line="2206"/>
+      <location filename="../../Command.cpp" line="2207"/>
       <source>Toggle Delta</source>
       <translation>Basculer Delta</translation>
     </message>
@@ -1626,17 +1724,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1274"/>
+      <location filename="../../Command.cpp" line="1153"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1275"/>
+      <location filename="../../Command.cpp" line="1154"/>
       <source>Boolean...</source>
       <translation>Opération booléenne...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1276"/>
+      <location filename="../../Command.cpp" line="1155"/>
       <source>Run a boolean operation with two shapes selected</source>
       <translation>Exécuter une opération booléenne sur deux formes sélectionnées</translation>
     </message>
@@ -1660,21 +1758,29 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <source>Create a cube solid</source>
       <translation>Créer un cube plein</translation>
     </message>
+    <message>
+      <source>Box</source>
+      <translation>Boîte</translation>
+    </message>
+    <message>
+      <source>Create a box solid</source>
+      <translation>Créer une boîte solide</translation>
+    </message>
   </context>
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="135"/>
+      <location filename="../../Command.cpp" line="133"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="136"/>
+      <location filename="../../Command.cpp" line="134"/>
       <source>Box fix 1</source>
       <translation>Boîte correctif 1</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="137"/>
+      <location filename="../../Command.cpp" line="135"/>
       <source>Create a box solid without dialog</source>
       <translation>Créer une boîte solide sans boîte de dialogue</translation>
     </message>
@@ -1682,17 +1788,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartBox3</name>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Box fix 2</source>
       <translation>Boîte correctif 2</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="178"/>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Create a box solid without dialog</source>
       <translation>Créer une boîte solide sans boîte de dialogue</translation>
     </message>
@@ -1700,17 +1806,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1535"/>
+      <location filename="../../Command.cpp" line="1414"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1536"/>
+      <location filename="../../Command.cpp" line="1415"/>
       <source>Shape builder...</source>
       <translation>Générateur de forme...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1537"/>
+      <location filename="../../Command.cpp" line="1416"/>
       <source>Advanced utility to create shapes</source>
       <translation>Utilitaire avancé de création de formes</translation>
     </message>
@@ -1718,17 +1824,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1439"/>
+      <location filename="../../Command.cpp" line="1318"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1440"/>
+      <location filename="../../Command.cpp" line="1319"/>
       <source>Chamfer...</source>
       <translation>Chanfrein...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1441"/>
+      <location filename="../../Command.cpp" line="1320"/>
       <source>Chamfer the selected edges of a shape</source>
       <translation>Chanfreiner les arêtes sélectionnées d'une forme</translation>
     </message>
@@ -1736,53 +1842,35 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location filename="../../Command.cpp" line="349"/>
+      <location filename="../../Command.cpp" line="347"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="350"/>
+      <location filename="../../Command.cpp" line="348"/>
       <source>Intersection</source>
       <translation>Intersection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="351"/>
+      <location filename="../../Command.cpp" line="349"/>
       <source>Make an intersection of two shapes</source>
       <translation>Exécuter une intersection entre deux formes</translation>
     </message>
   </context>
   <context>
-    <name>CmdPartCompCompoundTools</name>
-    <message>
-      <location filename="../../Command.cpp" line="782"/>
-      <source>Part</source>
-      <translation>Pièce</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="783"/>
-      <source>Counpound tools</source>
-      <translation>Objets composés</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="784"/>
-      <source>Compound tools: working with lists of shapes.</source>
-      <translation>Outils de compilation : travailler avec des listes de formes.</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdPartCompJoinFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="554"/>
+      <location filename="../../Command.cpp" line="552"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="555"/>
+      <location filename="../../Command.cpp" line="553"/>
       <source>Join objects...</source>
       <translation>Joindre les objets...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="556"/>
+      <location filename="../../Command.cpp" line="554"/>
       <source>Join walled objects</source>
       <translation>Joindre les objets à paroi</translation>
     </message>
@@ -1790,17 +1878,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1720"/>
+      <location filename="../../Command.cpp" line="1599"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1721"/>
+      <location filename="../../Command.cpp" line="1600"/>
       <source>Offset:</source>
       <translation>Décalage :</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1722"/>
+      <location filename="../../Command.cpp" line="1601"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>Outils pour décaler des formes (construire des formes parallèles)</translation>
     </message>
@@ -1808,17 +1896,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="660"/>
+      <location filename="../../Command.cpp" line="659"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="661"/>
+      <location filename="../../Command.cpp" line="660"/>
       <source>Split objects...</source>
       <translation>Objets éclatés...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="662"/>
+      <location filename="../../Command.cpp" line="661"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
       <translation>Outils de division de forme. Outils de création de Compsolid. OCC 6.9.0 ou ultérieur est requis.</translation>
     </message>
@@ -1826,17 +1914,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="889"/>
+      <location filename="../../Command.cpp" line="768"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="890"/>
+      <location filename="../../Command.cpp" line="769"/>
       <source>Make compound</source>
       <translation>Créer un composé</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="891"/>
+      <location filename="../../Command.cpp" line="770"/>
       <source>Make a compound of several shapes</source>
       <translation>Créer un composé à partir de plusieurs formes</translation>
     </message>
@@ -1864,17 +1952,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1374"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1375"/>
       <source>Cross-sections...</source>
       <translation>Coupes...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1497"/>
+      <location filename="../../Command.cpp" line="1376"/>
       <source>Cross-sections</source>
       <translation>Coupes</translation>
     </message>
@@ -1882,17 +1970,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location filename="../../Command.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cut</source>
       <translation>Soustraction</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>Make a cut of two shapes</source>
       <translation>Exécuter une soustraction sur deux formes</translation>
     </message>
@@ -1918,37 +2006,19 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     </message>
   </context>
   <context>
-    <name>CmdPartDefeaturing</name>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="271"/>
-      <source>Part</source>
-      <translation>Pièce</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="272"/>
-      <source>Defeaturing</source>
-      <translation>Supprimer la fonctionnalité</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="273"/>
-      <source>Remove feature from a shape</source>
-      <translation>Supprimer la fonctionnalité d’une forme</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="1047"/>
+      <location filename="../../Command.cpp" line="926"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1048"/>
+      <location filename="../../Command.cpp" line="927"/>
       <source>Export CAD...</source>
       <translation>Exportation CAO...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1049"/>
+      <location filename="../../Command.cpp" line="928"/>
       <source>Exports to a CAD file</source>
       <translation>Exporte vers un fichier dans un format de CAO</translation>
     </message>
@@ -1956,17 +2026,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1305"/>
+      <location filename="../../Command.cpp" line="1184"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1306"/>
+      <location filename="../../Command.cpp" line="1185"/>
       <source>Extrude...</source>
       <translation>Extrusion...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1307"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <source>Extrude a selected sketch</source>
       <translation>Extrusion d'une esquisse sélectionnée</translation>
     </message>
@@ -1974,17 +2044,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1411"/>
+      <location filename="../../Command.cpp" line="1290"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1412"/>
+      <location filename="../../Command.cpp" line="1291"/>
       <source>Fillet...</source>
       <translation>Congé...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1413"/>
+      <location filename="../../Command.cpp" line="1292"/>
       <source>Fillet the selected edges of a shape</source>
       <translation>Créer un congé sur les arêtes sélectionnées d'une forme</translation>
     </message>
@@ -1992,17 +2062,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location filename="../../Command.cpp" line="451"/>
+      <location filename="../../Command.cpp" line="449"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="450"/>
       <source>Union</source>
       <translation>Union</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="451"/>
       <source>Make a union of several shapes</source>
       <translation>Exécuter l'union de plusieurs formes</translation>
     </message>
@@ -2010,17 +2080,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location filename="../../Command.cpp" line="987"/>
+      <location filename="../../Command.cpp" line="866"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="988"/>
+      <location filename="../../Command.cpp" line="867"/>
       <source>Import CAD...</source>
       <translation>Importation CAO...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="989"/>
+      <location filename="../../Command.cpp" line="868"/>
       <source>Imports a CAD file</source>
       <translation>Importe un fichier CAO</translation>
     </message>
@@ -2028,17 +2098,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="1094"/>
+      <location filename="../../Command.cpp" line="973"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1095"/>
+      <location filename="../../Command.cpp" line="974"/>
       <source>Import curve network...</source>
       <translation>Importer réseau de courbes...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1096"/>
+      <location filename="../../Command.cpp" line="975"/>
       <source>Import a curve network</source>
       <translation>Importer un réseau de courbes</translation>
     </message>
@@ -2046,53 +2116,69 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1564"/>
+      <location filename="../../Command.cpp" line="1443"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1565"/>
+      <location filename="../../Command.cpp" line="1444"/>
       <source>Loft...</source>
       <translation>Lissage...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1566"/>
+      <location filename="../../Command.cpp" line="1445"/>
       <source>Utility to loft</source>
       <translation>Lissage d'une série de profils</translation>
+    </message>
+    <message>
+      <source>Advanced utility to lofts</source>
+      <translation>Utilitaire avancé de lissages</translation>
     </message>
   </context>
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1333"/>
+      <location filename="../../Command.cpp" line="1212"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1334"/>
+      <location filename="../../Command.cpp" line="1213"/>
       <source>Make face from wires</source>
       <translation>Créer une face à partir de fils</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1335"/>
-      <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation>Créer une face à partir d'un ensemble de fils (par exemple, à partir d’une esquisse)</translation>
+      <location filename="../../Command.cpp" line="1214"/>
+      <source>Part_MakeFace: Make face from set of wires (e.g. from a sketch)</source>
+      <translation>Part_MakeFace : Créer une face à partir d'un ensemble de fils (par exemple, à partir d’une esquisse)</translation>
+    </message>
+    <message>
+      <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
+      <translation>Part_MakeFace : Créer une face à partir d'un ensemble de fils (par exemple, à partir d’une esquisse).</translation>
+    </message>
+    <message>
+      <source>Make face from sketch</source>
+      <translation>Créer une face à partir de l'esquisse</translation>
+    </message>
+    <message>
+      <source>Make face from selected sketches</source>
+      <translation>Créer une face à partir des esquisses sélectionnées</translation>
     </message>
   </context>
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1142"/>
+      <location filename="../../Command.cpp" line="1021"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../Command.cpp" line="1022"/>
       <source>Convert to solid</source>
       <translation>Convertir en solide</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1144"/>
+      <location filename="../../Command.cpp" line="1023"/>
       <source>Create solid from a shell or compound</source>
       <translation>Créer un solide à partir d'une coque ou d'un composé</translation>
     </message>
@@ -2100,17 +2186,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1467"/>
+      <location filename="../../Command.cpp" line="1346"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1468"/>
+      <location filename="../../Command.cpp" line="1347"/>
       <source>Mirroring...</source>
       <translation>Mise en miroir...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1469"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Mirroring a selected shape</source>
       <translation>Mise en miroir de la forme sélectionnée</translation>
     </message>
@@ -2118,53 +2204,61 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1622"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1623"/>
+      <location filename="../../Command.cpp" line="1502"/>
       <source>3D Offset...</source>
       <translation>Décalage 3D...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1624"/>
-      <source>Utility to offset in 3D</source>
-      <translation>Utilitaire pour décaler en 3D</translation>
+      <location filename="../../Command.cpp" line="1503"/>
+      <source>Part_Offset: Utility to offset in 3D</source>
+      <translation>Part_Offset : Utilitaire pour décaler en 3D</translation>
+    </message>
+    <message>
+      <source>Offset...</source>
+      <translation>Décalage...</translation>
+    </message>
+    <message>
+      <source>Utility to offset</source>
+      <translation>Décalage d'une surface ou d'un corps</translation>
     </message>
   </context>
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1672"/>
+      <location filename="../../Command.cpp" line="1551"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1673"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>2D Offset...</source>
       <translation>Décalage 2D...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1674"/>
-      <source>Utility to offset planar shapes</source>
-      <translation>Utilitaire pour décaler les formes planaires</translation>
+      <location filename="../../Command.cpp" line="1553"/>
+      <source>Part_Offset2D: Utility to offset planar shapes</source>
+      <translation>Part_Offset2D : Utilitaire pour décaler les formes planes</translation>
     </message>
   </context>
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="87"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="90"/>
+      <location filename="../../Command.cpp" line="88"/>
       <source>Pick curve network</source>
       <translation>Choisir un réseau de courbes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="91"/>
+      <location filename="../../Command.cpp" line="89"/>
       <source>Pick a curve network</source>
       <translation>Choisir un réseau de courbes</translation>
     </message>
@@ -2172,17 +2266,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartPrimitives</name>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="218"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Create primitives...</source>
       <translation>Créer des primitives...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="219"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Creation of parametrized geometric primitives</source>
       <translation>Création de primitives géométriques paramétrées</translation>
     </message>
@@ -2190,17 +2284,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartRefineShape</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="218"/>
+      <location filename="../../CommandSimple.cpp" line="217"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="219"/>
+      <location filename="../../CommandSimple.cpp" line="218"/>
       <source>Refine shape</source>
       <translation>Affiner la forme</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="220"/>
+      <location filename="../../CommandSimple.cpp" line="219"/>
       <source>Refine the copy of a shape</source>
       <translation>Affiner la copie d'une forme</translation>
     </message>
@@ -2208,17 +2302,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1220"/>
+      <location filename="../../Command.cpp" line="1099"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1221"/>
+      <location filename="../../Command.cpp" line="1100"/>
       <source>Reverse shapes</source>
       <translation>Inverser les formes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1222"/>
+      <location filename="../../Command.cpp" line="1101"/>
       <source>Reverse orientation of shapes</source>
       <translation>Inverser l'orientation des formes</translation>
     </message>
@@ -2226,17 +2320,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1383"/>
+      <location filename="../../Command.cpp" line="1262"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1384"/>
+      <location filename="../../Command.cpp" line="1263"/>
       <source>Revolve...</source>
       <translation>Révolution...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1385"/>
+      <location filename="../../Command.cpp" line="1264"/>
       <source>Revolve a selected shape</source>
       <translation>Révolutionner une forme sélectionnée</translation>
     </message>
@@ -2244,35 +2338,39 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="1988"/>
+      <location filename="../../Command.cpp" line="1867"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1989"/>
+      <location filename="../../Command.cpp" line="1868"/>
       <source>Create ruled surface</source>
       <translation>Créer une surface réglée</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1990"/>
+      <location filename="../../Command.cpp" line="1869"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
       <translation>Créer une surface réglée depuis deux arêtes ou deux fils</translation>
+    </message>
+    <message>
+      <source>Create a ruled surface from two curves</source>
+      <translation>Créer une surface réglée à partir de deux courbes</translation>
     </message>
   </context>
   <context>
     <name>CmdPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="940"/>
+      <location filename="../../Command.cpp" line="819"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="941"/>
+      <location filename="../../Command.cpp" line="820"/>
       <source>Section</source>
       <translation>Section</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="942"/>
+      <location filename="../../Command.cpp" line="821"/>
       <source>Make a section of two shapes</source>
       <translation>Faire une section de deux formes</translation>
     </message>
@@ -2354,17 +2452,17 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1593"/>
+      <location filename="../../Command.cpp" line="1472"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1594"/>
+      <location filename="../../Command.cpp" line="1473"/>
       <source>Sweep...</source>
       <translation>Balayage...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1595"/>
+      <location filename="../../Command.cpp" line="1474"/>
       <source>Utility to sweep</source>
       <translation>Balayage d'une ou plusieurs section le long d'un chemin</translation>
     </message>
@@ -2372,33 +2470,33 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="1813"/>
+      <location filename="../../Command.cpp" line="1692"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1814"/>
+      <location filename="../../Command.cpp" line="1693"/>
       <source>Thickness...</source>
       <translation>Évidement...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1815"/>
+      <location filename="../../Command.cpp" line="1694"/>
       <source>Utility to apply a thickness</source>
       <translation>Évidement d'un solide sélectionné</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1827"/>
-      <location filename="../../Command.cpp" line="1847"/>
+      <location filename="../../Command.cpp" line="1706"/>
+      <location filename="../../Command.cpp" line="1726"/>
       <source>Wrong selection</source>
       <translation>Sélection invalide</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1828"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Selected one or more faces of a shape</source>
       <translation>Sélectionner une ou plusieurs faces d'une forme</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1848"/>
+      <location filename="../../Command.cpp" line="1727"/>
       <source>Selected shape is not a solid</source>
       <translation>La forme sélectionnée n'est pas un solide</translation>
     </message>
@@ -2421,6 +2519,35 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../CommandParametric.cpp" line="212"/>
       <source>Create a torus solid</source>
       <translation>Créer un solide toroïdal</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgExtrusion</name>
+    <message>
+      <source>Select a shape for extrusion, first.</source>
+      <translation>Sélectionnez d'abord une forme pour l'extrusion.</translation>
+    </message>
+    <message>
+      <source>The document '%1' doesn't exist.</source>
+      <translation>Document « %1 » inexistant.</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgRevolution</name>
+    <message>
+      <source>Select a shape for revolution, first.</source>
+      <translation>Sélectionnez d'abord une forme à révolutionner.</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgSettings3DViewPart</name>
+    <message>
+      <source>Deviation</source>
+      <translation>Déviation</translation>
+    </message>
+    <message>
+      <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
+      <translation>Définir une déviation de tessellation trop faible peut ralentir ou geler l'interface.</translation>
     </message>
   </context>
   <context>
@@ -2504,6 +2631,14 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="328"/>
       <source>Flip sides</source>
       <translation>Retourner</translation>
+    </message>
+    <message>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>Mirroir de la propriété superPlacement. Le placement relatif est exprimé localement par rapport à l'objet auquel il est attaché.</translation>
+    </message>
+    <message>
+      <source>Extra placement:</source>
+      <translation>Placement relatif :</translation>
     </message>
   </context>
   <context>
@@ -2728,7 +2863,7 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
-      <location filename="../../DlgExtrusion.cpp" line="207"/>
+      <location filename="../../DlgExtrusion.cpp" line="198"/>
       <source>Select</source>
       <translation>Sélectionner</translation>
     </message>
@@ -2819,18 +2954,38 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <translation>Forme</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="181"/>
+      <source>Length:</source>
+      <translation>Longueur :</translation>
+    </message>
+    <message>
+      <source>3D view</source>
+      <translation>Vue 3D</translation>
+    </message>
+    <message>
+      <source>Note:This option works for planes only</source>
+      <translation>Remarque : cette option ne fonctionne que pour les plans</translation>
+    </message>
+    <message>
+      <source/>
+      <translation> </translation>
+    </message>
+    <message>
+      <source>Select a shape for extrusion, first.</source>
+      <translation>Sélectionnez d'abord une forme pour l'extrusion.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.cpp" line="172"/>
       <source>Selecting...</source>
       <translation>Sélection de...</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="422"/>
+      <location filename="../../DlgExtrusion.cpp" line="413"/>
       <source>The document '%1' doesn't exist.</source>
       <translation>Document « %1 » inexistant.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="470"/>
-      <location filename="../../DlgExtrusion.cpp" line="475"/>
+      <location filename="../../DlgExtrusion.cpp" line="461"/>
+      <location filename="../../DlgExtrusion.cpp" line="466"/>
       <source>Creating Extrusion failed.
 
 %1</source>
@@ -2838,31 +2993,31 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="542"/>
+      <location filename="../../DlgExtrusion.cpp" line="533"/>
       <source>Object not found: %1</source>
       <translation>Objet introuvable : %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="604"/>
+      <location filename="../../DlgExtrusion.cpp" line="595"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
       <translation>Aucune forme sélectionnée pour l’extrusion. Sélectionnez-en une d’abord.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="625"/>
-      <source>Extrusion direction link is invalid.
+      <location filename="../../DlgExtrusion.cpp" line="616"/>
+      <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>Le lien de direction d'extrusion est invalide.
+      <translation>Le lien à la direction d'extrusion est invalide. 
 
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="627"/>
+      <location filename="../../DlgExtrusion.cpp" line="618"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Le mode de direction consiste à utiliser une arête, mais aucune arête n’est liée.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="650"/>
+      <location filename="../../DlgExtrusion.cpp" line="641"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
@@ -2871,14 +3026,22 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="660"/>
+      <location filename="../../DlgExtrusion.cpp" line="651"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
       <translation>La direction de l’extrusion est de longueur nulle. Elle doit être différente de zéro.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="671"/>
+      <location filename="../../DlgExtrusion.cpp" line="662"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Longueur totale d’extrusion est à zéro (length1 == - length2). Elle doit être différente de zéro.</translation>
+    </message>
+    <message>
+      <source>Succeeded</source>
+      <translation>Réussi</translation>
+    </message>
+    <message>
+      <source>Failed</source>
+      <translation>Échec</translation>
     </message>
   </context>
   <context>
@@ -3116,6 +3279,10 @@ Please check one or more edge entities first.</source>
       <source>Author</source>
       <translation>Auteur</translation>
     </message>
+    <message>
+      <source>Enable B-REP mode</source>
+      <translation>Activer le mode B-REP</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgImportExportStep</name>
@@ -3247,6 +3414,14 @@ Please check one or more edge entities first.</source>
       <source>Length:</source>
       <translation>Longueur :</translation>
     </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Annuler</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>OK</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgPartCylinder</name>
@@ -3295,6 +3470,14 @@ Please check one or more edge entities first.</source>
       <source>Radius:</source>
       <translation>Rayon :</translation>
     </message>
+    <message>
+      <source>OK</source>
+      <translation>OK</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Annuler</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgPartImportIges</name>
@@ -3313,9 +3496,25 @@ Please check one or more edge entities first.</source>
       <source>...</source>
       <translation>...</translation>
     </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Annuler</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>OK</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>Texte source</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgPartImportIgesImp</name>
+    <message>
+      <source>IGES (*.igs *.iges);;All Files (*.*)</source>
+      <translation>IGES (*.igs *.IGES);; Tous les fichiers (*.*)</translation>
+    </message>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="71"/>
       <source>IGES</source>
@@ -3344,9 +3543,25 @@ Please check one or more edge entities first.</source>
       <source>...</source>
       <translation>...</translation>
     </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Annuler</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>OK</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>Texte source</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgPartImportStepImp</name>
+    <message>
+      <source>STEP (*.stp *.step);;All Files (*.*)</source>
+      <translation>STEP (*.stp *.step);; Tous les fichiers (*.*)</translation>
+    </message>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="70"/>
       <source>STEP</source>
@@ -3367,79 +3582,79 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
-      <location filename="../../DlgPrimitives.cpp" line="385"/>
+      <location filename="../../DlgPrimitives.cpp" line="384"/>
       <source>Plane</source>
       <translation>Plan</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="42"/>
-      <location filename="../../DlgPrimitives.cpp" line="401"/>
+      <location filename="../../DlgPrimitives.cpp" line="400"/>
       <source>Box</source>
       <translation>Boîte</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
-      <location filename="../../DlgPrimitives.cpp" line="417"/>
+      <location filename="../../DlgPrimitives.cpp" line="416"/>
       <source>Cylinder</source>
       <translation>Cylindre</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="60"/>
-      <location filename="../../DlgPrimitives.cpp" line="435"/>
+      <location filename="../../DlgPrimitives.cpp" line="434"/>
       <source>Cone</source>
       <translation>Cône</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="69"/>
-      <location filename="../../DlgPrimitives.cpp" line="453"/>
+      <location filename="../../DlgPrimitives.cpp" line="452"/>
       <source>Sphere</source>
       <translation>Sphère</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
-      <location filename="../../DlgPrimitives.cpp" line="475"/>
+      <location filename="../../DlgPrimitives.cpp" line="474"/>
       <source>Ellipsoid</source>
       <translation>Ellipsoïde</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="87"/>
-      <location filename="../../DlgPrimitives.cpp" line="495"/>
+      <location filename="../../DlgPrimitives.cpp" line="494"/>
       <source>Torus</source>
       <translation>Tore</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
-      <location filename="../../DlgPrimitives.cpp" line="511"/>
+      <location filename="../../DlgPrimitives.cpp" line="510"/>
       <source>Prism</source>
       <translation>Prisme</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="105"/>
-      <location filename="../../DlgPrimitives.cpp" line="541"/>
+      <location filename="../../DlgPrimitives.cpp" line="540"/>
       <source>Wedge</source>
       <translation>Prisme</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="114"/>
-      <location filename="../../DlgPrimitives.cpp" line="562"/>
+      <location filename="../../DlgPrimitives.cpp" line="561"/>
       <source>Helix</source>
       <translation>Hélice</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="123"/>
-      <location filename="../../DlgPrimitives.cpp" line="578"/>
+      <location filename="../../DlgPrimitives.cpp" line="577"/>
       <source>Spiral</source>
       <translation>Spirale</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="132"/>
-      <location filename="../../DlgPrimitives.cpp" line="594"/>
+      <location filename="../../DlgPrimitives.cpp" line="593"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="141"/>
-      <location filename="../../DlgPrimitives.cpp" line="612"/>
+      <location filename="../../DlgPrimitives.cpp" line="611"/>
       <source>Ellipse</source>
       <translation>Ellipse</translation>
     </message>
@@ -3450,13 +3665,13 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="159"/>
-      <location filename="../../DlgPrimitives.cpp" line="650"/>
+      <location filename="../../DlgPrimitives.cpp" line="649"/>
       <source>Line</source>
       <translation>Ligne</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="168"/>
-      <location filename="../../DlgPrimitives.cpp" line="664"/>
+      <location filename="../../DlgPrimitives.cpp" line="663"/>
       <source>Regular polygon</source>
       <translation>Polygone régulier</translation>
     </message>
@@ -3669,26 +3884,126 @@ Please check one or more edge entities first.</source>
       <translation>Point de départ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="369"/>
-      <location filename="../../DlgPrimitives.cpp" line="668"/>
-      <location filename="../../DlgPrimitives.cpp" line="676"/>
+      <source>Primitive</source>
+      <translation>Primitive</translation>
+    </message>
+    <message>
+      <source>X min</source>
+      <translation>X min</translation>
+    </message>
+    <message>
+      <source>x max</source>
+      <translation>X max</translation>
+    </message>
+    <message>
+      <source>Y min</source>
+      <translation>Y min</translation>
+    </message>
+    <message>
+      <source>Y max</source>
+      <translation>Y max</translation>
+    </message>
+    <message>
+      <source>Z min</source>
+      <translation>Z min</translation>
+    </message>
+    <message>
+      <source>Z max</source>
+      <translation>Z max</translation>
+    </message>
+    <message>
+      <source>X2 min</source>
+      <translation>X2 min</translation>
+    </message>
+    <message>
+      <source>X2 max</source>
+      <translation>X2 max</translation>
+    </message>
+    <message>
+      <source>Z2 min</source>
+      <translation>Z2 min</translation>
+    </message>
+    <message>
+      <source>Z2 max</source>
+      <translation>Z2 max</translation>
+    </message>
+    <message>
+      <source>Angle - 0 for cyl</source>
+      <translation>Angle - 0 pour cyl.</translation>
+    </message>
+    <message>
+      <source>Angle0</source>
+      <translation>Angle0</translation>
+    </message>
+    <message>
+      <source>Angle1</source>
+      <translation>Angle1</translation>
+    </message>
+    <message>
+      <source>X Axis Value:</source>
+      <translation>Valeur d'axe X :</translation>
+    </message>
+    <message>
+      <source>Y Axis Value:</source>
+      <translation>Valeur d'axe Y :</translation>
+    </message>
+    <message>
+      <source>Z Axis Value:</source>
+      <translation>Valeur d'axe Z :</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.cpp" line="368"/>
+      <location filename="../../DlgPrimitives.cpp" line="667"/>
+      <location filename="../../DlgPrimitives.cpp" line="675"/>
       <source>Create %1</source>
       <translation>Créer %1</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="370"/>
+      <location filename="../../DlgPrimitives.cpp" line="369"/>
       <source>No active document</source>
       <translation>Aucun document actif</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="628"/>
+      <location filename="../../DlgPrimitives.cpp" line="627"/>
       <source>Vertex</source>
       <translation>Sommet</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="856"/>
+      <location filename="../../DlgPrimitives.cpp" line="855"/>
       <source>&amp;Create</source>
       <translation>&amp;Créer</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation>Position</translation>
+    </message>
+    <message>
+      <source>Direction:</source>
+      <translation>Direction :</translation>
+    </message>
+    <message>
+      <source>U parametric:</source>
+      <translation>U paramétrique :</translation>
+    </message>
+    <message>
+      <source>V parametric:</source>
+      <translation>V paramétrique :</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt + C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Fer&amp;mer</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+F</translation>
+    </message>
+    <message>
+      <source>3D View</source>
+      <translation>Vue 3D</translation>
     </message>
   </context>
   <context>
@@ -3761,7 +4076,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="305"/>
-      <location filename="../../DlgRevolution.cpp" line="448"/>
+      <location filename="../../DlgRevolution.cpp" line="440"/>
       <source>Select reference</source>
       <translation>Sélectionner une référence</translation>
     </message>
@@ -3776,19 +4091,43 @@ Please check one or more edge entities first.</source>
       <translation>Angle symétrique</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="173"/>
+      <source>If checked, revolving wires will produce solids. If not, revolving a wire yeilds a shell.</source>
+      <translation>Si coché, la rotation des fils produira des solides. Sinon, la rotation d'un fil produit une coque.</translation>
+    </message>
+    <message>
+      <source>Y:</source>
+      <translation>Y :</translation>
+    </message>
+    <message>
+      <source>X:</source>
+      <translation>X :</translation>
+    </message>
+    <message>
+      <source>Z:</source>
+      <translation>Z :</translation>
+    </message>
+    <message>
+      <source>Axis:</source>
+      <translation>Axe :</translation>
+    </message>
+    <message>
+      <source>Select line in 3D view</source>
+      <translation>Sélectionnez une ligne dans la vue 3D</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="172"/>
       <source>Object not found: %1</source>
       <translation>Objet introuvable : %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="254"/>
+      <location filename="../../DlgRevolution.cpp" line="253"/>
       <source>Select a shape for revolution, first.</source>
       <translation>Sélectionnez d'abord une forme à révolutionner.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="270"/>
-      <location filename="../../DlgRevolution.cpp" line="275"/>
-      <location filename="../../DlgRevolution.cpp" line="280"/>
+      <location filename="../../DlgRevolution.cpp" line="269"/>
+      <location filename="../../DlgRevolution.cpp" line="274"/>
+      <location filename="../../DlgRevolution.cpp" line="279"/>
       <source>Revolution axis link is invalid.
 
 %1</source>
@@ -3797,18 +4136,18 @@ Please check one or more edge entities first.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="289"/>
+      <location filename="../../DlgRevolution.cpp" line="288"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
       <translation>La direction d’axe de révolution est de longueur nulle. Elle ne doit pas être nulle.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="299"/>
+      <location filename="../../DlgRevolution.cpp" line="298"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
       <translation>L'angle de révolution est nul. Il doit être différent de zéro.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="428"/>
-      <location filename="../../DlgRevolution.cpp" line="432"/>
+      <location filename="../../DlgRevolution.cpp" line="420"/>
+      <location filename="../../DlgRevolution.cpp" line="424"/>
       <source>Creating Revolve failed.
 
 %1</source>
@@ -3817,13 +4156,33 @@ Please check one or more edge entities first.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="444"/>
+      <location filename="../../DlgRevolution.cpp" line="436"/>
       <source>Selecting... (line or arc)</source>
       <translation>Sélection de... (ligne ou arc)</translation>
     </message>
   </context>
   <context>
     <name>PartGui::DlgSettings3DViewPart</name>
+    <message>
+      <source>View accuracy / Performance</source>
+      <translation>Précision d'affichage / performance</translation>
+    </message>
+    <message>
+      <source>View smoothing</source>
+      <translation>Lissage de la vue</translation>
+    </message>
+    <message>
+      <source>Using high-quality normals</source>
+      <translation>Utiliser normales de haute qualité</translation>
+    </message>
+    <message>
+      <source>This will slow down render speed but will lead to nicer results</source>
+      <translation>Ceci ralentira la vitesse de rendu, mais donnera de meilleurs résultats</translation>
+    </message>
+    <message>
+      <source>Defines the appearance of surfaces</source>
+      <translation>Définit l'apparence des surfaces</translation>
+    </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="14"/>
       <source>Shape view</source>
@@ -3846,8 +4205,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="90"/>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Définit la déviation maximale de la maille tesselée à la surface. Plus la valeur est lente la vitesse de rendu qui résulte en détail/résolution accrue.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt; &lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt; &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt; &lt;span style=" font-weight:400;"&gt;Définit la déviation maximum de la structure en tessellation par rapport à la surface. Plus la valeur est petite, plus la vitesse de rendu est lente et le rendu lissé.&lt;/span&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="93"/>
@@ -3865,12 +4224,28 @@ Please check one or more edge entities first.</source>
       <translation> °</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="69"/>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Ombrage plat/Ombrage Phong&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Avec l'ombrage plat, les normales à la surface ne sont pas définies par vertex, ce qui conduit à une apparence irréelle pour les surfaces courbes, alors que l'ombrage Phong produit une apparence plus lissée. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Si l'option n'est pas sélectionnée, l'ombrage Phong est utilisé. Sinon, l'ombrage plat sera utilisé.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Do not define normal per vertex</source>
+      <translation>Ne pas définir les normales par vertex</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Définir les normales par vertex est aussi appelé &lt;span style=" font-style:italic;"&gt;ombrage Phong&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;alors que définir les normales par face est appelé&lt;/span&gt;ombrage plat&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Normales de haute qualité&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Cela ralentit la vitesse de rendu, mais produit de meilleurs résultats.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="64"/>
       <source>Deviation</source>
       <translation>Déviation</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="70"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="65"/>
       <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
       <translation>Définir une déviation de tessellation trop faible peut ralentir ou geler l'interface.</translation>
     </message>
@@ -3912,6 +4287,26 @@ Please check one or more edge entities first.</source>
       <source>Add name of base object</source>
       <translation>Ajouter un nom à l'objet de base</translation>
     </message>
+    <message>
+      <source>Export</source>
+      <translation>Exporter</translation>
+    </message>
+    <message>
+      <source>Millimeter</source>
+      <translation>Millimètre</translation>
+    </message>
+    <message>
+      <source>Meter</source>
+      <translation>Mètre</translation>
+    </message>
+    <message>
+      <source>Inch</source>
+      <translation>Pouce</translation>
+    </message>
+    <message>
+      <source>Units for export of STEP/IGES</source>
+      <translation>Unités pour l'exportation de STEP / IGES</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgSettingsObjectColor</name>
@@ -3927,74 +4322,69 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
-      <source>Default vertex color</source>
-      <translation>Couleur de sommet par défaut</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="47"/>
-      <source>Bounding box color</source>
-      <translation>Couleur de la boîte englobante</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="60"/>
       <source>Default shape color</source>
       <translation>Couleur des formes par défaut</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="67"/>
-      <location filename="../../DlgSettingsObjectColor.ui" line="210"/>
-      <source>The default line color for new shapes</source>
-      <translation>La couleur de ligne par défaut des nouvelles formes</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="87"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="41"/>
       <source>The default color for new shapes</source>
       <translation>La couleur par défaut des nouvelles formes</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsObjectColor.ui" line="67"/>
+      <source>Default line color</source>
+      <translation>Couleur de ligne par défaut</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsObjectColor.ui" line="74"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="142"/>
+      <source>The default line color for new shapes</source>
+      <translation>La couleur de ligne par défaut des nouvelles formes</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsObjectColor.ui" line="100"/>
+      <source>Default line width</source>
+      <translation>Épaisseur de trait par défaut</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="107"/>
-      <location filename="../../DlgSettingsObjectColor.ui" line="129"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="175"/>
       <source>The default line thickness for new shapes</source>
       <translation>L'épaisseur de ligne par défaut des nouvelles formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="110"/>
-      <location filename="../../DlgSettingsObjectColor.ui" line="132"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="178"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
-      <source>The color of bounding boxes in the 3D view</source>
-      <translation>Couleur de la boîte englobante dans la vue 3D</translation>
+      <location filename="../../DlgSettingsObjectColor.ui" line="135"/>
+      <source>Default vertex color</source>
+      <translation>Couleur de sommet par défaut</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="177"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="168"/>
       <source>Default vertex size</source>
       <translation>Taille de sommet par défaut</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="190"/>
-      <source>Default line width</source>
-      <translation>Épaisseur de trait par défaut</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="203"/>
-      <source>Default line color</source>
-      <translation>Couleur de ligne par défaut</translation>
+      <source>Bounding box color</source>
+      <translation>Couleur de la boîte englobante</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
-      <source>Random shape color</source>
-      <translation>Couleur des formes aléatoire</translation>
+      <location filename="../../DlgSettingsObjectColor.ui" line="210"/>
+      <source>The color of bounding boxes in the 3D view</source>
+      <translation>Couleur de la boîte englobante dans la vue 3D</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="248"/>
       <source>Annotations</source>
       <translation>Annotations</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="275"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="262"/>
       <source>Default text color</source>
       <translation>Couleur de texte par défaut</translation>
     </message>
@@ -4002,12 +4392,12 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::FaceColors</name>
     <message>
-      <location filename="../../TaskFaceColors.cpp" line="416"/>
+      <location filename="../../TaskFaceColors.cpp" line="395"/>
       <source>Face colors</source>
       <translation>Couleurs de face</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceColors.cpp" line="416"/>
+      <location filename="../../TaskFaceColors.cpp" line="395"/>
       <source>Do you really want to cancel?</source>
       <translation>Voulez-vous vraiment annuler?</translation>
     </message>
@@ -4033,39 +4423,51 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="80"/>
+      <source>Vertex/Wire</source>
+      <translation>Sommet/Fil</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLoft.cpp" line="75"/>
       <source>Available profiles</source>
       <translation>Profils disponibles</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="81"/>
+      <location filename="../../TaskLoft.cpp" line="76"/>
       <source>Selected profiles</source>
       <translation>Profils sélectionnés</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="180"/>
+      <location filename="../../TaskLoft.cpp" line="158"/>
       <source>Too few elements</source>
       <translation>Trop peu d'éléments</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="180"/>
+      <location filename="../../TaskLoft.cpp" line="158"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
       <translation>Au moins deux sommets, arêtes, fils ou faces sont requis.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="214"/>
+      <location filename="../../TaskLoft.cpp" line="191"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="243"/>
+      <location filename="../../TaskLoft.cpp" line="220"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Sommet/Arête/Fil/Face</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="244"/>
+      <location filename="../../TaskLoft.cpp" line="221"/>
       <source>Loft</source>
       <translation>Lissage</translation>
+    </message>
+    <message>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation>Au moins deux sommets, arêtes ou filaires sont nécessaires.</translation>
+    </message>
+    <message>
+      <source>At least two vertices or wires are required.</source>
+      <translation>Au moins deux sommets ou fils sont nécessaires.</translation>
     </message>
   </context>
   <context>
@@ -4121,12 +4523,16 @@ Please check one or more edge entities first.</source>
       <translation>z</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="124"/>
+      <source>Base point:</source>
+      <translation>Point de départ :</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.cpp" line="123"/>
       <source>Select a shape for mirroring, first.</source>
       <translation>Sélectionner d'abord une forme à mettre en miroir.</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="131"/>
+      <location filename="../../Mirroring.cpp" line="130"/>
       <source>No such document '%1'.</source>
       <translation>Aucun document '%1'.</translation>
     </message>
@@ -4142,17 +4548,17 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="340"/>
       <source>Name</source>
       <translation>Nom</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="346"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="342"/>
       <source>Type</source>
       <translation>Type</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="348"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
@@ -4160,72 +4566,69 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="208"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="227"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="255"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="296"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="348"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="400"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="463"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="204"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="223"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="251"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="303"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="355"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="418"/>
       <source>Wrong selection</source>
       <translation>Sélection invalide</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="208"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="227"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="204"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="223"/>
       <source>Select two vertices</source>
       <translation>Sélectionnez deux sommets</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="255"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="348"/>
-      <source>Select one or more edges</source>
-      <translation>Sélectionnez une ou plusieurs arêtes</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="296"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="251"/>
       <source>Select three or more vertices</source>
       <translation>Sélectionnez au moins trois sommets</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="400"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="303"/>
+      <source>Select one or more edges</source>
+      <translation>Sélectionnez une ou plusieurs arêtes</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.cpp" line="355"/>
       <source>Select two or more faces</source>
       <translation>Sélectionnez au moins deux faces</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="463"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="418"/>
       <source>Select only one part object</source>
       <translation>Sélectionnez seulement un objet pièce</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="515"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="470"/>
       <source>Select two vertices to create an edge</source>
       <translation>Sélectionner deux sommets pour créer une arête</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="522"/>
-      <source>Select adjacent edges</source>
-      <translation>Sélectionnez les bords adjacents</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="529"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="477"/>
       <source>Select a list of vertices</source>
       <translation>Sélectionnez une liste de sommets</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="536"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Select a closed set of edges</source>
       <translation>Sélectionner un ensemble fermé d'arêtes</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="543"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="491"/>
       <source>Select adjacent faces</source>
       <translation>Sélectionner les faces adjacentes</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="550"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="498"/>
       <source>All shape types can be selected</source>
       <translation>Tous les types de forme peuvent être sélectionnés</translation>
+    </message>
+    <message>
+      <source>Select three or more edges</source>
+      <translation>Sélectionnez au moins trois arêtes</translation>
     </message>
   </context>
   <context>
@@ -4241,67 +4644,75 @@ Please check one or more edge entities first.</source>
       <translation>Profils sélectionnés</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="282"/>
-      <location filename="../../TaskSweep.cpp" line="414"/>
-      <location filename="../../TaskSweep.cpp" line="422"/>
+      <location filename="../../TaskSweep.cpp" line="265"/>
+      <location filename="../../TaskSweep.cpp" line="396"/>
+      <location filename="../../TaskSweep.cpp" line="404"/>
       <source>Sweep path</source>
       <translation>Chemin de balayage</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="282"/>
+      <location filename="../../TaskSweep.cpp" line="265"/>
       <source>Select one or more connected edges you want to sweep along.</source>
       <translation>Sélectionnez une ou plusieurs arêtes connectées le long desquelles passe le balayage.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="310"/>
+      <location filename="../../TaskSweep.cpp" line="293"/>
       <source>Too few elements</source>
       <translation>Trop peu d'éléments</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="310"/>
+      <location filename="../../TaskSweep.cpp" line="293"/>
       <source>At least one edge or wire is required.</source>
       <translation>Au moins une arête ou un fil est requis.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="317"/>
+      <location filename="../../TaskSweep.cpp" line="300"/>
       <source>Wrong selection</source>
       <translation>Sélection invalide</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="317"/>
+      <location filename="../../TaskSweep.cpp" line="300"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' ne peut pas servir de profil et de chemin.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="355"/>
+      <location filename="../../TaskSweep.cpp" line="337"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="388"/>
+      <location filename="../../TaskSweep.cpp" line="370"/>
       <source>Done</source>
       <translation>Fait</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="390"/>
+      <location filename="../../TaskSweep.cpp" line="372"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
       <translation>Sélectionnez une ou plusieurs arêtes connectées dans la vue 3D et appuyez sur « Fait »</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="414"/>
-      <location filename="../../TaskSweep.cpp" line="422"/>
+      <location filename="../../TaskSweep.cpp" line="396"/>
+      <location filename="../../TaskSweep.cpp" line="404"/>
       <source>The selected sweep path is invalid.</source>
       <translation>Le chemin de balayage sélectionné n'est pas valide.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="434"/>
+      <location filename="../../TaskSweep.cpp" line="416"/>
       <source>Vertex/Wire</source>
       <translation>Sommet/Fil</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="435"/>
+      <location filename="../../TaskSweep.cpp" line="417"/>
       <source>Sweep</source>
       <translation>Balayage</translation>
+    </message>
+    <message>
+      <source>Vertex/Edge/Wire/Face</source>
+      <translation>Sommet/Arête/Fil/Face</translation>
+    </message>
+    <message>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation>Sélectionnez une arête ou un fil sur lequel vous souhaitez faire un balayage.</translation>
     </message>
   </context>
   <context>
@@ -4348,7 +4759,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="319"/>
+      <location filename="../../TaskAttacher.cpp" line="302"/>
       <source>Attachment Offset:</source>
       <translation>Compensation d'accrochage :</translation>
     </message>
@@ -4388,85 +4799,113 @@ Please check one or more edge entities first.</source>
       <translation>Retourner</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="302"/>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>Mirroir de la propriété superPlacement. Le placement relatif est exprimé localement par rapport à l'objet auquel il est attaché.</translation>
+    </message>
+    <message>
+      <source>Extra placement:</source>
+      <translation>Placement relatif :</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="285"/>
       <source>OCC error: %1</source>
       <translation>Erreur OCC : %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="304"/>
+      <location filename="../../TaskAttacher.cpp" line="287"/>
       <source>unknown error</source>
       <translation>erreur inconnue</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="307"/>
+      <location filename="../../TaskAttacher.cpp" line="290"/>
       <source>Attachment mode failed: %1</source>
       <translation>Le mode d'accrochage a échoué : %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="311"/>
+      <location filename="../../TaskAttacher.cpp" line="294"/>
       <source>Not attached</source>
       <translation>Non accroché</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="315"/>
+      <location filename="../../TaskAttacher.cpp" line="298"/>
       <source>Attached with mode %1</source>
       <translation>Accroché avec mode %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="319"/>
+      <location filename="../../TaskAttacher.cpp" line="302"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Compensation d'accrochage (inactif - non accroché) :</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="618"/>
+      <location filename="../../TaskAttacher.cpp" line="578"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="623"/>
+      <location filename="../../TaskAttacher.cpp" line="583"/>
       <source>Edge</source>
       <translation>Arête</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="628"/>
+      <location filename="../../TaskAttacher.cpp" line="588"/>
       <source>Vertex</source>
       <translation>Sommet</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="690"/>
+      <location filename="../../TaskAttacher.cpp" line="647"/>
       <source>Selecting...</source>
       <translation>Sélection de...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="694"/>
+      <location filename="../../TaskAttacher.cpp" line="651"/>
       <source>Reference%1</source>
       <translation>Référence%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="740"/>
+      <location filename="../../TaskAttacher.cpp" line="694"/>
       <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
       <translation>Non modifiable parce que la rotation de la compensation d'accrochage est définie par des expressions.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="804"/>
-      <source>Reference combinations:</source>
-      <translation>Combinaisons de référence :</translation>
+      <location filename="../../TaskAttacher.cpp" line="755"/>
+      <source>
+
+Reference combinations:
+</source>
+      <translation>
+
+Combinaisons de références :
+</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="821"/>
+      <location filename="../../TaskAttacher.cpp" line="772"/>
       <source>%1 (add %2)</source>
       <translation>%1 (ajouter %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="826"/>
+      <location filename="../../TaskAttacher.cpp" line="777"/>
       <source>%1 (add more references)</source>
       <translation>%1 (ajouter plus de références)</translation>
+    </message>
+    <message>
+      <source>Extra placement (inactive - not attached):</source>
+      <translation>Placement supplémentaire (inactif - non attaché) :</translation>
+    </message>
+    <message>
+      <source>Not editable because rotation part of superplacement is bound by expressions.</source>
+      <translation>Non modifiable parce que la rotation de superplacement est définie par des expressions.</translation>
+    </message>
+    <message>
+      <source>Reference combinations:
+</source>
+      <translation>Combinaisons de référence :
+</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="942"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="916"/>
       <source>Shape Content</source>
       <translation>Contenu de la forme</translation>
     </message>
@@ -4474,20 +4913,178 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="385"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="381"/>
       <source>Check Geometry</source>
       <translation>Vérifier la géométrie</translation>
     </message>
+  </context>
+  <context>
+    <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="421"/>
-      <source>Check geometry</source>
-      <translation>Vérifier la géométrie</translation>
+      <source>Hint</source>
+      <translation>Astuce</translation>
+    </message>
+    <message>
+      <source>Select Control.</source>
+      <translation>Sélectionnez un contrôle.</translation>
+    </message>
+    <message>
+      <source>Control</source>
+      <translation>Contrôle</translation>
+    </message>
+    <message>
+      <source>Dynamic</source>
+      <translation>Dynamique</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Aligner</translation>
+    </message>
+    <message>
+      <source>Value</source>
+      <translation>Valeur</translation>
+    </message>
+    <message>
+      <source>Special</source>
+      <translation>Spécial</translation>
+    </message>
+    <message>
+      <source>Command</source>
+      <translation>Commande</translation>
+    </message>
+    <message>
+      <source>Stretch</source>
+      <translation>Étirer</translation>
+    </message>
+    <message>
+      <source>Move</source>
+      <translation>Déplacer</translation>
+    </message>
+    <message>
+      <source>Rotate</source>
+      <translation>Pivoter</translation>
+    </message>
+    <message>
+      <source>Offset</source>
+      <translation>Décalage</translation>
+    </message>
+    <message>
+      <source>Orient</source>
+      <translation>Orienter</translation>
+    </message>
+    <message>
+      <source>Match</source>
+      <translation>Faire correspondre</translation>
+    </message>
+    <message>
+      <source>Surround</source>
+      <translation>Environnant</translation>
+    </message>
+    <message>
+      <source>dummy</source>
+      <translation>factice</translation>
+    </message>
+    <message>
+      <source>X Axis</source>
+      <translation>Axe X</translation>
+    </message>
+    <message>
+      <source>Y Axis</source>
+      <translation>Axe Y</translation>
+    </message>
+    <message>
+      <source>Z Axis</source>
+      <translation>Axe Z</translation>
+    </message>
+    <message>
+      <source>Increment</source>
+      <translation>Incrément</translation>
+    </message>
+    <message>
+      <source>.125</source>
+      <translation>.125</translation>
+    </message>
+    <message>
+      <source>.500</source>
+      <translation>.500</translation>
+    </message>
+    <message>
+      <source>1.000</source>
+      <translation>1.000</translation>
+    </message>
+    <message>
+      <source>5.000</source>
+      <translation>5.000</translation>
+    </message>
+    <message>
+      <source>10.000</source>
+      <translation>10.000</translation>
+    </message>
+    <message>
+      <source>Drag arrows to stretch box by increment</source>
+      <translation>Faites glisser les flèches pour étirer la boîte par incrément</translation>
+    </message>
+    <message>
+      <source>Drag arrows to move box by increment</source>
+      <translation>Faites glisser les flèches pour déplacer la boîte par incrément</translation>
+    </message>
+    <message>
+      <source>Not implemented yet</source>
+      <translation>Pas encore implémenté</translation>
+    </message>
+    <message>
+      <source>Drag arrows to offset checked axes by increment</source>
+      <translation>Faites glisser les flèches pour déplacer les axes marqués par incrément</translation>
+    </message>
+    <message>
+      <source>Select dragger for stretch by align</source>
+      <translation>Sélectionnez un marqueur pour étirer par alignement</translation>
+    </message>
+    <message>
+      <source>Select dragger for move by align</source>
+      <translation>Sélectionnez un marqueur pour déplacer par alignement</translation>
+    </message>
+    <message>
+      <source>Select dragger for stretch by value</source>
+      <translation>Sélectionnez le marqueur pour étirer par une valeur</translation>
+    </message>
+    <message>
+      <source>Select dragger for move by value</source>
+      <translation>Sélectionnez un marqueur pour déplacer par une valeur</translation>
+    </message>
+    <message>
+      <source>1.0</source>
+      <translation>1.0</translation>
+    </message>
+    <message>
+      <source>Enter Value</source>
+      <translation>Entrez une valeur</translation>
+    </message>
+    <message>
+      <source>Select box to match</source>
+      <translation>Sélectionnez une boîte à faire correspondre</translation>
+    </message>
+    <message>
+      <source>Select a point</source>
+      <translation>Sélectionnez un point</translation>
+    </message>
+    <message>
+      <source>0.0</source>
+      <translation>0.0</translation>
+    </message>
+    <message>
+      <source>Select dragger to align</source>
+      <translation>Sélectionnez un marqueur pour aligner</translation>
+    </message>
+    <message>
+      <source>Select dragger to modify</source>
+      <translation>Sélectionnez un marqueur pour modifier</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1057"/>
+      <location filename="../../TaskAttacher.cpp" line="994"/>
       <source>Datum dialog: Input error</source>
       <translation>Boîte de dialogue de dimension : erreur d’entrée</translation>
     </message>
@@ -4541,6 +5138,42 @@ Please check one or more edge entities first.</source>
       <location filename="../../TaskLoft.ui" line="50"/>
       <source>Closed</source>
       <translation>Fermé</translation>
+    </message>
+    <message>
+      <source>Vertex/Wire</source>
+      <translation>Sommet/Fil</translation>
+    </message>
+    <message>
+      <source>Move right</source>
+      <translation>Déplacer vers la droite</translation>
+    </message>
+    <message>
+      <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Descendre l'élément sélectionné d'un niveau.&lt;/b&gt;&lt;p&gt;Cela changera aussi le niveau de l'élément parent.&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>Move left</source>
+      <translation>Déplacer vers la gauche</translation>
+    </message>
+    <message>
+      <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Monter l'élément sélectionné d'un niveau.&lt;/b&gt;&lt;p&gt;Cela changera aussi le niveau de l'élément parent.&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>Move up</source>
+      <translation>Déplacer vers le haut</translation>
+    </message>
+    <message>
+      <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Monter l'élément sélectionné d'un niveau.&lt;/b&gt;&lt;p&gt;L'élément sera déplacé au sein du niveau de hiérarchie.&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Déplacer vers le bas</translation>
+    </message>
+    <message>
+      <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Descendre l'élément sélectionné d'un niveau.&lt;/b&gt;&lt;p&gt;L'élément sera déplacé au sein du niveau de hiérarchie.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -4623,23 +5256,23 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
-      <source>Face from vertices</source>
-      <translation>Face depuis des sommets</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.ui" line="33"/>
-      <source>Shell from faces</source>
-      <translation>Coque à partir de faces</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Edge from vertices</source>
       <translation>Arête à partir de sommets</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.ui" line="47"/>
+      <location filename="../../TaskShapeBuilder.ui" line="33"/>
+      <source>Face from vertices</source>
+      <translation>Face depuis des sommets</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Face from edges</source>
       <translation>Face à partir d'arêtes</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.ui" line="47"/>
+      <source>Shell from faces</source>
+      <translation>Coque à partir de faces</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="54"/>
@@ -4666,11 +5299,6 @@ Please check one or more edge entities first.</source>
       <source>Create</source>
       <translation>Créer</translation>
     </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.ui" line="116"/>
-      <source>Wire from edges</source>
-      <translation>Fil à partir des arêtes</translation>
-    </message>
   </context>
   <context>
     <name>PartGui::TaskSweep</name>
@@ -4695,7 +5323,7 @@ Please check one or more edge entities first.</source>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="464"/>
+      <location filename="../../TaskSweep.cpp" line="446"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Sélectionnez au moins un profil dans la liste, puis une arête ou un fil dans la vue 3D comme chemin.</translation>
@@ -4759,12 +5387,12 @@ in the 3D view for the sweep path.</source>
       <translation>Supporte la création de faces planaires avec des trous, mais pas d'îlots à l'intérieur des trous.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="515"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="506"/>
       <source>Part Extrude facemaker</source>
       <translation>Générateur de faces extrusion</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="520"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="511"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Supporte la création de faces trouées, ne supporte pas l'imbrication.</translation>
     </message>
@@ -4772,83 +5400,86 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppPartGui.cpp" line="210"/>
-      <location filename="../../AppPartGui.cpp" line="211"/>
-      <source>Part design</source>
-      <translation>Conception de pièces</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="212"/>
-      <location filename="../../AppPartGui.cpp" line="213"/>
-      <source>Import-Export</source>
-      <translation>Importer-Exporter</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="214"/>
-      <source>Display</source>
-      <translation>Affichage</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="284"/>
-      <location filename="../../Command.cpp" line="381"/>
-      <location filename="../../Command.cpp" line="483"/>
-      <location filename="../../Command.cpp" line="902"/>
-      <location filename="../../Command.cpp" line="953"/>
-      <location filename="../../Command.cpp" line="2074"/>
+      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="379"/>
+      <location filename="../../Command.cpp" line="481"/>
+      <location filename="../../Command.cpp" line="781"/>
+      <location filename="../../Command.cpp" line="832"/>
+      <location filename="../../Command.cpp" line="1953"/>
       <source>Wrong selection</source>
       <translation>Sélection invalide</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="285"/>
-      <location filename="../../Command.cpp" line="954"/>
+      <location filename="../../Command.cpp" line="283"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Select two shapes please.</source>
       <translation>Veuillez sélectionner deux formes.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="295"/>
-      <location filename="../../Command.cpp" line="397"/>
-      <location filename="../../Command.cpp" line="499"/>
+      <location filename="../../Command.cpp" line="293"/>
+      <location filename="../../Command.cpp" line="395"/>
+      <location filename="../../Command.cpp" line="497"/>
       <source>Non-solids selected</source>
       <translation>Formes non-pleines sélectionnées</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="296"/>
-      <location filename="../../Command.cpp" line="398"/>
-      <location filename="../../Command.cpp" line="500"/>
+      <location filename="../../Command.cpp" line="294"/>
+      <location filename="../../Command.cpp" line="396"/>
+      <location filename="../../Command.cpp" line="498"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
       <translation>L'utilisation de formes non-pleines pour les opérations booléennes peut entraîner des résultats indésirables.
 Voulez-vous continuer ?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="382"/>
+      <location filename="../../Command.cpp" line="380"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
       <translation>Sélectionnez deux formes ou plus. Ou sélectionnez un composé contenant plusieurs formes à partir desquelles calculer l'intersection.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="484"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
       <translation>Sélectionnez deux formes ou plus. Ou sélectionnez un composé contenant plusieurs formes à partir desquelles calculer la fusion.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="903"/>
+      <location filename="../../Command.cpp" line="782"/>
       <source>Select one shape or more, please.</source>
       <translation>Veuillez sélectionner au moins une forme.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1107"/>
+      <location filename="../../Command.cpp" line="986"/>
       <source>All CAD Files</source>
       <translation>Tous les fichiers CAO</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1112"/>
+      <location filename="../../Command.cpp" line="991"/>
       <source>All Files</source>
       <translation>Tous les fichiers</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2075"/>
+      <location filename="../../Command.cpp" line="1954"/>
       <source>You have to select either two edges or two wires.</source>
       <translation>Vous devez sélectionner deux arêtes ou deux fils.</translation>
+    </message>
+    <message>
+      <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
+      <translation>Tous les fichiers CAO (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
+    </message>
+    <message>
+      <source>STEP (*.stp *.step)</source>
+      <translation>STEP (*.stp * .step)</translation>
+    </message>
+    <message>
+      <source>IGES (*.igs *.iges)</source>
+      <translation>IGES (*.igs *.iges)</translation>
+    </message>
+    <message>
+      <source>BREP (*.brp *.brep)</source>
+      <translation>BREP (*.brp *.brep)</translation>
+    </message>
+    <message>
+      <source>All Files (*.*)</source>
+      <translation>Tous les fichiers (*.*)</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="120"/>
@@ -4861,369 +5492,394 @@ Voulez-vous continuer ?</translation>
       <translation>Saisir la tolérance pour coudre la forme :</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="71"/>
-      <location filename="../../TaskAttacher.cpp" line="104"/>
-      <source>No reference selected</source>
-      <translation>Aucune référence sélectionnée</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="80"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
-      <source>Face</source>
-      <translation>Face</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="83"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
-      <source>Edge</source>
-      <translation>Arête</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="86"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
-      <source>Vertex</source>
-      <translation>Sommet</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
-      <source>Compound</source>
-      <translation>Composé</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
-      <source>Compound Solid</source>
-      <translation>Composé solide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
-      <source>Solid</source>
-      <translation>Solide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
-      <source>Shell</source>
-      <translation>Coque</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
-      <source>Wire</source>
-      <translation>Fil</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
-      <source>Shape</source>
-      <translation>Forme</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
-      <source>No Error</source>
-      <translation>Aucune erreur</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
-      <source>Invalid Point On Curve</source>
-      <translation>Point sur courbe invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
-      <source>Invalid Point On Curve On Surface</source>
-      <translation>Point sur courbe sur surface invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
-      <source>Invalid Point On Surface</source>
-      <translation>Point sur surface invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
-      <source>No 3D Curve</source>
-      <translation>Aucune courbe 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
-      <source>Multiple 3D Curve</source>
-      <translation>Courbe 3D multiple</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
-      <source>Invalid 3D Curve</source>
-      <translation>Courbe 3D invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
-      <source>No Curve On Surface</source>
-      <translation>Aucune courbe sur surface</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
-      <source>Invalid Curve On Surface</source>
-      <translation>Courbe sur surface invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
-      <source>Invalid Curve On Closed Surface</source>
-      <translation>Courbe sur surface fermée invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
-      <source>Invalid Same Range Flag</source>
-      <translation>L'indicateur de plage invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
-      <source>Invalid Same Parameter Flag</source>
-      <translation>Indicateur de paramètre invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
-      <source>Invalid Degenerated Flag</source>
-      <translation>Indicateur dégénéré invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
-      <source>Free Edge</source>
-      <translation>Arête libre</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
-      <source>Invalid MultiConnexity</source>
-      <translation>Connectivité multiple invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
-      <source>Invalid Range</source>
-      <translation>Plage non valide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
-      <source>Empty Wire</source>
-      <translation>Fil vide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
-      <source>Redundant Edge</source>
-      <translation>Arête redondante</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
-      <source>Self Intersecting Wire</source>
-      <translation>Fil entre-croisé</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
-      <source>No Surface</source>
-      <translation>Aucune surface</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
-      <source>Invalid Wire</source>
-      <translation>Fil invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
-      <source>Redundant Wire</source>
-      <translation>Fil redondant</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
-      <source>Intersecting Wires</source>
-      <translation>Fils croisés</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
-      <source>Invalid Imbrication Of Wires</source>
-      <translation>Imbrication de fils invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
-      <source>Empty Shell</source>
-      <translation>Coque vide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
-      <source>Redundant Face</source>
-      <translation>Surface redondante</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
-      <source>Unorientable Shape</source>
-      <translation>La forme n'est pas orientable</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
-      <source>Not Closed</source>
-      <translation>Non fermé</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
-      <source>Not Connected</source>
-      <translation>Non connecté</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
-      <source>Sub Shape Not In Shape</source>
-      <translation>La sous-forme n'est pas dans une forme</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
-      <source>Bad Orientation</source>
-      <translation>Mauvaise orientation</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
-      <source>Bad Orientation Of Sub Shape</source>
-      <translation>Mauvaise orientation de la sous-forme</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
-      <source>Invalid Tolerance Value</source>
-      <translation>Valeur de tolérance invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
-      <source>Check Failed</source>
-      <translation>La vérification a échoué</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
-      <source>No Result</source>
-      <translation>Aucun résultat</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
-      <source>Out Of Enum Range: </source>
-      <translation>Hors plage d'énumération : </translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>BOPAlgo CheckUnknown</source>
-      <translation>BOPAlgo Vérifier les inconnues</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>BOPAlgo BadType</source>
-      <translation>BOPAlgo MauvaisType</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>BOPAlgo SelfIntersect</source>
-      <translation>BOPAlgo auto intersection</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>BOPAlgo TooSmallEdge</source>
-      <translation>BOPAlgo Arête trop courte</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>BOPAlgo NonRecoverableFace</source>
-      <translation>BOPAlgo Face non récupérable</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation>BOPAlgo incompatibilité de sommet</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation>BOPAlgo Incompatibilité d'arête</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>BOPAlgo Incompatibilité de face</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>BOPAlgo OperationAborted</source>
-      <translation>BOPAlgo Opération avortée</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>BOPAlgo GeomAbs_C0</source>
-      <translation>BOPAlgo GeomAbs_C0</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo_Courbe invalide sur surface</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
-      <source>BOPAlgo NotValid</source>
-      <translation>BOPAlgo Non valide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="463"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="659"/>
-      <source>Invalid</source>
-      <translation>Invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="556"/>
-      <location filename="../../TaskDimension.cpp" line="1602"/>
-      <source>Selections</source>
-      <translation>Sélections</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="563"/>
-      <location filename="../../TaskDimension.cpp" line="1609"/>
-      <source>Control</source>
-      <translation>Contrôle</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1340"/>
-      <source>Reset Dialog</source>
-      <translation>Réinitialiser la boîte de dialogue</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1344"/>
-      <source>Toggle 3d</source>
-      <translation>Basculer 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1349"/>
-      <source>Toggle Delta</source>
-      <translation>Basculer Delta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1354"/>
-      <source>Clear All</source>
-      <translation>Tout effacer</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderExt.cpp" line="847"/>
-      <source>Set colors...</source>
-      <translation>Définir les couleurs...</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="79"/>
+      <location filename="../../ViewProviderMirror.cpp" line="78"/>
       <source>Edit mirror plane</source>
       <translation>Éditer le plan du miroir</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="276"/>
+      <location filename="../../ViewProviderMirror.cpp" line="275"/>
       <source>Edit fillet edges</source>
       <translation>Modifier les congés d'arête</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="379"/>
+      <location filename="../../ViewProviderMirror.cpp" line="378"/>
       <source>Edit chamfer edges</source>
       <translation>Modifier les arêtes du chanfrein</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="520"/>
+      <location filename="../../ViewProviderMirror.cpp" line="519"/>
       <source>Edit offset</source>
       <translation>Modifier le décalage</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="606"/>
+      <location filename="../../ViewProviderMirror.cpp" line="605"/>
       <source>Edit thickness</source>
       <translation>Modifier l'évidement</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpline.cpp" line="81"/>
+      <source>Transform</source>
+      <translation>Transformer</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="209"/>
+      <location filename="../../AppPartGui.cpp" line="210"/>
+      <source>Part design</source>
+      <translation>Conception de pièces</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="211"/>
+      <location filename="../../AppPartGui.cpp" line="212"/>
+      <source>Import-Export</source>
+      <translation>Importer-Exporter</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="213"/>
+      <source>Display</source>
+      <translation>Affichage</translation>
+    </message>
+    <message>
+      <source>Select two shapes or more, please.</source>
+      <translation>Veuillez sélectionner au moins deux formes.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderExt.cpp" line="840"/>
+      <source>Set colors...</source>
+      <translation>Définir les couleurs...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="74"/>
+      <source>Compound</source>
+      <translation>Composé</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="75"/>
+      <source>Compound Solid</source>
+      <translation>Composé solide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="76"/>
+      <source>Solid</source>
+      <translation>Solide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="77"/>
+      <source>Shell</source>
+      <translation>Coque</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+      <source>Wire</source>
+      <translation>Fil</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <source>Shape</source>
+      <translation>Forme</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="97"/>
+      <source>No Error</source>
+      <translation>Aucune erreur</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="98"/>
+      <source>Invalid Point On Curve</source>
+      <translation>Point sur courbe invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="99"/>
+      <source>Invalid Point On Curve On Surface</source>
+      <translation>Point sur courbe sur surface invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="100"/>
+      <source>Invalid Point On Surface</source>
+      <translation>Point sur surface invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+      <source>No 3D Curve</source>
+      <translation>Aucune courbe 3D</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+      <source>Multiple 3D Curve</source>
+      <translation>Courbe 3D multiple</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
+      <source>Invalid 3D Curve</source>
+      <translation>Courbe 3D invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+      <source>No Curve On Surface</source>
+      <translation>Aucune courbe sur surface</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
+      <source>Invalid Curve On Surface</source>
+      <translation>Courbe sur surface invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <source>Invalid Curve On Closed Surface</source>
+      <translation>Courbe sur surface fermée invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <source>Invalid Same Range Flag</source>
+      <translation>L'indicateur de plage invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <source>Invalid Same Parameter Flag</source>
+      <translation>Indicateur de paramètre invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <source>Invalid Degenerated Flag</source>
+      <translation>Indicateur dégénéré invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <source>Free Edge</source>
+      <translation>Arête libre</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <source>Invalid MultiConnexity</source>
+      <translation>Connectivité multiple invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
+      <source>Invalid Range</source>
+      <translation>Plage non valide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <source>Empty Wire</source>
+      <translation>Fil vide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
+      <source>Redundant Edge</source>
+      <translation>Arête redondante</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <source>Self Intersecting Wire</source>
+      <translation>Fil entre-croisé</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <source>No Surface</source>
+      <translation>Aucune surface</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <source>Invalid Wire</source>
+      <translation>Fil invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <source>Redundant Wire</source>
+      <translation>Fil redondant</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <source>Intersecting Wires</source>
+      <translation>Fils croisés</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <source>Invalid Imbrication Of Wires</source>
+      <translation>Imbrication de fils invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <source>Empty Shell</source>
+      <translation>Coque vide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <source>Redundant Face</source>
+      <translation>Surface redondante</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <source>Unorientable Shape</source>
+      <translation>La forme n'est pas orientable</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <source>Not Closed</source>
+      <translation>Non fermé</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <source>Not Connected</source>
+      <translation>Non connecté</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <source>Sub Shape Not In Shape</source>
+      <translation>La sous-forme n'est pas dans une forme</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <source>Bad Orientation</source>
+      <translation>Mauvaise orientation</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <source>Bad Orientation Of Sub Shape</source>
+      <translation>Mauvaise orientation de la sous-forme</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <source>Invalid Tolerance Value</source>
+      <translation>Valeur de tolérance invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <source>Check Failed</source>
+      <translation>La vérification a échoué</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="140"/>
+      <source>No Result</source>
+      <translation>Aucun résultat</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
+      <source>Out Of Enum Range: </source>
+      <translation>Hors plage d'énumération : </translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="156"/>
+      <source>BOPAlgo CheckUnknown</source>
+      <translation>BOPAlgo Vérifier les inconnues</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="157"/>
+      <source>BOPAlgo BadType</source>
+      <translation>BOPAlgo MauvaisType</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="158"/>
+      <source>BOPAlgo SelfIntersect</source>
+      <translation>BOPAlgo auto intersection</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="159"/>
+      <source>BOPAlgo TooSmallEdge</source>
+      <translation>BOPAlgo Arête trop courte</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
+      <source>BOPAlgo NonRecoverableFace</source>
+      <translation>BOPAlgo Face non récupérable</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
+      <source>BOPAlgo IncompatibilityOfVertex</source>
+      <translation>BOPAlgo incompatibilité de sommet</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+      <source>BOPAlgo IncompatibilityOfEdge</source>
+      <translation>BOPAlgo Incompatibilité d'arête</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+      <source>BOPAlgo IncompatibilityOfFace</source>
+      <translation>BOPAlgo Incompatibilité de face</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <source>BOPAlgo OperationAborted</source>
+      <translation>BOPAlgo Opération avortée</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <source>BOPAlgo GeomAbs_C0</source>
+      <translation>BOPAlgo GeomAbs_C0</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <source>BOPAlgo_InvalidCurveOnSurface</source>
+      <translation>BOPAlgo_Courbe invalide sur surface</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
+      <source>BOPAlgo NotValid</source>
+      <translation>BOPAlgo Non valide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="452"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="633"/>
+      <source>Invalid</source>
+      <translation>Invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="70"/>
+      <location filename="../../TaskAttacher.cpp" line="103"/>
+      <source>No reference selected</source>
+      <translation>Aucune référence sélectionnée</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="79"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+      <source>Face</source>
+      <translation>Face</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="82"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <source>Edge</source>
+      <translation>Arête</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="85"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <source>Vertex</source>
+      <translation>Sommet</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="552"/>
+      <location filename="../../TaskDimension.cpp" line="1598"/>
+      <source>Selections</source>
+      <translation>Sélections</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="559"/>
+      <location filename="../../TaskDimension.cpp" line="1605"/>
+      <source>Control</source>
+      <translation>Contrôle</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1336"/>
+      <source>Reset Dialog</source>
+      <translation>Réinitialiser la boîte de dialogue</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1340"/>
+      <source>Toggle 3d</source>
+      <translation>Basculer 3D</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1345"/>
+      <source>Toggle Delta</source>
+      <translation>Basculer Delta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1350"/>
+      <source>Clear All</source>
+      <translation>Tout effacer</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpline.cpp" line="80"/>
       <source>Show control points</source>
       <translation>Afficher les points de contrôle</translation>
     </message>
@@ -5259,26 +5915,6 @@ Voulez-vous continuer ?</translation>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Boolean</source>
       <translation>Opération booléenne</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="43"/>
-      <source>Primitives</source>
-      <translation>Primitives</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="44"/>
-      <source>Join</source>
-      <translation>Joindre</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="45"/>
-      <source>Split</source>
-      <translation>Scinder</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="46"/>
-      <source>Compound</source>
-      <translation>Composé</translation>
     </message>
   </context>
 </TS>

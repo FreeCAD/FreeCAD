@@ -124,7 +124,7 @@
       <translation>Daerah dihitung lantai lantai ini</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="438"/>
+      <location filename="../../ArchSectionPlane.py" line="437"/>
       <source>The placement of this object</source>
       <translation>Penempatan objek ini</translation>
     </message>
@@ -214,12 +214,12 @@
       <translation>Arah normal ekstrusi objek ini (tetap (0,0,0) untuk otomatis normal)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="722"/>
+      <location filename="../../ArchSectionPlane.py" line="721"/>
       <source>The linked object</source>
       <translation>Objek terkait</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="732"/>
+      <location filename="../../ArchSectionPlane.py" line="731"/>
       <source>The line width of the rendered objects</source>
       <translation>Lebar garis benda-benda yang diberikan</translation>
     </message>
@@ -624,52 +624,52 @@
       <translation>Spreadsheet untu mencetak hasil</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="444"/>
+      <location filename="../../ArchSectionPlane.py" line="443"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Jika salah, non-padat akan dipotong juga, dengan kemungkinan hasil yang salah.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="508"/>
+      <location filename="../../ArchSectionPlane.py" line="507"/>
       <source>The display length of this section plane</source>
       <translation>Panjang tampilan bidang bagian ini</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="514"/>
+      <location filename="../../ArchSectionPlane.py" line="513"/>
       <source>The display height of this section plane</source>
       <translation>Tinggi tampilan bidang bagian ini</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="520"/>
+      <location filename="../../ArchSectionPlane.py" line="519"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Ukuran panah bidang bagian ini</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="534"/>
+      <location filename="../../ArchSectionPlane.py" line="533"/>
       <source>Show the cut in the 3D view</source>
       <translation>Menunjukkan potongan dalam tampilan 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="724"/>
+      <location filename="../../ArchSectionPlane.py" line="723"/>
       <source>The rendering mode to use</source>
       <translation>Mode penyiapan yang dipakai</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="728"/>
+      <location filename="../../ArchSectionPlane.py" line="727"/>
       <source>If cut geometry is shown or not</source>
       <translation>Jika potongan geometri digunakan atau tidak</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="730"/>
+      <location filename="../../ArchSectionPlane.py" line="729"/>
       <source>If cut geometry is filled or not</source>
       <translation>Jika potongan geometri diisi atau tidak</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="735"/>
+      <location filename="../../ArchSectionPlane.py" line="734"/>
       <source>The size of the texts inside this object</source>
       <translation>Ukuran teks didalam objek ini</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="738"/>
+      <location filename="../../ArchSectionPlane.py" line="737"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Kalau dicentang, sumber objek ditampilkan tanpa memperhatikan untuk menjadi tampil dalam model 3D</translation>
     </message>
@@ -824,52 +824,52 @@
       <translation>Tipe Ac dari ruang ini</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="482"/>
+      <location filename="../../ArchSpace.py" line="481"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
       <translation>Teks ini untuk menunjukkan penggunaan $area, $label, $tag, $floor, $walls, $ceiling untuk memasukkan data masing-masing</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="485"/>
+      <location filename="../../ArchSpace.py" line="484"/>
       <source>The name of the font</source>
       <translation>Nama font</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="488"/>
+      <location filename="../../ArchSpace.py" line="487"/>
       <source>The color of the area text</source>
       <translation>Warna teks area</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="491"/>
+      <location filename="../../ArchSpace.py" line="490"/>
       <source>The size of the text font</source>
       <translation>Ukuran teksnya</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="494"/>
+      <location filename="../../ArchSpace.py" line="493"/>
       <source>The size of the first line of text</source>
       <translation>Ukuran baris pertama dari teks</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="497"/>
+      <location filename="../../ArchSpace.py" line="496"/>
       <source>The space between the lines of text</source>
       <translation>Ruang antara garis teks</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="500"/>
+      <location filename="../../ArchSpace.py" line="499"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>Posisi teks. Tinggalkan (0,0,0) untuk posisi otomatis</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="502"/>
+      <location filename="../../ArchSpace.py" line="501"/>
       <source>The justification of the text</source>
       <translation>Pembenaran teks</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="505"/>
+      <location filename="../../ArchSpace.py" line="504"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>Jumlah desimal yang digunakan untuk teks yang dihitung</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="508"/>
+      <location filename="../../ArchSpace.py" line="507"/>
       <source>Show the unit suffix</source>
       <translation>Tampilkan akhiran unit</translation>
     </message>
@@ -1099,17 +1099,17 @@
       <translation>Daftar dari lapisan ketebalan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="740"/>
+      <location filename="../../ArchSectionPlane.py" line="739"/>
       <source>The line color of the projected objects</source>
       <translation>Warna garis benda-benda yang diproyeksikan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="742"/>
+      <location filename="../../ArchSectionPlane.py" line="741"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Warna permukaan potong (jika diaktifkan)</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="1062"/>
+      <location filename="../../ArchStairs.py" line="1056"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
       <translation>Tumpang tindih stringer di atas bagian bawah tapak</translation>
     </message>
@@ -1279,7 +1279,7 @@
       <translation type="unfinished">The level of the (0,0,0) point of this level</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="440"/>
+      <location filename="../../ArchSectionPlane.py" line="439"/>
       <source>The shape of this object</source>
       <translation type="unfinished">The shape of this object</translation>
     </message>
@@ -1289,7 +1289,7 @@
       <translation type="unfinished">Stores IFC properties</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="526"/>
+      <location filename="../../ArchSectionPlane.py" line="525"/>
       <source>The line width of this object</source>
       <translation type="unfinished">The line width of this object</translation>
     </message>
@@ -1434,22 +1434,22 @@
       <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="442"/>
+      <location filename="../../ArchSectionPlane.py" line="441"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation type="unfinished">The objects that must be considered by this section plane. Empty means the whole document.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="523"/>
+      <location filename="../../ArchSectionPlane.py" line="522"/>
       <source>The transparency of this object</source>
       <translation type="unfinished">The transparency of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="531"/>
+      <location filename="../../ArchSectionPlane.py" line="530"/>
       <source>The color of this object</source>
       <translation type="unfinished">The color of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="536"/>
+      <location filename="../../ArchSectionPlane.py" line="535"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation type="unfinished">The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</translation>
     </message>
@@ -1692,22 +1692,22 @@
       <translation>contains faces that are not part of any solid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1312"/>
+      <location filename="../../ArchCommands.py" line="1308"/>
       <source>Grouping</source>
       <translation>Grouping</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1344"/>
+      <location filename="../../ArchCommands.py" line="1340"/>
       <source>Ungrouping</source>
       <translation>Ungrouping</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1375"/>
+      <location filename="../../ArchCommands.py" line="1371"/>
       <source>Split Mesh</source>
       <translation>Split Mesh</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1415"/>
+      <location filename="../../ArchCommands.py" line="1411"/>
       <source>Mesh to Shape</source>
       <translation>Mesh ke Bentuk</translation>
     </message>
@@ -1757,7 +1757,7 @@
       <translation>Pemandangan dari</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="417"/>
+      <location filename="../../ArchSectionPlane.py" line="416"/>
       <source>Create Section Plane</source>
       <translation>Membuat bidang bagian</translation>
     </message>
@@ -1847,17 +1847,17 @@
       <translation>Kesalahan: Tidak dapat menentukan character encoding</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="291"/>
+      <location filename="../../importDAE.py" line="282"/>
       <source>file %s successfully created.</source>
       <translation>%s file berhasil dibuat.</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1308"/>
+      <location filename="../../ArchCommands.py" line="1304"/>
       <source>Add space boundary</source>
       <translation>Tambahkan pembatas ruang</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1340"/>
+      <location filename="../../ArchCommands.py" line="1336"/>
       <source>Remove space boundary</source>
       <translation>Hapus pembatas ruang</translation>
     </message>
@@ -2102,7 +2102,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Tinggi (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1587"/>
+      <location filename="../../ArchCommands.py" line="1583"/>
       <source>Create Component</source>
       <translation>Buat Komponen</translation>
     </message>
@@ -2117,17 +2117,17 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Dinding hanya dapat didasarkan pada Bagian atau Mesh benda</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="695"/>
+      <location filename="../../ArchSpace.py" line="694"/>
       <source>Set text position</source>
       <translation>Atur posisi teks</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1607"/>
+      <location filename="../../ArchCommands.py" line="1603"/>
       <source>Category</source>
       <translation>Kategori</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1608"/>
+      <location filename="../../ArchCommands.py" line="1604"/>
       <source>Key</source>
       <translation>Kunci</translation>
     </message>
@@ -2137,12 +2137,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Nilai</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1611"/>
+      <location filename="../../ArchCommands.py" line="1607"/>
       <source>Unit</source>
       <translation>Satuan</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1636"/>
+      <location filename="../../ArchCommands.py" line="1632"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Buat spreadsheet properti IFC</translation>
     </message>
@@ -2556,7 +2556,7 @@ Pembuatan situs dibatalkan.</translation>
       <translation>Objek ini tidak memiliki wajah</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="699"/>
+      <location filename="../../ArchSpace.py" line="698"/>
       <source>Space boundaries</source>
       <translation>Batas ruang</translation>
     </message>
@@ -2684,12 +2684,12 @@ Building creation aborted.</translation>
       <translation>Sumbu potong tidak valid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1496"/>
+      <location filename="../../ArchCommands.py" line="1492"/>
       <source>All good! No problems found</source>
       <translation>Bagus! Tidak ada masalah ditemukan</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1618"/>
+      <location filename="../../ArchCommands.py" line="1614"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>Obyek tidak memiliki atribut IfcProperties. Membatalkan spreadsheet penciptaan untuk obyek:</translation>
     </message>
@@ -2872,42 +2872,42 @@ Floor creation aborted.</translation>
       <translation type="unfinished">No spreadsheet attached to this schedule</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="966"/>
+      <location filename="../../ArchSectionPlane.py" line="965"/>
       <source>Section plane settings</source>
       <translation type="unfinished">Section plane settings</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="969"/>
+      <location filename="../../ArchSectionPlane.py" line="968"/>
       <source>Objects seen by this section plane:</source>
       <translation type="unfinished">Objects seen by this section plane:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="970"/>
+      <location filename="../../ArchSectionPlane.py" line="969"/>
       <source>Section plane placement:</source>
       <translation type="unfinished">Section plane placement:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="971"/>
+      <location filename="../../ArchSectionPlane.py" line="970"/>
       <source>Rotate X</source>
       <translation type="unfinished">Rotate X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="972"/>
+      <location filename="../../ArchSectionPlane.py" line="971"/>
       <source>Rotate Y</source>
       <translation type="unfinished">Rotate Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="973"/>
+      <location filename="../../ArchSectionPlane.py" line="972"/>
       <source>Rotate Z</source>
       <translation type="unfinished">Rotate Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="974"/>
+      <location filename="../../ArchSectionPlane.py" line="973"/>
       <source>Resize</source>
       <translation type="unfinished">Resize</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="975"/>
+      <location filename="../../ArchSectionPlane.py" line="974"/>
       <source>Center</source>
       <translation>Pusat</translation>
     </message>
@@ -2998,7 +2998,7 @@ Note: You can change that in the preferences.</translation>
       <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="58"/>
+      <location filename="../../importDAE.py" line="52"/>
       <source>pycollada not found, collada support is disabled.</source>
       <translation type="unfinished">pycollada not found, collada support is disabled.</translation>
     </message>
@@ -3038,17 +3038,17 @@ Note: You can change that in the preferences.</translation>
       <translation type="unfinished">Error: your IfcOpenShell version is too old</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="222"/>
+      <location filename="../../importOBJ.py" line="215"/>
       <source>Successfully written</source>
       <translation type="unfinished">Successfully written</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="78"/>
+      <location filename="../../importOBJ.py" line="71"/>
       <source>Found a shape containing curves, triangulating</source>
       <translation type="unfinished">Found a shape containing curves, triangulating</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="300"/>
+      <location filename="../../importOBJ.py" line="293"/>
       <source>Successfully imported</source>
       <translation>Berhasil diimpor</translation>
     </message>
@@ -3172,12 +3172,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1299"/>
+      <location filename="../../ArchCommands.py" line="1295"/>
       <source>Add component</source>
       <translation>Tambahkan komponen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1300"/>
+      <location filename="../../ArchCommands.py" line="1296"/>
       <source>Adds the selected components to the active object</source>
       <translation>Menambahkan komponen yang dipilih ke objek yang aktif</translation>
     </message>
@@ -3255,17 +3255,17 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1487"/>
+      <location filename="../../ArchCommands.py" line="1483"/>
       <source>Check</source>
       <translation>Memeriksa</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1488"/>
+      <location filename="../../ArchCommands.py" line="1484"/>
       <source>Checks the selected objects for problems</source>
       <translation>Memeriksa objek yang dipilih untuk masalah</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1509"/>
+      <location filename="../../ArchCommands.py" line="1505"/>
       <source>Explore the contents of an IFC file</source>
       <translation type="unfinished">Explore the contents of an IFC file</translation>
     </message>
@@ -3273,12 +3273,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1577"/>
+      <location filename="../../ArchCommands.py" line="1573"/>
       <source>Clone component</source>
       <translation>Komponen klon</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1579"/>
+      <location filename="../../ArchCommands.py" line="1575"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Klon objek sebagai komponen arsitektur undefined</translation>
     </message>
@@ -3286,12 +3286,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1470"/>
+      <location filename="../../ArchCommands.py" line="1466"/>
       <source>Close holes</source>
       <translation>Tutup lubang</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1471"/>
+      <location filename="../../ArchCommands.py" line="1467"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Menutup lubang dalam bentuk terbuka, mengubahnya menjadi padatan</translation>
     </message>
@@ -3299,12 +3299,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1552"/>
+      <location filename="../../ArchCommands.py" line="1548"/>
       <source>Component</source>
       <translation>Komponen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1554"/>
+      <location filename="../../ArchCommands.py" line="1550"/>
       <source>Creates an undefined architectural component</source>
       <translation>Membuat komponen arsitektur yang tidak terdefinisi</translation>
     </message>
@@ -3427,7 +3427,7 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_IfcExplorer</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1508"/>
+      <location filename="../../ArchCommands.py" line="1504"/>
       <source>Ifc Explorer</source>
       <translation>Ifc Explorer</translation>
     </message>
@@ -3435,12 +3435,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1627"/>
+      <location filename="../../ArchCommands.py" line="1623"/>
       <source>Create IFC spreadsheet...</source>
       <translation>Buat spreadsheet IFC...</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1629"/>
+      <location filename="../../ArchCommands.py" line="1625"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation type="unfinished">Creates a spreadsheet to store IFC properties of an object.</translation>
     </message>
@@ -3482,12 +3482,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1391"/>
+      <location filename="../../ArchCommands.py" line="1387"/>
       <source>Mesh to Shape</source>
       <translation>Mesh ke Bentuk</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1392"/>
+      <location filename="../../ArchCommands.py" line="1388"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>Ternyata jerat dipilih ke Bagian Shape objek</translation>
     </message>
@@ -3628,12 +3628,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1331"/>
+      <location filename="../../ArchCommands.py" line="1327"/>
       <source>Remove component</source>
       <translation>Hapus komponen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1332"/>
+      <location filename="../../ArchCommands.py" line="1328"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Lepaskan komponen yang dipilih dari orang tua mereka, atau buat lubang di komponen</translation>
     </message>
@@ -3641,12 +3641,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1455"/>
+      <location filename="../../ArchCommands.py" line="1451"/>
       <source>Remove Shape from Arch</source>
       <translation>Hapus Bentuk dari Arch</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1456"/>
+      <location filename="../../ArchCommands.py" line="1452"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Menghapus bentuk kubik dari komponen Arch</translation>
     </message>
@@ -3680,12 +3680,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="401"/>
+      <location filename="../../ArchSectionPlane.py" line="400"/>
       <source>Section Plane</source>
       <translation>Bagian pesawat</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="402"/>
+      <location filename="../../ArchSectionPlane.py" line="401"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Membuat bagian objek pesawat, termasuk objek yang dipilih</translation>
     </message>
@@ -3693,12 +3693,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1426"/>
+      <location filename="../../ArchCommands.py" line="1422"/>
       <source>Select non-manifold meshes</source>
       <translation>Pilih jaring tak banyak</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1427"/>
+      <location filename="../../ArchCommands.py" line="1423"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Memilih semua jerat yang tidak bermanuver dari dokumen atau dari kelompok yang dipilih</translation>
     </message>
@@ -3737,12 +3737,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1366"/>
+      <location filename="../../ArchCommands.py" line="1362"/>
       <source>Split Mesh</source>
       <translation>Split Mesh</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1367"/>
+      <location filename="../../ArchCommands.py" line="1363"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Perpecahan jala yang dipilih menjadi komponen independen</translation>
     </message>
@@ -3771,12 +3771,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1522"/>
+      <location filename="../../ArchCommands.py" line="1518"/>
       <source>Survey</source>
       <translation>Survei</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1523"/>
+      <location filename="../../ArchCommands.py" line="1519"/>
       <source>Starts survey</source>
       <translation>Mulai survei</translation>
     </message>
@@ -3784,12 +3784,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1537"/>
+      <location filename="../../ArchCommands.py" line="1533"/>
       <source>Toggle IFC Brep flag</source>
       <translation>Beralih bendera IFC Brep</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1538"/>
+      <location filename="../../ArchCommands.py" line="1534"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Pakai benda yang akan diekspor sebagai Brep atau tidak</translation>
     </message>
@@ -3797,12 +3797,12 @@ Note: You can change that in the preferences.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1653"/>
+      <location filename="../../ArchCommands.py" line="1649"/>
       <source>Toggle subcomponents</source>
       <translation>Toggle subcomponents</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1654"/>
+      <location filename="../../ArchCommands.py" line="1650"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Menunjukkan atau menyembunyikan subkomponen dari objek ini</translation>
     </message>

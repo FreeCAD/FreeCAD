@@ -176,7 +176,7 @@
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="55"/>
       <source>The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is.</source>
-      <translation>Głębokość, na której włączona jest funkcja dressup dla rampy. Powyżej niej rampy nie są generowane, ale polecenia ruchu są przekazywane tak jak są.</translation>
+      <translation>Głębokość, na której włączona jest funkcja dressup dla rampy. Powyżej tych ramp nie są generowane, ale polecenia ruchu są przekazywane tak jak są.</translation>
     </message>
     <message>
       <location filename="PathPlane.py" line="44"/>
@@ -815,7 +815,7 @@
       <translation>Tworzy ścieżkę grawerowania wokół Draft ShapeString</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngrave.py" line="156"/>
+      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
       <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
       <translation>Obiekt bazowy pracy nie posiada grawerowanego elementu. Operacja grawerowania nie wytworzy żadnych wyników.</translation>
     </message>
@@ -1944,32 +1944,32 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
       <source>DragKnife Dress-up</source>
       <translation>DragKnife Dress-up</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="471"/>
       <source>Modifies a path to add dragknife corner actions</source>
       <translation>Modyfikuje ścieżkę, żeby dodać dragknife akcji rogu</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="485"/>
       <source>Please select one path object</source>
       <translation type="unfinished">Please select one path object</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="489"/>
       <source>The selected object is not a path</source>
       <translation>Wybrany obiekt nie jest ścieżką</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="493"/>
       <source>Please select a Path object</source>
       <translation>Proszę wybrać obiekt-ścieżkę</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="498"/>
       <source>Create Dress-up</source>
       <translation>Utworzenie ulepszenia</translation>
     </message>
