@@ -84,12 +84,12 @@ def decode(name):
 # https://en.wikipedia.org/wiki/INI_file
 # http://www.docuxplorer.com/WebHelp/INI_File_Format.htm
 # mainly this parser here is used in FreeCAD
-# in the module Material.py is another implementaion of reading and writing FCMat files which uses the module ConfigParser
+# in the module Material.py is another implementation of reading and writing FCMat files which uses the module ConfigParser
 # in ViewProviderFemMaterial in add_cards_from_a_dir() the parser from Material.py is used
 # since this mixture seams to be there for ages it should not be changed for 0.18
 # TODO: get rid of this mixture in FreeCAD 0.19
 
-# Metainformations
+# Metainformation
 # first five lines are the same in any card file
 # Line1: card name
 # Line2: author and licence
@@ -124,11 +124,11 @@ def read(filename):
                 v = v.decode('utf-8')
             d["AuthorAndLicense"] = v
         else:
-            # ; is a Commend
+            # ; is a Comment
             # # might be a comment too ?
             # [ is a Section
             if line[0] not in ";#[":
-                k = line.split("=", 1)  # only split once on first occurence, a link could contain a = and thus would be splitted
+                k = line.split("=", 1)  # only split once on first occurrence, a link could contain a = and thus would be splitted
                 if len(k) == 2:
                     v = k[1].strip()
                     if hasattr(v, "decode"):
