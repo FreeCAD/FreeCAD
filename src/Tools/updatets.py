@@ -178,7 +178,7 @@ def update_translation(path):
     if "Mod" in path:
         tsname = " -ts "+os.path.join("Gui","Resources","translations",os.path.basename(path) + ".ts")
     elif "src/Gui" in path:
-        tsname = " -ts "+os.path.join("Languages", "FreeCAD.ts")
+        tsname = " -ts "+os.path.join("Language", "FreeCAD.ts")
     os.system(LUPDATE + " " + filename + tsname)
     os.remove(filename)
     os.chdir(cur)
