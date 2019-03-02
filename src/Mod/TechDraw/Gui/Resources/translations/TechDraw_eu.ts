@@ -30,7 +30,7 @@
     <message>
       <location filename="../../Command.cpp" line="996"/>
       <source>Inserts a view of a Section Plane from Arch Workbench</source>
-      <translation>Arch lan-mahaiko sekzio-plano baten bista bat txertatzen du</translation>
+      <translation type="unfinished">Inserts a view of a Section Plane from Arch Workbench</translation>
     </message>
   </context>
   <context>
@@ -93,12 +93,12 @@
     <message>
       <location filename="../../Command.cpp" line="942"/>
       <source>Insert a DraftWB object</source>
-      <translation>Txertatu DraftWB objektu bat</translation>
+      <translation type="unfinished">Insert a DraftWB object</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="943"/>
       <source>Insert a View of a Draft Workbench object</source>
-      <translation>Txertatu zirriborro lan-mahai objektu baten bista bat</translation>
+      <translation type="unfinished">Insert a View of a Draft Workbench object</translation>
     </message>
   </context>
   <context>
@@ -201,7 +201,7 @@
       <location filename="../../CommandCreateDims.cpp" line="871"/>
       <location filename="../../CommandCreateDims.cpp" line="872"/>
       <source>Insert a new 3 point Angle dimension</source>
-      <translation>Txertatu 3 puntuko angelu-kota berri bat</translation>
+      <translation type="unfinished">Insert a new 3 point Angle dimension</translation>
     </message>
   </context>
   <context>
@@ -543,17 +543,17 @@
     <message>
       <location filename="../../Command.cpp" line="743"/>
       <source>Select 1 Clip group and 1 View.</source>
-      <translation>Hautatu ebaketa talde bat eta bista bat.</translation>
+      <translation type="unfinished">Select 1 Clip group and 1 View.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="759"/>
       <source>Select exactly one View to add to group.</source>
-      <translation>Hautatu bista bakar bat taldeari gehitzeko.</translation>
+      <translation type="unfinished">Select exactly one View to add to group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
       <source>Select exactly one Clip group.</source>
-      <translation>Hautatu ebaketa-talde bakar bat.</translation>
+      <translation type="unfinished">Select exactly one Clip group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
@@ -563,7 +563,7 @@
     <message>
       <location filename="../../Command.cpp" line="827"/>
       <source>Select exactly one View to remove from Group.</source>
-      <translation>Hautatu bista bakar bat taldetik kentzeko.</translation>
+      <translation type="unfinished">Select exactly one View to remove from Group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="847"/>
@@ -631,27 +631,27 @@
       <location filename="../../CommandCreateDims.cpp" line="288"/>
       <location filename="../../CommandCreateDims.cpp" line="388"/>
       <source>Selection Warning</source>
-      <translation>Hautapen-abisua</translation>
+      <translation type="unfinished">Selection Warning</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="289"/>
       <source>Selected edge is a BSpline.  Radius will be approximate.</source>
-      <translation>Hautatutako ertza BSpline bat da. Erradioa gutxi gorabeherakoa izango da.</translation>
+      <translation type="unfinished">Selected edge is a BSpline.  Radius will be approximate.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="389"/>
       <source>Selected edge is a BSpline.  Diameter will be approximate.</source>
-      <translation>Hautatutako ertza BSpline bat da. Diametroa gutxi gorabeherakoa izango da.</translation>
+      <translation type="unfinished">Selected edge is a BSpline.  Diameter will be approximate.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="828"/>
       <source>Need two straight edges to make an Angle Dimension</source>
-      <translation>Bi ertz zuzen behar dira angelu-kota bat egiteko</translation>
+      <translation type="unfinished">Need two straight edges to make an Angle Dimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="917"/>
       <source>Need three points to make a 3 point Angle Dimension</source>
-      <translation>Hiru puntu behar dira 3 puntuko angelu-kota bat egiteko</translation>
+      <translation type="unfinished">Need three points to make a 3 point Angle Dimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1003"/>
@@ -693,12 +693,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1082"/>
       <source>No View of a Part in selection.</source>
-      <translation>Ez dago piezaren bistarik hautapenean.</translation>
+      <translation type="unfinished">No View of a Part in selection.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
       <source>No Feature with Shape in selection.</source>
-      <translation>Ez dago formarik duen elementurik hautapenean.</translation>
+      <translation type="unfinished">No Feature with Shape in selection.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
@@ -729,7 +729,7 @@
       <location filename="../../CommandDecorate.cpp" line="382"/>
       <location filename="../../CommandDecorate.cpp" line="388"/>
       <source>No Faces to hatch in this selection</source>
-      <translation>Ez dago itzaleztatzeko aurpegirik hautapen honetan</translation>
+      <translation type="unfinished">No Faces to hatch in this selection</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="136"/>
@@ -858,7 +858,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
       <source>TechDraw Dimensions</source>
-      <translation>TechDraw kotak</translation>
+      <translation type="unfinished">TechDraw Dimensions</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
@@ -918,7 +918,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="297"/>
       <source>Adjusts size of vertices in drawing</source>
-      <translation>Erpinen tamaina egokitzen du marrazkian</translation>
+      <translation type="unfinished">Adjusts size of vertices in drawing</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="313"/>
@@ -1083,7 +1083,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
       <source>TechDraw General</source>
-      <translation>TechDraw orokorra</translation>
+      <translation type="unfinished">TechDraw General</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
@@ -1108,12 +1108,12 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="165"/>
       <source>Automatically distribute secondary views.</source>
-      <translation>Banatu automatikoki bigarren mailako bistak.</translation>
+      <translation type="unfinished">Automatically distribute secondary views.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="168"/>
       <source>AutoDistribute Secondary Views</source>
-      <translation>Banatu automatikoki bigarren mailako bistak</translation>
+      <translation type="unfinished">AutoDistribute Secondary Views</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
@@ -1178,7 +1178,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="494"/>
       <source>Line Group File</source>
-      <translation>Lerro taldearen fitxategia</translation>
+      <translation type="unfinished">Line Group File</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="511"/>
@@ -1198,7 +1198,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="544"/>
       <source>Alternate Line Group file</source>
-      <translation>Lerro taldearen ordezko fitxategia</translation>
+      <translation type="unfinished">Alternate Line Group file</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="561"/>
@@ -1228,7 +1228,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
       <source>Editable Text Marker Size</source>
-      <translation>Testu-markatzailearen tamaina editagarria</translation>
+      <translation type="unfinished">Editable Text Marker Size</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="707"/>
@@ -1238,7 +1238,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="723"/>
       <source>Size of editable text marker in Templates (green dot).</source>
-      <translation>Testu-markatzaile editagarriaren tamaina txantiloietan (puntu berdea).</translation>
+      <translation type="unfinished">Size of editable text marker in Templates (green dot).</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="649"/>
@@ -1256,7 +1256,7 @@
     <message>
       <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Toggle &amp;Keep Updated</source>
-      <translation>Txandakatu &amp;eguneratuta mantentzea</translation>
+      <translation type="unfinished">Toggle &amp;Keep Updated</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="115"/>
@@ -1455,7 +1455,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="73"/>
       <source>First Angle</source>
-      <translation>Lehen angelua</translation>
+      <translation>Lehenengo angelua</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="78"/>
@@ -1505,12 +1505,12 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="196"/>
       <source>Adjust Primary Direction</source>
-      <translation>Egokitu norabide nagusia</translation>
+      <translation>Doitu norabide nagusia</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="230"/>
       <source>Current primary view direction</source>
-      <translation>Uneko bista nagusiaren norabidea</translation>
+      <translation type="unfinished">Current primary view direction</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="243"/>
@@ -1580,7 +1580,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="555"/>
       <source>Rear</source>
-      <translation>Atzekoa</translation>
+      <translation>Atzea</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="572"/>

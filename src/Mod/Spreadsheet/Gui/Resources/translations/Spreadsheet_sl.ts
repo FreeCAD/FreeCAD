@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Poravnaj vsebino izbranih celic na sredino navpično</translation>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -223,14 +223,14 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation>Podčrtano besedilo v izbranih celicah</translation>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation>Barva po meri</translation>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -257,7 +257,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation>Vodoravno</translation>
+      <translation type="unfinished">Horizontal</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation>Navpično</translation>
+      <translation type="unfinished">Vertical</translation>
     </message>
     <message>
       <source>Top</source>

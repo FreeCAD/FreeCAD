@@ -25,12 +25,12 @@
     <message>
       <location filename="../../Command.cpp" line="995"/>
       <source>Insert a Section Plane</source>
-      <translation>Egy metszősík beszúrása</translation>
+      <translation type="unfinished">Insert a Section Plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="996"/>
       <source>Inserts a view of a Section Plane from Arch Workbench</source>
-      <translation>Egy nézetet illeszt a metszősíkba az építészet munkafelületből</translation>
+      <translation type="unfinished">Inserts a view of a Section Plane from Arch Workbench</translation>
     </message>
   </context>
   <context>
@@ -75,7 +75,7 @@
     <message>
       <location filename="../../Command.cpp" line="730"/>
       <source>Add View to Clip group</source>
-      <translation>Nézet hozzáadása a kivágás csoporthoz</translation>
+      <translation type="unfinished">Add View to Clip group</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="731"/>
@@ -93,12 +93,12 @@
     <message>
       <location filename="../../Command.cpp" line="942"/>
       <source>Insert a DraftWB object</source>
-      <translation>Tervezet munkafelület objektum beszúrása</translation>
+      <translation type="unfinished">Insert a DraftWB object</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="943"/>
       <source>Insert a View of a Draft Workbench object</source>
-      <translation>Szúrjon be egy nézetet a tervezet munkafelület tárgyból</translation>
+      <translation type="unfinished">Insert a View of a Draft Workbench object</translation>
     </message>
   </context>
   <context>
@@ -505,7 +505,7 @@
       <location filename="../../CommandDecorate.cpp" line="265"/>
       <location filename="../../CommandDecorate.cpp" line="266"/>
       <source>Turn View Frames On/Off</source>
-      <translation>Keretek nézetének be-/kikapcsolása</translation>
+      <translation type="unfinished">Turn View Frames On/Off</translation>
     </message>
   </context>
   <context>
@@ -543,17 +543,17 @@
     <message>
       <location filename="../../Command.cpp" line="743"/>
       <source>Select 1 Clip group and 1 View.</source>
-      <translation>1 kivágás csoport és 1 nézet kiválasztása.</translation>
+      <translation type="unfinished">Select 1 Clip group and 1 View.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="759"/>
       <source>Select exactly one View to add to group.</source>
-      <translation>Válasszon pontosan egy nézetet a csoporthoz adásra.</translation>
+      <translation type="unfinished">Select exactly one View to add to group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
       <source>Select exactly one Clip group.</source>
-      <translation>Jelöljön ki pontosan egy kivágandó tárgyat.</translation>
+      <translation type="unfinished">Select exactly one Clip group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
@@ -563,7 +563,7 @@
     <message>
       <location filename="../../Command.cpp" line="827"/>
       <source>Select exactly one View to remove from Group.</source>
-      <translation>Válasszon pontosan egy nézetet a csoportból eltávolításra.</translation>
+      <translation type="unfinished">Select exactly one View to remove from Group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="847"/>
@@ -589,7 +589,7 @@
     <message>
       <location filename="../../Command.cpp" line="1030"/>
       <source>There is no Section Plane in selection.</source>
-      <translation>Nincs metszősík a kiválasztásban.</translation>
+      <translation type="unfinished">There is no Section Plane in selection.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>
@@ -625,7 +625,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="203"/>
       <source>Can not make a Dimension from this selection</source>
-      <translation>Nem tud méretet létrehozni ebből a kiválasztásból</translation>
+      <translation type="unfinished">Can not make a Dimension from this selection</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
@@ -651,7 +651,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="917"/>
       <source>Need three points to make a 3 point Angle Dimension</source>
-      <translation>Három pont kell a 3 pontos szög méretvonalához</translation>
+      <translation type="unfinished">Need three points to make a 3 point Angle Dimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1003"/>
@@ -693,12 +693,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1082"/>
       <source>No View of a Part in selection.</source>
-      <translation>Nincs alkatrész nézet ebben a kiválasztásban.</translation>
+      <translation type="unfinished">No View of a Part in selection.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
       <source>No Feature with Shape in selection.</source>
-      <translation>Nincs alakzat tulajdonság a kiválasztásban.</translation>
+      <translation type="unfinished">No Feature with Shape in selection.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
@@ -780,7 +780,7 @@
     <message>
       <location filename="../../MDIViewPage.cpp" line="790"/>
       <source>SVG (*.svg)</source>
-      <translation>SVG (*.svg)</translation>
+      <translation type="unfinished">SVG (*.svg)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="792"/>
@@ -790,7 +790,7 @@
     <message>
       <location filename="../../MDIViewPage.cpp" line="1223"/>
       <source>%1.%2.%3</source>
-      <translation>%1.%2.%3</translation>
+      <translation type="unfinished">%1.%2.%3</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="595"/>
@@ -858,7 +858,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
       <source>TechDraw Dimensions</source>
-      <translation>MűszakiRajz méretek</translation>
+      <translation type="unfinished">TechDraw Dimensions</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
@@ -1083,7 +1083,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
       <source>TechDraw General</source>
-      <translation>MűszakiRajz általános</translation>
+      <translation type="unfinished">TechDraw General</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
@@ -1228,7 +1228,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
       <source>Editable Text Marker Size</source>
-      <translation>Szerkeszthető szöveg jelölő méret</translation>
+      <translation type="unfinished">Editable Text Marker Size</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="707"/>
@@ -1238,7 +1238,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="723"/>
       <source>Size of editable text marker in Templates (green dot).</source>
-      <translation>Szerkeszthető szöveg jelölő mérete a sablonban (zöld pont).</translation>
+      <translation type="unfinished">Size of editable text marker in Templates (green dot).</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="649"/>
@@ -1296,7 +1296,7 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="653"/>
       <source>Can not open file %1 for writing.</source>
-      <translation>%1 fájlt nem nyitható meg íráshoz.</translation>
+      <translation type="unfinished">Can not open file %1 for writing.</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1221"/>
@@ -1309,12 +1309,12 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../QGVPage.cpp" line="580"/>
       <source>Drawing page:</source>
-      <translation>Rajz oldal:</translation>
+      <translation type="unfinished">Drawing page:</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="582"/>
       <source> exported from FreeCAD document:</source>
-      <translation> FreeCAD dokumentumból exportált:</translation>
+      <translation type="unfinished"> exported from FreeCAD document:</translation>
     </message>
   </context>
   <context>
@@ -1509,7 +1509,7 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="230"/>
       <source>Current primary view direction</source>
-      <translation>Aktuális elsődleges nézet iránya</translation>
+      <translation type="unfinished">Current primary view direction</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="243"/>

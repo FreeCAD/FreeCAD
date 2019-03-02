@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Alinha verticalmente o conteúdo das células selecionadas no centro</translation>
+      <translation>Conteúdo das células selecionadas alinhadas ao Centro na verticalmente</translation>
     </message>
   </context>
   <context>

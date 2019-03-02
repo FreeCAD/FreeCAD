@@ -4,712 +4,712 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../Draft.py" line="3349"/>
+      <location filename="../../Draft.py" line="3275"/>
       <source>Defines a hatch pattern</source>
       <translation>Definuje vzor šrafování</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3350"/>
+      <location filename="../../Draft.py" line="3276"/>
       <source>Sets the size of the pattern</source>
       <translation>Nastaví velikost vzoru</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3493"/>
+      <location filename="../../Draft.py" line="3419"/>
       <source>Startpoint of dimension</source>
       <translation>Počáteční bod rozměru</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3494"/>
+      <location filename="../../Draft.py" line="3420"/>
       <source>Endpoint of dimension</source>
       <translation>Koncový bod rozměru</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4022"/>
+      <location filename="../../Draft.py" line="3948"/>
       <source>Point through which the dimension line passes</source>
       <translation>Bod, přes který prochází rozměr</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4025"/>
+      <location filename="../../Draft.py" line="3951"/>
       <source>The object measured by this dimension</source>
       <translation>Objekt měřený tímto rozměrem</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4026"/>
+      <location filename="../../Draft.py" line="3952"/>
       <source>The geometry this dimension is linked to</source>
       <translation>Geometrie ke které je připojen tento rozměr</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4027"/>
+      <location filename="../../Draft.py" line="3953"/>
       <source>The measurement of this dimension</source>
       <translation>Měření tohoto rozměru</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3501"/>
+      <location filename="../../Draft.py" line="3427"/>
       <source>For arc/circle measurements, false = radius, true = diameter</source>
       <translation>Pro měření oblouku/kružnice, nepravda = rádius, pravda = průměr</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4049"/>
+      <location filename="../../Draft.py" line="3975"/>
       <source>Font size</source>
       <translation>Velikost písma</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4050"/>
+      <location filename="../../Draft.py" line="3976"/>
       <source>The number of decimals to show</source>
       <translation>Počet desetinných míst pro zobrazení</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4679"/>
+      <location filename="../../Draft.py" line="4605"/>
       <source>Arrow size</source>
       <translation>Velikost šipky</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4053"/>
+      <location filename="../../Draft.py" line="3979"/>
       <source>The spacing between the text and the dimension line</source>
       <translation>Mezera mezi textem a kótovací čarou</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4680"/>
+      <location filename="../../Draft.py" line="4606"/>
       <source>Arrow type</source>
       <translation>Typ šipky</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4051"/>
+      <location filename="../../Draft.py" line="3977"/>
       <source>Font name</source>
       <translation>Název písma</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6427"/>
+      <location filename="../../Draft.py" line="6353"/>
       <source>Line width</source>
       <translation>Tloušťka čáry</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6428"/>
+      <location filename="../../Draft.py" line="6354"/>
       <source>Line color</source>
       <translation>Barva čáry</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3583"/>
+      <location filename="../../Draft.py" line="3509"/>
       <source>Length of the extension lines</source>
       <translation>Délka vynášecích čar</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4057"/>
+      <location filename="../../Draft.py" line="3983"/>
       <source>Rotate the dimension arrows 180 degrees</source>
       <translation>Otočit kótovací šipky o 180°</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3587"/>
+      <location filename="../../Draft.py" line="3513"/>
       <source>Rotate the dimension text 180 degrees</source>
       <translation>Otočit text rozměru o 180°</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4058"/>
+      <location filename="../../Draft.py" line="3984"/>
       <source>Show the unit suffix</source>
       <translation type="unfinished">Show the unit suffix</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4059"/>
+      <location filename="../../Draft.py" line="3985"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation type="unfinished">The position of the text. Leave (0,0,0) for automatic position</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3590"/>
+      <location filename="../../Draft.py" line="3516"/>
       <source>Text override. Use $dim to insert the dimension length</source>
       <translation>Přepsání textu. Použijte $dim pro vložení kóty délky</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3591"/>
+      <location filename="../../Draft.py" line="3517"/>
       <source>A unit to express the measurement. Leave blank for system default</source>
       <translation>Jednotka pro popis měření. Ponechte prázdné pro výchozí nastavení</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4020"/>
+      <location filename="../../Draft.py" line="3946"/>
       <source>Start angle of the dimension</source>
       <translation>Počáteční úhel kóty</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4021"/>
+      <location filename="../../Draft.py" line="3947"/>
       <source>End angle of the dimension</source>
       <translation>Koncový úhel kóty</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4023"/>
+      <location filename="../../Draft.py" line="3949"/>
       <source>The center point of this dimension</source>
       <translation>Středový bod tohoto rozměru</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4024"/>
+      <location filename="../../Draft.py" line="3950"/>
       <source>The normal direction of this dimension</source>
       <translation>Normálový směr tohoto rozměru</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4060"/>
+      <location filename="../../Draft.py" line="3986"/>
       <source>Text override. Use 'dim' to insert the dimension length</source>
       <translation>Přepsání textu. Použijte 'dim' pro vložení kóty délky</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4363"/>
+      <location filename="../../Draft.py" line="4289"/>
       <source>Length of the rectangle</source>
       <translation>Délka obdélníku</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4779"/>
+      <location filename="../../Draft.py" line="4705"/>
       <source>Radius to use to fillet the corners</source>
       <translation>Rádius pro zaoblení rohů</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4780"/>
+      <location filename="../../Draft.py" line="4706"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>Velikost zkosení rohů</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4781"/>
+      <location filename="../../Draft.py" line="4707"/>
       <source>Create a face</source>
       <translation>Vytvořit plochu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4445"/>
+      <location filename="../../Draft.py" line="4371"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
       <translation>Definuje obrázek textury (přepíše vzory šrafování)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4478"/>
+      <location filename="../../Draft.py" line="4404"/>
       <source>Start angle of the arc</source>
       <translation>Počáteční bod oblouku</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4479"/>
+      <location filename="../../Draft.py" line="4405"/>
       <source>End angle of the arc (for a full circle, give it same value as First Angle)</source>
       <translation>Koncový úhel oblouku (pro celou kružnici použijte hodnotu Prvního úhlu)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4454"/>
+      <location filename="../../Draft.py" line="4380"/>
       <source>Radius of the circle</source>
       <translation>Poloměr kružnice</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4480"/>
+      <location filename="../../Draft.py" line="4406"/>
       <source>The minor radius of the ellipse</source>
       <translation>Vedlejší poloměr elipsy</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4481"/>
+      <location filename="../../Draft.py" line="4407"/>
       <source>The major radius of the ellipse</source>
       <translation>Hlavní poloměr elipsy</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4515"/>
+      <location filename="../../Draft.py" line="4441"/>
       <source>The vertices of the wire</source>
       <translation>Vrcholy drátu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4516"/>
+      <location filename="../../Draft.py" line="4442"/>
       <source>If the wire is closed or not</source>
       <translation>Je-li drát uzavřený nebo ne</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4519"/>
+      <location filename="../../Draft.py" line="4445"/>
       <source>The start point of this line</source>
       <translation>Počáteční bod této čáry</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4520"/>
+      <location filename="../../Draft.py" line="4446"/>
       <source>The end point of this line</source>
       <translation>Koncový bod této čáry</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4521"/>
+      <location filename="../../Draft.py" line="4447"/>
       <source>The length of this line</source>
       <translation>Délka této čáry</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4524"/>
+      <location filename="../../Draft.py" line="4450"/>
       <source>Create a face if this object is closed</source>
       <translation>Vytvořit plochu, je-li tento objekt uzavřený</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4525"/>
+      <location filename="../../Draft.py" line="4451"/>
       <source>The number of subdivisions of each edge</source>
       <translation>Počet dělení každé hrany</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4678"/>
+      <location filename="../../Draft.py" line="4604"/>
       <source>Displays a dim symbol at the end of the wire</source>
       <translation>Zobrazí dim symbol na konci drátu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4776"/>
+      <location filename="../../Draft.py" line="4702"/>
       <source>Number of faces</source>
       <translation>Počet ploch</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4777"/>
+      <location filename="../../Draft.py" line="4703"/>
       <source>Radius of the control circle</source>
       <translation>Poloměr řídící kružnice</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4778"/>
+      <location filename="../../Draft.py" line="4704"/>
       <source>How the polygon must be drawn from the control circle</source>
       <translation>Jak má být mnohoúhelník vytvořen z řídící kružnice</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4826"/>
+      <location filename="../../Draft.py" line="4752"/>
       <source>Projection direction</source>
       <translation>Směr projekce</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4827"/>
+      <location filename="../../Draft.py" line="4753"/>
       <source>The width of the lines inside this object</source>
       <translation>Šířka čar uvnitř tohoto objektu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4828"/>
+      <location filename="../../Draft.py" line="4754"/>
       <source>The size of the texts inside this object</source>
       <translation>Velikost textů uvnitř tohoto objektu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4829"/>
+      <location filename="../../Draft.py" line="4755"/>
       <source>The spacing between lines of text</source>
       <translation>Mezery mezi řádky textu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4830"/>
+      <location filename="../../Draft.py" line="4756"/>
       <source>The color of the projected objects</source>
       <translation>Barva promítnutých objektů</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4831"/>
+      <location filename="../../Draft.py" line="4757"/>
       <source>The linked object</source>
       <translation>Propojený objekt</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4832"/>
+      <location filename="../../Draft.py" line="4758"/>
       <source>Shape Fill Style</source>
       <translation>Styl výplně tvaru</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4833"/>
+      <location filename="../../Draft.py" line="4759"/>
       <source>Line Style</source>
       <translation>Styl čáry</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4834"/>
+      <location filename="../../Draft.py" line="4760"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation type="unfinished">If checked, source objects are displayed regardless of being visible in the 3D model</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4893"/>
+      <location filename="../../Draft.py" line="4819"/>
       <source>Create a face if this spline is closed</source>
       <translation>Vytvořit plochu, je-li tento splajn uzavřený</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4901"/>
+      <location filename="../../Draft.py" line="4827"/>
       <source>Parameterization factor</source>
       <translation>Faktor parametrizace</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4966"/>
+      <location filename="../../Draft.py" line="4892"/>
       <source>The points of the Bezier curve</source>
       <translation>Body Beziérovy křivky</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4967"/>
+      <location filename="../../Draft.py" line="4893"/>
       <source>The degree of the Bezier function</source>
       <translation>Stupeň Beziérovy funkce</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4968"/>
+      <location filename="../../Draft.py" line="4894"/>
       <source>Continuity</source>
       <translation>Pokračování</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4969"/>
+      <location filename="../../Draft.py" line="4895"/>
       <source>If the Bezier curve should be closed or not</source>
       <translation>Má-li být Beziérova křivka uzavřená nebo ne</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4970"/>
+      <location filename="../../Draft.py" line="4896"/>
       <source>Create a face if this curve is closed</source>
       <translation>Vytvořit plochu, je-li tato křivka uzavřená</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5090"/>
+      <location filename="../../Draft.py" line="5016"/>
       <source>The components of this block</source>
       <translation>Komponenty tohoto bloku</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5108"/>
+      <location filename="../../Draft.py" line="5034"/>
       <source>The base object this 2D view must represent</source>
       <translation>Základní objekt, který má reprezentovat tento 2D pohled</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5109"/>
+      <location filename="../../Draft.py" line="5035"/>
       <source>The projection vector of this object</source>
       <translation>Vektor projekce tohoto objektu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5110"/>
+      <location filename="../../Draft.py" line="5036"/>
       <source>The way the viewed object must be projected</source>
       <translation>Způsob kterým má být objekt promítnut</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5111"/>
+      <location filename="../../Draft.py" line="5037"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
       <translation>Indexy ploch při promítání v módu Individuální plochy</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5112"/>
+      <location filename="../../Draft.py" line="5038"/>
       <source>Show hidden lines</source>
       <translation>Zobrazit skryté čáry</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5359"/>
+      <location filename="../../Draft.py" line="5285"/>
       <source>The base object that must be duplicated</source>
       <translation>Základní objekt který má být duplikován</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5259"/>
+      <location filename="../../Draft.py" line="5185"/>
       <source>The type of array to create</source>
       <translation>Typ pole, které má být vytvořeno</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5260"/>
+      <location filename="../../Draft.py" line="5186"/>
       <source>The axis direction</source>
       <translation>Směr osy</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5261"/>
+      <location filename="../../Draft.py" line="5187"/>
       <source>Number of copies in X direction</source>
       <translation>Poče kopií ve směru X</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5262"/>
+      <location filename="../../Draft.py" line="5188"/>
       <source>Number of copies in Y direction</source>
       <translation>Počet kopií ve směru Y</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5263"/>
+      <location filename="../../Draft.py" line="5189"/>
       <source>Number of copies in Z direction</source>
       <translation>Počet kopií ve směru Z</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5362"/>
+      <location filename="../../Draft.py" line="5288"/>
       <source>Number of copies</source>
       <translation>Počet kopií</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5265"/>
+      <location filename="../../Draft.py" line="5191"/>
       <source>Distance and orientation of intervals in X direction</source>
       <translation>Délka a orientace intervalů ve směru X</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5266"/>
+      <location filename="../../Draft.py" line="5192"/>
       <source>Distance and orientation of intervals in Y direction</source>
       <translation>Délka a orientace intervalů ve směru Y</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5267"/>
+      <location filename="../../Draft.py" line="5193"/>
       <source>Distance and orientation of intervals in Z direction</source>
       <translation>Délka a orientace intervalů ve směru Z</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5268"/>
+      <location filename="../../Draft.py" line="5194"/>
       <source>Distance and orientation of intervals in Axis direction</source>
       <translation>Délka a orientace intervalů ve směru osy</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5269"/>
+      <location filename="../../Draft.py" line="5195"/>
       <source>Center point</source>
       <translation>Počátek</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5270"/>
+      <location filename="../../Draft.py" line="5196"/>
       <source>Angle to cover with copies</source>
       <translation>Úhel pokrytý kopiemi</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5271"/>
+      <location filename="../../Draft.py" line="5197"/>
       <source>Specifies if copies must be fused (slower)</source>
       <translation>Určuje, jestli mají být kopie sloučny (pomalejší)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5360"/>
+      <location filename="../../Draft.py" line="5286"/>
       <source>The path object along which to distribute objects</source>
       <translation>Objekt trajektorie, po které se mají objekty rozmístit</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5361"/>
+      <location filename="../../Draft.py" line="5287"/>
       <source>Selected subobjects (edges) of PathObj</source>
       <translation>Vybrané podobjekty (hrany) z PathObj</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5363"/>
+      <location filename="../../Draft.py" line="5289"/>
       <source>Optional translation vector</source>
       <translation>Volitelný translační vektor</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5364"/>
+      <location filename="../../Draft.py" line="5290"/>
       <source>Orientation of Base along path</source>
       <translation>Orientace základny podél trajektorie</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5574"/>
+      <location filename="../../Draft.py" line="5500"/>
       <source>X Location</source>
       <translation>Poloha X</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5575"/>
+      <location filename="../../Draft.py" line="5501"/>
       <source>Y Location</source>
       <translation>Poloha Y</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5576"/>
+      <location filename="../../Draft.py" line="5502"/>
       <source>Z Location</source>
       <translation>Poloha Z</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5779"/>
+      <location filename="../../Draft.py" line="5705"/>
       <source>Text string</source>
       <translation>Textový řetězec</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5780"/>
+      <location filename="../../Draft.py" line="5706"/>
       <source>Font file name</source>
       <translation>Název souboru písma</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5781"/>
+      <location filename="../../Draft.py" line="5707"/>
       <source>Height of text</source>
       <translation>Výška textu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5782"/>
+      <location filename="../../Draft.py" line="5708"/>
       <source>Inter-character spacing</source>
       <translation>Rozestupy mezi znaky</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5924"/>
+      <location filename="../../Draft.py" line="5850"/>
       <source>Linked faces</source>
       <translation>Propojené plochy</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5925"/>
+      <location filename="../../Draft.py" line="5851"/>
       <source>Specifies if splitter lines must be removed</source>
       <translation>Specifikuje, jestli mají být odstraněny dělící čáry</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5926"/>
+      <location filename="../../Draft.py" line="5852"/>
       <source>An optional extrusion value to be applied to all faces</source>
       <translation>Hodnota volitelného vysunutí pro všechny plochy</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4364"/>
+      <location filename="../../Draft.py" line="4290"/>
       <source>Height of the rectangle</source>
       <translation>Výška obdélníku</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4368"/>
+      <location filename="../../Draft.py" line="4294"/>
       <source>Horizontal subdivisions of this rectangle</source>
       <translation>Horizontální dělení tohoto obdélníku</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4369"/>
+      <location filename="../../Draft.py" line="4295"/>
       <source>Vertical subdivisions of this rectangle</source>
       <translation>Vertikální dělení tohoto obdélníku</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6644"/>
+      <location filename="../../Draft.py" line="6570"/>
       <source>The placement of this object</source>
       <translation>Umístění tohoto objektu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6138"/>
+      <location filename="../../Draft.py" line="6064"/>
       <source>The display length of this section plane</source>
       <translation type="unfinished">The display length of this section plane</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6139"/>
+      <location filename="../../Draft.py" line="6065"/>
       <source>The size of the arrows of this section plane</source>
       <translation type="unfinished">The size of the arrows of this section plane</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5114"/>
+      <location filename="../../Draft.py" line="5040"/>
       <source>For Cutlines and Cutfaces modes, this leaves the faces at the cut location</source>
       <translation>V módu Dělicích čar a Dělicích ploch zůstanou plochy v místě řezu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4517"/>
+      <location filename="../../Draft.py" line="4443"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
       <translation>Základním objektem je drát složený ze 2 objeků</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4518"/>
+      <location filename="../../Draft.py" line="4444"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
       <translation>Nástrojovým objektem je drát složený ze 2 objeků</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6339"/>
+      <location filename="../../Draft.py" line="6265"/>
       <source>The length of the straight segment</source>
       <translation>Délka přímého segmentu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6340"/>
+      <location filename="../../Draft.py" line="6266"/>
       <source>The point indicated by this label</source>
       <translation>Bod označený tímto popiskem</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6341"/>
+      <location filename="../../Draft.py" line="6267"/>
       <source>The points defining the label polyline</source>
       <translation>Body definující lomenou čáru popisku</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6342"/>
+      <location filename="../../Draft.py" line="6268"/>
       <source>The direction of the straight segment</source>
       <translation>Směř přímého úseku</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6343"/>
+      <location filename="../../Draft.py" line="6269"/>
       <source>The type of information shown by this label</source>
       <translation>Typ informace zobrazené tímto popiskem</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6344"/>
+      <location filename="../../Draft.py" line="6270"/>
       <source>The target object of this label</source>
       <translation>Cílový objekt tohoto popisku</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6345"/>
+      <location filename="../../Draft.py" line="6271"/>
       <source>The text to display when type is set to custom</source>
       <translation>Text pro zobrazení, když je typ nastaven na Vlastní</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6346"/>
+      <location filename="../../Draft.py" line="6272"/>
       <source>The text displayed by this label</source>
       <translation>Text zobrazený tímto popiskem</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6657"/>
+      <location filename="../../Draft.py" line="6583"/>
       <source>The size of the text</source>
       <translation>Velikost textu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6658"/>
+      <location filename="../../Draft.py" line="6584"/>
       <source>The font of the text</source>
       <translation>Písmo textu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6422"/>
+      <location filename="../../Draft.py" line="6348"/>
       <source>The size of the arrow</source>
       <translation>Velikost šipky</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6659"/>
+      <location filename="../../Draft.py" line="6585"/>
       <source>The vertical alignment of the text</source>
       <translation>Svislé zarovnání textu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6424"/>
+      <location filename="../../Draft.py" line="6350"/>
       <source>The type of arrow of this label</source>
       <translation>Typ šipky tohoto popisku</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6425"/>
+      <location filename="../../Draft.py" line="6351"/>
       <source>The type of frame around the text of this object</source>
       <translation>Typ rámečku kolem textu tohoto objektu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6660"/>
+      <location filename="../../Draft.py" line="6586"/>
       <source>Text color</source>
       <translation>Barva textu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6430"/>
+      <location filename="../../Draft.py" line="6356"/>
       <source>The maximum number of characters on each line of the text box</source>
       <translation>Maximální počet znaků na každém řádku textového pole</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3584"/>
+      <location filename="../../Draft.py" line="3510"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation>Vzdálenost kótovací čáry je rozšířena za rozšiřitelnost čáry</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3585"/>
+      <location filename="../../Draft.py" line="3511"/>
       <source>Length of the extension line above the dimension line</source>
       <translation>Délka prodloužení nad kótovací čárou</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4891"/>
+      <location filename="../../Draft.py" line="4817"/>
       <source>The points of the B-spline</source>
       <translation>Body B-splajnu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4892"/>
+      <location filename="../../Draft.py" line="4818"/>
       <source>If the B-spline is closed or not</source>
       <translation>Je-li B-splajn uzavřený nebo ne</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5113"/>
+      <location filename="../../Draft.py" line="5039"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
       <translation>Teselovat Elipsy a B-splajny na segmenty čar</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5115"/>
+      <location filename="../../Draft.py" line="5041"/>
       <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
       <translation>Délka čar segmentů při teselaci Elips a B-splajnů na segmenty čar</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5116"/>
+      <location filename="../../Draft.py" line="5042"/>
       <source>If this is True, this object will be recomputed only if it is visible</source>
       <translation>Je-li to pravda, objekt bude přepočítán pouze, když je viditelný</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5524"/>
+      <location filename="../../Draft.py" line="5450"/>
       <source>Base</source>
       <translation>Základna</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5525"/>
+      <location filename="../../Draft.py" line="5451"/>
       <source>PointList</source>
       <translation>Body</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5526"/>
+      <location filename="../../Draft.py" line="5452"/>
       <source>Count</source>
       <translation>Počet</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5612"/>
+      <location filename="../../Draft.py" line="5538"/>
       <source>The objects included in this clone</source>
       <translation>Objekty zahrnuté v tomto klonování</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5613"/>
+      <location filename="../../Draft.py" line="5539"/>
       <source>The scale factor of this clone</source>
       <translation>Měřítko klonování</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5614"/>
+      <location filename="../../Draft.py" line="5540"/>
       <source>If this clones several objects, this specifies if the result is a fusion or a compound</source>
       <translation>Při klonování několika objektů se tímto určuje, má-li být výsledek sloučením nebo složeninou</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5927"/>
+      <location filename="../../Draft.py" line="5853"/>
       <source>This specifies if the shapes sew</source>
       <translation>To určuje, zda je obrazec přišitý</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6426"/>
+      <location filename="../../Draft.py" line="6352"/>
       <source>Display a leader line or not</source>
       <translation>Zobrazit vodící čáry</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6645"/>
+      <location filename="../../Draft.py" line="6571"/>
       <source>The text displayed by this object</source>
       <translation>Text zobrazený tímto objektem</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6661"/>
+      <location filename="../../Draft.py" line="6587"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Rozteč řádků (vzhledem k velikosti písma)</translation>
     </message>
@@ -717,7 +717,7 @@
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../DraftTools.py" line="5419"/>
+      <location filename="../../DraftTools.py" line="5349"/>
       <source>Slope</source>
       <translation>Sklon</translation>
     </message>
@@ -733,62 +733,62 @@ Kompletní instrukce na
 http://www.freecadweb.org/wiki/Dxf_Importer_Install</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2360"/>
+      <location filename="../../DraftGui.py" line="2345"/>
       <source>Scale</source>
       <translation>Změna velikosti</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6179"/>
+      <location filename="../../Draft.py" line="6105"/>
       <source>Writing camera position</source>
       <translation>Zápis polohy kamery</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6196"/>
+      <location filename="../../Draft.py" line="6122"/>
       <source>Writing objects shown/hidden state</source>
       <translation>Zápis stavu skrytých/zobrazených objektů</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2361"/>
+      <location filename="../../DraftGui.py" line="2346"/>
       <source>X factor</source>
       <translation>Měřítko X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2362"/>
+      <location filename="../../DraftGui.py" line="2347"/>
       <source>Y factor</source>
       <translation>Měřítko Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2363"/>
+      <location filename="../../DraftGui.py" line="2348"/>
       <source>Z factor</source>
       <translation>Měřítko Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2364"/>
+      <location filename="../../DraftGui.py" line="2349"/>
       <source>Uniform scaling</source>
       <translation>Rovnoměrné měřítko</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2365"/>
+      <location filename="../../DraftGui.py" line="2350"/>
       <source>Working plane orientation</source>
       <translation>Orientace pracovní roviny</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2366"/>
+      <location filename="../../DraftGui.py" line="2351"/>
       <source>Result</source>
       <translation>Výsledek</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2367"/>
+      <location filename="../../DraftGui.py" line="2352"/>
       <source>Create a clone</source>
       <translation>Vytvořit kopii</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2368"/>
+      <location filename="../../DraftGui.py" line="2353"/>
       <source>Modify original</source>
       <translation>Upravit originál</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2369"/>
+      <location filename="../../DraftGui.py" line="2354"/>
       <source>Create a copy</source>
       <translation>Vytvořit kopii</translation>
     </message>
@@ -802,17 +802,17 @@ Nainstalujte prosím manuálně doplněk dxf-library
 z menu Nástroje -&gt; Manažer doplňků</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4769"/>
+      <location filename="../../Draft.py" line="4695"/>
       <source>This Wire is already flat</source>
       <translation>Drát je již plochý</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2370"/>
+      <location filename="../../DraftGui.py" line="2355"/>
       <source>Pick from/to points</source>
       <translation>Výběr z / do bodů</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5425"/>
+      <location filename="../../DraftTools.py" line="5355"/>
       <source>Slope to give selected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down</source>
       <translation>Sklon pro vybrané Dráty/Čáry: 0 = horizontální, 1 = 45° nahoru, -1 = 45° dolů</translation>
     </message>
@@ -868,12 +868,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="../../DraftTools.py" line="5661"/>
+      <location filename="../../DraftTools.py" line="5591"/>
       <source>Add to Construction group</source>
       <translation>Přidat do Konstrukční skupiny</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5662"/>
+      <location filename="../../DraftTools.py" line="5592"/>
       <source>Adds the selected objects to the Construction group</source>
       <translation>Přidá vybrané objekty do Konstrukční skupiny</translation>
     </message>
@@ -881,12 +881,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_AddPoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="4714"/>
+      <location filename="../../DraftTools.py" line="4644"/>
       <source>Add Point</source>
       <translation>Přidat bod</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4715"/>
+      <location filename="../../DraftTools.py" line="4645"/>
       <source>Adds a point to an existing Wire or B-spline</source>
       <translation>Přidá bod do stávajícího drátu nebo B-splajnu</translation>
     </message>
@@ -894,12 +894,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4667"/>
+      <location filename="../../DraftTools.py" line="4597"/>
       <source>Move to group...</source>
       <translation>Přesunout do skupiny...</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4668"/>
+      <location filename="../../DraftTools.py" line="4598"/>
       <source>Moves the selected object(s) to an existing group</source>
       <translation>Přesune vybrané objekty do existující skupiny</translation>
     </message>
@@ -907,12 +907,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_ApplyStyle</name>
     <message>
-      <location filename="../../DraftTools.py" line="2478"/>
+      <location filename="../../DraftTools.py" line="2476"/>
       <source>Apply Current Style</source>
       <translation>Použít aktuální styl</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2479"/>
+      <location filename="../../DraftTools.py" line="2477"/>
       <source>Applies current line width and color to selected objects</source>
       <translation>Použít aktuální tloušťku čáry a barvu na vybrané objekty</translation>
     </message>
@@ -933,12 +933,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Array</name>
     <message>
-      <location filename="../../DraftTools.py" line="4936"/>
+      <location filename="../../DraftTools.py" line="4866"/>
       <source>Array</source>
       <translation>Pole</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4937"/>
+      <location filename="../../DraftTools.py" line="4867"/>
       <source>Creates a polar or rectangular array from a selected object</source>
       <translation>Vytvoří polární nebo obdelníkové pole z vybraných objektů</translation>
     </message>
@@ -946,12 +946,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="5460"/>
+      <location filename="../../DraftTools.py" line="5390"/>
       <source>AutoGroup</source>
       <translation>Automatické seskupování</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5461"/>
+      <location filename="../../DraftTools.py" line="5391"/>
       <source>Select a group to automatically add all Draft &amp; Arch objects to</source>
       <translation>Vyberte skupinu, do které budou automaticky přidány všechny Draft a Arch objekty</translation>
     </message>
@@ -985,12 +985,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Circle</name>
     <message>
-      <location filename="../../DraftTools.py" line="1488"/>
+      <location filename="../../DraftTools.py" line="1486"/>
       <source>Circle</source>
       <translation>Kruh</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1489"/>
+      <location filename="../../DraftTools.py" line="1487"/>
       <source>Creates a circle. CTRL to snap, ALT to select tangent objects</source>
       <translation>Vytvoří kruh. CTRL pro přichycení, ALT vybere objekty na tangentě</translation>
     </message>
@@ -998,12 +998,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Clone</name>
     <message>
-      <location filename="../../DraftTools.py" line="5128"/>
+      <location filename="../../DraftTools.py" line="5058"/>
       <source>Clone</source>
       <translation>Klon</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5129"/>
+      <location filename="../../DraftTools.py" line="5059"/>
       <source>Clones the selected object(s)</source>
       <translation>Naklonuje vybrané objekty</translation>
     </message>
@@ -1024,12 +1024,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_DelPoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="4739"/>
+      <location filename="../../DraftTools.py" line="4669"/>
       <source>Remove Point</source>
       <translation>Odstranit bod</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4740"/>
+      <location filename="../../DraftTools.py" line="4670"/>
       <source>Removes a point from an existing Wire or B-spline</source>
       <translation>Odstraní bod z existujícího drátu nebo B-splajnu</translation>
     </message>
@@ -1037,12 +1037,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Dimension</name>
     <message>
-      <location filename="../../DraftTools.py" line="1885"/>
+      <location filename="../../DraftTools.py" line="1883"/>
       <source>Dimension</source>
       <translation>Rozměr</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1886"/>
+      <location filename="../../DraftTools.py" line="1884"/>
       <source>Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment</source>
       <translation>Vytvoří rozměr. CTRL pro přichycení, SHIFT pro omezení, ALT vybere segment</translation>
     </message>
@@ -1050,12 +1050,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Downgrade</name>
     <message>
-      <location filename="../../DraftTools.py" line="3317"/>
+      <location filename="../../DraftTools.py" line="3250"/>
       <source>Downgrade</source>
       <translation>Ponížení</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3318"/>
+      <location filename="../../DraftTools.py" line="3251"/>
       <source>Explodes the selected objects into simpler objects, or subtracts faces</source>
       <translation>Rozloží vybrané objekty na jednodušší objekty nebo odečte plochy</translation>
     </message>
@@ -1063,12 +1063,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Draft2Sketch</name>
     <message>
-      <location filename="../../DraftTools.py" line="4878"/>
+      <location filename="../../DraftTools.py" line="4808"/>
       <source>Draft to Sketch</source>
       <translation>Skica z Návrhu</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4879"/>
+      <location filename="../../DraftTools.py" line="4809"/>
       <source>Convert bidirectionally between Draft and Sketch objects</source>
       <translation>Převést vzájemně mezi objekty Návrhu a Skici</translation>
     </message>
@@ -1076,12 +1076,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Drawing</name>
     <message>
-      <location filename="../../DraftTools.py" line="3922"/>
+      <location filename="../../DraftTools.py" line="3855"/>
       <source>Drawing</source>
       <translation>Výkres</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3923"/>
+      <location filename="../../DraftTools.py" line="3856"/>
       <source>Puts the selected objects on a Drawing sheet</source>
       <translation>Umístí vybrané objekty na list výkresu</translation>
     </message>
@@ -1089,12 +1089,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Edit</name>
     <message>
-      <location filename="../../DraftTools.py" line="4027"/>
+      <location filename="../../DraftTools.py" line="3960"/>
       <source>Edit</source>
       <translation>Upravit</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4028"/>
+      <location filename="../../DraftTools.py" line="3961"/>
       <source>Edits the active object</source>
       <translation>Upravuje aktivní objekt</translation>
     </message>
@@ -1102,12 +1102,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Ellipse</name>
     <message>
-      <location filename="../../DraftTools.py" line="1683"/>
+      <location filename="../../DraftTools.py" line="1681"/>
       <source>Ellipse</source>
       <translation>Elipsa</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1684"/>
+      <location filename="../../DraftTools.py" line="1682"/>
       <source>Creates an ellipse. CTRL to snap</source>
       <translation>Vytvoří elipsu. Stiskni CTRL pro přichycení.</translation>
     </message>
@@ -1115,12 +1115,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Facebinder</name>
     <message>
-      <location filename="../../DraftTools.py" line="5213"/>
+      <location filename="../../DraftTools.py" line="5143"/>
       <source>Facebinder</source>
       <translation>Svázat plochy</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5214"/>
+      <location filename="../../DraftTools.py" line="5144"/>
       <source>Creates a facebinder object from selected face(s)</source>
       <translation>Vytvoří objekt svázaných ploch z vybraných ploch</translation>
     </message>
@@ -1141,12 +1141,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_FlipDimension</name>
     <message>
-      <location filename="../../DraftTools.py" line="5242"/>
+      <location filename="../../DraftTools.py" line="5172"/>
       <source>Flip Dimension</source>
       <translation>Obrať rozměr</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5243"/>
+      <location filename="../../DraftTools.py" line="5173"/>
       <source>Flip the normal direction of a dimension</source>
       <translation>Obrátí směr normály rozměru</translation>
     </message>
@@ -1154,38 +1154,25 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Heal</name>
     <message>
-      <location filename="../../DraftTools.py" line="5194"/>
+      <location filename="../../DraftTools.py" line="5124"/>
       <source>Heal</source>
       <translation>Léčit</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5195"/>
+      <location filename="../../DraftTools.py" line="5125"/>
       <source>Heal faulty Draft objects saved from an earlier FreeCAD version</source>
       <translation>Léčí objekty Návrhu uložené v dřívějších verzích FreeCADu</translation>
     </message>
   </context>
   <context>
-    <name>Draft_Join</name>
-    <message>
-      <location filename="../../DraftTools.py" line="3221"/>
-      <source>Join</source>
-      <translation>Spojit</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3222"/>
-      <source>Joins two wires together</source>
-      <translation>Spojí dohromady dva dráty</translation>
-    </message>
-  </context>
-  <context>
     <name>Draft_Label</name>
     <message>
-      <location filename="../../DraftTools.py" line="5528"/>
+      <location filename="../../DraftTools.py" line="5458"/>
       <source>Label</source>
       <translation type="unfinished">Label</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5529"/>
+      <location filename="../../DraftTools.py" line="5459"/>
       <source>Creates a label, optionally attached to a selected object or element</source>
       <translation>Vytvoří popisek, volitelně připojený k vybranému objektu nebo elementu</translation>
     </message>
@@ -1206,12 +1193,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Mirror</name>
     <message>
-      <location filename="../../DraftTools.py" line="5283"/>
+      <location filename="../../DraftTools.py" line="5213"/>
       <source>Mirror</source>
       <translation>Zrcadlit</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5284"/>
+      <location filename="../../DraftTools.py" line="5214"/>
       <source>Mirrors the selected objects along a line defined by two points</source>
       <translation>Ozrcadlí vybrané objekty podél čáry definované dvěma body</translation>
     </message>
@@ -1219,12 +1206,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Move</name>
     <message>
-      <location filename="../../DraftTools.py" line="2359"/>
+      <location filename="../../DraftTools.py" line="2357"/>
       <source>Move</source>
       <translation>Přesun</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2360"/>
+      <location filename="../../DraftTools.py" line="2358"/>
       <source>Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Přesune vybrané objekty mezi 2 body. CTRL pro přichycení, SHIFT pro omezení, ALT pro kopírování</translation>
     </message>
@@ -1232,12 +1219,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Offset</name>
     <message>
-      <location filename="../../DraftTools.py" line="2700"/>
+      <location filename="../../DraftTools.py" line="2698"/>
       <source>Offset</source>
       <translation>Odstup</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2701"/>
+      <location filename="../../DraftTools.py" line="2699"/>
       <source>Offsets the active object. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Posune aktivní objekt. CTRL pro přichycení, SHIFT pro omezení, ALT pro kopírování</translation>
     </message>
@@ -1245,12 +1232,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_PathArray</name>
     <message>
-      <location filename="../../DraftTools.py" line="4966"/>
+      <location filename="../../DraftTools.py" line="4896"/>
       <source>PathArray</source>
       <translation>Dráha pole</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4967"/>
+      <location filename="../../DraftTools.py" line="4897"/>
       <source>Creates copies of a selected object along a selected path.</source>
       <translation>Vytvoří kopije z vybraných objektů podél vybrané dráhy.</translation>
     </message>
@@ -1258,12 +1245,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Point</name>
     <message>
-      <location filename="../../DraftTools.py" line="5033"/>
+      <location filename="../../DraftTools.py" line="4963"/>
       <source>Point</source>
       <translation>Bod</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5034"/>
+      <location filename="../../DraftTools.py" line="4964"/>
       <source>Creates a point object</source>
       <translation>Vytvoří bodový objekt</translation>
     </message>
@@ -1271,12 +1258,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_PointArray</name>
     <message>
-      <location filename="../../DraftTools.py" line="5002"/>
+      <location filename="../../DraftTools.py" line="4932"/>
       <source>PointArray</source>
       <translation>Bodové pole</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5003"/>
+      <location filename="../../DraftTools.py" line="4933"/>
       <source>Creates copies of a selected object on the position of points.</source>
       <translation>Vytvoří kopii vybraného objektu na pozici bodů.</translation>
     </message>
@@ -1284,12 +1271,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Polygon</name>
     <message>
-      <location filename="../../DraftTools.py" line="1498"/>
+      <location filename="../../DraftTools.py" line="1496"/>
       <source>Polygon</source>
       <translation>Mnohoúhelník</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1499"/>
+      <location filename="../../DraftTools.py" line="1497"/>
       <source>Creates a regular polygon. CTRL to snap, SHIFT to constrain</source>
       <translation>Vytváří pravidelný mnohoúhelník. CTRL pro přichycení, SHIFT pro omezení</translation>
     </message>
@@ -1310,12 +1297,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Rotate</name>
     <message>
-      <location filename="../../DraftTools.py" line="2516"/>
+      <location filename="../../DraftTools.py" line="2514"/>
       <source>Rotate</source>
       <translation>Rotace</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2517"/>
+      <location filename="../../DraftTools.py" line="2515"/>
       <source>Rotates the selected objects. CTRL to snap, SHIFT to constrain, ALT creates a copy</source>
       <translation>Otočí vybrané objekty. CTRL pro přichycení, SHIFT pro omezení, ALT vytvoří kopii</translation>
     </message>
@@ -1323,12 +1310,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Scale</name>
     <message>
-      <location filename="../../DraftTools.py" line="3768"/>
+      <location filename="../../DraftTools.py" line="3701"/>
       <source>Scale</source>
       <translation>Změna velikosti</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3769"/>
+      <location filename="../../DraftTools.py" line="3702"/>
       <source>Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Změní velikost vybraných objektů ze základního bodu. CTRL pro přichycení, SHIFT pro omezení, ALT pro kopírování</translation>
     </message>
@@ -1336,12 +1323,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4806"/>
+      <location filename="../../DraftTools.py" line="4736"/>
       <source>Select group</source>
       <translation>Vybrat skupinu</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4807"/>
+      <location filename="../../DraftTools.py" line="4737"/>
       <source>Selects all objects with the same parents as this group</source>
       <translation>Vybere všechyn objekty se společnými předky jako skupinu</translation>
     </message>
@@ -1362,12 +1349,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
     <message>
-      <location filename="../../DraftTools.py" line="5505"/>
+      <location filename="../../DraftTools.py" line="5435"/>
       <source>Creates a proxy object from the current working plane</source>
       <translation>Vytvoří náhradní objekt ze současné pracovní plochy</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5504"/>
+      <location filename="../../DraftTools.py" line="5434"/>
       <source>Create Working Plane Proxy</source>
       <translation>Vytvořit náhradní pracovní rovinu</translation>
     </message>
@@ -1375,12 +1362,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="../../DraftTools.py" line="4838"/>
+      <location filename="../../DraftTools.py" line="4768"/>
       <source>Shape 2D view</source>
       <translation>2D průmět</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4839"/>
+      <location filename="../../DraftTools.py" line="4769"/>
       <source>Creates Shape 2D views of selected objects</source>
       <translation>Vytvoří 2D průmět vybraných objektů</translation>
     </message>
@@ -1388,12 +1375,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_ShapeString</name>
     <message>
-      <location filename="../../DraftTools.py" line="2226"/>
+      <location filename="../../DraftTools.py" line="2224"/>
       <source>Shape from text...</source>
       <translation>Obrazec z textu...</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2227"/>
+      <location filename="../../DraftTools.py" line="2225"/>
       <source>Creates text string in shapes.</source>
       <translation>Vytvoří text v obrazci.</translation>
     </message>
@@ -1401,12 +1388,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="../../DraftTools.py" line="5110"/>
+      <location filename="../../DraftTools.py" line="5040"/>
       <source>Show Snap Bar</source>
       <translation>Zobrazit přichytávací panel</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5111"/>
+      <location filename="../../DraftTools.py" line="5041"/>
       <source>Shows Draft snap toolbar</source>
       <translation>Zobrazit Přichytávací nástrojový panel</translation>
     </message>
@@ -1414,12 +1401,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Slope</name>
     <message>
-      <location filename="../../DraftTools.py" line="5405"/>
+      <location filename="../../DraftTools.py" line="5335"/>
       <source>Set Slope</source>
       <translation>Nastavit sklon</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5406"/>
+      <location filename="../../DraftTools.py" line="5336"/>
       <source>Sets the slope of a selected Line or Wire</source>
       <translation>Nastaví sklon vybrané čáry nebo drátu</translation>
     </message>
@@ -1427,12 +1414,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="../../DraftTools.py" line="5778"/>
+      <location filename="../../DraftTools.py" line="5708"/>
       <source>Angles</source>
       <translation>Úhly</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5779"/>
+      <location filename="../../DraftTools.py" line="5709"/>
       <source>Snaps to 45 and 90 degrees points on arcs and circles</source>
       <translation>Zachytávání na bodech po 45 a 90 stupňích na kruzích a elipsách</translation>
     </message>
@@ -1440,12 +1427,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="../../DraftTools.py" line="5790"/>
+      <location filename="../../DraftTools.py" line="5720"/>
       <source>Center</source>
       <translation>Střed</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5791"/>
+      <location filename="../../DraftTools.py" line="5721"/>
       <source>Snaps to center of circles and arcs</source>
       <translation>Přichytit na střed kruhů nebo oblouků</translation>
     </message>
@@ -1453,12 +1440,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="../../DraftTools.py" line="5850"/>
+      <location filename="../../DraftTools.py" line="5780"/>
       <source>Dimensions</source>
       <translation>Rozměry</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5851"/>
+      <location filename="../../DraftTools.py" line="5781"/>
       <source>Shows temporary dimensions when snapping to Arch objects</source>
       <translation>Zobrazuje dočasný rozměr když se přichytává k objektům</translation>
     </message>
@@ -1466,12 +1453,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="5766"/>
+      <location filename="../../DraftTools.py" line="5696"/>
       <source>Endpoint</source>
       <translation>Koncový bod</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5767"/>
+      <location filename="../../DraftTools.py" line="5697"/>
       <source>Snaps to endpoints of edges</source>
       <translation>Přichytí do koncového bodu hrany</translation>
     </message>
@@ -1479,12 +1466,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="../../DraftTools.py" line="5802"/>
+      <location filename="../../DraftTools.py" line="5732"/>
       <source>Extension</source>
       <translation>Prodloužit</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5803"/>
+      <location filename="../../DraftTools.py" line="5733"/>
       <source>Snaps to extension of edges</source>
       <translation>Přichytí do prodloužení hrany</translation>
     </message>
@@ -1492,12 +1479,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="../../DraftTools.py" line="5730"/>
+      <location filename="../../DraftTools.py" line="5660"/>
       <source>Grid</source>
       <translation>Mřížka</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5731"/>
+      <location filename="../../DraftTools.py" line="5661"/>
       <source>Snaps to grid points</source>
       <translation>Přichytí na body mřížky</translation>
     </message>
@@ -1505,12 +1492,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="../../DraftTools.py" line="5742"/>
+      <location filename="../../DraftTools.py" line="5672"/>
       <source>Intersection</source>
       <translation>Průnik</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5743"/>
+      <location filename="../../DraftTools.py" line="5673"/>
       <source>Snaps to edges intersections</source>
       <translation>Přichytí na průsečík hran</translation>
     </message>
@@ -1518,17 +1505,17 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="../../DraftTools.py" line="5696"/>
+      <location filename="../../DraftTools.py" line="5626"/>
       <source>Toggle On/Off</source>
       <translation>Přepínač On/Off</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5697"/>
+      <location filename="../../DraftTools.py" line="5627"/>
       <source>Activates/deactivates all snap tools at once</source>
       <translation>Aktivace/deaktivace všech nástrojů najednou</translation>
     </message>
     <message>
-      <location filename="../../DraftSnap.py" line="1266"/>
+      <location filename="../../DraftSnap.py" line="1259"/>
       <source>Lock</source>
       <translation>Zamknout</translation>
     </message>
@@ -1536,12 +1523,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="5706"/>
+      <location filename="../../DraftTools.py" line="5636"/>
       <source>Midpoint</source>
       <translation>Bod uprostřed</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5707"/>
+      <location filename="../../DraftTools.py" line="5637"/>
       <source>Snaps to midpoints of edges</source>
       <translation>Přichytí na bod uprostřed hrany</translation>
     </message>
@@ -1549,12 +1536,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="../../DraftTools.py" line="5814"/>
+      <location filename="../../DraftTools.py" line="5744"/>
       <source>Nearest</source>
       <translation>Nejbližší</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5815"/>
+      <location filename="../../DraftTools.py" line="5745"/>
       <source>Snaps to nearest point on edges</source>
       <translation>Přichytí k nejbližšímu bodu hrany</translation>
     </message>
@@ -1562,12 +1549,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="../../DraftTools.py" line="5826"/>
+      <location filename="../../DraftTools.py" line="5756"/>
       <source>Ortho</source>
       <translation>Pravoůhle</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5827"/>
+      <location filename="../../DraftTools.py" line="5757"/>
       <source>Snaps to orthogonal and 45 degrees directions</source>
       <translation>Přichytí pravoůhle a ve směrech pod 45 stupni</translation>
     </message>
@@ -1575,12 +1562,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="../../DraftTools.py" line="5754"/>
+      <location filename="../../DraftTools.py" line="5684"/>
       <source>Parallel</source>
       <translation>Rovnoběžně</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5755"/>
+      <location filename="../../DraftTools.py" line="5685"/>
       <source>Snaps to parallel directions of edges</source>
       <translation>Přichtí rovnoběžně ke směru hrany</translation>
     </message>
@@ -1588,12 +1575,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="../../DraftTools.py" line="5718"/>
+      <location filename="../../DraftTools.py" line="5648"/>
       <source>Perpendicular</source>
       <translation>Kolmo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5719"/>
+      <location filename="../../DraftTools.py" line="5649"/>
       <source>Snaps to perpendicular points on edges</source>
       <translation>Přichytí kolmo v bodě na hraně</translation>
     </message>
@@ -1601,12 +1588,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="../../DraftTools.py" line="5838"/>
+      <location filename="../../DraftTools.py" line="5768"/>
       <source>Special</source>
       <translation>Speciální</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5839"/>
+      <location filename="../../DraftTools.py" line="5769"/>
       <source>Snaps to special locations of objects</source>
       <translation>Přichytává ke speciálním polohám objektů</translation>
     </message>
@@ -1614,38 +1601,25 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="../../DraftTools.py" line="5862"/>
+      <location filename="../../DraftTools.py" line="5792"/>
       <source>Working Plane</source>
       <translation>Pracovní rovina</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5863"/>
+      <location filename="../../DraftTools.py" line="5793"/>
       <source>Restricts the snapped point to the current working plane</source>
       <translation>Omezení přichtávání bodů na aktuální pracovní rovinu</translation>
     </message>
   </context>
   <context>
-    <name>Draft_Split</name>
-    <message>
-      <location filename="../../DraftTools.py" line="3251"/>
-      <source>Split</source>
-      <translation>Rozdělit</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3252"/>
-      <source>Splits a wire into two wires</source>
-      <translation>Rozdělí drát na dva dráty</translation>
-    </message>
-  </context>
-  <context>
     <name>Draft_Stretch</name>
     <message>
-      <location filename="../../DraftTools.py" line="2891"/>
+      <location filename="../../DraftTools.py" line="2889"/>
       <source>Stretch</source>
       <translation>Protažení</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2892"/>
+      <location filename="../../DraftTools.py" line="2890"/>
       <source>Stretches the selected objects</source>
       <translation>Roztáhne vybrané objekty</translation>
     </message>
@@ -1653,12 +1627,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Text</name>
     <message>
-      <location filename="../../DraftTools.py" line="1800"/>
+      <location filename="../../DraftTools.py" line="1798"/>
       <source>Text</source>
       <translation>Text</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1801"/>
+      <location filename="../../DraftTools.py" line="1799"/>
       <source>Creates an annotation. CTRL to snap</source>
       <translation>Vytvoří anotace. CTRL na přichycení</translation>
     </message>
@@ -1666,12 +1640,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_ToggleConstructionMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3898"/>
+      <location filename="../../DraftTools.py" line="3831"/>
       <source>Toggles the Construction Mode for next objects.</source>
       <translation>Přepíná režim konstrukce pro další objekty.</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3896"/>
+      <location filename="../../DraftTools.py" line="3829"/>
       <source>Toggle Construction Mode</source>
       <translation>Přepnout konstrukční mód</translation>
     </message>
@@ -1679,12 +1653,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_ToggleContinueMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3909"/>
+      <location filename="../../DraftTools.py" line="3842"/>
       <source>Toggle Continue Mode</source>
       <translation>Přepnout opakování režimu</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3910"/>
+      <location filename="../../DraftTools.py" line="3843"/>
       <source>Toggles the Continue Mode for next commands.</source>
       <translation>Zapne/vypne režim pokračování pro příští příkaz.</translation>
     </message>
@@ -1692,12 +1666,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_ToggleDisplayMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3993"/>
+      <location filename="../../DraftTools.py" line="3926"/>
       <source>Toggle display mode</source>
       <translation>Přepnout režim zobrazení</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3994"/>
+      <location filename="../../DraftTools.py" line="3927"/>
       <source>Swaps display mode of selected objects between wireframe and flatlines</source>
       <translation>Přepne režim zobrazení vybraných objektů mezi drátěným a stínovaným</translation>
     </message>
@@ -1705,22 +1679,22 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_ToggleGrid</name>
     <message>
-      <location filename="../../DraftTools.py" line="5172"/>
+      <location filename="../../DraftTools.py" line="5102"/>
       <source>Toggle Grid</source>
       <translation>Přepnout mřížku</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5173"/>
+      <location filename="../../DraftTools.py" line="5103"/>
       <source>Toggles the Draft grid on/off</source>
       <translation>Přepne mřížku Návrhu - zapnuto/vypnuto</translation>
     </message>
     <message>
-      <location filename="../../DraftSnap.py" line="1257"/>
+      <location filename="../../DraftSnap.py" line="1250"/>
       <source>Grid</source>
       <translation>Mřížka</translation>
     </message>
     <message>
-      <location filename="../../DraftSnap.py" line="1258"/>
+      <location filename="../../DraftSnap.py" line="1251"/>
       <source>Toggles the Draft grid On/Off</source>
       <translation>Přepne mřížku Návrhu - Zapnuto/Vypnuto</translation>
     </message>
@@ -1728,12 +1702,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="../../DraftTools.py" line="3350"/>
+      <location filename="../../DraftTools.py" line="3283"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3351"/>
+      <location filename="../../DraftTools.py" line="3284"/>
       <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
       <translation>Ořízne nebo prodlouží vybraný objekt, nebo vysune samostatnou plochu. CTRL úchop, SHIFT omezení vzhledem k aktuálnímu segmentu nebo k normále, ALT obrácení</translation>
     </message>
@@ -1754,12 +1728,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_Upgrade</name>
     <message>
-      <location filename="../../DraftTools.py" line="3287"/>
+      <location filename="../../DraftTools.py" line="3220"/>
       <source>Upgrade</source>
       <translation>Povýšení</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3288"/>
+      <location filename="../../DraftTools.py" line="3221"/>
       <source>Joins the selected objects into one, or converts closed wires to filled faces, or unites faces</source>
       <translation>Spojí vybrané objekty do jednoho nebo převede uzavřené dráty na plochy nebo spojí plochy</translation>
     </message>
@@ -1767,12 +1741,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_VisGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="5257"/>
+      <location filename="../../DraftTools.py" line="5187"/>
       <source>VisGroup</source>
       <translation>VisGroup</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5258"/>
+      <location filename="../../DraftTools.py" line="5188"/>
       <source>Adds a VisGroup</source>
       <translation>Přidá VisGroup</translation>
     </message>
@@ -1793,12 +1767,12 @@ z menu Nástroje -&gt; Manažer doplňků</translation>
   <context>
     <name>Draft_WireToBSpline</name>
     <message>
-      <location filename="../../DraftTools.py" line="4764"/>
+      <location filename="../../DraftTools.py" line="4694"/>
       <source>Wire to B-spline</source>
       <translation>B-splajn z drátu</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4765"/>
+      <location filename="../../DraftTools.py" line="4695"/>
       <source>Converts between Wire and B-spline</source>
       <translation>Převede mezi drátem a B-splajnem</translation>
     </message>
@@ -2831,7 +2805,7 @@ Např. pro soubor v milimetrech: 1, v centimetrech: 10, v metrech: 1000, v palc�
     <message>
       <location filename="../ui/preferences-dxf.ui" line="433"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
-      <translation>Export elipsy je nedostatečně podporován. Tímto se bude exportovat jako lomená čára.</translation>
+      <translation type="unfinished">Ellipse export is poorly supported. Use this to export them as polylines instead.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="465"/>
@@ -2842,7 +2816,7 @@ Např. pro soubor v milimetrech: 1, v centimetrech: 10, v metrech: 1000, v palc�
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../DraftSnap.py" line="1252"/>
+      <location filename="../../DraftSnap.py" line="1245"/>
       <source>Draft Snap</source>
       <translation>Úchopy návrhu</translation>
     </message>
@@ -2875,322 +2849,322 @@ Např. pro soubor v milimetrech: 1, v centimetrech: 10, v metrech: 1000, v palc�
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../Draft.py" line="2210"/>
+      <location filename="../../Draft.py" line="2136"/>
       <source>not shape found</source>
       <translation>nebyl nalezen tvar</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2215"/>
+      <location filename="../../Draft.py" line="2141"/>
       <source>All Shapes must be co-planar</source>
       <translation>Všechny tvary musejí být koplanární (v jedné rovině)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2343"/>
+      <location filename="../../Draft.py" line="2269"/>
       <source>The given object is not planar and cannot be converted into a sketch.</source>
       <translation>Daný objekt není rovinný a nelze převést na náčrt.</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2351"/>
+      <location filename="../../Draft.py" line="2277"/>
       <source>Unable to guess the normal direction of this object</source>
       <translation>Nelze určit normálu tohoto objektu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="393"/>
+      <location filename="../../DraftGui.py" line="382"/>
       <source>Draft Command Bar</source>
       <translation>Příkazový panel Návrhu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="727"/>
+      <location filename="../../DraftGui.py" line="715"/>
       <source>Toggle construction mode</source>
       <translation>Přepnout konstrukční mód</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="728"/>
+      <location filename="../../DraftGui.py" line="716"/>
       <source>Current line color</source>
       <translation>Současná barva čáry</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="729"/>
+      <location filename="../../DraftGui.py" line="717"/>
       <source>Current face color</source>
       <translation>Aktuální barva plochy</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="730"/>
+      <location filename="../../DraftGui.py" line="718"/>
       <source>Current line width</source>
       <translation>Aktuální šířka čáry</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="731"/>
+      <location filename="../../DraftGui.py" line="719"/>
       <source>Current font size</source>
       <translation>Aktuální velikost písma</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="732"/>
+      <location filename="../../DraftGui.py" line="720"/>
       <source>Apply to selected objects</source>
       <translation>použít na vybrané objekty</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2006"/>
+      <location filename="../../DraftGui.py" line="1991"/>
       <source>Autogroup off</source>
       <translation>Automatické seskupování vypnuto</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="761"/>
+      <location filename="../../DraftGui.py" line="749"/>
       <source>active command:</source>
       <translation>aktivní příkaz:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1048"/>
+      <location filename="../../DraftGui.py" line="1036"/>
       <source>None</source>
       <translation>Žádný</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="763"/>
+      <location filename="../../DraftGui.py" line="751"/>
       <source>Active Draft command</source>
       <translation>aktivní příkaz návrhu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="764"/>
+      <location filename="../../DraftGui.py" line="752"/>
       <source>X coordinate of next point</source>
       <translation>X souřadnice dalšího bodu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1049"/>
+      <location filename="../../DraftGui.py" line="1037"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="766"/>
+      <location filename="../../DraftGui.py" line="754"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="767"/>
+      <location filename="../../DraftGui.py" line="755"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="768"/>
+      <location filename="../../DraftGui.py" line="756"/>
       <source>Y coordinate of next point</source>
       <translation>Y souřadnice dalšího bodu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="769"/>
+      <location filename="../../DraftGui.py" line="757"/>
       <source>Z coordinate of next point</source>
       <translation>Z souřadnice dalšího bodu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="770"/>
+      <location filename="../../DraftGui.py" line="758"/>
       <source>Enter point</source>
       <translation>Zadejte bod</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="771"/>
+      <location filename="../../DraftGui.py" line="759"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>Zadejte nový bod s danými souřadnicemi</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="772"/>
+      <location filename="../../DraftGui.py" line="760"/>
       <source>Length</source>
       <translation>Délka</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="773"/>
+      <location filename="../../DraftGui.py" line="761"/>
       <source>Angle</source>
       <translation>Úhel</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="774"/>
+      <location filename="../../DraftGui.py" line="762"/>
       <source>Length of current segment</source>
       <translation>Délka aktuálního segmentu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="775"/>
+      <location filename="../../DraftGui.py" line="763"/>
       <source>Angle of current segment</source>
       <translation>Úhel aktuálního segmentu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1104"/>
+      <location filename="../../DraftGui.py" line="1092"/>
       <source>Radius</source>
       <translation>Poloměr</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="779"/>
+      <location filename="../../DraftGui.py" line="767"/>
       <source>Radius of Circle</source>
       <translation>Poloměr kruhu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="786"/>
+      <location filename="../../DraftGui.py" line="774"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Je-li zaškrtnuto, příkaz se nedokončí, dokud nestisknete znovu na příkazové tlačítko</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="788"/>
+      <location filename="../../DraftGui.py" line="776"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>Je-li zaškrtnuto, bude uplatněn OCC-styl odsazení namísto klasického odsazení</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="789"/>
+      <location filename="../../DraftGui.py" line="777"/>
       <source>&amp;OCC-style offset</source>
       <translation>&amp;OCC-styl odstupu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="790"/>
+      <location filename="../../DraftGui.py" line="778"/>
       <source>Add points to the current object</source>
       <translation>Přidá body k aktuálnímu objektu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="791"/>
+      <location filename="../../DraftGui.py" line="779"/>
       <source>Remove points from the current object</source>
       <translation>Odstraní body z aktuálního objektu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="792"/>
+      <location filename="../../DraftGui.py" line="780"/>
       <source>Make Bezier node sharp</source>
       <translation>Změní Beziérův uzel na ostrý</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="793"/>
+      <location filename="../../DraftGui.py" line="781"/>
       <source>Make Bezier node tangent</source>
       <translation>Změní Beziérův uzel na tangentní</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="794"/>
+      <location filename="../../DraftGui.py" line="782"/>
       <source>Make Bezier node symmetric</source>
       <translation>Změní Beziérův uzel na symetrický</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="805"/>
+      <location filename="../../DraftGui.py" line="793"/>
       <source>Sides</source>
       <translation>Strany</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="806"/>
+      <location filename="../../DraftGui.py" line="794"/>
       <source>Number of sides</source>
       <translation>Počet stran</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2879"/>
+      <location filename="../../DraftTools.py" line="2877"/>
       <source>Offset</source>
       <translation>Odstup</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="808"/>
+      <location filename="../../DraftGui.py" line="796"/>
       <source>XY (top)</source>
       <translation>XY (horní)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="809"/>
+      <location filename="../../DraftGui.py" line="797"/>
       <source>Select XY plane</source>
       <translation>Vyberte rovinu XY</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="810"/>
+      <location filename="../../DraftGui.py" line="798"/>
       <source>XZ (front)</source>
       <translation>XZ (přední)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="811"/>
+      <location filename="../../DraftGui.py" line="799"/>
       <source>Select XZ plane</source>
       <translation>Vyberte rovinu XY</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="812"/>
+      <location filename="../../DraftGui.py" line="800"/>
       <source>YZ (side)</source>
       <translation>YZ (boční)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="813"/>
+      <location filename="../../DraftGui.py" line="801"/>
       <source>Select YZ plane</source>
       <translation>Vyberte rovinu YZ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="814"/>
+      <location filename="../../DraftGui.py" line="802"/>
       <source>View</source>
       <translation>Pohled</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="815"/>
+      <location filename="../../DraftGui.py" line="803"/>
       <source>Select plane perpendicular to the current view</source>
       <translation>Vyberte rovinu kolmou na aktuální pohled</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="816"/>
+      <location filename="../../DraftGui.py" line="804"/>
       <source>Auto</source>
       <translation>Automaticky</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="817"/>
+      <location filename="../../DraftGui.py" line="805"/>
       <source>Do not project points to a drawing plane</source>
       <translation>nepromítat body do kreslící roviny</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="820"/>
+      <location filename="../../DraftGui.py" line="808"/>
       <source>Text string to draw</source>
       <translation>Textový řetězec k vykreslení</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="821"/>
+      <location filename="../../DraftGui.py" line="809"/>
       <source>String</source>
       <translation>Řetězec</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="822"/>
+      <location filename="../../DraftGui.py" line="810"/>
       <source>Height of text</source>
       <translation>Výška textu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="823"/>
+      <location filename="../../DraftGui.py" line="811"/>
       <source>Height</source>
       <translation>Výška</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="824"/>
+      <location filename="../../DraftGui.py" line="812"/>
       <source>Intercharacter spacing</source>
       <translation>Rozestupy mezi znaky</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="825"/>
+      <location filename="../../DraftGui.py" line="813"/>
       <source>Tracking</source>
       <translation>Sledování</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="826"/>
+      <location filename="../../DraftGui.py" line="814"/>
       <source>Full path to font file:</source>
       <translation>Úplná cesta k souboru písma:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="827"/>
+      <location filename="../../DraftGui.py" line="815"/>
       <source>Open a FileChooser for font file</source>
       <translation>Otevře dialogové okno pro výběr souboru písma</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="828"/>
+      <location filename="../../DraftGui.py" line="816"/>
       <source>Grid spacing</source>
       <translation>Rozteč mřížky</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="829"/>
+      <location filename="../../DraftGui.py" line="817"/>
       <source>The spacing between the grid lines</source>
       <translation>Rozestupy mezi čarami mřížky</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="830"/>
+      <location filename="../../DraftGui.py" line="818"/>
       <source>Main line every</source>
       <translation>Hlavní čára každých</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="831"/>
+      <location filename="../../DraftGui.py" line="819"/>
       <source>The number of lines between main lines</source>
       <translation>Počet čar mezi hlavními čarami</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="832"/>
+      <location filename="../../DraftGui.py" line="820"/>
       <source>Center plane on view</source>
       <translation>Vystředit rovinu v pohledu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="906"/>
+      <location filename="../../DraftGui.py" line="894"/>
       <source>Select Plane</source>
       <translation>Vyberte rovinu</translation>
     </message>
@@ -3205,127 +3179,127 @@ Např. pro soubor v milimetrech: 1, v centimetrech: 10, v metrech: 1000, v palc�
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="977"/>
+      <location filename="../../DraftGui.py" line="965"/>
       <source>Circle</source>
       <translation>Kruh</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="984"/>
+      <location filename="../../DraftGui.py" line="972"/>
       <source>Center X</source>
       <translation>Střed X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="983"/>
+      <location filename="../../DraftGui.py" line="971"/>
       <source>Arc</source>
       <translation>oblouk</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="987"/>
+      <location filename="../../DraftGui.py" line="975"/>
       <source>Point</source>
       <translation>Bod</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1013"/>
+      <location filename="../../DraftGui.py" line="1001"/>
       <source>Label</source>
       <translation type="unfinished">Label</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1097"/>
+      <location filename="../../DraftGui.py" line="1085"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1094"/>
+      <location filename="../../DraftGui.py" line="1082"/>
       <source>Trim</source>
       <translation>Oříznout</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1186"/>
+      <location filename="../../DraftGui.py" line="1174"/>
       <source>Pick Object</source>
       <translation>Vybrat objekt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1191"/>
+      <location filename="../../DraftGui.py" line="1179"/>
       <source>Edit</source>
       <translation>Upravit</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1251"/>
+      <location filename="../../DraftGui.py" line="1236"/>
       <source>Global X</source>
       <translation>Globální X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1252"/>
+      <location filename="../../DraftGui.py" line="1237"/>
       <source>Global Y</source>
       <translation>Globální Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1253"/>
+      <location filename="../../DraftGui.py" line="1238"/>
       <source>Global Z</source>
       <translation>Globální Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1256"/>
+      <location filename="../../DraftGui.py" line="1241"/>
       <source>Local X</source>
       <translation>Lokální X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1257"/>
+      <location filename="../../DraftGui.py" line="1242"/>
       <source>Local Y</source>
       <translation>Lokální Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1258"/>
+      <location filename="../../DraftGui.py" line="1243"/>
       <source>Local Z</source>
       <translation>Lokální Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1496"/>
+      <location filename="../../DraftGui.py" line="1481"/>
       <source>Invalid Size value. Using 200.0.</source>
       <translation>Neplatná hodnota velikosti. Použito 200,0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1504"/>
+      <location filename="../../DraftGui.py" line="1489"/>
       <source>Invalid Tracking value. Using 0.</source>
       <translation>Neplatná hodnota sledování. Použito 0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1518"/>
+      <location filename="../../DraftGui.py" line="1503"/>
       <source>Please enter a text string.</source>
       <translation>Vložte textový řetězec, prosím.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1526"/>
+      <location filename="../../DraftGui.py" line="1511"/>
       <source>Select a Font file</source>
       <translation>Vyberte soubor písma</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1557"/>
+      <location filename="../../DraftGui.py" line="1542"/>
       <source>Please enter a font file.</source>
       <translation>Vložte, prosím, soubor písma.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2000"/>
+      <location filename="../../DraftGui.py" line="1985"/>
       <source>Autogroup: </source>
       <translation>Automatické seskupování: </translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2295"/>
+      <location filename="../../DraftGui.py" line="2280"/>
       <source>Faces</source>
       <translation>Plochy</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2296"/>
+      <location filename="../../DraftGui.py" line="2281"/>
       <source>Remove</source>
       <translation>Odstranit</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2297"/>
+      <location filename="../../DraftGui.py" line="2282"/>
       <source>Add</source>
       <translation>Přidat</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2298"/>
+      <location filename="../../DraftGui.py" line="2283"/>
       <source>Facebinder elements</source>
       <translation>Svázané plochy</translation>
     </message>
@@ -3376,150 +3350,150 @@ Např. pro soubor v milimetrech: 1, v centimetrech: 10, v metrech: 1000, v palc�
       <translation>Vytvořit obdélník</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1377"/>
+      <location filename="../../DraftTools.py" line="1375"/>
       <source>Create Circle</source>
       <translation>Vytvořit kruh</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1412"/>
+      <location filename="../../DraftTools.py" line="1410"/>
       <source>Create Arc</source>
       <translation>Vytvořit oblouk</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1454"/>
+      <location filename="../../DraftTools.py" line="1452"/>
       <source>Start Angle</source>
       <translation>Počáteční úhel</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1461"/>
+      <location filename="../../DraftTools.py" line="1459"/>
       <source>Aperture</source>
       <translation>Výseč</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1502"/>
+      <location filename="../../DraftTools.py" line="1500"/>
       <source>Polygon</source>
       <translation>Mnohoúhelník</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1639"/>
+      <location filename="../../DraftTools.py" line="1637"/>
       <source>Create Polygon</source>
       <translation>Vytvořit mnohoúhelník</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1687"/>
+      <location filename="../../DraftTools.py" line="1685"/>
       <source>Ellipse</source>
       <translation>Elipsa</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1744"/>
+      <location filename="../../DraftTools.py" line="1742"/>
       <source>Create Ellipse</source>
       <translation>Vytvoří elipsu</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1804"/>
+      <location filename="../../DraftTools.py" line="1802"/>
       <source>Text</source>
       <translation>Text</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1840"/>
+      <location filename="../../DraftTools.py" line="1838"/>
       <source>Create Text</source>
       <translation>Vytvořit text</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1889"/>
+      <location filename="../../DraftTools.py" line="1887"/>
       <source>Dimension</source>
       <translation>Rozměr</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2013"/>
+      <location filename="../../DraftTools.py" line="2011"/>
       <source>Create Dimension</source>
       <translation>Vytvořit kótu</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2230"/>
+      <location filename="../../DraftTools.py" line="2228"/>
       <source>ShapeString</source>
       <translation>Tvar písma</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2271"/>
+      <location filename="../../DraftTools.py" line="2269"/>
       <source>Create ShapeString</source>
       <translation>Vytvoří Tvar písma</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3831"/>
+      <location filename="../../DraftTools.py" line="3764"/>
       <source>Copy</source>
       <translation>Kopírovat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2410"/>
+      <location filename="../../DraftTools.py" line="2408"/>
       <source>Move</source>
       <translation>Přesun</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2499"/>
+      <location filename="../../DraftTools.py" line="2497"/>
       <source>Change Style</source>
       <translation>Změnit styl</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2571"/>
+      <location filename="../../DraftTools.py" line="2569"/>
       <source>Rotate</source>
       <translation>Rotace</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2723"/>
+      <location filename="../../DraftTools.py" line="2721"/>
       <source>Cannot offset this object type
 </source>
       <translation>Nelze ofsetovat tento typ objektu </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3212"/>
+      <location filename="../../DraftTools.py" line="3210"/>
       <source>Stretch</source>
       <translation>Protažení</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3305"/>
+      <location filename="../../DraftTools.py" line="3238"/>
       <source>Upgrade</source>
       <translation>Povýšení</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3335"/>
+      <location filename="../../DraftTools.py" line="3268"/>
       <source>Downgrade</source>
       <translation>Ponížení</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4583"/>
+      <location filename="../../DraftTools.py" line="4513"/>
       <source>Selection is not a Knot
 </source>
       <translation>Ve výběru není uzel
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4910"/>
+      <location filename="../../DraftTools.py" line="4840"/>
       <source>Convert to Sketch</source>
       <translation>Převést na náčrt</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4914"/>
+      <location filename="../../DraftTools.py" line="4844"/>
       <source>Convert to Draft</source>
       <translation>Převést na Návrh</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4926"/>
+      <location filename="../../DraftTools.py" line="4856"/>
       <source>Convert</source>
       <translation>Převést</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4955"/>
+      <location filename="../../DraftTools.py" line="4885"/>
       <source>Array</source>
       <translation>Pole</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5092"/>
+      <location filename="../../DraftTools.py" line="5022"/>
       <source>Create Point</source>
       <translation>Vytvoří bod</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5328"/>
+      <location filename="../../DraftTools.py" line="5258"/>
       <source>Mirror</source>
       <translation>Zrcadlit</translation>
     </message>
@@ -3581,164 +3555,164 @@ Chcete umožnit FreeCADu stáhnout tyto knihovny?</translation>
       <translation>Draft.makeBSpline: Neplatný seznam bodů</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2583"/>
+      <location filename="../../Draft.py" line="2509"/>
       <source>No object given</source>
       <translation>Není zadán objekt</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2586"/>
+      <location filename="../../Draft.py" line="2512"/>
       <source>The two points are coincident</source>
       <translation>Dva body jsou shodné</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2996"/>
+      <location filename="../../Draft.py" line="2922"/>
       <source>Found groups: closing each open object inside</source>
       <translation>Nalezené skupiny: uzavírání každého otevřeného objektu uvnitř</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3001"/>
+      <location filename="../../Draft.py" line="2927"/>
       <source>Found mesh(es): turning into Part shapes</source>
       <translation>Nalezena síť (sítě): změna na tvary Dílu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3009"/>
+      <location filename="../../Draft.py" line="2935"/>
       <source>Found 1 solidifiable object: solidifying it</source>
-      <translation>Nalezen 1 objekt k vytvoření tělesa: vytváření tělesa</translation>
+      <translation type="unfinished">Found 1 solidifiable object: solidifying it</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3014"/>
+      <location filename="../../Draft.py" line="2940"/>
       <source>Found 2 objects: fusing them</source>
       <translation>Nalezeny 2 objekty: jejich slučování</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3019"/>
+      <location filename="../../Draft.py" line="2945"/>
       <source>Found several objects: creating a shell</source>
       <translation>Nalezeno několik objektů: vytváření skořepiny</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3024"/>
+      <location filename="../../Draft.py" line="2950"/>
       <source>Found several coplanar objects or faces: creating one face</source>
       <translation>Nalezeno několik koplanárních objektů nebo ploch: vytváření jedné plochy</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3029"/>
+      <location filename="../../Draft.py" line="2955"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
       <translation>Nalezen 1 neparametrický objekt: převádění na parametrický drát Návrhu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3050"/>
+      <location filename="../../Draft.py" line="2976"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
       <translation>Nalezen 1 uzavřený náčrt: vytváření plochy z něj</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3042"/>
+      <location filename="../../Draft.py" line="2968"/>
       <source>Found 1 linear object: converting to line</source>
       <translation>Nalezen 1 lineární objekt: převádění na čáru</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3055"/>
+      <location filename="../../Draft.py" line="2981"/>
       <source>Found closed wires: creating faces</source>
       <translation>Nalezeny uzavřené dráty: vytváření ploch</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3060"/>
+      <location filename="../../Draft.py" line="2986"/>
       <source>Found 1 open wire: closing it</source>
       <translation>Nalezen 1 otevřený drát: jeho uzavírání</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3065"/>
+      <location filename="../../Draft.py" line="2991"/>
       <source>Found several open wires: joining them</source>
       <translation>Nalezeno několik otevřených drátů: jejich spojování</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3070"/>
+      <location filename="../../Draft.py" line="2996"/>
       <source>Found several edges: wiring them</source>
       <translation>Nalezeno několik hran: jejich spojování do drátu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3075"/>
+      <location filename="../../Draft.py" line="3001"/>
       <source>Found several non-treatable objects: creating compound</source>
       <translation>Nalezeno několik neléčitelných objektů: vytváření složeniny</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3079"/>
+      <location filename="../../Draft.py" line="3005"/>
       <source>Unable to upgrade these objects.</source>
       <translation>Nelze povýšit tyto objekty.</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3249"/>
+      <location filename="../../Draft.py" line="3175"/>
       <source>Found 1 block: exploding it</source>
       <translation>Nalezen 1 blok: jeho rozkládání</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3255"/>
+      <location filename="../../Draft.py" line="3181"/>
       <source>Found 1 multi-solids compound: exploding it</source>
       <translation>Nalezena 1 více-tělesová složenína: její rozkládání</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3261"/>
+      <location filename="../../Draft.py" line="3187"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
       <translation>Nalezen 1 parametrický objekt: rozbíjení jeho závislostí</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3268"/>
+      <location filename="../../Draft.py" line="3194"/>
       <source>Found 2 objects: subtracting them</source>
       <translation>Nalezeny 2 objekty: jejich odečítání</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3275"/>
+      <location filename="../../Draft.py" line="3201"/>
       <source>Found several faces: splitting them</source>
       <translation>Nalezeno několik ploch: jejich rozdělování</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3280"/>
+      <location filename="../../Draft.py" line="3206"/>
       <source>Found several objects: subtracting them from the first one</source>
       <translation>Nalezeno několik objektů: jejich odečítání od prvního</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3285"/>
+      <location filename="../../Draft.py" line="3211"/>
       <source>Found 1 face: extracting its wires</source>
       <translation>Nalezena 1 plocha: extrahování jejích drátů</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3290"/>
+      <location filename="../../Draft.py" line="3216"/>
       <source>Found only wires: extracting their edges</source>
       <translation>Nalezeny pouze dráty: extrahování jejich hran</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3294"/>
+      <location filename="../../Draft.py" line="3220"/>
       <source>No more downgrade possible</source>
       <translation>Není možné další ponížení</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4934"/>
+      <location filename="../../Draft.py" line="4860"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
       <translation>_BSpline.createGeometry: Uzavřeno s některým prvním/posledním bodem. Geometrie není aktualizovaná.</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5567"/>
+      <location filename="../../Draft.py" line="5493"/>
       <source>No point found
 </source>
       <translation>Nebyl nalezen bod
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5800"/>
+      <location filename="../../Draft.py" line="5726"/>
       <source>ShapeString: string has no wires</source>
       <translation>Tvar písma: řetězec nemá dráty</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="780"/>
+      <location filename="../../DraftGui.py" line="768"/>
       <source>Relative</source>
       <translation>Relativní</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="787"/>
+      <location filename="../../DraftGui.py" line="775"/>
       <source>Continue</source>
       <translation>Pokračovat</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="797"/>
+      <location filename="../../DraftGui.py" line="785"/>
       <source>Close</source>
       <translation>Zavřít</translation>
     </message>
@@ -3783,7 +3757,7 @@ Chcete umožnit FreeCADu stáhnout tyto knihovny?</translation>
       <translation>Omezit Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="803"/>
+      <location filename="../../DraftGui.py" line="791"/>
       <source>Select edge</source>
       <translation>Výběr hrany</translation>
     </message>
@@ -3798,7 +3772,7 @@ Chcete umožnit FreeCADu stáhnout tyto knihovny?</translation>
       <translation>Režim délky</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="799"/>
+      <location filename="../../DraftGui.py" line="787"/>
       <source>Wipe</source>
       <translation>Vyčistit</translation>
     </message>
@@ -3808,87 +3782,82 @@ Chcete umožnit FreeCADu stáhnout tyto knihovny?</translation>
       <translation>Nastavit pracovní rovinu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="126"/>
-      <source>Cycle snap object</source>
-      <translation>Cyklovat přichycený objekt</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="777"/>
+      <location filename="../../DraftGui.py" line="765"/>
       <source>Check this to lock the current angle</source>
       <translation>Zaškrtněte pro uzamčení aktuálního úhlu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="781"/>
+      <location filename="../../DraftGui.py" line="769"/>
       <source>Coordinates relative to last point or absolute</source>
       <translation>Souřadnice vzhledem k poslednímu bodu nebo absolutní</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="782"/>
+      <location filename="../../DraftGui.py" line="770"/>
       <source>Filled</source>
       <translation>Vyplněné</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="783"/>
+      <location filename="../../DraftGui.py" line="771"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe</source>
       <translation>Zaškrtněte, jestliže se má zobrazit objekt vyplněný, jinak se zobrazí jako drátěný</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="784"/>
+      <location filename="../../DraftGui.py" line="772"/>
       <source>Finish</source>
       <translation>Dokončit</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="785"/>
+      <location filename="../../DraftGui.py" line="773"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Dokončí aktuální kreslicí nebo upravovací operaci</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="795"/>
+      <location filename="../../DraftGui.py" line="783"/>
       <source>&amp;Undo (CTRL+Z)</source>
       <translation>Zpět (CTRL+Z)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="796"/>
+      <location filename="../../DraftGui.py" line="784"/>
       <source>Undo the last segment</source>
       <translation>Vrátit zpět poslední segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="798"/>
+      <location filename="../../DraftGui.py" line="786"/>
       <source>Finishes and closes the current line</source>
       <translation>Dokončí a uzavře aktuální čáru</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="800"/>
+      <location filename="../../DraftGui.py" line="788"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Vymaže dosavadní segmenty této čáry a začne znovu z posledního bodu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="801"/>
+      <location filename="../../DraftGui.py" line="789"/>
       <source>Set WP</source>
       <translation>Nastavit PR</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="802"/>
+      <location filename="../../DraftGui.py" line="790"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>Přeorientuje pracovní rovinu na poslední segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="804"/>
+      <location filename="../../DraftGui.py" line="792"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Vybere existující hranu pro změření touto kótou</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="819"/>
+      <location filename="../../DraftGui.py" line="807"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
       <translation>Je-li zaškrtnuto, objekty budou kopírovány namísto přesunutí. Nastavení -&gt; Draft -&gt; Globální režim kopírování přednastaví tento mód pro další příkazy</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1228"/>
+      <location filename="../../DraftGui.py" line="1216"/>
       <source>options</source>
       <translation>možnosti</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2457"/>
+      <location filename="../../DraftGui.py" line="2442"/>
       <source>Default</source>
       <translation>Výchozí</translation>
     </message>
@@ -3958,299 +3927,284 @@ Chcete umožnit FreeCADu stáhnout tyto knihovny?</translation>
       <translation>Beziérova křivka byla uzavřena</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1920"/>
+      <location filename="../../DraftTools.py" line="1918"/>
       <source>Pick first point:</source>
       <translation>Vyberte první bod:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1786"/>
+      <location filename="../../DraftTools.py" line="1784"/>
       <source>Pick opposite point:</source>
       <translation>Vyberte opační bod:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1518"/>
+      <location filename="../../DraftTools.py" line="1516"/>
       <source>Pick center point:</source>
       <translation>Vyberte středový bod:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1657"/>
+      <location filename="../../DraftTools.py" line="1655"/>
       <source>Pick radius:</source>
       <translation>Vyberte poloměr:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1459"/>
+      <location filename="../../DraftTools.py" line="1457"/>
       <source>Pick start angle:</source>
       <translation>Vyberte počáteční úhel:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1354"/>
+      <location filename="../../DraftTools.py" line="1352"/>
       <source>Pick aperture:</source>
       <translation>Vyberte výseč:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1470"/>
+      <location filename="../../DraftTools.py" line="1468"/>
       <source>Aperture angle:</source>
       <translation>Výsečový úhel:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1816"/>
+      <location filename="../../DraftTools.py" line="1814"/>
       <source>Pick location point:</source>
       <translation>Vyberte bod umístění:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2173"/>
+      <location filename="../../DraftTools.py" line="2171"/>
       <source>Edges don't intersect!</source>
       <translation>Hrany se neprotínají!</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2250"/>
+      <location filename="../../DraftTools.py" line="2248"/>
       <source>Pick ShapeString location point:</source>
       <translation>Zvolte bod umístění Tvaru písma:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2369"/>
+      <location filename="../../DraftTools.py" line="2367"/>
       <source>Select an object to move</source>
       <translation>Vyberte objekt pro přesunutí</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2386"/>
+      <location filename="../../DraftTools.py" line="2384"/>
       <source>Pick start point:</source>
       <translation>Vyberte bod začátku:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2463"/>
+      <location filename="../../DraftTools.py" line="2461"/>
       <source>Pick end point:</source>
       <translation>Vyberte bod konce:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2526"/>
+      <location filename="../../DraftTools.py" line="2524"/>
       <source>Select an object to rotate</source>
       <translation>Vyberte objekt pro rotaci</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2543"/>
+      <location filename="../../DraftTools.py" line="2541"/>
       <source>Pick rotation center:</source>
       <translation>Zvolte střed otáčení:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2676"/>
+      <location filename="../../DraftTools.py" line="2674"/>
       <source>Pick base angle:</source>
       <translation>Vyberte základní úhel:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2688"/>
+      <location filename="../../DraftTools.py" line="2686"/>
       <source>Pick rotation angle:</source>
       <translation>Zvolte úhel natočení:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2712"/>
+      <location filename="../../DraftTools.py" line="2710"/>
       <source>Select an object to offset</source>
       <translation>Vyberte objekt pro odsazení</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2715"/>
+      <location filename="../../DraftTools.py" line="2713"/>
       <source>Offset only works on one object at a time</source>
       <translation>Odsazení funguje současně pouze na jednom objektu</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2746"/>
+      <location filename="../../DraftTools.py" line="2744"/>
       <source>Sorry, offset of Bezier curves is currently still not supported</source>
       <translation>Je nám líto, ale odsazení Bezierovy křivky zatím není podporováno</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3435"/>
+      <location filename="../../DraftTools.py" line="3368"/>
       <source>Pick distance:</source>
       <translation>Zvolte vzdálenost:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2899"/>
+      <location filename="../../DraftTools.py" line="2897"/>
       <source>Select an object to stretch</source>
       <translation>Vyberte objekt pro natažení</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2944"/>
+      <location filename="../../DraftTools.py" line="2942"/>
       <source>Pick first point of selection rectangle:</source>
       <translation>Vyberte první bod obdélníku výběru:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2968"/>
+      <location filename="../../DraftTools.py" line="2966"/>
       <source>Pick opposite point of selection rectangle:</source>
       <translation>Vyberte opačný bod obdélníku výběru:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2977"/>
+      <location filename="../../DraftTools.py" line="2975"/>
       <source>Pick start point of displacement:</source>
       <translation>Vyberte počáteční bod posunutí:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3040"/>
+      <location filename="../../DraftTools.py" line="3038"/>
       <source>Pick end point of displacement:</source>
       <translation>Vyberte koncový bod posunutí:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3192"/>
+      <location filename="../../DraftTools.py" line="3190"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Převedení Obdélníku na Drát</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3230"/>
-      <source>Select an object to join</source>
-      <translation>Vyberte objekt pro spojení</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3241"/>
-      <source>Join</source>
-      <translation>Spojit</translation>
-    </message>
-    <message>
       <location filename="../../DraftTools.py" line="3258"/>
-      <source>Select an object to split</source>
-      <translation>Vyberte objekt k rozdělení</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3325"/>
       <source>Select an object to upgrade</source>
       <translation>Vyberte objekt pro povýšení</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3364"/>
+      <location filename="../../DraftTools.py" line="3297"/>
       <source>Select object(s) to trim/extend</source>
       <translation>Vyberte objekt(y) k oříznutí/rozšíření</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3676"/>
+      <location filename="../../DraftTools.py" line="3609"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
       <translation>Tyto objekty nelze oříznout, pouze dráty Návrhu a oblouky jsou podporované</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3679"/>
+      <location filename="../../DraftTools.py" line="3612"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Tyto objekty nelze ořízout, příliš mnoho drátů</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3696"/>
+      <location filename="../../DraftTools.py" line="3629"/>
       <source>These objects don't intersect</source>
       <translation>Tyto objekty se neprotínají</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3699"/>
+      <location filename="../../DraftTools.py" line="3632"/>
       <source>Too many intersection points</source>
       <translation>Příliš mnoho průsečíků</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3778"/>
+      <location filename="../../DraftTools.py" line="3711"/>
       <source>Select an object to scale</source>
       <translation>Vyberte objekt pro škálování</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3796"/>
+      <location filename="../../DraftTools.py" line="3729"/>
       <source>Pick base point:</source>
       <translation>Vyberte základní bod:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3802"/>
+      <location filename="../../DraftTools.py" line="3735"/>
       <source>Pick reference distance from base point:</source>
       <translation>Vyberte referenční vzdálenosti od základního bodu:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3877"/>
+      <location filename="../../DraftTools.py" line="3810"/>
       <source>Pick new distance from base point:</source>
       <translation>Vyberte novou vzdálenost od základního bodu:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4846"/>
+      <location filename="../../DraftTools.py" line="4776"/>
       <source>Select an object to project</source>
       <translation>Vyberte objekt k promítnutí</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4186"/>
+      <location filename="../../DraftTools.py" line="4119"/>
       <source>This object type is not editable</source>
       <translation>Tento typ objektu není upravitelný</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4057"/>
+      <location filename="../../DraftTools.py" line="3990"/>
       <source>Please select only one object</source>
       <translation>Prosím vyberte pouze jeden objekt</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4062"/>
+      <location filename="../../DraftTools.py" line="3995"/>
       <source>Select a Draft object to edit</source>
       <translation>Vyberte objekt Návrhu k editaci</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4536"/>
+      <location filename="../../DraftTools.py" line="4466"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>Aktivní objekt musí mít více než dva body/uzly</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4608"/>
+      <location filename="../../DraftTools.py" line="4538"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation>Koncový bod Beziérovy křivky nemůže být uhlazen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4886"/>
+      <location filename="../../DraftTools.py" line="4816"/>
       <source>Select an object to convert</source>
       <translation>Vyberte objekt k převedení</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4944"/>
+      <location filename="../../DraftTools.py" line="4874"/>
       <source>Select an object to array</source>
       <translation>Vyberte objekt pro pole</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4974"/>
+      <location filename="../../DraftTools.py" line="4904"/>
       <source>Please select base and path objects</source>
       <translation>Vyberte, prosím, základnu a objekt cesty</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5010"/>
+      <location filename="../../DraftTools.py" line="4940"/>
       <source>Please select base and pointlist objects
 </source>
       <translation>Vyberte prosím základnu a bodové objekty
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5136"/>
+      <location filename="../../DraftTools.py" line="5066"/>
       <source>Select an object to clone</source>
       <translation>Vyberte objekt pro klonování</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5221"/>
+      <location filename="../../DraftTools.py" line="5151"/>
       <source>Select face(s) on existing object(s)</source>
       <translation>Vyberte plochu/y na existujícím objektu/objektech</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5293"/>
+      <location filename="../../DraftTools.py" line="5223"/>
       <source>Select an object to mirror</source>
       <translation>Vyberte objekt k zrcadlení</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5307"/>
+      <location filename="../../DraftTools.py" line="5237"/>
       <source>Pick start point of mirror line:</source>
       <translation>Vyberte počáteční bod osy zrcadlení:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5391"/>
+      <location filename="../../DraftTools.py" line="5321"/>
       <source>Pick end point of mirror line:</source>
       <translation>Vyberte koncový bod osy zrcadlení:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5413"/>
+      <location filename="../../DraftTools.py" line="5343"/>
       <source>This tool only works with Wires and Lines</source>
       <translation>Tento nástroj pracuje pouze s Dráty a Čarami</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5544"/>
+      <location filename="../../DraftTools.py" line="5474"/>
       <source>Pick target point:</source>
       <translation>Vyberte cílový bod:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5640"/>
+      <location filename="../../DraftTools.py" line="5570"/>
       <source>Pick endpoint of leader line:</source>
       <translation>Vyberte koncový bod vedoucí čáry:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5650"/>
+      <location filename="../../DraftTools.py" line="5580"/>
       <source>Pick text position:</source>
       <translation>Vyberte pozici textu:</translation>
     </message>

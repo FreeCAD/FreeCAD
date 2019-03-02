@@ -1231,6 +1231,21 @@
     </message>
   </context>
   <context>
+    <name>CmdFemCreateFromShape</name>
+    <message>
+      <source>Fem</source>
+      <translation>FEM-Elementtimenetelmä</translation>
+    </message>
+    <message>
+      <source>Create FEM mesh</source>
+      <translation>Luo FEM-ELEMENTTIMENETELMÄN tahko</translation>
+    </message>
+    <message>
+      <source>Create FEM mesh from shape</source>
+      <translation>Luo FEM-ELEMENTTIMENETELMÄN tahko muodosta</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -1390,6 +1405,29 @@
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>Käyttäjän hakemisto</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::HypothesisWidget</name>
+    <message>
+      <source>Hypothesis</source>
+      <translation>Hypoteesi</translation>
+    </message>
+    <message>
+      <source>Quadrangle</source>
+      <translation>Nelikulmio</translation>
+    </message>
+    <message>
+      <source>Maximum length</source>
+      <translation>Suurin pituus</translation>
+    </message>
+    <message>
+      <source>Local length</source>
+      <translation>Paikallinen pituus</translation>
+    </message>
+    <message>
+      <source>Maximum element area</source>
+      <translation>Suurin elementin alue</translation>
     </message>
   </context>
   <context>
@@ -1667,6 +1705,18 @@
       <source>Only faces and edges can be picked</source>
       <translation>Vain tahkot ja reunat on poimittavissa</translation>
     </message>
+    <message>
+      <source>Point load [N]</source>
+      <translation>Pistekuorma [N]</translation>
+    </message>
+    <message>
+      <source>Line load [N/mm]</source>
+      <translation>Viivakuorma [N/mm]</translation>
+    </message>
+    <message>
+      <source>Area load [N/mm²]</source>
+      <translation>Pinta-ala kuorma [N/mm²]</translation>
+    </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
@@ -1873,6 +1923,14 @@
       <translation>Aika:</translation>
     </message>
     <message>
+      <source>Write Calculix Input File</source>
+      <translation>Kirjoita Calculix syöttötiedosto</translation>
+    </message>
+    <message>
+      <source>Edit Calculix Input File</source>
+      <translation>Muokkaa Calculix syöttötiedostoa</translation>
+    </message>
+    <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
       <translation>Mekaaninen materiaali</translation>
@@ -1942,6 +2000,14 @@
       <source>MatWeb database...</source>
       <translation>MatWeb tietokantaa...</translation>
     </message>
+    <message>
+      <source>0 kg/m^3</source>
+      <translation type="unfinished">0 kg/m^3</translation>
+    </message>
+    <message>
+      <source>Pa</source>
+      <translation>Pa</translation>
+    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -2003,6 +2069,26 @@
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
       <translation>Muokkaa rajoitusta</translation>
+    </message>
+    <message>
+      <source>Combo View</source>
+      <translation>Yhdistelmänäkymä</translation>
+    </message>
+    <message>
+      <source>combiTab</source>
+      <translation>combiTab</translation>
+    </message>
+    <message>
+      <source>qt_tabwidget_stackedwidget</source>
+      <translation>qt_tabwidget_stackedwidget</translation>
+    </message>
+    <message>
+      <source>ShaftWizard</source>
+      <translation>AkseliApuväline</translation>
+    </message>
+    <message>
+      <source>ShaftWizardLayout</source>
+      <translation>AkseliApuvälineUlkonäkö</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -2120,6 +2206,14 @@
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
       <translation>Liukusäädin max:</translation>
+    </message>
+    <message>
+      <source>Colors</source>
+      <translation>Värit</translation>
+    </message>
+    <message>
+      <source>mm</source>
+      <translation>mm</translation>
     </message>
   </context>
   <context>

@@ -121,7 +121,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>Available addons</source>
-      <translation>可用的插件</translation>
+      <translation>可用的附加组件</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
@@ -223,7 +223,7 @@
       <translation>起始页</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="545"/>
+      <location filename="../../../StartPage/StartPage.py" line="542"/>
       <source>Start page</source>
       <translation>起始页</translation>
     </message>

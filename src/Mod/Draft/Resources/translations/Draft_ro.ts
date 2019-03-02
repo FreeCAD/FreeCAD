@@ -4,712 +4,712 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../Draft.py" line="3349"/>
+      <location filename="../../Draft.py" line="3275"/>
       <source>Defines a hatch pattern</source>
       <translation>Definește un model de hașură</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3350"/>
+      <location filename="../../Draft.py" line="3276"/>
       <source>Sets the size of the pattern</source>
       <translation>Definește mărimea motivului</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3493"/>
+      <location filename="../../Draft.py" line="3419"/>
       <source>Startpoint of dimension</source>
       <translation>Punct de plecare al dimensiunii</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3494"/>
+      <location filename="../../Draft.py" line="3420"/>
       <source>Endpoint of dimension</source>
       <translation>Punct final al dimensiunii</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4022"/>
+      <location filename="../../Draft.py" line="3948"/>
       <source>Point through which the dimension line passes</source>
       <translation>Punctul prin care trece linia de cota</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4025"/>
+      <location filename="../../Draft.py" line="3951"/>
       <source>The object measured by this dimension</source>
       <translation>Obiect măsurat prin această dimensiune</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4026"/>
+      <location filename="../../Draft.py" line="3952"/>
       <source>The geometry this dimension is linked to</source>
       <translation>Geometria la care această dimensiune este legată</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4027"/>
+      <location filename="../../Draft.py" line="3953"/>
       <source>The measurement of this dimension</source>
       <translation>Măsura acestei dimensiuni</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3501"/>
+      <location filename="../../Draft.py" line="3427"/>
       <source>For arc/circle measurements, false = radius, true = diameter</source>
       <translation>Pentru măsurători de arc/cerc, false = raza, true = diametrul</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4049"/>
+      <location filename="../../Draft.py" line="3975"/>
       <source>Font size</source>
       <translation>Dimensiunea fontului</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4050"/>
+      <location filename="../../Draft.py" line="3976"/>
       <source>The number of decimals to show</source>
       <translation>Numărul de zecimale de arătat</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4679"/>
+      <location filename="../../Draft.py" line="4605"/>
       <source>Arrow size</source>
       <translation>Dimensiunea săgeții</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4053"/>
+      <location filename="../../Draft.py" line="3979"/>
       <source>The spacing between the text and the dimension line</source>
       <translation>Distanţa dintre text şi linia de dimensiune</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4680"/>
+      <location filename="../../Draft.py" line="4606"/>
       <source>Arrow type</source>
       <translation>Tipul de săgeată</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4051"/>
+      <location filename="../../Draft.py" line="3977"/>
       <source>Font name</source>
       <translation>Nume font</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6427"/>
+      <location filename="../../Draft.py" line="6353"/>
       <source>Line width</source>
       <translation>Latimea liniei</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6428"/>
+      <location filename="../../Draft.py" line="6354"/>
       <source>Line color</source>
       <translation>Culoarea liniei</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3583"/>
+      <location filename="../../Draft.py" line="3509"/>
       <source>Length of the extension lines</source>
       <translation>Lungimea liniilor de extensie</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4057"/>
+      <location filename="../../Draft.py" line="3983"/>
       <source>Rotate the dimension arrows 180 degrees</source>
       <translation>Roti săgeţile de dimensiune cu 180 de grade</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3587"/>
+      <location filename="../../Draft.py" line="3513"/>
       <source>Rotate the dimension text 180 degrees</source>
       <translation>Rotire text dimensiune cu 180 de grade</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4058"/>
+      <location filename="../../Draft.py" line="3984"/>
       <source>Show the unit suffix</source>
       <translation>Arată sufixul unității folosite</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4059"/>
+      <location filename="../../Draft.py" line="3985"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>Poziția textului. Păstrați (0,0,0) pentru poziționare automata</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3590"/>
+      <location filename="../../Draft.py" line="3516"/>
       <source>Text override. Use $dim to insert the dimension length</source>
       <translation>Suprascrie textul. Folosi $dim pentru a introduce lungimea de dimensiune</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3591"/>
+      <location filename="../../Draft.py" line="3517"/>
       <source>A unit to express the measurement. Leave blank for system default</source>
       <translation>O unitate pentru a exprima unitatea de măsurare. Lăsați-o necompletată pentru sistemul implicit</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4020"/>
+      <location filename="../../Draft.py" line="3946"/>
       <source>Start angle of the dimension</source>
       <translation>Unghiul de început a dimensiunii</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4021"/>
+      <location filename="../../Draft.py" line="3947"/>
       <source>End angle of the dimension</source>
       <translation>Unghi de final a dimensiunii</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4023"/>
+      <location filename="../../Draft.py" line="3949"/>
       <source>The center point of this dimension</source>
       <translation>Punctul central al această dimensiune</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4024"/>
+      <location filename="../../Draft.py" line="3950"/>
       <source>The normal direction of this dimension</source>
       <translation>Întoarce direcția normală a unei dimensiuni</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4060"/>
+      <location filename="../../Draft.py" line="3986"/>
       <source>Text override. Use 'dim' to insert the dimension length</source>
       <translation>Suprascrie textul. Folosi 'dim' pentru a introduce lungimea de dimensiune</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4363"/>
+      <location filename="../../Draft.py" line="4289"/>
       <source>Length of the rectangle</source>
       <translation>Lungimea dreptunghiului</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4779"/>
+      <location filename="../../Draft.py" line="4705"/>
       <source>Radius to use to fillet the corners</source>
       <translation>Raza de utilizat pentru a rotunji colţurile</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4780"/>
+      <location filename="../../Draft.py" line="4706"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>Dimensiunea chamfer să dea la colturi</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4781"/>
+      <location filename="../../Draft.py" line="4707"/>
       <source>Create a face</source>
       <translation>Creaţi-o-față</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4445"/>
+      <location filename="../../Draft.py" line="4371"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
       <translation>Definește un model de textură (schimbă modelul de hașură)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4478"/>
+      <location filename="../../Draft.py" line="4404"/>
       <source>Start angle of the arc</source>
       <translation>Unghiul de start al arcului</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4479"/>
+      <location filename="../../Draft.py" line="4405"/>
       <source>End angle of the arc (for a full circle, give it same value as First Angle)</source>
       <translation>Unghiul final al arcului (pentru un cerc complet, dati-i aceeaşi valoarea ca unghiului de început)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4454"/>
+      <location filename="../../Draft.py" line="4380"/>
       <source>Radius of the circle</source>
       <translation>Raza cercului</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4480"/>
+      <location filename="../../Draft.py" line="4406"/>
       <source>The minor radius of the ellipse</source>
       <translation>Raza minoră a elipsei</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4481"/>
+      <location filename="../../Draft.py" line="4407"/>
       <source>The major radius of the ellipse</source>
       <translation>Raza majoră a elipsei</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4515"/>
+      <location filename="../../Draft.py" line="4441"/>
       <source>The vertices of the wire</source>
       <translation>Les sommets du fil</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4516"/>
+      <location filename="../../Draft.py" line="4442"/>
       <source>If the wire is closed or not</source>
       <translation>În cazul în care B-spline este închis sau nu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4519"/>
+      <location filename="../../Draft.py" line="4445"/>
       <source>The start point of this line</source>
       <translation>Punctul de pornire al acestei linii</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4520"/>
+      <location filename="../../Draft.py" line="4446"/>
       <source>The end point of this line</source>
       <translation>Punctul final al acestei linii</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4521"/>
+      <location filename="../../Draft.py" line="4447"/>
       <source>The length of this line</source>
       <translation>Lungimea acestei linii</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4524"/>
+      <location filename="../../Draft.py" line="4450"/>
       <source>Create a face if this object is closed</source>
       <translation>Creaţi o față dacă acest obiect este închis</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4525"/>
+      <location filename="../../Draft.py" line="4451"/>
       <source>The number of subdivisions of each edge</source>
       <translation>Numărul subdiviziunilor din fiecare margine</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4678"/>
+      <location filename="../../Draft.py" line="4604"/>
       <source>Displays a dim symbol at the end of the wire</source>
       <translation>Afişează un simbol 'dim' la capătul firului</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4776"/>
+      <location filename="../../Draft.py" line="4702"/>
       <source>Number of faces</source>
       <translation>Numărul de feţe</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4777"/>
+      <location filename="../../Draft.py" line="4703"/>
       <source>Radius of the control circle</source>
       <translation>Raza cercului de control</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4778"/>
+      <location filename="../../Draft.py" line="4704"/>
       <source>How the polygon must be drawn from the control circle</source>
       <translation>Cum poligonului trebuie desenat pornind de la cercul de control</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4826"/>
+      <location filename="../../Draft.py" line="4752"/>
       <source>Projection direction</source>
       <translation>Direcţia de proiecţie</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4827"/>
+      <location filename="../../Draft.py" line="4753"/>
       <source>The width of the lines inside this object</source>
       <translation>Lăţimea de linii în interiorul acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4828"/>
+      <location filename="../../Draft.py" line="4754"/>
       <source>The size of the texts inside this object</source>
       <translation>Dimensiunea textelor în interiorul acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4829"/>
+      <location filename="../../Draft.py" line="4755"/>
       <source>The spacing between lines of text</source>
       <translation>Spaţierea dintre liniile de text</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4830"/>
+      <location filename="../../Draft.py" line="4756"/>
       <source>The color of the projected objects</source>
       <translation>Culoarea obiectelor proiectate</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4831"/>
+      <location filename="../../Draft.py" line="4757"/>
       <source>The linked object</source>
       <translation>Obiectul corelat</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4832"/>
+      <location filename="../../Draft.py" line="4758"/>
       <source>Shape Fill Style</source>
       <translation>Stil de umplere a formei</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4833"/>
+      <location filename="../../Draft.py" line="4759"/>
       <source>Line Style</source>
       <translation>Stilul de linie</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4834"/>
+      <location filename="../../Draft.py" line="4760"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>În cazul în care bifat, sursa de obiecte sunt afişată indiferent dacă sunt vizibile sau nu în modelul 3D</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4893"/>
+      <location filename="../../Draft.py" line="4819"/>
       <source>Create a face if this spline is closed</source>
       <translation>Creaţi o fațetă dacă acest obiect (line b-spline) este închis(ă)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4901"/>
+      <location filename="../../Draft.py" line="4827"/>
       <source>Parameterization factor</source>
       <translation>Factor de parametrizare</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4966"/>
+      <location filename="../../Draft.py" line="4892"/>
       <source>The points of the Bezier curve</source>
       <translation>Punctele curbei Bézier</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4967"/>
+      <location filename="../../Draft.py" line="4893"/>
       <source>The degree of the Bezier function</source>
       <translation>Gradul funcției Bézier</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4968"/>
+      <location filename="../../Draft.py" line="4894"/>
       <source>Continuity</source>
       <translation>Continuitate</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4969"/>
+      <location filename="../../Draft.py" line="4895"/>
       <source>If the Bezier curve should be closed or not</source>
       <translation>Dacă curba Bézier ar trebui să fie închisă sau deschisă</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4970"/>
+      <location filename="../../Draft.py" line="4896"/>
       <source>Create a face if this curve is closed</source>
       <translation>Creaţi o fațetă dacă această curbă este închisă</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5090"/>
+      <location filename="../../Draft.py" line="5016"/>
       <source>The components of this block</source>
       <translation>Componentele acestui bloc</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5108"/>
+      <location filename="../../Draft.py" line="5034"/>
       <source>The base object this 2D view must represent</source>
       <translation>Obiectul de bază pe care această vedere 2 D trebuie să o prezinte</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5109"/>
+      <location filename="../../Draft.py" line="5035"/>
       <source>The projection vector of this object</source>
       <translation>Vectorul de proiecție al acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5110"/>
+      <location filename="../../Draft.py" line="5036"/>
       <source>The way the viewed object must be projected</source>
       <translation>Modul în care obiectul văzut trebuie să se proiecteze</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5111"/>
+      <location filename="../../Draft.py" line="5037"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
       <translation>Indicii fețelor care urmează să fie proiectate în modul Fețe individuale</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5112"/>
+      <location filename="../../Draft.py" line="5038"/>
       <source>Show hidden lines</source>
       <translation>Afișează liniile ascunse</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5359"/>
+      <location filename="../../Draft.py" line="5285"/>
       <source>The base object that must be duplicated</source>
       <translation>Obiectul de bază care trebuie multiplicat</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5259"/>
+      <location filename="../../Draft.py" line="5185"/>
       <source>The type of array to create</source>
       <translation>Tipul de matrice creeat</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5260"/>
+      <location filename="../../Draft.py" line="5186"/>
       <source>The axis direction</source>
       <translation>Direcția axei</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5261"/>
+      <location filename="../../Draft.py" line="5187"/>
       <source>Number of copies in X direction</source>
       <translation>Numărul de copii pe direcția X</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5262"/>
+      <location filename="../../Draft.py" line="5188"/>
       <source>Number of copies in Y direction</source>
       <translation>Numărul de copii pe direcția Y</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5263"/>
+      <location filename="../../Draft.py" line="5189"/>
       <source>Number of copies in Z direction</source>
       <translation>Numărul de copii pe direcția Z</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5362"/>
+      <location filename="../../Draft.py" line="5288"/>
       <source>Number of copies</source>
       <translation>Numărul de copii</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5265"/>
+      <location filename="../../Draft.py" line="5191"/>
       <source>Distance and orientation of intervals in X direction</source>
       <translation>Distanța și orientarea intervalelor pe direcția X</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5266"/>
+      <location filename="../../Draft.py" line="5192"/>
       <source>Distance and orientation of intervals in Y direction</source>
       <translation>Distanța și intervalele pe direcția Y</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5267"/>
+      <location filename="../../Draft.py" line="5193"/>
       <source>Distance and orientation of intervals in Z direction</source>
       <translation>Distanța și orientarea intervalelor pe direcția Z</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5268"/>
+      <location filename="../../Draft.py" line="5194"/>
       <source>Distance and orientation of intervals in Axis direction</source>
       <translation>Distanța și orientarea intervalelor pe direcția axei</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5269"/>
+      <location filename="../../Draft.py" line="5195"/>
       <source>Center point</source>
       <translation>Punctul central</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5270"/>
+      <location filename="../../Draft.py" line="5196"/>
       <source>Angle to cover with copies</source>
       <translation>Unghiul de acoperit cu copii</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5271"/>
+      <location filename="../../Draft.py" line="5197"/>
       <source>Specifies if copies must be fused (slower)</source>
       <translation>Specificați dacă copiile trebuie să fuzioneze (proces mai lent)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5360"/>
+      <location filename="../../Draft.py" line="5286"/>
       <source>The path object along which to distribute objects</source>
       <translation>Traiectoria după care se distribuie aceste obiecte</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5361"/>
+      <location filename="../../Draft.py" line="5287"/>
       <source>Selected subobjects (edges) of PathObj</source>
       <translation>Soub-obiecte sélectionate (edges) ale PathObj</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5363"/>
+      <location filename="../../Draft.py" line="5289"/>
       <source>Optional translation vector</source>
       <translation>Vector opțional de translație</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5364"/>
+      <location filename="../../Draft.py" line="5290"/>
       <source>Orientation of Base along path</source>
       <translation>Orientarea Bazei de-a lungul traiectoriei</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5574"/>
+      <location filename="../../Draft.py" line="5500"/>
       <source>X Location</source>
       <translation>Localizarea pe X</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5575"/>
+      <location filename="../../Draft.py" line="5501"/>
       <source>Y Location</source>
       <translation>Localizarea pe Y</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5576"/>
+      <location filename="../../Draft.py" line="5502"/>
       <source>Z Location</source>
       <translation>Localizarea pe Z</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5779"/>
+      <location filename="../../Draft.py" line="5705"/>
       <source>Text string</source>
       <translation>Şir tip text</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5780"/>
+      <location filename="../../Draft.py" line="5706"/>
       <source>Font file name</source>
       <translation>Numele fișierului de fonturi</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5781"/>
+      <location filename="../../Draft.py" line="5707"/>
       <source>Height of text</source>
       <translation>Înălțimea textului</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5782"/>
+      <location filename="../../Draft.py" line="5708"/>
       <source>Inter-character spacing</source>
       <translation>Spațiul dintre caractere</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5924"/>
+      <location filename="../../Draft.py" line="5850"/>
       <source>Linked faces</source>
       <translation>Faces liées</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5925"/>
+      <location filename="../../Draft.py" line="5851"/>
       <source>Specifies if splitter lines must be removed</source>
       <translation>Specificați dacă liniile secante trebuie șterse</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5926"/>
+      <location filename="../../Draft.py" line="5852"/>
       <source>An optional extrusion value to be applied to all faces</source>
       <translation>O valoare opțională de extrudere se aplică la toate fațetele</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4364"/>
+      <location filename="../../Draft.py" line="4290"/>
       <source>Height of the rectangle</source>
       <translation>Înălţimea dreptunghiului</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4368"/>
+      <location filename="../../Draft.py" line="4294"/>
       <source>Horizontal subdivisions of this rectangle</source>
       <translation>Subdiviziunile orizontale de acest dreptunghi</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4369"/>
+      <location filename="../../Draft.py" line="4295"/>
       <source>Vertical subdivisions of this rectangle</source>
       <translation>Subdiviziunile verticale de acest dreptunghi</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6644"/>
+      <location filename="../../Draft.py" line="6570"/>
       <source>The placement of this object</source>
       <translation>Amplasarea acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6138"/>
+      <location filename="../../Draft.py" line="6064"/>
       <source>The display length of this section plane</source>
       <translation>Lungimea vederii de afișare al acestui plan de secționare</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6139"/>
+      <location filename="../../Draft.py" line="6065"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Dimensiunea săgeţilor acestui plan de secțiune</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5114"/>
+      <location filename="../../Draft.py" line="5040"/>
       <source>For Cutlines and Cutfaces modes, this leaves the faces at the cut location</source>
       <translation>Pentru modurile de Cutlines şi Cutfaces, acest lucru lasă rezultatul la locul de tăiere</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4517"/>
+      <location filename="../../Draft.py" line="4443"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
       <translation>Obiectul de baza este firul, este format din 2 obiecte</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4518"/>
+      <location filename="../../Draft.py" line="4444"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
       <translation>Obiect instrument este firul, este format din 2 obiecte</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6339"/>
+      <location filename="../../Draft.py" line="6265"/>
       <source>The length of the straight segment</source>
       <translation>Lungimea segmentului de dreaptă</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6340"/>
+      <location filename="../../Draft.py" line="6266"/>
       <source>The point indicated by this label</source>
       <translation>Punctul indicat de această etichetă</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6341"/>
+      <location filename="../../Draft.py" line="6267"/>
       <source>The points defining the label polyline</source>
       <translation>Punctele definind eticheta poliliniei</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6342"/>
+      <location filename="../../Draft.py" line="6268"/>
       <source>The direction of the straight segment</source>
       <translation>Direcţia de segment de dreaptă</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6343"/>
+      <location filename="../../Draft.py" line="6269"/>
       <source>The type of information shown by this label</source>
       <translation>Tipul de informaţie indicat de această etichetă</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6344"/>
+      <location filename="../../Draft.py" line="6270"/>
       <source>The target object of this label</source>
       <translation>Obiectivul ţintă această etichetă</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6345"/>
+      <location filename="../../Draft.py" line="6271"/>
       <source>The text to display when type is set to custom</source>
       <translation>Text de afișat atunci când tipul este setat la particularizat</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6346"/>
+      <location filename="../../Draft.py" line="6272"/>
       <source>The text displayed by this label</source>
       <translation>Textul afişat de această etichetă</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6657"/>
+      <location filename="../../Draft.py" line="6583"/>
       <source>The size of the text</source>
       <translation>Dimensiunea textului</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6658"/>
+      <location filename="../../Draft.py" line="6584"/>
       <source>The font of the text</source>
       <translation>Fontul textului</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6422"/>
+      <location filename="../../Draft.py" line="6348"/>
       <source>The size of the arrow</source>
       <translation>Dimensiunea săgeții</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6659"/>
+      <location filename="../../Draft.py" line="6585"/>
       <source>The vertical alignment of the text</source>
       <translation>Aliniere verticală a textului</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6424"/>
+      <location filename="../../Draft.py" line="6350"/>
       <source>The type of arrow of this label</source>
       <translation>Tipul de săgeată din această etichetă</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6425"/>
+      <location filename="../../Draft.py" line="6351"/>
       <source>The type of frame around the text of this object</source>
       <translation>Tipul de cadru în jurul textul de la acest obiect</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6660"/>
+      <location filename="../../Draft.py" line="6586"/>
       <source>Text color</source>
       <translation>Culoarea textului</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6430"/>
+      <location filename="../../Draft.py" line="6356"/>
       <source>The maximum number of characters on each line of the text box</source>
       <translation>Numărul maxim de caractere pe fiecare linie din caseta de text</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3584"/>
+      <location filename="../../Draft.py" line="3510"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation>Distanța liniei de dimensiune se extinde peste liniile de prelungire</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3585"/>
+      <location filename="../../Draft.py" line="3511"/>
       <source>Length of the extension line above the dimension line</source>
       <translation>Lungimea liniei de extensie deasupra liniei de dimensiune</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4891"/>
+      <location filename="../../Draft.py" line="4817"/>
       <source>The points of the B-spline</source>
       <translation>Punctele de B-spline</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4892"/>
+      <location filename="../../Draft.py" line="4818"/>
       <source>If the B-spline is closed or not</source>
       <translation>În cazul în care B-spline este închis sau nu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5113"/>
+      <location filename="../../Draft.py" line="5039"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
       <translation>Tessellate elipselor şi B-spline în segmente de linie</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5115"/>
+      <location filename="../../Draft.py" line="5041"/>
       <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
       <translation>Lungimea segmentelor de linie dacă aproximarea elipselor sau curbelor B-spline prin segmente de linie</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5116"/>
+      <location filename="../../Draft.py" line="5042"/>
       <source>If this is True, this object will be recomputed only if it is visible</source>
       <translation>În cazul în care acest lucru este adevărat, acest obiect va fi recalculat numai în cazul în care este vizibil</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5524"/>
+      <location filename="../../Draft.py" line="5450"/>
       <source>Base</source>
       <translation>Bază</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5525"/>
+      <location filename="../../Draft.py" line="5451"/>
       <source>PointList</source>
       <translation>List[ de puncte</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5526"/>
+      <location filename="../../Draft.py" line="5452"/>
       <source>Count</source>
       <translation>Numar</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5612"/>
+      <location filename="../../Draft.py" line="5538"/>
       <source>The objects included in this clone</source>
       <translation>Obiectele incluse în această clona</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5613"/>
+      <location filename="../../Draft.py" line="5539"/>
       <source>The scale factor of this clone</source>
       <translation>Factorul de scară la această clonă</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5614"/>
+      <location filename="../../Draft.py" line="5540"/>
       <source>If this clones several objects, this specifies if the result is a fusion or a compound</source>
       <translation>Dacă această clonează mai multe obiedcte, această opțiune indică rezultatul unei fuziuni sau compuneri</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5927"/>
+      <location filename="../../Draft.py" line="5853"/>
       <source>This specifies if the shapes sew</source>
       <translation>Aceasta specifică dacă formele sunt croite</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6426"/>
+      <location filename="../../Draft.py" line="6352"/>
       <source>Display a leader line or not</source>
       <translation>Afișați indicații sau nu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6645"/>
+      <location filename="../../Draft.py" line="6571"/>
       <source>The text displayed by this object</source>
       <translation>Textul afişat de acest obiect</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6661"/>
+      <location filename="../../Draft.py" line="6587"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Interlinia (relativ la dimensiunea fontului)</translation>
     </message>
@@ -717,7 +717,7 @@
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../DraftTools.py" line="5419"/>
+      <location filename="../../DraftTools.py" line="5349"/>
       <source>Slope</source>
       <translation>Pantă</translation>
     </message>
@@ -730,62 +730,62 @@ http://www.freecadweb.org/wiki/Dxf_Importer_Install</source>
       <translation>Descarcarea bibliotecii dxf nu a reuşit. Descărcaţi şi instalaţi-le manual. Vedeți instrucţiuni complete la http://www.freecadweb.org/wiki/Dxf_Importer_Install</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2360"/>
+      <location filename="../../DraftGui.py" line="2345"/>
       <source>Scale</source>
       <translation>Scalare</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6179"/>
+      <location filename="../../Draft.py" line="6105"/>
       <source>Writing camera position</source>
       <translation>Scrie poziţia camerei</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6196"/>
+      <location filename="../../Draft.py" line="6122"/>
       <source>Writing objects shown/hidden state</source>
       <translation>Scrie starea obiectului vizibil/ascuns</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2361"/>
+      <location filename="../../DraftGui.py" line="2346"/>
       <source>X factor</source>
       <translation>Factor de X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2362"/>
+      <location filename="../../DraftGui.py" line="2347"/>
       <source>Y factor</source>
       <translation>Factor de Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2363"/>
+      <location filename="../../DraftGui.py" line="2348"/>
       <source>Z factor</source>
       <translation>Factor de Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2364"/>
+      <location filename="../../DraftGui.py" line="2349"/>
       <source>Uniform scaling</source>
       <translation>Scalare uniformă</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2365"/>
+      <location filename="../../DraftGui.py" line="2350"/>
       <source>Working plane orientation</source>
       <translation>Orientarea de planul de lucru</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2366"/>
+      <location filename="../../DraftGui.py" line="2351"/>
       <source>Result</source>
       <translation>Rezultat</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2367"/>
+      <location filename="../../DraftGui.py" line="2352"/>
       <source>Create a clone</source>
       <translation>Creaţi o clona</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2368"/>
+      <location filename="../../DraftGui.py" line="2353"/>
       <source>Modify original</source>
       <translation>Modifica original</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2369"/>
+      <location filename="../../DraftGui.py" line="2354"/>
       <source>Create a copy</source>
       <translation>Creeaza o copie</translation>
     </message>
@@ -797,17 +797,17 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>Descarcarea bibliotecii dxf a eșuat. Vă rugăm să instalaţi addon biblioteca dxf manual din meniul Tools-&gt; Addon Manager</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4769"/>
+      <location filename="../../Draft.py" line="4695"/>
       <source>This Wire is already flat</source>
       <translation>Acest fir este deja plat</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2370"/>
+      <location filename="../../DraftGui.py" line="2355"/>
       <source>Pick from/to points</source>
       <translation>Alege la puncte</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5425"/>
+      <location filename="../../DraftTools.py" line="5355"/>
       <source>Slope to give selected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down</source>
       <translation>Panta de dat firelor/liniilor selectate, selectat fire/linii: 0 = orizontală, 1 = 45deg în sus, -1 = 45deg în jos</translation>
     </message>
@@ -863,12 +863,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="../../DraftTools.py" line="5661"/>
+      <location filename="../../DraftTools.py" line="5591"/>
       <source>Add to Construction group</source>
       <translation>Adăugaţi la grupul de Constructii</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5662"/>
+      <location filename="../../DraftTools.py" line="5592"/>
       <source>Adds the selected objects to the Construction group</source>
       <translation>Adaugă obiectele selectate la grupul de Constructii</translation>
     </message>
@@ -876,12 +876,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_AddPoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="4714"/>
+      <location filename="../../DraftTools.py" line="4644"/>
       <source>Add Point</source>
       <translation>Adaugă punct</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4715"/>
+      <location filename="../../DraftTools.py" line="4645"/>
       <source>Adds a point to an existing Wire or B-spline</source>
       <translation>Adaugă un punct la un fir sau B-spline existentă</translation>
     </message>
@@ -889,12 +889,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4667"/>
+      <location filename="../../DraftTools.py" line="4597"/>
       <source>Move to group...</source>
       <translation>Mutare la grup...</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4668"/>
+      <location filename="../../DraftTools.py" line="4598"/>
       <source>Moves the selected object(s) to an existing group</source>
       <translation>Adaugă obiectul(ele) selectat(e) la un grup existent</translation>
     </message>
@@ -902,12 +902,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_ApplyStyle</name>
     <message>
-      <location filename="../../DraftTools.py" line="2478"/>
+      <location filename="../../DraftTools.py" line="2476"/>
       <source>Apply Current Style</source>
       <translation>Aplică stilul curent</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2479"/>
+      <location filename="../../DraftTools.py" line="2477"/>
       <source>Applies current line width and color to selected objects</source>
       <translation>Aplică lăţimea și culoarea liniei curente pentru obiectele selectate</translation>
     </message>
@@ -928,12 +928,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Array</name>
     <message>
-      <location filename="../../DraftTools.py" line="4936"/>
+      <location filename="../../DraftTools.py" line="4866"/>
       <source>Array</source>
       <translation>Matrice</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4937"/>
+      <location filename="../../DraftTools.py" line="4867"/>
       <source>Creates a polar or rectangular array from a selected object</source>
       <translation>Creează o matrice polară (de rotație) sau dreptunghiulară din obiectele selectate</translation>
     </message>
@@ -941,12 +941,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="5460"/>
+      <location filename="../../DraftTools.py" line="5390"/>
       <source>AutoGroup</source>
       <translation>AutoGroup</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5461"/>
+      <location filename="../../DraftTools.py" line="5391"/>
       <source>Select a group to automatically add all Draft &amp; Arch objects to</source>
       <translation>Sélectionați un grup pentru a adăuga automat toate obiectele Draft &amp; Arch</translation>
     </message>
@@ -980,12 +980,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Circle</name>
     <message>
-      <location filename="../../DraftTools.py" line="1488"/>
+      <location filename="../../DraftTools.py" line="1486"/>
       <source>Circle</source>
       <translation>Cerc</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1489"/>
+      <location filename="../../DraftTools.py" line="1487"/>
       <source>Creates a circle. CTRL to snap, ALT to select tangent objects</source>
       <translation>Creează un cerc. CTRL pentru ancorare, ALT pentru selectare obiecte tangente</translation>
     </message>
@@ -993,12 +993,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Clone</name>
     <message>
-      <location filename="../../DraftTools.py" line="5128"/>
+      <location filename="../../DraftTools.py" line="5058"/>
       <source>Clone</source>
       <translation>Clonă</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5129"/>
+      <location filename="../../DraftTools.py" line="5059"/>
       <source>Clones the selected object(s)</source>
       <translation>Clonează obiectul(ele) selectate</translation>
     </message>
@@ -1019,12 +1019,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_DelPoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="4739"/>
+      <location filename="../../DraftTools.py" line="4669"/>
       <source>Remove Point</source>
       <translation>Eliminare punct</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4740"/>
+      <location filename="../../DraftTools.py" line="4670"/>
       <source>Removes a point from an existing Wire or B-spline</source>
       <translation>Elimina un punct dintr-o polilinie/curba</translation>
     </message>
@@ -1032,12 +1032,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Dimension</name>
     <message>
-      <location filename="../../DraftTools.py" line="1885"/>
+      <location filename="../../DraftTools.py" line="1883"/>
       <source>Dimension</source>
       <translation>Dimensiune</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1886"/>
+      <location filename="../../DraftTools.py" line="1884"/>
       <source>Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment</source>
       <translation>Creează o dimensiune. CTRL pentru ancorare, SHIFT pentru constrângere, ALT pentru selectare segment</translation>
     </message>
@@ -1045,12 +1045,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Downgrade</name>
     <message>
-      <location filename="../../DraftTools.py" line="3317"/>
+      <location filename="../../DraftTools.py" line="3250"/>
       <source>Downgrade</source>
       <translation>Downgrade</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3318"/>
+      <location filename="../../DraftTools.py" line="3251"/>
       <source>Explodes the selected objects into simpler objects, or subtracts faces</source>
       <translation>Explodează obiectele selectate în simple obiecte, sau scade feţele</translation>
     </message>
@@ -1058,12 +1058,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Draft2Sketch</name>
     <message>
-      <location filename="../../DraftTools.py" line="4878"/>
+      <location filename="../../DraftTools.py" line="4808"/>
       <source>Draft to Sketch</source>
       <translation>Ciorna in schita</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4879"/>
+      <location filename="../../DraftTools.py" line="4809"/>
       <source>Convert bidirectionally between Draft and Sketch objects</source>
       <translation>Conversie bidirectionala a obiectelor intre ciorna si schita</translation>
     </message>
@@ -1071,12 +1071,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Drawing</name>
     <message>
-      <location filename="../../DraftTools.py" line="3922"/>
+      <location filename="../../DraftTools.py" line="3855"/>
       <source>Drawing</source>
       <translation>Desen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3923"/>
+      <location filename="../../DraftTools.py" line="3856"/>
       <source>Puts the selected objects on a Drawing sheet</source>
       <translation>Pune obiectele selectate într-o foaie de desen</translation>
     </message>
@@ -1084,12 +1084,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Edit</name>
     <message>
-      <location filename="../../DraftTools.py" line="4027"/>
+      <location filename="../../DraftTools.py" line="3960"/>
       <source>Edit</source>
       <translation>Editare</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4028"/>
+      <location filename="../../DraftTools.py" line="3961"/>
       <source>Edits the active object</source>
       <translation>Editează obiectul activ</translation>
     </message>
@@ -1097,12 +1097,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Ellipse</name>
     <message>
-      <location filename="../../DraftTools.py" line="1683"/>
+      <location filename="../../DraftTools.py" line="1681"/>
       <source>Ellipse</source>
       <translation>Elipsa</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1684"/>
+      <location filename="../../DraftTools.py" line="1682"/>
       <source>Creates an ellipse. CTRL to snap</source>
       <translation>Crează o elipsă. CTRL pentru a ancora</translation>
     </message>
@@ -1110,12 +1110,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Facebinder</name>
     <message>
-      <location filename="../../DraftTools.py" line="5213"/>
+      <location filename="../../DraftTools.py" line="5143"/>
       <source>Facebinder</source>
       <translation>Facebinder</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5214"/>
+      <location filename="../../DraftTools.py" line="5144"/>
       <source>Creates a facebinder object from selected face(s)</source>
       <translation>Creează un obiect facebinder de la feţele selectate</translation>
     </message>
@@ -1136,12 +1136,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_FlipDimension</name>
     <message>
-      <location filename="../../DraftTools.py" line="5242"/>
+      <location filename="../../DraftTools.py" line="5172"/>
       <source>Flip Dimension</source>
       <translation>Inversează direcția cotei</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5243"/>
+      <location filename="../../DraftTools.py" line="5173"/>
       <source>Flip the normal direction of a dimension</source>
       <translation>Inversează direcția normală a unei dimensiuni</translation>
     </message>
@@ -1149,38 +1149,25 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Heal</name>
     <message>
-      <location filename="../../DraftTools.py" line="5194"/>
+      <location filename="../../DraftTools.py" line="5124"/>
       <source>Heal</source>
       <translation>Repară</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5195"/>
+      <location filename="../../DraftTools.py" line="5125"/>
       <source>Heal faulty Draft objects saved from an earlier FreeCAD version</source>
       <translation>Repară obiectele ciornă/draft defecte salvate din o versiune mai veche de FreeCAD</translation>
     </message>
   </context>
   <context>
-    <name>Draft_Join</name>
-    <message>
-      <location filename="../../DraftTools.py" line="3221"/>
-      <source>Join</source>
-      <translation type="unfinished">Join</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3222"/>
-      <source>Joins two wires together</source>
-      <translation type="unfinished">Joins two wires together</translation>
-    </message>
-  </context>
-  <context>
     <name>Draft_Label</name>
     <message>
-      <location filename="../../DraftTools.py" line="5528"/>
+      <location filename="../../DraftTools.py" line="5458"/>
       <source>Label</source>
       <translation>Etichetă</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5529"/>
+      <location filename="../../DraftTools.py" line="5459"/>
       <source>Creates a label, optionally attached to a selected object or element</source>
       <translation>Creează o etichetă, opţional ataşată la un obiect selectat sau un element</translation>
     </message>
@@ -1201,12 +1188,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Mirror</name>
     <message>
-      <location filename="../../DraftTools.py" line="5283"/>
+      <location filename="../../DraftTools.py" line="5213"/>
       <source>Mirror</source>
       <translation>Oglindă</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5284"/>
+      <location filename="../../DraftTools.py" line="5214"/>
       <source>Mirrors the selected objects along a line defined by two points</source>
       <translation>Oglindirea obiectelor selectate de-a lungul unei linii definite prin două puncte</translation>
     </message>
@@ -1214,12 +1201,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Move</name>
     <message>
-      <location filename="../../DraftTools.py" line="2359"/>
+      <location filename="../../DraftTools.py" line="2357"/>
       <source>Move</source>
       <translation>Mută</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2360"/>
+      <location filename="../../DraftTools.py" line="2358"/>
       <source>Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Mută ​​obiectele selectate între 2 puncte. CTRL pentru ancorare, SHIFT pentru constrângere, ALT pentru copiere</translation>
     </message>
@@ -1227,12 +1214,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Offset</name>
     <message>
-      <location filename="../../DraftTools.py" line="2700"/>
+      <location filename="../../DraftTools.py" line="2698"/>
       <source>Offset</source>
       <translation>Compensare</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2701"/>
+      <location filename="../../DraftTools.py" line="2699"/>
       <source>Offsets the active object. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Compensează obiectul activ. CTRL la ancorare, SHIFT pentru constrângere, ALT pentru a copia</translation>
     </message>
@@ -1240,12 +1227,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_PathArray</name>
     <message>
-      <location filename="../../DraftTools.py" line="4966"/>
+      <location filename="../../DraftTools.py" line="4896"/>
       <source>PathArray</source>
       <translation>PathArray (cale pentru o serie de forme)</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4967"/>
+      <location filename="../../DraftTools.py" line="4897"/>
       <source>Creates copies of a selected object along a selected path.</source>
       <translation>Creează copii ale unui obiect selectat de-a lungul unui traseu selectat.</translation>
     </message>
@@ -1253,12 +1240,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Point</name>
     <message>
-      <location filename="../../DraftTools.py" line="5033"/>
+      <location filename="../../DraftTools.py" line="4963"/>
       <source>Point</source>
       <translation>Punct</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5034"/>
+      <location filename="../../DraftTools.py" line="4964"/>
       <source>Creates a point object</source>
       <translation>Creează un obiect punct</translation>
     </message>
@@ -1266,12 +1253,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_PointArray</name>
     <message>
-      <location filename="../../DraftTools.py" line="5002"/>
+      <location filename="../../DraftTools.py" line="4932"/>
       <source>PointArray</source>
       <translation>Matrice de puncte</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5003"/>
+      <location filename="../../DraftTools.py" line="4933"/>
       <source>Creates copies of a selected object on the position of points.</source>
       <translation>Creează copii ale unui obiect selectat pe poziţia punctelor.</translation>
     </message>
@@ -1279,12 +1266,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Polygon</name>
     <message>
-      <location filename="../../DraftTools.py" line="1498"/>
+      <location filename="../../DraftTools.py" line="1496"/>
       <source>Polygon</source>
       <translation>Poligon</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1499"/>
+      <location filename="../../DraftTools.py" line="1497"/>
       <source>Creates a regular polygon. CTRL to snap, SHIFT to constrain</source>
       <translation>Creează un poligon regulat. CTRL pentru a fixa, SHIFT pentru a limita</translation>
     </message>
@@ -1305,12 +1292,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Rotate</name>
     <message>
-      <location filename="../../DraftTools.py" line="2516"/>
+      <location filename="../../DraftTools.py" line="2514"/>
       <source>Rotate</source>
       <translation>Rotire</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2517"/>
+      <location filename="../../DraftTools.py" line="2515"/>
       <source>Rotates the selected objects. CTRL to snap, SHIFT to constrain, ALT creates a copy</source>
       <translation>Roteşte obiectele selectate. CTRL pentru ancorare, SHIFT pentru constrângere, ALT creează copie</translation>
     </message>
@@ -1318,12 +1305,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Scale</name>
     <message>
-      <location filename="../../DraftTools.py" line="3768"/>
+      <location filename="../../DraftTools.py" line="3701"/>
       <source>Scale</source>
       <translation>Scalare</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3769"/>
+      <location filename="../../DraftTools.py" line="3702"/>
       <source>Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Scalează obiectele selectate de la un punct de bază. CTRL pentru ancorare, SHIFT pentru constrângere, ALT pentru a copia</translation>
     </message>
@@ -1331,12 +1318,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4806"/>
+      <location filename="../../DraftTools.py" line="4736"/>
       <source>Select group</source>
       <translation>Selectați un grup</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4807"/>
+      <location filename="../../DraftTools.py" line="4737"/>
       <source>Selects all objects with the same parents as this group</source>
       <translation>Selectează toate obiectele cu aceeaşi părinţii ca acest grup</translation>
     </message>
@@ -1357,12 +1344,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
     <message>
-      <location filename="../../DraftTools.py" line="5505"/>
+      <location filename="../../DraftTools.py" line="5435"/>
       <source>Creates a proxy object from the current working plane</source>
       <translation>Creează un obiect proxy din planul de lucru curent</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5504"/>
+      <location filename="../../DraftTools.py" line="5434"/>
       <source>Create Working Plane Proxy</source>
       <translation>Crearea Proxy planului de lucru</translation>
     </message>
@@ -1370,12 +1357,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="../../DraftTools.py" line="4838"/>
+      <location filename="../../DraftTools.py" line="4768"/>
       <source>Shape 2D view</source>
       <translation>Vizualizare forma 2D</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4839"/>
+      <location filename="../../DraftTools.py" line="4769"/>
       <source>Creates Shape 2D views of selected objects</source>
       <translation>Creaza vizualizari forma 2D pentru obiectele selectate</translation>
     </message>
@@ -1383,12 +1370,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_ShapeString</name>
     <message>
-      <location filename="../../DraftTools.py" line="2226"/>
+      <location filename="../../DraftTools.py" line="2224"/>
       <source>Shape from text...</source>
       <translation>Forma din text...</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2227"/>
+      <location filename="../../DraftTools.py" line="2225"/>
       <source>Creates text string in shapes.</source>
       <translation>Creează şir text în forme.</translation>
     </message>
@@ -1396,12 +1383,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="../../DraftTools.py" line="5110"/>
+      <location filename="../../DraftTools.py" line="5040"/>
       <source>Show Snap Bar</source>
       <translation>Arata bara de ancore</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5111"/>
+      <location filename="../../DraftTools.py" line="5041"/>
       <source>Shows Draft snap toolbar</source>
       <translation>Arata bara de ancore pentru ciorna</translation>
     </message>
@@ -1409,12 +1396,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Slope</name>
     <message>
-      <location filename="../../DraftTools.py" line="5405"/>
+      <location filename="../../DraftTools.py" line="5335"/>
       <source>Set Slope</source>
       <translation>Setaţi panta</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5406"/>
+      <location filename="../../DraftTools.py" line="5336"/>
       <source>Sets the slope of a selected Line or Wire</source>
       <translation>Stabileşte panta liniei selectate sau firului/sârmei</translation>
     </message>
@@ -1422,12 +1409,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="../../DraftTools.py" line="5778"/>
+      <location filename="../../DraftTools.py" line="5708"/>
       <source>Angles</source>
       <translation>Unghiuri</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5779"/>
+      <location filename="../../DraftTools.py" line="5709"/>
       <source>Snaps to 45 and 90 degrees points on arcs and circles</source>
       <translation>Se ancorează la punctele de la 45 și 90 de grade pe un arc de cerc</translation>
     </message>
@@ -1435,12 +1422,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="../../DraftTools.py" line="5790"/>
+      <location filename="../../DraftTools.py" line="5720"/>
       <source>Center</source>
       <translation>Centru</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5791"/>
+      <location filename="../../DraftTools.py" line="5721"/>
       <source>Snaps to center of circles and arcs</source>
       <translation>Se ancorează pe centrul cercului și pe arce</translation>
     </message>
@@ -1448,12 +1435,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="../../DraftTools.py" line="5850"/>
+      <location filename="../../DraftTools.py" line="5780"/>
       <source>Dimensions</source>
       <translation>Dimensiuni</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5851"/>
+      <location filename="../../DraftTools.py" line="5781"/>
       <source>Shows temporary dimensions when snapping to Arch objects</source>
       <translation>Arată dimensiunile temporare când se ancorează la obiecte arc</translation>
     </message>
@@ -1461,12 +1448,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="5766"/>
+      <location filename="../../DraftTools.py" line="5696"/>
       <source>Endpoint</source>
       <translation>Punct final</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5767"/>
+      <location filename="../../DraftTools.py" line="5697"/>
       <source>Snaps to endpoints of edges</source>
       <translation>Se ancorează la capetele marginilor</translation>
     </message>
@@ -1474,12 +1461,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="../../DraftTools.py" line="5802"/>
+      <location filename="../../DraftTools.py" line="5732"/>
       <source>Extension</source>
       <translation>Extensie</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5803"/>
+      <location filename="../../DraftTools.py" line="5733"/>
       <source>Snaps to extension of edges</source>
       <translation>Se ancorează pe extensia marginilor</translation>
     </message>
@@ -1487,12 +1474,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="../../DraftTools.py" line="5730"/>
+      <location filename="../../DraftTools.py" line="5660"/>
       <source>Grid</source>
       <translation>Grilă</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5731"/>
+      <location filename="../../DraftTools.py" line="5661"/>
       <source>Snaps to grid points</source>
       <translation>Se fancorează pe punctele grilei</translation>
     </message>
@@ -1500,12 +1487,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="../../DraftTools.py" line="5742"/>
+      <location filename="../../DraftTools.py" line="5672"/>
       <source>Intersection</source>
       <translation>Intersecţie</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5743"/>
+      <location filename="../../DraftTools.py" line="5673"/>
       <source>Snaps to edges intersections</source>
       <translation>Se ancorează pe marginile intersecțiilor</translation>
     </message>
@@ -1513,17 +1500,17 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="../../DraftTools.py" line="5696"/>
+      <location filename="../../DraftTools.py" line="5626"/>
       <source>Toggle On/Off</source>
       <translation>Activează/dezactivează</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5697"/>
+      <location filename="../../DraftTools.py" line="5627"/>
       <source>Activates/deactivates all snap tools at once</source>
       <translation>Activează/dezactivează toate instrumentele de ancorare odată</translation>
     </message>
     <message>
-      <location filename="../../DraftSnap.py" line="1266"/>
+      <location filename="../../DraftSnap.py" line="1259"/>
       <source>Lock</source>
       <translation>Zăvorăște</translation>
     </message>
@@ -1531,12 +1518,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="5706"/>
+      <location filename="../../DraftTools.py" line="5636"/>
       <source>Midpoint</source>
       <translation>Punct mijlociu</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5707"/>
+      <location filename="../../DraftTools.py" line="5637"/>
       <source>Snaps to midpoints of edges</source>
       <translation>Se ancorează pe mijlocul marginii</translation>
     </message>
@@ -1544,12 +1531,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="../../DraftTools.py" line="5814"/>
+      <location filename="../../DraftTools.py" line="5744"/>
       <source>Nearest</source>
       <translation>Cel mai apropiat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5815"/>
+      <location filename="../../DraftTools.py" line="5745"/>
       <source>Snaps to nearest point on edges</source>
       <translation>Se fixează la extremitățile marginilor</translation>
     </message>
@@ -1557,12 +1544,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="../../DraftTools.py" line="5826"/>
+      <location filename="../../DraftTools.py" line="5756"/>
       <source>Ortho</source>
       <translation>Ortogonal</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5827"/>
+      <location filename="../../DraftTools.py" line="5757"/>
       <source>Snaps to orthogonal and 45 degrees directions</source>
       <translation>Se fixează la ortogonale şi la 45 de grade în direcţii</translation>
     </message>
@@ -1570,12 +1557,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="../../DraftTools.py" line="5754"/>
+      <location filename="../../DraftTools.py" line="5684"/>
       <source>Parallel</source>
       <translation>Paralel</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5755"/>
+      <location filename="../../DraftTools.py" line="5685"/>
       <source>Snaps to parallel directions of edges</source>
       <translation>Se ancorează la direcţiile paralele cu marginile</translation>
     </message>
@@ -1583,12 +1570,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="../../DraftTools.py" line="5718"/>
+      <location filename="../../DraftTools.py" line="5648"/>
       <source>Perpendicular</source>
       <translation>Perpendicular</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5719"/>
+      <location filename="../../DraftTools.py" line="5649"/>
       <source>Snaps to perpendicular points on edges</source>
       <translation>Se ancorează pe punctele perpendiculare pe margini</translation>
     </message>
@@ -1596,12 +1583,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="../../DraftTools.py" line="5838"/>
+      <location filename="../../DraftTools.py" line="5768"/>
       <source>Special</source>
       <translation type="unfinished">Special</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5839"/>
+      <location filename="../../DraftTools.py" line="5769"/>
       <source>Snaps to special locations of objects</source>
       <translation>Se ancorează pe locaţii speciale ale obiectelor</translation>
     </message>
@@ -1609,38 +1596,25 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="../../DraftTools.py" line="5862"/>
+      <location filename="../../DraftTools.py" line="5792"/>
       <source>Working Plane</source>
       <translation>Plan de lucru</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5863"/>
+      <location filename="../../DraftTools.py" line="5793"/>
       <source>Restricts the snapped point to the current working plane</source>
       <translation>Limiteză punctul de ancorare în planul de lucru actual</translation>
     </message>
   </context>
   <context>
-    <name>Draft_Split</name>
-    <message>
-      <location filename="../../DraftTools.py" line="3251"/>
-      <source>Split</source>
-      <translation>Divizare</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3252"/>
-      <source>Splits a wire into two wires</source>
-      <translation type="unfinished">Splits a wire into two wires</translation>
-    </message>
-  </context>
-  <context>
     <name>Draft_Stretch</name>
     <message>
-      <location filename="../../DraftTools.py" line="2891"/>
+      <location filename="../../DraftTools.py" line="2889"/>
       <source>Stretch</source>
       <translation type="unfinished">Stretch</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2892"/>
+      <location filename="../../DraftTools.py" line="2890"/>
       <source>Stretches the selected objects</source>
       <translation>Întinde obiectele selecționate</translation>
     </message>
@@ -1648,12 +1622,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Text</name>
     <message>
-      <location filename="../../DraftTools.py" line="1800"/>
+      <location filename="../../DraftTools.py" line="1798"/>
       <source>Text</source>
       <translation>Text</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1801"/>
+      <location filename="../../DraftTools.py" line="1799"/>
       <source>Creates an annotation. CTRL to snap</source>
       <translation>Creează o notă. CTRL pentru a ancora</translation>
     </message>
@@ -1661,12 +1635,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_ToggleConstructionMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3898"/>
+      <location filename="../../DraftTools.py" line="3831"/>
       <source>Toggles the Construction Mode for next objects.</source>
       <translation>Activează/dezactivează Modul de Construcţie pentru obiectele următoare.</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3896"/>
+      <location filename="../../DraftTools.py" line="3829"/>
       <source>Toggle Construction Mode</source>
       <translation>Activează/dezactivează Modul de Construcție</translation>
     </message>
@@ -1674,12 +1648,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_ToggleContinueMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3909"/>
+      <location filename="../../DraftTools.py" line="3842"/>
       <source>Toggle Continue Mode</source>
       <translation>Activează/dezactivează modul continuu</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3910"/>
+      <location filename="../../DraftTools.py" line="3843"/>
       <source>Toggles the Continue Mode for next commands.</source>
       <translation>Activează/dezactivează modul continuu pentru urmatoarea comanda.</translation>
     </message>
@@ -1687,12 +1661,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_ToggleDisplayMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3993"/>
+      <location filename="../../DraftTools.py" line="3926"/>
       <source>Toggle display mode</source>
       <translation>Activează/dezactivează mod de afişare</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3994"/>
+      <location filename="../../DraftTools.py" line="3927"/>
       <source>Swaps display mode of selected objects between wireframe and flatlines</source>
       <translation>Activează/dezactivează modul de afişare a obiectelor selectate între wireframe şi linii bidimensionale</translation>
     </message>
@@ -1700,22 +1674,22 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_ToggleGrid</name>
     <message>
-      <location filename="../../DraftTools.py" line="5172"/>
+      <location filename="../../DraftTools.py" line="5102"/>
       <source>Toggle Grid</source>
       <translation>Activează/dezactivează grila</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5173"/>
+      <location filename="../../DraftTools.py" line="5103"/>
       <source>Toggles the Draft grid on/off</source>
       <translation>Activează/dezactivează grila pentru modul ciorna</translation>
     </message>
     <message>
-      <location filename="../../DraftSnap.py" line="1257"/>
+      <location filename="../../DraftSnap.py" line="1250"/>
       <source>Grid</source>
       <translation>Grilă</translation>
     </message>
     <message>
-      <location filename="../../DraftSnap.py" line="1258"/>
+      <location filename="../../DraftSnap.py" line="1251"/>
       <source>Toggles the Draft grid On/Off</source>
       <translation>Activează/dezactivează grila pentru modul ciorna</translation>
     </message>
@@ -1723,12 +1697,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="../../DraftTools.py" line="3350"/>
+      <location filename="../../DraftTools.py" line="3283"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3351"/>
+      <location filename="../../DraftTools.py" line="3284"/>
       <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
       <translation>Taie sau extinde obiectele selectate sau extrudeaza o fateta. CTRL activeaza ancorele, SHIFT adauga segmentul sau normala, ALT inverseaza</translation>
     </message>
@@ -1749,12 +1723,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_Upgrade</name>
     <message>
-      <location filename="../../DraftTools.py" line="3287"/>
+      <location filename="../../DraftTools.py" line="3220"/>
       <source>Upgrade</source>
       <translation>Upgrade</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3288"/>
+      <location filename="../../DraftTools.py" line="3221"/>
       <source>Joins the selected objects into one, or converts closed wires to filled faces, or unites faces</source>
       <translation>Se alătură obiectele selectate într-unul singur, converteşte fire închis umplut fațete sau uneşte faţete</translation>
     </message>
@@ -1762,12 +1736,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_VisGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="5257"/>
+      <location filename="../../DraftTools.py" line="5187"/>
       <source>VisGroup</source>
       <translation>VisGroup</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5258"/>
+      <location filename="../../DraftTools.py" line="5188"/>
       <source>Adds a VisGroup</source>
       <translation>Adaugă o VisGroup</translation>
     </message>
@@ -1788,12 +1762,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>Draft_WireToBSpline</name>
     <message>
-      <location filename="../../DraftTools.py" line="4764"/>
+      <location filename="../../DraftTools.py" line="4694"/>
       <source>Wire to B-spline</source>
       <translation>Polilinie spsre curba b-spline</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4765"/>
+      <location filename="../../DraftTools.py" line="4695"/>
       <source>Converts between Wire and B-spline</source>
       <translation>Converteste un obiect din polilinie in curba</translation>
     </message>
@@ -2838,7 +2812,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../DraftSnap.py" line="1252"/>
+      <location filename="../../DraftSnap.py" line="1245"/>
       <source>Draft Snap</source>
       <translation>Ancorare masă de desen</translation>
     </message>
@@ -2871,322 +2845,322 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../Draft.py" line="2210"/>
+      <location filename="../../Draft.py" line="2136"/>
       <source>not shape found</source>
       <translation>nicio formă găsită</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2215"/>
+      <location filename="../../Draft.py" line="2141"/>
       <source>All Shapes must be co-planar</source>
       <translation>Toate formele trebuie să fie coplanare</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2343"/>
+      <location filename="../../Draft.py" line="2269"/>
       <source>The given object is not planar and cannot be converted into a sketch.</source>
       <translation>Obiectul dat nu este plan și nu poate fi convertit în sketch.</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2351"/>
+      <location filename="../../Draft.py" line="2277"/>
       <source>Unable to guess the normal direction of this object</source>
       <translation>Incapable de a évalua directia normală a acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="393"/>
+      <location filename="../../DraftGui.py" line="382"/>
       <source>Draft Command Bar</source>
       <translation>Bara de Comandă Schiță</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="727"/>
+      <location filename="../../DraftGui.py" line="715"/>
       <source>Toggle construction mode</source>
       <translation>Activează/dezactivează Modul de Construcție</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="728"/>
+      <location filename="../../DraftGui.py" line="716"/>
       <source>Current line color</source>
       <translation>Culoarea liniei curente</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="729"/>
+      <location filename="../../DraftGui.py" line="717"/>
       <source>Current face color</source>
       <translation>Culoare curentă a fațetei</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="730"/>
+      <location filename="../../DraftGui.py" line="718"/>
       <source>Current line width</source>
       <translation>Lățimea linei curente</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="731"/>
+      <location filename="../../DraftGui.py" line="719"/>
       <source>Current font size</source>
       <translation>Dimensiunea curentă a fontului</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="732"/>
+      <location filename="../../DraftGui.py" line="720"/>
       <source>Apply to selected objects</source>
       <translation>Se aplică la obiectele selectate</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2006"/>
+      <location filename="../../DraftGui.py" line="1991"/>
       <source>Autogroup off</source>
       <translation>Autogrup dezactivat</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="761"/>
+      <location filename="../../DraftGui.py" line="749"/>
       <source>active command:</source>
       <translation>Comanda activă:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1048"/>
+      <location filename="../../DraftGui.py" line="1036"/>
       <source>None</source>
       <translation>Niciunul</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="763"/>
+      <location filename="../../DraftGui.py" line="751"/>
       <source>Active Draft command</source>
       <translation>Comanda activă proiect</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="764"/>
+      <location filename="../../DraftGui.py" line="752"/>
       <source>X coordinate of next point</source>
       <translation>Coordonata X a punctului următor</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1049"/>
+      <location filename="../../DraftGui.py" line="1037"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="766"/>
+      <location filename="../../DraftGui.py" line="754"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="767"/>
+      <location filename="../../DraftGui.py" line="755"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="768"/>
+      <location filename="../../DraftGui.py" line="756"/>
       <source>Y coordinate of next point</source>
       <translation>Coordonata Y a punctului următor</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="769"/>
+      <location filename="../../DraftGui.py" line="757"/>
       <source>Z coordinate of next point</source>
       <translation>Coordonata Z a punctului următor</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="770"/>
+      <location filename="../../DraftGui.py" line="758"/>
       <source>Enter point</source>
       <translation>Introduceți punctul</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="771"/>
+      <location filename="../../DraftGui.py" line="759"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>Introduceți un nou punct cu coordonatele date</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="772"/>
+      <location filename="../../DraftGui.py" line="760"/>
       <source>Length</source>
       <translation>Lungime</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="773"/>
+      <location filename="../../DraftGui.py" line="761"/>
       <source>Angle</source>
       <translation>Unghi</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="774"/>
+      <location filename="../../DraftGui.py" line="762"/>
       <source>Length of current segment</source>
       <translation>Lungimea segmentului curent</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="775"/>
+      <location filename="../../DraftGui.py" line="763"/>
       <source>Angle of current segment</source>
       <translation>Unghiul segmentului curent</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1104"/>
+      <location filename="../../DraftGui.py" line="1092"/>
       <source>Radius</source>
       <translation>Raza</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="779"/>
+      <location filename="../../DraftGui.py" line="767"/>
       <source>Radius of Circle</source>
       <translation>Raza cercului</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="786"/>
+      <location filename="../../DraftGui.py" line="774"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Dacă bifaţi casuţa, comanda nu se va termina până când nu apăsaţi butonul de comandă din nou</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="788"/>
+      <location filename="../../DraftGui.py" line="776"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>Daca este bifat, o expandare tip OCC va fi folosita inlocul expandarii clasice</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="789"/>
+      <location filename="../../DraftGui.py" line="777"/>
       <source>&amp;OCC-style offset</source>
       <translation>Expandare tip &amp;OCC</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="790"/>
+      <location filename="../../DraftGui.py" line="778"/>
       <source>Add points to the current object</source>
       <translation>Adăuga puncte la obiectul curent</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="791"/>
+      <location filename="../../DraftGui.py" line="779"/>
       <source>Remove points from the current object</source>
       <translation>Elimina puncte din obiectul curent</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="792"/>
+      <location filename="../../DraftGui.py" line="780"/>
       <source>Make Bezier node sharp</source>
       <translation>Fă nodul Bezier ascuțit</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="793"/>
+      <location filename="../../DraftGui.py" line="781"/>
       <source>Make Bezier node tangent</source>
       <translation>Fă nodul Bezier tangent</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="794"/>
+      <location filename="../../DraftGui.py" line="782"/>
       <source>Make Bezier node symmetric</source>
       <translation>Fă nodul Bezier simetric</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="805"/>
+      <location filename="../../DraftGui.py" line="793"/>
       <source>Sides</source>
       <translation>Părți</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="806"/>
+      <location filename="../../DraftGui.py" line="794"/>
       <source>Number of sides</source>
       <translation>Numărul de laturi</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2879"/>
+      <location filename="../../DraftTools.py" line="2877"/>
       <source>Offset</source>
       <translation>Compensare</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="808"/>
+      <location filename="../../DraftGui.py" line="796"/>
       <source>XY (top)</source>
       <translation>XY (sus)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="809"/>
+      <location filename="../../DraftGui.py" line="797"/>
       <source>Select XY plane</source>
       <translation>Selectare plan XY</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="810"/>
+      <location filename="../../DraftGui.py" line="798"/>
       <source>XZ (front)</source>
       <translation>XZ (în față)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="811"/>
+      <location filename="../../DraftGui.py" line="799"/>
       <source>Select XZ plane</source>
       <translation>Selectare plan XZ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="812"/>
+      <location filename="../../DraftGui.py" line="800"/>
       <source>YZ (side)</source>
       <translation>YZ (lateral)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="813"/>
+      <location filename="../../DraftGui.py" line="801"/>
       <source>Select YZ plane</source>
       <translation>Selectare plan YZ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="814"/>
+      <location filename="../../DraftGui.py" line="802"/>
       <source>View</source>
       <translation>Vizualizare</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="815"/>
+      <location filename="../../DraftGui.py" line="803"/>
       <source>Select plane perpendicular to the current view</source>
       <translation>Selectare plan perpendicular pe vizualizarea curentă</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="816"/>
+      <location filename="../../DraftGui.py" line="804"/>
       <source>Auto</source>
       <translation>Automat</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="817"/>
+      <location filename="../../DraftGui.py" line="805"/>
       <source>Do not project points to a drawing plane</source>
       <translation>Nu proiectează punctele pe planul desenului</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="820"/>
+      <location filename="../../DraftGui.py" line="808"/>
       <source>Text string to draw</source>
       <translation>Șir text de desenat</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="821"/>
+      <location filename="../../DraftGui.py" line="809"/>
       <source>String</source>
       <translation>Şir</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="822"/>
+      <location filename="../../DraftGui.py" line="810"/>
       <source>Height of text</source>
       <translation>Înălțimea textului</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="823"/>
+      <location filename="../../DraftGui.py" line="811"/>
       <source>Height</source>
       <translation>Înălţime</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="824"/>
+      <location filename="../../DraftGui.py" line="812"/>
       <source>Intercharacter spacing</source>
       <translation>Spațiul dintre caractere</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="825"/>
+      <location filename="../../DraftGui.py" line="813"/>
       <source>Tracking</source>
       <translation>Urmărire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="826"/>
+      <location filename="../../DraftGui.py" line="814"/>
       <source>Full path to font file:</source>
       <translation>Calea întreagă la fișierul text:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="827"/>
+      <location filename="../../DraftGui.py" line="815"/>
       <source>Open a FileChooser for font file</source>
       <translation>Deschide un FileChooser pentru fişier de font</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="828"/>
+      <location filename="../../DraftGui.py" line="816"/>
       <source>Grid spacing</source>
       <translation>Spaţierea grilei</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="829"/>
+      <location filename="../../DraftGui.py" line="817"/>
       <source>The spacing between the grid lines</source>
       <translation>Spaţierea dintre liniile grilei</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="830"/>
+      <location filename="../../DraftGui.py" line="818"/>
       <source>Main line every</source>
       <translation>Linii principale la fiecare</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="831"/>
+      <location filename="../../DraftGui.py" line="819"/>
       <source>The number of lines between main lines</source>
       <translation>Numărul de linii între liniile principale</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="832"/>
+      <location filename="../../DraftGui.py" line="820"/>
       <source>Center plane on view</source>
       <translation>Centrează planul în vedere</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="906"/>
+      <location filename="../../DraftGui.py" line="894"/>
       <source>Select Plane</source>
       <translation>Selectare plan</translation>
     </message>
@@ -3201,127 +3175,127 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="977"/>
+      <location filename="../../DraftGui.py" line="965"/>
       <source>Circle</source>
       <translation>Cerc</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="984"/>
+      <location filename="../../DraftGui.py" line="972"/>
       <source>Center X</source>
       <translation>Centrul X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="983"/>
+      <location filename="../../DraftGui.py" line="971"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="987"/>
+      <location filename="../../DraftGui.py" line="975"/>
       <source>Point</source>
       <translation>Punct</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1013"/>
+      <location filename="../../DraftGui.py" line="1001"/>
       <source>Label</source>
       <translation>Etichetă</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1097"/>
+      <location filename="../../DraftGui.py" line="1085"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1094"/>
+      <location filename="../../DraftGui.py" line="1082"/>
       <source>Trim</source>
       <translation>Taiere</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1186"/>
+      <location filename="../../DraftGui.py" line="1174"/>
       <source>Pick Object</source>
       <translation>Alege obiect</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1191"/>
+      <location filename="../../DraftGui.py" line="1179"/>
       <source>Edit</source>
       <translation>Editare</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1251"/>
+      <location filename="../../DraftGui.py" line="1236"/>
       <source>Global X</source>
       <translation>Global X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1252"/>
+      <location filename="../../DraftGui.py" line="1237"/>
       <source>Global Y</source>
       <translation>Global Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1253"/>
+      <location filename="../../DraftGui.py" line="1238"/>
       <source>Global Z</source>
       <translation>Global Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1256"/>
+      <location filename="../../DraftGui.py" line="1241"/>
       <source>Local X</source>
       <translation>Local X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1257"/>
+      <location filename="../../DraftGui.py" line="1242"/>
       <source>Local Y</source>
       <translation>Local Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1258"/>
+      <location filename="../../DraftGui.py" line="1243"/>
       <source>Local Z</source>
       <translation>Local Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1496"/>
+      <location filename="../../DraftGui.py" line="1481"/>
       <source>Invalid Size value. Using 200.0.</source>
       <translation>Valoare dimensiune nevalidă. Utilizați 200.0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1504"/>
+      <location filename="../../DraftGui.py" line="1489"/>
       <source>Invalid Tracking value. Using 0.</source>
       <translation>Valoare dimensiune nevalidă. Utilizați 0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1518"/>
+      <location filename="../../DraftGui.py" line="1503"/>
       <source>Please enter a text string.</source>
       <translation>Introduceți un șir text.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1526"/>
+      <location filename="../../DraftGui.py" line="1511"/>
       <source>Select a Font file</source>
       <translation>Selectați un fișier font</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1557"/>
+      <location filename="../../DraftGui.py" line="1542"/>
       <source>Please enter a font file.</source>
       <translation>Introduceți un fișier font.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2000"/>
+      <location filename="../../DraftGui.py" line="1985"/>
       <source>Autogroup: </source>
       <translation>AutoGroup: </translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2295"/>
+      <location filename="../../DraftGui.py" line="2280"/>
       <source>Faces</source>
       <translation>Fete</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2296"/>
+      <location filename="../../DraftGui.py" line="2281"/>
       <source>Remove</source>
       <translation>Elimină</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2297"/>
+      <location filename="../../DraftGui.py" line="2282"/>
       <source>Add</source>
       <translation>Adaugă</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2298"/>
+      <location filename="../../DraftGui.py" line="2283"/>
       <source>Facebinder elements</source>
       <translation>Surfaces liées: éléments</translation>
     </message>
@@ -3372,150 +3346,150 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
       <translation>Creează un Dreptunghi</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1377"/>
+      <location filename="../../DraftTools.py" line="1375"/>
       <source>Create Circle</source>
       <translation>Creează un Cerc</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1412"/>
+      <location filename="../../DraftTools.py" line="1410"/>
       <source>Create Arc</source>
       <translation>Creează un Arc de cerc</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1454"/>
+      <location filename="../../DraftTools.py" line="1452"/>
       <source>Start Angle</source>
       <translation>Unghiul de inceput</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1461"/>
+      <location filename="../../DraftTools.py" line="1459"/>
       <source>Aperture</source>
       <translation>Deschidere</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1502"/>
+      <location filename="../../DraftTools.py" line="1500"/>
       <source>Polygon</source>
       <translation>Poligon</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1639"/>
+      <location filename="../../DraftTools.py" line="1637"/>
       <source>Create Polygon</source>
       <translation>Creează un Poligon</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1687"/>
+      <location filename="../../DraftTools.py" line="1685"/>
       <source>Ellipse</source>
       <translation>Elipsa</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1744"/>
+      <location filename="../../DraftTools.py" line="1742"/>
       <source>Create Ellipse</source>
       <translation>Creează o elipsă</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1804"/>
+      <location filename="../../DraftTools.py" line="1802"/>
       <source>Text</source>
       <translation>Text</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1840"/>
+      <location filename="../../DraftTools.py" line="1838"/>
       <source>Create Text</source>
       <translation>Creează un Text</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1889"/>
+      <location filename="../../DraftTools.py" line="1887"/>
       <source>Dimension</source>
       <translation>Dimensiune</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2013"/>
+      <location filename="../../DraftTools.py" line="2011"/>
       <source>Create Dimension</source>
       <translation>Creează Cotă</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2230"/>
+      <location filename="../../DraftTools.py" line="2228"/>
       <source>ShapeString</source>
       <translation>ShapeString</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2271"/>
+      <location filename="../../DraftTools.py" line="2269"/>
       <source>Create ShapeString</source>
       <translation>Crea ShapeString</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3831"/>
+      <location filename="../../DraftTools.py" line="3764"/>
       <source>Copy</source>
       <translation>Copiere</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2410"/>
+      <location filename="../../DraftTools.py" line="2408"/>
       <source>Move</source>
       <translation>Mută</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2499"/>
+      <location filename="../../DraftTools.py" line="2497"/>
       <source>Change Style</source>
       <translation>Modifică stilul</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2571"/>
+      <location filename="../../DraftTools.py" line="2569"/>
       <source>Rotate</source>
       <translation>Rotire</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2723"/>
+      <location filename="../../DraftTools.py" line="2721"/>
       <source>Cannot offset this object type
 </source>
       <translation>Acest tip de obiect nu poate fi expandat </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3212"/>
+      <location filename="../../DraftTools.py" line="3210"/>
       <source>Stretch</source>
       <translation type="unfinished">Stretch</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3305"/>
+      <location filename="../../DraftTools.py" line="3238"/>
       <source>Upgrade</source>
       <translation>Upgrade</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3335"/>
+      <location filename="../../DraftTools.py" line="3268"/>
       <source>Downgrade</source>
       <translation>Downgrade</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4583"/>
+      <location filename="../../DraftTools.py" line="4513"/>
       <source>Selection is not a Knot
 </source>
       <translation>Selecția nu este un nod
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4910"/>
+      <location filename="../../DraftTools.py" line="4840"/>
       <source>Convert to Sketch</source>
       <translation>Convertește la schiță</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4914"/>
+      <location filename="../../DraftTools.py" line="4844"/>
       <source>Convert to Draft</source>
       <translation>Convertește în Draft</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4926"/>
+      <location filename="../../DraftTools.py" line="4856"/>
       <source>Convert</source>
       <translation>Converteşte</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4955"/>
+      <location filename="../../DraftTools.py" line="4885"/>
       <source>Array</source>
       <translation>Matrice</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5092"/>
+      <location filename="../../DraftTools.py" line="5022"/>
       <source>Create Point</source>
       <translation>Creează un punct</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5328"/>
+      <location filename="../../DraftTools.py" line="5258"/>
       <source>Mirror</source>
       <translation>Oglindă</translation>
     </message>
@@ -3569,164 +3543,164 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Draft.makeBSpline: Pointslist nevalidă</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2583"/>
+      <location filename="../../Draft.py" line="2509"/>
       <source>No object given</source>
       <translation>Niciun obiect fournizat</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2586"/>
+      <location filename="../../Draft.py" line="2512"/>
       <source>The two points are coincident</source>
       <translation>Cele două puncte coincid</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2996"/>
+      <location filename="../../Draft.py" line="2922"/>
       <source>Found groups: closing each open object inside</source>
       <translation>S-au găsit grupuri: se închid toate obiectele deschise din grup</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3001"/>
+      <location filename="../../Draft.py" line="2927"/>
       <source>Found mesh(es): turning into Part shapes</source>
       <translation>S-a găsit plase (ochiuri): se transformă în forme ale pieselor</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3009"/>
+      <location filename="../../Draft.py" line="2935"/>
       <source>Found 1 solidifiable object: solidifying it</source>
       <translation type="unfinished">Found 1 solidifiable object: solidifying it</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3014"/>
+      <location filename="../../Draft.py" line="2940"/>
       <source>Found 2 objects: fusing them</source>
       <translation>Am descoperit 2 obiecte: le unesc</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3019"/>
+      <location filename="../../Draft.py" line="2945"/>
       <source>Found several objects: creating a shell</source>
       <translation>Mai multe obiecte găsite: crearea unei carcase</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3024"/>
+      <location filename="../../Draft.py" line="2950"/>
       <source>Found several coplanar objects or faces: creating one face</source>
       <translation>Mai multe obiecte coplanare găsite,: crearea unei fațete</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3029"/>
+      <location filename="../../Draft.py" line="2955"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
       <translation>Am gasit un obiect neparametric; il schitam</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3050"/>
+      <location filename="../../Draft.py" line="2976"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
       <translation>Am gasit un obiect schita inchis; il convertesc in fata</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3042"/>
+      <location filename="../../Draft.py" line="2968"/>
       <source>Found 1 linear object: converting to line</source>
       <translation>1 obiect linear găsit: convertit în linie</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3055"/>
+      <location filename="../../Draft.py" line="2981"/>
       <source>Found closed wires: creating faces</source>
       <translation>Am gasit polilinie inchisa; construim fațeta</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3060"/>
+      <location filename="../../Draft.py" line="2986"/>
       <source>Found 1 open wire: closing it</source>
       <translation>Am gasit o linie deschisa; o inchid</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3065"/>
+      <location filename="../../Draft.py" line="2991"/>
       <source>Found several open wires: joining them</source>
       <translation>Am gasit mai multe fire; le imbin</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3070"/>
+      <location filename="../../Draft.py" line="2996"/>
       <source>Found several edges: wiring them</source>
       <translation>Am gasit mai multe margini; le transform în fire</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3075"/>
+      <location filename="../../Draft.py" line="3001"/>
       <source>Found several non-treatable objects: creating compound</source>
       <translation>Am găsit mai multe obiecte netratabile; creez complex</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3079"/>
+      <location filename="../../Draft.py" line="3005"/>
       <source>Unable to upgrade these objects.</source>
       <translation>Nu se poat actualiza aceste obiecte.</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3249"/>
+      <location filename="../../Draft.py" line="3175"/>
       <source>Found 1 block: exploding it</source>
       <translation>S-a găsit 1 bloc: să-l explodăm</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3255"/>
+      <location filename="../../Draft.py" line="3181"/>
       <source>Found 1 multi-solids compound: exploding it</source>
       <translation>Un solid multi-composant a fost găsit: separă-l</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3261"/>
+      <location filename="../../Draft.py" line="3187"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
       <translation>Am gasit un obiect parametric fara toate dependentele</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3268"/>
+      <location filename="../../Draft.py" line="3194"/>
       <source>Found 2 objects: subtracting them</source>
       <translation>Am gasit doua obiecte; le substragem</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3275"/>
+      <location filename="../../Draft.py" line="3201"/>
       <source>Found several faces: splitting them</source>
       <translation>Am gasit mai multe fete; le divizam</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3280"/>
+      <location filename="../../Draft.py" line="3206"/>
       <source>Found several objects: subtracting them from the first one</source>
       <translation>Am gasit mai multe obiecte; le substragem din primul</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3285"/>
+      <location filename="../../Draft.py" line="3211"/>
       <source>Found 1 face: extracting its wires</source>
       <translation>Am gasit o fateta; ii extragem liniile</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3290"/>
+      <location filename="../../Draft.py" line="3216"/>
       <source>Found only wires: extracting their edges</source>
       <translation>Am gasit doar linii; le extragem marginile</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3294"/>
+      <location filename="../../Draft.py" line="3220"/>
       <source>No more downgrade possible</source>
       <translation>Imposibil de retrogradat</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4934"/>
+      <location filename="../../Draft.py" line="4860"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
       <translation>_BSpline.createGeometrie: este o curbă închisă având același prim / ultim Punct. Geometria nu a fost actualizată.</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5567"/>
+      <location filename="../../Draft.py" line="5493"/>
       <source>No point found
 </source>
       <translation>Nici un punct găsit
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5800"/>
+      <location filename="../../Draft.py" line="5726"/>
       <source>ShapeString: string has no wires</source>
       <translation>ShapeString: șirul de caractere nu are nici un fir atașat</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="780"/>
+      <location filename="../../DraftGui.py" line="768"/>
       <source>Relative</source>
       <translation>Relativ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="787"/>
+      <location filename="../../DraftGui.py" line="775"/>
       <source>Continue</source>
       <translation>Continua</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="797"/>
+      <location filename="../../DraftGui.py" line="785"/>
       <source>Close</source>
       <translation>Închide</translation>
     </message>
@@ -3771,7 +3745,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Limita Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="803"/>
+      <location filename="../../DraftGui.py" line="791"/>
       <source>Select edge</source>
       <translation>Selectează marginea</translation>
     </message>
@@ -3786,7 +3760,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Modul longitudinal</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="799"/>
+      <location filename="../../DraftGui.py" line="787"/>
       <source>Wipe</source>
       <translation>Șterge</translation>
     </message>
@@ -3796,87 +3770,82 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Setare Plan de lucru</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="126"/>
-      <source>Cycle snap object</source>
-      <translation type="unfinished">Cycle snap object</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="777"/>
+      <location filename="../../DraftGui.py" line="765"/>
       <source>Check this to lock the current angle</source>
       <translation>Bifați asta pentru a bloca unghiul curent</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="781"/>
+      <location filename="../../DraftGui.py" line="769"/>
       <source>Coordinates relative to last point or absolute</source>
       <translation>Coordonate relative faţă de ultimul punct sau absolute</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="782"/>
+      <location filename="../../DraftGui.py" line="770"/>
       <source>Filled</source>
       <translation>Umplut</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="783"/>
+      <location filename="../../DraftGui.py" line="771"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe</source>
       <translation>Verifica dacă obiectul ar trebui să apară ca umplut, altfel va apare ca wireframe</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="784"/>
+      <location filename="../../DraftGui.py" line="772"/>
       <source>Finish</source>
       <translation>Terminare</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="785"/>
+      <location filename="../../DraftGui.py" line="773"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Termina operatiunea curenta de editare sau desenare</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="795"/>
+      <location filename="../../DraftGui.py" line="783"/>
       <source>&amp;Undo (CTRL+Z)</source>
       <translation>&amp; Undo (CTRL + Z)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="796"/>
+      <location filename="../../DraftGui.py" line="784"/>
       <source>Undo the last segment</source>
       <translation>Anulare ultimul segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="798"/>
+      <location filename="../../DraftGui.py" line="786"/>
       <source>Finishes and closes the current line</source>
       <translation>Termină, şi închide linia curentă</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="800"/>
+      <location filename="../../DraftGui.py" line="788"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Şterge toate segmentele existente ale acestei linii şi reporneşte de la ultimul punct</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="801"/>
+      <location filename="../../DraftGui.py" line="789"/>
       <source>Set WP</source>
       <translation>Definește planul de lucru</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="802"/>
+      <location filename="../../DraftGui.py" line="790"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>Reorientează plan de lucru pe ultimul segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="804"/>
+      <location filename="../../DraftGui.py" line="792"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Selectați o margine existentă pentru a fi măsurată de către această dimensiune</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="819"/>
+      <location filename="../../DraftGui.py" line="807"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
       <translation>Dacă este bifat, obiectele vor fi copiate în loc de a fi mutate. Preferences -&gt; Draft -&gt; Global copy mode pentru a menţine acest mod în următoarele comenzi</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1228"/>
+      <location filename="../../DraftGui.py" line="1216"/>
       <source>options</source>
       <translation>opţiuni</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2457"/>
+      <location filename="../../DraftGui.py" line="2442"/>
       <source>Default</source>
       <translation>Implicit</translation>
     </message>
@@ -3946,299 +3915,284 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Curba Bezier a fost închisă</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1920"/>
+      <location filename="../../DraftTools.py" line="1918"/>
       <source>Pick first point:</source>
       <translation>Alege primul punct:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1786"/>
+      <location filename="../../DraftTools.py" line="1784"/>
       <source>Pick opposite point:</source>
       <translation>Alege punctul opus:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1518"/>
+      <location filename="../../DraftTools.py" line="1516"/>
       <source>Pick center point:</source>
       <translation>Alege punctul central:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1657"/>
+      <location filename="../../DraftTools.py" line="1655"/>
       <source>Pick radius:</source>
       <translation>Selectează raza:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1459"/>
+      <location filename="../../DraftTools.py" line="1457"/>
       <source>Pick start angle:</source>
       <translation>Selectează unghiul de start:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1354"/>
+      <location filename="../../DraftTools.py" line="1352"/>
       <source>Pick aperture:</source>
       <translation>Alege deschiderea:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1470"/>
+      <location filename="../../DraftTools.py" line="1468"/>
       <source>Aperture angle:</source>
       <translation>Unghiul de deschidere:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1816"/>
+      <location filename="../../DraftTools.py" line="1814"/>
       <source>Pick location point:</source>
       <translation>Alege punctul de locaţie:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2173"/>
+      <location filename="../../DraftTools.py" line="2171"/>
       <source>Edges don't intersect!</source>
       <translation>Marginile nu se intersectează!</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2250"/>
+      <location filename="../../DraftTools.py" line="2248"/>
       <source>Pick ShapeString location point:</source>
       <translation>Alege punctul de locaţie ShapeString:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2369"/>
+      <location filename="../../DraftTools.py" line="2367"/>
       <source>Select an object to move</source>
       <translation>Selectaţi un obiect pentru a muta</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2386"/>
+      <location filename="../../DraftTools.py" line="2384"/>
       <source>Pick start point:</source>
       <translation>Selecționați punctul de plecare:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2463"/>
+      <location filename="../../DraftTools.py" line="2461"/>
       <source>Pick end point:</source>
       <translation>Alege punctul final:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2526"/>
+      <location filename="../../DraftTools.py" line="2524"/>
       <source>Select an object to rotate</source>
       <translation>Selectaţi un obiect pentru a roti</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2543"/>
+      <location filename="../../DraftTools.py" line="2541"/>
       <source>Pick rotation center:</source>
       <translation>Alege centrul de rotaţie:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2676"/>
+      <location filename="../../DraftTools.py" line="2674"/>
       <source>Pick base angle:</source>
       <translation>Alege unghiul de bază:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2688"/>
+      <location filename="../../DraftTools.py" line="2686"/>
       <source>Pick rotation angle:</source>
       <translation>Selectează unghiul de start:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2712"/>
+      <location filename="../../DraftTools.py" line="2710"/>
       <source>Select an object to offset</source>
       <translation>Selectaţi un obiect pentru a compensa</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2715"/>
+      <location filename="../../DraftTools.py" line="2713"/>
       <source>Offset only works on one object at a time</source>
       <translation>Offset funcţionează numai pe un singur obiect, la un moment dat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2746"/>
+      <location filename="../../DraftTools.py" line="2744"/>
       <source>Sorry, offset of Bezier curves is currently still not supported</source>
       <translation>Ne pare rau, offset de curbe Bezier în prezent încă nu este acceptat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3435"/>
+      <location filename="../../DraftTools.py" line="3368"/>
       <source>Pick distance:</source>
       <translation>Alege distanţa:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2899"/>
+      <location filename="../../DraftTools.py" line="2897"/>
       <source>Select an object to stretch</source>
       <translation>Selectaţi un obiect să se întindă</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2944"/>
+      <location filename="../../DraftTools.py" line="2942"/>
       <source>Pick first point of selection rectangle:</source>
       <translation>Alege primul punct de selecţie al dreptunghiului:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2968"/>
+      <location filename="../../DraftTools.py" line="2966"/>
       <source>Pick opposite point of selection rectangle:</source>
       <translation>Alege punct opus de selecţie al dreptunghiului:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2977"/>
+      <location filename="../../DraftTools.py" line="2975"/>
       <source>Pick start point of displacement:</source>
       <translation>Alege punctul de pornire al deplasării:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3040"/>
+      <location filename="../../DraftTools.py" line="3038"/>
       <source>Pick end point of displacement:</source>
       <translation>Alege punctul final de deplasare:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3192"/>
+      <location filename="../../DraftTools.py" line="3190"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Un dreptunghi de cotitură într-un fir</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3230"/>
-      <source>Select an object to join</source>
-      <translation type="unfinished">Select an object to join</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3241"/>
-      <source>Join</source>
-      <translation type="unfinished">Join</translation>
-    </message>
-    <message>
       <location filename="../../DraftTools.py" line="3258"/>
-      <source>Select an object to split</source>
-      <translation type="unfinished">Select an object to split</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3325"/>
       <source>Select an object to upgrade</source>
       <translation>Selectaţi un obiect pentru a face upgrade</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3364"/>
+      <location filename="../../DraftTools.py" line="3297"/>
       <source>Select object(s) to trim/extend</source>
       <translation>Selectaţi obiectul sau obiectele trim/extinderea</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3676"/>
+      <location filename="../../DraftTools.py" line="3609"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
       <translation>Incapabil să tăiaţi aceste obiecte, doar firele de proiect şi arce sunt acceptate</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3679"/>
+      <location filename="../../DraftTools.py" line="3612"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Incapabil să tăiaţi aceste obiecte, prea multe fire</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3696"/>
+      <location filename="../../DraftTools.py" line="3629"/>
       <source>These objects don't intersect</source>
       <translation>Aceste obiecte nu se intersectează</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3699"/>
+      <location filename="../../DraftTools.py" line="3632"/>
       <source>Too many intersection points</source>
       <translation>Prea multe puncte de intersecţie</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3778"/>
+      <location filename="../../DraftTools.py" line="3711"/>
       <source>Select an object to scale</source>
       <translation>Selectaţi un obiect pentru mărire la scară</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3796"/>
+      <location filename="../../DraftTools.py" line="3729"/>
       <source>Pick base point:</source>
       <translation>Selectați punctul țintă:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3802"/>
+      <location filename="../../DraftTools.py" line="3735"/>
       <source>Pick reference distance from base point:</source>
       <translation>Alege distanţa de referinţă de la punctul de bază:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3877"/>
+      <location filename="../../DraftTools.py" line="3810"/>
       <source>Pick new distance from base point:</source>
       <translation>Alege noua distanţa de la punctul de bază:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4846"/>
+      <location filename="../../DraftTools.py" line="4776"/>
       <source>Select an object to project</source>
       <translation>Selectați un obiect de proiectat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4186"/>
+      <location filename="../../DraftTools.py" line="4119"/>
       <source>This object type is not editable</source>
       <translation>Acest tip de obiect nu poate fi editat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4057"/>
+      <location filename="../../DraftTools.py" line="3990"/>
       <source>Please select only one object</source>
       <translation>Vă rugăm să selectaţi doar un singur obiect</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4062"/>
+      <location filename="../../DraftTools.py" line="3995"/>
       <source>Select a Draft object to edit</source>
       <translation>Selectați un obiect ciornă de editat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4536"/>
+      <location filename="../../DraftTools.py" line="4466"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>Obiectul activ trebuie să aibă mai mult de două puncte/noduri</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4608"/>
+      <location filename="../../DraftTools.py" line="4538"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation>Punctul final al curbei Bezier nu poate fi netezit</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4886"/>
+      <location filename="../../DraftTools.py" line="4816"/>
       <source>Select an object to convert</source>
       <translation>Selectați un obiect de convertit</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4944"/>
+      <location filename="../../DraftTools.py" line="4874"/>
       <source>Select an object to array</source>
       <translation>Selectați un obiect de recopiat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4974"/>
+      <location filename="../../DraftTools.py" line="4904"/>
       <source>Please select base and path objects</source>
       <translation>Sélectionați un object de bază și o traiectorie</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5010"/>
+      <location filename="../../DraftTools.py" line="4940"/>
       <source>Please select base and pointlist objects
 </source>
       <translation>Selectionați un object de bază și o listă de obiecte puncte
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5136"/>
+      <location filename="../../DraftTools.py" line="5066"/>
       <source>Select an object to clone</source>
       <translation>Selectați un obiect de clonat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5221"/>
+      <location filename="../../DraftTools.py" line="5151"/>
       <source>Select face(s) on existing object(s)</source>
       <translation>Selectați fațete ale obiectului(elor) existent(e)</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5293"/>
+      <location filename="../../DraftTools.py" line="5223"/>
       <source>Select an object to mirror</source>
       <translation>Selectați un obiect pentru a-l face simetric</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5307"/>
+      <location filename="../../DraftTools.py" line="5237"/>
       <source>Pick start point of mirror line:</source>
       <translation>Selectați punctul de plecare al liniei de simetrie:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5391"/>
+      <location filename="../../DraftTools.py" line="5321"/>
       <source>Pick end point of mirror line:</source>
       <translation>Selectați punctul de sfârșit al liniei de simetrie:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5413"/>
+      <location filename="../../DraftTools.py" line="5343"/>
       <source>This tool only works with Wires and Lines</source>
       <translation>Acest instrument funcționează doar cu fire și linii</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5544"/>
+      <location filename="../../DraftTools.py" line="5474"/>
       <source>Pick target point:</source>
       <translation>Selectați punctul țintă:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5640"/>
+      <location filename="../../DraftTools.py" line="5570"/>
       <source>Pick endpoint of leader line:</source>
       <translation>Selectați punctul terminal al liniei de repère :</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5650"/>
+      <location filename="../../DraftTools.py" line="5580"/>
       <source>Pick text position:</source>
       <translation>Alegeți poziția textului:</translation>
     </message>

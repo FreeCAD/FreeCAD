@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>Az a rész a fejlesztők számára tartalmaz anyagot: Hogyan kell összeállítani a FreeCAD-t, hogyan kell felépíteni a FreeCAD forráskódját + hogyan kell navigálni, új munkaállományokat fejleszteni és/vagy a FreeCAD-ot beépíteni a saját alkalmazásába.</translation>
+      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -223,7 +223,7 @@
       <translation>Kezdőlap</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="545"/>
+      <location filename="../../../StartPage/StartPage.py" line="542"/>
       <source>Start page</source>
       <translation>Kezdőlap</translation>
     </message>

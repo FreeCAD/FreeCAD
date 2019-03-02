@@ -127,10 +127,6 @@
       <translation>Spaceball beweging</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation type="unfinished">Global Sensitivity:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Dominante modus</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Omdraaien</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Globale gevoeligheid:</translation>
     </message>
   </context>
   <context>
@@ -294,14 +294,13 @@
       <translation>Druk op de middelste muisknop</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation type="unfinished">Press middle and left or right mouse button</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation>Druk op de middelste + links of midden + rechterknop</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation type="unfinished">Scroll middle mouse button or keep middle button pressed
-while doing a left or right click and move the mouse up or down</translation>
+      <translation>Scroll of druk de middelste muisknop terwijl linker of rechterknop klikken en beweeg de muis omhoog of omlaag</translation>
     </message>
   </context>
   <context>
@@ -400,6 +399,21 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Bibliotheken</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Deze software maakt gebruik van open source componenten waarvan copyright en andere eigendomsrechten tot hun respectievelijke eigenaars behoren:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Licentie</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
       <source>Button %1</source>
@@ -408,6 +422,37 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>Out Of Range</source>
       <translation>Buiten het bereik</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Camera-instellingen</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Oriëntatie</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Huidig aanzicht</translation>
     </message>
   </context>
   <context>
@@ -814,10 +859,10 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
+Do you want to override it?</source>
+      <translation>De snelkoppeling '%1' is al toegewezen aan '%2'.
 
-Please define another shortcut.</translation>
+Wil je deze overschrijven?</translation>
     </message>
   </context>
   <context>
@@ -1338,6 +1383,14 @@ Please define another shortcut.</translation>
       <source>Rename</source>
       <translation>Hernoemen</translation>
     </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>Dupliceer</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>Addons...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
@@ -1404,6 +1457,20 @@ bestaat al.</translation>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Kan de naam '%1' niet wijzigen.
+Misschien een fout met bestandsrechten?</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Macro dupliceren</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Dupliceren mislukt</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>Kan niet naar '%1' dupliceren.
 Misschien een fout met bestandsrechten?</translation>
     </message>
   </context>
@@ -1979,8 +2046,52 @@ Kies een andere map, alstublieft.</translation>
       <translation>Perspectief renderin&amp;g</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object (experimental)</translation>
+      <source>Show navigation cube</source>
+      <translation>Laat de navigatie kubus zien</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Hoek</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Linksboven</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Rechtsboven</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Linksonder</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Rechts Onder</translation>
+    </message>
+    <message>
+      <source>Use OpenGL Vertex Buffer Object</source>
+      <translation>OpenGL Vertex Buffer-Object gebruiken</translation>
+    </message>
+    <message>
+      <source>New Document Camera Orientation</source>
+      <translation>Nieuwe Document Camera oriëntatie</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
+      <translation>Voorkomt dat de weergave kantelen als pinch-zoomen. Beïnvloedt alleen gebaar nav. stijl. Kantelen van de muis is niet uitgeschakeld door deze instelling.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>Touchscreen kantel gebaar uitschakelen</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Sleep bij cursor</translation>
+    </message>
+    <message>
+      <source>Marker size:</source>
+      <translation>Marker grootte:</translation>
     </message>
   </context>
   <context>
@@ -1992,6 +2103,70 @@ Kies een andere map, alstublieft.</translation>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Open een nieuwe viewer of %1 herstart om anti-aliasing wijzigingen toepassen.</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation>7PX</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation>9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation>11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation>13px</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation>15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrisch</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrisch</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrisch</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Boven</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Voorkant</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Links</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Rechts</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Achter</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Onder</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Eigen</translation>
     </message>
   </context>
   <context>
@@ -2619,6 +2794,46 @@ Kies een andere map, alstublieft.</translation>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>Metrische kleine onderdelen en CNC (mm, mm / min)</translation>
     </message>
+    <message>
+      <source>Imperial Civil (ft/ft^2/ft^3)</source>
+      <translation type="unfinished">Imperial Civil (ft/ft^2/ft^3)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation>Minimale fractionele inch:</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimale fractionele inch om weer te geven.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128"</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2659,8 +2874,20 @@ Kies een andere map, alstublieft.</translation>
       <translation>Kies straal (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation>Stelt het verwarringsgebied in voor het selecteren van elementen in de 3D-weergave. Grotere waarde maakt het gemakkelijker om dingen te kiezen, maar sommige functies zullen niet kunnen worden geselecteerd.</translation>
+    </message>
+    <message>
+      <source>Tree View</source>
+      <translation>Boomstructuurweergave</translation>
+    </message>
+    <message>
+      <source>Object being edited</source>
+      <translation>Object dat wordt bewerkt</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Actieve container</translation>
     </message>
   </context>
   <context>
@@ -2849,10 +3076,6 @@ Kies een andere map, alstublieft.</translation>
       <translation>Weet u zeker dat u alle voorbijgaande mappen wilt verwijderen?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directory you won't be able to recover any files afterwards.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Afgerond</translation>
     </message>
@@ -2865,6 +3088,10 @@ Kies een andere map, alstublieft.</translation>
 
 The 'Status' column shows whether the document could be recovered.</source>
       <translation>Druk op 'Start Herstellen' om te beginnen met het proces van herstel van het document hieronder opgesomd. De kolom 'Status' wordt weergegeven of het document kan worden hersteld.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation>Herstel van bestanden is niet mogelijk na het verwijderen van alle tijdelijke mappen.</translation>
     </message>
   </context>
   <context>
@@ -3198,14 +3425,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Rotatieas met hoek</translation>
     </message>
     <message>
-      <source>Apply placement changes immediately</source>
-      <translation type="unfinished">Apply placement changes immediately</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation type="unfinished">Apply incremental changes to object placement</translation>
-    </message>
-    <message>
       <source>Apply</source>
       <translation>Toepassen</translation>
     </message>
@@ -3232,6 +3451,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Use center of mass</source>
       <translation>Zwaartepunt gebruiken</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation>Axiaal:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation>Axiaal toepassen</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Shift + Klik hier voor de tegenovergestelde richting</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>Geselecteerde punten</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation>Toegenomen wijzigingen toepassen</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Selecteer alstublieft 1, 2 of 3 punten voordat U op deze knop klikt. Een punt kan op een top, aanzicht of rand zijn. Wanneer een aanzicht of een rand wordt geselecteerd dan zal het gebruikte punt een punt zijn op de muispositie langzij het aanzicht of een rand. Wanneer er 1 punt geselecteerd is dan zal het worden gebruikt als het middelpunt van de rotatie. Wanneer er 2 punten zijn geselecteerd dan zal het midden tussen deze 2 punten gebruikt worden als het middelpunt van de rotatie en zal er een nieuwe op maat gemaakte as worden gecreëerd wanneer dit nodig blijkt. Wanneer er 3 punten zijn geselecteerd dan wordt het eerste punt het middelpunt van de rotatie en ligt dan in de normale richting ten opzichte van het vlak dat is gedefinieerd door de 3 punten. Enige informatie over de afstand en de hoek wordt weergegeven in het rapportage venster wat behulpzaam kan zijn wanneer objecten uitgelijnd worden. Voor Uw gemak zal er wanneer shift + klik gebruikt wordt de geschikte informatie over de afstand en hoek naar het kladblok gekopieëerd worden.</translation>
     </message>
   </context>
   <context>
@@ -3345,10 +3588,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>CombiView</source>
       <translation>Combi-Weergave</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Project</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -3628,20 +3867,20 @@ Wilt u uw wijzigingen opslaan?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation type="unfinished">Tap. Or click left mouse button.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Tik OF klik op de linker muisknop.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers. Or press right mouse button.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation>Sleep het scherm met twee vingers OF hou de rechter muisknop ingedrukt.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>Sleep het scherm met één vinger of druk op de linker mouse button. Houd Alt bovendien in Sketcher en andere Bewerkmodi.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>Knijp (zet twee vingers op het scherm en sleep ze uit/in elkaar). Of scroll middelste muisknop. Of PgUp/PgDown op het toetsenbord.</translation>
     </message>
   </context>
   <context>
@@ -3924,29 +4163,27 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation type="unfinished">Tap. Or click left mouse button.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Tik OF klik op de linker muisknop.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers. Or press ALT + middle mouse button.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation>Sleep het scherm met twee vingers. Of klik op ALT + middelste muisknop.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>Sleep het scherm met één vinger. Of druk op ALT + linker muisknop. Gebruik bij Sketcher of andere bewerkingsmodi de ALT knop.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>Knijp (zet twee vingers op het scherm en sleep ze uit/in elkaar). Of scroll middelste muisknop. Of klik ALT + rechter muisknop. Of PgUp/PgDown op het toetsenbord.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation type="unfinished">Download started...
-</translation>
+      <source>Download started...</source>
+      <translation>Download is gestart...</translation>
     </message>
   </context>
   <context>
@@ -4025,6 +4262,13 @@ How do you want to proceed?</source>
     <message>
       <source>Change the linked objects</source>
       <translation>Verander de gekoppelde objecten</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit %1</source>
+      <translation>Bewerken %1</translation>
     </message>
   </context>
   <context>
@@ -4403,6 +4647,13 @@ Wilt u een andere map opgeven?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Zoeken</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
@@ -4467,6 +4718,14 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <source>%1, Internal name: %2</source>
       <translation>%1, interne naam: %2</translation>
+    </message>
+    <message>
+      <source>Search...</source>
+      <translation>Zoeken...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>Zoeken naar objecten</translation>
     </message>
   </context>
   <context>
@@ -5023,24 +5282,40 @@ Let op, het maakt uit waar je klikt.</translation>
       <translation type="unfinished">Origin</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation type="unfinished"> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation type="unfinished">Translation: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation type="unfinished">Rotation: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Groepsinhoud verwijderen?</translation>
     </message>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>De %1 is niet leeg. Mag de inhoud worden verwijderd?</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Exporteren mislukt</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Delen</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation>%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Verplaatsing:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Rotatie:</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation>Schakel actief deel</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Tekst bewerken</translation>
     </message>
   </context>
   <context>
@@ -5767,12 +6042,12 @@ Let op, het maakt uit waar je klikt.</translation>
       <translation>Voeg project samen</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation type="unfinished">%1 document (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Kan project niet met zichzelf samenvoegen.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 document (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6448,21 +6723,6 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonometrisch</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation type="unfinished">Set to axonometric view</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6488,8 +6748,23 @@ Let op, het maakt uit waar je klikt.</translation>
       <translation>Nieuwe weergave aanmaken</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation type="unfinished">Creates a new  view window for the active document</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation>Maakt een nieuw weergavevenster voor het actieve document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standaardweergave</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrisch</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Ingesteld op dimetrisch aanzicht</translation>
     </message>
   </context>
   <context>
@@ -6580,6 +6855,21 @@ Let op, het maakt uit waar je klikt.</translation>
     <message>
       <source>Set to front view</source>
       <translation>Ingestellen als vooraanzicht</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standaardweergave</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrisch</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Ingesteld op isometrisch aanzicht</translation>
     </message>
   </context>
   <context>
@@ -6763,6 +7053,21 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standaardweergave</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrisch</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Ingesteld op trimetrisch aanzicht</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewVR</name>
     <message>
       <source>Standard-View</source>
@@ -6879,6 +7184,66 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
   </context>
   <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Weergave</translation>
+    </message>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>In- / Uitklappen</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>Actieve document uitvouwen en alle andere documenten invouwen</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Weergave</translation>
+    </message>
+    <message>
+      <source>Multi Document</source>
+      <translation>Multi Document</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Alle documenten in de structuurweergave weergeven</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Weergave</translation>
+    </message>
+    <message>
+      <source>Single Document</source>
+      <translation>Enkel Document</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Geef alleen het actieve document weer in de boomstructuurweergave</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeViewDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Weergave</translation>
+    </message>
+    <message>
+      <source>Document Tree</source>
+      <translation>Boomstructuur document</translation>
+    </message>
+    <message>
+      <source>Set visibility of inactive documents in tree view</source>
+      <translation>Zichtbaarheid van inactieve documenten instellen in structuurweergave</translation>
+    </message>
+  </context>
+  <context>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
@@ -6989,20 +7354,20 @@ Let op, het maakt uit waar je klikt.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>Object dependencies</source>
-      <translation>Object afhankelijkheden</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation>Deze onderdelen zijn gekoppeld aan onderdelen welke geselecteerd zijn om te worden verwijderd, de link kan daardoor verbroken worden.</translation>
     </message>
     <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
-
-</source>
-      <translation type="unfinished">The following, referencing objects might break.
-
-Are you sure you want to continue?
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Deze items worden geselecteerd voor verwijdering, maar staan niet in het actieve document.</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Weet u zeker dat u wilt doorgaan?</translation>
+    </message>
+    <message>
+      <source>Delete Selection Issues</source>
+      <translation>Selectieproblemen wissen</translation>
     </message>
   </context>
   <context>
@@ -7104,6 +7469,50 @@ Wilt u deze ook dupliceren?</translation>
     <message>
       <source>Do you want to continue?</source>
       <translation>Wilt u doorgaan?</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrisch</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>Stel de NaviCube in op de isometrische modus</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Orthografische projectie</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Stel de weergave in op de orthografische modus</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Perspectief</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Stel de modus Beeld in Perspectief in</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Zoom om te passen</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Zoom in zodat het model de weergave vult</translation>
     </message>
   </context>
   <context>

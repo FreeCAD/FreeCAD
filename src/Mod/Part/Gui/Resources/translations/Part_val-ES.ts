@@ -4,57 +4,57 @@
   <context>
     <name>AttachmentEditor</name>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="95"/>
       <source>No object named {name}</source>
       <translation>Cap objecte anomenat {name}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="98"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="99"/>
       <source>Failed to parse link (more than one colon encountered)</source>
       <translation>No s'ha pogut analitzar l'enllaç (s'ha trobat més d'un signe de puntuació de dos punts)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="205"/>
       <source>Object {name} is neither movable nor attachable, can't edit attachment</source>
       <translation>L'objecte {name} no és movible ni acoblable, no es pot editar d'adjunt</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="212"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="213"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
       <translation>{obj} no es pot adjuntar. Encara podeu utilitzar el diàleg de l'editor adjunt per a alinear l'objecte, però l'adjunt no serà paramètric.</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="230"/>
       <source>Attachment</source>
       <translation>Adjunt</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="219"/>
       <source>Continue</source>
       <translation>Continua</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="263"/>
       <source>Edit attachment of {feat}</source>
       <translation>Edita l'adjunt de {feat}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="349"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="350"/>
       <source>Ignored. Can't attach object to itself!</source>
       <translation>Ignorat. No podeu adjuntar un objecte a si mateix!</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="353"/>
       <source>{obj1} depends on object being attached, can't use it for attachment</source>
       <translation>{obj1} depén de l'objecte adjuntat, no es pot utilitzar per a adjuntar</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="497"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="498"/>
       <source>{mode} (add {morerefs})</source>
       <translation>{mode} (afig {morerefs})</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="500"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="501"/>
       <source>{mode} (add more references)</source>
       <translation>{mode} (afig més referències)</translation>
     </message>
@@ -149,6 +149,19 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 
 Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp' per a cancel·lar.</translation>
     </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>El resultat del càlcul ha fallat amb un error: 
+
+{err}
+
+Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp' per a cancel·lar.</translation>
+    </message>
   </context>
   <context>
     <name>Part_ExplodeCompound</name>
@@ -206,11 +219,6 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <source>Embed object</source>
       <translation>Objecte incrustat</translation>
     </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
-      <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
-    </message>
   </context>
   <context>
     <name>Part_JoinFeatures</name>
@@ -252,24 +260,26 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
       <translation>Seleccioneu l'objecte en què realitzar un retall, després l'objecte que ha d'encabir-se en el retall i apliqueu aquesta eina.</translation>
     </message>
-  </context>
-  <context>
-    <name>Part_MakeTube</name>
     <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation>En primer lloc, seleccioneu com a mínim dos objectes, o un o més de compostos!</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
+      <source>Embed object</source>
+      <translation>Objecte incrustat</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation>Seleccioneu l'objecte en què realitzar un retall, després l'objecte que ha d'encabir-se en el retall i apliqueu aquesta eina.</translation>
     </message>
   </context>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="407"/>
       <source>Computing the result failed with an error: 
 
 {err}
@@ -282,7 +292,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp' per a cancel·lar.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="440"/>
       <source>Bad selection</source>
       <translation>Selecció no vàlida</translation>
     </message>
@@ -297,9 +307,42 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <translation>Fragments booleans</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation type="unfinished">Split objects where they intersect</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="439"/>
+      <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>En primer lloc, seleccioneu coma mínim dos objectes, o un o més de compostos! Si sols se selecciona un compost, les formes compostes s'intersecaran les unes amb les altres (en cas contrari, els compostos amb auto-interseccions no són vàlids.).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>El resultat del càlcul ha fallat amb un error: 
+
+{err}
+
+Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp' per a cancel·lar.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Primer de tot, seleccioneu com a mínim dos objectes! El primer és l'objecte que es tallarà; la resta són objectes amb els qual es talla.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Continua</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragments booleans</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
+      <source>Boolean XOR</source>
+      <translation>XOR booleà</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
@@ -327,9 +370,29 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <translation>Llesca a part</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Part_BooleanFragments: split objects where they intersect</source>
+      <translation>Part_BooleanFragments: divideix els objectes on s'intersequen</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
+      <source>Slice</source>
+      <translation>Tall</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="297"/>
+      <source>Part_Slice: split object by intersections with other objects</source>
+      <translation>Part_Slice: Divideix un objecte per les interseccions amb altres objectes</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
       <source>Split object by intersections with other objects.</source>
       <translation>Divideix un objecte per les interseccions amb altres objectes.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="431"/>
+      <source>Part_XOR: remove intersection fragments</source>
+      <translation>Part_XOR: Elimina els fragments d'intersecció</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
@@ -340,6 +403,14 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
       <translation>Elimina els fragments d'intersecció</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation type="unfinished">Creates a tube</translation>
     </message>
   </context>
   <context>
@@ -599,6 +670,16 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>El punt en la segona referència més pròxima a la primera referència.</translation>
     </message>
+    <message>
+      <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
+      <comment>AttachmentPoint mode tooltip</comment>
+      <translation>El punt es posa sobre la vora, MapPathParametr controla la posició. Addicionalment, el vèrtex pot estar enllaçat per a permetre una projecció.</translation>
+    </message>
+    <message>
+      <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
+      <comment>AttachmentPoint mode tooltip</comment>
+      <translation>El centre del cercle osculador d'una vora. L'enllaç opcional del vèrtex defineix on.</translation>
+    </message>
   </context>
   <context>
     <name>Attacher1D</name>
@@ -844,6 +925,11 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Línia perpendicular a la superfície en el punt definit pel vèrtex.</translation>
     </message>
+    <message>
+      <source>Normal</source>
+      <comment>AttachmentLine mode caption</comment>
+      <translation>Normal</translation>
+    </message>
   </context>
   <context>
     <name>Attacher2D</name>
@@ -1040,6 +1126,16 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Pla construït sobre el segon i tercer dels eixos principals d'inèrcia (passa pel centre de massa).</translation>
+    </message>
+    <message>
+      <source>Attachment is disabled. Plane can be moved by editing Placement property.</source>
+      <comment>AttachmentPlane mode tooltip</comment>
+      <translation>L'adjunció està desactivada. Es pot moure el pla editant la propietat Posicionament.</translation>
+    </message>
+    <message>
+      <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
+      <comment>AttachmentPlane mode tooltip</comment>
+      <translation>El pla és perpendicular a la vora, i l'eix Y es correspon amb l'eix del cercle osculador. L'enllaç opcional del vèrtex defineix on.</translation>
     </message>
   </context>
   <context>
@@ -1372,6 +1468,11 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <comment>Attachment3D mode tooltip</comment>
       <translation>Fes coincidir l'origen amb primer vèrtex. Alinea els eixos dels plans vertical i horitzontal cap al vèrtex/al llarg de la línia.</translation>
     </message>
+    <message>
+      <source>Attachment is disabled. CS can be moved by editing Placement property.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation>L'adjunció està desactivada. Es pot moure el CS editant la propietat Posicionament.</translation>
+    </message>
   </context>
   <context>
     <name>BlockDefinition</name>
@@ -1487,36 +1588,33 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <source>Reference</source>
       <translation>Ref</translation>
     </message>
-  </context>
-  <context>
-    <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2355"/>
-      <source>Part</source>
-      <translation>Peça</translation>
+      <source>Apply</source>
+      <translation type="unfinished">Apply</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
-      <location filename="../../Command.cpp" line="2357"/>
-      <location filename="../../Command.cpp" line="2359"/>
-      <source>Box selection</source>
-      <translation>Quadre de selecció</translation>
+      <source>Cancel</source>
+      <translation>Cancel·la</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>D'acord</translation>
     </message>
   </context>
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2104"/>
+      <location filename="../../Command.cpp" line="1983"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2105"/>
+      <location filename="../../Command.cpp" line="1984"/>
       <source>Check Geometry</source>
       <translation>Comprova la geometria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2106"/>
+      <location filename="../../Command.cpp" line="1985"/>
       <source>Analyzes Geometry For Errors</source>
       <translation>Busca errors de geometria</translation>
     </message>
@@ -1524,17 +1622,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2138"/>
+      <location filename="../../Command.cpp" line="2017"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2139"/>
+      <location filename="../../Command.cpp" line="2018"/>
       <source>Color per face</source>
       <translation>Color per cara</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2140"/>
+      <location filename="../../Command.cpp" line="2019"/>
       <source>Set color per face</source>
       <translation>Estableix el color de les cares</translation>
     </message>
@@ -1542,13 +1640,13 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdMeasureAngular</name>
     <message>
-      <location filename="../../Command.cpp" line="2204"/>
+      <location filename="../../Command.cpp" line="2083"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2205"/>
-      <location filename="../../Command.cpp" line="2206"/>
+      <location filename="../../Command.cpp" line="2084"/>
+      <location filename="../../Command.cpp" line="2085"/>
       <source>Measure Angular</source>
       <translation>Mesura angular</translation>
     </message>
@@ -1556,13 +1654,13 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdMeasureClearAll</name>
     <message>
-      <location filename="../../Command.cpp" line="2233"/>
+      <location filename="../../Command.cpp" line="2112"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2234"/>
-      <location filename="../../Command.cpp" line="2235"/>
+      <location filename="../../Command.cpp" line="2113"/>
+      <location filename="../../Command.cpp" line="2114"/>
       <source>Clear All</source>
       <translation>Neteja-ho tot</translation>
     </message>
@@ -1570,13 +1668,13 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdMeasureLinear</name>
     <message>
-      <location filename="../../Command.cpp" line="2175"/>
+      <location filename="../../Command.cpp" line="2054"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2176"/>
-      <location filename="../../Command.cpp" line="2177"/>
+      <location filename="../../Command.cpp" line="2055"/>
+      <location filename="../../Command.cpp" line="2056"/>
       <source>Measure Linear</source>
       <translation>Mesura lineal</translation>
     </message>
@@ -1584,13 +1682,13 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdMeasureToggle3d</name>
     <message>
-      <location filename="../../Command.cpp" line="2297"/>
+      <location filename="../../Command.cpp" line="2176"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2298"/>
-      <location filename="../../Command.cpp" line="2299"/>
+      <location filename="../../Command.cpp" line="2177"/>
+      <location filename="../../Command.cpp" line="2178"/>
       <source>Toggle 3d</source>
       <translation>Commuta la vista 3D</translation>
     </message>
@@ -1598,13 +1696,13 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdMeasureToggleAll</name>
     <message>
-      <location filename="../../Command.cpp" line="2262"/>
+      <location filename="../../Command.cpp" line="2141"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2263"/>
-      <location filename="../../Command.cpp" line="2264"/>
+      <location filename="../../Command.cpp" line="2142"/>
+      <location filename="../../Command.cpp" line="2143"/>
       <source>Toggle All</source>
       <translation>Commuta-ho tot</translation>
     </message>
@@ -1612,13 +1710,13 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdMeasureToggleDelta</name>
     <message>
-      <location filename="../../Command.cpp" line="2326"/>
+      <location filename="../../Command.cpp" line="2205"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2327"/>
-      <location filename="../../Command.cpp" line="2328"/>
+      <location filename="../../Command.cpp" line="2206"/>
+      <location filename="../../Command.cpp" line="2207"/>
       <source>Toggle Delta</source>
       <translation>Commuta Delta</translation>
     </message>
@@ -1626,17 +1724,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1274"/>
+      <location filename="../../Command.cpp" line="1153"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1275"/>
+      <location filename="../../Command.cpp" line="1154"/>
       <source>Boolean...</source>
       <translation>Booleà...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1276"/>
+      <location filename="../../Command.cpp" line="1155"/>
       <source>Run a boolean operation with two shapes selected</source>
       <translation>Executa una operació booleana amb dues formes seleccionades</translation>
     </message>
@@ -1660,21 +1758,29 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <source>Create a cube solid</source>
       <translation>Crea un cub sòlid</translation>
     </message>
+    <message>
+      <source>Box</source>
+      <translation type="unfinished">Box</translation>
+    </message>
+    <message>
+      <source>Create a box solid</source>
+      <translation type="unfinished">Create a box solid</translation>
+    </message>
   </context>
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="135"/>
+      <location filename="../../Command.cpp" line="133"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="136"/>
+      <location filename="../../Command.cpp" line="134"/>
       <source>Box fix 1</source>
       <translation>Fixa el quadre 1</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="137"/>
+      <location filename="../../Command.cpp" line="135"/>
       <source>Create a box solid without dialog</source>
       <translation>Crea una caixa sòlida sense diàleg</translation>
     </message>
@@ -1682,17 +1788,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartBox3</name>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Box fix 2</source>
       <translation>Fixa el quadre 2</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="178"/>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Create a box solid without dialog</source>
       <translation>Crea una caixa sòlida sense diàleg</translation>
     </message>
@@ -1700,17 +1806,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1535"/>
+      <location filename="../../Command.cpp" line="1414"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1536"/>
+      <location filename="../../Command.cpp" line="1415"/>
       <source>Shape builder...</source>
       <translation>Generador de formes...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1537"/>
+      <location filename="../../Command.cpp" line="1416"/>
       <source>Advanced utility to create shapes</source>
       <translation>Utilitat avançada per a crear formes</translation>
     </message>
@@ -1718,17 +1824,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1439"/>
+      <location filename="../../Command.cpp" line="1318"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1440"/>
+      <location filename="../../Command.cpp" line="1319"/>
       <source>Chamfer...</source>
       <translation type="unfinished">Chamfer...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1441"/>
+      <location filename="../../Command.cpp" line="1320"/>
       <source>Chamfer the selected edges of a shape</source>
       <translation>Crea un xamfrà per a les vores seleccionades</translation>
     </message>
@@ -1736,53 +1842,35 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location filename="../../Command.cpp" line="349"/>
+      <location filename="../../Command.cpp" line="347"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="350"/>
+      <location filename="../../Command.cpp" line="348"/>
       <source>Intersection</source>
       <translation>Intersecció</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="351"/>
+      <location filename="../../Command.cpp" line="349"/>
       <source>Make an intersection of two shapes</source>
       <translation>Crea una intersecció entre dues formes</translation>
     </message>
   </context>
   <context>
-    <name>CmdPartCompCompoundTools</name>
-    <message>
-      <location filename="../../Command.cpp" line="782"/>
-      <source>Part</source>
-      <translation>Peça</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="783"/>
-      <source>Counpound tools</source>
-      <translation type="unfinished">Counpound tools</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="784"/>
-      <source>Compound tools: working with lists of shapes.</source>
-      <translation type="unfinished">Compound tools: working with lists of shapes.</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdPartCompJoinFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="554"/>
+      <location filename="../../Command.cpp" line="552"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="555"/>
+      <location filename="../../Command.cpp" line="553"/>
       <source>Join objects...</source>
       <translation>Uneix objectes...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="556"/>
+      <location filename="../../Command.cpp" line="554"/>
       <source>Join walled objects</source>
       <translation>Uneix objectes que tenen paret</translation>
     </message>
@@ -1790,17 +1878,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1720"/>
+      <location filename="../../Command.cpp" line="1599"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1721"/>
+      <location filename="../../Command.cpp" line="1600"/>
       <source>Offset:</source>
       <translation type="unfinished">Offset:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1722"/>
+      <location filename="../../Command.cpp" line="1601"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>Eines per a desplaçar formes (construeix formes paral·leles)</translation>
     </message>
@@ -1808,17 +1896,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="660"/>
+      <location filename="../../Command.cpp" line="659"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="661"/>
+      <location filename="../../Command.cpp" line="660"/>
       <source>Split objects...</source>
       <translation>Divisió d'objectes...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="662"/>
+      <location filename="../../Command.cpp" line="661"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
       <translation>Eines de divisió de formes. Es necessiten eines de creació de Compsolid. OCC 6.9.0 o posterior.</translation>
     </message>
@@ -1826,17 +1914,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="889"/>
+      <location filename="../../Command.cpp" line="768"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="890"/>
+      <location filename="../../Command.cpp" line="769"/>
       <source>Make compound</source>
       <translation>Crea un compost</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="891"/>
+      <location filename="../../Command.cpp" line="770"/>
       <source>Make a compound of several shapes</source>
       <translation>Crea un compost a partir de diverses formes</translation>
     </message>
@@ -1864,17 +1952,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1374"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1375"/>
       <source>Cross-sections...</source>
       <translation>Seccions...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1497"/>
+      <location filename="../../Command.cpp" line="1376"/>
       <source>Cross-sections</source>
       <translation>Seccions</translation>
     </message>
@@ -1882,17 +1970,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location filename="../../Command.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cut</source>
       <translation>Retalla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>Make a cut of two shapes</source>
       <translation>Talla per a fer dues formes</translation>
     </message>
@@ -1918,37 +2006,19 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
     </message>
   </context>
   <context>
-    <name>CmdPartDefeaturing</name>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="271"/>
-      <source>Part</source>
-      <translation>Peça</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="272"/>
-      <source>Defeaturing</source>
-      <translation type="unfinished">Defeaturing</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="273"/>
-      <source>Remove feature from a shape</source>
-      <translation type="unfinished">Remove feature from a shape</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="1047"/>
+      <location filename="../../Command.cpp" line="926"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1048"/>
+      <location filename="../../Command.cpp" line="927"/>
       <source>Export CAD...</source>
       <translation>Exporta a CAD...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1049"/>
+      <location filename="../../Command.cpp" line="928"/>
       <source>Exports to a CAD file</source>
       <translation>Exporta a un fitxer de CAD</translation>
     </message>
@@ -1956,17 +2026,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1305"/>
+      <location filename="../../Command.cpp" line="1184"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1306"/>
+      <location filename="../../Command.cpp" line="1185"/>
       <source>Extrude...</source>
       <translation>Extrusió...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1307"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <source>Extrude a selected sketch</source>
       <translation>Extrusió d'un esbós seleccionat</translation>
     </message>
@@ -1974,17 +2044,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1411"/>
+      <location filename="../../Command.cpp" line="1290"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1412"/>
+      <location filename="../../Command.cpp" line="1291"/>
       <source>Fillet...</source>
       <translation>Arredoniment...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1413"/>
+      <location filename="../../Command.cpp" line="1292"/>
       <source>Fillet the selected edges of a shape</source>
       <translation>Arredoneix les arestes seleccionades d'una forma</translation>
     </message>
@@ -1992,17 +2062,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location filename="../../Command.cpp" line="451"/>
+      <location filename="../../Command.cpp" line="449"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="450"/>
       <source>Union</source>
       <translation>Unió</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="451"/>
       <source>Make a union of several shapes</source>
       <translation>Uneix diverses formes</translation>
     </message>
@@ -2010,17 +2080,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location filename="../../Command.cpp" line="987"/>
+      <location filename="../../Command.cpp" line="866"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="988"/>
+      <location filename="../../Command.cpp" line="867"/>
       <source>Import CAD...</source>
       <translation>Importa CAD...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="989"/>
+      <location filename="../../Command.cpp" line="868"/>
       <source>Imports a CAD file</source>
       <translation>Importa un fitxer de CAD</translation>
     </message>
@@ -2028,17 +2098,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="1094"/>
+      <location filename="../../Command.cpp" line="973"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1095"/>
+      <location filename="../../Command.cpp" line="974"/>
       <source>Import curve network...</source>
       <translation>Importa una xarxa de corbes...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1096"/>
+      <location filename="../../Command.cpp" line="975"/>
       <source>Import a curve network</source>
       <translation>Importa una xarxa de corbes</translation>
     </message>
@@ -2046,53 +2116,69 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1564"/>
+      <location filename="../../Command.cpp" line="1443"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1565"/>
+      <location filename="../../Command.cpp" line="1444"/>
       <source>Loft...</source>
       <translation>Projecció...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1566"/>
+      <location filename="../../Command.cpp" line="1445"/>
       <source>Utility to loft</source>
       <translation>Utilitats de projecció</translation>
+    </message>
+    <message>
+      <source>Advanced utility to lofts</source>
+      <translation type="unfinished">Advanced utility to lofts</translation>
     </message>
   </context>
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1333"/>
+      <location filename="../../Command.cpp" line="1212"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1334"/>
+      <location filename="../../Command.cpp" line="1213"/>
       <source>Make face from wires</source>
       <translation>Crea una cara a partir de fils</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1335"/>
-      <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation type="unfinished">Make face from set of wires (e.g. from a sketch)</translation>
+      <location filename="../../Command.cpp" line="1214"/>
+      <source>Part_MakeFace: Make face from set of wires (e.g. from a sketch)</source>
+      <translation>Part_MakeFace: Realitza una cara a partir d'un conjunt de filferros (p. ex. d'un esbós)</translation>
+    </message>
+    <message>
+      <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
+      <translation>Part_MakeFace: Crea una cara a partir d'un conjunt de fils (per exemple, a partir d'un esbós).</translation>
+    </message>
+    <message>
+      <source>Make face from sketch</source>
+      <translation type="unfinished">Make face from sketch</translation>
+    </message>
+    <message>
+      <source>Make face from selected sketches</source>
+      <translation type="unfinished">Make face from selected sketches</translation>
     </message>
   </context>
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1142"/>
+      <location filename="../../Command.cpp" line="1021"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../Command.cpp" line="1022"/>
       <source>Convert to solid</source>
       <translation>Converteix a sòlid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1144"/>
+      <location filename="../../Command.cpp" line="1023"/>
       <source>Create solid from a shell or compound</source>
       <translation>Crea un sòlid a partir d'una closca o compost</translation>
     </message>
@@ -2100,17 +2186,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1467"/>
+      <location filename="../../Command.cpp" line="1346"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1468"/>
+      <location filename="../../Command.cpp" line="1347"/>
       <source>Mirroring...</source>
       <translation>S'està duplicant...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1469"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Mirroring a selected shape</source>
       <translation>Duplicació d'una forma seleccionada</translation>
     </message>
@@ -2118,53 +2204,61 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1622"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1623"/>
+      <location filename="../../Command.cpp" line="1502"/>
       <source>3D Offset...</source>
       <translation>Desplaçament 3D...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1624"/>
-      <source>Utility to offset in 3D</source>
-      <translation type="unfinished">Utility to offset in 3D</translation>
+      <location filename="../../Command.cpp" line="1503"/>
+      <source>Part_Offset: Utility to offset in 3D</source>
+      <translation>Part_Offset: Utilitat per a desplaçar en 3D</translation>
+    </message>
+    <message>
+      <source>Offset...</source>
+      <translation type="unfinished">Offset...</translation>
+    </message>
+    <message>
+      <source>Utility to offset</source>
+      <translation type="unfinished">Utility to offset</translation>
     </message>
   </context>
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1672"/>
+      <location filename="../../Command.cpp" line="1551"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1673"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>2D Offset...</source>
       <translation>Desplaçament 2D...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1674"/>
-      <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <location filename="../../Command.cpp" line="1553"/>
+      <source>Part_Offset2D: Utility to offset planar shapes</source>
+      <translation>Part_Offset2D: Utilitat per a desplaçar formes planes</translation>
     </message>
   </context>
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="87"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="90"/>
+      <location filename="../../Command.cpp" line="88"/>
       <source>Pick curve network</source>
       <translation>Tria una xarxa de corbes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="91"/>
+      <location filename="../../Command.cpp" line="89"/>
       <source>Pick a curve network</source>
       <translation>Tria una xarxa de corbes</translation>
     </message>
@@ -2172,17 +2266,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartPrimitives</name>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="218"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Create primitives...</source>
       <translation>Crea primitives...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="219"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Creation of parametrized geometric primitives</source>
       <translation>Creació de primitives geomètriques parametritzades</translation>
     </message>
@@ -2190,17 +2284,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartRefineShape</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="218"/>
+      <location filename="../../CommandSimple.cpp" line="217"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="219"/>
+      <location filename="../../CommandSimple.cpp" line="218"/>
       <source>Refine shape</source>
       <translation>Refina la forma</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="220"/>
+      <location filename="../../CommandSimple.cpp" line="219"/>
       <source>Refine the copy of a shape</source>
       <translation>Refina la còpia d'una forma</translation>
     </message>
@@ -2208,17 +2302,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1220"/>
+      <location filename="../../Command.cpp" line="1099"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1221"/>
+      <location filename="../../Command.cpp" line="1100"/>
       <source>Reverse shapes</source>
       <translation>Inverteix les formes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1222"/>
+      <location filename="../../Command.cpp" line="1101"/>
       <source>Reverse orientation of shapes</source>
       <translation>Inverteix l'orientació de les formes</translation>
     </message>
@@ -2226,17 +2320,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1383"/>
+      <location filename="../../Command.cpp" line="1262"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1384"/>
+      <location filename="../../Command.cpp" line="1263"/>
       <source>Revolve...</source>
       <translation>Gira...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1385"/>
+      <location filename="../../Command.cpp" line="1264"/>
       <source>Revolve a selected shape</source>
       <translation>Gira una forma seleccionada</translation>
     </message>
@@ -2244,35 +2338,39 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="1988"/>
+      <location filename="../../Command.cpp" line="1867"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1989"/>
+      <location filename="../../Command.cpp" line="1868"/>
       <source>Create ruled surface</source>
       <translation>Crea una superfície reglada</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1990"/>
+      <location filename="../../Command.cpp" line="1869"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
       <translation>Crea una superfície reglada ja siga a partir de dues arestes o dos filferros</translation>
+    </message>
+    <message>
+      <source>Create a ruled surface from two curves</source>
+      <translation type="unfinished">Create a ruled surface from two curves</translation>
     </message>
   </context>
   <context>
     <name>CmdPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="940"/>
+      <location filename="../../Command.cpp" line="819"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="941"/>
+      <location filename="../../Command.cpp" line="820"/>
       <source>Section</source>
       <translation>Secció</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="942"/>
+      <location filename="../../Command.cpp" line="821"/>
       <source>Make a section of two shapes</source>
       <translation>Crea una secció de dues formes</translation>
     </message>
@@ -2354,17 +2452,17 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1593"/>
+      <location filename="../../Command.cpp" line="1472"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1594"/>
+      <location filename="../../Command.cpp" line="1473"/>
       <source>Sweep...</source>
       <translation>Escombratge...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1595"/>
+      <location filename="../../Command.cpp" line="1474"/>
       <source>Utility to sweep</source>
       <translation>Utilitat d'escombratge</translation>
     </message>
@@ -2372,33 +2470,33 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="1813"/>
+      <location filename="../../Command.cpp" line="1692"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1814"/>
+      <location filename="../../Command.cpp" line="1693"/>
       <source>Thickness...</source>
       <translation>Gruix...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1815"/>
+      <location filename="../../Command.cpp" line="1694"/>
       <source>Utility to apply a thickness</source>
       <translation>Utilitat per a aplicar un gruix</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1827"/>
-      <location filename="../../Command.cpp" line="1847"/>
+      <location filename="../../Command.cpp" line="1706"/>
+      <location filename="../../Command.cpp" line="1726"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1828"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Selected one or more faces of a shape</source>
       <translation>S'ha seleccionat una o més cares d'una forma.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1848"/>
+      <location filename="../../Command.cpp" line="1727"/>
       <source>Selected shape is not a solid</source>
       <translation>La forma seleccionada no és un sòlid.</translation>
     </message>
@@ -2421,6 +2519,35 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <location filename="../../CommandParametric.cpp" line="212"/>
       <source>Create a torus solid</source>
       <translation>Crea un tor sòlid</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgExtrusion</name>
+    <message>
+      <source>Select a shape for extrusion, first.</source>
+      <translation type="unfinished">Select a shape for extrusion, first.</translation>
+    </message>
+    <message>
+      <source>The document '%1' doesn't exist.</source>
+      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgRevolution</name>
+    <message>
+      <source>Select a shape for revolution, first.</source>
+      <translation type="unfinished">Select a shape for revolution, first.</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgSettings3DViewPart</name>
+    <message>
+      <source>Deviation</source>
+      <translation type="unfinished">Deviation</translation>
+    </message>
+    <message>
+      <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
+      <translation type="unfinished">Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
     </message>
   </context>
   <context>
@@ -2504,6 +2631,14 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="328"/>
       <source>Flip sides</source>
       <translation>Inverteix les cares</translation>
+    </message>
+    <message>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>Espill de la propietat sobrePosicionament. Un posicionament addicional s'expressa en l'espai local de l'objecte que s'adjunta.</translation>
+    </message>
+    <message>
+      <source>Extra placement:</source>
+      <translation>Posicionament addicional:</translation>
     </message>
   </context>
   <context>
@@ -2728,7 +2863,7 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
-      <location filename="../../DlgExtrusion.cpp" line="207"/>
+      <location filename="../../DlgExtrusion.cpp" line="198"/>
       <source>Select</source>
       <translation>Selecciona</translation>
     </message>
@@ -2819,63 +2954,89 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <translation>Forma</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="181"/>
+      <source>Length:</source>
+      <translation type="unfinished">Length:</translation>
+    </message>
+    <message>
+      <source>3D view</source>
+      <translation type="unfinished">3D view</translation>
+    </message>
+    <message>
+      <source>Note:This option works for planes only</source>
+      <translation type="unfinished">Note:This option works for planes only</translation>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Select a shape for extrusion, first.</source>
+      <translation type="unfinished">Select a shape for extrusion, first.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.cpp" line="172"/>
       <source>Selecting...</source>
       <translation>Selecció...</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="422"/>
+      <location filename="../../DlgExtrusion.cpp" line="413"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="470"/>
-      <location filename="../../DlgExtrusion.cpp" line="475"/>
+      <location filename="../../DlgExtrusion.cpp" line="461"/>
+      <location filename="../../DlgExtrusion.cpp" line="466"/>
       <source>Creating Extrusion failed.
 
 %1</source>
       <translation>La creació de l'extrusió ha fallat. %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="542"/>
+      <location filename="../../DlgExtrusion.cpp" line="533"/>
       <source>Object not found: %1</source>
       <translation>No s'ha trobat l'objecte: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="604"/>
+      <location filename="../../DlgExtrusion.cpp" line="595"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
       <translation>No s'ha seleccionat cap forma per a extrudir. Seleccioneu-ne algunes primer.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="625"/>
-      <source>Extrusion direction link is invalid.
+      <location filename="../../DlgExtrusion.cpp" line="616"/>
+      <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation type="unfinished">Extrusion direction link is invalid.
-
-%1</translation>
+      <translation>L'enllaç de l'eix de revolució no és vàlid. %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="627"/>
+      <location filename="../../DlgExtrusion.cpp" line="618"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>El mode de direcció és per a utilitzar una aresta, però no hi ha cap aresta enllaçada.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="650"/>
+      <location filename="../../DlgExtrusion.cpp" line="641"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
       <translation>No es pot determinar el vector normal de la forma que s'ha d'extrudir. Utilitzeu un altre mode. (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="660"/>
+      <location filename="../../DlgExtrusion.cpp" line="651"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
       <translation>La longitud d'extrusió és zero. Ha de ser diferent de zero.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="671"/>
+      <location filename="../../DlgExtrusion.cpp" line="662"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>La longitud total d'extrusió és zero (length1 = = - length2). Ha de ser diferent de zero.</translation>
+    </message>
+    <message>
+      <source>Succeeded</source>
+      <translation type="unfinished">Succeeded</translation>
+    </message>
+    <message>
+      <source>Failed</source>
+      <translation type="unfinished">Failed</translation>
     </message>
   </context>
   <context>
@@ -3113,6 +3274,10 @@ Please check one or more edge entities first.</source>
       <source>Author</source>
       <translation>Autor</translation>
     </message>
+    <message>
+      <source>Enable B-REP mode</source>
+      <translation type="unfinished">Enable B-REP mode</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgImportExportStep</name>
@@ -3244,6 +3409,14 @@ Please check one or more edge entities first.</source>
       <source>Length:</source>
       <translation type="unfinished">Length:</translation>
     </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Cancel·la</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>D'acord</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgPartCylinder</name>
@@ -3292,6 +3465,14 @@ Please check one or more edge entities first.</source>
       <source>Radius:</source>
       <translation>Radi:</translation>
     </message>
+    <message>
+      <source>OK</source>
+      <translation>D'acord</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Cancel·la</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgPartImportIges</name>
@@ -3310,9 +3491,25 @@ Please check one or more edge entities first.</source>
       <source>...</source>
       <translation>...</translation>
     </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Cancel·la</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>D'acord</translation>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgPartImportIgesImp</name>
+    <message>
+      <source>IGES (*.igs *.iges);;All Files (*.*)</source>
+      <translation type="unfinished">IGES (*.igs *.iges);;All Files (*.*)</translation>
+    </message>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="71"/>
       <source>IGES</source>
@@ -3341,9 +3538,25 @@ Please check one or more edge entities first.</source>
       <source>...</source>
       <translation>...</translation>
     </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Cancel·la</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>D'acord</translation>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgPartImportStepImp</name>
+    <message>
+      <source>STEP (*.stp *.step);;All Files (*.*)</source>
+      <translation type="unfinished">STEP (*.stp *.step);;All Files (*.*)</translation>
+    </message>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="70"/>
       <source>STEP</source>
@@ -3364,79 +3577,79 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
-      <location filename="../../DlgPrimitives.cpp" line="385"/>
+      <location filename="../../DlgPrimitives.cpp" line="384"/>
       <source>Plane</source>
       <translation>Pla</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="42"/>
-      <location filename="../../DlgPrimitives.cpp" line="401"/>
+      <location filename="../../DlgPrimitives.cpp" line="400"/>
       <source>Box</source>
       <translation type="unfinished">Box</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
-      <location filename="../../DlgPrimitives.cpp" line="417"/>
+      <location filename="../../DlgPrimitives.cpp" line="416"/>
       <source>Cylinder</source>
       <translation>Cilindre</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="60"/>
-      <location filename="../../DlgPrimitives.cpp" line="435"/>
+      <location filename="../../DlgPrimitives.cpp" line="434"/>
       <source>Cone</source>
       <translation>Con</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="69"/>
-      <location filename="../../DlgPrimitives.cpp" line="453"/>
+      <location filename="../../DlgPrimitives.cpp" line="452"/>
       <source>Sphere</source>
       <translation>Esfera</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
-      <location filename="../../DlgPrimitives.cpp" line="475"/>
+      <location filename="../../DlgPrimitives.cpp" line="474"/>
       <source>Ellipsoid</source>
       <translation>El·lipsoide</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="87"/>
-      <location filename="../../DlgPrimitives.cpp" line="495"/>
+      <location filename="../../DlgPrimitives.cpp" line="494"/>
       <source>Torus</source>
       <translation>Tor</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
-      <location filename="../../DlgPrimitives.cpp" line="511"/>
+      <location filename="../../DlgPrimitives.cpp" line="510"/>
       <source>Prism</source>
       <translation>Prisma</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="105"/>
-      <location filename="../../DlgPrimitives.cpp" line="541"/>
+      <location filename="../../DlgPrimitives.cpp" line="540"/>
       <source>Wedge</source>
       <translation>Falca</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="114"/>
-      <location filename="../../DlgPrimitives.cpp" line="562"/>
+      <location filename="../../DlgPrimitives.cpp" line="561"/>
       <source>Helix</source>
       <translation>Hèlix</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="123"/>
-      <location filename="../../DlgPrimitives.cpp" line="578"/>
+      <location filename="../../DlgPrimitives.cpp" line="577"/>
       <source>Spiral</source>
       <translation>Espiral</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="132"/>
-      <location filename="../../DlgPrimitives.cpp" line="594"/>
+      <location filename="../../DlgPrimitives.cpp" line="593"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="141"/>
-      <location filename="../../DlgPrimitives.cpp" line="612"/>
+      <location filename="../../DlgPrimitives.cpp" line="611"/>
       <source>Ellipse</source>
       <translation>El·lipse</translation>
     </message>
@@ -3447,13 +3660,13 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="159"/>
-      <location filename="../../DlgPrimitives.cpp" line="650"/>
+      <location filename="../../DlgPrimitives.cpp" line="649"/>
       <source>Line</source>
       <translation>Línia</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="168"/>
-      <location filename="../../DlgPrimitives.cpp" line="664"/>
+      <location filename="../../DlgPrimitives.cpp" line="663"/>
       <source>Regular polygon</source>
       <translation>Polígon regular</translation>
     </message>
@@ -3666,26 +3879,126 @@ Please check one or more edge entities first.</source>
       <translation>Punt inicial</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="369"/>
-      <location filename="../../DlgPrimitives.cpp" line="668"/>
-      <location filename="../../DlgPrimitives.cpp" line="676"/>
+      <source>Primitive</source>
+      <translation type="unfinished">Primitive</translation>
+    </message>
+    <message>
+      <source>X min</source>
+      <translation type="unfinished">X min</translation>
+    </message>
+    <message>
+      <source>x max</source>
+      <translation type="unfinished">x max</translation>
+    </message>
+    <message>
+      <source>Y min</source>
+      <translation type="unfinished">Y min</translation>
+    </message>
+    <message>
+      <source>Y max</source>
+      <translation type="unfinished">Y max</translation>
+    </message>
+    <message>
+      <source>Z min</source>
+      <translation type="unfinished">Z min</translation>
+    </message>
+    <message>
+      <source>Z max</source>
+      <translation type="unfinished">Z max</translation>
+    </message>
+    <message>
+      <source>X2 min</source>
+      <translation type="unfinished">X2 min</translation>
+    </message>
+    <message>
+      <source>X2 max</source>
+      <translation type="unfinished">X2 max</translation>
+    </message>
+    <message>
+      <source>Z2 min</source>
+      <translation type="unfinished">Z2 min</translation>
+    </message>
+    <message>
+      <source>Z2 max</source>
+      <translation type="unfinished">Z2 max</translation>
+    </message>
+    <message>
+      <source>Angle - 0 for cyl</source>
+      <translation type="unfinished">Angle - 0 for cyl</translation>
+    </message>
+    <message>
+      <source>Angle0</source>
+      <translation type="unfinished">Angle0</translation>
+    </message>
+    <message>
+      <source>Angle1</source>
+      <translation type="unfinished">Angle1</translation>
+    </message>
+    <message>
+      <source>X Axis Value:</source>
+      <translation type="unfinished">X Axis Value:</translation>
+    </message>
+    <message>
+      <source>Y Axis Value:</source>
+      <translation type="unfinished">Y Axis Value:</translation>
+    </message>
+    <message>
+      <source>Z Axis Value:</source>
+      <translation type="unfinished">Z Axis Value:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.cpp" line="368"/>
+      <location filename="../../DlgPrimitives.cpp" line="667"/>
+      <location filename="../../DlgPrimitives.cpp" line="675"/>
       <source>Create %1</source>
       <translation>Crea %1</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="370"/>
+      <location filename="../../DlgPrimitives.cpp" line="369"/>
       <source>No active document</source>
       <translation>No hi ha cap document actiu.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="628"/>
+      <location filename="../../DlgPrimitives.cpp" line="627"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="856"/>
+      <location filename="../../DlgPrimitives.cpp" line="855"/>
       <source>&amp;Create</source>
       <translation>&amp;Crea</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation type="unfinished">Position</translation>
+    </message>
+    <message>
+      <source>Direction:</source>
+      <translation type="unfinished">Direction:</translation>
+    </message>
+    <message>
+      <source>U parametric:</source>
+      <translation type="unfinished">U parametric:</translation>
+    </message>
+    <message>
+      <source>V parametric:</source>
+      <translation type="unfinished">V parametric:</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Tan&amp;ca</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation type="unfinished">Alt+O</translation>
+    </message>
+    <message>
+      <source>3D View</source>
+      <translation>Vista 3D</translation>
     </message>
   </context>
   <context>
@@ -3758,7 +4071,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="305"/>
-      <location filename="../../DlgRevolution.cpp" line="448"/>
+      <location filename="../../DlgRevolution.cpp" line="440"/>
       <source>Select reference</source>
       <translation>Seleccioneu una referència</translation>
     </message>
@@ -3773,50 +4086,94 @@ Please check one or more edge entities first.</source>
       <translation>Angle simètric</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="173"/>
+      <source>If checked, revolving wires will produce solids. If not, revolving a wire yeilds a shell.</source>
+      <translation>Si està marcada, els fils de revolució produiran sòlids. Si no, donaran lloc a una closca.</translation>
+    </message>
+    <message>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+    <message>
+      <source>Axis:</source>
+      <translation>Eix:</translation>
+    </message>
+    <message>
+      <source>Select line in 3D view</source>
+      <translation type="unfinished">Select line in 3D view</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="172"/>
       <source>Object not found: %1</source>
       <translation>No s'ha trobat l'objecte: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="254"/>
+      <location filename="../../DlgRevolution.cpp" line="253"/>
       <source>Select a shape for revolution, first.</source>
       <translation type="unfinished">Select a shape for revolution, first.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="270"/>
-      <location filename="../../DlgRevolution.cpp" line="275"/>
-      <location filename="../../DlgRevolution.cpp" line="280"/>
+      <location filename="../../DlgRevolution.cpp" line="269"/>
+      <location filename="../../DlgRevolution.cpp" line="274"/>
+      <location filename="../../DlgRevolution.cpp" line="279"/>
       <source>Revolution axis link is invalid.
 
 %1</source>
       <translation>L'enllaç de l'eix de revolució no és vàlid. %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="289"/>
+      <location filename="../../DlgRevolution.cpp" line="288"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
       <translation>La direcció de l'eix de revolució és de longitud zero. Ha de ser diferent de zero.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="299"/>
+      <location filename="../../DlgRevolution.cpp" line="298"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
       <translation>L'angle de revolució és zero. Ha de ser diferent de zero.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="428"/>
-      <location filename="../../DlgRevolution.cpp" line="432"/>
+      <location filename="../../DlgRevolution.cpp" line="420"/>
+      <location filename="../../DlgRevolution.cpp" line="424"/>
       <source>Creating Revolve failed.
 
 %1</source>
       <translation>La creació de revolució ha fallat. %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="444"/>
+      <location filename="../../DlgRevolution.cpp" line="436"/>
       <source>Selecting... (line or arc)</source>
       <translation>Selecció... (línia o arc)</translation>
     </message>
   </context>
   <context>
     <name>PartGui::DlgSettings3DViewPart</name>
+    <message>
+      <source>View accuracy / Performance</source>
+      <translation type="unfinished">View accuracy / Performance</translation>
+    </message>
+    <message>
+      <source>View smoothing</source>
+      <translation type="unfinished">View smoothing</translation>
+    </message>
+    <message>
+      <source>Using high-quality normals</source>
+      <translation type="unfinished">Using high-quality normals</translation>
+    </message>
+    <message>
+      <source>This will slow down render speed but will lead to nicer results</source>
+      <translation type="unfinished">This will slow down render speed but will lead to nicer results</translation>
+    </message>
+    <message>
+      <source>Defines the appearance of surfaces</source>
+      <translation type="unfinished">Defines the appearance of surfaces</translation>
+    </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="14"/>
       <source>Shape view</source>
@@ -3839,8 +4196,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="90"/>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessel·lació&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defineix la desviació màxima de la malla tessel·lada respecte a la superfície. Com més menut és el valor més lenta és la velocitat de renderització i més agradable l'aparença.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="93"/>
@@ -3858,12 +4215,28 @@ Please check one or more edge entities first.</source>
       <translation>°</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="69"/>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Do not define normal per vertex</source>
+      <translation type="unfinished">Do not define normal per vertex</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="64"/>
       <source>Deviation</source>
       <translation type="unfinished">Deviation</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="70"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="65"/>
       <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
       <translation type="unfinished">Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
     </message>
@@ -3905,6 +4278,26 @@ Please check one or more edge entities first.</source>
       <source>Add name of base object</source>
       <translation>Afig el nom de l'objecte base</translation>
     </message>
+    <message>
+      <source>Export</source>
+      <translation type="unfinished">Export</translation>
+    </message>
+    <message>
+      <source>Millimeter</source>
+      <translation type="unfinished">Millimeter</translation>
+    </message>
+    <message>
+      <source>Meter</source>
+      <translation type="unfinished">Meter</translation>
+    </message>
+    <message>
+      <source>Inch</source>
+      <translation type="unfinished">Inch</translation>
+    </message>
+    <message>
+      <source>Units for export of STEP/IGES</source>
+      <translation type="unfinished">Units for export of STEP/IGES</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::DlgSettingsObjectColor</name>
@@ -3920,74 +4313,69 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
-      <source>Default vertex color</source>
-      <translation>Color de vèrtex per defecte</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="47"/>
-      <source>Bounding box color</source>
-      <translation>Color de la caixa contenidora</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="60"/>
       <source>Default shape color</source>
       <translation>Colors per defecte per a formes</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="67"/>
-      <location filename="../../DlgSettingsObjectColor.ui" line="210"/>
-      <source>The default line color for new shapes</source>
-      <translation>El color per defecte de la línia per a formes noves</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="87"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="41"/>
       <source>The default color for new shapes</source>
       <translation>El color per defecte per a formes noves</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsObjectColor.ui" line="67"/>
+      <source>Default line color</source>
+      <translation>Color de línia per defecte</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsObjectColor.ui" line="74"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="142"/>
+      <source>The default line color for new shapes</source>
+      <translation>El color per defecte de la línia per a formes noves</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsObjectColor.ui" line="100"/>
+      <source>Default line width</source>
+      <translation>Amplària de la línia per defecte</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="107"/>
-      <location filename="../../DlgSettingsObjectColor.ui" line="129"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="175"/>
       <source>The default line thickness for new shapes</source>
       <translation>El gruix de línia per defecte per a formes noves</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="110"/>
-      <location filename="../../DlgSettingsObjectColor.ui" line="132"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="178"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
-      <source>The color of bounding boxes in the 3D view</source>
-      <translation>El color de les caixes contenidores en la vista 3D</translation>
+      <location filename="../../DlgSettingsObjectColor.ui" line="135"/>
+      <source>Default vertex color</source>
+      <translation>Color de vèrtex per defecte</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="177"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="168"/>
       <source>Default vertex size</source>
       <translation>Mida de vèrtex per defecte</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="190"/>
-      <source>Default line width</source>
-      <translation>Amplària de la línia per defecte</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="203"/>
-      <source>Default line color</source>
-      <translation>Color de línia per defecte</translation>
+      <source>Bounding box color</source>
+      <translation>Color de la caixa contenidora</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
-      <source>Random shape color</source>
-      <translation type="unfinished">Random shape color</translation>
+      <location filename="../../DlgSettingsObjectColor.ui" line="210"/>
+      <source>The color of bounding boxes in the 3D view</source>
+      <translation>El color de les caixes contenidores en la vista 3D</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="248"/>
       <source>Annotations</source>
       <translation>Anotacions</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="275"/>
+      <location filename="../../DlgSettingsObjectColor.ui" line="262"/>
       <source>Default text color</source>
       <translation>Color del text per defecte</translation>
     </message>
@@ -3995,12 +4383,12 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::FaceColors</name>
     <message>
-      <location filename="../../TaskFaceColors.cpp" line="416"/>
+      <location filename="../../TaskFaceColors.cpp" line="395"/>
       <source>Face colors</source>
       <translation>Colors de la cara</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceColors.cpp" line="416"/>
+      <location filename="../../TaskFaceColors.cpp" line="395"/>
       <source>Do you really want to cancel?</source>
       <translation>Esteu segur que voleu cancel·lar?</translation>
     </message>
@@ -4026,39 +4414,51 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="80"/>
+      <source>Vertex/Wire</source>
+      <translation type="unfinished">Vertex/Wire</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLoft.cpp" line="75"/>
       <source>Available profiles</source>
       <translation>Perfils disponibles</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="81"/>
+      <location filename="../../TaskLoft.cpp" line="76"/>
       <source>Selected profiles</source>
       <translation>Perfils seleccionats</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="180"/>
+      <location filename="../../TaskLoft.cpp" line="158"/>
       <source>Too few elements</source>
       <translation>Massa pocs elements</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="180"/>
+      <location filename="../../TaskLoft.cpp" line="158"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
       <translation>Calen com a mínim dos vèrtexs, arestes, fils o cares.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="214"/>
+      <location filename="../../TaskLoft.cpp" line="191"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="243"/>
+      <location filename="../../TaskLoft.cpp" line="220"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Vèrtex/Aresta/Filferro/Cara</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="244"/>
+      <location filename="../../TaskLoft.cpp" line="221"/>
       <source>Loft</source>
       <translation>Projecció</translation>
+    </message>
+    <message>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation type="unfinished">At least two vertices, edges or wires are required.</translation>
+    </message>
+    <message>
+      <source>At least two vertices or wires are required.</source>
+      <translation type="unfinished">At least two vertices or wires are required.</translation>
     </message>
   </context>
   <context>
@@ -4114,12 +4514,16 @@ Please check one or more edge entities first.</source>
       <translation>z</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="124"/>
+      <source>Base point:</source>
+      <translation type="unfinished">Base point:</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.cpp" line="123"/>
       <source>Select a shape for mirroring, first.</source>
       <translation>Seleccioneu primer la forma que s'ha de reflectir</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="131"/>
+      <location filename="../../Mirroring.cpp" line="130"/>
       <source>No such document '%1'.</source>
       <translation>No hi ha el document "%1".</translation>
     </message>
@@ -4135,17 +4539,17 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="340"/>
       <source>Name</source>
       <translation>Nom</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="346"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="342"/>
       <source>Type</source>
       <translation>Tipus</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="348"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
@@ -4153,72 +4557,69 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="208"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="227"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="255"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="296"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="348"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="400"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="463"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="204"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="223"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="251"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="303"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="355"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="418"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="208"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="227"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="204"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="223"/>
       <source>Select two vertices</source>
       <translation>Seleccioneu dos vèrtexs</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="255"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="348"/>
-      <source>Select one or more edges</source>
-      <translation>Seleccioneu una o més arestes</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="296"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="251"/>
       <source>Select three or more vertices</source>
       <translation>Seleccioneu tres o més vèrtexs</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="400"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="303"/>
+      <source>Select one or more edges</source>
+      <translation>Seleccioneu una o més arestes</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.cpp" line="355"/>
       <source>Select two or more faces</source>
       <translation>Seleccioneu dues o més cares</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="463"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="418"/>
       <source>Select only one part object</source>
       <translation>Seleccioneu només un objecte peça</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="515"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="470"/>
       <source>Select two vertices to create an edge</source>
       <translation>Seleccioneu dos vèrtexs per a crear una aresta</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="522"/>
-      <source>Select adjacent edges</source>
-      <translation type="unfinished">Select adjacent edges</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="529"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="477"/>
       <source>Select a list of vertices</source>
       <translation>Seleccioneu una llista de vèrtexs</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="536"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Select a closed set of edges</source>
       <translation>Seleccioneu un conjunt tancat d'arestes</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="543"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="491"/>
       <source>Select adjacent faces</source>
       <translation>Seleccioneu les cares adjacents</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="550"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="498"/>
       <source>All shape types can be selected</source>
       <translation>Es poden seleccionar tots els tipus de forma</translation>
+    </message>
+    <message>
+      <source>Select three or more edges</source>
+      <translation type="unfinished">Select three or more edges</translation>
     </message>
   </context>
   <context>
@@ -4234,67 +4635,75 @@ Please check one or more edge entities first.</source>
       <translation>Perfils seleccionats</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="282"/>
-      <location filename="../../TaskSweep.cpp" line="414"/>
-      <location filename="../../TaskSweep.cpp" line="422"/>
+      <location filename="../../TaskSweep.cpp" line="265"/>
+      <location filename="../../TaskSweep.cpp" line="396"/>
+      <location filename="../../TaskSweep.cpp" line="404"/>
       <source>Sweep path</source>
       <translation>Trajecte d'escombratge</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="282"/>
+      <location filename="../../TaskSweep.cpp" line="265"/>
       <source>Select one or more connected edges you want to sweep along.</source>
       <translation>Seleccioneu una o més arestes connectades al llarg de les quals voleu fer l'escombratge.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="310"/>
+      <location filename="../../TaskSweep.cpp" line="293"/>
       <source>Too few elements</source>
       <translation>Massa pocs elements</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="310"/>
+      <location filename="../../TaskSweep.cpp" line="293"/>
       <source>At least one edge or wire is required.</source>
       <translation>Es requereix almenys una aresta o filferro.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="317"/>
+      <location filename="../../TaskSweep.cpp" line="300"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="317"/>
+      <location filename="../../TaskSweep.cpp" line="300"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' no es pot utilitzar com a perfil i camí.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="355"/>
+      <location filename="../../TaskSweep.cpp" line="337"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="388"/>
+      <location filename="../../TaskSweep.cpp" line="370"/>
       <source>Done</source>
       <translation>Fet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="390"/>
+      <location filename="../../TaskSweep.cpp" line="372"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
       <translation>Seleccioneu una o més arestes connectades en la vista 3D i premeu "Fet"</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="414"/>
-      <location filename="../../TaskSweep.cpp" line="422"/>
+      <location filename="../../TaskSweep.cpp" line="396"/>
+      <location filename="../../TaskSweep.cpp" line="404"/>
       <source>The selected sweep path is invalid.</source>
       <translation>La trajectòria d'escombratge seleccionada no és vàlida.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="434"/>
+      <location filename="../../TaskSweep.cpp" line="416"/>
       <source>Vertex/Wire</source>
       <translation type="unfinished">Vertex/Wire</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="435"/>
+      <location filename="../../TaskSweep.cpp" line="417"/>
       <source>Sweep</source>
       <translation>Escombratge</translation>
+    </message>
+    <message>
+      <source>Vertex/Edge/Wire/Face</source>
+      <translation>Vèrtex/Aresta/Filferro/Cara</translation>
+    </message>
+    <message>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation type="unfinished">Select an edge or wire you want to sweep along.</translation>
     </message>
   </context>
   <context>
@@ -4341,7 +4750,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="319"/>
+      <location filename="../../TaskAttacher.cpp" line="302"/>
       <source>Attachment Offset:</source>
       <translation>Separació de l'adjunt:</translation>
     </message>
@@ -4381,85 +4790,112 @@ Please check one or more edge entities first.</source>
       <translation>Inverteix les cares</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="302"/>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>Espill de la propietat sobrePosicionament. Un posicionament addicional s'expressa en l'espai local de l'objecte que s'adjunta.</translation>
+    </message>
+    <message>
+      <source>Extra placement:</source>
+      <translation>Posicionament addicional:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="285"/>
       <source>OCC error: %1</source>
       <translation>Error OCC: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="304"/>
+      <location filename="../../TaskAttacher.cpp" line="287"/>
       <source>unknown error</source>
       <translation>error desconegut</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="307"/>
+      <location filename="../../TaskAttacher.cpp" line="290"/>
       <source>Attachment mode failed: %1</source>
       <translation>El mode d'adjunció ha fallat: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="311"/>
+      <location filename="../../TaskAttacher.cpp" line="294"/>
       <source>Not attached</source>
       <translation>No adjuntat</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="315"/>
+      <location filename="../../TaskAttacher.cpp" line="298"/>
       <source>Attached with mode %1</source>
       <translation>S'ha adjuntat amb mode %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="319"/>
+      <location filename="../../TaskAttacher.cpp" line="302"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Separació de l'adjunt (inactiu - no adjuntat):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="618"/>
+      <location filename="../../TaskAttacher.cpp" line="578"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="623"/>
+      <location filename="../../TaskAttacher.cpp" line="583"/>
       <source>Edge</source>
       <translation>Aresta</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="628"/>
+      <location filename="../../TaskAttacher.cpp" line="588"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="690"/>
+      <location filename="../../TaskAttacher.cpp" line="647"/>
       <source>Selecting...</source>
       <translation>Selecció...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="694"/>
+      <location filename="../../TaskAttacher.cpp" line="651"/>
       <source>Reference%1</source>
       <translation>Referència%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="740"/>
+      <location filename="../../TaskAttacher.cpp" line="694"/>
       <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
       <translation>No editable perquè part de rotació de AttachmentOffset està restringida per expressions.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="804"/>
-      <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <location filename="../../TaskAttacher.cpp" line="755"/>
+      <source>
+
+Reference combinations:
+</source>
+      <translation>
+
+Combinacions de referència:
+</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="821"/>
+      <location filename="../../TaskAttacher.cpp" line="772"/>
       <source>%1 (add %2)</source>
       <translation>%1 (afig %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="826"/>
+      <location filename="../../TaskAttacher.cpp" line="777"/>
       <source>%1 (add more references)</source>
       <translation>%1 (afig més referències)</translation>
+    </message>
+    <message>
+      <source>Extra placement (inactive - not attached):</source>
+      <translation>Posicionament addicional (inactiu - no adjuntat):</translation>
+    </message>
+    <message>
+      <source>Not editable because rotation part of superplacement is bound by expressions.</source>
+      <translation>No és editable perquè la rotació de peça de sobreposicionament està limitada per expressions.</translation>
+    </message>
+    <message>
+      <source>Reference combinations:
+</source>
+      <translation>Combinacions de referència:</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="942"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="916"/>
       <source>Shape Content</source>
       <translation>Contingut de la forma</translation>
     </message>
@@ -4467,20 +4903,178 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="385"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="381"/>
       <source>Check Geometry</source>
       <translation>Comprova la geometria</translation>
     </message>
+  </context>
+  <context>
+    <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="421"/>
-      <source>Check geometry</source>
-      <translation type="unfinished">Check geometry</translation>
+      <source>Hint</source>
+      <translation type="unfinished">Hint</translation>
+    </message>
+    <message>
+      <source>Select Control.</source>
+      <translation type="unfinished">Select Control.</translation>
+    </message>
+    <message>
+      <source>Control</source>
+      <translation type="unfinished">Control</translation>
+    </message>
+    <message>
+      <source>Dynamic</source>
+      <translation type="unfinished">Dynamic</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation type="unfinished">Align</translation>
+    </message>
+    <message>
+      <source>Value</source>
+      <translation>Valor</translation>
+    </message>
+    <message>
+      <source>Special</source>
+      <translation type="unfinished">Special</translation>
+    </message>
+    <message>
+      <source>Command</source>
+      <translation>Ordre</translation>
+    </message>
+    <message>
+      <source>Stretch</source>
+      <translation type="unfinished">Stretch</translation>
+    </message>
+    <message>
+      <source>Move</source>
+      <translation>Mou</translation>
+    </message>
+    <message>
+      <source>Rotate</source>
+      <translation>Gira</translation>
+    </message>
+    <message>
+      <source>Offset</source>
+      <translation>Separació</translation>
+    </message>
+    <message>
+      <source>Orient</source>
+      <translation type="unfinished">Orient</translation>
+    </message>
+    <message>
+      <source>Match</source>
+      <translation type="unfinished">Match</translation>
+    </message>
+    <message>
+      <source>Surround</source>
+      <translation type="unfinished">Surround</translation>
+    </message>
+    <message>
+      <source>dummy</source>
+      <translation type="unfinished">dummy</translation>
+    </message>
+    <message>
+      <source>X Axis</source>
+      <translation type="unfinished">X Axis</translation>
+    </message>
+    <message>
+      <source>Y Axis</source>
+      <translation type="unfinished">Y Axis</translation>
+    </message>
+    <message>
+      <source>Z Axis</source>
+      <translation type="unfinished">Z Axis</translation>
+    </message>
+    <message>
+      <source>Increment</source>
+      <translation type="unfinished">Increment</translation>
+    </message>
+    <message>
+      <source>.125</source>
+      <translation type="unfinished">.125</translation>
+    </message>
+    <message>
+      <source>.500</source>
+      <translation type="unfinished">.500</translation>
+    </message>
+    <message>
+      <source>1.000</source>
+      <translation type="unfinished">1.000</translation>
+    </message>
+    <message>
+      <source>5.000</source>
+      <translation type="unfinished">5.000</translation>
+    </message>
+    <message>
+      <source>10.000</source>
+      <translation type="unfinished">10.000</translation>
+    </message>
+    <message>
+      <source>Drag arrows to stretch box by increment</source>
+      <translation type="unfinished">Drag arrows to stretch box by increment</translation>
+    </message>
+    <message>
+      <source>Drag arrows to move box by increment</source>
+      <translation type="unfinished">Drag arrows to move box by increment</translation>
+    </message>
+    <message>
+      <source>Not implemented yet</source>
+      <translation type="unfinished">Not implemented yet</translation>
+    </message>
+    <message>
+      <source>Drag arrows to offset checked axes by increment</source>
+      <translation type="unfinished">Drag arrows to offset checked axes by increment</translation>
+    </message>
+    <message>
+      <source>Select dragger for stretch by align</source>
+      <translation type="unfinished">Select dragger for stretch by align</translation>
+    </message>
+    <message>
+      <source>Select dragger for move by align</source>
+      <translation type="unfinished">Select dragger for move by align</translation>
+    </message>
+    <message>
+      <source>Select dragger for stretch by value</source>
+      <translation type="unfinished">Select dragger for stretch by value</translation>
+    </message>
+    <message>
+      <source>Select dragger for move by value</source>
+      <translation type="unfinished">Select dragger for move by value</translation>
+    </message>
+    <message>
+      <source>1.0</source>
+      <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+      <source>Enter Value</source>
+      <translation type="unfinished">Enter Value</translation>
+    </message>
+    <message>
+      <source>Select box to match</source>
+      <translation type="unfinished">Select box to match</translation>
+    </message>
+    <message>
+      <source>Select a point</source>
+      <translation type="unfinished">Select a point</translation>
+    </message>
+    <message>
+      <source>0.0</source>
+      <translation type="unfinished">0.0</translation>
+    </message>
+    <message>
+      <source>Select dragger to align</source>
+      <translation type="unfinished">Select dragger to align</translation>
+    </message>
+    <message>
+      <source>Select dragger to modify</source>
+      <translation type="unfinished">Select dragger to modify</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1057"/>
+      <location filename="../../TaskAttacher.cpp" line="994"/>
       <source>Datum dialog: Input error</source>
       <translation>Diàleg de dimensió: error d'entrada</translation>
     </message>
@@ -4534,6 +5128,42 @@ Please check one or more edge entities first.</source>
       <location filename="../../TaskLoft.ui" line="50"/>
       <source>Closed</source>
       <translation>Tancat</translation>
+    </message>
+    <message>
+      <source>Vertex/Wire</source>
+      <translation type="unfinished">Vertex/Wire</translation>
+    </message>
+    <message>
+      <source>Move right</source>
+      <translation>Mou a la dreta</translation>
+    </message>
+    <message>
+      <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Mou l'element seleccionat un nivell cap avall.&lt;/b&gt;&lt;p&gt;Això també canvia el nivell de l'element pare.&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>Move left</source>
+      <translation>Mou a l'esquerra</translation>
+    </message>
+    <message>
+      <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Mou l'element seleccionat un nivell cap amunt.&lt;/b&gt;&lt;p&gt;Això també canvia el nivell de l'element pare.&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>Move up</source>
+      <translation>Mou amunt</translation>
+    </message>
+    <message>
+      <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Mou l'element seleccionat cap amunt.&lt;/b&gt;&lt;p&gt;L'element es mourà dins del nivell de jerarquia.&lt;/p&gt;1</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Mou avall</translation>
+    </message>
+    <message>
+      <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Mou l'element seleccionat cap avall.&lt;/b&gt;&lt;p&gt;L'element es mourà dins del nivell de jerarquia.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -4616,23 +5246,23 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
-      <source>Face from vertices</source>
-      <translation>Cara a partir de vèrtexs</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.ui" line="33"/>
-      <source>Shell from faces</source>
-      <translation>Closca a partir de cares</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Edge from vertices</source>
       <translation>Aresta a partir de vèrtexs</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.ui" line="47"/>
+      <location filename="../../TaskShapeBuilder.ui" line="33"/>
+      <source>Face from vertices</source>
+      <translation>Cara a partir de vèrtexs</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Face from edges</source>
       <translation>Cara a partir d'arestes</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.ui" line="47"/>
+      <source>Shell from faces</source>
+      <translation>Closca a partir de cares</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="54"/>
@@ -4659,11 +5289,6 @@ Please check one or more edge entities first.</source>
       <source>Create</source>
       <translation>Crea</translation>
     </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.ui" line="116"/>
-      <source>Wire from edges</source>
-      <translation type="unfinished">Wire from edges</translation>
-    </message>
   </context>
   <context>
     <name>PartGui::TaskSweep</name>
@@ -4688,7 +5313,7 @@ Please check one or more edge entities first.</source>
       <translation>Angle fix</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="464"/>
+      <location filename="../../TaskSweep.cpp" line="446"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Seleccioneu un o més perfils i seleccioneu una aresta o filferro en la vista 3D per al camí d'escombratge.</translation>
@@ -4752,12 +5377,12 @@ in the 3D view for the sweep path.</source>
       <translation>Permet fer cares planes amb forats, però no illes dins dels forats.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="515"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="506"/>
       <source>Part Extrude facemaker</source>
       <translation>Generador de cares de tipus extrusió de peça</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="520"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="511"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Permet fer cares amb forats, no admet la imbricació.</translation>
     </message>
@@ -4765,82 +5390,85 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppPartGui.cpp" line="210"/>
-      <location filename="../../AppPartGui.cpp" line="211"/>
-      <source>Part design</source>
-      <translation>Disseny de la peça</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="212"/>
-      <location filename="../../AppPartGui.cpp" line="213"/>
-      <source>Import-Export</source>
-      <translation>Importació-exportació</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="214"/>
-      <source>Display</source>
-      <translation>Visualització</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="284"/>
-      <location filename="../../Command.cpp" line="381"/>
-      <location filename="../../Command.cpp" line="483"/>
-      <location filename="../../Command.cpp" line="902"/>
-      <location filename="../../Command.cpp" line="953"/>
-      <location filename="../../Command.cpp" line="2074"/>
+      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="379"/>
+      <location filename="../../Command.cpp" line="481"/>
+      <location filename="../../Command.cpp" line="781"/>
+      <location filename="../../Command.cpp" line="832"/>
+      <location filename="../../Command.cpp" line="1953"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="285"/>
-      <location filename="../../Command.cpp" line="954"/>
+      <location filename="../../Command.cpp" line="283"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Select two shapes please.</source>
       <translation>Seleccioneu dues formes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="295"/>
-      <location filename="../../Command.cpp" line="397"/>
-      <location filename="../../Command.cpp" line="499"/>
+      <location filename="../../Command.cpp" line="293"/>
+      <location filename="../../Command.cpp" line="395"/>
+      <location filename="../../Command.cpp" line="497"/>
       <source>Non-solids selected</source>
       <translation>S'han seleccionat objectes no sòlids.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="296"/>
-      <location filename="../../Command.cpp" line="398"/>
-      <location filename="../../Command.cpp" line="500"/>
+      <location filename="../../Command.cpp" line="294"/>
+      <location filename="../../Command.cpp" line="396"/>
+      <location filename="../../Command.cpp" line="498"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
       <translation>L'ús d'objectes no sòlids per a operacions booleanes pot causar resultats inesperats. Voleu continuar?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="382"/>
+      <location filename="../../Command.cpp" line="380"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
       <translation>Seleccioneu dues formes o més. O bé, seleccioneu un compost que conté dues o més formes per a calcular la part comuna entre aquestes.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="484"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
       <translation>Seleccioneu dues formes o més. O bé, seleccioneu un compost que conté dues o més formes per a fusionar-les.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="903"/>
+      <location filename="../../Command.cpp" line="782"/>
       <source>Select one shape or more, please.</source>
       <translation>Seleccioneu una forma o més</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1107"/>
+      <location filename="../../Command.cpp" line="986"/>
       <source>All CAD Files</source>
       <translation>Tots els fitxers de CAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1112"/>
+      <location filename="../../Command.cpp" line="991"/>
       <source>All Files</source>
       <translation>Tots els fitxers</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2075"/>
+      <location filename="../../Command.cpp" line="1954"/>
       <source>You have to select either two edges or two wires.</source>
       <translation>Heu de seleccionar dues arestes o dos fils.</translation>
+    </message>
+    <message>
+      <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
+      <translation type="unfinished">All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
+    </message>
+    <message>
+      <source>STEP (*.stp *.step)</source>
+      <translation type="unfinished">STEP (*.stp *.step)</translation>
+    </message>
+    <message>
+      <source>IGES (*.igs *.iges)</source>
+      <translation type="unfinished">IGES (*.igs *.iges)</translation>
+    </message>
+    <message>
+      <source>BREP (*.brp *.brep)</source>
+      <translation type="unfinished">BREP (*.brp *.brep)</translation>
+    </message>
+    <message>
+      <source>All Files (*.*)</source>
+      <translation type="unfinished">All Files (*.*)</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="120"/>
@@ -4853,369 +5481,394 @@ Do you want to continue?</source>
       <translation>Introduïu la tolerància per a la costura:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="71"/>
-      <location filename="../../TaskAttacher.cpp" line="104"/>
-      <source>No reference selected</source>
-      <translation>No s'ha seleccionat cap referència.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="80"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
-      <source>Face</source>
-      <translation>Cara</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="83"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
-      <source>Edge</source>
-      <translation>Aresta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="86"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
-      <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
-      <source>Compound</source>
-      <translation>Compost</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
-      <source>Compound Solid</source>
-      <translation>Compost sòlid</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
-      <source>Solid</source>
-      <translation>Sòlid</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
-      <source>Shell</source>
-      <translation>Closca</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
-      <source>Wire</source>
-      <translation>Filferro</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
-      <source>Shape</source>
-      <translation>Forma</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
-      <source>No Error</source>
-      <translation>Cap error</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
-      <source>Invalid Point On Curve</source>
-      <translation>Punt invàlid en la corba</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
-      <source>Invalid Point On Curve On Surface</source>
-      <translation>Punt invàlid en la corba en superfície</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
-      <source>Invalid Point On Surface</source>
-      <translation>Punt invàlid en superfície</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
-      <source>No 3D Curve</source>
-      <translation>Cap corba 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
-      <source>Multiple 3D Curve</source>
-      <translation>Corba múltiple 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
-      <source>Invalid 3D Curve</source>
-      <translation>La corba 3D no és vàlida.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
-      <source>No Curve On Surface</source>
-      <translation>No hi ha cap corba en superfície.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
-      <source>Invalid Curve On Surface</source>
-      <translation>Corba invàlida en superfície</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
-      <source>Invalid Curve On Closed Surface</source>
-      <translation>Corba invàlida en superfície tancada</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
-      <source>Invalid Same Range Flag</source>
-      <translation>L'indicador del mateix interval no és vàlid.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
-      <source>Invalid Same Parameter Flag</source>
-      <translation>L'indicador del mateix paràmetre no és vàlid.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
-      <source>Invalid Degenerated Flag</source>
-      <translation>L'indicador degenerat no és vàlid.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
-      <source>Free Edge</source>
-      <translation>Aresta lliure</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
-      <source>Invalid MultiConnexity</source>
-      <translation>La connectivitat múltiple no és vàlida.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
-      <source>Invalid Range</source>
-      <translation>L'interval no és vàlid.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
-      <source>Empty Wire</source>
-      <translation>Trama buida</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
-      <source>Redundant Edge</source>
-      <translation>Aresta redundant</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
-      <source>Self Intersecting Wire</source>
-      <translation>Autointersecció de trama</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
-      <source>No Surface</source>
-      <translation>Sense superfície</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
-      <source>Invalid Wire</source>
-      <translation>La trama no és vàlida.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
-      <source>Redundant Wire</source>
-      <translation>Trama redundant</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
-      <source>Intersecting Wires</source>
-      <translation>Intersecció de trames</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
-      <source>Invalid Imbrication Of Wires</source>
-      <translation>La imbricació de trames no és vàlida.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
-      <source>Empty Shell</source>
-      <translation>Closca buida</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
-      <source>Redundant Face</source>
-      <translation>Cara redundant</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
-      <source>Unorientable Shape</source>
-      <translation>La forma no és orientable.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
-      <source>Not Closed</source>
-      <translation>No s'ha tancat.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
-      <source>Not Connected</source>
-      <translation>No està connectat.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
-      <source>Sub Shape Not In Shape</source>
-      <translation>La subforma no forma part de la forma.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
-      <source>Bad Orientation</source>
-      <translation>Mala orientació</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
-      <source>Bad Orientation Of Sub Shape</source>
-      <translation>Mala orientació de la subforma</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
-      <source>Invalid Tolerance Value</source>
-      <translation>El valor de tolerància no és vàlid.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
-      <source>Check Failed</source>
-      <translation>Ha fallat la comprovació.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
-      <source>No Result</source>
-      <translation>No hi ha cap resultat.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
-      <source>Out Of Enum Range: </source>
-      <translation>Fora de l'interval de l'enumeració:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>BOPAlgo CheckUnknown</source>
-      <translation>BOPAlgo VerificaDesconegudes</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>BOPAlgo BadType</source>
-      <translation>BOPAlgo TipusIncorrecte</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>BOPAlgo SelfIntersect</source>
-      <translation>BOPAlgo autointersecció</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>BOPAlgo TooSmallEdge</source>
-      <translation>BOPAlgo ArestaMassaXicoteta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>BOPAlgo NonRecoverableFace</source>
-      <translation>BOPAlgo CaraIrrecuperable</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation>BOPAlgo IncompatibilitatDeVèrtex</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation>BOPAlgo Incompatibilitat d'aresta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>BOPAlgo CaraIncompatible</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>BOPAlgo OperationAborted</source>
-      <translation>BOPAlgo OperacióAvortada</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>BOPAlgo GeomAbs_C0</source>
-      <translation>BOPAlgo GeomAbs_C0</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo_CorbaInvàlidaEnSuperfície</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
-      <source>BOPAlgo NotValid</source>
-      <translation>BOPAlgo NoVàlid</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="463"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="659"/>
-      <source>Invalid</source>
-      <translation>Invàlid</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="556"/>
-      <location filename="../../TaskDimension.cpp" line="1602"/>
-      <source>Selections</source>
-      <translation>Seleccions</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="563"/>
-      <location filename="../../TaskDimension.cpp" line="1609"/>
-      <source>Control</source>
-      <translation type="unfinished">Control</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1340"/>
-      <source>Reset Dialog</source>
-      <translation>Reinicialitza el diàleg</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1344"/>
-      <source>Toggle 3d</source>
-      <translation>Commuta la vista 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1349"/>
-      <source>Toggle Delta</source>
-      <translation>Commuta Delta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1354"/>
-      <source>Clear All</source>
-      <translation>Neteja-ho tot</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderExt.cpp" line="847"/>
-      <source>Set colors...</source>
-      <translation>Estableix els colors...</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="79"/>
+      <location filename="../../ViewProviderMirror.cpp" line="78"/>
       <source>Edit mirror plane</source>
       <translation>Edita el pla de simetria</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="276"/>
+      <location filename="../../ViewProviderMirror.cpp" line="275"/>
       <source>Edit fillet edges</source>
       <translation>Edita l'arredoniment d'arestes</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="379"/>
+      <location filename="../../ViewProviderMirror.cpp" line="378"/>
       <source>Edit chamfer edges</source>
       <translation>Edita les arestes del xamfrà</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="520"/>
+      <location filename="../../ViewProviderMirror.cpp" line="519"/>
       <source>Edit offset</source>
       <translation>Edita el desplaçament</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="606"/>
+      <location filename="../../ViewProviderMirror.cpp" line="605"/>
       <source>Edit thickness</source>
       <translation>Edita el gruix</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpline.cpp" line="81"/>
+      <source>Transform</source>
+      <translation type="unfinished">Transform</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="209"/>
+      <location filename="../../AppPartGui.cpp" line="210"/>
+      <source>Part design</source>
+      <translation>Disseny de la peça</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="211"/>
+      <location filename="../../AppPartGui.cpp" line="212"/>
+      <source>Import-Export</source>
+      <translation>Importació-exportació</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="213"/>
+      <source>Display</source>
+      <translation>Visualització</translation>
+    </message>
+    <message>
+      <source>Select two shapes or more, please.</source>
+      <translation type="unfinished">Select two shapes or more, please.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderExt.cpp" line="840"/>
+      <source>Set colors...</source>
+      <translation>Estableix els colors...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="74"/>
+      <source>Compound</source>
+      <translation>Compost</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="75"/>
+      <source>Compound Solid</source>
+      <translation>Compost sòlid</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="76"/>
+      <source>Solid</source>
+      <translation>Sòlid</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="77"/>
+      <source>Shell</source>
+      <translation>Closca</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+      <source>Wire</source>
+      <translation>Filferro</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <source>Shape</source>
+      <translation>Forma</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="97"/>
+      <source>No Error</source>
+      <translation>Cap error</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="98"/>
+      <source>Invalid Point On Curve</source>
+      <translation>Punt invàlid en la corba</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="99"/>
+      <source>Invalid Point On Curve On Surface</source>
+      <translation>Punt invàlid en la corba en superfície</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="100"/>
+      <source>Invalid Point On Surface</source>
+      <translation>Punt invàlid en superfície</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+      <source>No 3D Curve</source>
+      <translation>Cap corba 3D</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+      <source>Multiple 3D Curve</source>
+      <translation>Corba múltiple 3D</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
+      <source>Invalid 3D Curve</source>
+      <translation>La corba 3D no és vàlida.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+      <source>No Curve On Surface</source>
+      <translation>No hi ha cap corba en superfície.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
+      <source>Invalid Curve On Surface</source>
+      <translation>Corba invàlida en superfície</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <source>Invalid Curve On Closed Surface</source>
+      <translation>Corba invàlida en superfície tancada</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <source>Invalid Same Range Flag</source>
+      <translation>L'indicador del mateix interval no és vàlid.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <source>Invalid Same Parameter Flag</source>
+      <translation>L'indicador del mateix paràmetre no és vàlid.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <source>Invalid Degenerated Flag</source>
+      <translation>L'indicador degenerat no és vàlid.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <source>Free Edge</source>
+      <translation>Aresta lliure</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <source>Invalid MultiConnexity</source>
+      <translation>La connectivitat múltiple no és vàlida.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
+      <source>Invalid Range</source>
+      <translation>L'interval no és vàlid.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <source>Empty Wire</source>
+      <translation>Trama buida</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
+      <source>Redundant Edge</source>
+      <translation>Aresta redundant</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <source>Self Intersecting Wire</source>
+      <translation>Autointersecció de trama</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <source>No Surface</source>
+      <translation>Sense superfície</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <source>Invalid Wire</source>
+      <translation>La trama no és vàlida.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <source>Redundant Wire</source>
+      <translation>Trama redundant</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <source>Intersecting Wires</source>
+      <translation>Intersecció de trames</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <source>Invalid Imbrication Of Wires</source>
+      <translation>La imbricació de trames no és vàlida.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <source>Empty Shell</source>
+      <translation>Closca buida</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <source>Redundant Face</source>
+      <translation>Cara redundant</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <source>Unorientable Shape</source>
+      <translation>La forma no és orientable.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <source>Not Closed</source>
+      <translation>No s'ha tancat.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <source>Not Connected</source>
+      <translation>No està connectat.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <source>Sub Shape Not In Shape</source>
+      <translation>La subforma no forma part de la forma.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <source>Bad Orientation</source>
+      <translation>Mala orientació</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <source>Bad Orientation Of Sub Shape</source>
+      <translation>Mala orientació de la subforma</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <source>Invalid Tolerance Value</source>
+      <translation>El valor de tolerància no és vàlid.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <source>Check Failed</source>
+      <translation>Ha fallat la comprovació.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="140"/>
+      <source>No Result</source>
+      <translation>No hi ha cap resultat.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
+      <source>Out Of Enum Range: </source>
+      <translation>Fora de l'interval de l'enumeració:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="156"/>
+      <source>BOPAlgo CheckUnknown</source>
+      <translation>BOPAlgo VerificaDesconegudes</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="157"/>
+      <source>BOPAlgo BadType</source>
+      <translation>BOPAlgo TipusIncorrecte</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="158"/>
+      <source>BOPAlgo SelfIntersect</source>
+      <translation>BOPAlgo autointersecció</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="159"/>
+      <source>BOPAlgo TooSmallEdge</source>
+      <translation>BOPAlgo ArestaMassaXicoteta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
+      <source>BOPAlgo NonRecoverableFace</source>
+      <translation>BOPAlgo CaraIrrecuperable</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
+      <source>BOPAlgo IncompatibilityOfVertex</source>
+      <translation>BOPAlgo IncompatibilitatDeVèrtex</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+      <source>BOPAlgo IncompatibilityOfEdge</source>
+      <translation>BOPAlgo Incompatibilitat d'aresta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+      <source>BOPAlgo IncompatibilityOfFace</source>
+      <translation>BOPAlgo CaraIncompatible</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <source>BOPAlgo OperationAborted</source>
+      <translation>BOPAlgo OperacióAvortada</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <source>BOPAlgo GeomAbs_C0</source>
+      <translation>BOPAlgo GeomAbs_C0</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <source>BOPAlgo_InvalidCurveOnSurface</source>
+      <translation>BOPAlgo_CorbaInvàlidaEnSuperfície</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
+      <source>BOPAlgo NotValid</source>
+      <translation>BOPAlgo NoVàlid</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="452"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="633"/>
+      <source>Invalid</source>
+      <translation>Invàlid</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="70"/>
+      <location filename="../../TaskAttacher.cpp" line="103"/>
+      <source>No reference selected</source>
+      <translation>No s'ha seleccionat cap referència.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="79"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+      <source>Face</source>
+      <translation>Cara</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="82"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <source>Edge</source>
+      <translation>Aresta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="85"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <source>Vertex</source>
+      <translation type="unfinished">Vertex</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="552"/>
+      <location filename="../../TaskDimension.cpp" line="1598"/>
+      <source>Selections</source>
+      <translation>Seleccions</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="559"/>
+      <location filename="../../TaskDimension.cpp" line="1605"/>
+      <source>Control</source>
+      <translation type="unfinished">Control</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1336"/>
+      <source>Reset Dialog</source>
+      <translation>Reinicialitza el diàleg</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1340"/>
+      <source>Toggle 3d</source>
+      <translation>Commuta la vista 3D</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1345"/>
+      <source>Toggle Delta</source>
+      <translation>Commuta Delta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1350"/>
+      <source>Clear All</source>
+      <translation>Neteja-ho tot</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpline.cpp" line="80"/>
       <source>Show control points</source>
       <translation>Mostra punts de control</translation>
     </message>
@@ -5251,26 +5904,6 @@ Do you want to continue?</source>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Boolean</source>
       <translation>Booleà</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="43"/>
-      <source>Primitives</source>
-      <translation>Primitives</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="44"/>
-      <source>Join</source>
-      <translation type="unfinished">Join</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="45"/>
-      <source>Split</source>
-      <translation>Divideix</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="46"/>
-      <source>Compound</source>
-      <translation>Compost</translation>
     </message>
   </context>
 </TS>

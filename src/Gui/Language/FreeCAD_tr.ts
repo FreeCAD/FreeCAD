@@ -127,10 +127,6 @@
       <translation>Uzaybol Hareketi</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Genel hassasiyet:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Baskın Mod</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Ters çevir</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Küresel hassasiyet:</translation>
     </message>
   </context>
   <context>
@@ -250,11 +250,11 @@
     </message>
     <message>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-      <translation>%1 yardım dosyası bulunamadı (%2). %1 belge paketini kurmanız gerekebilir.</translation>
+      <translation>% 1 yardım dosyası bulunamadı (% 2). % 1 belge paketini kurmanız gerekebilir.</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
-      <translation>Qt Assistant (%1) başlatılamadı</translation>
+      <translation>Qt Assistant (% 1) başlatılamadı</translation>
     </message>
   </context>
   <context>
@@ -294,14 +294,14 @@
       <translation>Orta fare düğmesine basın</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Farenin orta ve sol ya da sağ düğmesine basın</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation type="unfinished">Press middle+left or middle+right button</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Farenin orta düğmesini kaydırın veya orta düğmeyi basılı tutun
-sola veya sağa tıklayın ve fareyi yukarı veya aşağı hareket ettirin</translation>
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -400,6 +400,21 @@ sola veya sağa tıklayın ve fareyi yukarı veya aşağı hareket ettirin</tran
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Kütüphaneler</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Bu yazılım telif hakkı ve diğer fikri mülkiyet hakları ilgili sahiplerine ait açık kaynak bileşenleri kullanır:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Lisans</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
       <source>Button %1</source>
@@ -408,6 +423,37 @@ sola veya sağa tıklayın ve fareyi yukarı veya aşağı hareket ettirin</tran
     <message>
       <source>Out Of Range</source>
       <translation>Aralığın dışında</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Kamera ayarları</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Yönlendirme</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Geçerli görünüm</translation>
     </message>
   </context>
   <context>
@@ -805,7 +851,7 @@ sola veya sağa tıklayın ve fareyi yukarı veya aşağı hareket ettirin</tran
     </message>
     <message>
       <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Kısayol '%1' bırden fazla tanımlanmış. Bu beklenmedik davranışlara neden olabilir.</translation>
+      <translation>Kısayol '% 1' bırden fazla tanımlanmış. Bu beklenmedik davranışlara neden olabilir.</translation>
     </message>
     <message>
       <source>Already defined shortcut</source>
@@ -814,8 +860,10 @@ sola veya sağa tıklayın ve fareyi yukarı veya aşağı hareket ettirin</tran
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
-      <translation>'%1' kısayolu zaten '%2' için atanmış.</translation>
+Do you want to override it?</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
+
+Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -905,7 +953,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>The toolbar name '%1' is already used</source>
-      <translation>Araç çubuğu adı '%1' zaten kullanılıyor</translation>
+      <translation>Araç çubuğu adı '% 1' zaten kullanılıyor</translation>
     </message>
     <message>
       <source>Rename toolbar</source>
@@ -1253,7 +1301,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Small (%1px)</source>
-      <translation>Küçük (%1px)</translation>
+      <translation>Küçük (%1 x %1)</translation>
     </message>
     <message>
       <source>Medium (%1px)</source>
@@ -1261,11 +1309,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Large (%1px)</source>
-      <translation>Büyük (%1px)</translation>
+      <translation>Büyük (%1 x %1)</translation>
     </message>
     <message>
       <source>Extra large (%1px)</source>
-      <translation>Çok büyük (%1px)</translation>
+      <translation>Çok büyük (%1 x %1)</translation>
     </message>
     <message>
       <source>Custom (%1px)</source>
@@ -1336,6 +1384,14 @@ Please define another shortcut.</source>
       <source>Rename</source>
       <translation>Yeniden Adlandır</translation>
     </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>Çoğalt</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>Eklentiler...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
@@ -1358,7 +1414,7 @@ Please define another shortcut.</source>
     <message>
       <source>'%1'.
 This file already exists.</source>
-      <translation>'%1'.
+      <translation>'%1!.
 Bu dosya zaten var.</translation>
     </message>
     <message>
@@ -1392,8 +1448,7 @@ Bu dosya zaten var.</translation>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation>'%1' 
-zaten mevcut.</translation>
+      <translation>%1 zaten mevcut.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
@@ -1402,8 +1457,21 @@ zaten mevcut.</translation>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation>'%1' yeniden adlandıramadı.
-Belki de bir dosya yetki hatası?</translation>
+      <translation>'%1' yeniden adlandıramadı. Belki de bir dosya yetki hatası?</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Makroyu Kopyala</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Kopyalama Başarısız</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>'%1'olarak çoğaltılamadı. 
+Belki bir dosya izni hatası vardır?</translation>
     </message>
   </context>
   <context>
@@ -1979,8 +2047,52 @@ Lütfen başka bir dizin belirtin.</translation>
       <translation>Perspektif işleme</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation>OpenGL Vertex Arabellek Nesnesi'ni kullanın (deneysel)</translation>
+      <source>Show navigation cube</source>
+      <translation>Dolaşma kübünü göster</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Köşe</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Sol üst</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Sağ üst</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Alt sol</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Sağ alt</translation>
+    </message>
+    <message>
+      <source>Use OpenGL Vertex Buffer Object</source>
+      <translation>OpenGL Tepe Arabellek Nesnesini Kullan</translation>
+    </message>
+    <message>
+      <source>New Document Camera Orientation</source>
+      <translation>Yeni belge kamera oryantasyonu</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
+      <translation>Pinch yakınlaştırma yaparken görüntünün eğilmesini önler. Sadece Gesture tarzı gezinmeyi etkiler. Fare eğmek bu ayar tarafından devre dışı bırakılmaz.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>DokunmatikEkran eğim hareketini devre dışı bırak</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>İmleci sürükleyin</translation>
+    </message>
+    <message>
+      <source>Marker size:</source>
+      <translation>İşaretci boyutu:</translation>
     </message>
   </context>
   <context>
@@ -1993,6 +2105,70 @@ Lütfen başka bir dizin belirtin.</translation>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>92/5000
 Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici açın veya% 1'i yeniden başlatın.</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation>7px</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation>9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation>11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation>13px</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation>15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>İzometrik</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrik</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrik</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>üst</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>ön</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Sol</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Sağ</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Arka</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Alt</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Özel</translation>
     </message>
   </context>
   <context>
@@ -2365,59 +2541,59 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
     </message>
     <message>
       <source>Icon       32  x 32</source>
-      <translation>Icon       32  x 32</translation>
+      <translation>Simge 32 x 32</translation>
     </message>
     <message>
       <source>Icon       64 x 64</source>
-      <translation>Icon       64 x 64</translation>
+      <translation>Simge 64 x 64</translation>
     </message>
     <message>
       <source>Icon       128 x 128</source>
-      <translation>Icon       128 x 128</translation>
+      <translation>Simge 128 x 128</translation>
     </message>
     <message>
       <source>CGA       320 x 200</source>
-      <translation>CGA       320 x 200</translation>
+      <translation>CGA 320 x 200</translation>
     </message>
     <message>
       <source>QVGA     320 x 240</source>
-      <translation>QVGA     320 x 240</translation>
+      <translation>QVGA 320 x 240</translation>
     </message>
     <message>
       <source>VGA       640 x 480</source>
-      <translation>VGA       640 x 480</translation>
+      <translation>VGA 640 x 480</translation>
     </message>
     <message>
       <source>NTSC     720 x 480</source>
-      <translation>NTSC     720 x 480</translation>
+      <translation>NTSC 720 x 480</translation>
     </message>
     <message>
       <source>PAL        768 x 578</source>
-      <translation>PAL        768 x 578</translation>
+      <translation>PAL 768 x 578</translation>
     </message>
     <message>
       <source>SVGA     800 x 600</source>
-      <translation>SVGA     800 x 600</translation>
+      <translation>SVGA 800 x 600</translation>
     </message>
     <message>
       <source>XGA       1024 x 768</source>
-      <translation>XGA       1024 x 768</translation>
+      <translation>XGA 1024 x 768</translation>
     </message>
     <message>
       <source>HD720   1280 x 720</source>
-      <translation>HD720   1280 x 720</translation>
+      <translation>HD720 1280 x 720</translation>
     </message>
     <message>
       <source>SXGA     1280 x 1024</source>
-      <translation>SXGA     1280 x 1024</translation>
+      <translation>SXGA 1280 x 1024</translation>
     </message>
     <message>
       <source>SXGA+   1400 x 1050</source>
-      <translation>SXGA+   1400 x 1050</translation>
+      <translation>SXGA+ 1400 x 1050</translation>
     </message>
     <message>
       <source>UXGA     1600 x 1200</source>
-      <translation>UXGA     1600 x 1200</translation>
+      <translation>UXGA 1600 x 1200</translation>
     </message>
     <message>
       <source>HD1080 1920 x 1080</source>
@@ -2425,31 +2601,31 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
     </message>
     <message>
       <source>WUXGA  1920 x 1200</source>
-      <translation>WUXGA  1920 x 1200</translation>
+      <translation>WUXGA 1920 x 1200</translation>
     </message>
     <message>
       <source>QXGA     2048 x 1538</source>
-      <translation>QXGA     2048 x 1538</translation>
+      <translation>QXGA 2048 x 1538</translation>
     </message>
     <message>
       <source>WQXGA  2560 x 1600</source>
-      <translation>WQXGA  2560 x 1600</translation>
+      <translation>WQXGA 2560 x 1600</translation>
     </message>
     <message>
       <source>QSXGA   2560 x 2048</source>
-      <translation>QSXGA   2560 x 2048</translation>
+      <translation>QSXGA 2560 x 2048</translation>
     </message>
     <message utf8="true">
       <source>QUXGA   3200 × 2400</source>
-      <translation>QUXGA   3200 × 2400</translation>
+      <translation>QUXGA 3200 × 2400</translation>
     </message>
     <message utf8="true">
       <source>HUXGA   6400 × 4800</source>
-      <translation>HUXGA   6400 × 4800</translation>
+      <translation>HUXGA 6400 × 4800</translation>
     </message>
     <message>
       <source>!!!          10000 x 10000</source>
-      <translation>!!!          10000 x 10000</translation>
+      <translation>!!! 10000 x 10000</translation>
     </message>
     <message>
       <source>Standard sizes:</source>
@@ -2621,6 +2797,46 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>Metrik küçük parçalar ve CNC (mm, mm/min)</translation>
     </message>
+    <message>
+      <source>Imperial Civil (ft/ft^2/ft^3)</source>
+      <translation>Kraliyet (İngiliz) Ölçü Sistemi (ft/ft^2/ft^3)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation>En küçük kesirli inç:</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gösterilecek en küçük kesirli inç.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128"</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2661,8 +2877,20 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
       <translation>Radius (px) seçin:</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>3D görünümde öğeleri toplama konusundaki karışıklığı ayarlar. Daha büyük değerler, öğeleri seçmeyi kolaylaştırır, ancak bazı küçük özellikleri seçmek imkansız hale getirecektir.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation>3D görünümünde öğeleri seçmek için karışıklık alanını ayarlar. Bu değerin arttırılması öğelerin seçimini kolaylaştırır, fakat diğer taraftan bazı küçük unsurların seçimini imkansız hale getirir.</translation>
+    </message>
+    <message>
+      <source>Tree View</source>
+      <translation>Unsur Ağacı</translation>
+    </message>
+    <message>
+      <source>Object being edited</source>
+      <translation>Nesne düzenleniyor</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Etkin taşıyıcı</translation>
     </message>
   </context>
   <context>
@@ -2851,10 +3079,6 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
       <translation>Seçili organizasyonları/tasarımları silmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Tüm geçici dizini silerken daha sonra hiçbir dosyayı kurtaramazsınız.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Tamamlandı</translation>
     </message>
@@ -2869,6 +3093,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Aşağıda listelenen belgenin kurtarma işlemini başlatmak için 'Kurtarmayı Başlat' düğmesine basın.
 
 'Statü' sütunu, dokümanın kurtarılıp kurtarılmayacağını gösterir.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3077,7 +3305,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>The sub-group '%1' already exists.</source>
-      <translation>Altgrup '%1' zaten mevcut.</translation>
+      <translation>Altgrup  '%1' zaten mevcut.</translation>
     </message>
     <message>
       <source>Export parameter to file</source>
@@ -3202,14 +3430,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Açılı dönme ekseni</translation>
     </message>
     <message>
-      <source>Apply placement changes immediately</source>
-      <translation>Yerleşim değişikliklerini hemen uygula</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation>Nesne yerleşimine kademeli değişiklikleri uygula</translation>
-    </message>
-    <message>
       <source>Apply</source>
       <translation>Uygula</translation>
     </message>
@@ -3236,6 +3456,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Use center of mass</source>
       <translation>Kitlesel merkez kullanın</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation>Eksensel:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation>Eksenel uygula</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Ters yöne dönmek için Shift'e tıklayın</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>Seçili noktalar</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation>Artımlı değişiklikleri Uygula</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Bu tuşa basmadan önce lütfen 1, 2 veya 3 nokta seçin. Bir nokta, yüzey veya kenarda bir nokta olabilir. Bir yüzey veya kenarda kullanılan nokta, yüzey veya kenar boyunca fare konumunda bulunan nokta olacaktır. 1 nokta seçilirse, dönüş merkezi olarak kullanılacaktır. 2 nokta seçilirse, aralarındaki orta nokta, dönme merkezi olacak ve gerekirse yeni bir özel eksen oluşturulacaktır. 3 nokta seçilirse, ilk nokta dönme merkezi olur ve 3 nokta tarafından tanımlanan düzlemde normal olan vektör üzerinde bulunur. Nesneleri hizalarken faydalı olabilecek, rapor görünümünde bazı mesafe ve açı bilgileri sağlanır. Shift + tıklama kullanıldığında kolaylık için uygun mesafe veya açı panoya kopyalanır.</translation>
     </message>
   </context>
   <context>
@@ -3299,7 +3543,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Image files (%1)</source>
-      <translation>Görüntü dosyalarını (%1)</translation>
+      <translation>Görüntü dosyalarını (% 1)</translation>
     </message>
     <message>
       <source>No image</source>
@@ -3326,7 +3570,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Dönüştür</translation>
+      <translation type="unfinished">Transform</translation>
     </message>
   </context>
   <context>
@@ -3349,10 +3593,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>CombiView</source>
       <translation>Hepsı bir arada görünüm</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Proje</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -3528,9 +3768,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-      <translation>%1.
-
-Bu kaynak Düzenleyicisi dışında değiştirildi. Yeniden yüklemek istiyor musunuz?</translation>
+      <translation>% 1.  Bu kaynak Düzenleyicisi dışında değiştirildi. Yeniden yüklemek istiyor musunuz?</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -3633,20 +3871,20 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Dokunun. Ya da farenin sol düğmesini tıklatın.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Ekranı iki parmağınızla sürükleyin Veya farenin sağ düğmesine basın.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Ekranı bir parmakla sürükleyin. Ya da farenin sol düğmesine basın. Sketcher ve diğer düzenleme modlarında Ek olarak Alt tuşunu basılı tutun.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Sıkıştırın (iki parmağınızı ekrana yerleştirin ve birbirinden uzağa veya birbirlerine doğru sürükleyin) Veya fare tekerini kaydırın Veya Klavyede PgUp / PgDown kullanın.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -3931,29 +4169,27 @@ sağ görünümde %2 nokta seçili.</translation>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Dokunun. Ya da farenin sol düğmesini tıklatın.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Ekranı iki parmağınızla sürükleyin VEYA ALT + farenin orta düğmesine basın.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Ekranı bir parmakla sürükleyin VEYA ALT + farenin sol düğmesine basın. Sketcher ve diğer düzenleme modlarında, ilave olarak Alt tuşuna basılı tutun.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Sıkıştırın (iki parmağınızı ekrana yerleştirin ve birbirinden uzağa veya birbirlerine doğru sürükleyin) VEYA fare tekerini kaydırın VEYA klavyede ALT + farenin sağ butonunu kullanın VEYA PgUp / PgDown tuşlarına basın.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>İndirme başladı...
-</translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -4032,6 +4268,13 @@ sağ görünümde %2 nokta seçili.</translation>
     <message>
       <source>Change the linked objects</source>
       <translation>Bağlı nesneyi değiştirme</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit %1</source>
+      <translation>%1'i düzenle</translation>
     </message>
   </context>
   <context>
@@ -4412,6 +4655,13 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Ara</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
@@ -4476,6 +4726,14 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     <message>
       <source>%1, Internal name: %2</source>
       <translation>% 1, Dahili adı:% 2</translation>
+    </message>
+    <message>
+      <source>Search...</source>
+      <translation>Ara...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>Nesneleri ara</translation>
     </message>
   </context>
   <context>
@@ -4751,7 +5009,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Restore view &amp;%1</source>
-      <translation>Görüş &amp;%1 geri yükleme</translation>
+      <translation>Görüş &amp; %1 geri yükleme</translation>
     </message>
     <message>
       <source>Save frozen views</source>
@@ -4836,7 +5094,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>The group '%1' already exists.</source>
-      <translation>'%1' Grubu zaten var.</translation>
+      <translation>'% 1' Grubu zaten var.</translation>
     </message>
     <message>
       <source>Change value</source>
@@ -4894,7 +5152,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     </message>
     <message>
       <source>Unable to start the server to port %1: %2.</source>
-      <translation>%2: port %1 sunucusu başlatılamıyor.</translation>
+      <translation>% 2: port% 1 sunucusu başlatılamıyor.</translation>
     </message>
     <message>
       <source>Unable to open your system browser.</source>
@@ -4922,7 +5180,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     </message>
     <message>
       <source>Save %1 Document</source>
-      <translation>%1 Belgeyi Kaydet</translation>
+      <translation>% 1 Belgeyi Kaydet</translation>
     </message>
     <message>
       <source>%1 document (*.FCStd)</source>
@@ -4951,8 +5209,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     <message>
       <source>Unable to load documentation.
 In order to load it Qt 4.4 or higher is required.</source>
-      <translation>Belgeler yüklenemiyor.
-Bunu yüklemek için Qt 4.4 veya üstü gereklidir.</translation>
+      <translation>Belgeler yüklenemiyor. Bunu yüklemek için Qt 4.4 veya üstü gereklidir.</translation>
     </message>
     <message>
       <source>Exporting PDF...</source>
@@ -4986,7 +5243,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Dönüştür</translation>
+      <translation type="unfinished">Transform</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
@@ -5029,24 +5286,40 @@ Be aware the point where you click matters.</source>
       <translation>Orijin</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Tercüme: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Dönüş: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>İçerik silinsin?</translation>
     </message>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
-      <translation>%1 boş değil, içerik de silinsin mi?</translation>
+      <translation>% 1 boş değil, içerik de silinsin mi?</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Dışa aktarma başarısız oldu</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Ayır</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation type="unfinished">%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Çeviri:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Döndürme:</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation>Aktif parçası ayarla</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Metni düzenle</translation>
     </message>
   </context>
   <context>
@@ -5773,12 +6046,12 @@ Be aware the point where you click matters.</source>
       <translation>Projeyi birleştir</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 belgesi (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Proje kendisiyle birleştirilemez.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>% 1 belgesi (*. FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6386,7 +6659,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Dönüştür</translation>
+      <translation type="unfinished">Transform</translation>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
@@ -6454,21 +6727,6 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standart Görünüm</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Aksonometrik</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Axometric görünüme ayarla</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6494,8 +6752,23 @@ Be aware the point where you click matters.</source>
       <translation>Yeni görünüm oluştur</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
+      <source>Creates a new view window for the active document</source>
       <translation>Etkin belge için yeni bir görünüm penceresi oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standart Görünüm</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrik</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Dimetrik görünümü ayarla</translation>
     </message>
   </context>
   <context>
@@ -6586,6 +6859,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to front view</source>
       <translation>Ön görünüme ayarla</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standart Görünüm</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>İzometrik</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>İzometrik görünümü ayarla</translation>
     </message>
   </context>
   <context>
@@ -6769,6 +7057,21 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standart Görünüm</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrik</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Trimetrik görünümü ayarla</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewVR</name>
     <message>
       <source>Standard-View</source>
@@ -6885,6 +7188,66 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Görünüm</translation>
+    </message>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>Daralt/Genişlet</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>Aktif belgeyi genişlet ve diğerlerini daralt</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Görünüm</translation>
+    </message>
+    <message>
+      <source>Multi Document</source>
+      <translation>Çoklu Belge</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Unsur ağacındaki tüm belgeleri görüntüle</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Görünüm</translation>
+    </message>
+    <message>
+      <source>Single Document</source>
+      <translation>Tek Belge</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Unsur ağacında yalnız aktif belgeyi görüntüle</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeViewDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Görünüm</translation>
+    </message>
+    <message>
+      <source>Document Tree</source>
+      <translation>Belge Ağacı</translation>
+    </message>
+    <message>
+      <source>Set visibility of inactive documents in tree view</source>
+      <translation>Unsur ağacında etkin olmayan belgelerin görünürlüğünü ayarlayın</translation>
+    </message>
+  </context>
+  <context>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
@@ -6995,20 +7358,20 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>Object dependencies</source>
-      <translation>Nesne bağımlılıkları</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
-
-</source>
-      <translation>Aşağıdakiler, nesneleri referans alarak kopabilir.
-
-Devam etmek istediğine emin misin?
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
+    </message>
+    <message>
+      <source>Delete Selection Issues</source>
+      <translation>Seçim sorunlarını sil</translation>
     </message>
   </context>
   <context>
@@ -7110,6 +7473,50 @@ Onları çoğaltmak mı istiyorsun?</translation>
     <message>
       <source>Do you want to continue?</source>
       <translation>Devam etmek istiyor musunuz?</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>İzometrik</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>NaviKüp'ü izometrik moda ayarla</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Ortografik</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Görüntüyü ortografik moda ayarla</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Perspektif</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Görüntüyü perspektif moduna ayarla</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Sığacak şekilde yakınlaştır</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Modeli görünümü dolduracak şekilde yakınlaştır</translation>
     </message>
   </context>
   <context>

@@ -1231,6 +1231,21 @@
     </message>
   </context>
   <context>
+    <name>CmdFemCreateFromShape</name>
+    <message>
+      <source>Fem</source>
+      <translation>Fem</translation>
+    </message>
+    <message>
+      <source>Create FEM mesh</source>
+      <translation>Направи FEM мрежу</translation>
+    </message>
+    <message>
+      <source>Create FEM mesh from shape</source>
+      <translation>Направите FEM мрежу из облика</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -1390,6 +1405,29 @@
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>Кориcнички директоријум</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::HypothesisWidget</name>
+    <message>
+      <source>Hypothesis</source>
+      <translation>Хипотеза</translation>
+    </message>
+    <message>
+      <source>Quadrangle</source>
+      <translation>Четвероугао</translation>
+    </message>
+    <message>
+      <source>Maximum length</source>
+      <translation>Максимална дужина</translation>
+    </message>
+    <message>
+      <source>Local length</source>
+      <translation>Локална дужина</translation>
+    </message>
+    <message>
+      <source>Maximum element area</source>
+      <translation>Максимална површина елемента</translation>
     </message>
   </context>
   <context>
@@ -1667,6 +1705,18 @@
       <source>Only faces and edges can be picked</source>
       <translation>Могу cе одабрати cамо површи и рубови</translation>
     </message>
+    <message>
+      <source>Point load [N]</source>
+      <translation>Отерећење тачке [N]</translation>
+    </message>
+    <message>
+      <source>Line load [N/mm]</source>
+      <translation>Оптерећење линије [N/mm]</translation>
+    </message>
+    <message>
+      <source>Area load [N/mm²]</source>
+      <translation>Оптерећење облаcти [N/mm²]</translation>
+    </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
@@ -1873,6 +1923,14 @@
       <translation>Време:</translation>
     </message>
     <message>
+      <source>Write Calculix Input File</source>
+      <translation type="unfinished">Write Calculix Input File</translation>
+    </message>
+    <message>
+      <source>Edit Calculix Input File</source>
+      <translation type="unfinished">Edit Calculix Input File</translation>
+    </message>
+    <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
       <translation>Механички материјал</translation>
@@ -1942,6 +2000,14 @@
       <source>MatWeb database...</source>
       <translation>MatWeb база података...</translation>
     </message>
+    <message>
+      <source>0 kg/m^3</source>
+      <translation>0 kg/m^3</translation>
+    </message>
+    <message>
+      <source>Pa</source>
+      <translation>Pa</translation>
+    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -2003,6 +2069,26 @@
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
       <translation>Уреди ограничење</translation>
+    </message>
+    <message>
+      <source>Combo View</source>
+      <translation>Комбиновани Преглед</translation>
+    </message>
+    <message>
+      <source>combiTab</source>
+      <translation>combiTab</translation>
+    </message>
+    <message>
+      <source>qt_tabwidget_stackedwidget</source>
+      <translation>qt_tabwidget_stackedwidget</translation>
+    </message>
+    <message>
+      <source>ShaftWizard</source>
+      <translation type="unfinished">ShaftWizard</translation>
+    </message>
+    <message>
+      <source>ShaftWizardLayout</source>
+      <translation type="unfinished">ShaftWizardLayout</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -2120,6 +2206,14 @@
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
       <translation type="unfinished">Slider max:</translation>
+    </message>
+    <message>
+      <source>Colors</source>
+      <translation>Боје</translation>
+    </message>
+    <message>
+      <source>mm</source>
+      <translation>мм</translation>
     </message>
   </context>
   <context>

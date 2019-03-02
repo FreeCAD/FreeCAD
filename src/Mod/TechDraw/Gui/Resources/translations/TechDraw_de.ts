@@ -98,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="943"/>
       <source>Insert a View of a Draft Workbench object</source>
-      <translation>Füge die Ansicht eines Draft Arbeitsbereichsobjekts ein</translation>
+      <translation type="unfinished">Insert a View of a Draft Workbench object</translation>
     </message>
   </context>
   <context>
@@ -543,7 +543,7 @@
     <message>
       <location filename="../../Command.cpp" line="743"/>
       <source>Select 1 Clip group and 1 View.</source>
-      <translation>Wähle eine Ausschnittsgruppe und eine Ansicht.</translation>
+      <translation type="unfinished">Select 1 Clip group and 1 View.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="759"/>
@@ -625,7 +625,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="203"/>
       <source>Can not make a Dimension from this selection</source>
-      <translation>Kann aus dieser Auswahl keine Bemassung erstellen</translation>
+      <translation type="unfinished">Can not make a Dimension from this selection</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
@@ -651,7 +651,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="917"/>
       <source>Need three points to make a 3 point Angle Dimension</source>
-      <translation>Es werden 3 Punkte für eine Winkelbemaßung benötigt</translation>
+      <translation type="unfinished">Need three points to make a 3 point Angle Dimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1003"/>
@@ -693,12 +693,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1082"/>
       <source>No View of a Part in selection.</source>
-      <translation>Keine Teileansicht in der Auswahl.</translation>
+      <translation type="unfinished">No View of a Part in selection.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
       <source>No Feature with Shape in selection.</source>
-      <translation>Kein Element einer Form in der Auswahl.</translation>
+      <translation type="unfinished">No Feature with Shape in selection.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
@@ -1228,7 +1228,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
       <source>Editable Text Marker Size</source>
-      <translation>Bearbeitbare Textmarkengröße</translation>
+      <translation type="unfinished">Editable Text Marker Size</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="707"/>
@@ -1238,7 +1238,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="723"/>
       <source>Size of editable text marker in Templates (green dot).</source>
-      <translation>Größe des bearbeitbaren Textmarker in Vorlagen (grüner Punkt).</translation>
+      <translation type="unfinished">Size of editable text marker in Templates (green dot).</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="649"/>
@@ -1313,7 +1313,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../QGVPage.cpp" line="582"/>
       <source> exported from FreeCAD document:</source>
-      <translation> von FreeCAD Dokument exportiert:</translation>
+      <translation type="unfinished"> exported from FreeCAD document:</translation>
     </message>
   </context>
   <context>
@@ -1508,7 +1508,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskProjGroup.ui" line="230"/>
       <source>Current primary view direction</source>
-      <translation>Aktuelle primäre Ansichtsrichtung</translation>
+      <translation type="unfinished">Current primary view direction</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="243"/>

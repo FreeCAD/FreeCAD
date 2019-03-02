@@ -36,7 +36,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Ställ in antalet nyligen öppnade filer som visas genom menyn Redigera -&gt; Alternativ... -&gt; Allmänt -&gt;Storlek på listan för senast öppnade filer</translation>
+      <translation>Justera antalet senaste filer som ska visas här i menyn Redigera-&gt; inställningar-&gt; General-&gt; storleken på listan senaste filer</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; är ett bra ställe att få hjälp från andra FreeCAD-användare och -utvecklare. Forumet har många sektioner för olika typer av frågor och diskussioner. Om du är osäker, posta i den mer allmänna &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt;-sektionen.</translation>
+      <translation>&lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; är ett bra ställe att få hjälp från andra FreeCAD användare och utvecklare. Forumet har många sektioner för olika typer av frågor och diskussion ämnen. Om du tvekar, posta i den mer allmänna &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; sektionen.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
@@ -223,7 +223,7 @@
       <translation>Startsida</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="545"/>
+      <location filename="../../../StartPage/StartPage.py" line="542"/>
       <source>Start page</source>
       <translation>Startsida</translation>
     </message>

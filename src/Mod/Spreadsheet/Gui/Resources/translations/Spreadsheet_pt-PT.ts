@@ -257,7 +257,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation>Horizontal</translation>
+      <translation type="unfinished">Horizontal</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation>Vertical</translation>
+      <translation type="unfinished">Vertical</translation>
     </message>
     <message>
       <source>Top</source>

@@ -86,12 +86,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
-      <translation>Tanımlanmamış</translation>
+      <translation type="unfinished">Undefined</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or H key.</source>
-      <translation>Farenin orta butonu ya da H tuşu.</translation>
+      <translation type="unfinished">Middle mouse button or H key.</translation>
     </message>
   </context>
 </TS>

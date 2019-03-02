@@ -1231,6 +1231,21 @@
     </message>
   </context>
   <context>
+    <name>CmdFemCreateFromShape</name>
+    <message>
+      <source>Fem</source>
+      <translation>有限元素法</translation>
+    </message>
+    <message>
+      <source>Create FEM mesh</source>
+      <translation>建立有限元素分析網格</translation>
+    </message>
+    <message>
+      <source>Create FEM mesh from shape</source>
+      <translation>從造型建立有限元素分析網格</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -1390,6 +1405,29 @@
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>使用者目錄</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::HypothesisWidget</name>
+    <message>
+      <source>Hypothesis</source>
+      <translation>假設</translation>
+    </message>
+    <message>
+      <source>Quadrangle</source>
+      <translation>四邊形</translation>
+    </message>
+    <message>
+      <source>Maximum length</source>
+      <translation>最大長度</translation>
+    </message>
+    <message>
+      <source>Local length</source>
+      <translation>區域長度</translation>
+    </message>
+    <message>
+      <source>Maximum element area</source>
+      <translation>物件最大區域</translation>
     </message>
   </context>
   <context>
@@ -1667,6 +1705,18 @@
       <source>Only faces and edges can be picked</source>
       <translation>僅可以選取面和邊</translation>
     </message>
+    <message>
+      <source>Point load [N]</source>
+      <translation>點負荷 [N]</translation>
+    </message>
+    <message>
+      <source>Line load [N/mm]</source>
+      <translation>線負荷 [N/mm]</translation>
+    </message>
+    <message>
+      <source>Area load [N/mm²]</source>
+      <translation>面負荷 [N/mm²]</translation>
+    </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
@@ -1873,6 +1923,14 @@
       <translation>時間：</translation>
     </message>
     <message>
+      <source>Write Calculix Input File</source>
+      <translation>產生Calculix輸入檔</translation>
+    </message>
+    <message>
+      <source>Edit Calculix Input File</source>
+      <translation>編輯Calculix輸入檔</translation>
+    </message>
+    <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
       <translation>機械材質</translation>
@@ -1942,6 +2000,14 @@
       <source>MatWeb database...</source>
       <translation>MatWeb資料庫...</translation>
     </message>
+    <message>
+      <source>0 kg/m^3</source>
+      <translation>0 kg/m^3</translation>
+    </message>
+    <message>
+      <source>Pa</source>
+      <translation>Pa</translation>
+    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -2003,6 +2069,26 @@
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
       <translation>編輯拘束</translation>
+    </message>
+    <message>
+      <source>Combo View</source>
+      <translation>複合檢視</translation>
+    </message>
+    <message>
+      <source>combiTab</source>
+      <translation>複合頁籤</translation>
+    </message>
+    <message>
+      <source>qt_tabwidget_stackedwidget</source>
+      <translation type="unfinished">qt_tabwidget_stackedwidget</translation>
+    </message>
+    <message>
+      <source>ShaftWizard</source>
+      <translation>軸設定精靈</translation>
+    </message>
+    <message>
+      <source>ShaftWizardLayout</source>
+      <translation>軸設定精靈配置</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -2120,6 +2206,14 @@
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
       <translation>變化最大值：</translation>
+    </message>
+    <message>
+      <source>Colors</source>
+      <translation>顏色</translation>
+    </message>
+    <message>
+      <source>mm</source>
+      <translation>mm</translation>
     </message>
   </context>
   <context>
