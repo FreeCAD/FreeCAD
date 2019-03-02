@@ -5,7 +5,7 @@
 
 ; localized Name, Description and KindOfMaterial uses 2 letter codes
 ; defined in ISO-639-1, see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-; find unit informations in src/App/FreeCADInit.py
+; find unit information in src/App/FreeCADInit.py
 
 [General]
 ; General name

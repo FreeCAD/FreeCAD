@@ -49,7 +49,7 @@ Version:
 """
 
 
-# see comments in module importFCMat, there is a independent parser implementaion for reading and writing FCMat files
+# see comments in module importFCMat, there is an independent parser implementation for reading and writing FCMat files
 # inside FreeCAD a mixture of these parsers and the ones in importFCMat.py is used
 
 
