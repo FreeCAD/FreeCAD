@@ -253,8 +253,8 @@ private:
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
-            bool keepExplicitPlacement = list.size() > 1;
-            keepExplicitPlacement = Standard_True;
+            //bool keepExplicitPlacement = list.size() > 1;
+            bool keepExplicitPlacement = Standard_True;
             Import::ExportOCAFCmd ocaf(hDoc, keepExplicitPlacement);
 
             std::map<Part::Feature*, std::vector<App::Color> > partColors;
