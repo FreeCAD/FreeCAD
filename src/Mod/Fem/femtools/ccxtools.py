@@ -216,7 +216,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.transform_constraints = self._get_several_member('Fem::ConstraintTransform')
 
         for m in self.analysis.Group:
-            if m.isDerivedFrom("Fem::FemMeshObject"):
+            if m.isDerivedFrom("Fem::FemMeshObject") and not femutils.is_of_type(m, 'Fem::FemMeshResult'):
                 if not self.mesh:
                     self.mesh = m
                 else:

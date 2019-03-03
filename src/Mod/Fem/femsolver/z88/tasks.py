@@ -159,7 +159,7 @@ class _Container(object):
         self.transform_constraints = []
 
         for m in self.analysis.Group:
-            if m.isDerivedFrom("Fem::FemMeshObject"):
+            if m.isDerivedFrom("Fem::FemMeshObject") and not FemUtils.is_of_type(m, 'Fem::FemMeshResult'):
                 if not self.mesh:
                     self.mesh = m
                 else:
