@@ -3967,39 +3967,81 @@ class Scale(Modifier):
             and arg["State"] == "DOWN" \
             and (arg["Button"] == "BUTTON1") \
             and self.point:
-                if not self.ghosts:
-                    self.set_ghosts()
-                self.numericInput(self.point.x, self.point.y, self.point.z)
+            self.handle_mouse_click_event()
 
     def handle_mouse_move_event(self, arg):
         for ghost in self.ghosts:
             ghost.off()
         self.point, ctrlPoint, info = getPoint(self, arg, sym=True)
 
-    def finish(self,closed=False,cont=False):
-        Modifier.finish(self)
-        for ghost in self.ghosts:
-            ghost.finalize()
+    def handle_mouse_click_event(self):
+        if not self.ghosts:
+            self.set_ghosts()
+        self.numericInput(self.point.x, self.point.y, self.point.z)
 
-    def scale(self,x,y,z,rel,mode):
-        delta = Vector(x,y,z)
-        if rel:
-            delta = FreeCAD.DraftWorkingPlane.getGlobalCoords(delta)
-        if mode == 0:
-            copy = False
-            legacy = False
-        elif mode == 1:
-            copy = False
-            legacy = True
-        elif mode == 2:
-            copy = True
-            legacy = True
+    def scale(self):
+        self.delta = Vector(self.task.xValue.value(), self.task.yValue.value(), self.task.zValue.value())
+        self.center = self.node[0]
+        if self.task.isSubelementMode.isChecked():
+            self.scale_subelements()
+        else:
+            self.scale_object()
+        self.finish()
+
+    def scale_subelements(self):
+        try:
+            if self.task.isCopy.isChecked():
+                self.commit(translate("draft", "Copy"), self.build_copy_subelements_command())
+            else:
+                self.commit(translate("draft", "Scale"), self.build_scale_subelements_command())
+        except:
+            FreeCAD.Console.PrintError(translate("draft", "Some subelements could not be scaled."))
+
+    def build_copy_subelements_command(self):
+        import Part
+        command = []
+        arguments = []
+        for object in self.selected_subelements:
+            for index, subelement in enumerate(object.SubObjects):
+                if not isinstance(subelement, Part.Edge):
+                    continue
+                arguments.append('[FreeCAD.ActiveDocument.{}, {}, {}, {}]'.format(
+                    object.ObjectName,
+                    int(object.SubElementNames[index][len("Edge"):])-1,
+                    DraftVecUtils.toString(self.delta),
+                    DraftVecUtils.toString(self.center)))
+        command.append('Draft.copyScaledEdges([{}])'.format(','.join(arguments)))
+        command.append('FreeCAD.ActiveDocument.recompute()')
+        return command
+
+    def build_scale_subelements_command(self):
+        import Part
+        command = []
+        for object in self.selected_subelements:
+            for index, subelement in enumerate(object.SubObjects):
+                if isinstance(subelement, Part.Vertex):
+                    command.append('Draft.scaleVertex(FreeCAD.ActiveDocument.{}, {}, {}, {})'.format(
+                        object.ObjectName,
+                        int(object.SubElementNames[index][len("Vertex"):])-1,
+                        DraftVecUtils.toString(self.delta),
+                        DraftVecUtils.toString(self.center)))
+                elif isinstance(subelement, Part.Edge):
+                    command.append('Draft.scaleEdge(FreeCAD.ActiveDocument.{}, {}, {}, {})'.format(
+                        object.ObjectName,
+                        int(object.SubElementNames[index][len("Edge"):])-1,
+                        DraftVecUtils.toString(self.delta),
+                        DraftVecUtils.toString(self.center)))
+        command.append('FreeCAD.ActiveDocument.recompute()')
+        return command
+
+    def scale_object(self):
+        if self.task.relative.isChecked():
+            self.delta = FreeCAD.DraftWorkingPlane.getGlobalCoords(self.delta)
         objects = '[' + ','.join(['FreeCAD.ActiveDocument.' + object.Name for object in self.selected_objects]) + ']'
         FreeCADGui.addModule("Draft")
-        self.commit(translate("draft","Copy"),
-                    ['Draft.scale('+objects+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+',legacy='+str(legacy)+')',
+        self.commit(translate("draft","Copy" if self.task.isCopy.isChecked() else "Scale"),
+                    ['Draft.scale('+objects+',scale='+DraftVecUtils.toString(self.delta)+',center='+DraftVecUtils.toString(self.center)+',copy='+str(self.task.isCopy.isChecked())+')',
                      'FreeCAD.ActiveDocument.recompute()'])
-        self.finish()
 
     def scaleGhost(self,x,y,z,rel):
         delta = Vector(x,y,z)
@@ -4042,6 +4084,11 @@ class Scale(Modifier):
                 if self.task:
                     self.task.lock.setChecked(True)
                     self.task.setValue(d2/d1)
+
+    def finish(self,closed=False,cont=False):
+        Modifier.finish(self)
+        for ghost in self.ghosts:
+            ghost.finalize()
 
 class ToggleConstructionMode():
     "The Draft_ToggleConstructionMode FreeCAD command definition"

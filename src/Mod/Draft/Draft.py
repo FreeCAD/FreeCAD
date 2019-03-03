@@ -1755,95 +1755,105 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     if len(newobjlist) == 1: return newobjlist[0]
     return newobjlist
 
-def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy=False):
+def scaleVectorFromCenter(vector, scale, center):
+    return vector.sub(center).scale(scale.x, scale.y, scale.z).add(center)
+
+def scaleVertex(object, vertex_index, scale, center):
+    points = object.Points
+    points[vertex_index] = object.Placement.inverse().multVec(
+        scaleVectorFromCenter(
+            object.Placement.multVec(points[vertex_index]),
+            scale, center))
+    object.Points = points
+
+def scaleEdge(object, edge_index, scale, center):
+    scaleVertex(object, edge_index, scale, center)
+    if isClosedEdge(edge_index, object):
+        scaleVertex(object, 0, scale, center)
+    else:
+        scaleVertex(object, edge_index+1, scale, center)
+
+def copyScaledEdges(arguments):
+    copied_edges = []
+    for argument in arguments:
+        copied_edges.append(copyScaledEdge(argument[0], argument[1],
+            argument[2], argument[3]))
+    joinWires(copied_edges)
+
+def copyScaledEdge(object, edge_index, scale, center):
+    vertex1 = scaleVectorFromCenter(
+        object.Placement.multVec(object.Points[edge_index]),
+        scale, center)
+    if isClosedEdge(edge_index, object):
+        vertex2 = scaleVectorFromCenter(
+            object.Placement.multVec(object.Points[0]),
+            scale, center)
+    else:
+        vertex2 = scaleVectorFromCenter(
+            object.Placement.multVec(object.Points[edge_index+1]),
+            scale, center)
+    return makeLine(vertex1, vertex2)
+
+def scale(objectslist,scale=Vector(1,1,1),center=Vector(0,0,0),copy=False):
     '''scale(objects,vector,[center,copy,legacy]): Scales the objects contained
     in objects (that can be a list of objects or an object) of the given scale
     factors defined by the given vector (in X, Y and Z directions) around
-    given center. If legacy is True, direct (old) mode is used, otherwise
-    a parametric copy is made. If copy is True, the actual objects are not moved,
-    but copies are created instead. The objects (or their copies) are returned.'''
+    given center. If copy is True, the actual objects are not moved, but copies
+    are created instead. The objects (or their copies) are returned.'''
     if not isinstance(objectslist, list):
         objectslist = [objectslist]
-    if legacy:
-        newobjlist = []
-        for obj in objectslist:
-            if copy:
-                newobj = makeCopy(obj)
-            else:
-                newobj = obj
-            if obj.isDerivedFrom("Part::Feature"):
-                sh = obj.Shape.copy()
-                m = FreeCAD.Matrix()
-                m.scale(delta)
-                sh = sh.transformGeometry(m)
-                corr = Vector(center.x,center.y,center.z)
-                corr.scale(delta.x,delta.y,delta.z)
-                corr = (corr.sub(center)).negative()
-                sh.translate(corr)
-            if getType(obj) == "Rectangle":
-                p = []
-                for v in sh.Vertexes: p.append(v.Point)
-                pl = obj.Placement.copy()
-                pl.Base = p[0]
-                diag = p[2].sub(p[0])
-                bb = p[1].sub(p[0])
-                bh = p[3].sub(p[0])
-                nb = DraftVecUtils.project(diag,bb)
-                nh = DraftVecUtils.project(diag,bh)
-                if obj.Length < 0: l = -nb.Length
-                else: l = nb.Length
-                if obj.Height < 0: h = -nh.Length
-                else: h = nh.Length
-                newobj.Length = l
-                newobj.Height = h
-                tr = p[0].sub(obj.Shape.Vertexes[0].Point)
-                newobj.Placement = pl
-            elif getType(obj) == "Wire":
-                p = []
-                for v in sh.Vertexes: p.append(v.Point)
-                newobj.Points = p
-            elif getType(obj) == "BSpline":
-                p = []
-                for p1 in obj.Points:
-                    p2 = p1.sub(center)
-                    p2.scale(delta.x,delta.y,delta.z)
-                    p.append(p2)
-                newobj.Points = p
-            elif (obj.isDerivedFrom("Part::Feature")):
-                newobj.Shape = sh
-            elif (obj.TypeId == "App::Annotation"):
-                factor = delta.y * obj.ViewObject.FontSize
-                newobj.ViewObject.FontSize = factor
-                d = obj.Position.sub(center)
-                newobj.Position = center.add(Vector(d.x*delta.x,d.y*delta.y,d.z*delta.z))
-            if copy:
-                formatObject(newobj,obj)
-            newobjlist.append(newobj)
-        if copy and getParam("selectBaseObjects",False):
-            select(objectslist)
+    newobjlist = []
+    for obj in objectslist:
+        if copy:
+            newobj = makeCopy(obj)
         else:
-            select(newobjlist)
-        if len(newobjlist) == 1: return newobjlist[0]
-        return newobjlist
+            newobj = obj
+        if obj.isDerivedFrom("Part::Feature"):
+            scaled_shape = obj.Shape.copy()
+            m = FreeCAD.Matrix()
+            m.move(obj.Placement.Base.negative())
+            m.move(center.negative())
+            m.multiply(scale)
+            m.move(center)
+            m.move(obj.Placement.Base)
+            scaled_shape = scaled_shape.transformGeometry(m)
+        if getType(obj) == "Rectangled":
+            p = []
+            for v in scaled_shape.Vertexes: p.append(v.Point)
+            pl = obj.Placement.copy()
+            pl.Base = p[0]
+            diag = p[2].sub(p[0])
+            bb = p[1].sub(p[0])
+            bh = p[3].sub(p[0])
+            nb = DraftVecUtils.project(diag,bb)
+            nh = DraftVecUtils.project(diag,bh)
+            if obj.Length < 0: l = -nb.Length
+            else: l = nb.Length
+            if obj.Height < 0: h = -nh.Length
+            else: h = nh.Length
+            newobj.Length = l
+            newobj.Height = h
+            tr = p[0].sub(obj.Shape.Vertexes[0].Point)
+            newobj.Placement = pl
+        elif getType(obj) == "Wire" or getType(obj) == "BSpline":
+            for index, point in enumerate(newobj.Points):
+                scaleVertex(newobj, index, scale, center)
+        elif (obj.isDerivedFrom("Part::Feature")):
+            newobj.Shape = scaled_shape
+        elif (obj.TypeId == "App::Annotation"):
+            factor = scale.y * obj.ViewObject.FontSize
+            newobj.ViewObject.FontSize = factor
+            d = obj.Position.sub(center)
+            newobj.Position = center.add(Vector(d.x*scale.x,d.y*scale.y,d.z*scale.z))
+        if copy:
+            formatObject(newobj,obj)
+        newobjlist.append(newobj)
+    if copy and getParam("selectBaseObjects",False):
+        select(objectslist)
     else:
-        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Scale")
-        _Clone(obj)
-        obj.Objects = objectslist
-        obj.Scale = delta
-        corr = Vector(center.x,center.y,center.z)
-        corr.scale(delta.x,delta.y,delta.z)
-        corr = (corr.sub(center)).negative()
-        p = obj.Placement
-        p.move(corr)
-        obj.Placement = p
-        if not copy:
-            for o in objectslist:
-                o.ViewObject.hide()
-        if gui:
-            _ViewProviderClone(obj.ViewObject)
-            formatObject(obj,objectslist[-1])
-            select(obj)
-        return obj
+        select(newobjlist)
+    if len(newobjlist) == 1: return newobjlist[0]
+    return newobjlist
 
 def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
     '''offset(object,delta,[copymode],[bind]): offsets the given wire by
