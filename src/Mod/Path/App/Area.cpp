@@ -188,7 +188,7 @@ Area::Area(const Area &other, bool deep_copy)
     myShape = other.myShape;
     myShapeDone = other.myShapeDone;
     mySections.reserve(other.mySections.size());
-    for(shared_ptr<Area> area:mySections)
+    for(shared_ptr<Area> area:other.mySections)
         mySections.push_back(make_shared<Area>(*area,true));
 }
 
