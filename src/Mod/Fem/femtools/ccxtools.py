@@ -87,7 +87,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         else:
             raise Exception('FEM: Somthing went wront, the exception should have been raised earlier!')
 
-    ## Removes all result objects from an analysis group
+    ## Removes all result objects and result meshes from an analysis group
     #  @param self The python object self
     def purge_results(self):
         from femresult.resulttools import purge_results as pr
