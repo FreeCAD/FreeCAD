@@ -2374,17 +2374,12 @@ class ScaleTaskPanel:
         layout.addWidget(self.lock,3,0,1,2)
         self.relative = QtGui.QCheckBox()
         layout.addWidget(self.relative,4,0,1,2)
-        self.rLabel = QtGui.QLabel()
-        layout.addWidget(self.rLabel,5,0,1,2)
-        self.isClone = QtGui.QRadioButton()
-        layout.addWidget(self.isClone,6,0,1,2)
-        self.isClone.setChecked(True)
-        self.isOriginal = QtGui.QRadioButton()
-        layout.addWidget(self.isOriginal,7,0,1,2)
-        self.isCopy = QtGui.QRadioButton()
-        layout.addWidget(self.isCopy,8,0,1,2)
+        self.isCopy = QtGui.QCheckBox()
+        layout.addWidget(self.isCopy,5,0,1,2)
+        self.isSubelementMode = QtGui.QCheckBox()
+        layout.addWidget(self.isSubelementMode,6,0,1,2)
         self.pickrefButton = QtGui.QPushButton()
-        layout.addWidget(self.pickrefButton,9,0,1,2)
+        layout.addWidget(self.pickrefButton,7,0,1,2)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
@@ -2406,10 +2401,8 @@ class ScaleTaskPanel:
         self.zLabel.setText(QtGui.QApplication.translate("Draft", "Z factor", None))
         self.lock.setText(QtGui.QApplication.translate("Draft", "Uniform scaling", None))
         self.relative.setText(QtGui.QApplication.translate("Draft", "Working plane orientation", None))
-        self.rLabel.setText(QtGui.QApplication.translate("Draft", "Result", None))
-        self.isClone.setText(QtGui.QApplication.translate("Draft", "Create a clone", None))
-        self.isOriginal.setText(QtGui.QApplication.translate("Draft", "Modify original", None))
-        self.isCopy.setText(QtGui.QApplication.translate("Draft", "Create a copy", None))
+        self.isCopy.setText(QtGui.QApplication.translate("draft", "Copy"))
+        self.isSubelementMode.setText(QtGui.QApplication.translate("draft", "Modify subelements"))
         self.pickrefButton.setText(QtGui.QApplication.translate("Draft", "Pick from/to points", None))
 
     def pickRef(self):
@@ -2418,17 +2411,7 @@ class ScaleTaskPanel:
 
     def accept(self):
         if self.sourceCmd:
-            x = self.xValue.value()
-            y = self.yValue.value()
-            z = self.zValue.value()
-            rel = self.relative.isChecked()
-            if self.isClone.isChecked():
-                mod = 0
-            elif self.isOriginal.isChecked():
-                mod = 1
-            else:
-                mod = 2
-            self.sourceCmd.scale(x,y,z,rel,mod)
+            self.sourceCmd.scale()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
