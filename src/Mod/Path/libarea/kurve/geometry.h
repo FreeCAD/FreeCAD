@@ -253,7 +253,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		double	z;																// z value
 
 		// constructors
-		inline	Point3d(){};// {z=0; /*ok=false;*/};												// Point p1
+		inline	Point3d(){x = 0; y = 0; z = 0;}// {z=0; /*ok=false;*/};												// Point p1
 		inline	Point3d(const double* xyz) {x = xyz[0], y = xyz[1]; z = xyz[2];}
 		inline	Point3d( double xord, double yord, double zord = 0/*, bool okay = true*/) {	// Point p1(10,30.5);
 			x = xord; y = yord; z = zord;/* ok = okay;*/}
@@ -296,7 +296,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 	public:
 
 		// constructors
-		Vector2d() {};
+		inline	Vector2d() {dx = 0; dy = 0;}
 		inline	Vector2d(const Vector2d &v) { dx = v.dx; dy = v.dy;}
 				Vector2d(const Vector3d &v);		// careful
 		inline	Vector2d(double x, double y) {dx = x, dy = y;}
@@ -364,7 +364,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 	public:
 
 		// constructors
-		Vector3d() {};
+		Vector3d() {dx = 0; dy = 0; dz = 0;}
 		Vector3d(const Vector3d &v) { dx = v.dx; dy = v.dy; dz = v.dz;}
 		Vector3d(double x, double y, double z = 0) {dx = x, dy = y; dz = z;}
 		Vector3d(const double* x) {dx = x[0], dy = x[1]; dz = x[2];}
@@ -440,7 +440,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		inline	CLine()	{ok = false;};
 		inline	CLine(const Point& p0, double dx, double dy, bool normalise = true){ p = p0; v = Vector2d(dx, dy); if(normalise) Normalise();};
 		inline	CLine(const Point& p0, const Vector2d& v0, bool normalise = true) {p = p0; v = v0; if(normalise) Normalise();};
-		inline	CLine( const CLine& s ) {p = s.p; v = s.v;};				// copy constructor  CLine s1(s2);
+		inline	CLine(const CLine& s) {p = s.p; v = s.v; ok = s.ok;}				// copy constructor  CLine s1(s2);
 		inline	CLine(const Point& p0, const Point& p1) {p = p0; v = Vector2d(p0, p1); Normalise();};
 		CLine(const Span& sp);	
 
@@ -477,7 +477,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		double	radius;
 
 		// constructors etc...
-		inline	Circle() {ok = false;};
+		inline	Circle() {ok = false; radius = 0;}
 		Circle( const Point& p, double r);										// Circle  c1(Point(10,30), 20);
 		Circle( const Point& p, const Point& pc);								// Circle  c1(p[222], p[223]);
 		Circle( const Circle& c ){*this = c;}									// copy constructor  Circle c1(c2);
@@ -590,7 +590,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		Vector2d GetVector(double fraction)const; // the direction along the span, 0.0 for start, 1.0 for end
 
 		// constructor
-		Span() {ID = 0; ok = false;};
+		Span() {dir = 0; ID = 0; ok = false; returnSpanProperties = false; length = 0; radius = 0; angle = 0; NullSpan = false;}
 		Span(int spandir, const Point& pn, const Point& pf, const Point& c) { dir = spandir; p0 = pn, p1 = pf, pc = c; ID = 0; SetProperties(true); ok = p0.ok;};
 
 		// operators
@@ -690,7 +690,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		double d;				// distance of plane to origin
 		Vector3d normal;				// normal to plane a = n.dx, b = n.dy, c = n.dz
 		// constructors
-		Plane(){ok = false;};
+		Plane(){ok = false; d = 0;}
 		Plane(double dist, const Vector3d& n);
 		Plane(const Point3d& p0, const Point3d& p1, const Point3d& p2);
 		Plane(const Point3d& p0, const Vector3d& n, bool normalise = true);
@@ -717,7 +717,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		int spanid;
 		Point p;
 		Point pc;
-		spVertex(){};
+		spVertex(){type = 0; spanid = 0;}
 		spVertex(int t, const Point& point, const Point& centre): type(t), spanid(0), p(point), pc(centre){};
 
 		bool operator==(spVertex &spv){
@@ -958,7 +958,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		bool ok;
 
 		// constructors
-		Line() {ok = false;};
+		Line() {ok = false; length = 0;}
 		Line(const Point3d& p0, const Vector3d& v0, bool boxed = true);
 		Line(const Point3d& p0, const Point3d& p1);
 		Line(const Span& sp);

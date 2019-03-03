@@ -41,6 +41,7 @@ using namespace TechDrawGui;
 
 QGICMark::QGICMark(int index) : QGIVertex(index)
 {
+    projIndex = 0;
     m_size = 3.0;
     m_width = 0.75;
     draw();
