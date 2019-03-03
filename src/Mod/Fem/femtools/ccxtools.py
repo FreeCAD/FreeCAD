@@ -87,15 +87,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         else:
             raise Exception('FEM: Somthing went wront, the exception should have been raised earlier!')
 
-    ## Removes all result objects
+    ## Removes all result objects from an analysis group
     #  @param self The python object self
     def purge_results(self):
-        for m in self.analysis.Group:
-            if (m.isDerivedFrom('Fem::FemResultObject')):
-                if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "Fem::FemMeshResult":
-                    self.analysis.Document.removeObject(m.Mesh.Name)
-                self.analysis.Document.removeObject(m.Name)
-        FreeCAD.ActiveDocument.recompute()
+        from femresult.resulttools import purge_results as pr
+        pr(self.analysis)
 
     ## Resets mesh color, deformation and removes all result objects if preferences to keep them is not set
     #  @param self The python object self
