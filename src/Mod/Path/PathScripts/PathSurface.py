@@ -24,6 +24,7 @@
 # *                                                                         *
 # *   Additional modifications and contributions in 2019                    *
 # *   by Russell Johnson  <russ4262@gmail.com>                              *
+# *   Version: Rev. 3 - Stable                                              *
 # *                                                                         *
 # ***************************************************************************
 
