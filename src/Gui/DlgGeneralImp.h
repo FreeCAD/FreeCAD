@@ -24,19 +24,20 @@
 #ifndef GUI_DIALOG_DLGGENERALIMP_H
 #define GUI_DIALOG_DLGGENERALIMP_H
 
-#include "ui_DlgGeneral.h"
 #include "PropertyPage.h"
+#include <memory>
 
 class QTabWidget;
 
 namespace Gui {
 namespace Dialog {
+class Ui_DlgGeneral;
 
 /** This class implements the settings for the application.
  *  You can change window style, size of pixmaps, size of recent file list and so on
  *  \author Werner Mayer
  */
-class DlgGeneralImp : public PreferencePage, public Ui_DlgGeneral
+class DlgGeneralImp : public PreferencePage
 {
     Q_OBJECT
 
@@ -46,14 +47,15 @@ public:
 
     void saveSettings();
     void loadSettings();
-    bool eventFilter ( QObject* o, QEvent* e );
 
 protected:
     void changeEvent(QEvent *e);
 
 private:
     void setRecentFileSize();
-    QTabWidget* watched;
+
+private:
+    std::unique_ptr<Ui_DlgGeneral> ui;
     QString selectedStyleSheet;
 };
 
