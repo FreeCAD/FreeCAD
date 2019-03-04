@@ -117,6 +117,7 @@ bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* mode
 void PropertyItemDelegate::editorClosed(QWidget *editor, QAbstractItemDelegate::EndEditHint hint)
 {
     // don't close the editor when pressing Tab or Shift+Tab
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=34627#p290957
     if (hint != EditNextItem && hint != EditPreviousItem)
         editor->close();
 }

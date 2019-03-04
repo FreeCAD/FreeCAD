@@ -185,6 +185,9 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
 
     QTreeView::closeEditor(editor, hint);
 
+    // If after closing the editor this widget is still in editing state
+    // then a new editor must have been created. So, a transaction must be
+    // opened, too.
     if (autoupdate && this->state() == EditingState) {
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (doc) {
