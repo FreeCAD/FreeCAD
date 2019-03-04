@@ -275,6 +275,7 @@ QGIViewClip* QGIView::getClipGroup(void)
 void QGIView::updateView(bool update)
 {
 //    Base::Console().Message("QGIV::updateView() - %s\n",getViewObject()->getNameInDocument());
+    (void) update;
     if (getViewObject()->isLocked()) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
     } else {
@@ -294,10 +295,7 @@ void QGIView::updateView(bool update)
         rotateView();
     }
 
-    draw();
-    
-    if (update)
-        QGraphicsItem::update();
+    QGIView::draw();
 }
 
 //QGIVP derived classes do not need a rotate view method as rotation is handled on App side.

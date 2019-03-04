@@ -266,6 +266,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
 
 #if MOD_TECHDRAW_HANDLE_FACES
+    auto start = chrono::high_resolution_clock::now();
     if (handleFaces() && !geometryObject->usePolygonHLR()) {
         try {
             extractFaces();
@@ -275,6 +276,12 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
             return new App::DocumentObjectExecReturn(e4.GetMessageString());
         }
     }
+    auto end   = chrono::high_resolution_clock::now();
+    auto diff  = end - start;
+    double diffOut = chrono::duration <double, milli> (diff).count();
+    Base::Console().Log("TIMING - %s DVP spent: %.3f millisecs handling Faces\n",
+                        getNameInDocument(),diffOut);
+
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
     requestPaint();
