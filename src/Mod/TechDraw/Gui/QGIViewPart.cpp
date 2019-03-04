@@ -125,9 +125,7 @@ void QGIViewPart::setViewPartFeature(TechDraw::DrawViewPart *obj)
     if (!obj)
         return;
 
-    // called from QGVPage
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));
-    draw();
 }
 
 QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) const
@@ -315,7 +313,7 @@ void QGIViewPart::updateView(bool update)
     auto end   = std::chrono::high_resolution_clock::now();
     auto diff  = end - start;
     double diffOut = std::chrono::duration <double, std::milli> (diff).count();
-    Base::Console().Log("TIMING - QGIVP::updateView - total %.3f millisecs\n",diffOut);
+    Base::Console().Log("TIMING - QGIVP::updateView - %s - total %.3f millisecs\n",getViewName(),diffOut);
 }
 
 void QGIViewPart::draw() {
@@ -324,7 +322,6 @@ void QGIViewPart::draw() {
     QGIView::draw();
     drawCenterLines(true);   //have to draw centerlines after border to get size correct.
     drawAllSectionLines();   //same for section lines
-
 }
 
 void QGIViewPart::drawViewPart()
