@@ -123,7 +123,7 @@ inCommandShortcuts = {
     "Length":     ["H",translate("draft","Length mode"),          "lengthValue"],
     "Wipe":       ["W",translate("draft","Wipe"),                 "wipeButton"],
     "SetWP":      ["U",translate("draft","Set Working Plane"), "orientWPButton"],
-    "CycleSnap":  [QtCore.Qt.Key_Tab,translate("draft","Cycle snap object"), None]
+    "CycleSnap":  ["`",translate("draft","Cycle snap object"), None]
 }
 
 
@@ -275,7 +275,7 @@ class DraftBaseWidget(QtGui.QWidget):
     def __init__(self,parent = None):
         QtGui.QWidget.__init__(self,parent)
     def eventFilter(self, widget, event):
-        if event.type() == QtCore.QEvent.KeyPress and event.key()==inCommandShortcuts["CycleSnap"][0]:
+        if event.type() == QtCore.QEvent.KeyPress and event.text().upper()==inCommandShortcuts["CycleSnap"][0]:
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.cycleSnapObject()
             return True
