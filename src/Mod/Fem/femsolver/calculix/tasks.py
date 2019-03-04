@@ -32,6 +32,8 @@ import subprocess
 import os.path
 
 import FreeCAD
+if FreeCAD.GuiUp:
+    from PySide import QtGui
 import femtools.femutils as femutils
 import feminout.importCcxFrdResults as importCcxFrdResults
 import feminout.importCcxDatResults as importCcxDatResults
@@ -151,7 +153,17 @@ class _Container(object):
 
     def __init__(self, analysis):
         self.analysis = analysis
-        self.mesh = None
+
+        # get mesh
+        mesh, message = femutils.get_mesh_to_solve(self.analysis)
+        if mesh is not None:
+            self.mesh = mesh
+        else:
+            if FreeCAD.GuiUp:
+                QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+            raise Exception(message + '\n')
+
+        # get member
         self.materials_linear = self.get_several_member('Fem::Material')
         self.materials_nonlinear = self.get_several_member('Fem::MaterialMechanicalNonlinear')
         self.fixed_constraints = self.get_several_member('Fem::ConstraintFixed')
@@ -169,13 +181,6 @@ class _Container(object):
         self.planerotation_constraints = self.get_several_member('Fem::ConstraintPlaneRotation')
         self.contact_constraints = self.get_several_member('Fem::ConstraintContact')
         self.transform_constraints = self.get_several_member('Fem::ConstraintTransform')
-
-        for m in self.analysis.Group:
-            if m.isDerivedFrom("Fem::FemMeshObject") and not femutils.is_of_type(m, 'Fem::FemMeshResult'):
-                if not self.mesh:
-                    self.mesh = m
-                else:
-                    raise Exception('FEM: Multiple mesh in analysis not yet supported!')
 
     def get_several_member(self, t):
         return femutils.get_several_member(self.analysis, t)
