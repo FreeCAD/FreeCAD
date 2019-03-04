@@ -142,7 +142,6 @@ void DrawView::onChanged(const App::Property* prop)
         } else if (prop == &LockPosition) {
             handleXYLock();
             LockPosition.purgeTouched(); 
-            requestPaint();
         }
     }
     App::DocumentObject::onChanged(prop);
@@ -161,26 +160,22 @@ void DrawView::handleXYLock(void)
             X.setStatus(App::Property::ReadOnly,true);
             App::GetApplication().signalChangePropertyEditor(X);
             X.purgeTouched();
-            requestPaint();
         }
         if (!Y.testStatus(App::Property::ReadOnly)) {
             Y.setStatus(App::Property::ReadOnly,true);
             App::GetApplication().signalChangePropertyEditor(Y);
             Y.purgeTouched();
-            requestPaint();
         }
     } else {
         if (X.testStatus(App::Property::ReadOnly)) {
             X.setStatus(App::Property::ReadOnly,false);
             App::GetApplication().signalChangePropertyEditor(X);
             X.purgeTouched();
-            requestPaint();
         }
         if (Y.testStatus(App::Property::ReadOnly)) {
             Y.setStatus(App::Property::ReadOnly,false);
             App::GetApplication().signalChangePropertyEditor(Y);
             Y.purgeTouched();
-            requestPaint();
         }
     }
 }

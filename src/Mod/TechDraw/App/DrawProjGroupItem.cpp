@@ -124,7 +124,6 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
         return ret;
     } else {
         autoPosition();
-        requestPaint();
         delete ret;
     }
     return App::DocumentObject::StdReturn;
@@ -141,11 +140,11 @@ void DrawProjGroupItem::autoPosition()
                 newPos = pgroup->getXYPosition(Type.getValueAsString());
                 X.setValue(newPos.x);
                 Y.setValue(newPos.y);
+                requestPaint();
+                purgeTouched();               //prevents "still touched after recompute" message
             }
         }
     }
-    requestPaint();
-    purgeTouched();               //prevents "still touched after recompute" message
 }
 
 void DrawProjGroupItem::onDocumentRestored()
