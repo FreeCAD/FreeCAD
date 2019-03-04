@@ -31,7 +31,7 @@ import subprocess
 import os.path
 
 import FreeCAD as App
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 import feminout.importZ88O2Results as importZ88O2Results
 
 from .. import run
@@ -115,8 +115,8 @@ class Results(run.Results):
         self.load_results_z88o2()
 
     def purge_results(self):
-        for m in FemUtils.get_member(self.analysis, "Fem::FemResultObject"):
-            if FemUtils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
+        for m in femutils.get_member(self.analysis, "Fem::FemResultObject"):
+            if femutils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
         App.ActiveDocument.recompute()
@@ -159,13 +159,13 @@ class _Container(object):
         self.transform_constraints = []
 
         for m in self.analysis.Group:
-            if m.isDerivedFrom("Fem::FemMeshObject") and not FemUtils.is_of_type(m, 'Fem::FemMeshResult'):
+            if m.isDerivedFrom("Fem::FemMeshObject") and not femutils.is_of_type(m, 'Fem::FemMeshResult'):
                 if not self.mesh:
                     self.mesh = m
                 else:
                     raise Exception('FEM: Multiple mesh in analysis not yet supported!')
 
     def get_several_member(self, t):
-        return FemUtils.get_several_member(self.analysis, t)
+        return femutils.get_several_member(self.analysis, t)
 
 ##  @}

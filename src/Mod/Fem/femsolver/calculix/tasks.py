@@ -32,7 +32,7 @@ import subprocess
 import os.path
 
 import FreeCAD as App
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 import feminout.importCcxFrdResults as importCcxFrdResults
 import feminout.importCcxDatResults as importCcxDatResults
 
@@ -113,8 +113,8 @@ class Results(run.Results):
         self.load_results_ccxdat()
 
     def purge_results(self):
-        for m in FemUtils.get_member(self.analysis, "Fem::FemResultObject"):
-            if FemUtils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
+        for m in femutils.get_member(self.analysis, "Fem::FemResultObject"):
+            if femutils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
         App.ActiveDocument.recompute()
@@ -140,7 +140,7 @@ class Results(run.Results):
             raise Exception(
                 'FEM: No .dat results found at {}!'.format(dat_result_file))
         if mode_frequencies:
-            for m in FemUtils.get_member(self.analysis, "Fem::FemResultObject"):
+            for m in femutils.get_member(self.analysis, "Fem::FemResultObject"):
                 if m.Eigenmode > 0:
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf['eigenmode']:
@@ -171,13 +171,13 @@ class _Container(object):
         self.transform_constraints = self.get_several_member('Fem::ConstraintTransform')
 
         for m in self.analysis.Group:
-            if m.isDerivedFrom("Fem::FemMeshObject") and not FemUtils.is_of_type(m, 'Fem::FemMeshResult'):
+            if m.isDerivedFrom("Fem::FemMeshObject") and not femutils.is_of_type(m, 'Fem::FemMeshResult'):
                 if not self.mesh:
                     self.mesh = m
                 else:
                     raise Exception('FEM: Multiple mesh in analysis not yet supported!')
 
     def get_several_member(self, t):
-        return FemUtils.get_several_member(self.analysis, t)
+        return femutils.get_several_member(self.analysis, t)
 
 ##  @}
