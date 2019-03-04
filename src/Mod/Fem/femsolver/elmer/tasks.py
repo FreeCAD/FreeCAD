@@ -28,7 +28,7 @@ __url__ = "http://www.freecadweb.org"
 
 import subprocess
 import os.path
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 
 from .. import run
 from .. import settings
@@ -45,8 +45,8 @@ class Check(run.Check):
         self.checkEquations()
 
     def checkMeshType(self):
-        mesh = FemUtils.get_single_member(self.analysis, "Fem::FemMeshObject")
-        if not FemUtils.is_of_type(mesh, "Fem::FemMeshGmsh"):
+        mesh = femutils.get_single_member(self.analysis, "Fem::FemMeshObject")
+        if not femutils.is_of_type(mesh, "Fem::FemMeshGmsh"):
             self.report.error(
                 "Unsupported type of mesh. "
                 "Mesh must be created with gmsh.")
@@ -84,7 +84,7 @@ class Prepare(run.Prepare):
 
     def checkHandled(self, w):
         handled = w.getHandledConstraints()
-        allConstraints = FemUtils.get_member(self.analysis, "Fem::Constraint")
+        allConstraints = femutils.get_member(self.analysis, "Fem::Constraint")
         for obj in set(allConstraints) - handled:
             self.report.warning("Ignored constraint %s." % obj.Label)
 
