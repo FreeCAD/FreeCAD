@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -56,7 +56,7 @@ class Snapper:
 
     The Snapper lives inside FreeCADGui once the Draft module has been
     loaded.
-    
+
     """
 
     def __init__(self):
@@ -84,7 +84,6 @@ class Snapper:
         self.dim2 = None
         self.snapInfo = None
         self.lastSnappedObject = None
-        self.lastArchPoint = None
         self.active = True
         self.forceGridOff = False
         self.lastExtensions = []
@@ -98,7 +97,7 @@ class Snapper:
         self.callbackClick = None
         self.callbackMove = None
         self.snapObjectIndex = 0
-        
+
         # the snapmarker has "dot","circle" and "square" available styles
         if self.snapStyle:
             self.mk = OrderedDict([('passive',      'empty'),
@@ -163,13 +162,13 @@ class Snapper:
         if self.running:
             # do not allow concurrent runs
             return None
-            
+
         self.running = True
 
         global Part, DraftGeomUtils
         import Part, DraftGeomUtils
         self.spoint = None
-        
+
         if not hasattr(self,"toolbar"):
             self.makeSnapToolBar()
         mw = FreeCADGui.getMainWindow()
@@ -181,7 +180,7 @@ class Snapper:
                 bt.show()
 
         self.snapInfo = None
-        
+
         # type conversion if needed
         if isinstance(screenpos,list):
             screenpos = tuple(screenpos)
@@ -229,13 +228,13 @@ class Snapper:
         if lastpoint:
             if self.trackLine:
                 self.trackLine.p1(lastpoint)
-            
+
         # checking if parallel to one of the edges of the last objects or to a polar direction
         if active:
             eline = None
             point,eline = self.snapToPolar(point,lastpoint)
             point,eline = self.snapToExtensions(point,lastpoint,constrain,eline)
-            
+
         objectsUnderCursor = Draft.get3DView().getObjectsInfo((screenpos[0],screenpos[1]))
         if objectsUnderCursor:
             if self.snapObjectIndex >= len(objectsUnderCursor):
@@ -258,8 +257,9 @@ class Snapper:
             self.trackLine.p2(fp)
             self.trackLine.on()
         # set the arch point tracking
-        if self.lastArchPoint:
-            self.setArchDims(self.lastArchPoint,fp)
+        if lastpoint:
+            self.setArchDims(lastpoint,fp)
+
         self.spoint = fp
         self.running = False
         return fp
@@ -278,37 +278,37 @@ class Snapper:
             return self.spoint
 
         self.lastSnappedObject = obj
-            
+
         if hasattr(obj.ViewObject,"Selectable"):
             if not obj.ViewObject.Selectable:
                 self.spoint = self.cstr(lastpoint, constrain, point)
                 self.running = False
                 return self.spoint
-            
+
         if not active:
-            
+
             # passive snapping
             snaps = [self.snapToVertex(self.snapInfo)]
 
         else:
-            
+
             # first stick to the snapped object
             s = self.snapToVertex(self.snapInfo)
             if s:
                 point = s[0]
                 snaps = [s]
-            
+
             # active snapping
             comp = self.snapInfo['Component']
 
             if obj.isDerivedFrom("Part::Feature"):
-                
+
                 # applying global placements
                 shape = obj.Shape.copy()
                 shape.Placement = obj.getGlobalPlacement()
-                
+
                 snaps.extend(self.snapToSpecials(obj,lastpoint,eline))
-                
+
                 if Draft.getType(obj) == "Polygon":
                     # special snapping for polygons: add the center
                     snaps.extend(self.snapToPolygon(obj))
@@ -324,7 +324,7 @@ class Snapper:
                             snaps.extend(self.snapToPerpendicular(edge,lastpoint))
                             snaps.extend(self.snapToIntersection(edge))
                             snaps.extend(self.snapToElines(edge,eline))
-                            
+
                             et = DraftGeomUtils.geomType(edge)
                             if et == "Circle":
                                 # the edge is an arc, we have extra options
@@ -347,7 +347,7 @@ class Snapper:
                     else:
                         # all other cases (face, etc...) default to passive snap
                         snapArray = [self.snapToVertex(self.snapInfo)]
-                        
+
             elif Draft.getType(obj) == "Dimension":
                 # for dimensions we snap to their 2 points:
                 snaps.extend(self.snapToDim(obj))
@@ -356,7 +356,7 @@ class Snapper:
                 for edge in obj.Shape.Edges:
                     snaps.extend(self.snapToEndpoints(edge))
                     snaps.extend(self.snapToIntersection(edge))
-                    
+
             elif Draft.getType(obj) == "Mesh":
                 # for meshes we only snap to vertices
                 snaps.extend(self.snapToEndpoints(obj.Mesh))
@@ -399,7 +399,7 @@ class Snapper:
                 if delta.Length < shortest:
                     shortest = delta.Length
                     winner = snap
-                    
+
         if winner:
             # see if we are out of the max radius, if any
             if self.radius:
@@ -420,15 +420,11 @@ class Snapper:
                 self.trackLine.on()
             # set the cursor
             self.setCursor(winner[1])
-            
+
             # set the arch point tracking
-            if self.lastArchPoint:
-                self.setArchDims(self.lastArchPoint,fp)
-            if Draft.getType(obj) in ["Wall","Structure"]:
-                self.lastArchPoint = winner[2]
-            else:
-                self.lastArchPoint = None
-            
+            if lastpoint:
+                self.setArchDims(lastpoint,fp)
+
         # return the final point
         self.spoint = fp
         self.running = False
@@ -505,7 +501,7 @@ class Snapper:
                             self.extLine.on()
                         self.setCursor(tsnap[1])
                         return tsnap[2],eline
-                
+
         for o in [self.lastObj[1],self.lastObj[0]]:
             if o and (self.isEnabled('extension') or self.isEnabled('parallel')):
                 ob = FreeCAD.ActiveDocument.getObject(o)
@@ -569,7 +565,7 @@ class Snapper:
                                                             self.setCursor('parallel')
                                                             return np,de
         return point,eline
-        
+
     def snapToCrossExtensions(self,point):
         "snaps to the intersection of the last 2 extension lines"
         if self.isEnabled('extension'):
@@ -602,7 +598,7 @@ class Snapper:
 
     def snapToPolar(self,point,last):
         "snaps to polar lines from the given point"
-        if self.isEnabled('ortho') and (not self.mask): 
+        if self.isEnabled('ortho') and (not self.mask):
             if last:
                 vecs = []
                 if hasattr(FreeCAD,"DraftWorkingPlane"):
@@ -744,7 +740,7 @@ class Snapper:
                 except:
                     return None
         return None
-        
+
     def snapToHold(self,point):
         "returns a snap location that is orthogonal to hold points or, if possible, at crossings"
         if not self.holdPoints:
@@ -841,7 +837,7 @@ class Snapper:
             else:
                 snaps.append([c,'center',c])
         return snaps
-        
+
     def snapToFace(self,shape):
         "returns a face center snap location"
         snaps = []
@@ -877,7 +873,7 @@ class Snapper:
                                     for p in pt:
                                         snaps.append([p,'intersection',self.toWP(p)])
         return snaps
-        
+
     def snapToPolygon(self,obj):
         "returns a list of polygon center snap locations"
         snaps = []
@@ -903,19 +899,19 @@ class Snapper:
             return [p,'passive',p]
         else:
             return []
-            
+
     def snapToSpecials(self,obj,lastpoint=None,eline=None):
         "returns special snap locations, if any"
         snaps = []
         if self.isEnabled("special"):
-            
+
             if (Draft.getType(obj) == "Wall"):
                 # special snapping for wall: snap to its base shape if it is linear
                 if obj.Base:
                     if not obj.Base.Shape.Solids:
                         for v in obj.Base.Shape.Vertexes:
                             snaps.append([v.Point,'special',self.toWP(v.Point)])
-                    
+
             elif (Draft.getType(obj) == "Structure"):
                 # special snapping for struct: only to its base point
                 if obj.Base:
@@ -953,7 +949,7 @@ class Snapper:
         nv = DraftVecUtils.project(dv,DraftGeomUtils.vec(edge))
         np = (edge.Vertexes[0].Point).add(nv)
         return np
-        
+
     def setArchDims(self,p1,p2):
         "show arch dimensions between 2 points"
         if self.isEnabled("Dimensions"):
@@ -1036,11 +1032,10 @@ class Snapper:
             if hasattr(self,"toolbar") and self.toolbar:
                 self.toolbar.hide()
         self.mask = None
-        self.lastArchPoint = None
         self.selectMode = False
         self.running = False
         self.holdPoints = []
-        
+
     def setSelectMode(self,mode):
         "sets the snapper into select mode (hides snapping temporarily)"
         self.selectMode = mode
@@ -1049,7 +1044,7 @@ class Snapper:
         else:
             if self.trackLine:
                 self.trackLine.off()
-        
+
     def setAngle(self,delta=None):
         "keeps the current angle"
         if delta:
@@ -1113,10 +1108,10 @@ class Snapper:
                 self.constraintAxis = self.affinity
             else:
                 self.constraintAxis = None
-                
+
         if not self.constraintAxis:
             return point
-                
+
         # calculating constrained point
         cdelta = DraftVecUtils.project(delta,self.constraintAxis)
         npoint = self.basepoint.add(cdelta)
@@ -1130,7 +1125,7 @@ class Snapper:
             else:
                 self.constrainLine.off()
 
-        return npoint       
+        return npoint
 
     def unconstrain(self):
         self.basepoint = None
@@ -1139,7 +1134,7 @@ class Snapper:
             self.constrainLine.off()
 
     def getPoint(self,last=None,callback=None,movecallback=None,extradlg=None):
-        
+
         """
         getPoint([last],[callback],[movecallback],[extradlg]) : gets a 3D point
         from the screen. You can provide an existing point, in that case additional
@@ -1155,18 +1150,18 @@ class Snapper:
         def cb(point):
             if point:
                 print "got a 3D point: ",point
-                
+
         FreeCADGui.Snapper.getPoint(callback=cb)
 
         If the callback function accepts more than one argument, it will also receive
         the last snapped object. Finally, a qt widget can be passed as an extra taskbox.
-        
+
         If getPoint() is invoked without any argument, nothing is done but the callbacks
         are removed, so it can be used as a cancel function.
         """
 
         import inspect
-        
+
         self.pt = None
         self.lastSnappedObject = None
         self.holdPoints = []
@@ -1191,7 +1186,7 @@ class Snapper:
                 self.ui.displayPoint(self.pt,last,plane=FreeCAD.DraftWorkingPlane,mask=FreeCADGui.Snapper.affinity)
             if movecallback:
                 movecallback(self.pt,self.snapInfo)
-        
+
         def getcoords(point,relative=False):
             self.pt = point
             if relative and last and hasattr(FreeCAD,"DraftWorkingPlane"):
@@ -1320,7 +1315,7 @@ class Snapper:
                     c += 1
         if not Draft.getParam("showSnapBar",True):
             self.toolbar.hide()
-            
+
     def toggleGrid(self):
         FreeCADGui.runCommand("Draft_ToggleGrid")
 
@@ -1394,7 +1389,7 @@ class Snapper:
             if init or self.grid.Visible:
                 self.grid.set()
             self.setTrackers()
-            
+
     def respawnGrid(self):
         "recreates a grid in the current view if needed"
         if self.grid:
@@ -1450,14 +1445,14 @@ class Snapper:
             self.trackers[9].append(self.holdTracker)
         if self.grid and (not self.forceGridOff):
             self.grid.set()
-            
+
     def addHoldPoint(self):
         if self.spoint and not(self.spoint in self.holdPoints):
             if self.holdTracker:
                 self.holdTracker.addCoords(self.spoint)
                 self.holdTracker.on()
             self.holdPoints.append(self.spoint)
-        
+
 if not hasattr(FreeCADGui,"Snapper"):
     FreeCADGui.Snapper = Snapper()
 if not hasattr(FreeCAD,"DraftWorkingPlane"):
