@@ -153,7 +153,7 @@ class PathWorkbench (Workbench):
             if isinstance (obj.Proxy, PathScripts.PathOp.ObjectOp):
                 self.appendContextMenu("", ["Path_OperationCopy"])
             if obj.isDerivedFrom("Path::Feature"):
-                if "Profile" in selectedName or "Contour" in selectedName or "Dressup" in selectedName:
+                if "Profile" in selectedName or "Contour" or "Engrave" in selectedName or "Dressup" in selectedName:
                     self.appendContextMenu("", "Separator")
                     #self.appendContextMenu("", ["Set_StartPoint"])
                     #self.appendContextMenu("", ["Set_EndPoint"])
