@@ -279,6 +279,13 @@ void QGVPage::removeQViewFromScene(QGIView *view)
 
 QGIView * QGVPage::addViewPart(TechDraw::DrawViewPart *part)
 {
+    QGIView* existing = findQViewForDocObj(part);
+    if (existing != nullptr) {
+       Base::Console().Log("INFO - QGVP::addViewPart -  %s - QView exists\n", 
+                                              part->getNameInDocument());
+       return existing;
+    }
+
     auto viewPart( new QGIViewPart );
 
     viewPart->setViewPartFeature(part);
@@ -666,7 +673,7 @@ void QGVPage::postProcessXml(QTemporaryFile* tempFile, QString fileName, QString
 
     QFile outFile( fileName );
     if( !outFile.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
-        Base::Console().Message("QGVP::ppxml - failed to open file for writing: %s\n.",qPrintable(fileName) );
+        Base::Console().Message("QGVP::ppxml - failed to open file for writing: %s\n",qPrintable(fileName) );
     }
     QTextStream stream( &outFile );
     stream << doc.toString();

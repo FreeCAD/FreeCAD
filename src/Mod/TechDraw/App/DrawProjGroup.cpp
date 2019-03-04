@@ -92,16 +92,17 @@ void DrawProjGroup::onChanged(const App::Property* prop)
     TechDraw::DrawPage *page = getPage();
     if (!isRestoring() && page) {
         if (prop == &Source) {
-            std::vector<App::DocumentObject*> sourceObjs = Source.getValues();
-            if (!sourceObjs.empty()) {
-                if (!hasAnchor()) {
-                    // if we have a Source, but no Anchor, make an anchor
-                    Anchor.setValue(addProjection("Front"));
-                    Anchor.purgeTouched();                      //don't need to mark this
-                }
-            } else {
-                //Source has been changed to null! Why? What to do?
-            }
+//            std::vector<App::DocumentObject*> sourceObjs = Source.getValues();
+//            if (!sourceObjs.empty()) {
+//                if (!hasAnchor()) {
+//                    // if we have a Source, but no Anchor, make an anchor
+//                    Anchor.setValue(addProjection("Front"));      //<<<<< semi-loop here!
+//                    //add projection marks object as changed -> onChanged, but anchor value isn't set
+//                    Anchor.purgeTouched();                      //don't need to mark this
+//                }
+//            } else {
+//                //Source has been changed to null! Why? What to do?
+//            }
         }
         if (prop == &Scale) {
             updateChildren();
@@ -143,7 +144,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 {
-//    Base::Console().Message("DPG::execute()\n");
+    Base::Console().Message("DPG::execute()\n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -161,6 +162,7 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 
     App::DocumentObject* docObj = Anchor.getValue();
     if (docObj == nullptr) {
+        //no anchor yet.  Should we create 1 here? 
         return DrawViewCollection::execute();
     }
     
@@ -370,6 +372,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         auto docObj( getDocument()->addObject( "TechDraw::DrawProjGroupItem",     //add to Document
                                                FeatName.c_str() ) );
         view = static_cast<TechDraw::DrawProjGroupItem *>( docObj );
+        addView(view);                            //from DrawViewCollection
         view->Source.setValues( Source.getValues() );
         view->Scale.setValue( getScale() );
         view->Type.setValue( viewProjType );
@@ -379,18 +382,21 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
             vecs = getDirsFromFront(view);
             view->Direction.setValue(vecs.first);
             view->RotationVector.setValue(vecs.second);
+            view->recomputeFeature();
         } else {  //Front
-            //where do direction & Rotation Vector get set for front???
+            //where do direction & Rotation Vector get set for front???  from cmd::newDPG
+            Anchor.setValue(view);
+            Anchor.purgeTouched();
             view->LockPosition.setValue(true);  //lock "Front" position within DPG (note not Page!).
             view->LockPosition.setStatus(App::Property::ReadOnly,true); //Front should stay locked.
             App::GetApplication().signalChangePropertyEditor(view->LockPosition);
             view->LockPosition.purgeTouched();
-            requestPaint();
+//            requestPaint();
         }
-        addView(view);                            //from DrawViewCollection
-        if (view != getAnchor()) {                //anchor is done elsewhere
-            view->recomputeFeature();
-        }
+//        addView(view);                            //from DrawViewCollection
+//        if (view != getAnchor()) {                //anchor is done elsewhere
+//            view->recomputeFeature();
+//        }
     }
 
     return view;
@@ -802,6 +808,7 @@ void DrawProjGroup::updateChildrenLock(void)
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
         if( view ) {
+            Base::Console().Message("DPG::updateChildrenLock requests paint for %s\n",view->getNameInDocument());
             view->requestPaint();
         }
     }
