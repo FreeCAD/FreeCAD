@@ -31,7 +31,7 @@ import os
 import subprocess
 import os.path
 
-import FreeCAD as App
+import FreeCAD
 import femtools.femutils as femutils
 import feminout.importCcxFrdResults as importCcxFrdResults
 import feminout.importCcxDatResults as importCcxDatResults
@@ -105,7 +105,7 @@ class Results(run.Results):
         if not _inputFileName:
             # TODO do not run solver, do not try to read results in a smarter way than an Exception
             raise Exception('Error on writing CalculiX input file.\n')
-        prefs = App.ParamGet(
+        prefs = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
             self.purge_results()
@@ -117,7 +117,7 @@ class Results(run.Results):
             if femutils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
-        App.ActiveDocument.recompute()
+        FreeCAD.ActiveDocument.recompute()
 
     def load_results_ccxfrd(self):
         frd_result_file = os.path.join(

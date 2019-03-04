@@ -30,7 +30,7 @@ import os
 import subprocess
 import os.path
 
-import FreeCAD as App
+import FreeCAD
 import femtools.femutils as femutils
 import feminout.importZ88O2Results as importZ88O2Results
 
@@ -108,7 +108,7 @@ class Solve(run.Solve):
 class Results(run.Results):
 
     def run(self):
-        prefs = App.ParamGet(
+        prefs = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
             self.purge_results()
@@ -119,7 +119,7 @@ class Results(run.Results):
             if femutils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
-        App.ActiveDocument.recompute()
+        FreeCAD.ActiveDocument.recompute()
 
     def load_results_z88o2(self):
         disp_result_file = os.path.join(
