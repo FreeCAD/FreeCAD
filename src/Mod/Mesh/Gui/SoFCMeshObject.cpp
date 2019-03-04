@@ -1053,8 +1053,7 @@ void SoFCMeshObjectShape::stopSelection(SoAction * action, const Mesh::MeshObjec
 
     delete [] selectBuf;
     selectBuf = 0;
-    bool sorted = true;
-    if(sorted) std::sort(hit.begin(),hit.end());
+    std::sort(hit.begin(),hit.end());
 
     Gui::SoGLSelectAction *doaction = static_cast<Gui::SoGLSelectAction*>(action);
     doaction->indices.reserve(hit.size());

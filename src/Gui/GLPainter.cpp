@@ -34,8 +34,17 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLGraphicsItem, Base::BaseClass);
 
-GLPainter::GLPainter() : viewer(0), width(0), height(0), logicOp(false), lineStipple(false)
+GLPainter::GLPainter()
+  : viewer(0)
+  , width(0)
+  , height(0)
+  , logicOp(false)
+  , lineStipple(false)
 {
+    depthrange[0] = 0;
+    depthrange[1] = 0;
+    for (int i=0; i<16; i++)
+        projectionmatrix[i] = 0.0;
 }
 
 GLPainter::~GLPainter()

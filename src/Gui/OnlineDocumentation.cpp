@@ -82,7 +82,7 @@ PythonOnlineHelp::~PythonOnlineHelp()
 
 QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
 {
-    QString fn = filename;
+    QString fn;
     fn = filename.mid(1);
     QByteArray res;
 
