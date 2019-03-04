@@ -124,26 +124,6 @@ bool PropertyEditor::event(QEvent* event)
     return QTreeView::event(event);
 }
 
-void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
-{
-    if (autoupdate) {
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc) {
-            if (!doc->isTransactionEmpty()) {
-                doc->commitTransaction();
-                // Between opening and committing a transaction a recompute
-                // could already have been done
-                if (doc->isTouched())
-                    doc->recompute();
-            }
-            else {
-                doc->abortTransaction();
-            }
-        }
-    }
-    QTreeView::closeEditor(editor, hint);
-}
-
 void PropertyEditor::commitData (QWidget * editor)
 {
     committing = true;
@@ -183,6 +163,40 @@ void PropertyEditor::onItemActivated ( const QModelIndex & index )
             doc->openTransaction(edit.toUtf8());
     }
     openPersistentEditor(model()->buddy(index));
+}
+
+void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
+{
+    if (autoupdate) {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if (doc) {
+            if (!doc->isTransactionEmpty()) {
+                doc->commitTransaction();
+                // Between opening and committing a transaction a recompute
+                // could already have been done
+                if (doc->isTouched())
+                    doc->recompute();
+            }
+            else {
+                doc->abortTransaction();
+            }
+        }
+    }
+
+    QTreeView::closeEditor(editor, hint);
+
+    if (autoupdate && this->state() == EditingState) {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if (doc) {
+            QString edit;
+            QModelIndex index = currentIndex();
+            if (index.isValid()) {
+                PropertyItem* property = static_cast<PropertyItem*>(index.internalPointer());
+                edit = tr("Edit %1").arg(property->propertyName());
+            }
+            doc->openTransaction(edit.toUtf8());
+        }
+    }
 }
 
 void PropertyEditor::reset()
