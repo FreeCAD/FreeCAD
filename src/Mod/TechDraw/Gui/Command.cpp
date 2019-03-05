@@ -548,8 +548,8 @@ void CmdTechDrawProjGroup::activated(int iMsg)
 
     App::DocumentObject *docObj = getDocument()->getObject(multiViewName.c_str());
     auto multiView( static_cast<TechDraw::DrawProjGroup *>(docObj) );
-    doCommand(Doc,"App.activeDocument().%s.addProjection('Front')",multiViewName.c_str());
     multiView->Source.setValues(shapes);
+    doCommand(Doc,"App.activeDocument().%s.addProjection('Front')",multiViewName.c_str());
 
     if (subFound) {
         std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partFeat,faceName);

@@ -144,7 +144,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 {
-    Base::Console().Message("DPG::execute()\n");
+//    Base::Console().Message("DPG::execute()\n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -162,13 +162,13 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 
     App::DocumentObject* docObj = Anchor.getValue();
     if (docObj == nullptr) {
-        //no anchor yet.  Should we create 1 here? 
+        //no anchor yet.  nothing to do.
         return DrawViewCollection::execute();
     }
     
-    for (auto& v: Views.getValues()) {
-        v->recomputeFeature();
-    }
+//    for (auto& v: Views.getValues()) {          //is this needed here? Up to DPGI to keep up to date. 
+//        v->recomputeFeature();
+//    }
 
     for (auto& item: getViewsAsDPGI()) {
         item->autoPosition();
@@ -366,7 +366,6 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
     DrawProjGroupItem *view( nullptr );
     std::pair<Base::Vector3d,Base::Vector3d> vecs;
 
-
     if ( checkViewProjType(viewProjType) && !hasProjection(viewProjType) ) {
         std::string FeatName = getDocument()->getUniqueObjectName("ProjItem");
         auto docObj( getDocument()->addObject( "TechDraw::DrawProjGroupItem",     //add to Document
@@ -384,7 +383,6 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
             view->RotationVector.setValue(vecs.second);
             view->recomputeFeature();
         } else {  //Front
-            //where do direction & Rotation Vector get set for front???  from cmd::newDPG
             Anchor.setValue(view);
             Anchor.purgeTouched();
             view->LockPosition.setValue(true);  //lock "Front" position within DPG (note not Page!).
@@ -462,6 +460,10 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawProjGroup::getDirsFromFront(std::st
 
     Base::Vector3d projDir, rotVec;
     DrawProjGroupItem* anch = getAnchor();
+    if (anch == nullptr) {
+        Base::Console().Warning("DPG::getDirsFromFront - %s - No Anchor!\n",Label.getValue());
+        throw Base::RuntimeError("Project Group missing Anchor projection item");
+    }
      
     Base::Vector3d dirAnch = anch->Direction.getValue();
     Base::Vector3d rotAnch = anch->RotationVector.getValue();
