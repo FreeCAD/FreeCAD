@@ -126,7 +126,7 @@
         <item row="4" column="1">
          <widget class="Gui::PrefSpinBox" name="DefaultShapeVertexWidth">
           <property name="toolTip">
-           <string>The default line thickness for new shapes</string>
+           <string>The default size for new vertices</string>
           </property>
           <property name="suffix">
            <string>px</string>
@@ -207,7 +207,7 @@
         <item row="3" column="1">
          <widget class="Gui::PrefColorButton" name="DefaultShapeVertexColor">
           <property name="toolTip">
-           <string>The default line color for new shapes</string>
+           <string>The default color for new vertices</string>
           </property>
           <property name="color" stdset="0">
            <color>
