@@ -127,6 +127,7 @@ class _TaskPanelFemSolverCalculix:
         QtCore.QObject.connect(self.form.rb_static_analysis, QtCore.SIGNAL("clicked()"), self.select_static_analysis)
         QtCore.QObject.connect(self.form.rb_frequency_analysis, QtCore.SIGNAL("clicked()"), self.select_frequency_analysis)
         QtCore.QObject.connect(self.form.rb_thermomech_analysis, QtCore.SIGNAL("clicked()"), self.select_thermomech_analysis)
+        QtCore.QObject.connect(self.form.rb_check_mesh, QtCore.SIGNAL("clicked()"), self.select_check_mesh)
 
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("stateChanged(QProcess::ProcessState)"), self.calculixStateChanged)
@@ -154,6 +155,8 @@ class _TaskPanelFemSolverCalculix:
             self.form.rb_frequency_analysis.setChecked(True)
         elif self.fea.solver.AnalysisType == 'thermomech':
             self.form.rb_thermomech_analysis.setChecked(True)
+        elif self.fea.solver.AnalysisType == 'check':
+            self.form.rb_check_mesh.setChecked(True)
         return
 
     def femConsoleMessage(self, message="", color="#000000"):
@@ -339,3 +342,6 @@ class _TaskPanelFemSolverCalculix:
 
     def select_thermomech_analysis(self):
         self.select_analysis_type('thermomech')
+
+    def select_check_mesh(self):
+        self.select_analysis_type('check')

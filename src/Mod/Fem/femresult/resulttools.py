@@ -28,16 +28,23 @@ __url__ = "http://www.freecadweb.org"
 #  @{
 
 import FreeCAD
+import femtools.femutils as femutils
 from math import sqrt
 
 
-## Removes all result objects from an analysis group
+## Removes all result objects and result meshes from an analysis group
 #  @param analysis
 def purge_results(analysis):
     for m in analysis.Group:
         if (m.isDerivedFrom('Fem::FemResultObject')):
             if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "Fem::FemMeshResult":
                 analysis.Document.removeObject(m.Mesh.Name)
+            analysis.Document.removeObject(m.Name)
+    FreeCAD.ActiveDocument.recompute()
+    # if analysis typ check is used result mesh without result obj is created in the analysis
+    # we could run into trouble in one loop because we will delete objects and try to access them later
+    for m in analysis.Group:
+        if femutils.is_of_type(m, 'Fem::FemMeshResult'):
             analysis.Document.removeObject(m.Name)
     FreeCAD.ActiveDocument.recompute()
 

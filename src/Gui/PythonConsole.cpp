@@ -1027,29 +1027,34 @@ void PythonConsole::insertFromMimeData (const QMimeData * source)
         return;
     // First check on urls instead of text otherwise it may happen that a url
     // is handled as text
+    bool existingFile = false;
     if (source->hasUrls()) {
         QList<QUrl> uri = source->urls();
         for (QList<QUrl>::ConstIterator it = uri.begin(); it != uri.end(); ++it) {
             // get the file name and check the extension
             QFileInfo info((*it).toLocalFile());
             QString ext = info.suffix().toLower();
-            if (info.exists() && info.isFile() && 
-                (ext == QLatin1String("py") || ext == QLatin1String("fcmacro"))) {
-                // load the file and read-in the source code
-                QFile file(info.absoluteFilePath());
-                if (file.open(QIODevice::ReadOnly)) {
-                    QTextStream str(&file);
-                    runSourceFromMimeData(str.readAll());
+            if (info.exists()) {
+                existingFile = true;
+                if (info.isFile() && (ext == QLatin1String("py") || ext == QLatin1String("fcmacro"))) {
+                    // load the file and read-in the source code
+                    QFile file(info.absoluteFilePath());
+                    if (file.open(QIODevice::ReadOnly)) {
+                        QTextStream str(&file);
+                        runSourceFromMimeData(str.readAll());
+                    }
+                    file.close();
                 }
-                file.close();
             }
         }
-
-        return;
     }
-    if (source->hasText()) {
+
+    // Some applications copy text into the clipboard with the formats
+    // 'text/plain' and 'text/uri-list'. In case the url is not an existing
+    // file we can handle it as normal text, then. See forum thread:
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=34618
+    if (source->hasText() && !existingFile) {
         runSourceFromMimeData(source->text());
-        return;
     }
 }
 

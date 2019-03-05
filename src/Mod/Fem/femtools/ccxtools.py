@@ -87,15 +87,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         else:
             raise Exception('FEM: Somthing went wront, the exception should have been raised earlier!')
 
-    ## Removes all result objects
+    ## Removes all result objects and result meshes from an analysis group
     #  @param self The python object self
     def purge_results(self):
-        for m in self.analysis.Group:
-            if (m.isDerivedFrom('Fem::FemResultObject')):
-                if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "Fem::FemMeshResult":
-                    self.analysis.Document.removeObject(m.Mesh.Name)
-                self.analysis.Document.removeObject(m.Name)
-        FreeCAD.ActiveDocument.recompute()
+        from femresult.resulttools import purge_results as pr
+        pr(self.analysis)
 
     ## Resets mesh color, deformation and removes all result objects if preferences to keep them is not set
     #  @param self The python object self
@@ -150,6 +146,17 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     # FreeCAD.Console.PrintMessage('FEM: More than one solver in the analysis and no solver given to analyze. No solver is set!\n')
 
     def update_objects(self):
+        ## @var mesh
+        #  mesh of the analysis. Used to generate .inp file and to show results
+        self.mesh = None
+        mesh, message = femutils.get_mesh_to_solve(self.analysis)
+        if mesh is not None:
+            self.mesh = mesh
+        else:
+            if FreeCAD.GuiUp:
+                QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+            raise Exception(message + '\n')
+
         # [{'Object':materials_linear}, {}, ...]
         # [{'Object':materials_nonlinear}, {}, ...]
         # [{'Object':fixed_constraints, 'NodeSupports':bool}, {}, ...]
@@ -164,9 +171,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':contact_constraints, 'xxxxxxxx':value}, {}, ...]
 
-        ## @var mesh
-        #  mesh of the analysis. Used to generate .inp file and to show results
-        self.mesh = None
         ## @var materials_linear
         #  list of linear materials from the analysis. Updated with update_objects
         self.materials_linear = self._get_several_member('Fem::Material')
@@ -218,16 +222,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ## @var transform_constraints
         #  list of transform constraints from the analysis. Updated with update_objects
         self.transform_constraints = self._get_several_member('Fem::ConstraintTransform')
-
-        for m in self.analysis.Group:
-            if m.isDerivedFrom("Fem::FemMeshObject"):
-                if not self.mesh:
-                    self.mesh = m
-                else:
-                    message = 'FEM: Multiple mesh in analysis not yet supported!'
-                    if FreeCAD.GuiUp:
-                        QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
-                    raise Exception(message + '\n')
 
     def check_prerequisites(self):
         from FreeCAD import Units
