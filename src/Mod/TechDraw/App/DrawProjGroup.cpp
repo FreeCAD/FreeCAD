@@ -384,7 +384,6 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
             view->RotationVector.setValue(vecs.second);
             view->recomputeFeature();
         } else {  //Front
-            //where do direction & Rotation Vector get set for front???  from cmd::newDPG
             Anchor.setValue(view);
             Anchor.purgeTouched();
             view->LockPosition.setValue(true);  //lock "Front" position within DPG (note not Page!).
@@ -462,6 +461,10 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawProjGroup::getDirsFromFront(std::st
 
     Base::Vector3d projDir, rotVec;
     DrawProjGroupItem* anch = getAnchor();
+    if (anch == nullptr) {
+        Base::Console().Warning("DPG::getDirsFromFront - %s - No Anchor!\n",Label.getValue());
+        throw Base::RuntimeError("Project Group missing Anchor projection item");
+    }
      
     Base::Vector3d dirAnch = anch->Direction.getValue();
     Base::Vector3d rotAnch = anch->RotationVector.getValue();
