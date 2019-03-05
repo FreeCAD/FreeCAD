@@ -153,7 +153,6 @@ class MaterialEditor:
            - a dictionary, if the editor was called with data.'''
 
         if isinstance(data, dict):
-
             # a standard material property dict is provided
             model = self.widget.treeView.model()
             root = model.invisibleRootItem()
@@ -183,8 +182,6 @@ class MaterialEditor:
                 self.customprops.append(k)
 
         elif isinstance(data, unicode):
-
-
             # a card name is provided, search card, read material data and call this def once more with std material property dict
             k = str(data)
             if k:
@@ -649,7 +646,7 @@ def editMaterial(material):
     # if the material editor is opened with this def the combo box with the card name is empty
     # this makes sense, because the editor was not opened with a card but with material dictionary instead
     # TODO: add some text in combo box, may be "custom material data" or "user material data"
-    # TODO: all card could be checked if one fits exact ALL provided data and than this card name could be displayed 
+    # TODO: all card could be checked if one fits exact ALL provided data and than this card name could be displayed
     editor = MaterialEditor(material=material)
     result = editor.exec_()
     if result:
