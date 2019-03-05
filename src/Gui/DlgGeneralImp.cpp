@@ -119,16 +119,12 @@ void DlgGeneralImp::saveSettings()
         }
     }
 
-    // set new user defined style
-    //(void)QApplication::setStyle(WindowStyle->currentText());
-
     setRecentFileSize();
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QString lang = QLocale::languageToString(QLocale::system().language());
     QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str();
     QByteArray current = ui->Languages->itemData(ui->Languages->currentIndex()).toByteArray();
-    if (current != language)
-    {
+    if (current != language) {
         hGrp->SetASCII("Language", current.constData());
         Translator::instance()->activateLanguage(current.constData());
     }
@@ -210,16 +206,18 @@ void DlgGeneralImp::loadSettings()
 
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
-    QString lang = QLocale::languageToString(QLocale::system().language());
-    QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str();
+    QString langToStr = QLocale::languageToString(QLocale::system().language());
+    QByteArray language = hGrp->GetASCII("Language", langToStr.toLatin1()).c_str();
+
     int index = 1;
-    ui->Languages->addItem(QString::fromLatin1("English"), QByteArray("English"));
     TStringMap list = Translator::instance()->supportedLocales();
+    ui->Languages->addItem(QString::fromLatin1("English"), QByteArray("English"));
     for (TStringMap::iterator it = list.begin(); it != list.end(); ++it, index++) {
-        QLocale locale(QString::fromLatin1(it->second.c_str()));
         QByteArray lang = it->first.c_str();
         QString langname = QString::fromLatin1(lang.constData());
+
 #if QT_VERSION >= 0x040800
+        QLocale locale(QString::fromLatin1(it->second.c_str()));
         QString native = locale.nativeLanguageName();
         if (!native.isEmpty()) {
             if (native[0].isLetter())
@@ -227,11 +225,16 @@ void DlgGeneralImp::loadSettings()
             langname = native;
         }
 #endif
+
         ui->Languages->addItem(langname, lang);
         if (language == lang) {
             ui->Languages->setCurrentIndex(index);
         }
     }
+
+    QAbstractItemModel* model = ui->Languages->model();
+    if (model)
+        model->sort(0);
 
     int current = getMainWindow()->iconSize().width();
     ui->toolbarIconSize->addItem(tr("Small (%1px)").arg(16), QVariant((int)16));
@@ -283,10 +286,6 @@ void DlgGeneralImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
-        for (int i = 0; i < ui->Languages->count(); i++) {
-            QByteArray lang = ui->Languages->itemData(i).toByteArray();
-            ui->Languages->setItemText(i, Gui::Translator::tr(lang.constData()));
-        }
     }
     else {
         QWidget::changeEvent(e);
