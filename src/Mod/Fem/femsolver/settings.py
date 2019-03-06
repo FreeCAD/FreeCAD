@@ -35,11 +35,12 @@ BESIDE = "beside"
 CUSTOM = "custom"
 
 
-_GENERAL_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/General"
-_ELMER_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Elmer"
-_GRID_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Grid"
-_CCX_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Ccx"
-_Z88_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Z88"
+_PARAM_PATH = "User parameter:BaseApp/Preferences/Mod/Fem/"
+_GENERAL_PARAM = _PARAM_PATH + "General"
+_ELMER_PARAM = _PARAM_PATH + "Elmer"
+_GRID_PARAM = _PARAM_PATH + "Grid"
+_CCX_PARAM = _PARAM_PATH + "Ccx"
+_Z88_PARAM = _PARAM_PATH + "Z88"
 
 
 class _BinaryDlg(object):
