@@ -144,7 +144,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 {
-//    Base::Console().Message("DPG::execute()\n");
+//    Base::Console().Message("DPG::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -421,7 +421,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
             view->LockPosition.setStatus(App::Property::ReadOnly,true); //Front should stay locked.
             App::GetApplication().signalChangePropertyEditor(view->LockPosition);
             view->LockPosition.purgeTouched();
-//            requestPaint();
+            requestPaint();   //make sure the group object is on the Gui page
         }
 //        addView(view);                            //from DrawViewCollection
 //        if (view != getAnchor()) {                //anchor is done elsewhere
@@ -871,8 +871,6 @@ void DrawProjGroup::updateChildrenLock(void)
             Base::Console().Log("PROBLEM - DPG::updateChildrenLock - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else {
-            view->requestPaint();
         }
     }
 }

@@ -268,6 +268,11 @@ void MDIViewPage::centerOnPage(void)
     }
 }
 
+bool MDIViewPage::addView(const App::DocumentObject *obj)
+{
+    return attachView(const_cast<App::DocumentObject*>(obj));
+}
+
 bool MDIViewPage::attachView(App::DocumentObject *obj)
 {
     auto typeId(obj->getTypeId());

@@ -203,30 +203,33 @@ std::vector<QGIView *> QGVPage::getViews() const
 
 int QGVPage::addQView(QGIView *view)
 {
-    auto ourScene( scene() );
-    assert(ourScene);
+    //don't add twice!
+    QGIView* existing = getQGIVByName(view->getViewName());
+    if (existing == nullptr) {
+        auto ourScene( scene() );
+        assert(ourScene);
 
-    ourScene->addItem(view);
+        ourScene->addItem(view);
 
-    // Find if it belongs to a parent
-    QGIView *parent = 0;
-    parent = findParent(view);
+        // Find if it belongs to a parent
+        QGIView *parent = 0;
+        parent = findParent(view);
 
-    QPointF viewPos(Rez::guiX(view->getViewObject()->X.getValue()),
-                    Rez::guiX(view->getViewObject()->Y.getValue() * -1));
+        QPointF viewPos(Rez::guiX(view->getViewObject()->X.getValue()),
+                        Rez::guiX(view->getViewObject()->Y.getValue() * -1));
 
-    if(parent) {
-        // move child view to center of parent
-        QPointF posRef(0.,0.);
-        QPointF mapPos = view->mapToItem(parent, posRef);
-        view->moveBy(-mapPos.x(), -mapPos.y());
+        if(parent) {
+            // move child view to center of parent
+            QPointF posRef(0.,0.);
+            QPointF mapPos = view->mapToItem(parent, posRef);
+            view->moveBy(-mapPos.x(), -mapPos.y());
 
-        parent->addToGroup(view);
+            parent->addToGroup(view);
+        }
+
+        view->setPos(viewPos);
+        view->updateView(true);
     }
-
-    view->setPos(viewPos);
-    view->updateView(true);
-
     return 0;
 }
 
@@ -281,8 +284,6 @@ QGIView * QGVPage::addViewPart(TechDraw::DrawViewPart *part)
 {
     QGIView* existing = findQViewForDocObj(part);
     if (existing != nullptr) {
-       Base::Console().Log("INFO - QGVP::addViewPart -  %s - QView exists\n", 
-                                              part->getNameInDocument());
        return existing;
     }
 
