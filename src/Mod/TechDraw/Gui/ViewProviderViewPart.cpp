@@ -137,13 +137,13 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderViewPart::setDisplayMode(const char* ModeName)
 {
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
+    ViewProviderDrawingView::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderViewPart::getDisplayModes(void) const
 {
     // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
+    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
 
     return StrList;
 }
