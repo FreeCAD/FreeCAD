@@ -714,7 +714,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 FreeCAD.Console.PrintMessage("Writing CalculiX input file completed.\n")
                 ret_code = self.ccx_run()
                 if ret_code != 0:
-                    error_message = "CalculiX finished with error {}".format(ret_code)
+                    error_message = "CalculiX finished with error {}.\n".format(ret_code)
                     FreeCAD.Console.PrintError(error_message)
                     if FreeCAD.GuiUp:
                         QtGui.QMessageBox.critical(None, "Error", error_message)
