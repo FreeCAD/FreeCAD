@@ -630,6 +630,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                  shell=False, env=_env)
             self.ccx_stdout, self.ccx_stderr = p.communicate()
+            if sys.version_info.major >= 3:
+                self.ccx_stdout = self.ccx_stdout.decode()
+                self.ccx_stderr = self.ccx_stderr.decode()
             os.putenv('OMP_NUM_THREADS', ont_backup)
             QtCore.QDir.setCurrent(cwd)
             return p.returncode
@@ -653,6 +656,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ccx_stdout, ccx_stderr = p.communicate()
         if sys.version_info.major >= 3:
             ccx_stdout = ccx_stdout.decode()
+            ccx_stderr = ccx_stderr.decode()
         m = re.search(r"(\d+).(\d+)", ccx_stdout)
         return (int(m.group(1)), int(m.group(2)))
 
