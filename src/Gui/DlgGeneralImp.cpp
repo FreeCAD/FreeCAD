@@ -162,7 +162,7 @@ void DlgGeneralImp::saveSettings()
             qApp->setStyleSheet(QString());
             ActionStyleEvent e(ActionStyleEvent::Restore);
             qApp->sendEvent(getMainWindow(), &e);
-            mdi->setBackground(QPixmap(QLatin1String(":/icons/background.png")));
+            mdi->setBackground(QPixmap(QLatin1String("images:background.png")));
         }
         else {
             qApp->setStyleSheet(QString());
