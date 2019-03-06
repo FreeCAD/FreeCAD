@@ -78,7 +78,7 @@
              <cstring>gridBinaryPath</cstring>
             </property>
             <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Grid</cstring>
+             <cstring>Mod/Fem/Elmer</cstring>
             </property>
            </widget>
           </item>
@@ -133,7 +133,7 @@
              <cstring>UseStandardGridLocation</cstring>
             </property>
             <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Grid</cstring>
+             <cstring>Mod/Fem/Elmer</cstring>
             </property>
            </widget>
           </item>
