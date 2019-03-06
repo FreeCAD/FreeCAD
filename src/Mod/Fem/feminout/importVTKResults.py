@@ -105,6 +105,7 @@ def importVtkVtkResult(filename, resultname):
     vtk_result_obj.read(filename)
     vtk_result_obj.touch()
     FreeCAD.ActiveDocument.recompute()
+    return vtk_result_obj
 
 
 def importVtkFemMesh(filename, meshname):
