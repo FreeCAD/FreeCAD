@@ -102,6 +102,7 @@ public:
     
     void setTabText(std::string t);
 
+    bool addView(const App::DocumentObject *obj);
 
 public Q_SLOTS:
     void viewAll();
