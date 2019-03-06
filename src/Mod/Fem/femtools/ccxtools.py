@@ -651,6 +651,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                              stderr=subprocess.PIPE, shell=False,
                              startupinfo=startup_info)
         ccx_stdout, ccx_stderr = p.communicate()
+        if sys.version_info.major >= 3:
+            ccx_stdout = ccx_stdout.decode()
         m = re.search(r"(\d+).(\d+)", ccx_stdout)
         return (int(m.group(1)), int(m.group(2)))
 
