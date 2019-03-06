@@ -37,9 +37,8 @@ CUSTOM = "custom"
 
 _PARAM_PATH = "User parameter:BaseApp/Preferences/Mod/Fem/"
 _GENERAL_PARAM = _PARAM_PATH + "General"
-_ELMER_PARAM = _PARAM_PATH + "Elmer"
-_GRID_PARAM = _PARAM_PATH + "Grid"
 _CCX_PARAM = _PARAM_PATH + "Ccx"
+_ELMER_PARAM = _PARAM_PATH + "Elmer"
 _Z88_PARAM = _PARAM_PATH + "Z88"
 
 
@@ -72,7 +71,7 @@ _BINARIES = {
         customPath="elmerBinaryPath"),
     "ElmerGrid": _BinaryDlg(
         default="ElmerGrid",
-        param=_GRID_PARAM,
+        param=_ELMER_PARAM,
         useDefault="UseStandardGridLocation",
         customPath="gridBinaryPath"),
     "Z88": _BinaryDlg(
