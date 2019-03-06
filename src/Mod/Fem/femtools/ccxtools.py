@@ -636,6 +636,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         return -1
 
     def get_ccx_version(self):
+        self.setup_ccx()
         import re
         from platform import system
         startup_info = None
@@ -654,6 +655,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         return (int(m.group(1)), int(m.group(2)))
 
     def ccx_run(self):
+        self.setup_ccx()
         if self.test_mode:
             FreeCAD.Console.PrintError("CalculiX can not be run if test_mode is True.\n")
             return
@@ -687,7 +689,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     def run(self):
         self.update_objects()
         self.setup_working_dir()
-        self.setup_ccx()
         message = self.check_prerequisites()
         if message:
             error_message = "CalculiX was not started due to missing prerequisites:\n{}\n".format(message)
