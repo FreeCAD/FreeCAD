@@ -65,8 +65,8 @@ def DProjGroupTest():
     print("added Bottom")
 
     #remove a view from projection group
-    #iv = group.removeProjection("Left")
-    #print("removed Left")
+    iv = group.removeProjection("Left")
+    print("removed Left")
 
     ##test getItemByLabel method
     print("testing getItemByLabel")
