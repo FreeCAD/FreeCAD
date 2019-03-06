@@ -300,10 +300,11 @@ class _TaskPanelFemSolverCalculix:
 
     def editCalculixInputFile(self):
         print('editCalculixInputFile {}'.format(self.fea.inp_file_name))
-        if self.ccx_prefs.GetBool("UseInternalEditor", True):
+        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+        if ccx_prefs.GetBool("UseInternalEditor", True):
             FemGui.open(self.fea.inp_file_name)
         else:
-            ext_editor_path = self.ccx_prefs.GetString("ExternalEditorPath", "")
+            ext_editor_path = ccx_prefs.GetString("ExternalEditorPath", "")
             if ext_editor_path:
                 self.start_ext_editor(ext_editor_path, self.fea.inp_file_name)
             else:

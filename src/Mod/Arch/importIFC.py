@@ -1807,7 +1807,7 @@ def export(exportList,filename):
                     "PredefinedType": internal,
                     "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
         elif ifctype == "IfcBuildingElementProxy":
-            if ifcopenshell.schema_identifier == "IFC4":
+            if schema == "IFC4":
                 kwargs.update({"PredefinedType": "ELEMENT"})
             else:
                 kwargs.update({"CompositionType": "ELEMENT"})
