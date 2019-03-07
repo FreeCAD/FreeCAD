@@ -814,7 +814,7 @@
       <translation>Erstellt einen Gravierpfad um einen "Draft ShapeString"</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
+      <location filename="../../../PathScripts/PathEngrave.py" line="156"/>
       <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
       <translation>Das Job Basisobjekt hat kein gravierbares Element. Engraving Operation wird kein Ergebnis liefern.</translation>
     </message>
@@ -1940,32 +1940,32 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
       <source>DragKnife Dress-up</source>
       <translation>Zugmesser DressUp</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="471"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
       <source>Modifies a path to add dragknife corner actions</source>
       <translation>Ändert eine Bewegungsbahn um Schneidmesserecken zu berücksichtigen</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="485"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
       <source>Please select one path object</source>
       <translation>Bitte eine einzelne Bewegungsbahn auswählen</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="489"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
       <source>The selected object is not a path</source>
       <translation>Das ausgewählte Objekt ist keine Bewegungsbahn</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="493"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
       <source>Please select a Path object</source>
       <translation>Bitte wählen Sie ein Pfadobjekt</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="498"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
       <source>Create Dress-up</source>
       <translation>Erzeuge Erweiterung</translation>
     </message>
@@ -3271,7 +3271,7 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
     <message>
       <location filename="PathCompoundExtended.py" line="95"/>
       <source>Compound</source>
-      <translation>Zusammengesetzt</translation>
+      <translation>Flächenverbund</translation>
     </message>
     <message>
       <location filename="PathCompoundExtended.py" line="97"/>
@@ -4130,7 +4130,7 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Compound</source>
-      <translation>Zusammengesetzt</translation>
+      <translation>Flächenverbund</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="55"/>

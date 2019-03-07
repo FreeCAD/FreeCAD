@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation>全域有效：</translation>
+      <translation type="unfinished">Global Sensitivity:</translation>
     </message>
   </context>
   <context>
@@ -403,11 +403,11 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation>函式庫</translation>
+      <translation type="unfinished">Libraries</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>此軟體使用開放原始碼元件，其版權及其他專屬權利屬於其各自擁有者：</translation>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
       <source>License</source>
@@ -850,20 +850,20 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>多重定義快捷鍵</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>該快捷鍵'%1'已定義超過一次。這可能導致意外的情況。</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>已定義的快捷鍵</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation type="unfinished">Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2981,10 +2981,6 @@ Specify another directory, please.</source>
       <translation>排序已啟用之工作臺</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;排序已啟用之工作臺&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>上移</translation>
     </message>
@@ -2999,6 +2995,10 @@ Specify another directory, please.</source>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>啟用所有工作臺</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -5293,10 +5293,6 @@ Be aware the point where you click matters.</source>
       <translation type="unfinished">Split</translation>
     </message>
     <message>
-      <source>%1.%2.%3</source>
-      <translation type="unfinished">%1.%2.%3</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>轉移：</translation>
     </message>
@@ -5702,8 +5698,8 @@ Be aware the point where you click matters.</source>
       <translation>切換所選的物件的編輯模式</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>進入或離開所選的物件的編輯模式</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
     </message>
   </context>
   <context>

@@ -224,7 +224,7 @@ de documentare, help pentru atelier și documentarea comenzilor individuale făr
       <translation>Pagină principală</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="542"/>
+      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>Pagină principală</translation>
     </message>

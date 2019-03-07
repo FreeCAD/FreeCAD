@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation>الحساسية العالمية:</translation>
+      <translation type="unfinished">Global Sensitivity:</translation>
     </message>
   </context>
   <context>
@@ -403,11 +403,11 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation>المكتبات</translation>
+      <translation type="unfinished">Libraries</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>يستخدم هذا البرنامج مكونات ذات مصدر مفتوح والتي تنتمي حقوق الطبع والنشر وحقوق الملكية الأخرى الخاصة بها إلى مالكيها المعنيين:</translation>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
       <source>License</source>
@@ -850,20 +850,20 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>اختصار محدد متعددة</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>يتم تعريف الاختصار '%1' أكثر من مرة. وقد يؤدي ذلك إلى سلوك غير متوقع.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>اختصار محدد بالفعل</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation type="unfinished">Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2050,7 +2050,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Show navigation cube</source>
-      <translation>إظهار مكعب التصفح</translation>
+      <translation type="unfinished">Show navigation cube</translation>
     </message>
     <message>
       <source>Corner</source>
@@ -2888,7 +2888,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Object being edited</source>
-      <translation>العنصر القيد التعديل</translation>
+      <translation type="unfinished">Object being edited</translation>
     </message>
     <message>
       <source>Active container</source>
@@ -2987,10 +2987,6 @@ Specify another directory, please.</source>
       <translation type="unfinished">Sort enabled workbenches</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>نقل للأعلى</translation>
     </message>
@@ -3005,6 +3001,10 @@ Specify another directory, please.</source>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation type="unfinished">Add all to enabled workbenches</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -5307,15 +5307,11 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>Export failed</source>
-      <translation>تعذّر التصدير</translation>
+      <translation type="unfinished">Export failed</translation>
     </message>
     <message>
       <source>Split</source>
       <translation type="unfinished">Split</translation>
-    </message>
-    <message>
-      <source>%1.%2.%3</source>
-      <translation type="unfinished">%1.%2.%3</translation>
     </message>
     <message>
       <source>Translation:</source>
@@ -5723,8 +5719,8 @@ Be aware the point where you click matters.</translation>
       <translation type="unfinished">Toggles the selected object's edit mode</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation type="unfinished">Enters or leaves the selected object's edit mode</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
     </message>
   </context>
   <context>
@@ -6765,7 +6761,7 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation>إنشاء نافذة عرض جديد للمستند النشط</translation>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
     </message>
   </context>
   <context>

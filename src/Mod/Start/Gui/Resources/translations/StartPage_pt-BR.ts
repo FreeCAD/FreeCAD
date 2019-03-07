@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>Esta seção contém material para desenvolvedores: como compilar o FreeCAD você mesmo, como está estruturado o código-fonte FreeCAD + como navegar-lo, como desenvolver novas bancadas e/ou incorporar FreeCAD no seu próprio aplicativo.</translation>
+      <translation>Esta seção contém material para desenvolvedores: como compilar o FreeCAD você mesmo, como está estruturado o código-fonte FreeCAD + como navegar nele, como desenvolver novas bancadas e/ou incorporar FreeCAD no seu próprio aplicativo.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -223,7 +223,7 @@
       <translation>Página inicial</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="542"/>
+      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>Página inicial</translation>
     </message>

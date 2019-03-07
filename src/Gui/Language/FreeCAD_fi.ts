@@ -850,20 +850,20 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Useasti määritetty pikakuvake</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Pikakuvake "%1" on määritelty enemmän kuin kerran. Tämä saattaa johtaa odottamattomaan lopputulokseen.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Jo aikaisemmin määritelty pikakuvake</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation type="unfinished">Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2985,10 +2985,6 @@ Määritä toinen hakemisto, ole hyvä.</translation>
       <translation type="unfinished">Sort enabled workbenches</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Siirrä ylös</translation>
     </message>
@@ -3003,6 +2999,10 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation type="unfinished">Add all to enabled workbenches</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -5307,10 +5307,6 @@ Huomaa, että piste johon klikkaat vaikuttaa.</translation>
       <translation type="unfinished">Split</translation>
     </message>
     <message>
-      <source>%1.%2.%3</source>
-      <translation type="unfinished">%1.%2.%3</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>Sijainti:</translation>
     </message>
@@ -5716,8 +5712,8 @@ Huomaa, että piste johon klikkaat vaikuttaa.</translation>
       <translation>Vaihtaa valitun objektin muokkaustilan</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Valitun objektin muokkaustilaan siirtyminen tai siitä poistuminen</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
     </message>
   </context>
   <context>

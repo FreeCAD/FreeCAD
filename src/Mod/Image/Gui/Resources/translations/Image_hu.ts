@@ -69,10 +69,6 @@
       <source>Create a planar image in the 3D space</source>
       <translation>Hozzon létre egy síkbeli képet a 3D-s térben</translation>
     </message>
-    <message>
-      <source>create a planar image in the 3D space</source>
-      <translation>hozzon létre egy síkbeli képet a 3D-s térben</translation>
-    </message>
   </context>
   <context>
     <name>CmdImageOpen</name>
@@ -130,7 +126,7 @@
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="14"/>
       <source>Choose orientation</source>
-      <translation>Válasszon orientáció</translation>
+      <translation>Válasszon tájolást</translation>
     </message>
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="20"/>
@@ -166,90 +162,66 @@
   <context>
     <name>ImageGui::ImageView</name>
     <message>
-      <location filename="../../ImageView.cpp" line="107"/>
+      <location filename="../../ImageView.cpp" line="111"/>
       <source>&amp;Fit image</source>
       <translation>Kép kitöltse a képernyőt</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="109"/>
+      <location filename="../../ImageView.cpp" line="113"/>
       <source>Stretch the image to fit the view</source>
       <translation>Nyújtsa ki a képet, hogy illeszkedjen a nézethez</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="113"/>
+      <location filename="../../ImageView.cpp" line="117"/>
       <source>&amp;1:1 scale</source>
       <translation>&amp;1:1 léptékű</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="115"/>
+      <location filename="../../ImageView.cpp" line="119"/>
       <source>Display the image at a 1:1 scale</source>
       <translation>A kép megjelenítése 1:1 méretarányban</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="124"/>
+      <location filename="../../ImageView.cpp" line="128"/>
       <source>Standard</source>
       <translation>Szabvány</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="142"/>
+      <location filename="../../ImageView.cpp" line="146"/>
       <source>Ready...</source>
       <translation>Kész ...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="532"/>
+      <location filename="../../ImageView.cpp" line="539"/>
       <source>grey</source>
       <translation>szürke</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="533"/>
-      <location filename="../../ImageView.cpp" line="536"/>
-      <location filename="../../ImageView.cpp" line="546"/>
-      <location filename="../../ImageView.cpp" line="551"/>
-      <location filename="../../ImageView.cpp" line="561"/>
-      <location filename="../../ImageView.cpp" line="566"/>
-      <location filename="../../ImageView.cpp" line="577"/>
-      <location filename="../../ImageView.cpp" line="582"/>
-      <location filename="../../ImageView.cpp" line="593"/>
-      <location filename="../../ImageView.cpp" line="598"/>
+      <location filename="../../ImageView.cpp" line="540"/>
+      <location filename="../../ImageView.cpp" line="543"/>
+      <location filename="../../ImageView.cpp" line="553"/>
+      <location filename="../../ImageView.cpp" line="558"/>
+      <location filename="../../ImageView.cpp" line="568"/>
+      <location filename="../../ImageView.cpp" line="573"/>
+      <location filename="../../ImageView.cpp" line="584"/>
+      <location filename="../../ImageView.cpp" line="589"/>
+      <location filename="../../ImageView.cpp" line="600"/>
+      <location filename="../../ImageView.cpp" line="605"/>
       <source>zoom</source>
       <translation>nagyítás</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="536"/>
-      <location filename="../../ImageView.cpp" line="546"/>
-      <location filename="../../ImageView.cpp" line="561"/>
-      <location filename="../../ImageView.cpp" line="577"/>
-      <location filename="../../ImageView.cpp" line="593"/>
+      <location filename="../../ImageView.cpp" line="543"/>
+      <location filename="../../ImageView.cpp" line="553"/>
+      <location filename="../../ImageView.cpp" line="568"/>
+      <location filename="../../ImageView.cpp" line="584"/>
+      <location filename="../../ImageView.cpp" line="600"/>
       <source>outside image</source>
       <translation>külső kép</translation>
-    </message>
-    <message>
-      <source>&amp;Original color</source>
-      <translation>Eredeti szín</translation>
-    </message>
-    <message>
-      <source>Display the image with its original color(s)</source>
-      <translation>Eredeti szín(ekk)el jelenítse meg a képet</translation>
-    </message>
-    <message>
-      <source>&amp;Brightened color</source>
-      <translation>Világosított szín</translation>
-    </message>
-    <message>
-      <source>Display the image with brightened color(s)</source>
-      <translation>Világosított szín(ekk)el jelenítse meg a képet</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
-    <message>
-      <source>Image viewer</source>
-      <translation>Képnézegető</translation>
-    </message>
-    <message>
-      <source>Images (*.png *.xpm *.jpg *.bmp)</source>
-      <translation>Képek (*.png *.xpm *.jpg *.bmp)</translation>
-    </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <location filename="../../Command.cpp" line="115"/>
@@ -276,14 +248,6 @@
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
-      <translation>Nem sikerült betölteni a kiválasztott képet</translation>
-    </message>
-    <message>
-      <source>Error open image</source>
-      <translation>Hiba a kép megnyitásakor</translation>
-    </message>
-    <message>
-      <source>Could not load the choosen image</source>
       <translation>Nem sikerült betölteni a kiválasztott képet</translation>
     </message>
   </context>

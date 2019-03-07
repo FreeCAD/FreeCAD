@@ -403,7 +403,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation>라이브러리</translation>
+      <translation type="unfinished">Libraries</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
@@ -850,20 +850,20 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>단축키 여러 번 정의</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>이 단축키 '% 1'은 이미 사용되고 있습니다. 이것은 예기치 않은 결과를 유발하는 경우가 있습니다.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>이미 정의 된 단축키</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation type="unfinished">Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2983,10 +2983,6 @@ Specify another directory, please.</source>
       <translation>활성화된 워크벤치를 정렬합니다.</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;워크벤치 정렬&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>위로 이동</translation>
     </message>
@@ -3001,6 +2997,10 @@ Specify another directory, please.</source>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation type="unfinished">Add all to enabled workbenches</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -5309,10 +5309,6 @@ Be aware the point where you click matters.</translation>
       <translation type="unfinished">Split</translation>
     </message>
     <message>
-      <source>%1.%2.%3</source>
-      <translation type="unfinished">%1.%2.%3</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>이동:</translation>
     </message>
@@ -5718,8 +5714,8 @@ Be aware the point where you click matters.</translation>
       <translation type="unfinished">Toggles the selected object's edit mode</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation type="unfinished">Enters or leaves the selected object's edit mode</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
     </message>
   </context>
   <context>
