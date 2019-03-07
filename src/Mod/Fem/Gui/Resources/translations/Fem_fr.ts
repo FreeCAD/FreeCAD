@@ -1231,21 +1231,6 @@
     </message>
   </context>
   <context>
-    <name>CmdFemCreateFromShape</name>
-    <message>
-      <source>Fem</source>
-      <translation>Fem</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh</source>
-      <translation>Créer un maillage FEM</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh from shape</source>
-      <translation>Créer un maillage FEM à partir d'une forme</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -1405,29 +1390,6 @@
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>Répertoire de l'utilisateur</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::HypothesisWidget</name>
-    <message>
-      <source>Hypothesis</source>
-      <translation>Hypothèse</translation>
-    </message>
-    <message>
-      <source>Quadrangle</source>
-      <translation>Quadrilatère</translation>
-    </message>
-    <message>
-      <source>Maximum length</source>
-      <translation>Longueur maximale</translation>
-    </message>
-    <message>
-      <source>Local length</source>
-      <translation>Longueur locale</translation>
-    </message>
-    <message>
-      <source>Maximum element area</source>
-      <translation>Surface maximale par élément</translation>
     </message>
   </context>
   <context>
@@ -1705,18 +1667,6 @@
       <source>Only faces and edges can be picked</source>
       <translation>Seulement des faces et des arètes peuvent être sélectionnées</translation>
     </message>
-    <message>
-      <source>Point load [N]</source>
-      <translation>Chargement local [N]</translation>
-    </message>
-    <message>
-      <source>Line load [N/mm]</source>
-      <translation>Chargement linéaire [N/mm]</translation>
-    </message>
-    <message>
-      <source>Area load [N/mm²]</source>
-      <translation>Chargement surfacique [N/mm2]</translation>
-    </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
@@ -1923,14 +1873,6 @@
       <translation>Temps :</translation>
     </message>
     <message>
-      <source>Write Calculix Input File</source>
-      <translation>Sauver un fichier d'entrée Calculix</translation>
-    </message>
-    <message>
-      <source>Edit Calculix Input File</source>
-      <translation>Modifier un fichier d'entrée Calculix</translation>
-    </message>
-    <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
       <translation>Matériel mécanique</translation>
@@ -2000,14 +1942,6 @@
       <source>MatWeb database...</source>
       <translation>base de données MatWeb...</translation>
     </message>
-    <message>
-      <source>0 kg/m^3</source>
-      <translation>0 kg/m ^ 3</translation>
-    </message>
-    <message>
-      <source>Pa</source>
-      <translation>Pa</translation>
-    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -2069,26 +2003,6 @@
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
       <translation>Modifier la contrainte</translation>
-    </message>
-    <message>
-      <source>Combo View</source>
-      <translation>Vue combinée</translation>
-    </message>
-    <message>
-      <source>combiTab</source>
-      <translation>combiTab</translation>
-    </message>
-    <message>
-      <source>qt_tabwidget_stackedwidget</source>
-      <translation>qt_tabwidget_stackedwidget</translation>
-    </message>
-    <message>
-      <source>ShaftWizard</source>
-      <translation>ShaftWizard</translation>
-    </message>
-    <message>
-      <source>ShaftWizardLayout</source>
-      <translation>ShaftWizardLayout</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -2206,14 +2120,6 @@
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
       <translation>Curseur max :</translation>
-    </message>
-    <message>
-      <source>Colors</source>
-      <translation>Couleurs</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>mm</translation>
     </message>
   </context>
   <context>

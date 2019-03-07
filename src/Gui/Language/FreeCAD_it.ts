@@ -295,12 +295,12 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation>Premere il tasto centrale + clic con il tasto sinistro o il tasto centrale + clic con il tasto destro</translation>
+      <translation>Premere il tasto centrale + tasto sinistro o il tasto centrale + tasto destro</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Scorrere con il tasto centrale del mouse o tenere premuto il tasto centrale mentre si fa un click con il tasto sinistro o destro e spostare il mouse su o giù</translation>
+      <translation>Scorrere con la rotellina centrale del mouse, oppure tenere premuto il tasto centrale mentre si fa un click con il tasto sinistro o destro e spostare il mouse su o giù</translation>
     </message>
   </context>
   <context>
@@ -428,7 +428,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
       <source>Camera settings</source>
-      <translation>Impostazioni della fotocamera</translation>
+      <translation>Impostazioni fotocamera</translation>
     </message>
     <message>
       <source>Orientation</source>
@@ -849,20 +849,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Scorciatoia definita più volte</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>La scorciatoia  '%1' è definita più volte. Ciò potrebbe portare ad un comportamento inaspettato.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Scorciatoia già definita</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation>Il collegamento '%1' è già assegnato a '%2'.
-
-Si desidera sovrascriverlo?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>La scorciatoia '%1' è definita più di una volta. Questo può causare un comportamento imprevisto.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>La scorciatoia '%1' è già assegnata a '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>Si desidera sovrascriverlo?</translation>
     </message>
   </context>
   <context>
@@ -1385,7 +1385,7 @@ Si desidera sovrascriverlo?</translation>
     </message>
     <message>
       <source>Duplicate</source>
-      <translation>Duplica</translation>
+      <translation>Duplicare</translation>
     </message>
     <message>
       <source>Addons...</source>
@@ -1460,17 +1460,17 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Duplicate Macro</source>
-      <translation>Duplica macro</translation>
+      <translation>Duplica la macro</translation>
     </message>
     <message>
       <source>Duplicate Failed</source>
-      <translation>Duplicazione non riuscita</translation>
+      <translation>Duplicazione fallita</translation>
     </message>
     <message>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>Impossibile duplicare '%1'.
-Forse un errore di autorizzazione file?</translation>
+Forse un errore di autorizzazione del file?</translation>
     </message>
   </context>
   <context>
@@ -2071,7 +2071,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object</source>
-      <translation>Utilizzare OpenGL Vertex Buffer Object</translation>
+      <translation>Utilizza OpenGL Vertex Buffer Object</translation>
     </message>
     <message>
       <source>New Document Camera Orientation</source>
@@ -2087,7 +2087,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation>Trascinare a cursore</translation>
+      <translation>Trascina al cursore</translation>
     </message>
     <message>
       <source>Marker size:</source>
@@ -2797,7 +2797,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Imperial Civil (ft/ft^2/ft^3)</source>
-      <translation>Imperial Civil (ft/ft^2/ft^3)</translation>
+      <translation>Imperiale civile (ft/ft ^2/ft ^3)</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
@@ -2805,7 +2805,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pollici frazionari minimi da visualizzare.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Frazione minima in pollici da visualizzare.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>1/2"</source>
@@ -2876,15 +2876,15 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Imposta l'area di confusione per la selezione degli elementi in una vista 3D. Un valore maggiore facilita la selezione, ma rende impossibile selezionare le cose piccole.</translation>
+      <translation>Imposta l'area di confusione per la selezione degli elementi nella vista 3D. Un valore maggiore facilita la selezione, ma rende impossibile selezionare gli elementi piccoli.</translation>
     </message>
     <message>
       <source>Tree View</source>
-      <translation>Struttura ad albero</translation>
+      <translation>Vista ad albero</translation>
     </message>
     <message>
       <source>Object being edited</source>
-      <translation>Oggetto modificato</translation>
+      <translation>Oggetto in fase di modifica</translation>
     </message>
     <message>
       <source>Active container</source>
@@ -2983,10 +2983,6 @@ Specificare un'altra cartella.</translation>
       <translation>Ordina gli ambienti abilitati</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Ordina gli ambienti abilitati&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Sposta verso l'alto</translation>
     </message>
@@ -3001,6 +2997,10 @@ Specificare un'altra cartella.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Aggiunge tutti gli ambienti negli abilitati</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Ordina gli ambienti abilitati&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3463,7 +3463,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Shift click for opposite direction</source>
-      <translation>Fare clic su Maiusc per la direzione opposta</translation>
+      <translation>Premere Shift+click per la direzione opposta</translation>
     </message>
     <message>
       <source>Selected points</source>
@@ -3871,7 +3871,7 @@ Si desidera salvare le modifiche?</translation>
     <name>Gui::GestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation>Toccare o cliccare con il pulsante sinistro del mouse.</translation>
+      <translation>Toccare oppure cliccare con il pulsante sinistro del mouse.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press right mouse button.</source>
@@ -4167,7 +4167,7 @@ How do you want to proceed?</source>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation>Toccare o cliccare con il pulsante sinistro del mouse.</translation>
+      <translation>Toccare oppure cliccare con il pulsante sinistro del mouse.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
@@ -4727,11 +4727,11 @@ Vuoi specificare un'altra cartella?</translation>
     </message>
     <message>
       <source>Search...</source>
-      <translation>Ricerca...</translation>
+      <translation>Cerca...</translation>
     </message>
     <message>
       <source>Search for objects</source>
-      <translation>Ricerca oggetti</translation>
+      <translation>Cerca oggetti</translation>
     </message>
   </context>
   <context>
@@ -5299,15 +5299,11 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
       <source>Export failed</source>
-      <translation>Esportazione non riuscita</translation>
+      <translation>Esportazione fallita</translation>
     </message>
     <message>
       <source>Split</source>
       <translation>Dividi</translation>
-    </message>
-    <message>
-      <source>%1.%2.%3</source>
-      <translation>%1.%2.%3</translation>
     </message>
     <message>
       <source>Translation:</source>
@@ -5715,8 +5711,8 @@ Prestare attenzione al punto dove si fa clic.</translation>
       <translation>Attiva/disattiva la modalità modifica per l'oggetto selezionato</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Entra o esce dalla modalità di modifica dell'oggetto selezionato</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation>Attiva o disattiva la modalità di modifica dell'oggetto selezionato</translation>
     </message>
   </context>
   <context>
@@ -6772,7 +6768,7 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
       <source>Set to dimetric view</source>
-      <translation>Imposta la visualizzazione dimetrica</translation>
+      <translation>Imposta la vista dimetrica</translation>
     </message>
   </context>
   <context>
@@ -6877,7 +6873,7 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
       <source>Set to isometric view</source>
-      <translation>Imposta la visualizzazione isometrica</translation>
+      <translation>Imposta la vista isometrica</translation>
     </message>
   </context>
   <context>
@@ -7072,7 +7068,7 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
       <source>Set to trimetric view</source>
-      <translation>Imposta la visualizzazione trimetrica</translation>
+      <translation>Imposta la vista trimetrica</translation>
     </message>
   </context>
   <context>
@@ -7497,7 +7493,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation>Visualizzazione in modalità ortogonale</translation>
+      <translation>Imposta la vista in modalità ortografica</translation>
     </message>
   </context>
   <context>
@@ -7508,7 +7504,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Set View to Perspective mode</source>
-      <translation>Visualizzazione in modalità prospettiva</translation>
+      <translation>Imposta la vista in prospettiva</translation>
     </message>
   </context>
   <context>

@@ -69,10 +69,6 @@
       <source>Create a planar image in the 3D space</source>
       <translation>Ein planare Grafik im 3D-Raum erzeugen</translation>
     </message>
-    <message>
-      <source>create a planar image in the 3D space</source>
-      <translation>Erstellen Sie eine ebenes Bild im 3D-Raum</translation>
-    </message>
   </context>
   <context>
     <name>CmdImageOpen</name>
@@ -166,90 +162,66 @@
   <context>
     <name>ImageGui::ImageView</name>
     <message>
-      <location filename="../../ImageView.cpp" line="107"/>
+      <location filename="../../ImageView.cpp" line="111"/>
       <source>&amp;Fit image</source>
       <translation>Bild an&amp;passen</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="109"/>
+      <location filename="../../ImageView.cpp" line="113"/>
       <source>Stretch the image to fit the view</source>
       <translation>Bild auf die Ansicht ausdehnen</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="113"/>
+      <location filename="../../ImageView.cpp" line="117"/>
       <source>&amp;1:1 scale</source>
       <translation>&amp;1:1 Maßstab</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="115"/>
+      <location filename="../../ImageView.cpp" line="119"/>
       <source>Display the image at a 1:1 scale</source>
       <translation>Das Bild im Maßstab 1:1 anzeigen</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="124"/>
+      <location filename="../../ImageView.cpp" line="128"/>
       <source>Standard</source>
       <translation>Standard</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="142"/>
+      <location filename="../../ImageView.cpp" line="146"/>
       <source>Ready...</source>
       <translation>Fertig...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="532"/>
+      <location filename="../../ImageView.cpp" line="539"/>
       <source>grey</source>
       <translation>grau</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="533"/>
-      <location filename="../../ImageView.cpp" line="536"/>
-      <location filename="../../ImageView.cpp" line="546"/>
-      <location filename="../../ImageView.cpp" line="551"/>
-      <location filename="../../ImageView.cpp" line="561"/>
-      <location filename="../../ImageView.cpp" line="566"/>
-      <location filename="../../ImageView.cpp" line="577"/>
-      <location filename="../../ImageView.cpp" line="582"/>
-      <location filename="../../ImageView.cpp" line="593"/>
-      <location filename="../../ImageView.cpp" line="598"/>
+      <location filename="../../ImageView.cpp" line="540"/>
+      <location filename="../../ImageView.cpp" line="543"/>
+      <location filename="../../ImageView.cpp" line="553"/>
+      <location filename="../../ImageView.cpp" line="558"/>
+      <location filename="../../ImageView.cpp" line="568"/>
+      <location filename="../../ImageView.cpp" line="573"/>
+      <location filename="../../ImageView.cpp" line="584"/>
+      <location filename="../../ImageView.cpp" line="589"/>
+      <location filename="../../ImageView.cpp" line="600"/>
+      <location filename="../../ImageView.cpp" line="605"/>
       <source>zoom</source>
       <translation>Zoom</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="536"/>
-      <location filename="../../ImageView.cpp" line="546"/>
-      <location filename="../../ImageView.cpp" line="561"/>
-      <location filename="../../ImageView.cpp" line="577"/>
-      <location filename="../../ImageView.cpp" line="593"/>
+      <location filename="../../ImageView.cpp" line="543"/>
+      <location filename="../../ImageView.cpp" line="553"/>
+      <location filename="../../ImageView.cpp" line="568"/>
+      <location filename="../../ImageView.cpp" line="584"/>
+      <location filename="../../ImageView.cpp" line="600"/>
       <source>outside image</source>
       <translation>außerhalb Bild</translation>
-    </message>
-    <message>
-      <source>&amp;Original color</source>
-      <translation>&amp;Ursprüngliche Farbe</translation>
-    </message>
-    <message>
-      <source>Display the image with its original color(s)</source>
-      <translation>Das Bild mit seinen ursprünglichen Farbe(n) anzeigen</translation>
-    </message>
-    <message>
-      <source>&amp;Brightened color</source>
-      <translation>&amp;Farbe aufhellen</translation>
-    </message>
-    <message>
-      <source>Display the image with brightened color(s)</source>
-      <translation>Das Bild mit aufgehellten Farben anzeigen</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
-    <message>
-      <source>Image viewer</source>
-      <translation>Bildbetrachter</translation>
-    </message>
-    <message>
-      <source>Images (*.png *.xpm *.jpg *.bmp)</source>
-      <translation>Bilder (*.png *.xpm *.jpg *.bmp)</translation>
-    </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <location filename="../../Command.cpp" line="115"/>
@@ -276,14 +248,6 @@
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
-      <translation>Das gewählte Bild konnte nicht geladen werden</translation>
-    </message>
-    <message>
-      <source>Error open image</source>
-      <translation>Fehler beim Öffnen des Bildes</translation>
-    </message>
-    <message>
-      <source>Could not load the choosen image</source>
       <translation>Das gewählte Bild konnte nicht geladen werden</translation>
     </message>
   </context>

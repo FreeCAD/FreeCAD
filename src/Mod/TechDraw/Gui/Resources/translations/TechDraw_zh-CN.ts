@@ -1308,12 +1308,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../QGVPage.cpp" line="580"/>
       <source>Drawing page:</source>
-      <translation type="unfinished">Drawing page:</translation>
+      <translation>图纸页：</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="582"/>
       <source> exported from FreeCAD document:</source>
-      <translation type="unfinished"> exported from FreeCAD document:</translation>
+      <translation> 从 FreeCAD 文档中导出:</translation>
     </message>
   </context>
   <context>
@@ -1508,7 +1508,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskProjGroup.ui" line="230"/>
       <source>Current primary view direction</source>
-      <translation type="unfinished">Current primary view direction</translation>
+      <translation>当前主视图方向</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="243"/>

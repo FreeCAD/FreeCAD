@@ -295,12 +295,12 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation type="unfinished">Press middle+left or middle+right button</translation>
+      <translation>Clique nos botões do meio+esquerdo ou meio+direito</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Rode o botão do meio do rato ou mantenha o botão do meio pressionado enquanto clica no botão esquerdo ou direito do rato e mova o rato para cima ou para baixo</translation>
+      <translation>Role o botão do meio do mouse ou mantenha o botão do meio apertado enquanto clica com o botão esquerdo ou direito do mouse e mova o mouse para cima ou para baixo</translation>
     </message>
   </context>
   <context>
@@ -849,20 +849,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Atalho definido várias vezes</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>O atalho '%1' é definido mais de uma vez. Isso pode provocar um comportamento inesperado.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Atalho já definido</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>O atalho '%1' é definido mais de uma vez. Isso pode provocar um comportamento inesperado.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>O atalho '%1' já está atribuído a '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>Deseja substituí-lo?</translation>
     </message>
   </context>
   <context>
@@ -2078,7 +2078,7 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
-      <translation>Impede a visualização de inclinação quando o zoom é reduzido. Afeta apenas o estilo de navegação por gestos. A inclinação do mouse não é desativada por essa configuração.</translation>
+      <translation>Impede a rotação da vista quando o zoom é reduzido. Afeta apenas o estilo de navegação por gestos. A inclinação do mouse não é desativada por essa configuração.</translation>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
@@ -2086,7 +2086,7 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation>Arraste o cursor</translation>
+      <translation>Arraste no cursor</translation>
     </message>
     <message>
       <source>Marker size:</source>
@@ -2799,11 +2799,11 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
-      <translation>Polegada fracionária mínima:</translation>
+      <translation>Fração mínima das polegadas:</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Polegada fracionária mínima para exibir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fração mínima das polegadas.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>1/2"</source>
@@ -2878,11 +2878,11 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Tree View</source>
-      <translation>Visualizar em árvore</translation>
+      <translation>Arborescência</translation>
     </message>
     <message>
       <source>Object being edited</source>
-      <translation>Objeto em edição</translation>
+      <translation>Objeto sendo editado</translation>
     </message>
     <message>
       <source>Active container</source>
@@ -2981,10 +2981,6 @@ Por favor especifique outro diretório.</translation>
       <translation>Ordenar as bancadas de trabalho ativas</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Ordenar as bancadas de trabalho ativas&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Mover para cima</translation>
     </message>
@@ -2999,6 +2995,10 @@ Por favor especifique outro diretório.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Ativar todas as bancadas de trabalho</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Ordenar as bancadas de trabalho ativadas&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3090,7 +3090,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
+      <translation>Ao excluir todos os diretórios temporários, não será possível recuperar nenhum arquivo depois.</translation>
     </message>
   </context>
   <context>
@@ -3868,19 +3868,19 @@ Deseja salvar as alterações?</translation>
     <name>Gui::GestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation type="unfinished">Tap OR click left mouse button.</translation>
+      <translation>Toque ou clique com o botão esquerdo do mouse.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press right mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
+      <translation>Arraste com dois dedos no monitor, ou pressione o botão direito do rato.</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <translation>Arraste a tela com um dedo ou pressione o botão esquerdo do rato. Em outros modos de edição ou no Sketcher, pressione também Alt.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
+      <translation>Pinça (Coloque dois dedos na tela e arraste-os afastando/aproximando um do outro). Ou o botão de rolagem do meio do mouse. Ou PgUp/PgDown no teclado.</translation>
     </message>
   </context>
   <context>
@@ -4165,26 +4165,26 @@ Deseja prosseguir?</translation>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation type="unfinished">Tap OR click left mouse button.</translation>
+      <translation>Toque ou clique com o botão esquerdo do mouse.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
+      <translation>Arraste a tela com os dois dedos ou pressione ALT + botão central do mouse.</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <translation>Arraste a tela com um dedo. Ou pressione o botão esquerdo do mouse. No esboço (Sketcher) e em outros modos de edição, pressione 'Alt' simultaneamente.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
+      <translation>Belisque (Coloque dois dedos na tela e arraste-os separados um do outro). Ou o use o botão de rolagem central do mouse. Ou pressione ALT + botão direito do mouse. Ou PgUp/PgDown no teclado.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...</source>
-      <translation>Descarga iniciada...</translation>
+      <translation>Download iniciado...</translation>
     </message>
   </context>
   <context>
@@ -5286,15 +5286,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Export failed</source>
-      <translation>Exportação falhou</translation>
+      <translation>Falha na exportação</translation>
     </message>
     <message>
       <source>Split</source>
       <translation>Separar</translation>
-    </message>
-    <message>
-      <source>%1.%2.%3</source>
-      <translation>%1.%2.%3</translation>
     </message>
     <message>
       <source>Translation:</source>
@@ -5702,8 +5698,8 @@ Be aware the point where you click matters.</source>
       <translation>Alterna o modo de edição do objeto selecionado</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Entra ou sair do modo de edição do objeto selecionado</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation>Ativa ou desativa o modo de edição do objeto selecionado</translation>
     </message>
   </context>
   <context>
@@ -6744,7 +6740,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation>Criar uma nova vista para o documento ativo</translation>
+      <translation>Cria uma nova vista para o documento ativo</translation>
     </message>
   </context>
   <context>
@@ -7350,7 +7346,7 @@ Be aware the point where you click matters.</source>
     <name>Std_Delete</name>
     <message>
       <source>These items are linked to items selected for deletion and might break.</source>
-      <translation>Estes itens estão ligados a itens selecionados para exclusão e podem quebrar.</translation>
+      <translation>Esses itens estão vinculados a itens selecionados para exclusão e podem quebrar.</translation>
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
@@ -7362,7 +7358,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Delete Selection Issues</source>
-      <translation>Excluir problemas de seleção</translation>
+      <translation>Problemas na exclusão de objetos selecionados</translation>
     </message>
   </context>
   <context>
@@ -7473,7 +7469,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation>Definir NaviCube para o modo isométrico</translation>
+      <translation>Colocar o NaviCube em modo isométrico</translation>
     </message>
   </context>
   <context>
@@ -7502,7 +7498,7 @@ Do you want to duplicate them, too?</source>
     <name>ViewZoomToFitCmd</name>
     <message>
       <source>Zoom to fit</source>
-      <translation>Ajustar para caber</translation>
+      <translation>Enquadrar</translation>
     </message>
     <message>
       <source>Zoom so that model fills the view</source>

@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation>Sensibilidade global:</translation>
+      <translation>Sensibilidade Global:</translation>
     </message>
   </context>
   <context>
@@ -849,20 +849,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Definidos varios atallos</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>O atallo '%1' está definido máis dunha vez. Isto pode resultar nun comportamento inesperado.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Atallo xa definido</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation>O acceso directo '%1' xa está asinado a '%2'.
-
-Queres trocalo?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>O atallo '%1' está definido máis dunha vez. Isto pode resultar nun comportamento inesperado.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>O atallo '%1' está xa asignado a '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>Queres anulalo?</translation>
     </message>
   </context>
   <context>
@@ -2073,15 +2073,15 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object</source>
-      <translation>Usar Vertex Buffer Object do OpenGL</translation>
+      <translation>Usar Vertex Buffer Obxecto OpenGL</translation>
     </message>
     <message>
       <source>New Document Camera Orientation</source>
-      <translation>Nova orientación da cámara do documento</translation>
+      <translation>Nova orientación da Cámara do Documento</translation>
     </message>
     <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
-      <translation>Evita vista inclinada cando fai xesto para zoom. Afecta só a xesto tipo nav. A inclinación do rato non se inhabilita por este axuste.</translation>
+      <translation>Evita vista inclinada cando fai xesto para zoom. Afecta só ao xesto tipo nav. A inclinación do rato non se inhabilita por este axuste.</translation>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
@@ -2799,7 +2799,7 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
       <source>Imperial Civil (ft/ft^2/ft^3)</source>
-      <translation>Imperial Civil (ft/ft^2/ft^3)</translation>
+      <translation>Imperial Civil (pé/pé^2/pé^3)</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
@@ -2985,10 +2985,6 @@ Por favor, especifique outro directorio.</translation>
       <translation>Ordenar os bancos de traballo activos</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Ordenar os bancos de traballo activos&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Mover cara arriba</translation>
     </message>
@@ -3003,6 +2999,10 @@ Por favor, especifique outro directorio.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Engadir todo ós bancos de traballo habilitados</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Ordenar os bancos de traballo activos&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3431,7 +3431,7 @@ A columna 'Estado' amosa se é posible recuperar o documento.</translation>
     </message>
     <message>
       <source>Apply</source>
-      <translation type="unfinished">Apply</translation>
+      <translation>Aplicar</translation>
     </message>
     <message>
       <source>Reset</source>
@@ -3467,7 +3467,7 @@ A columna 'Estado' amosa se é posible recuperar o documento.</translation>
     </message>
     <message>
       <source>Shift click for opposite direction</source>
-      <translation>Click Maius para a dirección oposta</translation>
+      <translation>Click Maius. para a dirección oposta</translation>
     </message>
     <message>
       <source>Selected points</source>
@@ -3479,7 +3479,7 @@ A columna 'Estado' amosa se é posible recuperar o documento.</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Fai o favor de escoller 1, 2 ou 3 puntos antes de facer clic neste botón. Un punto pode estar nun vértice, face ou bordo. Se está nunha face ou bordo, o punto empregado será o punto da posición do rato ao longo da face ou bordo. Se 1 punto é escolmado, vai ser usado coma centro de rotación. Se son 2 puntos escolmados o punto medio entre eles será o centro de rotación e crearase un novo eixo persoal, se fose necesario. Se son 3 puntos os escolmados, o primeiro punto convértese en centro de rotación e atópase no vector que é normal ao plano definido polos 3 puntos. Proporciónase certa información de distancia e ángulo na vista de informe, que pode ser útil ao aliñar obxectos. Para o seu convir, cando se usa Maius + clic, a distancia ou o ángulo apropiados cópianse ó portapapeis.</translation>
+      <translation>Fai o favor de escolmar 1, 2 ou 3 puntos antes de facer clic neste botón. Un punto pode estar nun vértice, face ou bordo. Se está nunha face ou bordo, o punto empregado será o punto da posición do rato ao longo da face ou bordo. Se 1 punto é escolmado, vai ser usado coma centro de rotación. Se son 2 puntos escolmados o punto medio entre eles será o centro de rotación e crearase un novo eixo persoal, se fose necesario. Se son 3 puntos os escolmados, o primeiro punto convértese en centro de rotación e atópase no vector que é normal ao plano definido polos 3 puntos. Proporciónase certa información de distancia e ángulo na vista de informe, que pode ser útil ao aliñar obxectos. Para o seu convir, cando se usa Maius + clic, a distancia ou o ángulo apropiados cópianse ó portapapeis.</translation>
     </message>
   </context>
   <context>
@@ -3570,7 +3570,7 @@ A columna 'Estado' amosa se é posible recuperar o documento.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Transformar</translation>
     </message>
   </context>
   <context>
@@ -4830,55 +4830,55 @@ Quere especificar outro directorio?</translation>
     </message>
     <message>
       <source>0.1 mm</source>
-      <translation type="unfinished">0.1 mm</translation>
+      <translation>0,1 mm</translation>
     </message>
     <message>
       <source>0.5 mm</source>
-      <translation type="unfinished">0.5 mm</translation>
+      <translation>0,5 mm</translation>
     </message>
     <message>
       <source>1 mm</source>
-      <translation type="unfinished">1 mm</translation>
+      <translation>1 mm</translation>
     </message>
     <message>
       <source>2 mm</source>
-      <translation type="unfinished">2 mm</translation>
+      <translation>2 mm</translation>
     </message>
     <message>
       <source>5 mm</source>
-      <translation type="unfinished">5 mm</translation>
+      <translation>5 mm</translation>
     </message>
     <message>
       <source>10 mm</source>
-      <translation type="unfinished">10 mm</translation>
+      <translation>10 mm</translation>
     </message>
     <message>
       <source>20 mm</source>
-      <translation type="unfinished">20 mm</translation>
+      <translation>20 mm</translation>
     </message>
     <message>
       <source>50 mm</source>
-      <translation type="unfinished">50 mm</translation>
+      <translation>50 mm</translation>
     </message>
     <message>
       <source>100 mm</source>
-      <translation type="unfinished">100 mm</translation>
+      <translation>100 mm</translation>
     </message>
     <message>
       <source>200 mm</source>
-      <translation type="unfinished">200 mm</translation>
+      <translation>200 mm</translation>
     </message>
     <message>
       <source>500 mm</source>
-      <translation type="unfinished">500 mm</translation>
+      <translation>500 mm</translation>
     </message>
     <message>
       <source>1 m</source>
-      <translation type="unfinished">1 m</translation>
+      <translation>1 m</translation>
     </message>
     <message>
       <source>2 m</source>
-      <translation type="unfinished">2 m</translation>
+      <translation>2 m</translation>
     </message>
     <message>
       <source>5 m </source>
@@ -5252,7 +5252,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Transformar</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
@@ -5309,10 +5309,6 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Split</source>
       <translation>Dividir</translation>
-    </message>
-    <message>
-      <source>%1.%2.%3</source>
-      <translation>%1.%2.%3</translation>
     </message>
     <message>
       <source>Translation:</source>
@@ -5720,7 +5716,7 @@ Be aware the point where you click matters.</source>
       <translation>Alterna o modo de edición do obxecto escolmado</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
+      <source>Activates or Deactivates the selected object's edit mode</source>
       <translation>Entra ou sae do modo de edición do obxecto escolmado</translation>
     </message>
   </context>
@@ -6668,7 +6664,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Transformar</translation>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
@@ -7208,7 +7204,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Expand active document and collapse all others</source>
-      <translation>Expandir documento activo e colapsar tódolos demáis</translation>
+      <translation>Expandir documento activo e ocultar tódolos demais</translation>
     </message>
   </context>
   <context>
@@ -7253,7 +7249,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set visibility of inactive documents in tree view</source>
-      <translation>Conxunto de visibilidade de documentos inactivos na vista de árbol</translation>
+      <translation>Conxunto de visibilidade de documentos inactivos na vista de árbore</translation>
     </message>
   </context>
   <context>
@@ -7492,7 +7488,7 @@ Quere duplicalos tamén?</translation>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation>Axuste NaviCube a modo isométrico</translation>
+      <translation>Axuste NaviCube a modo Isométrico</translation>
     </message>
   </context>
   <context>
