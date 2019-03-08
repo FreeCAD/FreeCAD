@@ -862,9 +862,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 nxt.y = CLP[i + 1].y
                 nxt.z = CLP[i + 1].z
                 if CLP[i + 1].z < layerDepth:
-                    pnt.z = layerDepth
-                else:
-                    pnt.z = CLP[i + 1].z
+                    nxt.z = layerDepth
             else:
                 optimize = False
 
