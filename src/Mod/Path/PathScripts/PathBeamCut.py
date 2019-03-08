@@ -45,11 +45,10 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 def toolOffset(ToolComp, width, Depth, tool):
-    '''toolOffset(width, Depth, tool) ... return tuple for given parameters.'''
+    '''toolOffset(ToolComp, width, Depth, tool) ... return tuple for given parameters.'''
     depth = 0 # Fixed at 0, tool never goes into work
     toolOffset = tool.Diameter/2
-    noToolComp = not ToolComp
-    extraOffset =  width - ((tool.Diameter/2)*noToolComp)
+    extraOffset =  width - ((tool.Diameter/2)*(not ToolComp))
     if extraOffset <= -(tool.Diameter/2):# We need to stay on the correct side
 	extraOffset = -(tool.Diameter/2) + 0.00001 #Offset to correct side by smallest unit(faster than offsetting twice)
     offset = toolOffset + extraOffset
@@ -64,9 +63,9 @@ class ObjectBeamCut(PathEngraveBase.ObjectOp):
     def initOperation(self, obj):
         PathLog.track(obj.Label)
         obj.addProperty('App::PropertyDistance',    'Offset', 'BeamCut', QtCore.QT_TRANSLATE_NOOP('PathBeamCut', 'The desired beam offset'))
-        obj.addProperty('App::PropertyBool',    'ToolComp', 'BeamCut', QtCore.QT_TRANSLATE_NOOP('PathBeamCut', 'Dont use tool compensation'))
+        obj.addProperty('App::PropertyBool',    'ToolComp', 'BeamCut', QtCore.QT_TRANSLATE_NOOP('PathBeamCut', 'Apply tool compensation'))
         obj.addProperty('App::PropertyDistance',    'Depth', 'BeamCut', QtCore.QT_TRANSLATE_NOOP('PathBeamCut', 'The additional depth of the tool path'))
-        obj.setEditorMode('Depth', 2) # hide disable depth settings
+        obj.setEditorMode('Depth', 2) # hide depth settings
 
     def opExecute(self, obj):
         PathLog.track(obj.Label)
@@ -116,7 +115,7 @@ class ObjectBeamCut(PathEngraveBase.ObjectOp):
             self.commandlist.pop()
 
     def opRejectAddBase(self, obj, base, sub):
-        '''The chamfer op can only deal with features of the base model, all others are rejected.'''
+        '''The Beamcut op can only deal with features of the base model, all others are rejected.'''
         return not base in self.model
 
     def opSetDefaultValues(self, obj, job):
@@ -131,7 +130,6 @@ def SetupProperties():
     setup = []
     setup.append('Offset')
     setup.append('ToolComp')
- #   setup.append('Depth')
     return setup
 
 def Create(name, obj = None):

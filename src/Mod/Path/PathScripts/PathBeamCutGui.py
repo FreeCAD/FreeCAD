@@ -46,7 +46,6 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     '''Page controller class for the BeamCut operation.'''
 
@@ -63,30 +62,29 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         iconRound.addFile(':/icons/edge-join-round.svg', state=QtGui.QIcon.On)
         self.form.joinMiter.setIcon(iconMiter)
         self.form.joinRound.setIcon(iconRound)
+        self.form.value_C.setEnabled(True)
 
     def getFields(self, obj):
         PathGui.updateInputField(obj, 'Offset', self.form.value_W)
-#        PathGui.updateInputField(obj, 'Depth', self.form.value_h)
+	self.form.value_C
         self.updateToolController(obj, self.form.toolController)
+	if obj.ToolComp != self.form.value_C.isChecked():
+            obj.ToolComp = self.form.value_C.isChecked()
 
     def setFields(self, obj):
         self.form.value_W.setText(FreeCAD.Units.Quantity(obj.Offset.Value, FreeCAD.Units.Length).UserString)
-#        self.form.value_h.setText(FreeCAD.Units.Quantity(obj.Depth.Value, FreeCAD.Units.Length).UserString)
         self.setupToolController(obj, self.form.toolController)
+        self.form.value_C.setChecked(obj.ToolComp)
 
     def updateOffset(self):
         PathGui.updateInputField(self.obj, 'Offset', self.form.value_W)
 
-#    def updateDepth(self):
-#        PathGui.updateInputField(self.obj, 'Depth', self.form.value_h)
-
-    def updateToolComp(self):
-        PathGui.updateInputField(self.obj, 'ToolComp', self.form.value_C)
-
-    def registerSignalHandlers(self, obj):
-        self.form.value_W.editingFinished.connect(self.updateOffset)
-#        self.form.value_h.editingFinished.connect(self.updateDepth)
-
+    def getSignalsForUpdate(self, obj):
+        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
+        signals = []
+        signals.append(self.form.value_W.editingFinished)
+        signals.append(self.form.value_C.clicked)
+        return signals
 
 Command = PathOpGui.SetupOperation('BeamCut',
         PathBeamCut.Create,
