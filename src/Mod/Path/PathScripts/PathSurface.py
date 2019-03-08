@@ -24,7 +24,7 @@
 # *                                                                         *
 # *   Additional modifications and contributions in 2019                    *
 # *   by Russell Johnson  <russ4262@gmail.com>                              *
-# *   Version: Rev. 3d - Usable                                             *
+# *   Version: Rev. 3e - Usable                                             *
 # *                                                                         *
 # *   NOTES:  After changing value in property window, only click on        *
 # *   blue re-compute icon in menu bar. Do NOT click anywhere outside       *
@@ -72,6 +72,7 @@ try:
 except:
     FreeCAD.Console.PrintError(
         translate("Path_Surface", "This operation requires OpenCamLib to be installed.") + "\n")
+    import sys
     sys.exit(translate("Path_Surface", "This operation requires OpenCamLib to be installed."))
 
 class ObjectSurface(PathOp.ObjectOp):
@@ -242,6 +243,8 @@ class ObjectSurface(PathOp.ObjectOp):
         # reset operation variables
         # self.resetOpVariables()
 
+
+
     def planearDropCut(self, obj, mesh, bb, singlePass):
         self.keepTime = time.time()
         # Determine bounding box length
@@ -297,159 +300,6 @@ class ObjectSurface(PathOp.ObjectOp):
             prevDepth = depthparams[lyr]
         #print("--END LAYER SCANS")
         print("--All layer scans combined took ", time.time() - self.keepTime, " s")
-        return True
-
-    def processPlanearHolds(self, obj):    
-        # Process all HOLDs in gcode command list
-        self.keepTime = time.time()
-        hldcnt = 0
-        hpCmds = []
-        lenHP = len(self.holdStartPnts)
-        commands = [Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid})]
-        print("--Processing ", str(lenHP), " HOLD optimizations---")
-        # cutter = self.cutter.getDiameter()
-        # cycle throug hold points
-        if lenHP > 0:
-            hdCnt = 0
-            lenGC = len(self.gcodeCmds)
-            for idx in range(0, lenGC):
-                if self.gcodeCmds[idx] == "HD":
-                    hdCnt += 1
-                    # process hold here
-                    p1 = self.holdStartPnts.pop(0)
-                    p2 = self.holdStopPnts.pop(0)
-                    pd = self.holdPrevLayerVals.pop(0)
-                    hscType = self.holdStopTypes.pop(0)
-
-                    if hscType == "End":
-                        N = None
-                        # Create gcode commands to connect p1 and p2
-                        hpCmds = self.holdStopEndCmds(obj, p2, "Hold Stop: End point")
-                    elif hscType == "Mid":
-                        # Set the max and min XY boundaries of the HOLD connection operation
-                        cutterClearance = self.cutter.getDiameter() / 1.25
-                        if p1.x < p2.x:
-                            xmin = p1.x - cutterClearance
-                            xmax = p2.x + cutterClearance
-                        else: 
-                            xmin = p2.x - cutterClearance
-                            xmax = p1.x + cutterClearance
-
-                        if p1.y < p2.y:
-                            ymin = p1.y - cutterClearance
-                            ymax = p2.y + cutterClearance
-                        else: 
-                            ymin = p2.y - cutterClearance
-                            ymax = p1.y + cutterClearance
-                        # get focused list of points based on bound box with p1 and p2 as corners, with cutter diam. as additional buffer
-                        subCLP = self.subsectionCLP(self.CLP, xmin, ymin, xmax, ymax)
-                        # Determine max z height for clearance between p1 and p2
-                        zMax = self.getMaxHeight(self.targetDepth, p1, p2, self.cutter.getDiameter(), subCLP)
-                        # Create gcode commands to connect p1 and p2
-                        hpCmds = self.holdStopCmds(obj, zMax, pd, p2, "Hold Stop: Group processed")
-                    # Add commands to list
-                    for cmd in hpCmds:
-                        commands.append(cmd)
-                    hldcnt += 1
-                else:
-                    commands.append(self.gcodeCmds[idx])
-        else:
-            commands = self.gcodeCmds
-        return commands
-
-    def _waterline(self, obj, stl, bb):
-        def drawLoops(loops):
-            nloop = 0
-            pp = []
-            pp.append(Path.Command("(waterline begin)"))
-
-            for loop in loops:
-                p = loop[0]
-                pp.append(Path.Command("(loop begin)"))
-                pp.append(Path.Command('G0', {"Z": obj.SafeHeight.Value, 'F': self.vertRapid}))
-                pp.append(Path.Command('G0', {'X': p.x, "Y": p.y, 'F': self.horizRapid}))
-                pp.append(Path.Command('G1', {"Z": p.z, 'F': self.vertFeed}))
-                prev = ocl.Point(float("inf"), float("inf"), float("inf"))
-                nxt = ocl.Point(float("inf"), float("inf"), float("inf"))
-                optimize = obj.Optimize
-                for i in range(1, len(loop)):
-                    p = loop[i]
-                    if i < len(loop) - 1:
-                        nxt.x = loop[i + 1].x
-                        nxt.y = loop[i + 1].y
-                        nxt.z = loop[i + 1].z
-                    else:
-                        optimize = False
-                    if not optimize or not self.isPointOnLine(FreeCAD.Vector(prev.x, prev.y, prev.z), FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(p.x, p.y, p.z)):
-                        pp.append(Path.Command('G1', {'X': p.x, "Y": p.y, "Z": p.z, 'F': self.horizFeed}))
-                    prev.x = p.x
-                    prev.y = p.y
-                    prev.z = p.z
-                    # zheight = p.z
-                p = loop[0]
-                pp.append(Path.Command('G1', {'X': p.x, "Y": p.y, "Z": p.z, 'F': self.horizFeed}))
-                pp.append(Path.Command("(loop end)"))
-
-                print("    loop ", nloop, " with ", len(loop), " points")
-                nloop = nloop + 1
-            pp.append(Path.Command("(waterline end)"))
-
-            return pp
-
-        depthparams = PathUtils.depth_params(obj.ClearanceHeight.Value, obj.SafeHeight.Value,
-                                             obj.StartDepth.Value, obj.StepDown, 0.0, obj.FinalDepth.Value)
-
-        t_before = time.time()
-        zheights = [i for i in depthparams]
-
-        wl = ocl.Waterline()
-        wl.setSTL(stl)
-
-        if obj.ToolController.Tool.ToolType == 'BallEndMill':
-            self.cutter = ocl.BallCutter(obj.ToolController.Tool.Diameter, 5)  # TODO: 5 represents cutting edge height. Should be replaced with the data from toolcontroller?
-        else:
-            self.cutter = ocl.CylCutter(obj.ToolController.Tool.Diameter, 5)
-
-        wl.setCutter(self.cutter)
-        # this should be smaller than the smallest details in the STL file
-        wl.setSampling(obj.SampleInterval)
-        # AdaptiveWaterline() also has settings for minimum sampling interval
-        # (see c++ code)
-        all_loops = []
-        print ("zheights: {}".format(zheights))
-        for zh in zheights:
-            print("calculating Waterline at z= ", zh)
-            wl.reset()
-            wl.setZ(zh)  # height for this waterline
-            wl.run()
-            all_loops.append(wl.getLoops())
-        t_after = time.time()
-        calctime = t_after - t_before
-        n = 0
-        output = []
-        for loops in all_loops:  # at each z-height, we may get many loops
-            print("  %d/%d:" % (n, len(all_loops)))
-            output.extend(drawLoops(loops))
-            n = n + 1
-        print("(" + str(calctime) + ")")
-        return output
-
-    def isPointOnLine(self, lineA, lineB, pointP):
-        tolerance = 1e-6
-        vectorAB = lineB - lineA
-        vectorAC = pointP - lineA
-        crossproduct = vectorAB.cross(vectorAC)
-        dotproduct = vectorAB.dot(vectorAC)
-
-        if crossproduct.Length > tolerance:
-            return False
-
-        if dotproduct < 0:
-            return False
-
-        if dotproduct > vectorAB.Length * vectorAB.Length:
-            return False
-
         return True
 
     def _dropCutterScan(self, obj, stl, bbLength, xmin, ymin, xmax, ymax, fd):
@@ -730,60 +580,63 @@ class ObjectSurface(PathOp.ObjectOp):
         self.gcodeCmds.append(Path.Command('N (End of layer ' + str(lc) + ')', {}))
         #return output
 
-    def holdStopCmds(self, obj, zMax, pd, p2, txt):
-        cmds = []
-        msg = 'N (' + txt + ')'
-        cmds.append(Path.Command(msg, {}))  # Raise cutter rapid to zMax in line of travel
-        cmds.append(Path.Command('G0', {'Z': zMax, 'F': self.vertRapid}))  # Raise cutter rapid to zMax in line of travel
-        cmds.append(Path.Command('G0', {'X': p2.x, "Y": p2.y, 'F': self.horizRapid}))  # horizontal rapid to current XY coordinate
-        if zMax != pd:
-            cmds.append(Path.Command('G0', {'Z': pd, 'F': self.vertRapid}))  # drop cutter down rapidly to prevDepth depth
-            cmds.append(Path.Command('G0', {'Z': p2.z, 'F': self.vertFeed}))  # drop cutter down to current Z depth, returning to normal cut path and speed
-        return cmds
+    def processPlanearHolds(self, obj):    
+        # Process all HOLDs in gcode command list
+        self.keepTime = time.time()
+        hldcnt = 0
+        hpCmds = []
+        lenHP = len(self.holdStartPnts)
+        commands = [Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid})]
+        print("--Processing ", str(lenHP), " HOLD optimizations---")
+        # cutter = self.cutter.getDiameter()
+        # cycle throug hold points
+        if lenHP > 0:
+            hdCnt = 0
+            lenGC = len(self.gcodeCmds)
+            for idx in range(0, lenGC):
+                if self.gcodeCmds[idx] == "HD":
+                    hdCnt += 1
+                    # process hold here
+                    p1 = self.holdStartPnts.pop(0)
+                    p2 = self.holdStopPnts.pop(0)
+                    pd = self.holdPrevLayerVals.pop(0)
+                    hscType = self.holdStopTypes.pop(0)
 
-    def holdStopEndCmds(self, obj, p2, txt):
-        cmds = []
-        msg = 'N (' + txt + ')'
-        cmds.append(Path.Command(msg, {}))  # Raise cutter rapid to zMax in line of travel
-        cmds.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))  # Raise cutter rapid to zMax in line of travel
-        # cmds.append(Path.Command('G0', {'X': p2.x, "Y": p2.y, 'F': self.horizRapid}))  # horizontal rapid to current XY coordinate
-        return cmds
+                    if hscType == "End":
+                        N = None
+                        # Create gcode commands to connect p1 and p2
+                        hpCmds = self.holdStopEndCmds(obj, p2, "Hold Stop: End point")
+                    elif hscType == "Mid":
+                        # Set the max and min XY boundaries of the HOLD connection operation
+                        cutterClearance = self.cutter.getDiameter() / 1.25
+                        if p1.x < p2.x:
+                            xmin = p1.x - cutterClearance
+                            xmax = p2.x + cutterClearance
+                        else: 
+                            xmin = p2.x - cutterClearance
+                            xmax = p1.x + cutterClearance
 
-    def subsectionCLP(self, CLP, xmin, ymin, xmax, ymax):
-        # This function returns a subsection of the CLP scan, limited to the min/max values supplied
-        section = []
-        lenCLP = len(CLP)
-        for i in range(0, lenCLP):
-            if CLP[i].x < xmax:
-                if CLP[i].y < ymax:
-                    if CLP[i].x > xmin:
-                        if CLP[i].y > ymin:
-                            section.append(CLP[i])
-        return section
-    
-    def getMaxHeight(self, finalDepth, p1, p2, cutter, CLP):
-        # This function connects two HOLD points with line
-        # Each point within the subsection point list is tested to determinie if it is under cutter
-        # Points determined to be under the cutter on line are tested for z height
-        # The highest z point is the requirement for clearance between p1 and p2, and returned as zMax with 2 mm extra
-        dx = (p2.x-p1.x)
-        if dx == 0.0:
-            dx = 0.00001
-        m = (p2.y-p1.y) / dx
-        b = p1.y-(m*p1.x)
-
-        avoidTool = round(cutter * 0.75, 1)  # 1/2 diam. of cutter is theoretically safe, but 3/4 diam is used for extra clearance
-        zMax = finalDepth
-        lenCLP = len(CLP)
-        for i in range(0, lenCLP):
-            mSqrd = m**2
-            if mSqrd < 0.0000001:
-                mSqrd = 0.0000001
-            perpDist = math.sqrt((CLP[i].y - (m * CLP[i].x) - b)**2 / (1 + 1 / (mSqrd)))
-            if perpDist < avoidTool: # if point within cutter reach on line of travel, test z height and update as needed
-                if CLP[i].z > zMax:
-                    zMax = CLP[i].z
-        return zMax + 2.0
+                        if p1.y < p2.y:
+                            ymin = p1.y - cutterClearance
+                            ymax = p2.y + cutterClearance
+                        else: 
+                            ymin = p2.y - cutterClearance
+                            ymax = p1.y + cutterClearance
+                        # get focused list of points based on bound box with p1 and p2 as corners, with cutter diam. as additional buffer
+                        subCLP = self.subsectionCLP(self.CLP, xmin, ymin, xmax, ymax)
+                        # Determine max z height for clearance between p1 and p2
+                        zMax = self.getMaxHeight(self.targetDepth, p1, p2, self.cutter.getDiameter(), subCLP)
+                        # Create gcode commands to connect p1 and p2
+                        hpCmds = self.holdStopCmds(obj, zMax, pd, p2, "Hold Stop: Group processed")
+                    # Add commands to list
+                    for cmd in hpCmds:
+                        commands.append(cmd)
+                    hldcnt += 1
+                else:
+                    commands.append(self.gcodeCmds[idx])
+        else:
+            commands = self.gcodeCmds
+        return commands
 
 
 
@@ -825,13 +678,15 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Set updated bound box values
         # Redefine the new max and min XY area of the operation based on greatest point radius of model
-        bb.ZMin = -bbRad
+        bb.ZMin = -1*bbRad
         bb.ZMax = bbRad
         if obj.DropCutterDir == 'X':
             bb.YMin = -bbRad
             bb.YMax = bbRad
-            ymin = -bbRad
-            ymax = bbRad
+            #ymin = -1*bbRad
+            #ymax = bbRad
+            ymin = 0.0
+            ymax = 0.0
             xmin = bb.XMin - obj.DropCutterExtraOffset.x
             xmax = bb.XMax + obj.DropCutterExtraOffset.x
         else:
@@ -839,8 +694,10 @@ class ObjectSurface(PathOp.ObjectOp):
             bb.XMax = bbRad
             ymin = bb.YMin - obj.DropCutterExtraOffset.y
             ymax = bb.YMax + obj.DropCutterExtraOffset.y
-            xmin = -bbRad
-            xmax = bbRad
+            #xmin = -1*bbRad
+            #xmax = bbRad
+            xmin = 0.0
+            xmax = 0.0
 
         # Compute angular index angles for rotation
         #stepDeg = round((cutOut / bbCircum) * 360, 5)
@@ -870,26 +727,30 @@ class ObjectSurface(PathOp.ObjectOp):
                             ocl.Point(r[0], r[1], r[2]))
             stl.addTriangle(t)
 
-        # indexScan = []
+        indexScan = []
         self.rotationalScanLines = []
         lenSAI = len(self.scanAngleIndexes)
         prevIndex = 0
         mathpi = math.pi
         if obj.DropCutterDir == 'Y':
-            mathpi = -1 * math.pi
+            mathpi = -math.pi
         for sa in range(0, lenSAI):
             t_before = time.time()
-            radsRot = (self.scanAngleIndexes[sa] - prevIndex) * mathpi / 180
+
+            radsRot = (self.scanAngleIndexes[sa] - prevIndex) * mathpi / 180 - 0.0000001
             # Rotate STL object in ocl
             if obj.DropCutterDir == 'X':
+                #rStl = stl.rotate(radsRot, 0.0, 0.0)
                 stl.rotate(radsRot, 0.0, 0.0)
             else:
+                #rStl = stl.rotate(0.0, radsRot, 0.0)
                 stl.rotate(0.0, radsRot, 0.0)
             # get scan at index
             indexScan = self.dropCutterAxialScan(obj, stl, xmin, ymin, xmax, ymax, obj.FinalDepth.Value, sa)
             self.rotationalScanLines.append(indexScan)
-            # print("--OCL scan time: " + str(time.time() - t_before) + " s")
             prevIndex = self.scanAngleIndexes[sa]
+
+            # print("--OCL scan time: " + str(time.time() - t_before) + " s")
             self.keepTime += time.time() - t_before
         # End loop
         print("--Total time for ", lenSAI, " OCL scans: ", self.keepTime, " s")
@@ -1077,6 +938,103 @@ class ObjectSurface(PathOp.ObjectOp):
         self.gcodeCmds.append(Path.Command('N (End index angle ' + str(round(idxAng, 4)) + ')', {}))
         return True
 
+
+
+    def _waterline(self, obj, stl, bb):
+        def drawLoops(loops):
+            nloop = 0
+            pp = []
+            pp.append(Path.Command("(waterline begin)"))
+
+            for loop in loops:
+                p = loop[0]
+                pp.append(Path.Command("(loop begin)"))
+                pp.append(Path.Command('G0', {"Z": obj.SafeHeight.Value, 'F': self.vertRapid}))
+                pp.append(Path.Command('G0', {'X': p.x, "Y": p.y, 'F': self.horizRapid}))
+                pp.append(Path.Command('G1', {"Z": p.z, 'F': self.vertFeed}))
+                prev = ocl.Point(float("inf"), float("inf"), float("inf"))
+                nxt = ocl.Point(float("inf"), float("inf"), float("inf"))
+                optimize = obj.Optimize
+                for i in range(1, len(loop)):
+                    p = loop[i]
+                    if i < len(loop) - 1:
+                        nxt.x = loop[i + 1].x
+                        nxt.y = loop[i + 1].y
+                        nxt.z = loop[i + 1].z
+                    else:
+                        optimize = False
+                    if not optimize or not self.isPointOnLine(FreeCAD.Vector(prev.x, prev.y, prev.z), FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(p.x, p.y, p.z)):
+                        pp.append(Path.Command('G1', {'X': p.x, "Y": p.y, "Z": p.z, 'F': self.horizFeed}))
+                    prev.x = p.x
+                    prev.y = p.y
+                    prev.z = p.z
+                    # zheight = p.z
+                p = loop[0]
+                pp.append(Path.Command('G1', {'X': p.x, "Y": p.y, "Z": p.z, 'F': self.horizFeed}))
+                pp.append(Path.Command("(loop end)"))
+
+                print("    loop ", nloop, " with ", len(loop), " points")
+                nloop = nloop + 1
+            pp.append(Path.Command("(waterline end)"))
+
+            return pp
+
+        depthparams = PathUtils.depth_params(obj.ClearanceHeight.Value, obj.SafeHeight.Value,
+                                             obj.StartDepth.Value, obj.StepDown, 0.0, obj.FinalDepth.Value)
+
+        t_before = time.time()
+        zheights = [i for i in depthparams]
+
+        wl = ocl.Waterline()
+        wl.setSTL(stl)
+
+        if obj.ToolController.Tool.ToolType == 'BallEndMill':
+            self.cutter = ocl.BallCutter(obj.ToolController.Tool.Diameter, 5)  # TODO: 5 represents cutting edge height. Should be replaced with the data from toolcontroller?
+        else:
+            self.cutter = ocl.CylCutter(obj.ToolController.Tool.Diameter, 5)
+
+        wl.setCutter(self.cutter)
+        # this should be smaller than the smallest details in the STL file
+        wl.setSampling(obj.SampleInterval)
+        # AdaptiveWaterline() also has settings for minimum sampling interval
+        # (see c++ code)
+        all_loops = []
+        print ("zheights: {}".format(zheights))
+        for zh in zheights:
+            print("calculating Waterline at z= ", zh)
+            wl.reset()
+            wl.setZ(zh)  # height for this waterline
+            wl.run()
+            all_loops.append(wl.getLoops())
+        t_after = time.time()
+        calctime = t_after - t_before
+        n = 0
+        output = []
+        for loops in all_loops:  # at each z-height, we may get many loops
+            print("  %d/%d:" % (n, len(all_loops)))
+            output.extend(drawLoops(loops))
+            n = n + 1
+        print("(" + str(calctime) + ")")
+        return output
+
+    def isPointOnLine(self, lineA, lineB, pointP):
+        tolerance = 1e-6
+        vectorAB = lineB - lineA
+        vectorAC = pointP - lineA
+        crossproduct = vectorAB.cross(vectorAC)
+        dotproduct = vectorAB.dot(vectorAC)
+
+        if crossproduct.Length > tolerance:
+            return False
+
+        if dotproduct < 0:
+            return False
+
+        if dotproduct > vectorAB.Length * vectorAB.Length:
+            return False
+
+        return True
+
     def holdStopCmds(self, obj, zMax, pd, p2, txt):
         cmds = []
         msg = 'N (' + txt + ')'
@@ -1087,6 +1045,50 @@ class ObjectSurface(PathOp.ObjectOp):
             cmds.append(Path.Command('G0', {'Z': pd, 'F': self.vertRapid}))  # drop cutter down rapidly to prevDepth depth
             cmds.append(Path.Command('G0', {'Z': p2.z, 'F': self.vertFeed}))  # drop cutter down to current Z depth, returning to normal cut path and speed
         return cmds
+
+    def holdStopEndCmds(self, obj, p2, txt):
+        cmds = []
+        msg = 'N (' + txt + ')'
+        cmds.append(Path.Command(msg, {}))  # Raise cutter rapid to zMax in line of travel
+        cmds.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))  # Raise cutter rapid to zMax in line of travel
+        # cmds.append(Path.Command('G0', {'X': p2.x, "Y": p2.y, 'F': self.horizRapid}))  # horizontal rapid to current XY coordinate
+        return cmds
+
+    def subsectionCLP(self, CLP, xmin, ymin, xmax, ymax):
+        # This function returns a subsection of the CLP scan, limited to the min/max values supplied
+        section = []
+        lenCLP = len(CLP)
+        for i in range(0, lenCLP):
+            if CLP[i].x < xmax:
+                if CLP[i].y < ymax:
+                    if CLP[i].x > xmin:
+                        if CLP[i].y > ymin:
+                            section.append(CLP[i])
+        return section
+
+    def getMaxHeight(self, finalDepth, p1, p2, cutter, CLP):
+        # This function connects two HOLD points with line
+        # Each point within the subsection point list is tested to determinie if it is under cutter
+        # Points determined to be under the cutter on line are tested for z height
+        # The highest z point is the requirement for clearance between p1 and p2, and returned as zMax with 2 mm extra
+        dx = (p2.x-p1.x)
+        if dx == 0.0:
+            dx = 0.00001
+        m = (p2.y-p1.y) / dx
+        b = p1.y-(m*p1.x)
+
+        avoidTool = round(cutter * 0.75, 1)  # 1/2 diam. of cutter is theoretically safe, but 3/4 diam is used for extra clearance
+        zMax = finalDepth
+        lenCLP = len(CLP)
+        for i in range(0, lenCLP):
+            mSqrd = m**2
+            if mSqrd < 0.0000001:
+                mSqrd = 0.0000001
+            perpDist = math.sqrt((CLP[i].y - (m * CLP[i].x) - b)**2 / (1 + 1 / (mSqrd)))
+            if perpDist < avoidTool: # if point within cutter reach on line of travel, test z height and update as needed
+                if CLP[i].z > zMax:
+                    zMax = CLP[i].z
+        return zMax + 2.0
 
     def pocketInvertExtraOffset(self):
         return True
@@ -1141,6 +1143,8 @@ def SetupProperties():
     setup.append("BoundBox")
     setup.append("StepOver")
     setup.append("DepthOffset")
+    setup.append("CompletionMode")
+    setup.append("ScanType")
     return setup
 
 def Create(name, obj=None):
