@@ -519,6 +519,9 @@ class _Site(ArchFloor._Floor):
         if not "CompassRotation" in pl:
             obj.addProperty("App::PropertyAngle", "CompassRotation", "Compass", QT_TRANSLATE_NOOP(
                 "App::Property", "The rotation of the Compass relative to the Site"))
+        if not "UpdateDeclination" in pl:
+            obj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP(
+                "App::Property", "Update the Declination value based on the compass roation"))
         self.Type = "Site"
         obj.setEditorMode('Height',2)
 
@@ -579,6 +582,17 @@ class _Site(ArchFloor._Floor):
                 if FreeCAD.GuiUp:
                     obj.Terrain.ViewObject.hide()
                 self.execute(obj)
+        if prop in ["UpdateDeclination", "CompassRotation", "Placement"]:
+            self.updateDeclination()
+
+    def updateDeclination(self):
+        if not hasattr(self.Object, 'UpdateDeclination') or not self.Object.UpdateDeclination:
+            return
+
+        compassRotation = self.Object.CompassRotation.Value
+        siteRotation = math.degrees(self.Object.Placement.Rotation.Angle)
+
+        self.Object.Declination = compassRotation + siteRotation
 
     def computeAreas(self,obj):
 
