@@ -425,16 +425,6 @@ class ObjectSurface(PathOp.ObjectOp):
         # generate the path commands
         # Begin processing ocl points list into gcode
         for i in range(0, lenCLP):
-            # Use first point below prvDep as start point for layer
-            '''
-            if beginCmdFlag:
-                if pnt.z < prvDep:
-                    bLC = beginLayerCommand(pnt, lc, firstDrop)
-                    for blc in bLC:
-                        output.insert(0, blc)
-                    beginCmdFlag = False
-            '''
-
             # Calculate next point for consideration of next point
             if i < lastCLP:
                 nxt.x = CLP[i + 1].x
