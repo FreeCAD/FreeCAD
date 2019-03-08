@@ -1,0 +1,54 @@
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient id="linearGradient3853">
+   <stop stop-color="#204a87" id="stop3855" offset="0"/>
+   <stop stop-color="#729fcf" id="stop3857" offset="1"/>
+  </linearGradient>
+  <pattern xlink:href="#Strips1_1-4" id="pattern5231" patternTransform="matrix(0.67643728,-0.81829155,2.4578314,1.8844554,-26.450606,18.294947)"/>
+  <pattern patternUnits="userSpaceOnUse" width="2" height="1" patternTransform="matrix(0.66772843,-1.0037085,2.4261878,2.3114548,3.4760987,3.534923)" id="Strips1_1-4">
+   <rect fill="black" x="0" y="-0.5" width="1" height="2" id="rect4483-4"/>
+  </pattern>
+  <pattern xlink:href="#Strips1_1-6" id="pattern5231-4" patternTransform="matrix(0.66772843,-1.0037085,2.4261878,2.3114548,39.618381,8.9692804)"/>
+  <pattern patternUnits="userSpaceOnUse" width="2" height="1" patternTransform="matrix(0.66772843,-1.0037085,2.4261878,2.3114548,3.4760987,3.534923)" id="Strips1_1-6">
+   <rect fill="black" x="0" y="-0.5" width="1" height="2" id="rect4483-0"/>
+  </pattern>
+  <pattern xlink:href="#pattern5231-3" id="pattern5296" patternTransform="matrix(0.66513382,-1.0631299,2.4167603,2.4482973,-49.762569,2.9546807)"/>
+  <pattern xlink:href="#Strips1_1-4-3" id="pattern5231-3" patternTransform="matrix(0.66772843,-1.0037085,2.4261878,2.3114548,-26.336284,10.887197)"/>
+  <pattern patternUnits="userSpaceOnUse" width="2" height="1" patternTransform="matrix(0.66772843,-1.0037085,2.4261878,2.3114548,3.4760987,3.534923)" id="Strips1_1-4-3">
+   <rect fill="black" x="0" y="-0.5" width="1" height="2" id="rect4483-4-6"/>
+  </pattern>
+  <pattern xlink:href="#Strips1_1-9" id="pattern5330" patternTransform="matrix(0.42844886,-0.62155849,1.5567667,1.431396,27.948414,13.306456)"/>
+  <pattern patternUnits="userSpaceOnUse" width="2" height="1" patternTransform="matrix(0.66772843,-1.0037085,2.4261878,2.3114548,3.4760987,3.534923)" id="Strips1_1-9">
+   <rect fill="black" x="0" y="-0.5" width="1" height="2" id="rect4483-3"/>
+  </pattern>
+  <linearGradient y2="0.957497" x2="0.425905" y1="0.044963" x1="0.578845" id="linearGradient3859" xlink:href="#linearGradient3853"/>
+ </defs>
+ <metadata id="metadata2821">image/svg+xmlPath-Engrave2016-02-24http://www.freecadweb.org/wiki/index.php?title=ArtworkFreeCADFreeCAD/src/Mod/Path/Gui/Resources/icons/Path-Engrave.svgFreeCAD LGPL2+https://www.gnu.org/copyleft/lesser.html[agryson] Alexander Gryson</metadata>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g id="layer1">
+   <g id="g4219">
+    <g id="g4215" transform="matrix(1,0,0,-1,0,64.339618) ">
+     <path fill="#73d216" stroke="#73d216" stroke-width="2" id="path3865" d="m5.124996,39.339618l0,-13l28,-15l18,4l0,15l-46,9z"/>
+     <path fill="#8ae234" id="path3867" d="m3.124996,34.339615l0,-4l30,-16l16,4l0,4l-14,-4l-32,16z"/>
+     <path fill="none" stroke="#172a04" stroke-width="2" id="path3863" d="m3.124996,41.339618l0,-14l30,-16l18,4l0,14l-48,12z"/>
+     <path fill="url(#linearGradient3859)" fill-rule="nonzero" stroke="#0b1521" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="4" stroke-dashoffset="0" id="rect3105" d="m61.124996,3.339615l-58,0l0,26l30,-16l16,4l0,10l-14,-4l-32,16l0,20l58,0l0,-56z"/>
+     <path fill="none" stroke="#729fcf" stroke-width="2" stroke-miterlimit="4" stroke-dashoffset="0" id="rect3105-3" d="m59.125,5.33962l-54,0l0,20.68871l28,-14.68871l18,4.41323l-0.01722,14.25964l-15.98278,-4.67287l-30,15l0,17l54,0l0,-52z"/>
+    </g>
+   </g>
+   <ellipse stroke="#ff0000" ry="6.24982" rx="6.562311" id="svg_10" cy="41.80245" cx="45.124623" stroke-width="2" fill="#ff002e"/>
+   <line id="svg_14" y2="6.553464" x2="45.56211" y1="58.17698" x1="45.062125" stroke-width="2" stroke="#ff0000" fill="none"/>
+   <line stroke-linecap="null" stroke-linejoin="null" id="svg_16" y2="42.302436" x2="23.31275" y1="42.052444" x1="57.936755" fill-opacity="null" stroke-opacity="null" stroke-width="2" stroke="#ff0000" fill="none"/>
+   <line stroke-linecap="null" stroke-linejoin="null" id="svg_17" y2="54.677081" x2="31.687509" y1="29.177814" x1="57.436769" fill-opacity="null" stroke-opacity="null" stroke-width="2" stroke="#ff0000" fill="none"/>
+   <line stroke-linecap="null" stroke-linejoin="null" id="svg_19" y2="28.552832" x2="31.562513" y1="54.302092" x1="56.811787" fill-opacity="null" stroke-opacity="null" stroke-width="2" stroke="#ff0000" fill="none"/>
+   <line stroke-linecap="null" stroke-linejoin="null" id="svg_29" y2="37.677569" x2="55.936812" y1="46.177325" x1="34.187437" fill-opacity="null" stroke-opacity="null" stroke-width="2" stroke="#ff0000" fill="none"/>
+   <line stroke-linecap="null" stroke-linejoin="null" id="svg_31" y2="52.677138" x2="49.811988" y1="30.802767" x1="40.062268" fill-opacity="null" stroke-opacity="null" stroke-width="2" stroke="#ff0000" fill="none"/>
+   <line stroke-linecap="null" stroke-linejoin="null" id="svg_34" y2="30.802767" x2="49.936985" y1="53.30212" x1="40.437258" fill-opacity="null" stroke-opacity="null" stroke-width="2" stroke="#ff0000" fill="none"/>
+  </g>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_35" y2="37.552573" x2="34.062441" y1="46.802307" x1="55.186834" fill-opacity="null" stroke-opacity="null" stroke-width="2" stroke="#ff0000" fill="none"/>
+ </g>
+</svg>

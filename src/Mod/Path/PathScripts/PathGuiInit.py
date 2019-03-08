@@ -39,6 +39,7 @@ def Startup():
         PathLog.debug('Initializing PathGui')
         from PathScripts import PathAdaptiveGui
         from PathScripts import PathArray
+        from PathScripts import PathBeamCutGui
         from PathScripts import PathComment
         from PathScripts import PathCustom
         from PathScripts import PathDeburrGui

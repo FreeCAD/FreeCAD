@@ -210,6 +210,7 @@ def surfaceselect():
 
 def select(op):
     opsel = {}
+    opsel['BeamCut'] = chamferselect
     opsel['Contour'] = contourselect
     opsel['Deburr'] = chamferselect
     opsel['Drilling'] = drillselect

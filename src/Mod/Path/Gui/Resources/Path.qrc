@@ -5,6 +5,7 @@
         <file>icons/Path-Array.svg</file>
         <file>icons/Path-Axis.svg</file>
         <file>icons/Path-BaseGeometry.svg</file>
+        <file>icons/Path-BeamCut.svg</file>
         <file>icons/Path-Comment.svg</file>
         <file>icons/Path-Compound.svg</file>
         <file>icons/Path-Contour.svg</file>
@@ -90,6 +91,7 @@
         <file>panels/PageBaseGeometryEdit.ui</file>
         <file>panels/PageBaseHoleGeometryEdit.ui</file>
         <file>panels/PageBaseLocationEdit.ui</file>
+        <file>panels/PageOpBeamCutEdit.ui</file>
         <file>panels/PageDepthsEdit.ui</file>
         <file>panels/PageHeightsEdit.ui</file>
         <file>panels/PageOpDeburrEdit.ui</file>

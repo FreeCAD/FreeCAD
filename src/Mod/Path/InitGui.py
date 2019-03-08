@@ -80,7 +80,7 @@ class PathWorkbench (Workbench):
         prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop", "Path_Custom"]
         twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_MillFace", "Path_Helix", "Path_Adaptive" ]
         threedopcmdlist = ["Path_Pocket_3D"]
-        engravecmdlist = ["Path_Engrave", "Path_Deburr"]
+        engravecmdlist = ["Path_Engrave", "Path_Deburr", "Path_BeamCut"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
         dressupcmdlist = ["Path_DressupAxisMap", "Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag"]
         extracmdlist = []
@@ -153,7 +153,7 @@ class PathWorkbench (Workbench):
             if isinstance (obj.Proxy, PathScripts.PathOp.ObjectOp):
                 self.appendContextMenu("", ["Path_OperationCopy"])
             if obj.isDerivedFrom("Path::Feature"):
-                if "Profile" in selectedName or "Contour" in selectedName or "Dressup" in selectedName:
+                if "Profile" in selectedName or "BeamCut" in selectedName or "Contour" in selectedName or "Dressup" in selectedName or "Deburr" in selectedName or "Engrave" in selectedName:
                     self.appendContextMenu("", "Separator")
                     #self.appendContextMenu("", ["Set_StartPoint"])
                     #self.appendContextMenu("", ["Set_EndPoint"])

@@ -51,7 +51,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
     def opFeatures(self, obj):
         '''opFeatures(obj) ... return all standard features and edges based geomtries'''
-        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges;
+        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces;
 
     def setupAdditionalProperties(self, obj):
         if not hasattr(obj, 'BaseShapes'):
