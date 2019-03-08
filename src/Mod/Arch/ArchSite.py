@@ -686,6 +686,12 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         if not "SolarDiagramColor" in pl:
             vobj.addProperty("App::PropertyColor","SolarDiagramColor","Site",QT_TRANSLATE_NOOP("App::Property","The color of the solar diagram"))
             vobj.SolarDiagramColor = (0.16,0.16,0.25)
+        if not "Orientation" in pl:
+            vobj.addProperty("App::PropertyEnumeration", "Orientation", "Site", QT_TRANSLATE_NOOP(
+                "App::Property", "When set to 'True North' the whole geometry will be rotated to match the true north of this site"))
+            
+            vobj.Orientation = ["Project North", "True North"]
+            vobj.Orientation = "Project North"
 
     def onDocumentRestored(self,vobj):
 
@@ -748,6 +754,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
             self.onChanged(obj.ViewObject,"SolarDiagram")
         elif prop == "Declination":
             self.onChanged(obj.ViewObject,"SolarDiagramPosition")
+            self.updateTrueNorthRotation()
         elif prop == "Terrain":
             self.updateCompassLocation(obj)
         elif prop == "Compass":
@@ -787,7 +794,40 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
                 self.updateCompassVisibility(self.Object)
             else:
                 self.compass.hide()
+        elif prop == 'Orientation':
+            if vobj.Orientation == 'True North':
+                self.addTrueNorthRotation()
+            else:
+                self.removeTrueNorthRotation()
     
+    def addTrueNorthRotation(self):
+        if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
+            return
+        
+        from pivy import coin
+        
+        self.trueNorthRotation = coin.SoTransform()
+
+        sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+        sg.insertChild(self.trueNorthRotation, 0)
+
+        self.updateTrueNorthRotation()
+    
+    def removeTrueNorthRotation(self):
+        if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
+            sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+
+            sg.removeChild(self.trueNorthRotation)
+            self.trueNorthRotation = None
+    
+    def updateTrueNorthRotation(self):
+        if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
+            from pivy import coin
+            
+            angle = self.Object.Declination.Value
+
+            self.trueNorthRotation.rotation.setValue(coin.SbVec3f(0, 0, 1), math.radians(-angle))
+
     def updateCompassVisibility(self, obj):
         if not hasattr(self, 'compass'):
             return
