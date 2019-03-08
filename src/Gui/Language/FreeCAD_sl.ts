@@ -300,7 +300,7 @@
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Zavrtite srednji gumb na miški ali ga spustite, medtem ko
+      <translation>Zavrtite srednji miškin gumb ali ga spustite, medtem ko
 kliknete na levi ali desni gumb in premikate miško gor oz. dol</translation>
     </message>
   </context>
@@ -407,7 +407,7 @@ kliknete na levi ali desni gumb in premikate miško gor oz. dol</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>Ta programska oprema uporablja odprtokodne dele katerih avtorske pravice in ostale pravice pripadajo njihovim lastnikom:</translation>
+      <translation>To programje uporablja odprtokodne dele katerih avtorske pravice in ostale pravice pripadajo njihovim lastnikom:</translation>
     </message>
     <message>
       <source>License</source>
@@ -850,20 +850,20 @@ kliknete na levi ali desni gumb in premikate miško gor oz. dol</translation>
       <translation>Večkrat dodeljena bližnica</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Bližnjica »%1« je določena več kot enkrat. To lahko povzroči nepričakovano odzivanje.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Že dodeljena bližnjica</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation>Bližnica "%1" je že vezana na "%2".
-
-Želite to povoziti?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>Bližnjica »%1« je določena več kot enkrat. To lahko povzroči nepričakovano odzivanje.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>Bližnjica "%1" je že izbrana za "%2".</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>Ali to želite povoziti?</translation>
     </message>
   </context>
   <context>
@@ -1466,7 +1466,7 @@ Mogoče je napaka pri dostopu do datoteke?</translation>
     </message>
     <message>
       <source>Duplicate Failed</source>
-      <translation>Podvojevanje ni uspelo</translation>
+      <translation>Podvajanje spodletelo</translation>
     </message>
     <message>
       <source>Failed to duplicate to '%1'.
@@ -2085,7 +2085,7 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
-      <translation>Onemogoči potezo nagiba zaslona na dotik</translation>
+      <translation>Onemogoči potezo nagibanja na zaslonu na dotik</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
@@ -2799,7 +2799,7 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
       <source>Imperial Civil (ft/ft^2/ft^3)</source>
-      <translation>Imperial Civil (ft/ft^2/ft^3)</translation>
+      <translation>Anglosaške (ft/ft^2/ft^3)</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
@@ -2886,7 +2886,7 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
       <source>Object being edited</source>
-      <translation>Objekt v urejanju</translation>
+      <translation>Predmet v urejanju</translation>
     </message>
     <message>
       <source>Active container</source>
@@ -2985,10 +2985,6 @@ Navedite drugo mapo.</translation>
       <translation>Razvrsti omogočena delovna okolja</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Razvrsti omogočena delovna okolja&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Premakni gor</translation>
     </message>
@@ -3003,6 +2999,10 @@ Navedite drugo mapo.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Dodaj vse med omogočena delovna okolja</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Razvrsti omogočena delovna okolja&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3094,7 +3094,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
-      <translation>Če bodo izbrisani vsi začasni imeniki, potem ne boste mogli obnoviti datotek.</translation>
+      <translation>Če bodo izbrisani vsi začasni imeniki, kasneje ne boste mogli obnoviti datotek.</translation>
     </message>
   </context>
   <context>
@@ -3429,7 +3429,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Apply</source>
-      <translation type="unfinished">Apply</translation>
+      <translation>Uveljavi</translation>
     </message>
     <message>
       <source>Reset</source>
@@ -3465,7 +3465,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Shift click for opposite direction</source>
-      <translation>Klikni Shift za nasprotno smer</translation>
+      <translation>Za nasprotno smer pritisnite "Premakni" in kliknite</translation>
     </message>
     <message>
       <source>Selected points</source>
@@ -3473,11 +3473,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Apply incremental changes</source>
-      <translation>Potrdi postopne spremembe</translation>
+      <translation>Uveljavi koračne spremembe</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Izberite 1, 2 ali 3 točke preden kliknete ta gumb.  Točka je lahko na ogljišču, ploskvi ali na robu.  Če bo na ploskvi ali robu, bo uporabljena točka na položaju miške na ploskvi ali robu.  Če je izbrana 1 točka, bo uporabljena kot središče sukanja.  Če sta izbrani 2 točki, bo točka na sredini med njima središče sukanja in ustvarjena bo nova os po meri, če bo potrebno.  Če so izbrane 3 točke, prva točka postane središče vrtenja in leži na vektorju, ki je pravokoten na ravnino, določeno s 3 točkami.  Nekateri podatki o razdaljah in kotih so podani v pogledu poročil, ki je lahko uporaben pri poravnavi objektov.  Za lažjo uporabo se s Shiftom + klik ustrezna razdalja ali kot kopira v odložišče.</translation>
+      <translation>Izberite 1, 2 ali 3 točke preden kliknete ta gumb.  Točka je lahko na ogljišču, ploskvi ali na robu.  Če bo na ploskvi ali robu, bo uporabljena točka položaja kazalke na ploskvi ali robu.  Če je izbrana 1 točka, bo uporabljena kot središče sukanja.  Če sta izbrani 2 točki, bo točka na sredini med njima središče sukanja in ustvarjena bo nova os po meri, če bo potrebno.  Če so izbrane 3 točke, prva točka postane središče vrtenja in leži na vektorju, ki je pravokoten na ravnino, določeno s temi 3 točkami.  Nekateri podatki o razdaljah in kotih so podani v poročilnem pogledu, ki je lahko koristen posebno pri poravnavanju objektov.  Za lažjo uporabo se s Premakni + klik ustrezna razdalja ali kot kopira v odložišče.</translation>
     </message>
   </context>
   <context>
@@ -3568,7 +3568,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Preoblikuj</translation>
     </message>
   </context>
   <context>
@@ -4731,7 +4731,7 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
       <source>Search...</source>
-      <translation>Poišči...</translation>
+      <translation>Iskanje ...</translation>
     </message>
     <message>
       <source>Search for objects</source>
@@ -4826,55 +4826,55 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
       <source>0.1 mm</source>
-      <translation type="unfinished">0.1 mm</translation>
+      <translation>0,1 mm</translation>
     </message>
     <message>
       <source>0.5 mm</source>
-      <translation type="unfinished">0.5 mm</translation>
+      <translation>0,5 mm</translation>
     </message>
     <message>
       <source>1 mm</source>
-      <translation type="unfinished">1 mm</translation>
+      <translation>1 mm</translation>
     </message>
     <message>
       <source>2 mm</source>
-      <translation type="unfinished">2 mm</translation>
+      <translation>2 mm</translation>
     </message>
     <message>
       <source>5 mm</source>
-      <translation type="unfinished">5 mm</translation>
+      <translation>5 mm</translation>
     </message>
     <message>
       <source>10 mm</source>
-      <translation type="unfinished">10 mm</translation>
+      <translation>10 mm</translation>
     </message>
     <message>
       <source>20 mm</source>
-      <translation type="unfinished">20 mm</translation>
+      <translation>20 mm</translation>
     </message>
     <message>
       <source>50 mm</source>
-      <translation type="unfinished">50 mm</translation>
+      <translation>50 mm</translation>
     </message>
     <message>
       <source>100 mm</source>
-      <translation type="unfinished">100 mm</translation>
+      <translation>100 mm</translation>
     </message>
     <message>
       <source>200 mm</source>
-      <translation type="unfinished">200 mm</translation>
+      <translation>200 mm</translation>
     </message>
     <message>
       <source>500 mm</source>
-      <translation type="unfinished">500 mm</translation>
+      <translation>500 mm</translation>
     </message>
     <message>
       <source>1 m</source>
-      <translation type="unfinished">1 m</translation>
+      <translation>1 m</translation>
     </message>
     <message>
       <source>2 m</source>
-      <translation type="unfinished">2 m</translation>
+      <translation>2 m</translation>
     </message>
     <message>
       <source>5 m </source>
@@ -5251,7 +5251,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Preoblikuj</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
@@ -5308,10 +5308,6 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     <message>
       <source>Split</source>
       <translation>Razdeli</translation>
-    </message>
-    <message>
-      <source>%1.%2.%3</source>
-      <translation>%1.%2.%3</translation>
     </message>
     <message>
       <source>Translation:</source>
@@ -5719,8 +5715,8 @@ Upoštevajte, da je mesto klika pomembno.</translation>
       <translation>Preklopi način urejanja izbranih predmetov</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Vstopi in izstopi iz načina urejanja izbranih predmetov</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation>Omogoči ali onemogoči urejevalni način izbrani predmetov</translation>
     </message>
   </context>
   <context>
@@ -6667,7 +6663,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Preoblikuj</translation>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
@@ -7233,11 +7229,11 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
       <source>Single Document</source>
-      <translation>En dokument</translation>
+      <translation>Enojni dokument</translation>
     </message>
     <message>
       <source>Only display the active document in the tree view</source>
-      <translation>Prikaži samo dejavni dokument v drevesnem pogledu</translation>
+      <translation>V drevesnem pogledu prikaži samo dejavni dokument</translation>
     </message>
   </context>
   <context>
@@ -7379,7 +7375,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>
-      <translation>Izbriši probleme Izbire</translation>
+      <translation>Izbriši probleme izbora</translation>
     </message>
   </context>
   <context>
@@ -7490,7 +7486,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation>Nastavi krmilno kocko na Izometrični način</translation>
+      <translation>Nastavi krmilno kocko na izometrični način</translation>
     </message>
   </context>
   <context>

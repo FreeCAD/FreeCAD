@@ -1,22 +1,27 @@
 ; Steel-S275JR
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = S275JR
 NameDE = St44-2
 DescriptionDE = Wellen, Achsen, gut bearbeitbar, gut schweißbar
 Father = Metal
-YoungsModulus = 210000 MPa
-UltimateTensileStrength = 430 MPa
-PoissonRatio = 0.3
-Density = 7800 kg/m^3
 KindOfMaterial = Mild steel
 KindOfMaterialDE = Baustahl
 MaterialNumber = 1.0044
 Norm = EN 10025
+
+[Mechanical]
+Density = 7800 kg/m^3
+PoissonRatio = 0.3
 ShearModulus = 81000 MPa
-ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 22
+UltimateTensileStrength = 430 MPa
 YieldStrength = 275 MPa
+YoungsModulus = 210000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.000011 m/m/K

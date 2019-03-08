@@ -170,7 +170,6 @@ void TaskProjGroup::rotateButtonClicked(void)
             multiView->spinCCW();
         }
         setUiPrimary();
-        Gui::Command::updateActive();
     }
 }
 
@@ -257,7 +256,6 @@ void TaskProjGroup::scaleTypeChanged(int index)
     }
 
     multiView->recomputeFeature();
-    Gui::Command::updateActive();
 }
 
 std::pair<int, int> TaskProjGroup::nearestFraction(const double val, const long int maxDenom) const
@@ -375,7 +373,6 @@ void TaskProjGroup::scaleManuallyChanged(int i)
     Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument()
                                                                                      , scale);
     multiView->recomputeFeature();  //just a repaint.  multiView is already marked for recompute by changed to Scale
-    Gui::Command::updateActive();
 }
 
 void TaskProjGroup::changeEvent(QEvent *e)
@@ -500,7 +497,6 @@ bool TaskProjGroup::reject()
             Base::Console().Log("TaskProjGroup: Edit mode - NO command is active\n");
         }
 
-        Gui::Command::updateActive();
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     }
     return false;

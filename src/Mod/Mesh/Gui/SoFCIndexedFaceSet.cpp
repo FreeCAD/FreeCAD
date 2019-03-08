@@ -496,7 +496,7 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
     // use VBO for fast rendering if possible
     if (useVBO) {
         if (updateGLArray.getValue()) {
-            updateGLArray = false;
+            updateGLArray.setValue(false);
             generateGLArrays(action);
         }
 
@@ -533,7 +533,7 @@ void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
             SoMaterialBundle mb(action);
             mb.sendFirst();
             if (updateGLArray.getValue()) {
-                updateGLArray = false;
+                updateGLArray.setValue(false);
                 generateGLArrays(action);
             }
             render.renderFacesGLArray(action);
@@ -670,7 +670,7 @@ void SoFCIndexedFaceSet::drawCoords(const SoGLCoordinateElement * const vertexli
 
 void SoFCIndexedFaceSet::invalidate()
 {
-    updateGLArray = true;
+    updateGLArray.setValue(true);
 }
 
 void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
@@ -977,8 +977,7 @@ void SoFCIndexedFaceSet::stopSelection(SoAction * action)
 
     delete [] selectBuf;
     selectBuf = 0;
-    bool sorted = true;
-    if(sorted) std::sort(hit.begin(),hit.end());
+    std::sort(hit.begin(),hit.end());
 
     Gui::SoGLSelectAction *doaction = static_cast<Gui::SoGLSelectAction*>(action);
     doaction->indices.reserve(hit.size());

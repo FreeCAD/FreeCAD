@@ -1,13 +1,18 @@
 ; Wood-Generic
 ; (c) 2015 Bernd Hahnebach (CC-BY 3.0)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Wood
 Description = A standard construction wood
 Father = Aggregate
-ProductURL = https://en.wikipedia.org/wiki/Wood
-YoungsModulus = 12000 MPa
-PoissonRatio = 0.05
+
+[Mechanical]
 Density = 700 kg/m^3
+PoissonRatio = 0.05
+YoungsModulus = 12000 MPa
+
+[Cost]
+ProductURL = https://en.wikipedia.org/wiki/Wood

@@ -850,20 +850,20 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Beberapa shortcut yang didefinisikan</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Jalan pintas ' %1 ' didefinisikan lebih dari satu kali. Hal ini bisa berakibat pada perilaku tak terduga.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Jalan pintas sudah didefinisikan</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation type="unfinished">Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2981,10 +2981,6 @@ Specify another directory, please.</source>
       <translation>Urutkan meja kerja yang diaktifkan</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt; Memilah workbenches yang diaktifkan &lt;/ p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Pindah ke atas</translation>
     </message>
@@ -2999,6 +2995,10 @@ Specify another directory, please.</source>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Tambahkan semua untuk mengaktifkan workbenches</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -5288,10 +5288,6 @@ Be aware the point where you click matters.</source>
       <translation type="unfinished">Split</translation>
     </message>
     <message>
-      <source>%1.%2.%3</source>
-      <translation type="unfinished">%1.%2.%3</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>Terjemahan:</translation>
     </message>
@@ -5697,8 +5693,8 @@ Be aware the point where you click matters.</source>
       <translation>Mengaktifkan mode edit objek yang dipilih</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Memasuki atau meninggalkan mode edit objek yang dipilih</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
     </message>
   </context>
   <context>

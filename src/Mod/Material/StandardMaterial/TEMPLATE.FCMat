@@ -1,65 +1,115 @@
 ; TEMPLATE
 ; (c) 2013-2015 Juergen Riegel (CC-BY 3.0)
-; information about the content of such cards you can find here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
 
-[FCMat]
-; General name, need to be the same as the file name
+; localized Name, Description and KindOfMaterial uses 2 letter codes
+; defined in ISO-639-1, see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+; find unit information in src/App/FreeCADInit.py
+
+[General]
+; General name
 Name =
 
-; Example of localized name. 2 letter codes as per ISO-639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+; German localized name
 NameDE =
 
-; More elaborate description of this material card:
+; Polish localized name
+NamePL =
+
+; A more elaborate description of the material
 Description =
 
-; Example of localized description. 2 letter codes as per ISO-639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+; German localized description
 DescriptionDE =
 
-; Example of localized description. 2 letter codes as per ISO-639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+; Polish localized description
 DescriptionPL =
 
 ; Father of the material, i.e. for PLA is Thermoplast, for Steel is Metal
 Father =
 
-; Vendor of the material. Leave blank if not required
-Vendor =
+; Description to be updated
+KindOfMaterial =
 
-; Product URL, recommended are wikipedia links
-ProductURL = http://en.wikipedia.org/wiki/
-
-; Specific price in currency / mass, a currency is not supported by FreeCAD unit system
-SpecificPrice =
-
-; Young's Modulus (or E-Module) in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Young%27s_modulus for the details
-YoungsModulus =
-
-; Ultimate tensile strength in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Ultimate_tensile_strength for the details
-UltimateTensileStrength =
-
-; Poisson's ratio [unitless], see https://en.wikipedia.org/wiki/Poisson%27s_ratio for the details
-PoissonRatio =
+; Germand localized kind of material
+KindOfMaterialDE =
 
 ; Description to be updated
-AmbientColor =
+MaterialNumber =
 
 ; Description to be updated
+Norm =
+
+; Description to be updated
+ReferenceSource =
+
+; Description to be updated
+SourceURL =
+
+; Description to be updated
+StandardCode =
+
+
+[Mechanical]
+; Further information can be found at https://en.wikipedia.org/wiki/Mohr%E2%80%93Coulomb_theory
+; https://en.wikipedia.org/wiki/Friction#Angle_of_friction
 AngleOfFriction =
 
-; Description to be updated
-Color =
-
-; Compressive strength https://en.wikipedia.org/wiki/Compressive_strength
+; Compressive strength in [FreeCAD Pressure unit]
+; https://en.wikipedia.org/wiki/Compressive_strength
 CompressiveStrength =
 
-; Density in [FreeCAD Density unit] https://en.wikipedia.org/wiki/Density
+; Density in [FreeCAD Density unit]
+; https://en.wikipedia.org/wiki/Density
 Density =
 
 ; Description to be updated
-DiffuseColor =
+; https://en.wikipedia.org/wiki/Fracture_toughness
+FractureToughness =
+
+; Poisson's ratio [unitless]
+; https://en.wikipedia.org/wiki/Poisson%27s_ratio
+PoissonRatio =
+
+; Shear modulus in [FreeCAD Pressure unit]
+; https://en.wikipedia.org/wiki/Shear_modulus
+ShearModulus =
 
 ; Description to be updated
-EmissiveColor =
+; https://en.wikipedia.org/wiki/Deformation_(mechanics)
+UltimateStrain =
+
+; Ultimate tensile strength in [FreeCAD Pressure unit]
+; https://en.wikipedia.org/wiki/Ultimate_tensile_strength
+UltimateTensileStrength =
+
+; Yield strength in [FreeCAD Pressure unit]
+; https://en.wikipedia.org/wiki/Yield_Strength
+YieldStrength =
+
+; Young's modulus (or E-Module) in [FreeCAD Pressure unit]
+; https://en.wikipedia.org/wiki/Young%27s_modulus
+YoungsModulus =
+
+
+[Thermal]
+; Description to be updated
+; https://en.wikipedia.org/wiki/Heat_capacity
+SpecificHeat =
+
+; Thermal conductivity in [FreCAD ThermalConductivity unit]
+; https://en.wikipedia.org/wiki/Thermal_conductivity
+ThermalConductivity =
+
+; Thermal expansion coefficient (linear) in [FreeCAD ThermalExpansionCoefficient unit]
+; https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient
+ThermalExpansionCoefficient =
+
+
+[Architectural]
+; Description to be updated
+Color =
 
 ; Description to be updated
 EnvironmentalEfficiencyClass =
@@ -74,55 +124,33 @@ Finish =
 FireResistanceClass =
 
 ; Description to be updated
-FractureToughness =
-
-; Description to be updated
-FragmentShader =
-
-; Description to be updated
-KindOfMaterial =
-
-; Description to be updated
-KindOfMaterialDE =
-
-; Description to be updated
-MaterialNumber =
-
-; Description to be updated
 Model =
-
-; Description to be updated
-Norm =
-
-; Description to be updated
-ReferenceSource =
-
-; Description to be updated
-SectionFillPattern =
-
-; Description to be updated
-SectionLinewidth =
-
-; Description to be updated
-ShearModulus =
-
-; Description to be updated
-Shininess =
 
 ; Description to be updated
 SoundTransmissionClass =
 
 ; Description to be updated
-SourceURL =
+UnitsPerQuantity =
+
+
+[Rendering]
+; Description to be updated
+AmbientColor =
 
 ; Description to be updated
-SpecificHeat =
+DiffuseColor =
+
+; Description to be updated
+EmissiveColor =
+
+; Description to be updated
+FragmentShader =
+
+; Description to be updated
+Shininess =
 
 ; Description to be updated
 SpecularColor =
-
-; Description to be updated
-StandardCode =
 
 ; Description to be updated
 TexturePath =
@@ -130,23 +158,19 @@ TexturePath =
 ; Description to be updated
 TextureScaling =
 
-; Thermal conductivity https://en.wikipedia.org/wiki/Thermal_conductivity
-ThermalConductivity =
-
-; Thermal expansion coefficient (linear) in [1/K] https://en.wikipedia.org/wiki/Thermal_expansion
-ThermalExpansionCoefficient =
-
 ; Description to be updated
 Transparency =
 
 ; Description to be updated
-UltimateStrain =
-
-; Description to be updated
-UnitsPerQuantity =
-
-; Description to be updated
 VertexShader =
+
+
+[Vector rendering]
+; Description to be updated
+SectionFillPattern =
+
+; Description to be updated
+SectionLinewidth =
 
 ; Description to be updated
 ViewColor =
@@ -157,5 +181,14 @@ ViewFillPattern =
 ; Description to be updated
 ViewLinewidth =
 
-; Yield strength in [FreeCAD Pressure unit] https://en.wikipedia.org/wiki/Yield_%28engineering%29
-YieldStrength =
+
+[Cost]
+; Product URL, recommended are wikipedia links
+; https://de.wikipedia.org/wiki/Hyperlink
+ProductURL =
+
+; Specific price in currency / mass. A currency is not supported by FreeCAD unit system. Will be empty in all FreeCAD cards. Means the user needs to put in himself.
+SpecificPrice =
+
+; Vendor of the material
+Vendor =

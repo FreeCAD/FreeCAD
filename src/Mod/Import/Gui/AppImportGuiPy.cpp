@@ -485,8 +485,8 @@ private:
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
-            bool keepExplicitPlacement = list.size() > 1;
-            keepExplicitPlacement = Standard_True;
+            //bool keepExplicitPlacement = list.size() > 1;
+            bool keepExplicitPlacement = Standard_True;
             ExportOCAFGui ocaf(hDoc, keepExplicitPlacement);
 
             // That stuff is exporting a list of selected objects into FreeCAD Tree

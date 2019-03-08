@@ -78,8 +78,10 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QW
         item->setText(QString::fromUtf8((*it)->Label.getValue()));
         item->setData(Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
     }
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
+    action->setShortcut(QString::fromLatin1("Del"));
     ui->listWidgetBodies->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onBodyDeleted()));
     ui->listWidgetBodies->setContextMenuPolicy(Qt::ActionsContextMenu);

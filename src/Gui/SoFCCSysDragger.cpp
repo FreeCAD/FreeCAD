@@ -1072,7 +1072,7 @@ bool SoFCCSysDragger::isShownTranslationY()
 
 bool SoFCCSysDragger::isShownTranslationZ()
 {
-  SoSwitch *sw = SO_GET_ANY_PART(this, "yTranslatorSwitch", SoSwitch);
+  SoSwitch *sw = SO_GET_ANY_PART(this, "zTranslatorSwitch", SoSwitch);
   return (sw->whichChild.getValue() == SO_SWITCH_ALL);
 }
 

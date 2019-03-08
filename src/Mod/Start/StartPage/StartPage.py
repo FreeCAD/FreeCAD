@@ -388,6 +388,8 @@ def handle():
             wn = "cadquery_module"
         elif wn == "DefeaturingWB":
             wn = "Defeaturing"
+        elif wn == "ksuWB":
+            wn = "kicadStepUp"
         elif wn == "ManipulatorWB":
             wn = "Manipulator"
         elif wn == "PartOMagic":

@@ -1,21 +1,26 @@
 ; Steel-S420N
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = S420N
 NameDE = St E 420
 Father = Metal
-YoungsModulus = 210000 MPa
-UltimateTensileStrength = 520 MPa
-PoissonRatio = 0.3
-Density = 7800 kg/m^3
 KindOfMaterial = Fine grain steel
 KindOfMaterialDE = Feinkornstahl
 MaterialNumber = 1.8902
 Norm = EN 10113-2
+
+[Mechanical]
+Density = 7800 kg/m^3
+PoissonRatio = 0.3
 ShearModulus = 81000 MPa
-ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 19
+UltimateTensileStrength = 520 MPa
 YieldStrength = 420 MPa
+YoungsModulus = 210000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.000011 m/m/K

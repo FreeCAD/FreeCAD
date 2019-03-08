@@ -6614,6 +6614,8 @@ void SketchObject::onDocumentRestored()
 void SketchObject::restoreFinished()
 {
     try {
+        validateExternalLinks();
+        rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before

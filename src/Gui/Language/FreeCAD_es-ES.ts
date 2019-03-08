@@ -849,20 +849,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Múltiples atajos de teclado definidos</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>El atajo de teclado '%1' está definido más de una vez. Esto puede ocasionar un comportamiento inesperado.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Atajo de teclado ya definido</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>El acceso directo '%1' está definido más de una vez. Esto podría resultar en un comportamiento inesperado.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>El acceso directo '%1' ya está asignado a '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>¿Quieres anularlo?</translation>
     </message>
   </context>
   <context>
@@ -2080,7 +2080,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
-      <translation>Evita ver inclinando cuando hace gesto de zoom. Afecta sólo gesto estilo Nav. Inclinación del ratón no se deshabilita por esta opción.</translation>
+      <translation>Evita ver inclinando cuando hace gesto de zoom. Afecta sólo gesto estilo de navegación. Inclinación del ratón no se deshabilita por esta opción.</translation>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
@@ -2984,10 +2984,6 @@ Especifique otro directorio, por favor.</translation>
       <translation>Clasificar espacios de trabajo habilitados</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Tipo de mesa de trabajo habilitado&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Mover hacia arriba</translation>
     </message>
@@ -3002,6 +2998,10 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Agregar todos a espacios de trabajo habilitados</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Ordenar los entornos de trabajo habilitados&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3095,7 +3095,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
+      <translation>Al eliminar todo directorio transitorio no podrá recuperar los archivos luego.</translation>
     </message>
   </context>
   <context>
@@ -3478,7 +3478,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Seleccione 1, 2 o 3 puntos antes de hacer clic en este botón. Un punto puede estar en un vértice, cara o borde. Si en una cara o borde, el punto usado será el punto en la posición del mouse a lo largo de la cara o borde. Si se selecciona 1 punto, se utilizará como centro de rotación. Si se seleccionan 2 puntos, el punto medio entre ellos será el centro de rotación y se creará un nuevo eje personalizado, si es necesario. Si se seleccionan 3 puntos, el primer punto se convierte en el centro de rotación y se encuentra en el vector que es normal al plano definido por los 3 puntos. Se proporciona cierta información de distancia y ángulo en la vista de informe, que puede ser útil al alinear objetos. Para su conveniencia, cuando se usa Shift + click, la distancia o el ángulo apropiados se copian en el portapapeles.</translation>
+      <translation>Por favor, seleccione 1, 2 o 3 puntos antes de hacer clic en este botón. Un punto puede estar en un vértice, cara o arista. Si en una cara o arista, el punto utilizado será el punto en la posición del mouse a lo largo de la cara o la arista. Si se selecciona 1 punto, se utilizará como centro de rotación. Si se seleccionan 2 puntos, el punto medio entre ellos será el centro de rotación y, si es necesario, se creará un nuevo eje personalizado. Si se seleccionan 3 puntos, el primer punto se convierte en el centro de rotación y se encuentra en el vector que es normal al plano definido por los 3 puntos. Se proporciona cierta información de distancia y ángulo en la vista de reporte, que puede ser útil al alinear objetos. Para su comodidad, cuando se usa la tecla Mayús + clic, la distancia o el ángulo apropiados se copian en el portapapeles.</translation>
     </message>
   </context>
   <context>
@@ -3874,7 +3874,7 @@ Desea guardar los cambios?</translation>
     <name>Gui::GestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation type="unfinished">Tap OR click left mouse button.</translation>
+      <translation>Toque o haga click en el botón izquierdo del ratón.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press right mouse button.</source>
@@ -4169,7 +4169,7 @@ How do you want to proceed?</source>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation type="unfinished">Tap OR click left mouse button.</translation>
+      <translation>Toque o haga click en el botón izquierdo del ratón.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
@@ -5306,10 +5306,6 @@ Be aware the point where you click matters.</source>
       <translation>Dividir</translation>
     </message>
     <message>
-      <source>%1.%2.%3</source>
-      <translation>%1.%2.%3</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>Traslación:</translation>
     </message>
@@ -5715,8 +5711,8 @@ Be aware the point where you click matters.</source>
       <translation>Activa o desactiva el modo de edición del objeto seleccionado</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Entra o sale del modo de edición del objeto seleccionado</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation>Activa o desactiva el modo de edición del objeto seleccionado</translation>
     </message>
   </context>
   <context>
@@ -7375,7 +7371,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Delete Selection Issues</source>
-      <translation>Eliminar Problemas de Selección</translation>
+      <translation type="unfinished">Delete Selection Issues</translation>
     </message>
   </context>
   <context>
@@ -7498,7 +7494,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation>Conjunto Vista al modo Ortográfico</translation>
+      <translation>Configurar Vista a modo Ortográfico</translation>
     </message>
   </context>
   <context>

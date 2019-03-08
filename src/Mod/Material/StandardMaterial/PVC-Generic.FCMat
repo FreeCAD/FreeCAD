@@ -1,16 +1,23 @@
 ; PVC-Generic
 ; (c) 2019 Uwe Stöhr (CC-BY 3.0)
-; information about the content of such cards you can find here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = PVC
-ProductURL = https://en.wikipedia.org/wiki/Polyvinyl_chloride
-YoungsModulus = 2800 MPa
-UltimateTensileStrength = 50 MPa
-PoissonRatio = 0.38
-Density = 1380 kg/m^3
 SourceURL = http://www.matweb.com/search/DataSheet.aspx?MatGUID=1f650966ec834bb8833dd4c6e3116079
+
+[Mechanical]
+Density = 1380 kg/m^3
+PoissonRatio = 0.38
+UltimateTensileStrength = 50 MPa
+YoungsModulus = 2800 MPa
+
+[Thermal]
 SpecificHeat = 1000 J/kg/K
 ThermalConductivity = 0.150 W/m/K
 ThermalExpansionCoefficient = 0.000075 m/m/K
+
+[Cost]
+ProductURL = https://en.wikipedia.org/wiki/Polyvinyl_chloride

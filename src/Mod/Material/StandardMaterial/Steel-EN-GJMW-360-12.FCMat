@@ -1,22 +1,27 @@
 ; Steel-EN-GJMW-360-12
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJMW-360-12
 NameDE = GTW S38-12
 DescriptionDE = für Verbundschweißteile
 Father = Metal
-YoungsModulus = 175000 MPa
-UltimateTensileStrength = 380 MPa
-PoissonRatio = 0.3
-Density = 7200 kg/m^3
 KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.8038
 Norm = EN 1562
+
+[Mechanical]
+Density = 7200 kg/m^3
+PoissonRatio = 0.3
 ShearModulus = 67000 MPa
-ThermalExpansionCoefficient = 0.00001 m/m/K
 UltimateStrain = 5
+UltimateTensileStrength = 380 MPa
 YieldStrength = 200 MPa
+YoungsModulus = 175000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.00001 m/m/K

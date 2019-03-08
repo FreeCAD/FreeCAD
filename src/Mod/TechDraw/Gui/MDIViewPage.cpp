@@ -268,6 +268,11 @@ void MDIViewPage::centerOnPage(void)
     }
 }
 
+bool MDIViewPage::addView(const App::DocumentObject *obj)
+{
+    return attachView(const_cast<App::DocumentObject*>(obj));
+}
+
 bool MDIViewPage::attachView(App::DocumentObject *obj)
 {
     auto typeId(obj->getTypeId());
@@ -852,7 +857,6 @@ void MDIViewPage::saveDXF(std::string fileName)
     Gui::Command::doCommand(Gui::Command::Doc,"import TechDraw");
     Gui::Command::doCommand(Gui::Command::Doc,"TechDraw.writeDXFPage(App.activeDocument().%s,u\"%s\")",
                             PageName.c_str(),(const char*)fileName.c_str());
-    Gui::Command::updateActive();
     Gui::Command::commitCommand();
 }
 

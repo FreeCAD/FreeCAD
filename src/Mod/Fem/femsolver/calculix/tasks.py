@@ -31,8 +31,10 @@ import os
 import subprocess
 import os.path
 
-import FreeCAD as App
-import femtools.femutils as FemUtils
+import FreeCAD
+if FreeCAD.GuiUp:
+    from PySide import QtGui
+import femtools.femutils as femutils
 import feminout.importCcxFrdResults as importCcxFrdResults
 import feminout.importCcxDatResults as importCcxDatResults
 
@@ -105,7 +107,7 @@ class Results(run.Results):
         if not _inputFileName:
             # TODO do not run solver, do not try to read results in a smarter way than an Exception
             raise Exception('Error on writing CalculiX input file.\n')
-        prefs = App.ParamGet(
+        prefs = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
             self.purge_results()
@@ -113,11 +115,11 @@ class Results(run.Results):
         self.load_results_ccxdat()
 
     def purge_results(self):
-        for m in FemUtils.get_member(self.analysis, "Fem::FemResultObject"):
-            if FemUtils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
+        for m in femutils.get_member(self.analysis, "Fem::FemResultObject"):
+            if femutils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
-        App.ActiveDocument.recompute()
+        FreeCAD.ActiveDocument.recompute()
 
     def load_results_ccxfrd(self):
         frd_result_file = os.path.join(
@@ -140,7 +142,7 @@ class Results(run.Results):
             raise Exception(
                 'FEM: No .dat results found at {}!'.format(dat_result_file))
         if mode_frequencies:
-            for m in FemUtils.get_member(self.analysis, "Fem::FemResultObject"):
+            for m in femutils.get_member(self.analysis, "Fem::FemResultObject"):
                 if m.Eigenmode > 0:
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf['eigenmode']:
@@ -151,7 +153,17 @@ class _Container(object):
 
     def __init__(self, analysis):
         self.analysis = analysis
-        self.mesh = None
+
+        # get mesh
+        mesh, message = femutils.get_mesh_to_solve(self.analysis)
+        if mesh is not None:
+            self.mesh = mesh
+        else:
+            if FreeCAD.GuiUp:
+                QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+            raise Exception(message + '\n')
+
+        # get member
         self.materials_linear = self.get_several_member('Fem::Material')
         self.materials_nonlinear = self.get_several_member('Fem::MaterialMechanicalNonlinear')
         self.fixed_constraints = self.get_several_member('Fem::ConstraintFixed')
@@ -170,14 +182,7 @@ class _Container(object):
         self.contact_constraints = self.get_several_member('Fem::ConstraintContact')
         self.transform_constraints = self.get_several_member('Fem::ConstraintTransform')
 
-        for m in self.analysis.Group:
-            if m.isDerivedFrom("Fem::FemMeshObject"):
-                if not self.mesh:
-                    self.mesh = m
-                else:
-                    raise Exception('FEM: Multiple mesh in analysis not yet supported!')
-
     def get_several_member(self, t):
-        return FemUtils.get_several_member(self.analysis, t)
+        return femutils.get_several_member(self.analysis, t)
 
 ##  @}

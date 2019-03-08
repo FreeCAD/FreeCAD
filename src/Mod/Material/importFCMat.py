@@ -84,12 +84,12 @@ def decode(name):
 # https://en.wikipedia.org/wiki/INI_file
 # http://www.docuxplorer.com/WebHelp/INI_File_Format.htm
 # mainly this parser here is used in FreeCAD
-# in the module Material.py is another implementaion of reading and writing FCMat files which uses the module ConfigParser
+# in the module Material.py is another implementation of reading and writing FCMat files which uses the module ConfigParser
 # in ViewProviderFemMaterial in add_cards_from_a_dir() the parser from Material.py is used
 # since this mixture seams to be there for ages it should not be changed for 0.18
 # TODO: get rid of this mixture in FreeCAD 0.19
 
-# Metainformations
+# Metainformation
 # first five lines are the same in any card file
 # Line1: card name
 # Line2: author and licence
@@ -103,23 +103,32 @@ def read(filename):
             filename = filename.encode(sys.getfilesystemencoding())
     # print(filename)
     card_name_file = os.path.splitext(os.path.basename(filename))[0]
-    f = pythonopen(filename)
+    if sys.version_info.major >= 3:
+        f = pythonopen(filename, encoding="utf8")
+    else:
+        f = pythonopen(filename)
     d = {}
     d["CardName"] = card_name_file  # CardName is the MatCard file name
     ln = 0
     for line in f:
         if ln == 0:
-            card_name_content = line.split(";")[1].strip()  # Line 1
+            v = line.split(";")[1].strip()  # Line 1
+            if hasattr(v, "decode"):
+                v = v.decode('utf-8')
+            card_name_content = v
             if card_name_content != d["CardName"]:
                 FreeCAD.Console.PrintError("File CardName (" + card_name_file + ") is not content CardName (" + card_name_content + ")\n")
         elif ln == 1:
-            d["AuthorAndLicense"] = line.split(";")[1].strip()  # Line 2
+            v = line.split(";")[1].strip()  # Line 2
+            if hasattr(v, "decode"):
+                v = v.decode('utf-8')
+            d["AuthorAndLicense"] = v
         else:
-            # ; is a Commend
+            # ; is a Comment
             # # might be a comment too ?
             # [ is a Section
             if line[0] not in ";#[":
-                k = line.split("=", 1)  # only split once on first occurence, a link could contain a = and thus would be splitted
+                k = line.split("=", 1)  # only split once on first occurrence, a link could contain a = and thus would be splitted
                 if len(k) == 2:
                     v = k[1].strip()
                     if hasattr(v, "decode"):
@@ -129,7 +138,7 @@ def read(filename):
     return d
 
 
-def write(filename, dictionary):
+def write(filename, dictionary, write_group_section=True):
     "writes the given dictionary to the given file"
 
     # sort the data into sections
@@ -180,22 +189,25 @@ def write(filename, dictionary):
     else:
         f.write("; " + header["CardName"].encode("utf8") + "\n")
         f.write("; " + header["AuthorAndLicense"].encode("utf8") + "\n")
-    f.write("; information about the content of such cards you can find here:\n")
-    f.write("; http://www.freecadweb.org/wiki/index.php?title=Material\n")
-    f.write("; file produced by FreeCAD" + rev + "\n")
-    f.write("\n")
+    f.write("; information about the content of such cards can be found on the wiki:\n")
+    f.write("; https://www.freecadweb.org/wiki/Material\n")
+    f.write("; file created by FreeCAD" + rev + "\n")
     # write sections
+    # write standard FCMat section if write group section parameter is set to False
+    if write_group_section is False:
+        f.write("\n[FCMat]\n")
     for s in contents:
         if s["keyname"] != "Meta":
+            # if the section has no contents, we don't write it
             if len(s) > 1:
-                # if the section has no contents, we don't write it
-                f.write("[" + s["keyname"] + "]\n")
+                # only write group section if write group section parameter is set to True
+                if write_group_section is True:
+                    f.write("\n[" + s["keyname"] + "]\n")
                 for k, i in s.items():
                     if (k != "keyname" and i != '') or k == "Name":
                         # use only keys which are not empty and the name even if empty
                         if sys.version_info.major >= 3:
-                            f.write(k + "=" + i + "\n")
+                            f.write(k + " = " + i + "\n")
                         else:
-                            f.write(k + "=" + i.encode('utf-8') + "\n")
-                f.write("\n")
+                            f.write(k + " = " + i.encode('utf-8') + "\n")
     f.close()

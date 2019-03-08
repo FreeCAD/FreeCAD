@@ -239,10 +239,18 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
+    
+    const std::vector<App::DocumentObject*>& links = Source.getValues();
+    if (links.empty())  {
+        Base::Console().Log("DVP::execute - %s - No Sources - creation time?\n",getNameInDocument());
+        return App::DocumentObject::StdReturn;
+    }
 
-    TopoDS_Shape shape = getSourceShape();
+    TopoDS_Shape shape = getSourceShape();          //if shape is null, it is probably obj creation time.
     if (shape.IsNull()) {
-        return new App::DocumentObjectExecReturn("DVP - Linked shape object is invalid");
+        Base::Console().Log("DVP::execute - %s - source shape is invalid - creation time?\n",
+                            getNameInDocument());
+        return App::DocumentObject::StdReturn;
     }
 
     gp_Pnt inputCenter;
@@ -266,6 +274,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
 
 #if MOD_TECHDRAW_HANDLE_FACES
+    auto start = chrono::high_resolution_clock::now();
     if (handleFaces() && !geometryObject->usePolygonHLR()) {
         try {
             extractFaces();
@@ -275,6 +284,12 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
             return new App::DocumentObjectExecReturn(e4.GetMessageString());
         }
     }
+    auto end   = chrono::high_resolution_clock::now();
+    auto diff  = end - start;
+    double diffOut = chrono::duration <double, milli> (diff).count();
+    Base::Console().Log("TIMING - %s DVP spent: %.3f millisecs handling Faces\n",
+                        getNameInDocument(),diffOut);
+
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
     requestPaint();

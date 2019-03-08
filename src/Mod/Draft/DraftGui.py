@@ -123,7 +123,7 @@ inCommandShortcuts = {
     "Length":     ["H",translate("draft","Length mode"),          "lengthValue"],
     "Wipe":       ["W",translate("draft","Wipe"),                 "wipeButton"],
     "SetWP":      ["U",translate("draft","Set Working Plane"), "orientWPButton"],
-    "CycleSnap":  [QtCore.Qt.Key_Tab,translate("draft","Cycle snap object"), None]
+    "CycleSnap":  ["`",translate("draft","Cycle snap object"), None]
 }
 
 
@@ -275,7 +275,7 @@ class DraftBaseWidget(QtGui.QWidget):
     def __init__(self,parent = None):
         QtGui.QWidget.__init__(self,parent)
     def eventFilter(self, widget, event):
-        if event.type() == QtCore.QEvent.KeyPress and event.key()==inCommandShortcuts["CycleSnap"][0]:
+        if event.type() == QtCore.QEvent.KeyPress and event.text().upper()==inCommandShortcuts["CycleSnap"][0]:
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.cycleSnapObject()
             return True
@@ -388,12 +388,23 @@ class DraftToolBar:
             self.draftWidget = QtGui.QDockWidget()
             self.baseWidget = DraftDockWidget()
             self.draftWidget.setObjectName("draftToolbar")
-            self.draftWidget.setTitleBarWidget(self.baseWidget)
+            self.scroll = QtGui.QScrollArea()
+            self.scroll.setWidgetResizable(True)
+            self.scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+            self.scroll.setWidget(self.baseWidget)
+            self.draftWidget.setTitleBarWidget(self.scroll)
+            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
+            size = p.GetInt("ToolbarIconSize", 24)
+            if size < 24:
+                scale = 3.5
+            else:
+                scale = 2.5
+            self.scroll.setMinimumHeight(size * scale)
             self.draftWidget.setWindowTitle(translate("draft", "Draft Command Bar"))
             self.mw = FreeCADGui.getMainWindow()
             self.mw.addDockWidget(QtCore.Qt.TopDockWidgetArea,self.draftWidget)
             self.draftWidget.setVisible(False)
-            self.draftWidget.toggleViewAction().setVisible(False)                               
+            self.draftWidget.toggleViewAction().setVisible(False)
             self.baseWidget.setObjectName("draftToolbar")
             self.layout = QtGui.QHBoxLayout(self.baseWidget)
             self.layout.setObjectName("layout")
@@ -403,7 +414,7 @@ class DraftToolBar:
             self.setupTray()
             self.setupStyle()
             self.retranslateUi(self.baseWidget)
-		
+
 #---------------------------------------------------------------------------
 # General UI setup
 #---------------------------------------------------------------------------

@@ -75,7 +75,7 @@
     <message>
       <location filename="../../Command.cpp" line="730"/>
       <source>Add View to Clip group</source>
-      <translation>Adicionar vista ao grupo de recorte</translation>
+      <translation>Adicionar uma vista ao grupo de recorte</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="731"/>
@@ -625,7 +625,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="203"/>
       <source>Can not make a Dimension from this selection</source>
-      <translation>Não pode fazer uma cotagem desta selecção</translation>
+      <translation>Não é possível criar uma cota para esta seleção</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
@@ -651,7 +651,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="917"/>
       <source>Need three points to make a 3 point Angle Dimension</source>
-      <translation>São precisos de três pontos para fazer uma cotagem de ângulo com 3 pontos</translation>
+      <translation>São necessários três pontos para fazer uma cota de ângulo com 3 pontos</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1003"/>
@@ -698,7 +698,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
       <source>No Feature with Shape in selection.</source>
-      <translation>Nenhum recurso com forma de seleção.</translation>
+      <translation>Nenhum objeto com forma na seleção.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
@@ -858,7 +858,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
       <source>TechDraw Dimensions</source>
-      <translation>Cotagens TechDraw</translation>
+      <translation>Cotas TechDraw</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
@@ -1296,7 +1296,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="653"/>
       <source>Can not open file %1 for writing.</source>
-      <translation>Não é possível abrir o ficheiro %1 para a escrita.</translation>
+      <translation>Não é possível abrir o arquivo '%1' para a gravação.</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1221"/>
@@ -1314,7 +1314,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../QGVPage.cpp" line="582"/>
       <source> exported from FreeCAD document:</source>
-      <translation> exportado documento do FreeCAD:</translation>
+      <translation> exportado a partir de um documento FreeCAD:</translation>
     </message>
   </context>
   <context>

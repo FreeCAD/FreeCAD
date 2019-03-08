@@ -381,8 +381,6 @@ inline MeshFacetIterator& MeshFacetIterator::operator = (const MeshFacetIterator
   _clIter  = rpI._clIter;
   _bApply = rpI._bApply;
   _clTrf = rpI._clTrf;
-  // dirty flat copy of reference
-  memcpy((void*)&_rclMesh, &rpI._rclMesh, sizeof(MeshKernel*));
   return *this;
 }
 
@@ -469,8 +467,6 @@ inline MeshPointIterator& MeshPointIterator::operator = (const MeshPointIterator
   _clIter  = rpI._clIter;
   _bApply = rpI._bApply;
   _clTrf = rpI._clTrf;
-  // dirty flat copy of reference
-  memcpy((void*)&_rclMesh, &rpI._rclMesh, sizeof(MeshKernel*));
   return *this;
 }
 

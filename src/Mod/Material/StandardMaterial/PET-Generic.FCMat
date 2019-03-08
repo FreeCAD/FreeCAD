@@ -1,19 +1,26 @@
 ; PET-Generic
 ; (c) 2019 Uwe Stöhr (CC-BY 3.0)
-; information about the content of such cards you can find here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = PET
-ProductURL = https://en.wikipedia.org/wiki/Polyethylene_terephthalate
-YoungsModulus = 3150 MPa
-UltimateTensileStrength = 38.8 MPa
-PoissonRatio = 0.36
+SourceURL = http://www.matweb.com/search/DataSheet.aspx?MatGUID=a696bdcdff6f41dd98f8eec3599eaa20
+
+[Mechanical]
 CompressiveStrength = 38.0 MPa
 Density = 1380 kg/m^3
+PoissonRatio = 0.36
 ShearModulus = 0.0385 GPa
-SourceURL = http://www.matweb.com/search/DataSheet.aspx?MatGUID=a696bdcdff6f41dd98f8eec3599eaa20
+UltimateTensileStrength = 38.8 MPa
+YieldStrength = 62.8 MPa
+YoungsModulus = 3150 MPa
+
+[Thermal]
 SpecificHeat = 1140 J/kg/K
 ThermalConductivity = 0.181 W/m/K
 ThermalExpansionCoefficient = 0.000072 m/m/K
-YieldStrength = 62.8 MPa
+
+[Cost]
+ProductURL = https://en.wikipedia.org/wiki/Polyethylene_terephthalate

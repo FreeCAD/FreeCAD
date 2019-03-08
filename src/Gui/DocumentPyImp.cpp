@@ -298,7 +298,8 @@ PyObject* DocumentPy::toggleTreeItem(PyObject *args)
         // get the gui document of the Assembly Item 
         //ActiveAppDoc = Item->getDocument();
         //ActiveGuiDoc = Gui::Application::Instance->getDocument(getDocumentPtr());
-        Gui::ViewProviderDocumentObject* ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (getDocumentPtr()->getViewProvider(Object)) ;
+        Gui::ViewProviderDocumentObject* ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (getDocumentPtr()->getViewProvider(Object));
+        assert(ActiveVp);
         switch(mod) {
             case 0: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::ToggleItem); break;
             case 1: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::CollapseItem); break;

@@ -316,17 +316,20 @@ void CmdTechDrawNewView::activated(int iMsg)
     if (subFound) {
         std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partFeat,faceName);
         projDir = dirs.first;
+        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,"App.activeDocument().%s.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                   FeatName.c_str(), projDir.x,projDir.y,projDir.z);
         doCommand(Doc,"App.activeDocument().%s.recompute()", FeatName.c_str());
+        getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
    } else {
         std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
         projDir = dirs.first;
+        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,"App.activeDocument().%s.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                   FeatName.c_str(), projDir.x,projDir.y,projDir.z);
+        getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
         doCommand(Doc,"App.activeDocument().%s.recompute()", FeatName.c_str());
     }
-    updateActive();
     commitCommand();
 }
 
@@ -390,7 +393,7 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Scale = %0.6f",FeatName.c_str(),baseScale);
     Gui::Control().showDialog(new TaskDlgSectionView(dvp,dsv));
 
-    updateActive();
+    updateActive();             //ok here since dialog doesn't call doc.recompute()
     commitCommand();
 }
 
@@ -457,7 +460,7 @@ void CmdTechDrawNewViewDetail::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Direction = App.activeDocument().%s.Direction",FeatName.c_str(),dvp->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
-    updateActive();
+    updateActive();            //ok here, no preceeding recompute
     commitCommand();
 }
 
@@ -546,9 +549,11 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     App::DocumentObject *docObj = getDocument()->getObject(multiViewName.c_str());
     auto multiView( static_cast<TechDraw::DrawProjGroup *>(docObj) );
     multiView->Source.setValues(shapes);
+    doCommand(Doc,"App.activeDocument().%s.addProjection('Front')",multiViewName.c_str());
 
     if (subFound) {
         std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partFeat,faceName);
+        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,"App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                       multiViewName.c_str(), dirs.first.x,dirs.first.y,dirs.first.z);
         doCommand(Doc,"App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.3f,%.3f,%.3f)",
@@ -565,7 +570,6 @@ void CmdTechDrawProjGroup::activated(int iMsg)
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
         doCommand(Doc,"App.activeDocument().%s.Anchor.recompute()", multiViewName.c_str());
     }
-    //updateActive();    //exec all pending actions, but there's nothing to do here.
     commitCommand();   //write the undo
 
     // create the rest of the desired views
@@ -1192,7 +1196,6 @@ void CmdTechDrawExportPageDxf::activated(int iMsg)
     openCommand("Save page to dxf");
     doCommand(Doc,"import TechDraw");
     doCommand(Doc,"TechDraw.writeDXFPage(App.activeDocument().%s,u\"%s\")",PageName.c_str(),(const char*)fileName.toUtf8());
-    updateActive();
     commitCommand();
 }
 

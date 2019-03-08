@@ -850,20 +850,20 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Raccourci défini plusieurs fois</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Le raccourci '%1' est défini plus d'une fois. Il pourrait en résulter un comportement inattendu.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Raccourci déjà défini</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation type="unfinished">Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2985,10 +2985,6 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
       <translation>Trier les ateliers activés</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Tri des ateliers activés&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Déplacer vers le haut</translation>
     </message>
@@ -3003,6 +2999,10 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Ajouter tous les ateliers activés</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -5303,10 +5303,6 @@ Be aware the point where you click matters.</source>
       <translation type="unfinished">Split</translation>
     </message>
     <message>
-      <source>%1.%2.%3</source>
-      <translation type="unfinished">%1.%2.%3</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>Translation :</translation>
     </message>
@@ -5712,8 +5708,8 @@ Be aware the point where you click matters.</source>
       <translation>Active ou désactive le mode d'édition de l'objet sélectionné</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Entre ou quitte le mode d'édition de l'objet sélectionné</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
     </message>
   </context>
   <context>

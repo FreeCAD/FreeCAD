@@ -1,22 +1,27 @@
 ; Steel-S235JR
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = S235JR
 NameDE = St37-2
 DescriptionDE = üblich für mäßige Beanspruchung, gut schweißbar, nicht für Hilfsrahmen
 Father = Metal
-YoungsModulus = 210000 MPa
-UltimateTensileStrength = 360 MPa
-PoissonRatio = 0.3
-Density = 7800 kg/m^3
 KindOfMaterial = Mild steel
 KindOfMaterialDE = Baustahl
 MaterialNumber = 1.0037
 Norm = EN 10025
+
+[Mechanical]
+Density = 7800 kg/m^3
+PoissonRatio = 0.3
 ShearModulus = 81000 MPa
-ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 26
+UltimateTensileStrength = 360 MPa
 YieldStrength = 235 MPa
+YoungsModulus = 210000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.000011 m/m/K

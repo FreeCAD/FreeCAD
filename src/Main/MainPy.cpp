@@ -143,7 +143,7 @@ PyMOD_INIT_FUNC(FreeCAD)
         // backwards since the FreeCAD path was likely appended just before
         // we were imported.
         for (i = PyList_Size(pySysPath) - 1; i >= 0 ; --i) {
-            char *basePath;
+            const char *basePath;
             PyObject *pyPath = PyList_GetItem(pySysPath, i);
             long sz = 0;
 

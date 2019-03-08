@@ -850,20 +850,20 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Flerdefinert snarvei</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Snarvei '%1' er definert mer enn én gang. Dette kan føre til uventet oppførsel.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Allerede definert snarvei</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation type="unfinished">Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2984,10 +2984,6 @@ Vennligst angi en annen mappe.</translation>
       <translation type="unfinished">Sort enabled workbenches</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Sorter aktiverte Arbeidsbenker&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Flytt opp</translation>
     </message>
@@ -3002,6 +2998,10 @@ Vennligst angi en annen mappe.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Legg alle til aktiverte arbeidsbenker</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -5306,10 +5306,6 @@ Vær oppmerksom på at punktet hvor du klikker betyr noe.</translation>
       <translation type="unfinished">Split</translation>
     </message>
     <message>
-      <source>%1.%2.%3</source>
-      <translation type="unfinished">%1.%2.%3</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>Oversettelse:</translation>
     </message>
@@ -5715,8 +5711,8 @@ Vær oppmerksom på at punktet hvor du klikker betyr noe.</translation>
       <translation type="unfinished">Toggles the selected object's edit mode</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation type="unfinished">Enters or leaves the selected object's edit mode</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
     </message>
   </context>
   <context>

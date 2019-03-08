@@ -1,22 +1,27 @@
 ; Steel-EN-GJL-200
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJL-200
 NameDE = GG-20
 DescriptionDE = Hebel, Lager , Lagerböcke
 Father = Metal
-YoungsModulus = 105000 MPa
-UltimateTensileStrength = 200 MPa
-PoissonRatio = 0.3
-Density = 7200 kg/m^3
 KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.602
 Norm = EN 1561
+
+[Mechanical]
+Density = 7200 kg/m^3
+PoissonRatio = 0.3
 ShearModulus = 40000 MPa
-ThermalExpansionCoefficient = 0.00001 m/m/K
 UltimateStrain = 0
+UltimateTensileStrength = 200 MPa
 YieldStrength = 130 MPa
+YoungsModulus = 105000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.00001 m/m/K

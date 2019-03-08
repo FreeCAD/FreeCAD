@@ -1,18 +1,25 @@
 ; PP-Generic
 ; (c) 2019 Uwe Stöhr (CC-BY 3.0)
-; information about the content of such cards you can find here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Polypropylene
-ProductURL = https://en.wikipedia.org/wiki/Polypropylene
-YoungsModulus = 1470 MPa
-UltimateTensileStrength = 79.7 MPa
-PoissonRatio = 0.44
+SourceURL = http://www.matweb.com/search/DataSheet.aspx?MatGUID=a882a1c603374e278d062f106dfda95b
+
+[Mechanical]
 CompressiveStrength = 10 MPa
 Density = 916 kg/m^3
-SourceURL = http://www.matweb.com/search/DataSheet.aspx?MatGUID=a882a1c603374e278d062f106dfda95b
+PoissonRatio = 0.44
+UltimateTensileStrength = 79.7 MPa
+YieldStrength = 32.8 MPa
+YoungsModulus = 1470 MPa
+
+[Thermal]
 SpecificHeat = 1920 J/kg/K
 ThermalConductivity = 0.249 W/m/K
 ThermalExpansionCoefficient = 0.000123 m/m/K
-YieldStrength = 32.8 MPa
+
+[Cost]
+ProductURL = https://en.wikipedia.org/wiki/Polypropylene

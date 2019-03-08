@@ -523,6 +523,14 @@ makePerspectiveProjection(shape, pnt)
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="reflectLines" Const="true" Keyword="true">
+      <Documentation>
+        <UserDocu>Build reflect lines on a shape according to the axes of view.
+Reflect lines are represented by edges in 3d.
+reflectLines(ViewDir, ViewPos, UpDir) -> Shape
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="makeShapeFromMesh">
       <Documentation>
         <UserDocu>Make a compound shape out of mesh data.

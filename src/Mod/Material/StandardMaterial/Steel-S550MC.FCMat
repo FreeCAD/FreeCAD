@@ -1,22 +1,27 @@
 ; Steel-S550MC
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = S550MC
 NameDE = QStE550 TM
 DescriptionDE = gut biegbar, Fahrgestellrahmen, Hilfsrahmen
 Father = Metal
-YoungsModulus = 210000 MPa
-UltimateTensileStrength = 680 MPa
-PoissonRatio = 0.3
-Density = 7800 kg/m^3
 KindOfMaterial = Cold forming steel
 KindOfMaterialDE = Kaltumformstahl
 MaterialNumber = 1.0986
 Norm = SEW 092
+
+[Mechanical]
+Density = 7800 kg/m^3
+PoissonRatio = 0.3
 ShearModulus = 81000 MPa
-ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 15
+UltimateTensileStrength = 680 MPa
 YieldStrength = 550 MPa
+YoungsModulus = 210000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.000011 m/m/K
