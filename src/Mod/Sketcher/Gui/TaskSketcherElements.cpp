@@ -731,7 +731,6 @@ void TaskSketcherElements::slotElementsChanged(void)
     
     ui->elementsWidget->blockSignals(true);
     ui->elementsWidget->clear();
-    ui->elementsWidget->blockSignals(false);
     itemMap.clear();
 
     int element = ui->comboBoxElementFilter->currentIndex();
@@ -752,6 +751,7 @@ void TaskSketcherElements::slotElementsChanged(void)
 
     for(int i = 0; i < ui->elementsWidget->columnCount(); i++)
         ui->elementsWidget->resizeColumnToContents(i);
+    ui->elementsWidget->blockSignals(false);
 }
 
 
