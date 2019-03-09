@@ -53,7 +53,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpBeamCutEdit.ui")
 
     def initPage(self, obj):
-        self.opImagePath = "{}Mod/Path/Images/Ops/{}".format(FreeCAD.getHomePath(), 'chamfer.svg')
+        self.opImagePath = "{}Mod/Path/Images/Ops/{}".format(FreeCAD.getHomePath(), 'offset.svg')
         self.opImage = QtGui.QPixmap(self.opImagePath)
         self.form.opImage.setPixmap(self.opImage)
         iconMiter = QtGui.QIcon(':/icons/edge-join-miter-not.svg')

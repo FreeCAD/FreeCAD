@@ -157,6 +157,7 @@ SET(PathTests_SRCS
 
 SET(PathImages_Ops
     Images/Ops/chamfer.svg
+    Images/Ops/offset.svg
 )
 
 SET(PathImages_Tools
