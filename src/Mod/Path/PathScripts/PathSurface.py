@@ -24,7 +24,7 @@
 # *                                                                         *
 # *   Additional modifications and contributions in 2019                    *
 # *   by Russell Johnson  <russ4262@gmail.com>                              *
-# *   Version: Rev. 3f - Testing                                            *
+# *   Version: Rev. 3f - Usable                                             *
 # *                                                                         *
 # *   NOTES:  After changing value in property window, only click on        *
 # *   blue re-compute icon in menu bar. Do NOT click anywhere outside       *
@@ -1107,6 +1107,11 @@ class ObjectSurface(PathOp.ObjectOp):
         if self.layerEndPnt == None:
             self.layerEndPnt = ocl.Point(float("inf"), float("inf"), float("inf"))
 
+        # Invert angles for Y-axis rotation
+        if obj.DropCutterDir == 'Y':
+            for a in range(0, len(self.scanAngleIndexes)):
+                self.scanAngleIndexes[a] = -self.scanAngleIndexes[a]
+        
         # Compute number and size of stepdowns, and final depth
         # This area needs to be updated to account for self.bbRadius values larger than obj.ClearanceHeight/SafeHeight values
         if singlePass == True:
