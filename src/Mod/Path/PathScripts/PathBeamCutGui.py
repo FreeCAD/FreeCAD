@@ -60,21 +60,30 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         iconMiter.addFile(':/icons/edge-join-miter.svg', state=QtGui.QIcon.On)
         iconRound = QtGui.QIcon(':/icons/edge-join-round-not.svg')
         iconRound.addFile(':/icons/edge-join-round.svg', state=QtGui.QIcon.On)
+        self.form.Bool_C.setEnabled(True)
         self.form.joinMiter.setIcon(iconMiter)
         self.form.joinRound.setIcon(iconRound)
-        self.form.value_C.setEnabled(True)
+
 
     def getFields(self, obj):
         PathGui.updateInputField(obj, 'Offset', self.form.value_W)
-	self.form.value_C
+	self.form.Bool_C
+	if obj.ToolComp != self.form.Bool_C.isChecked():
+            obj.ToolComp = self.form.Bool_C.isChecked()
+	if self.form.joinRound.isChecked():
+	    obj.Join = 'Round'
+	elif self.form.joinMiter.isChecked():
+   	    obj.Join = 'Miter'
+
         self.updateToolController(obj, self.form.toolController)
-	if obj.ToolComp != self.form.value_C.isChecked():
-            obj.ToolComp = self.form.value_C.isChecked()
 
     def setFields(self, obj):
         self.form.value_W.setText(FreeCAD.Units.Quantity(obj.Offset.Value, FreeCAD.Units.Length).UserString)
         self.setupToolController(obj, self.form.toolController)
-        self.form.value_C.setChecked(obj.ToolComp)
+        self.form.Bool_C.setChecked(obj.ToolComp)
+        self.form.joinRound.setChecked('Round' == obj.Join)
+        self.form.joinMiter.setChecked('Miter' == obj.Join)
+        self.form.joinFrame.hide()
 
     def updateOffset(self):
         PathGui.updateInputField(self.obj, 'Offset', self.form.value_W)
@@ -83,7 +92,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
         signals.append(self.form.value_W.editingFinished)
-        signals.append(self.form.value_C.clicked)
+        signals.append(self.form.Bool_C.clicked)
+        signals.append(self.form.joinMiter.clicked)
+        signals.append(self.form.joinRound.clicked)
         return signals
 
 Command = PathOpGui.SetupOperation('BeamCut',

@@ -82,9 +82,9 @@
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="QCheckBox" name="value_C">
+             <widget class="QCheckBox" name="Bool_C">
               <property name="text">
-               <string>ToolComp</string>
+               <string>Tool Comp.</string>
               </property>
              </widget>
             </item>

@@ -66,6 +66,12 @@ class ObjectBeamCut(PathEngraveBase.ObjectOp):
         obj.addProperty('App::PropertyBool',    'ToolComp', 'BeamCut', QtCore.QT_TRANSLATE_NOOP('PathBeamCut', 'Apply tool compensation'))
         obj.addProperty('App::PropertyDistance',    'Depth', 'BeamCut', QtCore.QT_TRANSLATE_NOOP('PathBeamCut', 'The additional depth of the tool path'))
         obj.setEditorMode('Depth', 2) # hide depth settings
+        obj.addProperty('App::PropertyEnumeration', 'Join',       'BeamCut', QtCore.QT_TRANSLATE_NOOP('PathBeamCut', 'How to dress corners'))
+        obj.Join = ['Round', 'Miter']
+        obj.setEditorMode('Join', 2) # hide for now
+
+    def opOnDocumentRestored(self, obj):
+        obj.setEditorMode('Join', 2) # hide for now
 
     def opExecute(self, obj):
         PathLog.track(obj.Label)
@@ -123,6 +129,7 @@ class ObjectBeamCut(PathEngraveBase.ObjectOp):
         obj.Offset = '0 mm'
         obj.Depth = '0.0 mm'
         obj.setExpression('StepDown', '0 mm')
+        obj.Join = 'Round'
         obj.StepDown = False
  	obj.ToolComp = True
 
