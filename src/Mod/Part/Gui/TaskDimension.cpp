@@ -204,8 +204,10 @@ void PartGui::dumpLinearResults(const BRepExtrema_DistShapeShape &measure)
 
 Gui::View3DInventorViewer * PartGui::getViewer()
 {
-  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->
-    activeDocument()->getActiveView());
+  Gui::Document *doc = Gui::Application::Instance->activeDocument();
+  if (!doc)
+    return 0;
+  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView());
   if (!view)
     return 0;
   Gui::View3DInventorViewer *viewer = view->getViewer();
@@ -255,8 +257,10 @@ SoNode* PartGui::createLinearDimension(const gp_Pnt &point1, const gp_Pnt &point
 
 void PartGui::eraseAllDimensions()
 {
-  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->
-    activeDocument()->getActiveView());
+  Gui::Document *doc = Gui::Application::Instance->activeDocument();
+  if (!doc)
+    return;
+  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView());
   if (!view)
     return;
   Gui::View3DInventorViewer *viewer = view->getViewer();
