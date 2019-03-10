@@ -1246,11 +1246,14 @@ PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args)
 
     try {
         std::set<App::DocumentObject*> noduplicates;
+        std::vector<App::DocumentObject*> selectedObjects; // keep the order of selection
         Py::List list;
         for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
-            noduplicates.insert(it->pObject);
+            if (noduplicates.insert(it->pObject).second) {
+                selectedObjects.push_back(it->pObject);
+            }
         }
-        for (std::set<App::DocumentObject*>::iterator it = noduplicates.begin(); it != noduplicates.end(); ++it) {
+        for (std::vector<App::DocumentObject*>::iterator it = selectedObjects.begin(); it != selectedObjects.end(); ++it) {
             list.append(Py::asObject((*it)->getPyObject()));
         }
         return Py::new_reference_to(list);
