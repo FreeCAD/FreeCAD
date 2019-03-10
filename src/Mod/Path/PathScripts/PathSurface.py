@@ -24,7 +24,7 @@
 # *                                                                         *
 # *   Additional modifications and contributions in 2019                    *
 # *   by Russell Johnson  <russ4262@gmail.com>                              *
-# *   Version: Rev. 3f - Usable                                             *
+# *   Version: Rev. 3g - Usable                                             *
 # *                                                                         *
 # *   NOTES:  After changing value in property window, only click on        *
 # *   blue re-compute icon in menu bar. Do NOT click anywhere outside       *
@@ -54,6 +54,7 @@ __author__ = "sliptonic (Brad Collette)"
 __contributors__ = "roivai[FreeCAD], russ4262 (Russell Johnson)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of Mill Facing operation."
+__scriptVersion__ = "3g Usable 2019-03-09"
 
 
 if False:
@@ -133,6 +134,7 @@ class ObjectSurface(PathOp.ObjectOp):
         '''opExecute(obj) ... process surface operation'''
         PathLog.track()
         print("\n-----\n-----\nBegin 3D surface operation")
+        print("Script version: ", __scriptVersion__)
 
         # Instantiate additional class operation variables
         rtn = self.resetOpVariables()
@@ -169,8 +171,6 @@ class ObjectSurface(PathOp.ObjectOp):
             if obj.CompletionMode == 'Multi-pass':
                 singlePass = False
             print("--CompletionMode: ", obj.CompletionMode)
-        else:
-            print("**CompletionMode non-existant; single-pass based if Optimize box true")
 
         # Set scan mode
         rotationalMode = False
@@ -178,8 +178,6 @@ class ObjectSurface(PathOp.ObjectOp):
             if obj.ScanType == 'Rotational':
                 rotationalMode = True
             print("--ScanType: ", obj.ScanType)
-        else:
-            print("**ScanType non-existant; planear mode is default.")
 
         # Set cutter travel orientation
         cutParallel = True
@@ -187,8 +185,6 @@ class ObjectSurface(PathOp.ObjectOp):
             if obj.CutterTravelOrientation == 'Perpendicular':
                 cutParallel = False
             print("--CutterTravelOrientation: ", obj.CutterTravelOrientation)
-        else:
-            print("**CutterTravelOrientation non-existant; parallel travel is default.")
 
         # Cycle through parts of model
         for base in self.model:
@@ -232,9 +228,6 @@ class ObjectSurface(PathOp.ObjectOp):
                         rtn = self.performRotDropCutScans(obj, parentJob, mesh, bb)
                         if rtn == True:
                             final = self.processRotationalScans(obj, singlePass)
-                            nn = None
-                        else:
-                            print("Line and Index Angle counts are NOT equal.")
                     else:
                         rtn = self.performPerpRotDropCutScans(obj, parentJob, mesh, bb)
                         if rtn == True:
@@ -296,15 +289,18 @@ class ObjectSurface(PathOp.ObjectOp):
         else:
             dep_par = PathUtils.depth_params(obj.ClearanceHeight.Value, obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown, 0.0, obj.FinalDepth.Value)
             depthparams = [i for i in dep_par]
-        print("--depthparams:", str(depthparams))
+        # print("--depthparams:", str(depthparams))
         lenDP = len(depthparams)
         self.targetDepth = depthparams[lenDP-1]
         prevDepth = depthparams[0]
 
         # Scan the piece to depth
         self.CLP = self._dropCutterScan(obj, stl, bbLength, xmin, ymin, xmax, ymax, self.targetDepth)
-        # print("--Received: ", str(len(self.CLP)), " CLP points at target depth of ", str(self.targetDepth))
         pnt = ocl.Point(float("inf"), float("inf"), float("inf"))
+
+        # Prepare global holdpoint container
+        if self.holdPoint == None:
+            self.holdPoint = ocl.Point(float("inf"), float("inf"), float("inf"))
 
         # Extract layers per depthparams
         for lyr in  range(0, lenDP):
@@ -416,8 +412,6 @@ class ObjectSurface(PathOp.ObjectOp):
         prev = ocl.Point(float("inf"), float("inf"), float("inf"))
         nxt = ocl.Point(float("inf"), float("inf"), float("inf"))
         pnt = ocl.Point(float("inf"), float("inf"), float("inf"))
-        if self.holdPoint == None:
-            self.holdPoint = ocl.Point(float("inf"), float("inf"), float("inf"))
         travVect = ocl.Point(float("inf"), float("inf"), float("inf"))
 
         # Set values for first gcode point in layer
@@ -659,14 +653,12 @@ class ObjectSurface(PathOp.ObjectOp):
         else:
             vlim = bb.ZMax
         if obj.DropCutterDir == 'X':
-            rotVect = FreeCAD.Vector(1,0,0)
             # Rotation is around X-axis, cutter moves along same axis
             if math.fabs(ymin) > math.fabs(ymax):
                 hlim = bb.YMin
             else:
                 hlim = bb.YMax
         else:
-            rotVect = FreeCAD.Vector(0,1,0)
             # Rotation is around Y-axis, cutter moves along same axis
             if math.fabs(xmin) > math.fabs(xmax):
                 hlim = bb.XMin
@@ -685,17 +677,17 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Set updated bound box values
         # Redefine the new max and min XY area of the operation based on greatest point radius of model
-        bb.ZMin = -1*bbRad
+        bb.ZMin = -1 * bbRad
         bb.ZMax = bbRad
         if obj.DropCutterDir == 'X':
-            bb.YMin = -bbRad
+            bb.YMin = -1 * bbRad
             bb.YMax = bbRad
             ymin = 0.0
             ymax = 0.0
             xmin = bb.XMin - obj.DropCutterExtraOffset.x
             xmax = bb.XMax + obj.DropCutterExtraOffset.x
         else:
-            bb.XMin = -bbRad
+            bb.XMin = -1 * bbRad
             bb.XMax = bbRad
             ymin = bb.YMin - obj.DropCutterExtraOffset.y
             ymax = bb.YMax + obj.DropCutterExtraOffset.y
@@ -704,10 +696,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Determine angule indexes
         angIdx = 0
-        self.gcodeRotations = [angIdx]
         while angIdx < 360:
             self.scanAngleIndexes.append(angIdx)
-            self.gcodeRotations.append(self.stepDeg)
             angIdx += self.stepDeg
 
         # Create stl object for ocl
@@ -725,9 +715,6 @@ class ObjectSurface(PathOp.ObjectOp):
         dCAS = []
         lenSAI = len(self.scanAngleIndexes)
         prevIndex = 0
-        mathpi = math.pi
-        if obj.DropCutterDir == 'Y':
-            mathpi = -math.pi
         for sa in range(0, lenSAI):
             t_before = time.time()
             radsRot = math.radians((self.scanAngleIndexes[sa] - prevIndex)) - 0.0000001
@@ -754,7 +741,7 @@ class ObjectSurface(PathOp.ObjectOp):
         for ln in range(0, len(self.rotationalScanLines)):
             lenln = len(self.rotationalScanLines[ln])
             if lenln != lenLN:
-                #print("NOT EQUAL AT Line: ", ln, " contains ", lenln, " points")
+                print("NOT EQUAL AT Line: ", ln, " contains ", lenln, " points")
                 return False
         return True
 
@@ -802,9 +789,6 @@ class ObjectSurface(PathOp.ObjectOp):
         # Begin gcode operation with raising cutter to safe height
         commands.append(Path.Command('G0', {'Z': safeHeight, 'F': self.vertRapid}))
 
-        if self.layerEndPnt == None:
-            self.layerEndPnt = ocl.Point(float("inf"), float("inf"), float("inf"))
-
         # Compute number and size of stepdowns, and final depth
         # This area needs to be updated to account for self.bbRadius values larger than obj.ClearanceHeight/SafeHeight values
         if singlePass == True:
@@ -813,10 +797,22 @@ class ObjectSurface(PathOp.ObjectOp):
             # dep_par = PathUtils.depth_params(obj.ClearanceHeight.Value, obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown, 0.0, obj.FinalDepth.Value)
             dep_par = PathUtils.depth_params(clearHeight, safeHeight, self.bbRadius, obj.StepDown, 0.0, obj.FinalDepth.Value)
             depthparams = [i for i in dep_par]
-        print("--depthparams:", str(depthparams))
+        # print("--depthparams:", str(depthparams))
         lenDP = len(depthparams)
         targetDepth = depthparams[lenDP-1]
         prevDepth = depthparams[0]
+
+        if self.layerEndPnt == None:
+            self.layerEndPnt = ocl.Point(float("inf"), float("inf"), float("inf"))
+
+        # Invert angles for Y-axis rotation
+        if obj.DropCutterDir == 'Y':
+            for a in range(0, len(self.scanAngleIndexes)):
+                self.scanAngleIndexes[a] = -self.scanAngleIndexes[a]
+
+        # Prepare global holdpoint container
+        if self.holdPoint == None:
+            self.holdPoint = ocl.Point(float("inf"), float("inf"), float("inf"))
 
         # Convert rotational scans into gcode
         rslLen = len(self.rotationalScanLines)
@@ -832,7 +828,6 @@ class ObjectSurface(PathOp.ObjectOp):
                 for c in rLTG:
                     commands.append(c)
             prevDepth = layDep
-
         return commands
 
     def rotationalLineToGcode(self, obj, li, CLP, clearHeight, idxAng, prvDep, layerDepth, spm):
@@ -848,7 +843,6 @@ class ObjectSurface(PathOp.ObjectOp):
         zMax = prvDep
         lenCLP = len(CLP)
         lastCLP = lenCLP - 1
-        self.holdPoint = ocl.Point(float("inf"), float("inf"), float("inf"))
         prev = ocl.Point(float("inf"), float("inf"), float("inf"))
         nxt = ocl.Point(float("inf"), float("inf"), float("inf"))
         pnt = ocl.Point(float("inf"), float("inf"), float("inf"))
@@ -863,14 +857,14 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Rotate to correct index location
         if obj.DropCutterDir == 'X':
-            output.append(Path.Command('G0', {'A': idxAng, 'F': self.vertFeed}))
+            output.append(Path.Command('G0', {'A': idxAng, 'F': self.axialFeed}))
         else:
-            output.append(Path.Command('G0', {'B': idxAng, 'F': self.vertFeed}))
+            output.append(Path.Command('G0', {'B': idxAng, 'F': self.axialFeed}))
 
         if li > 0:
             if pnt.z > self.layerEndPnt.z:
                 clrZ = pnt.z + 2.0
-                output.append(Path.Command('G1', {'Z': clrZ, 'F': self.vertFeed}))
+                output.append(Path.Command('G1', {'Z': clrZ, 'F': self.vertRapid}))
         else:
             output.append(Path.Command('G0', {'Z': clearHeight, 'F': self.vertRapid}))
         output.append(Path.Command('G0', {'X': pnt.x, "Y": pnt.y, 'F': self.horizRapid}))
@@ -939,12 +933,13 @@ class ObjectSurface(PathOp.ObjectOp):
             pnt.y = nxt.y
             pnt.z = nxt.z
         # print("points after optimization: " + str(len(output)))
+        output.append(Path.Command('N (End index angle ' + str(round(idxAng, 4)) + ')', {}))
 
+        # Save layer end point for use in transitioning to next layer
         self.layerEndPnt.x = pnt.x
         self.layerEndPnt.y = pnt.y
         self.layerEndPnt.z = pnt.z
 
-        output.append(Path.Command('N (End index angle ' + str(round(idxAng, 4)) + ')', {}))
         return output
 
 
@@ -966,14 +961,12 @@ class ObjectSurface(PathOp.ObjectOp):
         else:
             vlim = bb.ZMax
         if obj.DropCutterDir == 'X':
-            rotVect = FreeCAD.Vector(1,0,0)
             # Rotation is around X-axis, cutter moves along same axis
             if math.fabs(ymin) > math.fabs(ymax):
                 hlim = bb.YMin
             else:
                 hlim = bb.YMax
         else:
-            rotVect = FreeCAD.Vector(0,1,0)
             # Rotation is around Y-axis, cutter moves along same axis
             if math.fabs(xmin) > math.fabs(xmax):
                 hlim = bb.XMin
@@ -995,18 +988,18 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Set updated bound box values
         # Redefine the new max and min XY area of the operation based on greatest point radius of model
-        bb.ZMin = -1*bbRad
+        bb.ZMin = -1 * bbRad
         bb.ZMax = bbRad
         if obj.DropCutterDir == 'X':
-            bb.YMin = -self.bbRadius
-            bb.YMax = self.bbRadius
+            bb.YMin = -1 * bbRad
+            bb.YMax = bbRad
             ymin = 0.0
             ymax = 0.0
             xmin = bb.XMin - obj.DropCutterExtraOffset.x
             xmax = bb.XMax + obj.DropCutterExtraOffset.x
         else:
-            bb.XMin = -self.bbRadius
-            bb.XMax = self.bbRadius
+            bb.XMin = -1 * bbRad
+            bb.XMax = bbRad
             ymin = bb.YMin - obj.DropCutterExtraOffset.y
             ymax = bb.YMax + obj.DropCutterExtraOffset.y
             xmin = 0.0
@@ -1014,10 +1007,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Determine angule indexes
         angIdx = 0
-        self.gcodeRotations = [angIdx]
         while angIdx < 360:
             self.scanAngleIndexes.append(angIdx)
-            self.gcodeRotations.append(self.stepDeg)
             angIdx += self.stepDeg
 
         # Create stl object for ocl
@@ -1034,9 +1025,6 @@ class ObjectSurface(PathOp.ObjectOp):
         dCAS = []
         lenSAI = len(self.scanAngleIndexes)
         prevIndex = 0
-        mathpi = math.pi
-        if obj.DropCutterDir == 'Y':
-            mathpi = -math.pi
         for sa in range(0, lenSAI):
             t_before = time.time()
             radsRot = math.radians((self.scanAngleIndexes[sa] - prevIndex)) - 0.0000001
@@ -1104,14 +1092,6 @@ class ObjectSurface(PathOp.ObjectOp):
         # Begin gcode operation with raising cutter to safe height
         commands.append(Path.Command('G0', {'Z': safeHeight, 'F': self.vertRapid}))
 
-        if self.layerEndPnt == None:
-            self.layerEndPnt = ocl.Point(float("inf"), float("inf"), float("inf"))
-
-        # Invert angles for Y-axis rotation
-        if obj.DropCutterDir == 'Y':
-            for a in range(0, len(self.scanAngleIndexes)):
-                self.scanAngleIndexes[a] = -self.scanAngleIndexes[a]
-        
         # Compute number and size of stepdowns, and final depth
         # This area needs to be updated to account for self.bbRadius values larger than obj.ClearanceHeight/SafeHeight values
         if singlePass == True:
@@ -1119,10 +1099,18 @@ class ObjectSurface(PathOp.ObjectOp):
         else:
             dep_par = PathUtils.depth_params(clearHeight, safeHeight, self.bbRadius, obj.StepDown, 0.0, obj.FinalDepth.Value)
             depthparams = [i for i in dep_par]
-        print("--depthparams:", str(depthparams))
+        # print("--depthparams:", str(depthparams))
         lenDP = len(depthparams)
         targetDepth = depthparams[lenDP-1]
         prevDepth = depthparams[0]
+
+        if self.layerEndPnt == None:
+            self.layerEndPnt = ocl.Point(float("inf"), float("inf"), float("inf"))
+
+        # Invert angles for Y-axis rotation
+        if obj.DropCutterDir == 'Y':
+            for a in range(0, len(self.scanAngleIndexes)):
+                self.scanAngleIndexes[a] = -self.scanAngleIndexes[a]
 
         # Convert rotational scans into gcode
         numPnts = len(self.rotationalScanLines[0])  # Number of points per line along axis, at obj.SampleInterval spacing
@@ -1138,9 +1126,6 @@ class ObjectSurface(PathOp.ObjectOp):
                     commands.append(c)
                 #rLTG = []
             prevDepth = layDep
-
-        #for c in self.gcodeCmds:
-        #    commands.append(c)
         return commands
 
     def perpRotLineToGcode(self, obj, PNTS, np, clearHeight, prvDep, layerDepth, spm):
@@ -1148,11 +1133,9 @@ class ObjectSurface(PathOp.ObjectOp):
         output = []
         nxtAng = 0
         adjRotAng = 0
-        self.holdPoint = ocl.Point(float("inf"), float("inf"), float("inf"))
         prev = ocl.Point(float("inf"), float("inf"), float("inf"))
         nxt = ocl.Point(float("inf"), float("inf"), float("inf"))
         pnt = ocl.Point(float("inf"), float("inf"), float("inf"))
-        end = ocl.Point(float("inf"), float("inf"), float("inf"))
 
         def adjustRotation(ang, adjRotAng):
             ang += adjRotAng
@@ -1168,7 +1151,6 @@ class ObjectSurface(PathOp.ObjectOp):
             axisOfRot = 'B'
         
         # Create frist point
-        #ang = adjustRotation(self.scanAngleIndexes[0], adjRotAng)
         ang = self.scanAngleIndexes[0]
         pnt.x = PNTS[0].x
         pnt.y = PNTS[0].y
@@ -1179,20 +1161,15 @@ class ObjectSurface(PathOp.ObjectOp):
         if np > 0:
             if pnt.z > self.layerEndPnt.z:
                 clrZ = pnt.z + 2.0
-                output.append(Path.Command('G1', {'Z': clrZ, 'F': self.vertFeed}))
+                output.append(Path.Command('G1', {'Z': clrZ, 'F': self.vertRapid}))
         else:
             output.append(Path.Command('G0', {'Z': clearHeight, 'F': self.vertRapid}))
-        #output.append(Path.Command('G0', {axisOfRot: ang, 'F': self.axialRapid}))
-        #output.append(Path.Command('G0', {'X': pnt.x, "Y": pnt.y, 'F': self.horizRapid}))
-        #output.append(Path.Command('G1', {'Z': pnt.z, 'F': self.vertFeed}))
         output.append(Path.Command('G1', {'X': pnt.x, "Y": pnt.y, "Z": pnt.z, axisOfRot: ang, 'F': self.axialFeed}))
         
         lenPNTS = len(PNTS)
         lastIdx = lenPNTS - 1
-
         for i in range(0, lenPNTS):
             if i < lastIdx:
-                #nxtAng = adjustRotation(self.scanAngleIndexes[i + 1], adjRotAng)
                 nxtAng = self.scanAngleIndexes[i + 1]
                 nxt.x = PNTS[i + 1].x
                 nxt.y = PNTS[i + 1].y
@@ -1204,21 +1181,15 @@ class ObjectSurface(PathOp.ObjectOp):
             ang = nxtAng
         # print("points after optimization: " + str(len(output)))
 
-        #endang = adjustRotation(self.scanAngleIndexes[0], adjRotAng)
+        # Save layer end point for use in transitioning to next layer
         endang = self.scanAngleIndexes[0]
-        end.x = PNTS[0].x
-        end.y = PNTS[0].y
-        end.z = PNTS[0].z
-        output.append(Path.Command('G1', {'X': end.x, "Y": end.y, "Z": end.z, axisOfRot: endang, 'F': self.axialFeed}))
-        #output.append(Path.Command('G0', {'Z': clearHeight, 'F': self.vertRapid}))
+        self.layerEndPnt.x = PNTS[0].x
+        self.layerEndPnt.y = PNTS[0].y
+        self.layerEndPnt.z = PNTS[0].z
+        
+        # Move cutter to final point
+        output.append(Path.Command('G1', {'X': self.layerEndPnt.x, "Y": self.layerEndPnt.y, "Z": self.layerEndPnt.z, axisOfRot: endang, 'F': self.axialFeed}))
 
-        self.layerEndPnt.x = end.x
-        self.layerEndPnt.y = end.y
-        self.layerEndPnt.z = end.z
-
-        #for o in output:
-        #    self.gcodeCmds.append(o)
-        #return True
         return output
 
 
@@ -1420,7 +1391,6 @@ class ObjectSurface(PathOp.ObjectOp):
         self.keepTime = 0
         self.lineScanTime = 0
         self.holdPntCnt = 0
-        self.gcodeRotations = []
         self.scanAngleIndexes = []
         self.rotationalScanLines = []
         self.stl = None
