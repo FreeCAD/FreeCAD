@@ -49,8 +49,8 @@ def toolOffset(ToolComp, width, Depth, tool):
     depth = 0 # Fixed at 0, tool never goes into work
     toolOffset = tool.Diameter/2
     extraOffset =  width - ((tool.Diameter/2)*(not ToolComp))
-    if extraOffset <= -(tool.Diameter/2):# We need to stay on the correct side
-	extraOffset = -(tool.Diameter/2) + 0.00001 #Offset to correct side by smallest unit(faster than offsetting twice)
+    if extraOffset <= -(tool.Diameter/2): # We need to stay on the correct side
+    	extraOffset = -(tool.Diameter/2) + 0.00001 #Offset to correct side by smallest unit(faster than offsetting twice)
     offset = toolOffset + extraOffset
     return (depth, offset)
 
@@ -75,6 +75,7 @@ class ObjectBeamCut(PathEngraveBase.ObjectOp):
 
     def opExecute(self, obj):
         PathLog.track(obj.Label)
+ #       (depth, offset) = toolDepthAndOffset(obj.Width.Value, obj.ExtraDepth.Value, self.tool)
         (depth, offset ) = toolOffset(obj.ToolComp, obj.Offset.Value, obj.Depth.Value, self.tool)
         PathLog.track(obj.Label, depth, offset)
 
@@ -101,8 +102,8 @@ class ObjectBeamCut(PathEngraveBase.ObjectOp):
             for w in basewires:
                 self.adjusted_basewires.append(w)
                 wire = PathOpTools.offsetWire(w, base.Shape, offset, True)
-	        if wire:
-                    wires.append(wire)  
+                if wire:
+                    wires.append(wire)
 
         zValues = []
         z = 0
@@ -131,7 +132,7 @@ class ObjectBeamCut(PathEngraveBase.ObjectOp):
         obj.setExpression('StepDown', '0 mm')
         obj.Join = 'Round'
         obj.StepDown = False
- 	obj.ToolComp = True
+        obj.ToolComp = True
 
 def SetupProperties():
     setup = []
@@ -145,4 +146,3 @@ def Create(name, obj = None):
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectBeamCut(obj, name)
     return obj
-

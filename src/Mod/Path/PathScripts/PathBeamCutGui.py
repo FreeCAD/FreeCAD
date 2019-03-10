@@ -67,13 +67,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getFields(self, obj):
         PathGui.updateInputField(obj, 'Offset', self.form.value_W)
-	self.form.Bool_C
-	if obj.ToolComp != self.form.Bool_C.isChecked():
+        self.form.Bool_C
+        if obj.ToolComp != self.form.Bool_C.isChecked():
             obj.ToolComp = self.form.Bool_C.isChecked()
-	if self.form.joinRound.isChecked():
-	    obj.Join = 'Round'
-	elif self.form.joinMiter.isChecked():
-   	    obj.Join = 'Miter'
+        if self.form.joinRound.isChecked():
+            obj.Join = 'Round'
+        elif self.form.joinMiter.isChecked():
+            obj.Join = 'Miter'
 
         self.updateToolController(obj, self.form.toolController)
 
