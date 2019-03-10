@@ -91,15 +91,21 @@ private:
     {
         const char* HtmlCode;
         const char* BaseUrl;
-        const char* TabName = "Browser";
-        if (! PyArg_ParseTuple(args.ptr(), "ss|s",&HtmlCode,&BaseUrl,&TabName))
+        char* TabName = nullptr;
+        if (! PyArg_ParseTuple(args.ptr(), "ss|et", &HtmlCode, &BaseUrl, "utf-8", &TabName))
             throw Py::Exception();
+
+        std::string EncodedName = "Browser";
+        if (TabName) {
+            EncodedName = std::string(TabName);
+            PyMem_Free(TabName);
+        }
 
         WebGui::BrowserView* pcBrowserView = 0;
         pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
         pcBrowserView->resize(400, 300);
         pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)));
-        pcBrowserView->setWindowTitle(QString::fromUtf8(TabName));
+        pcBrowserView->setWindowTitle(QString::fromUtf8(EncodedName.c_str()));
         Gui::getMainWindow()->addWindow(pcBrowserView);
         if (!Gui::getMainWindow()->activeWindow())
             Gui::getMainWindow()->setActiveWindow(pcBrowserView);
@@ -109,14 +115,20 @@ private:
 
     Py::Object openBrowserWindow(const Py::Tuple& args)
     {
-        const char* TabName = "Browser";
-        if (! PyArg_ParseTuple(args.ptr(), "|s",&TabName))
+        char* TabName = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "|et", "utf-8", &TabName))
             throw Py::Exception();
+
+        std::string EncodedName = "Browser";
+        if (TabName) {
+            EncodedName = std::string(TabName);
+            PyMem_Free(TabName);
+        }
 
         WebGui::BrowserView* pcBrowserView = 0;
         pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
         pcBrowserView->resize(400, 300);
-        pcBrowserView->setWindowTitle(QString::fromUtf8(TabName));
+        pcBrowserView->setWindowTitle(QString::fromUtf8(EncodedName.c_str()));
         Gui::getMainWindow()->addWindow(pcBrowserView);
         if (!Gui::getMainWindow()->activeWindow())
             Gui::getMainWindow()->setActiveWindow(pcBrowserView);
