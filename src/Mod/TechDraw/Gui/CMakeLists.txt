@@ -30,6 +30,7 @@ set(TechDrawGui_MOC_HDRS
     QGISVGTemplate.h
     QGIDrawingTemplate.h
     QGIViewDimension.h
+    QGIViewBalloon.h
     TaskProjGroup.h
     DlgPrefsTechDrawImp.h
     DlgPrefsTechDraw2Imp.h
@@ -148,6 +149,8 @@ SET(TechDrawGuiView_SRCS
     QGIViewCollection.h
     QGIViewDimension.cpp
     QGIViewDimension.h
+    QGIViewBalloon.cpp
+    QGIViewBalloon.h
     QGIProjGroup.cpp
     QGIProjGroup.h
     QGIViewPart.cpp
@@ -193,6 +196,8 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderTemplate.h
     ViewProviderDimension.cpp
     ViewProviderDimension.h
+    ViewProviderBalloon.cpp
+    ViewProviderBalloon.h
     ViewProviderViewPart.cpp
     ViewProviderViewPart.h
     ViewProviderProjGroup.cpp

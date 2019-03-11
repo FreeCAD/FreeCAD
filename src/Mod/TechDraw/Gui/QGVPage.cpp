@@ -58,6 +58,7 @@
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawParametricTemplate.h>
 #include <Mod/TechDraw/App/DrawViewCollection.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -75,6 +76,7 @@
 #include "TemplateTextField.h"
 #include "QGIViewCollection.h"
 #include "QGIViewDimension.h"
+#include "QGIViewBalloon.h"
 #include "QGIProjGroup.h"
 #include "QGIViewPart.h"
 #include "QGIViewSection.h"
@@ -133,6 +135,8 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     bkgBrush = new QBrush(getBackgroundColor());
+
+    balloonIndex = 1;
 
     resetCachedContent();
 }
@@ -255,7 +259,13 @@ int QGVPage::removeQViewByName(const char* name)
             break;
         }
     }
+
     if (found) {
+        int balloonItemType = QGraphicsItem::UserType + 140;
+        if (ourItem->type() == balloonItemType) {
+            QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>(ourItem);
+            balloon->disconnect();
+        }
         removeQViewFromScene(ourItem);
         delete ourItem;
     }
@@ -383,6 +393,39 @@ QGIView * QGVPage::addDrawViewImage(TechDraw::DrawViewImage *view)
     return qview;
 }
 
+QGIView * QGVPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
+{
+    auto balloonGroup( new QGIViewBalloon );
+
+    auto ourScene( scene() );
+    assert(ourScene);
+    ourScene->addItem(balloonGroup);
+
+    balloonGroup->setViewPartFeature(balloon);
+
+    // Find if it belongs to a parent
+    QGIView *parent = 0;
+    parent = findParent(balloonGroup);
+
+    if(parent) {
+        balloonGroup->connect(parent);
+        addBalloonToParent(balloonGroup,parent);
+    }
+
+    return balloonGroup;
+}
+
+void QGVPage::addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent)
+{
+    assert(balloon);
+    assert(parent);          //blow up if we don't have Dimension or Parent
+    QPointF posRef(0.,0.);
+    QPointF mapPos = balloon->mapToItem(parent, posRef);
+    balloon->moveBy(-mapPos.x(), -mapPos.y());
+    parent->addToGroup(balloon);
+    balloon->setZValue(ZVALUE::DIMENSION);
+}
+
 QGIView * QGVPage::addViewDimension(TechDraw::DrawViewDimension *dim)
 {
     auto dimGroup( new QGIViewDimension );
@@ -463,6 +506,23 @@ QGIView * QGVPage::findParent(QGIView *view) const
             // Attach the dimension to the first object's group
             for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
                 if(strcmp((*it)->getViewName(), objs.at(0)->getNameInDocument()) == 0) {
+                    return *it;
+                }
+            }
+        }
+    }
+
+    //If type is balloon we check references first
+    TechDraw::DrawViewBalloon *balloon = 0;
+    balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(myView);
+
+    if(balloon) {
+        App::DocumentObject* obj = balloon->sourceView.getValue();
+
+        if(obj) {
+            // Attach the dimension to the first object's group
+            for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
+                if(strcmp((*it)->getViewName(), obj->getNameInDocument()) == 0) {
                     return *it;
                 }
             }

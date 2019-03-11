@@ -73,6 +73,7 @@ public:
     void setFont(QFont f);
     QFont getFont(void) { return m_dimText->font(); }
     void setDimString(QString t);
+    void setDimString(QString t, qreal maxWidth);
     void setTolString();
     void setPrettySel(void);
     void setPrettyPre(void);
