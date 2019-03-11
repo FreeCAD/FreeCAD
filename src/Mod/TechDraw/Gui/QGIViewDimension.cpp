@@ -210,6 +210,13 @@ void QGIDatumLabel::setDimString(QString t)
     m_dimText->setPlainText(t);
 } 
 
+void QGIDatumLabel::setDimString(QString t, qreal maxWidth)
+{
+    prepareGeometryChange();
+    m_dimText->setPlainText(t);
+    m_dimText->setTextWidth(maxWidth);
+}
+
 void QGIDatumLabel::setTolString()
 {
     prepareGeometryChange();
