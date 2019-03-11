@@ -100,6 +100,8 @@ public:
     
     static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
     MDIViewPage* getMDIViewPage(void) const;
+    // Mouse handling
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
 protected:
     QGIView* getQGIVByName(std::string name);
@@ -107,7 +109,6 @@ protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     // Mouse handling
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     // Preselection events:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;

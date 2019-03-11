@@ -227,3 +227,13 @@ Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     return hGrp;
 }
+
+void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+    QGIView *parent;
+    QGraphicsItem* qparent = parentItem();
+    if (qparent != nullptr) {
+        parent = dynamic_cast<QGIView *> (qparent);
+        parent->mousePressEvent(event);
+    }
+}
