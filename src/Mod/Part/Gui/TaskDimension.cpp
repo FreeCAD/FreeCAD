@@ -247,6 +247,7 @@ SoNode* PartGui::createLinearDimension(const gp_Pnt &point1, const gp_Pnt &point
   PartGui::DimensionLinear *dimension = new PartGui::DimensionLinear();
   dimension->point1.setValue(vec1);
   dimension->point2.setValue(vec2);
+  dimension->setupDimension();
   
   Base::Quantity quantity(static_cast<double>((vec2-vec1).length()), Base::Unit::Length);
   dimension->text.setValue(quantity.getUserString().toUtf8().constData());
@@ -344,11 +345,6 @@ PartGui::DimensionLinear::DimensionLinear()
     SO_NODE_ADD_FIELD(origin, (0.0, 0.0, 0.0));//static
     SO_NODE_ADD_FIELD(text, ("test"));//dimension text
     SO_NODE_ADD_FIELD(dColor, (1.0, 0.0, 0.0));//dimension color.
-    
-    point1.setValue(SbVec3f(0.0, 0.0, 0.0));
-    point2.setValue(SbVec3f(1.0, 0.0, 0.0));
-
-    setupDimension();
 }
 
 PartGui::DimensionLinear::~DimensionLinear()
@@ -374,6 +370,7 @@ void PartGui::DimensionLinear::setupDimension()
   hyp->expression.set1Value(1, "oB = normalize(oA)");
   hyp->expression.set1Value(2, "oa = length(oA)");
   length.connectFrom(&hyp->oa);
+
   //build engine for rotation.
   SoComposeRotationFromTo *rotationEngine = new SoComposeRotationFromTo();
   rotationEngine->from.setValue(SbVec3f(1.0, 0.0, 0.0));
@@ -384,18 +381,27 @@ void PartGui::DimensionLinear::setupDimension()
   SoMaterial *material = new SoMaterial;
   material->diffuseColor.connectFrom(&dColor);
 
-  //dimension arrows.
+  //dimension arrows
+  float dimLength = (point2.getValue()-point1.getValue()).length();
+  float coneHeight = dimLength * .05;
+  float coneRadius = coneHeight / 2;
+
   SoCone *cone = new SoCone();
-  cone->bottomRadius.setValue(0.25);
-  cone->height.setValue(0.5);
+  cone->bottomRadius.setValue(coneRadius);
+  cone->height.setValue(coneHeight);
+
+  char lStr[100];
+  char rStr[100];
+  snprintf(lStr, sizeof(lStr), "translation %.2f 0.0 0.0", coneHeight*0.5);
+  snprintf(rStr, sizeof(rStr), "translation 0.0 -%.2f 0.0", coneHeight*0.5);
 
   setPart("leftArrow.shape", cone);
   set("leftArrow.transform", "rotation 0.0 0.0 1.0 1.5707963");
-  set("leftArrow.transform", "translation 0.25 0.0 0.0"); //half cone height.
+  set("leftArrow.transform", lStr);
   setPart("rightArrow.shape", cone);
   set("rightArrow.transform", "rotation 0.0 0.0 -1.0 1.5707963"); //no constant for PI.
   //have use local here to do the offset because the main is wired up to length of dimension.
-  set("rightArrow.localTransform", "translation 0.0 -0.25 0.0"); //half cone height.
+  set("rightArrow.localTransform", rStr);
 
   SoTransform *transform = static_cast<SoTransform *>(getPart("rightArrow.transform", false));
   if (!transform)
@@ -1004,6 +1010,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   dimension->angle.setValue(static_cast<float>(displayAngle));
   dimension->text.setValue((Base::Quantity(180 * angle / M_PI, Base::Unit::Angle)).getUserString().toUtf8().constData());
   dimension->dColor.setValue(SbColor(0.0, 0.0, 1.0));
+  dimension->setupDimension();
   
   Gui::View3DInventorViewer *viewer = getViewer();
   if (viewer)
@@ -1039,8 +1046,6 @@ PartGui::DimensionAngular::DimensionAngular()
                                0.0, 1.0, 0.0, 0.0,
 			       0.0, 0.0, 1.0, 0.0,
 			       0.0, 0.0, 0.0, 1.0));
-    
-    setupDimension();
 }
 
 PartGui::DimensionAngular::~DimensionAngular()
@@ -1065,17 +1070,25 @@ void PartGui::DimensionAngular::setupDimension()
   material->ref();
   material->diffuseColor.connectFrom(&dColor);
 
-  //dimension arrows.
+  //dimension arrows
+  float coneHeight = radius.getValue() * 0.1;
+  float coneRadius = coneHeight / 2;
+
   SoCone *cone = new SoCone();
-  cone->bottomRadius.setValue(0.25);
-  cone->height.setValue(0.5);
+  cone->bottomRadius.setValue(coneRadius);
+  cone->height.setValue(coneHeight);
+
+  char str1[100];
+  char str2[100];
+  snprintf(str1, sizeof(str1), "translation 0.0 %.2f 0.0", coneHeight*0.5);
+  snprintf(str2, sizeof(str2), "translation 0.0 -%.2f 0.0", coneHeight*0.5);
 
   setPart("arrow1.shape", cone);
   set("arrow1.localTransform", "rotation 0.0 0.0 1.0 3.1415927");
-  set("arrow1.localTransform", "translation 0.0 0.25 0.0"); //half cone height.
+  set("arrow1.localTransform", str1);
   setPart("arrow2.shape", cone);
   set("arrow2.transform", "rotation 0.0 0.0 1.0 0.0");
-  set("arrow2.localTransform", "translation 0.0 -0.25 0.0"); //half cone height.
+  set("arrow2.localTransform", str2);
   
   //I was getting errors if I didn't manually allocate for these transforms. Not sure why.
   SoTransform *arrow1Transform = new SoTransform();
