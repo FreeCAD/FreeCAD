@@ -88,6 +88,8 @@ QGIDatumLabel::QGIDatumLabel()
     m_dimText->setParentItem(this);
     m_tolText = new QGCustomText();
     m_tolText->setParentItem(this);
+
+    m_ctrl = false;
 }
 
 QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -103,7 +105,7 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &va
         update();
     } else if(change == ItemPositionHasChanged && scene()) {
         setLabelCenter();
-        Q_EMIT dragging();
+        Q_EMIT dragging(m_ctrl);
     }
 
     return QGraphicsItem::itemChange(change, value);
@@ -111,6 +113,10 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &va
 
 void QGIDatumLabel::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
+    if(event->modifiers() & Qt::ControlModifier) {
+        m_ctrl = true;
+    }
+
     if(scene() && this == scene()->mouseGrabberItem()) {
         Q_EMIT dragFinished();
     }
@@ -124,6 +130,7 @@ void QGIDatumLabel::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIDatumLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
+    m_ctrl = false;
     if(scene() && this == scene()->mouseGrabberItem()) {
         Q_EMIT dragFinished();
     }
@@ -313,8 +320,8 @@ QGIViewDimension::QGIViewDimension() :
 
     // connecting the needed slots and signals
     QObject::connect(
-        datumLabel, SIGNAL(dragging()),
-        this  , SLOT  (datumLabelDragged()));
+        datumLabel, SIGNAL(dragging(bool)),
+        this  , SLOT  (datumLabelDragged(bool)));
 
     QObject::connect(
         datumLabel, SIGNAL(dragFinished()),
@@ -438,8 +445,9 @@ QString QGIViewDimension::getLabelText(void)
 
 }
 
-void QGIViewDimension::datumLabelDragged()
+void QGIViewDimension::datumLabelDragged(bool ctrl)
 {
+    Q_UNUSED(ctrl);
     draw();
 }
 
