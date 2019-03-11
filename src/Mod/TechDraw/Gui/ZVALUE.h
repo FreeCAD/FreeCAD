@@ -13,6 +13,7 @@ namespace ZVALUE {
     const int EDGE = 50;
     const int VERTEX = 60;
     const int DIMENSION = 110;
+    const int LABEL = 120;
     const int SECTIONLINE = 80;    //TODO: change to "DECORATION"? section lines, symmetry lines, etc?
     const int HIGHLIGHT = 80;
     const int MATTING = 100;

@@ -37,6 +37,7 @@
 #include <App/DocumentObject.h>
 
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
@@ -177,6 +178,8 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) cons
           } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())) {
               temp.push_back((*it));
           } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawGeomHatch::getClassTypeId())) {
+              temp.push_back((*it));
+          } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())) {
               temp.push_back((*it));
           }
       }

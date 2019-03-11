@@ -52,7 +52,7 @@ class TechDrawGuiExport  QGIView : public QGraphicsItemGroup
 {
 public:
     QGIView();
-    virtual ~QGIView() = default;
+    virtual ~QGIView();
 
     enum {Type = QGraphicsItem::UserType + 101};
     int type() const override { return Type;}
@@ -102,6 +102,7 @@ public:
     MDIViewPage* getMDIViewPage(void) const;
     // Mouse handling
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    boost::signals2::signal<void (QGIView*, QPointF)> signalSelectPoint;
 
 protected:
     QGIView* getQGIVByName(std::string name);

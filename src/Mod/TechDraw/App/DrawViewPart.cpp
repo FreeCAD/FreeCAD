@@ -97,6 +97,7 @@
 #include "DrawHatch.h"
 #include "DrawGeomHatch.h"
 #include "DrawViewDimension.h"
+#include "DrawViewBalloon.h"
 #include "DrawViewDetail.h"
 #include "DrawPage.h"
 #include "EdgeWalker.h"
@@ -559,6 +560,20 @@ std::vector<TechDraw::DrawViewDimension*> DrawViewPart::getDimensions() const
     return result;
 }
 
+std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
+{
+    std::vector<TechDraw::DrawViewBalloon*> result;
+    std::vector<App::DocumentObject*> children = getInList();
+    std::sort(children.begin(),children.end(),std::less<App::DocumentObject*>());
+    std::vector<App::DocumentObject*>::iterator newEnd = std::unique(children.begin(),children.end());
+    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawViewBalloon::getClassTypeId())) {
+            TechDraw::DrawViewBalloon* balloon = dynamic_cast<TechDraw::DrawViewBalloon*>(*it);
+            result.push_back(balloon);
+        }
+    }
+    return result;
+}
 
 const std::vector<TechDrawGeometry::Vertex *> & DrawViewPart::getVertexGeometry() const
 {
@@ -828,6 +843,22 @@ void DrawViewPart::unsetupObject()
         std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
         std::vector<TechDraw::DrawViewDimension*>::iterator it3 = dims.begin();
         for (; it3 != dims.end(); it3++) {
+            page->removeView(*it3);
+            const char* name = (*it3)->getNameInDocument();
+            if (name) {
+                Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                                docName.c_str(), name);
+            }
+        }
+    }
+
+    // Remove Balloons which reference this DVP
+    // must use page->removeObject first
+    page = findParentPage();
+    if (page != nullptr) {
+        std::vector<TechDraw::DrawViewBalloon*> balloons = getBalloons();
+        std::vector<TechDraw::DrawViewBalloon*>::iterator it3 = balloons.begin();
+        for (; it3 != balloons.end(); it3++) {
             page->removeView(*it3);
             const char* name = (*it3)->getNameInDocument();
             if (name) {

@@ -74,6 +74,8 @@ SET(Draw_SRCS
     DrawViewCollection.h
     DrawViewDimension.cpp
     DrawViewDimension.h
+    DrawViewBalloon.cpp
+    DrawViewBalloon.h
     DrawViewSection.cpp
     DrawViewSection.h
     DrawHatch.cpp

@@ -110,6 +110,10 @@ QGIView::QGIView()
     isVisible(true);
 }
 
+QGIView::~QGIView()
+{
+    signalSelectPoint.disconnect_all_slots();
+}
 
 void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 {
@@ -179,6 +183,8 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
+    signalSelectPoint(this, event->pos());
+
     if(m_locked) {
         event->ignore();
     } else {
