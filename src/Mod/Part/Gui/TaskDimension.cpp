@@ -383,8 +383,8 @@ void PartGui::DimensionLinear::setupDimension()
 
   //dimension arrows
   float dimLength = (point2.getValue()-point1.getValue()).length();
-  float coneHeight = dimLength * .05;
-  float coneRadius = coneHeight / 2;
+  float coneHeight = dimLength * 0.05;
+  float coneRadius = coneHeight * 0.5;
 
   SoCone *cone = new SoCone();
   cone->bottomRadius.setValue(coneRadius);
@@ -392,8 +392,8 @@ void PartGui::DimensionLinear::setupDimension()
 
   char lStr[100];
   char rStr[100];
-  snprintf(lStr, sizeof(lStr), "translation %.2f 0.0 0.0", coneHeight*0.5);
-  snprintf(rStr, sizeof(rStr), "translation 0.0 -%.2f 0.0", coneHeight*0.5);
+  snprintf(lStr, sizeof(lStr), "translation %.6f 0.0 0.0", coneHeight * 0.5);
+  snprintf(rStr, sizeof(rStr), "translation 0.0 -%.6f 0.0", coneHeight * 0.5);
 
   setPart("leftArrow.shape", cone);
   set("leftArrow.transform", "rotation 0.0 0.0 1.0 1.5707963");
@@ -1072,7 +1072,7 @@ void PartGui::DimensionAngular::setupDimension()
 
   //dimension arrows
   float coneHeight = radius.getValue() * 0.1;
-  float coneRadius = coneHeight / 2;
+  float coneRadius = coneHeight * 0.5;
 
   SoCone *cone = new SoCone();
   cone->bottomRadius.setValue(coneRadius);
@@ -1080,8 +1080,8 @@ void PartGui::DimensionAngular::setupDimension()
 
   char str1[100];
   char str2[100];
-  snprintf(str1, sizeof(str1), "translation 0.0 %.2f 0.0", coneHeight*0.5);
-  snprintf(str2, sizeof(str2), "translation 0.0 -%.2f 0.0", coneHeight*0.5);
+  snprintf(str1, sizeof(str1), "translation 0.0 %.6f 0.0", coneHeight * 0.5);
+  snprintf(str2, sizeof(str2), "translation 0.0 -%.6f 0.0", coneHeight * 0.5);
 
   setPart("arrow1.shape", cone);
   set("arrow1.localTransform", "rotation 0.0 0.0 1.0 3.1415927");
