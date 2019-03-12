@@ -37,6 +37,9 @@
        <layout class="QGridLayout" name="girdLayoutAbaqus">
         <item row="1" column="1">
          <widget class="Gui::PrefCheckBox" name="checkBoxWriteGroups">
+          <property name="toolTip">
+           <string>If checked, the mesh groups from the mesh are exported as well.</string>
+          </property>
           <property name="text">
            <string/>
           </property>
