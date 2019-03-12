@@ -1523,6 +1523,19 @@ def is_edge_femmesh(femmesh):
         return True
 
 
+def is_zplane_2D_mesh(femmesh):
+    # used in oofem writer to distinguish between 3D and 2D plane stress
+    if is_face_femmesh(femmesh) is True:
+        tol = 0.0001
+        for n in femmesh.Nodes:
+            z = femmesh.Nodes[n].z
+            if ((0 - tol) < z < (0 + tol)) is not True:
+                    return False
+        return True
+    else:
+        return False
+
+
 def get_three_non_colinear_nodes(nodes_coords):
     # Code to obtain three non-colinear nodes on the PlaneRotation support face
     # nodes_coords --> [(nodenumber, x, y, z), (nodenumber, x, y, z), ...]
