@@ -35,16 +35,16 @@ class SketcherExport SketchGeometryExtension : public Part::GeometryExtension
 public:
     SketchGeometryExtension();
     SketchGeometryExtension(long cid);
-    virtual ~SketchGeometryExtension() = default;
+    virtual ~SketchGeometryExtension() override = default;
 
     // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
+    virtual unsigned int getMemSize(void) const override;
+    virtual void Save(Base::Writer &/*writer*/) const override;
+    virtual void Restore(Base::XMLReader &/*reader*/) override;
 
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const;
+    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     long getId() const {return Id;}
     void setId(long id) {Id = id;}
