@@ -1254,6 +1254,19 @@ PyObject*  MeshPy::refine(PyObject *args)
     Py_Return;
 }
 
+PyObject* MeshPy::removeSmallEdges(PyObject *args)
+{
+    float length;
+    if (!PyArg_ParseTuple(args, "f", &length))
+        return NULL;
+
+    PY_TRY {
+        getMeshObjectPtr()->removeSmallEdges(length);
+    } PY_CATCH;
+
+    Py_Return;
+}
+
 PyObject*  MeshPy::optimizeTopology(PyObject *args)
 {
     float fMaxAngle=-1.0f;
