@@ -65,6 +65,9 @@ Toolpath::~Toolpath()
 
 Toolpath &Toolpath::operator=(const Toolpath& otherPath)
 {
+    if (this == &otherPath)
+        return *this;
+
     clear();
     vpcCommands.resize(otherPath.vpcCommands.size());
     int i = 0;
