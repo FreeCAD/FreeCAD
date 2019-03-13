@@ -86,7 +86,7 @@ void ConstraintPulley::onChanged(const App::Property* prop)
         if (neg)
             force *= -1.0;
 
-        if ((IsDriven.getValue() && neg) || (!IsDriven.getValue() && !neg)) {
+        if (IsDriven.getValue() == neg) {
             BeltForce1.setValue(force + TensionForce.getValue());
             BeltForce2.setValue(TensionForce.getValue());
         } else {
