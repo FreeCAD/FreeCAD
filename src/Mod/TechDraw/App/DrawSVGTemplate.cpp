@@ -156,9 +156,8 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
     //remove DrawingContent comment line
     //change line endings
     //capture TitleBlock dimensions
-    while (!inTemplate.eof())
+    while (getline(inTemplate,line))
     {
-        getline(inTemplate,line);
         // copy every line except the DrawingContent comment?
         if(line.find("<!-- DrawingContent -->") == string::npos) {
             // if not -  write through
@@ -287,8 +286,7 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
         }
         string tline, tfrag;
         ifstream tfile (tfi.filePath().c_str());
-        while (!tfile.eof()) {
-            getline (tfile,tline);
+        while (getline (tfile,tline)) {
             tfrag += tline;
             tfrag += "--endOfLine--";
         }
