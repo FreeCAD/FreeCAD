@@ -81,6 +81,16 @@ const std::vector<unsigned long>& Segment::getIndices() const
     return _indices;
 }
 
+Segment::Segment(const Segment& s)
+  : _mesh(s._mesh)
+  , _indices(s._indices)
+  , _name(s._name)
+  , _save(s._save)
+  , _modifykernel(s._modifykernel)
+{
+
+}
+
 const Segment& Segment::operator = (const Segment& s)
 {
     // Do not copy the MeshObject pointer
