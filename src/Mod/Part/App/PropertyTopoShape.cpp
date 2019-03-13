@@ -185,7 +185,7 @@ PyObject *PropertyPartShape::getPyObject(void)
         }
     }
 
-    if (prop) prop->setConst();
+    prop->setConst();
     return prop;
 }
 

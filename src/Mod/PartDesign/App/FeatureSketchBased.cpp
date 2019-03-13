@@ -925,7 +925,7 @@ double ProfileBased::getReversedAngle(const Base::Vector3d &b, const Base::Vecto
         return SketchNormal * cross;
     }
     catch (...) {
-        return Reversed.getValue();
+        return Reversed.getValue() ? 1 : 0;
     }
 }
 
