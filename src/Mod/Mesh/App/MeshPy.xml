@@ -136,7 +136,12 @@ mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserD
 				<UserDocu>Remove a list of facet indices from the mesh</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getInternalFacets" Const="true">
+        <Methode Name="removeSmallEdges">
+            <Documentation>
+                <UserDocu>Remove all edges that are smaller than a given length</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getInternalFacets" Const="true">
 			<Documentation>
 				<UserDocu>Builds a list of facet indices with triangles that are inside a volume mesh</UserDocu>
 			</Documentation>
