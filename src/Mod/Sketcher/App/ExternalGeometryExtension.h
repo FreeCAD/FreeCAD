@@ -46,16 +46,16 @@ public:
     constexpr static std::array<const char *,NumFlags> flag2str {{ "Defining", "Frozen", "Detached","Missing", "Sync" }};
 
     ExternalGeometryExtension() = default;
-    virtual ~ExternalGeometryExtension() = default;
+    virtual ~ExternalGeometryExtension() override = default;
 
     // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
+    virtual unsigned int getMemSize(void) const override;
+    virtual void Save(Base::Writer &/*writer*/) const override;
+    virtual void Restore(Base::XMLReader &/*reader*/) override;
 
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const;
+    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
     bool testFlag(int flag) const { return Flags.test((size_t)(flag)); }
