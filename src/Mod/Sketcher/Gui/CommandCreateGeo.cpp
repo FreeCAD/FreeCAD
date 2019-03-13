@@ -3258,10 +3258,10 @@ public:
             double ry0 = onSketchPos.y - EditCurve[0].y;
             for (int i=0; i < 16; i++) {
                 double angle = i*M_PI/16.0;
-                double rx = rx0 * cos(angle) + ry0 * sin(angle);
-                double ry = -rx0 * sin(angle) + ry0 * cos(angle);
-                EditCurve[1+i] = Base::Vector2d(EditCurve[0].x + rx, EditCurve[0].y + ry);
-                EditCurve[17+i] = Base::Vector2d(EditCurve[0].x - rx, EditCurve[0].y - ry);
+                double rx1 = rx0 * cos(angle) + ry0 * sin(angle);
+                double ry1 = -rx0 * sin(angle) + ry0 * cos(angle);
+                EditCurve[1+i] = Base::Vector2d(EditCurve[0].x + rx1, EditCurve[0].y + ry1);
+                EditCurve[17+i] = Base::Vector2d(EditCurve[0].x - rx1, EditCurve[0].y - ry1);
             }
             EditCurve[33] = EditCurve[1];
 
@@ -3290,10 +3290,10 @@ public:
 
             for (int i=1; i < 16; i++) {
                 double angle = i*M_PI/16.0;
-                double rx = a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi);
-                double ry = a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi);
-                EditCurve[1+i] = Base::Vector2d(EditCurve[0].x + rx, EditCurve[0].y + ry);
-                EditCurve[17+i] = Base::Vector2d(EditCurve[0].x - rx, EditCurve[0].y - ry);
+                double rx1 = a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi);
+                double ry1 = a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi);
+                EditCurve[1+i] = Base::Vector2d(EditCurve[0].x + rx1, EditCurve[0].y + ry1);
+                EditCurve[17+i] = Base::Vector2d(EditCurve[0].x - rx1, EditCurve[0].y - ry1);
             }
             EditCurve[33] = EditCurve[1];
             EditCurve[17] = EditCurve[16];
@@ -3330,9 +3330,9 @@ public:
 
             for (int i=0; i < 34; i++) {
                 double angle = startAngle+i*arcAngle/34.0;
-                double rx = a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi);
-                double ry = a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi);
-                EditCurve[i] = Base::Vector2d(centerPoint.x + rx, centerPoint.y + ry);
+                double rx1 = a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi);
+                double ry1 = a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi);
+                EditCurve[i] = Base::Vector2d(centerPoint.x + rx1, centerPoint.y + ry1);
             }
 //             EditCurve[33] = EditCurve[1];
 //             EditCurve[17] = EditCurve[16];
@@ -4075,18 +4075,18 @@ public:
             double ustartpoint =
             ( cos(phi) * (startingPoint.y - axisPoint.y) - (startingPoint.x - axisPoint.x) * sin(phi));
 
-            double startAngle = ustartpoint;
+            double startValue = ustartpoint;
 
             double u =
             ( cos(phi) * (onSketchPos.y - axisPoint.y) - (onSketchPos.x - axisPoint.x) * sin(phi));
 
 
-            arcAngle = u - startAngle;
+            arcAngle = u - startValue;
 
             if (!boost::math::isnan(arcAngle)) {
                 EditCurve.resize(33);
                 for (std::size_t i=0; i < 33; i++) {
-                    double angle = startAngle+i*arcAngle/32.0;
+                    double angle = startValue+i*arcAngle/32.0;
                     double rx = angle * angle / 4 / focal * cos(phi) - angle * sin(phi);
                     double ry = angle * angle / 4 / focal * sin(phi) + angle * cos(phi);
                     EditCurve[i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
