@@ -138,7 +138,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
         return 0; // If Autoconstraints property is not set quit
 
     Base::Vector3d hitShapeDir = Base::Vector3d(0,0,0); // direction of hit shape (if it is a line, the direction of the line)
-        
+
     // Get Preselection
     int preSelPnt = sketchgui->getPreselectPoint();
     int preSelCrv = sketchgui->getPreselectCurve();
@@ -150,12 +150,12 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     else if (preSelCrv != -1){
         GeoId = preSelCrv;
         const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
-        
+
         if(geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
             const Part::GeomLineSegment *line = static_cast<const Part::GeomLineSegment *>(geom);
-            hitShapeDir= line->getEndPoint()-line->getStartPoint();     
+            hitShapeDir= line->getEndPoint()-line->getStartPoint();
         }
-            
+
     }
     else if (preSelCrs == 0) { // root point
         GeoId = Sketcher::GeoEnum::RtPnt;
@@ -164,7 +164,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     else if (preSelCrs == 1){ // x axis
         GeoId = Sketcher::GeoEnum::HAxis;
         hitShapeDir = Base::Vector3d(1,0,0);
-        
+
     }
     else if (preSelCrs == 2){ // y axis
         GeoId = Sketcher::GeoEnum::VAxis;
@@ -185,24 +185,24 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             constr.Type = Sketcher::PointOnObject;
         else if (type == AutoConstraint::CURVE && PosId == Sketcher::none)
             constr.Type = Sketcher::Tangent;
-        
+
         if(constr.Type == Sketcher::Tangent && Dir.Length() > 1e-8 && hitShapeDir.Length() > 1e-8) { // We are hitting a line and have hitting vector information
             Base::Vector3d dir3d = Base::Vector3d(Dir.x,Dir.y,0);
             double cosangle=dir3d.Normalize()*hitShapeDir.Normalize();
-            
+
             // the angle between the line and the hitting direction are over around 6 degrees (it is substantially parallel)
             // or if it is an sketch axis (that can not move to accommodate to the shape), then only if it is around 6 degrees with the normal (around 84 degrees)
             if (fabs(cosangle) < 0.995f || ((GeoId==Sketcher::GeoEnum::HAxis || GeoId==Sketcher::GeoEnum::VAxis) && fabs(cosangle) < 0.1))
                 suggestedConstraints.push_back(constr);
-            
-            
+
+
             return suggestedConstraints.size();
         }
 
         if (constr.Type != Sketcher::None)
             suggestedConstraints.push_back(constr);
     }
-        
+
     if (Dir.Length() < 1e-8 || type == AutoConstraint::CURVE)
         // Direction not set so return;
         return suggestedConstraints.size();
@@ -269,7 +269,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             }
 
         } else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
-            
+
             const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>((*it));
 
             Base::Vector3d center = ellipse->getCenter();
@@ -277,21 +277,21 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             double a = ellipse->getMajorRadius();
             double b = ellipse->getMinorRadius();
             Base::Vector3d majdir = ellipse->getMajorAxisDir();
-            
+
             double cf = sqrt(a*a - b*b);
-                
+
             Base::Vector3d focus1P = center + cf * majdir;
             Base::Vector3d focus2P = center - cf * majdir;
-            
+
             Base::Vector3d norm = Base::Vector3d(Dir.y,-Dir.x).Normalize();
-            
+
             double distancetoline = norm*(tmpPos - focus1P); // distance focus1 to line
-                        
+
             Base::Vector3d focus1PMirrored = focus1P + 2*distancetoline*norm; // mirror of focus1 with respect to the line
-            
+
             double error = fabs((focus1PMirrored-focus2P).Length() - 2*a);
-            
-            if ( error< tangDeviation) { 
+
+            if ( error< tangDeviation) {
                     tangId = i;
                     tangDeviation = error;
             }
@@ -332,20 +332,20 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             double a = aoe->getMajorRadius();
             double b = aoe->getMinorRadius();
             Base::Vector3d majdir = aoe->getMajorAxisDir();
-            
+
             double cf = sqrt(a*a - b*b);
-                
+
             Base::Vector3d focus1P = center + cf * majdir;
             Base::Vector3d focus2P = center - cf * majdir;
-            
+
             Base::Vector3d norm = Base::Vector3d(Dir.y,-Dir.x).Normalize();
-            
+
             double distancetoline = norm*(tmpPos - focus1P); // distance focus1 to line
-                        
+
             Base::Vector3d focus1PMirrored = focus1P + 2*distancetoline*norm; // mirror of focus1 with respect to the line
-            
+
             double error = fabs((focus1PMirrored-focus2P).Length() - 2*a);
-            
+
             if ( error< tangDeviation ) {
                     tangId = i;
                     tangDeviation = error;
@@ -354,12 +354,12 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             if (error < tangDeviation) {
                 double startAngle, endAngle;
                 aoe->getRange(startAngle, endAngle, /*emulateCCW=*/true);
-                
+
                 double angle = Base::fmod(
                     atan2(-aoe->getMajorRadius()*((tmpPos.x-center.x)*majdir.y-(tmpPos.y-center.y)*majdir.x),
                                 aoe->getMinorRadius()*((tmpPos.x-center.x)*majdir.x+(tmpPos.y-center.y)*majdir.y)
-                    )- startAngle, 2.f*M_PI); 
-                
+                    )- startAngle, 2.f*M_PI);
+
                 while(angle < startAngle)
                     angle += 2*D_PI;         // Bring it to range of arc
 
@@ -392,12 +392,12 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
         return; // If Autoconstraints property is not set quit
 
     if (autoConstrs.size() > 0) {
-        
+
         if(createowncommand) {
             // Open the Command
             Gui::Command::openCommand("Add auto constraints");
         }
-        
+
         // Iterate through constraints
         std::vector<AutoConstraint>::const_iterator it = autoConstrs.begin();
         for (; it != autoConstrs.end(); ++it) {
@@ -444,55 +444,58 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                 } break;
             case Sketcher::Tangent: {
                 Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
-                
+
                 const Part::Geometry *geom1 = Obj->getGeometry(geoId1);
                 const Part::Geometry *geom2 = Obj->getGeometry(it->GeoId);
-                
+
                 int geoId2 = it->GeoId;
-                
+
                 // ellipse tangency support using construction elements (lines)
-                if( geom1 && geom2 && 
+                if( geom1 && geom2 &&
                     ( geom1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
                     geom2->getTypeId() == Part::GeomEllipse::getClassTypeId() )){
-                    
+
                     if(geom1->getTypeId() != Part::GeomEllipse::getClassTypeId())
                         std::swap(geoId1,geoId2);
-            
+
                     // geoId1 is the ellipse
                     geom1 = Obj->getGeometry(geoId1);
-                    geom2 = Obj->getGeometry(geoId2);                
-            
+                    geom2 = Obj->getGeometry(geoId2);
+
                     if( geom2->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
                         geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
                         geom2->getTypeId() == Part::GeomCircle::getClassTypeId() ||
                         geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ) {
                         // in all these cases an intermediate element is needed
-                        makeTangentToEllipseviaNewPoint(Obj,geom1,geom2,geoId1,geoId2);
+                        makeTangentToEllipseviaNewPoint(Obj,
+                                                        static_cast<const Part::GeomEllipse *>(geom1),
+                                                        geom2, geoId1, geoId2);
                         return;
                     }
                 }
-                
+
                 // arc of ellipse tangency support using external elements
-                if( geom1 && geom2 && 
+                if( geom1 && geom2 &&
                     ( geom1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
                     geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() )){
-                    
+
                     if(geom1->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId())
                         std::swap(geoId1,geoId2);
-            
+
                     // geoId1 is the arc of ellipse
                     geom1 = Obj->getGeometry(geoId1);
-                    geom2 = Obj->getGeometry(geoId2);                
-            
+                    geom2 = Obj->getGeometry(geoId2);
+
                     if( geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
                         geom2->getTypeId() == Part::GeomCircle::getClassTypeId() ||
                         geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ) {
                         // in all these cases an intermediate element is needed
-                        makeTangentToArcOfEllipseviaNewPoint(Obj,geom1,geom2,geoId1,geoId2);
+                        makeTangentToArcOfEllipseviaNewPoint(Obj,
+                                                             static_cast<const Part::GeomArcOfEllipse *>(geom1), geom2, geoId1, geoId2);
                         return;
                     }
                 }
-            
+
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i, %i)) "
                                         ,sketchgui->getObject()->getNameInDocument()
                                         ,geoId1, it->GeoId
