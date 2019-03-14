@@ -355,7 +355,7 @@ bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher
 }
 
 /// Makes a simple tangency constraint using extra point + tangent via point
-/// geom1 => an ellipse
+/// ellipse => an ellipse
 /// geom2 => any of an ellipse, an arc of ellipse, a circle, or an arc (of circle)
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
@@ -420,7 +420,7 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 }
 
 /// Makes a simple tangency constraint using extra point + tangent via point
-/// geom1 => an arc of ellipse
+/// aoe => an arc of ellipse
 /// geom2 => any of an arc of ellipse, a circle, or an arc (of circle)
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
@@ -483,7 +483,7 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* O
 }
 
 /// Makes a simple tangency constraint using extra point + tangent via point
-/// geom1 => an arc of hyperbola
+/// aoh => an arc of hyperbola
 /// geom2 => any of an arc of hyperbola, an arc of ellipse, a circle, or an arc (of circle)
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
@@ -564,7 +564,7 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject*
 }
 
 /// Makes a simple tangency constraint using extra point + tangent via point
-/// geom1 => an arc of parabola
+/// aop => an arc of parabola
 /// geom2 => any of an arc of parabola, an arc of hyperbola an arc of ellipse, a circle, or an arc (of circle)
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
