@@ -53,15 +53,15 @@ bool IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos Po
 
 
 // These functions are declared here to promote code reuse from other modules
-    
+
 /// Makes a tangency constraint using external construction line between
 /// geom1 => an ellipse
 /// geom2 => any of an ellipse, an arc of ellipse, a circle, or an arc (of circle)
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
-/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp    
+/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
 void makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
-                                             const Part::Geometry *geom1, 
+                                             const Part::GeomEllipse *ellipse,
                                              const Part::Geometry *geom2,
                                              int geoId1,
                                              int geoId2
@@ -71,9 +71,9 @@ void makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 /// geom2 => any of an arc of ellipse, a circle, or an arc (of circle)
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
-/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp 
+/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
 void makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
-                                             const Part::Geometry *geom1, 
+                                             const Part::GeomArcOfEllipse *aoe,
                                              const Part::Geometry *geom2,
                                              int geoId1,
                                              int geoId2
@@ -84,13 +84,13 @@ void makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 /// geom2 => any of an arc of hyperbola, an arc of ellipse, a circle, or an arc (of circle)
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
-/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp 
+/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
 void makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject* Obj,
-                                          const Part::Geometry *geom1, 
-                                          const Part::Geometry *geom2,
-                                          int geoId1,
-                                          int geoId2
-);
+                                            const Part::GeomArcOfHyperbola *aoh,
+                                            const Part::Geometry *geom2,
+                                            int geoId1,
+                                            int geoId2
+                                            );
 
 /// Makes a simple tangency constraint using extra point + tangent via point
 /// geom1 => an arc of parabola
@@ -99,11 +99,11 @@ void makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject* Obj,
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
 void makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* Obj,
-                                                       const Part::Geometry *geom1, 
-                                                       const Part::Geometry *geom2,
-                                                       int geoId1,
-                                                       int geoId2
-);
+                                            const Part::GeomArcOfParabola *aop,
+                                            const Part::Geometry *geom2,
+                                            int geoId1,
+                                            int geoId2
+                                            );
 
 std::string getStrippedPythonExceptionString(const Base::Exception&);
 
