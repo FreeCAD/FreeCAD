@@ -57,6 +57,8 @@ bool IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos Po
 /// Makes a tangency constraint using external construction line between
 /// ellipse => an ellipse
 /// geom2 => any of an ellipse, an arc of ellipse, a circle, or an arc (of circle)
+/// geoId1 => geoid of the ellipse
+/// geoId2 => geoid of geom2
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
@@ -69,6 +71,8 @@ void makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 /// Makes a tangency constraint using external construction line between
 /// aoe => an arc of ellipse
 /// geom2 => any of an arc of ellipse, a circle, or an arc (of circle)
+/// geoId1 => geoid of the arc of ellipse
+/// geoId2 => geoid of geom2
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
@@ -82,6 +86,8 @@ void makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 /// Makes a tangency constraint using external construction line between
 /// aoh => an arc of hyperbola
 /// geom2 => any of an arc of hyperbola, an arc of ellipse, a circle, or an arc (of circle)
+/// geoId1 => geoid of the arc of hyperbola
+/// geoId2 => geoid of geom2
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
@@ -95,6 +101,8 @@ void makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject* Obj,
 /// Makes a simple tangency constraint using extra point + tangent via point
 /// aop => an arc of parabola
 /// geom2 => any of an arc of parabola, an arc of hyperbola an arc of ellipse, a circle, or an arc (of circle)
+/// geoId1 => geoid of the arc of parabola
+/// geoId2 => geoid of geom2
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
