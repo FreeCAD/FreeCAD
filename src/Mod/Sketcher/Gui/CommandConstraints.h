@@ -55,7 +55,7 @@ bool IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos Po
 // These functions are declared here to promote code reuse from other modules
 
 /// Makes a tangency constraint using external construction line between
-/// geom1 => an ellipse
+/// ellipse => an ellipse
 /// geom2 => any of an ellipse, an arc of ellipse, a circle, or an arc (of circle)
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
@@ -67,7 +67,7 @@ void makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
                                              int geoId2
                                             );
 /// Makes a tangency constraint using external construction line between
-/// geom1 => an arc of ellipse
+/// aoe => an arc of ellipse
 /// geom2 => any of an arc of ellipse, a circle, or an arc (of circle)
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
@@ -80,7 +80,7 @@ void makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
                                             );
 
 /// Makes a tangency constraint using external construction line between
-/// geom1 => an arc of hyperbola
+/// aoh => an arc of hyperbola
 /// geom2 => any of an arc of hyperbola, an arc of ellipse, a circle, or an arc (of circle)
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
@@ -93,7 +93,7 @@ void makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject* Obj,
                                             );
 
 /// Makes a simple tangency constraint using extra point + tangent via point
-/// geom1 => an arc of parabola
+/// aop => an arc of parabola
 /// geom2 => any of an arc of parabola, an arc of hyperbola an arc of ellipse, a circle, or an arc (of circle)
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
