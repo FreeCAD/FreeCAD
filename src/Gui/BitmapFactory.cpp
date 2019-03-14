@@ -571,20 +571,27 @@ QPixmap BitmapFactoryInst::merge(const QPixmap& p1, const QPixmap& p2, Position 
 {
     // does the similar as the method above except that this method does not resize the resulting pixmap
     int x = 0, y = 0;
+#if QT_VERSION >= 0x050000
+    qreal dpr1 = p1.devicePixelRatio();
+    qreal dpr2 = p2.devicePixelRatio();
+#else
+    qreal dpr1 = 1;
+    qreal dpr2 = 1;
+#endif
 
     switch (pos)
     {
     case TopLeft:
         break;
     case TopRight:
-        x = p1.width () - p2.width ();
+        x = p1.width ()/dpr1 - p2.width ()/dpr2;
         break;
     case BottomLeft:
-        y = p1.height() - p2.height();
+        y = p1.height()/dpr1 - p2.height()/dpr2;
         break;
     case BottomRight:
-        x = p1.width () - p2.width ();
-        y = p1.height() - p2.height();
+        x = p1.width ()/dpr1 - p2.width ()/dpr2;
+        y = p1.height()/dpr1 - p2.height()/dpr2;
         break;
     }
 
