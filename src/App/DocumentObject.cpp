@@ -496,10 +496,27 @@ void DocumentObject::setDocument(App::Document* doc)
     onSettingDocument();
 }
 
-void DocumentObject::onAboutToRemoveProperty(const char* prop)
+void DocumentObject::onAboutToRemoveProperty(const char* name)
 {
-    if (_pDoc)
-        _pDoc->removePropertyOfObject(this, prop);
+    if (_pDoc) {
+        _pDoc->removePropertyOfObject(this, name);
+
+        Property* prop = getDynamicPropertyByName(name);
+        if (prop) {
+            auto expressions = ExpressionEngine.getExpressions();
+            std::vector<App::ObjectIdentifier> removeExpr;
+
+            for (auto it : expressions) {
+                if (it.first.getProperty() == prop) {
+                    removeExpr.push_back(it.first);
+                }
+            }
+
+            for (auto it : removeExpr) {
+                ExpressionEngine.setValue(it, boost::shared_ptr<Expression>());
+            }
+        }
+    }
 }
 
 void DocumentObject::onBeforeChange(const Property* prop)
