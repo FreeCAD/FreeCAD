@@ -334,7 +334,7 @@ p, li { white-space: pre-wrap; }
              <number>1</number>
             </property>
             <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;displacement (x,y,z) and strain (ex,ey,ez)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;displacement (x,y,z) and strain (exx,eyy,ezz,exy,exz,eyz)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="scaledContents">
              <bool>false</bool>
@@ -371,7 +371,7 @@ p, li { white-space: pre-wrap; }
              <number>1</number>
             </property>
             <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;stresses (sx,sy,sz) and principal stresses (P1,P2,P3)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;stresses (sxx,syy,szz,sxy,sxz,syz) and principal stresses (P1,P2,P3)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="scaledContents">
              <bool>false</bool>
