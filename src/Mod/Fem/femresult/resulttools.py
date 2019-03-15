@@ -331,14 +331,14 @@ def compact_result(res_obj):
     return res_obj
 
 
-def calculate_von_mises(i):
+def calculate_von_mises(stresstuple):
     # Von mises stress (http://en.wikipedia.org/wiki/Von_Mises_yield_criterion)
-    s11 = i[0]
-    s22 = i[1]
-    s33 = i[2]
-    s12 = i[3]
-    s31 = i[4]
-    s23 = i[5]
+    s11 = stresstuple[0]  # Sxx
+    s22 = stresstuple[1]  # Syy
+    s33 = stresstuple[2]  # Szz
+    s12 = stresstuple[3]  # Sxy
+    s31 = stresstuple[4]  # Sxz
+    s23 = stresstuple[5]  # Syz
     s11s22 = pow(s11 - s22, 2)
     s22s33 = pow(s22 - s33, 2)
     s33s11 = pow(s33 - s11, 2)
@@ -347,13 +347,21 @@ def calculate_von_mises(i):
     return vm_stress
 
 
-def calculate_principal_stress(i):
+def calculate_principal_stress(stresstuple):
     import numpy as np
-    sigma = np.array([[i[0], i[3], i[4]],
-                      [i[3], i[1], i[5]],
-                      [i[4], i[5], i[2]]])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
+    s11 = stresstuple[0]  # Sxx
+    s22 = stresstuple[1]  # Syy
+    s33 = stresstuple[2]  # Szz
+    s12 = stresstuple[3]  # Sxy
+    s31 = stresstuple[4]  # Sxz
+    s23 = stresstuple[5]  # Syz
+    sigma = np.array([
+        [s11, s12, s31],
+        [s12, s22, s23],
+        [s31, s23, s33]
+    ])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
 
-    try:  # it will fail if NaN is inside the array,
+    try:  # it will fail if NaN is inside the array, which can happen on Calculix frd result files
         # compute principal stresses
         eigvals = list(np.linalg.eigvalsh(sigma))
         eigvals.sort()
