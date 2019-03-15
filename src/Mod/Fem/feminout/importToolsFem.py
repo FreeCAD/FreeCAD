@@ -255,8 +255,11 @@ def fill_femresult_mechanical(res_obj, result_set):
                       .format(res_obj.NodeNumbers, len(res_obj.StressValues)))
 
         # fill res_obj.StrainVectors if they exist
-        if 'strainv' in result_set:
-            strainv = result_set['strainv']
+        if 'strain' in result_set:
+            strain = result_set['strain']
+            strainv = {}
+            for i, values_E in enumerate(strain.values()):  # values_E .. straintuple .. (Exx, Eyy, Ezz, Exy, Eyz, Ezx)
+                strainv[i] = (FreeCAD.Vector(values_E[0], values_E[1], values_E[2]))
             res_obj.StrainVectors = list(map((lambda x: x * scale), strainv.values()))
 
         # calculate von Mises, principal and max Shear and fill them in res_obj
