@@ -713,8 +713,8 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
     Base::Console().Log("    NodeNumbers have been filled with values.\n");
 
     // vectors
-    int dim = 3;  // Fixme: currently 3D only
     for (std::vector<std::string>::iterator it = vectors.begin(); it != vectors.end(); ++it ) {
+        int dim = 3;  // Fixme: currently 3D only, here we could run into trouble, FreeCAD only supports dim 3D, I do not know about VTK
         vtkDataArray* vector_field = vtkDataArray::SafeDownCast(pd->GetArray(it->c_str()));
         if(vector_field && vector_field->GetNumberOfComponents() == dim) {
             App::PropertyVectorList* vector_list = static_cast<App::PropertyVectorList*>(result->getPropertyByName(it->c_str()));
@@ -792,7 +792,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
 
     // vectors
     for (std::vector<std::string>::iterator it = vectors.begin(); it != vectors.end(); ++it ) {
-        const int dim=3;  //Fixme, detect dim
+        const int dim=3;  //Fixme, detect dim, but FreeCAD PropertyVectorList ATM only has DIM of 3
         App::PropertyVectorList* field = nullptr;
         if (res->getPropertyByName(it->c_str()))
             field = static_cast<App::PropertyVectorList*>(res->getPropertyByName(it->c_str()));
