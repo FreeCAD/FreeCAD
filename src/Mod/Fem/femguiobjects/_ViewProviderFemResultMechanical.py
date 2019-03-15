@@ -158,6 +158,13 @@ class _TaskPanelFemResultShow:
             self.restore_result_dialog()
         else:
             self.restore_initial_result_dialog()
+            # initialize scale factor for show displacement
+            scale_factor = get_displacement_scale_factor(self.result_obj)
+            self.form.sb_displacement_factor.setValue(scale_factor)
+            self.form.hsb_displacement_factor.setValue(scale_factor)
+            diggits_scale_factor = len(str(abs(int(scale_factor))))
+            new_max_factor = 10 ** diggits_scale_factor
+            self.form.sb_displacement_factor_max.setValue(new_max_factor)
 
     def restore_result_dialog(self):
         try:
@@ -507,3 +514,23 @@ def hide_parts_constraints():
                     if "Constraint" in acnstrmesh.TypeId:
                         acnstrmesh.ViewObject.Visibility = False
                 break
+
+
+def get_displacement_scale_factor(res_obj):
+    node_items = res_obj.Mesh.FemMesh.Nodes.items()
+    displacements = res_obj.DisplacementVectors
+    x_max, y_max, z_max = map(max, zip(*displacements))
+    positions = []  # list of node vectors
+    for k, v in node_items:
+        positions.append(v)
+    p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
+    p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
+    x_span = abs(p_x_max - p_x_min)
+    y_span = abs(p_y_max - p_y_min)
+    z_span = abs(p_z_max - p_z_min)
+    span = max(x_span, y_span, z_span)
+    max_disp = max(x_max, y_max, z_max)
+    # FIXME - add max_allowed_disp to Preferences
+    max_allowed_disp = 0.01 * span
+    scale = max_allowed_disp / max_disp
+    return scale
