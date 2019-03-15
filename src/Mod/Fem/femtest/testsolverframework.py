@@ -121,7 +121,7 @@ class TestSolverFrameWork(unittest.TestCase):
 
         static_base_name = 'cube_static'
         solverframework_analysis_dir = testtools.get_unit_test_tmp_dir(testtools.get_fem_test_tmp_dir(), 'FEM_solverframework/')
-        fcc_print('Checking FEM Elmer solver for solver frame work......')
+        fcc_print('Checking FEM ccx solver for solver frame work......')
         fcc_print('machine_ccx')
         machine_ccx = solver_ccx_object.Proxy.createMachine(solver_ccx_object, solverframework_analysis_dir)
         fcc_print('Machine testmode: ' + str(machine_ccx.testmode))
