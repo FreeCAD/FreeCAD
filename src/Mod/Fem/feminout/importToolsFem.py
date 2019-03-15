@@ -349,8 +349,8 @@ def calculate_von_mises(i):
     s22 = i[1]
     s33 = i[2]
     s12 = i[3]
-    s23 = i[4]
-    s31 = i[5]
+    s31 = i[4]
+    s23 = i[5]
     s11s22 = pow(s11 - s22, 2)
     s22s33 = pow(s22 - s33, 2)
     s33s11 = pow(s33 - s11, 2)
@@ -360,9 +360,9 @@ def calculate_von_mises(i):
 
 
 def calculate_principal_stress(i):
-    sigma = np.array([[i[0], i[3], i[5]],
-                      [i[3], i[1], i[4]],
-                      [i[5], i[4], i[2]]])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
+    sigma = np.array([[i[0], i[3], i[4]],
+                      [i[3], i[1], i[5]],
+                      [i[4], i[5], i[2]]])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
 
     try:  # it will fail if NaN is inside the array,
         # compute principal stresses

@@ -425,7 +425,10 @@ def read_frd_result(frd_input):
             stress_4 = float(line[49:61])
             stress_5 = float(line[61:73])
             stress_6 = float(line[73:85])
-            mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_5, stress_6)
+            # CalculiX frd files: (Sxx, Syy, Szz, Sxy, Syz, Szx)
+            # FreeCAD:            (Sxx, Syy, Szz, Sxy, Sxz, Syz)
+            # thus exchange the last two entries
+            mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_6, stress_5)
 
         # Check if we found strain section
         if line[5:13] == "TOSTRAIN":
@@ -439,7 +442,10 @@ def read_frd_result(frd_input):
             strain_4 = float(line[49:61])
             strain_5 = float(line[61:73])
             strain_6 = float(line[73:85])
-            mode_strain[elem] = (strain_1, strain_2, strain_3, strain_4, strain_5, strain_6)
+            # CalculiX frd files: (Exx, Eyy, Ezz, Exy, Eyz, Ezx)
+            # FreeCAD:            (Exx, Eyy, Ezz, Exy, Exz, Eyz)
+            # thus exchange the last two entries
+            mode_strain[elem] = (strain_1, strain_2, strain_3, strain_4, strain_6, strain_5)
 
         # Check if we found an equivalent plastic strain section
         if line[5:7] == "PE":
