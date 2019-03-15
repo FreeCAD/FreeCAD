@@ -314,27 +314,23 @@ def fill_femresult_mechanical(res_obj, result_set):
         if 'stress' in result_set:
             stress = result_set['stress']
             if len(stress) > 0:
-                mstress = []
                 prinstress1 = []
                 prinstress2 = []
                 prinstress3 = []
                 shearstress = []
                 for i in stress.values():
-                    mstress.append(calculate_von_mises(i))
                     prin1, prin2, prin3, shear = calculate_principal_stress(i)
                     prinstress1.append(prin1)
                     prinstress2.append(prin2)
                     prinstress3.append(prin3)
                     shearstress.append(shear)
                 if eigenmode_number > 0:
-                    res_obj.StressValues = list(map((lambda x: x * scale), mstress))
                     res_obj.PrincipalMax = list(map((lambda x: x * scale), prinstress1))
                     res_obj.PrincipalMed = list(map((lambda x: x * scale), prinstress2))
                     res_obj.PrincipalMin = list(map((lambda x: x * scale), prinstress3))
                     res_obj.MaxShear = list(map((lambda x: x * scale), shearstress))
                     res_obj.Eigenmode = eigenmode_number
                 else:
-                    res_obj.StressValues = mstress
                     res_obj.PrincipalMax = prinstress1
                     res_obj.PrincipalMed = prinstress2
                     res_obj.PrincipalMin = prinstress3
@@ -391,22 +387,6 @@ def fill_femresult_mechanical(res_obj, result_set):
 
 
 # helper
-def calculate_von_mises(i):
-    # Von mises stress (http://en.wikipedia.org/wiki/Von_Mises_yield_criterion)
-    s11 = i[0]
-    s22 = i[1]
-    s33 = i[2]
-    s12 = i[3]
-    s31 = i[4]
-    s23 = i[5]
-    s11s22 = pow(s11 - s22, 2)
-    s22s33 = pow(s22 - s33, 2)
-    s33s11 = pow(s33 - s11, 2)
-    s12s23s31 = 6 * (pow(s12, 2) + pow(s23, 2) + pow(s31, 2))
-    vm_stress = sqrt(0.5 * (s11s22 + s22s33 + s33s11 + s12s23s31))
-    return vm_stress
-
-
 def calculate_principal_stress(i):
     sigma = np.array([[i[0], i[3], i[4]],
                       [i[3], i[1], i[5]],
