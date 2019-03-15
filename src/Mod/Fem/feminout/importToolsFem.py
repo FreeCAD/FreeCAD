@@ -288,26 +288,6 @@ def fill_femresult_mechanical(res_obj, result_set):
             res_obj.NodeStrainXZ = Exz
             res_obj.NodeStrainYZ = Eyz
 
-        # fill res_obj.StressVectors if they exist
-        if 'stress' in result_set:
-            stress = result_set['stress']
-            stressv1 = {}
-            for i, stval in enumerate(stress.values()):  # i .. stresstuple .. (Sxx, Syy, Szz, Sxy, Syz, Szx)
-                stressv1[i] = (FreeCAD.Vector(stval[0], stval[1], stval[2]))  # Sxx, Syy, Szz
-            res_obj.StressVectors = list(map((lambda x: x * scale), stressv1.values()))
-            stress_keys = list(stress.keys())
-            if (res_obj.NodeNumbers != 0 and res_obj.NodeNumbers != stress_keys):
-                print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
-                      .format(res_obj.NodeNumbers, len(res_obj.StressValues)))
-
-        # fill res_obj.StrainVectors if they exist
-        if 'strain' in result_set:
-            strain = result_set['strain']
-            strainv = {}
-            for i, values_E in enumerate(strain.values()):  # values_E .. straintuple .. (Exx, Eyy, Ezz, Exy, Eyz, Ezx)
-                strainv[i] = (FreeCAD.Vector(values_E[0], values_E[1], values_E[2]))
-            res_obj.StrainVectors = list(map((lambda x: x * scale), strainv.values()))
-
         # fill Equivalent Plastic strain if they exist
         if 'peeq' in result_set:
             Peeq = result_set['peeq']

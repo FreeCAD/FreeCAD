@@ -48,8 +48,6 @@ class _FemResultMechanical():
         # set read only or hide a property: https://forum.freecadweb.org/viewtopic.php?f=18&t=13460&start=10#p108072
         # do not show up in propertyEditor of comboView
         obj.addProperty("App::PropertyVectorList", "DisplacementVectors", "NodeData", "List of displacement vectors", True)
-        obj.addProperty("App::PropertyVectorList", "StressVectors", "NodeData", "List of stress vectors", True)
-        obj.addProperty("App::PropertyVectorList", "StrainVectors", "NodeData", "List of strain vectors", True)
         obj.addProperty("App::PropertyFloatList", "Peeq", "NodeData", "List of equivalent plastic strain values", True)
         # readonly in propertyEditor of comboView
         obj.addProperty("App::PropertyFloatList", "DisplacementLengths", "NodeData", "List of displacement lengths", True)
