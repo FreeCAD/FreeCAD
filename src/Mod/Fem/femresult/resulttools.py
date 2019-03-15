@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import femtools.femutils as femutils
-from math import sqrt
+from math import pow, sqrt
 
 
 ## Removes all result objects and result meshes from an analysis group
@@ -262,6 +262,23 @@ def add_disp_apps(res_obj):
     return res_obj
 
 
+def add_von_mises(res_obj):
+    mstress = []
+    iterator = zip(
+        res_obj.NodeStressXX,
+        res_obj.NodeStressYY,
+        res_obj.NodeStressZZ,
+        res_obj.NodeStressXY,
+        res_obj.NodeStressXZ,
+        res_obj.NodeStressYZ
+    )
+    for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
+        mstress.append(calculate_von_mises((Sxx, Syy, Szz, Sxy, Sxz, Syz)))
+    res_obj.StressValues = mstress
+    FreeCAD.Console.PrintMessage('Added StressValues (von Mises).\n')
+    return res_obj
+
+
 def compact_result(res_obj):
     '''
     compacts result.Mesh and appropriate result.NodeNumbers
@@ -285,6 +302,22 @@ def compact_result(res_obj):
     res_obj.NodeNumbers = new_node_numbers
 
     return res_obj
+
+
+def calculate_von_mises(i):
+    # Von mises stress (http://en.wikipedia.org/wiki/Von_Mises_yield_criterion)
+    s11 = i[0]
+    s22 = i[1]
+    s33 = i[2]
+    s12 = i[3]
+    s31 = i[4]
+    s23 = i[5]
+    s11s22 = pow(s11 - s22, 2)
+    s22s33 = pow(s22 - s33, 2)
+    s33s11 = pow(s33 - s11, 2)
+    s12s23s31 = 6 * (pow(s12, 2) + pow(s23, 2) + pow(s31, 2))
+    vm_stress = sqrt(0.5 * (s11s22 + s22s33 + s33s11 + s12s23s31))
+    return vm_stress
 
 
 def calculate_disp_abs(displacements):
