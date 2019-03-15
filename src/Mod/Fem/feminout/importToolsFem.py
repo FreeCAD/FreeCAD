@@ -211,10 +211,6 @@ def make_femmesh(mesh_data):
 def fill_femresult_mechanical(res_obj, result_set):
     ''' fills a FreeCAD FEM mechanical result object with result data
     '''
-    if 'number' in result_set:
-        eigenmode_number = result_set['number']
-    else:
-        eigenmode_number = 0
     if 'time' in result_set:
         step_time = result_set['time']
         step_time = round(step_time, 2)
@@ -222,22 +218,7 @@ def fill_femresult_mechanical(res_obj, result_set):
     # if disp exists, fill res_obj.NodeNumbers and res_obj.DisplacementVectors as well as stress and strain
     if 'disp' in result_set:
         disp = result_set['disp']
-        displacement = []
-        for k, v in disp.items():
-            displacement.append(v)
-
-        x_max, y_max, z_max = map(max, zip(*displacement))
-        if eigenmode_number > 0:
-            span = get_span(res_obj.Mesh.FemMesh.Nodes.items())
-            max_disp = max(x_max, y_max, z_max)
-            # Allow for max displacement to be 0.1% of the span
-            # FIXME - add to Preferences
-            max_allowed_disp = 0.001 * span
-            scale = max_allowed_disp / max_disp
-        else:
-            scale = 1.0
-
-        res_obj.DisplacementVectors = list(map((lambda x: x * scale), disp.values()))
+        res_obj.DisplacementVectors = list(map((lambda x: x), disp.values()))
         res_obj.NodeNumbers = list(disp.keys())
 
         # fill res_obj.NodeStressXX etc if they exist in result_set
@@ -336,17 +317,3 @@ def fill_femresult_mechanical(res_obj, result_set):
             res_obj.Time = step_time
 
     return res_obj
-
-
-# helper
-def get_span(node_items):
-    positions = []  # list of node vectors
-    for k, v in node_items:
-        positions.append(v)
-    p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
-    p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
-    x_span = abs(p_x_max - p_x_min)
-    y_span = abs(p_y_max - p_y_min)
-    z_span = abs(p_z_max - p_z_min)
-    span = max(x_span, y_span, z_span)
-    return span
