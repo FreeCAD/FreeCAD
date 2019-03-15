@@ -29,8 +29,6 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD FEM import tools
 
 import FreeCAD
-from math import pow, sqrt
-import numpy as np
 
 
 def get_FemMeshObjectMeshGroups(fem_mesh_obj):
@@ -310,32 +308,6 @@ def fill_femresult_mechanical(res_obj, result_set):
                 strainv[i] = (FreeCAD.Vector(values_E[0], values_E[1], values_E[2]))
             res_obj.StrainVectors = list(map((lambda x: x * scale), strainv.values()))
 
-        # calculate von Mises, principal and max Shear and fill them in res_obj
-        if 'stress' in result_set:
-            stress = result_set['stress']
-            if len(stress) > 0:
-                prinstress1 = []
-                prinstress2 = []
-                prinstress3 = []
-                shearstress = []
-                for i in stress.values():
-                    prin1, prin2, prin3, shear = calculate_principal_stress(i)
-                    prinstress1.append(prin1)
-                    prinstress2.append(prin2)
-                    prinstress3.append(prin3)
-                    shearstress.append(shear)
-                if eigenmode_number > 0:
-                    res_obj.PrincipalMax = list(map((lambda x: x * scale), prinstress1))
-                    res_obj.PrincipalMed = list(map((lambda x: x * scale), prinstress2))
-                    res_obj.PrincipalMin = list(map((lambda x: x * scale), prinstress3))
-                    res_obj.MaxShear = list(map((lambda x: x * scale), shearstress))
-                    res_obj.Eigenmode = eigenmode_number
-                else:
-                    res_obj.PrincipalMax = prinstress1
-                    res_obj.PrincipalMed = prinstress2
-                    res_obj.PrincipalMin = prinstress3
-                    res_obj.MaxShear = shearstress
-
         # fill Equivalent Plastic strain if they exist
         if 'peeq' in result_set:
             Peeq = result_set['peeq']
@@ -387,23 +359,6 @@ def fill_femresult_mechanical(res_obj, result_set):
 
 
 # helper
-def calculate_principal_stress(i):
-    sigma = np.array([[i[0], i[3], i[4]],
-                      [i[3], i[1], i[5]],
-                      [i[4], i[5], i[2]]])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
-
-    try:  # it will fail if NaN is inside the array,
-        # compute principal stresses
-        eigvals = list(np.linalg.eigvalsh(sigma))
-        eigvals.sort()
-        eigvals.reverse()
-        maxshear = (eigvals[0] - eigvals[2]) / 2.0
-        return (eigvals[0], eigvals[1], eigvals[2], maxshear)
-    except:
-        return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
-    # TODO might be possible without a try except for NaN, https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
-
-
 def get_span(node_items):
     positions = []  # list of node vectors
     for k, v in node_items:
