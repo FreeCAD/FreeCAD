@@ -279,6 +279,33 @@ def add_von_mises(res_obj):
     return res_obj
 
 
+def add_principal_stress(res_obj):
+    prinstress1 = []
+    prinstress2 = []
+    prinstress3 = []
+    shearstress = []
+    iterator = zip(
+        res_obj.NodeStressXX,
+        res_obj.NodeStressYY,
+        res_obj.NodeStressZZ,
+        res_obj.NodeStressXY,
+        res_obj.NodeStressXZ,
+        res_obj.NodeStressYZ
+    )
+    for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
+        prin1, prin2, prin3, shear = calculate_principal_stress((Sxx, Syy, Szz, Sxy, Sxz, Syz))
+        prinstress1.append(prin1)
+        prinstress2.append(prin2)
+        prinstress3.append(prin3)
+        shearstress.append(shear)
+    res_obj.PrincipalMax = prinstress1
+    res_obj.PrincipalMed = prinstress2
+    res_obj.PrincipalMin = prinstress3
+    res_obj.MaxShear = shearstress
+    FreeCAD.Console.PrintMessage('Added principal stress and max shear values.\n')
+    return res_obj
+
+
 def compact_result(res_obj):
     '''
     compacts result.Mesh and appropriate result.NodeNumbers
@@ -318,6 +345,24 @@ def calculate_von_mises(i):
     s12s23s31 = 6 * (pow(s12, 2) + pow(s23, 2) + pow(s31, 2))
     vm_stress = sqrt(0.5 * (s11s22 + s22s33 + s33s11 + s12s23s31))
     return vm_stress
+
+
+def calculate_principal_stress(i):
+    import numpy as np
+    sigma = np.array([[i[0], i[3], i[4]],
+                      [i[3], i[1], i[5]],
+                      [i[4], i[5], i[2]]])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
+
+    try:  # it will fail if NaN is inside the array,
+        # compute principal stresses
+        eigvals = list(np.linalg.eigvalsh(sigma))
+        eigvals.sort()
+        eigvals.reverse()
+        maxshear = (eigvals[0] - eigvals[2]) / 2.0
+        return (eigvals[0], eigvals[1], eigvals[2], maxshear)
+    except:
+        return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
+    # TODO might be possible without a try except for NaN, https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
 
 
 def calculate_disp_abs(displacements):
