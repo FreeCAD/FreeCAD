@@ -104,6 +104,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                     # compact result object, workaround for bug 2873, https://www.freecadweb.org/tracker/view.php?id=2873
                     res_obj = restools.compact_result(res_obj)
                 res_obj = restools.add_disp_apps(res_obj)  # fill DisplacementLengths
+                res_obj = restools.add_von_mises(res_obj)  # fill StressValues
                 res_obj = restools.fill_femresult_stats(res_obj)  # fill Stats
         else:
             error_message = (
