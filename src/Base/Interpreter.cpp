@@ -492,6 +492,15 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
         // https://bugs.python.org/issue17797#msg197474
         //
         Py_Initialize();
+        PyRun_SimpleString(R"(
+# Check for virtualenv, and activate if present. See https://virtualenv.pypa.io/en/latest/userguide/#using-virtualenv-without-bin-python
+import os
+import sys
+base_path = os.getenv("VIRTUAL_ENV")
+if not base_path is None:
+    activate_this = os.path.join(base_path, "bin", "activate_this.py")
+    exec(open(activate_this).read(), {'__file__':activate_this})
+)");
         PyEval_InitThreads();
 #if PY_MAJOR_VERSION >= 3
         size_t size = argc;
