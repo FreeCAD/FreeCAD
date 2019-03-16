@@ -137,7 +137,7 @@ def processArguments(argstring):
         if not args.preamble is None:
             PREAMBLE = args.preamble
         if not args.postamble is None:
-            POSTAMBLE = args.postamble
+            POSTAMBLE = args.postamble.replace('\\n', '\n')
         if not args.tool_change is None:
             OUTPUT_TOOL_CHANGE = int(args.tool_change) > 0
             SUPPRESS_TOOL_CHANGE = min(1, int(args.tool_change) - 1)
