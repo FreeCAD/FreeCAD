@@ -95,7 +95,6 @@ doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles
 doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/ccx/multimat.FCStd')
 doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/ccx/spine_thermomech.FCStd')
 
-
 # open files generated from test suite
 import femtest.utilstest as ut
 ut.all_test_files()
@@ -104,7 +103,7 @@ doc = ut.cube_frequency()
 doc = ut.cube_static()
 doc = ut.Flow1D_thermomech()
 doc = ut.multimat()
-doc = spine_thermomech()
+doc = ut.spine_thermomech()
 
 # load std FEM example files
 doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'data/examples/FemCalculixCantilever2D.FCStd')
