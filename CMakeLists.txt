@@ -1018,50 +1018,11 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
             find_package(PySide REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
         endif(DEFINED MACPORTS_PREFIX)
 
-        # Shiboken2Config.cmake may explicitly set CMAKE_BUILD_TYPE to Release which causes
-        # CMake to fail to create Makefiles for a debug build.
-        # So as a workaround we save and restore the value after checking for Shiboken2.
-        set (SAVE_BUILD_TYPE ${CMAKE_BUILD_TYPE})
-        find_package(Shiboken2 QUIET)# REQUIRED
-        set (CMAKE_BUILD_TYPE ${SAVE_BUILD_TYPE})
-        if (Shiboken2_FOUND)
-            # Shiboken2 config file was found but it may use the wrong Python version
-            # Try to get the matching config suffix and repeat finding the package
-            if (PYTHON_VERSION_MAJOR LESS 3)
-                set(SHIBOKEN_PATTERN -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
-            else()
-                set(SHIBOKEN_PATTERN .cpython-${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
-            endif()
+        find_package(Shiboken2 REQUIRED)
 
-            file(GLOB SHIBOKEN_CONFIG "${Shiboken2_DIR}/Shiboken2Config${SHIBOKEN_PATTERN}*.cmake")
-            if (SHIBOKEN_CONFIG)
-                get_filename_component(SHIBOKEN_CONFIG_SUFFIX ${SHIBOKEN_CONFIG} NAME)
-                string(SUBSTRING ${SHIBOKEN_CONFIG_SUFFIX} 15 -1 SHIBOKEN_CONFIG_SUFFIX)
-                string(REPLACE ".cmake" "" PYTHON_CONFIG_SUFFIX ${SHIBOKEN_CONFIG_SUFFIX})
-                message(STATUS "PYTHON_CONFIG_SUFFIX: ${PYTHON_CONFIG_SUFFIX}")
-                find_package(Shiboken2 QUIET)
-            endif()
-        endif()
-
-        if(NOT SHIBOKEN_INCLUDE_DIR)
-            message("====================\n"
-                    "shiboken2 not found.\n"
-                    "====================\n")
-        endif(NOT SHIBOKEN_INCLUDE_DIR)
-
-        find_package(PySide2 QUIET)# REQUIRED
-        if(NOT PYSIDE_INCLUDE_DIR)
-            message("==================\n"
-                    "PySide2 not found.\n"
-                    "==================\n")
-        endif(NOT PYSIDE_INCLUDE_DIR)
+        find_package(PySide2 REQUIRED)
 
         find_package(PySide2Tools QUIET) #REQUIRED # PySide2 utilities (pyside2-uic & pyside2-rcc)
-        if(NOT PYSIDE2_TOOLS_FOUND)
-            message("=======================\n"
-                    "PySide2Tools not found.\n"
-                    "=======================\n")
-        endif(NOT PYSIDE2_TOOLS_FOUND)
 
         file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Ext/PySide)
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/__init__.py "# PySide wrapper\n"
