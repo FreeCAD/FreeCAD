@@ -706,7 +706,8 @@ def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None
             delta = edge.Curve.Center.sub(placement.Base)
             placement.move(delta)
             if len(edge.Vertexes) > 1:
-                ref = placement.multVec(FreeCAD.Vector(1,0,0))
+                # ref = placement.multVec(FreeCAD.Vector(1,0,0)) ## INCORRECT 
+                ref = FreeCAD.Vector(1,0,0)
                 v1 = (edge.Vertexes[0].Point).sub(edge.Curve.Center)
                 v2 = (edge.Vertexes[-1].Point).sub(edge.Curve.Center)
                 a1 = -math.degrees(DraftVecUtils.angle(v1,ref))
