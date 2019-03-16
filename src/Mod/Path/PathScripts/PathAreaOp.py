@@ -250,8 +250,8 @@ class ObjectOp(PathOp.ObjectOp):
         shapes = self.areaOpShapes(obj)
 
         jobs = [{
-            'x': s[0].BoundBox.XMin,
-            'y': s[0].BoundBox.YMin,
+            'x': s[0].BoundBox.XMax,
+            'y': s[0].BoundBox.YMax,
             'shape': s
         } for s in shapes]
 
