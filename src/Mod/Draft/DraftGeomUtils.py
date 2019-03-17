@@ -47,7 +47,14 @@ params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 def precision():
     "precision(): returns the Draft precision setting"
-    return params.GetInt("precision",6)
+    # Set precision level with a cap to avoid overspecification that:-
+    #  1 - whilst it is precise enough (e.g. that OCC would consider 2 points are conincident) (not sure what it should be 10 or otherwise);
+    #  2 - but FreeCAD / OCC can handle 'internally' (e.g. otherwise user may set something like 15 that the code would never consider 2 points are coincident as internal float is not that precise);
+
+    precisionMax = 10
+    precisionInt = params.GetInt("precision",6)
+    precisionInt = (precisionInt if precisionInt <=10 else precisionMax)
+    return precisionInt								#return params.GetInt("precision",6)
 
 def vec(edge):
     "vec(edge) or vec(line): returns a vector from an edge or a Part.LineSegment"
@@ -346,7 +353,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
         center = arc.Curve.Center
 
         int = []
-        # first check for coincident endpoints
+        # first check for coincident endpoints					# Should also check if endpoints are within 'tolerence' to consider conincident (against precision level set) here?
         if (pt1 in [pt3,pt4]):
             if findAll:
                 int.append(pt1)
