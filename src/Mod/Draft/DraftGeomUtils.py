@@ -1223,6 +1223,8 @@ def offsetWire(wire,dvec,bind=False,occ=False):
 def connect(edges,closed=False):
         '''connects the edges in the given list by their intersections'''
         nedges = []
+        v2 = None
+
         for i in range(len(edges)):
             curr = edges[i]
             #print("debug: DraftGeomUtils.connect edge ",i," : ",curr.Vertexes[0].Point,curr.Vertexes[-1].Point)
@@ -1240,7 +1242,13 @@ def connect(edges,closed=False):
                 else:
                     next = None
             if prev:
-                #print("debug: DraftGeomUtils.connect prev : ",prev.Vertexes[0].Point,prev.Vertexes[-1].Point)
+              #print("debug: DraftGeomUtils.connect prev : ",prev.Vertexes[0].Point,prev.Vertexes[-1].Point)
+
+              # If prev v2 had been calculated, do not calculate again, just use it as current v1 - avoid chance of slight difference in result
+              if v2:
+                v1 = v2
+
+              else:
                 i = findIntersection(curr,prev,True,True)
                 if i:
                     v1 = i[DraftVecUtils.closest(curr.Vertexes[0].Point,i)]
