@@ -1186,6 +1186,14 @@ def offsetWire(wire,dvec,bind=False,occ=False):
             return None
         else:
             return off
+
+    # vec of first edge depends on its geometry
+    e = edges[0]
+    if isinstance(e.Curve,Part.Circle):
+        firstVec = e.tangentAt(e.FirstParameter)
+    else:
+        firstVec = vec(e)
+
     for i in range(len(edges)):
         curredge = edges[i]
         delta = dvec
@@ -1194,7 +1202,7 @@ def offsetWire(wire,dvec,bind=False,occ=False):
                 v = curredge.tangentAt(curredge.FirstParameter)
             else:
                 v = vec(curredge)
-            angle = DraftVecUtils.angle(vec(edges[0]),v,norm)
+            angle = DraftVecUtils.angle(firstVec,v,norm)			# use vec deduced depending on geometry instead of - angle = DraftVecUtils.angle(vec(edges[0]),v,norm)
             delta = DraftVecUtils.rotate(delta,angle,norm)
         #print("edge ",i,": ",curredge.Curve," ",curredge.Orientation," parameters:",curredge.ParameterRange," vector:",delta)
         nedge = offset(curredge,delta,trim=True)
