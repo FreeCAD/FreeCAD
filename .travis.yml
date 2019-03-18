@@ -166,8 +166,8 @@ before_install:
        then
         export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python"
        else
-        export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python3.4 -DPYTHON_BASENAME=.cpython-34m \
-        -DPYTHON_SUFFIX=.cpython-34m"
+        export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python3.5 -DPYTHON_BASENAME=.cpython-35m \
+        -DPYTHON_SUFFIX=.cpython-35m"
        fi
        export INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
        ;;
