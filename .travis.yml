@@ -33,7 +33,7 @@ cache:
 language: cpp
 python:
     - 2.7
-    - 3.4
+    - 3.5
 
 # Inject osx build into matrix - needed to specify image/dist
 matrix:
