@@ -616,28 +616,48 @@ def loadTexture(filename,size=None):
             img = coin.SoSFImage()
             width = size[0]
             height = size[1]
-            bytes = ""
+            byteList = []
+            isPy2 = sys.version_info.major < 3
 
             for y in range(height):
                 #line = width*numcomponents*(height-(y));
                 for x in range(width):
                     rgb = p.pixel(x,y)
                     if numcomponents == 1:
-                        bytes = bytes + chr(QtGui.qGray( rgb ))
+                        if isPy2:
+                            byteList.append(chr(QtGui.qGray( rgb )))
+                        else:
+                            byteList.append(chr(QtGui.qGray( rgb )).encode('latin-1'))
                     elif numcomponents == 2:
-                        bytes = bytes + chr(QtGui.qGray( rgb ))
-                        bytes = bytes + chr(QtGui.qAlpha( rgb ))
+                        if isPy2:
+                            byteList.append(chr(QtGui.qGray( rgb )))
+                            byteList.append(chr(QtGui.qAlpha( rgb )))
+                        else:
+                            byteList.append(chr(QtGui.qGray( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qAlpha( rgb )).encode('latin-1'))
                     elif numcomponents == 3:
-                        bytes = bytes + chr(QtGui.qRed( rgb ))
-                        bytes = bytes + chr(QtGui.qGreen( rgb ))
-                        bytes = bytes + chr(QtGui.qBlue( rgb ))
+                        if isPy2:
+                            byteList.append(chr(QtGui.qRed( rgb )))
+                            byteList.append(chr(QtGui.qGreen( rgb )))
+                            byteList.append(chr(QtGui.qBlue( rgb )))
+                        else:
+                            byteList.append(chr(QtGui.qRed( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qGreen( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qBlue( rgb )).encode('latin-1'))
                     elif numcomponents == 4:
-                        bytes = bytes + chr(QtGui.qRed( rgb ))
-                        bytes = bytes + chr(QtGui.qGreen( rgb ))
-                        bytes = bytes + chr(QtGui.qBlue( rgb ))
-                        bytes = bytes + chr(QtGui.qAlpha( rgb ))
+                        if isPy2:
+                            byteList.append(chr(QtGui.qRed( rgb )))
+                            byteList.append(chr(QtGui.qGreen( rgb )))
+                            byteList.append(chr(QtGui.qBlue( rgb )))
+                            byteList.append(chr(QtGui.qAlpha( rgb )))
+                        else:
+                            byteList.append(chr(QtGui.qRed( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qGreen( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qBlue( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qAlpha( rgb )).encode('latin-1'))
                     #line += numcomponents
-
+            
+            bytes = b"".join(byteList)
             img.setValue(size, numcomponents, bytes)
         except:
             print("Draft: unable to load texture")
