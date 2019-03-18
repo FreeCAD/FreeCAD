@@ -460,7 +460,7 @@ void CmdTechDrawNewViewDetail::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Direction = App.activeDocument().%s.Direction",FeatName.c_str(),dvp->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
-    updateActive();            //ok here, no preceeding recompute
+    updateActive();            //ok here, no preceding recompute
     commitCommand();
 }
 

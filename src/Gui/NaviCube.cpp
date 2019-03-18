@@ -1264,8 +1264,8 @@ bool NaviCubeImplementation::processSoEvent(const SoEvent* ev) {
     // FIXME find out why do we need to hack the cursor position to get
     // 2019-02-17
     // The above comment is truncated; don't know what it's about
-    // The two hacked lines changing the cursor positon are responsible for parts of the
-    // navigational cluster not being active.
+    // The two hacked lines changing the cursor position are responsible for
+    // parts of the navigational cluster not being active.
     // Commented them out and everything seems to be working
 //    y += 4;
 //    x -= 2;
