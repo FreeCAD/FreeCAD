@@ -118,8 +118,8 @@ void NetworkRetriever::testFailure()
     if ( wget->state() == QProcess::Running )
     {
         d->fail = false;
-        QString msg = tr("Download started...") + QString::fromUtf8("\n");    // all QString
-        Base::Console().Message(msg.toUtf8().constData());                    // all cStyleString
+        QString msg = tr("Download started...");
+        Base::Console().Message("%s\n", msg.toUtf8().constData());
     }
 }
 

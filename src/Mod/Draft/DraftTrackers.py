@@ -600,6 +600,7 @@ class ghostTracker(Tracker):
 
     def getNode(self,obj):
         "returns a coin node representing the given object"
+        import Part
         if isinstance(obj,Part.Shape):
             return self.getNodeLight(obj)
         elif obj.isDerivedFrom("Part::Feature"):
@@ -612,6 +613,14 @@ class ghostTracker(Tracker):
         sep = coin.SoSeparator()
         try:
             sep.addChild(obj.ViewObject.RootNode.copy())
+            # add Part container offset
+            if hasattr(obj,"getGlobalPlacement"):
+                if obj.Placement != obj.getGlobalPlacement():
+                    if sep.getChild(0).getNumChildren() > 0:
+                        if isinstance(sep.getChild(0).getChild(0),coin.SoTransform):
+                            gpl = obj.getGlobalPlacement()
+                            sep.getChild(0).getChild(0).translation.setValue(tuple(gpl.Base))
+                            sep.getChild(0).getChild(0).rotation.setValue(gpl.Rotation.Q)
         except:
             print("ghostTracker: Error retrieving coin node (full)")
         return sep

@@ -7,8 +7,6 @@
         </Property>
         <Property Name="AuthorAndLicense" Type="String">
         </Property>
-        <Property Name="Source" Type="String">
-        </Property>
     </Group>
 
     <Group Name="General">
@@ -18,52 +16,54 @@
         </Property>
         <Property Name="Description" Type="String">
         </Property>
-        <Property Name="Density" Type="Quantity" Units="(-3, 1, 0, 0, 0, 0, 0, 0)">
+        <Property Name="ReferenceSource" Type="String">
         </Property>
-        <Property Name="Vendor" Type="String">
-        </Property>
-        <Property Name="ProductURL" Type="URL">
-        </Property>
-        <Property Name="SpecificPrice" Type="Float">
+        <Property Name="SourceURL" Type="URL">
         </Property>
     </Group>
 
     <Group Name="Mechanical">
-        <Property Name="YoungsModulus" Type="Quantity" Units="(-1, 1, -2, 0, 0, 0, 0, 0)">
+        <Property Name="Density" Type="Quantity">
+            <Reference>https://en.wikipedia.org/wiki/Density</Reference>
+        </Property>
+        <Property Name="YoungsModulus" Type="Quantity">
             <Reference>https://en.wikipedia.org/wiki/Young%27s_modulus</Reference>
+        </Property>
+        <Property Name="ShearModulus" Type="Quantity">
+            <Reference>https://en.wikipedia.org/wiki/Shear_modulus</Reference>
         </Property>
         <Property Name="PoissonRatio" Type="Float">
             <Reference>https://en.wikipedia.org/wiki/Poisson%27s_ratio</Reference>
         </Property>
-        <Property Name="UltimateTensileStrength" Type="Quantity" Units="(-1, 1, -2, 0, 0, 0, 0, 0)">
+        <Property Name="UltimateTensileStrength" Type="Quantity">
             <Reference>https://en.wikipedia.org/wiki/Ultimate_tensile_strength</Reference>
         </Property>
-        <Property Name="CompressiveStrength" Type="Quantity" Units="(-1, 1, -2, 0, 0, 0, 0, 0)">
+        <Property Name="CompressiveStrength" Type="Quantity">
             <Reference>https://en.wikipedia.org/wiki/Compressive_strength</Reference>
         </Property>
-        <Property Name="YieldStrength" Type="Quantity" Units="(-1, 1, -2, 0, 0, 0, 0, 0)">
+        <Property Name="YieldStrength" Type="Quantity">
             <Reference>https://en.wikipedia.org/wiki/Yield_Strength</Reference>
         </Property>
-        <Property Name="UltimateStrain" Type="Quantity" Units="(-1, 1, -2, 0, 0, 0, 0, 0)">
-            <Reference>https://en.wikipedia.org/wiki/Ultimate_tensile_strength</Reference>
+        <Property Name="UltimateStrain" Type="Float">
+            <Reference>https://en.wikipedia.org/wiki/Deformation_(mechanics)</Reference>
         </Property>
-        <Property Name="FractureToughness" Type="Quantity" Units="(-1, 1, -2, 0, 0, 0, 0, 0)">
+        <Property Name="FractureToughness" Type="Quantity">
             <Reference>https://en.wikipedia.org/wiki/Fracture_toughness</Reference>
         </Property>
-        <Property Name="AngleOfFriction" Type="Quantity" Units="(0, 0, 0, 0, 0, 0, 0, 1)">
+        <Property Name="AngleOfFriction" Type="Quantity">
             <Reference>https://en.wikipedia.org/wiki/Friction#Angle_of_friction</Reference>
             <Reference>https://en.m.wikipedia.org/wiki/Mohr%E2%80%93Coulomb_theory</Reference>
         </Property>
     </Group>
 
     <Group Name="Thermal">
-        <Property Name="ThermalConductivity" Type="Quantity" Units="(1, 1, -3, 0, -1, 0, 0, 0)">
+        <Property Name="ThermalConductivity" Type="Quantity">
             <Reference>https://en.wikipedia.org/wiki/Thermal_conductivity</Reference>
         </Property>
-        <Property Name="ThermalExpansionCoefficient" Type="Quantity" Units="(0, 0, 0, 0, -1, 0, 0, 0)">
+        <Property Name="ThermalExpansionCoefficient" Type="Quantity">
             <Reference>https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient</Reference>
         </Property>
-        <Property Name="SpecificHeat" Type="Quantity" Units="(2, 1, -2, 0, -1, 0, 0, 0)">
+        <Property Name="SpecificHeat" Type="Quantity">
             <Reference>https://en.wikipedia.org/wiki/Heat_capacity</Reference>
         </Property>
     </Group>
@@ -119,11 +119,20 @@
         </Property>
         <Property Name="SectionFillPattern" Type="File">
         </Property>
-        <Property Name="ViewLinewidth" Type="Quantity" Units="(1, 0, 0, 0, 0, 0, 0, 0)">
+        <Property Name="ViewLinewidth" Type="Float">
         </Property>
-        <Property Name="SectionLinewidth" Type="Quantity" Units="(1, 0, 0, 0, 0, 0, 0, 0)">
+        <Property Name="SectionLinewidth" Type="Float">
         </Property>
     </Group>
+
+    <Group Name="Cost">
+        <Property Name="Vendor" Type="String">
+        </Property>
+        <Property Name="SpecificPrice" Type="Float">
+        </Property>
+        <Property Name="ProductURL" Type="URL">
+        </Property>
+     </Group>
 
     <Group Name="User defined">
     </Group>

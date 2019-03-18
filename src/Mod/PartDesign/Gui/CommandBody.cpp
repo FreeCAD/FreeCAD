@@ -367,7 +367,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
             // Huh? nothing to migrate?
             QMessageBox::warning ( 0, QObject::tr ( "Nothing to migrate" ),
                     QObject::tr ( "No PartDesign features found that don't belong to a body."
-                        "Nothing to migrate." ) );
+                        " Nothing to migrate." ) );
         }
         return;
     }
@@ -913,6 +913,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
 
     openCommand("Move an object inside tree");
 
+    App::DocumentObject* lastObject = nullptr;
     for ( auto feat: features ) {
         if ( feat == target ) continue;
 
@@ -930,9 +931,37 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
                 body->getNameInDocument(), feat->getNameInDocument() );
         doCommand ( Doc, "App.activeDocument().%s.insertObject(App.activeDocument().%s, %s, True)",
                 body->getNameInDocument(), feat->getNameInDocument(), targetStr.c_str () );
+
+        if (!lastObject)
+            lastObject = feat;
     }
 
     updateActive();
+
+    // If the selected objects have been moved after the current tip then ask the
+    // user if he wants the last object to be the new tip.
+    if (lastObject && body->Tip.getValue() == target) {
+        QMessageBox msgBox(Gui::getMainWindow());
+        msgBox.setIcon(QMessageBox::Question);
+        msgBox.setWindowTitle(qApp->translate("PartDesign_MoveFeatureInTree","Move tip"));
+        msgBox.setText(qApp->translate("PartDesign_MoveFeatureInTree","The moved feature appears after the currently set tip."));
+        msgBox.setInformativeText(qApp->translate("PartDesign_MoveFeatureInTree","Do you want the last feature to be the new tip?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        int ret = msgBox.exec();
+        if (ret == QMessageBox::Yes) {
+            openCommand("Move tip to selected feature");
+
+            doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",
+                      body->getNameInDocument(),
+                      lastObject->getNameInDocument());
+
+            // Adjust visibility to show only the Tip feature
+            doCommand(Gui,"Gui.activeDocument().show(\"%s\")", lastObject->getNameInDocument());
+
+            updateActive();
+        }
+    }
 }
 
 bool CmdPartDesignMoveFeatureInTree::isActive(void)

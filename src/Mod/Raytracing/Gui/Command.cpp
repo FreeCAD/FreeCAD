@@ -274,9 +274,11 @@ void CmdRaytracingWriteView::activated(int)
             Gui::ViewProvider* vp = getActiveGuiDocument()->getViewProvider(*it);
             if (vp && vp->isVisible()) {
                 App::PropertyColor *pcColor = dynamic_cast<App::PropertyColor *>(vp->getPropertyByName("ShapeColor"));
-                App::Color col = pcColor->getValue();
-                doCommand(Doc,"content += Raytracing.getPartAsPovray('%s',App.activeDocument().%s.Shape,%f,%f,%f)",
-                         (*it)->getNameInDocument(),(*it)->getNameInDocument(),col.r,col.g,col.b);
+                if (pcColor) {
+                    App::Color col = pcColor->getValue();
+                    doCommand(Doc,"content += Raytracing.getPartAsPovray('%s',App.activeDocument().%s.Shape,%f,%f,%f)",
+                             (*it)->getNameInDocument(),(*it)->getNameInDocument(),col.r,col.g,col.b);
+                }
             }
         }
         doCommand(Doc,"result = result.replace('//RaytracingContent',content)");
@@ -385,7 +387,7 @@ Gui::Action * CmdRaytracingNewPovrayProject::createAction(void)
         for (unsigned int i=0; i<dir.count(); i++ ) {
             QFileInfo fi(dir[i]);
             QAction* a = pcAction->addAction(fi.baseName());
-            a->setIcon(Gui::BitmapFactory().pixmap("Raytrace_New"));
+            a->setIcon(Gui::BitmapFactory().iconFromTheme("Raytrace_New"));
 
             a->setProperty("Template", dir.absoluteFilePath(dir[i]));
         }
@@ -819,7 +821,7 @@ Gui::Action * CmdRaytracingNewLuxProject::createAction(void)
         for (unsigned int i=0; i<dir.count(); i++ ) {
             QFileInfo fi(dir[i]);
             QAction* a = pcAction->addAction(fi.baseName());
-            a->setIcon(Gui::BitmapFactory().pixmap("Raytrace_Lux"));
+            a->setIcon(Gui::BitmapFactory().iconFromTheme("Raytrace_Lux"));
 
             a->setProperty("Template", dir.absoluteFilePath(dir[i]));
         }

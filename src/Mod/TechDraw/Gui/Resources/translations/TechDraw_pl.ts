@@ -791,7 +791,7 @@
     <message>
       <location filename="../../MDIViewPage.cpp" line="1223"/>
       <source>%1.%2.%3</source>
-      <translation type="unfinished">%1.%2.%3</translation>
+      <translation>%1.%2.%3</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="595"/>
@@ -1311,7 +1311,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../QGVPage.cpp" line="580"/>
       <source>Drawing page:</source>
-      <translation type="unfinished">Drawing page:</translation>
+      <translation>Strona rysunku:</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="582"/>

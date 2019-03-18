@@ -210,7 +210,7 @@ def make_femmesh(mesh_data):
     return mesh
 
 
-def fill_femresult_mechanical(results, result_set):
+def fill_femresult_mechanical(res_obj, result_set):
     ''' fills a FreeCAD FEM mechanical result object with result data
     '''
     if 'number' in result_set:
@@ -221,6 +221,7 @@ def fill_femresult_mechanical(results, result_set):
         step_time = result_set['time']
         step_time = round(step_time, 2)
 
+    # if disp exists, fill res_obj.NodeNumbers and res_obj.DisplacementVectors as well as stress and strain
     if 'disp' in result_set:
         disp = result_set['disp']
         displacement = []
@@ -229,7 +230,7 @@ def fill_femresult_mechanical(results, result_set):
 
         x_max, y_max, z_max = map(max, zip(*displacement))
         if eigenmode_number > 0:
-            span = get_span(results.Mesh.FemMesh.Nodes.items())
+            span = get_span(res_obj.Mesh.FemMesh.Nodes.items())
             max_disp = max(x_max, y_max, z_max)
             # Allow for max displacement to be 0.1% of the span
             # FIXME - add to Preferences
@@ -238,24 +239,27 @@ def fill_femresult_mechanical(results, result_set):
         else:
             scale = 1.0
 
-        results.DisplacementVectors = list(map((lambda x: x * scale), disp.values()))
-        results.NodeNumbers = list(disp.keys())
+        res_obj.DisplacementVectors = list(map((lambda x: x * scale), disp.values()))
+        res_obj.NodeNumbers = list(disp.keys())
 
+        # fill res_obj.StressVectors if they exist
         if 'stress' in result_set:
             stress = result_set['stress']
             stressv1 = {}
             for i, stval in enumerate(stress.values()):  # i .. stresstuple .. (Sxx, Syy, Szz, Sxy, Syz, Szx)
                 stressv1[i] = (FreeCAD.Vector(stval[0], stval[1], stval[2]))  # Sxx, Syy, Szz
-            results.StressVectors = list(map((lambda x: x * scale), stressv1.values()))
+            res_obj.StressVectors = list(map((lambda x: x * scale), stressv1.values()))
             stress_keys = list(stress.keys())
-            if (results.NodeNumbers != 0 and results.NodeNumbers != stress_keys):
+            if (res_obj.NodeNumbers != 0 and res_obj.NodeNumbers != stress_keys):
                 print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
-                      .format(results.NodeNumbers, len(results.StressValues)))
+                      .format(res_obj.NodeNumbers, len(res_obj.StressValues)))
 
+        # fill res_obj.StrainVectors if they exist
         if 'strainv' in result_set:
             strainv = result_set['strainv']
-            results.StrainVectors = list(map((lambda x: x * scale), strainv.values()))
+            res_obj.StrainVectors = list(map((lambda x: x * scale), strainv.values()))
 
+        # calculate von Mises, principal and max Shear and fill them in res_obj
         if 'stress' in result_set:
             stress = result_set['stress']
             if len(stress) > 0:
@@ -272,20 +276,20 @@ def fill_femresult_mechanical(results, result_set):
                     prinstress3.append(prin3)
                     shearstress.append(shear)
                 if eigenmode_number > 0:
-                    results.StressValues = list(map((lambda x: x * scale), mstress))
-                    results.PrincipalMax = list(map((lambda x: x * scale), prinstress1))
-                    results.PrincipalMed = list(map((lambda x: x * scale), prinstress2))
-                    results.PrincipalMin = list(map((lambda x: x * scale), prinstress3))
-                    results.MaxShear = list(map((lambda x: x * scale), shearstress))
-                    results.Eigenmode = eigenmode_number
+                    res_obj.StressValues = list(map((lambda x: x * scale), mstress))
+                    res_obj.PrincipalMax = list(map((lambda x: x * scale), prinstress1))
+                    res_obj.PrincipalMed = list(map((lambda x: x * scale), prinstress2))
+                    res_obj.PrincipalMin = list(map((lambda x: x * scale), prinstress3))
+                    res_obj.MaxShear = list(map((lambda x: x * scale), shearstress))
+                    res_obj.Eigenmode = eigenmode_number
                 else:
-                    results.StressValues = mstress
-                    results.PrincipalMax = prinstress1
-                    results.PrincipalMed = prinstress2
-                    results.PrincipalMin = prinstress3
-                    results.MaxShear = shearstress
+                    res_obj.StressValues = mstress
+                    res_obj.PrincipalMax = prinstress1
+                    res_obj.PrincipalMed = prinstress2
+                    res_obj.PrincipalMin = prinstress3
+                    res_obj.MaxShear = shearstress
 
-        # Read Equivalent Plastic strain if they exist
+        # fill Equivalent Plastic strain if they exist
         if 'peeq' in result_set:
             Peeq = result_set['peeq']
             if len(Peeq) > 0:
@@ -296,11 +300,12 @@ def fill_femresult_mechanical(results, result_set):
                     for i in range(nodes):
                         Pe_value = Pe_extra_nodes[i]
                         Pe.append(Pe_value)
-                    results.Peeq = Pe
+                    res_obj.Peeq = Pe
                 else:
-                    results.Peeq = Peeq.values()
+                    res_obj.Peeq = Peeq.values()
 
-    # Read temperatures if they exist
+    # fill res_obj.Temperature if they exist
+    # TODO, check if it is possible to have Temperature without disp, we would need to set NodeNumbers than
     if 'temp' in result_set:
         Temperature = result_set['temp']
         if len(Temperature) > 0:
@@ -311,27 +316,27 @@ def fill_femresult_mechanical(results, result_set):
                 for i in range(nodes):
                     Temp_value = Temp_extra_nodes[i]
                     Temp.append(Temp_value)
-                results.Temperature = list(map((lambda x: x), Temp))
+                res_obj.Temperature = list(map((lambda x: x), Temp))
             else:
-                results.Temperature = list(map((lambda x: x), Temperature.values()))
-            results.Time = step_time
+                res_obj.Temperature = list(map((lambda x: x), Temperature.values()))
+            res_obj.Time = step_time
 
-    # read MassFlow
+    # fill res_obj.MassFlow
     if 'mflow' in result_set:
         MassFlow = result_set['mflow']
         if len(MassFlow) > 0:
-            results.MassFlowRate = list(map((lambda x: x), MassFlow.values()))
-            results.Time = step_time
-            results.NodeNumbers = list(MassFlow.keys())  # disp does not exist, results.NodeNumbers needs to be set
+            res_obj.MassFlowRate = list(map((lambda x: x), MassFlow.values()))
+            res_obj.Time = step_time
+            res_obj.NodeNumbers = list(MassFlow.keys())  # disp does not exist, res_obj.NodeNumbers needs to be set
 
-    # read NetworkPressure, disp does not exist, see MassFlow
+    # fill res_obj.NetworkPressure, disp does not exist, see MassFlow
     if 'npressure' in result_set:
         NetworkPressure = result_set['npressure']
         if len(NetworkPressure) > 0:
-            results.NetworkPressure = list(map((lambda x: x), NetworkPressure.values()))
-            results.Time = step_time
+            res_obj.NetworkPressure = list(map((lambda x: x), NetworkPressure.values()))
+            res_obj.Time = step_time
 
-    return results
+    return res_obj
 
 
 # helper
@@ -365,6 +370,7 @@ def calculate_principal_stress(i):
         return (eigvals[0], eigvals[1], eigvals[2], maxshear)
     except:
         return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
+    # TODO might be possible without a try except for NaN, https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
 
 
 def get_span(node_items):

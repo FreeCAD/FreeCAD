@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="BoundedCurvePy"
+	Name="TrimmedCurvePy"
+        PythonName="Part.TrimmedCurve"
+        Twin="GeomTrimmedCurve"
+        TwinPointer="GeomTrimmedCurve"
+	Include="Mod/Part/App/Geometry.h"
+	Namespace="Part"
+        FatherInclude="Mod/Part/App/BoundedCurvePy.h"
+	FatherNamespace="Part"
+	Constructor="true">
+	<Documentation>
+            <Author Licence="LGPL" Name="Abdullah Tahiri" EMail="abdullah.tahiri.yo@gmail.com" />
+            <UserDocu>
+                The abstract class TrimmedCurve is the root class of all trimmed curve objects.
+            </UserDocu>
+        </Documentation>
+        <Methode Name="setParameterRange" Const="false">
+            <Documentation>
+                <UserDocu>
+                    Re-trims this curve to the provided parameter range ([Float=First, Float=Last])
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        </PythonExport>
+</GenerateModel>

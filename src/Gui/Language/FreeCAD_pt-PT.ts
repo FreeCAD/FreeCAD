@@ -295,7 +295,7 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation type="unfinished">Press middle+left or middle+right button</translation>
+      <translation>Clique nos botões do meio+esquerda ou meio+direita</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
@@ -849,20 +849,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Vários Atalhos definidos</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>O atalho '% 1' é definido mais de uma vez. Isso pode resultar em comportamento inesperado.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Atalho já definido</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>O atalho '%1' está definido mais de uma vez. Isso pode resultar num comportamento indesejado.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>O atalho '%1' já está atribuído a '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>Quer substituí-lo?</translation>
     </message>
   </context>
   <context>
@@ -1468,8 +1468,8 @@ Perhaps a file permission error?</source>
     <message>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
-      <translation>Falha a duplicar para '%1'.
-talvez um erro de permissão do ficheiro?</translation>
+      <translation>Falha ao duplicar para '%1'.
+Talvez um erro de permissão de ficheiro?</translation>
     </message>
   </context>
   <context>
@@ -2070,7 +2070,7 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object</source>
-      <translation>Usar o Vertex Buffer Object do OpenGL</translation>
+      <translation>Usar Objeto Buffer Vertex OpenGL</translation>
     </message>
     <message>
       <source>New Document Camera Orientation</source>
@@ -2082,15 +2082,15 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
-      <translation>Desativar o gesto de inclinação da tela sensível ao toque</translation>
+      <translation type="unfinished">Disable touchscreen tilt gesture</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation>Arraste o cursor</translation>
+      <translation type="unfinished">Drag at cursor</translation>
     </message>
     <message>
       <source>Marker size:</source>
-      <translation>Tamanho do marcador:</translation>
+      <translation type="unfinished">Marker size:</translation>
     </message>
   </context>
   <context>
@@ -2105,27 +2105,27 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
       <source>5px</source>
-      <translation>5px</translation>
+      <translation type="unfinished">5px</translation>
     </message>
     <message>
       <source>7px</source>
-      <translation>7px</translation>
+      <translation type="unfinished">7px</translation>
     </message>
     <message>
       <source>9px</source>
-      <translation>9px</translation>
+      <translation type="unfinished">9px</translation>
     </message>
     <message>
       <source>11px</source>
-      <translation>11px</translation>
+      <translation type="unfinished">11px</translation>
     </message>
     <message>
       <source>13px</source>
-      <translation>13px</translation>
+      <translation type="unfinished">13px</translation>
     </message>
     <message>
       <source>15px</source>
-      <translation>15px</translation>
+      <translation type="unfinished">15px</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -2795,43 +2795,43 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
       <source>Imperial Civil (ft/ft^2/ft^3)</source>
-      <translation>Imperial Civil (ft/ft^2/ft^3)</translation>
+      <translation type="unfinished">Imperial Civil (ft/ft^2/ft^3)</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
-      <translation>Fração mínima de Polegada:</translation>
+      <translation type="unfinished">Minimum fractional inch:</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fração mínima de Polegada para mostrar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>1/2"</source>
-      <translation>1/2"</translation>
+      <translation type="unfinished">1/2"</translation>
     </message>
     <message>
       <source>1/4"</source>
-      <translation>1/4"</translation>
+      <translation type="unfinished">1/4"</translation>
     </message>
     <message>
       <source>1/8"</source>
-      <translation>1/8"</translation>
+      <translation type="unfinished">1/8"</translation>
     </message>
     <message>
       <source>1/16"</source>
-      <translation>1/16"</translation>
+      <translation type="unfinished">1/16"</translation>
     </message>
     <message>
       <source>1/32"</source>
-      <translation>1/32"</translation>
+      <translation type="unfinished">1/32"</translation>
     </message>
     <message>
       <source>1/64"</source>
-      <translation>1/64"</translation>
+      <translation type="unfinished">1/64"</translation>
     </message>
     <message>
       <source>1/128"</source>
-      <translation>1/128"</translation>
+      <translation type="unfinished">1/128"</translation>
     </message>
   </context>
   <context>
@@ -2874,19 +2874,19 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Define a área de confusão para escolher elementos na vista 3D. Valores maiores facilitam a escolha, mas alguns recursos (objetos) mais pequenos podem não ser possíveis de selecionar.</translation>
+      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
     <message>
       <source>Tree View</source>
-      <translation>Visualização em árvore</translation>
+      <translation type="unfinished">Tree View</translation>
     </message>
     <message>
       <source>Object being edited</source>
-      <translation>Objeto em edição</translation>
+      <translation type="unfinished">Object being edited</translation>
     </message>
     <message>
       <source>Active container</source>
-      <translation>Contentor ativo</translation>
+      <translation type="unfinished">Active container</translation>
     </message>
   </context>
   <context>
@@ -2981,10 +2981,6 @@ Por favor, indique outra pasta.</translation>
       <translation>Ordenar as bancadas de trabalho ativas</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Ordenar as bancadas de trabalho ativas&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Mover para cima</translation>
     </message>
@@ -2999,6 +2995,10 @@ Por favor, indique outra pasta.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Ativar todas as bancadas de trabalho</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3453,27 +3453,27 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Axial:</source>
-      <translation>Axial:</translation>
+      <translation type="unfinished">Axial:</translation>
     </message>
     <message>
       <source>Apply axial</source>
-      <translation>Aplicar axial</translation>
+      <translation type="unfinished">Apply axial</translation>
     </message>
     <message>
       <source>Shift click for opposite direction</source>
-      <translation>Shift clique para direção oposta</translation>
+      <translation type="unfinished">Shift click for opposite direction</translation>
     </message>
     <message>
       <source>Selected points</source>
-      <translation>Pontos selecionados</translation>
+      <translation type="unfinished">Selected points</translation>
     </message>
     <message>
       <source>Apply incremental changes</source>
-      <translation>Aplicar alterações incrementais</translation>
+      <translation type="unfinished">Apply incremental changes</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Por favor selecione 1, 2 ou 3 pontos antes de clicar neste botão.  Um ponto pode estar num vértice, face ou aresta.  Se estiver numa face ou aresta, o ponto utilizado será o ponto na posição do rato ao longo da face ou aresta.  Se for selecionado 1 ponto será usado como o centro de rotação.  Se forem selecionados 2 pontos o ponto médio entre eles será o centro de rotação e será criado um novo eixo personalizado, se necessário.  Se forem selecionados 3 pontos o primeiro ponto torna-se o centro de rotação e encontra-se sobre o vetor normal ao plano definido por 3 pontos.  Algumas informações de distância e ângulo são fornecidas na vista de relatório, que pode ser útil ao alinhar objetos.  Para sua conveniência quando Shift + clique for usado a distância adequada ou ângulo é copiado para a área de transferência.</translation>
+      <translation type="unfinished">Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</translation>
     </message>
   </context>
   <context>
@@ -4185,7 +4185,7 @@ Como pretende continuar?</translation>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...</source>
-      <translation>Descarga iniciada...</translation>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -4724,11 +4724,11 @@ Quer especificar outro diretório?</translation>
     </message>
     <message>
       <source>Search...</source>
-      <translation>Procurar...</translation>
+      <translation type="unfinished">Search...</translation>
     </message>
     <message>
       <source>Search for objects</source>
-      <translation>Procurar por objetos</translation>
+      <translation type="unfinished">Search for objects</translation>
     </message>
   </context>
   <context>
@@ -5292,15 +5292,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Export failed</source>
-      <translation>Exportação falhada</translation>
+      <translation type="unfinished">Export failed</translation>
     </message>
     <message>
       <source>Split</source>
       <translation>Separar</translation>
-    </message>
-    <message>
-      <source>%1.%2.%3</source>
-      <translation>%1.%2.%3</translation>
     </message>
     <message>
       <source>Translation:</source>
@@ -5312,11 +5308,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggle active part</source>
-      <translation>Alternar peça ativa</translation>
+      <translation type="unfinished">Toggle active part</translation>
     </message>
     <message>
       <source>Edit text</source>
-      <translation>Editar Texto</translation>
+      <translation type="unfinished">Edit text</translation>
     </message>
   </context>
   <context>
@@ -5708,8 +5704,8 @@ Be aware the point where you click matters.</source>
       <translation>Alterna o modo de edição do objeto selecionado</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Insere ou deixa o modo de edição do objeto selecionado</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
     </message>
   </context>
   <context>
@@ -6750,7 +6746,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation>Criar uma nova vista para o documento ativo</translation>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
     </message>
   </context>
   <context>
@@ -6765,7 +6761,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to dimetric view</source>
-      <translation>Ver axonometria dimétrica</translation>
+      <translation type="unfinished">Set to dimetric view</translation>
     </message>
   </context>
   <context>
@@ -6870,7 +6866,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to isometric view</source>
-      <translation>Ver axonometria isométrica</translation>
+      <translation type="unfinished">Set to isometric view</translation>
     </message>
   </context>
   <context>
@@ -7065,7 +7061,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to trimetric view</source>
-      <translation>Ver axonometria trimétrica</translation>
+      <translation type="unfinished">Set to trimetric view</translation>
     </message>
   </context>
   <context>
@@ -7192,11 +7188,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Collapse/Expand</source>
-      <translation>Recolher/Expandir</translation>
+      <translation type="unfinished">Collapse/Expand</translation>
     </message>
     <message>
       <source>Expand active document and collapse all others</source>
-      <translation>Expandir o documento ativo e recolher todos os outros</translation>
+      <translation type="unfinished">Expand active document and collapse all others</translation>
     </message>
   </context>
   <context>
@@ -7207,11 +7203,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Multi Document</source>
-      <translation>Multi-documento</translation>
+      <translation type="unfinished">Multi Document</translation>
     </message>
     <message>
       <source>Display all documents in the tree view</source>
-      <translation>Mostrar todos os documentos na vista de árvore</translation>
+      <translation type="unfinished">Display all documents in the tree view</translation>
     </message>
   </context>
   <context>
@@ -7222,11 +7218,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Single Document</source>
-      <translation>Documento único</translation>
+      <translation type="unfinished">Single Document</translation>
     </message>
     <message>
       <source>Only display the active document in the tree view</source>
-      <translation>Mostrar somente o documento ativo na vista de árvore</translation>
+      <translation type="unfinished">Only display the active document in the tree view</translation>
     </message>
   </context>
   <context>
@@ -7237,11 +7233,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Document Tree</source>
-      <translation>Árvore do documento</translation>
+      <translation type="unfinished">Document Tree</translation>
     </message>
     <message>
       <source>Set visibility of inactive documents in tree view</source>
-      <translation>Definir a visibilidade dos documentos inativos na de vista de árvore</translation>
+      <translation type="unfinished">Set visibility of inactive documents in tree view</translation>
     </message>
   </context>
   <context>
@@ -7356,19 +7352,19 @@ Be aware the point where you click matters.</source>
     <name>Std_Delete</name>
     <message>
       <source>These items are linked to items selected for deletion and might break.</source>
-      <translation>Estes itens estão ligados a itens selecionados para exclusão e podem quebrar.</translation>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation>Estes itens estão selecionados para exclusão, mas não estão no documento ativo.</translation>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
       <source>Are you sure you want to continue?</source>
-      <translation>Tem certeza que deseja continuar?</translation>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>
-      <translation>Questões na seleção para exclusão</translation>
+      <translation type="unfinished">Delete Selection Issues</translation>
     </message>
   </context>
   <context>
@@ -7479,40 +7475,40 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation>Configurar NaviCube para o modo isométrico</translation>
+      <translation type="unfinished">Set NaviCube to Isometric mode</translation>
     </message>
   </context>
   <context>
     <name>ViewOrthographicCmd</name>
     <message>
       <source>Orthographic</source>
-      <translation>Ortogonal</translation>
+      <translation type="unfinished">Orthographic</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation>Vista definida para o modo ortogonal</translation>
+      <translation type="unfinished">Set View to Orthographic mode</translation>
     </message>
   </context>
   <context>
     <name>ViewPerspectiveCmd</name>
     <message>
       <source>Perspective</source>
-      <translation>Perspectiva</translation>
+      <translation type="unfinished">Perspective</translation>
     </message>
     <message>
       <source>Set View to Perspective mode</source>
-      <translation>Definir Vista para o modo de perspectiva</translation>
+      <translation type="unfinished">Set View to Perspective mode</translation>
     </message>
   </context>
   <context>
     <name>ViewZoomToFitCmd</name>
     <message>
       <source>Zoom to fit</source>
-      <translation>Ajustar para caber</translation>
+      <translation type="unfinished">Zoom to fit</translation>
     </message>
     <message>
       <source>Zoom so that model fills the view</source>
-      <translation>Ajustar o zoom para que o modelo preencha a vista</translation>
+      <translation type="unfinished">Zoom so that model fills the view</translation>
     </message>
   </context>
   <context>

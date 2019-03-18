@@ -21,7 +21,9 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,math,DraftVecUtils,ArchCommands,sys
+import six
+
+import FreeCAD,Draft,math,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -544,7 +546,7 @@ class _ViewProviderAxis:
                                 tx = coin.SoAsciiText()
                                 tx.justification = coin.SoText2.LEFT
                                 t = vobj.Object.Labels[i]
-                                if sys.version_info.major < 3 and isinstance(t,unicode):
+                                if six.PY2 and isinstance(t,six.text_type):
                                     t = t.encode("utf8")
                                 tx.string.setValue(t)
                                 if hasattr(vobj,"FontSize"):
@@ -577,7 +579,7 @@ class _ViewProviderAxis:
                ('C',100),('XC',90),('L',50),('XL',40),
                ('X',10),('IX',9),('V',5),('IV',4),('I',1))
         if hasattr(vobj.Object,"CustomNumber") and vobj.Object.CustomNumber:
-            if sys.version_info.major < 3:
+            if six.PY2:
                 return vobj.Object.CustomNumber.encode("utf8")
             else:
                 return vobj.Object.CustomNumber

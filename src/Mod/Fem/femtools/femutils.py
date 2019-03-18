@@ -32,6 +32,7 @@ import FreeCAD
 import FreeCAD as App
 
 
+# analysis and its members
 def createObject(doc, name, proxy, viewProxy):
     obj = doc.addObject(proxy.BaseType, name)
     proxy(obj)
@@ -87,6 +88,20 @@ def get_several_member(analysis, t):
         obj_dict['RefShapeType'] = get_refshape_type(m)
         members.append(obj_dict)
     return members
+
+
+def get_mesh_to_solve(analysis):
+    mesh_to_solve = None
+    for m in analysis.Group:
+        if m.isDerivedFrom("Fem::FemMeshObject") and not is_of_type(m, 'Fem::FemMeshResult'):
+            if not mesh_to_solve:
+                mesh_to_solve = m
+            else:
+                return (None, 'FEM: multiple mesh in analysis not yet supported!')
+    if mesh_to_solve is not None:
+        return (mesh_to_solve, '')
+    else:
+        return (None, 'FEM: no mesh object found in analysis.')
 
 
 # typeID and object type defs

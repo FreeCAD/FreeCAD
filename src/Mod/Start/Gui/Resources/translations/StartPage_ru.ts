@@ -56,7 +56,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation>Этот раздел содержит полезную для пользователей FreeCAD справочную документацию: список всех рабочих окружений, подробные инструкции о том, как установить и использовать приложение FreeCAD, учебники и все, что вам нужно для начала.</translation>
+      <translation>Этот раздел содержит полезную для пользователей FreeCAD справочную документацию: список всех верстаков, подробные инструкции о том, как установить и использовать приложение FreeCAD, учебники и все, что вам нужно для начала.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
@@ -91,12 +91,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>Workbenches documentation</source>
-      <translation>Документация рабочих окружений</translation>
+      <translation>Документация верстаков</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>These are the help pages of all the workbenches currently installed on this computer.</source>
-      <translation>Это страницы справки всех рабочих окружений, установленных на этом компьютере в настоящее время.</translation>
+      <translation>Это страницы справки всех верстаков, установленных на этом компьютере в настоящее время.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
@@ -126,12 +126,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Ниже перечислен список доступных дополнительных рабочих окружений, которые могут быть добавлены в ваш FreeCAD. Просматривайте и устанавливайте их из меню Инструменты-&gt; менеджер дополнений. Вы можете узнать больше о любом из них, нажав на ссылки ниже.</translation>
+      <translation>Ниже перечислен список доступных дополнительных верстаков, которые могут быть добавлены в ваш FreeCAD. Просматривайте и устанавливайте их из меню Инструменты-&gt; менеджер дополнений. Вы можете узнать больше о любом из них, нажав на ссылки ниже.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation>Если в комплекте с вашей версией FreeCAD нет документации, установите пакет документации FreeCAD, чтобы получить уголки пользователей, руководства пользователя по рабочим окружениям и документацию по отдельным командам без подключения к Интернету.</translation>
+      <translation>Если в комплекте с вашей версией FreeCAD нет документации, установите пакет документации FreeCAD, чтобы получить уголки пользователей, руководства пользователя по верстакам и документацию по отдельным командам без подключения к Интернету.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
@@ -223,7 +223,7 @@
       <translation>Стартовая страница</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="542"/>
+      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>Стартовая страница</translation>
     </message>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="596"/>
       <source>Switch workbench after loading</source>
-      <translation>Переключатель рабочее окружение после загрузки</translation>
+      <translation>Переключить верстак после загрузки</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="603"/>

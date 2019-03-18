@@ -953,6 +953,35 @@ bool MeshTopoAlgorithm::CollapseEdge(unsigned long ulFacetPos, unsigned long ulN
   return true;
 }
 
+bool MeshTopoAlgorithm::IsCollapseEdgeLegal(const EdgeCollapse& ec) const
+{
+    std::vector<unsigned long>::const_iterator it;
+    for (it = ec._changeFacets.begin(); it != ec._changeFacets.end(); ++it) {
+        MeshFacet f = _rclMesh._aclFacetArray[*it];
+        if (!f.IsValid())
+            return false;
+
+        // ignore the facet(s) at this edge
+        if (f.HasPoint(ec._fromPoint) && f.HasPoint(ec._toPoint))
+            continue;
+
+        MeshGeomFacet tria1 = _rclMesh.GetFacet(f);
+        f.Transpose(ec._fromPoint, ec._toPoint);
+        MeshGeomFacet tria2 = _rclMesh.GetFacet(f);
+
+        if (tria1.GetNormal() * tria2.GetNormal() < 0.0f)
+            return false;
+    }
+
+    if (!_rclMesh._aclPointArray[ec._fromPoint].IsValid())
+        return false;
+
+    if (!_rclMesh._aclPointArray[ec._toPoint].IsValid())
+        return false;
+
+    return true;
+}
+
 bool MeshTopoAlgorithm::CollapseEdge(const EdgeCollapse& ec)
 {
     std::vector<unsigned long>::const_iterator it;

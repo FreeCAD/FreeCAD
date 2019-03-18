@@ -379,6 +379,7 @@ public:
     Base::Vector3f GetNormal(unsigned long) const;
     void AddNeighbour(unsigned long, unsigned long);
     void RemoveNeighbour(unsigned long, unsigned long);
+    void RemoveFacet(unsigned long);
 
 protected:
     void SearchNeighbours(const MeshFacetArray& rFacets, unsigned long index, const Base::Vector3f &rclCenter, 

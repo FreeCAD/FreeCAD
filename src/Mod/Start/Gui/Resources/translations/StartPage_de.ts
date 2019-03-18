@@ -77,7 +77,7 @@
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
       <translation>In diesem Abschnitt finden Sie Informationen für Entwickler:
-Wie Sie FreeCad selbst kompilieren können, der FreeCAD-Quellcode strukturiert ist und wie darin navigiert wird. Es wird beschrieben wie Sie neue Workbenches entwickeln oder FreeCAD in Ihre eigene Anwendung einbetten.</translation>
+Wie Sie FreeCAD selbst kompilieren können, der FreeCAD-Quellcode strukturiert ist und wie darin navigiert wird. Es wird beschrieben wie Sie neue Workbenches entwickeln oder FreeCAD in Ihre eigene Anwendung einbetten.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -224,7 +224,7 @@ Wie Sie FreeCad selbst kompilieren können, der FreeCAD-Quellcode strukturiert i
       <translation>Startseite</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="542"/>
+      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>Startseite</translation>
     </message>
@@ -422,7 +422,7 @@ Wie Sie FreeCad selbst kompilieren können, der FreeCAD-Quellcode strukturiert i
     <message>
       <location filename="../../DlgStartPreferences.ui" line="493"/>
       <source>Font family</source>
-      <translation>Schriftart</translation>
+      <translation>Schriftartfamilie</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>

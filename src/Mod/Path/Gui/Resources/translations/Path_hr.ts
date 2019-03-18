@@ -521,7 +521,7 @@
     <message>
       <location filename="PathFacePocket.py" line="50"/>
       <source>Perform only one loop or fill the whole shape</source>
-      <translation type="unfinished">Perform only one loop or fill the whole shape</translation>
+      <translation>Izvrši samo jednu petlju ili ispuni cijeli oblik</translation>
     </message>
   </context>
   <context>
@@ -529,12 +529,12 @@
     <message>
       <location filename="PathUtils.py" line="472"/>
       <source>Didn't find job %s</source>
-      <translation type="unfinished">Didn't find job %s</translation>
+      <translation>Nisam našao posao %s</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="762"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
-      <translation type="unfinished">Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</translation>
+      <translation>Pogrešan rub rezanja kut %.2f, mora biti &lt; 90 ° i &gt; = 0 °</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="767"/>
@@ -599,7 +599,7 @@
     <message>
       <location filename="InitGui.py" line="86"/>
       <source>Partial Commands</source>
-      <translation type="unfinished">Partial Commands</translation>
+      <translation>Parcijalne Naredbe</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="97"/>
@@ -639,7 +639,7 @@
     <message>
       <location filename="../../../InitGui.py" line="91"/>
       <source>Engraving Operations</source>
-      <translation type="unfinished">Engraving Operations</translation>
+      <translation>Graviranje operacije</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="100"/>
@@ -815,7 +815,7 @@
       <translation type="unfinished">Creates an Engraving Path around a Draft ShapeString</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
+      <location filename="../../../PathScripts/PathEngrave.py" line="156"/>
       <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
       <translation type="unfinished">The Job Base Object has no engraveable element.  Engraving operation will produce no output.</translation>
     </message>
@@ -848,7 +848,7 @@
     <message>
       <location filename="PathMillFace.py" line="367"/>
       <source>Create Face</source>
-      <translation type="unfinished">Create Face</translation>
+      <translation>Napravite lice</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathMillFaceGui.py" line="45"/>
@@ -959,7 +959,7 @@
     <message>
       <location filename="PathHelix.py" line="464"/>
       <source>Create a helix cut</source>
-      <translation type="unfinished">Create a helix cut</translation>
+      <translation>Stvoriti spiralni rez</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHelixGui.py" line="83"/>
@@ -1062,7 +1062,7 @@
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="99"/>
       <source>An optional description for this job</source>
-      <translation type="unfinished">An optional description for this job</translation>
+      <translation>Dodatni opis za ovaj posao</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="100"/>
@@ -1077,7 +1077,7 @@
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="102"/>
       <source>The base object for all operations</source>
-      <translation type="unfinished">The base object for all operations</translation>
+      <translation>Osnovni objekt za sve operacije</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="103"/>
@@ -1210,7 +1210,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="107"/>
       <source>Holds the diameter of the tool</source>
-      <translation type="unfinished">Holds the diameter of the tool</translation>
+      <translation>Drži promjer alata</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="113"/>
@@ -1501,7 +1501,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProject.py" line="53"/>
       <source>An optional description for this project</source>
-      <translation type="unfinished">An optional description for this project</translation>
+      <translation>Dodatni opis za ovaj posao</translation>
     </message>
   </context>
   <context>
@@ -1945,32 +1945,32 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
       <source>DragKnife Dress-up</source>
       <translation type="unfinished">DragKnife Dress-up</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="471"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
       <source>Modifies a path to add dragknife corner actions</source>
       <translation type="unfinished">Modifies a path to add dragknife corner actions</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="485"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
       <source>Please select one path object</source>
       <translation type="unfinished">Please select one path object</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="489"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
       <source>The selected object is not a path</source>
       <translation type="unfinished">The selected object is not a path</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="493"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
       <source>Please select a Path object</source>
       <translation type="unfinished">Please select a Path object</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="498"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
       <source>Create Dress-up</source>
       <translation type="unfinished">Create Dress-up</translation>
     </message>
@@ -2113,7 +2113,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathJob.py" line="197"/>
       <source>Create Job</source>
-      <translation type="unfinished">Create Job</translation>
+      <translation>Stvori posao</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="223"/>
@@ -2190,7 +2190,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPost.py" line="45"/>
       <source>Post Process</source>
-      <translation type="unfinished">Post Process</translation>
+      <translation>Naknadni proces</translation>
     </message>
     <message>
       <location filename="PathPost.py" line="155"/>
@@ -2205,7 +2205,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathPost.py" line="161"/>
       <source>Post Process</source>
-      <translation type="unfinished">Post Process</translation>
+      <translation>Naknadni proces</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPost.py" line="163"/>

@@ -698,7 +698,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
       <source>No Feature with Shape in selection.</source>
-      <translation type="unfinished">No Feature with Shape in selection.</translation>
+      <translation>Nessuna funzione con una forma nella selezione.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>

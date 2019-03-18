@@ -276,7 +276,7 @@
     <message>
       <location filename="../../../PathScripts/PathProfileBase.py" line="59"/>
       <source>Make True, if using Cutter Radius Compensation</source>
-      <translation type="unfinished">Make True, if using Cutter Radius Compensation</translation>
+      <translation>Állítsa igazra, ha sugár vágó kompenzációt alkalmaz</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileBase.py" line="61"/>
@@ -639,7 +639,7 @@
     <message>
       <location filename="../../../InitGui.py" line="91"/>
       <source>Engraving Operations</source>
-      <translation type="unfinished">Engraving Operations</translation>
+      <translation>Gravírozási műveletek</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="100"/>
@@ -815,7 +815,7 @@
       <translation>Létrehoz egy begravírozó útvonalat egy Szövegalakzat körül</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
+      <location filename="../../../PathScripts/PathEngrave.py" line="156"/>
       <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
       <translation>A művelet feladatobjektumának nincs begravírozható  eleme.  Gravírozás művelet eredménytelen lesz.</translation>
     </message>
@@ -954,7 +954,7 @@
     <message>
       <location filename="PathHelix.py" line="450"/>
       <source>Creates a helix cut from selected circles</source>
-      <translation type="unfinished">Creates a helix cut from selected circles</translation>
+      <translation>Létrehoz egy spirál kivágást a kijelölt körökből</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="464"/>
@@ -1062,7 +1062,7 @@
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="99"/>
       <source>An optional description for this job</source>
-      <translation type="unfinished">An optional description for this job</translation>
+      <translation>Egy lehetséges leírás ehhez a feladathoz</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="100"/>
@@ -1190,7 +1190,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="112"/>
       <source>Holds the max Z value of Stock</source>
-      <translation type="unfinished">Holds the max Z value of Stock</translation>
+      <translation>Tartja az alaptest max Z értékét</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="545"/>
@@ -1246,8 +1246,8 @@
       <location filename="../../../PathScripts/PathOpGui.py" line="641"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
-      <translation type="unfinished">FinalDepth cannot be modified for this operation.
-If it is necessary to set the FinalDepth manually please select a different operation.</translation>
+      <translation>Végleges-Mélység nem módosítható ehhez a művelethez.
+Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy másik műveletet.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOpGui.py" line="660"/>
@@ -1355,7 +1355,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
       <source>Profile based on face or faces</source>
-      <translation type="unfinished">Profile based on face or faces</translation>
+      <translation>Felületen vagy felületeken alapuló profil</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="54"/>
@@ -1549,12 +1549,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="153"/>
       <source>Length of this stock box</source>
-      <translation type="unfinished">Length of this stock box</translation>
+      <translation>Ennek az alaptest mezőnek a hossza</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="154"/>
       <source>Width of this stock box</source>
-      <translation type="unfinished">Width of this stock box</translation>
+      <translation>Ennek az alaptest mezőnek a szélessége</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="155"/>
@@ -1945,32 +1945,32 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
       <source>DragKnife Dress-up</source>
       <translation>DragKnife felépítés</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="471"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
       <source>Modifies a path to add dragknife corner actions</source>
       <translation>Módosít egy szerszámpályát egy dragknife sarok művelet hozzáadásával</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="485"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
       <source>Please select one path object</source>
       <translation>Kérem jelöljön ki egy pálya objektumot</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="489"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
       <source>The selected object is not a path</source>
       <translation>A kijelölt objektum nem pálya útvonal</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="493"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
       <source>Please select a Path object</source>
       <translation>Kérem válasszon egy pályaútvonal objektumot</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="498"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
       <source>Create Dress-up</source>
       <translation>Változtatást hoz létre</translation>
     </message>
@@ -2318,7 +2318,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="140"/>
       <source>A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</source>
-      <translation type="unfinished">A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</translation>
+      <translation>Egy eszköz vezérlő nem található. Alapértelmezett értékeket használnak, amely veszélyes. Kérjük, adjon hozzá eszköz vezérlőt.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="144"/>
@@ -2633,7 +2633,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="TooltableEditor.py" line="415"/>
       <source>Undefined</source>
-      <translation>Nem definiált</translation>
+      <translation>Meghatározatlan</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="416"/>

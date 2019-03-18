@@ -685,7 +685,7 @@ bool Document::saveAs(void)
 
     QString exe = qApp->applicationName();
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
-        QString(), QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe).arg(QObject::tr("Document")));
+        QString(), QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document")));
     if (!fn.isEmpty()) {
         QFileInfo fi;
         fi.setFile(fn);
@@ -800,8 +800,6 @@ void Document::RestoreDocFile(Base::Reader &reader)
     Base::XMLReader xmlReader("GuiDocument.xml", reader);
     xmlReader.FileVersion = reader.getFileVersion();
 
-    int i,Cnt;
-
     xmlReader.readElement("Document");
     long scheme = xmlReader.getAttributeAsInteger("SchemaVersion");
     xmlReader.DocumentSchema = scheme;
@@ -813,8 +811,8 @@ void Document::RestoreDocFile(Base::Reader &reader)
     if (scheme == 1) {
         // read the viewproviders itself
         xmlReader.readElement("ViewProviderData");
-        Cnt = xmlReader.getAttributeAsInteger("Count");
-        for (i=0 ;i<Cnt ;i++) {
+        int Cnt = xmlReader.getAttributeAsInteger("Count");
+        for (int i=0; i<Cnt; i++) {
             xmlReader.readElement("ViewProvider");
             std::string name = xmlReader.getAttribute("name");
             bool expanded = false;
@@ -829,7 +827,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
                 pObj->Restore(xmlReader);
             if (pObj && expanded) {
                 Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
-                this->signalExpandObject(*vp, Gui::Expand);
+                this->signalExpandObject(*vp, Gui::ExpandItem);
             }
             xmlReader.readEndElement("ViewProvider");
         }
@@ -923,7 +921,7 @@ void Document::SaveDocFile (Base::Writer &writer) const
         writer.Stream() << writer.ind() << "<ViewProvider name=\""
                         << doc->getNameInDocument() << "\" "
                         << "expanded=\"" << (doc->testStatus(App::Expand) ? 1:0) << "\"";
-        if(obj->hasExtensions())
+        if (obj->hasExtensions())
             writer.Stream() << " Extensions=\"True\"";
         
         writer.Stream() << ">" << std::endl;
@@ -988,9 +986,12 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
         const App::DocumentObject* doc = jt->first;
         ViewProvider* obj = jt->second;
         writer.Stream() << writer.ind() << "<ViewProvider name=\""
-                        << doc->getNameInDocument() << "\" type=\""
-                        << obj->getTypeId().getName()
-                        << "\">" << std::endl;
+                        << doc->getNameInDocument() << "\" "
+                        << "expanded=\"" << (doc->testStatus(App::Expand) ? 1:0) << "\"";
+        if (obj->hasExtensions())
+            writer.Stream() << " Extensions=\"True\"";
+
+        writer.Stream() << ">" << std::endl;
         obj->Save(writer);
         writer.Stream() << writer.ind() << "</ViewProvider>" << std::endl;
     }
@@ -1031,9 +1032,20 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
             std::map<std::string, std::string>::const_iterator jt = nameMapping.find(name);
             if (jt != nameMapping.end())
                 name = jt->second;
+            bool expanded = false;
+            if (xmlReader.hasAttribute("expanded")) {
+                const char* attr = xmlReader.getAttribute("expanded");
+                if (strcmp(attr,"1") == 0) {
+                    expanded = true;
+                }
+            }
             Gui::ViewProvider* pObj = this->getViewProviderByName(name.c_str());
             if (pObj)
                 pObj->Restore(xmlReader);
+            if (pObj && expanded) {
+                Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
+                this->signalExpandObject(*vp, Gui::ExpandItem);
+            }
             xmlReader.readEndElement("ViewProvider");
             if (it == obj.end())
                 break;

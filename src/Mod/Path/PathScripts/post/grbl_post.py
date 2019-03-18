@@ -135,9 +135,9 @@ def processArguments(argstring):
         print("Show editor = %d" % SHOW_EDITOR)
         PRECISION = args.precision
         if not args.preamble is None:
-            PREAMBLE = args.preamble
+            PREAMBLE = args.preamble.replace('\\n', '\n')
         if not args.postamble is None:
-            POSTAMBLE = args.postamble
+            POSTAMBLE = args.postamble.replace('\\n', '\n')
         if not args.tool_change is None:
             OUTPUT_TOOL_CHANGE = int(args.tool_change) > 0
             SUPPRESS_TOOL_CHANGE = min(1, int(args.tool_change) - 1)

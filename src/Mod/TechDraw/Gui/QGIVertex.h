@@ -35,8 +35,8 @@ public:
     ~QGIVertex() {}
 
     enum {Type = QGraphicsItem::UserType + 105};
-    int type() const { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    int type() const override { return Type;}
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
 
     int getProjIndex() const { return projIndex; }
 

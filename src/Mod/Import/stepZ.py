@@ -11,9 +11,11 @@
 # OCC7 doesn't support non-ASCII characters at the moment
 # https://forum.freecadweb.org/viewtopic.php?t=20815
 
+import six
+
 import FreeCAD,FreeCADGui
 import shutil
-import sys, os, re
+import os, re
 import ImportGui
 import PySide
 from PySide import QtGui, QtCore
@@ -22,39 +24,37 @@ import tempfile
 ___stpZversion___ = "1.3.2"
 
 
-if (sys.version_info > (3, 0)):  #py3
-    import builtins as builtin  #py3
+if six.PY3:
     import gzip as gz
-else:  #py2
-    import __builtin__ as builtin #py2
+else:  # six.PY2
     import gzip_utf8 as gz
     
 # import stepZ; reload(stepZ); import gzip_utf8; reload(gzip_utf8)
 
 def mkz_string(input):
-    if (sys.version_info > (3, 0)):  #py3
+    if six.PY3:
         if isinstance(input, str):
             return input
         else:
-            input =  input.encode('utf-8')
+            input = input.encode('utf-8')
             return input
-    else:  #py2
-        if type(input) == unicode:
-            input =  input.encode('utf-8')
+    else:  # six.PY2
+        if isinstance(input, six.text_type):
+            input = input.encode('utf-8')
             return input
         else:
             return input
 ####
 def mkz_unicode(input):
-    if (sys.version_info > (3, 0)):  #py3
+    if six.PY3:
         if isinstance(input, str):
             return input
         else:
-            input =  input.decode('utf-8')
+            input = input.decode('utf-8')
             return input
-    else: #py2
-        if type(input) != unicode:
-            input =  input.decode('utf-8')
+    else:  # six.PY2
+        if isinstance(input, six.text_type):
+            input = input.decode('utf-8')
             return input
         else:
             return input
@@ -85,7 +85,7 @@ def open(filename):
     tempdir = tempfile.gettempdir() # get the current temporary directory
     tempfilepath = os.path.join(tempdir,fname + u'.stp')
 
-    with builtin.open(tempfilepath, 'wb') as f: #py3
+    with six.builtins.open(tempfilepath, 'wb') as f: #py3
         f.write(file_content)
     #ImportGui.insert(filepath)
     ImportGui.open(tempfilepath)
@@ -110,7 +110,7 @@ def insert(filename,doc):
     tempdir = tempfile.gettempdir() # get the current temporary directory
     tempfilepath = os.path.join(tempdir,fname + u'.stp')
     
-    with builtin.open(tempfilepath, 'wb') as f: #py3
+    with six.builtins.open(tempfilepath, 'wb') as f: #py3
         f.write(file_content)
     ImportGui.insert(tempfilepath, doc)
     #ImportGui.open(tempfilepath)
@@ -154,7 +154,7 @@ def export(objs,filename):
             QtGui.QApplication.restoreOverrideCursor()
             reply = QtGui.QMessageBox.information(None,"info", "File cannot be compressed because\na file with the same name exists\n'"+ namefpath+ "'")
         else:
-            with builtin.open(outfpath_stp, 'rb') as f_in:
+            with six.builtins.open(outfpath_stp, 'rb') as f_in:
                 file_content = f_in.read()
                 new_f_content = file_content
                 f_in.close()

@@ -295,7 +295,7 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation>Appuyez sur le bouton du milieu + clic gauche ou bouton du milieu + clic droit</translation>
+      <translation>Appuyez sur le bouton du milieu + bouton gauche ou bouton du milieu + bouton droit</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
@@ -849,20 +849,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Raccourci défini plusieurs fois</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Le raccourci '%1' est défini plus d'une fois. Il pourrait en résulter un comportement inattendu.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Raccourci déjà défini</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation>Le raccourci '%1' est déjà affecté à '%2'.
-
-vous voulez l’ignorer ?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>Le raccourci '%1' est défini plus d'une fois. Cela peut entraîner un comportement inattendu.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>Le raccourci '%1' est déjà assigné à '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>Voulez-vous le remplacer ?</translation>
     </message>
   </context>
   <context>
@@ -1385,7 +1385,7 @@ vous voulez l’ignorer ?</translation>
     </message>
     <message>
       <source>Duplicate</source>
-      <translation>Dupliquer</translation>
+      <translation>Doublon</translation>
     </message>
     <message>
       <source>Addons...</source>
@@ -1459,7 +1459,7 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Duplicate Macro</source>
-      <translation>Macro de duplication</translation>
+      <translation>Dupliquer la macro</translation>
     </message>
     <message>
       <source>Duplicate Failed</source>
@@ -1468,7 +1468,8 @@ Perhaps a file permission error?</source>
     <message>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
-      <translation>Impossible de dupliquer '%1'. Peut-être une erreur de permission des fichiers ?</translation>
+      <translation>Impossible de dupliquer '%1'.
+Peut-être une erreur de permission du fichier ?</translation>
     </message>
   </context>
   <context>
@@ -2069,7 +2070,7 @@ Veuillez spécifier un autre répertoire.</translation>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object</source>
-      <translation>Utiliser le Vertex Buffer Object OpenGL</translation>
+      <translation>Utiliser OpenGL Vertex Buffer Object</translation>
     </message>
     <message>
       <source>New Document Camera Orientation</source>
@@ -2085,7 +2086,7 @@ Veuillez spécifier un autre répertoire.</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation>Faites glisser le curseur</translation>
+      <translation>Glisser au curseur</translation>
     </message>
     <message>
       <source>Marker size:</source>
@@ -2799,11 +2800,11 @@ Veuillez spécifier un autre répertoire.</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
-      <translation>Fractions minimales en pouce:</translation>
+      <translation>Fraction minimale en pouce:</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;minimum fractionnaire pouces à afficher.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction minimale en pouce à afficher&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>1/2"</source>
@@ -2886,7 +2887,7 @@ Veuillez spécifier un autre répertoire.</translation>
     </message>
     <message>
       <source>Active container</source>
-      <translation>Conteneur Active</translation>
+      <translation>Conteneur actif</translation>
     </message>
   </context>
   <context>
@@ -2981,10 +2982,6 @@ Veuillez spécifier un autre répertoire.</translation>
       <translation>Trier les ateliers activés</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Tri des ateliers activés&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Déplacer vers le haut</translation>
     </message>
@@ -2999,6 +2996,10 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Ajouter tout aux ateliers activés</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Trier les ateliers activés&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3471,11 +3472,11 @@ La colonne « État » indique si le document peut être récupéré.</translati
     </message>
     <message>
       <source>Apply incremental changes</source>
-      <translation>Appliquer les modifications incrémentielles</translation>
+      <translation>Appliquer les modifications incrémentales</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Veuillez sélectionner 1, 2 ou 3 points avant de cliquer sur ce bouton.  Un point peut être sur un sommet, la face ou le bord.  Si sur une face ou le bord du point utilisé sera le point à la position de la souris le long de la face ou le bord.  Si 1 point est sélectionné il sera utilisé comme centre de rotation.  Si 2 points sont choisis le point médian entre eux sera le centre de rotation et un nouvel axe personnalisé sera créé, si nécessaire.  Si 3 points sont choisis le premier point devient le centre de rotation et se trouve sur le vecteur qui est perpendiculaire au plan défini par les 3 points.  Des informations de distance et l’angle sont fournies dans la visualisation de rapport, qui peut être utile lors de l’alignement des objets.  Pour plus de commodité lors de Maj + clic sert la distance appropriée ou l’angle est copié dans le presse-papiers.</translation>
+      <translation>Veuillez sélectionner 1, 2 ou 3 points avant de cliquer sur ce bouton.  Un point peut être sur un sommet, une face ou une arête.  S'il est sur une face ou une arête, le point utilisé sera le point à la position de la souris le long de la face ou de l'arête.  Si 1 point est sélectionné il sera utilisé comme centre de rotation.  Si 2 points sont choisis le point médian sera le centre de rotation et un nouvel axe personnalisé sera créé, si nécessaire.  Si 3 points sont choisis le premier point devient le centre de rotation et se trouve sur le vecteur qui est perpendiculaire au plan défini par les 3 points.  Des informations de distance et d’angle sont fournies dans la vue rapport, ce qui peut être utile pour aligner des objets.  Pour plus de commodité, lors de l'utilisation de Maj + clic la distance appropriée ou l’angle sont copiés dans le presse-papiers.</translation>
     </message>
   </context>
   <context>
@@ -3871,7 +3872,7 @@ Voulez enregistrer les modifications ?</translation>
     <name>Gui::GestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation type="unfinished">Tap OR click left mouse button.</translation>
+      <translation>Cliquez sur le pavé tactile, ou cliquez sur le bouton gauche de la souris.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press right mouse button.</source>
@@ -3879,7 +3880,7 @@ Voulez enregistrer les modifications ?</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Faire glisser l'écran avec un doigt. Ou cliquer le bouton gauche de la souris. Dans l'atelier Esquisses et les autres modes d'édition, maintenez en plus la touche Alt enfoncée.</translation>
+      <translation>Faire glisser l'écran avec un doigt. Ou cliquer le bouton gauche de la souris. Dans l'atelier Sketcher et les autres modes d'édition, maintenez en plus la touche Alt enfoncée.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
@@ -4165,7 +4166,7 @@ How do you want to proceed?</source>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation type="unfinished">Tap OR click left mouse button.</translation>
+      <translation>Cliquez sur le pavé tactile, ou cliquez sur le bouton gauche de la souris.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
@@ -4173,11 +4174,11 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Faites glisser l'écran avec un doigt, ou appuyez sur ALT + bouton gauche de la souris. Dans l'atelier Esquisses et les autres modes d'édition, maintenez en plus la touche Alt enfoncée.</translation>
+      <translation>Faites glisser l'écran avec un doigt, ou appuyez sur ALT + bouton gauche de la souris. Dans l'atelier Sketcher et les autres modes d'édition, maintenez en plus la touche Alt enfoncée.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Pincez (placez deux doigts sur l'écran et écartez-les l'un de l'autre). Ou utilisez la molette de la souris. Ou appuyez sur ALT + bouton droit de la souris. Ou PgUp/PgDown sur le clavier.</translation>
+      <translation>Pincez (placez deux doigts sur l'écran et écartez-les l'un de l'autre ou rapprochez les). Ou utilisez la molette de la souris. Ou appuyez sur ALT + bouton droit de la souris. Ou PgUp/PgDown sur le clavier.</translation>
     </message>
   </context>
   <context>
@@ -5299,10 +5300,6 @@ Be aware the point where you click matters.</source>
       <translation>Scinder</translation>
     </message>
     <message>
-      <source>%1.%2.%3</source>
-      <translation>%1.%2.%3</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>Translation :</translation>
     </message>
@@ -5708,8 +5705,8 @@ Be aware the point where you click matters.</source>
       <translation>Active ou désactive le mode d'édition de l'objet sélectionné</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Entre ou quitte le mode d'édition de l'objet sélectionné</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation>Active ou désactive le mode d'édition de l'objet sélectionné</translation>
     </message>
   </context>
   <context>
@@ -6750,7 +6747,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation>Crée une nouvelle fenêtre de la vue pour le document actif</translation>
+      <translation>Crée une nouvelle fenêtre de vue pour le document actif</translation>
     </message>
   </context>
   <context>
@@ -7196,7 +7193,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Expand active document and collapse all others</source>
-      <translation>Développer les document actifs et réduire tous les autres</translation>
+      <translation>Développer le document actif et réduire tous les autres</translation>
     </message>
   </context>
   <context>
@@ -7207,7 +7204,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Multi Document</source>
-      <translation>Documents multiples</translation>
+      <translation>Document multiple</translation>
     </message>
     <message>
       <source>Display all documents in the tree view</source>
@@ -7237,7 +7234,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Document Tree</source>
-      <translation>Arborescence des documents</translation>
+      <translation>Arborescence du document</translation>
     </message>
     <message>
       <source>Set visibility of inactive documents in tree view</source>
@@ -7508,11 +7505,11 @@ Do you want to duplicate them, too?</source>
     <name>ViewZoomToFitCmd</name>
     <message>
       <source>Zoom to fit</source>
-      <translation>Zoom pour s’adapter</translation>
+      <translation>Ajuster le zoom</translation>
     </message>
     <message>
       <source>Zoom so that model fills the view</source>
-      <translation>Zoom pour ce modèle remplisse bien la vue</translation>
+      <translation>Zoom pour que le modèle remplisse la vue</translation>
     </message>
   </context>
   <context>

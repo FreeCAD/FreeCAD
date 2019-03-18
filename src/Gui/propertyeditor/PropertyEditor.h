@@ -92,6 +92,7 @@ protected:
     virtual void rowsInserted (const QModelIndex & parent, int start, int end);
     virtual void drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const;
     virtual QStyleOptionViewItem viewOptions() const;
+    virtual bool event(QEvent*);
 
 private:
     void setEditorMode(const QModelIndex & parent, int start, int end);

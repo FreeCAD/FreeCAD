@@ -708,7 +708,7 @@ PyObject* Curve2dPy::parameter(PyObject *args)
             PyObject *p;
             if (!PyArg_ParseTuple(args, "O!", Base::Vector2dPy::type_object(), &p))
                 return 0;
-            Base::Vector2d v = Py::Vector2d(p).getCxxObject()->value();
+            Base::Vector2d v = Py::toVector2d(p);
             gp_Pnt2d pnt(v.x,v.y);
             Geom2dAPI_ProjectPointOnCurve ppc(pnt, c);
             double val = ppc.LowerDistanceParameter();

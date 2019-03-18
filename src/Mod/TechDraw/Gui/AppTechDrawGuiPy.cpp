@@ -41,10 +41,12 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
 
 
 #include <Mod/Part/App/OCCError.h>
+#include <Mod/TechDraw/App/DrawPage.h>
 
 #include "MDIViewPage.h"
 #include "ViewProviderPage.h"
@@ -60,7 +62,10 @@ class Module : public Py::ExtensionModule<Module>
 public:
     Module() : Py::ExtensionModule<Module>("TechDrawGui")
     {
-        add_varargs_method("exportPageAsPdf",&Module::exportPageAsPdf,
+       add_varargs_method("export",&Module::exporter,
+            "TechDraw hook for FC Gui exporter."
+       );
+       add_varargs_method("exportPageAsPdf",&Module::exportPageAsPdf,
             "exportPageAsPdf(DrawPageObject,FilePath) -- print page as Pdf to file."
         );
         add_varargs_method("exportPageAsSvg",&Module::exportPageAsSvg,
@@ -102,6 +107,53 @@ private:
             Base::Console().Error("%s\n", str.c_str());
             throw Py::RuntimeError(str);
         }
+    }
+
+//! hook for FC Gui export function
+    Py::Object exporter(const Py::Tuple& args)
+    {
+        PyObject* object;
+        char* Name;
+        if (!PyArg_ParseTuple(args.ptr(), "Oet",&object,"utf-8",&Name))
+            throw Py::Exception();
+
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
+
+        TechDraw::DrawPage* page = nullptr;
+        Py::Sequence list(object);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            PyObject* item = (*it).ptr();
+            if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
+                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
+                if (obj->getTypeId().isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+                    page = static_cast<TechDraw::DrawPage*>(obj);
+                    Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
+                    Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
+                    ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+                    if ( !(dvp  && dvp->getMDIViewPage()) ) {
+                        throw Py::TypeError("TechDraw can not find Page");
+                    }
+
+                    Base::FileInfo fi_out(EncodedName.c_str());
+
+                    if (fi_out.hasExtension("svg")) {
+                        dvp->getMDIViewPage()->saveSVG(EncodedName);
+                    } else if (fi_out.hasExtension("dxf")) {
+                        dvp->getMDIViewPage()->saveDXF(EncodedName);
+                    } else if (fi_out.hasExtension("pdf")) {
+                        dvp->getMDIViewPage()->savePDF(EncodedName);
+                    } else {
+                        throw Py::TypeError("TechDraw can not export this file format");
+                    }
+                }
+                else {
+                    throw Py::TypeError("Export of this object type is not supported by TechDraw module");
+                }
+            }
+        }
+
+        return Py::None();
     }
 
 //!exportPageAsPdf(PageObject,FullPath)

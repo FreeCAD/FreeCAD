@@ -28,16 +28,23 @@ __url__ = "http://www.freecadweb.org"
 #  @{
 
 import FreeCAD
+import femtools.femutils as femutils
 from math import sqrt
 
 
-## Removes all result objects from an analysis group
+## Removes all result objects and result meshes from an analysis group
 #  @param analysis
 def purge_results(analysis):
     for m in analysis.Group:
         if (m.isDerivedFrom('Fem::FemResultObject')):
             if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "Fem::FemMeshResult":
                 analysis.Document.removeObject(m.Mesh.Name)
+            analysis.Document.removeObject(m.Name)
+    FreeCAD.ActiveDocument.recompute()
+    # if analysis typ check is used result mesh without result obj is created in the analysis
+    # we could run into trouble in one loop because we will delete objects and try to access them later
+    for m in analysis.Group:
+        if femutils.is_of_type(m, 'Fem::FemMeshResult'):
             analysis.Document.removeObject(m.Name)
     FreeCAD.ActiveDocument.recompute()
 
@@ -162,68 +169,68 @@ def get_all_stats(res_obj):
     return stats_dict
 
 
-def fill_femresult_stats(results):
+def fill_femresult_stats(res_obj):
     '''
     fills a FreeCAD FEM mechanical result object with stats data
-    results: FreeCAD FEM result object
+    res_obj: FreeCAD FEM result object
     '''
-    FreeCAD.Console.PrintLog('Calculate stats list for result obj: ' + results.Name + '\n')
+    FreeCAD.Console.PrintLog('Calculate stats list for result obj: ' + res_obj.Name + '\n')
     no_of_values = 1  # to avoid division by zero
-    # set stats values to 0, they may not exist in result obj results
+    # set stats values to 0, they may not exist in res_obj
     x_min = y_min = z_min = x_max = y_max = z_max = x_avg = y_avg = z_avg = 0
     a_max = a_min = a_avg = s_max = s_min = s_avg = 0
     p1_min = p1_avg = p1_max = p2_min = p2_avg = p2_max = p3_min = p3_avg = p3_max = 0
     ms_min = ms_avg = ms_max = peeq_min = peeq_avg = peeq_max = 0
     temp_min = temp_avg = temp_max = mflow_min = mflow_avg = mflow_max = npress_min = npress_avg = npress_max = 0
 
-    if results.DisplacementVectors:
-        no_of_values = len(results.DisplacementVectors)
-        x_max, y_max, z_max = map(max, zip(*results.DisplacementVectors))
-        x_min, y_min, z_min = map(min, zip(*results.DisplacementVectors))
-        sum_list = map(sum, zip(*results.DisplacementVectors))
+    if res_obj.DisplacementVectors:
+        no_of_values = len(res_obj.DisplacementVectors)
+        x_max, y_max, z_max = map(max, zip(*res_obj.DisplacementVectors))
+        x_min, y_min, z_min = map(min, zip(*res_obj.DisplacementVectors))
+        sum_list = map(sum, zip(*res_obj.DisplacementVectors))
         x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
-        a_min = min(results.DisplacementLengths)
-        a_avg = sum(results.DisplacementLengths) / no_of_values
-        a_max = max(results.DisplacementLengths)
-    if results.StressValues:
-        s_min = min(results.StressValues)
-        s_avg = sum(results.StressValues) / no_of_values
-        s_max = max(results.StressValues)
-    if results.PrincipalMax:
-        p1_min = min(results.PrincipalMax)
-        p1_avg = sum(results.PrincipalMax) / no_of_values
-        p1_max = max(results.PrincipalMax)
-    if results.PrincipalMed:
-        p2_min = min(results.PrincipalMed)
-        p2_avg = sum(results.PrincipalMed) / no_of_values
-        p2_max = max(results.PrincipalMed)
-    if results.PrincipalMin:
-        p3_min = min(results.PrincipalMin)
-        p3_avg = sum(results.PrincipalMin) / no_of_values
-        p3_max = max(results.PrincipalMin)
-    if results.MaxShear:
-        ms_min = min(results.MaxShear)
-        ms_avg = sum(results.MaxShear) / no_of_values
-        ms_max = max(results.MaxShear)
-    if results.Peeq:
-        peeq_min = min(results.Peeq)
-        peeq_avg = sum(results.Peeq) / no_of_values
-        peeq_max = max(results.Peeq)
-    if results.Temperature:
-        temp_min = min(results.Temperature)
-        temp_avg = sum(results.Temperature) / no_of_values
-        temp_max = max(results.Temperature)
-    if results.MassFlowRate:
-        no_of_values = len(results.MassFlowRate)  # DisplacementVectors is empty, no_of_values needs to be set
-        mflow_min = min(results.MassFlowRate)
-        mflow_avg = sum(results.MassFlowRate) / no_of_values
-        mflow_max = max(results.MassFlowRate)
-    if results.NetworkPressure:
-        npress_min = min(results.NetworkPressure)
-        npress_avg = sum(results.NetworkPressure) / no_of_values
-        npress_max = max(results.NetworkPressure)
+        a_min = min(res_obj.DisplacementLengths)
+        a_avg = sum(res_obj.DisplacementLengths) / no_of_values
+        a_max = max(res_obj.DisplacementLengths)
+    if res_obj.StressValues:
+        s_min = min(res_obj.StressValues)
+        s_avg = sum(res_obj.StressValues) / no_of_values
+        s_max = max(res_obj.StressValues)
+    if res_obj.PrincipalMax:
+        p1_min = min(res_obj.PrincipalMax)
+        p1_avg = sum(res_obj.PrincipalMax) / no_of_values
+        p1_max = max(res_obj.PrincipalMax)
+    if res_obj.PrincipalMed:
+        p2_min = min(res_obj.PrincipalMed)
+        p2_avg = sum(res_obj.PrincipalMed) / no_of_values
+        p2_max = max(res_obj.PrincipalMed)
+    if res_obj.PrincipalMin:
+        p3_min = min(res_obj.PrincipalMin)
+        p3_avg = sum(res_obj.PrincipalMin) / no_of_values
+        p3_max = max(res_obj.PrincipalMin)
+    if res_obj.MaxShear:
+        ms_min = min(res_obj.MaxShear)
+        ms_avg = sum(res_obj.MaxShear) / no_of_values
+        ms_max = max(res_obj.MaxShear)
+    if res_obj.Peeq:
+        peeq_min = min(res_obj.Peeq)
+        peeq_avg = sum(res_obj.Peeq) / no_of_values
+        peeq_max = max(res_obj.Peeq)
+    if res_obj.Temperature:
+        temp_min = min(res_obj.Temperature)
+        temp_avg = sum(res_obj.Temperature) / no_of_values
+        temp_max = max(res_obj.Temperature)
+    if res_obj.MassFlowRate:
+        no_of_values = len(res_obj.MassFlowRate)  # DisplacementVectors is empty, no_of_values needs to be set
+        mflow_min = min(res_obj.MassFlowRate)
+        mflow_avg = sum(res_obj.MassFlowRate) / no_of_values
+        mflow_max = max(res_obj.MassFlowRate)
+    if res_obj.NetworkPressure:
+        npress_min = min(res_obj.NetworkPressure)
+        npress_avg = sum(res_obj.NetworkPressure) / no_of_values
+        npress_max = max(res_obj.NetworkPressure)
 
-    results.Stats = [x_min, x_avg, x_max,
+    res_obj.Stats = [x_min, x_avg, x_max,
                      y_min, y_avg, y_max,
                      z_min, z_avg, z_max,
                      a_min, a_avg, a_max,
@@ -245,8 +252,8 @@ def fill_femresult_stats(results):
     # - module femtest/testccxtools.py
     # TODO: all stats stuff should be reimplemented, maybe a dictionary would be far more robust than a list
 
-    FreeCAD.Console.PrintLog('Stats list for result obj: ' + results.Name + ' calculated\n')
-    return results
+    FreeCAD.Console.PrintLog('Stats list for result obj: ' + res_obj.Name + ' calculated\n')
+    return res_obj
 
 
 def add_disp_apps(res_obj):

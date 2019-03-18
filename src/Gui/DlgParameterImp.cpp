@@ -471,7 +471,6 @@ void ParameterGroup::onImportFromFile()
         QString::null, QString::fromLatin1("XML (*.FCParam)"));
     if ( !file.isEmpty() )
     {
-        QFileInfo fi(file);
         QTreeWidgetItem* item = currentItem();
         if (isItemSelected(item))
         {

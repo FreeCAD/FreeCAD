@@ -815,7 +815,7 @@
       <translation>Δημιουργεί μια Διαδρομή Χάραξης γύρω από ένα Πλαίσιο Συμβολοσειράς Κειμένου Προσχεδίου</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
+      <location filename="../../../PathScripts/PathEngrave.py" line="156"/>
       <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
       <translation>Το Αντικείμενο Βάσης της Εργασίας δεν έχει κάποιο στοιχείο προς χάραξη. Η λειτουργία χάραξης δεν θα παράγει κανένα αρχείο εξόδου.</translation>
     </message>
@@ -1945,32 +1945,32 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
       <source>DragKnife Dress-up</source>
       <translation>Αναδιαμόρφωση Συρόμενης Λεπίδας</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="471"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
       <source>Modifies a path to add dragknife corner actions</source>
       <translation>Τροποποιεί μια διαδρομή για να προσθέσει γωνιακές ενέργειες για τη συρόμενη λεπίδα</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="485"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
       <source>Please select one path object</source>
       <translation>Παρακαλώ επιλέξτε ένα αντικείμενο διαδρομής</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="489"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
       <source>The selected object is not a path</source>
       <translation>Το επιλεγμένο αντικείμενο δεν είναι διαδρομή</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="493"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
       <source>Please select a Path object</source>
       <translation>Παρακαλώ επιλέξτε ένα αντικείμενο Διαδρομής</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="498"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
       <source>Create Dress-up</source>
       <translation>Δημιουργήστε Αναδιαμόρφωση</translation>
     </message>

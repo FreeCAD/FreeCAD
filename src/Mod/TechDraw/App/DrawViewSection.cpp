@@ -106,7 +106,6 @@ DrawViewSection::DrawViewSection()
     static const char *sgroup = "Section";
     static const char *fgroup = "Cut Surface Format";
 
-
     ADD_PROPERTY_TYPE(SectionSymbol ,("A"),sgroup,App::Prop_None,"The identifier for this section");
     ADD_PROPERTY_TYPE(BaseView ,(0),sgroup,App::Prop_None,"2D View source for this Section");
     BaseView.setScope(App::LinkScope::Global);
@@ -114,6 +113,7 @@ DrawViewSection::DrawViewSection()
     ADD_PROPERTY_TYPE(SectionOrigin ,(0,0,0) ,sgroup,App::Prop_None,"Section Plane Origin");
     SectionDirection.setEnums(SectionDirEnums);
     ADD_PROPERTY_TYPE(SectionDirection,((long)0),sgroup, App::Prop_None, "Direction in Base View for this Section");
+    ADD_PROPERTY_TYPE(FuseBeforeCut ,(false),sgroup,App::Prop_None,"Merge Source(s) into a single shape before cutting");
 
     ADD_PROPERTY_TYPE(FileHatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
     ADD_PROPERTY_TYPE(NameGeomPattern ,(""),fgroup,App::Prop_None,"The pattern name for geometric hatching");
@@ -196,7 +196,13 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
         return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
 
-    TopoDS_Shape baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShapeFused();
+    TopoDS_Shape baseShape;
+    if (FuseBeforeCut.getValue()) {
+        baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShapeFused();
+    } else {
+        baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShape();
+    }
+    
     if (baseShape.IsNull()) {
         Base::Console().Log("DVS::execute - baseShape is Null\n");
         return new App::DocumentObjectExecReturn("BaseView Source object is Null");
@@ -619,6 +625,12 @@ void DrawViewSection::getParameters()
         }
     std::string patternName = hGrp->GetASCII("PatternName","Diamond");
     NameGeomPattern.setValue(patternName);
+
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+
+    bool fuseFirst = hGrp->GetBool("SectionFuseFirst",true);
+    FuseBeforeCut.setValue(fuseFirst);
 }
 
 // Python Drawing feature ---------------------------------------------------------

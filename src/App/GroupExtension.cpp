@@ -56,7 +56,7 @@ DocumentObject* GroupExtension::addObject(const char* sType, const char* pObject
         getExtendedObject()->getDocument()->removeObject(obj->getNameInDocument());
         return nullptr;
     }
-    if (obj) addObject(obj);
+    addObject(obj);
     return obj;
 }
 

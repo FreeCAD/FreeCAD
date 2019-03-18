@@ -80,6 +80,10 @@ class SoVectorizeLine : public SoVectorizeItem {
 public:
     SoVectorizeLine(void) {
         this->type = LINE;
+        vidx[0] = 0;
+        vidx[1] = 0;
+        col[0] = 0;
+        col[1] = 0;
         this->pattern = 0xffff;
         this->width = 1.0f;
     }
@@ -116,6 +120,8 @@ class SoVectorizeImage : public SoVectorizeItem {
 public:
     SoVectorizeImage(void) {
         this->type = IMAGE;
+        this->image.data = 0;
+        this->image.nc = 0;
     }
 
     SbVec2f pos;        // pos in normalized coordinates
@@ -337,7 +343,7 @@ void SoFCVectorizeSVGActionP::printLine(const SoVectorizeLine * item) const
         v[i][1] = ((1.0f-v[i][1]) * mul[1]) + add[1];
         c[i].setPackedValue(item->col[i], t[i]);
     }
-    uint32_t cc = c->getPackedValue();
+    uint32_t cc = c[0].getPackedValue();
 
     std::ostream& str = publ->getSVGOutput()->getFileStream();
     str << "<line "

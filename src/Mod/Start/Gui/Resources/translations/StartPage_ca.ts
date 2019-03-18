@@ -36,7 +36,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation type="unfinished">Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</translation>
+      <translation>Ajustar el nombre de fitxers recents per ser mostrat al menú Edita -&gt; Preferències -&gt; General -&gt; Mida de la llista de fitxers recents</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
@@ -51,27 +51,27 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
       <source>User hub</source>
-      <translation type="unfinished">User hub</translation>
+      <translation>Centre d'usuaris</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation type="unfinished">This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</translation>
+      <translation>Aquesta secció conté documentació útil per a usuaris FreeCAD en general: una llista de tots els bancs de treball, instruccions detallades sobre com instal·lar i utilitzar l'aplicació FreeCAD, tutorials i tot el necessari per començar.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
       <source>Power users hub</source>
-      <translation type="unfinished">Power users hub</translation>
+      <translation>Centre d'usuaris avançats</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation type="unfinished">This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</translation>
+      <translation>Aquesta secció recull documentació per a usuaris avançats i persones interessades a escriure scripts en python. També hi trobarà un repositori de macros, instruccions sobre com instal·lar i utilitzar-les i més informació sobre la personalització FreeCAD a les seves necessitats específiques.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>Developers hub</source>
-      <translation type="unfinished">Developers hub</translation>
+      <translation>Centre de desenvolupadors</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
@@ -223,7 +223,7 @@
       <translation>Pàgina d'inici</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="542"/>
+      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>Pàgina d'inici</translation>
     </message>
@@ -251,7 +251,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="14"/>
       <source>Start page options</source>
-      <translation type="unfinished">Start page options</translation>
+      <translation>Opcions de pàgina d'inici</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="596"/>
       <source>Switch workbench after loading</source>
-      <translation type="unfinished">Switch workbench after loading</translation>
+      <translation>Canvia el banc de treball a l'iniciar</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="603"/>
@@ -471,7 +471,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="610"/>
       <source>Close &amp; switch on file open</source>
-      <translation type="unfinished">Close &amp; switch on file open</translation>
+      <translation>Tancar i canviar en obrir el fitxer</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="617"/>

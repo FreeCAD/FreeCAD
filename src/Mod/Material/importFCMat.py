@@ -78,22 +78,57 @@ def decode(name):
     return decodedName
 
 
+# the reader and writer do not use some Library to read and write the ini file format, they are implemented here
+# thus non standard ini files will be read and written too
+# in standard ini file format a = in the value without any encapsulation or string quotes is not allowed (AFAIK)
+# https://en.wikipedia.org/wiki/INI_file
+# http://www.docuxplorer.com/WebHelp/INI_File_Format.htm
+# mainly this parser here is used in FreeCAD
+# in the module Material.py is another implementation of reading and writing FCMat files which uses the module ConfigParser
+# in ViewProviderFemMaterial in add_cards_from_a_dir() the parser from Material.py is used
+# since this mixture seams to be there for ages it should not be changed for 0.18
+# TODO: get rid of this mixture in FreeCAD 0.19
+
+# Metainformation
+# first five lines are the same in any card file
+# Line1: card name
+# Line2: author and licence
+# Line3: information string
+# Line4: information link
+# Line5: FreeCAD version info or empty
 def read(filename):
     "reads a FCMat file and returns a dictionary from it"
     if isinstance(filename, unicode):
-        import sys
-        filename = filename.encode(sys.getfilesystemencoding())
-    f = pythonopen(filename)
+        if sys.version_info.major < 3:
+            filename = filename.encode(sys.getfilesystemencoding())
+    # print(filename)
+    card_name_file = os.path.splitext(os.path.basename(filename))[0]
+    if sys.version_info.major >= 3:
+        f = pythonopen(filename, encoding="utf8")
+    else:
+        f = pythonopen(filename)
     d = {}
+    d["CardName"] = card_name_file  # CardName is the MatCard file name
     ln = 0
     for line in f:
         if ln == 0:
-            d["CardName"] = line.split(";")[1].strip()
+            v = line.split(";")[1].strip()  # Line 1
+            if hasattr(v, "decode"):
+                v = v.decode('utf-8')
+            card_name_content = v
+            if card_name_content != d["CardName"]:
+                FreeCAD.Console.PrintError("File CardName (" + card_name_file + ") is not content CardName (" + card_name_content + ")\n")
         elif ln == 1:
-            d["AuthorAndLicense"] = line.split(";")[1].strip()
+            v = line.split(";")[1].strip()  # Line 2
+            if hasattr(v, "decode"):
+                v = v.decode('utf-8')
+            d["AuthorAndLicense"] = v
         else:
-            if not line[0] in ";#[":
-                k = line.split("=")
+            # ; is a Comment
+            # # might be a comment too ?
+            # [ is a Section
+            if line[0] not in ";#[":
+                k = line.split("=", 1)  # only split once on first occurrence, a link could contain a = and thus would be splitted
                 if len(k) == 2:
                     v = k[1].strip()
                     if hasattr(v, "decode"):
@@ -103,8 +138,9 @@ def read(filename):
     return d
 
 
-def write(filename, dictionary):
+def write(filename, dictionary, write_group_section=True):
     "writes the given dictionary to the given file"
+
     # sort the data into sections
     contents = []
     tree = Material.getMaterialAttributeStructure()
@@ -118,8 +154,8 @@ def write(filename, dictionary):
             user = contents[-1]
         for proper in group.getchildren():
             properName = proper.attrib['Name']
-            contents[-1][properName] = ""
-    for k, i in dictionary.iteritems():
+            contents[-1][properName] = ''
+    for k, i in dictionary.items():
         found = False
         for group in contents:
             if not found:
@@ -128,32 +164,50 @@ def write(filename, dictionary):
                     found = True
         if not found:
             user[k] = i
-    # write header
-    rev = FreeCAD.ConfigGet("BuildVersionMajor") + "." + FreeCAD.ConfigGet("BuildVersionMinor") + " " + FreeCAD.ConfigGet("BuildRevision")
+    # delete empty properties
+    for group in contents:
+        for k in list(group.keys()):  # iterating over a dict and changing it is not allowed, thus we iterate over a list of the keys
+            if group[k] == '':
+                del group[k]
+
+    # card writer
+    rev = FreeCAD.ConfigGet("BuildVersionMajor") + "." + FreeCAD.ConfigGet("BuildVersionMinor") + "." + FreeCAD.ConfigGet("BuildRevision")
     if isinstance(filename, unicode):
-        import sys
-        filename = filename.encode(sys.getfilesystemencoding())
-    print(filename)
-    f = pythonopen(filename, "wb")
-    f.write("; " + header["CardName"].encode("utf8") + "\n")
-    f.write("; " + header["AuthorAndLicense"].encode("utf8") + "\n")
-    f.write("; file produced by FreeCAD " + rev + "\n")
-    f.write("; information about the content of this card can be found here:\n")
-    f.write("; http://www.freecadweb.org/wiki/index.php?title=Material\n")
-    f.write("\n")
-    if header["Source"]:
-        f.write("; source of the data provided in this card:\n")
-        f.write("; " + header["Source"].encode("utf8") + "\n")
-        f.write("\n")
+        if sys.version_info.major < 3:
+            filename = filename.encode(sys.getfilesystemencoding())
+    # print(filename)
+    card_name_file = os.path.splitext(os.path.basename(filename))[0]
+    # print(card_name_file)
+    f = pythonopen(filename, "w")
+    # write header
+    # first five lines are the same in any card file, see comment above read def
+    if header["CardName"] != card_name_file:
+        FreeCAD.Console.PrintMessage("File CardName is used: " + card_name_file + " \n")  # CardName is the MatCard file name
+    if sys.version_info.major >= 3:
+        f.write("; " + card_name_file + "\n")
+        f.write("; " + header["AuthorAndLicense"] + "\n")
+    else:
+        f.write("; " + header["CardName"].encode("utf8") + "\n")
+        f.write("; " + header["AuthorAndLicense"].encode("utf8") + "\n")
+    f.write("; information about the content of such cards can be found on the wiki:\n")
+    f.write("; https://www.freecadweb.org/wiki/Material\n")
+    f.write("; file created by FreeCAD" + rev + "\n")
     # write sections
+    # write standard FCMat section if write group section parameter is set to False
+    if write_group_section is False:
+        f.write("\n[FCMat]\n")
     for s in contents:
         if s["keyname"] != "Meta":
+            # if the section has no contents, we don't write it
             if len(s) > 1:
-                # if the section has no contents, we don't write it
-                f.write("[" + s["keyname"] + "]\n")
+                # only write group section if write group section parameter is set to True
+                if write_group_section is True:
+                    f.write("\n[" + s["keyname"] + "]\n")
                 for k, i in s.items():
                     if (k != "keyname" and i != '') or k == "Name":
                         # use only keys which are not empty and the name even if empty
-                        f.write(k + "=" + i.encode('utf-8') + "\n")
-                f.write("\n")
+                        if sys.version_info.major >= 3:
+                            f.write(k + " = " + i + "\n")
+                        else:
+                            f.write(k + " = " + i.encode('utf-8') + "\n")
     f.close()

@@ -103,9 +103,9 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
     QString cmd;
     cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
                         "App.getDocument(\"%1\").getObject(\"%3\"))")
-                        .arg(QString::fromLatin1(doc->getName()))
-                        .arg(QString::fromLatin1(grp->getNameInDocument()))
-                        .arg(QString::fromLatin1(obj->getNameInDocument()));
+                        .arg(QString::fromLatin1(doc->getName()),
+                             QString::fromLatin1(grp->getNameInDocument()),
+                             QString::fromLatin1(obj->getNameInDocument()));
 
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
 }
@@ -119,16 +119,16 @@ void ViewProviderGroupExtension::extensionReplaceObject(App::DocumentObject* old
     QString cmd;
     cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
                         "App.getDocument(\"%1\").getObject(\"%3\"))")
-                        .arg(QString::fromLatin1(doc->getName()))
-                        .arg(QString::fromLatin1(grp->getNameInDocument()))
-                        .arg(QString::fromLatin1(oldValue->getNameInDocument()));
+                        .arg(QString::fromLatin1(doc->getName()),
+                             QString::fromLatin1(grp->getNameInDocument()),
+                             QString::fromLatin1(oldValue->getNameInDocument()));
 
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
     cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
                         "App.getDocument(\"%1\").getObject(\"%3\"))")
-                        .arg(QString::fromLatin1(doc->getName()))
-                        .arg(QString::fromLatin1(grp->getNameInDocument()))
-                        .arg(QString::fromLatin1(newValue->getNameInDocument()));
+                        .arg(QString::fromLatin1(doc->getName()),
+                             QString::fromLatin1(grp->getNameInDocument()),
+                             QString::fromLatin1(newValue->getNameInDocument()));
 
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
 }

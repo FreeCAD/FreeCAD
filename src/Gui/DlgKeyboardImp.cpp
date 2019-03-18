@@ -101,7 +101,7 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
         categoryBox->setItemData(index, QVariant(it->first), Qt::UserRole);
     }
 
-    QStringList labels; 
+    QStringList labels;
     labels << tr("Icon") << tr("Command");
     commandTreeWidget->setHeaderLabels(labels);
     commandTreeWidget->header()->hide();
@@ -123,7 +123,7 @@ DlgCustomKeyboardImp::~DlgCustomKeyboardImp()
 
 void DlgCustomKeyboardImp::showEvent(QShowEvent* e)
 {
-    Q_UNUSED(e); 
+    Q_UNUSED(e);
     // If we did this already in the constructor we wouldn't get the vertical scrollbar if needed.
     // The problem was noticed with Qt 4.1.4 but may arise with any later version.
     if (firstShow) {
@@ -234,7 +234,7 @@ void DlgCustomKeyboardImp::on_buttonAssign_clicked()
         if (!accel.isEmpty()) {
             if (!toolTip.isEmpty()) {
                 QString tip = QString::fromLatin1("%1 (%2)")
-                    .arg(toolTip).arg(accel);
+                    .arg(toolTip, accel);
                 action->setToolTip(tip);
             }
         }
@@ -250,7 +250,7 @@ void DlgCustomKeyboardImp::on_buttonAssign_clicked()
         if (!accel.isEmpty()) {
             if (!statusTip.isEmpty()) {
                 QString tip = QString::fromLatin1("(%1)\t%2")
-                    .arg(accel).arg(statusTip);
+                    .arg(accel, statusTip);
                 action->setStatusTip(tip);
             }
         }
@@ -369,7 +369,6 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
         CommandManager & cCmdMgr = Application::Instance->commandManager();
         std::vector<Command*> cmds = cCmdMgr.getAllCommands();
         for (std::vector<Command*>::iterator it = cmds.begin(); it != cmds.end(); ++it) {
-            QList<QAction*> acts;
             if ((*it)->getAction()) {
                 // A command may have several QAction's. So, check all of them if one of them matches (See bug #0002160)
                 QList<QAction*> acts = (*it)->getAction()->findChildren<QAction*>();
@@ -395,17 +394,23 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
 
         if (countAmbiguous > 0)
             assignedTreeWidget->resizeColumnToContents(0);
-        
+
         if (countAmbiguous > 1) {
             QMessageBox::warning(this, tr("Multiple defined shortcut"),
-                                 tr("The shortcut '%1' is defined more than once. This could result into unexpected behaviour.").arg(sc) );
+                                 tr("The shortcut '%1' is defined more than once. This could result in unexpected behaviour.").arg(sc) );
             editShortcut->setFocus();
             buttonAssign->setEnabled(false);
         }
         else if (countAmbiguous == 1 && ambiguousCommand != QLatin1String(name)) {
-            int ret = QMessageBox::warning(this, tr("Already defined shortcut"),
-                                 tr("The shortcut '%1' is already assigned to '%2'.\n\nDo you want to override it?")
-                                 .arg(sc).arg(ambiguousMenu), QMessageBox::Yes | QMessageBox::No);
+            QMessageBox box(this);
+            box.setIcon(QMessageBox::Warning);
+            box.setWindowTitle(tr("Already defined shortcut"));
+            box.setText(tr("The shortcut '%1' is already assigned to '%2'.").arg(sc, ambiguousMenu));
+            box.setInformativeText(tr("Do you want to override it?"));
+            box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            box.setDefaultButton(QMessageBox::No);
+            box.setEscapeButton(QMessageBox::No);
+            int ret = box.exec();
             if (ret == QMessageBox::Yes) {
                 for (auto* cmd : ambiguousCommands) {
                     Action* action = cmd->getAction();

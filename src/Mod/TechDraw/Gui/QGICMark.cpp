@@ -87,3 +87,26 @@ void QGICMark::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
     QGIVertex::paint (painter, &myOption, widget);
 }
+
+QRectF QGICMark::boundingRect() const
+{
+    return shape().controlPointRect();
+}
+
+QPainterPath QGICMark::shape() const
+{
+    QPainterPath outline;
+    QPainterPathStroker stroker;
+    stroker.setWidth(getMarkFuzz());
+    outline = stroker.createStroke(path());
+    return outline;
+}
+
+ double QGICMark::getMarkFuzz(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    double result = hGrp->GetFloat("MarkFuzz",20.0);
+    return result;
+}
+

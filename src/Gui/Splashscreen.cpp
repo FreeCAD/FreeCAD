@@ -26,6 +26,7 @@
 # include <cstdlib>
 # include <QApplication>
 # include <QClipboard>
+# include <QDesktopWidget>
 # include <QDesktopServices>
 # include <QDialogButtonBox>
 # include <QLocale>
@@ -245,7 +246,20 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
 
     setModal(true);
     ui->setupUi(this);
-    ui->labelSplashPicture->setPixmap(getMainWindow()->splashImage());
+    QRect rect = QApplication::desktop()->availableGeometry();
+    QPixmap image = getMainWindow()->splashImage();
+
+    // Make sure the image is not too big
+    if (image.height() > rect.height()/2 || image.width() > rect.width()/2) {
+        float scale = static_cast<float>(image.width()) / static_cast<float>(image.height());
+        int width = std::min(image.width(), rect.width()/2);
+        int height = std::min(image.height(), rect.height()/2);
+        height = std::min(height, static_cast<int>(width / scale));
+        width = static_cast<int>(scale * height);
+
+        image = image.scaled(width, height);
+    }
+    ui->labelSplashPicture->setPixmap(image);
 //    if (showLic) { // currently disabled. Additional license blocks are always shown.
         QString info(QLatin1String("SUCH DAMAGES.<hr/>"));
         // any additional piece of text to be added after the main license text goes below.
@@ -475,7 +489,7 @@ void AboutDialog::setupLabels()
     ui->labelAuthor->setUrl(mturl);
 
     QString version = ui->labelBuildVersion->text();
-    version.replace(QString::fromLatin1("Unknown"), QString::fromLatin1("%1.%2").arg(major).arg(minor));
+    version.replace(QString::fromLatin1("Unknown"), QString::fromLatin1("%1.%2").arg(major, minor));
     ui->labelBuildVersion->setText(version);
 
     QString revision = ui->labelBuildRevision->text();
@@ -703,7 +717,7 @@ void AboutDialog::linkActivated(const QUrl& link)
     QString fragment = link.fragment();
     if (fragment.startsWith(QLatin1String("_Toc"))) {
         QString prefix = fragment.mid(4);
-        title = QString::fromLatin1("%1 %2").arg(prefix).arg(title);
+        title = QString::fromLatin1("%1 %2").arg(prefix, title);
     }
     licenseView->setWindowTitle(title);
     getMainWindow()->addWindow(licenseView);

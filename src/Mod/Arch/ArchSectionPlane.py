@@ -85,7 +85,7 @@ def makeSectionView(section,name="View"):
             page = o
             break
     if not page:
-        page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage",translate("Arch","Page"))
+        page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage","Page")
         page.Template = Draft.getParam("template",FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg')
 
     view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython",name)
@@ -95,6 +95,18 @@ def makeSectionView(section,name="View"):
     view.Label = translate("Arch","View of")+" "+section.Name
     return view
 
+def looksLikeDraft(o):
+    # If there is no shape at all ignore it
+    if not hasattr(o, 'Shape') or o.Shape.isNull():
+        return False
+    
+    # If there are solids in the object, it will be handled later
+    # by getCutShapes
+    if len(o.Shape.Solids) > 0:
+        return False
+    
+    # If we have a shape, but no volume, it looks like a flat 2D object
+    return o.Shape.Volume == 0
 
 def getCutShapes(objs,section,showHidden):
 
@@ -178,6 +190,8 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
             drafts.append(o)
         elif o.isDerivedFrom("Part::Part2DObject"):
             drafts.append(o)
+        elif looksLikeDraft(o):
+            drafts.append(o)
         else:
             nonspaces.append(o)
         if Draft.getType(o) == "Window":
@@ -238,11 +252,12 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
             # print(render.info())
             section.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill]
     else:
+        shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
+        
         if not svgcache:
             svgcache = ""
             # render using the Drawing module
             import Drawing, Part
-            shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
             if shapes:
                 baseshape = Part.makeCompound(shapes)
                 style = {'stroke':       "SVGLINECOLOR",

@@ -295,13 +295,12 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation type="unfinished">Press middle+left or middle+right button</translation>
+      <translation>Stiskněte střední + levé nebo střední + pravé tlačítko</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
-while doing a left or right click and move the mouse up or down</translation>
+      <translation>Rolujte prostředním tlačítkem myši nebo držte prostřední tlačítko zmáčknuté během stisknutí levého nebo pravého tlačítka a pohybujte myší nahoru nebo dolů</translation>
     </message>
   </context>
   <context>
@@ -850,20 +849,20 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Vícenásobně definovaná klávesová zkratka</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Zástupce '%1' je definován více než jednou. To by mohlo vyústit do neočekávané chování.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Již definovaná klávesová zkratka</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
-
-Do you want to override it?</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>Zkratka '%1' je definována více než jednou. To může způsobit neočekávané chování.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>Zkratka '%1' je již přiřazena k '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>Přejete si jej přepsat?</translation>
     </message>
   </context>
   <context>
@@ -2874,7 +2873,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Nastaví oblast výběru elemenů ve 3D pohledu. Vyšší hodnota zjednoduší vybírání prvků, ale znemožní výběr některých prvků.</translation>
+      <translation>Nastaví oblast výběru elemenů ve 3D pohledu. Vyšší hodnota zjednoduší vybírání prvků, ale znemožní výběr některých malých prvků.</translation>
     </message>
     <message>
       <source>Tree View</source>
@@ -2882,7 +2881,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Object being edited</source>
-      <translation>Objekt upravován</translation>
+      <translation>Upravovaný objekt</translation>
     </message>
     <message>
       <source>Active container</source>
@@ -2981,10 +2980,6 @@ Specify another directory, please.</source>
       <translation>Třídit povolené workbenche</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Třídit povolené workbenche&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Posunout nahorů</translation>
     </message>
@@ -2999,6 +2994,10 @@ Specify another directory, please.</source>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Přidat všechny mezi povolené workbenche</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Třídit povolená pracovní prostředí&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3092,7 +3091,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
+      <translation>Po odstranění všech dočasných adresářů nebudete moci obnovit žádné soubory.</translation>
     </message>
   </context>
   <context>
@@ -3463,7 +3462,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
     <message>
       <source>Shift click for opposite direction</source>
-      <translation>Stisknutí Shiftu pro opačný směr</translation>
+      <translation>Stiskněte Shift pro opačný směr</translation>
     </message>
     <message>
       <source>Selected points</source>
@@ -3566,7 +3565,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Transformace</translation>
     </message>
   </context>
   <context>
@@ -3869,19 +3868,19 @@ Chcete uložit provedené změny?</translation>
     <name>Gui::GestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation>Klepněte nebo klikněte na levé tlačítko myši.</translation>
+      <translation>Klepněte NEBO klikněte na levé tlačítko myši.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press right mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
+      <translation>Táhněte obrazovku dvěma prsty NEBO stiskněté pravé tlačítko myši.</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <translation>Táhněte obrazovku jedním prstem NEBO stiskněté levé tlačítko myši. V Náčrtu a dalších editačních módech držte navíc Alt.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
+      <translation>Štípněte (položte dva prsty na obrazovku a táhněte je od sebe/k sobě) NEBO rolujte prostředním tlačítem myši NEBO použijte na klávesnici PgUp/PgDown.</translation>
     </message>
   </context>
   <context>
@@ -4168,26 +4167,26 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation>Klepněte nebo klikněte na levé tlačítko myši.</translation>
+      <translation>Klepněte NEBO klikněte na levé tlačítko myši.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
+      <translation>Táhněte obrazovku dvěma prsty NEBO stiskněte ALT + prostřední tlačítko myši.</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <translation>Táhněte obrazovku jedním prstem NEBO stiskněte ALT + levé tlačítko myši. V Náčrtu a dalších editačních módech držte navíc Alt.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
+      <translation>Štípněte (položte dva prsty na obrazovku a táhněte je od sebe nebo k sobě) NEBO rolujte prostředním tlačítkem myši NEBO stiskněte ALT + pravé tlačítko myši NEBO použijte PgUp/PgDown na klávesnici.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...</source>
-      <translation type="unfinished">Download started...</translation>
+      <translation>Začalo stahování...</translation>
     </message>
   </context>
   <context>
@@ -5243,7 +5242,7 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Transformace</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
@@ -5300,10 +5299,6 @@ Dejte si pozor na místo, kam klikáte.</translation>
     <message>
       <source>Split</source>
       <translation>Rozdělit</translation>
-    </message>
-    <message>
-      <source>%1.%2.%3</source>
-      <translation type="unfinished">%1.%2.%3</translation>
     </message>
     <message>
       <source>Translation:</source>
@@ -5711,8 +5706,8 @@ Dejte si pozor na místo, kam klikáte.</translation>
       <translation>Přepíná režim úprav vybraného objektu</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Přepíná z a do režimu úprav vybraného objektu</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation>Aktivuje nebo deaktivuje režim úprav vybraného objektu</translation>
     </message>
   </context>
   <context>
@@ -6659,7 +6654,7 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Transformace</translation>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
@@ -7244,7 +7239,7 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Set visibility of inactive documents in tree view</source>
-      <translation>Ve stromovém zobrazení zviditelnit neaktivní dokumenty</translation>
+      <translation>Nastavit viditelnost neaktivních dokumentů ve stromovém zobrazení</translation>
     </message>
   </context>
   <context>
@@ -7359,11 +7354,11 @@ Dejte si pozor na místo, kam klikáte.</translation>
     <name>Std_Delete</name>
     <message>
       <source>These items are linked to items selected for deletion and might break.</source>
-      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
+      <translation>Tyto položky jsou spojeny s položkami, které jsou vybrány pro odstranění, a mohou se rozbít.</translation>
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+      <translation>Tyto položky jsou vybrány pro odstranění, ale nejsou v aktivním dokumentu.</translation>
     </message>
     <message>
       <source>Are you sure you want to continue?</source>
@@ -7371,7 +7366,7 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>
-      <translation>Smazat vybrané problémy</translation>
+      <translation>Problémy ve výběru pro mazání</translation>
     </message>
   </context>
   <context>
@@ -7482,7 +7477,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation>Nastavit NaviCube do izometrického módu</translation>
+      <translation>Nastavit Navigační Kostku do izometrického módu</translation>
     </message>
   </context>
   <context>

@@ -650,34 +650,34 @@ void TaskSketcherElements::leaveEvent (QEvent * event)
 
 void TaskSketcherElements::slotElementsChanged(void)
 {
-    QIcon Sketcher_Element_Arc_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_Edge") );
-    QIcon Sketcher_Element_Arc_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_EndPoint") );
-    QIcon Sketcher_Element_Arc_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_MidPoint") );
-    QIcon Sketcher_Element_Arc_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_StartingPoint") );
-    QIcon Sketcher_Element_Circle_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Circle_Edge") );
-    QIcon Sketcher_Element_Circle_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Circle_MidPoint") );
-    QIcon Sketcher_Element_Line_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Line_Edge") );
-    QIcon Sketcher_Element_Line_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Line_EndPoint") );
-    QIcon Sketcher_Element_Line_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Line_StartingPoint") );
-    QIcon Sketcher_Element_Point_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Point_StartingPoint") );
-    QIcon Sketcher_Element_Ellipse_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Ellipse_Edge_2") );
-    QIcon Sketcher_Element_Ellipse_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Ellipse_CentrePoint") );
-    QIcon Sketcher_Element_ArcOfEllipse_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Edge") );
-    QIcon Sketcher_Element_ArcOfEllipse_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Centre_Point") );
-    QIcon Sketcher_Element_ArcOfEllipse_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Start_Point") );
-    QIcon Sketcher_Element_ArcOfEllipse_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_End_Point") );
-    QIcon Sketcher_Element_ArcOfHyperbola_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Edge") );
-    QIcon Sketcher_Element_ArcOfHyperbola_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Centre_Point") );
-    QIcon Sketcher_Element_ArcOfHyperbola_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Start_Point") );
-    QIcon Sketcher_Element_ArcOfHyperbola_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_End_Point") );
-    QIcon Sketcher_Element_ArcOfParabola_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Edge") );
-    QIcon Sketcher_Element_ArcOfParabola_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Centre_Point") );
-    QIcon Sketcher_Element_ArcOfParabola_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Start_Point") );
-    QIcon Sketcher_Element_ArcOfParabola_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_End_Point") );
-    QIcon Sketcher_Element_BSpline_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_BSpline_Edge") );
-    QIcon Sketcher_Element_BSpline_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_BSpline_StartPoint") );
-    QIcon Sketcher_Element_BSpline_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_BSpline_EndPoint") );
-    QIcon none( Gui::BitmapFactory().pixmap("Sketcher_Element_SelectionTypeInvalid") );
+    QIcon Sketcher_Element_Arc_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Arc_Edge") );
+    QIcon Sketcher_Element_Arc_EndPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Arc_EndPoint") );
+    QIcon Sketcher_Element_Arc_MidPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Arc_MidPoint") );
+    QIcon Sketcher_Element_Arc_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Arc_StartingPoint") );
+    QIcon Sketcher_Element_Circle_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Circle_Edge") );
+    QIcon Sketcher_Element_Circle_MidPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Circle_MidPoint") );
+    QIcon Sketcher_Element_Line_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Line_Edge") );
+    QIcon Sketcher_Element_Line_EndPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Line_EndPoint") );
+    QIcon Sketcher_Element_Line_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Line_StartingPoint") );
+    QIcon Sketcher_Element_Point_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Point_StartingPoint") );
+    QIcon Sketcher_Element_Ellipse_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Ellipse_Edge_2") );
+    QIcon Sketcher_Element_Ellipse_MidPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Ellipse_CentrePoint") );
+    QIcon Sketcher_Element_ArcOfEllipse_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Elliptical_Arc_Edge") );
+    QIcon Sketcher_Element_ArcOfEllipse_MidPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Elliptical_Arc_Centre_Point") );
+    QIcon Sketcher_Element_ArcOfEllipse_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Elliptical_Arc_Start_Point") );
+    QIcon Sketcher_Element_ArcOfEllipse_EndPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Elliptical_Arc_End_Point") );
+    QIcon Sketcher_Element_ArcOfHyperbola_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Hyperbolic_Arc_Edge") );
+    QIcon Sketcher_Element_ArcOfHyperbola_MidPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Hyperbolic_Arc_Centre_Point") );
+    QIcon Sketcher_Element_ArcOfHyperbola_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Hyperbolic_Arc_Start_Point") );
+    QIcon Sketcher_Element_ArcOfHyperbola_EndPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Hyperbolic_Arc_End_Point") );
+    QIcon Sketcher_Element_ArcOfParabola_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Parabolic_Arc_Edge") );
+    QIcon Sketcher_Element_ArcOfParabola_MidPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Parabolic_Arc_Centre_Point") );
+    QIcon Sketcher_Element_ArcOfParabola_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Parabolic_Arc_Start_Point") );
+    QIcon Sketcher_Element_ArcOfParabola_EndPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Parabolic_Arc_End_Point") );
+    QIcon Sketcher_Element_BSpline_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_BSpline_Edge") );
+    QIcon Sketcher_Element_BSpline_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_BSpline_StartPoint") );
+    QIcon Sketcher_Element_BSpline_EndPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_BSpline_EndPoint") );
+    QIcon none( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_SelectionTypeInvalid") );
 
     assert(sketchView);
     // Build up ListView with the elements
@@ -973,34 +973,34 @@ void TaskSketcherElements::clearWidget()
 
 void TaskSketcherElements::updateIcons(int element)
 {
-    QIcon Sketcher_Element_Arc_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_Edge") );
-    QIcon Sketcher_Element_Arc_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_EndPoint") );
-    QIcon Sketcher_Element_Arc_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_MidPoint") );
-    QIcon Sketcher_Element_Arc_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_StartingPoint") );
-    QIcon Sketcher_Element_Circle_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Circle_Edge") );
-    QIcon Sketcher_Element_Circle_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Circle_MidPoint") );
-    QIcon Sketcher_Element_Line_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Line_Edge") );
-    QIcon Sketcher_Element_Line_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Line_EndPoint") );
-    QIcon Sketcher_Element_Line_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Line_StartingPoint") );
-    QIcon Sketcher_Element_Point_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Point_StartingPoint") );
-    QIcon Sketcher_Element_Ellipse_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Ellipse_Edge_2") );
-    QIcon Sketcher_Element_Ellipse_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Ellipse_CentrePoint") );
-    QIcon Sketcher_Element_ArcOfEllipse_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Edge") );
-    QIcon Sketcher_Element_ArcOfEllipse_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Centre_Point") );
-    QIcon Sketcher_Element_ArcOfEllipse_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Start_Point") );
-    QIcon Sketcher_Element_ArcOfEllipse_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_End_Point") );
-    QIcon Sketcher_Element_ArcOfHyperbola_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Edge") );
-    QIcon Sketcher_Element_ArcOfHyperbola_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Centre_Point") );
-    QIcon Sketcher_Element_ArcOfHyperbola_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Start_Point") );
-    QIcon Sketcher_Element_ArcOfHyperbola_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_End_Point") );
-    QIcon Sketcher_Element_ArcOfParabola_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Edge") );
-    QIcon Sketcher_Element_ArcOfParabola_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Centre_Point") );
-    QIcon Sketcher_Element_ArcOfParabola_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Start_Point") );
-    QIcon Sketcher_Element_ArcOfParabola_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_End_Point") );
-    QIcon Sketcher_Element_BSpline_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_BSpline_Edge") );
-    QIcon Sketcher_Element_BSpline_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_BSpline_StartPoint") );
-    QIcon Sketcher_Element_BSpline_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_BSpline_EndPoint") );
-    QIcon none( Gui::BitmapFactory().pixmap("Sketcher_Element_SelectionTypeInvalid") );
+    QIcon Sketcher_Element_Arc_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Arc_Edge") );
+    QIcon Sketcher_Element_Arc_EndPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Arc_EndPoint") );
+    QIcon Sketcher_Element_Arc_MidPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Arc_MidPoint") );
+    QIcon Sketcher_Element_Arc_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Arc_StartingPoint") );
+    QIcon Sketcher_Element_Circle_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Circle_Edge") );
+    QIcon Sketcher_Element_Circle_MidPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Circle_MidPoint") );
+    QIcon Sketcher_Element_Line_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Line_Edge") );
+    QIcon Sketcher_Element_Line_EndPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Line_EndPoint") );
+    QIcon Sketcher_Element_Line_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Line_StartingPoint") );
+    QIcon Sketcher_Element_Point_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Point_StartingPoint") );
+    QIcon Sketcher_Element_Ellipse_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Ellipse_Edge_2") );
+    QIcon Sketcher_Element_Ellipse_MidPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Ellipse_CentrePoint") );
+    QIcon Sketcher_Element_ArcOfEllipse_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Elliptical_Arc_Edge") );
+    QIcon Sketcher_Element_ArcOfEllipse_MidPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Elliptical_Arc_Centre_Point") );
+    QIcon Sketcher_Element_ArcOfEllipse_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Elliptical_Arc_Start_Point") );
+    QIcon Sketcher_Element_ArcOfEllipse_EndPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Elliptical_Arc_End_Point") );
+    QIcon Sketcher_Element_ArcOfHyperbola_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Hyperbolic_Arc_Edge") );
+    QIcon Sketcher_Element_ArcOfHyperbola_MidPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Hyperbolic_Arc_Centre_Point") );
+    QIcon Sketcher_Element_ArcOfHyperbola_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Hyperbolic_Arc_Start_Point") );
+    QIcon Sketcher_Element_ArcOfHyperbola_EndPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Hyperbolic_Arc_End_Point") );
+    QIcon Sketcher_Element_ArcOfParabola_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Parabolic_Arc_Edge") );
+    QIcon Sketcher_Element_ArcOfParabola_MidPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Parabolic_Arc_Centre_Point") );
+    QIcon Sketcher_Element_ArcOfParabola_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Parabolic_Arc_Start_Point") );
+    QIcon Sketcher_Element_ArcOfParabola_EndPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Parabolic_Arc_End_Point") );
+    QIcon Sketcher_Element_BSpline_Edge( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_BSpline_Edge") );
+    QIcon Sketcher_Element_BSpline_StartingPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_BSpline_StartPoint") );
+    QIcon Sketcher_Element_BSpline_EndPoint( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_BSpline_EndPoint") );
+    QIcon none( Gui::BitmapFactory().iconFromTheme("Sketcher_Element_SelectionTypeInvalid") );
 
     for (int i=0;i<ui->listWidgetElements->count(); i++) {
       Base::Type type = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->GeometryType;

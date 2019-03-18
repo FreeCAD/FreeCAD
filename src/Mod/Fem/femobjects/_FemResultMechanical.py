@@ -45,6 +45,7 @@ class _FemResultMechanical():
         obj.addProperty("App::PropertyFloat", "EigenmodeFrequency", "Data", "User Defined Results", True)
 
         # node results
+        # set read only or hide a property: https://forum.freecadweb.org/viewtopic.php?f=18&t=13460&start=10#p108072
         # do not show up in propertyEditor of comboView
         obj.addProperty("App::PropertyVectorList", "DisplacementVectors", "NodeData", "List of displacement vectors", True)
         obj.addProperty("App::PropertyVectorList", "StressVectors", "NodeData", "List of stress vectors", True)
