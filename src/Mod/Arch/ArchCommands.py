@@ -737,7 +737,11 @@ def pruneIncluded(objectslist,strict=False):
                     if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Facebinder","Window","Roof"]):
                         if not parent.isDerivedFrom("Part::Part2DObject"):
                             # don't consider 2D objects based on arch elements
-                            if hasattr(parent,"CloneOf"):
+                            if hasattr(parent,"Host") and (parent.Host == obj):
+                                pass
+                            elif hasattr(parent,"Hosts") and (obj in parent.Hosts):
+                                pass
+                            elif hasattr(parent,"CloneOf"):
                                 if parent.CloneOf:
                                     if parent.CloneOf.Name != obj.Name:
                                         toplevel = False
