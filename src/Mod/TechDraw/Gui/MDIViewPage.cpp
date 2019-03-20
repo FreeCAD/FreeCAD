@@ -498,11 +498,9 @@ bool MDIViewPage::onMsg(const char *pMsg, const char **)
         return true;
     } else if (strcmp("Save", pMsg) == 0 ) {
         doc->save();
-        Gui::Command::updateActive();
         return true;
     } else if (strcmp("SaveAs", pMsg) == 0 ) {
         doc->saveAs();
-        Gui::Command::updateActive();
         return true;
     } else if (strcmp("Undo", pMsg) == 0 ) {
         doc->undo(1);
