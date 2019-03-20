@@ -33,13 +33,26 @@ import os
 
 class FemInputWriter():
     def __init__(self,
-                 analysis_obj, solver_obj,
-                 mesh_obj, matlin_obj, matnonlin_obj,
-                 fixed_obj, displacement_obj,
-                 contact_obj, planerotation_obj, transform_obj,
-                 selfweight_obj, force_obj, pressure_obj,
-                 temperature_obj, heatflux_obj, initialtemperature_obj,
-                 beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
+                 analysis_obj,
+                 solver_obj,
+                 mesh_obj,
+                 matlin_obj,
+                 matnonlin_obj,
+                 fixed_obj,
+                 displacement_obj,
+                 contact_obj,
+                 planerotation_obj,
+                 transform_obj,
+                 selfweight_obj,
+                 force_obj,
+                 pressure_obj,
+                 temperature_obj,
+                 heatflux_obj,
+                 initialtemperature_obj,
+                 beamsection_obj,
+                 beamrotation_obj,
+                 shellthickness_obj,
+                 fluidsection_obj,
                  dir_name
                  ):
         self.analysis = analysis_obj

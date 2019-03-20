@@ -2535,27 +2535,36 @@ def createCurve(ifcfile,wire):
         edges = Part.__sortEdges__(wire.Edges)
     for e in edges:
         if isinstance(e.Curve,Part.Circle):
+            xaxis = e.Curve.XAxis
+            zaxis = e.Curve.Axis
             follow = True
             if last:
                 if not DraftVecUtils.equals(last,e.Vertexes[0].Point):
                     follow = False
                     last = e.Vertexes[0].Point
+                    prev = e.Vertexes[-1].Point
                 else:
                     last = e.Vertexes[-1].Point
+                    prev = e.Vertexes[0].Point
             else:
                 last = e.Vertexes[-1].Point
-            p1 = math.degrees(-DraftVecUtils.angle(e.Vertexes[0].Point.sub(e.Curve.Center)))
-            p2 = math.degrees(-DraftVecUtils.angle(e.Vertexes[-1].Point.sub(e.Curve.Center)))
-            da = DraftVecUtils.angle(e.valueAt(e.FirstParameter+0.1).sub(e.Curve.Center),e.Vertexes[0].Point.sub(e.Curve.Center))
+                prev = e.Vertexes[0].Point
+            p1 = math.degrees(-DraftVecUtils.angle(prev.sub(e.Curve.Center),xaxis,zaxis))
+            p2 = math.degrees(-DraftVecUtils.angle(last.sub(e.Curve.Center),xaxis,zaxis))
+            da = DraftVecUtils.angle(e.valueAt(e.FirstParameter+0.1).sub(e.Curve.Center),prev.sub(e.Curve.Center))
+            #print("curve params:",p1,",",p2,"da=",da)
             if p1 < 0:
                 p1 = 360 + p1
             if p2 < 0:
                 p2 = 360 + p2
             if da > 0:
-                follow = not(follow)
-            xvc =       ifcbin.createIfcDirection((1.0,0.0))
+                #follow = not(follow) # now we always draw segments in the correct order, so follow is always true
+                pass
+            #print("  circle from",prev,"to",last,"a1=",p1,"a2=",p2)
             ovc =       ifcbin.createIfcCartesianPoint(tuple(e.Curve.Center))
-            plc =       ifcbin.createIfcAxis2Placement2D(ovc,xvc)
+            zvc =       ifcbin.createIfcDirection(tuple(zaxis))
+            xvc =       ifcbin.createIfcDirection(tuple(xaxis))
+            plc =       ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
             cir =       ifcfile.createIfcCircle(plc,e.Curve.Radius)
             curve =     ifcfile.createIfcTrimmedCurve(cir,[ifcfile.createIfcParameterValue(p1)],[ifcfile.createIfcParameterValue(p2)],follow,"PARAMETER")
         else:
@@ -2568,6 +2577,7 @@ def createCurve(ifcfile,wire):
                     last = e.Vertexes[-1].Point
             else:
                 last = e.Vertexes[-1].Point
+            #print("  polyline:",verts)
             pts =     [ifcbin.createIfcCartesianPoint(tuple(v)) for v in verts]
             curve =   ifcbin.createIfcPolyline(pts)
         segment = ifcfile.createIfcCompositeCurveSegment("CONTINUOUS",True,curve)
@@ -2705,7 +2715,20 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
         profile = None
         ev = FreeCAD.Vector()
         if hasattr(obj,"Proxy"):
-            if hasattr(obj.Proxy,"getExtrusionData"):
+            if hasattr(obj.Proxy,"getRebarData"):
+                # export rebars as IfcSweptDiskSolid
+                rdata = obj.Proxy.getRebarData(obj)
+                if rdata:
+                    # convert to meters
+                    r = rdata[1] * 0.001
+                    for w in rdata[0]:
+                        w.scale(0.001)
+                        cur = createCurve(ifcfile,w)
+                        shape = ifcfile.createIfcSweptDiskSolid(cur,r)
+                        shapes.append(shape)
+                        solidType = "SweptSolid"
+                        shapetype = "extrusion"
+            if (not shapes) and hasattr(obj.Proxy,"getExtrusionData"):
                 extdata = obj.Proxy.getExtrusionData(obj)
                 if extdata:
                     #print(extdata)
@@ -2757,19 +2780,6 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             shapes.append(shape)
                             solidType = "SweptSolid"
                             shapetype = "extrusion"
-            elif hasattr(obj.Proxy,"getRebarData"):
-                # export rebars as IfcSweptDiskSolid
-                rdata = obj.Proxy.getRebarData(obj)
-                if rdata:
-                    # convert to meters
-                    r = rdata[1] * 0.001
-                    for w in rdata[0]:
-                        w.scale(0.001)
-                        cur =       createCurve(ifcfile,w)
-                        shape =     ifcfile.createIfcSweptDiskSolid(cur,r)
-                        shapes.append(shape)
-                        solidType = "SweptSolid"
-                        shapetype = "extrusion"
 
     if not shapes:
 
