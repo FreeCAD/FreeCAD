@@ -3790,7 +3790,18 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             for(int i = 0; i < ndiv; i++) {
                 paramlist[i] = firstparam + i * step;
                 pointatcurvelist[i] = spline->pointAtParameter(paramlist[i]);
-                curvaturelist[i] = spline->curvatureAt(paramlist[i]);
+
+                try {
+                    curvaturelist[i] = spline->curvatureAt(paramlist[i]);
+                }
+                catch(Base::CADKernelError &e) {
+                    // it is "just" a visualisation matter OCC could not calculate the curvature
+                    // terminating here would mean that the other shapes would not be drawed.
+                    // Solution: Report the issue and set dummy curvature to 0
+                    e.ReportException();
+                    Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", GeoId);
+                    curvaturelist[i] = 0;
+                }
 
                 if(curvaturelist[i] > maxcurv)
                     maxcurv = curvaturelist[i];
@@ -3991,7 +4002,18 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         for(int i = 0; i < ndiv; i++) {
             paramlist[i] = firstparam + i * step;
             pointatcurvelist[i] = spline->pointAtParameter(paramlist[i]);
-            curvaturelist[i] = spline->curvatureAt(paramlist[i]);
+
+            try {
+                curvaturelist[i] = spline->curvatureAt(paramlist[i]);
+            }
+            catch(Base::CADKernelError &e) {
+                // it is "just" a visualisation matter OCC could not calculate the curvature
+                // terminating here would mean that the other shapes would not be drawed.
+                // Solution: Report the issue and set dummy curvature to 0
+                e.ReportException();
+                Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", GeoId);
+                curvaturelist[i] = 0;
+            }
 
             try {
                 spline->normalAt(paramlist[i],normallist[i]);
