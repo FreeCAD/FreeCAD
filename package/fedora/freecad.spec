@@ -11,7 +11,7 @@
 
 Name:           %{name}
 Epoch:          1
-Version:    	0.18_pre
+Version:    	0.19_pre
 Release:        {{{ git_commits_no }}}
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
