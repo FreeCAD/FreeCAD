@@ -491,9 +491,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             self.working_dir = _getTempDir(self.solver)
             FreeCAD.Console.PrintMessage("Dir \'{}\' will be used instead.\n".format(self.working_dir))
 
-        # check working_dir has a slash at the end, if not add one, needed for inp writer
-        self.working_dir = os.path.join(self.working_dir, '')
-
         # Update inp file name
         self.set_inp_file_name()
 

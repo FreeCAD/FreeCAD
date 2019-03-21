@@ -81,9 +81,9 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
             shellthickness_obj,
             fluidsection_obj,
             dir_name)
-        # self.dir_name does have a slash at the end
-        self.file_name = self.dir_name + 'z88'
-        FreeCAD.Console.PrintMessage('FemInputWriterZ88 --> self.dir_name  -->  ' + self.dir_name + '\n')
+        from os.path import join
+        self.file_name = join(self.dir_name, 'z88')
+        FreeCAD.Console.PrintLog('FemInputWriterZ88 --> self.dir_name  -->  ' + self.dir_name + '\n')
         FreeCAD.Console.PrintMessage('FemInputWriterZ88 --> self.file_name  -->  ' + self.file_name + '\n')
 
     def write_z88_input(self):
