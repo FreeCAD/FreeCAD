@@ -530,7 +530,7 @@ BSpline::BSpline(const TopoDS_Edge &e)
     }
 
     Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen can't resolve this
-    Standard_Integer maxDegree = 3, maxSegment = 100;
+    Standard_Integer maxDegree = 3, maxSegment = 200;
     Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
     // approximate the curve using a tolerance
     //Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C2, maxSegment, maxDegree);   //gives degree == 5  ==> too many poles ==> buffer overrun
