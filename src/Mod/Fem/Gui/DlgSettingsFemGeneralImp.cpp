@@ -44,7 +44,6 @@ DlgSettingsFemGeneralImp::~DlgSettingsFemGeneralImp()
 
 void DlgSettingsFemGeneralImp::saveSettings()
 {
-    fc_analysis_working_directory->onSave();
 
     cb_analysis_group_meshing->onSave();
 
@@ -56,11 +55,11 @@ void DlgSettingsFemGeneralImp::saveSettings()
     cb_wd_beside->onSave();
     cb_wd_custom->onSave();
     le_wd_custom->onSave();
+    cb_overwrite_solver_working_directory->onSave();
 }
 
 void DlgSettingsFemGeneralImp::loadSettings()
 {
-    fc_analysis_working_directory->onRestore();
 
     cb_analysis_group_meshing->onRestore();
 
@@ -72,6 +71,7 @@ void DlgSettingsFemGeneralImp::loadSettings()
     cb_wd_beside->onRestore();
     cb_wd_custom->onRestore();
     le_wd_custom->onRestore();
+    cb_overwrite_solver_working_directory->onRestore();
 }
 
 /**

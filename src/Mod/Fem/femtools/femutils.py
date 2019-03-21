@@ -129,7 +129,7 @@ def is_derived_from(obj, t):
 
 
 # working dir
-def get_pref_working_dir():
+def get_pref_working_dir(solver_obj):
     # _dirTypes from run are not used
     # be aware beside could get an error if the document has not been saved
     from femsolver import settings
