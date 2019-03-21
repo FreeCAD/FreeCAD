@@ -61,11 +61,8 @@ def run_analysis(doc, base_name, filepath=''):
     working_dir = getpath(solver)
 
     # run analysis
-    from femsolver.run import RESULTS
-    machine = solver.Proxy.createMachine(solver, working_dir)
-    machine.target = RESULTS
-    machine.start()
-    machine.join()  # wait for the machine to finish.
+    from femsolver.run import run_fem_solver
+    run_fem_solver(solver, working_dir)
 
     # save doc once again with results
     doc.save()
