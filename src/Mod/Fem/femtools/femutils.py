@@ -29,14 +29,13 @@ __url__ = "http://www.freecadweb.org"
 
 import sys
 import FreeCAD
-import FreeCAD as App
 
 
 # analysis and its members
 def createObject(doc, name, proxy, viewProxy):
     obj = doc.addObject(proxy.BaseType, name)
     proxy(obj)
-    if App.GuiUp:
+    if FreeCAD.GuiUp:
         viewProxy(obj.ViewObject)
     return obj
 
