@@ -1940,8 +1940,14 @@ def getStrGroup(ob):
 def export(objectslist,filename,nospline=False,lwPoly=False):
 
     "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs. lwPoly=True is for OpenSCAD DXF"
-
     readPreferences()
+    if not dxfUseLegacyExporter:
+        import Import
+        version = 14
+        if nospline:
+            version = 12
+        Import.writeDXFObject(objectslist,filename,version,lwPoly)
+        return
     getDXFlibs()
     if dxfLibrary:
         global exportList
@@ -2307,6 +2313,7 @@ def readPreferences():
     global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth, dxfImportTexts, dxfImportLayouts
     global dxfImportPoints, dxfImportHatches, dxfUseStandardSize, dxfGetColors, dxfUseDraftVisGroups
     global dxfFillMode, dxfBrightBackground, dxfDefaultColor, dxfUseLegacyImporter, dxfExportBlocks, dxfScaling
+    global dxfUseLegacyExporter
     dxfCreatePart = p.GetBool("dxfCreatePart",True)
     dxfCreateDraft = p.GetBool("dxfCreateDraft",False)
     dxfCreateSketch = p.GetBool("dxfCreateSketch",False)
@@ -2324,6 +2331,7 @@ def readPreferences():
     dxfUseDraftVisGroups = p.GetBool("dxfUseDraftVisGroups",False)
     dxfFillMode = p.GetBool("fillmode",True)
     dxfUseLegacyImporter = p.GetBool("dxfUseLegacyImporter",False)
+    dxfUseLegacyExporter = p.GetBool("dxfUseLegacyExporter",False)
     dxfBrightBackground = isBrightBackground()
     dxfDefaultColor = getColor()
     dxfExportBlocks = p.GetBool("dxfExportBlocks",True)
