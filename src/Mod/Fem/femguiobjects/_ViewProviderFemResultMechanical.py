@@ -158,6 +158,13 @@ class _TaskPanelFemResultShow:
             self.restore_result_dialog()
         else:
             self.restore_initial_result_dialog()
+            # initialize scale factor for show displacement
+            scale_factor = get_displacement_scale_factor(self.result_obj)
+            self.form.sb_displacement_factor.setValue(scale_factor)
+            self.form.hsb_displacement_factor.setValue(scale_factor)
+            diggits_scale_factor = len(str(abs(int(scale_factor))))
+            new_max_factor = 10 ** diggits_scale_factor
+            self.form.sb_displacement_factor_max.setValue(new_max_factor)
 
     def restore_result_dialog(self):
         try:
@@ -341,14 +348,18 @@ class _TaskPanelFemResultShow:
         x = np.array(dispvectors[:, 0])
         y = np.array(dispvectors[:, 1])
         z = np.array(dispvectors[:, 2])
-        stressvectors = np.array(self.result_obj.StressVectors)
-        sx = np.array(stressvectors[:, 0])
-        sy = np.array(stressvectors[:, 1])
-        sz = np.array(stressvectors[:, 2])
-        strainvectors = np.array(self.result_obj.StrainVectors)
-        ex = np.array(strainvectors[:, 0])
-        ey = np.array(strainvectors[:, 1])
-        ez = np.array(strainvectors[:, 2])
+        sxx = np.array(self.result_obj.NodeStressXX)
+        syy = np.array(self.result_obj.NodeStressYY)
+        szz = np.array(self.result_obj.NodeStressZZ)
+        sxy = np.array(self.result_obj.NodeStressXY)
+        sxz = np.array(self.result_obj.NodeStressXZ)
+        syz = np.array(self.result_obj.NodeStressYZ)
+        exx = np.array(self.result_obj.NodeStrainXX)
+        eyy = np.array(self.result_obj.NodeStrainYY)
+        ezz = np.array(self.result_obj.NodeStrainZZ)
+        exy = np.array(self.result_obj.NodeStrainXY)
+        exz = np.array(self.result_obj.NodeStrainXZ)
+        eyz = np.array(self.result_obj.NodeStrainYZ)
         userdefined_eq = self.form.user_def_eq.toPlainText()  # Get equation to be used
         UserDefinedFormula = eval(userdefined_eq).tolist()
         self.result_obj.UserDefined = UserDefinedFormula
@@ -361,7 +372,7 @@ class _TaskPanelFemResultShow:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, UserDefinedFormula)
         self.set_result_stats("", minm, avg, maxm)
         QtGui.QApplication.restoreOverrideCursor()
-        del x, y, z, T, Von, Peeq, P1, P2, P3, sx, sy, sz, ex, ey, ez, MF, NP  # Dummy use of the variables to get around flake8 error
+        del x, y, z, T, Von, Peeq, P1, P2, P3, sxx, syy, szz, sxy, sxz, syz, exx, eyy, ezz, exy, exz, eyz, MF, NP  # Dummy use of the variables to get around flake8 error
 
     def select_displacement_type(self, disp_type):
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -503,3 +514,23 @@ def hide_parts_constraints():
                     if "Constraint" in acnstrmesh.TypeId:
                         acnstrmesh.ViewObject.Visibility = False
                 break
+
+
+def get_displacement_scale_factor(res_obj):
+    node_items = res_obj.Mesh.FemMesh.Nodes.items()
+    displacements = res_obj.DisplacementVectors
+    x_max, y_max, z_max = map(max, zip(*displacements))
+    positions = []  # list of node vectors
+    for k, v in node_items:
+        positions.append(v)
+    p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
+    p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
+    x_span = abs(p_x_max - p_x_min)
+    y_span = abs(p_y_max - p_y_min)
+    z_span = abs(p_z_max - p_z_min)
+    span = max(x_span, y_span, z_span)
+    max_disp = max(x_max, y_max, z_max)
+    # FIXME - add max_allowed_disp to Preferences
+    max_allowed_disp = 0.01 * span
+    scale = max_allowed_disp / max_disp
+    return scale

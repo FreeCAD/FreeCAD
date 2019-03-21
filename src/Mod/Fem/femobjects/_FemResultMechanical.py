@@ -48,8 +48,6 @@ class _FemResultMechanical():
         # set read only or hide a property: https://forum.freecadweb.org/viewtopic.php?f=18&t=13460&start=10#p108072
         # do not show up in propertyEditor of comboView
         obj.addProperty("App::PropertyVectorList", "DisplacementVectors", "NodeData", "List of displacement vectors", True)
-        obj.addProperty("App::PropertyVectorList", "StressVectors", "NodeData", "List of stress vectors", True)
-        obj.addProperty("App::PropertyVectorList", "StrainVectors", "NodeData", "List of strain vectors", True)
         obj.addProperty("App::PropertyFloatList", "Peeq", "NodeData", "List of equivalent plastic strain values", True)
         # readonly in propertyEditor of comboView
         obj.addProperty("App::PropertyFloatList", "DisplacementLengths", "NodeData", "List of displacement lengths", True)
@@ -62,6 +60,18 @@ class _FemResultMechanical():
         obj.addProperty("App::PropertyFloatList", "NetworkPressure", "NodeData", "List of network pressure values", True)
         obj.addProperty("App::PropertyFloatList", "UserDefined", "NodeData", "User Defined Results", True)
         obj.addProperty("App::PropertyFloatList", "Temperature", "NodeData", "Temperature field", True)
+        obj.addProperty("App::PropertyFloatList", "NodeStressXX", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "NodeStressYY", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "NodeStressZZ", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "NodeStressXY", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "NodeStressXZ", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "NodeStressYZ", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "NodeStrainXX", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "NodeStrainYY", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "NodeStrainZZ", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "NodeStrainXY", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "NodeStrainXZ", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "NodeStrainYZ", "NodeData", "", True)
 
         # initialize the Stats with the appropriate count of items (see fill_femresult_stats in femresult/resulttools.py)
         zero_list = 39 * [0]
