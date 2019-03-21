@@ -50,6 +50,68 @@ _machines = {}
 _dirTypes = {}
 
 
+def run_fem_solver(solver, working_dir=None):
+
+    if App.GuiUp:
+        import FreeCADGui
+        from PySide import QtGui
+
+    if solver.Proxy.Type == 'Fem::FemSolverCalculixCcxTools':
+        App.Console.PrintMessage("CalxuliX ccx tools solver!\n")
+        from femtools import ccxtools
+        fea = ccxtools.FemToolsCcx(None, solver)
+        fea.reset_mesh_purge_results_checked()
+        if working_dir is None:
+            fea.run()
+        else:
+            fea.update_objects()
+            fea.setup_working_dir(working_dir)
+            fea.setup_ccx()
+            message = fea.check_prerequisites()
+            if not message:
+                fea.write_inp_file()
+                fea.ccx_run()
+                fea.load_results()
+            else:
+                App.Console.PrintError("Houston, we have a problem! {}\n".format(message))
+    else:
+        App.Console.PrintMessage("Frame work solver!\n")
+        try:
+            if working_dir is not None:
+                machine = getMachine(solver, working_dir)
+            else:
+                machine = getMachine(solver)
+        except MustSaveError:
+            error_message = (
+                "Please save the file before executing the solver. "
+                "This must be done because the location of the working "
+                "directory is set to \"Beside .FCStd File\"."
+            )
+            App.Console.PrintError(error_message + "\n")
+            if App.GuiUp:
+                QtGui.QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    "Can't start Solver",
+                    error_message
+                )
+            return
+        except DirectoryDoesNotExist:
+            error_message = "Selected working directory doesn't exist."
+            App.Console.PrintError(error_message + "\n")
+            if App.GuiUp:
+                QtGui.QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    "Can't start Solver",
+                    error_message
+                )
+            return
+        if not machine.running:
+            machine.reset()
+            machine.target = RESULTS
+            machine.start()
+            machine.join()  # wait for the machine to finish.
+
+
 def getMachine(solver, path=None):
     _DocObserver.attach()
     m = _machines.get(solver)
