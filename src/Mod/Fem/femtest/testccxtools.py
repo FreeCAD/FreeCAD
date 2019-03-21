@@ -127,8 +127,7 @@ class TestCcxTools(unittest.TestCase):
 
         fcc_print('Setting up working directory {}'.format(static_analysis_dir))
         fea.setup_working_dir(static_analysis_dir)
-        # setup_working_dir adds an / TODO: fix
-        self.assertTrue(True if fea.working_dir == static_analysis_dir + '/' else False,
+        self.assertTrue(True if fea.working_dir == static_analysis_dir else False,
                         "Setting working directory {} failed".format(static_analysis_dir))
 
         fcc_print('Checking FEM inp file prerequisites for static analysis...')
@@ -151,8 +150,7 @@ class TestCcxTools(unittest.TestCase):
         fea.setup_working_dir(self.test_file_dir)
         fcc_print(fea.working_dir)
         fcc_print(self.test_file_dir)
-        # setup_working_dir adds an / TODO: fix
-        self.assertTrue(True if fea.working_dir == self.test_file_dir + '/' else False,
+        self.assertTrue(True if fea.working_dir == self.test_file_dir else False,
                         "Setting working directory {} failed".format(self.test_file_dir))
 
         fcc_print('Setting base name to read test {}.frd file...'.format('cube_static'))
@@ -341,8 +339,7 @@ class TestCcxTools(unittest.TestCase):
 
         fcc_print('Setting up working directory {}'.format(frequency_analysis_dir))
         fea.setup_working_dir(frequency_analysis_dir)
-        # setup_working_dir adds an / TODO: fix
-        self.assertTrue(True if fea.working_dir == frequency_analysis_dir + '/' else False,
+        self.assertTrue(True if fea.working_dir == frequency_analysis_dir else False,
                         "Setting working directory {} failed".format(frequency_analysis_dir))
 
         fcc_print('Checking FEM inp file prerequisites for frequency analysis...')
@@ -363,8 +360,7 @@ class TestCcxTools(unittest.TestCase):
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(self.test_file_dir))
         fea.setup_working_dir(self.test_file_dir)
-        # setup_working_dir adds an / TODO: fix
-        self.assertTrue(True if fea.working_dir == self.test_file_dir + '/' else False,
+        self.assertTrue(True if fea.working_dir == self.test_file_dir else False,
                         "Setting working directory {} failed".format(self.test_file_dir))
 
         fcc_print('Setting base name to read test {}.frd file...'.format(frequency_base_name))
@@ -474,8 +470,7 @@ class TestCcxTools(unittest.TestCase):
 
         fcc_print('Setting up working directory {}'.format(thermomech_analysis_dir))
         fea.setup_working_dir(thermomech_analysis_dir)
-        # setup_working_dir adds an / TODO: fix
-        self.assertTrue(True if fea.working_dir == thermomech_analysis_dir + '/' else False,
+        self.assertTrue(True if fea.working_dir == thermomech_analysis_dir else False,
                         "Setting working directory {} failed".format(thermomech_analysis_dir))
 
         fcc_print('Checking FEM inp file prerequisites for thermo-mechanical analysis...')
@@ -496,8 +491,7 @@ class TestCcxTools(unittest.TestCase):
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(self.test_file_dir))
         fea.setup_working_dir(self.test_file_dir)
-        # setup_working_dir adds an / TODO: fix
-        self.assertTrue(True if fea.working_dir == self.test_file_dir + '/' else False,
+        self.assertTrue(True if fea.working_dir == self.test_file_dir else False,
                         "Setting working directory {} failed".format(self.test_file_dir))
 
         fcc_print('Setting base name to read test {}.frd file...'.format('spine_thermomech'))
@@ -727,8 +721,7 @@ class TestCcxTools(unittest.TestCase):
 
         fcc_print('Setting up working directory {}'.format(Flow1D_thermomech_analysis_dir))
         fea.setup_working_dir(Flow1D_thermomech_analysis_dir)
-        # setup_working_dir adds an / TODO: fix
-        self.assertTrue(True if fea.working_dir == Flow1D_thermomech_analysis_dir + '/' else False,
+        self.assertTrue(True if fea.working_dir == Flow1D_thermomech_analysis_dir else False,
                         "Setting working directory {} failed".format(Flow1D_thermomech_analysis_dir))
 
         fcc_print('Checking FEM inp file prerequisites for thermo-mechanical analysis...')
@@ -749,8 +742,7 @@ class TestCcxTools(unittest.TestCase):
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(self.test_file_dir))
         fea.setup_working_dir(self.test_file_dir)
-        # setup_working_dir adds an / TODO: fix
-        self.assertTrue(True if fea.working_dir == self.test_file_dir + '/' else False,
+        self.assertTrue(True if fea.working_dir == self.test_file_dir else False,
                         "Setting working directory {} failed".format(self.test_file_dir))
 
         fcc_print('Setting base name to read test {}.frd file...'.format('Flow1D_thermomech'))
