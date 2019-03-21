@@ -85,13 +85,13 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             shellthickness_obj,
             fluidsection_obj,
             dir_name)
-        # self.dir_name does have a slash at the end
+        from os.path import join
         self.main_file_name = self.mesh_object.Name + '.inp'
-        self.file_name = self.dir_name + self.main_file_name
+        self.file_name = join(self.dir_name, self.main_file_name)
         self.FluidInletoutlet_ele = []
-        self.fluid_inout_nodes_file = self.dir_name + self.mesh_object.Name + '_inout_nodes.txt'
-        FreeCAD.Console.PrintMessage('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name + '\n')
-        FreeCAD.Console.PrintMessage('FemInputWriterCcx --> self.main_file_name  -->  ' + self.main_file_name + '\n')
+        self.fluid_inout_nodes_file = join(self.dir_name, (self.mesh_object.Name + '_inout_nodes.txt'))
+        FreeCAD.Console.PrintLog('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name + '\n')
+        FreeCAD.Console.PrintLog('FemInputWriterCcx --> self.main_file_name  -->  ' + self.main_file_name + '\n')
         FreeCAD.Console.PrintMessage('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name + '\n')
 
     def write_calculix_input_file(self):
