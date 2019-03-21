@@ -28,6 +28,8 @@ import unittest
 from . import utilstest as testtools
 from .utilstest import fcc_print
 
+from os.path import join
+
 
 class TestResult(unittest.TestCase):
     fcc_print('import TestResult')
@@ -44,7 +46,7 @@ class TestResult(unittest.TestCase):
 
     def test_read_frd_massflow_networkpressure(self):
         # read data from frd file
-        frd_file = testtools.get_fem_test_home_dir() + 'ccx/Flow1D_thermomech.frd'
+        frd_file = join(testtools.get_fem_test_home_dir(), 'ccx', 'Flow1D_thermomech.frd')
         from feminout.importCcxFrdResults import read_frd_result as read_frd
         frd_content = read_frd(frd_file)
 

@@ -30,6 +30,8 @@ import unittest
 from . import utilstest as testtools
 from .utilstest import fcc_print
 
+from os.path import join
+
 
 class TestSolverFrameWork(unittest.TestCase):
     fcc_print('import TestSolverFrameWork')
@@ -45,7 +47,7 @@ class TestSolverFrameWork(unittest.TestCase):
         self.active_doc = FreeCAD.ActiveDocument
         self.mesh_name = 'Mesh'
         self.temp_dir = testtools.get_fem_test_tmp_dir()
-        self.test_file_dir = testtools.get_fem_test_home_dir() + 'ccx/'
+        self.test_file_dir = join(testtools.get_fem_test_home_dir(), 'ccx')
 
     def test_solver_framework(self):
         fcc_print('\n--------------- Start of FEM tests  solver frame work ---------------')
@@ -106,6 +108,7 @@ class TestSolverFrameWork(unittest.TestCase):
         self.active_doc.recompute()
 
         # solver frame work ccx solver
+        # calculix solver object
         fcc_print('\nChecking FEM CalculiX solver for solver frame work...')
         solver_ccx_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'SolverCalculiX')
         solver_ccx_object.AnalysisType = 'static'
@@ -120,7 +123,9 @@ class TestSolverFrameWork(unittest.TestCase):
         analysis.addObject(solver_ccx_object)
 
         static_base_name = 'cube_static'
-        solverframework_analysis_dir = testtools.get_unit_test_tmp_dir(testtools.get_fem_test_tmp_dir(), 'FEM_solverframework/')
+        solverframework_analysis_dir = testtools.get_unit_test_tmp_dir(testtools.get_fem_test_tmp_dir(), 'FEM_solverframework')
+
+        # write input file
         fcc_print('Checking FEM ccx solver for solver frame work......')
         fcc_print('machine_ccx')
         machine_ccx = solver_ccx_object.Proxy.createMachine(solver_ccx_object, solverframework_analysis_dir)
@@ -128,12 +133,15 @@ class TestSolverFrameWork(unittest.TestCase):
         machine_ccx.target = femsolver.run.PREPARE
         machine_ccx.start()
         machine_ccx.join()  # wait for the machine to finish.
-        static_analysis_inp_file = testtools.get_fem_test_home_dir() + 'ccx/' + static_base_name + '.inp'
-        fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, solverframework_analysis_dir, self.mesh_name))
-        ret = testtools.compare_inp_files(static_analysis_inp_file, solverframework_analysis_dir + self.mesh_name + '.inp')
+
+        infile_given = join(testtools.get_fem_test_home_dir(), 'ccx', (static_base_name + '.inp'))
+        inpfile_totest = join(solverframework_analysis_dir, (self.mesh_name + '.inp'))
+        fcc_print('Comparing {} to {}'.format(infile_given, inpfile_totest))
+        ret = testtools.compare_inp_files(infile_given, inpfile_totest)
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
         # use solver frame work elmer solver
+        # elmer solver object
         solver_elmer_object = ObjectsFem.makeSolverElmer(self.active_doc, 'SolverElmer')
         self.assertTrue(solver_elmer_object, "FemTest of elmer solver failed")
         analysis.addObject(solver_elmer_object)
@@ -153,6 +161,7 @@ class TestSolverFrameWork(unittest.TestCase):
         self.active_doc.removeObject(mesh_object.Name)
 
         # solver frame work Elmer solver
+        # write input files
         fcc_print('\nChecking FEM Elmer solver for solver frame work...')
         machine_elmer = solver_elmer_object.Proxy.createMachine(solver_elmer_object, solverframework_analysis_dir, True)
         fcc_print('Machine testmode: ' + str(machine_elmer.testmode))
@@ -160,20 +169,28 @@ class TestSolverFrameWork(unittest.TestCase):
         machine_elmer.start()
         machine_elmer.join()  # wait for the machine to finish.
 
-        test_file_dir_elmer = testtools.get_fem_test_home_dir() + 'elmer/'
+        # compare startinfo, case and gmsh input files
+        test_file_dir_elmer = join(testtools.get_fem_test_home_dir(), 'elmer')
+
         fcc_print('Test writing STARTINFO file')
-        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'ELMERSOLVER_STARTINFO', solverframework_analysis_dir + 'ELMERSOLVER_STARTINFO'))
-        ret = testtools.compare_files(test_file_dir_elmer + 'ELMERSOLVER_STARTINFO', solverframework_analysis_dir + 'ELMERSOLVER_STARTINFO')
+        startinfo_given = join(test_file_dir_elmer, 'ELMERSOLVER_STARTINFO')
+        startinfo_totest = join(solverframework_analysis_dir, 'ELMERSOLVER_STARTINFO')
+        fcc_print('Comparing {} to {}'.format(startinfo_given, startinfo_totest))
+        ret = testtools.compare_files(startinfo_given, startinfo_totest)
         self.assertFalse(ret, "STARTINFO write file test failed.\n{}".format(ret))
 
         fcc_print('Test writing case file')
-        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'case.sif', solverframework_analysis_dir + 'case.sif'))
-        ret = testtools.compare_files(test_file_dir_elmer + 'case.sif', solverframework_analysis_dir + 'case.sif')
+        casefile_given = join(test_file_dir_elmer, 'case.sif')
+        casefile_totest = join(solverframework_analysis_dir, 'case.sif')
+        fcc_print('Comparing {} to {}'.format(casefile_given, casefile_totest))
+        ret = testtools.compare_files(casefile_given, casefile_totest)
         self.assertFalse(ret, "case write file test failed.\n{}".format(ret))
 
         fcc_print('Test writing GMSH geo file')
-        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'group_mesh.geo', solverframework_analysis_dir + 'group_mesh.geo'))
-        ret = testtools.compare_files(test_file_dir_elmer + 'group_mesh.geo', solverframework_analysis_dir + 'group_mesh.geo')
+        gmshgeofile_given = join(test_file_dir_elmer, 'group_mesh.geo')
+        gmshgeofile_totest = join(solverframework_analysis_dir, 'group_mesh.geo')
+        fcc_print('Comparing {} to {}'.format(gmshgeofile_given, gmshgeofile_totest))
+        ret = testtools.compare_files(gmshgeofile_given, gmshgeofile_totest)
         self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
 
         save_fc_file = solverframework_analysis_dir + static_base_name + '.FCStd'
