@@ -36,6 +36,7 @@ import femtools.femutils as femutils
 from PySide import QtCore
 if FreeCAD.GuiUp:
     from PySide import QtGui
+    import FemGui
 
 
 class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
@@ -49,25 +50,37 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     #  "__init__" tries to use current active analysis in analysis is left empty.
     #  Raises exception if analysis is not set and there is no active analysis
     def __init__(self, analysis=None, solver=None, test_mode=False):
+
         QtCore.QRunnable.__init__(self)
         QtCore.QObject.__init__(self)
+
+        ## @var analysis
+        #  FEM analysis - the core object. Has to be present.
+        #  It's set to analysis passed in "__init__" or set to current active analysis by default if nothing has been passed to "__init__".
+        self.analysis = None
+        ## @var solver
+        #  solver of the analysis. Used to store the active solver and analysis parameters
+        self.solver = None
+
         if analysis:
-            ## @var analysis
-            #  FEM analysis - the core object. Has to be present.
-            #  It's set to analysis passed in "__init__" or set to current active analysis by default if nothing has been passed to "__init__".
             self.analysis = analysis
+            if solver:
+                self.solver = solver
+            else:
+                self.find_solver()
+                if not self.solver:
+                    raise Exception('FEM: No solver found!')
         else:
-            self.find_analysis()
-            if not self.analysis:
-                raise Exception('FEM: No active analysis found!')
-        if solver:
-            ## @var solver
-            #  solver of the analysis. Used to store the active solver and analysis parameters
-            self.solver = solver
-        else:
-            self.find_solver()
-            if not self.solver:
-                raise Exception('FEM: No solver found!')
+            if solver:
+                self.solver = solver
+                self.find_solver_analysis()
+                if not self.analysis:
+                    raise Exception('FEM: The solver was given as parameter, but no analysis for this solver was found!')
+            else:
+                self.find_analysis()
+                if not self.analysis:
+                    raise Exception('FEM: No solver was given and either no active analysis or no analysis at all or more than one analysis found!')
+
         if self.analysis and self.solver:
             self.working_dir = ''
             self.ccx_binary = ''
@@ -110,8 +123,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         return femutils.get_several_member(self.analysis, obj_type)
 
     def find_analysis(self):
-        import FemGui
-        self.analysis = FemGui.getActiveAnalysis()
+        if FreeCAD.GuiUp:
+            self.analysis = FemGui.getActiveAnalysis()
         if self.analysis:
             return
         found_analysis = False
@@ -121,9 +134,19 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     self.analysis = m
                     found_analysis = True
                 else:
-                    self.analysis = None
+                    self.analysis = None  # more than one analysis
         if self.analysis:
-            FemGui.setActiveAnalysis(self.analysis)
+            if FreeCAD.GuiUp:
+                FemGui.setActiveAnalysis(self.analysis)
+
+    def find_solver_analysis(self):
+        # get the analysis the solver is in
+        if self.solver.getParentGroup():
+            obj = self.solver.getParentGroup()
+            if femutils.is_of_type(obj, "Fem::FemAnalysis"):
+                self.analysis = obj
+                if FreeCAD.GuiUp:
+                    FemGui.setActiveAnalysis(self.analysis)
 
     def find_solver(self):
         found_solver_for_use = False
