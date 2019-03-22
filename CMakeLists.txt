@@ -391,9 +391,11 @@ if(FREECAD_LIBPACK_USE)
         set(FREECAD_LIBPACK_VERSION "CLbundler" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPackCLbundler.cmake)
         # FIXME: --> for now disable fem
-        SET(BUILD_SMESH OFF)
-        SET(BUILD_FEM OFF)
-        SET(BUILD_FEM_NETGEN OFF)
+        if(EXISTS ${FREECAD_LIBPACK_DIR}/LipPackVersion.txt)
+          SET(BUILD_SMESH OFF)
+          SET(BUILD_FEM OFF)
+          SET(BUILD_FEM_NETGEN OFF)
+        endif()
     ELSEIF(FREECAD_LIBPACK_CHECKFILE9X)
         set(FREECAD_LIBPACK_VERSION "9.x" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPack9x.cmake)
@@ -601,10 +603,7 @@ endif()
 # -------------------------------- Boost --------------------------------
 
     SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})
-    set (BOOST_COMPONENTS filesystem program_options regex system thread)
-    IF(FREECAD_LIBPACK_USE)
-      set (BOOST_COMPONENTS ${BOOST_COMPONENTS} python37)
-    ENDIF()
+    set (BOOST_COMPONENTS ${BOOST_COMPONENTS} filesystem program_options regex system thread)
     find_package(Boost ${BOOST_MIN_VERSION}
         COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 

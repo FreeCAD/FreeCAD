@@ -17,7 +17,8 @@ set(OCC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/opencascade CACHE PATH "" FOR
 set(SWIG_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/swig/swig.exe CACHE FILEPATH "Swig" FORCE)
 
 if( ${LIBPACK_VERSION} VERSION_EQUAL "12.1.1" )
-  MESSAGE(STATUS "HUHU")
+
+  set (BOOST_COMPONENTS ${BOOST_COMPONENTS} python37)
 
   SET(SHIBOKEN_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/shiboken2)
   SET(SHIBOKEN_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/shiboken2.cp37-win_amd64.lib debug ${FREECAD_LIBPACK_DIR}/lib/shiboken2_d_d.cp37-win_amd64.lib)
