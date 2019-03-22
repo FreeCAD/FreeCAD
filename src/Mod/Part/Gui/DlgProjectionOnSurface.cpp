@@ -132,7 +132,7 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget *parent)
     ui->pushButtonAddFace->setCheckable(true);
     ui->pushButtonAddProjFace->setCheckable(true);
     ui->pushButtonAddWire->setCheckable(true);
-    
+
     m_guiObjectVec.push_back(ui->pushButtonAddEdge);
     m_guiObjectVec.push_back(ui->pushButtonAddFace);
     m_guiObjectVec.push_back(ui->pushButtonAddProjFace);
@@ -148,18 +148,19 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget *parent)
     get_camera_direction();
     disable_ui_elements(m_guiObjectVec, ui->pushButtonAddProjFace);
 
-    App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc)
+    m_partDocument = App::GetApplication().getActiveDocument();
+    if (!m_partDocument)
     {
       throw Base::ValueError(QString(tr("Have no active document!!!")).toUtf8());
-      return;
     }
-    m_projectionObject = dynamic_cast<Part::Feature*>(activeDoc->addObject("Part::Feature", std::string(m_projectionObjectName.toUtf8()).c_str()));
-    if ( !m_projectionObject )
+    this->attachDocument(m_partDocument);
+    m_partDocument->openTransaction("Project on surface");
+    m_projectionObject = dynamic_cast<Part::Feature*>(m_partDocument->addObject("Part::Feature", "Projection Object"));
+    if (!m_projectionObject)
     {
       throw Base::ValueError(QString(tr("Can not create a projection object!!!")).toUtf8());
-      return;
     }
+    m_projectionObject->Label.setValue(std::string(m_projectionObjectName.toUtf8()).c_str());
     on_radioButtonShowAll_clicked();
     m_lastDepthVal = ui->doubleSpinBoxSolidDepth->value();
 }
@@ -184,15 +185,31 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
   Gui::Selection().rmvSelectionGate();
 }
 
+void PartGui::DlgProjectionOnSurface::slotDeletedDocument(const App::Document& Doc)
+{
+  if (m_partDocument == &Doc) {
+    m_partDocument = nullptr;
+    m_projectionObject = nullptr;
+  }
+}
+
+void PartGui::DlgProjectionOnSurface::slotDeletedObject(const App::DocumentObject& Obj)
+{
+  if (m_projectionObject == &Obj) {
+    m_projectionObject = nullptr;
+  }
+}
+
 void PartGui::DlgProjectionOnSurface::apply(void)
 {
+  if (m_partDocument)
+    m_partDocument->commitTransaction();
 }
 
 void PartGui::DlgProjectionOnSurface::reject(void)
 {
-  App::Document* activeDoc = App::GetApplication().getActiveDocument();
-  if (!activeDoc) return;
-  activeDoc->removeObject(m_projectionObject->getNameInDocument());
+  if (m_partDocument)
+    m_partDocument->abortTransaction();
 }
 
 void PartGui::DlgProjectionOnSurface::on_pushButtonAddFace_clicked()
@@ -238,6 +255,7 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddEdge_clicked()
     filterEdge = nullptr;
   }
 }
+
 void PartGui::DlgProjectionOnSurface::on_pushButtonGetCurrentCamDir_clicked()
 {
   get_camera_direction();
@@ -311,8 +329,7 @@ void PartGui::DlgProjectionOnSurface::get_camera_direction(void)
 
 void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<SShapeStore>& iStoreVec, const unsigned int iColor)
 {
-  App::Document* activeDoc = App::GetApplication().getActiveDocument();
-  if (!activeDoc) return;
+  if (!m_partDocument) return;
   std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx();
   if (selObj.size())
   {
@@ -357,7 +374,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
           auto store = store_part_in_vector(currentShapeStore, iStoreVec);
           higlight_object(aPart, aPart->Shape.getName(), store, iColor);
         }
-        Gui::Selection().clearSelection(activeDoc->getName());
+        Gui::Selection().clearSelection(m_partDocument->getName());
         Gui::Selection().rmvPreselect();
       }
     }
@@ -528,10 +545,8 @@ void PartGui::DlgProjectionOnSurface::show_projected_shapes(const std::vector<SS
   auto aCompound = create_compound(iShapeStoreVec);
   if ( aCompound.IsNull() )
   {
-    App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc) return;
-    activeDoc->removeObject(m_projectionObject->getNameInDocument());
-    m_projectionObject = dynamic_cast<Part::Feature*>(activeDoc->addObject("Part::Feature", std::string(m_projectionObjectName.toUtf8()).c_str()));
+    if (!m_partDocument) return;
+    m_projectionObject->Shape.setValue(TopoDS_Shape());
     return;
   }
   auto currentPlacement = m_projectionObject->Placement.getValue();
@@ -1003,8 +1018,8 @@ TaskProjectionOnSurface::~TaskProjectionOnSurface()
 
 bool TaskProjectionOnSurface::accept()
 {
-  return true;
   widget->apply();
+  return true;
   //return (widget->result() == QDialog::Accepted);
 }
 
