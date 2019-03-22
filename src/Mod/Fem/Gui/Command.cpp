@@ -134,7 +134,7 @@ void CmdFemAddPart::activated(int)
 
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select an edge, face or body. Only one body is allowed."));
+            QObject::tr("Select an edge, face, or body. Only one body is allowed."));
         return;
     }
 
@@ -199,7 +199,7 @@ void CmdFemCreateAnalysis::activated(int)
 
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select an edge, face or body. Only one body is allowed."));
+            QObject::tr("Select an edge, face, or body. Only one body is allowed."));
         return;
     }
 

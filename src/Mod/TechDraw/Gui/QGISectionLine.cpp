@@ -48,7 +48,7 @@ QGISectionLine::QGISectionLine()
 
     m_extLen = 1.5 * Rez::guiX(QGIArrow::getPrefArrowSize());
     m_arrowSize = QGIArrow::getPrefArrowSize();
-    
+
     m_line = new QGraphicsPathItem();
     addToGroup(m_line);
     m_arrow1 = new QGIArrow();
@@ -79,7 +79,7 @@ void QGISectionLine::makeLine()
 {
     QPainterPath pp;
     QPointF beginExtLineStart,beginExtLineEnd;             //ext line start pts for measure Start side and measure End side
-    QPointF endExtLineStart, endExtLineEnd; 
+    QPointF endExtLineStart, endExtLineEnd;
     QPointF offset(m_arrowDir.x,-m_arrowDir.y);
     double arrowLen2 = 2.0 * Rez::guiX(QGIArrow::getPrefArrowSize());
     int format = getPrefSectionFormat();
@@ -110,7 +110,7 @@ void QGISectionLine::makeLine()
 
 //    pp.moveTo(beginExtLineStart);
 //    pp.lineTo(m_start);          //arrow line
-//    pp.moveTo(beginExtLineEnd); 
+//    pp.moveTo(beginExtLineEnd);
     pp.moveTo(m_end);
     pp.lineTo(m_start);          //sectionLine
     m_line->setPath(pp);
@@ -119,7 +119,7 @@ void QGISectionLine::makeLine()
 void QGISectionLine::makeArrows()
 {
     int format = getPrefSectionFormat();
-    if (format == 0) { 
+    if (format == 0) {
         makeArrowsTrad();
     } else {
         makeArrowsISO();
@@ -147,7 +147,7 @@ void QGISectionLine::makeArrowsISO()
     m_arrow1->setPos(m_start);
     m_arrow1->draw();
     m_arrow1->setRotation(arrowRotation);                   //rotation = 0  ==>  ->  horizontal, pointing right
-    
+
     m_arrow2->setStyle(0);
     m_arrow2->setSize(QGIArrow::getPrefArrowSize());
     m_arrow2->setPos(m_end);
@@ -177,7 +177,7 @@ void QGISectionLine::makeArrowsTrad()
     m_arrow1->setPos(extLineStart);
     m_arrow1->draw();
     m_arrow1->setRotation(arrowRotation);                   //rotation = 0  ==>  ->  horizontal, pointing right
-    
+
     m_arrow2->setStyle(0);
     m_arrow2->setSize(QGIArrow::getPrefArrowSize());
     m_arrow2->setPos(extLineEnd);
@@ -240,7 +240,7 @@ void QGISectionLine::makeSymbolsISO()
     QPointF dist = (m_start - m_end);
     double lenDist = sqrt(dist.x()*dist.x() + dist.y()*dist.y());
     QPointF distDir = dist / lenDist;
-    
+
     QPointF offset = m_extLen * distDir;
     symPosStart = m_start + offset;
     symPosEnd = m_end - offset;
@@ -256,7 +256,7 @@ void QGISectionLine::makeSymbolsISO()
     m_symbol2->centerAt(symPosEnd);
 
 }
-    
+
 void QGISectionLine::setBounds(double x1,double y1,double x2,double y2)
 {
     m_start = QPointF(x1,y1);
@@ -336,7 +336,7 @@ void QGISectionLine::setTools()
 
         dashes << dot << space << dash << space;
 
-        // TODO for fancyness: calculate the offset so both arrows start with a
+        // TODO for fanciness: calculate the offset so both arrows start with a
         // dash!
 
         m_pen.setDashPattern(dashes);

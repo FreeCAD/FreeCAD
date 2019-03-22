@@ -136,7 +136,7 @@
          <item row="0" column="0">
           <widget class="Gui::PrefCheckBox" name="PrefCheckBox_RecordGui">
            <property name="text">
-            <string>Recording GUI commands</string>
+            <string>Record GUI commands</string>
            </property>
            <property name="checked">
             <bool>true</bool>

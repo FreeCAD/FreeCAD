@@ -616,28 +616,48 @@ def loadTexture(filename,size=None):
             img = coin.SoSFImage()
             width = size[0]
             height = size[1]
-            bytes = ""
+            byteList = []
+            isPy2 = sys.version_info.major < 3
 
             for y in range(height):
                 #line = width*numcomponents*(height-(y));
                 for x in range(width):
                     rgb = p.pixel(x,y)
                     if numcomponents == 1:
-                        bytes = bytes + chr(QtGui.qGray( rgb ))
+                        if isPy2:
+                            byteList.append(chr(QtGui.qGray( rgb )))
+                        else:
+                            byteList.append(chr(QtGui.qGray( rgb )).encode('latin-1'))
                     elif numcomponents == 2:
-                        bytes = bytes + chr(QtGui.qGray( rgb ))
-                        bytes = bytes + chr(QtGui.qAlpha( rgb ))
+                        if isPy2:
+                            byteList.append(chr(QtGui.qGray( rgb )))
+                            byteList.append(chr(QtGui.qAlpha( rgb )))
+                        else:
+                            byteList.append(chr(QtGui.qGray( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qAlpha( rgb )).encode('latin-1'))
                     elif numcomponents == 3:
-                        bytes = bytes + chr(QtGui.qRed( rgb ))
-                        bytes = bytes + chr(QtGui.qGreen( rgb ))
-                        bytes = bytes + chr(QtGui.qBlue( rgb ))
+                        if isPy2:
+                            byteList.append(chr(QtGui.qRed( rgb )))
+                            byteList.append(chr(QtGui.qGreen( rgb )))
+                            byteList.append(chr(QtGui.qBlue( rgb )))
+                        else:
+                            byteList.append(chr(QtGui.qRed( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qGreen( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qBlue( rgb )).encode('latin-1'))
                     elif numcomponents == 4:
-                        bytes = bytes + chr(QtGui.qRed( rgb ))
-                        bytes = bytes + chr(QtGui.qGreen( rgb ))
-                        bytes = bytes + chr(QtGui.qBlue( rgb ))
-                        bytes = bytes + chr(QtGui.qAlpha( rgb ))
+                        if isPy2:
+                            byteList.append(chr(QtGui.qRed( rgb )))
+                            byteList.append(chr(QtGui.qGreen( rgb )))
+                            byteList.append(chr(QtGui.qBlue( rgb )))
+                            byteList.append(chr(QtGui.qAlpha( rgb )))
+                        else:
+                            byteList.append(chr(QtGui.qRed( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qGreen( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qBlue( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qAlpha( rgb )).encode('latin-1'))
                     #line += numcomponents
-
+            
+            bytes = b"".join(byteList)
             img.setValue(size, numcomponents, bytes)
         except:
             print("Draft: unable to load texture")
@@ -1478,12 +1498,8 @@ def move(objectslist,vector,copy=False):
     objectslist.extend(getMovableChildren(objectslist))
     newobjlist = []
     newgroups = {}
+    objectslist = filterObjectsForModifiers(objectslist, copy)
     for obj in objectslist:
-        if hasattr(obj,"Placement"):
-           if obj.getEditorMode("Placement") == ["ReadOnly"]:
-               if not copy:
-                   FreeCAD.Console.PrintError(obj.Name+" cannot be moved because its placement is readonly.")
-                   continue
         if getType(obj) == "Point":
             v = Vector(obj.X,obj.Y,obj.Z)
             v = v.add(vector)
@@ -1613,6 +1629,27 @@ def array(objectslist,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None):
     else:
         polarArray(objectslist,arg1,arg2,arg3)
 
+def filterObjectsForModifiers(objects, isCopied=False):
+    filteredObjects = []
+    for object in objects:
+        if hasattr(object, "MoveBase") and object.MoveBase and object.Base:
+            parents = []
+            for parent in object.Base.InList:
+                if parent.isDerivedFrom("Part::Feature"):
+                    parents.append(parent.Name)
+            if len(parents) > 1:
+                warningMessage = translate("draft","%s shares a base with %d other objects. Please check if you want to modify this.") % (object.Name,len(parents) - 1)
+                FreeCAD.Console.PrintError(warningMessage)
+                if FreeCAD.GuiUp:
+                    FreeCADGui.getMainWindow().showMessage(warningMessage, 0)
+            filteredObjects.append(object.Base)
+        elif hasattr(object,"Placement") and object.getEditorMode("Placement") == ["ReadOnly"] and not isCopied:
+           FreeCAD.Console.PrintError(translate("%s cannot be modified because its placement is readonly.") % obj.Name)
+           continue
+        else:
+           filteredObjects.append(object)
+    return filteredObjects
+
 def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False):
     '''rotate(objects,angle,[center,axis,copy]): Rotates the objects contained
     in objects (that can be a list of objects or an object) of the given angle
@@ -1626,12 +1663,8 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     objectslist.extend(getMovableChildren(objectslist))
     newobjlist = []
     newgroups = {}
+    objectslist = filterObjectsForModifiers(objectslist, copy)
     for obj in objectslist:
-        if hasattr(obj,"Placement"):
-           if obj.getEditorMode("Placement") == ["ReadOnly"]:
-               if not copy:
-                   FreeCAD.Console.PrintError(obj.Name+" cannot be rotated because its placement is readonly.")
-                   continue
         if copy:
             newobj = makeCopy(obj)
         else:
@@ -2870,7 +2903,7 @@ def upgrade(objects,delete=False,force=None):
         if DraftGeomUtils.isCoplanar(faces):
             u = DraftGeomUtils.concatenate(u)
             if not DraftGeomUtils.hasCurves(u):
-                # several coplanar and non-curved faces: they can becoem a Draft wire
+                # several coplanar and non-curved faces: they can become a Draft wire
                 newobj = makeWire(u.Wires[0],closed=True,face=True)
             else:
                 # if not possible, we do a non-parametric union
@@ -2988,13 +3021,13 @@ def upgrade(objects,delete=False,force=None):
         # if we have a group: turn each closed wire inside into a face
         if groups:
             result = closeGroupWires(groups)
-            if result: 
+            if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found groups: closing each open object inside")+"\n")
 
         # if we have meshes, we try to turn them into shapes
         elif meshes:
             result = turnToParts(meshes)
-            if result: 
+            if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found mesh(es): turning into Part shapes")+"\n")
 
         # we have only faces here, no lone edges
@@ -3003,31 +3036,31 @@ def upgrade(objects,delete=False,force=None):
             # we have one shell: we try to make a solid
             if (len(objects) == 1) and (len(faces) > 3):
                 result = makeSolid(objects[0])
-                if result: 
+                if result:
                     FreeCAD.Console.PrintMessage(translate("draft", "Found 1 solidifiable object: solidifying it")+"\n")
 
             # we have exactly 2 objects: we fuse them
             elif (len(objects) == 2) and (not curves):
                 result = makeFusion(objects[0],objects[1])
-                if result: 
+                if result:
                     FreeCAD.Console.PrintMessage(translate("draft", "Found 2 objects: fusing them")+"\n")
 
             # we have many separate faces: we try to make a shell
             elif (len(objects) > 2) and (len(faces) > 1) and (not loneedges):
                 result = makeShell(objects)
-                if result: 
+                if result:
                     FreeCAD.Console.PrintMessage(translate("draft", "Found several objects: creating a shell")+"\n")
 
             # we have faces: we try to join them if they are coplanar
             elif len(faces) > 1:
                 result = joinFaces(objects)
-                if result: 
+                if result:
                     FreeCAD.Console.PrintMessage(translate("draft", "Found several coplanar objects or faces: creating one face")+"\n")
 
             # only one object: if not parametric, we "draftify" it
             elif len(objects) == 1 and (not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
                 result = draftify(objects[0])
-                if result: 
+                if result:
                     FreeCAD.Console.PrintMessage(translate("draft", "Found 1 non-parametric objects: draftifying it")+"\n")
 
         # we have only one object that contains one edge
@@ -3035,14 +3068,14 @@ def upgrade(objects,delete=False,force=None):
             # we have a closed sketch: Extract a face
             if objects[0].isDerivedFrom("Sketcher::SketchObject") and (len(edges[0].Vertexes) == 1):
                 result = makeSketchFace(objects[0])
-                if result: 
+                if result:
                     FreeCAD.Console.PrintMessage(translate("draft", "Found 1 closed sketch object: creating a face from it")+"\n")
             else:
                 # turn to Draft line
                 e = objects[0].Shape.Edges[0]
                 if isinstance(e.Curve,(Part.LineSegment,Part.Line)):
                     result = turnToLine(objects[0])
-                    if result: 
+                    if result:
                         FreeCAD.Console.PrintMessage(translate("draft", "Found 1 linear object: converting to line")+"\n")
 
         # we have only closed wires, no faces
@@ -3051,37 +3084,37 @@ def upgrade(objects,delete=False,force=None):
             # we have a sketch: Extract a face
             if (len(objects) == 1) and objects[0].isDerivedFrom("Sketcher::SketchObject"):
                 result = makeSketchFace(objects[0])
-                if result: 
+                if result:
                     FreeCAD.Console.PrintMessage(translate("draft", "Found 1 closed sketch object: creating a face from it")+"\n")
 
             # only closed wires
             else:
                 result = makeFaces(objects)
-                if result: 
+                if result:
                     FreeCAD.Console.PrintMessage(translate("draft", "Found closed wires: creating faces")+"\n")
 
         # special case, we have only one open wire. We close it, unless it has only 1 edge!"
         elif (len(openwires) == 1) and (not faces) and (not loneedges):
             result = closeWire(objects[0])
-            if result: 
+            if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found 1 open wire: closing it")+"\n")
 
         # only open wires and edges: we try to join their edges
         elif openwires and (not wires) and (not faces):
             result = makeWires(objects)
-            if result: 
+            if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found several open wires: joining them")+"\n")
 
         # only loneedges: we try to join them
         elif loneedges and (not facewires):
             result = makeWires(objects)
-            if result: 
+            if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found several edges: wiring them")+"\n")
 
         # all other cases, if more than 1 object, make a compound
         elif (len(objects) > 1):
             result = makeCompound(objects)
-            if result: 
+            if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found several non-treatable objects: creating compound")+"\n")
 
         # no result has been obtained
@@ -3254,14 +3287,14 @@ def downgrade(objects,delete=False,force=None):
         # we have a block, we explode it
         if (len(objects) == 1) and (getType(objects[0]) == "Block"):
             result = explode(objects[0])
-            if result: 
+            if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found 1 block: exploding it")+"\n")
 
         # we have one multi-solids compound object: extract its solids
         elif (len(objects) == 1) and (getType(objects[0]) == "Part") and (len(solids) > 1):
             result = splitCompounds(objects)
             #print(result)
-            if result: 
+            if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found 1 multi-solids compound: exploding it")+"\n")
 
         # special case, we have one parametric object: we "de-parametrize" it
@@ -3275,7 +3308,7 @@ def downgrade(objects,delete=False,force=None):
         # we have only 2 objects: cut 2nd from 1st
         elif len(objects) == 2:
             result = cut2(objects)
-            if result: 
+            if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found 2 objects: subtracting them")+"\n")
 
         elif (len(faces) > 1):
@@ -3283,25 +3316,25 @@ def downgrade(objects,delete=False,force=None):
             # one object with several faces: split it
             if len(objects) == 1:
                 result = splitFaces(objects)
-                if result: 
+                if result:
                     FreeCAD.Console.PrintMessage(translate("draft", "Found several faces: splitting them")+"\n")
 
             # several objects: remove all the faces from the first one
             else:
                 result = subtr(objects)
-                if result: 
+                if result:
                     FreeCAD.Console.PrintMessage(translate("draft", "Found several objects: subtracting them from the first one")+"\n")
 
         # only one face: we extract its wires
         elif (len(faces) > 0):
             result = getWire(objects[0])
-            if result: 
+            if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found 1 face: extracting its wires")+"\n")
 
         # no faces: split wire into single edges
         elif not onlyedges:
             result = splitWires(objects)
-            if result: 
+            if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found only wires: extracting their edges")+"\n")
 
         # no result has been obtained

@@ -3356,7 +3356,7 @@ class Trimex(Modifier):
         Modifier.Activated(self,"Trimex")
         self.edges = []
         self.placement = None
-        self.ghost = None
+        self.ghost = []
         self.linetrack = None
         self.color = None
         self.width = None
