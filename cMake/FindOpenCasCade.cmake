@@ -114,41 +114,76 @@ include(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(OCC REQUIRED_VARS OCC_INCLUDE_DIR VERSION_VAR OCC_VERSION_STRING)
 
 if(OCC_FOUND)
-  set(OCC_LIBRARIES
-    optimized TKFillet debug TKFilletd
-    optimized TKMesh debug TKMeshd
-    optimized TKernel debug TKerneld
-    optimized TKG2d debug TKG2dd
-    optimized TKG3d debug TKG3dd
-    optimized TKMath debug TKMathd
-    optimized TKIGES debug TKIGESd
-    optimized TKSTL debug TKSTLd
-    optimized TKShHealing debug TKShHealingd
-    optimized TKXSBase debug TKXSBased
-    optimized TKBin debug TKBind
-    optimized TKBool debug TKBoold
-    optimized TKBO debug TKBOd
-    optimized TKCDF debug TKCDFd
-    optimized TKBRep debug TKBRepd
-    optimized TKTopAlgo debug TKTopAlgod
-    optimized TKGeomAlgo debug TKGeomAlgod
-    optimized TKGeomBase debug TKGeomBased
-    optimized TKOffset debug TKOffsetd
-    optimized TKPrim debug TKPrimd
-    optimized TKSTEP debug TKSTEPd
-    optimized TKSTEPBase debug TKSTEPBased
-    optimized TKSTEPAttr debug TKSTEPAttrd
-    optimized TKHLR debug TKHLRd
-    optimized TKFeat debug TKFeatd
-  )
+  if(FREECAD_LIBPACK_USE)
+      set(OCC_LIBRARIES
+          optimized TKFillet debug TKFilletd
+          optimized TKMesh debug TKMeshd
+          optimized TKernel debug TKerneld
+          optimized TKG2d debug TKG2dd
+          optimized TKG3d debug TKG3dd
+          optimized TKMath debug TKMathd
+          optimized TKIGES debug TKIGESd
+          optimized TKSTL debug TKSTLd
+          optimized TKShHealing debug TKShHealingd
+          optimized TKXSBase debug TKXSBased
+          optimized TKBin debug TKBind
+          optimized TKBool debug TKBoold
+          optimized TKBO debug TKBOd
+          optimized TKCDF debug TKCDFd
+          optimized TKBRep debug TKBRepd
+          optimized TKTopAlgo debug TKTopAlgod
+          optimized TKGeomAlgo debug TKGeomAlgod
+          optimized TKGeomBase debug TKGeomBased
+          optimized TKOffset debug TKOffsetd
+          optimized TKPrim debug TKPrimd
+          optimized TKSTEP debug TKSTEPd
+          optimized TKSTEPBase debug TKSTEPBased
+          optimized TKSTEPAttr debug TKSTEPAttrd
+          optimized TKHLR debug TKHLRd
+          optimized TKFeat debug TKFeatd )
   set(OCC_OCAF_LIBRARIES
-    optimized TKCAF debug TKCAFd
-    optimized TKXCAF debug TKXCAFd
-    optimized TKLCAF debug TKLCAFd
-    optimized TKXDESTEP debug TKXDESTEPd
-    optimized TKXDEIGES debug TKXDEIGESd
-    optimized TKMeshVS debug TKMeshVSd
-  )
+      optimized TKCAF debug TKCAFd
+      optimized TKXCAF debug TKXCAFd
+      optimized TKLCAF debug TKLCAFd
+      optimized TKXDESTEP debug TKXDESTEPd
+      optimized TKXDEIGES debug TKXDEIGESd
+      optimized TKMeshVS debug TKMeshVSd )
+  else()
+      set(OCC_LIBRARIES
+          TKFillet
+          TKMesh
+          TKernel
+          TKG2d
+          TKG3d
+          TKMath
+          TKIGES
+          TKSTL
+          TKShHealing
+          TKXSBase
+          TKBin
+          TKBool
+          TKBO
+          TKCDF
+          TKBRep
+          TKTopAlgo
+          TKGeomAlgo
+          TKGeomBase
+          TKOffset
+          TKPrim
+          TKSTEP
+          TKSTEPBase
+          TKSTEPAttr
+          TKHLR
+          TKFeat )
+  set(OCC_OCAF_LIBRARIES
+      TKCAF
+      TKXCAF
+      TKLCAF
+      TKXDESTEP
+      TKXDEIGES
+      TKMeshVS )
+  endif()
+
   if(OCC_VERSION_STRING VERSION_LESS 6.7.3)
     list(APPEND OCC_OCAF_LIBRARIES TKAdvTools)
   endif(OCC_VERSION_STRING VERSION_LESS 6.7.3)
