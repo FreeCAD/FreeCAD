@@ -5,6 +5,8 @@ set(LIBPACK_VERSION "")
 if(EXISTS ${FREECAD_LIBPACK_DIR}/LipPackVersion.txt)
   file (STRINGS ${FREECAD_LIBPACK_DIR}/LipPackVersion.txt LIBPACK_VERSION)
   MESSAGE(STATUS "Lib pack version: ${LIBPACK_VERSION}")
+else()
+  set(LIBPACK_VERSION "0.0.0.0")
 endif()
 
 set(Boost_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include CACHE PATH "" FORCE)
