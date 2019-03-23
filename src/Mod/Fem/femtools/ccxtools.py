@@ -65,22 +65,31 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if analysis:
             self.analysis = analysis
             if solver:
+                # analysis and solver given
                 self.solver = solver
             else:
+                # analysis given, search for the solver
                 self.find_solver()
                 if not self.solver:
                     raise Exception('FEM: No solver found!')
         else:
             if solver:
+                # solver given, searche for the analysis
                 self.solver = solver
                 self.find_solver_analysis()
                 if not self.analysis:
                     raise Exception('FEM: The solver was given as parameter, but no analysis for this solver was found!')
             else:
+                # neither analysis nor solver given, search both
                 self.find_analysis()
                 if not self.analysis:
                     raise Exception('FEM: No solver was given and either no active analysis or no analysis at all or more than one analysis found!')
+                self.find_solver()
+                if not self.solver:
+                    raise Exception('FEM: No solver found!')
 
+        # print(self.solver)
+        # print(self.analysis)
         if self.analysis and self.solver:
             self.working_dir = ''
             self.ccx_binary = ''
