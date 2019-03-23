@@ -102,7 +102,8 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         self.write_z88_integration_properties()
         self.write_z88_memory_parameter()
         self.write_z88_solver_parameter()
-        FreeCAD.Console.PrintMessage("Writing time input file: " + str(time.clock() - timestart) + ' \n\n')
+        writing_time_string = "Writing time input file: " + str(round((time.clock() - timestart), 2)) + " seconds"
+        FreeCAD.Console.PrintMessage(writing_time_string + ' \n\n')
         return self.dir_name
 
     def set_z88_elparam(self):
