@@ -870,4 +870,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                         if m.Eigenmode == mf['eigenmode']:
                             m.EigenmodeFrequency = mf['frequency']
 
+
+class CcxTools(FemToolsCcx):
+
+    def __init__(self, solver=None):
+        FemToolsCcx.__init__(self, None, solver)
+
 ##  @}
