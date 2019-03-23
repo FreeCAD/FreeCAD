@@ -214,7 +214,7 @@ int __cdecl MemDebug::sAllocHook(
      return(7);
    
    fprintf( logFile, 
-            "%s (#%7d) %12ld byte (%s) in %s line %d",
+            "%s (#%7d) %12Iu byte (%s) in %s line %d",
             operation[nAllocType],lRequest, nSize, blockType[nBlockUse],szFileName, nLine);
    if ( pvData != NULL )
       fprintf( logFile, " at %p\n", pvData );
@@ -239,7 +239,7 @@ void __cdecl MemDebug::sDumpClientHook(
 {
    long requestNumber=0;
   _CrtIsMemoryBlock(pUserData,(unsigned int)nBytes,&requestNumber,NULL,NULL);
-  fprintf( logFile, "Leak   : (#%7d) %12ld bytes (%p)  \n", requestNumber, nBytes, pUserData );
+  fprintf( logFile, "Leak   : (#%7d) %12Iu bytes (%p)  \n", requestNumber, nBytes, pUserData );
 
 }
 
