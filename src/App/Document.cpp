@@ -3031,7 +3031,13 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
             std::vector<App::ObjectIdentifier> paths;
             pcObject->ExpressionEngine.getPathsToDocumentObject(it->second, paths);
             for (std::vector<App::ObjectIdentifier>::iterator jt = paths.begin(); jt != paths.end(); ++jt) {
-                pcObject->ExpressionEngine.setValue(*jt, nullptr);
+                // When nullifying the expression handle case where an identifier lacks of the property
+                try {
+                    pcObject->ExpressionEngine.setValue(*jt, nullptr);
+                }
+                catch (const Base::Exception& e) {
+                    e.ReportException();
+                }
             }
         }
     }
@@ -3047,6 +3053,11 @@ DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive)
     md.setVerbose(recursive);
     if (recursive) {
         objs = obj->getDocument()->getDependencyList(objs);
+        auto it = std::find(objs.begin(), objs.end(), obj);
+        if (it != objs.end()) {
+            auto index = std::distance(objs.begin(), it);
+            std::swap(objs[index], objs.back());
+        }
     }
 
     unsigned int memsize=1000; // ~ for the meta-information

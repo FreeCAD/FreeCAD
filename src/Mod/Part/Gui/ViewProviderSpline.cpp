@@ -196,27 +196,27 @@ void ViewProviderSpline::showControlPointsOfEdge(const TopoDS_Edge& edge)
     if (poles.empty())
         return; // nothing to do
 
-    SoCoordinate3 * coords = new SoCoordinate3;
-    coords->point.setNum(nCt + knots.size());
+    SoCoordinate3 * controlcoords = new SoCoordinate3;
+    controlcoords->point.setNum(nCt + knots.size());
 
     int index=0;
-    SbVec3f* verts = coords->point.startEditing();
+    SbVec3f* verts = controlcoords->point.startEditing();
     for (std::list<gp_Pnt>::iterator p = poles.begin(); p != poles.end(); ++p) {
         verts[index++].setValue((float)p->X(), (float)p->Y(), (float)p->Z());
     }
     for (std::list<gp_Pnt>::iterator k = knots.begin(); k != knots.end(); ++k) {
         verts[index++].setValue((float)k->X(), (float)k->Y(), (float)k->Z());
     }
-    coords->point.finishEditing();
+    controlcoords->point.finishEditing();
 
 
-    SoFCControlPoints* control = new SoFCControlPoints();
-    control->numPolesU = nCt;
-    control->numPolesV = 1;
+    SoFCControlPoints* controlpoints = new SoFCControlPoints();
+    controlpoints->numPolesU = nCt;
+    controlpoints->numPolesV = 1;
 
     SoSeparator* nodes = new SoSeparator();
-    nodes->addChild(coords);
-    nodes->addChild(control);
+    nodes->addChild(controlcoords);
+    nodes->addChild(controlpoints);
 
     pcControlPoints->addChild(nodes);
 }

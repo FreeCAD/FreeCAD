@@ -123,7 +123,7 @@ def export(exportList,filename):
     "exports the given objects to an .html file"
 
     html = getHTML(exportList)
-    outfile = pythonopen(filename,"wb")
+    outfile = pythonopen(filename,"w")
     outfile.write(html)
     outfile.close()
     FreeCAD.Console.PrintMessage(translate("Arch","Successfully written", utf8_decode=True) + ' ' + filename + "\n")

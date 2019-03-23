@@ -19,12 +19,12 @@
       <translation>Eksenlerin Uzunlukları</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="300"/>
+      <location filename="../../ArchAxis.py" line="301"/>
       <source>The size of the axis bubbles</source>
       <translation>Eksen kabarcık boyutu</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="303"/>
+      <location filename="../../ArchAxis.py" line="304"/>
       <source>The numbering style</source>
       <translation>Numaralandırma stili</translation>
     </message>
@@ -74,17 +74,17 @@
       <translation>Bu nesne için bir malzeme</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="147"/>
+      <location filename="../../ArchFloor.py" line="146"/>
       <source>The role of this object</source>
       <translation>Bu nesnenin rolü</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="259"/>
+      <location filename="../../ArchComponent.py" line="265"/>
       <source>Specifies if this object must move together when its host is moved</source>
       <translation>Bu objeyi barındıran nesne hareket ettirildiğinde, bu objenin hareket edip etmeyeceğini belirler</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="264"/>
+      <location filename="../../ArchComponent.py" line="270"/>
       <source>The area of all vertical faces of this object</source>
       <translation>Bu nesnenin tüm dikey yüzler alanları</translation>
     </message>
@@ -94,7 +94,7 @@
       <translation>Bu nesnenin XY düzlemindeki izdüşümünün alanı</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="270"/>
+      <location filename="../../ArchComponent.py" line="276"/>
       <source>The perimeter length of the horizontal area</source>
       <translation>Yatay alan çevre uzunluğu</translation>
     </message>
@@ -114,17 +114,17 @@
       <translation>Bu ekipmanın Watt cinsinden elektrik tüketimi</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="140"/>
+      <location filename="../../ArchFloor.py" line="139"/>
       <source>The height of this object</source>
       <translation>Bu nesnenin yüksekliği</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="142"/>
+      <location filename="../../ArchFloor.py" line="141"/>
       <source>The computed floor area of this floor</source>
       <translation>Bu katın hesaplanan kat alanı</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="437"/>
+      <location filename="../../ArchSectionPlane.py" line="438"/>
       <source>The placement of this object</source>
       <translation>Bu nesnenin yerleşimi</translation>
     </message>
@@ -214,12 +214,12 @@
       <translation>Bu objenin bormal ekstrüzyon yönü ( Otomatik tanımlamak için (0,0,0) olarak ayarlayın)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="721"/>
+      <location filename="../../ArchSectionPlane.py" line="722"/>
       <source>The linked object</source>
       <translation>Bağlantı</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="731"/>
+      <location filename="../../ArchSectionPlane.py" line="732"/>
       <source>The line width of the rendered objects</source>
       <translation>Render edilen objenin çizgi kalınlığı</translation>
     </message>
@@ -456,7 +456,7 @@
     <message>
       <location filename="../../ArchPrecast.py" line="638"/>
       <source>The number of risers in this element</source>
-      <translation>Oluklar bu öğe sayısı</translation>
+      <translation>Bu öğedeki yükseltici sayısı</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="640"/>
@@ -624,52 +624,52 @@
       <translation>Sonuçlarını yazdırmak için elektronik tablo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="443"/>
+      <location filename="../../ArchSectionPlane.py" line="444"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Yanlış'sa, katı olmayan olası yanlış sonuçlar ile de kesecek.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="507"/>
+      <location filename="../../ArchSectionPlane.py" line="508"/>
       <source>The display length of this section plane</source>
       <translation>Kesit düzlemin ekran boyutu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="513"/>
+      <location filename="../../ArchSectionPlane.py" line="514"/>
       <source>The display height of this section plane</source>
       <translation>Kesit düzlemin ekran boyutu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="519"/>
+      <location filename="../../ArchSectionPlane.py" line="520"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Bu kesit düzleminin oklarının boyutu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="533"/>
+      <location filename="../../ArchSectionPlane.py" line="534"/>
       <source>Show the cut in the 3D view</source>
       <translation>Kesmeyi 3D görünümde gösterin</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="723"/>
+      <location filename="../../ArchSectionPlane.py" line="724"/>
       <source>The rendering mode to use</source>
       <translation>Kullanılacak işleme modu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="727"/>
+      <location filename="../../ArchSectionPlane.py" line="728"/>
       <source>If cut geometry is shown or not</source>
       <translation>Kesme geometrisi gösterilse veya gösterilmezse</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="729"/>
+      <location filename="../../ArchSectionPlane.py" line="730"/>
       <source>If cut geometry is filled or not</source>
       <translation>Kesim geometrisi doldurulmuş veya doldurulmamışsa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="734"/>
+      <location filename="../../ArchSectionPlane.py" line="735"/>
       <source>The size of the texts inside this object</source>
       <translation>Bu nesnenin içindeki metinlerin boyutu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="737"/>
+      <location filename="../../ArchSectionPlane.py" line="738"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>İşaretlenirse, görünür olmasına bakılmaksızın kaynak nesneler 3D modelde görüntülenir</translation>
     </message>
@@ -824,52 +824,52 @@
       <translation>Klima bu alanı türü</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="481"/>
+      <location filename="../../ArchSpace.py" line="482"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
       <translation>Göstermek için metin. $area, $label, $tag, $floor, $walls, $ceiling ilgili veri eklemek için kullanın</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="484"/>
+      <location filename="../../ArchSpace.py" line="485"/>
       <source>The name of the font</source>
       <translation>Yazı tipinin adını</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="487"/>
+      <location filename="../../ArchSpace.py" line="488"/>
       <source>The color of the area text</source>
       <translation>Etiket yazısının rengi</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="490"/>
+      <location filename="../../ArchSpace.py" line="491"/>
       <source>The size of the text font</source>
       <translation>Etiket yazısının boyutu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="493"/>
+      <location filename="../../ArchSpace.py" line="494"/>
       <source>The size of the first line of text</source>
       <translation>Metnin ilk satırının boyutu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="496"/>
+      <location filename="../../ArchSpace.py" line="497"/>
       <source>The space between the lines of text</source>
       <translation>Metin satırları arasındaki boşluk</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="499"/>
+      <location filename="../../ArchSpace.py" line="500"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>Etiket metin konumu. (0,0,0) için otomatik Merkezi konumunu korumak</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="501"/>
+      <location filename="../../ArchSpace.py" line="502"/>
       <source>The justification of the text</source>
       <translation>Metni bloklama</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="504"/>
+      <location filename="../../ArchSpace.py" line="505"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>İçin hesaplanan metin kullanmak için ondalık basamak sayısı</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="507"/>
+      <location filename="../../ArchSpace.py" line="508"/>
       <source>Show the unit suffix</source>
       <translation>Birim son eki</translation>
     </message>
@@ -1049,7 +1049,7 @@
       <translation>Bu pencerenin alanı</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="273"/>
+      <location filename="../../ArchComponent.py" line="279"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
       <translation>Bir isteğe bağlı yüksek çözünürlüklü kafes veya bu nesnenin şekli</translation>
     </message>
@@ -1069,9 +1069,9 @@
       <translation>Standart kod (MasterFormat, OmniClass,...)</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="601"/>
+      <location filename="../../ArchMaterial.py" line="603"/>
       <source>A description for this material</source>
-      <translation>Bu ders için açıklama ekle</translation>
+      <translation>Bu malzeme için açıklama</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="258"/>
@@ -1084,62 +1084,62 @@
       <translation>Bu malzemenin rengini</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="602"/>
+      <location filename="../../ArchMaterial.py" line="604"/>
       <source>The list of layer names</source>
       <translation>Katman adları listesi</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="603"/>
+      <location filename="../../ArchMaterial.py" line="605"/>
       <source>The list of layer materials</source>
-      <translation>Katman adları listesi</translation>
+      <translation>Katman malzemelerinin listesi</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="604"/>
+      <location filename="../../ArchMaterial.py" line="606"/>
       <source>The list of layer thicknesses</source>
-      <translation>Katman adları listesi</translation>
+      <translation>Katman kalınlıklarının listesi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="739"/>
+      <location filename="../../ArchSectionPlane.py" line="740"/>
       <source>The line color of the projected objects</source>
       <translation>Yansıtılan nesnelerin rengi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="741"/>
+      <location filename="../../ArchSectionPlane.py" line="742"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Kesme renk (açık değilse) karşı karşıya</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="955"/>
+      <location filename="../../ArchStairs.py" line="1062"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
       <translation>Yukarıdaki basamakları alt stringers örtüşme</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1667"/>
+      <location filename="../../ArchWindow.py" line="1673"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Delik tanımlar tel sayısı. 0 değeri, otomatik anlamına gelir</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="210"/>
       <source>The label of each axis</source>
-      <translation>Her Eksenin Açıları</translation>
+      <translation>Her eksenin etiketi</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="329"/>
+      <location filename="../../ArchAxis.py" line="330"/>
       <source>If true, show the labels</source>
       <translation>Doğru ise ise, etiketlerini göster</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="331"/>
+      <location filename="../../ArchAxis.py" line="332"/>
       <source>A transformation to apply to each label</source>
       <translation>Her etiket için uygulanacak bir dönüşüm</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="806"/>
+      <location filename="../../ArchAxis.py" line="807"/>
       <source>The axes this system is made of</source>
       <translation>Bu sistem yapilmis eksenleri</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="275"/>
+      <location filename="../../ArchComponent.py" line="281"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
       <translation>Bir isteğe bağlı eksen veya bu nesneyi çoğaltılması gerektiğini eksen sistemi</translation>
     </message>
@@ -1234,42 +1234,42 @@
       <translation>İsteğe bağlı bir özel balon numarası</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="307"/>
+      <location filename="../../ArchAxis.py" line="308"/>
       <source>The type of line to draw this axis</source>
       <translation>Bu eksene çizilecek çizginin türü</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="311"/>
+      <location filename="../../ArchAxis.py" line="312"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
       <translation>Eksene eklenecek balonların yeri: Başlangıç, son, ikisi birden veya hiçbiri</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="314"/>
+      <location filename="../../ArchAxis.py" line="315"/>
       <source>The line width to draw this axis</source>
       <translation>Bu eksene çizilecek çizgi genişliği</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="317"/>
+      <location filename="../../ArchAxis.py" line="318"/>
       <source>The color of this axis</source>
       <translation>Bu eksenin rengi</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="320"/>
+      <location filename="../../ArchAxis.py" line="321"/>
       <source>The number of the first axis</source>
       <translation>İlk eksenin numarası</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="323"/>
+      <location filename="../../ArchAxis.py" line="324"/>
       <source>The font to use for texts</source>
       <translation>Metin için kullanılacak yazı tipi</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="326"/>
+      <location filename="../../ArchAxis.py" line="327"/>
       <source>The font size</source>
       <translation>Metin boyutu</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="808"/>
+      <location filename="../../ArchAxis.py" line="809"/>
       <source>The placement of this axis system</source>
       <translation>Bu eksen sisteminin yerleştirilmesi</translation>
     </message>
@@ -1279,17 +1279,17 @@
       <translation>Bu seviyenin (0,0,0) noktasının seviyesi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="439"/>
+      <location filename="../../ArchSectionPlane.py" line="440"/>
       <source>The shape of this object</source>
       <translation>Bu nesnenin şekli</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="262"/>
+      <location filename="../../ArchComponent.py" line="268"/>
       <source>Stores IFC properties</source>
       <translation>IFC özelliklerini depolar</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="525"/>
+      <location filename="../../ArchSectionPlane.py" line="526"/>
       <source>The line width of this object</source>
       <translation>Bu nesnenin çizgi genişliği</translation>
     </message>
@@ -1384,6 +1384,11 @@
       <translation>Dalga alt tarafı etkilemekte mi, etkilememekte mi</translation>
     </message>
     <message>
+      <location filename="../../ArchPanel.py" line="938"/>
+      <source>The position of the tag text. Keep (0,0,0) for center position</source>
+      <translation>Etiket metninin konumu. Merkez konum için (0,0,0) yazın</translation>
+    </message>
+    <message>
       <location filename="../../ArchPanel.py" line="1218"/>
       <source>The font file</source>
       <translation>Yazı tipi dosyası</translation>
@@ -1419,32 +1424,32 @@
       <translation>Eğer Doğru ise, görünürlüğü kapatırken, daha hafif bir dosyaya neden olan, ancak nesneyi tekrar açarken ek bir yükleme süresiyle şekil atılır</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="278"/>
+      <location filename="../../ArchReference.py" line="287"/>
       <source>The latest time stamp of the linked file</source>
       <translation>Bağlantılı dosyanın en son zaman damgası</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="281"/>
+      <location filename="../../ArchReference.py" line="290"/>
       <source>If true, the colors from the linked file will be kept updated</source>
       <translation>Doğruysa, bağlı dosyadaki renkler güncellenir</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="441"/>
+      <location filename="../../ArchSectionPlane.py" line="442"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Bu seçim düzlemi tarafından dikkate alınması gereken nesneler. Boş, tüm belgeyi ifade eder.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="522"/>
+      <location filename="../../ArchSectionPlane.py" line="523"/>
       <source>The transparency of this object</source>
       <translation>Bu nesnenin saydamlığı</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="530"/>
+      <location filename="../../ArchSectionPlane.py" line="531"/>
       <source>The color of this object</source>
       <translation>Bu nesnenin rengi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="535"/>
+      <location filename="../../ArchSectionPlane.py" line="536"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Kesim düzlemiyle gerçek kesim arasındaki uzaklık (bu değeri sıfır olmayan çok küçük değerde tutun)</translation>
     </message>
@@ -1475,8 +1480,8 @@
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="360"/>
-      <source>The width of a Landing (Second edge and after - First edge follows Width property</source>
-      <translation>Bir kademe genişliği (İkinci kenar ve sonrası - İlk kenar Genişlik özelliğini izler</translation>
+      <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
+      <translation>Bir kademe genişliği (İkinci kenar ve sonrası - İlk kenar Genişlik özelliğini izler)</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="376"/>
@@ -1490,17 +1495,17 @@
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="383"/>
-      <source>The depth of the treads of these stairs - Enforced regardless Length or edge's Length</source>
-      <translation>Bu merdivenlerin basamaklarının derinliği - Zorlu uzunluktan bağımsız Kenar Uzunluğu</translation>
+      <source>The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</source>
+      <translation>Bu merdivenlerin basamaklarının derinliği - Uzunluk veya kenar uzunluğundan bağımsız olarak uygulanır</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="385"/>
-      <source>The height of the risers of these stairs - Enforced regardless Height or edge's Height</source>
-      <translation>Bu merdiven desteği yüksekliği - Zorlanmamış Yükseklik veya kenar Yüksekliği</translation>
+      <source>The height of the risers of these stairs - Enforced regardless of Height or edge's Height</source>
+      <translation>Bu merdivenlerin basamaklarının yüksekliği - Yükseklik veya kenar Yüksekliği bağımsız olarak uygulanır</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="388"/>
-      <source>The direction of of flight after landing</source>
+      <source>The direction of flight after landing</source>
       <translation>İniş sonrası uçuş yönü</translation>
     </message>
     <message>
@@ -1617,17 +1622,17 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchWindow.py" line="1908"/>
+      <location filename="../../ArchWindow.py" line="1914"/>
       <source>Components</source>
       <translation>Bileşenler</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1204"/>
+      <location filename="../../ArchComponent.py" line="1215"/>
       <source>Components of this object</source>
       <translation>Bu nesnenin bileşenleri</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1209"/>
+      <location filename="../../ArchComponent.py" line="1220"/>
       <source>Axes</source>
       <translation>Eksenler</translation>
     </message>
@@ -1637,27 +1642,27 @@
       <translation>Eksen Oluştur</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1902"/>
+      <location filename="../../ArchWindow.py" line="1908"/>
       <source>Remove</source>
       <translation>Kaldır</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1903"/>
+      <location filename="../../ArchWindow.py" line="1909"/>
       <source>Add</source>
       <translation>Ekle</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="787"/>
+      <location filename="../../ArchAxis.py" line="788"/>
       <source>Axis</source>
       <translation>Eksen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="787"/>
+      <location filename="../../ArchAxis.py" line="788"/>
       <source>Distance</source>
       <translation>Uzaklık</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="787"/>
+      <location filename="../../ArchAxis.py" line="788"/>
       <source>Angle</source>
       <translation>Açı</translation>
     </message>
@@ -1687,42 +1692,42 @@
       <translation>herhangi bir katının parçası olmayan yüzleri içerir</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1308"/>
+      <location filename="../../ArchCommands.py" line="1312"/>
       <source>Grouping</source>
       <translation>Gruplandırma</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1340"/>
+      <location filename="../../ArchCommands.py" line="1344"/>
       <source>Ungrouping</source>
       <translation>Grubu çözme</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1371"/>
+      <location filename="../../ArchCommands.py" line="1375"/>
       <source>Split Mesh</source>
       <translation>Parçacıkları ayır</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1411"/>
+      <location filename="../../ArchCommands.py" line="1415"/>
       <source>Mesh to Shape</source>
       <translation>Parçacıklardan şekle</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1205"/>
+      <location filename="../../ArchComponent.py" line="1216"/>
       <source>Base component</source>
       <translation>Temel bileşen</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1206"/>
+      <location filename="../../ArchComponent.py" line="1217"/>
       <source>Additions</source>
       <translation>Eklemeler</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1207"/>
+      <location filename="../../ArchComponent.py" line="1218"/>
       <source>Subtractions</source>
       <translation>Çıkarmalar</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1208"/>
+      <location filename="../../ArchComponent.py" line="1219"/>
       <source>Objects</source>
       <translation>Nesneler</translation>
     </message>
@@ -1752,7 +1757,7 @@
       <translation>Görünümü</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="416"/>
+      <location filename="../../ArchSectionPlane.py" line="417"/>
       <source>Create Section Plane</source>
       <translation>Kesit Düzlem Oluşturma</translation>
     </message>
@@ -1797,42 +1802,42 @@
       <translation>Pencere oluşturma</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1904"/>
+      <location filename="../../ArchWindow.py" line="1910"/>
       <source>Edit</source>
       <translation>Düzenle</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1905"/>
+      <location filename="../../ArchWindow.py" line="1911"/>
       <source>Create/update component</source>
       <translation>Oluştur/Güncelleştir bileşeni</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1906"/>
+      <location filename="../../ArchWindow.py" line="1912"/>
       <source>Base 2D object</source>
       <translation>Temel 2D nesne</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1912"/>
+      <location filename="../../ArchWindow.py" line="1918"/>
       <source>Wires</source>
       <translation>Teller</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1909"/>
+      <location filename="../../ArchWindow.py" line="1915"/>
       <source>Create new component</source>
       <translation>Yeni bileşen oluştur</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1910"/>
+      <location filename="../../ArchWindow.py" line="1916"/>
       <source>Name</source>
       <translation>Isim</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1911"/>
+      <location filename="../../ArchWindow.py" line="1917"/>
       <source>Type</source>
       <translation>Türü</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1913"/>
+      <location filename="../../ArchWindow.py" line="1919"/>
       <source>Thickness</source>
       <translation>Kalınlık</translation>
     </message>
@@ -1842,17 +1847,17 @@
       <translation>Hata: karakter kodlaması belirlenemedi</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="282"/>
+      <location filename="../../importDAE.py" line="291"/>
       <source>file %s successfully created.</source>
       <translation>Dosya %s başarıyla oluşturuldu.</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1304"/>
+      <location filename="../../ArchCommands.py" line="1308"/>
       <source>Add space boundary</source>
       <translation>Boşluk sınırı ekleme</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1336"/>
+      <location filename="../../ArchCommands.py" line="1340"/>
       <source>Remove space boundary</source>
       <translation>Boşluk sınırını kaldırma</translation>
     </message>
@@ -1862,7 +1867,7 @@
       <translation>Lütfen temel bir nesne seçin</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1211"/>
+      <location filename="../../ArchComponent.py" line="1222"/>
       <source>Fixtures</source>
       <translation>Fikstürler</translation>
     </message>
@@ -1922,12 +1927,12 @@
       <translation>Duvar birleştirme</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="786"/>
+      <location filename="../../ArchAxis.py" line="787"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Uzaklık (mm) ve eksenleri arasındaki açıları (deg)</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="645"/>
+      <location filename="../../ArchComponent.py" line="651"/>
       <source>Error computing the shape of this object</source>
       <translation>Bu nesnenin şeklini bilgi işlem hatası</translation>
     </message>
@@ -1952,17 +1957,17 @@
       <translation>Brep kuvvet bayrak nesnesinin devre dışı bırakma</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="666"/>
+      <location filename="../../ArchComponent.py" line="672"/>
       <source>has no solid</source>
       <translation>hiçbir katı vardır</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="673"/>
+      <location filename="../../ArchComponent.py" line="679"/>
       <source>has an invalid shape</source>
       <translation>geçersiz bir şekli vardır</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="675"/>
+      <location filename="../../ArchComponent.py" line="681"/>
       <source>has a null shape</source>
       <translation>geçersiz bir şekli vardır</translation>
     </message>
@@ -2054,12 +2059,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="../../ArchCutPlane.py" line="145"/>
       <source>Cut Plane</source>
-      <translation>Uçak kesmek</translation>
+      <translation>Düzlem kes</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="146"/>
       <source>Cut Plane options</source>
-      <translation>Kesme uçak seçenekleri</translation>
+      <translation>Düzlem kesme seçenekleri</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="148"/>
@@ -2097,7 +2102,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Yükseklik (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1583"/>
+      <location filename="../../ArchCommands.py" line="1587"/>
       <source>Create Component</source>
       <translation>Bileşen oluştur</translation>
     </message>
@@ -2112,32 +2117,32 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Duvarlar yalnızca kısmen ya da kafes nesneler üzerinde temel alabilir</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="694"/>
+      <location filename="../../ArchSpace.py" line="695"/>
       <source>Set text position</source>
-      <translation>Metin konumu</translation>
+      <translation>Metin konumunu ayarla</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1603"/>
+      <location filename="../../ArchCommands.py" line="1607"/>
       <source>Category</source>
       <translation>Kategori</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1604"/>
+      <location filename="../../ArchCommands.py" line="1608"/>
       <source>Key</source>
       <translation>Anahtar</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1252"/>
+      <location filename="../../ArchComponent.py" line="1263"/>
       <source>Value</source>
       <translation>Değer</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1607"/>
+      <location filename="../../ArchCommands.py" line="1611"/>
       <source>Unit</source>
       <translation>Birim</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1632"/>
+      <location filename="../../ArchCommands.py" line="1636"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>IFC özellikleri elektronik tablo oluşturmak</translation>
     </message>
@@ -2147,12 +2152,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Yapı Oluştur</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1212"/>
+      <location filename="../../ArchComponent.py" line="1223"/>
       <source>Group</source>
       <translation>Grup</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="116"/>
+      <location filename="../../ArchFloor.py" line="115"/>
       <source>Create Floor</source>
       <translation>Çatı oluşturmak</translation>
     </message>
@@ -2184,12 +2189,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="../../ArchPipe.py" line="131"/>
       <source>Create Pipe</source>
-      <translation>Konum Oluştur</translation>
+      <translation>Boru oluştur</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="170"/>
       <source>Create Connector</source>
-      <translation>Şablon Bağlayıcı</translation>
+      <translation>Bağlayıcı oluştur</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="958"/>
@@ -2229,7 +2234,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="965"/>
       <source>Number of holes</source>
-      <translation>Yüzeylerin sayısı</translation>
+      <translation>Delik sayısı</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="966"/>
@@ -2239,7 +2244,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="967"/>
       <source>Minor diameter of holes</source>
-      <translation>Büyük delik çapi</translation>
+      <translation>Küçük delik çapı</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="968"/>
@@ -2249,17 +2254,17 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="969"/>
       <source>Number of grooves</source>
-      <translation>Yüzeylerin sayısı</translation>
+      <translation>Oluk sayısı</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="970"/>
       <source>Depth of grooves</source>
-      <translation>Derinlik oluklar</translation>
+      <translation>Oluk derinliği</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="971"/>
       <source>Height of grooves</source>
-      <translation>Derinlik oluklar</translation>
+      <translation>Oluk yüksekliği</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="972"/>
@@ -2322,7 +2327,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Dönüş</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1914"/>
+      <location filename="../../ArchWindow.py" line="1920"/>
       <source>Offset</source>
       <translation>Uzaklaşma</translation>
     </message>
@@ -2334,7 +2339,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="335"/>
       <source>Import CSV File</source>
-      <translation>. CSV Dosya Dışa Çıkar</translation>
+      <translation>CSV dosya içe aktar</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="354"/>
@@ -2355,7 +2360,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchStructure.py" line="923"/>
       <source>Node Tools</source>
-      <translation>Tel Araçları</translation>
+      <translation>Düğüm araçları</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="928"/>
@@ -2401,7 +2406,7 @@ Site creation aborted.</source>
       <location filename="../../ArchStructure.py" line="1000"/>
       <source>Intersection found.
 </source>
-      <translation>Kavşak buldum. 
+      <translation>Kesişim bulundu.
 </translation>
     </message>
     <message>
@@ -2410,22 +2415,22 @@ Site creation aborted.</source>
       <translation>Kapı</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1915"/>
+      <location filename="../../ArchWindow.py" line="1921"/>
       <source>Hinge</source>
       <translation>Menteşe</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1916"/>
+      <location filename="../../ArchWindow.py" line="1922"/>
       <source>Opening mode</source>
       <translation>Açılış modu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1921"/>
+      <location filename="../../ArchWindow.py" line="1927"/>
       <source>Get selected edge</source>
-      <translation>Seçili avantaj elde</translation>
+      <translation>Seçili kenarı al</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1922"/>
+      <location filename="../../ArchWindow.py" line="1928"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Seçili kenarına almak için tuşuna basın</translation>
     </message>
@@ -2445,19 +2450,14 @@ Site creation aborted.</source>
       <translation>Malzeme oluşturmak</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="726"/>
+      <location filename="../../ArchMaterial.py" line="728"/>
       <source>Material</source>
       <translation>Malzeme</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="754"/>
+      <location filename="../../ArchMaterial.py" line="756"/>
       <source>New layer</source>
       <translation>Yeni katman</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPanel.py" line="739"/>
-      <source>Error computing shape of </source>
-      <translation>Hata hesaplama şekli </translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="337"/>
@@ -2465,87 +2465,87 @@ Site creation aborted.</source>
       <translation>Duvar hazır ayarları...</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1899"/>
+      <location filename="../../ArchWindow.py" line="1905"/>
       <source>Hole wire</source>
       <translation>Delik tel</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1901"/>
+      <location filename="../../ArchWindow.py" line="1907"/>
       <source>Pick selected</source>
       <translation>Seçilen çekme</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="156"/>
       <source>Create Axis System</source>
-      <translation>Bir axis sistemi oluşturur</translation>
+      <translation>Eksen sistemi oluştur</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="181"/>
       <source>Create Grid</source>
-      <translation>Eksen Oluştur</translation>
+      <translation>Izgara oluştur</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="787"/>
+      <location filename="../../ArchAxis.py" line="788"/>
       <source>Label</source>
       <translation>Etiket</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1053"/>
+      <location filename="../../ArchAxis.py" line="1054"/>
       <source>Axis system components</source>
       <translation>Eksen sistem bileşenleri</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1379"/>
+      <location filename="../../ArchAxis.py" line="1380"/>
       <source>Grid</source>
       <translation>Izgara</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1380"/>
+      <location filename="../../ArchAxis.py" line="1381"/>
       <source>Total width</source>
       <translation>Toplam genişlik</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1381"/>
+      <location filename="../../ArchAxis.py" line="1382"/>
       <source>Total height</source>
       <translation>Toplam ağırlık</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1382"/>
+      <location filename="../../ArchAxis.py" line="1383"/>
       <source>Add row</source>
       <translation>Satır Ekle</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1383"/>
-      <source>Del row</source>
-      <translation>Del satır</translation>
-    </message>
-    <message>
       <location filename="../../ArchAxis.py" line="1384"/>
-      <source>Add col</source>
-      <translation>Simge ekleme</translation>
+      <source>Del row</source>
+      <translation>Satır sil</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="1385"/>
-      <source>Del col</source>
-      <translation>Del satır</translation>
+      <source>Add col</source>
+      <translation>Sütun ekle</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="1386"/>
-      <source>Create span</source>
-      <translation>Alan oluştur</translation>
+      <source>Del col</source>
+      <translation>Sütun sil</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="1387"/>
-      <source>Remove span</source>
-      <translation>Yayılma kaldırmak</translation>
+      <source>Create span</source>
+      <translation>Kiriş oluştur</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="1388"/>
+      <source>Remove span</source>
+      <translation>Kiriş kaldır</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="1389"/>
       <source>Rows</source>
       <translation>Sütunlar</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1388"/>
+      <location filename="../../ArchAxis.py" line="1389"/>
       <source>Columns</source>
       <translation>Sütunlar</translation>
     </message>
@@ -2555,7 +2555,7 @@ Site creation aborted.</source>
       <translation>Bu nesne bir yüzü yok</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="698"/>
+      <location filename="../../ArchSpace.py" line="699"/>
       <source>Space boundaries</source>
       <translation>Alanı sınırları</translation>
     </message>
@@ -2565,9 +2565,9 @@ Site creation aborted.</source>
       <translation>Hata: Bu duvarın temel nesne değiştirilemiyor</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1898"/>
+      <location filename="../../ArchWindow.py" line="1904"/>
       <source>Window elements</source>
-      <translation>Widget elemanları</translation>
+      <translation>Pencere öğeleri</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="994"/>
@@ -2577,7 +2577,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="995"/>
       <source>Set description</source>
-      <translation>Açıklayınız</translation>
+      <translation>Açıklama ayarla</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="996"/>
@@ -2607,7 +2607,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1000"/>
       <source>Area</source>
-      <translation>Yüzölçümü</translation>
+      <translation>Alan</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1049"/>
@@ -2615,7 +2615,7 @@ Site creation aborted.</source>
       <translation>Toplam</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1213"/>
+      <location filename="../../ArchComponent.py" line="1224"/>
       <source>Hosts</source>
       <translation>Sunucular</translation>
     </message>
@@ -2630,22 +2630,22 @@ Site creation aborted.</source>
       <translation>Lütfen en az bir eksen seçin</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1115"/>
+      <location filename="../../ArchAxis.py" line="1116"/>
       <source>Auto height is larger than height</source>
       <translation>Otomatik yükseklik yükseklikten fazladır</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1124"/>
+      <location filename="../../ArchAxis.py" line="1125"/>
       <source>Total row size is larger than height</source>
       <translation>Toplam satır boyutu, yükseklikten daha büyüktür</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1146"/>
+      <location filename="../../ArchAxis.py" line="1147"/>
       <source>Auto width is larger than width</source>
       <translation>Otomatik genişlik, mevcut genişlikten daha büyüktür</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1155"/>
+      <location filename="../../ArchAxis.py" line="1156"/>
       <source>Total column size is larger than width</source>
       <translation>Toplam sütun boyutu, genişlikten daha büyük</translation>
     </message>
@@ -2683,83 +2683,83 @@ Yapı oluşturma işlemi iptal edildi.</translation>
       <translation>Geçersiz kesme düzlemi</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1492"/>
+      <location filename="../../ArchCommands.py" line="1496"/>
       <source>All good! No problems found</source>
       <translation>Her şey yolunda! hiçbir sorun bulunamadı</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1614"/>
+      <location filename="../../ArchCommands.py" line="1618"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>Nesnede bir IfcProperties özelliği yoktur. E-tablo oluşturmak için iptal edilecek Nesne:</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="939"/>
+      <location filename="../../ArchComponent.py" line="950"/>
       <source>Toggle subcomponents</source>
       <translation>İki durumlu alt bileşenleri</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="988"/>
+      <location filename="../../ArchComponent.py" line="999"/>
       <source>Closing Sketch edit</source>
       <translation>Eskiz düzenleme kapatılıyor</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1201"/>
+      <location filename="../../ArchComponent.py" line="1212"/>
       <source>Component</source>
       <translation>Bileşen</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1214"/>
+      <location filename="../../ArchComponent.py" line="1225"/>
       <source>Edit IFC properties</source>
       <translation>IFC özelliklerini düzenle</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1215"/>
+      <location filename="../../ArchComponent.py" line="1226"/>
       <source>Edit standard code</source>
       <translation>Standart kodu düzenle</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1252"/>
+      <location filename="../../ArchComponent.py" line="1263"/>
       <source>Property</source>
       <translation>Özellik</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1256"/>
+      <location filename="../../ArchComponent.py" line="1267"/>
       <source>Add property...</source>
       <translation>Özellik ekle...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1257"/>
+      <location filename="../../ArchComponent.py" line="1268"/>
       <source>Add property set...</source>
       <translation>Özellik kümesi ekle...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1257"/>
+      <location filename="../../ArchComponent.py" line="1268"/>
       <source>New...</source>
       <translation>Yeni...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1356"/>
+      <location filename="../../ArchComponent.py" line="1367"/>
       <source>New property</source>
       <translation>Yeni Özellik</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1377"/>
+      <location filename="../../ArchComponent.py" line="1388"/>
       <source>New property set</source>
       <translation>Yeni özellik kümesi</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="102"/>
-      <source>You can put anything but Site, Building, Floor object in a Floor object.
-Floor object are not allowed to accept Site or Building object.
-Site, Building and Floor objects will be removed from the selection.
+      <location filename="../../ArchFloor.py" line="101"/>
+      <source>You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+Floor object is not allowed to accept Site or Building objects.
+Site, Building, and Floor objects will be removed from the selection.
 You can change that in the preferences.</source>
-      <translation>Bir zemin nesnesinde Site(Mevki), Yapı(bina), zemin nesnesinden başka bir şey koyabilirsiniz.
-Zemin nesnesinin Site veya yapı nesnesini kabul etmesine izin verilmez.
-Site, yapı ve zemin nesneleri seçimden kaldırılacaktır.
+      <translation>Aşağıdaki nesneler dışında herhangi bir şey koyabilirsiniz: Site, Yapı ve Zemin - Bir Zemin nesnesinde.
+Zemin nesnesinin Site veya Yapı nesnelerini kabul etmesine izin verilmez.
+Seçimden Site, Yapı ve Zemin nesneleri kaldırılacaktır.
 Bunu tercihlerde değiştirebilirsiniz.</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="108"/>
+      <location filename="../../ArchFloor.py" line="107"/>
       <source>There is no valid object in the selection.
 Floor creation aborted.</source>
       <translation>Seçimde geçerli bir nesne yok. 
@@ -2769,6 +2769,11 @@ Zemin oluşturma işlemi iptal edildi.</translation>
       <location filename="../../ArchFrame.py" line="220"/>
       <source>Crossing point not found in profile.</source>
       <translation>Geçiş noktası profilde bulunamadı.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPanel.py" line="739"/>
+      <source>Error computing shape of</source>
+      <translation>Hesaplama hatası şeklin</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="161"/>
@@ -2856,7 +2861,7 @@ Zemin oluşturma işlemi iptal edildi.</translation>
       <translation>Lütfen yapısal bir nesne üzerinde bir taban yüzeyi seçin</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="518"/>
+      <location filename="../../ArchReference.py" line="534"/>
       <source>Create external reference</source>
       <translation>Harici referans oluştur</translation>
     </message>
@@ -2866,42 +2871,42 @@ Zemin oluşturma işlemi iptal edildi.</translation>
       <translation>Bu plana eklenmiş bir hesap tablosu yok</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="965"/>
+      <location filename="../../ArchSectionPlane.py" line="966"/>
       <source>Section plane settings</source>
       <translation>Seçim düzlemi ayarları</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="968"/>
+      <location filename="../../ArchSectionPlane.py" line="969"/>
       <source>Objects seen by this section plane:</source>
       <translation>Bu seçim düzlemi tarafından görülen nesneler:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="969"/>
+      <location filename="../../ArchSectionPlane.py" line="970"/>
       <source>Section plane placement:</source>
       <translation>Seçim düzlemi yerleşimi:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="970"/>
+      <location filename="../../ArchSectionPlane.py" line="971"/>
       <source>Rotate X</source>
       <translation>Döndür X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="971"/>
+      <location filename="../../ArchSectionPlane.py" line="972"/>
       <source>Rotate Y</source>
       <translation>Döndür Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="972"/>
+      <location filename="../../ArchSectionPlane.py" line="973"/>
       <source>Rotate Z</source>
       <translation>Döndür Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="973"/>
+      <location filename="../../ArchSectionPlane.py" line="974"/>
       <source>Resize</source>
       <translation>Yeniden boyutlandır</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="974"/>
+      <location filename="../../ArchSectionPlane.py" line="975"/>
       <source>Center</source>
       <translation>Ortala</translation>
     </message>
@@ -2967,32 +2972,32 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
       <translation>Varolan bir nesne üzerinde bir yüzey seçin veya bir ön ayar seçin</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1860"/>
+      <location filename="../../ArchWindow.py" line="1866"/>
       <source>Unable to create component</source>
       <translation>Bileşen oluşturulamadı</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1900"/>
+      <location filename="../../ArchWindow.py" line="1906"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Ana nesnedeki bir deliği tanımlayan telin sayısı. Sıfır değeri otomatik olarak en geniş teli kabul edecektir</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1919"/>
+      <location filename="../../ArchWindow.py" line="1925"/>
       <source>+ default</source>
       <translation>+ varsayılan</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1918"/>
+      <location filename="../../ArchWindow.py" line="1924"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation>Bu işaretliyse, bu pencerenin varsayılan Çerçeve değeri buraya girilen değere eklenecektir</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1920"/>
+      <location filename="../../ArchWindow.py" line="1926"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation>Bu işaretliyse, bu pencerenin varsayılan öteleme değeri buraya girilen değere eklenecektir</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="52"/>
+      <location filename="../../importDAE.py" line="58"/>
       <source>pycollada not found, collada support is disabled.</source>
       <translation>pycollada bulunamadı, collada desteği devre dışı bırakıldı.</translation>
     </message>
@@ -3032,17 +3037,17 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
       <translation>Hata: Sizin IfcOpenShell sürümünüz çok eski</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="215"/>
+      <location filename="../../importOBJ.py" line="222"/>
       <source>Successfully written</source>
       <translation>Başarıyla yazıldı</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="71"/>
+      <location filename="../../importOBJ.py" line="78"/>
       <source>Found a shape containing curves, triangulating</source>
       <translation>Eğrileri içeren bir şekil bulundu, Üçgen</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="293"/>
+      <location filename="../../importOBJ.py" line="300"/>
       <source>Successfully imported</source>
       <translation>Başarıyla ithal edildi</translation>
     </message>
@@ -3166,12 +3171,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1295"/>
+      <location filename="../../ArchCommands.py" line="1299"/>
       <source>Add component</source>
       <translation>Parça ekle</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1296"/>
+      <location filename="../../ArchCommands.py" line="1300"/>
       <source>Adds the selected components to the active object</source>
       <translation>Seçili bileşenleri etkin nesneye ekle</translation>
     </message>
@@ -3215,7 +3220,7 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1553"/>
+      <location filename="../../ArchAxis.py" line="1554"/>
       <source>Axis tools</source>
       <translation>Eksen araçları</translation>
     </message>
@@ -3249,17 +3254,17 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1483"/>
+      <location filename="../../ArchCommands.py" line="1487"/>
       <source>Check</source>
       <translation>Kontrol Et</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1484"/>
+      <location filename="../../ArchCommands.py" line="1488"/>
       <source>Checks the selected objects for problems</source>
       <translation>Seçili nesneler için sorunları denetler</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1505"/>
+      <location filename="../../ArchCommands.py" line="1509"/>
       <source>Explore the contents of an IFC file</source>
       <translation>Bir IFC dosyasının içeriğini keşfedin</translation>
     </message>
@@ -3267,12 +3272,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1573"/>
+      <location filename="../../ArchCommands.py" line="1577"/>
       <source>Clone component</source>
       <translation>Temel bileşen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1575"/>
+      <location filename="../../ArchCommands.py" line="1579"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Bir nesne tanımlanmamış bir mimari bileşeni klonlar</translation>
     </message>
@@ -3280,12 +3285,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1466"/>
+      <location filename="../../ArchCommands.py" line="1470"/>
       <source>Close holes</source>
       <translation>Yakın delik</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1467"/>
+      <location filename="../../ArchCommands.py" line="1471"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Açık şekiller, onları katı dönüm delikleri kapatır</translation>
     </message>
@@ -3293,12 +3298,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1548"/>
+      <location filename="../../ArchCommands.py" line="1552"/>
       <source>Component</source>
       <translation>Bileşen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1550"/>
+      <location filename="../../ArchCommands.py" line="1554"/>
       <source>Creates an undefined architectural component</source>
       <translation>Bir nesne tanımlanmamış bir mimari bileşeni klonlar</translation>
     </message>
@@ -3308,12 +3313,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
     <message>
       <location filename="../../ArchCutPlane.py" line="70"/>
       <source>Cut with plane</source>
-      <translation>Uçak ile kesmek</translation>
+      <translation>Düzlem ile kes</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="71"/>
       <source>Cut an object with a plane</source>
-      <translation>Bir nesneyi bir uçak ile kesmek</translation>
+      <translation>Bir nesneyi bir düzlem ile kes</translation>
     </message>
   </context>
   <context>
@@ -3332,12 +3337,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_Floor</name>
     <message>
-      <location filename="../../ArchFloor.py" line="78"/>
+      <location filename="../../ArchFloor.py" line="77"/>
       <source>Floor</source>
       <translation>Zemin</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="80"/>
+      <location filename="../../ArchFloor.py" line="79"/>
       <source>Creates a floor object including selected objects</source>
       <translation>Seçili nesneleri kapsayacak şekilde zemin nesnesi yarat</translation>
     </message>
@@ -3358,62 +3363,62 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1069"/>
+      <location filename="../../ArchAxis.py" line="1070"/>
       <source>The number of rows</source>
       <translation>Satırların simge sayısı</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1071"/>
+      <location filename="../../ArchAxis.py" line="1072"/>
       <source>The number of columns</source>
       <translation>Sütunların simge sayısı</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1073"/>
+      <location filename="../../ArchAxis.py" line="1074"/>
       <source>The sizes for rows</source>
       <translation>Satır için boyutları</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1075"/>
+      <location filename="../../ArchAxis.py" line="1076"/>
       <source>The sizes of columns</source>
       <translation>Sütunların simge sayısı</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1077"/>
+      <location filename="../../ArchAxis.py" line="1078"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>Birlikte birleştirilmiş hücre yayılma alanı aralığı</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1079"/>
+      <location filename="../../ArchAxis.py" line="1080"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation>Bu kılavuz nesne tarafından üretilen 3D Puan türü</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1082"/>
+      <location filename="../../ArchAxis.py" line="1083"/>
       <source>The total width of this grid</source>
       <translation>Bu kılavuz toplam genişliğini</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1084"/>
+      <location filename="../../ArchAxis.py" line="1085"/>
       <source>The total height of this grid</source>
       <translation>Bu kademelerin toplam yüksekliği</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1086"/>
+      <location filename="../../ArchAxis.py" line="1087"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation>Otomatik sütun bölümler (devre dışı bırakmak için 0 olarak ayarlayın) oluşturur</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1088"/>
+      <location filename="../../ArchAxis.py" line="1089"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation>Otomatik sütun bölümler (devre dışı bırakmak için 0 olarak ayarlayın) oluşturur</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1090"/>
+      <location filename="../../ArchAxis.py" line="1091"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation>Bu kılavuz ya da alt kenar normaller boyunca antenin yönünü gerekir Eğer kenar orta nokta modunda, ne zaman</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1092"/>
+      <location filename="../../ArchAxis.py" line="1093"/>
       <source>The indices of faces to hide</source>
       <translation>Gizlemek için yüzleri endeksleri</translation>
     </message>
@@ -3421,7 +3426,7 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_IfcExplorer</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1504"/>
+      <location filename="../../ArchCommands.py" line="1508"/>
       <source>Ifc Explorer</source>
       <translation>Ifc Explorer</translation>
     </message>
@@ -3429,12 +3434,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1623"/>
+      <location filename="../../ArchCommands.py" line="1627"/>
       <source>Create IFC spreadsheet...</source>
       <translation>Yeni hesap tablosu yarat...</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1625"/>
+      <location filename="../../ArchCommands.py" line="1629"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>Bir nesnenin IFC özelliklerini depolamak için bir hesap tablosu oluşturur.</translation>
     </message>
@@ -3455,7 +3460,7 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_MaterialTools</name>
     <message>
-      <location filename="../../ArchMaterial.py" line="831"/>
+      <location filename="../../ArchMaterial.py" line="833"/>
       <source>Material tools</source>
       <translation>Malzeme araçları</translation>
     </message>
@@ -3476,12 +3481,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1387"/>
+      <location filename="../../ArchCommands.py" line="1391"/>
       <source>Mesh to Shape</source>
       <translation>Parçacıklardan şekle</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1388"/>
+      <location filename="../../ArchCommands.py" line="1392"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>Döner seçilen kafesler içine bölümü şekil nesneleri</translation>
     </message>
@@ -3609,12 +3614,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../ArchReference.py" line="507"/>
+      <location filename="../../ArchReference.py" line="523"/>
       <source>External reference</source>
       <translation>Harici referans</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="509"/>
+      <location filename="../../ArchReference.py" line="525"/>
       <source>Creates an external reference object</source>
       <translation>Harici referans nesnesi oluştur</translation>
     </message>
@@ -3622,12 +3627,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1327"/>
+      <location filename="../../ArchCommands.py" line="1331"/>
       <source>Remove component</source>
       <translation>Bileşeni kaldır</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1328"/>
+      <location filename="../../ArchCommands.py" line="1332"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Seçili bileşenleri bağlı oldukları ana bileşenlerden ayır, veya bileşen içinde bir delik oluştur</translation>
     </message>
@@ -3635,12 +3640,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1451"/>
+      <location filename="../../ArchCommands.py" line="1455"/>
       <source>Remove Shape from Arch</source>
       <translation>Arktan şekilleri çıkarır</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1452"/>
+      <location filename="../../ArchCommands.py" line="1456"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Ark parçalarından kübik şekilleri çıkarır</translation>
     </message>
@@ -3674,12 +3679,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="400"/>
+      <location filename="../../ArchSectionPlane.py" line="401"/>
       <source>Section Plane</source>
       <translation>Bölüm düzlemi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="401"/>
+      <location filename="../../ArchSectionPlane.py" line="402"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Seçili nesneleri de dahil olmak üzere bir bölüm uçak nesnesi oluşturur</translation>
     </message>
@@ -3687,12 +3692,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1422"/>
+      <location filename="../../ArchCommands.py" line="1426"/>
       <source>Select non-manifold meshes</source>
       <translation>Dallanmamış kafesleri seç</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1423"/>
+      <location filename="../../ArchCommands.py" line="1427"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Belgeden veya seçili grup içerisinden dallanmamış kafeslerin tamamını seçer</translation>
     </message>
@@ -3731,12 +3736,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1362"/>
+      <location filename="../../ArchCommands.py" line="1366"/>
       <source>Split Mesh</source>
       <translation>Parçacıkları ayır</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1363"/>
+      <location filename="../../ArchCommands.py" line="1367"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Seçili parçacıkları bağımsız bileşenlere ayır</translation>
     </message>
@@ -3765,12 +3770,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1518"/>
+      <location filename="../../ArchCommands.py" line="1522"/>
       <source>Survey</source>
       <translation>Anket</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1519"/>
+      <location filename="../../ArchCommands.py" line="1523"/>
       <source>Starts survey</source>
       <translation>Başlar anket</translation>
     </message>
@@ -3778,12 +3783,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1533"/>
+      <location filename="../../ArchCommands.py" line="1537"/>
       <source>Toggle IFC Brep flag</source>
       <translation>İki durumlu IFC Brep bayrak</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1534"/>
+      <location filename="../../ArchCommands.py" line="1538"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Bir nesne ya da Brep verilecek zorlamak</translation>
     </message>
@@ -3791,12 +3796,12 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1649"/>
+      <location filename="../../ArchCommands.py" line="1653"/>
       <source>Toggle subcomponents</source>
       <translation>İki durumlu alt bileşenleri</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1650"/>
+      <location filename="../../ArchCommands.py" line="1654"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Gösterir veya gizler, bu nesnenin alt bileşenleri</translation>
     </message>
@@ -4023,11 +4028,6 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
       <translation>BimServer giriş</translation>
     </message>
     <message>
-      <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
-      <source>Bim server URL:</source>
-      <translation>Bim Server:</translation>
-    </message>
-    <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="36"/>
       <source>Login (email):</source>
       <translation>Giriş (e-posta):</translation>
@@ -4036,11 +4036,6 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
       <source>Password:</source>
       <translation>Şifre:</translation>
-    </message>
-    <message>
-      <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
-      <source>Keep me logged across FreeCAD sessions</source>
-      <translation>Beni FreeCAD oturumlarda oturum</translation>
     </message>
     <message>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
@@ -4053,6 +4048,16 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
         Note: as of LibreOffice v5.4.5.1 the correct path now is: Sheets tab bar -&gt; Insert Sheet... -&gt; From file -&gt; Browse...</source>
       <translation>Bu,"Sonuç" hesap tablosunun içeriğini, bir CSV dosyası olarak dışa aktarır. LibreOffice'de, bu CSV dosyasını Sayfalar Sekme Çubuğuna sağ tıklatarak- &gt; Yeni Sayfa - &gt; Dosyadan - &gt; Bağlantı yöntemi ile bağlı tutabilirsiniz
         Not: LibreOffice v5.4.5.1 itibariyle doğru yol şu şekildedir: Sayfalar Sekme Çubuğu- &gt; Çalışma Sayfası Ekle... -&gt; Dosyadan - &gt; Gözat...</translation>
+    </message>
+    <message>
+      <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
+      <source>BimServer URL:</source>
+      <translation>BimServer URL:</translation>
+    </message>
+    <message>
+      <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
+      <source>Keep me logged in across FreeCAD sessions</source>
+      <translation>FreeCAD oturumlarında, oturumumu açık tut</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
@@ -4093,7 +4098,7 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="714"/>
+      <location filename="../../ArchBuildingPart.py" line="702"/>
       <source>Writing camera position</source>
       <translation>Yazma kamera konumu</translation>
     </message>
@@ -4551,7 +4556,7 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="784"/>
       <source>Number of steps:</source>
-      <translation>Kullanıcı Sayısı:</translation>
+      <translation>Basamak sayısı:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="812"/>
@@ -4601,7 +4606,7 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="351"/>
       <source>Export options</source>
-      <translation>Dışa aktarma seçenekleri</translation>
+      <translation>Dışa aktarım seçenekleri</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="14"/>
@@ -4621,7 +4626,7 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="80"/>
       <source>Import options</source>
-      <translation>Seçenekleri aktar</translation>
+      <translation>İçe aktar seçenekleri</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="88"/>
@@ -4716,7 +4721,7 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="81"/>
       <source>Builtin</source>
-      <translation>İç</translation>
+      <translation>Yerleşik</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="86"/>
@@ -5059,7 +5064,7 @@ Not: Bunu tercihlerde değiştirebilirsiniz.</translation>
     <message>
       <location filename="../../InitGui.py" line="92"/>
       <source>Arch tools</source>
-      <translation>Eksen araçları</translation>
+      <translation>Mimari araçlar</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="93"/>

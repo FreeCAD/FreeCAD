@@ -278,8 +278,8 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
         if (!loadPixmap(fileName, icon)) {
             // Go through supported file formats
             for (QList<QByteArray>::iterator fm = formats.begin(); fm != formats.end(); ++fm) {
-                QString path = QString::fromLatin1("%1.%2").arg(fileName).
-                    arg(QString::fromLatin1((*fm).toLower().constData()));
+                QString path = QString::fromLatin1("%1.%2").arg(fileName,
+                    QString::fromLatin1((*fm).toLower().constData()));
                 if (loadPixmap(path, icon)) {
                     break;
                 }
@@ -492,8 +492,7 @@ QPixmap BitmapFactoryInst::resize(int w, int h, const QPixmap& p, Qt::BGMode bgm
         QColor dl = pal.color(QPalette::Disabled, QPalette::Light);
         QColor dt = pal.color(QPalette::Disabled, QPalette::Text);
 
-        QPixmap pm = pix;
-        pm = QPixmap(w,h);
+        QPixmap pm(w,h);
         pm.fill(dl);
 
         QPainter pt;
@@ -572,20 +571,27 @@ QPixmap BitmapFactoryInst::merge(const QPixmap& p1, const QPixmap& p2, Position 
 {
     // does the similar as the method above except that this method does not resize the resulting pixmap
     int x = 0, y = 0;
+#if QT_VERSION >= 0x050000
+    qreal dpr1 = p1.devicePixelRatio();
+    qreal dpr2 = p2.devicePixelRatio();
+#else
+    qreal dpr1 = 1;
+    qreal dpr2 = 1;
+#endif
 
     switch (pos)
     {
-    case Qt::TopLeftCorner:
+    case TopLeft:
         break;
-    case Qt::TopRightCorner:
-        x = p1.width () - p2.width ();
+    case TopRight:
+        x = p1.width ()/dpr1 - p2.width ()/dpr2;
         break;
-    case Qt::BottomLeftCorner:
-        y = p1.height() - p2.height();
+    case BottomLeft:
+        y = p1.height()/dpr1 - p2.height()/dpr2;
         break;
-    case Qt::BottomRightCorner:
-        x = p1.width () - p2.width ();
-        y = p1.height() - p2.height();
+    case BottomRight:
+        x = p1.width ()/dpr1 - p2.width ()/dpr2;
+        y = p1.height()/dpr1 - p2.height()/dpr2;
         break;
     }
 

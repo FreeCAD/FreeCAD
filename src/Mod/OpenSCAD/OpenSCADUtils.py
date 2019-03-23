@@ -418,7 +418,7 @@ def callopenscadmeshstring(scadstr):
 
 def meshopinline(opname,iterable1):
     """uses OpenSCAD to combine meshes
-    takes the name of the CGAL operation and an iterable (tuple,list) of 
+    takes the name of the CGAL operation and an iterable (tuple,list) of
     FreeCAD Mesh objects
     includes all the mesh data in the SCAD file
     """
@@ -428,7 +428,7 @@ def meshopinline(opname,iterable1):
 
 def meshoptempfile(opname,iterable1):
     """uses OpenSCAD to combine meshes
-    takes the name of the CGAL operation and an iterable (tuple,list) of 
+    takes the name of the CGAL operation and an iterable (tuple,list) of
     FreeCAD Mesh objects
     uses stl files to supply the mesh data
     """
@@ -554,7 +554,7 @@ def process3D_ObjectsViaOpenSCADShape(ObjList,Operation,maxmeshpoints=None):
 def process3D_ObjectsViaOpenSCAD(doc,ObjList,Operation):
     solid = process3D_ObjectsViaOpenSCADShape(ObjList,Operation)
     if solid is not None:
-        obj=doc.addObject('Part::Feature',Operation) #non parametric objec
+        obj=doc.addObject('Part::Feature',Operation) #non-parametric object
         obj.Shape=solid#.removeSplitter()
         if FreeCAD.GuiUp:
           for index in ObjList :

@@ -3071,7 +3071,7 @@ bool Sketch::updateNonDrivingConstraints()
 
                 (*it).constr->setValue(std::remainder(*((*it).value), 2.0*M_PI));
             }
-            else if((*it).constr->Type==Diameter && (*it).constr->First>0 ) {
+            else if((*it).constr->Type==Diameter && (*it).constr->First>=0 ) {
 
                 (*it).constr->setValue(2.0**((*it).value));
             }
@@ -3844,12 +3844,6 @@ TopoShape Sketch::toShape(void) const
             builder.Add(comp, *wt);
         result.setShape(comp);
     }
-    // FIXME: if free edges are left over its probably better to
-    // create a compound with the closed structures and let the
-    // features decide what to do with it...
-    if (edge_list.size() > 0)
-        Base::Console().Warning("Left over edges in Sketch. Only closed structures will be propagated at the moment!\n");
-
 #endif
 
     return result;

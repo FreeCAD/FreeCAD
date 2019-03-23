@@ -39,25 +39,51 @@ import six
 
 class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     def __init__(self,
-                 analysis_obj, solver_obj,
-                 mesh_obj, matlin_obj, matnonlin_obj,
-                 fixed_obj, displacement_obj,
-                 contact_obj, planerotation_obj, transform_obj,
-                 selfweight_obj, force_obj, pressure_obj,
-                 temperature_obj, heatflux_obj, initialtemperature_obj,
-                 beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
+                 analysis_obj,
+                 solver_obj,
+                 mesh_obj,
+                 matlin_obj,
+                 matnonlin_obj,
+                 fixed_obj,
+                 displacement_obj,
+                 contact_obj,
+                 planerotation_obj,
+                 transform_obj,
+                 selfweight_obj,
+                 force_obj,
+                 pressure_obj,
+                 temperature_obj,
+                 heatflux_obj,
+                 initialtemperature_obj,
+                 beamsection_obj,
+                 beamrotation_obj,
+                 shellthickness_obj,
+                 fluidsection_obj,
                  dir_name=None
                  ):
 
         FemInputWriter.FemInputWriter.__init__(
             self,
-            analysis_obj, solver_obj,
-            mesh_obj, matlin_obj, matnonlin_obj,
-            fixed_obj, displacement_obj,
-            contact_obj, planerotation_obj, transform_obj,
-            selfweight_obj, force_obj, pressure_obj,
-            temperature_obj, heatflux_obj, initialtemperature_obj,
-            beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
+            analysis_obj,
+            solver_obj,
+            mesh_obj,
+            matlin_obj,
+            matnonlin_obj,
+            fixed_obj,
+            displacement_obj,
+            contact_obj,
+            planerotation_obj,
+            transform_obj,
+            selfweight_obj,
+            force_obj,
+            pressure_obj,
+            temperature_obj,
+            heatflux_obj,
+            initialtemperature_obj,
+            beamsection_obj,
+            beamrotation_obj,
+            shellthickness_obj,
+            fluidsection_obj,
             dir_name)
         # self.dir_name does have a slash at the end
         self.main_file_name = self.mesh_object.Name + '.inp'
@@ -74,7 +100,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_calculix_splitted_input_file()
         else:
             self.write_calculix_one_input_file()
-        writing_time_string = "Writing time input file: " + str(time.clock() - timestart)
+        writing_time_string = "Writing time input file: " + str(round((time.clock() - timestart), 2)) + " seconds"
         if self.femelement_count_test is True:
             FreeCAD.Console.PrintMessage(writing_time_string + ' \n\n')
             return self.file_name

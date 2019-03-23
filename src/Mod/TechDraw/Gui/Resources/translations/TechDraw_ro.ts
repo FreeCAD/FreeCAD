@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="649"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="650"/>
@@ -20,17 +20,17 @@
     <message>
       <location filename="../../Command.cpp" line="994"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
-      <source>Insert an ArchView</source>
-      <translation>Inserați o ArchView</translation>
+      <source>Insert a Section Plane</source>
+      <translation type="unfinished">Insert a Section Plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="996"/>
-      <source>Inserts a view of an Arch Section Plane</source>
-      <translation>Inserează o vedere un plan de secțiune Arch</translation>
+      <source>Inserts a view of a Section Plane from Arch Workbench</source>
+      <translation type="unfinished">Inserts a view of a Section Plane from Arch Workbench</translation>
     </message>
   </context>
   <context>
@@ -38,7 +38,7 @@
     <message>
       <location filename="../../Command.cpp" line="690"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="691"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="812"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="813"/>
@@ -70,12 +70,12 @@
     <message>
       <location filename="../../Command.cpp" line="729"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="730"/>
-      <source>Add View to ClipGroup</source>
-      <translation>Adăugați o vedere la ClipGroup</translation>
+      <source>Add View to Clip group</source>
+      <translation type="unfinished">Add View to Clip group</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="731"/>
@@ -88,17 +88,17 @@
     <message>
       <location filename="../../Command.cpp" line="941"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="942"/>
-      <source>Insert a DraftView</source>
-      <translation>Inserați o DraftView</translation>
+      <source>Insert a DraftWB object</source>
+      <translation type="unfinished">Insert a DraftWB object</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="943"/>
-      <source>Inserts a Draft WB object</source>
-      <translation>Inserați Un obiect Draft WB</translation>
+      <source>Insert a View of a Draft Workbench object</source>
+      <translation type="unfinished">Insert a View of a Draft Workbench object</translation>
     </message>
   </context>
   <context>
@@ -152,7 +152,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="212"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="213"/>
@@ -181,7 +181,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="962"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="963"/>
@@ -195,7 +195,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="870"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="871"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="782"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="783"/>
@@ -223,7 +223,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="344"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="345"/>
@@ -241,7 +241,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="117"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="118"/>
@@ -259,7 +259,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="557"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="558"/>
@@ -277,7 +277,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="670"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="671"/>
@@ -295,7 +295,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="142"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="143"/>
@@ -309,7 +309,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="80"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="81"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="444"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="445"/>
@@ -337,7 +337,7 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
@@ -361,7 +361,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
@@ -375,7 +375,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="244"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="245"/>
@@ -389,7 +389,7 @@
     <message>
       <location filename="../../Command.cpp" line="253"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="254"/>
@@ -403,7 +403,7 @@
     <message>
       <location filename="../../Command.cpp" line="418"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="419"/>
@@ -417,7 +417,7 @@
     <message>
       <location filename="../../Command.cpp" line="348"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="349"/>
@@ -431,7 +431,7 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
@@ -449,7 +449,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="311"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="312"/>
@@ -463,7 +463,7 @@
     <message>
       <location filename="../../Command.cpp" line="1061"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1062"/>
@@ -481,7 +481,7 @@
     <message>
       <location filename="../../Command.cpp" line="887"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="888"/>
@@ -499,13 +499,13 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="264"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="265"/>
       <location filename="../../CommandDecorate.cpp" line="266"/>
-      <source>Turn View Frames on or off</source>
-      <translation>Activează/dezactivează ramele vederilor</translation>
+      <source>Turn View Frames On/Off</source>
+      <translation type="unfinished">Turn View Frames On/Off</translation>
     </message>
   </context>
   <context>
@@ -542,24 +542,28 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="743"/>
-      <source>Select 1 DrawViewClip and 1 DrawView.</source>
-      <translation>Selectaţi 1 DrawViewClip și 1 DrawView.</translation>
+      <source>Select 1 Clip group and 1 View.</source>
+      <translation type="unfinished">Select 1 Clip group and 1 View.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="759"/>
-      <location filename="../../Command.cpp" line="827"/>
-      <source>Select exactly one Drawing View object.</source>
-      <translation>Selectați doar un singur obiect tip Drawing View.</translation>
+      <source>Select exactly one View to add to group.</source>
+      <translation type="unfinished">Select exactly one View to add to group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
-      <source>Select exactly one Clip object.</source>
-      <translation>Selectați doar un singur obiect tip Clip.</translation>
+      <source>Select exactly one Clip group.</source>
+      <translation type="unfinished">Select exactly one Clip group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Clip şi View trebuie să fie din aceeaşi pagină.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="827"/>
+      <source>Select exactly one View to remove from Group.</source>
+      <translation type="unfinished">Select exactly one View to remove from Group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="847"/>
@@ -584,8 +588,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1030"/>
-      <source>There is no Arch Section Plane in selection.</source>
-      <translation>Nu este selectat un Plan de Secțiune al Arcadei.</translation>
+      <source>There is no Section Plane in selection.</source>
+      <translation type="unfinished">There is no Section Plane in selection.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>
@@ -620,8 +624,8 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="203"/>
-      <source>Can&apos;t make a Dimension from this selection</source>
-      <translation>Nu se poate creea o Dimension cu această selecţie</translation>
+      <source>Can not make a Dimension from this selection</source>
+      <translation type="unfinished">Can not make a Dimension from this selection</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
@@ -646,8 +650,8 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="917"/>
-      <source>Need three points to make an 3 point Angle Dimension</source>
-      <translation>Aveți nevoie de trei puncte pentru a face o cotă de unghiul de 3 puncte</translation>
+      <source>Need three points to make a 3 point Angle Dimension</source>
+      <translation type="unfinished">Need three points to make a 3 point Angle Dimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1003"/>
@@ -688,9 +692,13 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1082"/>
+      <source>No View of a Part in selection.</source>
+      <translation type="unfinished">No View of a Part in selection.</translation>
+    </message>
+    <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
-      <source>No DrawViewPart in selection.</source>
-      <translation>Nu aveți DrawViewPart în selecţie.</translation>
+      <source>No Feature with Shape in selection.</source>
+      <translation type="unfinished">No Feature with Shape in selection.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
@@ -754,35 +762,35 @@
       <translation>Selectaţi exact 1 pagină.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="539"/>
+      <location filename="../../MDIViewPage.cpp" line="544"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="540"/>
-      <location filename="../../MDIViewPage.cpp" line="786"/>
+      <location filename="../../MDIViewPage.cpp" line="545"/>
+      <location filename="../../MDIViewPage.cpp" line="791"/>
       <source>All Files (*.*)</source>
       <translation>Toate fișierele (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="541"/>
+      <location filename="../../MDIViewPage.cpp" line="546"/>
       <source>Export Page As PDF</source>
       <translation>Exportă pagina ca PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="785"/>
+      <location filename="../../MDIViewPage.cpp" line="790"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="787"/>
+      <location filename="../../MDIViewPage.cpp" line="792"/>
       <source>Export page as SVG</source>
       <translation>Exportă pagina ca SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1217"/>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
+      <location filename="../../MDIViewPage.cpp" line="1223"/>
+      <source>%1.%2.%3</source>
+      <translation type="unfinished">%1.%2.%3</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="595"/>
@@ -807,11 +815,6 @@
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDraw2Imp</name>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
-      <source>TechDraw 2</source>
-      <translation>TechDraw 2</translation>
-    </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="20"/>
       <source>Dimensions</source>
@@ -851,6 +854,11 @@
       <location filename="../../DlgPrefsTechDraw2.ui" line="85"/>
       <source>Alternate Decimals</source>
       <translation>Zecimale Alternative</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
+      <source>TechDraw Dimensions</source>
+      <translation type="unfinished">TechDraw Dimensions</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
@@ -1002,11 +1010,6 @@
   <context>
     <name>TechDrawGui::DlgPrefsTechDrawImp</name>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
-      <source>TechDraw 1</source>
-      <translation>TechDraw 1</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="20"/>
       <source>General</source>
       <translation>General</translation>
@@ -1078,19 +1081,9 @@
       <translation>Păstraţi pagini actualizate</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="656"/>
-      <source>Font for View Labels</source>
-      <translation>Font pentru View label</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
-      <source>Template Dot Size</source>
-      <translation>Dimensiunea punctului din şablon</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
-      <source>Colors</source>
-      <translation>Culori</translation>
+      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
+      <source>TechDraw General</source>
+      <translation type="unfinished">TechDraw General</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
@@ -1121,6 +1114,11 @@
       <location filename="../../DlgPrefsTechDraw.ui" line="168"/>
       <source>AutoDistribute Secondary Views</source>
       <translation>Autodistribuirea automată a vizualizărilor secundare</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
+      <source>Colors</source>
+      <translation>Culori</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="210"/>
@@ -1223,14 +1221,24 @@
       <translation>Font pentru Etichete</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="656"/>
+      <source>Font for View Labels</source>
+      <translation>Font pentru View label</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
+      <source>Editable Text Marker Size</source>
+      <translation type="unfinished">Editable Text Marker Size</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="707"/>
       <source>View Label size in units</source>
       <translation>Vezi Dimensiune etichetă în unităţi</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="723"/>
-      <source>Green edit dot size in units</source>
-      <translation>Dimensiunea punctelor Verzi de editare, în unităţi</translation>
+      <source>Size of editable text marker in Templates (green dot).</source>
+      <translation type="unfinished">Size of editable text marker in Templates (green dot).</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="649"/>
@@ -1246,11 +1254,6 @@
       <translation>&amp; Export SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="123"/>
-      <source>dummy[*]</source>
-      <translation>dummy[*]</translation>
-    </message>
-    <message>
       <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Comuta &amp; actualizează</translation>
@@ -1261,51 +1264,56 @@
       <translation>Comutare &amp; cadre</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="619"/>
+      <location filename="../../MDIViewPage.cpp" line="624"/>
       <source>Different orientation</source>
       <translation>Orientare diferită</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="620"/>
+      <location filename="../../MDIViewPage.cpp" line="625"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Imprimanta utilizează o orientare diferită decât desenul. Doriţi să continuaţi?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="627"/>
-      <location filename="../../MDIViewPage.cpp" line="635"/>
+      <location filename="../../MDIViewPage.cpp" line="632"/>
+      <location filename="../../MDIViewPage.cpp" line="640"/>
       <source>Different paper size</source>
       <translation>Hârtie de dimensiune diferită</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="628"/>
-      <location filename="../../MDIViewPage.cpp" line="636"/>
+      <location filename="../../MDIViewPage.cpp" line="633"/>
+      <location filename="../../MDIViewPage.cpp" line="641"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Imprimanta utilizează o altă dimensiune de hârtie decât desenul. Doriţi să continuaţi?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="647"/>
+      <location filename="../../MDIViewPage.cpp" line="652"/>
       <source>Opening file failed</source>
       <translation>Deschiderea fișierului a eșuat</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="648"/>
-      <source>Can&apos;t open file %1 for writing.</source>
-      <translation>Imposibil de deschis fișierul %1 la scriere.</translation>
+      <location filename="../../MDIViewPage.cpp" line="653"/>
+      <source>Can not open file %1 for writing.</source>
+      <translation type="unfinished">Can not open file %1 for writing.</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="1221"/>
+      <source>Selected:</source>
+      <translation>Selectat:</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::QGVPage</name>
     <message>
       <location filename="../../QGVPage.cpp" line="580"/>
-      <source>Drawing page: </source>
-      <translation>Pagina de desen: </translation>
+      <source>Drawing page:</source>
+      <translation type="unfinished">Drawing page:</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="582"/>
-      <source> exported from FreeCAD document: </source>
-      <translation> exportate din documentul FreeCAD: </translation>
+      <source> exported from FreeCAD document:</source>
+      <translation type="unfinished"> exported from FreeCAD document:</translation>
     </message>
   </context>
   <context>
@@ -1499,8 +1507,8 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="230"/>
-      <source>Primary View Direction</source>
-      <translation>Directia vederii principale</translation>
+      <source>Current primary view direction</source>
+      <translation type="unfinished">Current primary view direction</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="243"/>

@@ -102,8 +102,8 @@
       <translation>Centrera vertikalt</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Centrera vertikalt innehållet i markerade celler</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Centrera innehållet i markerade celler vertikalt</translation>
     </message>
   </context>
   <context>
@@ -114,11 +114,11 @@
     </message>
     <message>
       <source>Export spreadsheet</source>
-      <translation>Exportera kalkylark</translation>
+      <translation>Exportera kalkylblad</translation>
     </message>
     <message>
       <source>Export spreadsheet to CSV file</source>
-      <translation>Exportera kalkylark till CSV-fil</translation>
+      <translation>Exportera kalkylblad till CSV-fil</translation>
     </message>
   </context>
   <context>
@@ -129,11 +129,11 @@
     </message>
     <message>
       <source>Import spreadsheet</source>
-      <translation>Importera kalkylark</translation>
+      <translation>Importera kalkylblad</translation>
     </message>
     <message>
       <source>Import CSV file into spreadsheet</source>
-      <translation>Importera CSV-fil till kalkylark</translation>
+      <translation>Importera CSV-fil till kalkylblad</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells in spreadsheet</source>
-      <translation>Sammanfoga markerade celler i kalkylark</translation>
+      <translation>Sammanfoga markerade celler i kalkylblad</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells in spreadsheet</source>
-      <translation>Dela upp tidigare sammanfogade celler i kalkylark</translation>
+      <translation>Dela upp tidigare sammanfogade celler i kalkylblad</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Understruken text</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
+      <source>Underline text in selected cells</source>
       <translation>Stryk under text i markerade celler</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Anpassad</translation>
+      <source>Custom Color</source>
+      <translation>Anpassad färg</translation>
     </message>
   </context>
   <context>

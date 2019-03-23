@@ -109,8 +109,15 @@ public:
     static Unit AmountOfSubstance;
     static Unit LuminousIntensity;
 
-    static Unit Stress;
+    // Pressure
+    static Unit CompressiveStrength;
     static Unit Pressure;
+    static Unit ShearModulus;
+    static Unit Stress;
+    static Unit UltimateTensileStrength;
+    static Unit YieldStrength;
+    static Unit YoungsModulus;
+
     static Unit Force;
     static Unit Work;
     static Unit Power;

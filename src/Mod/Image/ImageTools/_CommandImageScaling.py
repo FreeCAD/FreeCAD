@@ -59,7 +59,7 @@ if FreeCAD.GuiUp:
 class _CommandImageScaling:
     "Command to Scale an Image to an Image Plane"
     def GetResources(self):
-        return {'Pixmap': ":/icons/image-scale.svg",
+        return {'Pixmap': "Image_Scaling",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Scale image plane"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Scales an image plane by defining a distance between two points")}

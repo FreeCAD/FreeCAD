@@ -71,37 +71,34 @@ ViewProviderProjGroup::~ViewProviderProjGroup()
 void ViewProviderProjGroup::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
-    ViewProviderDocumentObject::attach(pcFeat);
+    ViewProviderDrawingView::attach(pcFeat);
 }
 
 void ViewProviderProjGroup::setDisplayMode(const char* ModeName)
 {
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
+    ViewProviderDrawingView::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderProjGroup::getDisplayModes(void) const
 {
     // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
+    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
     StrList.push_back("Drawing");
     return StrList;
 }
 
 void ViewProviderProjGroup::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderDocumentObject::updateData(prop);
+    ViewProviderDrawingView::updateData(prop);
 
     if(prop == &(getObject()->Scale) ||
        prop == &(getObject()->ScaleType) ||
        prop == &(getObject()->Views) ||
-       prop == &(getObject()->ProjectionType)) {
-
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgProjGroup *projDlg = qobject_cast<TaskDlgProjGroup *>(dlg);
-
-        if (projDlg &&
-            projDlg->getViewProvider() == dynamic_cast<const ViewProviderProjGroup *>(getObject()) ) {
-            projDlg->update();
+       prop == &(getObject()->ProjectionType) ||
+       prop == &(getObject()->LockPosition) ) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
         }
     }
 

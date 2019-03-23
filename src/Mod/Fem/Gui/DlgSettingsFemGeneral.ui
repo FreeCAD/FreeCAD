@@ -34,7 +34,7 @@
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="title">
-        <string>Working directory ccx tools</string>
+        <string>Working directory for ccx tools solver only</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -107,7 +107,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Working directory gerneral FEM solver frame work</string>
+        <string>Working directory for all frame work solver</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
@@ -133,7 +133,7 @@
              <bool>true</bool>
             </property>
             <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Elmer</cstring>
+             <cstring>Mod/Fem/General</cstring>
             </property>
             <property name="prefEntry" stdset="0">
              <cstring>UseTempDirectory</cstring>
@@ -177,7 +177,7 @@
              <string>Beside .FCStd file</string>
             </property>
             <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Elmer</cstring>
+             <cstring>Mod/Fem/General</cstring>
             </property>
             <property name="prefEntry" stdset="0">
              <cstring>UseBesideDirectory</cstring>
@@ -221,7 +221,7 @@
              <string>Use custom directory</string>
             </property>
             <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Elmer</cstring>
+             <cstring>Mod/Fem/General</cstring>
             </property>
             <property name="prefEntry" stdset="0">
              <cstring>UseCustomDirectory</cstring>
@@ -282,7 +282,7 @@
                </size>
               </property>
               <property name="prefPath" stdset="0">
-               <cstring>Mod/Fem/Elmer</cstring>
+               <cstring>Mod/Fem/General</cstring>
               </property>
               <property name="prefEntry" stdset="0">
                <cstring>CustomDirectoryPath</cstring>

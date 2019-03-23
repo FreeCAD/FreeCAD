@@ -24,13 +24,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
-      <source>Insert an ArchView</source>
-      <translation>Txertatu arkitektura-bista bat</translation>
+      <source>Insert a Section Plane</source>
+      <translation>Txertatu sekzio-planoa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="996"/>
-      <source>Inserts a view of an Arch Section Plane</source>
-      <translation>Arkitekturako sekzio-plano baten bista bat txertatzen du</translation>
+      <source>Inserts a view of a Section Plane from Arch Workbench</source>
+      <translation>Arch lan-mahaiko sekzio-plano baten bista bat txertatzen du</translation>
     </message>
   </context>
   <context>
@@ -74,8 +74,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="730"/>
-      <source>Add View to ClipGroup</source>
-      <translation>Gehitu bista ebaketa-taldeari</translation>
+      <source>Add View to Clip group</source>
+      <translation>Gehitu bista bat ebaketa-taldeari</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="731"/>
@@ -92,13 +92,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="942"/>
-      <source>Insert a DraftView</source>
-      <translation>Txertatu Draft bista bat</translation>
+      <source>Insert a DraftWB object</source>
+      <translation>Txertatu DraftWB objektu bat</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="943"/>
-      <source>Inserts a Draft WB object</source>
-      <translation>Laneko mahaia den objektu baten zirriborroa txertatzen du</translation>
+      <source>Insert a View of a Draft Workbench object</source>
+      <translation>Txertatu zirriborro lan-mahai objektu baten bista bat</translation>
     </message>
   </context>
   <context>
@@ -201,7 +201,7 @@
       <location filename="../../CommandCreateDims.cpp" line="871"/>
       <location filename="../../CommandCreateDims.cpp" line="872"/>
       <source>Insert a new 3 point Angle dimension</source>
-      <translation type="unfinished">Insert a new 3 point Angle dimension</translation>
+      <translation>Txertatu 3 puntuko angelu-kota berri bat</translation>
     </message>
   </context>
   <context>
@@ -504,7 +504,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="265"/>
       <location filename="../../CommandDecorate.cpp" line="266"/>
-      <source>Turn View Frames on or off</source>
+      <source>Turn View Frames On/Off</source>
       <translation>Aktibatu/desaktibatu bista-markoak</translation>
     </message>
   </context>
@@ -532,7 +532,7 @@
       <location filename="../../Command.cpp" line="275"/>
       <location filename="../../Command.cpp" line="509"/>
       <source>No Shapes or Groups in this selection</source>
-      <translation type="unfinished">No Shapes or Groups in this selection</translation>
+      <translation>Ez dago formarik edo talderik hautapen honetan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="367"/>
@@ -542,24 +542,28 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="743"/>
-      <source>Select 1 DrawViewClip and 1 DrawView.</source>
-      <translation>Hautatu marrazki-bistaren ebaketa bat eta marrazki-bista bat.</translation>
+      <source>Select 1 Clip group and 1 View.</source>
+      <translation>Hautatu ebaketa talde bat eta bista bat.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="759"/>
-      <location filename="../../Command.cpp" line="827"/>
-      <source>Select exactly one Drawing View object.</source>
-      <translation>Hautatu marrazki-bistako objektu bakar bat.</translation>
+      <source>Select exactly one View to add to group.</source>
+      <translation>Hautatu bista bakar bat taldeari gehitzeko.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
-      <source>Select exactly one Clip object.</source>
-      <translation>Hautatu ebaketa-objektu bakar bat.</translation>
+      <source>Select exactly one Clip group.</source>
+      <translation>Hautatu ebaketa-talde bakar bat.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Ebaketak eta bistak orrialde berekoak izan behar dute.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="827"/>
+      <source>Select exactly one View to remove from Group.</source>
+      <translation>Hautatu bista bakar bat taldetik kentzeko.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="847"/>
@@ -584,8 +588,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1030"/>
-      <source>There is no Arch Section Plane in selection.</source>
-      <translation>Ez dago arkitekturako sekzio-planorik hautapenean.</translation>
+      <source>There is no Section Plane in selection.</source>
+      <translation>Ez dago sekzio-planorik hautapenean.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>
@@ -620,34 +624,34 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="203"/>
-      <source>Can&apos;t make a Dimension from this selection</source>
+      <source>Can not make a Dimension from this selection</source>
       <translation>Ezin da kota bat egin hautapen horrekin</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
       <location filename="../../CommandCreateDims.cpp" line="388"/>
       <source>Selection Warning</source>
-      <translation type="unfinished">Selection Warning</translation>
+      <translation>Hautapen-abisua</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="289"/>
       <source>Selected edge is a BSpline.  Radius will be approximate.</source>
-      <translation type="unfinished">Selected edge is a BSpline.  Radius will be approximate.</translation>
+      <translation>Hautatutako ertza BSpline bat da. Erradioa gutxi gorabeherakoa izango da.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="389"/>
       <source>Selected edge is a BSpline.  Diameter will be approximate.</source>
-      <translation type="unfinished">Selected edge is a BSpline.  Diameter will be approximate.</translation>
+      <translation>Hautatutako ertza BSpline bat da. Diametroa gutxi gorabeherakoa izango da.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="828"/>
       <source>Need two straight edges to make an Angle Dimension</source>
-      <translation type="unfinished">Need two straight edges to make an Angle Dimension</translation>
+      <translation>Bi ertz zuzen behar dira angelu-kota bat egiteko</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="917"/>
-      <source>Need three points to make an 3 point Angle Dimension</source>
-      <translation type="unfinished">Need three points to make an 3 point Angle Dimension</translation>
+      <source>Need three points to make a 3 point Angle Dimension</source>
+      <translation>Hiru puntu behar dira 3 puntuko angelu-kota bat egiteko</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1003"/>
@@ -688,9 +692,13 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1082"/>
+      <source>No View of a Part in selection.</source>
+      <translation>Ez dago piezaren bistarik hautapenean.</translation>
+    </message>
+    <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
-      <source>No DrawViewPart in selection.</source>
-      <translation>Ez dago marrazki-bistaren piezarik hautapenean.</translation>
+      <source>No Feature with Shape in selection.</source>
+      <translation>Ez dago formarik duen elementurik hautapenean.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
@@ -721,7 +729,7 @@
       <location filename="../../CommandDecorate.cpp" line="382"/>
       <location filename="../../CommandDecorate.cpp" line="388"/>
       <source>No Faces to hatch in this selection</source>
-      <translation type="unfinished">No Faces to hatch in this selection</translation>
+      <translation>Ez dago itzaleztatzeko aurpegirik hautapen honetan</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="136"/>
@@ -754,35 +762,35 @@
       <translation>Hautatu orrialde bakar bat.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="539"/>
+      <location filename="../../MDIViewPage.cpp" line="544"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="540"/>
-      <location filename="../../MDIViewPage.cpp" line="786"/>
+      <location filename="../../MDIViewPage.cpp" line="545"/>
+      <location filename="../../MDIViewPage.cpp" line="791"/>
       <source>All Files (*.*)</source>
       <translation>Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="541"/>
+      <location filename="../../MDIViewPage.cpp" line="546"/>
       <source>Export Page As PDF</source>
       <translation>Esportatu orrialdea PDF gisa</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="785"/>
+      <location filename="../../MDIViewPage.cpp" line="790"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="787"/>
+      <location filename="../../MDIViewPage.cpp" line="792"/>
       <source>Export page as SVG</source>
       <translation>Esportatu orrialdea SVG gisa</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1217"/>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
+      <location filename="../../MDIViewPage.cpp" line="1223"/>
+      <source>%1.%2.%3</source>
+      <translation>%1.%2.%3</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="595"/>
@@ -807,11 +815,6 @@
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDraw2Imp</name>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
-      <source>TechDraw 2</source>
-      <translation>TechDraw 2</translation>
-    </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="20"/>
       <source>Dimensions</source>
@@ -851,6 +854,11 @@
       <location filename="../../DlgPrefsTechDraw2.ui" line="85"/>
       <source>Alternate Decimals</source>
       <translation>Txandakako dezimalak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
+      <source>TechDraw Dimensions</source>
+      <translation>TechDraw kotak</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
@@ -910,12 +918,12 @@
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="297"/>
       <source>Adjusts size of vertices in drawing</source>
-      <translation type="unfinished">Adjusts size of vertices in drawing</translation>
+      <translation>Erpinen tamaina egokitzen du marrazkian</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="313"/>
       <source>Vertex Scale</source>
-      <translation type="unfinished">Vertex Scale</translation>
+      <translation>Erpin-eskala</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="327"/>
@@ -951,12 +959,12 @@
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="491"/>
       <source>Line Group Name</source>
-      <translation type="unfinished">Line Group Name</translation>
+      <translation>Lerro taldearen izena</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="511"/>
       <source>Vertex Color</source>
-      <translation type="unfinished">Vertex Color</translation>
+      <translation>Erpin-kolorea</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="381"/>
@@ -1001,11 +1009,6 @@
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDrawImp</name>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
-      <source>TechDraw 1</source>
-      <translation>TechDraw 1</translation>
-    </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="20"/>
       <source>General</source>
@@ -1078,19 +1081,9 @@
       <translation>Mantendu orrialdeak eguneratuta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="656"/>
-      <source>Font for View Labels</source>
-      <translation>Etiketak bistaratzeko letra-tipoa</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
-      <source>Template Dot Size</source>
-      <translation>Puntu-tamainaren txantiloia</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
-      <source>Colors</source>
-      <translation>Koloreak</translation>
+      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
+      <source>TechDraw General</source>
+      <translation>TechDraw orokorra</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
@@ -1115,12 +1108,17 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="165"/>
       <source>Automatically distribute secondary views.</source>
-      <translation type="unfinished">Automatically distribute secondary views.</translation>
+      <translation>Banatu automatikoki bigarren mailako bistak.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="168"/>
       <source>AutoDistribute Secondary Views</source>
-      <translation type="unfinished">AutoDistribute Secondary Views</translation>
+      <translation>Banatu automatikoki bigarren mailako bistak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
+      <source>Colors</source>
+      <translation>Koloreak</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="210"/>
@@ -1180,7 +1178,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="494"/>
       <source>Line Group File</source>
-      <translation type="unfinished">Line Group File</translation>
+      <translation>Lerro taldearen fitxategia</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="511"/>
@@ -1200,7 +1198,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="544"/>
       <source>Alternate Line Group file</source>
-      <translation type="unfinished">Alternate Line Group file</translation>
+      <translation>Lerro taldearen ordezko fitxategia</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="561"/>
@@ -1223,14 +1221,24 @@
       <translation>Etiketen letra-tipoa</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="656"/>
+      <source>Font for View Labels</source>
+      <translation>Etiketak bistaratzeko letra-tipoa</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
+      <source>Editable Text Marker Size</source>
+      <translation>Testu-markatzailearen tamaina editagarria</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="707"/>
       <source>View Label size in units</source>
       <translation>Bistaratu etiketa-tamaina unitatetan</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="723"/>
-      <source>Green edit dot size in units</source>
-      <translation>Edizio berdearen puntu-tamaina unitatetan</translation>
+      <source>Size of editable text marker in Templates (green dot).</source>
+      <translation>Testu-markatzaile editagarriaren tamaina txantiloietan (puntu berdea).</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="649"/>
@@ -1246,68 +1254,68 @@
       <translation>&amp;Esportatu SVGa</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="123"/>
-      <source>dummy[*]</source>
-      <translation>fikziozkoa[*]</translation>
-    </message>
-    <message>
       <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Toggle &amp;Keep Updated</source>
-      <translation type="unfinished">Toggle &amp;Keep Updated</translation>
+      <translation>Txandakatu &amp;eguneratuta mantentzea</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="115"/>
       <source>Toggle &amp;Frames</source>
-      <translation type="unfinished">Toggle &amp;Frames</translation>
+      <translation>Txandakatu &amp;markoak</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="619"/>
+      <location filename="../../MDIViewPage.cpp" line="624"/>
       <source>Different orientation</source>
       <translation>Orientazio desberdina</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="620"/>
+      <location filename="../../MDIViewPage.cpp" line="625"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Inprimagailuak eta marrazkiak orientazio desberdina dute.
 Jarraitu nahi duzu?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="627"/>
-      <location filename="../../MDIViewPage.cpp" line="635"/>
+      <location filename="../../MDIViewPage.cpp" line="632"/>
+      <location filename="../../MDIViewPage.cpp" line="640"/>
       <source>Different paper size</source>
       <translation>Paper-tamaina desberdina</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="628"/>
-      <location filename="../../MDIViewPage.cpp" line="636"/>
+      <location filename="../../MDIViewPage.cpp" line="633"/>
+      <location filename="../../MDIViewPage.cpp" line="641"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Inprimagailuak eta marrazkiak paper-tamaina desberdina dute.
 Jarraitu nahi duzu?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="647"/>
+      <location filename="../../MDIViewPage.cpp" line="652"/>
       <source>Opening file failed</source>
       <translation>Fitxategia irekitzeak huts egin du</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="648"/>
-      <source>Can&apos;t open file %1 for writing.</source>
+      <location filename="../../MDIViewPage.cpp" line="653"/>
+      <source>Can not open file %1 for writing.</source>
       <translation>Ezin da %1 fitxategia ireki hura idazteko.</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="1221"/>
+      <source>Selected:</source>
+      <translation>Hautatua:</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::QGVPage</name>
     <message>
       <location filename="../../QGVPage.cpp" line="580"/>
-      <source>Drawing page: </source>
-      <translation>Marrazte-orrialdea: </translation>
+      <source>Drawing page:</source>
+      <translation>Marrazte-orria:</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="582"/>
-      <source> exported from FreeCAD document: </source>
-      <translation> FreeCAD dokumentutik esportatua: </translation>
+      <source> exported from FreeCAD document:</source>
+      <translation> FreeCAD dokumentutik esportatua:</translation>
     </message>
   </context>
   <context>
@@ -1447,7 +1455,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="73"/>
       <source>First Angle</source>
-      <translation>Lehenengo angelua</translation>
+      <translation>Lehen angelua</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="78"/>
@@ -1497,12 +1505,12 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="196"/>
       <source>Adjust Primary Direction</source>
-      <translation>Doitu norabide nagusia</translation>
+      <translation>Egokitu norabide nagusia</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="230"/>
-      <source>Primary View Direction</source>
-      <translation>Bista nagusiaren norabidea</translation>
+      <source>Current primary view direction</source>
+      <translation>Uneko bista nagusiaren norabidea</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="243"/>
@@ -1572,7 +1580,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="555"/>
       <source>Rear</source>
-      <translation>Atzea</translation>
+      <translation>Atzekoa</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="572"/>

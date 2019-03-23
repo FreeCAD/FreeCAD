@@ -294,13 +294,14 @@
       <translation>Tryck på mittre musknapp</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Tryck på mitt och vänster eller höger musknapp</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation type="unfinished">Press middle+left or middle+right button</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Rulla med musens scrollknapp eller håll den nedtryckt medan du klickar med vänster eller höger musknapp och flyttar musen uppåt eller nedåt</translation>
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -402,7 +403,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation>Biblioteken</translation>
+      <translation type="unfinished">Libraries</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
@@ -422,6 +423,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Utanför område</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation type="unfinished">Camera settings</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Orientering</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation type="unfinished">Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation type="unfinished">Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation type="unfinished">Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation type="unfinished">Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation type="unfinished">Current view</translation>
     </message>
   </context>
   <context>
@@ -818,20 +850,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>multipel definierad genväg</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Genvägen '%1' är definierad mer än en gång. Detta kan leda till oväntat beteende.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Genvägen är redan definierad</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Please define another shortcut.</source>
-      <translation>Genvägen '%1' är redan tilldelad '%2'.
-
-Definiera en annan genväg.</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation type="unfinished">Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -1354,11 +1386,11 @@ Definiera en annan genväg.</translation>
     </message>
     <message>
       <source>Duplicate</source>
-      <translation>Duplicera</translation>
+      <translation type="unfinished">Duplicate</translation>
     </message>
     <message>
       <source>Addons...</source>
-      <translation>Tillägg...</translation>
+      <translation type="unfinished">Addons...</translation>
     </message>
   </context>
   <context>
@@ -1431,17 +1463,17 @@ Perhaps a file permission error?</translation>
     </message>
     <message>
       <source>Duplicate Macro</source>
-      <translation>Duplicera makro</translation>
+      <translation type="unfinished">Duplicate Macro</translation>
     </message>
     <message>
       <source>Duplicate Failed</source>
-      <translation>Dublicering misslyckades</translation>
+      <translation type="unfinished">Duplicate Failed</translation>
     </message>
     <message>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
-      <translation>Det gick inte att duplicera till '%1'.
-kanske saknas filrättigheter?</translation>
+      <translation type="unfinished">Failed to duplicate to '%1'.
+Perhaps a file permission error?</translation>
     </message>
   </context>
   <context>
@@ -2018,11 +2050,11 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Show navigation cube</source>
-      <translation>Visa navigeringskub</translation>
+      <translation type="unfinished">Show navigation cube</translation>
     </message>
     <message>
       <source>Corner</source>
-      <translation>Hörn</translation>
+      <translation type="unfinished">Corner</translation>
     </message>
     <message>
       <source>Top left</source>
@@ -2043,6 +2075,10 @@ Ange en annan katalog.</translation>
     <message>
       <source>Use OpenGL Vertex Buffer Object</source>
       <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
+    </message>
+    <message>
+      <source>New Document Camera Orientation</source>
+      <translation type="unfinished">New Document Camera Orientation</translation>
     </message>
     <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
@@ -2073,27 +2109,67 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>5px</source>
-      <translation>5px</translation>
+      <translation type="unfinished">5px</translation>
     </message>
     <message>
       <source>7px</source>
-      <translation>7px</translation>
+      <translation type="unfinished">7px</translation>
     </message>
     <message>
       <source>9px</source>
-      <translation>9px</translation>
+      <translation type="unfinished">9px</translation>
     </message>
     <message>
       <source>11px</source>
-      <translation>11px</translation>
+      <translation type="unfinished">11px</translation>
     </message>
     <message>
       <source>13px</source>
-      <translation>13px</translation>
+      <translation type="unfinished">13px</translation>
     </message>
     <message>
       <source>15px</source>
-      <translation>15px</translation>
+      <translation type="unfinished">15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrisk</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrisk</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrisk</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Topp</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Front</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Vänster</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Höger</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Bak</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Botten</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Anpassad</translation>
     </message>
   </context>
   <context>
@@ -2736,31 +2812,31 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>1/2"</source>
-      <translation>1/2"</translation>
+      <translation type="unfinished">1/2"</translation>
     </message>
     <message>
       <source>1/4"</source>
-      <translation>1/4"</translation>
+      <translation type="unfinished">1/4"</translation>
     </message>
     <message>
       <source>1/8"</source>
-      <translation>1/8"</translation>
+      <translation type="unfinished">1/8"</translation>
     </message>
     <message>
       <source>1/16"</source>
-      <translation>1/16"</translation>
+      <translation type="unfinished">1/16"</translation>
     </message>
     <message>
       <source>1/32"</source>
-      <translation>1/32"</translation>
+      <translation type="unfinished">1/32"</translation>
     </message>
     <message>
       <source>1/64"</source>
-      <translation>1/64"</translation>
+      <translation type="unfinished">1/64"</translation>
     </message>
     <message>
       <source>1/128"</source>
-      <translation>1/128"</translation>
+      <translation type="unfinished">1/128"</translation>
     </message>
   </context>
   <context>
@@ -2807,7 +2883,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Tree View</source>
-      <translation>Träd-vy</translation>
+      <translation type="unfinished">Tree View</translation>
     </message>
     <message>
       <source>Object being edited</source>
@@ -2910,10 +2986,6 @@ Ange en annan katalog.</translation>
       <translation>Sortera aktiverade arbetsbänkar</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Sortera aktiverade arbetsbänkar&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Flytta upp</translation>
     </message>
@@ -2928,6 +3000,10 @@ Ange en annan katalog.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Lägg till alla till aktiverade arbetsbänkar</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3004,10 +3080,6 @@ Ange en annan katalog.</translation>
       <translation>Är du säker på att du vill ta bort alla temporära kataloger?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>När du tar bort den valda temporära katalogerna kommer du inte att kunna återställa filerna efteråt.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Färdig</translation>
     </message>
@@ -3022,6 +3094,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation type="unfinished">Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3799,20 +3875,20 @@ Vill du spara ändringarna?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Tryck på skärmen eller klicka på vänster musknapp.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Dra på skärmen med två fingrar. Eller tryck på höger musknapp.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Dra på skärmen med ett finger. Eller tryck på vänster musknapp. I Sketcher och andra redigeringslägen, håll ned Alt-knappen.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Nyp (dra isär/ihop två fingrar på skärmen). Eller bläddra med mellersta musknappen. Eller använd PgUp/Page på tangentbordet.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4096,28 +4172,27 @@ Hur vill du fortsätta?</translation>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Tryck på skärmen eller klicka på vänster musknapp.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Dra skärmen med två fingrar. Eller tryck på ALT + musens mittknapp.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Dra skärmen med ett finger. Eller tryck på ALT + vänster musknapp. I Sketcher och andra redigeringslägen, håller du även ned Alt.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Nyp (dra isär/ihop två fingrar på skärmen). Eller bläddra med mellersta musknappen. Eller tryck ALT+höger musknapp. Eller använd PgUp/PgDown på tangentbordet.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Nedladdning startad...</translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -5218,19 +5293,7 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Origin</source>
-      <translation type="unfinished">Origin</translation>
-    </message>
-    <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Förflyttning: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Rotering: </translation>
+      <translation>Ursprung</translation>
     </message>
     <message>
       <source>Delete group content?</source>
@@ -5247,6 +5310,14 @@ Tänk på att det har betydelse var du klickar.</translation>
     <message>
       <source>Split</source>
       <translation type="unfinished">Split</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Förflyttning:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Rotation:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -5646,8 +5717,8 @@ Tänk på att det har betydelse var du klickar.</translation>
       <translation>Växlar det markerade objektets redigeringsläge</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Går in i eller lämnar det markerade objektets redigeringsläge</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
     </message>
   </context>
   <context>
@@ -5981,12 +6052,12 @@ Tänk på att det har betydelse var du klickar.</translation>
       <translation>Sammanfoga projekt</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 dokument (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Kan inte slå samman projektet med sig själv.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 dokument (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6662,21 +6733,6 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardvy</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonometrisk</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Applicera axonometrisk vy</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6704,6 +6760,21 @@ Tänk på att det har betydelse var du klickar.</translation>
     <message>
       <source>Creates a new view window for the active document</source>
       <translation type="unfinished">Creates a new view window for the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvy</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrisk</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation type="unfinished">Set to dimetric view</translation>
     </message>
   </context>
   <context>
@@ -6794,6 +6865,21 @@ Tänk på att det har betydelse var du klickar.</translation>
     <message>
       <source>Set to front view</source>
       <translation>Ställ in till frontvy</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvy</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrisk</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation type="unfinished">Set to isometric view</translation>
     </message>
   </context>
   <context>
@@ -6974,6 +7060,21 @@ Tänk på att det har betydelse var du klickar.</translation>
     <message>
       <source>Set to top view</source>
       <translation>Ställ in till toppvy</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvy</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrisk</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation type="unfinished">Set to trimetric view</translation>
     </message>
   </context>
   <context>
@@ -7263,28 +7364,16 @@ Tänk på att det har betydelse var du klickar.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation type="unfinished">These items are linked to items selected for deletion and might break.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document. 
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation type="unfinished">
-
-Are you sure you want to continue?</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>
@@ -7343,11 +7432,11 @@ Are you sure you want to continue?</translation>
     </message>
     <message>
       <source>No shading</source>
-      <translation type="unfinished">No shading</translation>
+      <translation>Utan skuggning</translation>
     </message>
     <message>
       <source>No shading mode</source>
-      <translation type="unfinished">No shading mode</translation>
+      <translation>Utan skuggning-läge</translation>
     </message>
   </context>
   <context>

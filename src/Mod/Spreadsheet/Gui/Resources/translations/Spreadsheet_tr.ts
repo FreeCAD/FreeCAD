@@ -102,8 +102,8 @@
       <translation>Dikeyde ortala</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Seçilen hücrelerin içeriğini dikey olarak hizala</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Seçilen hücrelerin içeriğini dikey olarak merkeze hizalayın</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Altı çizili metin</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Seçilen hücrelerdeki yazıların altını çiz</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Seçili hücrelerde metnin altını çiz</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Özel</translation>
+      <source>Custom Color</source>
+      <translation>Özel Renk</translation>
     </message>
   </context>
   <context>

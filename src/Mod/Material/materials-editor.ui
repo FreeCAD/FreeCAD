@@ -90,7 +90,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QGroupBox" name="groupBox_3">
+      <widget class="QGroupBox" name="PreviewGroup">
        <property name="title">
         <string>Preview</string>
        </property>
@@ -143,8 +143,7 @@
         <enum>QLayout::SetMaximumSize</enum>
        </property>
        <item>
-        <widget class="QTreeView" name="treeView">
-        </widget>
+        <widget class="QTreeView" name="treeView"/>
        </item>
       </layout>
      </item>

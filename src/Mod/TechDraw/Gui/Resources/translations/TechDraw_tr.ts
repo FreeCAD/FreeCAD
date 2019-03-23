@@ -24,13 +24,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
-      <source>Insert an ArchView</source>
-      <translation>MimariGörünümü ekle</translation>
+      <source>Insert a Section Plane</source>
+      <translation>Bir Kesit Düzlemi Ekle</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="996"/>
-      <source>Inserts a view of an Arch Section Plane</source>
-      <translation>Bir Kemer Kesiti Düzlemi görünümü girin</translation>
+      <source>Inserts a view of a Section Plane from Arch Workbench</source>
+      <translation>Mimari Çalışma Tezgahından (Arch Workbench) Kesit Düzleminin bir görünümünü ekler</translation>
     </message>
   </context>
   <context>
@@ -74,13 +74,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="730"/>
-      <source>Add View to ClipGroup</source>
-      <translation>Görüntüryü KesimGrubu'na ekleyin</translation>
+      <source>Add View to Clip group</source>
+      <translation>Görüntüyü Kesim Grubu'na ekle</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="731"/>
       <source>Add a View to Clip group</source>
-      <translation>Bir görüntüryü KesimGrubu'na ekleyin</translation>
+      <translation>Kesim Grubu'na Bir Görüntü ekle</translation>
     </message>
   </context>
   <context>
@@ -92,13 +92,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="942"/>
-      <source>Insert a DraftView</source>
-      <translation>DraftView ekleme</translation>
+      <source>Insert a DraftWB object</source>
+      <translation>Bir DraftWB nesnesi ekle</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="943"/>
-      <source>Inserts a Draft WB object</source>
-      <translation>Taslak bir SB nesne ekleyin</translation>
+      <source>Insert a View of a Draft Workbench object</source>
+      <translation>Taslak Çalışma Tezgahının (Draft Workbench) bir görünümünü ekle</translation>
     </message>
   </context>
   <context>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../Command.cpp" line="1121"/>
       <source>Export page as SVG</source>
-      <translation>Sayfa SVG dışa aktarma</translation>
+      <translation>Sayfayı SVG olarak dışa aktar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1122"/>
@@ -504,8 +504,8 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="265"/>
       <location filename="../../CommandDecorate.cpp" line="266"/>
-      <source>Turn View Frames on or off</source>
-      <translation>Görünüm çerçeveleri açma veya kapatma</translation>
+      <source>Turn View Frames On/Off</source>
+      <translation>Görünüm Çerçevelerini Aç / Kapat</translation>
     </message>
   </context>
   <context>
@@ -542,24 +542,28 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="743"/>
-      <source>Select 1 DrawViewClip and 1 DrawView.</source>
-      <translation>1 DrawViewClip ve 1 DrawView seçin.</translation>
+      <source>Select 1 Clip group and 1 View.</source>
+      <translation>1 Kesim Grubu ve 1 Görünüm seçin.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="759"/>
-      <location filename="../../Command.cpp" line="827"/>
-      <source>Select exactly one Drawing View object.</source>
-      <translation>Sadece birtane çizim görünümü nesnesi seçin.</translation>
+      <source>Select exactly one View to add to group.</source>
+      <translation>Gruba eklemek için tam olarak bir Görünüm seçin.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
-      <source>Select exactly one Clip object.</source>
-      <translation>Tek bir küçük resim nesnesi seçin.</translation>
+      <source>Select exactly one Clip group.</source>
+      <translation>Tam olarak bir Kesim grubu seçin.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Klip ve görünümü bakarak aynı sayfada olması gerekir.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="827"/>
+      <source>Select exactly one View to remove from Group.</source>
+      <translation>Gruptan kaldırmak için tam olarak bir Görünüm seçin.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="847"/>
@@ -584,8 +588,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1030"/>
-      <source>There is no Arch Section Plane in selection.</source>
-      <translation>Seçilmiş bir kemer kesiti düzlemi yok.</translation>
+      <source>There is no Section Plane in selection.</source>
+      <translation>Seçimde Kesit Düzlemi yok.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>
@@ -620,8 +624,8 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="203"/>
-      <source>Can&apos;t make a Dimension from this selection</source>
-      <translation>Bu&apos;boyuttan diğerine geçiş yapılamaz</translation>
+      <source>Can not make a Dimension from this selection</source>
+      <translation>Bu seçimden bir ölçülendirme oluşturulamıyor</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
@@ -646,8 +650,8 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="917"/>
-      <source>Need three points to make an 3 point Angle Dimension</source>
-      <translation>3 noktalı Açı Ölçüsü yapmak için üç noktaya ihtiyacınız var</translation>
+      <source>Need three points to make a 3 point Angle Dimension</source>
+      <translation>3 noktalı bir Açı Ölçüsü oluşturmak için üç noktaya ihtiyacınız var</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1003"/>
@@ -688,9 +692,13 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1082"/>
+      <source>No View of a Part in selection.</source>
+      <translation>Seçimdeki Parçanın Görünümü Yok.</translation>
+    </message>
+    <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
-      <source>No DrawViewPart in selection.</source>
-      <translation>Seçimde DrawViewPart yok.</translation>
+      <source>No Feature with Shape in selection.</source>
+      <translation>Seçimdeki şeklin özelliği yok.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
@@ -754,40 +762,40 @@
       <translation>Tam olarak 1 sayfayı seçin.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="539"/>
+      <location filename="../../MDIViewPage.cpp" line="544"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="540"/>
-      <location filename="../../MDIViewPage.cpp" line="786"/>
+      <location filename="../../MDIViewPage.cpp" line="545"/>
+      <location filename="../../MDIViewPage.cpp" line="791"/>
       <source>All Files (*.*)</source>
       <translation>Tüm dosyalar (*. *)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="541"/>
+      <location filename="../../MDIViewPage.cpp" line="546"/>
       <source>Export Page As PDF</source>
-      <translation>Sayfa PDF olarak dışa aktarma</translation>
+      <translation>Sayfayı PDF olarak dışa aktar</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="785"/>
+      <location filename="../../MDIViewPage.cpp" line="790"/>
       <source>SVG (*.svg)</source>
-      <translation type="unfinished">SVG (*.svg)</translation>
+      <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="787"/>
+      <location filename="../../MDIViewPage.cpp" line="792"/>
       <source>Export page as SVG</source>
-      <translation>Sayfa SVG dışa aktarma</translation>
+      <translation>Sayfayı SVG olarak dışa aktar</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1217"/>
-      <source> %1.%2.%3 </source>
-      <translation> %1%2 %3 </translation>
+      <location filename="../../MDIViewPage.cpp" line="1223"/>
+      <source>%1.%2.%3</source>
+      <translation>%1.%2.%3</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="595"/>
       <source>FreeCAD SVG Export</source>
-      <translation>FreeCAD SVG dışa aktarma</translation>
+      <translation>FreeCAD SVG dışa aktarım</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="181"/>
@@ -807,11 +815,6 @@
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDraw2Imp</name>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
-      <source>TechDraw 2</source>
-      <translation>TeknikÇizim</translation>
-    </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="20"/>
       <source>Dimensions</source>
@@ -851,6 +854,11 @@
       <location filename="../../DlgPrefsTechDraw2.ui" line="85"/>
       <source>Alternate Decimals</source>
       <translation>Alternatif ondalık sayı</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
+      <source>TechDraw Dimensions</source>
+      <translation>TechDraw boyutları</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
@@ -1002,11 +1010,6 @@
   <context>
     <name>TechDrawGui::DlgPrefsTechDrawImp</name>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
-      <source>TechDraw 1</source>
-      <translation>TeknikÇizim</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="20"/>
       <source>General</source>
       <translation>Genel</translation>
@@ -1078,19 +1081,9 @@
       <translation>Sayfayı güncel tutun</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="656"/>
-      <source>Font for View Labels</source>
-      <translation>Görünüm Etiketleri için Yazıtipi</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
-      <source>Template Dot Size</source>
-      <translation>Şablon nokta boyutu</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
-      <source>Colors</source>
-      <translation>Renkler</translation>
+      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
+      <source>TechDraw General</source>
+      <translation>TechDraw Genel</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
@@ -1121,6 +1114,11 @@
       <location filename="../../DlgPrefsTechDraw.ui" line="168"/>
       <source>AutoDistribute Secondary Views</source>
       <translation>İkincil Görünümleri OtoDağıt</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
+      <source>Colors</source>
+      <translation>Renkler</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="210"/>
@@ -1223,14 +1221,24 @@
       <translation>Etiket yazı tipi</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="656"/>
+      <source>Font for View Labels</source>
+      <translation>Görünüm Etiketleri için Yazıtipi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
+      <source>Editable Text Marker Size</source>
+      <translation>Düzenlenebilir Metin İşaretleyici Boyutu</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="707"/>
       <source>View Label size in units</source>
       <translation>Etiket boyutunu birimlerde Görüntüle</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="723"/>
-      <source>Green edit dot size in units</source>
-      <translation>Birimlerde Yeşil düzenleme nokta boyutu</translation>
+      <source>Size of editable text marker in Templates (green dot).</source>
+      <translation>Şablonlarda düzenlenebilir metin işaretleyicinin boyutu (yeşil nokta).</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="649"/>
@@ -1246,11 +1254,6 @@
       <translation>&amp;SVG olarak dışarıya aktar</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="123"/>
-      <source>dummy[*]</source>
-      <translation>deneme[*]</translation>
-    </message>
-    <message>
       <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Ayarla &amp; Güncel Tut</translation>
@@ -1261,52 +1264,57 @@
       <translation>Ayarla &amp; Çerçeveler</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="619"/>
+      <location filename="../../MDIViewPage.cpp" line="624"/>
       <source>Different orientation</source>
       <translation>Ekran yönü</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="620"/>
+      <location filename="../../MDIViewPage.cpp" line="625"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Yazıcı çizim daha farklı bir yönelim kullanır. Devam etmek istiyor musunuz?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="627"/>
-      <location filename="../../MDIViewPage.cpp" line="635"/>
+      <location filename="../../MDIViewPage.cpp" line="632"/>
+      <location filename="../../MDIViewPage.cpp" line="640"/>
       <source>Different paper size</source>
       <translation>Farklı kağıt boyutu</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="628"/>
-      <location filename="../../MDIViewPage.cpp" line="636"/>
+      <location filename="../../MDIViewPage.cpp" line="633"/>
+      <location filename="../../MDIViewPage.cpp" line="641"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Yazıcı, çizimden farklı bir kağıt boyutu kullanıyor.
 Devam etmek istiyor musun?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="647"/>
+      <location filename="../../MDIViewPage.cpp" line="652"/>
       <source>Opening file failed</source>
       <translation>Dosya açılamadı</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="648"/>
-      <source>Can&apos;t open file %1 for writing.</source>
-      <translation>Yazma için%1 dosyası açılamıyor.</translation>
+      <location filename="../../MDIViewPage.cpp" line="653"/>
+      <source>Can not open file %1 for writing.</source>
+      <translation>%1 dosyasını yazmak için açamazsın.</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="1221"/>
+      <source>Selected:</source>
+      <translation>Seçili:</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::QGVPage</name>
     <message>
       <location filename="../../QGVPage.cpp" line="580"/>
-      <source>Drawing page: </source>
-      <translation>Çizim sayfası: </translation>
+      <source>Drawing page:</source>
+      <translation>Çizim sayfası:</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="582"/>
-      <source> exported from FreeCAD document: </source>
-      <translation> freeCAD belgesinden dışa aktarıldı: </translation>
+      <source> exported from FreeCAD document:</source>
+      <translation> FreeCAD belgesinden dışa aktarıldı:</translation>
     </message>
   </context>
   <context>
@@ -1500,8 +1508,8 @@ Devam etmek istiyor musun?</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="230"/>
-      <source>Primary View Direction</source>
-      <translation>Ana Görüş Gidişatı</translation>
+      <source>Current primary view direction</source>
+      <translation>Geçerli birincil görünüm yönü</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="243"/>

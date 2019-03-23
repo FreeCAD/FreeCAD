@@ -182,6 +182,21 @@ Py::String UnitPy::getType(void) const
     return Py::String(getUnitPtr()->getTypeString().toUtf8(),"utf-8");
 }
 
+Py::Tuple UnitPy::getSignature(void) const
+{
+    const UnitSignature &  Sig = getUnitPtr()->getSignature();
+    Py::Tuple tuple(8);
+    tuple.setItem(0, Py::Long(Sig.Length));
+    tuple.setItem(1, Py::Long(Sig.Mass));
+    tuple.setItem(2, Py::Long(Sig.Time));
+    tuple.setItem(3, Py::Long(Sig.ElectricCurrent));
+    tuple.setItem(4, Py::Long(Sig.ThermodynamicTemperature));
+    tuple.setItem(5, Py::Long(Sig.AmountOfSubstance));
+    tuple.setItem(6, Py::Long(Sig.LuminousIntensity));
+    tuple.setItem(7, Py::Long(Sig.Angle));
+    return tuple;
+}
+
 
 
 PyObject *UnitPy::getCustomAttributes(const char* /*attr*/) const

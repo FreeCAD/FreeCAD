@@ -102,8 +102,8 @@
       <translation>垂直居中对齐</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>沿所选单元格内容垂直居中对齐</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>给文本加下划线</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>在选定的单元格设置下划线文本</translation>
+      <source>Underline text in selected cells</source>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>自定义</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

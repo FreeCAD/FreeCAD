@@ -1211,11 +1211,11 @@ void printBacktrace(size_t skip=0)
 void segmentation_fault_handler(int sig)
 {
 #if defined(FC_OS_LINUX)
+    (void)sig;
     std::cerr << "Program received signal SIGSEGV, Segmentation fault.\n";
     printBacktrace(2);
     exit(1);
-#endif
-
+#else
     switch (sig) {
         case SIGSEGV:
             std::cerr << "Illegal storage access..." << std::endl;
@@ -1233,6 +1233,7 @@ void segmentation_fault_handler(int sig)
             std::cerr << "Unknown error occurred..." << std::endl;
             break;
     }
+#endif // FC_OS_LINUX
 }
 
 void unhandled_exception_handler()

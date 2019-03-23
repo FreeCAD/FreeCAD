@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation>Độ nhạy toàn cầu:</translation>
+      <translation type="unfinished">Global Sensitivity:</translation>
     </message>
   </context>
   <context>
@@ -294,14 +294,14 @@
       <translation>Bấm nút chuột giữa</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Nhật nút chuột giữa và nút chuột trái hoặc nút chuột phải</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation type="unfinished">Press middle+left or middle+right button</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Lăn nút chuột giữa hoặc nhấn giữ nút giữa
-đồng thời bấm chuột trái hoặc phải và di chuyển chuột lên hoặc xuống</translation>
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -403,11 +403,11 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation>Thư viện</translation>
+      <translation type="unfinished">Libraries</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>Phần mềm này sử dụng thành phần mã nguồn mở có quyền tác giả và các quyền sở hữu thuộc về chủ sở hữu tương ứng:</translation>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
       <source>License</source>
@@ -423,6 +423,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Ngoài phạm vi</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation type="unfinished">Camera settings</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Sự định hướng</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation type="unfinished">Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation type="unfinished">Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation type="unfinished">Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation type="unfinished">Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation type="unfinished">Current view</translation>
     </message>
   </context>
   <context>
@@ -819,18 +850,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Nhiều lối tắt được xác định</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Phím tắt '% 1' được xác định nhiều hơn một lần. Điều này có thể dẫn đến hành vi không mong muốn.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Phím tắt đã được định nghĩa rồi</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Please define another shortcut.</source>
-      <translation>Phím tắt '% 1' đã được gán cho '% 2'.</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation type="unfinished">Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2017,11 +2050,11 @@ Hãy chọn mục khác.</translation>
     </message>
     <message>
       <source>Show navigation cube</source>
-      <translation>Hiển thị khối điều hướng</translation>
+      <translation type="unfinished">Show navigation cube</translation>
     </message>
     <message>
       <source>Corner</source>
-      <translation>Góc</translation>
+      <translation type="unfinished">Corner</translation>
     </message>
     <message>
       <source>Top left</source>
@@ -2042,6 +2075,10 @@ Hãy chọn mục khác.</translation>
     <message>
       <source>Use OpenGL Vertex Buffer Object</source>
       <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
+    </message>
+    <message>
+      <source>New Document Camera Orientation</source>
+      <translation type="unfinished">New Document Camera Orientation</translation>
     </message>
     <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
@@ -2093,6 +2130,46 @@ Hãy chọn mục khác.</translation>
     <message>
       <source>15px</source>
       <translation type="unfinished">15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometric</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetric</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetric</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Đỉnh</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Phía trước</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Trái</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Phải</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Phía sau</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Đáy</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Tùy chọn</translation>
     </message>
   </context>
   <context>
@@ -2802,19 +2879,19 @@ Hãy chọn mục khác.</translation>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Đặt giới hạn dung sai cho các mục đã chọn trong chế độ xem 3D. Giá trị lớn hơn giúp chọn dễ dàng hơn, nhưng lại không thể chọn được một số mục nhỏ.</translation>
+      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
     <message>
       <source>Tree View</source>
-      <translation>Chế độ xem hình cây</translation>
+      <translation type="unfinished">Tree View</translation>
     </message>
     <message>
       <source>Object being edited</source>
-      <translation>Đối tượng đang được sửa</translation>
+      <translation type="unfinished">Object being edited</translation>
     </message>
     <message>
       <source>Active container</source>
-      <translation>Kích hoạt thùng chứa</translation>
+      <translation type="unfinished">Active container</translation>
     </message>
   </context>
   <context>
@@ -2909,10 +2986,6 @@ Hãy chọn mục khác.</translation>
       <translation>Sắp xếp bàn làm việc được bật</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Sắp xếp bàn làm việc được bật&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Di chuyển lên</translation>
     </message>
@@ -2927,6 +3000,10 @@ Hãy chọn mục khác.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Thêm tất cả vào workbenches được kích hoạt</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3003,10 +3080,6 @@ Hãy chọn mục khác.</translation>
       <translation>Bạn có chắc chắn muốn xóa tất cả các thư mục tạm thời không?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Khi xóa tất cả thư mục tạm thời, bạn sẽ không thể khôi phục bất kỳ tệp nào sau đó.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Đã hoàn thành</translation>
     </message>
@@ -3021,6 +3094,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Nhấn 'Bắt đầu khôi phục' để bắt đầu quá trình khôi phục tài liệu được liệt kê bên dưới.
 
 Cột 'Trạng thái' cho biết liệu tài liệu có thể được khôi phục được hay không.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3798,20 +3875,20 @@ Bạn có muốn lưu các thay đổi của bạn?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Nhấn. Hoặc nhấp vào nút chuột trái.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Kéo màn hình bằng hai ngón tay. Hoặc nhấn nút chuột phải.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Kéo màn hình bằng một ngón tay. Hoặc nhấn nút chuột trái. Trong Sketcher và các chế độ chỉnh sửa khác, đồng thời nhấn giữ phím Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Chụm (đặt hai ngón tay lên màn hình và kéo chúng ra xa nhau). Hoặc di chuyển nút chuột giữa. Hoặc PgUp / PgDown trên bàn phím.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4096,29 +4173,27 @@ Bạn muốn tiến hành như thế nào?</translation>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Nhấn. Hoặc nhấp vào nút chuột trái.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Kéo màn hình bằng hai ngón tay. Hoặc nhấn ALT + nút chuột giữa.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Kéo màn hình bằng một ngón tay. Hoặc nhấn ALT + nút chuột trái. Trong Sketcher và các chế độ chỉnh sửa khác, đồng thơi nhấn giữ phím Alt.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Chụm (đặt hai ngón tay lên màn hình và kéo chúng ra xa nhau hoặc lại gần với nhau). Hoặc lăn nút chuột giữa. Hoặc nhấn ALT + nút chuột phải. Hoặc PgUp / PgDown trên bàn phím.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Đã bắt đầu tải về...
-</translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -5222,19 +5297,6 @@ Hãy nhận biết điểm bạn nhấp vào là quan trọng.</translation>
       <translation>Gốc tọa độ</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 
- </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Dịch: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Xoay: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Xóa nội dung nhóm?</translation>
     </message>
@@ -5244,11 +5306,19 @@ Hãy nhận biết điểm bạn nhấp vào là quan trọng.</translation>
     </message>
     <message>
       <source>Export failed</source>
-      <translation>Xuất dữ liệu thất bại</translation>
+      <translation type="unfinished">Export failed</translation>
     </message>
     <message>
       <source>Split</source>
       <translation type="unfinished">Split</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Dịch:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Xoay:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -5648,8 +5718,8 @@ Hãy nhận biết điểm bạn nhấp vào là quan trọng.</translation>
       <translation>Chuyển chế độ chỉnh sửa của đối tượng đã chọn</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Vào hoặc rời khỏi chế độ chỉnh sửa của đối tượng đã chọn</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
     </message>
   </context>
   <context>
@@ -5983,12 +6053,12 @@ Hãy nhận biết điểm bạn nhấp vào là quan trọng.</translation>
       <translation>Hợp nhất dự án</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 tài liệu (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Không thể hợp nhất dự án với chính nó.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>tài liệu %1 (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6664,21 +6734,6 @@ Hãy nhận biết điểm bạn nhấp vào là quan trọng.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Chế độ xem-chuẩn</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Phép chiếu có trục đo</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Đặt thành chế độ xem trục</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6705,7 +6760,22 @@ Hãy nhận biết điểm bạn nhấp vào là quan trọng.</translation>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation>Tạo cửa sổ xem mới cho tài liệu hiện hành</translation>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Chế độ xem-chuẩn</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetric</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation type="unfinished">Set to dimetric view</translation>
     </message>
   </context>
   <context>
@@ -6796,6 +6866,21 @@ Hãy nhận biết điểm bạn nhấp vào là quan trọng.</translation>
     <message>
       <source>Set to front view</source>
       <translation>Đặt chế độ xem phía trước</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Chế độ xem-chuẩn</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometric</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation type="unfinished">Set to isometric view</translation>
     </message>
   </context>
   <context>
@@ -6976,6 +7061,21 @@ Hãy nhận biết điểm bạn nhấp vào là quan trọng.</translation>
     <message>
       <source>Set to top view</source>
       <translation>Đặt thành chế độ xem ở đỉnh</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Chế độ xem-chuẩn</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetric</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation type="unfinished">Set to trimetric view</translation>
     </message>
   </context>
   <context>
@@ -7265,32 +7365,20 @@ Hãy nhận biết điểm bạn nhấp vào là quan trọng.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation>Các mục này được liên kết với các mục được chọn để xóa và có thể bị hỏng.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Các mục này được chọn để xóa, nhưng không có trong tài liệu hiện hành.
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation>
-
-Bạn có chắc chắn muốn tiếp tục không?</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>
-      <translation>Xóa các vấn đề về lựa chọn</translation>
+      <translation type="unfinished">Delete Selection Issues</translation>
     </message>
   </context>
   <context>
@@ -7402,40 +7490,40 @@ Bạn có muốn nhân bản chúng không?</translation>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation>Đặt NaviCube thành chế độ Isometric</translation>
+      <translation type="unfinished">Set NaviCube to Isometric mode</translation>
     </message>
   </context>
   <context>
     <name>ViewOrthographicCmd</name>
     <message>
       <source>Orthographic</source>
-      <translation>Trực quan</translation>
+      <translation type="unfinished">Orthographic</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation>Đặt chế độ xem trực quan</translation>
+      <translation type="unfinished">Set View to Orthographic mode</translation>
     </message>
   </context>
   <context>
     <name>ViewPerspectiveCmd</name>
     <message>
       <source>Perspective</source>
-      <translation>Phối cảnh</translation>
+      <translation type="unfinished">Perspective</translation>
     </message>
     <message>
       <source>Set View to Perspective mode</source>
-      <translation>Đặt chế độ xem phối cảnh</translation>
+      <translation type="unfinished">Set View to Perspective mode</translation>
     </message>
   </context>
   <context>
     <name>ViewZoomToFitCmd</name>
     <message>
       <source>Zoom to fit</source>
-      <translation>Tự động căn chỉnh tỉ lệ hình ảnh</translation>
+      <translation type="unfinished">Zoom to fit</translation>
     </message>
     <message>
       <source>Zoom so that model fills the view</source>
-      <translation>Thu phóng để mô hình vừa khít màn ảnh</translation>
+      <translation type="unfinished">Zoom so that model fills the view</translation>
     </message>
   </context>
   <context>

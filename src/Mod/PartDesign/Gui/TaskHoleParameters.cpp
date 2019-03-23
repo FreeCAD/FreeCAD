@@ -101,6 +101,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
     pcHole->updateProps();
+    vp->show();
 
     ui->ThreadPitch->bind(pcHole->ThreadPitch);
     ui->ThreadAngle->bind(pcHole->ThreadAngle);

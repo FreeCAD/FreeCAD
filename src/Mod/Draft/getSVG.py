@@ -1,4 +1,6 @@
-import FreeCAD, math, sys, os, DraftVecUtils, WorkingPlane
+import six
+
+import FreeCAD, math, os, DraftVecUtils, WorkingPlane
 import Part, DraftGeomUtils
 from FreeCAD import Vector
 from Draft import getType, getrgb, svgpatterns, gui
@@ -390,7 +392,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg = ""
             for i in range(len(text)):
                 t = text[i]
-                if sys.version_info.major < 3 and (not isinstance(t,unicode)):
+                if six.PY2 and not isinstance(t, six.text_type):
                     t = t.decode("utf8")
                 # possible workaround if UTF8 is unsupported
                 #    import unicodedata

@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="129"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation>Seleccionar Caras/Aristas/Vértices</translation>
+      <translation>Escolmar Caras/Aristas/Vértices</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
@@ -321,7 +321,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation>Crea un material FEM para sólido</translation>
+      <translation>Crea un material MEF para sólido</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -419,7 +419,7 @@
     <message>
       <location filename="_CommandFemResultShow.py" line="43"/>
       <source>Shows and visualizes selected result data</source>
-      <translation>Amosa e visualiza os datos de resultados seleccionados</translation>
+      <translation>Amosa e visualiza os datos de resultados escolmados</translation>
     </message>
   </context>
   <context>
@@ -468,7 +468,7 @@
     <message>
       <location filename="_CommandFemSolverControl.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Troca os atributos do resolvedor e executa os cálculos para o resolvedor seleccionado</translation>
+      <translation>Troca os atributos do resolvedor e executa os cálculos para o resolvedor escolmado</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="726"/>
@@ -478,7 +478,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="728"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Troca os atributos do resolvedor e executa os cálculos para o resolvedor seleccionado</translation>
+      <translation>Troca os atributos do resolvedor e executa os cálculos para o resolvedor escolmado</translation>
     </message>
   </context>
   <context>
@@ -491,7 +491,7 @@
     <message>
       <location filename="_CommandFemSolverRun.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation>Fai os cálculos no resolvedor seleccionado</translation>
+      <translation>Fai os cálculos no resolvedor escolmado</translation>
     </message>
   </context>
   <context>
@@ -576,7 +576,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
       <source>Select Solids</source>
-      <translation>Seleccionar Sólidos</translation>
+      <translation>Escolmar Sólidos</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
@@ -594,7 +594,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
   </context>
   <context>
@@ -778,7 +778,7 @@
     <message>
       <location filename="_CommandControlSolver.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Troca os atributos do resolvedor e executa os cálculos para o resolvedor seleccionado</translation>
+      <translation>Troca os atributos do resolvedor e executa os cálculos para o resolvedor escolmado</translation>
     </message>
   </context>
   <context>
@@ -905,7 +905,7 @@
     <message>
       <location filename="_CommandRunSolver.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation>Fai os cálculos no resolvedor seleccionado</translation>
+      <translation>Fai os cálculos no resolvedor escolmado</translation>
     </message>
   </context>
   <context>
@@ -946,7 +946,7 @@
     <message>
       <location filename="_CommandShowResult.py" line="42"/>
       <source>Shows and visualizes selected result data</source>
-      <translation>Amosa e visualiza os datos de resultados seleccionados</translation>
+      <translation>Amosa e visualiza os datos de resultados escolmados</translation>
     </message>
   </context>
   <context>
@@ -1231,21 +1231,6 @@
     </message>
   </context>
   <context>
-    <name>CmdFemCreateFromShape</name>
-    <message>
-      <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh</source>
-      <translation type="unfinished">Create FEM mesh</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh from shape</source>
-      <translation type="unfinished">Create FEM mesh from shape</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -1266,7 +1251,7 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation>Seleccione unha única malla FEM ou un conxunto de nós, por favor.</translation>
+      <translation>Escolme unha única malla FEM ou un conxunto de nós, por favor.</translation>
     </message>
   </context>
   <context>
@@ -1323,7 +1308,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="122"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation>Deixe en branco para usar o ficheiro binario por defecto CalculiX ccx</translation>
+      <translation>Deixo en branco para usar o ficheiro binario por defecto CalculiX ccx</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="141"/>
@@ -1405,29 +1390,6 @@
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>Directorio de usuario</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::HypothesisWidget</name>
-    <message>
-      <source>Hypothesis</source>
-      <translation type="unfinished">Hypothesis</translation>
-    </message>
-    <message>
-      <source>Quadrangle</source>
-      <translation type="unfinished">Quadrangle</translation>
-    </message>
-    <message>
-      <source>Maximum length</source>
-      <translation type="unfinished">Maximum length</translation>
-    </message>
-    <message>
-      <source>Local length</source>
-      <translation type="unfinished">Local length</translation>
-    </message>
-    <message>
-      <source>Maximum element area</source>
-      <translation type="unfinished">Maximum element area</translation>
     </message>
   </context>
   <context>
@@ -1616,13 +1578,13 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="412"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
       <source>Nothing selected!</source>
-      <translation>Nada seleccionado!</translation>
+      <translation>Nada escolmado!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="422"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
       <source>Selected object is not a part!</source>
-      <translation>O obxecto seleccionado non é unha peza!</translation>
+      <translation>O obxecto escolmado non é unha peza!</translation>
     </message>
   </context>
   <context>
@@ -1704,18 +1666,6 @@
       <location filename="../../TaskFemConstraintForce.cpp" line="224"/>
       <source>Only faces and edges can be picked</source>
       <translation>Sómente se poden coller faces e bordos</translation>
-    </message>
-    <message>
-      <source>Point load [N]</source>
-      <translation type="unfinished">Point load [N]</translation>
-    </message>
-    <message>
-      <source>Line load [N/mm]</source>
-      <translation type="unfinished">Line load [N/mm]</translation>
-    </message>
-    <message>
-      <source>Area load [N/mm²]</source>
-      <translation type="unfinished">Area load [N/mm²]</translation>
     </message>
   </context>
   <context>
@@ -1923,14 +1873,6 @@
       <translation>Tempo:</translation>
     </message>
     <message>
-      <source>Write Calculix Input File</source>
-      <translation type="unfinished">Write Calculix Input File</translation>
-    </message>
-    <message>
-      <source>Edit Calculix Input File</source>
-      <translation type="unfinished">Edit Calculix Input File</translation>
-    </message>
-    <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
       <translation>Material mecánico</translation>
@@ -2000,14 +1942,6 @@
       <source>MatWeb database...</source>
       <translation>Base de datos MatWeb...</translation>
     </message>
-    <message>
-      <source>0 kg/m^3</source>
-      <translation type="unfinished">0 kg/m^3</translation>
-    </message>
-    <message>
-      <source>Pa</source>
-      <translation type="unfinished">Pa</translation>
-    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -2041,7 +1975,7 @@
       <location filename="../../Command.cpp" line="123"/>
       <location filename="../../Command.cpp" line="185"/>
       <source>Select an edge, face or body. Only one body is allowed.</source>
-      <translation type="unfinished">Select an edge, face or body. Only one body is allowed.</translation>
+      <translation>Escolma un bordo, face ou corpo. Só un corpo está permitido.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="128"/>
@@ -2053,7 +1987,7 @@
       <location filename="../../Command.cpp" line="129"/>
       <location filename="../../Command.cpp" line="191"/>
       <source>Fillet works only on parts</source>
-      <translation type="unfinished">Fillet works only on parts</translation>
+      <translation>Chaflán só traballa en pezas</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="83"/>
@@ -2069,26 +2003,6 @@
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
       <translation>Editar constrición</translation>
-    </message>
-    <message>
-      <source>Combo View</source>
-      <translation>Vista combinada</translation>
-    </message>
-    <message>
-      <source>combiTab</source>
-      <translation type="unfinished">combiTab</translation>
-    </message>
-    <message>
-      <source>qt_tabwidget_stackedwidget</source>
-      <translation type="unfinished">qt_tabwidget_stackedwidget</translation>
-    </message>
-    <message>
-      <source>ShaftWizard</source>
-      <translation type="unfinished">ShaftWizard</translation>
-    </message>
-    <message>
-      <source>ShaftWizardLayout</source>
-      <translation type="unfinished">ShaftWizardLayout</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -2206,14 +2120,6 @@
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
       <translation>Esvaramento max:</translation>
-    </message>
-    <message>
-      <source>Colors</source>
-      <translation>Cores</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>mm</translation>
     </message>
   </context>
   <context>
@@ -2446,7 +2352,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="66"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>

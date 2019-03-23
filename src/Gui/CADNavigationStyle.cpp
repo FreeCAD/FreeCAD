@@ -69,9 +69,9 @@ const char* CADNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::PANNING:
         return QT_TR_NOOP("Press middle mouse button");
     case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Press middle and left or right mouse button");
+        return QT_TR_NOOP("Press middle+left or middle+right button");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Scroll middle mouse button or keep middle button pressed\n"
+        return QT_TR_NOOP("Scroll middle mouse button or keep middle button depressed\n"
                           "while doing a left or right click and move the mouse up or down");
     default:
         return "No description";
@@ -124,7 +124,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     }
 
     // give the nodes in the foreground root the chance to handle events (e.g color bar)
-    if (!processed && !viewer->isEditing()) {
+    if (!viewer->isEditing()) {
         processed = handleEventInForeground(ev);
         if (processed)
             return true;
@@ -259,8 +259,8 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
             this->lockrecenter = true;
             if (!viewer->isEditing()) {
                 // If we are in zoom or pan mode ignore RMB events otherwise
-                // the canvas doesn't get any release events 
-                if (this->currentmode != NavigationStyle::ZOOMING && 
+                // the canvas doesn't get any release events
+                if (this->currentmode != NavigationStyle::ZOOMING &&
                     this->currentmode != NavigationStyle::PANNING &&
                     this->currentmode != NavigationStyle::DRAGGING) {
                     if (this->isPopupMenuEnabled()) {

@@ -294,11 +294,11 @@
       <translation>Cliquee el botón central del mouse</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Pulse el botón central y derecho o izquierdo del ratón</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation>Pulse botón medio + izquierdo o medio + derecho</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
       <translation>Desliza la rueda del ratón o mantenla pulsada mientras haces click derecho o izquierdo, moviendo el ratón hacia arriba o abajo</translation>
     </message>
@@ -422,6 +422,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Fuera de rango</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Ajustes de la cámara</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Orientación</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Vista actual</translation>
     </message>
   </context>
   <context>
@@ -818,20 +849,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Múltiples atajos de teclado definidos</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>El atajo de teclado '%1' está definido más de una vez. Esto puede ocasionar un comportamiento inesperado.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Atajo de teclado ya definido</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Please define another shortcut.</source>
-      <translation>El atajo de teclado '%1' ya está asignado a '%2'.
-
-Por favor defina otro atajo de teclado.</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>El acceso directo '%1' está definido más de una vez. Esto podría resultar en un comportamiento inesperado.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>El acceso directo '%1' ya está asignado a '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>¿Quieres anularlo?</translation>
     </message>
   </context>
   <context>
@@ -2044,8 +2075,12 @@ Especifique otro directorio, por favor.</translation>
       <translation>Utilice objeto OpenGL Vertex Buffer</translation>
     </message>
     <message>
+      <source>New Document Camera Orientation</source>
+      <translation>Nueva orientación de la cámara del documento</translation>
+    </message>
+    <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
-      <translation>Evita ver inclinando cuando hace gesto de zoom. Afecta sólo gesto estilo Nav. Inclinación del ratón no se deshabilita por esta opción.</translation>
+      <translation>Evita ver inclinando cuando hace gesto de zoom. Afecta sólo gesto estilo de navegación. Inclinación del ratón no se deshabilita por esta opción.</translation>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
@@ -2093,6 +2128,46 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isométrico</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimétrica</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimétrica</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Planta</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Alzado</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Izquierda</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Derecha</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Posterior</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Inferior</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Personalizado</translation>
     </message>
   </context>
   <context>
@@ -2909,10 +2984,6 @@ Especifique otro directorio, por favor.</translation>
       <translation>Clasificar espacios de trabajo habilitados</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Tipo de mesa de trabajo habilitado&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Mover hacia arriba</translation>
     </message>
@@ -2927,6 +2998,10 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Agregar todos a espacios de trabajo habilitados</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Ordenar los entornos de trabajo habilitados&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3003,10 +3078,6 @@ Especifique otro directorio, por favor.</translation>
       <translation>¿Está seguro que desea eliminar todos los directorios transitorios?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Al eliminar todo directorio transitorio no podrá recuperar los archivos luego.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Completado</translation>
     </message>
@@ -3021,6 +3092,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Pulse 'Empezar Recuperación' para iniciar el proceso de recuperación del documento indicado a continuación. 
 
 La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation>Al eliminar todo directorio transitorio no podrá recuperar los archivos luego.</translation>
     </message>
   </context>
   <context>
@@ -3403,7 +3478,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Seleccione 1, 2 o 3 puntos antes de hacer clic en este botón. Un punto puede estar en un vértice, cara o borde. Si en una cara o borde, el punto usado será el punto en la posición del mouse a lo largo de la cara o borde. Si se selecciona 1 punto, se utilizará como centro de rotación. Si se seleccionan 2 puntos, el punto medio entre ellos será el centro de rotación y se creará un nuevo eje personalizado, si es necesario. Si se seleccionan 3 puntos, el primer punto se convierte en el centro de rotación y se encuentra en el vector que es normal al plano definido por los 3 puntos. Se proporciona cierta información de distancia y ángulo en la vista de informe, que puede ser útil al alinear objetos. Para su conveniencia, cuando se usa Shift + click, la distancia o el ángulo apropiados se copian en el portapapeles.</translation>
+      <translation>Por favor, seleccione 1, 2 o 3 puntos antes de hacer clic en este botón. Un punto puede estar en un vértice, cara o arista. Si en una cara o arista, el punto utilizado será el punto en la posición del mouse a lo largo de la cara o la arista. Si se selecciona 1 punto, se utilizará como centro de rotación. Si se seleccionan 2 puntos, el punto medio entre ellos será el centro de rotación y, si es necesario, se creará un nuevo eje personalizado. Si se seleccionan 3 puntos, el primer punto se convierte en el centro de rotación y se encuentra en el vector que es normal al plano definido por los 3 puntos. Se proporciona cierta información de distancia y ángulo en la vista de reporte, que puede ser útil al alinear objetos. Para su comodidad, cuando se usa la tecla Mayús + clic, la distancia o el ángulo apropiados se copian en el portapapeles.</translation>
     </message>
   </context>
   <context>
@@ -3798,20 +3873,20 @@ Desea guardar los cambios?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Dé un toque. O haga clic en el botón izquierdo del ratón.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Toque o haga click en el botón izquierdo del ratón.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Arrastre la pantalla con dos dedos. O pulse el botón derecho del ratón.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrastre la pantalla con un dedo. O pulse el botón izquierdo del ratón. En el croquizador y otros modos de edición, mantenga pulsado también Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Pellizque (ponga dos dedos en la pantalla y separelos/juntelos). O arrastre el botón central del ratón. O use AcPág/RePág en teclado.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4093,29 +4168,27 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Dé un toque. O haga clic en el botón izquierdo del ratón.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Toque o haga click en el botón izquierdo del ratón.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Arrastre la pantalla con dos dedos. O presione ALT + botón medio del ratón.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrastre la pantalla con un dedo. O presione ALT + botón izquierdo del mouse. En Sketcher y otros modos de edición, también mantenga presionado Alt.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Pellizcar (poner dos dedos en la pantalla y separarlos). O usar el scroll medio del mouse. O presionar ALT + botón derecho del mouse. O usar PgUp/PgDown del teclado.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Descarga comenzada...
-</translation>
+      <source>Download started...</source>
+      <translation>La descarga comenzó...</translation>
     </message>
   </context>
   <context>
@@ -5217,18 +5290,6 @@ Be aware the point where you click matters.</source>
       <translation>Origen de coordenadas</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Traducción: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Rotación: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>¿Borrar el contenido de grupo?</translation>
     </message>
@@ -5243,6 +5304,14 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Split</source>
       <translation>Dividir</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Traslación:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Rotación:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -5642,8 +5711,8 @@ Be aware the point where you click matters.</source>
       <translation>Activa o desactiva el modo de edición del objeto seleccionado</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Entra o sale del modo de edición del objeto seleccionado</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation>Activa o desactiva el modo de edición del objeto seleccionado</translation>
     </message>
   </context>
   <context>
@@ -5977,12 +6046,12 @@ Be aware the point where you click matters.</source>
       <translation>Fusionar proyecto</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>Documento %1(*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>No se puede fusionar el proyecto consigo mismo.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 documento (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6658,21 +6727,6 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonométrica</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Establecer vista axonométrica</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6700,6 +6754,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Creates a new view window for the active document</source>
       <translation>Crea una nueva ventana de vista para el documento activo</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimétrica</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Establecer vista dimétrica</translation>
     </message>
   </context>
   <context>
@@ -6790,6 +6859,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to front view</source>
       <translation>Establecer vista alzado</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isométrico</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Establecer vista isométrica</translation>
     </message>
   </context>
   <context>
@@ -6970,6 +7054,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to top view</source>
       <translation>Establecer vista en planta</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimétrica</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Establecer vista trimétrica</translation>
     </message>
   </context>
   <context>
@@ -7259,32 +7358,20 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation>Estos artículos están vinculados a elementos seleccionados para su eliminación y podrían romperse.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Estos artículos son seleccionados para su eliminación, pero no están en el documento activo. 
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation>
-
-¿Está seguro de que desea continuar?</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation>¿Está seguro de que desea continuar?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>
-      <translation>Eliminar Problemas de Selección</translation>
+      <translation type="unfinished">Delete Selection Issues</translation>
     </message>
   </context>
   <context>
@@ -7407,7 +7494,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation>Conjunto Vista al modo Ortográfico</translation>
+      <translation>Configurar Vista a modo Ortográfico</translation>
     </message>
   </context>
   <context>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
 	<PythonExport
-		Father="GeometryCurvePy"
+                Father="BoundedCurvePy"
 		Name="BezierCurvePy"
-        PythonName="Part.BezierCurve"
+                PythonName="Part.BezierCurve"
 		Twin="GeomBezierCurve"
 		TwinPointer="GeomBezierCurve"
 		Include="Mod/Part/App/Geometry.h"
 		Namespace="Part"
-		FatherInclude="Mod/Part/App/GeometryCurvePy.h"
+                FatherInclude="Mod/Part/App/BoundedCurvePy.h"
 		FatherNamespace="Part"
 		Constructor="true">
 		<Documentation>

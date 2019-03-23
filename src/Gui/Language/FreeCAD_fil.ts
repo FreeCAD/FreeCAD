@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation>Ang Malawakang Pagkasensitibo:</translation>
+      <translation type="unfinished">Global Sensitivity:</translation>
     </message>
   </context>
   <context>
@@ -294,14 +294,14 @@
       <translation>Pindutin ang gitnang pindutan ng mouse</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Pindutin ang gitna at kaliwa o kanang pindutan ng mouse</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation type="unfinished">Press middle+left or middle+right button</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Mag-scroll sa gitna ng pindutan ng mouse o panatilihing gitna ang pindutan ng gitna
-habang lumilikha ng isang kaliwa o kanan pindutin at ilipat ang mouse pataas o pababa</translation>
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -403,7 +403,7 @@ habang lumilikha ng isang kaliwa o kanan pindutin at ilipat ang mouse pataas o p
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation>Aklatan</translation>
+      <translation type="unfinished">Libraries</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
@@ -423,6 +423,37 @@ habang lumilikha ng isang kaliwa o kanan pindutin at ilipat ang mouse pataas o p
     <message>
       <source>Out Of Range</source>
       <translation>Wala sa Range</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation type="unfinished">Camera settings</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Oryentasyon</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation type="unfinished">Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation type="unfinished">Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation type="unfinished">Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation type="unfinished">Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation type="unfinished">Current view</translation>
     </message>
   </context>
   <context>
@@ -819,18 +850,20 @@ habang lumilikha ng isang kaliwa o kanan pindutin at ilipat ang mouse pataas o p
       <translation>Maramihang pagtukoy sa daang tuwiran</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Ang daang tuwiran '%1' ay tinukoy nang higit sa isang beses. Ito ay maaaring magresulta sa hindi inaasahang pag-uugali.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Nilalaman ng daang tuwiran</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Please define another shortcut.</source>
-      <translation>Ang daang tuwiran '%1' ay nakatalaga na sa '%2'.</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation type="unfinished">Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2042,6 +2075,10 @@ mangyaring Tukuyin ang ibang direktoryo,.</translation>
       <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
     </message>
     <message>
+      <source>New Document Camera Orientation</source>
+      <translation type="unfinished">New Document Camera Orientation</translation>
+    </message>
+    <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
       <translation type="unfinished">Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</translation>
     </message>
@@ -2091,6 +2128,46 @@ mangyaring Tukuyin ang ibang direktoryo,.</translation>
     <message>
       <source>15px</source>
       <translation type="unfinished">15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometric</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetric</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetric</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Tugatog</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Harap</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Kaliwa</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Kanan</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Likuran</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Ibaba</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Custom</translation>
     </message>
   </context>
   <context>
@@ -2907,10 +2984,6 @@ mangyaring Tukuyin ang ibang direktoryo,.</translation>
       <translation>Pinag-uri-uriin ang workbenches</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Pinag-uri-uriin ang workbenches&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Galawin pataas</translation>
     </message>
@@ -2925,6 +2998,10 @@ mangyaring Tukuyin ang ibang direktoryo,.</translation>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Idagdag ang lahat sa mga workbench na pinagana</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3002,10 +3079,6 @@ Kalagayan ng mga nakuhang dokumento:</translation>
       <translation>Sigurado ka bang gusto mong tanggalin ang lahat ng mga lumilipas na direktoryo?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Kapag tinatanggal ang lahat ng lumilipas na direktoryo, hindi mo magagawang mabawi ang anumang mga file pagkatapos.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Tapos</translation>
     </message>
@@ -3020,6 +3093,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Pindutin ang 'Start Recovery' upang simulan ang proseso ng pagbawi ng dokumento na nakalista sa ibaba.
 
 Ang haligi ng 'Katayuan' ay nagpapakita kung ang dokumento ay maaaring mabawi.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3797,20 +3874,20 @@ Gusto mo bang i-save ang iyong mga pagbabago?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Tapikin. O pindutin ang kaliwang pindutan ng mouse.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>I-drag ang screen gamit ang dalawang daliri. O pindutin ang kanang pindutan ng mouse.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>I-drag ang screen gamit ang isang daliri. O pindutin ang kaliwang pindutan ng mouse. Sa Sketcher at iba pang mga edit mode, pindutin nang matagal ang Alt bilang karagdagan.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Pakurot (ilagay ang dalawang daliri sa screen at kaladkarin ang mga ito/sa bawat isa). O mag-scroll sa gitnang pindutan ng mouse. O PgUp/PgDown sa keyboard.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4095,29 +4172,27 @@ Paano mo gustong magpatuloy?</translation>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Tapikin. O pindutin ang kaliwang pindutan ng mouse.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Hilahin ang screen gamit ang dalawang daliri. O pindutin ang ALT + gitnang pindutan ng mouse.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Hilahin ang screen gamit ang isang daliri. O pindutin ang ALT + kaliwang pindutan ng mouse. Sa Sketcher at iba pang mga pagbabago ng anyo, pindutin nang matagal ang Alt bilang karagdagan.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Pakurot (ilagay ang dalawang daliri sa screen at kaladkarin ang mga ito/sa bawat isa). O mag-ikid sa gitnang pindutan ng mouse. O pindutin ang ALT + kanang pindutan ng mouse. O PgUp/PgDown sa keyboard.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Nasimulan na ang Download...
-</translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -5219,18 +5294,6 @@ Magkaroon ng kamalayan sa punto kung saan mo pindutin ang mga bagay.</translatio
       <translation>Pinagmulan</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Pagsasalin: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Pag-ikot: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Tanggalin ang nilalaman ng pangkat?</translation>
     </message>
@@ -5240,11 +5303,19 @@ Magkaroon ng kamalayan sa punto kung saan mo pindutin ang mga bagay.</translatio
     </message>
     <message>
       <source>Export failed</source>
-      <translation>Hindi matagumpay na pag-export</translation>
+      <translation type="unfinished">Export failed</translation>
     </message>
     <message>
       <source>Split</source>
       <translation type="unfinished">Split</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Pagsasalin:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Pag-ikot:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -5644,8 +5715,8 @@ Magkaroon ng kamalayan sa punto kung saan mo pindutin ang mga bagay.</translatio
       <translation>Ang mga toggle sa anyo ng pag-babago ng piniling bagay</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Ang mga pumapasok o nag-iiwan ng anyo ng pag-edit ng piniling bagay</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
     </message>
   </context>
   <context>
@@ -5979,12 +6050,12 @@ Magkaroon ng kamalayan sa punto kung saan mo pindutin ang mga bagay.</translatio
       <translation>Pagsamahin ang proyekto</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 papeles(*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Hindi maisama ang proyekto sa sarili nito.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 dokumento (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6660,21 +6731,6 @@ Magkaroon ng kamalayan sa punto kung saan mo pindutin ang mga bagay.</translatio
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standard-View</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonometric</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>I-set sa view ng axonometric</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6701,7 +6757,22 @@ Magkaroon ng kamalayan sa punto kung saan mo pindutin ang mga bagay.</translatio
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation>Lumilikha ng bagong durungawan para sa dokumentong aktibo</translation>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-View</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetric</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation type="unfinished">Set to dimetric view</translation>
     </message>
   </context>
   <context>
@@ -6792,6 +6863,21 @@ Magkaroon ng kamalayan sa punto kung saan mo pindutin ang mga bagay.</translatio
     <message>
       <source>Set to front view</source>
       <translation>Itakda sa harap na tanaw</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-View</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometric</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation type="unfinished">Set to isometric view</translation>
     </message>
   </context>
   <context>
@@ -6972,6 +7058,21 @@ Magkaroon ng kamalayan sa punto kung saan mo pindutin ang mga bagay.</translatio
     <message>
       <source>Set to top view</source>
       <translation>Itakda sa tugatog na tanaw</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-View</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetric</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation type="unfinished">Set to trimetric view</translation>
     </message>
   </context>
   <context>
@@ -7261,28 +7362,16 @@ Magkaroon ng kamalayan sa punto kung saan mo pindutin ang mga bagay.</translatio
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation type="unfinished">These items are linked to items selected for deletion and might break.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document. 
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation type="unfinished">
-
-Are you sure you want to continue?</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>

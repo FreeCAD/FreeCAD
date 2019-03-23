@@ -134,6 +134,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Offset"
           << "Part_Offset2D"
           << "Part_Thickness"
+          << "Part_projectionOnSurface"
           << "Separator"
           << "Part_EditAttachment";
 
@@ -188,7 +189,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Part_Loft"
           << "Part_Sweep"
           << "Part_CompOffset"
-          << "Part_Thickness";
+          << "Part_Thickness"
+          << "Part_projectionOnSurface";
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");

@@ -192,7 +192,7 @@
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation>Spessore della membrana</translation>
+      <translation>Spessore della lastra</translation>
     </message>
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
@@ -202,7 +202,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="259"/>
       <source>Shell plate thickness</source>
-      <translation>Spessore della membrana</translation>
+      <translation>Spessore della lastra</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="261"/>
@@ -321,7 +321,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation>Crea un materiale FEM per solido</translation>
+      <translation>Crea un materiale FEM per il solido</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -688,7 +688,7 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation>Spessore della membrana</translation>
+      <translation>Spessore della lastra</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
@@ -913,7 +913,7 @@
     <message>
       <location filename="_CommandShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation>Spessore della membrana</translation>
+      <translation>Spessore della lastra</translation>
     </message>
     <message>
       <location filename="_CommandShellThickness.py" line="43"/>
@@ -928,7 +928,7 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM Shell Thickness</source>
-      <translation>Crea lo spessore di una lastra Shell FEM</translation>
+      <translation>Crea lo spessore di una shell (lastra-piastra) FEM</translation>
     </message>
   </context>
   <context>
@@ -1231,21 +1231,6 @@
     </message>
   </context>
   <context>
-    <name>CmdFemCreateFromShape</name>
-    <message>
-      <source>Fem</source>
-      <translation>Fem</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh</source>
-      <translation>Crea una mesh FEM</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh from shape</source>
-      <translation>Crea una mesh FEM da una forma</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -1405,29 +1390,6 @@
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>Directory dell'utente</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::HypothesisWidget</name>
-    <message>
-      <source>Hypothesis</source>
-      <translation>Ipotesi</translation>
-    </message>
-    <message>
-      <source>Quadrangle</source>
-      <translation>Quadrangolo</translation>
-    </message>
-    <message>
-      <source>Maximum length</source>
-      <translation>Lunghezza massima</translation>
-    </message>
-    <message>
-      <source>Local length</source>
-      <translation>Lunghezza locale</translation>
-    </message>
-    <message>
-      <source>Maximum element area</source>
-      <translation>Area massima dell'elemento</translation>
     </message>
   </context>
   <context>
@@ -1705,18 +1667,6 @@
       <source>Only faces and edges can be picked</source>
       <translation>Si possono selezionare solo le superfici e i bordi</translation>
     </message>
-    <message>
-      <source>Point load [N]</source>
-      <translation>Carico nel punto [N]</translation>
-    </message>
-    <message>
-      <source>Line load [N/mm]</source>
-      <translation>Carico sulla linea [N/mm]</translation>
-    </message>
-    <message>
-      <source>Area load [N/mm²]</source>
-      <translation>Carico sull'area [N/mm ²]</translation>
-    </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
@@ -1923,14 +1873,6 @@
       <translation>Tempo:</translation>
     </message>
     <message>
-      <source>Write Calculix Input File</source>
-      <translation>Scrivere il File di Input Calculix</translation>
-    </message>
-    <message>
-      <source>Edit Calculix Input File</source>
-      <translation>Modifica il File di Input Calculix</translation>
-    </message>
-    <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
       <translation>Materiale meccanico</translation>
@@ -2000,14 +1942,6 @@
       <source>MatWeb database...</source>
       <translation>Database MatWeb...</translation>
     </message>
-    <message>
-      <source>0 kg/m^3</source>
-      <translation>0 kg/m^3</translation>
-    </message>
-    <message>
-      <source>Pa</source>
-      <translation>Pa</translation>
-    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -2069,26 +2003,6 @@
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
       <translation>Modifica vincolo</translation>
-    </message>
-    <message>
-      <source>Combo View</source>
-      <translation>Vista combinata</translation>
-    </message>
-    <message>
-      <source>combiTab</source>
-      <translation>combiTab</translation>
-    </message>
-    <message>
-      <source>qt_tabwidget_stackedwidget</source>
-      <translation>qt_tabwidget_stackedwidget</translation>
-    </message>
-    <message>
-      <source>ShaftWizard</source>
-      <translation>ShaftWizard</translation>
-    </message>
-    <message>
-      <source>ShaftWizardLayout</source>
-      <translation>ShaftWizardLayout</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -2206,14 +2120,6 @@
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
       <translation>Corsa max:</translation>
-    </message>
-    <message>
-      <source>Colors</source>
-      <translation>Colori</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>mm</translation>
     </message>
   </context>
   <context>

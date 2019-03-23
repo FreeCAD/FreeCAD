@@ -1214,3 +1214,22 @@ bool MeshGeomFacet::IsPointOfSphere(const MeshGeomFacet& rFacet) const
   return false;
 }
 
+float MeshGeomFacet::AspectRatio() const
+{
+    Base::Vector3f center;
+    float radius = CenterOfCircumCircle(center);
+
+    float minLength = FLOAT_MAX;
+    for (int i=0; i<3; i++) {
+        const Base::Vector3f& p0 = _aclPoints[i];
+        const Base::Vector3f& p1 = _aclPoints[(i+1)%3];
+        float distance = Base::Distance(p0, p1);
+        if (distance < minLength) {
+            minLength = distance;
+        }
+    }
+
+    if (minLength == 0)
+        return FLOAT_MAX;
+    return radius / minLength;
+}

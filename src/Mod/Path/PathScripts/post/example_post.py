@@ -49,7 +49,7 @@ def export(objectslist, filename,argstring):
         print("the given object is not a path")
     gcode = obj.Path.toGCode()
     gcode = parse(gcode)
-    gfile = pythonopen(filename, "wb")
+    gfile = pythonopen(filename, "w")
     gfile.write(gcode)
     gfile.close()
 

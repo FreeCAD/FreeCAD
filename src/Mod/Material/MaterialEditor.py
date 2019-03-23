@@ -51,6 +51,7 @@ class MaterialEditor:
         self.customprops = []
         self.internalprops = []
         self.groups = []
+        self.directory = FreeCAD.getResourceDir() + "Mod/Material"
 
         # load the UI file from the same directory as this script
         self.widget = FreeCADGui.PySideUic.loadUi(
@@ -67,6 +68,10 @@ class MaterialEditor:
         buttonSave = widget.ButtonSave
         comboMaterial = widget.ComboMaterial
         treeView = widget.treeView
+
+        # temporarily hide preview fields, as they are not used yet
+        # TODO : implement previews
+        widget.PreviewGroup.hide()
 
         buttonURL.setIcon(QtGui.QIcon(":/icons/internet-web-browser.svg"))
         buttonDeleteProperty.setEnabled(False)
@@ -108,13 +113,11 @@ class MaterialEditor:
         widget = self.widget
         treeView = widget.treeView
         model = treeView.model()
-        model.setHorizontalHeaderLabels(["Property", "Value",
-                                         "Type", "Units"])
+        model.setHorizontalHeaderLabels(["Property", "Value", "Type"])
 
         treeView.setColumnWidth(0, 250)
         treeView.setColumnWidth(1, 250)
         treeView.setColumnHidden(2, True)
-        treeView.setColumnHidden(3, True)
 
         tree = getMaterialAttributeStructure(True)
         MatPropDict = tree.getroot()
@@ -137,13 +140,7 @@ class MaterialEditor:
                 tt = properDict['Type']
                 itType = QtGui.QStandardItem(tt)
 
-                try:
-                    uu = properDict['Units']
-                    itUnit = QtGui.QStandardItem(uu)
-                except KeyError:
-                    itUnit = QtGui.QStandardItem()
-
-                top.appendRow([item, it, itType, itUnit])
+                top.appendRow([item, it, itType])
 
             top.sortChildren(0)
 
@@ -156,7 +153,7 @@ class MaterialEditor:
            - a dictionary, if the editor was called with data.'''
 
         if isinstance(data, dict):
-
+            # a standard material property dict is provided
             model = self.widget.treeView.model()
             root = model.invisibleRootItem()
             for gg in range(root.rowCount() - 1):
@@ -185,7 +182,7 @@ class MaterialEditor:
                 self.customprops.append(k)
 
         elif isinstance(data, unicode):
-
+            # a card name is provided, search card, read material data and call this def once more with std material property dict
             k = str(data)
             if k:
                 if k in self.cards:
@@ -233,7 +230,7 @@ class MaterialEditor:
         self.cards = {}
         for p in self.resources:
             if os.path.exists(p):
-                for f in os.listdir(p):
+                for f in sorted(os.listdir(p)):
                     b, e = os.path.splitext(f)
                     if e.upper() == ".FCMAT":
                         self.cards[b] = p + os.sep + f
@@ -416,10 +413,11 @@ class MaterialEditor:
 
     def openfile(self):
         "Opens a FCMat file"
-        filetuple = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), 'Open FreeCAD Material file', '*.FCMat')
+        filetuple = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), 'Open FreeCAD Material file', self.directory, '*.FCMat')
         filename = filetuple[0]  # a tuple of two empty strings returns True, so use the filename directly
         if filename:
             import importFCMat
+            self.directory = os.path.dirname(filename)
             d = importFCMat.read(filename)
             if d:
                 self.updateContents(d)
@@ -441,9 +439,10 @@ class MaterialEditor:
         filetuple =\
             QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),
                                               'Save FreeCAD Material file',
-                                              name + '.FCMat')
+                                              self.directory + '/' + name + '.FCMat', '*.FCMat')
         filename = filetuple[0]  # a tuple of two empty strings returns True, so use the filename directly
         if filename:
+            self.directory = os.path.dirname(filename)
             d = self.getDict()
             # self.outputDict(d)
             if d:
@@ -482,24 +481,22 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
         if column == 1:
 
             row = index.row()
+
+            PP = group.child(row, 0)
+            matproperty = PP.text().replace(" ", "")  # remove spaces
+
             TT = group.child(row, 2)
 
             if TT:
                 Type = TT.text()
-                UU = group.child(row, 3)
-                if UU:
-                    Units = UU.text()
-                else:
-                    Units = None
 
             else:
                 Type = "String"
-                Units = None
 
             VV = group.child(row, 1)
             Value = VV.text()
 
-            editor = matProperWidget(parent, Type, Units, Value)
+            editor = matProperWidget(parent, matproperty, Type, Value)
 
         elif column == 0:
 
@@ -542,7 +539,7 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
 ui = FreeCADGui.UiLoader()
 
 
-def matProperWidget(parent=None, Type="String", Units=None, Value=None,
+def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
                     minimum=None, maximum=None, stepsize=None, precision=None):
 
     '''customs widgets for the material stuff.'''
@@ -565,13 +562,12 @@ def matProperWidget(parent=None, Type="String", Units=None, Value=None,
     elif Type == "Quantity":
 
         widget = ui.createWidget("Gui::InputField")
-        if Units:
-            vv = string2tuple(Units)
-            unit = FreeCAD.Units.Unit(
-                vv[0], vv[1], vv[2], vv[3], vv[4], vv[5], vv[6], vv[7]
-            )
+        if hasattr(FreeCAD.Units, matproperty):
+            unit = getattr(FreeCAD.Units, matproperty)
             quantity = FreeCAD.Units.Quantity(1, unit)
             widget.setProperty('unit', quantity.getUserPreferred()[2])
+        else:
+            FreeCAD.Console.PrintError('Not known unit for property: ' + matproperty + '\n')
 
     elif Type == "Integer":
 
@@ -646,10 +642,32 @@ def openEditor(obj=None, prop=None):
 
 def editMaterial(material):
     """editMaterial(material): opens the editor to edit the contents
-    of the given material dictionary. Returns the modified material."""
+    of the given material dictionary. Returns the modified material dictionary."""
+    # if the material editor is opened with this def the combo box with the card name is empty
+    # this makes sense, because the editor was not opened with a card but with material dictionary instead
+    # TODO: add some text in combo box, may be "custom material data" or "user material data"
+    # TODO: all card could be checked if one fits exact ALL provided data and than this card name could be displayed
     editor = MaterialEditor(material=material)
     result = editor.exec_()
     if result:
         return editor.getDict()
     else:
         return material
+
+
+'''
+# some examples how to open the material editor in Python:
+import MaterialEditor
+MaterialEditor.openEditor()
+
+doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'data/examples/FemCalculixCantilever3D.FCStd')
+import MaterialEditor
+MaterialEditor.openEditor('SolidMaterial', 'Material')
+
+import MaterialEditor
+MaterialEditor.editMaterial({'Density': '1234.0 kg/m^3', 'Name': 'My-Material-Data', 'PoissonRatio': '0.66', 'YoungsModulus': '123456 MPa'})
+
+import MaterialEditor
+MaterialEditor.editMaterial('ABS')
+
+'''

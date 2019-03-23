@@ -4,18 +4,18 @@
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="+478"/>
+      <location filename="../../Command.cpp" line="478"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="479"/>
       <source>&amp;Annotation</source>
       <translation>&amp;Anotació</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="480"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>Inserts an Annotation view in the active drawing</source>
       <translation>Insereix una vista de l'anotació en el dibuix actiu</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdDrawingClip</name>
     <message>
-      <location line="+44"/>
+      <location filename="../../Command.cpp" line="526"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="527"/>
       <source>&amp;Clip</source>
       <translation>&amp;Retalla</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="530"/>
       <source>Inserts a clip group in the active drawing</source>
       <translation>Insereix un grup de retalls en el dibuix actual</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location line="+193"/>
+      <location filename="../../Command.cpp" line="723"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="724"/>
       <source>&amp;Draft View</source>
       <translation>&amp;Vista d'esborrany</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="725"/>
+      <location filename="../../Command.cpp" line="727"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
       <translation>Insereix una vista d'esborrany dels objectes seleccionats en el dibuix actiu</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location line="-96"/>
+      <location filename="../../Command.cpp" line="631"/>
       <source>File</source>
       <translation>Fitxer</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="632"/>
       <source>&amp;Export page...</source>
       <translation>&amp;Exporta la pàgina...</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="633"/>
+      <location filename="../../Command.cpp" line="635"/>
       <source>Export a page to an SVG file</source>
       <translation>Exporta una pàgina a un fitxer SVG</translation>
     </message>
@@ -80,13 +80,13 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location line="-363"/>
+      <location filename="../../Command.cpp" line="272"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="274"/>
       <source>Insert new A3 landscape drawing</source>
       <translation type="unfinished">Insert new A3 landscape drawing</translation>
     </message>
@@ -94,13 +94,13 @@
   <context>
     <name>CmdDrawingNewPage</name>
     <message>
-      <location line="-179"/>
+      <location filename="../../Command.cpp" line="95"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="96"/>
+      <location filename="../../Command.cpp" line="97"/>
       <source>Insert new drawing</source>
       <translation>Insereix un dibuix nou</translation>
     </message>
@@ -108,17 +108,17 @@
   <context>
     <name>CmdDrawingNewView</name>
     <message>
-      <location line="+214"/>
+      <location filename="../../Command.cpp" line="311"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="312"/>
       <source>Insert view in drawing</source>
       <translation>Insereix la vista en el dibuix</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="313"/>
       <source>Insert a new View of a Part in the active drawing</source>
       <translation>Insereix una vista nova d'una peça en el dibuix actiu</translation>
     </message>
@@ -126,17 +126,17 @@
   <context>
     <name>CmdDrawingOpen</name>
     <message>
-      <location line="-254"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="60"/>
       <source>Open SVG...</source>
       <translation>Obri SVG...</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="61"/>
       <source>Open a scalable vector graphic</source>
       <translation>Obri una imatge vectorial escalable</translation>
     </message>
@@ -144,18 +144,18 @@
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location line="+379"/>
+      <location filename="../../Command.cpp" line="440"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>Open &amp;browser view</source>
       <translation>Obri una &amp;vista de navegador</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="442"/>
+      <location filename="../../Command.cpp" line="444"/>
       <source>Opens the selected page in a browser view</source>
       <translation>Obri la pàgina seleccionada en una vista de navegador</translation>
     </message>
@@ -163,17 +163,17 @@
   <context>
     <name>CmdDrawingOrthoViews</name>
     <message>
-      <location line="-54"/>
+      <location filename="../../Command.cpp" line="390"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="391"/>
       <source>Insert orthographic views</source>
       <translation>Insereix vistes ortogràfiques</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="392"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
       <translation>Insereix una projecció ortogonal d'una part en el dibuix actiu</translation>
     </message>
@@ -181,18 +181,18 @@
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location line="+295"/>
+      <location filename="../../Command.cpp" line="687"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="688"/>
       <source>Project shape...</source>
       <translation>Projecta la forma...</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="689"/>
+      <location filename="../../Command.cpp" line="690"/>
       <source>Project shape onto a user-defined plane</source>
       <translation>Projecta la forma en un pla definit per l'usuari</translation>
     </message>
@@ -200,18 +200,18 @@
   <context>
     <name>CmdDrawingSpreadsheetView</name>
     <message>
-      <location line="+64"/>
+      <location filename="../../Command.cpp" line="754"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="755"/>
       <source>&amp;Spreadsheet View</source>
       <translation>&amp;Visualització del full de càlcul</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="756"/>
+      <location filename="../../Command.cpp" line="758"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
       <translation>Insereix una vista del full de càlcul seleccionat en el dibuix actiu</translation>
     </message>
@@ -219,18 +219,18 @@
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location line="-187"/>
+      <location filename="../../Command.cpp" line="571"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="572"/>
       <source>&amp;Symbol</source>
       <translation>&amp;Símbol</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="573"/>
+      <location filename="../../Command.cpp" line="575"/>
       <source>Inserts a symbol from a svg file in the active drawing</source>
       <translation>Insereix un símbol des d'un fitxer svg en el dibuix actiu</translation>
     </message>
@@ -238,135 +238,126 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+211"/>
+      <location filename="../../DrawingView.cpp" line="215"/>
       <source>&amp;Background</source>
       <translation>&amp;Fons</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location filename="../../DrawingView.cpp" line="221"/>
       <source>&amp;Outline</source>
       <translation>&amp;Contorn</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location filename="../../DrawingView.cpp" line="227"/>
       <source>&amp;Native</source>
       <translation>&amp;Natiu</translation>
     </message>
     <message>
-      <location line="+4"/>
+      <location filename="../../DrawingView.cpp" line="231"/>
       <source>&amp;OpenGL</source>
       <translation>&amp;OpenGL</translation>
     </message>
     <message>
-      <location line="+3"/>
+      <location filename="../../DrawingView.cpp" line="234"/>
       <source>&amp;Image</source>
       <translation>&amp;Imatge</translation>
     </message>
     <message>
-      <location line="+4"/>
+      <location filename="../../DrawingView.cpp" line="238"/>
       <source>&amp;High Quality Antialiasing</source>
       <translation>&amp;Antialiàsing d'alta qualitat</translation>
     </message>
     <message>
-      <location line="+33"/>
+      <location filename="../../DrawingView.cpp" line="276"/>
       <source>Open SVG File</source>
       <translation>Obri un fitxer SVG</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../DrawingView.cpp" line="277"/>
       <source>Could not open file '%1'.</source>
       <translation>No s'ha pogut obrir el fitxer '%1'.</translation>
     </message>
     <message>
-      <location line="+87"/>
+      <location filename="../../DrawingView.cpp" line="364"/>
       <source>&amp;Renderer</source>
       <translation>&amp;Renderitzador</translation>
     </message>
     <message>
-      <location line="+105"/>
+      <location filename="../../DrawingView.cpp" line="469"/>
       <source>Export PDF</source>
       <translation>Exporta a PDF</translation>
     </message>
     <message>
-      <location line="+110"/>
+      <location filename="../../DrawingView.cpp" line="470"/>
+      <source>PDF file</source>
+      <translation>Fitxer PDF</translation>
+    </message>
+    <message>
+      <location filename="../../DrawingView.cpp" line="486"/>
+      <source>Page sizes</source>
+      <translation>Mides de pàgina</translation>
+    </message>
+    <message>
+      <location filename="../../DrawingView.cpp" line="487"/>
+      <source>A0</source>
+      <translation>A0</translation>
+    </message>
+    <message>
+      <location filename="../../DrawingView.cpp" line="489"/>
+      <source>A1</source>
+      <translation>A1</translation>
+    </message>
+    <message>
+      <location filename="../../DrawingView.cpp" line="491"/>
+      <source>A2</source>
+      <translation>A2</translation>
+    </message>
+    <message>
+      <location filename="../../DrawingView.cpp" line="493"/>
+      <source>A3</source>
+      <translation>A3</translation>
+    </message>
+    <message>
+      <location filename="../../DrawingView.cpp" line="495"/>
+      <source>A4</source>
+      <translation>A4</translation>
+    </message>
+    <message>
+      <location filename="../../DrawingView.cpp" line="497"/>
+      <source>A5</source>
+      <translation>A5</translation>
+    </message>
+    <message>
+      <location filename="../../DrawingView.cpp" line="578"/>
+      <source>Different orientation</source>
+      <translation>Orientació diferent</translation>
+    </message>
+    <message>
+      <location filename="../../DrawingView.cpp" line="579"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>La impressora utilitza una orientació diferent de la del dibuix. Voleu continuar?</translation>
     </message>
     <message>
-      <source>PDF file (*.pdf)</source>
-      <translation type="unfinished">PDF file (*.pdf)</translation>
-    </message>
-    <message>
-      <location line="-109"/>
-      <source>PDF file</source>
-      <translation>Fitxer PDF</translation>
-    </message>
-    <message>
-      <location line="+16"/>
-      <source>Page sizes</source>
-      <translation>Mides de pàgina</translation>
-    </message>
-    <message>
-      <location line="+1"/>
-      <source>A0</source>
-      <translation>A0</translation>
-    </message>
-    <message>
-      <location line="+2"/>
-      <source>A1</source>
-      <translation>A1</translation>
-    </message>
-    <message>
-      <location line="+2"/>
-      <source>A2</source>
-      <translation>A2</translation>
-    </message>
-    <message>
-      <location line="+2"/>
-      <source>A3</source>
-      <translation>A3</translation>
-    </message>
-    <message>
-      <location line="+2"/>
-      <source>A4</source>
-      <translation>A4</translation>
-    </message>
-    <message>
-      <location line="+2"/>
-      <source>A5</source>
-      <translation>A5</translation>
-    </message>
-    <message>
-      <location line="+81"/>
-      <source>Different orientation</source>
-      <translation>Orientació diferent</translation>
-    </message>
-    <message>
-      <source>The printer uses a different orientation  than the drawing.
-Do you want to continue?</source>
-      <translation>La impressora utilitza una orientació diferent de la del dibuix. Voleu continuar?</translation>
-    </message>
-    <message>
-      <location line="+8"/>
-      <location line="+8"/>
+      <location filename="../../DrawingView.cpp" line="586"/>
+      <location filename="../../DrawingView.cpp" line="594"/>
       <source>Different paper size</source>
       <translation>Mida de paper diferent</translation>
     </message>
     <message>
-      <location line="-7"/>
-      <location line="+8"/>
+      <location filename="../../DrawingView.cpp" line="587"/>
+      <location filename="../../DrawingView.cpp" line="595"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>La impressora utilitza una mida de paper diferent de la del dibuix. Voleu continuar?</translation>
     </message>
     <message>
-      <location line="+11"/>
+      <location filename="../../DrawingView.cpp" line="606"/>
       <source>Opening file failed</source>
       <translation>No s'ha pogut obrir el fitxer.</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../DrawingView.cpp" line="607"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>No s'ha pogut obrir el fitxer '%1' per a escriure-hi.</translation>
     </message>
@@ -374,331 +365,267 @@ Do you want to continue?</source>
   <context>
     <name>DrawingGui::TaskOrthoViews</name>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="+26"/>
+      <location filename="../../TaskOrthoViews.ui" line="26"/>
       <source>Orthographic Projection</source>
       <translation>Projecció ortogràfica</translation>
     </message>
     <message>
-      <location line="+20"/>
-      <location line="+25"/>
-      <location line="+25"/>
-      <location line="+25"/>
-      <location line="+25"/>
-      <location line="+31"/>
-      <location line="+25"/>
-      <location line="+25"/>
-      <location line="+25"/>
-      <location line="+25"/>
-      <location line="+25"/>
-      <location line="+60"/>
+      <location filename="../../TaskOrthoViews.ui" line="46"/>
+      <location filename="../../TaskOrthoViews.ui" line="71"/>
+      <location filename="../../TaskOrthoViews.ui" line="96"/>
+      <location filename="../../TaskOrthoViews.ui" line="121"/>
+      <location filename="../../TaskOrthoViews.ui" line="146"/>
+      <location filename="../../TaskOrthoViews.ui" line="177"/>
+      <location filename="../../TaskOrthoViews.ui" line="202"/>
+      <location filename="../../TaskOrthoViews.ui" line="227"/>
+      <location filename="../../TaskOrthoViews.ui" line="252"/>
+      <location filename="../../TaskOrthoViews.ui" line="277"/>
+      <location filename="../../TaskOrthoViews.ui" line="302"/>
+      <location filename="../../TaskOrthoViews.ui" line="362"/>
       <source>Right click for axonometric settings</source>
       <translation>Feu clic dret per a la configuració axonomètrica</translation>
     </message>
     <message>
-      <location line="+106"/>
-      <source>Top left x / y</source>
-      <translation>Dalt a l'esquerra x / y</translation>
-    </message>
-    <message>
-      <source>Spacing dx / dy   </source>
-      <translation>Espaiat dx / dy</translation>
-    </message>
-    <message>
-      <source> Axis out and right</source>
-      <translation>Sentit de l'eix cap a la dreta</translation>
-    </message>
-    <message>
-      <source> Vertical tilt</source>
-      <translation>Inclinació vertical</translation>
-    </message>
-    <message>
-      <location line="+48"/>
-      <source>Spacing dx / dy</source>
-      <translation>Espaiat dx / dy</translation>
-    </message>
-    <message>
-      <location line="+71"/>
-      <source>Axis out and right</source>
-      <translation>Eix orientat cap a l'exterior i cap a la dreta</translation>
-    </message>
-    <message>
-      <location line="+7"/>
-      <source>Vertical tilt</source>
-      <translation>Inclinació vertical</translation>
-    </message>
-    <message>
-      <location line="+11"/>
-      <location line="+200"/>
-      <source>X +ve</source>
-      <translation>X +ve</translation>
-    </message>
-    <message>
-      <location line="-195"/>
-      <location line="+75"/>
-      <location line="+125"/>
-      <source>Y +ve</source>
-      <translation>Y +ve</translation>
-    </message>
-    <message>
-      <location line="-195"/>
-      <location line="+75"/>
-      <location line="+125"/>
-      <source>Z +ve</source>
-      <translation>Z +ve</translation>
-    </message>
-    <message>
-      <location line="-195"/>
-      <location line="+200"/>
-      <source>X -ve</source>
-      <translation>X -ve</translation>
-    </message>
-    <message>
-      <location line="-195"/>
-      <location line="+70"/>
-      <location line="+130"/>
-      <source>Y -ve</source>
-      <translation>Y -ve</translation>
-    </message>
-    <message>
-      <location line="-195"/>
-      <location line="+70"/>
-      <location line="+130"/>
-      <source>Z -ve</source>
-      <translation>Z -ve</translation>
-    </message>
-    <message>
-      <location line="-188"/>
-      <source>Isometric</source>
-      <translation>Isomètric</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Dimetric</source>
-      <translation>Dimètric</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Trimetric</source>
-      <translation>Trimètric</translation>
-    </message>
-    <message>
-      <location line="+8"/>
-      <source> Scale</source>
-      <translation>Escala</translation>
-    </message>
-    <message>
-      <location line="+7"/>
-      <source> View projection   </source>
-      <translation>Projecció de la vista</translation>
-    </message>
-    <message>
-      <location line="+7"/>
-      <source> Axis aligned up</source>
-      <translation>Eix alineat cap a dalt</translation>
-    </message>
-    <message>
-      <location line="+41"/>
-      <location line="+23"/>
-      <source>Flip</source>
-      <translation>Inverteix</translation>
-    </message>
-    <message>
-      <location line="-10"/>
-      <source> Trimetric</source>
-      <translation>Trimètric</translation>
-    </message>
-    <message>
-      <location line="+28"/>
-      <source>Projection</source>
-      <translation>Projecció</translation>
-    </message>
-    <message>
-      <location line="+11"/>
-      <source>Third Angle</source>
-      <translation>Tercer angle</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>First Angle</source>
-      <translation>Primer angle</translation>
-    </message>
-    <message>
-      <location line="+19"/>
-      <source>View from:</source>
-      <translation>Vista des de:</translation>
-    </message>
-    <message>
-      <location line="+47"/>
-      <source>Axis aligned right:</source>
-      <translation>Eix alineat a la dreta:</translation>
-    </message>
-    <message>
-      <source>Primary View</source>
-      <translation type="unfinished">Primary View</translation>
-    </message>
-    <message>
-      <source>Front</source>
-      <translation>Alçat</translation>
-    </message>
-    <message>
-      <source>Right</source>
-      <translation>Dreta</translation>
-    </message>
-    <message>
-      <source>Back</source>
-      <translation type="unfinished">Back</translation>
-    </message>
-    <message>
-      <source>Left</source>
-      <translation>Esquerra</translation>
-    </message>
-    <message>
-      <source>Top</source>
-      <translation>Planta</translation>
-    </message>
-    <message>
-      <source>Bottom</source>
-      <translation>Inferior</translation>
-    </message>
-    <message>
-      <source>- Rotate</source>
-      <translation type="unfinished">- Rotate</translation>
-    </message>
-    <message>
-      <source>90</source>
-      <translation type="unfinished">90</translation>
-    </message>
-    <message>
-      <source>180</source>
-      <translation type="unfinished">180</translation>
-    </message>
-    <message>
-      <source>270</source>
-      <translation type="unfinished">270</translation>
-    </message>
-    <message>
-      <location line="-514"/>
+      <location filename="../../TaskOrthoViews.ui" line="324"/>
       <source>Primary view</source>
       <translation>Vista principal</translation>
     </message>
     <message>
-      <location line="+16"/>
+      <location filename="../../TaskOrthoViews.ui" line="340"/>
       <source>Secondary Views</source>
       <translation>Vistes secundàries</translation>
     </message>
     <message>
-      <location line="+72"/>
+      <location filename="../../TaskOrthoViews.ui" line="412"/>
       <source>General</source>
       <translation>General</translation>
     </message>
     <message>
-      <location line="+9"/>
+      <location filename="../../TaskOrthoViews.ui" line="421"/>
       <source>Auto scale / position</source>
       <translation>Escala / posició automàtiques</translation>
     </message>
     <message>
-      <location line="+15"/>
+      <location filename="../../TaskOrthoViews.ui" line="436"/>
       <source>Scale</source>
       <translation>Redimensiona</translation>
     </message>
     <message>
-      <source>Primary x / y</source>
-      <translation type="unfinished">Primary x / y</translation>
+      <location filename="../../TaskOrthoViews.ui" line="468"/>
+      <source>Top left x / y</source>
+      <translation>Dalt a l'esquerra x / y</translation>
     </message>
     <message>
-      <source>Secondary dx / dy</source>
-      <translation type="unfinished">Secondary dx / dy</translation>
+      <location filename="../../TaskOrthoViews.ui" line="516"/>
+      <source>Spacing dx / dy</source>
+      <translation>Espaiat dx / dy</translation>
     </message>
     <message>
-      <location line="+125"/>
+      <location filename="../../TaskOrthoViews.ui" line="561"/>
       <source>Show hidden lines</source>
       <translation>Mostra les línies amagades</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location filename="../../TaskOrthoViews.ui" line="568"/>
       <source>Show smooth lines</source>
       <translation>Mostra les línies suaus</translation>
     </message>
     <message>
-      <location line="+11"/>
+      <location filename="../../TaskOrthoViews.ui" line="579"/>
       <source>Axonometric</source>
       <translation>Axonomètrica</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="587"/>
+      <source>Axis out and right</source>
+      <translation>Eix orientat cap a l'exterior i cap a la dreta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="594"/>
+      <source>Vertical tilt</source>
+      <translation>Inclinació vertical</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="605"/>
+      <location filename="../../TaskOrthoViews.ui" line="805"/>
+      <source>X +ve</source>
+      <translation>X +ve</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="610"/>
+      <location filename="../../TaskOrthoViews.ui" line="685"/>
+      <location filename="../../TaskOrthoViews.ui" line="810"/>
+      <source>Y +ve</source>
+      <translation>Y +ve</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="615"/>
+      <location filename="../../TaskOrthoViews.ui" line="690"/>
+      <location filename="../../TaskOrthoViews.ui" line="815"/>
+      <source>Z +ve</source>
+      <translation>Z +ve</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="620"/>
+      <location filename="../../TaskOrthoViews.ui" line="820"/>
+      <source>X -ve</source>
+      <translation>X -ve</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="625"/>
+      <location filename="../../TaskOrthoViews.ui" line="695"/>
+      <location filename="../../TaskOrthoViews.ui" line="825"/>
+      <source>Y -ve</source>
+      <translation>Y -ve</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="630"/>
+      <location filename="../../TaskOrthoViews.ui" line="700"/>
+      <location filename="../../TaskOrthoViews.ui" line="830"/>
+      <source>Z -ve</source>
+      <translation>Z -ve</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="642"/>
+      <source>Isometric</source>
+      <translation>Isomètric</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="647"/>
+      <source>Dimetric</source>
+      <translation>Dimètric</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="652"/>
+      <source>Trimetric</source>
+      <translation>Trimètric</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="660"/>
+      <source> Scale</source>
+      <translation>Escala</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="667"/>
+      <source>View projection</source>
+      <translation type="unfinished">View projection</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="674"/>
+      <source> Axis aligned up</source>
+      <translation>Eix alineat cap a dalt</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="715"/>
+      <location filename="../../TaskOrthoViews.ui" line="738"/>
+      <source>Flip</source>
+      <translation>Inverteix</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="728"/>
+      <source> Trimetric</source>
+      <translation>Trimètric</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="756"/>
+      <source>Projection</source>
+      <translation>Projecció</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="767"/>
+      <source>Third Angle</source>
+      <translation>Tercer angle</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="772"/>
+      <source>First Angle</source>
+      <translation>Primer angle</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="791"/>
+      <source>View from:</source>
+      <translation>Vista des de:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="838"/>
+      <source>Axis aligned right:</source>
+      <translation>Eix alineat a la dreta:</translation>
     </message>
   </context>
   <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-      <location filename="../../TaskDialog.cpp" line="+51"/>
+      <location filename="../../TaskDialog.cpp" line="51"/>
       <source>Visible sharp edges</source>
       <translation>Arestes afilades visibles</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../TaskDialog.cpp" line="52"/>
       <source>Visible smooth edges</source>
       <translation>Arestes suaus visibles</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../TaskDialog.cpp" line="53"/>
       <source>Visible sewn edges</source>
       <translation>Arestes cosides visibles</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../TaskDialog.cpp" line="54"/>
       <source>Visible outline edges</source>
       <translation>Arestes de contorn visibles</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../TaskDialog.cpp" line="55"/>
       <source>Visible isoparameters</source>
       <translation>Isoparàmetres visibles</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../TaskDialog.cpp" line="56"/>
       <source>Hidden sharp edges</source>
       <translation>Arestes afilades amagades</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../TaskDialog.cpp" line="57"/>
       <source>Hidden smooth edges</source>
       <translation>Arestes suaus amagades</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../TaskDialog.cpp" line="58"/>
       <source>Hidden sewn edges</source>
       <translation>Arestes cosides amagades</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../TaskDialog.cpp" line="59"/>
       <source>Hidden outline edges</source>
       <translation>Arestes de contorn amagades</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../TaskDialog.cpp" line="60"/>
       <source>Hidden isoparameters</source>
       <translation>Isoparàmetres ocults</translation>
     </message>
     <message>
-      <location line="+17"/>
+      <location filename="../../TaskDialog.cpp" line="77"/>
       <source>Project shapes</source>
       <translation>Projecta formes</translation>
     </message>
     <message>
-      <location line="+14"/>
+      <location filename="../../TaskDialog.cpp" line="91"/>
       <source>No active document</source>
       <translation>No hi ha cap document actiu.</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../TaskDialog.cpp" line="92"/>
       <source>There is currently no active document to complete the operation</source>
       <translation>Actualment no hi ha cap document actiu per a completar l'operació</translation>
     </message>
     <message>
-      <location line="+5"/>
+      <location filename="../../TaskDialog.cpp" line="97"/>
       <source>No active view</source>
       <translation>No hi ha cap visualització activa.</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../TaskDialog.cpp" line="98"/>
       <source>There is currently no active view to complete the operation</source>
       <translation>Actualment hi ha cap visualització activa per a completar l'operació</translation>
     </message>
@@ -706,80 +633,32 @@ Do you want to continue?</source>
   <context>
     <name>Drawing_NewPage</name>
     <message>
-      <source>A0 landscape</source>
-      <translation type="unfinished">A0 landscape</translation>
-    </message>
-    <message>
-      <source>Insert new A0 landscape drawing</source>
-      <translation type="unfinished">Insert new A0 landscape drawing</translation>
-    </message>
-    <message>
-      <source>A1 landscape</source>
-      <translation type="unfinished">A1 landscape</translation>
-    </message>
-    <message>
-      <source>Insert new A1 landscape drawing</source>
-      <translation type="unfinished">Insert new A1 landscape drawing</translation>
-    </message>
-    <message>
-      <source>A2 landscape</source>
-      <translation type="unfinished">A2 landscape</translation>
-    </message>
-    <message>
-      <source>Insert new A2 landscape drawing</source>
-      <translation type="unfinished">Insert new A2 landscape drawing</translation>
-    </message>
-    <message>
-      <source>A3 landscape</source>
-      <translation type="unfinished">A3 landscape</translation>
-    </message>
-    <message>
-      <source>Insert new A3 landscape drawing</source>
-      <translation type="unfinished">Insert new A3 landscape drawing</translation>
-    </message>
-    <message>
-      <source>A4 landscape</source>
-      <translation type="unfinished">A4 landscape</translation>
-    </message>
-    <message>
-      <source>Insert new A4 landscape drawing</source>
-      <translation type="unfinished">Insert new A4 landscape drawing</translation>
-    </message>
-    <message>
-      <source>Insert new A%1 landscape drawing</source>
-      <translation type="unfinished">Insert new A%1 landscape drawing</translation>
-    </message>
-    <message>
-      <source>A%1 landscape</source>
-      <translation type="unfinished">A%1 landscape</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="-355"/>
+      <location filename="../../Command.cpp" line="220"/>
       <source>Landscape</source>
       <translation>Horitzontal</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="222"/>
       <source>Portrait</source>
       <translation>Vertical</translation>
     </message>
     <message>
-      <location line="+4"/>
+      <location filename="../../Command.cpp" line="226"/>
       <source>%1%2 %3</source>
       <translation>%1%2 %3</translation>
     </message>
     <message>
-      <location line="+5"/>
+      <location filename="../../Command.cpp" line="231"/>
       <source>Insert new %1%2 %3 drawing</source>
       <translation>Insereix el nou dibuix %1%2 %3</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location filename="../../Command.cpp" line="238"/>
       <source>%1%2 %3 (%4)</source>
       <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
       <translation>Insereix el nou dibuix %1%2 %3 (%4)</translation>
     </message>
@@ -787,162 +666,106 @@ Do you want to continue?</source>
   <context>
     <name>QObject</name>
     <message>
-      <location line="-173"/>
-      <location line="+521"/>
+      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="592"/>
       <source>Choose an SVG file to open</source>
       <translation>Trieu un fitxer SVG per a obrir-lo</translation>
     </message>
     <message>
-      <source>Drawing viewer</source>
-      <translation type="unfinished">Drawing viewer</translation>
-    </message>
-    <message>
-      <source>Scalable Vector Graphics (*.svg *.svgz)</source>
-      <translation type="unfinished">Scalable Vector Graphics (*.svg *.svgz)</translation>
-    </message>
-    <message>
-      <location line="-268"/>
-      <location line="+79"/>
-      <location line="+50"/>
-      <location line="+191"/>
-      <location line="+123"/>
-      <source>Wrong selection</source>
-      <translation>Selecció incorrecta</translation>
-    </message>
-    <message>
-      <location line="-442"/>
-      <source>Select a Part object.</source>
-      <translation>Seleccioneu un objecte peça</translation>
-    </message>
-    <message>
-      <source>No page to insert</source>
-      <translation type="unfinished">No page to insert</translation>
-    </message>
-    <message>
-      <source>Create a page to insert.</source>
-      <translation type="unfinished">Create a page to insert.</translation>
-    </message>
-    <message>
-      <source>Create a page to insert views into.</source>
-      <translation type="unfinished">Create a page to insert views into.</translation>
-    </message>
-    <message>
-      <location line="-253"/>
-      <location line="+521"/>
-      <location line="+57"/>
+      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="593"/>
+      <location filename="../../Command.cpp" line="650"/>
       <source>Scalable Vector Graphic</source>
       <translation>Gràfic vectorial escalable</translation>
     </message>
     <message>
-      <location line="-317"/>
-      <location line="+79"/>
-      <location line="+81"/>
-      <location line="+48"/>
-      <location line="+45"/>
-      <location line="+187"/>
+      <location filename="../../Command.cpp" line="324"/>
+      <location filename="../../Command.cpp" line="403"/>
+      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="644"/>
+      <location filename="../../Command.cpp" line="767"/>
+      <source>Wrong selection</source>
+      <translation>Selecció incorrecta</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="325"/>
+      <source>Select a Part object.</source>
+      <translation>Seleccioneu un objecte peça</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="333"/>
+      <location filename="../../Command.cpp" line="412"/>
+      <location filename="../../Command.cpp" line="493"/>
+      <location filename="../../Command.cpp" line="541"/>
+      <location filename="../../Command.cpp" line="586"/>
+      <location filename="../../Command.cpp" line="773"/>
       <source>No page found</source>
       <translation>No s'ha trobat cap pàgina.</translation>
     </message>
     <message>
-      <location line="-439"/>
-      <location line="+79"/>
-      <location line="+81"/>
-      <location line="+48"/>
-      <location line="+45"/>
-      <location line="+187"/>
+      <location filename="../../Command.cpp" line="334"/>
+      <location filename="../../Command.cpp" line="413"/>
+      <location filename="../../Command.cpp" line="494"/>
+      <location filename="../../Command.cpp" line="542"/>
+      <location filename="../../Command.cpp" line="587"/>
+      <location filename="../../Command.cpp" line="774"/>
       <source>Create a page first.</source>
       <translation>Creeu una pàgina primer</translation>
     </message>
     <message>
-      <location line="-370"/>
+      <location filename="../../Command.cpp" line="404"/>
       <source>Select exactly one Part object.</source>
       <translation>Seleccioneu exactament un únic objecte peça</translation>
     </message>
     <message>
-      <location line="+50"/>
-      <location line="+191"/>
+      <location filename="../../Command.cpp" line="454"/>
+      <location filename="../../Command.cpp" line="645"/>
       <source>Select one Page object.</source>
       <translation>Seleccioneu un objecte pàgina</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location filename="../../Command.cpp" line="651"/>
       <source>All Files</source>
       <translation>Tots els fitxers</translation>
     </message>
     <message>
-      <location line="+117"/>
-      <source>Select exactly one Spreadsheet object.</source>
-      <translation>Seleccioneu exactament un sol objecte full de càlcul.</translation>
-    </message>
-    <message>
-      <source>SVG (*.svg)</source>
-      <translation type="unfinished">SVG (*.svg)</translation>
-    </message>
-    <message>
-      <source>SVG(*.svg)</source>
-      <translation type="unfinished">SVG(*.svg)</translation>
-    </message>
-    <message>
-      <source>All Files (*.*)</source>
-      <translation type="unfinished">All Files (*.*)</translation>
-    </message>
-    <message>
-      <location line="-115"/>
+      <location filename="../../Command.cpp" line="653"/>
       <source>Export page</source>
       <translation>Exporta la pàgina</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="+152"/>
-      <source>Show drawing</source>
-      <translation>Mostra el dibuix</translation>
+      <location filename="../../Command.cpp" line="768"/>
+      <source>Select exactly one Spreadsheet object.</source>
+      <translation>Seleccioneu exactament un sol objecte full de càlcul.</translation>
     </message>
     <message>
-      <source>Front</source>
-      <translation>Alçat</translation>
-    </message>
-    <message>
-      <source>Back</source>
-      <translation type="unfinished">Back</translation>
-    </message>
-    <message>
-      <source>Right</source>
-      <translation>Dreta</translation>
-    </message>
-    <message>
-      <source>Left</source>
-      <translation>Esquerra</translation>
-    </message>
-    <message>
-      <source>Top</source>
-      <translation>Planta</translation>
-    </message>
-    <message>
-      <source>Bottom</source>
-      <translation>Inferior</translation>
-    </message>
-    <message>
-      <location filename="../../TaskOrthoViews.cpp" line="+51"/>
-      <location line="+930"/>
+      <location filename="../../TaskOrthoViews.cpp" line="51"/>
+      <location filename="../../TaskOrthoViews.cpp" line="981"/>
       <source>Make axonometric...</source>
       <translation>Fes axonomètrica...</translation>
     </message>
     <message>
-      <location line="-929"/>
-      <location line="+930"/>
+      <location filename="../../TaskOrthoViews.cpp" line="52"/>
+      <location filename="../../TaskOrthoViews.cpp" line="982"/>
       <source>Edit axonometric settings...</source>
       <translation>Edita la configuració axonomètrica...</translation>
     </message>
     <message>
-      <location line="-929"/>
-      <location line="+930"/>
+      <location filename="../../TaskOrthoViews.cpp" line="53"/>
+      <location filename="../../TaskOrthoViews.cpp" line="983"/>
       <source>Make orthographic</source>
       <translation>Fes ortogràfica</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPage.cpp" line="152"/>
+      <source>Show drawing</source>
+      <translation>Mostra el dibuix</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+37"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>

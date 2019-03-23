@@ -45,8 +45,8 @@ class TestResult(unittest.TestCase):
     def test_read_frd_massflow_networkpressure(self):
         # read data from frd file
         frd_file = testtools.get_fem_test_home_dir() + 'ccx/Flow1D_thermomech.frd'
-        import feminout.importCcxFrdResults as importCcxFrdResults
-        frd_content = importCcxFrdResults.readResult(frd_file)
+        from feminout.importCcxFrdResults import read_frd_result as read_frd
+        frd_content = read_frd(frd_file)
 
         # do something with the read data
         frd_content_len = []
@@ -221,6 +221,38 @@ class TestResult(unittest.TestCase):
         self.assertEqual(res_len, expected_res_len, "Length's of read result data values are unexpected")
         self.assertEqual(read_mflow, expected_mflow, "Values of read mflow result data are unexpected")
         self.assertEqual(read_npressure, expected_npressure, "Values of read npressure result data are unexpected")
+
+    def get_stress_values(self):
+        # node 5 von calculix cantilver 3D example
+        # doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'data/examples/FemCalculixCantilever3D.FCStd')
+        # doc.Box_Mesh.FemMesh.Nodes[5]
+        # Vector (0.0, 1000.0, 0.0)
+        # res = doc.CalculiX_static_results
+        # stress = (res.NodeStressXX[4], res.NodeStressYY[4], res.NodeStressZZ[4], res.NodeStressXY[4], res.NodeStressXZ[4],res.NodeStressYZ[4])
+        stress = (
+            -4.52840E+02,  # Sxx
+            -1.94075E+02,  # Syy
+            -1.94075E+02,  # Szz
+            6.11223E+01,  # Sxy
+            -2.60754E+01,  # Sxz
+            6.92759E-05  # Syz
+        )
+        return stress
+
+    def test_stress_von_mises(self):
+        expected_mises = 283.2082
+        from femresult.resulttools import calculate_von_mises as vm
+        mises = vm(self.get_stress_values())
+        # fcc_print(round(mises, 4))
+        self.assertEqual(round(mises, 4), expected_mises, "Calculated von Mises stress is not the expected value.")
+
+    def test_stress_principal(self):
+        expected_principal = (-178.0076, -194.0749, -468.9075, 145.4499)
+        from femresult.resulttools import calculate_principal_stress as pr
+        prin = pr(self.get_stress_values())
+        rounded_prin = (round(prin[0], 4), round(prin[1], 4), round(prin[2], 4), round(prin[3], 4))
+        # fcc_print(rounded_prin)
+        self.assertEqual(rounded_prin, expected_principal, "Calculated principal stresses are not the expected values.")
 
     def tearDown(self):
         FreeCAD.closeDocument(self.doc_name)

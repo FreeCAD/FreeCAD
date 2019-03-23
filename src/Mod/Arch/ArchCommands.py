@@ -737,7 +737,11 @@ def pruneIncluded(objectslist,strict=False):
                     if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Facebinder","Window","Roof"]):
                         if not parent.isDerivedFrom("Part::Part2DObject"):
                             # don't consider 2D objects based on arch elements
-                            if hasattr(parent,"CloneOf"):
+                            if hasattr(parent,"Host") and (parent.Host == obj):
+                                pass
+                            elif hasattr(parent,"Hosts") and (obj in parent.Hosts):
+                                pass
+                            elif hasattr(parent,"CloneOf"):
                                 if parent.CloneOf:
                                     if parent.CloneOf.Name != obj.Name:
                                         toplevel = False
@@ -1276,12 +1280,16 @@ def getExtrusionData(shape,sortmethod="area"):
 def printMessage( message ):
     FreeCAD.Console.PrintMessage( message )
     if FreeCAD.GuiUp :
-        reply = QtGui.QMessageBox.information( None , "" , message.decode('utf8') )
+        if sys.version_info.major < 3:
+            message = message.decode("utf8")
+        reply = QtGui.QMessageBox.information( None , "" , message )
 
 def printWarning( message ):
     FreeCAD.Console.PrintMessage( message )
     if FreeCAD.GuiUp :
-        reply = QtGui.QMessageBox.warning( None , "" , message.decode('utf8') )
+        if sys.version_info.major < 3:
+            message = message.decode("utf8")
+        reply = QtGui.QMessageBox.warning( None , "" , message )
 
 
 # command definitions ###############################################

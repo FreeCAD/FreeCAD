@@ -173,7 +173,7 @@ public:
      */
     virtual void* Produce () const
     {
-        return (void*)(new CLASS);
+        return (new CLASS);
     }
 };
 
@@ -212,7 +212,7 @@ public:
      */
     virtual void* Produce () const
     {
-        return (void*)(new CLASS);
+        return (new CLASS);
     }
 };
 
@@ -295,7 +295,7 @@ public:
      */
     virtual void* Produce () const
     {
-        return (void*)(new CLASS);
+        return (new CLASS);
     }
 };
 

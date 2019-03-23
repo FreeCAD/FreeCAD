@@ -227,7 +227,7 @@ def export(objectslist, filename, argstring):
     print("done postprocessing.")
 
     if not filename == '-':
-        gfile = pythonopen(filename, "wb")
+        gfile = pythonopen(filename, "w")
         gfile.write(final)
         gfile.close()
 

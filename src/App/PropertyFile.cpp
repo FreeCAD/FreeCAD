@@ -516,7 +516,7 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
 
 Property *PropertyFileIncluded::Copy(void) const
 {
-    PropertyFileIncluded *prop = new PropertyFileIncluded();
+    std::unique_ptr<PropertyFileIncluded> prop(new PropertyFileIncluded());
 
     // remember the base name
     prop->_BaseFileName = _BaseFileName;
@@ -556,7 +556,7 @@ Property *PropertyFileIncluded::Copy(void) const
         newName.setPermissions(Base::FileInfo::ReadWrite);
     }
 
-    return prop;
+    return prop.release();
 }
 
 void PropertyFileIncluded::Paste(const Property &from)

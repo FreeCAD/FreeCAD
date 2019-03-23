@@ -60,13 +60,13 @@ ViewProviderRobotObject::ViewProviderRobotObject()
 {
     ADD_PROPERTY(Manipulator,(0));   
 
-	pcRobotRoot = new Gui::SoFCSelection();
+    pcRobotRoot = new Gui::SoFCSelection();
     pcRobotRoot->highlightMode = Gui::SoFCSelection::OFF;
     //pcRobotRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;
     //pcRobotRoot->style = Gui::SoFCSelection::BOX;
     pcRobotRoot->ref();
 
-	pcSimpleRoot = new Gui::SoFCSelection();
+    pcSimpleRoot = new Gui::SoFCSelection();
     pcSimpleRoot->highlightMode = Gui::SoFCSelection::OFF;
     //pcSimpleRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;
     pcSimpleRoot->ref();
@@ -80,6 +80,14 @@ ViewProviderRobotObject::ViewProviderRobotObject()
 
 
     Axis1Node = Axis2Node = Axis3Node = Axis4Node = Axis5Node = Axis6Node = 0;
+}
+
+ViewProviderRobotObject::~ViewProviderRobotObject()
+{
+    pcRobotRoot->unref();
+    pcSimpleRoot->unref();
+    pcOffRoot->unref();
+    pcTcpRoot->unref();
 }
 
 void ViewProviderRobotObject::setDragger()
@@ -98,23 +106,13 @@ void ViewProviderRobotObject::setDragger()
                    SbVec3f(150,150,150)
                    );
     pcDragger->setMotionMatrix(M);
-
-
 }
+
 void ViewProviderRobotObject::resetDragger()
 {
     assert(pcDragger);
     pcTcpRoot->removeAllChildren();
     pcDragger = 0;
-
- }
-
-ViewProviderRobotObject::~ViewProviderRobotObject()
-{
-    pcRobotRoot->unref();
-    pcSimpleRoot->unref();
-    pcOffRoot->unref();
-
 }
 
 void ViewProviderRobotObject::attach(App::DocumentObject *pcObj)
@@ -135,8 +133,6 @@ void ViewProviderRobotObject::attach(App::DocumentObject *pcObj)
 
     addDisplayMaskMode(pcOffRoot, "Off");
     pcOffRoot->addChild(pcTcpRoot);
-
-
 }
 
 void ViewProviderRobotObject::setDisplayMode(const char* ModeName)

@@ -1549,6 +1549,25 @@ bool GeomTrimmedCurve::intersectBasisCurves(  const GeomTrimmedCurve * c,
 
 }
 
+void GeomTrimmedCurve::getRange(double& u, double& v) const
+{
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    u = curve->FirstParameter();
+    v = curve->LastParameter();
+}
+
+void GeomTrimmedCurve::setRange(double u, double v)
+{
+    try {
+        Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+
+        curve->SetTrim(u, v);
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError,e.GetMessageString())
+    }
+}
+
 // -------------------------------------------------
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomArcOfConic,Part::GeomTrimmedCurve)
 

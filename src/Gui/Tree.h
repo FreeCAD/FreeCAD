@@ -53,9 +53,10 @@ enum HighlightMode {  Underlined,
 };
 
 /// highlight modes for the tree items
-enum TreeItemMode {  Expand,
-                     Collapse,
-                     Toggle
+enum TreeItemMode {  ExpandItem,
+                     ExpandPath,
+                     CollapseItem,
+                     ToggleItem
 };
 
 

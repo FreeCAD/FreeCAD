@@ -205,7 +205,7 @@ void ViewProvider::onChanged(const App::Property* prop) {
                        return;
                    
                    Gui::ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
-                   if(vpd && vpd->Visibility.getValue())
+                   if (vpd->Visibility.getValue())
                        vpd->Visibility.setValue(false);
                 }
             }            

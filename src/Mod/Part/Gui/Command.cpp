@@ -64,6 +64,7 @@
 #include "DlgRevolution.h"
 #include "DlgFilletEdges.h"
 #include "DlgPrimitives.h"
+#include "DlgProjectionOnSurface.h"
 #include "CrossSections.h"
 #include "Mirroring.h"
 #include "ViewProvider.h"
@@ -586,11 +587,11 @@ Gui::Action * CmdPartCompJoinFeatures::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* cmd0 = pcAction->addAction(QString());
-    cmd0->setIcon(Gui::BitmapFactory().pixmap("Part_JoinConnect"));
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("Part_JoinConnect"));
     QAction* cmd1 = pcAction->addAction(QString());
-    cmd1->setIcon(Gui::BitmapFactory().pixmap("Part_JoinEmbed"));
+    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("Part_JoinEmbed"));
     QAction* cmd2 = pcAction->addAction(QString());
-    cmd2->setIcon(Gui::BitmapFactory().pixmap("Part_JoinCutout"));
+    cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("Part_JoinCutout"));
 
     _pcAction = pcAction;
     languageChange();
@@ -694,13 +695,13 @@ Gui::Action * CmdPartCompSplitFeatures::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* cmd0 = pcAction->addAction(QString());
-    cmd0->setIcon(Gui::BitmapFactory().pixmap("Part_BooleanFragments"));
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("Part_BooleanFragments"));
     QAction* cmd1 = pcAction->addAction(QString());
-    cmd1->setIcon(Gui::BitmapFactory().pixmap("Part_SliceApart"));
+    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("Part_SliceApart"));
     QAction* cmd2 = pcAction->addAction(QString());
-    cmd2->setIcon(Gui::BitmapFactory().pixmap("Part_Slice"));
+    cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("Part_Slice"));
     QAction* cmd3 = pcAction->addAction(QString());
-    cmd3->setIcon(Gui::BitmapFactory().pixmap("Part_XOR"));
+    cmd3->setIcon(Gui::BitmapFactory().iconFromTheme("Part_XOR"));
 
     _pcAction = pcAction;
     languageChange();
@@ -780,7 +781,7 @@ CmdPartCompCompoundTools::CmdPartCompCompoundTools()
 {
     sAppModule      = "Part";
     sGroup          = QT_TR_NOOP("Part");
-    sMenuText       = QT_TR_NOOP("Counpound tools");
+    sMenuText       = QT_TR_NOOP("Compound tools");
     sToolTipText    = QT_TR_NOOP("Compound tools: working with lists of shapes.");
     sWhatsThis      = "Part_CompCompoundTools";
     sStatusTip      = sToolTipText;
@@ -814,11 +815,11 @@ Gui::Action * CmdPartCompCompoundTools::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* cmd0 = pcAction->addAction(QString());
-    cmd0->setIcon(Gui::BitmapFactory().pixmap("Part_Compound"));
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("Part_Compound"));
     QAction* cmd1 = pcAction->addAction(QString());
-    cmd1->setIcon(Gui::BitmapFactory().pixmap("Part_ExplodeCompound"));
+    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("Part_ExplodeCompound"));
     QAction* cmd2 = pcAction->addAction(QString());
-    cmd2->setIcon(Gui::BitmapFactory().pixmap("Part_CompoundFilter"));
+    cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("Part_CompoundFilter"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1049,7 +1050,7 @@ CmdPartExport::CmdPartExport()
     sToolTipText  = QT_TR_NOOP("Exports to a CAD file");
     sWhatsThis    = "Part_Export";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Export.svg";
+    sPixmap       = "Part_Export";
 }
 
 void CmdPartExport::activated(int iMsg)
@@ -1469,7 +1470,7 @@ CmdPartMirror::CmdPartMirror()
     sToolTipText  = QT_TR_NOOP("Mirroring a selected shape");
     sWhatsThis    = "Part_Mirror";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Mirror.svg";
+    sPixmap       = "Part_Mirror";
 }
 
 void CmdPartMirror::activated(int iMsg)
@@ -1750,9 +1751,9 @@ Gui::Action * CmdPartCompOffset::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* cmd0 = pcAction->addAction(QString());
-    cmd0->setIcon(Gui::BitmapFactory().pixmap("Part_Offset"));
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("Part_Offset"));
     QAction* cmd1 = pcAction->addAction(QString());
-    cmd1->setIcon(Gui::BitmapFactory().pixmap("Part_Offset2D"));
+    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("Part_Offset2D"));
 
     _pcAction = pcAction;
     languageChange();
@@ -2371,6 +2372,35 @@ bool CmdBoxSelection::isActive(void)
     return hasActiveDocument();
 }
 
+//===========================================================================
+// Part_projectionOnSurface
+//===========================================================================
+DEF_STD_CMD_A(CmdPartProjectionOnSurface);
+
+CmdPartProjectionOnSurface::CmdPartProjectionOnSurface()
+  :Command("Part_projectionOnSurface")
+{
+  sAppModule = "Part";
+  sGroup = QT_TR_NOOP("Part");
+  sMenuText = QT_TR_NOOP("Create projection on surface...");
+  sToolTipText = QT_TR_NOOP("Create projection on surface...");
+  sWhatsThis = "Part_projectionOnSurface";
+  sStatusTip = sToolTipText;
+  sPixmap = "Part_ProjectionOnSurface";
+}
+
+void CmdPartProjectionOnSurface::activated(int iMsg)
+{
+  Q_UNUSED(iMsg);
+  PartGui::TaskProjectionOnSurface* dlg = new PartGui::TaskProjectionOnSurface();
+  Gui::Control().showDialog(dlg);
+}
+
+bool CmdPartProjectionOnSurface::isActive(void)
+{
+  return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
 void CreatePartCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -2419,4 +2449,5 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdMeasureToggle3d());
     rcCmdMgr.addCommand(new CmdMeasureToggleDelta());
     rcCmdMgr.addCommand(new CmdBoxSelection());
+    rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
 }

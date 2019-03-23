@@ -71,8 +71,8 @@ public:
     virtual void toggleCache(bool state);
     virtual void updateView(bool update = false);
     virtual void drawBorder(void);
-    virtual void isVisible(bool state) { m_visibility = state; };
-    virtual bool isVisible(void) {return m_visibility;};
+    virtual void isVisible(bool state) { m_visibility = state; }
+    virtual bool isVisible(void) {return m_visibility;}
     virtual void draw(void);
     virtual void drawCaption(void);
     virtual void rotateView(void);
@@ -92,7 +92,7 @@ public:
 
 
     void alignTo(QGraphicsItem*, const QString &alignment);
-    void setLocked(bool /*state*/ = true) { locked = true; }
+    void setLocked(bool b) { m_locked = b; }
 
     virtual QColor getNormalColor(void);
     virtual QColor getPreColor(void);
@@ -124,7 +124,7 @@ protected:
     QHash<QString, QGraphicsItem*> alignHash;
     //std::string alignMode;
     //QGIView* alignAnchor;
-    bool locked;
+    bool m_locked;
     bool borderVisible;
     bool m_visibility;
     bool m_innerView;                                                  //View is inside another View

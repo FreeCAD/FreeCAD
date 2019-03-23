@@ -484,6 +484,9 @@ public:
    * If one of the facet's points is inside the sphere true is returned, otherwise false.
    */
   bool IsPointOfSphere(const MeshGeomFacet& rFacet) const;
+  /** The aspect ratio is the ratio of the radius of the circum-circle to the shortest edge length.
+   */
+  float AspectRatio() const;
 
 protected:
   Base::Vector3f  _clNormal; /**< Normal of the facet. */
@@ -821,8 +824,8 @@ inline MeshFacet::MeshFacet (void)
 : _ucFlag(0),
   _ulProp(0)
 {
-    memset(_aulNeighbours, 0xff, sizeof(ULONG_MAX) * 3);
-    memset(_aulPoints, 0xff, sizeof(ULONG_MAX) * 3);
+    memset(_aulNeighbours, 0xff, sizeof(unsigned long) * 3);
+    memset(_aulPoints, 0xff, sizeof(unsigned long) * 3);
 }
 
 inline MeshFacet::MeshFacet(const MeshFacet &rclF)

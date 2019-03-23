@@ -24,6 +24,8 @@
 # This is the start page template. It builds a HTML global variable that contains
 # the html code of the start page. It is built only once per FreeCAD session for now...
 
+import six
+
 import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
 from . import TranslationTexts
 from PySide import QtCore,QtGui
@@ -41,8 +43,8 @@ def encode(text):
 
     "make sure we are always working with unicode in python2"
 
-    if sys.version_info.major < 3:
-        if not isinstance(text,unicode):
+    if six.PY2:
+        if not isinstance(text,six.text_type):
             return text.decode("utf8")
     return text
 
@@ -217,9 +219,9 @@ def buildCard(filename,method,arg=None):
                 result += '<li class="icon">'
                 result += '<img src="file:///'+image+'">'
                 result += '<div class="caption">'
-                result += '<h4>'+basename+'</h4>'
+                result += '<h4>'+encode(basename)+'</h4>'
                 result += '<p>'+size+'</p>'
-                result += '<p>'+author+'</p>'
+                result += '<p>'+encode(author)+'</p>'
                 result += '</div>'
                 result += '</li>'
                 result += '</a>'
@@ -361,6 +363,9 @@ def handle():
     HTML = HTML.replace("IMAGE_SRC_POWERHUB",'file:///'+os.path.join(resources_dir, 'images/poweruserhub.png'))
     HTML = HTML.replace("IMAGE_SRC_DEVHUB",'file:///'+os.path.join(resources_dir, 'images/developerhub.png'))
     HTML = HTML.replace("IMAGE_SRC_MANUAL",'file:///'+os.path.join(resources_dir, 'images/manual.png'))
+    imagepath= 'file:///'+os.path.join(resources_dir, 'images/installed.png')
+    imagepath = imagepath.replace('\\','/')  # replace Windows backslash with slash to make the path javascript compatible
+    HTML = HTML.replace("IMAGE_SRC_INSTALLED",imagepath)
 
     # build UL_WORKBENCHES
 
@@ -385,6 +390,8 @@ def handle():
             wn = "cadquery_module"
         elif wn == "DefeaturingWB":
             wn = "Defeaturing"
+        elif wn == "ksuWB":
+            wn = "kicadStepUp"
         elif wn == "ManipulatorWB":
             wn = "Manipulator"
         elif wn == "PartOMagic":
@@ -401,7 +408,7 @@ def handle():
         if wb in iconbank:
             img = iconbank[wb]
         else:
-            img = os.path.join(FreeCAD.getResourceDir(),"data","Mod",wn,"Resources","icons",wn+"Workbench.svg")
+            img = os.path.join(FreeCAD.getResourceDir(),"Mod",wn,"Resources","icons",wn+"Workbench.svg")
             if not os.path.exists(img):
                 w = FreeCADGui.listWorkbenches()[wb]
                 if hasattr(w,"Icon"):
@@ -416,7 +423,7 @@ def handle():
                     else:
                         img = xpm
                 else:
-                    img="images/freecad.png"
+                    img = os.path.join(resources_dir,"images/freecad.png")
             iconbank[wb] = img
         UL_WORKBENCHES += '<li>'
         UL_WORKBENCHES += '<img src="file:///'+iconbank[wb]+'">&nbsp;'

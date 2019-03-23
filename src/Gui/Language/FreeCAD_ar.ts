@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation>الحساسية العالمية:</translation>
+      <translation type="unfinished">Global Sensitivity:</translation>
     </message>
   </context>
   <context>
@@ -294,14 +294,14 @@
       <translation>اضغط على زر الماوس الأوسط</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>اضغط على زر الماوس الأوسط واليسار أو اليمين</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation type="unfinished">Press middle+left or middle+right button</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>مرر زر الماوس الأوسط أو اضغط على زر الوسط
-أثناء القيام بالنقر الأيسر أو الأيمن وتحريك الماوس للأعلى أو للأسفل</translation>
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -403,11 +403,11 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation>المكتبات</translation>
+      <translation type="unfinished">Libraries</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>يستخدم هذا البرنامج مكونات ذات مصدر مفتوح والتي تنتمي حقوق الطبع والنشر وحقوق الملكية الأخرى الخاصة بها إلى مالكيها المعنيين:</translation>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
       <source>License</source>
@@ -423,6 +423,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>خارج النطاق</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation type="unfinished">Camera settings</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>التوجه</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation type="unfinished">Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation type="unfinished">Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation type="unfinished">Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation type="unfinished">Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation type="unfinished">Current view</translation>
     </message>
   </context>
   <context>
@@ -819,20 +850,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>اختصار محدد متعددة</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>يتم تعريف الاختصار '%1' أكثر من مرة. وقد يؤدي ذلك إلى سلوك غير متوقع.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>اختصار محدد بالفعل</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Please define another shortcut.</source>
-      <translation>الإختصار '%1' قد تم تعيينه من قبل لـ '%2'.
-
-المرجو اختيار إختصار أخر.</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation type="unfinished">Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2019,7 +2050,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Show navigation cube</source>
-      <translation>إظهار مكعب التصفح</translation>
+      <translation type="unfinished">Show navigation cube</translation>
     </message>
     <message>
       <source>Corner</source>
@@ -2044,6 +2075,10 @@ Specify another directory, please.</source>
     <message>
       <source>Use OpenGL Vertex Buffer Object</source>
       <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
+    </message>
+    <message>
+      <source>New Document Camera Orientation</source>
+      <translation type="unfinished">New Document Camera Orientation</translation>
     </message>
     <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
@@ -2095,6 +2130,46 @@ Specify another directory, please.</source>
     <message>
       <source>15px</source>
       <translation type="unfinished">15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation type="unfinished">Isometric</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation type="unfinished">Dimetric</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation type="unfinished">Trimetric</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>أعلى</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>أمام</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>يسار</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>يمين</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>خلفي</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>أسفل</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>مخصص</translation>
     </message>
   </context>
   <context>
@@ -2813,7 +2888,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Object being edited</source>
-      <translation>العنصر القيد التعديل</translation>
+      <translation type="unfinished">Object being edited</translation>
     </message>
     <message>
       <source>Active container</source>
@@ -2912,10 +2987,6 @@ Specify another directory, please.</source>
       <translation type="unfinished">Sort enabled workbenches</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>نقل للأعلى</translation>
     </message>
@@ -2930,6 +3001,10 @@ Specify another directory, please.</source>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation type="unfinished">Add all to enabled workbenches</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3006,10 +3081,6 @@ Specify another directory, please.</source>
       <translation type="unfinished">Are you sure you want to delete all transient directories?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directory you won't be able to recover any files afterwards.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>منتهي</translation>
     </message>
@@ -3024,6 +3095,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>اضغط على 'بداية الإسترجاع' للبدء في عملية إسترجاع المستند المدرج أدناه.
 
 عمود 'الحالة' يقوم بعرض مدى إمكانية إسترجاع المستند.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3801,20 +3876,20 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation type="unfinished">Tap. Or click left mouse button.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers. Or press right mouse button.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>قم بسحب الشاشة بإصبع واحد. أو اضغط على زر الفأرة الأيسر. في المخطط وفي أوضاع التعديل الأخرى، بالإضافة إلى الضغط باستمرار على Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>أُقْرُصْ (قم بوضع إصبعين على الشاشة وباعد بينهما/قَرِّبْهُمَا). أو قم بتحريك الزر الأوسط للفأرة. أو باستعمال الزرين PgUp/PgDown على لوحة المفاتيح.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4099,29 +4174,27 @@ How do you want to proceed?</translation>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation type="unfinished">Tap. Or click left mouse button.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers. Or press ALT + middle mouse button.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>قم بسحب الشاشة بإصبع واحد. أو اضغط على ALT + زر الفأرة الأيسر. في المخطط وفي أوضاع التعديل الأخرى، بالإضافة إلى الضغط باستمرار على Alt.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>أُقْرُصْ (قم بوضع إصبعين على الشاشة وباعد بينهما/قَرِّبْهُمَا). أو قم بتحريك الزر الأوسط للفأرة. أو اضغط على ALT + الزر الأيمن للفأرة. أو باستعمال الزرين PgUp/PgDown على لوحة المفاتيح.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>بدء التحميل...
-</translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -5225,18 +5298,6 @@ Be aware the point where you click matters.</translation>
       <translation>الأصل</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>التّرجمة: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>الدوران: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>حذف محتوى المجموعة؟</translation>
     </message>
@@ -5246,11 +5307,19 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>Export failed</source>
-      <translation>تعذّر التصدير</translation>
+      <translation type="unfinished">Export failed</translation>
     </message>
     <message>
       <source>Split</source>
       <translation type="unfinished">Split</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>الموضع:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>الدوران:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -5650,8 +5719,8 @@ Be aware the point where you click matters.</translation>
       <translation type="unfinished">Toggles the selected object's edit mode</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation type="unfinished">Enters or leaves the selected object's edit mode</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
     </message>
   </context>
   <context>
@@ -5985,12 +6054,12 @@ Be aware the point where you click matters.</translation>
       <translation>دمج المشروع</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>المستند %1 (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation type="unfinished">Cannot merge project with itself.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation type="unfinished">%1 document (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6666,21 +6735,6 @@ Be aware the point where you click matters.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation type="unfinished">Standard-View</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation type="unfinished">Axonometric</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation type="unfinished">Set to axonometric view</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6707,7 +6761,22 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation>إنشاء نافذة عرض جديد للمستند النشط</translation>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation type="unfinished">Standard-View</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation type="unfinished">Dimetric</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation type="unfinished">Set to dimetric view</translation>
     </message>
   </context>
   <context>
@@ -6798,6 +6867,21 @@ Be aware the point where you click matters.</translation>
     <message>
       <source>Set to front view</source>
       <translation type="unfinished">Set to front view</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation type="unfinished">Standard-View</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation type="unfinished">Isometric</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation type="unfinished">Set to isometric view</translation>
     </message>
   </context>
   <context>
@@ -6978,6 +7062,21 @@ Be aware the point where you click matters.</translation>
     <message>
       <source>Set to top view</source>
       <translation type="unfinished">Set to top view</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation type="unfinished">Standard-View</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation type="unfinished">Trimetric</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation type="unfinished">Set to trimetric view</translation>
     </message>
   </context>
   <context>
@@ -7267,28 +7366,16 @@ Be aware the point where you click matters.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation type="unfinished">These items are linked to items selected for deletion and might break.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document. 
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation>
-
-هل أنت متأكد أنك تريد الإستمرار؟</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>

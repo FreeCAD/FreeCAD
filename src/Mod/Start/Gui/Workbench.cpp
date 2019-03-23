@@ -44,6 +44,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 
 #include <Mod/Start/App/StartConfiguration.h>
 
@@ -71,6 +72,7 @@ void StartGui::Workbench::activated()
 
     try {
         QByteArray utf8Title = title.toUtf8();
+        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(utf8Title);
         QByteArray cmd;
         QTextStream str(&cmd);
         str << "import WebGui,sys,Start" << endl;
@@ -78,7 +80,7 @@ void StartGui::Workbench::activated()
         str << endl;
         str << "class WebPage(object):" << endl;
         str << "    def __init__(self):" << endl;
-        str << "        self.browser=WebGui.openBrowserWindow('" << utf8Title << "')" << endl;
+        str << "        self.browser=WebGui.openBrowserWindow(u'" << escapedstr.c_str() << "')" << endl;
 #if defined(FC_OS_WIN32)
         str << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
 #else

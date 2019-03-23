@@ -89,7 +89,7 @@ class ObjectOp(PathOp.ObjectOp):
         Obviously this is as fragile as can be, but currently the best we can do while the panel sheets
         hide the actual features from Path and they can't be referenced directly.
         '''
-        ids = string.split(sub, '.')
+        ids = sub.split(".")
         holeId = int(ids[0])
         wireId = int(ids[1])
         edgeId = int(ids[2])

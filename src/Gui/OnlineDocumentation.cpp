@@ -82,7 +82,7 @@ PythonOnlineHelp::~PythonOnlineHelp()
 
 QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
 {
-    QString fn = filename;
+    QString fn;
     fn = filename.mid(1);
     QByteArray res;
 
@@ -116,7 +116,7 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
         dict = PyDict_Copy(dict);
 
         QByteArray cmd =
-            "import string, os, sys, pydoc, pkgutil\n"
+            "import os, sys, pydoc, pkgutil\n"
             "\n"
             "class FreeCADDoc(pydoc.HTMLDoc):\n"
             "    def index(self, dir, shadowed=None):\n"
@@ -160,7 +160,7 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
             "    ret = pydoc.html.index(dir, seen)\n"
             "    if ret != None:\n"
             "        indices.append(ret)\n"
-            "contents = heading + string.join(indices) + '''<p align=right>\n"
+            "contents = heading + ' '.join(indices) + '''<p align=right>\n"
             "<font color=\"#909090\" face=\"helvetica, arial\"><strong>\n"
             "pydoc</strong> by Ka-Ping Yee &lt;ping@lfw.org&gt;</font>'''\n"
             "htmldocument=pydoc.html.page(title,contents)\n";

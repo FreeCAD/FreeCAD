@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation>Sensibilitatea globala:</translation>
+      <translation type="unfinished">Global Sensitivity:</translation>
     </message>
   </context>
   <context>
@@ -294,13 +294,14 @@
       <translation>Apasati butonul din mijloc al mouse-ului</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Apăsați butoanele stâng și mijloc sau drept al mausului</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation type="unfinished">Press middle+left or middle+right button</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Defilați butonul din mijloc al mouse-ului, sau păstrați butonul din mijloc apăsat în timp ce mișcați mouse-ul în sus sau în jos</translation>
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -402,11 +403,11 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation>Biblioteci</translation>
+      <translation type="unfinished">Libraries</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>Acest software-ul foloseste componente open source al cărui drepturilor de autor şi alte drepturi de proprietate aparțin proprietarilor respectivi:</translation>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
       <source>License</source>
@@ -422,6 +423,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Valoare incorecta</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation type="unfinished">Camera settings</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Orientarea</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation type="unfinished">Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation type="unfinished">Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation type="unfinished">Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation type="unfinished">Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation type="unfinished">Current view</translation>
     </message>
   </context>
   <context>
@@ -818,20 +850,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Comandă rapidă definită de mai multe ori</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Comanda rapidă '%1' este definită de mai multe ori. Aceasta ar putea rezulta într-un comportament imprevizibil.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Comanda rapidă este deja definită</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Please define another shortcut.</source>
-      <translation>Comanda rapidă '%1' este deja atribuită lui '%2'.
-
-Vă rugăm definiți o altă comandă rapidă.</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation type="unfinished">Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -1354,11 +1386,11 @@ Vă rugăm definiți o altă comandă rapidă.</translation>
     </message>
     <message>
       <source>Duplicate</source>
-      <translation>Duplică</translation>
+      <translation type="unfinished">Duplicate</translation>
     </message>
     <message>
       <source>Addons...</source>
-      <translation>Addons...</translation>
+      <translation type="unfinished">Addons...</translation>
     </message>
   </context>
   <context>
@@ -1429,17 +1461,17 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Duplicate Macro</source>
-      <translation>Duplicat Macro</translation>
+      <translation type="unfinished">Duplicate Macro</translation>
     </message>
     <message>
       <source>Duplicate Failed</source>
-      <translation>Dublare eșuată</translation>
+      <translation type="unfinished">Duplicate Failed</translation>
     </message>
     <message>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
-      <translation>Nu a reuşit să duplicat la '%1'.
-poate este o eroare de permisiuni la fişier?</translation>
+      <translation type="unfinished">Failed to duplicate to '%1'.
+Perhaps a file permission error?</translation>
     </message>
   </context>
   <context>
@@ -2014,11 +2046,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Show navigation cube</source>
-      <translation>Arată NaviCube</translation>
+      <translation type="unfinished">Show navigation cube</translation>
     </message>
     <message>
       <source>Corner</source>
-      <translation>Colţ</translation>
+      <translation type="unfinished">Corner</translation>
     </message>
     <message>
       <source>Top left</source>
@@ -2041,20 +2073,24 @@ Specify another directory, please.</source>
       <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
     </message>
     <message>
+      <source>New Document Camera Orientation</source>
+      <translation type="unfinished">New Document Camera Orientation</translation>
+    </message>
+    <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
-      <translation>Previne înclinarea vizualizării atunci când se face pinch-zoom pe ecranul tactil. Afectează numai gest nav. stil. Înclinarea mouse-ul nu este dezactivată de această setare.</translation>
+      <translation type="unfinished">Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
-      <translation>Dezactivaţi inclinarea prin gest a ecranului tactil</translation>
+      <translation type="unfinished">Disable touchscreen tilt gesture</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation>Glisaţi cursorul</translation>
+      <translation type="unfinished">Drag at cursor</translation>
     </message>
     <message>
       <source>Marker size:</source>
-      <translation>Dimensiune marcator:</translation>
+      <translation type="unfinished">Marker size:</translation>
     </message>
   </context>
   <context>
@@ -2069,27 +2105,67 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>5px</source>
-      <translation>5px</translation>
+      <translation type="unfinished">5px</translation>
     </message>
     <message>
       <source>7px</source>
-      <translation>7px</translation>
+      <translation type="unfinished">7px</translation>
     </message>
     <message>
       <source>9px</source>
-      <translation>9px</translation>
+      <translation type="unfinished">9px</translation>
     </message>
     <message>
       <source>11px</source>
-      <translation>11px</translation>
+      <translation type="unfinished">11px</translation>
     </message>
     <message>
       <source>13px</source>
-      <translation>13px</translation>
+      <translation type="unfinished">13px</translation>
     </message>
     <message>
       <source>15px</source>
-      <translation>15px</translation>
+      <translation type="unfinished">15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Izometrică</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetric</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetric</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Partea de sus</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Din față</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Stanga</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Dreapta</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Din spate</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Partea de jos</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Personalizat</translation>
     </message>
   </context>
   <context>
@@ -2720,43 +2796,43 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Imperial Civil (ft/ft^2/ft^3)</source>
-      <translation>Unități de măsură Imperial în geniu Civil (ft/ft^2/ft^3)</translation>
+      <translation type="unfinished">Imperial Civil (ft/ft^2/ft^3)</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
-      <translation>Fracțiunea minimă în Inch:</translation>
+      <translation type="unfinished">Minimum fractional inch:</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;fracțiunea minimă în inch pentru a afişa.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>1/2"</source>
-      <translation>1/2"</translation>
+      <translation type="unfinished">1/2"</translation>
     </message>
     <message>
       <source>1/4"</source>
-      <translation>1/4"</translation>
+      <translation type="unfinished">1/4"</translation>
     </message>
     <message>
       <source>1/8"</source>
-      <translation>1/8"</translation>
+      <translation type="unfinished">1/8"</translation>
     </message>
     <message>
       <source>1/16"</source>
-      <translation>1/16"</translation>
+      <translation type="unfinished">1/16"</translation>
     </message>
     <message>
       <source>1/32"</source>
-      <translation>1/32"</translation>
+      <translation type="unfinished">1/32"</translation>
     </message>
     <message>
       <source>1/64"</source>
-      <translation>1/64"</translation>
+      <translation type="unfinished">1/64"</translation>
     </message>
     <message>
       <source>1/128"</source>
-      <translation>1/128"</translation>
+      <translation type="unfinished">1/128"</translation>
     </message>
   </context>
   <context>
@@ -2799,19 +2875,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Definiți zona de confuzie pentru elementele selecționate în vedere 3D. O valoare crescută facilitează selecția, dar va face ca elementele mici să fie imposibil de selecționat.</translation>
+      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
     <message>
       <source>Tree View</source>
-      <translation>Vizualizare Arborescenta</translation>
+      <translation type="unfinished">Tree View</translation>
     </message>
     <message>
       <source>Object being edited</source>
-      <translation>Obiectul de editat</translation>
+      <translation type="unfinished">Object being edited</translation>
     </message>
     <message>
       <source>Active container</source>
-      <translation>Containerul activ</translation>
+      <translation type="unfinished">Active container</translation>
     </message>
   </context>
   <context>
@@ -2906,10 +2982,6 @@ Specify another directory, please.</source>
       <translation>Filtrare ateliere active</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Filtrare ateliere active&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Deplasare în sus</translation>
     </message>
@@ -2924,6 +2996,10 @@ Specify another directory, please.</source>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Adaugă toate atelierele active</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3000,10 +3076,6 @@ Specify another directory, please.</source>
       <translation>Sigur doriți să ștergeți toate directoarele tranzitorii?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Atunci când ştergeţi toate directoarele temporare selectate, nu veți putea recupera vreun dosar după aceea.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Finalitzat</translation>
     </message>
@@ -3016,6 +3088,10 @@ Specify another directory, please.</source>
 
 The 'Status' column shows whether the document could be recovered.</source>
       <translation>Apăsaţi "Start recuperare" pentru a începe procesul de recuperare a documentelor enumerate mai jos. Coloana 'Status' indică dacă documentul ar putea fi recuperat.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3378,27 +3454,27 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Axial:</source>
-      <translation>Axial:</translation>
+      <translation type="unfinished">Axial:</translation>
     </message>
     <message>
       <source>Apply axial</source>
-      <translation>Aplică axial</translation>
+      <translation type="unfinished">Apply axial</translation>
     </message>
     <message>
       <source>Shift click for opposite direction</source>
-      <translation>Majuscule/Shift + click pentru direcţia opusă</translation>
+      <translation type="unfinished">Shift click for opposite direction</translation>
     </message>
     <message>
       <source>Selected points</source>
-      <translation>Punctele selectate</translation>
+      <translation type="unfinished">Selected points</translation>
     </message>
     <message>
       <source>Apply incremental changes</source>
-      <translation>Se aplică modificări incrementale</translation>
+      <translation type="unfinished">Apply incremental changes</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Vă rugăm să selectaţi 1, 2 sau 3 puncte înainte de clic pe acest buton.  Un punct poate fi pe un nod, o faţetă sau o muchie.  În cazul în care pe o faţetă sau o muchie punctul folosit va fi punctul de la poziţia de mouse-ul de-a lungul faţetei sau a muchiei.  În cazul în care punctul 1 este selectat va fi utilizat ca centrul de rotaţie.  Dacă se selectează 2 puncte punctul de mijloc între ele va fi centrul de rotaţie şi axă personalizate noi vor fi create, în cazul în care este necesar.  Dacă sunt selectate 3 puncte primul punct devine centrul de rotaţie şi se află pe vector care este perpendicular pe planul definit de 3 puncte.  Unele informaţii despre distanţă şi unghi sunt prevăzute în vizualizarea raport, care pot fi utile atunci când sunt aliniate obiectele.  Pentru confortul dumneavoastră atunci când se utilizează Shift + clic pe distanţa sau unghiul  corespunzătoare, acesta este copiat în clipboard.</translation>
+      <translation type="unfinished">Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</translation>
     </message>
   </context>
   <context>
@@ -3792,20 +3868,20 @@ Doriți să salvați modificările?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Robinet. Sau faceţi clic pe butonul stâng al mausului.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Glisați două degete pe ecran. Sau apăsaţi butonul mouse-ului dreapta.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Glisaţi un singur deget pe ecran. Sau apăsaţi butonul stâng al mausului. În Sketcher și alte moduri de editare, ţineţi și tasta Alt apăsată.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Ciupiți (puneți două degete pe ecran și glisați-le divergent). Sau scroll pe mijloc cu rotița de la mouse. Sau apăsați PgUp/PgDown pe tastatură.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4090,28 +4166,27 @@ Cum doresti sa continuam?</translation>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Robinet. Sau faceţi clic pe butonul stâng al mausului.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Glisați două degete pe ecran. Sau apăsaţi butonul mouse-ului dreapta.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Glisaţi ecranul cu un singur deget. Sau apăsaţi butonul stâng al mausului. În Sketcher și alte moduri de editare, ţineţi și tasta Alt apăsată.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Ciupiți (puneți două degete pe ecran și glisați-le divergent). Sau scroll pe mijloc cu rotița de la mouse. Sau apăsați ALT + butonul drept al mausului, sau apăsați PgUp/PgDown pe tastatură.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Descărcarea a început... </translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -4650,11 +4725,11 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
       <source>Search...</source>
-      <translation>Caută...</translation>
+      <translation type="unfinished">Search...</translation>
     </message>
     <message>
       <source>Search for objects</source>
-      <translation>Cauta obiectele</translation>
+      <translation type="unfinished">Search for objects</translation>
     </message>
   </context>
   <context>
@@ -5210,18 +5285,6 @@ Retineti: locul unde faceti click conteaza.</translation>
       <translation>Origine</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Translație: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Rotaţie: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Ștergeți conținutul grupului?</translation>
     </message>
@@ -5231,19 +5294,27 @@ Retineti: locul unde faceti click conteaza.</translation>
     </message>
     <message>
       <source>Export failed</source>
-      <translation>Échec al exportului</translation>
+      <translation type="unfinished">Export failed</translation>
     </message>
     <message>
       <source>Split</source>
       <translation>Divizare</translation>
     </message>
     <message>
+      <source>Translation:</source>
+      <translation>Traducere:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Rotaţie:</translation>
+    </message>
+    <message>
       <source>Toggle active part</source>
-      <translation>Activează/dezactivează Part/piesele</translation>
+      <translation type="unfinished">Toggle active part</translation>
     </message>
     <message>
       <source>Edit text</source>
-      <translation>Editează Textul</translation>
+      <translation type="unfinished">Edit text</translation>
     </message>
   </context>
   <context>
@@ -5635,8 +5706,8 @@ Retineti: locul unde faceti click conteaza.</translation>
       <translation>Activează/dezactivează modul de editare pentru obiectul selectat</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Intră sau iese din modul de editare pentru obiectul selectat</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
     </message>
   </context>
   <context>
@@ -5970,12 +6041,12 @@ Retineti: locul unde faceti click conteaza.</translation>
       <translation>Imbina proiect</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>document %1 (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Imposibil de imbinat proiectul cu el insusi.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>Documentul %1 (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6651,21 +6722,6 @@ Retineti: locul unde faceti click conteaza.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vedere standard</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonometric</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Vizualizare axometrica</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6692,7 +6748,22 @@ Retineti: locul unde faceti click conteaza.</translation>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation>Creează o nouă fereastră de vedere pentru documentul activ</translation>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vedere standard</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetric</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation type="unfinished">Set to dimetric view</translation>
     </message>
   </context>
   <context>
@@ -6783,6 +6854,21 @@ Retineti: locul unde faceti click conteaza.</translation>
     <message>
       <source>Set to front view</source>
       <translation>Seteaza vederea din fata</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vedere standard</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Izometrică</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation type="unfinished">Set to isometric view</translation>
     </message>
   </context>
   <context>
@@ -6966,6 +7052,21 @@ Retineti: locul unde faceti click conteaza.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vedere standard</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetric</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation type="unfinished">Set to trimetric view</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewVR</name>
     <message>
       <source>Standard-View</source>
@@ -7089,11 +7190,11 @@ Retineti: locul unde faceti click conteaza.</translation>
     </message>
     <message>
       <source>Collapse/Expand</source>
-      <translation>Minimizare/Expandare</translation>
+      <translation type="unfinished">Collapse/Expand</translation>
     </message>
     <message>
       <source>Expand active document and collapse all others</source>
-      <translation>Extinde documentului activ şi colapsează toate celelalte</translation>
+      <translation type="unfinished">Expand active document and collapse all others</translation>
     </message>
   </context>
   <context>
@@ -7104,11 +7205,11 @@ Retineti: locul unde faceti click conteaza.</translation>
     </message>
     <message>
       <source>Multi Document</source>
-      <translation>Multi Document</translation>
+      <translation type="unfinished">Multi Document</translation>
     </message>
     <message>
       <source>Display all documents in the tree view</source>
-      <translation>Afişează toate documentele în vizualizarea arborescentă</translation>
+      <translation type="unfinished">Display all documents in the tree view</translation>
     </message>
   </context>
   <context>
@@ -7119,11 +7220,11 @@ Retineti: locul unde faceti click conteaza.</translation>
     </message>
     <message>
       <source>Single Document</source>
-      <translation>Document singular</translation>
+      <translation type="unfinished">Single Document</translation>
     </message>
     <message>
       <source>Only display the active document in the tree view</source>
-      <translation>Se afișează doar documentului activ în vizualizarea arborescentă</translation>
+      <translation type="unfinished">Only display the active document in the tree view</translation>
     </message>
   </context>
   <context>
@@ -7134,11 +7235,11 @@ Retineti: locul unde faceti click conteaza.</translation>
     </message>
     <message>
       <source>Document Tree</source>
-      <translation>Documentul arborescent</translation>
+      <translation type="unfinished">Document Tree</translation>
     </message>
     <message>
       <source>Set visibility of inactive documents in tree view</source>
-      <translation>Setaţi vizibilitatea documentelor inactiv în vizualizare arborescentă</translation>
+      <translation type="unfinished">Set visibility of inactive documents in tree view</translation>
     </message>
   </context>
   <context>
@@ -7252,32 +7353,20 @@ Retineti: locul unde faceti click conteaza.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation>Aceste elemente sunt legate de elementele selectate pentru ştergere şi s-ar putea deteriora.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Aceste elemente sunt selectate pentru ștergere, dar nu sunt în documentul activ. 
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation>
-
-Sunteţi sigur că doriţi să continuați?</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>
-      <translation>Şterge selecţia cu probleme</translation>
+      <translation type="unfinished">Delete Selection Issues</translation>
     </message>
   </context>
   <context>
@@ -7389,40 +7478,40 @@ Doriți să fie duplicat și acesta?</translation>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation>NaviCube setat în modul izometric</translation>
+      <translation type="unfinished">Set NaviCube to Isometric mode</translation>
     </message>
   </context>
   <context>
     <name>ViewOrthographicCmd</name>
     <message>
       <source>Orthographic</source>
-      <translation>Vedere ortogonal</translation>
+      <translation type="unfinished">Orthographic</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation>Setați View pe modul ortogonal</translation>
+      <translation type="unfinished">Set View to Orthographic mode</translation>
     </message>
   </context>
   <context>
     <name>ViewPerspectiveCmd</name>
     <message>
       <source>Perspective</source>
-      <translation>Perspectiva</translation>
+      <translation type="unfinished">Perspective</translation>
     </message>
     <message>
       <source>Set View to Perspective mode</source>
-      <translation>Stabilește vederea pe modul perspectivă</translation>
+      <translation type="unfinished">Set View to Perspective mode</translation>
     </message>
   </context>
   <context>
     <name>ViewZoomToFitCmd</name>
     <message>
       <source>Zoom to fit</source>
-      <translation>Potrivire zoom</translation>
+      <translation type="unfinished">Zoom to fit</translation>
     </message>
     <message>
       <source>Zoom so that model fills the view</source>
-      <translation>Zoom astfel că modelul umple ecranul</translation>
+      <translation type="unfinished">Zoom so that model fills the view</translation>
     </message>
   </context>
   <context>

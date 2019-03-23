@@ -455,8 +455,8 @@ void DrawingView::onRelabel(Gui::Document *pDoc)
 {
     if (!bIsPassive && pDoc) {
         QString cap = QString::fromLatin1("%1 : %2[*]")
-            .arg(QString::fromUtf8(pDoc->getDocument()->Label.getValue()))
-            .arg(objectName());
+            .arg(QString::fromUtf8(pDoc->getDocument()->Label.getValue()),
+                 objectName());
         setWindowTitle(cap);
     }
 }

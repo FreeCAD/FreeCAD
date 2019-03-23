@@ -74,6 +74,7 @@
         <file>icons/Part_JoinCutout.svg</file>
         <file>icons/Part_JoinEmbed.svg</file>
         <file>icons/PartWorkbench.svg</file>
+        <file>icons/Part_ProjectionOnSurface.svg</file>
         <file>translations/Part_af.qm</file>
         <file>translations/Part_de.qm</file>
         <file>translations/Part_fi.qm</file>

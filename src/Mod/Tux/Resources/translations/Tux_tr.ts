@@ -31,7 +31,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Navigation style</source>
-      <translation>Navigasyon stili</translation>
+      <translation>Gezinme stili</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>
@@ -44,11 +44,6 @@
       <translation>Döndürme odaklaması</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="70"/>
-      <source>Middle mouse button or key H.</source>
-      <translation>Orta fare tuşu ya da düğmesi.</translation>
-    </message>
-    <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
       <translation>Fare orta düğmesi.</translation>
@@ -56,7 +51,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="74"/>
       <source>Navigation style not recognized.</source>
-      <translation>Navigasyon stili tanınmıyor.</translation>
+      <translation>Gezinme stili tanınmıyor.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="291"/>
@@ -91,7 +86,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
-      <translation type="unfinished">Undefined</translation>
+      <translation>Tanımlanmamış</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="70"/>
+      <source>Middle mouse button or H key.</source>
+      <translation>Farenin orta butonu ya da H tuşu.</translation>
     </message>
   </context>
 </TS>

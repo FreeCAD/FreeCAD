@@ -614,7 +614,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         for (auto plane: datumPlanes) {
             planes.push_back ( plane );
             // Check whether this plane belongs to the active body
-            if ( pcActiveBody && pcActiveBody->hasObject(plane) ) {
+            if ( pcActiveBody->hasObject(plane) ) {
                 if ( !pcActiveBody->isAfterInsertPoint ( plane ) ) {
                     validPlaneCount++;
                     status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
@@ -639,6 +639,27 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                     } else { // if we are outside a body count it as valid
                         validPlaneCount++;
                         status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
+                    }
+                }
+            }
+        }
+
+        // Collect also shape binders consisting of a single planar face
+        auto shapeBinders( getDocument()->getObjectsOfType(PartDesign::ShapeBinder::getClassTypeId()) );
+        for (auto binder : shapeBinders) {
+            // Check whether this plane belongs to the active body
+            if (pcActiveBody->hasObject(binder)) {
+                TopoDS_Shape shape = static_cast<Part::Feature*>(binder)->Shape.getValue();
+                if (!shape.IsNull() && shape.ShapeType() == TopAbs_FACE) {
+                    const TopoDS_Face& face = TopoDS::Face(shape);
+                    TopLoc_Location loc;
+                    Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
+                    if (!surf.IsNull() && GeomLib_IsPlanarSurface(surf).IsPlanar()) {
+                        if (!pcActiveBody->isAfterInsertPoint (binder)) {
+                            validPlaneCount++;
+                            planes.push_back(binder);
+                            status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
+                        }
                     }
                 }
             }
@@ -737,7 +758,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
         pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
     }
 
-    if (hidePrevSolid && prevSolidFeature && (prevSolidFeature != NULL))
+    if (hidePrevSolid && prevSolidFeature)
         cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
 
     if (updateDocument)
