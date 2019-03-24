@@ -462,11 +462,10 @@ void PartGui::DlgProjectionOnSurface::create_projection_wire(std::vector<SShapeS
 
     }
   }
-  catch (Standard_Failure)
+  catch (const Standard_Failure& error)
   {
-    auto error = Standard_Failure::Caught();
     std::stringstream ssOcc;
-    error->Print(ssOcc);
+    error.Print(ssOcc);
     throw Base::ValueError(ssOcc.str().c_str());
   }
 }
@@ -616,7 +615,7 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
       defaultColor = vp->LineColor.getValue();
     }
 
-    if ( colors.size() != anIndices.Extent() )
+    if ( static_cast<Standard_Integer>(colors.size()) != anIndices.Extent() )
     {
       colors.resize(anIndices.Extent(), defaultColor);
     }
@@ -733,16 +732,15 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
           }
         }
       }
-      auto doneFlag = faceMaker.IsDone();
-      auto error = faceMaker.Error();
+      //auto doneFlag = faceMaker.IsDone();
+      //auto error = faceMaker.Error();
       itCurrentShape.aProjectedFace = faceMaker.Face();
     }
   }
-  catch (Standard_Failure)
+  catch (const Standard_Failure& error)
   {
-    auto error = Standard_Failure::Caught();
     std::stringstream ssOcc;
-    error->Print(ssOcc);
+    error.Print(ssOcc);
     throw Base::ValueError(ssOcc.str().c_str());
   }
 }
@@ -786,6 +784,7 @@ TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(const std::vecto
     ShapeFix_Wireframe aWireFramFix(aWireRepair.Wire());
     auto retVal = aWireFramFix.FixWireGaps();
     retVal = aWireFramFix.FixSmallEdges();
+    Q_UNUSED(retVal);
     return TopoDS::Wire(aWireFramFix.Shape());
   }
   return TopoDS_Wire();
@@ -812,11 +811,10 @@ void PartGui::DlgProjectionOnSurface::create_face_extrude(std::vector<SShapeStor
       itCurrentShape.exrudeValue = height;
     }
   }
-  catch (Standard_Failure)
+  catch (const Standard_Failure& error)
   {
-    auto error = Standard_Failure::Caught();
     std::stringstream ssOcc;
-    error->Print(ssOcc);
+    error.Print(ssOcc);
     throw Base::ValueError(ssOcc.str().c_str());
   }
 }
@@ -956,11 +954,14 @@ void PartGui::DlgProjectionOnSurface::on_radioButtonEdges_clicked()
   m_currentShowType = "edges";
   show_projected_shapes(m_shapeVec);
 }
+
 void PartGui::DlgProjectionOnSurface::on_doubleSpinBoxExtrudeHeight_valueChanged(double arg1)
 {
+  Q_UNUSED(arg1);
   create_face_extrude(m_shapeVec);
   show_projected_shapes(m_shapeVec);
 }
+
 void PartGui::DlgProjectionOnSurface::on_pushButtonAddWire_clicked()
 {
   if (ui->pushButtonAddWire->isChecked())
@@ -983,6 +984,7 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddWire_clicked()
     filterEdge = nullptr;
   }
 }
+
 void PartGui::DlgProjectionOnSurface::on_doubleSpinBoxSolidDepth_valueChanged(double arg1)
 {
   auto valX = ui->doubleSpinBoxDirX->value();
@@ -999,6 +1001,7 @@ void PartGui::DlgProjectionOnSurface::on_doubleSpinBoxSolidDepth_valueChanged(do
 
   m_lastDepthVal = ui->doubleSpinBoxSolidDepth->value();
 }
+
 // ---------------------------------------
 
 TaskProjectionOnSurface::TaskProjectionOnSurface()
