@@ -1660,6 +1660,9 @@ void Application::runApplication(void)
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=15540
     mainApp.setAttribute(Qt::AA_DontShowIconsInMenus, false);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
+    mainApp.setAttribute(Qt::AA_UseDesktopOpenGL);
+#endif
 
 #ifdef Q_OS_UNIX
     // Make sure that we use '.' as decimal point. See also

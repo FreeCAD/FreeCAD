@@ -41,8 +41,6 @@ public:
     virtual QRectF boundingRect() const override;
     virtual QPainterPath shape() const override;
 
-    int getProjIndex() const { return projIndex; }
-
     void draw(void);
     float getSize() { return m_size; }
     void setSize(float s);
@@ -53,7 +51,6 @@ public:
     double getMarkFuzz(void) const;
 
 protected:
-    int projIndex;
     QColor getCMarkColor();
 
 private:

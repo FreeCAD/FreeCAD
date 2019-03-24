@@ -1092,9 +1092,15 @@ void StdCmdDelete::activated(int iMsg)
                             // handle the view provider
                             Gui::getMainWindow()->setUpdatesEnabled(false);
 
-                            (*it)->openTransaction("Delete");
-                            vpedit->onDelete(ft->getSubNames());
-                            (*it)->commitTransaction();
+                            try {
+                                (*it)->openTransaction("Delete");
+                                vpedit->onDelete(ft->getSubNames());
+                                (*it)->commitTransaction();
+                            }
+                            catch (const Base::Exception& e) {
+                                (*it)->abortTransaction();
+                                e.ReportException();
+                            }
 
                             Gui::getMainWindow()->setUpdatesEnabled(true);
                             Gui::getMainWindow()->update();
@@ -1171,18 +1177,24 @@ void StdCmdDelete::activated(int iMsg)
 
                 if (autoDeletion) {
                     Gui::getMainWindow()->setUpdatesEnabled(false);
-                    (*it)->openTransaction("Delete");
-                    for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-                        Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
-                        if (vp) {
-                            // ask the ViewProvider if it wants to do some clean up
-                            if (vp->onDelete(ft->getSubNames())) {
-                                doCommand(Doc,"App.getDocument(\"%s\").removeObject(\"%s\")"
-                                         ,(*it)->getName(), ft->getFeatName());
+                    try {
+                        (*it)->openTransaction("Delete");
+                        for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
+                            Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
+                            if (vp) {
+                                // ask the ViewProvider if it wants to do some clean up
+                                if (vp->onDelete(ft->getSubNames())) {
+                                    doCommand(Doc,"App.getDocument(\"%s\").removeObject(\"%s\")"
+                                             ,(*it)->getName(), ft->getFeatName());
+                                }
                             }
                         }
+                        (*it)->commitTransaction();
                     }
-                    (*it)->commitTransaction();
+                    catch (const Base::Exception& e) {
+                        (*it)->abortTransaction();
+                        e.ReportException();
+                    }
 
                     Gui::getMainWindow()->setUpdatesEnabled(true);
                     Gui::getMainWindow()->update();

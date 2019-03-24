@@ -315,7 +315,14 @@ class _TaskPanelFemMaterial:
             else:
                 print('YoungsModulus not found in material data of: ' + self.material['Name'])
                 self.material['YoungsModulus'] = '0 MPa'
-            if 'PoissonRatio' not in self.material:  # PoissonRatio does not have a unit, we're not going to check for a unit
+            if 'PoissonRatio' in self.material:
+                # PoissonRatio does not have a unit, but it is checked it there is no value at all
+                try:
+                    float(self.material['PoissonRatio'])
+                except:
+                    print('PoissonRatio has wrong or no data (reset the value): ' + self.material['PoissonRatio'])
+                    self.material['PoissonRatio'] = '0'
+            else:
                 print('PoissonRatio not found in material data of: ' + self.material['Name'])
                 self.material['PoissonRatio'] = '0'
         if self.obj.Category == 'Fluid':

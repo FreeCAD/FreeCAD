@@ -34,6 +34,8 @@ namespace geoff_geometry {
 
 	const SpanVertex& SpanVertex::operator= (const SpanVertex& spv ){
 		/// 
+		if (this == &spv)
+			return *this;
 
 		memcpy(x, spv.x, SPANSTORAGE * sizeof(double));
 		memcpy(y, spv.y, SPANSTORAGE * sizeof(double));
@@ -430,6 +432,9 @@ namespace geoff_geometry {
 	}
 
 	const Kurve& Kurve::operator=( const Kurve &k) {
+		if (this == &k)
+			return *this;
+
 		memcpy(e, k.e, 16 * sizeof(double));
 		m_unit = k.m_unit;
 		m_mirrored = k.m_mirrored;

@@ -198,20 +198,20 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
 
     // set the grid coordinates
     vts->vertex.setNum(2*lines);
-    SbVec3f* coords = vts->vertex.startEditing();
+    SbVec3f* vertex_coords = vts->vertex.startEditing();
 
     // vertical lines
     int i_offset_x = static_cast<int>(MiX / Step);
     for (int i=0; i<vlines; i++) {
-        coords[2*i].setValue((i+i_offset_x)*Step, MiY, zGrid);
-        coords[2*i+1].setValue((i+i_offset_x)*Step, MaY, zGrid);
+        vertex_coords[2*i].setValue((i+i_offset_x)*Step, MiY, zGrid);
+        vertex_coords[2*i+1].setValue((i+i_offset_x)*Step, MaY, zGrid);
     }
 
     // horizontal lines
     int i_offset_y = static_cast<int>(MiY / Step);
     for (int i=vlines; i<lines; i++) {
-        coords[2*i].setValue(MiX, (i-vlines+i_offset_y)*Step, zGrid);
-        coords[2*i+1].setValue(MaX, (i-vlines+i_offset_y)*Step, zGrid);
+        vertex_coords[2*i].setValue(MiX, (i-vlines+i_offset_y)*Step, zGrid);
+        vertex_coords[2*i+1].setValue(MaX, (i-vlines+i_offset_y)*Step, zGrid);
     }
     vts->vertex.finishEditing();
 

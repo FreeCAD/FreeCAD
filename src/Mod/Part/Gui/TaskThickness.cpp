@@ -60,7 +60,7 @@ public:
     QString text;
     std::string selection;
     Part::Thickness* thickness;
-    Private()
+    Private() : thickness(nullptr)
     {
     }
     ~Private()
@@ -119,6 +119,8 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
     QSignalBlocker blockSelfInt(d->ui.selfIntersection);
     bool selfint = d->thickness->SelfIntersection.getValue();
     d->ui.selfIntersection->setChecked(selfint);
+
+    d->ui.spinOffset->bind(d->thickness->Value);
 }
 
 ThicknessWidget::~ThicknessWidget()

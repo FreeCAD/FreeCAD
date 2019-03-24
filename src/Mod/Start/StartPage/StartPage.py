@@ -24,6 +24,8 @@
 # This is the start page template. It builds a HTML global variable that contains
 # the html code of the start page. It is built only once per FreeCAD session for now...
 
+import six
+
 import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
 from . import TranslationTexts
 from PySide import QtCore,QtGui
@@ -41,8 +43,8 @@ def encode(text):
 
     "make sure we are always working with unicode in python2"
 
-    if sys.version_info.major < 3:
-        if not isinstance(text,unicode):
+    if six.PY2:
+        if not isinstance(text,six.text_type):
             return text.decode("utf8")
     return text
 

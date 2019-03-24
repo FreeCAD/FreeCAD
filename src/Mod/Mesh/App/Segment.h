@@ -44,6 +44,7 @@ public:
     const std::vector<unsigned long>& getIndices() const;
     bool isEmpty() const { return _indices.empty(); }
 
+    Segment(const Segment&);
     const Segment& operator = (const Segment&);
     bool operator == (const Segment&) const;
 

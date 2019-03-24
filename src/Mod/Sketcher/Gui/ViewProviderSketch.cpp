@@ -1195,11 +1195,17 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             return true;
         }
         case STATUS_SKETCH_UseRubberBand: {
+            // Here we must use the device-pixel-ratio to compute the correct y coordinate (#0003130)
+#if QT_VERSION >= 0x050000
+            qreal dpr = viewer->getGLWidget()->devicePixelRatioF();
+#else
+            qreal dpr = 1;
+#endif
             newCursorPos = cursorPos;
             rubberband->setCoords(prvCursorPos.getValue()[0],
-                       viewer->getGLWidget()->height() - prvCursorPos.getValue()[1],
+                       viewer->getGLWidget()->height()*dpr - prvCursorPos.getValue()[1],
                        newCursorPos.getValue()[0],
-                       viewer->getGLWidget()->height() - newCursorPos.getValue()[1]);
+                       viewer->getGLWidget()->height()*dpr - newCursorPos.getValue()[1]);
             viewer->redraw();
             return true;
         }
@@ -1315,8 +1321,8 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
             Constr->LabelDistance = vec.x * dir.x + vec.y * dir.y;
             Constr->LabelPosition = atan2(dir.y, dir.x);
         } else {
-            Base::Vector3d norm(-dir.y,dir.x,0);
-            Constr->LabelDistance = vec.x * norm.x + vec.y * norm.y;
+            Base::Vector3d normal(-dir.y,dir.x,0);
+            Constr->LabelDistance = vec.x * normal.x + vec.y * normal.y;
             if (Constr->Type == Distance ||
                 Constr->Type == DistanceX || Constr->Type == DistanceY) {
                 vec = Base::Vector3d(toPos.x, toPos.y, 0) - (p2 + p1) / 2;
@@ -3904,18 +3910,18 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             mat->ref();
             mat->diffuseColor = InformationColor;
 
-            SoLineSet *lineset = new SoLineSet;
+            SoLineSet *polygon = new SoLineSet;
 
-            SoCoordinate3 *coords = new SoCoordinate3;
+            SoCoordinate3 *polygoncoords = new SoCoordinate3;
 
             if(spline->isPeriodic()) {
-                coords->point.setNum(poles.size()+1);
+                polygoncoords->point.setNum(poles.size()+1);
             }
             else {
-                coords->point.setNum(poles.size());
+                polygoncoords->point.setNum(poles.size());
             }
 
-            SbVec3f *vts = coords->point.startEditing();
+            SbVec3f *vts = polygoncoords->point.startEditing();
 
             int i=0;
             for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it, i++) {
@@ -3926,11 +3932,11 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 vts[poles.size()].setValue(poles[0].x,poles[0].y,zInfo);
             }
 
-            coords->point.finishEditing();
+            polygoncoords->point.finishEditing();
 
             sep->addChild(mat);
-            sep->addChild(coords);
-            sep->addChild(lineset);
+            sep->addChild(polygoncoords);
+            sep->addChild(polygon);
 
             sw->addChild(sep);
 
@@ -3946,16 +3952,16 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoSeparator *sep = static_cast<SoSeparator *>(sw->getChild(0));
 
-            SoCoordinate3 *coords = static_cast<SoCoordinate3 *>(sep->getChild(GEOINFO_BSPLINE_POLYGON));
+            SoCoordinate3 *polygoncoords = static_cast<SoCoordinate3 *>(sep->getChild(GEOINFO_BSPLINE_POLYGON));
 
             if(spline->isPeriodic()) {
-                coords->point.setNum(poles.size()+1);
+                polygoncoords->point.setNum(poles.size()+1);
             }
             else {
-                coords->point.setNum(poles.size());
+                polygoncoords->point.setNum(poles.size());
             }
 
-            SbVec3f *vts = coords->point.startEditing();
+            SbVec3f *vts = polygoncoords->point.startEditing();
 
             int i=0;
             for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it, i++) {
@@ -3966,7 +3972,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 vts[poles.size()].setValue(poles[0].x,poles[0].y,zInfo);
             }
 
-            coords->point.finishEditing();
+            polygoncoords->point.finishEditing();
 
         }
         currentInfoNode++; // switch to next node
@@ -4023,15 +4029,15 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             mat->ref();
             mat->diffuseColor = InformationColor;
 
-            SoLineSet *lineset = new SoLineSet;
+            SoLineSet *comblineset = new SoLineSet;
 
-            SoCoordinate3 *coords = new SoCoordinate3;
+            SoCoordinate3 *combcoords = new SoCoordinate3;
 
-            coords->point.setNum(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
-            lineset->numVertices.setNum(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
+            combcoords->point.setNum(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
+            comblineset->numVertices.setNum(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
 
-            int32_t *index = lineset->numVertices.startEditing();
-            SbVec3f *vts = coords->point.startEditing();
+            int32_t *index = comblineset->numVertices.startEditing();
+            SbVec3f *vts = combcoords->point.startEditing();
 
             for(int i = 0; i < ndiv; i++) {
                 vts[2*i].setValue(pointatcurvelist[i].x, pointatcurvelist[i].y, zInfo); // radials
@@ -4043,12 +4049,12 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             index[ndiv] = ndiv; // comb endpoint closing segment
 
-            coords->point.finishEditing();
-            lineset->numVertices.finishEditing();
+            combcoords->point.finishEditing();
+            comblineset->numVertices.finishEditing();
 
             sep->addChild(mat);
-            sep->addChild(coords);
-            sep->addChild(lineset);
+            sep->addChild(combcoords);
+            sep->addChild(comblineset);
 
             sw->addChild(sep);
 
@@ -4064,15 +4070,15 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoSeparator *sep = static_cast<SoSeparator *>(sw->getChild(0));
 
-            SoCoordinate3 *coords = static_cast<SoCoordinate3 *>(sep->getChild(GEOINFO_BSPLINE_POLYGON));
+            SoCoordinate3 *combcoords = static_cast<SoCoordinate3 *>(sep->getChild(GEOINFO_BSPLINE_POLYGON));
 
-            SoLineSet *lineset = static_cast<SoLineSet *>(sep->getChild(GEOINFO_BSPLINE_POLYGON+1));
+            SoLineSet *comblineset = static_cast<SoLineSet *>(sep->getChild(GEOINFO_BSPLINE_POLYGON+1));
 
-            coords->point.setNum(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
-            lineset->numVertices.setNum(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
+            combcoords->point.setNum(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
+            comblineset->numVertices.setNum(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
 
-            int32_t *index = lineset->numVertices.startEditing();
-            SbVec3f *vts = coords->point.startEditing();
+            int32_t *index = comblineset->numVertices.startEditing();
+            SbVec3f *vts = combcoords->point.startEditing();
 
             for(int i = 0; i < ndiv; i++) {
                 vts[2*i].setValue(pointatcurvelist[i].x, pointatcurvelist[i].y, zInfo); // radials
@@ -4084,8 +4090,8 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             index[ndiv] = ndiv; // comb endpoint closing segment
 
-            coords->point.finishEditing();
-            lineset->numVertices.finishEditing();
+            combcoords->point.finishEditing();
+            comblineset->numVertices.finishEditing();
 
         }
 
@@ -5827,10 +5833,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->PointsCoordinate->setName("PointsCoordinate");
     pointsRoot->addChild(edit->PointsCoordinate);
 
-    SoDrawStyle *DrawStyle = new SoDrawStyle;
-    DrawStyle->setName("PointsDrawStyle");
-    DrawStyle->pointSize = 8;
-    pointsRoot->addChild(DrawStyle);
+    SoDrawStyle *drawStyle = new SoDrawStyle;
+    drawStyle->setName("PointsDrawStyle");
+    drawStyle->pointSize = 8;
+    pointsRoot->addChild(drawStyle);
 
     edit->PointSet = new SoMarkerSet;
     edit->PointSet->setName("PointSet");
@@ -5853,10 +5859,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->CurvesCoordinate->setName("CurvesCoordinate");
     curvesRoot->addChild(edit->CurvesCoordinate);
 
-    DrawStyle = new SoDrawStyle;
-    DrawStyle->setName("CurvesDrawStyle");
-    DrawStyle->lineWidth = 3;
-    curvesRoot->addChild(DrawStyle);
+    drawStyle = new SoDrawStyle;
+    drawStyle->setName("CurvesDrawStyle");
+    drawStyle->lineWidth = 3;
+    curvesRoot->addChild(drawStyle);
 
     edit->CurveSet = new SoLineSet;
     edit->CurveSet->setName("CurvesLineSet");
@@ -5873,10 +5879,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     MtlBind->value = SoMaterialBinding::PER_FACE;
     crossRoot->addChild(MtlBind);
 
-    DrawStyle = new SoDrawStyle;
-    DrawStyle->setName("RootCrossDrawStyle");
-    DrawStyle->lineWidth = 2;
-    crossRoot->addChild(DrawStyle);
+    drawStyle = new SoDrawStyle;
+    drawStyle->setName("RootCrossDrawStyle");
+    drawStyle->lineWidth = 2;
+    crossRoot->addChild(drawStyle);
 
     edit->RootCrossMaterials = new SoMaterial;
     edit->RootCrossMaterials->setName("RootCrossMaterials");
@@ -5903,10 +5909,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditCurvesCoordinate->setName("EditCurvesCoordinate");
     editCurvesRoot->addChild(edit->EditCurvesCoordinate);
 
-    DrawStyle = new SoDrawStyle;
-    DrawStyle->setName("EditCurvesDrawStyle");
-    DrawStyle->lineWidth = 3;
-    editCurvesRoot->addChild(DrawStyle);
+    drawStyle = new SoDrawStyle;
+    drawStyle->setName("EditCurvesDrawStyle");
+    drawStyle->lineWidth = 3;
+    editCurvesRoot->addChild(drawStyle);
 
     edit->EditCurveSet = new SoLineSet;
     edit->EditCurveSet->setName("EditCurveLineSet");
@@ -5950,10 +5956,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(MtlBind);
 
     // use small line width for the Constraints
-    DrawStyle = new SoDrawStyle;
-    DrawStyle->setName("ConstraintDrawStyle");
-    DrawStyle->lineWidth = 1;
-    edit->EditRoot->addChild(DrawStyle);
+    drawStyle = new SoDrawStyle;
+    drawStyle->setName("ConstraintDrawStyle");
+    drawStyle->lineWidth = 1;
+    edit->EditRoot->addChild(drawStyle);
 
     // add the group where all the constraints has its SoSeparator
     edit->constrGroup = new SmSwitchboard();
@@ -5967,16 +5973,15 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(MtlBind);
 
     // use small line width for the information visual
-    DrawStyle = new SoDrawStyle;
-    DrawStyle->setName("InformationDrawStyle");
-    DrawStyle->lineWidth = 1;
-    edit->EditRoot->addChild(DrawStyle);
+    drawStyle = new SoDrawStyle;
+    drawStyle->setName("InformationDrawStyle");
+    drawStyle->lineWidth = 1;
+    edit->EditRoot->addChild(drawStyle);
 
     // add the group where all the information entity has its SoSeparator
     edit->infoGroup = new SoGroup();
     edit->infoGroup->setName("InformationGroup");
     edit->EditRoot->addChild(edit->infoGroup);
-
 }
 
 void ViewProviderSketch::unsetEdit(int ModNum)

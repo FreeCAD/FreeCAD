@@ -4726,20 +4726,20 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
                             }
                         }
 
-                        if ( (f && !s) || (!f && s)  ) { // the equality constraint constraints a pole but it is not interpole
+                        if (f != s) { // the equality constraint constraints a pole but it is not interpole
                             (*ita)++;
                         }
 
                     }
-                        // ignore radiuses and diameters
-                        else if (((*itc)->Type!=Sketcher::Radius && (*itc)->Type!=Sketcher::Diameter) && ( (*itc)->Second == (*it) || (*itc)->First == (*it) || (*itc)->Third == (*it)) )
+                    // ignore radii and diameters
+                    else if (((*itc)->Type!=Sketcher::Radius && (*itc)->Type!=Sketcher::Diameter) && ( (*itc)->Second == (*it) || (*itc)->First == (*it) || (*itc)->Third == (*it)) ) {
                         (*ita)++;
+                    }
+                }
 
-                 }
-
-                 if ( (*ita) < 2 ) { // IA
-                     delgeometries.push_back((*it));
-                 }
+                if ( (*ita) < 2 ) { // IA
+                    delgeometries.push_back((*it));
+                }
             }
         }
 

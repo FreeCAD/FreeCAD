@@ -280,7 +280,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
 }
 
 void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc, const std::string& name,
-                             std::vector<App::DocumentObject*>& lValue, bool merge)
+                             std::vector<App::DocumentObject*>& lValue, bool mergeShape)
 {
     const TopoDS_Shape& aShape = aShapeTool->GetShape(label);
 #ifdef HAVE_TBB
@@ -294,7 +294,7 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
         std::vector<App::DocumentObject *> localValue;
         App::Part *pcPart = NULL;
 
-        if (merge) {
+        if (mergeShape) {
 
             // We should do that only if there is more than a single shape inside
             // Computing Compounds takes time
@@ -387,7 +387,7 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
             }
         }
 
-        if (!localValue.empty() && !merge) {
+        if (!localValue.empty() && !mergeShape) {
             pcPart = static_cast<App::Part*>(doc->addObject("App::Part",name.c_str()));
             pcPart->Label.setValue(name);
 

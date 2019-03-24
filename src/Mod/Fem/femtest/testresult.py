@@ -227,26 +227,28 @@ class TestResult(unittest.TestCase):
         # doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'data/examples/FemCalculixCantilever3D.FCStd')
         # doc.Box_Mesh.FemMesh.Nodes[5]
         # Vector (0.0, 1000.0, 0.0)
+        # res = doc.CalculiX_static_results
+        # stress = (res.NodeStressXX[4], res.NodeStressYY[4], res.NodeStressZZ[4], res.NodeStressXY[4], res.NodeStressXZ[4],res.NodeStressYZ[4])
         stress = (
-            -4.52840E+02,  # S11
-            -1.94075E+02,  # S22
-            -1.94075E+02,  # S33
-            6.11223E+01,  # S12
-            6.92759E-05,  # S23
-            -2.60754E+01  # S31
-        )  # run an analysis and copy the values from frd result file
+            -4.52840E+02,  # Sxx
+            -1.94075E+02,  # Syy
+            -1.94075E+02,  # Szz
+            6.11223E+01,  # Sxy
+            -2.60754E+01,  # Sxz
+            6.92759E-05  # Syz
+        )
         return stress
 
     def test_stress_von_mises(self):
         expected_mises = 283.2082
-        from feminout.importToolsFem import calculate_von_mises as vm
+        from femresult.resulttools import calculate_von_mises as vm
         mises = vm(self.get_stress_values())
         # fcc_print(round(mises, 4))
         self.assertEqual(round(mises, 4), expected_mises, "Calculated von Mises stress is not the expected value.")
 
     def test_stress_principal(self):
         expected_principal = (-178.0076, -194.0749, -468.9075, 145.4499)
-        from feminout.importToolsFem import calculate_principal_stress as pr
+        from femresult.resulttools import calculate_principal_stress as pr
         prin = pr(self.get_stress_values())
         rounded_prin = (round(prin[0], 4), round(prin[1], 4), round(prin[2], 4), round(prin[3], 4))
         # fcc_print(rounded_prin)

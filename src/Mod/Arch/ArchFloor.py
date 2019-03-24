@@ -99,7 +99,7 @@ class _CommandFloor:
                     warning = True
         if warning :
             message = translate( "Arch" , "You can put anything but the following objects: Site, Building, and Floor - in a Floor object.\n\
-Floor object is not allowed to accept Site or Building objects.\n\
+Floor object is not allowed to accept Site, Building, or Floor objects.\n\
 Site, Building, and Floor objects will be removed from the selection.\n\
 You can change that in the preferences.") + "\n"
             ArchCommands.printMessage( message )
