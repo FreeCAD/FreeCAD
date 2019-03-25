@@ -30,6 +30,7 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import femtools.femutils as femutils
 from math import pow, sqrt
+import numpy as np
 
 
 ## Removes all result objects and result meshes from an analysis group
@@ -332,23 +333,16 @@ def compact_result(res_obj):
 
 
 def calculate_von_mises(stresstuple):
-    # Von mises stress (http://en.wikipedia.org/wiki/Von_Mises_yield_criterion)
-    s11 = stresstuple[0]  # Sxx
-    s22 = stresstuple[1]  # Syy
-    s33 = stresstuple[2]  # Szz
-    s12 = stresstuple[3]  # Sxy
-    s31 = stresstuple[4]  # Sxz
-    s23 = stresstuple[5]  # Syz
-    s11s22 = pow(s11 - s22, 2)
-    s22s33 = pow(s22 - s33, 2)
-    s33s11 = pow(s33 - s11, 2)
-    s12s23s31 = 6 * (pow(s12, 2) + pow(s23, 2) + pow(s31, 2))
-    vm_stress = sqrt(0.5 * (s11s22 + s22s33 + s33s11 + s12s23s31))
-    return vm_stress
+    # Von mises stress: http://en.wikipedia.org/wiki/Von_Mises_yield_criterion
+    # simplification: https://forum.freecadweb.org/viewtopic.php?f=18&t=33974&p=296542#p296542
+    # stresstuple ... (Sxx, Syy, Szz, Sxy, Sxz, Syz)
+    normal = stresstuple[:3]
+    shear = stresstuple[3:]
+    pressure = np.average(normal)
+    return np.sqrt(1.5 * np.linalg.norm(normal - pressure)**2 + 3.0 * np.linalg.norm(shear)**2)
 
 
 def calculate_principal_stress(stresstuple):
-    import numpy as np
     s11 = stresstuple[0]  # Sxx
     s22 = stresstuple[1]  # Syy
     s33 = stresstuple[2]  # Szz
