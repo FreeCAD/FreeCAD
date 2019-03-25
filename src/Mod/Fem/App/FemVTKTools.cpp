@@ -667,7 +667,7 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
     return resFCVecProp;
 }
 
-// see https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=30#p277434 for further information in the regard of names etc
+// see https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=30#p277434 for further information regarding names etc...
 // some scalar list are not needed on VTK file export but they are needed for internal VTK pipeline
 // TODO some filter to only export the needed values to VTK file but have all in FreeCAD VTK pipline
 std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
