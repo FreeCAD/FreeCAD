@@ -684,7 +684,7 @@ void Application::slotNewDocument(const App::Document& Doc)
     pDoc->signalActivatedObject.connect(boost::bind(&Gui::Application::slotActivatedObject, this, _1));
     pDoc->signalInEdit.connect(boost::bind(&Gui::Application::slotInEdit, this, _1));
     pDoc->signalResetEdit.connect(boost::bind(&Gui::Application::slotResetEdit, this, _1));
- 
+
     signalNewDocument(*pDoc);
     pDoc->createView(View3DInventor::getClassTypeId());
     // FIXME: Do we really need this further? Calling processEvents() mixes up order of execution in an
@@ -1700,7 +1700,7 @@ void Application::runApplication(void)
     }
 
 #if QT_VERSION >= 0x050600
-    //Enable automatic scaling based on pixel density fo display (added in Qt 5.6)
+    //Enable automatic scaling based on pixel density of display (added in Qt 5.6)
     mainApp.setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 #if QT_VERSION >= 0x050100
