@@ -33,7 +33,6 @@ import FreeCADGui
 import FemGui
 
 # for the panel
-from femtools import ccxtools
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
@@ -98,8 +97,9 @@ class _TaskPanelFemSolverCalculix:
     def __init__(self, solver_object):
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/SolverCalculix.ui")
 
-        # since open the task panel is only possible with an active analysis, we do not need to pass the analysis. it will be found
-        self.fea = ccxtools.FemToolsCcx(None, solver_object)
+        from femtools.ccxtools import CcxTools as ccx
+        # we do not need to pass the analysis, it will be found on fea init
+        self.fea = ccx(solver_object)
         self.fea.setup_working_dir()
         self.fea.setup_ccx()
 

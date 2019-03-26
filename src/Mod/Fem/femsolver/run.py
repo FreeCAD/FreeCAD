@@ -58,8 +58,8 @@ def run_fem_solver(solver, working_dir=None):
 
     if solver.Proxy.Type == 'Fem::FemSolverCalculixCcxTools':
         App.Console.PrintMessage("CalxuliX ccx tools solver!\n")
-        from femtools import ccxtools
-        fea = ccxtools.FemToolsCcx(None, solver)
+        from femtools.ccxtools import CcxTools as ccx
+        fea = ccx(solver)
         fea.reset_mesh_purge_results_checked()
         if working_dir is None:
             fea.run()
