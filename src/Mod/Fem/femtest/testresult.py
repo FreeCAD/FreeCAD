@@ -256,6 +256,14 @@ class TestResult(unittest.TestCase):
         # fcc_print(rounded_prin)
         self.assertEqual(rounded_prin, expected_principal, "Calculated principal stresses are not the expected values.")
 
+    def test_disp_abs(self):
+        expected_dispabs = 87.302986
+        disp_xyz = [FreeCAD.Vector(8.12900E+00, 3.38889E-02, -8.69237E+01)]  # x, y, z in node 4 of CalculiX cantilver face load
+        from femresult.resulttools import calculate_disp_abs as dp
+        disp_abs = round(dp(disp_xyz)[0], 6)
+        # fcc_print(disp_abs)
+        self.assertEqual(disp_abs, expected_dispabs, "Calculated displacement abs are not the expected values.")
+
     def tearDown(self):
         FreeCAD.closeDocument(self.doc_name)
         pass
