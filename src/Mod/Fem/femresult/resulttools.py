@@ -368,9 +368,7 @@ def calculate_principal_stress(stress_tensor):
 
 
 def calculate_disp_abs(displacements):
-    disp_abs = []
-    for d in displacements:
-        disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
-    return disp_abs
+    # see https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=100#p296657
+    return [np.linalg.norm(nd) for nd in displacements]
 
 ##  @}
