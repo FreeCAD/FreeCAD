@@ -37,6 +37,7 @@ class TestSolverFrameWork(unittest.TestCase):
     fcc_print('import TestSolverFrameWork')
 
     def setUp(self):
+        # init, is executed before every test
         self.doc_name = "TestSolverFrameWork"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
@@ -199,5 +200,6 @@ class TestSolverFrameWork(unittest.TestCase):
         fcc_print('--------------- End of FEM tests solver frame work ---------------')
 
     def tearDown(self):
+        # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
         pass

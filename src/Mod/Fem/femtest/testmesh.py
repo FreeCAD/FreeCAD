@@ -36,6 +36,7 @@ class TestMeshCommon(unittest.TestCase):
     fcc_print('import TestMeshCommon')
 
     def setUp(self):
+        # init, is executed before every test
         self.doc_name = "TestMeshCommon"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
@@ -398,5 +399,6 @@ class TestMeshEleTetra10(unittest.TestCase):
         )
 
     def tearDown(self):
+        # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
         pass
