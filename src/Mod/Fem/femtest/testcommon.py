@@ -36,6 +36,7 @@ class TestFemCommon(unittest.TestCase):
     fcc_print('import TestFemCommon')
 
     def setUp(self):
+        # init, is executed before every test
         self.doc_name = "TestsFemCommon"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
@@ -94,5 +95,6 @@ class TestFemCommon(unittest.TestCase):
             self.assertTrue(im, 'Problem importing {0}'.format(mod))
 
     def tearDown(self):
+        # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
         pass

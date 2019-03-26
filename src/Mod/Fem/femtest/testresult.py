@@ -35,6 +35,7 @@ class TestResult(unittest.TestCase):
     fcc_print('import TestResult')
 
     def setUp(self):
+        # init, is executed before every test
         self.doc_name = "TestResult"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
@@ -265,5 +266,6 @@ class TestResult(unittest.TestCase):
         self.assertEqual(disp_abs, expected_dispabs, "Calculated displacement abs are not the expected values.")
 
     def tearDown(self):
+        # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
         pass

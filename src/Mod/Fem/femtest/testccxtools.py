@@ -38,6 +38,7 @@ class TestCcxTools(unittest.TestCase):
     fcc_print('import TestCcxTools')
 
     def setUp(self):
+        # init, is executed before every test
         self.doc_name = "TestCcxTools"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
@@ -772,6 +773,7 @@ class TestCcxTools(unittest.TestCase):
         fcc_print('--------------- End of FEM tests FLow 1D thermomech analysis ---------------')
 
     def tearDown(self):
+        # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
         pass
 
