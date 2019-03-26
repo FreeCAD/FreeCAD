@@ -34,6 +34,7 @@ class TestObjectCreate(unittest.TestCase):
     fcc_print('import TestObjectCreate')
 
     def setUp(self):
+        # init, is executed before every test
         self.doc_name = "TestObjectCreate"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
@@ -475,5 +476,6 @@ class TestObjectType(unittest.TestCase):
         # is = 43 (just copy in empty file to test)
 
     def tearDown(self):
+        # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
         pass
