@@ -457,7 +457,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         return shape;
 
     // Check for cache
-    if(_ShapeCache.getShape(obj,shape)) {
+    if(obj==owner && _ShapeCache.getShape(obj,shape)) {
         if(noElementMap) {
             shape.resetElementMap();
             shape.Tag = 0;
