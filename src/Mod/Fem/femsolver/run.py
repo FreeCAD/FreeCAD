@@ -75,7 +75,7 @@ def run_fem_solver(solver, working_dir=None):
             else:
                 App.Console.PrintError("Houston, we have a problem! {}\n".format(message))
     else:
-        App.Console.PrintMessage("Frame work solver!\n")
+        # App.Console.PrintMessage("Frame work solver!\n")
         try:
             if working_dir is not None:
                 machine = getMachine(solver, working_dir)
@@ -85,7 +85,7 @@ def run_fem_solver(solver, working_dir=None):
             error_message = (
                 "Please save the file before executing the solver. "
                 "This must be done because the location of the working "
-                "directory is set to \"Beside .FCStd File\"."
+                "directory is set to \"Beside *.FCStd File\"."
             )
             App.Console.PrintError(error_message + "\n")
             if App.GuiUp:
