@@ -29,7 +29,6 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import femtools.femutils as femutils
-from math import pow, sqrt
 import numpy as np
 
 
