@@ -332,23 +332,23 @@ def compact_result(res_obj):
     return res_obj
 
 
-def calculate_von_mises(stresstuple):
+def calculate_von_mises(stress_tensor):
     # Von mises stress: http://en.wikipedia.org/wiki/Von_Mises_yield_criterion
     # simplification: https://forum.freecadweb.org/viewtopic.php?f=18&t=33974&p=296542#p296542
-    # stresstuple ... (Sxx, Syy, Szz, Sxy, Sxz, Syz)
-    normal = stresstuple[:3]
-    shear = stresstuple[3:]
+    # stress_tensor ... (Sxx, Syy, Szz, Sxy, Sxz, Syz)
+    normal = stress_tensor[:3]
+    shear = stress_tensor[3:]
     pressure = np.average(normal)
     return np.sqrt(1.5 * np.linalg.norm(normal - pressure)**2 + 3.0 * np.linalg.norm(shear)**2)
 
 
-def calculate_principal_stress(stresstuple):
-    s11 = stresstuple[0]  # Sxx
-    s22 = stresstuple[1]  # Syy
-    s33 = stresstuple[2]  # Szz
-    s12 = stresstuple[3]  # Sxy
-    s31 = stresstuple[4]  # Sxz
-    s23 = stresstuple[5]  # Syz
+def calculate_principal_stress(stress_tensor):
+    s11 = stress_tensor[0]  # Sxx
+    s22 = stress_tensor[1]  # Syy
+    s33 = stress_tensor[2]  # Szz
+    s12 = stress_tensor[3]  # Sxy
+    s31 = stress_tensor[4]  # Sxz
+    s23 = stress_tensor[5]  # Syz
     sigma = np.array([
         [s11, s12, s31],
         [s12, s22, s23],

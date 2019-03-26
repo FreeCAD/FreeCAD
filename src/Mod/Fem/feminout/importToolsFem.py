@@ -232,7 +232,7 @@ def fill_femresult_mechanical(res_obj, result_set):
             Sxy = []
             Sxz = []
             Syz = []
-            for i, values_S in enumerate(stress.values()):  # values_S .. stresstuple .. (Sxx, Syy, Szz, Sxy, Sxz, Syz)
+            for i, values_S in enumerate(stress.values()):  # values_S .. stress_tensor .. (Sxx, Syy, Szz, Sxy, Sxz, Syz)
                 Sxx.append(values_S[0])
                 Syy.append(values_S[1])
                 Szz.append(values_S[2])
