@@ -95,7 +95,7 @@ def run_fem_solver(solver, working_dir=None):
                     error_message
                 )
             return
-        except DirectoryDoesNotExist:
+        except DirectoryDoesNotExistError:
             error_message = "Selected working directory doesn't exist."
             App.Console.PrintError(error_message + "\n")
             if App.GuiUp:
@@ -195,7 +195,7 @@ def _getCustomDir(solver):
 def _getCustomBase(solver):
     path = settings.getCustomDir()
     if not os.path.isdir(path):
-        raise DirectoryDoesNotExist("Invalid path")
+        raise DirectoryDoesNotExistError("Invalid path")
     return path
 
 
@@ -499,7 +499,7 @@ class MustSaveError(Exception):
     pass
 
 
-class DirectoryDoesNotExist(Exception):
+class DirectoryDoesNotExistError(Exception):
     pass
 
 ##  @}
