@@ -104,6 +104,8 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                     # compact result object, workaround for bug 2873, https://www.freecadweb.org/tracker/view.php?id=2873
                     res_obj = restools.compact_result(res_obj)
                 res_obj = restools.add_disp_apps(res_obj)  # fill DisplacementLengths
+                res_obj = restools.add_von_mises(res_obj)  # fill StressValues
+                res_obj = restools.add_principal_stress(res_obj)  # fill PrincipalMax, PrincipalMed, PrincipalMin, MaxShear
                 res_obj = restools.fill_femresult_stats(res_obj)  # fill Stats
         else:
             error_message = (
@@ -425,7 +427,10 @@ def read_frd_result(frd_input):
             stress_4 = float(line[49:61])
             stress_5 = float(line[61:73])
             stress_6 = float(line[73:85])
-            mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_5, stress_6)
+            # CalculiX frd files: (Sxx, Syy, Szz, Sxy, Syz, Szx)
+            # FreeCAD:            (Sxx, Syy, Szz, Sxy, Sxz, Syz)
+            # thus exchange the last two entries
+            mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_6, stress_5)
 
         # Check if we found strain section
         if line[5:13] == "TOSTRAIN":
@@ -436,10 +441,13 @@ def read_frd_result(frd_input):
             strain_1 = float(line[13:25])
             strain_2 = float(line[25:37])
             strain_3 = float(line[37:49])
-            # strain_4 = float(line[49:61])  # Not used in vector
-            # strain_5 = float(line[61:73])
-            # strain_6 = float(line[73:85])
-            mode_strain[elem] = FreeCAD.Vector(strain_1, strain_2, strain_3)
+            strain_4 = float(line[49:61])
+            strain_5 = float(line[61:73])
+            strain_6 = float(line[73:85])
+            # CalculiX frd files: (Exx, Eyy, Ezz, Exy, Eyz, Ezx)
+            # FreeCAD:            (Exx, Eyy, Ezz, Exy, Exz, Eyz)
+            # thus exchange the last two entries
+            mode_strain[elem] = (strain_1, strain_2, strain_3, strain_4, strain_6, strain_5)
 
         # Check if we found an equivalent plastic strain section
         if line[5:7] == "PE":
@@ -512,7 +520,8 @@ def read_frd_result(frd_input):
                 node_element_section = False
 
             if mode_strain_found:
-                mode_results['strainv'] = mode_strain
+                mode_results['strain'] = mode_strain
+
                 mode_strain = {}
                 mode_strain_found = False
                 node_element_section = False

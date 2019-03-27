@@ -132,7 +132,7 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget *parent)
     ui->pushButtonAddFace->setCheckable(true);
     ui->pushButtonAddProjFace->setCheckable(true);
     ui->pushButtonAddWire->setCheckable(true);
-    
+
     m_guiObjectVec.push_back(ui->pushButtonAddEdge);
     m_guiObjectVec.push_back(ui->pushButtonAddFace);
     m_guiObjectVec.push_back(ui->pushButtonAddProjFace);
@@ -148,18 +148,19 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget *parent)
     get_camera_direction();
     disable_ui_elements(m_guiObjectVec, ui->pushButtonAddProjFace);
 
-    App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc)
+    m_partDocument = App::GetApplication().getActiveDocument();
+    if (!m_partDocument)
     {
       throw Base::ValueError(QString(tr("Have no active document!!!")).toUtf8());
-      return;
     }
-    m_projectionObject = dynamic_cast<Part::Feature*>(activeDoc->addObject("Part::Feature", std::string(m_projectionObjectName.toUtf8()).c_str()));
-    if ( !m_projectionObject )
+    this->attachDocument(m_partDocument);
+    m_partDocument->openTransaction("Project on surface");
+    m_projectionObject = dynamic_cast<Part::Feature*>(m_partDocument->addObject("Part::Feature", "Projection Object"));
+    if (!m_projectionObject)
     {
       throw Base::ValueError(QString(tr("Can not create a projection object!!!")).toUtf8());
-      return;
     }
+    m_projectionObject->Label.setValue(std::string(m_projectionObjectName.toUtf8()).c_str());
     on_radioButtonShowAll_clicked();
     m_lastDepthVal = ui->doubleSpinBoxSolidDepth->value();
 }
@@ -184,15 +185,31 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
   Gui::Selection().rmvSelectionGate();
 }
 
+void PartGui::DlgProjectionOnSurface::slotDeletedDocument(const App::Document& Doc)
+{
+  if (m_partDocument == &Doc) {
+    m_partDocument = nullptr;
+    m_projectionObject = nullptr;
+  }
+}
+
+void PartGui::DlgProjectionOnSurface::slotDeletedObject(const App::DocumentObject& Obj)
+{
+  if (m_projectionObject == &Obj) {
+    m_projectionObject = nullptr;
+  }
+}
+
 void PartGui::DlgProjectionOnSurface::apply(void)
 {
+  if (m_partDocument)
+    m_partDocument->commitTransaction();
 }
 
 void PartGui::DlgProjectionOnSurface::reject(void)
 {
-  App::Document* activeDoc = App::GetApplication().getActiveDocument();
-  if (!activeDoc) return;
-  activeDoc->removeObject(m_projectionObject->getNameInDocument());
+  if (m_partDocument)
+    m_partDocument->abortTransaction();
 }
 
 void PartGui::DlgProjectionOnSurface::on_pushButtonAddFace_clicked()
@@ -238,6 +255,7 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddEdge_clicked()
     filterEdge = nullptr;
   }
 }
+
 void PartGui::DlgProjectionOnSurface::on_pushButtonGetCurrentCamDir_clicked()
 {
   get_camera_direction();
@@ -311,8 +329,7 @@ void PartGui::DlgProjectionOnSurface::get_camera_direction(void)
 
 void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<SShapeStore>& iStoreVec, const unsigned int iColor)
 {
-  App::Document* activeDoc = App::GetApplication().getActiveDocument();
-  if (!activeDoc) return;
+  if (!m_partDocument) return;
   std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx();
   if (selObj.size())
   {
@@ -357,7 +374,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
           auto store = store_part_in_vector(currentShapeStore, iStoreVec);
           higlight_object(aPart, aPart->Shape.getName(), store, iColor);
         }
-        Gui::Selection().clearSelection(activeDoc->getName());
+        Gui::Selection().clearSelection(m_partDocument->getName());
         Gui::Selection().rmvPreselect();
       }
     }
@@ -445,11 +462,10 @@ void PartGui::DlgProjectionOnSurface::create_projection_wire(std::vector<SShapeS
 
     }
   }
-  catch (Standard_Failure)
+  catch (const Standard_Failure& error)
   {
-    auto error = Standard_Failure::Caught();
     std::stringstream ssOcc;
-    error->Print(ssOcc);
+    error.Print(ssOcc);
     throw Base::ValueError(ssOcc.str().c_str());
   }
 }
@@ -528,10 +544,8 @@ void PartGui::DlgProjectionOnSurface::show_projected_shapes(const std::vector<SS
   auto aCompound = create_compound(iShapeStoreVec);
   if ( aCompound.IsNull() )
   {
-    App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc) return;
-    activeDoc->removeObject(m_projectionObject->getNameInDocument());
-    m_projectionObject = dynamic_cast<Part::Feature*>(activeDoc->addObject("Part::Feature", std::string(m_projectionObjectName.toUtf8()).c_str()));
+    if (!m_partDocument) return;
+    m_projectionObject->Shape.setValue(TopoDS_Shape());
     return;
   }
   auto currentPlacement = m_projectionObject->Placement.getValue();
@@ -601,7 +615,7 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
       defaultColor = vp->LineColor.getValue();
     }
 
-    if ( colors.size() != anIndices.Extent() )
+    if ( static_cast<Standard_Integer>(colors.size()) != anIndices.Extent() )
     {
       colors.resize(anIndices.Extent(), defaultColor);
     }
@@ -718,16 +732,15 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
           }
         }
       }
-      auto doneFlag = faceMaker.IsDone();
-      auto error = faceMaker.Error();
+      //auto doneFlag = faceMaker.IsDone();
+      //auto error = faceMaker.Error();
       itCurrentShape.aProjectedFace = faceMaker.Face();
     }
   }
-  catch (Standard_Failure)
+  catch (const Standard_Failure& error)
   {
-    auto error = Standard_Failure::Caught();
     std::stringstream ssOcc;
-    error->Print(ssOcc);
+    error.Print(ssOcc);
     throw Base::ValueError(ssOcc.str().c_str());
   }
 }
@@ -771,6 +784,7 @@ TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(const std::vecto
     ShapeFix_Wireframe aWireFramFix(aWireRepair.Wire());
     auto retVal = aWireFramFix.FixWireGaps();
     retVal = aWireFramFix.FixSmallEdges();
+    Q_UNUSED(retVal);
     return TopoDS::Wire(aWireFramFix.Shape());
   }
   return TopoDS_Wire();
@@ -797,11 +811,10 @@ void PartGui::DlgProjectionOnSurface::create_face_extrude(std::vector<SShapeStor
       itCurrentShape.exrudeValue = height;
     }
   }
-  catch (Standard_Failure)
+  catch (const Standard_Failure& error)
   {
-    auto error = Standard_Failure::Caught();
     std::stringstream ssOcc;
-    error->Print(ssOcc);
+    error.Print(ssOcc);
     throw Base::ValueError(ssOcc.str().c_str());
   }
 }
@@ -941,11 +954,14 @@ void PartGui::DlgProjectionOnSurface::on_radioButtonEdges_clicked()
   m_currentShowType = "edges";
   show_projected_shapes(m_shapeVec);
 }
+
 void PartGui::DlgProjectionOnSurface::on_doubleSpinBoxExtrudeHeight_valueChanged(double arg1)
 {
+  Q_UNUSED(arg1);
   create_face_extrude(m_shapeVec);
   show_projected_shapes(m_shapeVec);
 }
+
 void PartGui::DlgProjectionOnSurface::on_pushButtonAddWire_clicked()
 {
   if (ui->pushButtonAddWire->isChecked())
@@ -968,6 +984,7 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddWire_clicked()
     filterEdge = nullptr;
   }
 }
+
 void PartGui::DlgProjectionOnSurface::on_doubleSpinBoxSolidDepth_valueChanged(double arg1)
 {
   auto valX = ui->doubleSpinBoxDirX->value();
@@ -984,6 +1001,7 @@ void PartGui::DlgProjectionOnSurface::on_doubleSpinBoxSolidDepth_valueChanged(do
 
   m_lastDepthVal = ui->doubleSpinBoxSolidDepth->value();
 }
+
 // ---------------------------------------
 
 TaskProjectionOnSurface::TaskProjectionOnSurface()
@@ -1003,8 +1021,8 @@ TaskProjectionOnSurface::~TaskProjectionOnSurface()
 
 bool TaskProjectionOnSurface::accept()
 {
-  return true;
   widget->apply();
+  return true;
   //return (widget->result() == QDialog::Accepted);
 }
 

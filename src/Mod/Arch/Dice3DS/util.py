@@ -24,14 +24,14 @@ def translate_points(pointarray,matrix):
 
         tpointarray = translate_points(pointarray,matrix)
 
-    Takes array of points and a homogenous (4D) transformation
+    Takes array of points and a homogeneous (4D) transformation
     matrix in exactly the same form in which they appear in the
     3DS DOM.
 
     Returns a pointarray with the points transformed by the matrix.
 
     """
-    
+
     n = len(pointarray)
     pt = numpy.ones((n,4),_calc_precision_type)
     pt[:,:3] = pointarray
@@ -55,7 +55,7 @@ def calculate_normals_no_smoothing(pointarray,facearray,smarray=None):
     returned as a list of consecutive triangles; the first three rows
     make up the first triangle, the second three rows make up the
     second triangle, and so on.
-   
+
     The normal vectors are determined by calculating the normal to
     each face.  There is no smoothing.
 
@@ -73,7 +73,7 @@ def calculate_normals_no_smoothing(pointarray,facearray,smarray=None):
     B = numpy.asarray(pointarray[facearray[:,1]],_calc_precision_type)
     C = numpy.asarray(pointarray[facearray[:,2]],_calc_precision_type)
     b = A - C
-    c = B - A        
+    c = B - A
     fnorms[2::3,0] = c[:,2]*b[:,1]-c[:,1]*b[:,2]
     fnorms[2::3,1] = c[:,0]*b[:,2]-c[:,2]*b[:,0]
     fnorms[2::3,2] = c[:,1]*b[:,0]-c[:,0]*b[:,1]
@@ -131,7 +131,7 @@ def calculate_normals_by_cross_product(pointarray,facearray,smarray):
     C = numpy.asarray(pointarray[facearray[:,2]],_calc_precision_type)
     a = C - B
     b = A - C
-    c = B - A        
+    c = B - A
     rnorms[0::3,0] = c[:,2]*b[:,1]-c[:,1]*b[:,2]
     rnorms[0::3,1] = c[:,0]*b[:,2]-c[:,2]*b[:,0]
     rnorms[0::3,2] = c[:,1]*b[:,0]-c[:,0]*b[:,1]
@@ -154,7 +154,7 @@ def calculate_normals_by_cross_product(pointarray,facearray,smarray):
     rslice[:-1] = brs
     rslice[-1] = 3*m
     for i in xrange(len(brs)+1):
-        rgroup = lex[lslice[i]:rslice[i]]        
+        rgroup = lex[lslice[i]:rslice[i]]
         xgroup = exarray[rgroup]
         normpat = numpy.logical_or(
             numpy.bitwise_and.outer(xgroup,xgroup),
@@ -186,7 +186,7 @@ def calculate_normals_by_angle_subtended(pointarray,facearray,smarray):
     consecutive triangles; the first three rows make up the first
     triangle, the second three rows make up the second triangle, and
     so on.
-        
+
     To calculate the normal of a given vertex on a given face, this
     function averages the normal vector for all faces which have share
     that vertex, and a smoothing group.
@@ -259,7 +259,7 @@ def calculate_normals_by_angle_subtended(pointarray,facearray,smarray):
     rslice[:-1] = brs
     rslice[-1] = 3*m
     for i in xrange(len(brs)+1):
-        rgroup = lex[lslice[i]:rslice[i]]        
+        rgroup = lex[lslice[i]:rslice[i]]
         xgroup = exarray[rgroup]
         normpat = numpy.logical_or(
             numpy.bitwise_and.outer(xgroup,xgroup),

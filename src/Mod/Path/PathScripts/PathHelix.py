@@ -48,7 +48,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
     def initCircularHoleOperation(self, obj):
         '''initCircularHoleOperation(obj) ... create helix specific properties.'''
-        obj.addProperty("App::PropertyEnumeration", "Direction", "Helix Drill", translate("PathHelix", "The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)"))
+        obj.addProperty("App::PropertyEnumeration", "Direction", "Helix Drill", translate("PathHelix", "The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)"))
         obj.Direction = ['CW', 'CCW']
 
         obj.addProperty("App::PropertyEnumeration", "StartSide", "Helix Drill", translate("PathHelix", "Start cutting from the inside or outside"))

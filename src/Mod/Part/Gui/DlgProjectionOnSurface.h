@@ -29,6 +29,7 @@
 #include <Gui/TaskView/TaskView.h>
 
 #include "../App/PartFeature.h"
+#include <App/DocumentObserver.h>
 
 #include "TopoDS_Shape.hxx"
 #include "TopoDS_Edge.hxx"
@@ -44,7 +45,9 @@ namespace PartGui {
     class DlgProjectionOnSurface;
   }
 
-class DlgProjectionOnSurface : public QWidget, public Gui::SelectionObserver
+class DlgProjectionOnSurface : public QWidget,
+                               public Gui::SelectionObserver,
+                               public App::DocumentObserver
 {
     Q_OBJECT
 
@@ -116,6 +119,12 @@ private:
   void transform_shape_to_global_postion(TopoDS_Shape& ioShape, Part::Feature* iPart);
 
 private:
+  /** Checks if the given document is about to be closed */
+  virtual void slotDeletedDocument(const App::Document& Doc);
+  /** Checks if the given object is about to be removed. */
+  virtual void slotDeletedObject(const App::DocumentObject& Obj);
+
+private:
     Ui::DlgProjectionOnSurface *ui;
     std::vector<SShapeStore> m_shapeVec;
     std::vector<SShapeStore> m_projectionSurfaceVec;
@@ -127,6 +136,7 @@ private:
     
     const QString m_projectionObjectName;
     Part::Feature* m_projectionObject;
+    App::Document* m_partDocument;
     float m_lastDepthVal;
 
     class EdgeSelection;
@@ -151,7 +161,7 @@ public:
 
   virtual QDialogButtonBox::StandardButtons getStandardButtons() const
   {
-    return QDialogButtonBox::Ok | QDialogButtonBox::Close;
+    return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
   }
 
 private:
