@@ -539,14 +539,28 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.inp_file_name = ""
         try:
             inp_writer = iw.FemInputWriterCcx(
-                self.analysis, self.solver,
-                self.mesh, self.materials_linear, self.materials_nonlinear,
-                self.fixed_constraints, self.displacement_constraints,
-                self.contact_constraints, self.planerotation_constraints, self.transform_constraints,
-                self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
-                self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
-                self.beam_sections, self.beam_rotations, self.shell_thicknesses, self.fluid_sections,
-                self.working_dir)
+                self.analysis,
+                self.solver,
+                self.mesh,
+                self.materials_linear,
+                self.materials_nonlinear,
+                self.fixed_constraints,
+                self.displacement_constraints,
+                self.contact_constraints,
+                self.planerotation_constraints,
+                self.transform_constraints,
+                self.selfweight_constraints,
+                self.force_constraints,
+                self.pressure_constraints,
+                self.temperature_constraints,
+                self.heatflux_constraints,
+                self.initialtemperature_constraints,
+                self.beam_sections,
+                self.beam_rotations,
+                self.shell_thicknesses,
+                self.fluid_sections,
+                self.working_dir
+            )
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
             FreeCAD.Console.PrintError("Unexpected error when writing CalculiX input file: {}\n".format(sys.exc_info()[0]))
