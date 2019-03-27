@@ -198,6 +198,8 @@ def getType(obj):
         return "Points"
     if (obj.TypeId == "App::DocumentObjectGroup"):
         return "Group"
+    if (obj.TypeId == "App::Part"):
+        return "App::Part"
     return "Unknown"
 
 def getObjectsOfType(objectslist,typ):
@@ -389,7 +391,7 @@ def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False,noarch
         objectslist = [objectslist]
     for obj in objectslist:
         if obj:
-            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["Building","BuildingPart","Space","Site"]) and hasattr(obj,"Group")):
+            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["App::Part","Building","BuildingPart","Space","Site"]) and hasattr(obj,"Group")):
                 if getType(obj) == "Site":
                     if obj.Shape:
                         newlist.append(obj)
