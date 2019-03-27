@@ -985,7 +985,7 @@ void MainWindow::onSetActiveSubWindow(QWidget *window)
 
 void MainWindow::setActiveWindow(MDIView* view)
 {
-    if(d->activeView == view)
+    if(!view || d->activeView == view)
         return;
     if(view->getGuiDocument()->getDocument()->testStatus(App::Document::PartialDoc))
         return;
