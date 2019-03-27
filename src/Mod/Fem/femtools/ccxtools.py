@@ -536,11 +536,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 ccx_path = FreeCAD.getHomePath() + "bin/ccx.exe"
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetString("ccxBinaryPath", ccx_path)
                 self.ccx_binary = ccx_path
-            elif system() == "Linux":
+            elif system() in ("Linux", "Darwin"):
                 p1 = subprocess.Popen(['which', 'ccx'], stdout=subprocess.PIPE)
                 if p1.wait() == 0:
                     if sys.version_info.major >= 3:
-                        ccx_path = str(p1.stdout.read()).split('\n')[0]
+                        ccx_path = p1.stdout.read().decode("utf8").split('\n')[0]
                     else:
                         ccx_path = p1.stdout.read().split('\n')[0]
                 elif p1.wait() == 1:
@@ -551,7 +551,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     if FreeCAD.GuiUp:
                         QtGui.QMessageBox.critical(None, error_title, error_message)
                     raise Exception(error_message)
-                self.ccx_binary = ccx_path
+                # we use the default ccx command and we don't have to use the path to ccx for calling it
+                # self.ccx_binary = ccx_path 
         else:
             if not ccx_binary:
                 self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
