@@ -415,11 +415,14 @@ class _CommandWall:
 
         self.Width = d
         self.tracker.width(d)
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("WallWidth",d)
+        
 
     def setHeight(self,d):
 
         self.Height = d
         self.tracker.height(d)
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("WallHeight",d)
 
     def setAlign(self,i):
 
