@@ -7,6 +7,7 @@ SET(Arch_SRCS
     InitGui.py
     ArchComponent.py
     ArchIFC.py
+    ArchIFCSchema.py
     ArchWall.py
     importIFC.py
     importIFClegacy.py
@@ -104,7 +105,6 @@ INSTALL(
         Presets
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Mod/Arch
-    FILES_MATCHING PATTERN "*.csv*"
 )
 INSTALL(
     FILES
