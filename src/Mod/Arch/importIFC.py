@@ -31,7 +31,7 @@ import six
 
 import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils,sys
 from DraftGeomUtils import vec
-from ArchIFC import ifcProducts
+import ArchIFCSchema
 
 ## @package importIFC
 #  \ingroup ARCH
@@ -847,7 +847,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 a = obj.IfcData
                 a["IfcUID"] = str(guid)
                 obj.IfcData = a
-                for attribute in ifcProducts[product.is_a()]["attributes"]:
+                for attribute in ArchIFCSchema.IfcProducts[product.is_a()]["attributes"]:
                     if hasattr(product, attribute["name"]) and getattr(product, attribute["name"]):
                         setattr(obj, attribute["name"], getattr(product, attribute["name"]))
 
@@ -1744,7 +1744,7 @@ def export(exportList,filename):
                 count += 1
             continue
 
-        if ifctype not in ifcProducts.keys():
+        if ifctype not in ArchIFCSchema.IfcProducts.keys():
             ifctype = "IfcBuildingElementProxy"
 
         # getting the "Force BREP" flag
@@ -1771,7 +1771,7 @@ def export(exportList,filename):
                            "RefElevation":obj.Elevation.Value/1000.0,
                            "SiteAddress":buildAddress(obj,ifcfile),
                            "CompositionType": "ELEMENT"})
-        if ifcopenshell.schema_identifier == "IFC2X3":
+        if schema == "IFC2X3":
             kwargs = exportIFC2X3Attributes(obj, kwargs)
         kwargs = exportIfcAttributes(obj, kwargs)
 
@@ -2367,7 +2367,9 @@ def export(exportList,filename):
         print("Compression ratio:",int((float(ifcbin.spared)/(s+ifcbin.spared))*100),"%")
     del ifcbin
 
+
 def getIfcRoleFromObj(obj):
+
     if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Undefined"):
         ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitly set
     elif hasattr(obj,"IfcRole"):
@@ -2384,7 +2386,9 @@ def getIfcRoleFromObj(obj):
 
     return "Ifc" + ifctype
 
+
 def exportIFC2X3Attributes(obj, kwargs):
+
     role = getIfcRoleFromObj(obj)
     if role in ["IfcSlab", "IfcFooting", "IfcRoof"]:
         kwargs.update({"PredefinedType": "NOTDEFINED"})
@@ -2413,6 +2417,7 @@ def exportIFC2X3Attributes(obj, kwargs):
 
 
 def exportIfcAttributes(obj, kwargs):
+
     for property in obj.PropertiesList:
         if obj.getGroupOfProperty(property) == "IFC Attributes" and obj.getPropertyByName(property):
             value = obj.getPropertyByName(property)
@@ -2420,6 +2425,7 @@ def exportIfcAttributes(obj, kwargs):
                 value = float(value)
             kwargs.update({ property: value })
     return kwargs
+
 
 def buildAddress(obj,ifcfile):
 
@@ -2591,7 +2597,9 @@ def createCurve(ifcfile,wire):
 
 
 def getEdgesAngle(edge1, edge2):
+
     """ getEdgesAngle(edge1, edge2): returns a angle between two edges."""
+
     vec1 = vec(edge1)
     vec2 = vec(edge2)
     angle = vec1.getAngle(vec2)
@@ -2600,9 +2608,11 @@ def getEdgesAngle(edge1, edge2):
 
 
 def checkRectangle(edges):
+
     """ checkRectangle(edges=[]): This function checks whether the given form is a rectangle
        or not. It will return True when edges form a rectangular shape or return False
        when edges do not form a rectangular shape."""
+
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("DisableIfcRectangleProfileDef",False):
         return False
     if len(edges) != 4:
@@ -2696,7 +2706,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 if k in sharedobjects:
                     # base shape already exists
                     repmap = sharedobjects[k]
-                    pla = obj.Placement
+                    pla = obj.getGlobalPlacement()
                     axis1 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
                     axis2 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
                     axis3 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,0,1))))
@@ -2771,7 +2781,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             #print("evi:",evi)
                             if not tostore:
                                 # add the object placement to the profile placement. Otherwise it'll be done later at map insert
-                                pl2 = FreeCAD.Placement(obj.Placement)
+                                pl2 = obj.getGlobalPlacement()
                                 pl2.Base = pl2.Base.multiply(0.001)
                                 pli = pl2.multiply(pli)
                             xvc =       ifcbin.createIfcDirection(tuple(pli.Rotation.multVec(FreeCAD.Vector(1,0,0))))
@@ -2814,7 +2824,8 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     if not fcshape:
                         if obj.Shape:
                             if not obj.Shape.isNull():
-                                fcshape = obj.Shape
+                                fcshape = obj.Shape.copy()
+                                fcshape.Placement = obj.getGlobalPlacement()
             if fcshape:
                 shapedef = str([v.Point for v in fcshape.Vertexes])
                 if shapedef in shapedefs:
@@ -2829,6 +2840,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     if hasattr(geom,"serialise") and obj.isDerivedFrom("Part::Feature") and SERIALIZE:
                         if obj.Shape.Faces:
                             sh = obj.Shape.copy()
+                            sh.Placement = obj.getGlobalPlacement()
                             sh.scale(0.001) # to meters
                             p = geom.serialise(sh.exportBrepToString())
                             if p:
@@ -2951,7 +2963,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
             gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
             repmap = ifcfile.createIfcRepresentationMap(gpl,subrep)
-            pla = obj.Placement
+            pla = obj.getGlobalPlacement()
             axis1 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
             axis2 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
             origin = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(pla.Base).multiply(0.001)))
