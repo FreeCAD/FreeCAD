@@ -47,6 +47,7 @@ class QGCustomText;
 class QGICaption;
 class MDIViewPage;
 class QGIViewClip;
+class QGCustomImage;
 
 class TechDrawGuiExport  QGIView : public QGraphicsItemGroup
 {
@@ -141,7 +142,11 @@ protected:
     QGCustomLabel* m_label;
     QGCustomBorder* m_border;
     QGICaption* m_caption;
+    QGCustomImage* m_lock;
     QPen m_decorPen;
+    double m_lockWidth;
+    double m_lockHeight;
+
 };
 
 } // namespace
