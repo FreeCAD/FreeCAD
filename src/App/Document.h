@@ -195,7 +195,8 @@ public:
     bool saveAs(const char* file);
     bool saveCopy(const char* file) const;
     /// Restore the document from the file in Property Path
-    void restore (bool delaySignal=false, const std::set<std::string> &objNames={});
+    void restore (const char *filename=0, 
+            bool delaySignal=false, const std::set<std::string> &objNames={});
     void afterRestore(bool checkXLink=false, bool checkPartial=false);
     bool afterRestore(const std::vector<App::DocumentObject *> &, 
             bool checkXLink=false, bool checkPartial=false);

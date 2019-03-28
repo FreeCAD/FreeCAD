@@ -82,6 +82,26 @@ public:
     std::string getUniqueDocumentName(const char *Name) const;
     /// Open an existing document from a file
     App::Document* openDocument(const char * FileName=0l);
+    /** Open multiple documents
+     *
+     * @param filenames: input file names
+     * @param pathes: optional input file path in case it is different from
+     * filenames (mainly used during recovery).
+     * @param labels: optional label assign to document (mainly used during recovery).
+     * @param errs: optional output error message corresponding to each input
+     * file name. If errs is given, this function will catch all
+     * Base::Exception and save the error message inside. Otherwise, it will
+     * throw on exception when opening the input files.
+     *
+     * @return Return opened document object corresponding to each input file
+     * name, which maybe NULL if failed.
+     *
+     * This function will also open any external referenced files.
+     */
+    std::vector<Document*> openDocuments(const std::vector<std::string> &filenames, 
+            const std::vector<std::string> *pathes=0,
+            const std::vector<std::string> *labels=0,
+            std::vector<std::string> *errs=0);
     /// Retrieve the active document
     App::Document* getActiveDocument(void) const;
     /// Retrieve a named document
@@ -368,8 +388,8 @@ protected:
     //@}
 
     /// open single document only
-    App::Document* openDocumentPrivate(const char * FileName, 
-            bool isMainDoc, const std::set<std::string> &objNames);
+    App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
+            const char *label, bool isMainDoc, const std::set<std::string> &objNames);
 
 private:
     /// Constructor

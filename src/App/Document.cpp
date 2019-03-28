@@ -2356,7 +2356,8 @@ bool Document::isAnyRestoring() {
 }
 
 // Open the document
-void Document::restore (bool delaySignal, const std::set<std::string> &objNames)
+void Document::restore (const char *filename,
+        bool delaySignal, const std::set<std::string> &objNames)
 {
     clearUndos();
     d->activeObject = 0;
@@ -2383,19 +2384,21 @@ void Document::restore (bool delaySignal, const std::set<std::string> &objNames)
     d->objectIdMap.clear();
     d->lastObjectId = 0;
 
-    Base::FileInfo fi(FileName.getValue());
+    if(!filename)
+        filename = FileName.getValue();
+    Base::FileInfo fi(filename);
     Base::ifstream file(fi, std::ios::in | std::ios::binary);
     std::streambuf* buf = file.rdbuf();
     std::streamoff size = buf->pubseekoff(0, std::ios::end, std::ios::in);
     buf->pubseekoff(0, std::ios::beg, std::ios::in);
     if (size < 22) // an empty zip archive has 22 bytes
-        throw Base::FileException("Invalid project file",FileName.getValue());
+        throw Base::FileException("Invalid project file",filename);
 
     zipios::ZipInputStream zipstream(file);
-    Base::XMLReader reader(FileName.getValue(), zipstream);
+    Base::XMLReader reader(filename, zipstream);
 
     if (!reader.isValid())
-        throw Base::FileException("Error reading compression file",FileName.getValue());
+        throw Base::FileException("Error reading compression file",filename);
 
     GetApplication().signalStartRestoreDocument(*this);
     setStatus(Document::Restoring, true);

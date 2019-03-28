@@ -237,33 +237,25 @@ void DocumentRecovery::accept()
     if (!d->recovered) {
 
         WaitCursor wc;
-        int index = 0;
-        for (QList<DocumentRecoveryPrivate::Info>::iterator it = d->recoveryInfo.begin(); it != d->recoveryInfo.end(); ++it, index++) {
+        int index = -1;
+        std::vector<int> indices;
+        std::vector<std::string> filenames, pathes, labels, errs;
+        for(auto &info : d->recoveryInfo) {
+            ++index;
             std::string documentName;
             QString errorInfo;
             QTreeWidgetItem* item = d_ptr->ui.treeWidget->topLevelItem(index);
 
             try {
-                QString file = it->projectFile;
+                QString file = info.projectFile;
                 QFileInfo fi(file);
                 if (fi.fileName() == QLatin1String("Document.xml"))
-                    file = createProjectFile(it->projectFile);
-                App::Document* document = App::GetApplication().newDocument();
-                documentName = document->getName();
-                document->FileName.setValue(file.toUtf8().constData());
+                    file = createProjectFile(info.projectFile);
 
-                // If something goes wrong an exception will be thrown here
-                document->restore();
-
-                file = it->fileName;
-                document->FileName.setValue(file.toUtf8().constData());
-                document->Label.setValue(it->label.toUtf8().constData());
-
-                // Set the modified flag so that the user cannot close by accident
-                Gui::Document* guidoc = Gui::Application::Instance->getDocument(document);
-                if (guidoc) {
-                    guidoc->setModified(true);
-                }
+                pathes.emplace_back(file.toUtf8().constData());
+                filenames.emplace_back(info.fileName.toUtf8().constData());
+                labels.emplace_back(info.label.toUtf8().constData());
+                indices.push_back(index);
             }
             catch (const std::exception& e) {
                 errorInfo = QString::fromLatin1(e.what());
@@ -275,23 +267,33 @@ void DocumentRecovery::accept()
                 errorInfo = tr("Unknown problem occurred");
             }
 
-            // an error occurred so close the document again
             if (!errorInfo.isEmpty()) {
-                if (!documentName.empty())
-                    App::GetApplication().closeDocument(documentName.c_str());
-
-                it->status = DocumentRecoveryPrivate::Failure;
-
+                info.status = DocumentRecoveryPrivate::Failure;
                 if (item) {
                     item->setText(1, tr("Failed to recover"));
                     item->setToolTip(1, errorInfo);
                     item->setForeground(1, QColor(170,0,0));
                 }
+                d->writeRecoveryInfo(info);
             }
-            // everything OK
-            else {
-                it->status = DocumentRecoveryPrivate::Success;
+        }
 
+        auto docs = App::GetApplication().openDocuments(filenames,&pathes,&labels,&errs);
+
+        for(int i=0;i<(int)docs.size();++i) {
+            auto &info = d->recoveryInfo[indices[i]];
+            QTreeWidgetItem* item = d_ptr->ui.treeWidget->topLevelItem(indices[i]);
+            if(!docs[i] || errs[i].size()) {
+                if(docs[i])
+                    App::GetApplication().closeDocument(docs[i]->getName());
+                info.status = DocumentRecoveryPrivate::Failure;
+                if (item) {
+                    item->setText(1, tr("Failed to recover"));
+                    item->setToolTip(1, QString::fromUtf8(errs[index].c_str()));
+                    item->setForeground(1, QColor(170,0,0));
+                }
+            }else{
+                info.status = DocumentRecoveryPrivate::Success;
                 if (item) {
                     item->setText(1, tr("Successfully recovered"));
                     item->setForeground(1, QColor(0,170,0));
@@ -299,7 +301,7 @@ void DocumentRecovery::accept()
             }
 
             // write back current status
-            d->writeRecoveryInfo(*it);
+            d->writeRecoveryInfo(info);
         }
 
         d->ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Finish"));

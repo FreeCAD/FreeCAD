@@ -567,8 +567,27 @@ public:
     }
 };
 
-Document* Application::openDocument(const char * FileName)
+Document* Application::openDocument(const char * FileName) {
+    std::vector<std::string> filenames(1,FileName);
+    auto docs = openDocuments(filenames);
+    if(docs.size())
+        return docs.front();
+    return 0;
+}
+
+std::vector<Document*> Application::openDocuments(
+        const std::vector<std::string> &filenames, 
+        const std::vector<std::string> *pathes, 
+        const std::vector<std::string> *labels, 
+        std::vector<std::string> *errs)
 {
+    std::vector<Document*> res(filenames.size(),nullptr);
+    if(filenames.empty())
+        return res;
+
+    if(errs)
+        errs->resize(filenames.size());
+
     DocOpenGuard guard(_isRestoring,signalFinishOpenDocument);
     _pendingDocs.clear();
     _pendingDocsReopen.clear();
@@ -579,16 +598,17 @@ Document* Application::openDocument(const char * FileName)
     ParameterGrp::handle hGrp = GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
     _allowPartial = !hGrp->GetBool("NoPartialLoading",false);
 
-    _pendingDocs.push_back(FileName?FileName:"");
+    for(auto &name : filenames)
+        _pendingDocs.push_back(name.c_str());
 
     std::deque<std::pair<Document *, DocTiming> > newDocs;
 
     FC_TIME_INIT(t);
 
-    bool isMainDoc = true;
-    while(true) {
+    for(std::size_t count=0;;++count) {
         const char *name = _pendingDocs.front();
         _pendingDocs.pop_front();
+        bool isMainDoc = count<filenames.size();
         try {
             _objCount = -1;
             std::set<std::string> objNames;
@@ -599,20 +619,45 @@ Document* Application::openDocument(const char * FileName)
             }
             FC_TIME_INIT(t1);
             DocTiming timing;
-            auto doc = openDocumentPrivate(name,isMainDoc,objNames);
+            const char *path = name;
+            const char *label = 0;
+            if(isMainDoc) {
+                if(pathes && pathes->size()>count)
+                    path = (*pathes)[count].c_str();
+                if(labels && labels->size()>count)
+                    label = (*labels)[count].c_str();
+            }
+            auto doc = openDocumentPrivate(path,name,label,isMainDoc,objNames);
             FC_DURATION_PLUS(timing.d1,t1);
             if(doc)
                 newDocs.emplace_front(doc,timing);
-            isMainDoc = false;
+            if(isMainDoc)
+                res[count] = doc;
             _objCount = -1;
         }catch(const Base::Exception &e) {
-            if(newDocs.empty()) throw;
-            Console().Error("Exception opening file: %s [%s]\n", name, e.what());
+            if(!errs && isMainDoc) 
+                throw;
+            if(errs && isMainDoc)
+                (*errs)[count] = e.what();
+            else
+                Console().Error("Exception opening file: %s [%s]\n", name, e.what());
+        }catch(const std::exception &e) {
+            if(!errs && isMainDoc) 
+                throw;
+            if(errs && isMainDoc)
+                (*errs)[count] = e.what();
+            else
+                Console().Error("Exception opening file: %s [%s]\n", name, e.what());
         }catch(...) {
-            _pendingDocs.clear();
-            _pendingDocsReopen.clear();
-            _pendingDocMap.clear();
-            throw;
+            if(errs) {
+                if(isMainDoc)
+                    (*errs)[count] = "unknown error";
+            } else {
+                _pendingDocs.clear();
+                _pendingDocsReopen.clear();
+                _pendingDocMap.clear();
+                throw;
+            }
         }
         if(_pendingDocs.empty()) {
             if(_pendingDocsReopen.empty())
@@ -640,10 +685,11 @@ Document* Application::openDocument(const char * FileName)
 
     _isRestoring = false;
     signalFinishOpenDocument();
-    return newDocs.back().first;
+    return res;
 }
 
 Document* Application::openDocumentPrivate(const char * FileName, 
+        const char *propFileName, const char *label,
         bool isMainDoc, const std::set<std::string> &objNames)
 {
     FileInfo File(FileName);
@@ -697,16 +743,25 @@ Document* Application::openDocumentPrivate(const char * FileName,
         throw Base::FileSystemError(str.str().c_str());
     }
 
+    std::string name;
+    if(propFileName != FileName) {
+        FileInfo fi(propFileName);
+        name = fi.fileNamePure();
+    }else
+        name = File.fileNamePure();
+
     // Use the same name for the internal and user name.
     // The file name is UTF-8 encoded which means that the internal name will be modified
     // to only contain valid ASCII characters but the user name will be kept.
-    Document* newDoc = newDocument(File.fileNamePure().c_str(), File.fileNamePure().c_str());
+    if(!label)
+        label = name.c_str();
+    Document* newDoc = newDocument(name.c_str(),label);
 
-    newDoc->FileName.setValue(File.filePath());
+    newDoc->FileName.setValue(propFileName==FileName?File.filePath():propFileName);
 
     try {
         // read the document
-        newDoc->restore(true,objNames);
+        newDoc->restore(File.filePath().c_str(),true,objNames);
         return newDoc;
     }
     // if the project file itself is corrupt then
