@@ -69,6 +69,7 @@
         <file>icons/arrow-down.svg</file>
         <file>icons/arrow-ccw.svg</file>
         <file>icons/arrow-cw.svg</file>
+        <file>icons/techdraw-lock.png</file>
         <file>translations/TechDraw_af.qm</file>
         <file>translations/TechDraw_zh-CN.qm</file>
         <file>translations/TechDraw_zh-TW.qm</file>
