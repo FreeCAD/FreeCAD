@@ -385,11 +385,21 @@ class _CommandWall:
         grid.addWidget(label4,5,0,1,1)
         grid.addWidget(value4,5,1,1,1)
 
+        label5 = QtGui.QLabel(translate("Arch","Use sketches", utf8_decode=True))
+        value5 = QtGui.QCheckBox()
+        value5.setObjectName("UseSketches")
+        value5.setLayoutDirection(QtCore.Qt.RightToLeft)
+        label5.setBuddy(value5)
+        value5.setChecked(FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("WallSketches",True))
+        grid.addWidget(label5,6,0,1,1)
+        grid.addWidget(value5,6,1,1,1)
+
         QtCore.QObject.connect(self.Length,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
         QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
         QtCore.QObject.connect(value3,QtCore.SIGNAL("currentIndexChanged(int)"),self.setAlign)
         QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+        QtCore.QObject.connect(value5,QtCore.SIGNAL("stateChanged(int)"),self.setUseSketch)
         QtCore.QObject.connect(self.Length,QtCore.SIGNAL("returnPressed()"),value1.setFocus)
         QtCore.QObject.connect(self.Length,QtCore.SIGNAL("returnPressed()"),value1.selectAll)
         QtCore.QObject.connect(value1,QtCore.SIGNAL("returnPressed()"),value2.setFocus)
@@ -434,6 +444,10 @@ class _CommandWall:
         self.continueCmd = bool(i)
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.continueMode = bool(i)
+
+    def setUseSketch(self,i):
+
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetBool("WallSketches",bool(i))
 
     def createFromGUI(self):
 

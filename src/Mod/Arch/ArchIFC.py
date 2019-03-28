@@ -54,6 +54,7 @@ def addIfcProductAttribute(obj, attribute):
         obj.addProperty("App::PropertyEnumeration", attribute["name"], "IFC Attributes", QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
         setattr(obj, attribute["name"], attribute["enum_values"])
     else:
+        import ArchIFCSchema
         propertyType = "App::" + ArchIFCSchema.IfcTypes[attribute["type"]]["property"]
         obj.addProperty(propertyType, attribute["name"], "IFC Attributes", QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
 

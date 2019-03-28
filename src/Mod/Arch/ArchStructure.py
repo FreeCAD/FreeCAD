@@ -392,16 +392,19 @@ class _CommandStructure:
 
         self.Width = d
         self.tracker.width(d)
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureWidth",d)
 
     def setHeight(self,d):
 
         self.Height = d
         self.tracker.height(d)
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureHeight",d)
 
     def setLength(self,d):
 
         self.Length = d
         self.tracker.length(d)
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureLength",d)
 
     def setContinue(self,i):
 

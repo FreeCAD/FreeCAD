@@ -812,14 +812,17 @@ class _CommandWindow:
             elif param == "Height":
                 wid.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
             elif param == "O1":
-                wid.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-                setattr(self,param,0)
+                n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowO1",0.0)
+                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
+                setattr(self,param,n)
             elif param == "W1":
-                wid.setText(FreeCAD.Units.Quantity(self.Thickness*2,FreeCAD.Units.Length).UserString)
-                setattr(self,param,self.Thickness*2)
+                n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowW1",self.Thickness*2)
+                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
+                setattr(self,param,n)
             else:
-                wid.setText(FreeCAD.Units.Quantity(self.Thickness,FreeCAD.Units.Length).UserString)
-                setattr(self,param,self.Thickness)
+                n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("Window"+param,self.Thickness)
+                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
+                setattr(self,param,n)
             grid.addWidget(lab,i,0,1,1)
             grid.addWidget(wid,i,1,1,1)
             i += 1
@@ -830,7 +833,7 @@ class _CommandWindow:
 
     def getValueChanged(self,p):
 
-      return lambda d : self.setParams(p, d)
+        return lambda d : self.setParams(p, d)
 
     def setSill(self,d):
 
@@ -846,6 +849,7 @@ class _CommandWindow:
         self.tracker.length(self.Width)
         self.tracker.height(self.Height)
         self.tracker.width(self.W1)
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("Window"+param,d)
 
     def setPreset(self,i):
 

@@ -297,14 +297,17 @@ class CommandPanel:
     def setWidth(self,d):
 
         self.Width = d
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PanelWidth",d)
 
     def setThickness(self,d):
 
         self.Thickness = d
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PanelThickness",d)
 
     def setLength(self,d):
 
         self.Length = d
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PanelLength",d)
 
     def setContinue(self,i):
 
