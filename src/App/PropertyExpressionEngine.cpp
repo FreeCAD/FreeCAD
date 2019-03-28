@@ -135,10 +135,15 @@ void PropertyExpressionEngine::Paste(const Property &from)
 
 void PropertyExpressionEngine::Save(Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<ExpressionEngine count=\"" <<  expressions.size()
-        << "\" xlink=\"1\">" << std::endl;
-    writer.incInd();
-    PropertyXLinkContainer::Save(writer);
+    writer.Stream() << writer.ind() << "<ExpressionEngine count=\"" <<  expressions.size();
+    if(PropertyXLinkContainer::_XLinks.empty()) {
+        writer.Stream() << "\">" << std::endl;
+        writer.incInd();
+    } else {
+        writer.Stream() << "\" xlink=\"1\">" << std::endl;
+        writer.incInd();
+        PropertyXLinkContainer::Save(writer);
+    }
     for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
         writer.Stream() << writer.ind() << "<Expression path=\"" 
             << Property::encodeAttribute(it->first.toString()) <<"\" expression=\"" 
