@@ -277,14 +277,14 @@ def fill_femresult_mechanical(res_obj, result_set):
                     # how is this possible? An example is needed!
                     FreeCAD.Console.PrintError('PEEQ seams to have exptra nodes.\n')
                     Pe = []
-                    Pe_extra_nodes = Peeq.values()
+                    Pe_extra_nodes = list(Peeq.values())
                     nodes = len(disp.values())
                     for i in range(nodes):
                         Pe_value = Pe_extra_nodes[i]
                         Pe.append(Pe_value)
                     res_obj.Peeq = Pe
                 else:
-                    res_obj.Peeq = Peeq.values()
+                    res_obj.Peeq = list(Peeq.values())
 
     # fill res_obj.Temperature if they exist
     # TODO, check if it is possible to have Temperature without disp, we would need to set NodeNumbers than
@@ -293,7 +293,7 @@ def fill_femresult_mechanical(res_obj, result_set):
         if len(Temperature) > 0:
             if len(Temperature.values()) != len(disp.values()):
                 Temp = []
-                Temp_extra_nodes = Temperature.values()
+                Temp_extra_nodes = list(Temperature.values())
                 nodes = len(disp.values())
                 for i in range(nodes):
                     # how is this possible? An example is needed!
