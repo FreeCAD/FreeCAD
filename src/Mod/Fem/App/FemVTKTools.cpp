@@ -689,10 +689,10 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     resFCScalProp["NodeStrainXZ"] = "Strain xz component";
     resFCScalProp["NodeStrainYZ"] = "Strain yz component";
     resFCScalProp["Peeq"] = "Equivalent Plastic Strain";
-    resFCScalProp["PrincipalMax"] = "Major Principal Stress",  // can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
-    resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress",  // can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE
-    resFCScalProp["PrincipalMin"] = "Minor Principal Stress",  // can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
-    resFCScalProp["StressValues"] = "von Mises Stress",
+    resFCScalProp["PrincipalMax"] = "Major Principal Stress";  // can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
+    resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress";  // can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE
+    resFCScalProp["PrincipalMin"] = "Minor Principal Stress";  // can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
+    resFCScalProp["StressValues"] = "von Mises Stress";
     resFCScalProp["Temperature"] = "Temperature";
 
     resFCScalProp["UserDefined"] = "UserDefinedMyName";  // this is empty or am I wrong ?!
