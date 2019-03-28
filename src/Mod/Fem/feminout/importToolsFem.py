@@ -274,6 +274,8 @@ def fill_femresult_mechanical(res_obj, result_set):
             Peeq = result_set['peeq']
             if len(Peeq) > 0:
                 if len(Peeq.values()) != len(disp.values()):
+                    # how is this possible? An example is needed!
+                    FreeCAD.Console.PrintError('PEEQ seams to have exptra nodes.\n')
                     Pe = []
                     Pe_extra_nodes = Peeq.values()
                     nodes = len(disp.values())
@@ -294,6 +296,8 @@ def fill_femresult_mechanical(res_obj, result_set):
                 Temp_extra_nodes = Temperature.values()
                 nodes = len(disp.values())
                 for i in range(nodes):
+                    # how is this possible? An example is needed!
+                    FreeCAD.Console.PrintError('Temperature seams to have exptra nodes.\n')
                     Temp_value = Temp_extra_nodes[i]
                     Temp.append(Temp_value)
                 res_obj.Temperature = list(map((lambda x: x), Temp))
