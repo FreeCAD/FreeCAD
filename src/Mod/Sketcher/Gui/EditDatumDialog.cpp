@@ -138,6 +138,8 @@ void EditDatumDialog::exec(bool atCursor)
         if (atCursor)
             dlg.setGeometry(QCursor::pos().x() - dlg.geometry().width() / 2, QCursor::pos().y(), dlg.geometry().width(), dlg.geometry().height());
 
+        Gui::Command::openCommand("Modify sketch constraints");
+
         if (dlg.exec()) {
             Base::Quantity newQuant = ui_ins_datum.labelEdit->value();
             if (newQuant.isQuantity() || (Constr->Type == Sketcher::SnellsLaw && newQuant.isDimensionless())) {
@@ -147,7 +149,6 @@ void EditDatumDialog::exec(bool atCursor)
                 double newDatum = newQuant.getValue();
 
                 try {
-                    Gui::Command::openCommand("Modify sketch constraints");
 
                     if (Constr->isDriving) {
                         if (ui_ins_datum.labelEdit->hasExpression())
@@ -177,9 +178,9 @@ void EditDatumDialog::exec(bool atCursor)
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
-                    Gui::Command::abortCommand();
                 }
             }
         }
+        Gui::Command::abortCommand();
     }
 }
