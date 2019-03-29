@@ -53,7 +53,7 @@ class _BinaryDlg(object):
     def getBinary(self):
         paramObj = App.ParamGet(self.param)
         binary = self.default
-        if not paramObj.GetBool(self.useDefault):
+        if not paramObj.GetBool(self.useDefault, True):
             binary = paramObj.GetString(self.customPath)
         return distutils.spawn.find_executable(binary)
 
