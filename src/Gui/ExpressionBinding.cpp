@@ -33,6 +33,7 @@
 #include <Base/Console.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Document.h>
+#include <App/Application.h>
 #include <boost/bind.hpp>
 
 FC_LOG_LEVEL_INIT("Expression",true,true)
@@ -70,10 +71,22 @@ void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
     }
 
     lastExpression = getExpression();
+
+    bool transaction = !App::GetApplication().getActiveTransaction();
+    if(transaction) {
+        std::ostringstream ss;
+        ss << (expr?"Set":"Discard") << " expression " << docObj->Label.getValue();
+        App::GetApplication().setActiveTransaction(ss.str().c_str());
+    }
+
     docObj->ExpressionEngine.setValue(path, expr);
-    
+
     if(m_autoApply)
         apply();
+    
+    if(transaction)
+        App::GetApplication().closeActiveTransaction();
+
 }
 
 void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
@@ -162,11 +175,20 @@ bool ExpressionBinding::apply(const std::string & propName)
 
         if (!docObj)
             throw Base::RuntimeError("Document object not found.");
+
+        bool transaction = !App::GetApplication().getActiveTransaction();
+        if(transaction) {
+            std::ostringstream ss;
+            ss << "Set expression " << docObj->Label.getValue();
+            App::GetApplication().setActiveTransaction(ss.str().c_str());
+        }
         Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setExpression('%s', u'%s')",
                                 docObj->getDocument()->getName(),
                                 docObj->getNameInDocument(),
                                 path.toEscapedString().c_str(),
                                 getEscapedExpressionString().c_str());
+        if(transaction)
+            App::GetApplication().closeActiveTransaction();
         return true;
     }
     else {
@@ -176,11 +198,20 @@ bool ExpressionBinding::apply(const std::string & propName)
             if (!docObj)
                 throw Base::RuntimeError("Document object not found.");
 
-            if (lastExpression)
+            if (lastExpression) {
+                bool transaction = !App::GetApplication().getActiveTransaction();
+                if(transaction) {
+                    std::ostringstream ss;
+                    ss << "Discard expression " << docObj->Label.getValue();
+                    App::GetApplication().setActiveTransaction(ss.str().c_str());
+                }
                 Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setExpression('%s', None)",
                                         docObj->getDocument()->getName(),
                                         docObj->getNameInDocument(),
                                         path.toEscapedString().c_str());
+                if(transaction)
+                    App::GetApplication().closeActiveTransaction();
+            }
         }
 
         return false;
