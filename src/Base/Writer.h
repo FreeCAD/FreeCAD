@@ -195,6 +195,7 @@ public:
     virtual void writeFiles(void);
 
     virtual std::ostream &Stream(void){return FileStream;}
+    void close() {FileStream.close();}
     /*!
      This method can be re-implemented in sub-classes to avoid
      to write out certain objects. The default implementation
