@@ -53,8 +53,10 @@ class _BinaryDlg(object):
     def getBinary(self):
         paramObj = FreeCAD.ParamGet(self.param)
         binary = self.default
+        FreeCAD.Console.PrintLog('Solver binary path: {} \n'.format(binary))
         if not paramObj.GetBool(self.useDefault, True):
             binary = paramObj.GetString(self.customPath)
+        FreeCAD.Console.PrintLog('Solver binary path: {} \n'.format(binary))
         return distutils.spawn.find_executable(binary)
 
 
@@ -84,8 +86,14 @@ _BINARIES = {
 
 def getBinary(name):
     if name in _BINARIES:
-        return _BINARIES[name].getBinary()
-    return None
+        binary = _BINARIES[name].getBinary()
+        FreeCAD.Console.PrintMessage('Solver binary path: {} \n'.format(binary))
+        return binary
+    else:
+        FreeCAD.Console.PrintError(
+            'Settings solver name: {} not found in solver settings modules _BINARIES dirctionary.\n'.format(name)
+        )
+        return None
 
 
 def getCustomDir():
