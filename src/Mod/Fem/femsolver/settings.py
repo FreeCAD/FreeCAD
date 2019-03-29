@@ -27,7 +27,7 @@ __url__ = "http://www.freecadweb.org"
 #  @{
 
 import distutils.spawn
-import FreeCAD as App
+import FreeCAD
 
 
 TEMPORARY = "temporary"
@@ -51,7 +51,7 @@ class _BinaryDlg(object):
         self.customPath = customPath
 
     def getBinary(self):
-        paramObj = App.ParamGet(self.param)
+        paramObj = FreeCAD.ParamGet(self.param)
         binary = self.default
         if not paramObj.GetBool(self.useDefault, True):
             binary = paramObj.GetString(self.customPath)
@@ -89,12 +89,12 @@ def getBinary(name):
 
 
 def getCustomDir():
-    param = App.ParamGet(_GENERAL_PARAM)
+    param = FreeCAD.ParamGet(_GENERAL_PARAM)
     return param.GetString("CustomDirectoryPath")
 
 
 def getDirSetting():
-    param = App.ParamGet(_GENERAL_PARAM)
+    param = FreeCAD.ParamGet(_GENERAL_PARAM)
     if param.GetBool("UseTempDirectory"):
         return TEMPORARY
     elif param.GetBool("UseBesideDirectory"):
