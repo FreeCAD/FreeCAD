@@ -56,7 +56,7 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of Mill Facing operation."
 __scriptVersion__ = "3m Usable"
 __created__ = "2019-03-29"
-__lastModified__ = "2019-03-29 23:46 CST"
+__lastModified__ = "2019-03-30 00:19 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -80,8 +80,8 @@ except:
 class ObjectSurface(PathOp.ObjectOp):
     '''Proxy object for Surfacing operation.'''
 
-    initFinalDepth = None
-    initStartDepth = None
+    initFinalDepth = 0.0
+    initStartDepth = 0.0
 
     def baseObject(self):
         '''baseObject() ... returns super of receiver
