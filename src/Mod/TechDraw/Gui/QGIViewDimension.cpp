@@ -525,7 +525,7 @@ void QGIViewDimension::draw()
         Base::Vector3d startDist, endDist, midDist;                     //start/end/mid points of distance line
         startDist = Rez::guiX(pts.first);
         endDist   = Rez::guiX(pts.second);
-        if (startDist.y < endDist.y) {                                 //measure bottom to top
+        if (startDist.y < endDist.y) {                                 //always measure bottom to top
             Base::Vector3d temp = startDist;
             startDist = endDist;
             endDist = temp;
@@ -571,21 +571,21 @@ void QGIViewDimension::draw()
         dirExt.Normalize();
 
         // Get magnitude of angle between dimension line and horizontal
-        // to determine rotation of dimension text  (iso convention. asme is always upright)
+        // to determine rotation of dimension text  ("aligned" convention. alt is "unidirectional")
         //note qt y axis is reversed! and angles are CW!
-        double angle = atan2(-dirDim.y,dirDim.x);
-        if (angle < 0.0) {
-            angle = 2 * M_PI + angle;          //map to +ve angle
+        double textRotAngle = atan2(-dirDim.y,dirDim.x);
+        if (textRotAngle < 0.0) {
+            textRotAngle = 2 * M_PI + textRotAngle;          //map to +ve textRotAngle
         }
 
         //orient text right side up
-        double angleFiddle = M_PI / 10.0;                  // 18 => 10*, 12 => 15*, ...
-        if ((angle > M_PI_2 + angleFiddle) &&              // > 100CW   
-                   (angle <= M_PI)) {                      // < 180CW -> Q2
-            angle += M_PI;                                 // flip CW
-        } else if ((angle > M_PI) &&                       // > 180CW
-                   (angle <= 1.5*M_PI - angleFiddle))  {   // < 260CW -> Q3
-            angle -= M_PI;                                 // flip CCW
+        double angleFiddle = M_PI / 10.0;                  // 18 => 10*, 12 => 15*, 10 => 18*, ...
+        if ((textRotAngle > M_PI_2 + angleFiddle) &&              // > 100CW   
+                   (textRotAngle <= M_PI)) {                      // < 180CW -> Q2
+            textRotAngle += M_PI;                                 // flip CW
+        } else if ((textRotAngle > M_PI) &&                       // > 180CW
+                   (textRotAngle <= 1.5*M_PI - angleFiddle))  {   // < 260CW -> Q3
+            textRotAngle -= M_PI;                                 // flip CCW
         }
 
         Base::Vector3d textNorm = normDim;
@@ -598,6 +598,7 @@ void QGIViewDimension::draw()
         } else if (std::abs(dirDist.y) < FLT_EPSILON) {                //this is vertical dim line
             textNorm = stdLeft;                                        //left of dimLine
         }
+
         // +/- pos of startDist vs endDist for vert/horiz Dims
         // distStartDelta sb zero for normal dims
         float distStartDelta = vecDist.Dot(normDim);        // component of distance vector in dim line direction
@@ -627,7 +628,7 @@ void QGIViewDimension::draw()
         //fauxCenter is where the getDimText() would be if it was on the dimLine
         Base::Vector3d fauxCenter;
         if (strcmp(dimType, "Distance") == 0 ) {                                 //oblique line
-                angle = -angle;
+                textRotAngle = -textRotAngle;          // flip text 180*
                 fauxCenter = lblCenter + textOffset * dirExtActual;
                 double slope;
                 if (DrawUtil::fpCompare(dirDist.x, 0.0)) {
@@ -635,11 +636,14 @@ void QGIViewDimension::draw()
                 } else {
                     slope = fabs(dirDist.y / dirDist.x);
                 }
-                if (slope > 1.0) {                                              //mostly vertical
+                double deg = atan(slope) * 180.0 / M_PI;
+                if (deg > (90.0 - (angleFiddle * 180.0/M_PI))) {                    //mostly vertical +/- 10*
+                    //dim text reads bottom to top on left side of dim line
                     if (lblCenter.x > fauxCenter.x) {                           //label is to right of dimline
                         fauxCenter = lblCenter - textOffset*dirExtActual;       //move dim line closer to figure
                     }
                 } else {                                                        //mostly horizontal
+                    //dim text reads left to right above dim line
                     if (lblCenter.y > fauxCenter.y) {                           //label is below dimline
                         fauxCenter = lblCenter - textOffset*dirExtActual;       //move dim line closer to figure
                     }
@@ -648,7 +652,7 @@ void QGIViewDimension::draw()
         } else if (strcmp(dimType, "DistanceX") == 0 ) {
             fauxCenter = lblCenter + textOffset * textNorm;
         } else if (strcmp(dimType, "DistanceY") == 0 ) {
-            angle = - angle;
+            textRotAngle = - textRotAngle;
             fauxCenter = lblCenter - textOffset * textNorm;
         }
 
@@ -748,7 +752,7 @@ void QGIViewDimension::draw()
         double bbY = datumLabel->boundingRect().height();
         datumLabel->setTransformOriginPoint(bbX / 2, bbY /2);
         double angleOption = 0.0;                                      //put lblText angle adjustments here
-        datumLabel->setRotation((angle * 180 / M_PI) + angleOption);
+        datumLabel->setRotation((textRotAngle * 180 / M_PI) + angleOption);
         if (strcmp(dimType, "DistanceY") == 0 ) {
             datumLabel->setRotation(-90.0 + angleOption);
         }
@@ -1215,7 +1219,7 @@ void QGIViewDimension::draw()
 //            dim->getViewPart()->addVertex(curveCenter,true);
 //        }
     } else if( (strcmp(dimType, "Angle") == 0) ||
-               (strcmp(dimType, "Angel3Pt")) ) {
+               (strcmp(dimType, "Angel3Pt") == 0)) {
         anglePoints pts = dim->getAnglePoints();
         Base::Vector3d X(1.0,0.0,0.0);
         Base::Vector3d vertex = Rez::guiX(pts.vertex);
@@ -1361,16 +1365,32 @@ void QGIViewDimension::draw()
         }
 
         // Set the angle of the dimension text
-
         Base::Vector3d labelNorm(-labelVec.y, labelVec.x, 0.);
         double lAngle = atan2(labelNorm.y, labelNorm.x);
 
-        //if label is more/less vertical, make it vertical
-        if (lAngle > M_PI_2+M_PI/12) {    // label norm angle > 90 + 15 = 105
-            lAngle -= M_PI;               // lAngle - 180   Flip
-        } else if (lAngle <= -M_PI_2+M_PI/12) {  // <  -90 + 15 = - 85
-            lAngle += M_PI;               // langle + 180   Flip
+//<<<<<<<<<<<
+        if (lAngle < 0.0) {
+            lAngle = 2 * M_PI + lAngle;          //map to +ve lAngle
         }
+
+        //orient text right side up
+        double angleFiddle = M_PI / 10.0;                  // 18 => 10*, 12 => 15*, 10 => 18*, ...
+        if ((lAngle > M_PI_2 + angleFiddle) &&              // > 100CW   
+                   (lAngle <= M_PI)) {                      // < 180CW -> Q2
+            lAngle += M_PI;                                 // flip CW
+        } else if ((lAngle > M_PI) &&                       // > 180CW
+                   (lAngle <= 1.5*M_PI - angleFiddle))  {   // < 260CW -> Q3
+            lAngle -= M_PI;                                 // flip CCW
+        }
+//<<<<<<<<<
+
+
+//        //if label is more/less vertical, make it vertical
+//        if (lAngle > M_PI_2+M_PI/12) {    // label norm angle > 90 + 15 = 105
+//            lAngle -= M_PI;               // lAngle - 180   Flip
+//        } else if (lAngle <= -M_PI_2+M_PI/12) {  // <  -90 + 15 = - 85
+//            lAngle += M_PI;               // langle + 180   Flip
+//        }
 
         float bbX  = datumLabel->boundingRect().width();
         float bbY  = datumLabel->boundingRect().height();
