@@ -48,7 +48,6 @@ def makeSnapshotWithoutGui():
 
 	# load it into a buffer
 	inp=coin.SoInput()
-	inp.setBuffer(iv)
 
 	# and create a scenegraph
 	data = coin.SoDB.readAll(inp)
