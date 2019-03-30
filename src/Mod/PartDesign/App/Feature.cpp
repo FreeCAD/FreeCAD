@@ -82,7 +82,8 @@ TopoShape Feature::getSolid(const TopoShape& shape)
     if(count>1) {
         if(allowMultiSolid())
             return shape;
-        throw Base::RuntimeError("Result has multiple solids. This is not supported at this time.");
+        throw Base::RuntimeError("Result has multiple solids.\n"
+                "To allow multiple solids, please set 'SingleSolid' property of the body to false");
     }
     if(count)
         return shape.getSubTopoShape(TopAbs_SOLID,1);
