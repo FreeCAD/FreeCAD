@@ -54,6 +54,8 @@
 #include <App/Document.h>
 #include <Mod/Part/App/modelRefine.h>
 
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
+
 using namespace PartDesign;
 using namespace Part;
 
@@ -72,6 +74,8 @@ Transformed::Transformed()
 
     ADD_PROPERTY_TYPE(SubTransform,(true),"Base",(App::PropertyType)(App::Prop_None),
         "Transform sub feature instead of the solid if is an additive or substractive feature (e.g. Pad, Pocket)");
+    ADD_PROPERTY_TYPE(CopyShape,(true),"Base",(App::PropertyType)(App::Prop_None),
+        "Make a copy of each transformed shape");
 
     //init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -272,6 +276,62 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     TopoShape result;
 
+    FC_TIME_INIT(t);
+
+    if (allowMultiSolid()) {
+        std::vector<TopoShape> fuseShapes;
+        fuseShapes.push_back(support);
+        std::vector<TopoShape> cutShapes;
+        cutShapes.push_back(TopoShape());
+
+        int i=0;
+        for (const TopoShape &shape : originalShapes) {
+            auto &sub = originalSubs[i];
+            bool fuse = fuses[i++];
+
+            std::vector<gp_Trsf>::const_iterator t = transformations.begin();
+            ++t; // Skip first transformation, which is always the identity transformation
+            for (int idx=1; t != transformations.end(); ++t,++idx) {
+                ss.str("");
+                ss << 'I' << idx;
+                auto shapeCopy = CopyShape.getValue()?shape.makECopy():shape;
+                if (shapeCopy.isNull())
+                    return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
+                try {
+                    shapeCopy = shapeCopy.makETransform(*t,ss.str().c_str());
+                    if(fuse)
+                        fuseShapes.push_back(shapeCopy);
+                    else
+                        cutShapes.push_back(shapeCopy);
+                }catch(Standard_Failure &) {
+                    std::string msg("Transformation failed ");
+                    msg += sub;
+                    return new App::DocumentObjectExecReturn(msg.c_str());
+                }
+            }
+        }
+
+        try {
+            if(fuseShapes.size() > 1) {
+                support.makEFuse(fuseShapes);
+                if (support.isNull())
+                    return new App::DocumentObjectExecReturn("Shape fusion failed");
+            }
+            if(cutShapes.size() > 1) {
+                cutShapes[0] = support;
+                result.makECut(support);
+            }else
+                result = support;
+        } catch (Standard_Failure& e) {
+            std::string msg("Boolean operation failed");
+            if (e.GetMessageString() != NULL)
+                msg += std::string(": '") + e.GetMessageString() + "'";
+            return new App::DocumentObjectExecReturn(msg.c_str());
+        }
+        originalShapes.clear();
+    }
+
+
     // NOTE: It would be possible to build a compound from all original addShapes/subShapes and then
     // transform the compounds as a whole. But we choose to apply the transformations to each
     // Original separately. This way it is easier to discover what feature causes a fuse/cut
@@ -295,12 +355,12 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             // seems to be pretty broken
             ss.str("");
             ss << 'I' << idx;
-            auto shapeCopy = shape.makECopy(ss.str().c_str());
+            auto shapeCopy = CopyShape.getValue()?shape.makECopy():shape;
             if (shapeCopy.isNull())
                 return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
 
             try {
-                shapeCopy = shapeCopy.makETransform(*t);
+                shapeCopy = shapeCopy.makETransform(*t,ss.str().c_str());
             }catch(Standard_Failure &) {
                 std::string msg("Transformation failed ");
                 msg += sub;
@@ -310,8 +370,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             // Check for intersection with support
             try {
 
-                if (!allowMultiSolid()
-                        && !Part::checkIntersection(support.getShape(), shapeCopy.getShape(), false, true)) {
+                if (!Part::checkIntersection(support.getShape(), shapeCopy.getShape(), false, true)) {
 #ifdef FC_DEBUG // do not write this in release mode because a message appears already in the task view
                     Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", sub.c_str());
 #endif
@@ -394,6 +453,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         }
     }
     result = refineShapeIfActive(result);
+
+    FC_TIME_LOG(t,"done");
 
     this->Shape.setValue(getSolid(result));
 
@@ -496,7 +557,7 @@ void Transformed::onChanged(const App::Property *prop) {
                 auto it = subMap.find(obj);
                 if(it == subMap.end()) {
                     touched = true;
-                    subset.emplace_back(obj,std::vector<std::string>());
+                    subset.emplace_back(obj,std::vector<std::string>{std::string("")});
                     continue;
                 }
                 subset.emplace_back(it->first,std::move(it->second));
@@ -523,4 +584,9 @@ void Transformed::onChanged(const App::Property *prop) {
     }
     PartDesign::Feature::onChanged(prop);
 }
+
+void Transformed::setupObject () {
+    CopyShape.setValue(false);
+}
+
 }

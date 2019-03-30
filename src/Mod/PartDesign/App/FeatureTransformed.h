@@ -54,6 +54,8 @@ public:
 
     App::PropertyBool SubTransform;
 
+    App::PropertyBool CopyShape;
+
     /**
      * Returns the BaseFeature property's object(if any) otherwise return first original,
      *         which serves as "Support" for old style workflows
@@ -101,6 +103,8 @@ protected:
     TopoShape refineShapeIfActive(const TopoShape&) const;
     void divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
 		     TopoDS_Compound &compoundOut) const; 
+
+    virtual void setupObject () override;
 
     rejectedMap rejected;
 };
