@@ -29,8 +29,8 @@
   <url type="help">https://forum.freecadweb.org</url>
   <url type="donation">https://www.freecadweb.org/wiki/Donate</url>
   <update_contact>yorik_AT_uncreated.net</update_contact>
-  <content_rating type="oars-1.1" />
+  <content_rating type="oars-1.1"/>
   <releases>
-    <release version="0.17" date="2018-04-06"></release>
+    <release version="@PACKAGE_VERSION@" date="@APPDATA_RELEASE_DATE@"/>
   </releases>
 </component>
