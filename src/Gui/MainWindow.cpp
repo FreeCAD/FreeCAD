@@ -650,7 +650,7 @@ bool MainWindow::closeAllDocuments (bool close)
             int res = confirmSave(doc->Label.getStrValue().c_str(),this,docs.size()>1);
             if(res==0)
                 return false;
-            if(res>1) {
+            if(res>0) {
                 save = true;
                 if(res==2)
                     saveAll = true;
