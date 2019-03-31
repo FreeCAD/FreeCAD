@@ -655,32 +655,30 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         import multiprocessing
         self.ccx_stdout = ""
         self.ccx_stderr = ""
-        if self.inp_file_name != "" and self.ccx_binary_present:
-            ont_backup = os.environ.get('OMP_NUM_THREADS')
-            self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-            num_cpu_pref = self.ccx_prefs.GetInt("AnalysisNumCPUs", 1)  # If number of CPU's specified
-            if not ont_backup:
-                ont_backup = str(num_cpu_pref)
-            if num_cpu_pref > 1:
-                _env = os.putenv('OMP_NUM_THREADS', str(num_cpu_pref))  # if user picked a number use that instead
-            else:
-                _env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
-            # change cwd because ccx may crash if directory has no write permission
-            # there is also a limit of the length of file names so jump to the document directory
-            cwd = QtCore.QDir.currentPath()
-            f = QtCore.QFileInfo(self.inp_file_name)
-            QtCore.QDir.setCurrent(f.path())
-            p = subprocess.Popen([self.ccx_binary, "-i ", f.baseName()],
-                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                 shell=False, env=_env)
-            self.ccx_stdout, self.ccx_stderr = p.communicate()
-            if sys.version_info.major >= 3:
-                self.ccx_stdout = self.ccx_stdout.decode()
-                self.ccx_stderr = self.ccx_stderr.decode()
-            os.putenv('OMP_NUM_THREADS', ont_backup)
-            QtCore.QDir.setCurrent(cwd)
-            return p.returncode
-        return -1
+        ont_backup = os.environ.get('OMP_NUM_THREADS')
+        self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+        num_cpu_pref = self.ccx_prefs.GetInt("AnalysisNumCPUs", 1)  # If number of CPU's specified
+        if not ont_backup:
+            ont_backup = str(num_cpu_pref)
+        if num_cpu_pref > 1:
+            _env = os.putenv('OMP_NUM_THREADS', str(num_cpu_pref))  # if user picked a number use that instead
+        else:
+            _env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
+        # change cwd because ccx may crash if directory has no write permission
+        # there is also a limit of the length of file names so jump to the document directory
+        cwd = QtCore.QDir.currentPath()
+        f = QtCore.QFileInfo(self.inp_file_name)
+        QtCore.QDir.setCurrent(f.path())
+        p = subprocess.Popen([self.ccx_binary, "-i ", f.baseName()],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             shell=False, env=_env)
+        self.ccx_stdout, self.ccx_stderr = p.communicate()
+        if sys.version_info.major >= 3:
+            self.ccx_stdout = self.ccx_stdout.decode()
+            self.ccx_stderr = self.ccx_stderr.decode()
+        os.putenv('OMP_NUM_THREADS', ont_backup)
+        QtCore.QDir.setCurrent(cwd)
+        return p.returncode
 
     def get_ccx_version(self):
         self.setup_ccx()
@@ -705,13 +703,23 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         return (int(m.group(1)), int(m.group(2)))
 
     def ccx_run(self):
-        self.setup_ccx()
+        FreeCAD.Console.PrintMessage("Run CalculiX ...\n")
         if self.test_mode:
             FreeCAD.Console.PrintError("CalculiX can not be run if test_mode is True.\n")
             return
-        ret_code = 0
+        self.setup_ccx()
+        if self.ccx_binary_present is False:
+            error_message = (
+                "FEM: CalculiX binary ccx \'{}\' not found. "
+                "Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.\n"
+                .format(self.ccx_binary)
+            )
+            if FreeCAD.GuiUp:
+                QtGui.QMessageBox.critical(None, "No CalculiX binary ccx", error_message)
+            raise Exception(error_message)
         progress_bar = FreeCAD.Base.ProgressIndicator()
-        progress_bar.start("Running CalculiX ccx...", 0)
+        progress_bar.start("Everything seams fine. CalculiX ccx will be executed ...", 0)
+        ret_code = 0
         ret_code = self.start_ccx()
         self.finished.emit(ret_code)
         progress_bar.stop()
