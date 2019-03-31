@@ -63,7 +63,7 @@ class _SolverDlg(object):
         # get the parameter object where the paramete are saved in
         self.param_group = FreeCAD.ParamGet(self.param_path)
 
-    def getBinary(self):
+    def get_binary(self):
 
         # set the binary path to the FreeCAD defaults, ATM pure unix shell commands without path names are used
         # TODO see todo on use_default later in this module
@@ -121,9 +121,9 @@ _SOLVER_PARAM = {
 }
 
 
-def getBinary(name):
+def get_binary(name):
     if name in _SOLVER_PARAM:
-        binary = _SOLVER_PARAM[name].getBinary()
+        binary = _SOLVER_PARAM[name].get_binary()
         FreeCAD.Console.PrintMessage('Solver binary path: {} \n'.format(binary))
         return binary
     else:

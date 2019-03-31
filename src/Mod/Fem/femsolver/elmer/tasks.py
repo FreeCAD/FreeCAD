@@ -93,7 +93,7 @@ class Solve(run.Solve):
 
     def run(self):
         self.pushStatus("Executing solver...\n")
-        binary = settings.getBinary("ElmerSolver")
+        binary = settings.get_binary("ElmerSolver")
         if binary is not None:
             self._process = subprocess.Popen(
                 [binary], cwd=self.directory,

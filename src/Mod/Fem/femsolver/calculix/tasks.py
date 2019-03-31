@@ -99,7 +99,7 @@ class Solve(run.Solve):
             # TODO do not run solver, do not try to read results in a smarter way than an Exception
             raise Exception('Error on writing CalculiX input file.\n')
         self.pushStatus("Executing solver...\n")
-        binary = settings.getBinary("Calculix")
+        binary = settings.get_binary("Calculix")
         self._process = subprocess.Popen(
             [binary, "-i", _inputFileName],
             cwd=self.directory,
