@@ -95,11 +95,14 @@ class FemInputWriter():
         self.ccx_efaces = 'Efaces'
         self.ccx_eedges = 'Eedges'
         self.ccx_elsets = []
-        if hasattr(self.mesh_object, "Shape"):
-            self.theshape = self.mesh_object.Shape
-        elif hasattr(self.mesh_object, "Part"):
-            self.theshape = self.mesh_object.Part
-        self.femmesh = self.mesh_object.FemMesh
+        if self.mesh_object:
+            if hasattr(self.mesh_object, "Shape"):
+                self.theshape = self.mesh_object.Shape
+            elif hasattr(self.mesh_object, "Part"):
+                self.theshape = self.mesh_object.Part
+            self.femmesh = self.mesh_object.FemMesh
+        else:
+            FreeCAD.Console.PrintError('No finite elemente mesh object was given to the writer class. In rare cases this might not be an error.\n')
         self.femnodes_mesh = {}
         self.femelement_table = {}
         self.constraint_conflict_nodes = []
