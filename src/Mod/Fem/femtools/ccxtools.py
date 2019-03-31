@@ -595,8 +595,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     if FreeCAD.GuiUp:
                         QtGui.QMessageBox.critical(None, error_title, error_message)
                     raise Exception(error_message)
-                # we use the default ccx command and we don't have to use the path to ccx for calling it
-                # self.ccx_binary = ccx_path 
+                self.ccx_binary = ccx_path
         else:
             if not ccx_binary:
                 self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
