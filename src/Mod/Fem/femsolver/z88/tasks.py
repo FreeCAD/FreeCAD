@@ -75,7 +75,8 @@ class Prepare(run.Prepare):
             c.beam_rotations,
             c.shell_thicknesses,
             c.fluid_sections,
-            self.directory)
+            self.directory
+        )
         path = w.write_z88_input()
         # report to user if task succeeded
         if path is not None:
