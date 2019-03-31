@@ -104,6 +104,6 @@ ENDIF (WIN32)
 
 IF(COIN3D_LIBRARIES)
   SET( COIN3D_FOUND "YES" )
-  message("COIN3D Libraries found")
+  message(STATUS "Coin3D libraries found")
 ENDIF(COIN3D_LIBRARIES)
 

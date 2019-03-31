@@ -1234,9 +1234,9 @@ endif(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 
 # -------------------------------- The final report ----------------------------------
 
-MESSAGE("==============\n"
-        "Summary report\n"
-        "==============\n")
+MESSAGE(STATUS "==============\n"
+               "Summary report\n"
+               "==============\n")
 
 # Qt5 needs/sets PYTHON_CONFIG_SUFFIX regarding Shiboken
 MESSAGE(STATUS "Python:           [${PYTHON_EXECUTABLE}] [${PYTHON_CONFIG_SUFFIX}]")
