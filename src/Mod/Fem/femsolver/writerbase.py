@@ -186,6 +186,8 @@ class FemInputWriter():
                 if not self.femelement_table:
                     self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         # get node loads
+        FreeCAD.Console.PrintMessage("  Finite element mesh nodes will be retrieved by searching the appropriate nodes in the finite element mesh.\n")
+        FreeCAD.Console.PrintMessage("  The appropriate finite element mesh node load values will be calculated according to the finite element definition.\n")
         for femobj in self.force_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             frc_obj = femobj['Object']
             if frc_obj.Force == 0:
@@ -218,10 +220,8 @@ class FemInputWriter():
         for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             FreeCAD.Console.PrintMessage("Constraint pressure: " + femobj['Object'].Name + '\n')
             pressure_faces = FemMeshTools.get_pressure_obj_faces(self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj)
-            # print(len(pressure_faces))
             femobj['PressureFaces'] = [(femobj['Object'].Name + ': face load', pressure_faces)]
-            FreeCAD.Console.PrintMessage(femobj['PressureFaces'])
-            FreeCAD.Console.PrintMessage('\n')
+            FreeCAD.Console.PrintLog('{}\n'.format(femobj['PressureFaces']))
 
     def get_element_geometry2D_elements(self):
         # get element ids and write them into the objects
