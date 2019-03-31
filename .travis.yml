@@ -30,7 +30,7 @@ env:
 cache:
     ccache: true
 
-language: cpp
+language: python
 dist: xenial
 python:
     - 2.7
