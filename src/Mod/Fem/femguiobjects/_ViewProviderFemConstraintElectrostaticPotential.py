@@ -33,7 +33,7 @@ import FreeCADGui
 from . import ViewProviderFemConstraint
 
 # for the panel
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 from FreeCAD import Units
 from . import FemSelectionWidgets
 
@@ -68,8 +68,8 @@ class _TaskPanel(object):
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElectrostaticPotential.ui")
         self._initParamWidget()
         self.form = [self._refWidget, self._paramWidget]
-        analysis = FemUtils.findAnalysisOfMember(obj)
-        self._mesh = FemUtils.get_single_member(analysis, "Fem::FemMeshObject")
+        analysis = femutils.findAnalysisOfMember(obj)
+        self._mesh = femutils.get_single_member(analysis, "Fem::FemMeshObject")
         self._part = self._mesh.Part if self._mesh is not None else None
         self._partVisible = None
         self._meshVisible = None

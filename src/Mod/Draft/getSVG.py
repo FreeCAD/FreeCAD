@@ -805,11 +805,11 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if FreeCAD.GuiUp:
             if hasattr(obj.ViewObject,"EndArrow") and hasattr(obj.ViewObject,"ArrowType") and (len(obj.Shape.Vertexes) > 1):
                 if obj.ViewObject.EndArrow:
-                    p1 = getProj(obj.Shape.Vertexes[-2].Point, plane)
-                    p2 = getProj(obj.Shape.Vertexes[-1].Point, plane)
+                    p1 = getProj(obj.Shape.Vertexes[-1].Point, plane)
+                    p2 = getProj(obj.Shape.Vertexes[-2].Point, plane)
                     angle = -DraftVecUtils.angle(p2.sub(p1))
                     arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
-                    svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
+                    svg += getArrow(obj.ViewObject.ArrowType,p1,arrowsize,stroke,linewidth,angle)
 
     # techdraw expects bottom-to-top coordinates
     if techdraw:

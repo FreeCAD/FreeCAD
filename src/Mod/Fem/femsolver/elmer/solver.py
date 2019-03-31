@@ -26,7 +26,7 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 
 from .. import run
 from .. import solverbase
@@ -40,7 +40,7 @@ from .equations import flow
 
 
 def create(doc, name="ElmerSolver"):
-    return FemUtils.createObject(
+    return femutils.createObject(
         doc, name, Proxy, ViewProxy)
 
 

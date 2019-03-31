@@ -71,7 +71,7 @@ public:
     void matchSceneRectToTemplate(void);
     
     bool onMsg(const char* pMsg,const char** ppReturn);
-    bool onHasMsg(const char* pMsg) const;
+      bool onHasMsg(const char* pMsg) const;
 
     void print();
     void print(QPrinter* printer);

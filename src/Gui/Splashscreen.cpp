@@ -33,6 +33,7 @@
 # include <QMutex>
 # include <QTextBrowser>
 # include <QProcess>
+# include <QProcessEnvironment>
 # include <QSysInfo>
 # include <QTextStream>
 # include <QWaitCondition>
@@ -738,7 +739,26 @@ void AboutDialog::on_copyButton_clicked()
     QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
     QString build  = QString::fromLatin1(config["BuildRevision"].c_str());
-    str << "OS: " << SystemInfo::getOperatingSystem() << endl;
+    
+    QString deskEnv = QProcessEnvironment::systemEnvironment().value(QString::fromLatin1("XDG_CURRENT_DESKTOP"),QString::fromLatin1(""));
+    QString deskSess = QProcessEnvironment::systemEnvironment().value(QString::fromLatin1("DESKTOP_SESSION"),QString::fromLatin1(""));
+    QString deskInfo = QString::fromLatin1("");
+    
+    if (!(deskEnv == QString::fromLatin1("") && deskSess == QString::fromLatin1("")))
+    {
+        if (deskEnv == QString::fromLatin1("") || deskSess == QString::fromLatin1(""))
+        {
+            deskInfo = QString::fromLatin1(" (") + deskEnv + deskSess + QString::fromLatin1(")");
+
+        }
+        else
+        {
+            deskInfo = QString::fromLatin1(" (") + deskEnv + QString::fromLatin1("/") + deskSess + QString::fromLatin1(")");
+        }
+    }
+    
+    str << "OS: " << SystemInfo::getOperatingSystem() << deskInfo << endl;
+    
     int wordSize = SystemInfo::getWordSizeOfOS();
     if (wordSize > 0) {
         str << "Word size of OS: " << wordSize << "-bit" << endl;

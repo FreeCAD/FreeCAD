@@ -29,14 +29,13 @@ __url__ = "http://www.freecadweb.org"
 
 import sys
 import FreeCAD
-import FreeCAD as App
 
 
 # analysis and its members
 def createObject(doc, name, proxy, viewProxy):
     obj = doc.addObject(proxy.BaseType, name)
     proxy(obj)
-    if App.GuiUp:
+    if FreeCAD.GuiUp:
         viewProxy(obj.ViewObject)
     return obj
 
@@ -128,6 +127,25 @@ def is_derived_from(obj, t):
     return obj.isDerivedFrom(t)
 
 
+# working dir
+def get_pref_working_dir(solver_obj):
+    # _dirTypes from run are not used
+    # be aware beside could get an error if the document has not been saved
+    from femsolver import settings
+    from femsolver import run
+    dir_setting = settings.getDirSetting()
+    if dir_setting == settings.TEMPORARY:
+        setting_working_dir = run._getTempDir(solver_obj)
+    elif dir_setting == settings.BESIDE:
+        setting_working_dir = run._getBesideDir(solver_obj)
+    elif dir_setting == settings.CUSTOM:
+        setting_working_dir = run._getCustomDir(solver_obj)
+    else:
+        setting_working_dir = ''
+    return setting_working_dir
+
+
+# other
 def getBoundBoxOfAllDocumentShapes(doc):
     overalboundbox = None
     for o in doc.Objects:

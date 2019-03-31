@@ -31,6 +31,7 @@ import six
 
 import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils,sys
 from DraftGeomUtils import vec
+import ArchIFCSchema
 
 ## @package importIFC
 #  \ingroup ARCH
@@ -842,10 +843,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             # setting uid
 
-            if hasattr(obj,"IfcAttributes"):
-                a = obj.IfcAttributes
+            if hasattr(obj,"IfcData"):
+                a = obj.IfcData
                 a["IfcUID"] = str(guid)
-                obj.IfcAttributes = a
+                obj.IfcData = a
+                for attribute in ArchIFCSchema.IfcProducts[product.is_a()]["attributes"]:
+                    if hasattr(product, attribute["name"]) and getattr(product, attribute["name"]):
+                        setattr(obj, attribute["name"], getattr(product, attribute["name"]))
 
             if obj:
                 s = ""
@@ -888,10 +892,10 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj.Role = r
                 except:
                     print("Unable to give IFC role ",ptype," to object ",obj.Label)
-                if hasattr(obj,"IfcAttributes"):
-                    a = obj.IfcAttributes
+                if hasattr(obj,"IfcData"):
+                    a = obj.IfcData
                     a["IfcUID"] = str(guid)
-                    obj.IfcAttributes = a
+                    obj.IfcData = a
 
         elif (MERGE_MODE_ARCH == 2 and archobj) or (MERGE_MODE_STRUCT == 1 and not archobj):
 
@@ -993,17 +997,17 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                 #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
                     obj.IfcProperties = d
 
-                elif hasattr(obj,"IfcAttributes"):
+                elif hasattr(obj,"IfcData"):
 
-                    # 0.17: properties are saved as type(value) in IfcAttributes
+                    # 0.17: properties are saved as type(value) in IfcData
 
-                    a = obj.IfcAttributes
+                    a = obj.IfcData
                     for c in properties[pid].keys():
                         for p in properties[pid][c]:
                             l = ifcfile[p]
                             if l.is_a("IfcPropertySingleValue"):
                                 a[l.Name.encode("utf8")] = str(l.NominalValue) # no py3 support here
-                    obj.IfcAttributes = a
+                    obj.IfcData = a
 
             # color
 
@@ -1664,37 +1668,22 @@ def export(exportList,filename):
         # getting uid
 
         uid = None
-        if hasattr(obj,"IfcAttributes"):
-            if "IfcUID" in obj.IfcAttributes.keys():
-                uid = str(obj.IfcAttributes["IfcUID"])
+        if hasattr(obj,"IfcData"):
+            if "IfcUID" in obj.IfcData.keys():
+                uid = str(obj.IfcData["IfcUID"])
         if not uid:
             uid = ifcopenshell.guid.compress(uuid.uuid1().hex)
             # storing the uid for further use
-            if STORE_UID and hasattr(obj,"IfcAttributes"):
-                d = obj.IfcAttributes
+            if STORE_UID and hasattr(obj,"IfcData"):
+                d = obj.IfcData
                 d["IfcUID"] = uid
-                obj.IfcAttributes = d
+                obj.IfcData = d
 
-        # setting the IFC type + name conversions
+        ifctype = getIfcRoleFromObj(obj)
 
-        if hasattr(obj,"IfcRole"):
-            ifctype = obj.IfcRole.replace(" ","")
-        elif hasattr(obj,"Role"):
-            ifctype = obj.Role.replace(" ","")
-        else:
-            ifctype = Draft.getType(obj)
-        if ifctype in translationtable.keys():
-            ifctype = translationtable[ifctype]
-        ifctype = "Ifc" + ifctype
-        if ifctype == "IfcVisGroup":
-            ifctype = "IfcGroup"
         if ifctype == "IfcGroup":
             groups[obj.Name] = [o.Name for o in obj.Group]
             continue
-        if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Undefined"):
-            ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitly set
-        if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Building"):
-            ifctype = "IfcBuilding"
 
         # export grids
 
@@ -1755,16 +1744,15 @@ def export(exportList,filename):
                 count += 1
             continue
 
-        from ArchComponent import IFCTYPES
-        if ifctype not in IFCTYPES:
+        if ifctype not in ArchIFCSchema.IfcProducts.keys():
             ifctype = "IfcBuildingElementProxy"
 
         # getting the "Force BREP" flag
 
         brepflag = False
-        if hasattr(obj,"IfcAttributes"):
-            if "FlagForceBrep" in obj.IfcAttributes.keys():
-                if obj.IfcAttributes["FlagForceBrep"] == "True":
+        if hasattr(obj,"IfcData"):
+            if "FlagForceBrep" in obj.IfcData.keys():
+                if obj.IfcData["FlagForceBrep"] == "True":
                     brepflag = True
 
         # getting the representation
@@ -1777,53 +1765,15 @@ def export(exportList,filename):
 
         kwargs = {"GlobalId": uid, "OwnerHistory": history, "Name": name,
             "Description": description, "ObjectPlacement": placement, "Representation": representation}
-        if ifctype in ["IfcSlab","IfcFooting","IfcRoof"]:
-            kwargs.update({"PredefinedType": "NOTDEFINED"})
-        elif ifctype in ["IfcWindow","IfcDoor"]:
-            if hasattr(obj,"Width") and hasattr(obj,"Height"):
-                kwargs.update({"OverallHeight": obj.Width.Value/1000.0,
-                    "OverallWidth": obj.Height.Value/1000.0})
-            else:
-                if obj.Shape.BoundBox.XLength > obj.Shape.BoundBox.YLength:
-                    l = obj.Shape.BoundBox.XLength
-                else:
-                    l = obj.Shape.BoundBox.YLength
-                kwargs.update({"OverallHeight": l/1000.0,
-                    "OverallWidth": obj.Shape.BoundBox.ZLength/1000.0})
-        elif ifctype == "IfcSpace":
-            internal = "NOTDEFINED"
-            if hasattr(obj,"Internal"):
-                if obj.Internal:
-                    internal = "INTERNAL"
-                else:
-                    internal = "EXTERNAL"
-            if schema == "IFC2X3":
-                kwargs.update({"CompositionType": "ELEMENT",
-                    "InteriorOrExteriorSpace": internal,
-                    "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
-            else:
-                kwargs.update({"CompositionType": "ELEMENT",
-                    "PredefinedType": internal,
-                    "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
-        elif ifctype == "IfcBuildingElementProxy":
-            if schema == "IFC4":
-                kwargs.update({"PredefinedType": "ELEMENT"})
-            else:
-                kwargs.update({"CompositionType": "ELEMENT"})
-        elif ifctype == "IfcSite":
+        if ifctype == "IfcSite":
             kwargs.update({"RefLatitude":dd2dms(obj.Latitude),
                            "RefLongitude":dd2dms(obj.Longitude),
                            "RefElevation":obj.Elevation.Value/1000.0,
                            "SiteAddress":buildAddress(obj,ifcfile),
                            "CompositionType": "ELEMENT"})
-        elif ifctype == "IfcBuilding":
-            kwargs.update({"CompositionType": "ELEMENT"})
-        elif ifctype == "IfcBuildingStorey":
-            kwargs.update({"CompositionType": "ELEMENT",
-                "Elevation": obj.Placement.Base.z/1000.0})
-        elif ifctype == "IfcReinforcingBar":
-            kwargs.update({"NominalDiameter": obj.Diameter.Value,
-                "BarLength": obj.Length.Value})
+        if schema == "IFC2X3":
+            kwargs = exportIFC2X3Attributes(obj, kwargs)
+        kwargs = exportIfcAttributes(obj, kwargs)
 
         # creating the product
 
@@ -1987,18 +1937,18 @@ def export(exportList,filename):
                             pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,cat,None,props)
                             ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
 
-        if hasattr(obj,"IfcAttributes"):
+        if hasattr(obj,"IfcData"):
 
-            if obj.IfcAttributes:
+            if obj.IfcData:
                 ifcprop = True
                 #if DEBUG : print("      adding ifc attributes")
                 props = []
-                for key in obj.IfcAttributes:
+                for key in obj.IfcData:
                     if not (key in ["IfcUID","FlagForceBrep"]):
 
-                        # (deprecated) properties in IfcAttributes dict are stored as "key":"type(value)"
+                        # (deprecated) properties in IfcData dict are stored as "key":"type(value)"
 
-                        r = obj.IfcAttributes[key].strip(")").split("(")
+                        r = obj.IfcData[key].strip(")").split("(")
                         if len(r) == 1:
                             tp = "IfcText"
                             val = r[0]
@@ -2031,19 +1981,19 @@ def export(exportList,filename):
 
         # Quantities
 
-        if hasattr(obj,"IfcAttributes"):
+        if hasattr(obj,"IfcData"):
             quantities = []
-            if ("ExportHeight" in obj.IfcAttributes) and obj.IfcAttributes["ExportHeight"] and hasattr(obj,"Height"):
+            if ("ExportHeight" in obj.IfcData) and obj.IfcData["ExportHeight"] and hasattr(obj,"Height"):
                 quantities.append(ifcfile.createIfcQuantityLength('Height',None,None,obj.Height.Value/1000.0))
-            if ("ExportWidth" in obj.IfcAttributes) and obj.IfcAttributes["ExportWidth"] and hasattr(obj,"Width"):
+            if ("ExportWidth" in obj.IfcData) and obj.IfcData["ExportWidth"] and hasattr(obj,"Width"):
                 quantities.append(ifcfile.createIfcQuantityLength('Width',None,None,obj.Width.Value/1000.0))
-            if ("ExportLength" in obj.IfcAttributes) and obj.IfcAttributes["ExportLength"] and hasattr(obj,"Length"):
+            if ("ExportLength" in obj.IfcData) and obj.IfcData["ExportLength"] and hasattr(obj,"Length"):
                 quantities.append(ifcfile.createIfcQuantityLength('Length',None,None,obj.Length.Value/1000.0))
-            if ("ExportHorizontalArea" in obj.IfcAttributes) and obj.IfcAttributes["ExportHorizontalArea"] and hasattr(obj,"HorizontalArea"):
+            if ("ExportHorizontalArea" in obj.IfcData) and obj.IfcData["ExportHorizontalArea"] and hasattr(obj,"HorizontalArea"):
                 quantities.append(ifcfile.createIfcQuantityArea('HorizontalArea',None,None,obj.HorizontalArea.Value/1000000.0))
-            if ("ExportVerticalArea" in obj.IfcAttributes) and obj.IfcAttributes["ExportVerticalArea"] and hasattr(obj,"VerticalArea"):
+            if ("ExportVerticalArea" in obj.IfcData) and obj.IfcData["ExportVerticalArea"] and hasattr(obj,"VerticalArea"):
                 quantities.append(ifcfile.createIfcQuantityArea('VerticalArea',None,None,obj.VerticalArea.Value/1000000.0))
-            if ("ExportVolume" in obj.IfcAttributes) and obj.IfcAttributes["ExportVolume"] and obj.isDerivedFrom("Part::Feature"):
+            if ("ExportVolume" in obj.IfcData) and obj.IfcData["ExportVolume"] and obj.isDerivedFrom("Part::Feature"):
                 quantities.append(ifcfile.createIfcQuantityVolume('Volume',None,None,obj.Shape.Volume/1000000000.0))
             if quantities:
                 eltq = ifcfile.createIfcElementQuantity(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"ElementQuantities",None,"FreeCAD",quantities)
@@ -2068,7 +2018,7 @@ def export(exportList,filename):
             for realm,ctx in sets:
                 if ctx:
                     for prop in ctx.PropertiesList:
-                        if not(prop in ["IfcProperties","IfcAttributes","Shape","Proxy","ExpressionEngine","AngularDeflection","BoundingBox"]):
+                        if not(prop in ["IfcProperties","IfcData","Shape","Proxy","ExpressionEngine","AngularDeflection","BoundingBox"]):
                             try:
                                 ptype = ctx.getTypeIdOfProperty(prop)
                             except AttributeError:
@@ -2418,6 +2368,65 @@ def export(exportList,filename):
     del ifcbin
 
 
+def getIfcRoleFromObj(obj):
+
+    if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Undefined"):
+        ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitly set
+    elif hasattr(obj,"IfcRole"):
+        ifctype = obj.IfcRole.replace(" ","")
+    elif hasattr(obj,"Role"):
+        ifctype = obj.Role.replace(" ","")
+    else:
+        ifctype = Draft.getType(obj)
+
+    if ifctype in translationtable.keys():
+        ifctype = translationtable[ifctype]
+    if ifctype == "VisGroup":
+        ifctype = "Group"
+
+    return "Ifc" + ifctype
+
+
+def exportIFC2X3Attributes(obj, kwargs):
+
+    role = getIfcRoleFromObj(obj)
+    if role in ["IfcSlab", "IfcFooting", "IfcRoof"]:
+        kwargs.update({"PredefinedType": "NOTDEFINED"})
+    elif role == "IfcBuilding":
+        kwargs.update({"CompositionType": "ELEMENT"})
+    elif role == "IfcBuildingStorey":
+        kwargs.update({"CompositionType": "ELEMENT"})
+    elif role == "IfcBuildingElementProxy":
+        kwargs.update({"CompositionType": "ELEMENT"})
+    elif role == "IfcSpace":
+        internal = "NOTDEFINED"
+        if hasattr(obj,"Internal"):
+            if obj.Internal:
+                internal = "INTERNAL"
+            else:
+                internal = "EXTERNAL"
+        kwargs.update({"CompositionType": "ELEMENT",
+            "InteriorOrExteriorSpace": internal,
+            "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
+    elif role == "IfcReinforcingBar":
+        kwargs.update({"NominalDiameter": obj.Diameter.Value,
+            "BarLength": obj.Length.Value})
+    elif role == "IfcBuildingStorey":
+        kwargs.update({"Elevation": obj.Placement.Base.z/1000.0})
+    return kwargs
+
+
+def exportIfcAttributes(obj, kwargs):
+
+    for property in obj.PropertiesList:
+        if obj.getGroupOfProperty(property) == "IFC Attributes" and obj.getPropertyByName(property):
+            value = obj.getPropertyByName(property)
+            if isinstance(value, FreeCAD.Units.Quantity):
+                value = float(value)
+            kwargs.update({ property: value })
+    return kwargs
+
+
 def buildAddress(obj,ifcfile):
 
     a = obj.Address or None
@@ -2588,7 +2597,9 @@ def createCurve(ifcfile,wire):
 
 
 def getEdgesAngle(edge1, edge2):
+
     """ getEdgesAngle(edge1, edge2): returns a angle between two edges."""
+
     vec1 = vec(edge1)
     vec2 = vec(edge2)
     angle = vec1.getAngle(vec2)
@@ -2597,9 +2608,11 @@ def getEdgesAngle(edge1, edge2):
 
 
 def checkRectangle(edges):
+
     """ checkRectangle(edges=[]): This function checks whether the given form is a rectangle
        or not. It will return True when edges form a rectangular shape or return False
        when edges do not form a rectangular shape."""
+
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("DisableIfcRectangleProfileDef",False):
         return False
     if len(edges) != 4:
@@ -2693,7 +2706,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 if k in sharedobjects:
                     # base shape already exists
                     repmap = sharedobjects[k]
-                    pla = obj.Placement
+                    pla = obj.getGlobalPlacement()
                     axis1 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
                     axis2 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
                     axis3 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,0,1))))
@@ -2768,7 +2781,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             #print("evi:",evi)
                             if not tostore:
                                 # add the object placement to the profile placement. Otherwise it'll be done later at map insert
-                                pl2 = FreeCAD.Placement(obj.Placement)
+                                pl2 = obj.getGlobalPlacement()
                                 pl2.Base = pl2.Base.multiply(0.001)
                                 pli = pl2.multiply(pli)
                             xvc =       ifcbin.createIfcDirection(tuple(pli.Rotation.multVec(FreeCAD.Vector(1,0,0))))
@@ -2811,7 +2824,8 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     if not fcshape:
                         if obj.Shape:
                             if not obj.Shape.isNull():
-                                fcshape = obj.Shape
+                                fcshape = obj.Shape.copy()
+                                fcshape.Placement = obj.getGlobalPlacement()
             if fcshape:
                 shapedef = str([v.Point for v in fcshape.Vertexes])
                 if shapedef in shapedefs:
@@ -2826,6 +2840,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     if hasattr(geom,"serialise") and obj.isDerivedFrom("Part::Feature") and SERIALIZE:
                         if obj.Shape.Faces:
                             sh = obj.Shape.copy()
+                            sh.Placement = obj.getGlobalPlacement()
                             sh.scale(0.001) # to meters
                             p = geom.serialise(sh.exportBrepToString())
                             if p:
@@ -2948,7 +2963,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
             gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
             repmap = ifcfile.createIfcRepresentationMap(gpl,subrep)
-            pla = obj.Placement
+            pla = obj.getGlobalPlacement()
             axis1 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
             axis2 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
             origin = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(pla.Base).multiply(0.001)))

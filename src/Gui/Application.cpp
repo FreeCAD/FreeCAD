@@ -684,7 +684,7 @@ void Application::slotNewDocument(const App::Document& Doc)
     pDoc->signalActivatedObject.connect(boost::bind(&Gui::Application::slotActivatedObject, this, _1));
     pDoc->signalInEdit.connect(boost::bind(&Gui::Application::slotInEdit, this, _1));
     pDoc->signalResetEdit.connect(boost::bind(&Gui::Application::slotResetEdit, this, _1));
- 
+
     signalNewDocument(*pDoc);
     pDoc->createView(View3DInventor::getClassTypeId());
     // FIXME: Do we really need this further? Calling processEvents() mixes up order of execution in an
@@ -1660,6 +1660,9 @@ void Application::runApplication(void)
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=15540
     mainApp.setAttribute(Qt::AA_DontShowIconsInMenus, false);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
+    mainApp.setAttribute(Qt::AA_UseDesktopOpenGL);
+#endif
 
 #ifdef Q_OS_UNIX
     // Make sure that we use '.' as decimal point. See also
@@ -1697,7 +1700,7 @@ void Application::runApplication(void)
     }
 
 #if QT_VERSION >= 0x050600
-    //Enable automatic scaling based on pixel density fo display (added in Qt 5.6)
+    //Enable automatic scaling based on pixel density of display (added in Qt 5.6)
     mainApp.setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 #if QT_VERSION >= 0x050100

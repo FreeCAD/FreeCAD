@@ -165,7 +165,7 @@ void UnitExpression::setUnit(const Quantity &_quantity)
 }
 
 /**
-  * Evaulate the expression
+  * Evaluate the expression
   *
   * @returns A NumberExpression set to 1.0.
   */

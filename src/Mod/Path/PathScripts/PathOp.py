@@ -420,7 +420,7 @@ class ObjectOp(object):
         It also sets the following instance variables that can and should be safely be used by
         implementation of opExecute():
             self.model        ... List of base objects of the Job itself
-            self.stock        ... Stock object fo the Job itself
+            self.stock        ... Stock object for the Job itself
             self.vertFeed     ... vertical feed rate of assigned tool
             self.vertRapid    ... vertical rapid rate of assigned tool
             self.horizFeed    ... horizontal feed rate of assigned tool

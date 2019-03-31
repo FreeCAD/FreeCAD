@@ -25,62 +25,7 @@ __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-# IFC types
-
-IFCTYPES = ["IfcActuator", "IfcAirTerminal", "IfcAirTerminalBox", "IfcAirToAirHeatRecovery",
-"IfcAlarm", "IfcAnnotation", "IfcAudioVisualAppliance", "IfcBeam", "IfcBeamStandardCase",
-"IfcBoiler", "IfcBuilding", "IfcBuildingElement", "IfcBuildingElementPart", "IfcBuildingElementProxy",
-"IfcBuildingStorey", "IfcBurner", "IfcCableCarrierFitting", "IfcCableCarrierSegment",
-"IfcCableFitting", "IfcCableSegment", "IfcChiller", "IfcChimney", "IfcCivilElement",
-"IfcCoil", "IfcColumn", "IfcColumnStandardCase", "IfcCommunicationsAppliance", "IfcCompressor",
-"IfcCondenser", "IfcController", "IfcCooledBeam", "IfcCoolingTower", "IfcCovering",
-"IfcCurtainWall", "IfcDamper", "IfcDiscreteAccessory", "IfcDistributionChamberElement",
-"IfcDistributionControlElement", "IfcDistributionElement", "IfcDistributionFlowElement",
-"IfcDistributionPort", "IfcDoor", "IfcDoorStandardCase", "IfcDuctFitting", "IfcDuctSegment",
-"IfcDuctSilencer", "IfcElectricAppliance", "IfcElectricDistributionBoard", "IfcElectricFlowStorageDevice",
-"IfcElectricGenerator", "IfcElectricMotor", "IfcElectricTimeControl",
-"IfcElementAssembly", "IfcElementComponent", "IfcEnergyConversionDevice", "IfcEngine",
-"IfcEvaporativeCooler", "IfcEvaporator", "IfcExternalSpatialElement", "IfcExternalSpatialStructureElement",
-"IfcFan", "IfcFastener", "IfcFeatureElement", "IfcFeatureElementAddition", "IfcFeatureElementSubtraction",
-"IfcFilter", "IfcFireSuppressionTerminal", "IfcFlowController", "IfcFlowFitting", "IfcFlowInstrument",
-"IfcFlowMeter", "IfcFlowMovingDevice", "IfcFlowSegment", "IfcFlowStorageDevice", "IfcFlowTerminal",
-"IfcFlowTreatmentDevice", "IfcFooting", "IfcFurnishingElement", "IfcFurniture", "IfcGeographicElement",
-"IfcGrid", "IfcHeatExchanger", "IfcHumidifier", "IfcInterceptor", "IfcJunctionBox", "IfcLamp",
-"IfcLightFixture", "IfcMechanicalFastener", "IfcMedicalDevice", "IfcMember", "IfcMemberStandardCase",
-"IfcMotorConnection", "IfcOpeningElement", "IfcOpeningStandardCase", "IfcOutlet", "IfcPile",
-"IfcPipeFitting", "IfcPipeSegment", "IfcPlate", "IfcPlateStandardCase",
-"IfcProjectionElement", "IfcProtectiveDevice", "IfcProtectiveDeviceTrippingUnit",
-"IfcProxy", "IfcPump", "IfcRailing", "IfcRamp", "IfcRampFlight", "IfcReinforcingBar",
-"IfcReinforcingMesh", "IfcRoof", "IfcSanitaryTerminal",
-"IfcSensor", "IfcShadingDevice", "IfcSite", "IfcSlab", "IfcSlabElementedCase", "IfcSlabStandardCase",
-"IfcSolarDevice", "IfcSpace", "IfcSpaceHeater",
-"IfcSpatialZone", "IfcStackTerminal", "IfcStair", "IfcStairFlight",
-"IfcStructuralCurveAction",
-"IfcStructuralCurveConnection", "IfcStructuralCurveMember", "IfcStructuralCurveMemberVarying",
-"IfcStructuralCurveReaction", "IfcStructuralLinearAction",
-"IfcStructuralPlanarAction", "IfcStructuralPointAction",
-"IfcStructuralPointConnection", "IfcStructuralPointReaction",
-"IfcStructuralSurfaceAction", "IfcStructuralSurfaceConnection", "IfcStructuralSurfaceMember",
-"IfcStructuralSurfaceMemberVarying", "IfcStructuralSurfaceReaction", "IfcSurfaceFeature",
-"IfcSwitchingDevice", "IfcSystemFurnitureElement", "IfcTank", "IfcTendon", "IfcTendonAnchor",
-"IfcTransformer", "IfcTransportElement", "IfcTubeBundle", "IfcUnitaryControlElement",
-"IfcUnitaryEquipment", "IfcValve", "IfcVibrationIsolator", "IfcVirtualElement", "IfcVoidingFeature",
-"IfcWall", "IfcWallElementedCase", "IfcWallStandardCase", "IfcWasteTerminal", "IfcWindow",
-"IfcWindowStandardCase"]
-
-# Possible roles for FreeCAD BIM objects
-IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in IFCTYPES]
-
-# Property types
-SimplePropertyTypes = ["IfcInteger","IfcReal","IfcBoolean","IfcIdentifier","IfcText","IfcLabel","IfcLogical"]
-MeasurePropertyTypes = ["IfcVolumeMeasure","IfcTimeMeasure","IfcThermodynamicTemperatureMeasure","IfcSolidAngleMeasure",
-                        "IfcPositiveRatioMeasure","IfcRatioMeasure","IfcPositivePlaneAngleMeasure","IfcPlaneAngleMeasure",
-                        "IfcParameterValue","IfcNumericMeasure","IfcMassMeasure","IfcPositiveLengthMeasure",
-                        "IfcLengthMeasure","IfcElectricCurrentMeasure","IfcDescriptiveMeasure","IfcCountMeasure",
-                        "IfcContextDependentMeasure","IfcAreaMeasure","IfcAmountOfSubstanceMeasure",
-                        "IfcLuminousIntensityMeasure","IfcNormalisedRatioMeasure","IfcComplexNumber"]
-
-import FreeCAD,Draft,ArchCommands,math,sys
+import FreeCAD,Draft,ArchCommands,math,sys,json,os,ArchIFC,ArchIFCSchema
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -102,7 +47,7 @@ else:
 #  This module provides the base Arch component class, that
 #  is shared by all of the Arch BIM objects
 
-
+IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in ArchIFCSchema.IfcProducts.keys()]
 
 def convertOldComponents(objs=[]):
 
@@ -222,7 +167,7 @@ class Component:
         self.Type = "Component"
 
     def setProperties(self,obj):
-
+        ArchIFC.setProperties(obj)
         pl = obj.PropertiesList
         if not "Base" in pl:
             obj.addProperty("App::PropertyLink","Base","Component",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
@@ -238,8 +183,6 @@ class Component:
             obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
         if not "StandardCode" in pl:
             obj.addProperty("App::PropertyString","StandardCode","Component",QT_TRANSLATE_NOOP("App::Property","An optional standard (OmniClass, etc...) code for this component"))
-        if not "IfcAttributes" in pl:
-            obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
         if not "Material" in pl:
             obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
         if "BaseMaterial" in pl:
@@ -317,6 +260,7 @@ class Component:
             self.oldPlacement = FreeCAD.Placement(obj.Placement)
 
     def onChanged(self,obj,prop):
+        ArchIFC.onChanged(obj, prop)
 
         if prop == "Placement":
             if hasattr(self,"oldPlacement"):
@@ -1255,10 +1199,10 @@ class ComponentTaskPanel:
             return
         if not isinstance(self.obj.IfcProperties,dict):
             return
-        import Arch_rc,csv,os
+        import Arch_rc, csv, os, ArchIFCSchema
 
         # get presets
-        self.ptypes = SimplePropertyTypes + MeasurePropertyTypes
+        self.ptypes = ArchIFCSchema.IfcTypes.keys()
         self.plabels = [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in self.ptypes]
         self.psetdefs = {}
         psetspath = os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","pset_definitions.csv")
@@ -1286,8 +1230,8 @@ class ComponentTaskPanel:
         self.ifcEditor.comboPset.addItems([QtGui.QApplication.translate("Arch", "Add property set...", None),
                                            QtGui.QApplication.translate("Arch", "New...", None)]+self.psetkeys)
         # set UUID
-        if "IfcUID" in self.obj.IfcAttributes:
-            self.ifcEditor.labelUUID.setText(self.obj.IfcAttributes["IfcUID"])
+        if "IfcUID" in self.obj.IfcData:
+            self.ifcEditor.labelUUID.setText(self.obj.IfcData["IfcUID"])
         # fill the tree
         psets = {}
         for pname,value in self.obj.IfcProperties.items():
@@ -1333,10 +1277,10 @@ class ComponentTaskPanel:
         QtCore.QObject.connect(self.ifcEditor.buttonDelete, QtCore.SIGNAL("clicked()"), self.removeIfcProperty)
         self.ifcEditor.treeProperties.setSortingEnabled(True)
         # set checkboxes
-        if "FlagForceBrep" in self.obj.IfcAttributes:
-            self.ifcEditor.checkBrep.setChecked(self.obj.IfcAttributes["FlagForceBrep"] == "True")
-        if "FlagParametric" in self.obj.IfcAttributes:
-            self.ifcEditor.checkParametric.setChecked(self.obj.IfcAttributes["FlagParametric"] == "True")
+        if "FlagForceBrep" in self.obj.IfcData:
+            self.ifcEditor.checkBrep.setChecked(self.obj.IfcData["FlagForceBrep"] == "True")
+        if "FlagParametric" in self.obj.IfcData:
+            self.ifcEditor.checkParametric.setChecked(self.obj.IfcData["FlagParametric"] == "True")
         self.ifcEditor.show()
 
     def acceptIfcProperties(self):
@@ -1358,16 +1302,16 @@ class ComponentTaskPanel:
                         else:
                             # keys cannot be unicode
                             ifcdict[prop.encode("utf8")] = pset+";;"+ptype+";;"+pvalue
-            ifcattrs = self.obj.IfcAttributes
-            ifcattrs["IfcUID"] = self.ifcEditor.labelUUID.text()
-            ifcattrs["FlagForceBrep"] = str(self.ifcEditor.checkBrep.isChecked())
-            ifcattrs["FlagParametric"] = str(self.ifcEditor.checkParametric.isChecked())
-            if (ifcdict != self.obj.IfcProperties) or (ifcattrs != self.obj.IfcAttributes):
+            ifcData = self.obj.IfcData
+            ifcData["IfcUID"] = self.ifcEditor.labelUUID.text()
+            ifcData["FlagForceBrep"] = str(self.ifcEditor.checkBrep.isChecked())
+            ifcData["FlagParametric"] = str(self.ifcEditor.checkParametric.isChecked())
+            if (ifcdict != self.obj.IfcProperties) or (ifcData != self.obj.IfcData):
                 FreeCAD.ActiveDocument.openTransaction("Change Ifc Properties")
                 if ifcdict != self.obj.IfcProperties:
                     self.obj.IfcProperties = ifcdict
-                if ifcattrs != self.obj.IfcAttributes:
-                    self.obj.IfcAttributes = ifcattrs
+                if ifcData != self.obj.IfcData:
+                    self.obj.IfcData = ifcData
                 FreeCAD.ActiveDocument.commitTransaction()
             del self.ifcEditor
 
@@ -1531,10 +1475,3 @@ if FreeCAD.GuiUp:
                 else:
                     model.setData(index,editor.text())
             self.dialog.update()
-
-
-
-
-
-
-
