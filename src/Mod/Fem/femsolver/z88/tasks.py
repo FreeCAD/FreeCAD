@@ -93,7 +93,7 @@ class Solve(run.Solve):
         # the subprocess was just copied, it seems to work :-)
         # TODO: search out for "Vektor GS" and "Vektor KOI" and print values, may be compared with the used ones
         self.pushStatus("Executing test solver...\n")
-        binary = settings.getBinary("Z88")
+        binary = settings.get_binary("Z88")
         self._process = subprocess.Popen(
             [binary, "-t", "-choly"],
             cwd=self.directory,
@@ -105,7 +105,7 @@ class Solve(run.Solve):
         self.signalAbort.remove(self._process.terminate)
 
         self.pushStatus("Executing real solver...\n")
-        binary = settings.getBinary("Z88")
+        binary = settings.get_binary("Z88")
         self._process = subprocess.Popen(
             [binary, "-c", "-choly"],
             cwd=self.directory,
