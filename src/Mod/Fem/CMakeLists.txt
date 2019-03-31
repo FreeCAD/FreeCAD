@@ -36,7 +36,11 @@ SET(FemExamples_SRCS
     femexamples/__init__.py
     femexamples/ccx_cantilever_std.py
     femexamples/manager.py
-    femexamples/mesh_canticcx_tetra10.py
+)
+
+SET(FemExampleMeshes_SRCS
+    femexamples/meshes/__init__.py
+    femexamples/meshes/mesh_canticcx_tetra10.py
 )
 
 SET(FemInOut_SRCS
@@ -214,6 +218,7 @@ SET(FemAllScripts
     ${FemScripts_SRCS}
     ${FemCommands_SRCS}
     ${FemExamples_SRCS}
+    ${FemExampleMeshes_SRCS}
     ${FemInOut_SRCS}
     ${FemMesh_SRCS}
     ${FemResult_SRCS}
@@ -244,6 +249,7 @@ fc_copy_sources(FemScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemAllScripts})
 INSTALL(FILES ${FemScripts_SRCS} DESTINATION Mod/Fem)
 INSTALL(FILES ${FemCommands_SRCS} DESTINATION Mod/Fem/femcommands)
 INSTALL(FILES ${FemExamples_SRCS} DESTINATION Mod/Fem/femexamples)
+INSTALL(FILES ${FemExampleMeshes_SRCS} DESTINATION Mod/Fem/femexamples/meshes)
 INSTALL(FILES ${FemInOut_SRCS} DESTINATION Mod/Fem/feminout)
 INSTALL(FILES ${FemMesh_SRCS} DESTINATION Mod/Fem/femmesh)
 INSTALL(FILES ${FemResult_SRCS} DESTINATION Mod/Fem/femresult)

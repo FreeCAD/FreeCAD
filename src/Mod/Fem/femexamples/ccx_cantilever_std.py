@@ -88,7 +88,7 @@ def setup_cantileverbase(doc=None, solver='ccxtools'):
     fixed_constraint.References = [(doc.Box, "Face1")]
 
     # mesh
-    from femexamples.mesh_canticcx_tetra10 import create_nodes, create_elements
+    from femexamples.meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
