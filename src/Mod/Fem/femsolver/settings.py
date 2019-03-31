@@ -58,6 +58,7 @@ class _SolverDlg(object):
         self.param_path = param_path
         self.use_default = use_default
         self.custom_path = custom_path
+        self.write_comments = "writeCommentsToInputFile"
 
         # get the parameter object where the paramete are saved in
         self.param_group = FreeCAD.ParamGet(self.param_path)
@@ -78,6 +79,9 @@ class _SolverDlg(object):
         # get the whole binary path name for the given command or binary path and return it
         from distutils.spawn import find_executable as find_bin
         return find_bin(binary)
+
+    def get_write_comments(self):
+        return self.param_group.GetBool(self.write_comments, True)
 
 
 '''
@@ -122,6 +126,16 @@ def getBinary(name):
         binary = _SOLVER_PARAM[name].getBinary()
         FreeCAD.Console.PrintMessage('Solver binary path: {} \n'.format(binary))
         return binary
+    else:
+        FreeCAD.Console.PrintError(
+            'Settings solver name: {} not found in solver settings modules _SOLVER_PARAM dirctionary.\n'.format(name)
+        )
+        return None
+
+
+def get_write_comments(name):
+    if name in _SOLVER_PARAM:
+        return _SOLVER_PARAM[name].get_write_comments()
     else:
         FreeCAD.Console.PrintError(
             'Settings solver name: {} not found in solver settings modules _SOLVER_PARAM dirctionary.\n'.format(name)
