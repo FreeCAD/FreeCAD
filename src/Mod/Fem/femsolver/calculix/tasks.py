@@ -81,7 +81,8 @@ class Prepare(run.Prepare):
             c.beam_rotations,
             c.shell_thicknesses,
             c.fluid_sections,
-            self.directory)
+            self.directory
+        )
         path = w.write_calculix_input_file()
         # report to user if task succeeded
         if path != "":
