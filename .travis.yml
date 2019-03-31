@@ -97,8 +97,6 @@ before_install:
        then
            pyenv install --force 3.6.3
            pyenv global 3.6.3
-           echo $(which python)
-           echo $(pyenv which)
        fi
        sudo apt-get update -qq
        sudo apt-get install -y --no-install-recommends          \
@@ -170,7 +168,7 @@ before_install:
        then
         export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python"
        else
-        export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=$(pyenv which) -DPYTHON_BASENAME=.cpython-36m \
+        export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=$(which python3.6) -DPYTHON_BASENAME=.cpython-36m \
         -DPYTHON_SUFFIX=.cpython-36m"
        fi
        export INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
