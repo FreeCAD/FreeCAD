@@ -99,15 +99,15 @@ before_install:
        sudo apt-get update -qq
        sudo apt-get install -y --no-install-recommends          \
                                doxygen                          \
-                               libboost1.55-dev                 \
-                               libboost-filesystem1.55-dev      \
-                               libboost-program-options1.55-dev \
-                               libboost-python1.55-dev          \
-                               libboost-regex1.55-dev           \
-                               libboost-signals1.55-dev         \
-                               libboost-system1.55-dev          \
-                               libboost-thread1.55-dev          \
-                               libcoin80                        \
+                               libboost-dev                     \
+                               libboost-filesystem-dev          \
+                               libboost-program-options-dev     \
+                               libboost-python-dev              \
+                               libboost-regex-dev               \
+                               libboost-signals-dev             \
+                               libboost-system-dev              \
+                               libboost-thread-dev              \
+                               libcoin80v5                      \
                                libcoin80-dev                    \
                                liboce-foundation-dev            \
                                liboce-modeling-dev              \
