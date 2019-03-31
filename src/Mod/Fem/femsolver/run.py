@@ -193,7 +193,7 @@ def _getCustomDir(solver):
 
 
 def _getCustomBase(solver):
-    path = settings.getCustomDir()
+    path = settings.get_custom_dir()
     if not os.path.isdir(path):
         raise DirectoryDoesNotExistError("Invalid path")
     return path
