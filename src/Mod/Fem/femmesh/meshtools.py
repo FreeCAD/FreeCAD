@@ -576,6 +576,9 @@ def get_elset_short_name(obj, i):
         FreeCAD.Console.PrintError('Error in creating short elset name for obj: ' + obj.Name + ' --> Proxy.Type: ' + str(obj.Proxy.Type) + '\n')
 
 
+# ************************************************************************************************
+# ***** methods for retrieving nodes and node load values for constraint force *******************
+# ***** Vertex loads *****************************************************************************
 def get_force_obj_vertex_nodeload_table(femmesh, frc_obj):
     # force_obj_node_load_table:
     #     [('refshape_name.elemname',node_load_table), ..., ('refshape_name.elemname',node_load_table)]
@@ -599,6 +602,10 @@ def get_force_obj_vertex_nodeload_table(femmesh, frc_obj):
     return force_obj_node_load_table
 
 
+# ***** Edge loads *******************************************************************************
+# get_force_obj_edge_nodeload_table
+# get_ref_edgenodes_table
+# get_ref_edgenodes_lengths
 def get_force_obj_edge_nodeload_table(femmesh, femelement_table, femnodes_mesh, frc_obj):
     # force_obj_node_load_table:
     #     [('refshape_name.elemname',node_load_table), ..., ('refshape_name.elemname',node_load_table)]
@@ -710,117 +717,6 @@ def get_force_obj_edge_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
     return force_obj_node_load_table
 
 
-def get_pressure_obj_faces_depreciated(femmesh, femobj):
-    pressure_faces = []
-    for o, elem_tup in femobj['Object'].References:
-        for elem in elem_tup:
-            ref_shape = o.Shape.getElement(elem)
-            elem_info_string = 'face load on shape: ' + o.Name + ':' + elem
-            FreeCAD.Console.PrintMessage('{}\n'.format(elem_info_string))
-            if ref_shape.ShapeType == 'Face':
-                pressure_faces.append((elem_info_string, femmesh.getccxVolumesByFace(ref_shape)))
-    return pressure_faces
-
-
-def get_pressure_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
-    if is_solid_femmesh(femmesh):
-        # get the nodes
-        prs_face_node_set = get_femnodes_by_femobj_with_references(femmesh, femobj)  # sorted and duplicates removed
-        # FreeCAD.Console.PrintMessage('prs_face_node_set: {}\n'.format(prs_face_node_set))
-        # fill the bit_pattern_dict and search for the faces
-        bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, prs_face_node_set)
-        pressure_faces = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
-    elif is_face_femmesh(femmesh):
-        pressure_faces = []
-        # normally we should call get_femelements_by_references and the group check should be integrated there
-        if femmesh.GroupCount:
-            meshfaces = get_femmesh_groupdata_sets_by_name(femmesh, femobj, 'Face')
-            # FreeCAD.Console.PrintMessage('{}\n'.format(meshfaces))
-            if not meshfaces:
-                FreeCAD.Console.PrintError("Error: Something went wrong in getting the group element faces.\n")
-            else:
-                for mf in meshfaces:
-                    # pressure_faces.append([mf, 0])
-                    pressure_faces.append([mf, -1])
-                    # 0 if femmeshface normal == reference face normal direction
-                    # -1 if femmeshface normal opposite reference face normal direction
-                    # easy on plane faces, but on a half sphere ... ?!?
-        else:
-            FreeCAD.Console.PrintError("Pressure on shell mesh at the moment only supported for meshes with appropriate group data.\n")
-    return pressure_faces
-
-
-def get_force_obj_face_nodeload_table(femmesh, femelement_table, femnodes_mesh, frc_obj):
-    # force_obj_node_load_table:
-    #     [('refshape_name.elemname',node_load_table), ..., ('refshape_name.elemname',node_load_table)]
-    force_obj_node_load_table = []
-    sum_ref_face_area = 0
-    sum_ref_face_node_area = 0  # for debugging
-    sum_node_load = 0  # for debugging
-    for o, elem_tup in frc_obj.References:
-        for elem in elem_tup:
-            ref_face = o.Shape.getElement(elem)
-            FreeCAD.Console.PrintMessage(
-                '  '
-                'ReferenceShape ... Type: {0}, '
-                'Object name: {1}, '
-                'Object label: {2}, '
-                'Element name: {3}\n'
-                .format(ref_face.ShapeType, o.Name, o.Label, elem)
-            )
-            sum_ref_face_area += ref_face.Area
-    if sum_ref_face_area != 0:
-        force_per_sum_ref_face_area = frc_obj.Force / sum_ref_face_area
-    for o, elem_tup in frc_obj.References:
-        for elem in elem_tup:
-            ref_face = o.Shape.getElement(elem)
-
-            # face_table:
-            #    { meshfaceID : ( nodeID, ... , nodeID ) }
-            face_table = get_ref_facenodes_table(femmesh, femelement_table, ref_face)
-
-            # node_area_table:
-            #    [ (nodeID, Area), ... , (nodeID, Area) ]  some nodes will have more than one entry
-            node_area_table = get_ref_facenodes_areas(femnodes_mesh, face_table)
-
-            # node_sum_area_table:
-            #    { nodeID : Area, ... , nodeID : Area }  AreaSum for each node, one entry for each node
-            node_sum_area_table = get_ref_shape_node_sum_geom_table(node_area_table)
-
-            # node_load_table:
-            #    { nodeID : NodeLoad, ... , nodeID : NodeLoad }  NodeLoad for each node, one entry for each node
-            node_load_table = {}
-            sum_node_areas = 0  # for debugging
-            for node in node_sum_area_table:
-                sum_node_areas += node_sum_area_table[node]  # for debugging
-                node_load_table[node] = node_sum_area_table[node] * force_per_sum_ref_face_area
-            ratio_refface_areas = sum_node_areas / ref_face.Area
-            if ratio_refface_areas < 0.99 or ratio_refface_areas > 1.01:
-                FreeCAD.Console.PrintError('Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n')
-                FreeCAD.Console.PrintMessage('  sum_node_areas: {}\n'.format(sum_node_areas))
-                FreeCAD.Console.PrintMessage('  ref_face_area:  {}\n'.format(ref_face.Area))
-            sum_ref_face_node_area += sum_node_areas
-
-            elem_info_string = 'node loads on shape: ' + o.Name + ':' + elem
-            force_obj_node_load_table.append((elem_info_string, node_load_table))
-
-    for ref_shape in force_obj_node_load_table:
-        for node in ref_shape[1]:
-            sum_node_load += ref_shape[1][node]  # for debugging
-
-    ratio = sum_node_load / frc_obj.Force
-    if ratio < 0.99 or ratio > 1.01:
-        FreeCAD.Console.PrintMessage('Deviation sum_node_load to frc_obj.Force is more than 1% :  {}\n'.format(ratio))
-        FreeCAD.Console.PrintMessage('  sum_ref_face_node_area: {}\n'.format(sum_ref_face_node_area))
-        FreeCAD.Console.PrintMessage('  sum_ref_face_area:      {}\n'.format(sum_ref_face_area))
-        FreeCAD.Console.PrintMessage('  sum_node_load:          {}\n'.format(sum_node_load))
-        FreeCAD.Console.PrintMessage('  frc_obj.Force:          {}\n'.format(frc_obj.Force))
-        FreeCAD.Console.PrintMessage('  the reason could be simply a circle area --> see method get_ref_face_node_areas\n')
-        FreeCAD.Console.PrintMessage('  the reason could also be a problem in retrieving the ref_face_node_area\n')
-
-    return force_obj_node_load_table
-
-
 def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
     edge_table = {}  # { meshedgeID : ( nodeID, ... , nodeID ) }
     refedge_nodes = femmesh.getNodesByEdge(refedge)
@@ -915,11 +811,87 @@ def get_ref_edgenodes_lengths(femnodes_mesh, edge_table):
     return node_length_table
 
 
+# ***** Face loads *******************************************************************************
+# get_force_obj_face_nodeload_table
+# get_ref_facenodes_table
+# get_ref_facenodes_areas
+# build_mesh_faces_of_volume_elements
+def get_force_obj_face_nodeload_table(femmesh, femelement_table, femnodes_mesh, frc_obj):
+    # force_obj_node_load_table:
+    #     [('refshape_name.elemname',node_load_table), ..., ('refshape_name.elemname',node_load_table)]
+    force_obj_node_load_table = []
+    sum_ref_face_area = 0
+    sum_ref_face_node_area = 0  # for debugging
+    sum_node_load = 0  # for debugging
+    for o, elem_tup in frc_obj.References:
+        for elem in elem_tup:
+            ref_face = o.Shape.getElement(elem)
+            FreeCAD.Console.PrintMessage(
+                '  '
+                'ReferenceShape ... Type: {0}, '
+                'Object name: {1}, '
+                'Object label: {2}, '
+                'Element name: {3}\n'
+                .format(ref_face.ShapeType, o.Name, o.Label, elem)
+            )
+            sum_ref_face_area += ref_face.Area
+    if sum_ref_face_area != 0:
+        force_per_sum_ref_face_area = frc_obj.Force / sum_ref_face_area
+    for o, elem_tup in frc_obj.References:
+        for elem in elem_tup:
+            ref_face = o.Shape.getElement(elem)
+
+            # face_table:
+            #    { meshfaceID : ( nodeID, ... , nodeID ) }
+            face_table = get_ref_facenodes_table(femmesh, femelement_table, ref_face)
+
+            # node_area_table:
+            #    [ (nodeID, Area), ... , (nodeID, Area) ]  some nodes will have more than one entry
+            node_area_table = get_ref_facenodes_areas(femnodes_mesh, face_table)
+
+            # node_sum_area_table:
+            #    { nodeID : Area, ... , nodeID : Area }  AreaSum for each node, one entry for each node
+            node_sum_area_table = get_ref_shape_node_sum_geom_table(node_area_table)
+
+            # node_load_table:
+            #    { nodeID : NodeLoad, ... , nodeID : NodeLoad }  NodeLoad for each node, one entry for each node
+            node_load_table = {}
+            sum_node_areas = 0  # for debugging
+            for node in node_sum_area_table:
+                sum_node_areas += node_sum_area_table[node]  # for debugging
+                node_load_table[node] = node_sum_area_table[node] * force_per_sum_ref_face_area
+            ratio_refface_areas = sum_node_areas / ref_face.Area
+            if ratio_refface_areas < 0.99 or ratio_refface_areas > 1.01:
+                FreeCAD.Console.PrintError('Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n')
+                FreeCAD.Console.PrintMessage('  sum_node_areas: {}\n'.format(sum_node_areas))
+                FreeCAD.Console.PrintMessage('  ref_face_area:  {}\n'.format(ref_face.Area))
+            sum_ref_face_node_area += sum_node_areas
+
+            elem_info_string = 'node loads on shape: ' + o.Name + ':' + elem
+            force_obj_node_load_table.append((elem_info_string, node_load_table))
+
+    for ref_shape in force_obj_node_load_table:
+        for node in ref_shape[1]:
+            sum_node_load += ref_shape[1][node]  # for debugging
+
+    ratio = sum_node_load / frc_obj.Force
+    if ratio < 0.99 or ratio > 1.01:
+        FreeCAD.Console.PrintMessage('Deviation sum_node_load to frc_obj.Force is more than 1% :  {}\n'.format(ratio))
+        FreeCAD.Console.PrintMessage('  sum_ref_face_node_area: {}\n'.format(sum_ref_face_node_area))
+        FreeCAD.Console.PrintMessage('  sum_ref_face_area:      {}\n'.format(sum_ref_face_area))
+        FreeCAD.Console.PrintMessage('  sum_node_load:          {}\n'.format(sum_node_load))
+        FreeCAD.Console.PrintMessage('  frc_obj.Force:          {}\n'.format(frc_obj.Force))
+        FreeCAD.Console.PrintMessage('  the reason could be simply a circle area --> see method get_ref_face_node_areas\n')
+        FreeCAD.Console.PrintMessage('  the reason could also be a problem in retrieving the ref_face_node_area\n')
+
+    return force_obj_node_load_table
+
+
 def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
     face_table = {}  # { meshfaceID : ( nodeID, ... , nodeID ) }
     if is_solid_femmesh(femmesh):
         if has_no_face_data(femmesh):
-            FreeCAD.Console.PrintLog('  No face data in finite volume element mesh. FreeCAD uses getccxVolumesByFace() to retrieve the volume elements of the ref_face.\n')
+            FreeCAD.Console.PrintMessage('  No face data in finite volume element mesh. FreeCAD uses getccxVolumesByFace() to retrieve the volume elements of the ref_face.\n')
             # there is no face data
             # the problem if we retrieve the nodes ourself is they are not sorted we just have the nodes.
             # We need to sort them according the shell mesh notation of tria3, tria6, quad4, quad8
@@ -955,113 +927,6 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
         for mf in ref_face_elements:
             face_table[mf] = femelement_table[mf]
     # FreeCAD.Console.PrintMessage('{}\n'.format(face_table))
-    return face_table
-
-
-def build_mesh_faces_of_volume_elements(face_table, femelement_table):
-    # node index of facenodes in femelementtable volume element
-    # if we know the position of the node we can build the element face out of the unsorted face nodes
-    face_nodenumber_table = {}  # { volumeID : ( index, ... , index ) }
-    for veID in face_table:
-        face_nodenumber_table[veID] = []
-        for n in face_table[veID]:
-            index = femelement_table[veID].index(n)
-            # FreeCAD.Console.PrintMessage('{}\n'.format(index))
-            face_nodenumber_table[veID].append(index + 1)  # local node number = index + 1
-        # FreeCAD.Console.PrintMessage('VolElement: {}\n'.format(veID))
-        # FreeCAD.Console.PrintMessage('  --> {}\n'.format(femelement_table[veID]))
-        # FreeCAD.Console.PrintMessage('  --> {}\n'.format(face_table[veID]))
-        # FreeCAD.Console.PrintMessage('  --> {}\n'.format(face_nodenumber_table[veID]))
-    for veID in face_nodenumber_table:
-        vol_node_ct = len(femelement_table[veID])
-        face_node_indexs = sorted(face_nodenumber_table[veID])
-        if vol_node_ct == 10:  # tetra10 --> tria6 face
-            if face_node_indexs == [1, 2, 3, 5, 6, 7]:  # node order of face in tetra10 volume element
-                node_numbers = (1, 2, 3, 5, 6, 7)       # node order of a tria6 face of tetra10
-            elif face_node_indexs == [1, 2, 4, 5, 8, 9]:
-                node_numbers = (1, 4, 2, 8, 9, 5)
-            elif face_node_indexs == [1, 3, 4, 7, 8, 10]:
-                node_numbers = (1, 3, 4, 7, 10, 8)
-            elif face_node_indexs == [2, 3, 4, 6, 9, 10]:
-                node_numbers = (2, 4, 3, 9, 10, 6)
-            else:
-                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
-        elif vol_node_ct == 4:  # tetra4 --> tria3 face
-            if face_node_indexs == [1, 2, 3]:  # node order of face in tetra4 volume element
-                node_numbers = (1, 2, 3)       # node order of a tria3 face of tetra4
-            elif face_node_indexs == [1, 2, 4]:
-                node_numbers = (1, 4, 2, 8)
-            elif face_node_indexs == [1, 3, 4]:
-                node_numbers = (1, 3, 4)
-            elif face_node_indexs == [2, 3, 4]:
-                node_numbers = (2, 4, 3)
-            else:
-                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
-        elif vol_node_ct == 20:  # hexa20 --> quad8 face
-            if face_node_indexs == [1, 2, 3, 4, 9, 10, 11, 12]:  # node order of face in hexa20 volume element
-                node_numbers = (1, 2, 3, 4, 9, 10, 11, 12)       # node order of a quad8 face of hexa20
-            elif face_node_indexs == [5, 6, 7, 8, 13, 14, 15, 16]:
-                node_numbers = (5, 8, 7, 6, 16, 15, 14, 13)
-            elif face_node_indexs == [1, 2, 5, 6, 9, 13, 17, 18]:
-                node_numbers = (1, 5, 6, 2, 17, 13, 18, 9)
-            elif face_node_indexs == [3, 4, 7, 8, 11, 15, 19, 20]:
-                node_numbers = (3, 7, 8, 4, 19, 15, 20, 11)
-            elif face_node_indexs == [1, 4, 5, 8, 12, 16, 17, 20]:
-                node_numbers = (1, 4, 8, 5, 12, 20, 16, 17)
-            elif face_node_indexs == [2, 3, 6, 7, 10, 14, 18, 19]:
-                node_numbers = (2, 6, 7, 3, 18, 14, 19, 10)
-            else:
-                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
-        elif vol_node_ct == 8:  # hexa8 --> quad4 face
-            face_node_indexs = sorted(face_nodenumber_table[veID])
-            if face_node_indexs == [1, 2, 3, 4]:  # node order of face in hexa8 volume element
-                node_numbers = (1, 2, 3, 4)       # node order of a quad8 face of hexa8
-            elif face_node_indexs == [5, 6, 7, 8]:
-                node_numbers = (5, 8, 7, 6)
-            elif face_node_indexs == [1, 2, 5, 6]:
-                node_numbers = (1, 5, 6, 2)
-            elif face_node_indexs == [3, 4, 7, 8]:
-                node_numbers = (3, 7, 8, 4)
-            elif face_node_indexs == [1, 4, 5, 8]:
-                node_numbers = (1, 4, 8, 5)
-            elif face_node_indexs == [2, 3, 6, 7]:
-                node_numbers = (2, 6, 7, 3)
-            else:
-                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
-        elif vol_node_ct == 15:  # penta15 --> tria6 and quad8 faces
-            if face_node_indexs == [1, 2, 3, 7, 8, 9]:  # node order of face in penta15 volume element
-                node_numbers = (1, 2, 3, 7, 8, 9)       # node order of a tria6 face of penta15
-            elif face_node_indexs == [4, 5, 6, 10, 11, 12]:
-                node_numbers = (4, 6, 5, 12, 11, 10)  # tria6
-            elif face_node_indexs == [1, 2, 4, 5, 7, 10, 13, 14]:
-                node_numbers = (1, 4, 5, 2, 13, 10, 14, 7)  # quad8
-            elif face_node_indexs == [1, 3, 4, 6, 9, 12, 13, 15]:
-                node_numbers = (1, 3, 6, 4, 9, 15, 12, 13)  # quad8
-            elif face_node_indexs == [2, 3, 5, 6, 8, 11, 14, 15]:
-                node_numbers = (2, 5, 6, 3, 14, 11, 15, 8)  # quad8
-            else:
-                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): penta15: face not found!" + str(face_node_indexs) + "\n")
-        elif vol_node_ct == 6:  # penta6 --> tria3 and quad4 faces
-            if face_node_indexs == [1, 2, 3]:  # node order of face in penta6 volume element
-                node_numbers = (1, 2, 3)       # node order of a tria3 face of penta6
-            elif face_node_indexs == [4, 5, 6]:
-                node_numbers = (4, 6, 5)  # tria3
-            elif face_node_indexs == [1, 2, 4, 5]:
-                node_numbers = (1, 4, 5, 2)  # quad4
-            elif face_node_indexs == [1, 3, 4, 6]:
-                node_numbers = (1, 3, 6, 4)  # quad4
-            elif face_node_indexs == [2, 3, 5, 6]:
-                node_numbers = (2, 5, 6, 3)  # quad4
-            else:
-                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): pent6: face not found!" + str(face_node_indexs) + "\n")
-        else:
-            FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): Volume not implemented: volume node count" + str(vol_node_ct) + "\n")
-        face_nodes = []
-        for i in node_numbers:
-            i -= 1  # node_number starts with 1, index starts with 0 --> index = node number - 1
-            face_nodes.append(femelement_table[veID][i])
-        face_table[veID] = face_nodes  # reset the entry in face_table
-        # FreeCAD.Console.PrintMessage('  --> {}\n'.format(face_table[veID]))
     return face_table
 
 
@@ -1202,6 +1067,114 @@ def get_ref_facenodes_areas(femnodes_mesh, face_table):
     return node_area_table
 
 
+def build_mesh_faces_of_volume_elements(face_table, femelement_table):
+    # node index of facenodes in femelementtable volume element
+    # if we know the position of the node we can build the element face out of the unsorted face nodes
+    face_nodenumber_table = {}  # { volumeID : ( index, ... , index ) }
+    for veID in face_table:
+        face_nodenumber_table[veID] = []
+        for n in face_table[veID]:
+            index = femelement_table[veID].index(n)
+            # FreeCAD.Console.PrintMessage('{}\n'.format(index))
+            face_nodenumber_table[veID].append(index + 1)  # local node number = index + 1
+        # FreeCAD.Console.PrintMessage('VolElement: {}\n'.format(veID))
+        # FreeCAD.Console.PrintMessage('  --> {}\n'.format(femelement_table[veID]))
+        # FreeCAD.Console.PrintMessage('  --> {}\n'.format(face_table[veID]))
+        # FreeCAD.Console.PrintMessage('  --> {}\n'.format(face_nodenumber_table[veID]))
+    for veID in face_nodenumber_table:
+        vol_node_ct = len(femelement_table[veID])
+        face_node_indexs = sorted(face_nodenumber_table[veID])
+        if vol_node_ct == 10:  # tetra10 --> tria6 face
+            if face_node_indexs == [1, 2, 3, 5, 6, 7]:  # node order of face in tetra10 volume element
+                node_numbers = (1, 2, 3, 5, 6, 7)       # node order of a tria6 face of tetra10
+            elif face_node_indexs == [1, 2, 4, 5, 8, 9]:
+                node_numbers = (1, 4, 2, 8, 9, 5)
+            elif face_node_indexs == [1, 3, 4, 7, 8, 10]:
+                node_numbers = (1, 3, 4, 7, 10, 8)
+            elif face_node_indexs == [2, 3, 4, 6, 9, 10]:
+                node_numbers = (2, 4, 3, 9, 10, 6)
+            else:
+                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
+        elif vol_node_ct == 4:  # tetra4 --> tria3 face
+            if face_node_indexs == [1, 2, 3]:  # node order of face in tetra4 volume element
+                node_numbers = (1, 2, 3)       # node order of a tria3 face of tetra4
+            elif face_node_indexs == [1, 2, 4]:
+                node_numbers = (1, 4, 2, 8)
+            elif face_node_indexs == [1, 3, 4]:
+                node_numbers = (1, 3, 4)
+            elif face_node_indexs == [2, 3, 4]:
+                node_numbers = (2, 4, 3)
+            else:
+                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
+        elif vol_node_ct == 20:  # hexa20 --> quad8 face
+            if face_node_indexs == [1, 2, 3, 4, 9, 10, 11, 12]:  # node order of face in hexa20 volume element
+                node_numbers = (1, 2, 3, 4, 9, 10, 11, 12)       # node order of a quad8 face of hexa20
+            elif face_node_indexs == [5, 6, 7, 8, 13, 14, 15, 16]:
+                node_numbers = (5, 8, 7, 6, 16, 15, 14, 13)
+            elif face_node_indexs == [1, 2, 5, 6, 9, 13, 17, 18]:
+                node_numbers = (1, 5, 6, 2, 17, 13, 18, 9)
+            elif face_node_indexs == [3, 4, 7, 8, 11, 15, 19, 20]:
+                node_numbers = (3, 7, 8, 4, 19, 15, 20, 11)
+            elif face_node_indexs == [1, 4, 5, 8, 12, 16, 17, 20]:
+                node_numbers = (1, 4, 8, 5, 12, 20, 16, 17)
+            elif face_node_indexs == [2, 3, 6, 7, 10, 14, 18, 19]:
+                node_numbers = (2, 6, 7, 3, 18, 14, 19, 10)
+            else:
+                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
+        elif vol_node_ct == 8:  # hexa8 --> quad4 face
+            face_node_indexs = sorted(face_nodenumber_table[veID])
+            if face_node_indexs == [1, 2, 3, 4]:  # node order of face in hexa8 volume element
+                node_numbers = (1, 2, 3, 4)       # node order of a quad8 face of hexa8
+            elif face_node_indexs == [5, 6, 7, 8]:
+                node_numbers = (5, 8, 7, 6)
+            elif face_node_indexs == [1, 2, 5, 6]:
+                node_numbers = (1, 5, 6, 2)
+            elif face_node_indexs == [3, 4, 7, 8]:
+                node_numbers = (3, 7, 8, 4)
+            elif face_node_indexs == [1, 4, 5, 8]:
+                node_numbers = (1, 4, 8, 5)
+            elif face_node_indexs == [2, 3, 6, 7]:
+                node_numbers = (2, 6, 7, 3)
+            else:
+                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
+        elif vol_node_ct == 15:  # penta15 --> tria6 and quad8 faces
+            if face_node_indexs == [1, 2, 3, 7, 8, 9]:  # node order of face in penta15 volume element
+                node_numbers = (1, 2, 3, 7, 8, 9)       # node order of a tria6 face of penta15
+            elif face_node_indexs == [4, 5, 6, 10, 11, 12]:
+                node_numbers = (4, 6, 5, 12, 11, 10)  # tria6
+            elif face_node_indexs == [1, 2, 4, 5, 7, 10, 13, 14]:
+                node_numbers = (1, 4, 5, 2, 13, 10, 14, 7)  # quad8
+            elif face_node_indexs == [1, 3, 4, 6, 9, 12, 13, 15]:
+                node_numbers = (1, 3, 6, 4, 9, 15, 12, 13)  # quad8
+            elif face_node_indexs == [2, 3, 5, 6, 8, 11, 14, 15]:
+                node_numbers = (2, 5, 6, 3, 14, 11, 15, 8)  # quad8
+            else:
+                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): penta15: face not found!" + str(face_node_indexs) + "\n")
+        elif vol_node_ct == 6:  # penta6 --> tria3 and quad4 faces
+            if face_node_indexs == [1, 2, 3]:  # node order of face in penta6 volume element
+                node_numbers = (1, 2, 3)       # node order of a tria3 face of penta6
+            elif face_node_indexs == [4, 5, 6]:
+                node_numbers = (4, 6, 5)  # tria3
+            elif face_node_indexs == [1, 2, 4, 5]:
+                node_numbers = (1, 4, 5, 2)  # quad4
+            elif face_node_indexs == [1, 3, 4, 6]:
+                node_numbers = (1, 3, 6, 4)  # quad4
+            elif face_node_indexs == [2, 3, 5, 6]:
+                node_numbers = (2, 5, 6, 3)  # quad4
+            else:
+                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): pent6: face not found!" + str(face_node_indexs) + "\n")
+        else:
+            FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): Volume not implemented: volume node count" + str(vol_node_ct) + "\n")
+        face_nodes = []
+        for i in node_numbers:
+            i -= 1  # node_number starts with 1, index starts with 0 --> index = node number - 1
+            face_nodes.append(femelement_table[veID][i])
+        face_table[veID] = face_nodes  # reset the entry in face_table
+        # FreeCAD.Console.PrintMessage('  --> {}\n'.format(face_table[veID]))
+    return face_table
+
+
+# ***** helper for Face and Edge loads ***********************************************************
 def get_ref_shape_node_sum_geom_table(node_geom_table):
     # shape could be Edge or Face, geom could be length or area
     # sum of length or area for each node of the ref_shape
@@ -1215,6 +1188,54 @@ def get_ref_shape_node_sum_geom_table(node_geom_table):
     return node_sum_geom_table
 
 
+# ************************************************************************************************
+# ***** methods for retrieving faces for constraint pressure *************************************
+def get_pressure_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
+    if is_solid_femmesh(femmesh):
+        # get the nodes
+        prs_face_node_set = get_femnodes_by_femobj_with_references(femmesh, femobj)  # sorted and duplicates removed
+        # FreeCAD.Console.PrintMessage('prs_face_node_set: {}\n'.format(prs_face_node_set))
+        # fill the bit_pattern_dict and search for the faces
+        bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, prs_face_node_set)
+        pressure_faces = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
+    elif is_face_femmesh(femmesh):
+        pressure_faces = []
+        # normally we should call get_femelements_by_references and the group check should be integrated there
+        if femmesh.GroupCount:
+            meshfaces = get_femmesh_groupdata_sets_by_name(femmesh, femobj, 'Face')
+            # FreeCAD.Console.PrintMessage('{}\n'.format(meshfaces))
+            if not meshfaces:
+                FreeCAD.Console.PrintError("Error: Something went wrong in getting the group element faces.\n")
+            else:
+                for mf in meshfaces:
+                    # pressure_faces.append([mf, 0])
+                    pressure_faces.append([mf, -1])
+                    # 0 if femmeshface normal == reference face normal direction
+                    # -1 if femmeshface normal opposite reference face normal direction
+                    # easy on plane faces, but on a half sphere ... ?!?
+        else:
+            FreeCAD.Console.PrintError("Pressure on shell mesh at the moment only supported for meshes with appropriate group data.\n")
+    return pressure_faces
+
+
+# depreciated method for pressure faces for constraint pressure and finite solid element mesh
+# why did we switch to the get_ccxelement_faces_from_binary_search?
+# just performance?
+# TODO: Find the forum topic disscussion with ulrich1a and post a link
+def get_pressure_obj_faces_depreciated(femmesh, femobj):
+    pressure_faces = []
+    for o, elem_tup in femobj['Object'].References:
+        for elem in elem_tup:
+            ref_shape = o.Shape.getElement(elem)
+            elem_info_string = 'face load on shape: ' + o.Name + ':' + elem
+            FreeCAD.Console.PrintMessage('{}\n'.format(elem_info_string))
+            if ref_shape.ShapeType == 'Face':
+                pressure_faces.append((elem_info_string, femmesh.getccxVolumesByFace(ref_shape)))
+    return pressure_faces
+
+
+# ************************************************************************************************
+# ***** groups ***********************************************************************************
 def get_mesh_group_elements(mesh_group_obj, aPart):
     '''the Reference shapes of the mesh_group_object are searched in the Shape of aPart.
        If found in shape they are added to a dict
