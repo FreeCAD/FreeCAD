@@ -34,7 +34,7 @@ language: cpp
 dist: xenial
 python:
     - 2.7
-    - 3.5
+    - 3.7
 
 # Inject osx build into matrix - needed to specify image/dist
 matrix:
@@ -44,29 +44,25 @@ matrix:
     fast_finish: true  # https://blog.travis-ci.com/2013-11-27-fast-finishing-builds
     include:
       - os: linux
-        dist: trusty
-        compiler: clang
+         compiler: clang
         env: 
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
           - PYTHON_MAJOR_VERSION=2
 
       - os: linux
-        dist: trusty
-        compiler: gcc
+         compiler: gcc
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
           - PYTHON_MAJOR_VERSION=2
 
       - os: linux
-        dist: trusty
-        compiler: gcc
+         compiler: gcc
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
           - PYTHON_MAJOR_VERSION=3
 
       - language: python
         python: 3.7
-        dist: xenial  # required for Python >= 3.7 (travis-ci/travis-ci#9069)
         before_install: true
         install: python3 -m pip install flake8
         # fail the build if there are Python syntax errors or undefined names
