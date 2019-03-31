@@ -54,8 +54,9 @@ class FemInputWriter():
         beamrotation_obj,
         shellthickness_obj,
         fluidsection_obj,
-        dir_name
+        dir_name=None
     ):
+        # class attributes from parameter values
         self.analysis = analysis_obj
         self.solver_obj = solver_obj
         self.analysis_type = self.solver_obj.AnalysisType
@@ -78,11 +79,15 @@ class FemInputWriter():
         self.fluidsection_objects = fluidsection_obj
         self.shellthickness_objects = shellthickness_obj
         self.dir_name = dir_name
+        # if dir_name was not given or does not exist empty we gone create a temporary one
+        # this makes sure the analysis can be run even on wired situation
         if not dir_name:
             FreeCAD.Console.PrintError('Error: FemInputWriter has no working_dir --> we are going to make a temporary one!\n')
             self.dir_name = FreeCAD.ActiveDocument.TransientDir.replace('\\', '/') + '/FemAnl_' + analysis_obj.Uid[-4:]
         if not os.path.isdir(self.dir_name):
             os.mkdir(self.dir_name)
+
+        # new class attributes
         self.fc_ver = FreeCAD.Version()
         self.ccx_nall = 'Nall'
         self.ccx_eall = 'Eall'
