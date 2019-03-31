@@ -126,7 +126,7 @@ class Writer(object):
         if self.testmode:
             print("We are in testmode ElmerGrid may not be installed!")
         else:
-            binary = settings.getBinary("ElmerGrid")
+            binary = settings.get_binary("ElmerGrid")
             if binary is None:
                 raise WriteError("Couldn't find ElmerGrid binary.")
             args = [binary,
