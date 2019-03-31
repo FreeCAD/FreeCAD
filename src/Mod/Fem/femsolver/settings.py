@@ -49,28 +49,30 @@ _GENERAL_PARAM = _PARAM_PATH + "General"
 
 
 # ******** binary parameter **********************************************************************
-class _BinaryDlg(object):
+class _SolverDlg(object):
 
-    def __init__(self, default, param, useDefault, customPath):
+    def __init__(self, default, param_path, use_default, custom_path):
+
+        # set the parameter identifier
         self.default = default
-        self.param = param
-        self.useDefault = useDefault
-        self.customPath = customPath
+        self.param_path = param_path
+        self.use_default = use_default
+        self.custom_path = custom_path
+
+        # get the parameter object where the paramete are saved in
+        self.param_group = FreeCAD.ParamGet(self.param_path)
 
     def getBinary(self):
 
-        # get the parameter object where the paramete are saved in
-        paramObj = FreeCAD.ParamGet(self.param)
-
         # set the binary path to the FreeCAD defaults, ATM pure unix shell commands without path names are used
-        # TODO see todo on useDefault later in this module
+        # TODO see todo on use_default later in this module
         binary = self.default
         FreeCAD.Console.PrintLog('Solver binary path: {} \n'.format(binary))
 
-        # check if useDefault is set to True
+        # check if use_default is set to True
         # if True the standard binary path will be overwritten with a user binary path
-        if not paramObj.GetBool(self.useDefault, True):
-            binary = paramObj.GetString(self.customPath)
+        if self.param_group.GetBool(self.use_default, True) is False:
+            binary = self.param_group.GetString(self.custom_path)
         FreeCAD.Console.PrintLog('Solver binary path: {} \n'.format(binary))
 
         # get the whole binary path name for the given command or binary path and return it
@@ -83,63 +85,64 @@ default:
     default command to run the binary, this one is taken if the UseStandardXXXLocation is not given or set to True
 param:
     path where these settings are saved, in FEM normally one path in one Tab in Preferences GUI
-useDefault:
+use_default:
     the UseStandardXXXLocation parameter identifier
     if this parameter is set to True FreeCAD standards for the binary are used, or FreeCAD tries to find the binary
     TODO: see method setup_ccx in ccx tools module, which sets up ccx binary for various os
-customPath:
+custom_path:
     the xxxBinaryPath parameter identifier
     binary path given by the user
 '''
-_BINARIES = {
-    "Calculix": _BinaryDlg(
+_SOLVER_PARAM = {
+    "Calculix": _SolverDlg(
         default="ccx",
-        param=_PARAM_PATH + "Ccx",
-        useDefault="UseStandardCcxLocation",
-        customPath="ccxBinaryPath"),
-    "ElmerSolver": _BinaryDlg(
+        param_path=_PARAM_PATH + "Ccx",
+        use_default="UseStandardCcxLocation",
+        custom_path="ccxBinaryPath"),
+    "ElmerSolver": _SolverDlg(
         default="ElmerSolver",
-        param=_PARAM_PATH + "Elmer",
-        useDefault="UseStandardElmerLocation",
-        customPath="elmerBinaryPath"),
-    "ElmerGrid": _BinaryDlg(
+        param_path=_PARAM_PATH + "Elmer",
+        use_default="UseStandardElmerLocation",
+        custom_path="elmerBinaryPath"),
+    "ElmerGrid": _SolverDlg(
         default="ElmerGrid",
-        param=_PARAM_PATH + "Elmer",
-        useDefault="UseStandardGridLocation",
-        customPath="gridBinaryPath"),
-    "Z88": _BinaryDlg(
+        param_path=_PARAM_PATH + "Elmer",
+        use_default="UseStandardGridLocation",
+        custom_path="gridBinaryPath"),
+    "Z88": _SolverDlg(
         default="z88r",
-        param=_PARAM_PATH + "Z88",
-        useDefault="UseStandardZ88Location",
-        customPath="z88BinaryPath"),
+        param_path=_PARAM_PATH + "Z88",
+        use_default="UseStandardZ88Location",
+        custom_path="z88BinaryPath"),
 }
 
 
 def getBinary(name):
-    if name in _BINARIES:
-        binary = _BINARIES[name].getBinary()
+    if name in _SOLVER_PARAM:
+        binary = _SOLVER_PARAM[name].getBinary()
         FreeCAD.Console.PrintMessage('Solver binary path: {} \n'.format(binary))
         return binary
     else:
         FreeCAD.Console.PrintError(
-            'Settings solver name: {} not found in solver settings modules _BINARIES dirctionary.\n'.format(name)
+            'Settings solver name: {} not found in solver settings modules _SOLVER_PARAM dirctionary.\n'.format(name)
         )
         return None
 
 
 # ******** working directory parameter ***********************************************************
 def getCustomDir():
-    param = FreeCAD.ParamGet(_GENERAL_PARAM)
-    return param.GetString("CustomDirectoryPath")
+    param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
+    return param_group.GetString("CustomDirectoryPath")
 
 
 def getDirSetting():
-    param = FreeCAD.ParamGet(_GENERAL_PARAM)
-    if param.GetBool("UseTempDirectory"):
+    param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
+    if param_group.GetBool("UseTempDirectory"):
         return TEMPORARY
-    elif param.GetBool("UseBesideDirectory"):
+    elif param_group.GetBool("UseBesideDirectory"):
         return BESIDE
-    elif param.GetBool("UseCustomDirectory"):
+    elif param_group.GetBool("UseCustomDirectory"):
         return CUSTOM
+
 
 ##  @}
