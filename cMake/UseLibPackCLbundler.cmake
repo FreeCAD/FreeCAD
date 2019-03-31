@@ -67,7 +67,7 @@ if(FREECAD_USE_FREETYPE)
 endif(FREECAD_USE_FREETYPE)
 
 link_directories(${FREECAD_LIBPACK_DIR}/lib)
-find_package(PCL)
+find_package(PCL QUIET)
 if(NOT EXISTS ${PCL_INCLUDE_DIRS})
   set(PCL_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/pcl-1.7)
   set(PCL_LIBRARY_DIRS ${FREECAD_LIBPACK_DIR}/lib)
