@@ -129,7 +129,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 
 # read a calculix result file and extract the nodes, displacement vectors and stress values.
 def read_frd_result(frd_input):
-    print('Read ccx results from frd file: ' + frd_input)
+    FreeCAD.Console.PrintMessage('Read ccx results from frd file: {}\n'.format(frd_input))
     inout_nodes = []
     inout_nodes_file = frd_input.rsplit('.', 1)[0] + '_inout_nodes.txt'
     if os.path.exists(inout_nodes_file):
