@@ -195,6 +195,18 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     this->positionBySupport();
 
+    // Get the support
+    auto support = getBaseShape();
+    if (support.isNull())
+        return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
+
+    auto trsfInv = support.getShape().Location().Transformation().Inverted();
+
+    // create an untransformed copy of the support shape
+    support.setTransform(Base::Matrix4D());
+    if(!support.Hasher)
+        support.Hasher = getDocument()->getStringHasher();
+
     TopTools_IndexedMapOfShape shapeMap;
     std::vector<TopoShape> originalShapes;
     std::vector<std::string> originalSubs;
@@ -215,7 +227,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             if(shapeMap.Add(shape.getShape())<=count)
                 continue;
             shape.Tag = -getID();
-            originalShapes.push_back(shape);
+            auto trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
+            originalShapes.push_back(shape.makETransform(trsf));
             originalSubs.push_back(feature->getFullName());
             fuses.push_back((feature->getAddSubType() == FeatureAddSub::Additive) ? true : false);
             continue;
@@ -261,16 +274,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     if (transformations.empty())
         return App::DocumentObject::StdReturn; // No transformations defined, exit silently
-
-    // Get the support
-    auto support = getBaseShape();
-    if (support.isNull())
-        return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
-
-    // create an untransformed copy of the support shape
-    support.setTransform(Base::Matrix4D());
-    if(!support.Hasher)
-        support.Hasher = getDocument()->getStringHasher();
 
     std::ostringstream ss;
 
