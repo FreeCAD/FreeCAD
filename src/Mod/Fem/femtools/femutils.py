@@ -133,7 +133,7 @@ def get_pref_working_dir(solver_obj):
     # be aware beside could get an error if the document has not been saved
     from femsolver import settings
     from femsolver import run
-    dir_setting = settings.getDirSetting()
+    dir_setting = settings.get_dir_setting()
     if dir_setting == settings.TEMPORARY:
         setting_working_dir = run._getTempDir(solver_obj)
     elif dir_setting == settings.BESIDE:

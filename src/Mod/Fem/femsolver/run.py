@@ -122,7 +122,7 @@ def getMachine(solver, path=None):
 
 def _isPathValid(m, path):
     t = _dirTypes.get(m.directory)  # setting default None
-    setting = settings.getDirSetting()
+    setting = settings.get_dir_setting()
     if path is not None:
         return t is None and m.directory == path
     if setting == settings.BESIDE:
@@ -142,7 +142,7 @@ def _isPathValid(m, path):
 
 def _createMachine(solver, path, testmode):
     global _dirTypes
-    setting = settings.getDirSetting()
+    setting = settings.get_dir_setting()
     if path is not None:
         _dirTypes[path] = None
     elif setting == settings.BESIDE:
