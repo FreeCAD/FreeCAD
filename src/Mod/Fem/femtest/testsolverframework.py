@@ -130,7 +130,6 @@ class TestSolverFrameWork(unittest.TestCase):
         fcc_print('Checking FEM ccx solver for solver frame work......')
         fcc_print('machine_ccx')
         machine_ccx = solver_ccx_object.Proxy.createMachine(solver_ccx_object, solverframework_analysis_dir)
-        fcc_print('Machine testmode: ' + str(machine_ccx.testmode))
         machine_ccx.target = femsolver.run.PREPARE
         machine_ccx.start()
         machine_ccx.join()  # wait for the machine to finish.
@@ -165,7 +164,6 @@ class TestSolverFrameWork(unittest.TestCase):
         # write input files
         fcc_print('\nChecking FEM Elmer solver for solver frame work...')
         machine_elmer = solver_elmer_object.Proxy.createMachine(solver_elmer_object, solverframework_analysis_dir, True)
-        fcc_print('Machine testmode: ' + str(machine_elmer.testmode))
         machine_elmer.target = femsolver.run.PREPARE
         machine_elmer.start()
         machine_elmer.join()  # wait for the machine to finish.
