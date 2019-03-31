@@ -44,19 +44,19 @@ matrix:
     fast_finish: true  # https://blog.travis-ci.com/2013-11-27-fast-finishing-builds
     include:
       - os: linux
-         compiler: clang
+        compiler: clang
         env: 
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
           - PYTHON_MAJOR_VERSION=2
 
       - os: linux
-         compiler: gcc
+        compiler: gcc
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
           - PYTHON_MAJOR_VERSION=2
 
       - os: linux
-         compiler: gcc
+        compiler: gcc
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
           - PYTHON_MAJOR_VERSION=3
