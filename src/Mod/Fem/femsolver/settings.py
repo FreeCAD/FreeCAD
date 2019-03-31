@@ -144,7 +144,7 @@ def get_write_comments(name):
 
 
 # ******** working directory parameter ***********************************************************
-def getCustomDir():
+def get_custom_dir():
     param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
     return param_group.GetString("CustomDirectoryPath")
 
