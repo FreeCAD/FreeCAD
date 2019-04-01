@@ -68,6 +68,7 @@
 # include <QFileInfo>
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/Material.h>
 #include <Base/BoundBox.h>
 #include <Base/Exception.h>
@@ -158,7 +159,14 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
 
     App::DocumentObject* baseObj = BaseView.getValue();
     if (!baseObj)  {
-        Base::Console().Log("INFO - DVD::execute - No BaseView - creation?\n");
+        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
+        if (isRestoring) {
+            Base::Console().Warning("DVD::execute - No BaseView (but document is restoring) - %s\n",
+                                getNameInDocument());
+        } else {
+            Base::Console().Error("Error: DVD::execute - No BaseView(s) linked. - %s\n",
+                                  getNameInDocument());
+        }
         return DrawView::execute();
     }
 
@@ -189,6 +197,14 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     }
 
     if (shape.IsNull()) {
+        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
+        if (isRestoring) {
+            Base::Console().Warning("DVD::execute - source shape is invalid - (but document is restoring) - %s\n",
+                                getNameInDocument());
+        } else {
+            Base::Console().Error("Error: DVD::execute - Source shape is Null. - %s\n",
+                                  getNameInDocument());
+        }
         return new App::DocumentObjectExecReturn("DVD - Linked shape object is invalid");
     }
 

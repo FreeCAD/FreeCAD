@@ -204,7 +204,14 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     }
     
     if (baseShape.IsNull()) {
-        Base::Console().Log("DVS::execute - baseShape is Null\n");
+        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
+        if (isRestoring) {
+            Base::Console().Warning("DVS::execute - base shape is invalid - (but document is restoring) - %s\n",
+                                getNameInDocument());
+        } else {
+            Base::Console().Error("Error: DVS::execute - base shape is Null. - %s\n",
+                                  getNameInDocument());
+        }
         return new App::DocumentObjectExecReturn("BaseView Source object is Null");
     }
 
