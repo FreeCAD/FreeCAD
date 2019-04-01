@@ -81,7 +81,11 @@ std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy(void)
     cpy->value = this->value;
     cpy->setName(this->getName());
 
-    return std::move(cpy);
+    #if defined(__GNUC__) && __GNUC__ < 7
+        return std::move(cpy); // GCC 4.8 bug
+    #else
+        return cpy; // all the others use RVO optimization perfectly fine.
+    #endif
     // Advise from Scott Meyers Effective Modern c++:
     //
     // Don't std::move(cpy); RVO optimization Item 25, if the compiler fails to elide, would have to move it anyway
