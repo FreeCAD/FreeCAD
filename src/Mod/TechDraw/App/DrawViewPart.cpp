@@ -162,7 +162,14 @@ TopoDS_Shape DrawViewPart::getSourceShape(void) const
     TopoDS_Shape result;
     const std::vector<App::DocumentObject*>& links = Source.getValues();
     if (links.empty())  {
-        Base::Console().Log("DVP::getSourceShape - No Sources - creation? - %s\n",getNameInDocument());
+        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
+        if (isRestoring) {
+            Base::Console().Warning("DVP::getSourceShape - No Sources (but document is restoring) - %s\n",
+                                getNameInDocument());
+        } else {
+            Base::Console().Error("Error: DVP::getSourceShape - No Source(s) linked. - %s\n",
+                                  getNameInDocument());
+        }
     } else {
         std::vector<TopoDS_Shape> sourceShapes;
         for (auto& l:links) {
@@ -237,20 +244,34 @@ TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
+//    Base::Console().Message("DVP::execute() - %s\n",getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
     
     const std::vector<App::DocumentObject*>& links = Source.getValues();
     if (links.empty())  {
-        Base::Console().Log("DVP::execute - %s - No Sources - creation time?\n",getNameInDocument());
+        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
+        if (isRestoring) {
+            Base::Console().Warning("DVP::execute - No Sources (but document is restoring) - %s\n",
+                                getNameInDocument());
+        } else {
+            Base::Console().Error("Error: DVP::execute - No Source(s) linked. - %s\n",
+                                  getNameInDocument());
+        }
         return App::DocumentObject::StdReturn;
     }
 
-    TopoDS_Shape shape = getSourceShape();          //if shape is null, it is probably obj creation time.
+    TopoDS_Shape shape = getSourceShape();          //if shape is null, it is probably(?) obj creation time.
     if (shape.IsNull()) {
-        Base::Console().Log("DVP::execute - %s - source shape is invalid - creation time?\n",
-                            getNameInDocument());
+        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
+        if (isRestoring) {
+            Base::Console().Warning("DVP::execute - source shape is invalid - (but document is restoring) - %s\n",
+                                getNameInDocument());
+        } else {
+            Base::Console().Error("Error: DVP::execute - Source shape is Null. - %s\n",
+                                  getNameInDocument());
+        }
         return App::DocumentObject::StdReturn;
     }
 
@@ -331,6 +352,11 @@ void DrawViewPart::onChanged(const App::Property* prop)
 
 //TODO: when scale changes, any Dimensions for this View sb recalculated.  DVD should pick this up subject to topological naming issues.
 }
+
+//void DrawViewPart::onDocumentRestored()
+//{
+//    m_restoreComplete = true;
+//}
 
 //note: slightly different than routine with same name in DrawProjectSplit
 TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis)

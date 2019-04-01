@@ -136,6 +136,7 @@ public:
                                const bool flip=true) const;
 
     virtual short mustExecute() const;
+/*    virtual void onDocumentRestored() override;*/
 
     bool handleFaces(void);
     bool showSectionEdges(void);
@@ -184,6 +185,7 @@ protected:
 
 private:
     bool nowUnsetting;
+/*    bool m_restoreComplete;*/
 
 };
 
