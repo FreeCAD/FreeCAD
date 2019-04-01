@@ -403,32 +403,33 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
                                     getNameInDocument(),viewProjType);
             throw Base::TypeError("Error: new projection is not a DPGI!");
         }
-        addView(view);                            //from DrawViewCollection
-        view->Source.setValues( Source.getValues() );
-        view->Scale.setValue( getScale() );
-        view->Type.setValue( viewProjType );
-        view->Label.setValue( viewProjType );
-        view->Source.setValues( Source.getValues() );
-        if (strcmp(viewProjType, "Front") != 0 ) {  //not Front!
-            vecs = getDirsFromFront(view);
-            view->Direction.setValue(vecs.first);
-            view->RotationVector.setValue(vecs.second);
-            view->recomputeFeature();
-        } else {  //Front
-            Anchor.setValue(view);
-            Anchor.purgeTouched();
-            view->LockPosition.setValue(true);  //lock "Front" position within DPG (note not Page!).
-            view->LockPosition.setStatus(App::Property::ReadOnly,true); //Front should stay locked.
-            App::GetApplication().signalChangePropertyEditor(view->LockPosition);
-            view->LockPosition.purgeTouched();
-            requestPaint();   //make sure the group object is on the Gui page
+        if (view != nullptr) {                        //coverity CID 151722
+            addView(view);                            //from DrawViewCollection
+            view->Source.setValues( Source.getValues() );
+            view->Scale.setValue( getScale() );
+            view->Type.setValue( viewProjType );
+            view->Label.setValue( viewProjType );
+            view->Source.setValues( Source.getValues() );
+            if (strcmp(viewProjType, "Front") != 0 ) {  //not Front!
+                vecs = getDirsFromFront(view);
+                view->Direction.setValue(vecs.first);
+                view->RotationVector.setValue(vecs.second);
+                view->recomputeFeature();
+            } else {  //Front
+                Anchor.setValue(view);
+                Anchor.purgeTouched();
+                view->LockPosition.setValue(true);  //lock "Front" position within DPG (note not Page!).
+                view->LockPosition.setStatus(App::Property::ReadOnly,true); //Front should stay locked.
+                App::GetApplication().signalChangePropertyEditor(view->LockPosition);
+                view->LockPosition.purgeTouched();
+                requestPaint();   //make sure the group object is on the Gui page
+            }
+        //        addView(view);                            //from DrawViewCollection
+        //        if (view != getAnchor()) {                //anchor is done elsewhere
+        //            view->recomputeFeature();
+        //        }
         }
-//        addView(view);                            //from DrawViewCollection
-//        if (view != getAnchor()) {                //anchor is done elsewhere
-//            view->recomputeFeature();
-//        }
     }
-
     return view;
 }
 
