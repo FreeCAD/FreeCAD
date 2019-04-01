@@ -81,9 +81,9 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
             shellthickness_obj,
             fluidsection_obj,
             dir_name)
-        # self.dir_name does have a slash at the end
-        self.file_name = self.dir_name + 'z88'
-        FreeCAD.Console.PrintMessage('FemInputWriterZ88 --> self.dir_name  -->  ' + self.dir_name + '\n')
+        from os.path import join
+        self.file_name = join(self.dir_name, 'z88')
+        FreeCAD.Console.PrintLog('FemInputWriterZ88 --> self.dir_name  -->  ' + self.dir_name + '\n')
         FreeCAD.Console.PrintMessage('FemInputWriterZ88 --> self.file_name  -->  ' + self.file_name + '\n')
 
     def write_z88_input(self):
@@ -102,7 +102,8 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         self.write_z88_integration_properties()
         self.write_z88_memory_parameter()
         self.write_z88_solver_parameter()
-        FreeCAD.Console.PrintMessage("Writing time input file: " + str(time.clock() - timestart) + ' \n\n')
+        writing_time_string = "Writing time input file: " + str(round((time.clock() - timestart), 2)) + " seconds"
+        FreeCAD.Console.PrintMessage(writing_time_string + ' \n\n')
         return self.dir_name
 
     def set_z88_elparam(self):

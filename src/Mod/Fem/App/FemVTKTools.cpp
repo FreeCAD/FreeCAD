@@ -667,7 +667,7 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
     return resFCVecProp;
 }
 
-// see https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=30#p277434 for further informations in the regard of names etc
+// see https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=30#p277434 for further information regarding names etc...
 // some scalar list are not needed on VTK file export but they are needed for internal VTK pipeline
 // TODO some filter to only export the needed values to VTK file but have all in FreeCAD VTK pipline
 std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
@@ -689,10 +689,10 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     resFCScalProp["NodeStrainXZ"] = "Strain xz component";
     resFCScalProp["NodeStrainYZ"] = "Strain yz component";
     resFCScalProp["Peeq"] = "Equivalent Plastic Strain";
-    resFCScalProp["PrincipalMax"] = "Major Principal Stress",  // can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
-    resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress",  // can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE
-    resFCScalProp["PrincipalMin"] = "Minor Principal Stress",  // can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
-    resFCScalProp["StressValues"] = "von Mises Stress",
+    resFCScalProp["PrincipalMax"] = "Major Principal Stress";  // can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
+    resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress";  // can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE
+    resFCScalProp["PrincipalMin"] = "Minor Principal Stress";  // can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
+    resFCScalProp["StressValues"] = "von Mises Stress";
     resFCScalProp["Temperature"] = "Temperature";
 
     resFCScalProp["UserDefined"] = "UserDefinedMyName";  // this is empty or am I wrong ?!

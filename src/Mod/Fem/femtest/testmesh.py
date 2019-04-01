@@ -29,11 +29,14 @@ import unittest
 from . import utilstest as testtools
 from .utilstest import fcc_print
 
+from os.path import join
+
 
 class TestMeshCommon(unittest.TestCase):
     fcc_print('import TestMeshCommon')
 
     def setUp(self):
+        # init, is executed before every test
         self.doc_name = "TestMeshCommon"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
@@ -152,8 +155,8 @@ class TestMeshEleTetra10(unittest.TestCase):
         self.active_doc = FreeCAD.ActiveDocument
 
         self.elem = 'tetra10'
-        self.base_testfile = testtools.get_fem_test_home_dir() + 'mesh/' + self.elem + '_mesh.'
-        self.base_outfile = testtools.get_fem_test_tmp_dir() + '/' + self.elem + '_mesh.'
+        self.base_testfile = join(testtools.get_fem_test_home_dir(), 'mesh', (self.elem + '_mesh.'))
+        self.base_outfile = join(testtools.get_fem_test_tmp_dir(), (self.elem + '_mesh.'))
         # 10 node tetrahedron --> tetra10
         femmesh = Fem.FemMesh()
         femmesh.addNode(6, 12, 18, 1)
@@ -396,5 +399,6 @@ class TestMeshEleTetra10(unittest.TestCase):
         )
 
     def tearDown(self):
+        # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
         pass

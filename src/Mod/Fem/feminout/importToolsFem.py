@@ -232,7 +232,7 @@ def fill_femresult_mechanical(res_obj, result_set):
             Sxy = []
             Sxz = []
             Syz = []
-            for i, values_S in enumerate(stress.values()):  # values_S .. stresstuple .. (Sxx, Syy, Szz, Sxy, Sxz, Syz)
+            for i, values_S in enumerate(stress.values()):  # values_S .. stress_tensor .. (Sxx, Syy, Szz, Sxy, Sxz, Syz)
                 Sxx.append(values_S[0])
                 Syy.append(values_S[1])
                 Szz.append(values_S[2])
@@ -274,15 +274,17 @@ def fill_femresult_mechanical(res_obj, result_set):
             Peeq = result_set['peeq']
             if len(Peeq) > 0:
                 if len(Peeq.values()) != len(disp.values()):
+                    # how is this possible? An example is needed!
+                    FreeCAD.Console.PrintError('PEEQ seams to have exptra nodes.\n')
                     Pe = []
-                    Pe_extra_nodes = Peeq.values()
+                    Pe_extra_nodes = list(Peeq.values())
                     nodes = len(disp.values())
                     for i in range(nodes):
                         Pe_value = Pe_extra_nodes[i]
                         Pe.append(Pe_value)
                     res_obj.Peeq = Pe
                 else:
-                    res_obj.Peeq = Peeq.values()
+                    res_obj.Peeq = list(Peeq.values())
 
     # fill res_obj.Temperature if they exist
     # TODO, check if it is possible to have Temperature without disp, we would need to set NodeNumbers than
@@ -291,9 +293,11 @@ def fill_femresult_mechanical(res_obj, result_set):
         if len(Temperature) > 0:
             if len(Temperature.values()) != len(disp.values()):
                 Temp = []
-                Temp_extra_nodes = Temperature.values()
+                Temp_extra_nodes = list(Temperature.values())
                 nodes = len(disp.values())
                 for i in range(nodes):
+                    # how is this possible? An example is needed!
+                    FreeCAD.Console.PrintError('Temperature seams to have exptra nodes.\n')
                     Temp_value = Temp_extra_nodes[i]
                     Temp.append(Temp_value)
                 res_obj.Temperature = list(map((lambda x: x), Temp))

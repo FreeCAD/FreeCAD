@@ -237,9 +237,9 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
 static void findStyledSR (const Handle(StepVisual_StyledItem) &style,
                           Handle(StepShape_ShapeRepresentation)& aSR)
 {
-    // search Shape Represenatation for component styled item
+    // search Shape Representation for component styled item
     for (Standard_Integer j=1; j <= style->NbStyles(); j++) {
-        Handle(StepVisual_PresentationStyleByContext) PSA = 
+        Handle(StepVisual_PresentationStyleByContext) PSA =
             Handle(StepVisual_PresentationStyleByContext)::DownCast(style->StylesValue ( j ));
         if (PSA.IsNull())
             continue;

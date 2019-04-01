@@ -698,11 +698,12 @@ void QGIViewDimension::draw()
                 a1Dir = dirDim;
                 a2Dir = -dirDim;
             }
+
             if (fauxToDim1 < fauxToDim2)  {
                 dim1Tail = fauxCenter;
-                dim2Tail = dim2Tip;
+                dim2Tail = dim2Tip - tailLength*a2Dir;
             } else {
-                dim1Tail = dim1Tip;
+                dim1Tail = dim1Tip - tailLength*a1Dir;
                 dim2Tail = fauxCenter;
             }
         }

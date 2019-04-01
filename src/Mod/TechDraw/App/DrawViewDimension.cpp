@@ -427,9 +427,8 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
     }
 
     //TODO: if MeasureType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
-    requestPaint();
 
-    return App::DocumentObject::execute();
+    return DrawView::execute();
 }
 
 std::string  DrawViewDimension::getFormatedValue(bool obtuse)
@@ -502,13 +501,15 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         pos = 0;
         if ((pos = rxFormat.indexIn(specStr, 0)) != -1)  {
             match = rxFormat.cap(0);                                          //entire capture of rx
-
     #if QT_VERSION >= 0x050000
             specVal = QString::asprintf(Base::Tools::toStdString(match).c_str(),userValNum);
     #else
             QString qs2;
             specVal = qs2.sprintf(Base::Tools::toStdString(match).c_str(),userValNum);
     #endif
+        } else {       //printf format not found!
+            Base::Console().Warning("Warning - no numeric format in formatSpec - %s\n",getNameInDocument());
+            return Base::Tools::toStdString(specStr);
         }
 
         QString repl = userVal;
@@ -978,23 +979,30 @@ std::string DrawViewDimension::getDefaultFormatSpec() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    QString format1 = Base::Tools::fromStdString("%.");
-    QString format2 = Base::Tools::fromStdString("f");
-    int precision;
-    if (useDecimals()) {
-        precision = Base::UnitsApi::getDecimals();
-    } else {
-        precision = hGrp->GetInt("AltDecimals", 2);
-    }
-    QString formatPrecision = QString::number(precision);
-    
-    std::string prefix = getPrefix();
-    QString qPrefix;
-    if (!prefix.empty()) {
-        qPrefix = QString::fromUtf8(prefix.data(),prefix.size());
-    }
+    std::string prefFormat = hGrp->GetASCII("formatSpec","");
+    QString formatSpec;
+    if (prefFormat.empty()) {
+        QString format1 = Base::Tools::fromStdString("%.");
+        QString format2 = Base::Tools::fromStdString("f");
+        int precision;
+        if (useDecimals()) {
+            precision = Base::UnitsApi::getDecimals();
+        } else {
+            precision = hGrp->GetInt("AltDecimals", 2);
+        }
+        QString formatPrecision = QString::number(precision);
 
-    QString formatSpec = qPrefix + format1 + formatPrecision + format2;
+        std::string prefix = getPrefix();
+        QString qPrefix;
+        if (!prefix.empty()) {
+            qPrefix = QString::fromUtf8(prefix.data(),prefix.size());
+        }
+
+        formatSpec = qPrefix + format1 + formatPrecision + format2;
+    } else {
+        return prefFormat;
+    }
+    
     return Base::Tools::toStdString(formatSpec);
 }
 
