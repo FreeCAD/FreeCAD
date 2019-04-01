@@ -81,10 +81,10 @@ std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy(void)
     cpy->value = this->value;
     cpy->setName(this->getName());
 
-    #if defined(__GNUC__) && __GNUC__ < 7
-        return std::move(cpy); // GCC 4.8 bug
+    #if (defined(__GNUC__) && __GNUC__ < 7 ) || defined(_MSC_VER)
+        return std::move(cpy); // GCC 4.8 and MSC do not support automatic move constructor call if the compiler fails to elide
     #else
-        return cpy; // all the others use RVO optimization perfectly fine.
+        return cpy; // all the others do automatic move constructor if RVO optimization not possible.
     #endif
     // Advise from Scott Meyers Effective Modern c++:
     //
