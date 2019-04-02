@@ -24,6 +24,7 @@
 #define SKETCHER_EXTERNALGEOMETRYEXTENSION_H
 
 #include <Mod/Part/App/Geometry.h>
+#include <array>
 
 namespace Sketcher
 {
