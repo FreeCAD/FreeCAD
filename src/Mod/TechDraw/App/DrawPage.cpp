@@ -100,8 +100,10 @@ DrawPage::DrawPage(void)
         ADD_PROPERTY(ProjectionType, ((long)projType));
     }
 
-    ADD_PROPERTY_TYPE(Scale, (1.0), group, App::Prop_None, "Scale factor for this Page");
+    ADD_PROPERTY_TYPE(Scale, (1.0), group, (App::PropertyType)(App::Prop_None), "Scale factor for this Page");
     Scale.setConstraints(&scaleRange);
+    double defScale = hGrp->GetFloat("DefaultScale",1.0);
+    Scale.setValue(defScale);
 }
 
 DrawPage::~DrawPage()
