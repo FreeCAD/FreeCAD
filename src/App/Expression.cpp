@@ -448,7 +448,7 @@ Py::Object Expression::Component::get(const Expression *owner, const Py::Object 
             if(pyobj.isMapping())
                 return Py::Mapping(pyobj).getItem(index);
             else {
-                Py_ssize_t i = PyNumber_AsSsize_t(pyobj.ptr(), PyExc_IndexError);
+                Py_ssize_t i = PyNumber_AsSsize_t(index.ptr(), PyExc_IndexError);
                 if(PyErr_Occurred())
                     throw Py::Exception();
                 return Py::Sequence(pyobj).getItem(i);
