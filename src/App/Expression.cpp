@@ -107,7 +107,7 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
     throw _e;\
 }while(0)
 
-#define EXPR_PY_THROW(_expr) _EXPR_PY_THROW("Failed to evaluate",_expr)
+#define EXPR_PY_THROW(_expr) _EXPR_PY_THROW("",_expr)
 
 #define EXPR_THROW(_msg) _EXPR_THROW(_msg,this)
 
@@ -470,7 +470,7 @@ Py::Object Expression::Component::get(const Expression *owner, const Py::Object 
             return Py::asObject(res);
         }
     }catch(Py::Exception &) {
-        _EXPR_PY_THROW("",owner);
+        EXPR_PY_THROW(owner);
     }
 }
 
@@ -503,7 +503,7 @@ void Expression::Component::set(const Expression *owner, Py::Object &pyobj, cons
                 throw Py::Exception();
         }
     }catch(Py::Exception &) {
-        _EXPR_PY_THROW("",owner);
+        EXPR_PY_THROW(owner);
     }
 }
 
@@ -535,7 +535,7 @@ void Expression::Component::del(const Expression *owner, Py::Object &pyobj) cons
                 throw Py::Exception();
         }
     }catch(Py::Exception &) {
-        _EXPR_PY_THROW("",owner);
+        EXPR_PY_THROW(owner);
     }
 }
 
@@ -1010,7 +1010,7 @@ App::any Expression::getValueAsAny() const {
             pyobj = c->get(this,pyobj);
         return pyObjectToAny(pyobj);
     }catch(Py::Exception &) {
-        _EXPR_PY_THROW("",this);
+        EXPR_PY_THROW(this);
     }
 }
 
@@ -4285,7 +4285,7 @@ App::any ComprehensionExpression::_getValueAsAny() const {
     try {
         _calc(res,comps.begin());
     }catch(Py::Exception &) {
-        _EXPR_PY_THROW("",this);
+        EXPR_PY_THROW(this);
     }
     return pyObjectToAny(res,false);
 }
