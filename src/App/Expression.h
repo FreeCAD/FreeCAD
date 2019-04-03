@@ -157,7 +157,11 @@ public:
 
     virtual bool isTouched() const { return false; }
 
-    ExpressionPtr eval() const;
+    enum EvalOption {
+        OptionCallFrame = 1,
+        OptionPythonMode = 2,
+    };
+    ExpressionPtr eval(int options=0) const;
 
     bool isSame(const Expression &other) const;
 
@@ -187,12 +191,12 @@ public:
     ExpressionPtr copy() const;
 
     static ExpressionPtr parse(const App::DocumentObject * owner, 
-            const char* buffer, size_t len=0, bool verbose=false);
+            const char* buffer, size_t len=0, bool verbose=false, bool pythonMode=false);
 
     static ExpressionPtr parse(const App::DocumentObject * owner, 
-            const std::string &buffer, bool verbose=false) 
+            const std::string &buffer, bool verbose=false, bool pythonMode=false) 
     {
-        return parse(owner,buffer.c_str(),buffer.size(),verbose);
+        return parse(owner,buffer.c_str(),buffer.size(),verbose,pythonMode);
     }
 
     static ExpressionPtr parseUnit(const App::DocumentObject * owner, const char* buffer, size_t len=0);

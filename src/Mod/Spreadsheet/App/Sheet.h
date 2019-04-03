@@ -76,7 +76,7 @@ class SpreadsheetExport Sheet : public App::DocumentObject
 public:
     App::PropertyIntegerSet hiddenRows;
     App::PropertyIntegerSet hiddenColumns;
-
+    App::PropertyBool PythonMode;
 
     /// Constructor
     Sheet();
@@ -248,6 +248,8 @@ public:
     virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 
 protected:
+
+    virtual void onChanged(const App::Property *prop);
 
     void updateColumnsOrRows(bool horizontal, int section, int count) ;
 

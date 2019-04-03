@@ -46,6 +46,9 @@ public:
 
     ~PropertySheet();
 
+    App::ExpressionPtr eval(const App::Expression* expr) const;
+    App::ExpressionPtr parse(const char *txt, std::size_t len=0, bool verbose=false) const;
+
     virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
 
@@ -113,6 +116,8 @@ public:
     const std::set<App::CellAddress> & getDirty() { return dirty; }
 
     void setDirty(App::CellAddress address);
+
+    void setDirty();
 
     void clearDirty(App::CellAddress key) { dirty.erase(key); }
 

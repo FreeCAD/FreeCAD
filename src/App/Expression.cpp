@@ -678,7 +678,7 @@ struct EvalFrame {
     }
 
     static PyObject *getBuiltin(const std::string &name) {
-        static std::map<std::string,PyObject*> builtins;
+        static std::unordered_map<std::string,PyObject*> builtins;
         if(builtins.empty()) {
 #if PY_MAJOR_VERSION < 3
             PyObject *pymod = PyImport_ImportModule("__builtin__");
@@ -818,9 +818,9 @@ int Expression::priority() const {
 }
 
 ExpressionPtr Expression::parse(const DocumentObject *owner, 
-        const char *buffer, std::size_t len, bool verbose)
+        const char *buffer, std::size_t len, bool verbose, bool pythonMode)
 {
-    return ExpressionParser::parse(owner, buffer, len, verbose);
+    return ExpressionParser::parse(owner, buffer, len, verbose, pythonMode);
 }
 
 ExpressionPtr Expression::parseUnit(const DocumentObject *owner, const char *buffer, std::size_t len)
@@ -1026,7 +1026,14 @@ void Expression::visit(ExpressionVisitor &v) {
     v.visit(*this);
 }
 
-ExpressionPtr Expression::eval() const {
+ExpressionPtr Expression::eval(int options) const {
+    if(options) {
+        EvalFrame frame;
+        if(options & OptionPythonMode)
+            frame.pythonMode = true;
+        frame.push();
+        return eval();
+    }
     if(components.empty()) {
         ExpressionPtr res(_eval());
         if(res) 
@@ -1847,7 +1854,7 @@ public:
     }
 
 private:
-    std::map<std::string,PyObject*> modules;
+    std::unordered_map<std::string,PyObject*> modules;
     std::set<PyObject*> imports;
     ParameterGrp::handle handle;
 };
@@ -1918,8 +1925,8 @@ enum ExpressionFunctionType {
     LAST,
 };
 
-static std::map<std::string, int> registered_functions; 
-static std::map<int, std::string> registered_function_names; 
+static std::unordered_map<std::string, int> registered_functions; 
+static std::unordered_map<int, std::string> registered_function_names; 
 
 void init_functions() {
     bool inited = false;
@@ -5879,7 +5886,7 @@ struct Context {
     const char *input;
     YY_BUFFER_STATE lexer_buffer;
 
-    Context(const char *buf, std::size_t len, const DocumentObject *obj=0);
+    Context(const char *buf, std::size_t len, const DocumentObject *obj=0, bool pythonMode=false);
     ~Context();
 
     std::string getErrorContext(const std::string &msg);
@@ -5936,7 +5943,8 @@ void parser::error(const std::string& m) {
     throw parser::syntax_error(m);
 }
 
-Context::Context(const char *buf, std::size_t len, const DocumentObject *obj)
+Context::Context(const char *buf, std::size_t len, 
+        const DocumentObject *obj, bool pythonMode)
     :obj(obj),input(buf)
 {
     if(busy) {
@@ -5964,6 +5972,9 @@ Context::Context(const char *buf, std::size_t len, const DocumentObject *obj)
     // of reallocating an internal buffer stack, which we don't really use.
     yy_init = 0;
     yy_start = 0;
+
+    if(pythonMode)
+        BEGIN py_mode;
 }
 
 Context::~Context() {
@@ -6030,9 +6041,9 @@ std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string &st
   */
 
 ExpressionPtr parse(const App::DocumentObject *owner, 
-        const char* buffer, std::size_t len, bool verbose)
+        const char* buffer, std::size_t len, bool verbose, bool pythonMode)
 {
-    Context ctx(buffer,len, owner);
+    Context ctx(buffer,len, owner, pythonMode);
 
     ExpressionParser::parser parser(ctx);
 

@@ -91,6 +91,7 @@ Sheet::Sheet()
     ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Row heights");
     ADD_PROPERTY_TYPE(hiddenRows, (), "Spreadsheet", (PropertyType)(Prop_Hidden|Prop_Output), "Hidden rows");
     ADD_PROPERTY_TYPE(hiddenColumns, (), "Spreadsheet", (PropertyType)(Prop_Hidden|Prop_Output), "Hidden columns");
+    ADD_PROPERTY_TYPE(PythonMode, (false), "Spreadsheet", Prop_None, "Set default expression syntax mode");
 
     onRenamedDocumentConnection = GetApplication().signalRenameDocument.connect(boost::bind(&Spreadsheet::Sheet::onRenamedDocument, this, _1));
     onRelabledDocumentConnection = GetApplication().signalRelabelDocument.connect(boost::bind(&Spreadsheet::Sheet::onRelabledDocument, this, _1));
@@ -661,7 +662,7 @@ void Sheet::updateProperty(CellAddress key)
 
         if (input) {
             CurrentAddressLock lock(currentRow,currentCol,key);
-            output = input->eval();
+            output = cells.eval(input);
         }
         else {
             std::string s;
@@ -1498,6 +1499,14 @@ std::string Sheet::getColumn(int offset) const {
     txt[1] = (char)('A' + (col % 26));
     txt[2] = 0;
     return txt;
+}
+
+void Sheet::onChanged(const App::Property *prop) {
+    if(!isRestoring() && getDocument() && !getDocument()->isPerformingTransaction()) {
+        if(prop == &PythonMode) 
+            cells.setDirty();
+    }
+    App::DocumentObject::onChanged(prop);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

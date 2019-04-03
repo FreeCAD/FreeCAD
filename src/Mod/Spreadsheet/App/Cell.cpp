@@ -240,7 +240,7 @@ void Cell::setContent(const char * value)
         }
         if (*value == '=') {
             try {
-                expr = App::Expression::parse(owner->sheet(), value + 1, 0, true);
+                expr = owner->parse(value + 1, 0, true);
             }
             catch (Base::Exception & e) {
                 expr = App::StringExpression::create(owner->sheet(), value);
@@ -257,8 +257,8 @@ void Cell::setContent(const char * value)
                 expr = App::NumberExpression::create(owner->sheet(), Quantity(float_value));
             else {
                 try {
-                    expr = Expression::parse(owner->sheet(), value);
-                    expr->eval();
+                    expr = owner->parse(value);
+                    owner->eval(expr.get());
                 }
                 catch (Base::Exception &e) {
                     expr = App::StringExpression::create(owner->sheet(), value);

@@ -164,6 +164,27 @@ void PropertySheet::setDirty(CellAddress address)
     dirty.insert(address);
 }
 
+void PropertySheet::setDirty()
+{
+    dirty = getUsedCells();
+}
+
+App::ExpressionPtr PropertySheet::eval(const App::Expression *expr) const {
+    if(!expr)
+        return App::ExpressionPtr();
+    int option = App::Expression::OptionCallFrame;
+    if(owner && owner->PythonMode.getValue())
+        option |= App::Expression::OptionPythonMode;
+    return expr->eval(option);
+}
+
+App::ExpressionPtr PropertySheet::parse(const char *txt, std::size_t len, bool verbose) const {
+    bool pythonMode = false;
+    if(owner)
+        pythonMode = owner->PythonMode.getValue();
+    return App::Expression::parse(owner,txt,len,verbose,pythonMode);
+}
+
 Cell * PropertySheet::createCell(CellAddress address)
 {
     Cell * cell = new Cell(address, this);

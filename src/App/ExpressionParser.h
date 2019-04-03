@@ -1033,7 +1033,7 @@ protected:
 namespace ExpressionParser {
 
 AppExport ExpressionPtr parse(const App::DocumentObject *owner, 
-        const char *buffer, std::size_t len=0, bool verbose=false);
+        const char *buffer, std::size_t len=0, bool verbose=false, bool pythonMode=false);
 AppExport ExpressionPtr parseUnit(const App::DocumentObject *owner, const char *buffer, std::size_t len=0);
 AppExport ObjectIdentifier parsePath(const App::DocumentObject *owner, const char* buffer, std::size_t len=0);
 AppExport bool isTokenAnIndentifier(const std::string & str);
