@@ -98,5 +98,17 @@ The two angles are given in radian.
             </Documentation>
             <Parameter Name="Area" Type="Float"/>
         </Attribute>
+        <Attribute Name="AspectRatio" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The aspect ratio of the facet</UserDocu>
+            </Documentation>
+            <Parameter Name="AspectRatio" Type="Float"/>
+        </Attribute>
+        <Attribute Name="CircumCircle" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The center and radius of the circum-circle</UserDocu>
+            </Documentation>
+            <Parameter Name="CircumCircle" Type="Tuple"/>
+        </Attribute>
     </PythonExport>
 </GenerateModel>

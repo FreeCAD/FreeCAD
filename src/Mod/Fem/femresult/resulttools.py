@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import femtools.femutils as femutils
-from math import sqrt
+import numpy as np
 
 
 ## Removes all result objects and result meshes from an analysis group
@@ -262,6 +262,50 @@ def add_disp_apps(res_obj):
     return res_obj
 
 
+def add_von_mises(res_obj):
+    mstress = []
+    iterator = zip(
+        res_obj.NodeStressXX,
+        res_obj.NodeStressYY,
+        res_obj.NodeStressZZ,
+        res_obj.NodeStressXY,
+        res_obj.NodeStressXZ,
+        res_obj.NodeStressYZ
+    )
+    for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
+        mstress.append(calculate_von_mises((Sxx, Syy, Szz, Sxy, Sxz, Syz)))
+    res_obj.StressValues = mstress
+    FreeCAD.Console.PrintMessage('Added StressValues (von Mises).\n')
+    return res_obj
+
+
+def add_principal_stress(res_obj):
+    prinstress1 = []
+    prinstress2 = []
+    prinstress3 = []
+    shearstress = []
+    iterator = zip(
+        res_obj.NodeStressXX,
+        res_obj.NodeStressYY,
+        res_obj.NodeStressZZ,
+        res_obj.NodeStressXY,
+        res_obj.NodeStressXZ,
+        res_obj.NodeStressYZ
+    )
+    for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
+        prin1, prin2, prin3, shear = calculate_principal_stress((Sxx, Syy, Szz, Sxy, Sxz, Syz))
+        prinstress1.append(prin1)
+        prinstress2.append(prin2)
+        prinstress3.append(prin3)
+        shearstress.append(shear)
+    res_obj.PrincipalMax = prinstress1
+    res_obj.PrincipalMed = prinstress2
+    res_obj.PrincipalMin = prinstress3
+    res_obj.MaxShear = shearstress
+    FreeCAD.Console.PrintMessage('Added principal stress and max shear values.\n')
+    return res_obj
+
+
 def compact_result(res_obj):
     '''
     compacts result.Mesh and appropriate result.NodeNumbers
@@ -287,10 +331,43 @@ def compact_result(res_obj):
     return res_obj
 
 
+def calculate_von_mises(stress_tensor):
+    # Von mises stress: http://en.wikipedia.org/wiki/Von_Mises_yield_criterion
+    # simplification: https://forum.freecadweb.org/viewtopic.php?f=18&t=33974&p=296542#p296542
+    # stress_tensor ... (Sxx, Syy, Szz, Sxy, Sxz, Syz)
+    normal = stress_tensor[:3]
+    shear = stress_tensor[3:]
+    pressure = np.average(normal)
+    return np.sqrt(1.5 * np.linalg.norm(normal - pressure)**2 + 3.0 * np.linalg.norm(shear)**2)
+
+
+def calculate_principal_stress(stress_tensor):
+    s11 = stress_tensor[0]  # Sxx
+    s22 = stress_tensor[1]  # Syy
+    s33 = stress_tensor[2]  # Szz
+    s12 = stress_tensor[3]  # Sxy
+    s31 = stress_tensor[4]  # Sxz
+    s23 = stress_tensor[5]  # Syz
+    sigma = np.array([
+        [s11, s12, s31],
+        [s12, s22, s23],
+        [s31, s23, s33]
+    ])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
+
+    try:  # it will fail if NaN is inside the array, which can happen on Calculix frd result files
+        # compute principal stresses
+        eigvals = list(np.linalg.eigvalsh(sigma))
+        eigvals.sort()
+        eigvals.reverse()
+        maxshear = (eigvals[0] - eigvals[2]) / 2.0
+        return (eigvals[0], eigvals[1], eigvals[2], maxshear)
+    except:
+        return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
+    # TODO might be possible without a try except for NaN, https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
+
+
 def calculate_disp_abs(displacements):
-    disp_abs = []
-    for d in displacements:
-        disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
-    return disp_abs
+    # see https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=100#p296657
+    return [np.linalg.norm(nd) for nd in displacements]
 
 ##  @}

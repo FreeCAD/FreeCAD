@@ -6,6 +6,8 @@ SET(Arch_SRCS
     Init.py
     InitGui.py
     ArchComponent.py
+    ArchIFC.py
+    ArchIFCSchema.py
     ArchWall.py
     importIFC.py
     importIFClegacy.py
@@ -53,6 +55,10 @@ SET(Dice3DS_SRCS
 SET(Arch_presets
     Presets/profiles.csv
     Presets/pset_definitions.csv
+    Presets/ifc_products_IFC2X3.json
+    Presets/ifc_products_IFC4.json
+    Presets/ifc_types_IFC2X3.json
+    Presets/ifc_types_IFC4.json
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})
@@ -99,7 +105,6 @@ INSTALL(
         Presets
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Mod/Arch
-    FILES_MATCHING PATTERN "*.csv*"
 )
 INSTALL(
     FILES

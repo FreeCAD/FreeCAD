@@ -355,19 +355,20 @@ bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher
 }
 
 /// Makes a simple tangency constraint using extra point + tangent via point
-/// geom1 => an ellipse
+/// ellipse => an ellipse
 /// geom2 => any of an ellipse, an arc of ellipse, a circle, or an arc (of circle)
+/// geoId1 => geoid of the ellipse
+/// geoId2 => geoid of geom2
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
 void SketcherGui::makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
-                                             const Part::Geometry *geom1,
+                                             const Part::GeomEllipse *ellipse,
                                              const Part::Geometry *geom2,
                                              int geoId1,
                                              int geoId2
 )
 {
-    const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(geom1);
 
     Base::Vector3d center=ellipse->getCenter();
     double majord=ellipse->getMajorRadius();
@@ -421,19 +422,20 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 }
 
 /// Makes a simple tangency constraint using extra point + tangent via point
-/// geom1 => an arc of ellipse
+/// aoe => an arc of ellipse
 /// geom2 => any of an arc of ellipse, a circle, or an arc (of circle)
+/// geoId1 => geoid of the arc of ellipse
+/// geoId2 => geoid of geom2
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
 void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
-                                             const Part::Geometry *geom1,
+                                             const Part::GeomArcOfEllipse *aoe,
                                              const Part::Geometry *geom2,
                                              int geoId1,
                                              int geoId2
 )
 {
-    const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(geom1);
 
     Base::Vector3d center=aoe->getCenter();
     double majord=aoe->getMajorRadius();
@@ -485,19 +487,20 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* O
 }
 
 /// Makes a simple tangency constraint using extra point + tangent via point
-/// geom1 => an arc of hyperbola
+/// aoh => an arc of hyperbola
 /// geom2 => any of an arc of hyperbola, an arc of ellipse, a circle, or an arc (of circle)
+/// geoId1 => geoid of the arc of hyperbola
+/// geoId2 => geoid of geom2
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
 void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject* Obj,
-                                                       const Part::Geometry *geom1,
+                                                       const Part::GeomArcOfHyperbola *aoh,
                                                        const Part::Geometry *geom2,
                                                        int geoId1,
                                                        int geoId2
 )
 {
-    const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(geom1);
 
     Base::Vector3d center=aoh->getCenter();
     double majord=aoh->getMajorRadius();
@@ -567,25 +570,21 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject*
 }
 
 /// Makes a simple tangency constraint using extra point + tangent via point
-/// geom1 => an arc of parabola
+/// aop => an arc of parabola
 /// geom2 => any of an arc of parabola, an arc of hyperbola an arc of ellipse, a circle, or an arc (of circle)
+/// geoId1 => geoid of the arc of parabola
+/// geoId2 => geoid of geom2
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
 void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* Obj,
-                                                       const Part::Geometry *geom1,
+                                                       const Part::GeomArcOfParabola *aop,
                                                        const Part::Geometry *geom2,
                                                        int geoId1,
                                                        int geoId2
 )
 {
-    const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(geom1);
 
-    //Base::Vector3d center=aop->getCenter();
-
-    //Base::Vector3d dirx = aop->getXAxisDir();
-    //double phi=atan2(dirx.y, dirx.x);
-    //double df = aop->getFocal();
     Base::Vector3d focus = aop->getFocus();
 
     Base::Vector3d center2;
@@ -614,14 +613,8 @@ void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* 
     }
 
     Base::Vector3d direction = center2-focus;
-    /*double angle = atan2(direction.y,direction.x)-phi;
-    double tapprox = 4*df*tan(angle);*/
 
     Base::Vector3d PoP = focus + direction / 2;
-
-
-    /*Base::Vector3d(center.x + tapprox * tapprox / 4 / df * cos(phi) - tapprox * sin(phi),
-                                        center.y + tapprox * tapprox / 4 / df * sin(phi) + tapprox * cos(phi), 0);*/
 
     try {
         // Add a point
@@ -4623,19 +4616,22 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ) {
 
                     Gui::Command::openCommand("add tangent constraint point");
-                    makeTangentToEllipseviaNewPoint(Obj,geom1,geom2,GeoId1,GeoId2);
+                    makeTangentToEllipseviaNewPoint(Obj,static_cast<const Part::GeomEllipse *>(geom1), geom2,
+                                                    GeoId1, GeoId2);
                     getSelection().clearSelection();
                     return;
                 }
                 else if( geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ) {
                     Gui::Command::openCommand("add tangent constraint point");
-                    makeTangentToArcOfHyperbolaviaNewPoint(Obj,geom2,geom1,GeoId2,GeoId1);
+                    makeTangentToArcOfHyperbolaviaNewPoint(Obj, static_cast<const Part::GeomArcOfHyperbola *>(geom2),
+                                                           geom1, GeoId2, GeoId1);
                     getSelection().clearSelection();
                     return;
                 }
                 else if( geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
                     Gui::Command::openCommand("add tangent constraint point");
-                    makeTangentToArcOfParabolaviaNewPoint(Obj,geom2,geom1,GeoId2,GeoId1);
+                    makeTangentToArcOfParabolaviaNewPoint(Obj,static_cast<const Part::GeomArcOfParabola *>(geom2),
+                                                          geom1, GeoId2, GeoId1);
                     getSelection().clearSelection();
                     return;
                 }
@@ -4658,13 +4654,17 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId() ) {
 
                     Gui::Command::openCommand("add tangent constraint point");
-                    makeTangentToArcOfEllipseviaNewPoint(Obj,geom1,geom2,GeoId1,GeoId2);
+                    makeTangentToArcOfEllipseviaNewPoint(Obj,
+                                                         static_cast<const Part::GeomArcOfEllipse *>(geom1), geom2, GeoId1, GeoId2);
+
                     getSelection().clearSelection();
                     return;
                 }
                 else if( geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
                     Gui::Command::openCommand("add tangent constraint point");
-                    makeTangentToArcOfParabolaviaNewPoint(Obj,geom2,geom1,GeoId2,GeoId1);
+                    makeTangentToArcOfParabolaviaNewPoint(Obj,
+                                                          static_cast<const Part::GeomArcOfParabola *>(geom2),
+                                                          geom1, GeoId2, GeoId1);
                     getSelection().clearSelection();
                     return;
                 }
@@ -4687,13 +4687,17 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId() ) {
 
                     Gui::Command::openCommand("add tangent constraint point");
-                    makeTangentToArcOfHyperbolaviaNewPoint(Obj,geom1,geom2,GeoId1,GeoId2);
+                    makeTangentToArcOfHyperbolaviaNewPoint(Obj,
+                                                           static_cast<const Part::GeomArcOfHyperbola *>(geom1),
+                                                           geom2, GeoId1, GeoId2);
                     getSelection().clearSelection();
                     return;
                 }
                 else if( geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
                     Gui::Command::openCommand("add tangent constraint point");
-                    makeTangentToArcOfParabolaviaNewPoint(Obj,geom2,geom1,GeoId2,GeoId1);
+                    makeTangentToArcOfParabolaviaNewPoint(Obj,
+                                                          static_cast<const Part::GeomArcOfParabola *>(geom2),
+                                                          geom1, GeoId2, GeoId1);
                     getSelection().clearSelection();
                     return;
                 }
@@ -4718,7 +4722,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId() ) {
 
                     Gui::Command::openCommand("add tangent constraint point");
-                    makeTangentToArcOfParabolaviaNewPoint(Obj,geom1,geom2,GeoId1,GeoId2);
+                    makeTangentToArcOfParabolaviaNewPoint(Obj, static_cast<const Part::GeomArcOfParabola *>(geom1),
+                                                          geom2, GeoId1, GeoId2);
                     getSelection().clearSelection();
                     return;
                 }
@@ -4797,19 +4802,22 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
                 geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ) {
 
                 Gui::Command::openCommand("add tangent constraint point");
-                makeTangentToEllipseviaNewPoint(Obj,geom1,geom2,GeoId1,GeoId2);
+                makeTangentToEllipseviaNewPoint(Obj, static_cast<const Part::GeomEllipse *>(geom1),
+                                                geom2, GeoId1, GeoId2);
                 getSelection().clearSelection();
                 return;
             }
             else if( geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ) {
                 Gui::Command::openCommand("add tangent constraint point");
-                makeTangentToArcOfHyperbolaviaNewPoint(Obj,geom2,geom1,GeoId2,GeoId1);
+                makeTangentToArcOfHyperbolaviaNewPoint(Obj, static_cast<const Part::GeomArcOfHyperbola *>(geom2),
+                                                       geom1, GeoId2, GeoId1);
                 getSelection().clearSelection();
                 return;
             }
             else if( geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
                 Gui::Command::openCommand("add tangent constraint point");
-                makeTangentToArcOfParabolaviaNewPoint(Obj,geom2,geom1,GeoId2,GeoId1);
+                makeTangentToArcOfParabolaviaNewPoint(Obj, static_cast<const Part::GeomArcOfParabola *>(geom2),
+                                                      geom1, GeoId2, GeoId1);
                 getSelection().clearSelection();
                 return;
             }
@@ -4832,13 +4840,15 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
                 geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId() ) {
 
                 Gui::Command::openCommand("add tangent constraint point");
-                makeTangentToArcOfHyperbolaviaNewPoint(Obj,geom1,geom2,GeoId1,GeoId2);
+                makeTangentToArcOfHyperbolaviaNewPoint(Obj, static_cast<const Part::GeomArcOfHyperbola *>(geom1),
+                                                       geom2, GeoId1, GeoId2);
                 getSelection().clearSelection();
                 return;
             }
             else if( geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
                 Gui::Command::openCommand("add tangent constraint point");
-                makeTangentToArcOfParabolaviaNewPoint(Obj,geom2,geom1,GeoId2,GeoId1);
+                makeTangentToArcOfParabolaviaNewPoint(Obj, static_cast<const Part::GeomArcOfParabola *>(geom2),
+                                                      geom1, GeoId2, GeoId1);
                 getSelection().clearSelection();
                 return;
             }
@@ -4863,7 +4873,8 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
                 geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId() ) {
 
                 Gui::Command::openCommand("add tangent constraint point");
-                makeTangentToArcOfParabolaviaNewPoint(Obj,geom1,geom2,GeoId1,GeoId2);
+                makeTangentToArcOfParabolaviaNewPoint(Obj, static_cast<const Part::GeomArcOfParabola *>(geom1),
+                                                      geom2, GeoId1, GeoId2);
                 getSelection().clearSelection();
                 return;
             }

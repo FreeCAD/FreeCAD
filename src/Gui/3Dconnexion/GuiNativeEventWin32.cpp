@@ -1,3 +1,24 @@
+/***************************************************************************
+ *   Copyright (c) 2018 Torsten Sadowski <tsadowski[at]gmx.net>            *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
 
 /*
 Development tools and related technology provided under license from 3Dconnexion.
@@ -15,17 +36,23 @@ http://www.3dconnexion.com/forum/viewtopic.php?f=19&t=4968&sid=72c018bdcf0e6edc9
 */
 
 #include "PreCompiled.h"
+#include <FCConfig.h>
+
+#include "GuiNativeEventWin32.h"
 
 #include <QGlobalStatic>
 #include <QMainWindow>
 #include <QWidget>
-#include <FCConfig.h>
 #include <Base/Console.h>
 #include "GuiApplicationNativeEventAware.h"
-#include "SpaceballEvent.h"
+#if QT_VERSION >= 0x050000
+  #include "GuiRawInputEventFilter.h"
+#endif // #if QT_VERSION >= 0x050000
+
+Gui::GuiNativeEvent* Gui::GuiNativeEvent::gMouseInput = 0;
+
 
 // Windows dependencies, enumerators and global variables
-#ifdef _USE_3DCONNEXION_SDK
 
 #include <QApplication>
 #include <windows.h>
@@ -151,6 +178,41 @@ static const struct tag_VirtualKeys _3dmouseVirtualKeys[]=
    , const_cast<e3dmouse_virtual_key *>(SpaceMouseWirelessReceiverKeys)
 };
 
+Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
+: GuiAbstractNativeEvent(app)
+{
+}
+
+Gui::GuiNativeEvent::~GuiNativeEvent()
+{
+    if (gMouseInput == this) {
+        gMouseInput = 0;
+        Base::Console().Log("3Dconnexion device detached.\n");
+    }
+}
+
+void Gui::GuiNativeEvent::initSpaceball(QMainWindow *mainWindow)
+{
+    mainApp->setSpaceballPresent(Is3dmouseAttached());
+
+    if (mainApp->isSpaceballPresent()) {
+        fLast3dmouseInputTime = 0;
+
+        if (InitializeRawInput((HWND)mainWindow->winId())){
+            gMouseInput = this;
+#if QT_VERSION >= 0x050000
+            qApp->installNativeEventFilter(new Gui::RawInputEventFilter(Gui::GuiNativeEvent::RawInputEventFilter));
+#else
+            qApp->setEventFilter(Gui::GuiNativeEvent::RawInputEventFilter);
+#endif
+            Base::Console().Log("3Dconnexion device initialized.\n");
+        } else {
+            Base::Console().Log("3Dconnexion device is attached, but not initialized.\n");
+        }
+    } else {
+        Base::Console().Log("3Dconnexion device not attached.\n");
+    }
+}
 
 // Methods for windows events
 
@@ -185,7 +247,7 @@ unsigned short HidToVirtualKey(unsigned long pid, unsigned short hidKeyCode)
 }
 
 
-bool Gui::GUIApplicationNativeEventAware::RawInputEventFilter(void* msg, long* result)
+bool Gui::GuiNativeEvent::RawInputEventFilter(void* msg, long* result)
 {
 	if (gMouseInput == 0) return false;
 
@@ -207,7 +269,7 @@ bool Gui::GUIApplicationNativeEventAware::RawInputEventFilter(void* msg, long* r
 /*!
 	Access the mouse parameters structure
 */
-I3dMouseParam& Gui::GUIApplicationNativeEventAware::MouseParams()
+I3dMouseParam& Gui::GuiNativeEvent::MouseParams()
 {
 	return f3dMouseParams;
 }
@@ -215,7 +277,7 @@ I3dMouseParam& Gui::GUIApplicationNativeEventAware::MouseParams()
 /*!
 	Access the mouse parameters structure
 */
-const I3dMouseParam& Gui::GUIApplicationNativeEventAware::MouseParams() const
+const I3dMouseParam& Gui::GuiNativeEvent::MouseParams() const
 {
 	return f3dMouseParams;
 }
@@ -225,30 +287,18 @@ const I3dMouseParam& Gui::GUIApplicationNativeEventAware::MouseParams() const
 
 	The default implementation emits a Move3d signal with the motion data
 */
-void Gui::GUIApplicationNativeEventAware::Move3d(HANDLE device, std::vector<float>& motionData)
+void Gui::GuiNativeEvent::Move3d(HANDLE device, std::vector<float>& motionData)
 {
 	Q_UNUSED(device);
 	
-	QWidget *currentWidget = this->focusWidget();
-    if (!currentWidget)
-        currentWidget = mainWindow;
-
-    motionDataArray[0] = ceil(motionData[0]);
+    motionDataArray[0] = -ceil(motionData[0]);
     motionDataArray[1] = ceil(motionData[1]);
     motionDataArray[2] = ceil(motionData[2]);
-    motionDataArray[3] = ceil(motionData[3]);
+    motionDataArray[3] = -ceil(motionData[3]);
     motionDataArray[4] = ceil(motionData[4]);
     motionDataArray[5] = ceil(motionData[5]);
 
-    if (!setOSIndependentMotionData()) return;
-    importSettings();
-
-    Spaceball::MotionEvent *motionEvent = new Spaceball::MotionEvent();
-
-    motionEvent->setTranslations(motionDataArray[0], motionDataArray[1], motionDataArray[2]);
-    motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);
-
-    this->postEvent(currentWidget, motionEvent);
+    mainApp->postMotionEvent(motionDataArray);
 }
 
 /*!
@@ -256,18 +306,11 @@ void Gui::GUIApplicationNativeEventAware::Move3d(HANDLE device, std::vector<floa
 
 	The default implementation emits a On3dmouseKeyDown signal with the key code.
 */
-void Gui::GUIApplicationNativeEventAware::On3dmouseKeyDown(HANDLE device, int virtualKeyCode)
+void Gui::GuiNativeEvent::On3dmouseKeyDown(HANDLE device, int virtualKeyCode)
 {
 	Q_UNUSED(device);
     
-    QWidget *currentWidget = this->focusWidget();
-    if (!currentWidget)
-        currentWidget = mainWindow;
-
-    Spaceball::ButtonEvent *buttonEvent = new Spaceball::ButtonEvent();
-    buttonEvent->setButtonNumber(virtualKeyCode - 1);
-    buttonEvent->setButtonStatus(Spaceball::BUTTON_PRESSED);
-    this->postEvent(currentWidget, buttonEvent);
+    mainApp->postButtonEvent(virtualKeyCode - 1, 1);
 }
 
 /*!
@@ -275,18 +318,11 @@ void Gui::GUIApplicationNativeEventAware::On3dmouseKeyDown(HANDLE device, int vi
 
 	The default implementation emits a On3dmouseKeyUp signal with the key code.
 */
-void Gui::GUIApplicationNativeEventAware::On3dmouseKeyUp(HANDLE device, int virtualKeyCode)
+void Gui::GuiNativeEvent::On3dmouseKeyUp(HANDLE device, int virtualKeyCode)
 {
 	Q_UNUSED(device);
     
-    QWidget *currentWidget = this->focusWidget();
-    if (!currentWidget)
-        currentWidget = mainWindow;
-
-    Spaceball::ButtonEvent *buttonEvent = new Spaceball::ButtonEvent();
-    buttonEvent->setButtonNumber(virtualKeyCode - 1);
-    buttonEvent->setButtonStatus(Spaceball::BUTTON_RELEASED);
-    this->postEvent(currentWidget, buttonEvent);
+    mainApp->postButtonEvent(virtualKeyCode - 1, 0);
 }
 
 /*!
@@ -313,7 +349,7 @@ static PRAWINPUTDEVICE GetDevicesToRegister(unsigned int* pNumDevices)
 /*!
 	Detect the 3D mouse
 */
-bool Gui::GUIApplicationNativeEventAware::Is3dmouseAttached()
+bool Gui::GuiNativeEvent::Is3dmouseAttached()
 {
 	unsigned int numDevicesOfInterest = 0;
 	PRAWINPUTDEVICE devicesToRegister = GetDevicesToRegister(&numDevicesOfInterest);
@@ -360,7 +396,7 @@ bool Gui::GUIApplicationNativeEventAware::Is3dmouseAttached()
 
 	This needs to be called initially so that Windows will send the messages from the 3D mouse to the window.
 */
-bool Gui::GUIApplicationNativeEventAware::InitializeRawInput(HWND hwndTarget)
+bool Gui::GuiNativeEvent::InitializeRawInput(HWND hwndTarget)
 {
 	fWindow = hwndTarget;
 
@@ -397,7 +433,7 @@ bool Gui::GUIApplicationNativeEventAware::InitializeRawInput(HWND hwndTarget)
 	when running as Wow64 (copied directly from 3DConnexion code)
 */
 
-UINT Gui::GUIApplicationNativeEventAware::GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT cbSizeHeader)
+UINT Gui::GuiNativeEvent::GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT cbSizeHeader)
 {
 #ifdef _WIN64
 	return ::GetRawInputBuffer(pData, pcbSize, cbSizeHeader);
@@ -457,7 +493,7 @@ UINT Gui::GUIApplicationNativeEventAware::GetRawInputBuffer(PRAWINPUT pData, PUI
 	finally calling the Move3d method.
 */
 
-void Gui::GUIApplicationNativeEventAware::On3dmouseInput()
+void Gui::GuiNativeEvent::On3dmouseInput()
 {
 	// Don't do any data processing in background
 	bool bIsForeground = (::GetActiveWindow() != NULL);
@@ -589,7 +625,7 @@ void Gui::GUIApplicationNativeEventAware::On3dmouseInput()
 /*!
 	Called when new raw input data is available
 */
-void Gui::GUIApplicationNativeEventAware::OnRawInput(UINT nInputCode, HRAWINPUT hRawInput)
+void Gui::GuiNativeEvent::OnRawInput(UINT nInputCode, HRAWINPUT hRawInput)
 {
 	const size_t cbSizeOfBuffer=1024;
 	BYTE pBuffer[cbSizeOfBuffer];
@@ -633,7 +669,7 @@ void Gui::GUIApplicationNativeEventAware::OnRawInput(UINT nInputCode, HRAWINPUT 
 
 
 
-bool Gui::GUIApplicationNativeEventAware::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawInput)
+bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawInput)
 {
 	bool bIsForeground = (nInputCode == RIM_INPUT);
 
@@ -794,7 +830,7 @@ bool Gui::GUIApplicationNativeEventAware::TranslateRawInputData(UINT nInputCode,
 #define CHECK(exp)		{ if(!(exp)) goto Error; }
 #define SAFE_FREE(p)	{ if(p) { HeapFree(hHeap, 0, p); (p) = NULL; } }
 
-bool Gui::GUIApplicationNativeEventAware::ParseRawInput(UINT nInputCode, PRAWINPUT pRawInput)
+bool Gui::GuiNativeEvent::ParseRawInput(UINT nInputCode, PRAWINPUT pRawInput)
 {
     bool processed = false;
     bool bIsForeground = (nInputCode == RIM_INPUT);
@@ -934,4 +970,4 @@ Error:
     return processed;
 }
 
-#endif // _USE_3DCONNEXION_SDK
+#include "3Dconnexion/moc_GuiNativeEventWin32.cpp"

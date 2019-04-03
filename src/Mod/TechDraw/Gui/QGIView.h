@@ -47,12 +47,13 @@ class QGCustomText;
 class QGICaption;
 class MDIViewPage;
 class QGIViewClip;
+class QGCustomImage;
 
 class TechDrawGuiExport  QGIView : public QGraphicsItemGroup
 {
 public:
     QGIView();
-    virtual ~QGIView() = default;
+    virtual ~QGIView();
 
     enum {Type = QGraphicsItem::UserType + 101};
     int type() const override { return Type;}
@@ -100,6 +101,9 @@ public:
     
     static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
     MDIViewPage* getMDIViewPage(void) const;
+    // Mouse handling
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    boost::signals2::signal<void (QGIView*, QPointF)> signalSelectPoint;
 
 protected:
     QGIView* getQGIVByName(std::string name);
@@ -107,7 +111,6 @@ protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     // Mouse handling
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     // Preselection events:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
@@ -139,7 +142,11 @@ protected:
     QGCustomLabel* m_label;
     QGCustomBorder* m_border;
     QGICaption* m_caption;
+    QGCustomImage* m_lock;
     QPen m_decorPen;
+    double m_lockWidth;
+    double m_lockHeight;
+
 };
 
 } // namespace

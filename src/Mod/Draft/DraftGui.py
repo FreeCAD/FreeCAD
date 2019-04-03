@@ -39,6 +39,8 @@ This is the GUI part of the Draft module.
 Report to Draft.py for info
 '''
 
+import six
+
 import FreeCAD, FreeCADGui, os, Draft, sys, DraftVecUtils, math
 
 try:
@@ -47,10 +49,7 @@ except ImportError:
     FreeCAD.Console.PrintMessage("Error: Python-pyside package must be installed on your system to use the Draft module.")
 
 try:
-    if sys.version_info.major >= 3:
-        _encoding = None
-    else:
-        _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtGui.QApplication.UnicodeUTF8 if six.PY2 else None
     def translate(context, text, utf8_decode=True):
         """convenience function for Qt translator
             context: str
@@ -61,7 +60,7 @@ try:
                 if set to true utf8 encoded unicode will be returned. This option does not have influence
                 on python3 as for python3 we are returning utf-8 encoded unicode by default!
         """
-        if sys.version_info.major >= 3:
+        if six.PY3:
             return QtGui.QApplication.translate(context, text, None)
         elif utf8_decode:
             return QtGui.QApplication.translate(context, text, None, _encoding)
@@ -79,7 +78,7 @@ except AttributeError:
                 if set to true utf8 encoded unicode will be returned. This option does not have influence
                 on python3 as for python3 we are returning utf-8 encoded unicode by default!
         """
-        if sys.version_info.major >= 3:
+        if six.PY3:
             return QtGui.QApplication.translate(context, text, None)
         elif QtCore.qVersion() > "4":
             if utf8_decode:
@@ -153,12 +152,12 @@ class todo:
                     wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
                     FreeCAD.Console.PrintWarning (wrn)
         except ReferenceError:
-            print ("Debug: DraftGui.todo.doTasks: queue contains a deleted object, skipping")
+            print("Debug: DraftGui.todo.doTasks: queue contains a deleted object, skipping")
         todo.itinerary = []
         if todo.commitlist:
             for name,func in todo.commitlist:
-                if sys.version_info.major < 3:
-                    if isinstance(name,unicode):
+                if six.PY2:
+                    if isinstance(name,six.text_type):
                         name = name.encode("utf8")
                 #print("debug: committing ",str(name))
                 try:
@@ -367,6 +366,7 @@ class DraftToolBar:
         self.uiloader = FreeCADGui.UiLoader()
         self.autogroup = None
         self.isCenterPlane = False
+        self.lastMode = None
         
         if self.taskmode:
             # add only a dummy widget, since widgets are created on demand
@@ -514,6 +514,7 @@ class DraftToolBar:
         self.sharpButton = self._pushbutton("sharpButton", self.layout, icon="Draft_BezSharpNode", width=22, checkable=True)
         self.tangentButton = self._pushbutton("tangentButton", self.layout, icon="Draft_BezTanNode", width=22, checkable=True)
         self.symmetricButton = self._pushbutton("symmetricButton", self.layout, icon="Draft_BezSymNode", width=22, checkable=True)
+        self.arc3PtButton = self._pushbutton("arc3PtButton", self.layout, icon="Draft_Arc", width=22, checkable=True)
 
         # point
 
@@ -658,6 +659,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.sharpButton,QtCore.SIGNAL("toggled(bool)"),self.setSharpMode)
         QtCore.QObject.connect(self.tangentButton,QtCore.SIGNAL("toggled(bool)"),self.setTangentMode)
         QtCore.QObject.connect(self.symmetricButton,QtCore.SIGNAL("toggled(bool)"),self.setSymmetricMode)
+        QtCore.QObject.connect(self.arc3PtButton,QtCore.SIGNAL("toggled(bool)"),self.setArc3PtMode)
         QtCore.QObject.connect(self.finishButton,QtCore.SIGNAL("pressed()"),self.finish)
         QtCore.QObject.connect(self.closeButton,QtCore.SIGNAL("pressed()"),self.closeLine)
         QtCore.QObject.connect(self.wipeButton,QtCore.SIGNAL("pressed()"),self.wipeLine)
@@ -802,6 +804,7 @@ class DraftToolBar:
         self.sharpButton.setToolTip(translate("draft", "Make Bezier node sharp"))
         self.tangentButton.setToolTip(translate("draft", "Make Bezier node tangent"))
         self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
+        self.arc3PtButton.setToolTip(translate("draft", "Toggle radius and angles arc editing"))
         self.undoButton.setText(translate("draft", "&Undo (CTRL+Z)"))
         self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
         self.closeButton.setText(translate("draft", "Close")+" ("+inCommandShortcuts["Close"][0]+")")
@@ -1068,6 +1071,7 @@ class DraftToolBar:
             self.sharpButton.hide()
             self.tangentButton.hide()
             self.symmetricButton.hide()
+            self.arc3PtButton.hide()
             self.undoButton.hide()
             self.closeButton.hide()
             self.wipeButton.hide()
@@ -1198,6 +1202,7 @@ class DraftToolBar:
         self.makeDumbTask(extra,callback)
 
     def editUi(self, mode=None):
+        self.lastMode=mode
         self.taskUi(translate("draft", "Edit"))
         self.hideXYZ()
         self.numFaces.hide()
@@ -1205,18 +1210,26 @@ class DraftToolBar:
         self.hasFill.hide()
         self.addButton.show()
         self.delButton.show()
-        if mode == 'BezCurve':
+        if mode == 'Wire':
+            self.setEditButtons(True)
+            self.setBezEditButtons(False)
+        elif mode == 'Arc':
+            self.addButton.hide()
+            self.delButton.hide()
+            self.arc3PtButton.show()
+        elif mode == 'BezCurve':
             self.sharpButton.show()
             self.tangentButton.show()
             self.symmetricButton.show()
-        self.finishButton.show()
         self.closeButton.show()
+        self.finishButton.show()
         # always start Edit with buttons unchecked
         self.addButton.setChecked(False)
         self.delButton.setChecked(False)
         self.sharpButton.setChecked(False)
         self.tangentButton.setChecked(False)
         self.symmetricButton.setChecked(False)
+        self.arc3PtButton.setChecked(False)
 
     def extUi(self):
         self.hasFill.show()
@@ -1978,6 +1991,10 @@ class DraftToolBar:
             self.tangentButton.setChecked(False)
             self.addButton.setChecked(False)
             self.delButton.setChecked(False)
+
+    def setArc3PtMode(self,bool):
+        if self.arc3PtButton.isChecked():
+            self.arc3PtButton.setChecked(True)
 
     def setRadiusValue(self,val,unit=None):
         #print("DEBUG: setRadiusValue val: ", val, " unit: ", unit)

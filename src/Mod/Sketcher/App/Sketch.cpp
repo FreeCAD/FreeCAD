@@ -3844,12 +3844,6 @@ TopoShape Sketch::toShape(void) const
             builder.Add(comp, *wt);
         result.setShape(comp);
     }
-    // FIXME: if free edges are left over its probably better to
-    // create a compound with the closed structures and let the
-    // features decide what to do with it...
-    if (edge_list.size() > 0)
-        Base::Console().Warning("Left over edges in Sketch. Only closed structures will be propagated at the moment!\n");
-
 #endif
 
     return result;

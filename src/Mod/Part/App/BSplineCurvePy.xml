@@ -246,7 +246,7 @@ to the pole of index Index in the poles table.</UserDocu>
 		</Methode>
         <Methode Name="getPolesAndWeights" Const="true">
 			<Documentation>
-				<UserDocu>Returns the table of poles and weights in homogenous ccordinates.</UserDocu>
+				<UserDocu>Returns the table of poles and weights in homogeneous coordinates.</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="getResolution" Const="true">

@@ -37,7 +37,7 @@ def shapeset(shapelst):
     return set([shape.hashCode() for shape in shapelst])
 
 def mostbasiccompound(comp):
-    '''searches fo the most basic shape in a Compound'''
+    '''searches for the most basic shape in a Compound'''
     solids=shapeset(comp.Solids)
     shells=shapeset(comp.Shells)
     faces=shapeset(comp.Faces)

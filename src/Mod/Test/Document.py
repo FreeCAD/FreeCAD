@@ -1344,6 +1344,19 @@ class DocumentPropertyCases(unittest.TestCase):
     self.Obj.recompute()
     self.Doc.abortTransaction()
 
+  def testRemovePropertyExpression(self):
+    p1 = self.Doc.addObject("App::FeaturePython", "params1")
+    p2 = self.Doc.addObject("App::FeaturePython", "params2")
+    p1.addProperty("App::PropertyFloat", "a")
+    p1.a = 42
+    p2.addProperty("App::PropertyFloat", "b")
+    p2.setExpression('b', u'params1.a')
+    self.Doc.recompute()
+    p2.removeProperty("b")
+    p1.touch()
+    self.Doc.recompute()
+    self.assertTrue(not p2 in p1.InList)
+
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument("PropertyTests")

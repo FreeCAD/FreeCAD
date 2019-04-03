@@ -36,6 +36,7 @@ import femtools.femutils as femutils
 from PySide import QtCore
 if FreeCAD.GuiUp:
     from PySide import QtGui
+    import FemGui
 
 
 class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
@@ -47,27 +48,48 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     #  @param analysis - analysis object to be used as the core object.
     #  @param test_mode - True indicates that no real calculations will take place, so ccx binary is not required. Used by test module.
     #  "__init__" tries to use current active analysis in analysis is left empty.
-    #  Rises exception if analysis is not set and there is no active analysis
+    #  Raises exception if analysis is not set and there is no active analysis
     def __init__(self, analysis=None, solver=None, test_mode=False):
+
         QtCore.QRunnable.__init__(self)
         QtCore.QObject.__init__(self)
+
+        ## @var analysis
+        #  FEM analysis - the core object. Has to be present.
+        #  It's set to analysis passed in "__init__" or set to current active analysis by default if nothing has been passed to "__init__".
+        self.analysis = None
+        ## @var solver
+        #  solver of the analysis. Used to store the active solver and analysis parameters
+        self.solver = None
+
         if analysis:
-            ## @var analysis
-            #  FEM analysis - the core object. Has to be present.
-            #  It's set to analysis passed in "__init__" or set to current active analysis by default if nothing has been passed to "__init__".
             self.analysis = analysis
+            if solver:
+                # analysis and solver given
+                self.solver = solver
+            else:
+                # analysis given, search for the solver
+                self.find_solver()
+                if not self.solver:
+                    raise Exception('FEM: No solver found!')
         else:
-            self.find_analysis()
-            if not self.analysis:
-                raise Exception('FEM: No active analysis found!')
-        if solver:
-            ## @var solver
-            #  solver of the analysis. Used to store the active solver and analysis parameters
-            self.solver = solver
-        else:
-            self.find_solver()
-            if not self.solver:
-                raise Exception('FEM: No solver found!')
+            if solver:
+                # solver given, searche for the analysis
+                self.solver = solver
+                self.find_solver_analysis()
+                if not self.analysis:
+                    raise Exception('FEM: The solver was given as parameter, but no analysis for this solver was found!')
+            else:
+                # neither analysis nor solver given, search both
+                self.find_analysis()
+                if not self.analysis:
+                    raise Exception('FEM: No solver was given and either no active analysis or no analysis at all or more than one analysis found!')
+                self.find_solver()
+                if not self.solver:
+                    raise Exception('FEM: No solver found!')
+
+        # print(self.solver)
+        # print(self.analysis)
         if self.analysis and self.solver:
             self.working_dir = ''
             self.ccx_binary = ''
@@ -85,7 +107,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.ccx_binary_present = False
             self.result_object = None
         else:
-            raise Exception('FEM: Somthing went wront, the exception should have been raised earlier!')
+            raise Exception('FEM: Something went wrong, the exception should have been raised earlier!')
 
     ## Removes all result objects and result meshes from an analysis group
     #  @param self The python object self
@@ -110,8 +132,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         return femutils.get_several_member(self.analysis, obj_type)
 
     def find_analysis(self):
-        import FemGui
-        self.analysis = FemGui.getActiveAnalysis()
+        if FreeCAD.GuiUp:
+            self.analysis = FemGui.getActiveAnalysis()
         if self.analysis:
             return
         found_analysis = False
@@ -121,9 +143,19 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     self.analysis = m
                     found_analysis = True
                 else:
-                    self.analysis = None
+                    self.analysis = None  # more than one analysis
         if self.analysis:
-            FemGui.setActiveAnalysis(self.analysis)
+            if FreeCAD.GuiUp:
+                FemGui.setActiveAnalysis(self.analysis)
+
+    def find_solver_analysis(self):
+        # get the analysis the solver is in
+        if self.solver.getParentGroup():
+            obj = self.solver.getParentGroup()
+            if femutils.is_of_type(obj, "Fem::FemAnalysis"):
+                self.analysis = obj
+                if FreeCAD.GuiUp:
+                    FemGui.setActiveAnalysis(self.analysis)
 
     def find_solver(self):
         found_solver_for_use = False
@@ -456,67 +488,79 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if inp_file_name is not None:
             self.inp_file_name = inp_file_name
         else:
-            # self.working_dir does have a slash at the end
-            self.inp_file_name = self.working_dir + self.base_name + '.inp'
+            self.inp_file_name = os.path.join(self.working_dir, (self.base_name + '.inp'))
 
     ## Sets working dir for solver execution. Called with no working_dir uses WorkingDir from FEM preferences
     #  @param self The python object self
-    #  @working_dir directory to be used for writing solver input file or files and executing solver
-    def setup_working_dir(self, working_dir=None):
-        if working_dir is not None:
-            self.working_dir = working_dir
+    #  param_working_dir directory to be used for writing solver input file or files and executing solver
+    def setup_working_dir(self, param_working_dir=None, create=False):
+        self.working_dir = ''
+        # try to use given working dir or overwrite with solver working dir
+        fem_general_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        if param_working_dir is not None:
+            self.working_dir = param_working_dir
+            if self.check_working_dir() is not True:
+                if create is True:
+                    FreeCAD.Console.PrintMessage("Dir given as parameter \'{}\' doesn't exist.\n".format(self.working_dir))
+                    pass
+                else:
+                    FreeCAD.Console.PrintError("Dir given as parameter \'{}\' doesn't exist and create parameter is set to False.\n".format(self.working_dir))
+                    self.working_dir = femutils.get_pref_working_dir(self.solver)
+                    FreeCAD.Console.PrintMessage("Dir \'{}\' will be used instead.\n".format(self.working_dir))
+        elif fem_general_prefs.GetBool("OverwriteSolverWorkingDirectory", True) is False:
+            self.working_dir = self.solver.WorkingDir
+            if self.check_working_dir() is not True:
+                FreeCAD.Console.PrintError("Dir from solver object \'{}\' doesn't exist.\n".format(self.working_dir))
+                self.working_dir = femutils.get_pref_working_dir(self.solver)
+                FreeCAD.Console.PrintMessage("Dir \'{}\' will be used instead.\n".format(self.working_dir))
         else:
-            self.working_dir = ''
-            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
-            if self.fem_prefs.GetString("WorkingDir"):  # if working dir in prefs is not empty
-                if self.solver.WorkingDir != '':
-                    # we use error message to get it red, but it is not an error
-                    FreeCAD.Console.PrintError('The solver working directory will be overwritten by the FEM preferences working dir.\n')
-                try:
-                    self.working_dir = self.fem_prefs.GetString("WorkingDir")
-                except:
-                    FreeCAD.Console.PrintError('Could not set working directory to FEM Preferences working directory.\n')
-            else:
-                FreeCAD.Console.PrintMessage('FEM preferences working dir setting is empty, the solver working directory is used.\n')
-                if self.solver.WorkingDir:
-                    try:
-                        self.working_dir = self.solver.WorkingDir
-                    except:
-                        FreeCAD.Console.PrintError('Could not set working directory to solver working directory.\n')
+            self.working_dir = femutils.get_pref_working_dir(self.solver)
 
         # check working_dir exist, if not use a tmp dir and inform the user
-        use_tmp_dir = False
-        if self.working_dir == '':
-            FreeCAD.Console.PrintError("All working Dir settings are empty: \'{}\'.\n".format(self.working_dir))
-            use_tmp_dir = True
-        if not (os.path.isdir(self.working_dir)):
-            FreeCAD.Console.PrintError("Working directory: \'{}\' doesn't exist.\n".format(self.working_dir))
-            use_tmp_dir = True
-        if use_tmp_dir is True:
-            from tempfile import gettempdir
-            self.working_dir = gettempdir()
+        if self.check_working_dir() is not True:
+            FreeCAD.Console.PrintError("Dir \'{}\' doesn't exist or cannot be created.\n".format(self.working_dir))
+            from femsolver.run import _getTempDir
+            self.working_dir = _getTempDir(self.solver)
             FreeCAD.Console.PrintMessage("Dir \'{}\' will be used instead.\n".format(self.working_dir))
-        FreeCAD.Console.PrintMessage('FemToolsCCx.setup_working_dir()  -->  self.working_dir = ' + self.working_dir + '\n')
-
-        # check working_dir has a slash at the end, if not add one
-        self.working_dir = os.path.join(self.working_dir, '')
 
         # Update inp file name
         self.set_inp_file_name()
+
+    def check_working_dir(self):
+        # check if working_dir exist, if not use a tmp dir and inform the user
+        # print(self.working_dir)
+        if os.path.isdir(self.working_dir):
+            return True
+        else:
+            return False
 
     def write_inp_file(self):
         import femsolver.calculix.writer as iw
         self.inp_file_name = ""
         try:
             inp_writer = iw.FemInputWriterCcx(
-                self.analysis, self.solver,
-                self.mesh, self.materials_linear, self.materials_nonlinear,
-                self.fixed_constraints, self.displacement_constraints,
-                self.contact_constraints, self.planerotation_constraints, self.transform_constraints,
-                self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
-                self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
-                self.beam_sections, self.beam_rotations, self.shell_thicknesses, self.fluid_sections,
-                self.working_dir)
+                self.analysis,
+                self.solver,
+                self.mesh,
+                self.materials_linear,
+                self.materials_nonlinear,
+                self.fixed_constraints,
+                self.displacement_constraints,
+                self.contact_constraints,
+                self.planerotation_constraints,
+                self.transform_constraints,
+                self.selfweight_constraints,
+                self.force_constraints,
+                self.pressure_constraints,
+                self.temperature_constraints,
+                self.heatflux_constraints,
+                self.initialtemperature_constraints,
+                self.beam_sections,
+                self.beam_rotations,
+                self.shell_thicknesses,
+                self.fluid_sections,
+                self.working_dir
+            )
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
             FreeCAD.Console.PrintError("Unexpected error when writing CalculiX input file: {}\n".format(sys.exc_info()[0]))
@@ -536,11 +580,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 ccx_path = FreeCAD.getHomePath() + "bin/ccx.exe"
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetString("ccxBinaryPath", ccx_path)
                 self.ccx_binary = ccx_path
-            elif system() == "Linux":
+            elif system() in ("Linux", "Darwin"):
                 p1 = subprocess.Popen(['which', 'ccx'], stdout=subprocess.PIPE)
                 if p1.wait() == 0:
                     if sys.version_info.major >= 3:
-                        ccx_path = str(p1.stdout.read()).split('\n')[0]
+                        ccx_path = p1.stdout.read().decode("utf8").split('\n')[0]
                     else:
                         ccx_path = p1.stdout.read().split('\n')[0]
                 elif p1.wait() == 1:
@@ -611,32 +655,30 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         import multiprocessing
         self.ccx_stdout = ""
         self.ccx_stderr = ""
-        if self.inp_file_name != "" and self.ccx_binary_present:
-            ont_backup = os.environ.get('OMP_NUM_THREADS')
-            self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-            num_cpu_pref = self.ccx_prefs.GetInt("AnalysisNumCPUs", 1)  # If number of CPU's specified
-            if not ont_backup:
-                ont_backup = str(num_cpu_pref)
-            if num_cpu_pref > 1:
-                _env = os.putenv('OMP_NUM_THREADS', str(num_cpu_pref))  # if user picked a number use that instead
-            else:
-                _env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
-            # change cwd because ccx may crash if directory has no write permission
-            # there is also a limit of the length of file names so jump to the document directory
-            cwd = QtCore.QDir.currentPath()
-            f = QtCore.QFileInfo(self.inp_file_name)
-            QtCore.QDir.setCurrent(f.path())
-            p = subprocess.Popen([self.ccx_binary, "-i ", f.baseName()],
-                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                 shell=False, env=_env)
-            self.ccx_stdout, self.ccx_stderr = p.communicate()
-            if sys.version_info.major >= 3:
-                self.ccx_stdout = self.ccx_stdout.decode()
-                self.ccx_stderr = self.ccx_stderr.decode()
-            os.putenv('OMP_NUM_THREADS', ont_backup)
-            QtCore.QDir.setCurrent(cwd)
-            return p.returncode
-        return -1
+        ont_backup = os.environ.get('OMP_NUM_THREADS')
+        self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+        num_cpu_pref = self.ccx_prefs.GetInt("AnalysisNumCPUs", 1)  # If number of CPU's specified
+        if not ont_backup:
+            ont_backup = str(num_cpu_pref)
+        if num_cpu_pref > 1:
+            _env = os.putenv('OMP_NUM_THREADS', str(num_cpu_pref))  # if user picked a number use that instead
+        else:
+            _env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
+        # change cwd because ccx may crash if directory has no write permission
+        # there is also a limit of the length of file names so jump to the document directory
+        cwd = QtCore.QDir.currentPath()
+        f = QtCore.QFileInfo(self.inp_file_name)
+        QtCore.QDir.setCurrent(f.path())
+        p = subprocess.Popen([self.ccx_binary, "-i ", f.baseName()],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             shell=False, env=_env)
+        self.ccx_stdout, self.ccx_stderr = p.communicate()
+        if sys.version_info.major >= 3:
+            self.ccx_stdout = self.ccx_stdout.decode()
+            self.ccx_stderr = self.ccx_stderr.decode()
+        os.putenv('OMP_NUM_THREADS', ont_backup)
+        QtCore.QDir.setCurrent(cwd)
+        return p.returncode
 
     def get_ccx_version(self):
         self.setup_ccx()
@@ -661,13 +703,23 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         return (int(m.group(1)), int(m.group(2)))
 
     def ccx_run(self):
-        self.setup_ccx()
+        FreeCAD.Console.PrintMessage("Run CalculiX ...\n")
         if self.test_mode:
             FreeCAD.Console.PrintError("CalculiX can not be run if test_mode is True.\n")
             return
-        ret_code = 0
+        self.setup_ccx()
+        if self.ccx_binary_present is False:
+            error_message = (
+                "FEM: CalculiX binary ccx \'{}\' not found. "
+                "Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.\n"
+                .format(self.ccx_binary)
+            )
+            if FreeCAD.GuiUp:
+                QtGui.QMessageBox.critical(None, "No CalculiX binary ccx", error_message)
+            raise Exception(error_message)
         progress_bar = FreeCAD.Base.ProgressIndicator()
-        progress_bar.start("Running CalculiX ccx...", 0)
+        progress_bar.start("Everything seams fine. CalculiX ccx will be executed ...", 0)
+        ret_code = 0
         ret_code = self.start_ccx()
         self.finished.emit(ret_code)
         progress_bar.stop()
@@ -839,5 +891,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf['eigenmode']:
                             m.EigenmodeFrequency = mf['frequency']
+
+
+class CcxTools(FemToolsCcx):
+
+    def __init__(self, solver=None):
+        FemToolsCcx.__init__(self, None, solver)
 
 ##  @}

@@ -190,6 +190,9 @@
         <property name="text">
          <string>Set &quot;Move with host&quot; property to True by default</string>
         </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>MoveWithHost</cstring>
         </property>
@@ -197,6 +200,85 @@
          <cstring>Mod/Arch</cstring>
         </property>
        </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_5">
+        <property name="text">
+         <string>Set &quot;Move base&quot; property to True by default</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MoveBase</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <spacer name="horizontalSpacer_11">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>IFC version</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_12">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBox">
+          <property name="toolTip">
+           <string>The IFC version will change which attributes and products are supported</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>IfcVersion</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>IFC4</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>IFC2X3</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -678,6 +760,11 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

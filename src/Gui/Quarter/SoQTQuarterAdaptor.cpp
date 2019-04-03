@@ -218,8 +218,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)
     SbBool oldisperspective = cam ? cam->getTypeId().isDerivedFrom(perspectivetype) : false;
     SbBool newisperspective = type.isDerivedFrom(perspectivetype);
 
-    if((oldisperspective && newisperspective) ||
-       (!oldisperspective && !newisperspective)) // Same old, same old..
+    if (oldisperspective == newisperspective) // Same old, same old..
         return;
 
 

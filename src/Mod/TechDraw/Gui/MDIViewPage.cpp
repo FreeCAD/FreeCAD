@@ -75,6 +75,7 @@
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawViewCollection.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
@@ -86,6 +87,7 @@
 #include "QGIView.h"
 #include "QGIViewPart.h"
 #include "QGIViewDimension.h"
+#include "QGIViewBalloon.h"
 #include "QGIViewClip.h"
 #include "QGIVertex.h"
 #include "QGIEdge.h"
@@ -161,6 +163,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     //when restoring, it is possible for a Dimension to be loaded before the ViewPart it applies to
     //therefore we need to make sure parentage of the graphics representation is set properly. bit of a kludge.
     setDimensionGroups();
+    setBalloonGroups();
 
     App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
@@ -200,6 +203,23 @@ void MDIViewPage::setDimensionGroups(void)
             if (parent) {
                 QGIViewDimension* dim = dynamic_cast<QGIViewDimension*>((*itInspect));
                 m_view->addDimToParent(dim,parent);
+            }
+        }
+    }
+}
+
+void MDIViewPage::setBalloonGroups(void)
+{
+    const std::vector<QGIView *> &allItems = m_view->getViews();
+    std::vector<QGIView *>::const_iterator itInspect;
+    int balloonItemType = QGraphicsItem::UserType + 140;
+
+    for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
+        if (((*itInspect)->type() == balloonItemType) && (!(*itInspect)->group())) {
+            QGIView* parent = m_view->findParent((*itInspect));
+            if (parent) {
+                QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>((*itInspect));
+                m_view->addBalloonToParent(balloon,parent);
             }
         }
     }
@@ -293,6 +313,9 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) ) {
         qview = m_view->addViewDimension( static_cast<TechDraw::DrawViewDimension *>(obj) );
+
+    } else if (typeId.isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()) ) {
+        qview = m_view->addViewBalloon( static_cast<TechDraw::DrawViewBalloon *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId()) ) {
         qview = m_view->addDrawViewAnnotation( static_cast<TechDraw::DrawViewAnnotation *>(obj) );
@@ -498,11 +521,9 @@ bool MDIViewPage::onMsg(const char *pMsg, const char **)
         return true;
     } else if (strcmp("Save", pMsg) == 0 ) {
         doc->save();
-        Gui::Command::updateActive();
         return true;
     } else if (strcmp("SaveAs", pMsg) == 0 ) {
         doc->saveAs();
-        Gui::Command::updateActive();
         return true;
     } else if (strcmp("Undo", pMsg) == 0 ) {
         doc->undo(1);

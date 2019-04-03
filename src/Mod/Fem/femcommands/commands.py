@@ -46,7 +46,7 @@ class _CommandFemAnalysis(CommandManager):
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeAnalysis(FreeCAD.ActiveDocument, 'Analysis')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.ActiveObject)")
-        # create a CalculiX ccx tools solver for any new analysis, to be on the save side fo rnew users
+        # create a CalculiX ccx tools solver for any new analysis, to be on the safe side for new users
         FreeCADGui.doCommand("ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)")
         FreeCAD.ActiveDocument.recompute()
@@ -761,39 +761,8 @@ class _CommandFemSolverRun(CommandManager):
         self.is_active = 'with_solver'
 
     def Activated(self):
-        import femsolver.run
-        from PySide import QtGui
-
-        self.solver = self.selobj
-        if self.solver.Proxy.Type == 'Fem::FemSolverCalculixCcxTools':
-            print('CalxuliX ccx tools solver!')
-            from femtools import ccxtools
-            self.fea = ccxtools.FemToolsCcx(None, self.solver)
-            self.fea.reset_mesh_purge_results_checked()
-            self.fea.run()
-        else:
-            print('Frame work solver!')
-            try:
-                machine = femsolver.run.getMachine(self.solver)
-            except femsolver.run.MustSaveError:
-                QtGui.QMessageBox.critical(
-                    FreeCADGui.getMainWindow(),
-                    "Can't start Solver",
-                    "Please save the file before executing the solver. "
-                    "This must be done because the location of the working "
-                    "directory is set to \"Beside .FCStd File\".")
-                return
-            except femsolver.run.DirectoryDoesNotExist:
-                QtGui.QMessageBox.critical(
-                    FreeCADGui.getMainWindow(),
-                    "Can't start Solver",
-                    "Selected working directory doesn't exist.")
-                return
-            if not machine.running:
-                machine.reset()
-                machine.target = femsolver.run.RESULTS
-                machine.start()
-                machine.join()  # wait for the machine to finish.
+        from femsolver.run import run_fem_solver
+        run_fem_solver(self.selobj)
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 

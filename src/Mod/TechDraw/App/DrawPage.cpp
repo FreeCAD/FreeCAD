@@ -49,6 +49,7 @@
 #include "DrawViewCollection.h"
 #include "DrawViewPart.h"
 #include "DrawViewDimension.h"
+#include "DrawViewBalloon.h"
 
 #include <Mod/TechDraw/App/DrawPagePy.h>  // generated from DrawPagePy.xml
 
@@ -255,8 +256,9 @@ int DrawPage::addView(App::DocumentObject *docObj)
         return -1;
     DrawView* view = static_cast<DrawView*>(docObj);
 
-    //position all new views in center of Page (exceptDVDimension)
-    if (!docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+      //position all new views in center of Page (exceptDVDimension)
+    if (!docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) &&
+        !docObj->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())) {
         view->X.setValue(getPageWidth()/2.0);
         view->Y.setValue(getPageHeight()/2.0);
     }

@@ -1090,43 +1090,37 @@ void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid, const Base::ViewPr
     // Precompute the polygon's bounding box
     Base::BoundBox2d clPolyBBox = rclPoly.CalcBoundBox();
 
-    // Falls true, verwende Grid auf Mesh, um Suche zu beschleunigen
-    if (bInner)
-    {
+    // if true use grid on mesh to speed up search
+    if (bInner) {
         BoundBox3f clBBox3d;
         BoundBox2d clViewBBox;
         std::vector<unsigned long> aulAllElements;
-        // Iterator fuer die zu durchsuchenden B-Boxen des Grids
+        // iterator for the bounding box grids
         MeshGridIterator clGridIter(rclGrid);
-        // alle B-Boxen durchlaufen und die Facets speichern
-        for (clGridIter.Init(); clGridIter.More(); clGridIter.Next())
-        {
+        for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
             clBBox3d = clGridIter.GetBoundBox();
             clViewBBox = clBBox3d.ProjectBox(&fixedProj);
-            if (clViewBBox.Intersect(clPolyBBox))
-            {
-                // alle Elemente in AllElements sammeln
+            if (clViewBBox.Intersect(clPolyBBox)) {
+                // collect all elements in aulAllElements
                 clGridIter.GetElements(aulAllElements);
             }
         }
-        // doppelte Elemente wieder entfernen
+
+        // remove duplicates
         std::sort(aulAllElements.begin(), aulAllElements.end());
         aulAllElements.erase(std::unique(aulAllElements.begin(), aulAllElements.end()), aulAllElements.end());
 
-        Base::SequencerLauncher seq( "Check facets", aulAllElements.size() );
+        Base::SequencerLauncher seq("Check facets", aulAllElements.size());
 
-        for (it = aulAllElements.begin(); it != aulAllElements.end(); ++it)
-        {
+        for (it = aulAllElements.begin(); it != aulAllElements.end(); ++it) {
             bNoPointInside = true;
             clGravityOfFacet.Set(0.0f, 0.0f, 0.0f);
             MeshGeomFacet rclFacet = _rclMesh.GetFacet(*it);
-            for (int j=0; j<3; j++)
-            {
+            for (int j=0; j<3; j++) {
                 clPt2d = fixedProj(rclFacet._aclPoints[j]);
                 clGravityOfFacet += clPt2d;
-                if ((clPolyBBox.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)) &&
-                    rclPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y))) ^ !bInner)
-                {
+                if (clPolyBBox.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)) &&
+                    rclPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y))) {
                     raulFacets.push_back(*it);
                     bNoPointInside = false;
                     break;
@@ -1134,30 +1128,25 @@ void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid, const Base::ViewPr
             }
 
             // if no facet point is inside the polygon then check also the gravity
-            if (bNoPointInside == true)
-            {
-              clGravityOfFacet *= 1.0f/3.0f;
+            if (bNoPointInside) {
+                clGravityOfFacet *= 1.0f/3.0f;
 
-              if ((clPolyBBox.Contains(Base::Vector2d(clGravityOfFacet.x, clGravityOfFacet.y)) &&
-                  rclPoly.Contains(Base::Vector2d(clGravityOfFacet.x, clGravityOfFacet.y))) ^ !bInner)
-                  raulFacets.push_back(*it);
+                if (clPolyBBox.Contains(Base::Vector2d(clGravityOfFacet.x, clGravityOfFacet.y)) &&
+                    rclPoly.Contains(Base::Vector2d(clGravityOfFacet.x, clGravityOfFacet.y)))
+                    raulFacets.push_back(*it);
             }
 
             seq.next();
         }
     }
-    // Dreiecke ausserhalb schneiden, dann alles durchsuchen
-    else
-    {
+    // When cutting triangles outside then go through all elements
+    else {
         Base::SequencerLauncher seq("Check facets", _rclMesh.CountFacets());
-        for (clIter.Init(); clIter.More(); clIter.Next())
-        {
-            for (int j=0; j<3; j++)
-            {
+        for (clIter.Init(); clIter.More(); clIter.Next()) {
+            for (int j=0; j<3; j++) {
                 clPt2d = fixedProj(clIter->_aclPoints[j]);
                 if ((clPolyBBox.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)) &&
-                     rclPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y))) ^ !bInner)
-                {
+                     rclPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y))) == false) {
                     raulFacets.push_back(clIter.Position());
                     break;
                 }
@@ -1807,6 +1796,16 @@ void MeshRefPointToFacets::AddNeighbour(unsigned long pos, unsigned long facet)
 void MeshRefPointToFacets::RemoveNeighbour(unsigned long pos, unsigned long facet)
 {
     _map[pos].erase(facet);
+}
+
+void MeshRefPointToFacets::RemoveFacet(unsigned long facetIndex)
+{
+    unsigned long p0, p1, p2;
+    _rclMesh.GetFacetPoints(facetIndex, p0, p1, p2);
+
+    _map[p0].erase(facetIndex);
+    _map[p1].erase(facetIndex);
+    _map[p2].erase(facetIndex);
 }
 
 //----------------------------------------------------------------------------

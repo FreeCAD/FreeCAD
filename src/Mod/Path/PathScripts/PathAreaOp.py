@@ -249,6 +249,16 @@ class ObjectOp(PathOp.ObjectOp):
 
         shapes = self.areaOpShapes(obj)
 
+        jobs = [{
+            'x': s[0].BoundBox.XMax,
+            'y': s[0].BoundBox.YMax,
+            'shape': s
+        } for s in shapes]
+
+        jobs = PathUtils.sort_jobs(jobs, ['x', 'y'])
+
+        shapes = [j['shape'] for j in jobs]
+
         sims = []
         for (shape, isHole) in shapes:
             try:

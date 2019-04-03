@@ -285,13 +285,11 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
         }
     }
 
-    if (pcActiveBody) {
-        copyVisual(FeatName.c_str(), "ShapeColor", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "PointColor", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "Transparency", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "DisplayMode", pcActiveBody->getNameInDocument());
-    }
+    copyVisual(FeatName.c_str(), "ShapeColor", pcActiveBody->getNameInDocument());
+    copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());
+    copyVisual(FeatName.c_str(), "PointColor", pcActiveBody->getNameInDocument());
+    copyVisual(FeatName.c_str(), "Transparency", pcActiveBody->getNameInDocument());
+    copyVisual(FeatName.c_str(), "DisplayMode", pcActiveBody->getNameInDocument());
 
     Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());
 }

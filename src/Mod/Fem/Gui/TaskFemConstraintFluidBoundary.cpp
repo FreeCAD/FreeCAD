@@ -863,8 +863,7 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
         //Reverse control is done at BoundaryType selection, this UI is hidden from user
         //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s", name.c_str(), boundary->getReverse() ? "True" : "False");
 
-        std::string scale = "1";
-        scale = boundary->getScale();  //OvG: determine modified scale
+        std::string scale = boundary->getScale();  //OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
 
         // solver specific setting, physical model selection

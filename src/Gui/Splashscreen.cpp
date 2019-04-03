@@ -26,12 +26,14 @@
 # include <cstdlib>
 # include <QApplication>
 # include <QClipboard>
+# include <QDesktopWidget>
 # include <QDesktopServices>
 # include <QDialogButtonBox>
 # include <QLocale>
 # include <QMutex>
 # include <QTextBrowser>
 # include <QProcess>
+# include <QProcessEnvironment>
 # include <QSysInfo>
 # include <QTextStream>
 # include <QWaitCondition>
@@ -245,7 +247,20 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
 
     setModal(true);
     ui->setupUi(this);
-    ui->labelSplashPicture->setPixmap(getMainWindow()->splashImage());
+    QRect rect = QApplication::desktop()->availableGeometry();
+    QPixmap image = getMainWindow()->splashImage();
+
+    // Make sure the image is not too big
+    if (image.height() > rect.height()/2 || image.width() > rect.width()/2) {
+        float scale = static_cast<float>(image.width()) / static_cast<float>(image.height());
+        int width = std::min(image.width(), rect.width()/2);
+        int height = std::min(image.height(), rect.height()/2);
+        height = std::min(height, static_cast<int>(width / scale));
+        width = static_cast<int>(scale * height);
+
+        image = image.scaled(width, height);
+    }
+    ui->labelSplashPicture->setPixmap(image);
 //    if (showLic) { // currently disabled. Additional license blocks are always shown.
         QString info(QLatin1String("SUCH DAMAGES.<hr/>"));
         // any additional piece of text to be added after the main license text goes below.
@@ -724,7 +739,26 @@ void AboutDialog::on_copyButton_clicked()
     QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
     QString build  = QString::fromLatin1(config["BuildRevision"].c_str());
-    str << "OS: " << SystemInfo::getOperatingSystem() << endl;
+    
+    QString deskEnv = QProcessEnvironment::systemEnvironment().value(QString::fromLatin1("XDG_CURRENT_DESKTOP"),QString::fromLatin1(""));
+    QString deskSess = QProcessEnvironment::systemEnvironment().value(QString::fromLatin1("DESKTOP_SESSION"),QString::fromLatin1(""));
+    QString deskInfo = QString::fromLatin1("");
+    
+    if (!(deskEnv == QString::fromLatin1("") && deskSess == QString::fromLatin1("")))
+    {
+        if (deskEnv == QString::fromLatin1("") || deskSess == QString::fromLatin1(""))
+        {
+            deskInfo = QString::fromLatin1(" (") + deskEnv + deskSess + QString::fromLatin1(")");
+
+        }
+        else
+        {
+            deskInfo = QString::fromLatin1(" (") + deskEnv + QString::fromLatin1("/") + deskSess + QString::fromLatin1(")");
+        }
+    }
+    
+    str << "OS: " << SystemInfo::getOperatingSystem() << deskInfo << endl;
+    
     int wordSize = SystemInfo::getWordSizeOfOS();
     if (wordSize > 0) {
         str << "Word size of OS: " << wordSize << "-bit" << endl;

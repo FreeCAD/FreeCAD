@@ -96,6 +96,7 @@ SET(TDTest_SRCS
     TDTest/DVDimensionTest.py
     TDTest/DVPartTest.py
     TDTest/DVSectionTest.py
+    TDTest/DVBalloonTest.py
 )
 
 SET(TDTestFile_SRCS

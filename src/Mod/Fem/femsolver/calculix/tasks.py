@@ -61,15 +61,28 @@ class Prepare(run.Prepare):
         self.pushStatus("Preparing input files...\n")
         c = _Container(self.analysis)
         w = writer.FemInputWriterCcx(
-            self.analysis, self.solver, c.mesh, c.materials_linear,
-            c.materials_nonlinear, c.fixed_constraints,
-            c.displacement_constraints, c.contact_constraints,
-            c.planerotation_constraints, c.transform_constraints,
-            c.selfweight_constraints, c.force_constraints,
-            c.pressure_constraints, c.temperature_constraints,
-            c.heatflux_constraints, c.initialtemperature_constraints,
-            c.beam_sections, c.beam_rotations, c.shell_thicknesses, c.fluid_sections,
-            self.directory)
+            self.analysis,
+            self.solver,
+            c.mesh,
+            c.materials_linear,
+            c.materials_nonlinear,
+            c.constraints_fixed,
+            c.constraints_displacement,
+            c.constraints_contact,
+            c.constraints_planerotation,
+            c.constraints_transform,
+            c.constraints_selfweight,
+            c.constraints_force,
+            c.constraints_pressure,
+            c.constraints_temperature,
+            c.constraints_heatflux,
+            c.constraints_initialtemperature,
+            c.beam_sections,
+            c.beam_rotations,
+            c.shell_thicknesses,
+            c.fluid_sections,
+            self.directory
+        )
         path = w.write_calculix_input_file()
         # report to user if task succeeded
         if path != "":
@@ -86,7 +99,7 @@ class Solve(run.Solve):
             # TODO do not run solver, do not try to read results in a smarter way than an Exception
             raise Exception('Error on writing CalculiX input file.\n')
         self.pushStatus("Executing solver...\n")
-        binary = settings.getBinary("Calculix")
+        binary = settings.get_binary("Calculix")
         self._process = subprocess.Popen(
             [binary, "-i", _inputFileName],
             cwd=self.directory,
@@ -166,21 +179,23 @@ class _Container(object):
         # get member
         self.materials_linear = self.get_several_member('Fem::Material')
         self.materials_nonlinear = self.get_several_member('Fem::MaterialMechanicalNonlinear')
-        self.fixed_constraints = self.get_several_member('Fem::ConstraintFixed')
-        self.selfweight_constraints = self.get_several_member('Fem::ConstraintSelfWeight')
-        self.force_constraints = self.get_several_member('Fem::ConstraintForce')
-        self.pressure_constraints = self.get_several_member('Fem::ConstraintPressure')
+
         self.beam_sections = self.get_several_member('Fem::FemElementGeometry1D')
         self.beam_rotations = self.get_several_member('Fem::FemElementRotation1D')
         self.fluid_sections = self.get_several_member('Fem::FemElementFluid1D')
         self.shell_thicknesses = self.get_several_member('Fem::FemElementGeometry2D')
-        self.displacement_constraints = self.get_several_member('Fem::ConstraintDisplacement')
-        self.temperature_constraints = self.get_several_member('Fem::ConstraintTemperature')
-        self.heatflux_constraints = self.get_several_member('Fem::ConstraintHeatflux')
-        self.initialtemperature_constraints = self.get_several_member('Fem::ConstraintInitialTemperature')
-        self.planerotation_constraints = self.get_several_member('Fem::ConstraintPlaneRotation')
-        self.contact_constraints = self.get_several_member('Fem::ConstraintContact')
-        self.transform_constraints = self.get_several_member('Fem::ConstraintTransform')
+
+        self.constraints_contact = self.get_several_member('Fem::ConstraintContact')
+        self.constraints_displacement = self.get_several_member('Fem::ConstraintDisplacement')
+        self.constraints_fixed = self.get_several_member('Fem::ConstraintFixed')
+        self.constraints_force = self.get_several_member('Fem::ConstraintForce')
+        self.constraints_heatflux = self.get_several_member('Fem::ConstraintHeatflux')
+        self.constraints_initialtemperature = self.get_several_member('Fem::ConstraintInitialTemperature')
+        self.constraints_planerotation = self.get_several_member('Fem::ConstraintPlaneRotation')
+        self.constraints_pressure = self.get_several_member('Fem::ConstraintPressure')
+        self.constraints_selfweight = self.get_several_member('Fem::ConstraintSelfWeight')
+        self.constraints_temperature = self.get_several_member('Fem::ConstraintTemperature')
+        self.constraints_transform = self.get_several_member('Fem::ConstraintTransform')
 
     def get_several_member(self, t):
         return femutils.get_several_member(self.analysis, t)

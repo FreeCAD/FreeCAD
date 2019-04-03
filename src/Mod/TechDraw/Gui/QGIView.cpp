@@ -60,6 +60,7 @@
 #include "QGCustomText.h"
 #include "QGICaption.h"
 #include "QGCustomClip.h"
+#include "QGCustomImage.h"
 #include "QGIViewClip.h"
 #include "ViewProviderDrawingView.h"
 #include "MDIViewPage.h"
@@ -106,10 +107,21 @@ QGIView::QGIView()
     addToGroup(m_border);
     m_caption = new QGICaption();
     addToGroup(m_caption);
+    m_lock = new QGCustomImage();
+    m_lock->setParentItem(m_label);
+    m_lock->load(QString::fromUtf8(":/icons/techdraw-lock.png"));
+    QSize sizeLock = m_lock->imageSize();
+    m_lockWidth = (double) sizeLock.width();
+    m_lockHeight = (double) sizeLock.height();
+    m_lock->hide();
 
     isVisible(true);
 }
 
+QGIView::~QGIView()
+{
+    signalSelectPoint.disconnect_all_slots();
+}
 
 void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 {
@@ -179,6 +191,8 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
+    signalSelectPoint(this, event->pos());
+
     if(m_locked) {
         event->ignore();
     } else {
@@ -387,12 +401,18 @@ void QGIView::drawCaption()
 
 void QGIView::drawBorder()
 {
+    auto feat = getViewObject();
+    if (feat == nullptr) {
+        return;
+    }
+    
     drawCaption();
     //show neither
     auto vp = static_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
     if (!borderVisible && !vp->KeepLabel.getValue()) {
          m_label->hide();
          m_border->hide();
+         m_lock->hide();
         return;
     }
 
@@ -400,6 +420,7 @@ void QGIView::drawBorder()
     //double margin = 2.0;
     m_label->hide();
     m_border->hide();
+    m_lock->hide();
 
     m_label->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
@@ -433,6 +454,17 @@ void QGIView::drawBorder()
                               displayArea.top(),
                               frameWidth,
                               frameHeight);
+ 
+    double lockX = labelArea.left();
+    double lockY = labelArea.bottom() - (2 * m_lockHeight);
+    if (feat->isLocked()) {
+        m_lock->setZValue(ZVALUE::LOCK);
+        m_lock->setPos(lockX,lockY);
+        m_lock->show();
+    } else {
+        m_lock->hide();
+    }
+
     prepareGeometryChange();
     m_border->setRect(frameArea.adjusted(-2,-2,2,2));
     m_border->setPos(0.,0.);
