@@ -33,6 +33,7 @@ import glob
 import os
 
 from PySide import QtCore, QtGui
+from collections import Counter
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -44,14 +45,25 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+class _ItemDelegate(QtGui.QStyledItemDelegate):
+
+    def __init__(self, controller, parent):
+        self.controller = controller
+        QtGui.QStyledItemDelegate.__init__(self, parent)
+
+    def createEditor(self, parent, option, index):
+        editor = QtGui.QSpinBox(parent)
+        self.controller.setupColumnEditor(index, editor)
+        return editor
+
 class JobCreate:
     DataObject = QtCore.Qt.ItemDataRole.UserRole
 
     def __init__(self, parent=None, sel=None):
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
-        self.itemsSolid = QtGui.QTreeWidgetItem([translate('PathJob', 'Solids')])
-        self.itemsTwoD  = QtGui.QTreeWidgetItem([translate('PathJob', '2D')])
-        self.itemsJob   = QtGui.QTreeWidgetItem([translate('PathJob', 'Jobs')])
+        self.itemsSolid = QtGui.QStandardItem(translate('PathJob', 'Solids'))
+        self.items2D    = QtGui.QStandardItem(translate('PathJob', '2D'))
+        self.itemsJob   = QtGui.QStandardItem(translate('PathJob', 'Jobs'))
         self.dialog.templateGroup.hide()
         self.dialog.modelGroup.hide()
 
@@ -59,72 +71,141 @@ class JobCreate:
         self.dialog.setWindowTitle(title)
 
     def setupModel(self, job = None):
+
         if job:
-            sel = [PathUtil.getPublicObject(job.Proxy.baseObject(job, obj)) for obj in job.Model.Group]
-            xxx = job.Model.Group + [job.Stock]
+            preSelected = Counter([PathUtil.getPublicObject(job.Proxy.baseObject(job, obj)).Label for obj in job.Model.Group])
+            jobResources = job.Model.Group + [job.Stock]
         else:
-            sel = FreeCADGui.Selection.getSelection()
-            xxx = []
+            preSelected = Counter([obj.Label for obj in FreeCADGui.Selection.getSelection()])
+            jobResources = []
 
-        if sel:
-            selected = [s.Label for s in sel]
-        else:
-            selected = []
+        self.candidates = sorted(PathJob.ObjectJob.baseCandidates(), key=lambda o: o.Label)
 
-        PathLog.track('selected', selected)
+        # If there is only one possibility we might as well make sure it's selected
+        if not preSelected and 1 == len(self.candidates):
+            preSelected = Counter([self.candidates[0].Label])
 
         expandSolids = False
-        expandTwoDs  = False
+        expand2Ds    = False
         expandJobs   = False
-        index = 0
-        candidates = sorted(PathJob.ObjectJob.baseCandidates(), key=lambda o: o.Label)
-        for base in candidates:
-            PathLog.track(base.Label)
-            if not base in xxx and not PathJob.isResourceClone(job, base, None) and not hasattr(base, 'StockType'):
-                PathLog.track('base', base.Label)
-                item = QtGui.QTreeWidgetItem([base.Label])
-                item.setData(0, self.DataObject, base)
-                sel = base.Label in selected
-                if sel or (1 == len(candidates) and not selected):
-                    item.setCheckState(0, QtCore.Qt.CheckState.Checked)
+
+        for i, base in enumerate(self.candidates):
+            if not base in jobResources and not PathJob.isResourceClone(job, base, None) and not hasattr(base, 'StockType'):
+                item0 = QtGui.QStandardItem()
+                item1 = QtGui.QStandardItem()
+
+                item0.setData(base.Label, QtCore.Qt.EditRole)
+                item0.setData(base, self.DataObject)
+                item0.setCheckable(True)
+                item0.setEditable(False)
+
+                item1.setEnabled(True)
+                item1.setEditable(True)
+
+                if base.Label in preSelected:
+                    itemSelected = True
+                    item0.setCheckState(QtCore.Qt.CheckState.Checked)
+                    item1.setData(preSelected[base.Label], QtCore.Qt.EditRole)
                 else:
-                    item.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
+                    itemSelected = False
+                    item0.setCheckState(QtCore.Qt.CheckState.Unchecked)
+                    item1.setData(0, QtCore.Qt.EditRole)
+
                 if PathUtil.isSolid(base):
-                    self.itemsSolid.addChild(item)
-                    if sel:
+                    self.itemsSolid.appendRow([item0, item1])
+                    if itemSelected:
                         expandSolids = True
                 else:
-                    self.itemsTwoD.addChild(item)
-                    if sel:
-                        expandTwoDs = True
+                    self.items2D.appendRow([item0, item1])
+                    if itemSelected:
+                        expand2Ds = True
 
         for j in sorted(PathJob.Instances(), key=lambda x: x.Label):
             if j != job:
-                item = QtGui.QTreeWidgetItem([j.Label])
-                item.setData(0, self.DataObject, j)
-                if j.Label in selected:
-                    expandJobs = True
-                    item.setCheckState(0, QtCore.Qt.CheckState.Checked)
-                else:
-                    item.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
-                self.itemsJob.addChild(item)
+                item0 = QtGui.QStandardItem()
+                item1 = QtGui.QStandardItem()
 
-        if self.itemsSolid.childCount() > 0:
-            self.dialog.modelTree.addTopLevelItem(self.itemsSolid)
-            if expandSolids or not (expandTwoDs or expandJobs):
-                PathLog.track()
-                self.itemsSolid.setExpanded(True)
+                item0.setData(j.Label, QtCore.Qt.EditRole)
+                item0.setData(j, self.DataObject)
+                item0.setCheckable(True)
+                item0.setEditable(False)
+
+                item1.setEnabled(True)
+                item1.setEditable(True)
+
+                if j.Label in preSelected:
+                    expandJobs = True
+                    item0.setCheckState(QtCore.Qt.CheckState.Checked)
+                    item1.setData(preSelected[j.Label], QtCore.Qt.EditRole)
+                else:
+                    item0.setCheckState(QtCore.Qt.CheckState.Unchecked)
+                    item1.setData(0, QtCore.Qt.EditRole)
+
+                self.itemsJob.appendRow([item0, item1])
+
+        self.delegate = _ItemDelegate(self, self.dialog.modelTree)
+        self.model = QtGui.QStandardItemModel(self.dialog)
+        self.model.setHorizontalHeaderLabels(['Model', 'Count'])
+
+
+        if self.itemsSolid.hasChildren():
+            self.model.appendRow(self.itemsSolid)
+            if expandSolids or not (expand2Ds or expandJobs):
                 expandSolids = True
-        if self.itemsTwoD.childCount() > 0:
-            self.dialog.modelTree.addTopLevelItem(self.itemsTwoD)
-            if expandTwoDs:
-                self.itemsTwoD.setExpanded(True)
-        if self.itemsJob.childCount() > 0:
-            self.dialog.modelTree.addTopLevelItem(self.itemsJob)
-            if expandJobs:
-                self.itemsJob.setExpanded(True)
+        if self.items2D.hasChildren():
+            self.model.appendRow(self.items2D)
+        if self.itemsJob.hasChildren():
+            self.model.appendRow(self.itemsJob)
+
+        self.dialog.modelTree.setModel(self.model)
+        self.dialog.modelTree.setItemDelegateForColumn(1, self.delegate)
+        self.dialog.modelTree.expandAll()
+        self.dialog.modelTree.resizeColumnToContents(0)
+        self.dialog.modelTree.resizeColumnToContents(1)
+        self.dialog.modelTree.collapseAll()
+
+        if expandSolids:
+            self.dialog.modelTree.setExpanded(self.itemsSolid.index(), True)
+        if expand2Ds:
+            self.dialog.modelTree.setExpanded(self.items2D.index(), True)
+        if expandJobs:
+            self.dialog.modelTree.setExpanded(self.itemsJob.index(), True)
+
+        self.dialog.modelTree.setEditTriggers(QtGui.QAbstractItemView.AllEditTriggers)
+        self.dialog.modelTree.setSelectionBehavior(QtGui.QAbstractItemView.SelectItems)
+
         self.dialog.modelGroup.show()
 
+    def updateData(self, topLeft, bottomRight):
+        if topLeft.column() == bottomRight.column() == 0:
+            item0 = self.model.itemFromIndex(topLeft)
+            item1 = self.model.itemFromIndex(topLeft.sibling(topLeft.row(), 1))
+            if item0.checkState() == QtCore.Qt.Checked:
+                if item1.data(QtCore.Qt.EditRole) == 0:
+                    item1.setData(1, QtCore.Qt.EditRole)
+            else:
+                item1.setData(0, QtCore.Qt.EditRole)
+
+        if topLeft.column() == bottomRight.column() == 1:
+            item0 = self.model.itemFromIndex(topLeft.sibling(topLeft.row(), 0))
+            item1 = self.model.itemFromIndex(topLeft)
+            if item1.data(QtCore.Qt.EditRole) == 0:
+                item0.setCheckState(QtCore.Qt.CheckState.Unchecked)
+            else:
+                item0.setCheckState(QtCore.Qt.CheckState.Checked)
+
+    def item1ValueChanged(self, v):
+        item0 = self.model.itemFromIndex(self.index.sibling(self.index.row(), 0))
+        if 0 == v:
+            item0.setCheckState(QtCore.Qt.CheckState.Unchecked)
+        else:
+            item0.setCheckState(QtCore.Qt.CheckState.Checked)
+
+    def setupColumnEditor(self, index, editor):
+        editor.setMinimum(0)
+        editor.setMaximum(999999)
+        self.index = index
+        editor.valueChanged.connect(self.item1ValueChanged)
 
     def setupTemplate(self):
         templateFiles = []
@@ -159,23 +240,22 @@ class JobCreate:
         return glob.glob(path + '/job_*.json')
 
     def getModels(self):
-        '''answer the base models selected for the job'''
         models = []
 
-        for i in range(self.itemsSolid.childCount()):
-            if self.itemsSolid.child(i).checkState(0) == QtCore.Qt.CheckState.Checked:
-                models.append(self.itemsSolid.child(i).data(0, self.DataObject))
+        for i in range(self.itemsSolid.rowCount()):
+            for j in range(self.itemsSolid.child(i, 1).data(QtCore.Qt.EditRole)):
+                models.append(self.itemsSolid.child(i).data(self.DataObject))
 
-        for i in range(self.itemsTwoD.childCount()):
-            if self.itemsTwoD.child(i).checkState(0) == QtCore.Qt.CheckState.Checked:
-                models.append(self.itemsTwoD.child(i).data(0, self.DataObject))
+        for i in range(self.items2D.rowCount()):
+            for j in range(self.items2D.child(i, 1).data(QtCore.Qt.EditRole)):
+                models.append(self.items2D.child(i).data(self.DataObject))
 
-        for i in range(self.itemsJob.childCount()):
-            if self.itemsJob.child(i).checkState(0) == QtCore.Qt.CheckState.Checked:
+        for i in range(self.itemsJob.rowCount()):
+            for j in range(self.itemsJob.child(i, 1).data(QtCore.Qt.EditRole)):
                 # Note that we do want to use the models (resource clones) of the
                 # source job as base objects for the new job in order to get the
                 # identical placement, and anything else that's been customized.
-                models.extend(self.itemsJob.child(i).data(0, self.DataObject).Model.Group)
+                models.extend(self.itemsJob.child(i, 0).data(self.DataObject).Model.Group)
 
         return models
 
@@ -184,7 +264,13 @@ class JobCreate:
         return self.dialog.jobTemplate.itemData(self.dialog.jobTemplate.currentIndex())
 
     def exec_(self):
-        return self.dialog.exec_()
+        # ml: For some reason the callback has to be unregistered, otherwise there is a
+        # segfault when python is shutdown. To keep it symmetric I also put the callback
+        # registration here
+        self.model.dataChanged.connect(self.updateData)
+        rc = self.dialog.exec_()
+        self.model.dataChanged.disconnect()
+        return rc
 
 
 class JobTemplateExport:

@@ -178,6 +178,18 @@ def _getBesideDir(solver):
 def _getBesideBase(solver):
     fcstdPath = solver.Document.FileName
     if fcstdPath == "":
+        error_message = (
+            "Please save the file before executing the solver. "
+            "This must be done because the location of the working "
+            "directory is set to \"Beside *.FCStd File\"."
+        )
+        App.Console.PrintError(error_message + "\n")
+        if App.GuiUp:
+            QtGui.QMessageBox.critical(
+                FreeCADGui.getMainWindow(),
+                "Can't start Solver",
+                error_message
+            )
         raise MustSaveError()
     return os.path.splitext(fcstdPath)[0]
 
@@ -195,6 +207,14 @@ def _getCustomDir(solver):
 def _getCustomBase(solver):
     path = settings.get_custom_dir()
     if not os.path.isdir(path):
+        error_message = "Selected working directory doesn't exist."
+        App.Console.PrintError(error_message + "\n")
+        if App.GuiUp:
+            QtGui.QMessageBox.critical(
+                FreeCADGui.getMainWindow(),
+                "Can't start Solver",
+                error_message
+            )
         raise DirectoryDoesNotExistError("Invalid path")
     return path
 
