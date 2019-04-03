@@ -602,7 +602,7 @@ class _Wall(ArchComponent.Component):
 
                 # blocks calculation
                 elif hasattr(obj,"MakeBlocks") and hasattr(self,"basewires"):
-                    if obj.MakeBlocks and self.basewires and extdata and obj.Width and obj.BlockLength.Value and obj.BlockHeight.Value:
+                    if obj.MakeBlocks and self.basewires and extdata and obj.Width and obj.Height:
                         #print "calculating blocks"
                         if len(self.basewires) == 1:
                             blocks = []
@@ -610,72 +610,83 @@ class _Wall(ArchComponent.Component):
                             n.normalize()
                             cuts1 = []
                             cuts2 = []
-                            for i in range(2):
-                                if i == 0:
-                                    offset = obj.OffsetFirst.Value
-                                else:
-                                    offset = obj.OffsetSecond.Value
-                                for edge in self.basewires[0].Edges:
-                                    while offset < (edge.Length-obj.Joint.Value):
-                                        #print i," Edge ",edge," : ",edge.Length," - ",offset
-                                        if offset:
-                                            t = edge.tangentAt(offset)
-                                            p = t.cross(n)
-                                            p.multiply(1.1*obj.Width.Value)
-                                            p1 = edge.valueAt(offset).add(p)
-                                            p2 = edge.valueAt(offset).add(p.negative())
-                                            sh = Part.LineSegment(p1,p2).toShape()
-                                            if obj.Joint.Value:
-                                                sh = sh.extrude(t.multiply(obj.Joint.Value))
-                                            sh = sh.extrude(n)
-                                            if i == 0:
-                                                cuts1.append(sh)
-                                            else:
-                                                cuts2.append(sh)
-                                        offset += (obj.BlockLength.Value+obj.Joint.Value)
+                            if obj.BlockLength.Value:
+                                for i in range(2):
+                                    if i == 0:
+                                        offset = obj.OffsetFirst.Value
                                     else:
-                                        offset -= (edge.Length-obj.Joint.Value)
-                            if cuts1 and cuts2:
-                                if isinstance(bplates,list):
-                                    bplates = bplates[0]
-                                fsize = obj.BlockHeight.Value+obj.Joint.Value
-                                bvec = FreeCAD.Vector(n)
-                                bvec.multiply(obj.BlockHeight.Value)
-                                svec = FreeCAD.Vector(n)
-                                svec.multiply(fsize)
-                                plate1 = bplates.cut(cuts1).Faces
-                                blocks1 = Part.makeCompound([f.extrude(bvec) for f in plate1])
-                                plate2 = bplates.cut(cuts2).Faces
-                                blocks2 = Part.makeCompound([f.extrude(bvec) for f in plate2])
-                                interval = extv.Length/(fsize)
-                                entires = int(interval)
-                                rest = (interval - entires)
-                                for i in range(entires):
-                                    if i % 2: # odd
-                                        b = blocks2.copy()
-                                    else:
-                                        b = blocks1.copy()
-                                    if i:
-                                        t = FreeCAD.Vector(svec)
-                                        t.multiply(i)
-                                        b.translate(t)
-                                    blocks.append(b)
-                                if rest:
-                                    rest = extv.Length-(entires*fsize)
-                                    rvec = FreeCAD.Vector(n)
-                                    rvec.multiply(rest)
-                                    if entires % 2:
-                                        b = Part.makeCompound([f.extrude(rvec) for f in plate2])
-                                    else:
-                                        b = Part.makeCompound([f.extrude(rvec) for f in plate1])
-                                    t = FreeCAD.Vector(svec)
-                                    t.multiply(entires)
-                                    b.translate(t)
-                                    blocks.append(b)
-                                if blocks:
-                                    base = Part.makeCompound(blocks)
+                                        offset = obj.OffsetSecond.Value
+                                    for edge in self.basewires[0].Edges:
+                                        while offset < (edge.Length-obj.Joint.Value):
+                                            #print i," Edge ",edge," : ",edge.Length," - ",offset
+                                            if offset:
+                                                t = edge.tangentAt(offset)
+                                                p = t.cross(n)
+                                                p.multiply(1.1*obj.Width.Value)
+                                                p1 = edge.valueAt(offset).add(p)
+                                                p2 = edge.valueAt(offset).add(p.negative())
+                                                sh = Part.LineSegment(p1,p2).toShape()
+                                                if obj.Joint.Value:
+                                                    sh = sh.extrude(t.multiply(obj.Joint.Value))
+                                                sh = sh.extrude(n)
+                                                if i == 0:
+                                                    cuts1.append(sh)
+                                                else:
+                                                    cuts2.append(sh)
+                                            offset += (obj.BlockLength.Value + obj.Joint.Value)
+                                        else:
+                                            offset -= (edge.Length - obj.Joint.Value)
+
+                            if isinstance(bplates,list):
+                                bplates = bplates[0]
+                            if obj.BlockHeight.Value:
+                                fsize = obj.BlockHeight.Value + obj.Joint.Value
+                                bh = obj.BlockHeight.Value
                             else:
-                                FreeCAD.Console.PrintWarning(translate("Arch","Error computing block cuts for wall")+obj.Label+"\n")
+                                fsize = obj.Height.Value
+                                bh = obj.Height.Value
+                            bvec = FreeCAD.Vector(n)
+                            bvec.multiply(bh)
+                            svec = FreeCAD.Vector(n)
+                            svec.multiply(fsize)
+                            if cuts1:
+                                plate1 = bplates.cut(cuts1).Faces
+                            else:
+                                plate1 = bplates.Faces
+                            blocks1 = Part.makeCompound([f.extrude(bvec) for f in plate1])
+                            if cuts2:
+                                plate2 = bplates.cut(cuts2).Faces
+                            else:
+                                plate2 = bplates.Faces
+                            blocks2 = Part.makeCompound([f.extrude(bvec) for f in plate2])
+                            interval = extv.Length/(fsize)
+                            entires = int(interval)
+                            rest = (interval - entires)
+                            for i in range(entires):
+                                if i % 2: # odd
+                                    b = blocks2.copy()
+                                else:
+                                    b = blocks1.copy()
+                                if i:
+                                    t = FreeCAD.Vector(svec)
+                                    t.multiply(i)
+                                    b.translate(t)
+                                blocks.append(b)
+                            if rest:
+                                rest = extv.Length-(entires*fsize)
+                                rvec = FreeCAD.Vector(n)
+                                rvec.multiply(rest)
+                                if entires % 2:
+                                    b = Part.makeCompound([f.extrude(rvec) for f in plate2])
+                                else:
+                                    b = Part.makeCompound([f.extrude(rvec) for f in plate1])
+                                t = FreeCAD.Vector(svec)
+                                t.multiply(entires)
+                                b.translate(t)
+                                blocks.append(b)
+                            if blocks:
+                                base = Part.makeCompound(blocks)
+
                         else:
                             FreeCAD.Console.PrintWarning(translate("Arch","Cannot compute blocks for wall")+obj.Label+"\n")
 
