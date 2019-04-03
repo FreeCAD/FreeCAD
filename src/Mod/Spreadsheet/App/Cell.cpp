@@ -32,9 +32,12 @@
 #include <Base/Reader.h>
 #include <Base/Quantity.h>
 #include <Base/Writer.h>
+#include <Base/Console.h>
 #include <App/ExpressionParser.h>
 #include "Sheet.h"
 #include <iomanip>
+
+FC_LOG_LEVEL_INIT("Spreadsheet",true,true);
 
 #ifdef _MSC_VER
 #define __func__ __FUNCTION__
@@ -525,18 +528,30 @@ bool Cell::getSpans(int &rows, int &columns) const
 
 void Cell::setException(const std::string &e)
 {
+    if(e.size() && owner && owner->sheet()) {
+        FC_ERR(owner->sheet()->getFullName() << '.' 
+                << address.toString() << ": " << e);
+    }
     exceptionStr = e;
     setUsed(EXCEPTION_SET);
 }
 
 void Cell::setParseException(const std::string &e)
 {
+    if(e.size() && owner && owner->sheet()) {
+        FC_ERR(owner->sheet()->getFullName() << '.' 
+                << address.toString() << ": " << e);
+    }
     exceptionStr = e;
     setUsed(PARSE_EXCEPTION_SET);
 }
 
 void Cell::setResolveException(const std::string &e)
 {
+    if(e.size() && owner && owner->sheet()) {
+        FC_ERR(owner->sheet()->getFullName() << '.' 
+                << address.toString() << ": " << e);
+    }
     exceptionStr = e;
     setUsed(RESOLVE_EXCEPTION_SET);
 }
