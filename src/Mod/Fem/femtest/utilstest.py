@@ -76,6 +76,40 @@ def get_defmake_count(fem_vtk_post=True):
     return len(lines_defmake)
 
 
+def get_fem_test_defs(inout='out'):
+    test_path = join(FreeCAD.getHomePath(), 'Mod', 'Fem', 'femtest')
+    collected_test_modules = []
+    collected_test_methods = []
+    for tfile in sorted(os.listdir(test_path)):
+        if tfile.startswith("test") and tfile.endswith(".py"):
+            collected_test_modules.append(join(test_path, tfile))
+    for f in collected_test_modules:
+        tfile = open(f, 'r')
+        module_name = os.path.splitext(os.path.basename(f))[0]
+        class_name = ''
+        for ln in tfile:
+            ln = ln.lstrip()
+            ln = ln.rstrip()
+            if ln.startswith('class '):
+                ln = ln.lstrip('class ')
+                ln = ln.split('(')[0]
+                class_name = ln
+            if ln.startswith('def test'):
+                ln = ln.lstrip('def ')
+                ln = ln.split('(')[0]
+                collected_test_methods.append('femtest.{}.{}.{}'.format(module_name, class_name, ln))
+        tfile.close()
+    print('')
+    for m in collected_test_methods:
+        run_outside_fc = './bin/FreeCADCmd --run-test "{}"'.format(m)
+        run_inside_fc = 'unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("{}"))'.format(m)
+        if inout == 'in':
+            print('\nimport unittest')
+            print(run_inside_fc)
+        else:
+            print(run_outside_fc)
+
+
 def compare_inp_files(file_name1, file_name2):
     file1 = open(file_name1, 'r')
     f1 = file1.readlines()
