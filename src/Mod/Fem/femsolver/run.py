@@ -38,6 +38,10 @@ from . import settings
 from . import signal
 from . import task
 
+if App.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui
+
 
 CHECK = 0
 PREPARE = 1
@@ -51,10 +55,6 @@ _dirTypes = {}
 
 
 def run_fem_solver(solver, working_dir=None):
-
-    if App.GuiUp:
-        import FreeCADGui
-        from PySide import QtGui
 
     if solver.Proxy.Type == 'Fem::FemSolverCalculixCcxTools':
         App.Console.PrintMessage("CalxuliX ccx tools solver!\n")
