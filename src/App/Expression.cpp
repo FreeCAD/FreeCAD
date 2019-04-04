@@ -581,6 +581,7 @@ typedef std::set<std::string,
                  ExpressionFastAlloc(std::string) > StringSet;
 
 struct EvalFrame;
+static EvalFrame *_EvalCallFrame;
 static std::vector<EvalFrame*> _EvalStack;
 #define CHECK_STACK(_type, _e) do{\
     if(_EvalStack.empty())\
@@ -641,13 +642,24 @@ struct EvalFrame {
         }
     };
 
+    EvalFrame *lastCallFrame = 0;
+    const char *funcName;
+    const App::DocumentObject *funcOwner;
+
+    bool warned = false;
     bool pushed = false;
     bool pythonMode = false;
+
+    EvalFrame(const char *name=0, const App::DocumentObject *owner=0)
+        :funcName(name),funcOwner(owner)
+    {}
 
     ~EvalFrame() {
         if(pushed) {
             assert(_EvalStack.size() && _EvalStack.back()==this);
             _EvalStack.pop_back();
+            if(funcName)
+                _EvalCallFrame = lastCallFrame;
         }
         for(auto &v : vars) {
             if(v.second)
@@ -663,6 +675,10 @@ struct EvalFrame {
         assert(!pushed);
         pushed = true;
         _EvalStack.push_back(this);
+        if(funcName) {
+            lastCallFrame = _EvalCallFrame;
+            _EvalCallFrame = this;
+        }
     }
 
     void erase(const Expression *owner, const std::string &name) {
@@ -1901,6 +1917,7 @@ enum ExpressionFunctionType {
     GET_VAR,
     HAS_VAR,
     IMPORT_PY,
+    NO_WARN,
 
     CALLABLE_START,
 
@@ -1963,6 +1980,7 @@ void init_functions() {
     registered_functions["getvar"] = GET_VAR;
     registered_functions["hasvar"] = HAS_VAR;
     registered_functions["import_py"] = IMPORT_PY;
+    registered_functions["nowarn"] = NO_WARN;
 
     // Aggregates
     registered_functions["sum"] = SUM;
@@ -2835,6 +2853,13 @@ App::any VariableExpression::_getValueAsAny() const {
             return pyObjectToAny(info.rhs);
         }
     }
+    if(_EvalCallFrame && !_EvalCallFrame->warned) {
+        _EvalCallFrame->warned = true;
+        const char *msg = "Object reference in function has no dependency tracking";
+        if(_EvalCallFrame->funcOwner)
+            FC_WARN(msg << ": in " << _EvalCallFrame->funcOwner->getFullName() 
+                    << '.' << _EvalCallFrame->funcName);
+    }
     return var.getValue(true);
 }
 
@@ -3264,7 +3289,7 @@ Py::Object CallableExpression::evaluate(PyObject *pyargs, PyObject *pykwds) {
     if(!expr)
         PY_THROW("Invalid callable expression");
 
-    EvalFrame frame;
+    EvalFrame frame(name.c_str(),getOwner());
 
     const char *tupleName = 0;
     const char *dictName = 0;
@@ -3457,6 +3482,18 @@ App::any CallableExpression::_getValueAsAny() const {
             Base::PyGILStateLocker lock;
             return pyObjectToAny(ImportModules::instance()->getModule(
                         App::any_cast<const std::string &>(value),this),false);
+        } case NO_WARN: {
+            App::any value(args[0]->getValueAsAny());
+            if(value.type() != typeid(int))
+                EXPR_THROW("Function expects the first argument to be an integer.");
+            switch(App::any_cast<int>(value)) {
+            case 0:
+            case 1:
+                if(_EvalCallFrame)
+                    _EvalCallFrame->warned = true;
+                break;
+            }
+            return App::any();
         } default:
             return FunctionExpression::evalToAny(this,ftype,args);
         }
@@ -5358,7 +5395,7 @@ static App::any makeFunc(const Expression *owner,
 }
 
 App::any LambdaExpression::_getValueAsAny() const {
-    return makeFunc(this,*body,names,args);
+    return makeFunc(this,*body,names,args,"<lambda>");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
