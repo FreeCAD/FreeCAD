@@ -741,9 +741,21 @@ def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None
                 v1.normalize()
                 v2.normalize()
                 # Angle between edge.Curve.XAxis and the vector from center to start of arc 
-                obj.FirstAngle = math.degrees(math.acos((v0.x*v1.x)+(v0.y*v1.y)+(v0.z*v1.z)))
+                p = (v0.x*v1.x)+(v0.y*v1.y)+(v0.z*v1.z)
+                if (p > 1.0): # sometimes rounding gives errors
+                    p = 1.0
+                elif (p < -1.0):
+                    p = -1.0
+                a0 = math.degrees(math.acos(p))
                 # Angle between edge.Curve.XAxis and the vector from center to end of arc 
-                obj.LastAngle = math.degrees(math.acos((v0.x*v2.x)+(v0.y*v2.y)+(v0.z*v2.z)))
+                p = (v0.x*v2.x)+(v0.y*v2.y)+(v0.z*v2.z)
+                if (p > 1.0): # sometimes rounding gives errors
+                    p = 1.0
+                elif (p < -1.0):
+                    p = -1.0
+                a1 = math.degrees(math.acos(p))
+                obj.FirstAngle = a0
+                obj.LastAngle = a1
     else:
         obj.Radius = radius
         if (startangle != None) and (endangle != None):
