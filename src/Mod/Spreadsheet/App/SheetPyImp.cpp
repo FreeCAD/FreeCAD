@@ -112,9 +112,9 @@ PyObject* SheetPy::get(PyObject *args)
             do {
                 App::Property *prop = getSheetPtr()->getPropertyByName(range.address().c_str());
                 if(!prop) {
-                    std::ostringstream ss;
-                    ss << "Invalid address '" << range.address() << "' in range " << address << ':' << address2;
-                    PyErr_SetString(PyExc_ValueError, ss.str().c_str());
+                    PyErr_Format(PyExc_ValueError, "Invalid address '%s' in range %s:%s",
+                            range.address().c_str(), address, address2);
+                    return 0;
                 }
                 tuple.setItem(i++,Py::Object(prop->getPyObject(),true));
             }while(range.next());
@@ -125,7 +125,8 @@ PyObject* SheetPy::get(PyObject *args)
     App::Property * prop = this->getSheetPtr()->getPropertyByName(address);
 
     if (prop == 0) {
-        PyErr_SetString(PyExc_ValueError, "Invalid address or property.");
+        PyErr_Format(PyExc_ValueError, 
+                "Invalid cell address or property: %s",address);
         return 0;
     }
     return prop->getPyObject();

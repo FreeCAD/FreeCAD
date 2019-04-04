@@ -840,9 +840,10 @@ DocumentObjectExecReturn *Sheet::execute(void)
     try {
         boost::topological_sort(graph, std::front_inserter(make_order));
         // Recompute cells
+        FC_LOG("recomputing " << getFullName());
         for(auto &pos : make_order) {
             const auto &addr = VertexIndexList[pos];
-            FC_LOG("recompute " << addr.toString());
+            FC_LOG(addr.toString());
             recomputeCell(addr);
         }
     } catch (std::exception&) {
