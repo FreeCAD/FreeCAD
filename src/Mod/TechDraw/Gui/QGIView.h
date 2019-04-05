@@ -26,6 +26,7 @@
 #include <QGraphicsItemGroup>
 #include <QPen>
 #include <QFont>
+#include <QObject>
 
 #include <App/DocumentObject.h>
 #include <Base/Parameter.h>
@@ -49,8 +50,9 @@ class MDIViewPage;
 class QGIViewClip;
 class QGCustomImage;
 
-class TechDrawGuiExport  QGIView : public QGraphicsItemGroup
+class TechDrawGuiExport  QGIView : public QObject, public QGraphicsItemGroup
 {
+    Q_OBJECT
 public:
     QGIView();
     virtual ~QGIView();

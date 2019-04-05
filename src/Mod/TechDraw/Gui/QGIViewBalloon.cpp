@@ -152,17 +152,21 @@ void QGIViewBalloon::connect(QGIView *parent)
 
 void QGIViewBalloon::parentViewMousePressed(QGIView *view, QPointF pos)
 {
-    Q_UNUSED(view);
     //Base::Console().Message("%s::parentViewMousePressed from %s\n", this->getViewName(), view->getViewName());
+    onAttachPointPicked(view, pos);
+}
+
+void QGIViewBalloon::onAttachPointPicked(QGIView *view, QPointF pos)
+{
+    Q_UNUSED(view);
+    auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
+    if( balloon == nullptr )
+        return;
 
     auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
     if ( vp == nullptr ) {
         return;
     }
-
-    auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
-    if( balloon == nullptr )
-        return;
 
     auto bnd = boost::bind(&QGIViewBalloon::parentViewMousePressed, this, _1, _2);
 
