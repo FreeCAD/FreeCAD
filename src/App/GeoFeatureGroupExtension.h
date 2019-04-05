@@ -75,6 +75,8 @@ public:
     
     virtual void extensionOnChanged(const Property* p) override;
 
+    virtual void onExtendedUnsetupObject() override;
+
     /** Returns the geo feature group which contains this object.
      * In case this object is not part of any geoFeatureGroup 0 is returned.
      * Unlike DocumentObjectGroup::getGroupOfObject serches only for GeoFeatureGroups

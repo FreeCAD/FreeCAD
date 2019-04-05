@@ -160,7 +160,7 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::addObjects(std::vector<Ap
                 group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
             
             if (!hasObject(obj)) {
-                obj->Visibility.setStatus(App::Property::Output,false);
+                obj->Visibility.setStatus(App::Property::NoRecompute,false);
                 grp.push_back(obj);
                 ret.push_back(obj);
             }
@@ -178,7 +178,7 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::removeObjects(std::vector
     
     for(auto object : objects) {
         if(object)
-            object->Visibility.setStatus(App::Property::Output,true);
+            object->Visibility.setStatus(App::Property::NoRecompute,true);
 
         //cross CoordinateSystem links are not allowed, so we need to remove the whole link group 
         std::vector< DocumentObject* > links = getCSRelevantLinks(object);
@@ -198,6 +198,14 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::removeObjects(std::vector
         Group.setValues(grp);
     
     return removed;
+}
+
+void GeoFeatureGroupExtension::onExtendedUnsetupObject() {
+    for(auto obj : Group.getValues()) {
+        if(obj && obj->getNameInDocument())
+            obj->Visibility.setStatus(App::Property::NoRecompute,true);
+    }
+    App::GroupExtension::onExtendedUnsetupObject();
 }
 
 void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
