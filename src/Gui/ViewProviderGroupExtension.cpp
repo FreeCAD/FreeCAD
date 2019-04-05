@@ -45,7 +45,7 @@ using namespace Gui;
 
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGroupExtension, Gui::ViewProviderExtension)
 
-ViewProviderGroupExtension::ViewProviderGroupExtension()  : visible(false), guard(false)
+ViewProviderGroupExtension::ViewProviderGroupExtension()  : guard(false)
 {
     initExtensionType(ViewProviderGroupExtension::getExtensionClassTypeId());
 }
@@ -125,20 +125,15 @@ void ViewProviderGroupExtension::extensionShow(void) {
 
     // when reading the Visibility property from file then do not hide the
     // objects of this group because they have stored their visibility status, too
-    if (!getExtendedViewProvider()->isRestoring() && !this->visible) {
+    if (!getExtendedViewProvider()->isRestoring() ) {
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-
-        const std::vector<App::DocumentObject*> & links = group->Group.getValues();
-        Gui::Document* doc = Application::Instance->getDocument(group->getExtendedObject()->getDocument());
-        for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
-            ViewProvider* view = doc->getViewProvider(*it);
-            if (view) 
-                view->show();
+        for(auto obj : group->Group.getValues()) {
+            if(obj && !obj->Visibility.getValue())
+                obj->Visibility.setValue(true);
         }
     }
 
     ViewProviderExtension::extensionShow();
-    this->visible = true;
 }
 
 void ViewProviderGroupExtension::extensionHide(void) {
@@ -150,25 +145,14 @@ void ViewProviderGroupExtension::extensionHide(void) {
 
     // when reading the Visibility property from file then do not hide the
     // objects of this group because they have stored their visibility status, too
-    if (!getExtendedViewProvider()->isRestoring() && this->visible) {
-
+    if (!getExtendedViewProvider()->isRestoring()) {
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-
-        const std::vector<App::DocumentObject*> & links = group->Group.getValues();
-        Gui::Document* doc = Application::Instance->getDocument(getExtendedViewProvider()->getObject()->getDocument());
-        // doc pointer can be null in case the document is about to be destroyed
-        // See https://forum.freecadweb.org/viewtopic.php?f=22&t=26797&p=218804#p218521
-        if (doc) {
-            for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
-                ViewProvider* view = doc->getViewProvider(*it);
-                if (view)
-                    view->hide();
-            }
+        for(auto obj : group->Group.getValues()) {
+            if(obj && obj->Visibility.getValue())
+                obj->Visibility.setValue(false);
         }
     }
-
     ViewProviderExtension::extensionHide();
-    this->visible = false;
 }
 
 bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >& ) {

@@ -50,20 +50,11 @@ EXTENSION_PROPERTY_SOURCE(App::GeoFeatureGroupExtension, App::GroupExtension)
 GeoFeatureGroupExtension::GeoFeatureGroupExtension(void)
 {
     initExtensionType(GeoFeatureGroupExtension::getExtensionClassTypeId());
-    EXTENSION_ADD_PROPERTY_TYPE(_GroupTouched, (false), "Base", 
-            PropertyType(Prop_Hidden|Prop_Transient),0);
     Group.setScope(LinkScope::Child);
 }
 
 GeoFeatureGroupExtension::~GeoFeatureGroupExtension(void)
 {
-}
-
-App::DocumentObjectExecReturn *GeoFeatureGroupExtension::extensionExecute(void) {
-    // This is touch property is for propagating changes to upper group, which
-    // is a must for Part::Feature::getTopoShape() caching to work
-    _GroupTouched.touch();
-    return inherited::extensionExecute();
 }
 
 void GeoFeatureGroupExtension::initExtension(ExtensionContainer* obj) {
@@ -211,7 +202,7 @@ void GeoFeatureGroupExtension::onExtendedUnsetupObject() {
 void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
 
     //objects are only allowed in a single GeoFeatureGroup
-    if((strcmp(p->getName(), "Group")==0)) {
+    if(p == &Group) {
     
         if(!getExtendedObject()->getDocument()->isPerformingTransaction()) {
                 
@@ -369,7 +360,6 @@ void GeoFeatureGroupExtension::recursiveCSRelevantLinks(const DocumentObject* ob
     }
 }
 
-
 bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const 
 {
@@ -382,7 +372,7 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const
             *mat *= const_cast<GeoFeatureGroupExtension*>(this)->placement().getValue().toMatrix();
     }else if((dot=strchr(subname,'.'))) {
         if(subname[0]!='$')
-            ret = Group.find(std::string(subname,dot).c_str());
+            ret = Group.find(std::string(subname,dot));
         else{
             std::string name = std::string(subname+1,dot);
             for(auto child : Group.getValues()) {
@@ -418,7 +408,7 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const
             }
             if(mat && transform) 
                 *mat *= const_cast<GeoFeatureGroupExtension*>(this)->placement().getValue().toMatrix();
-            ret = ret->getSubObject(dot?dot:"",pyObj,mat,true,depth);
+            ret = ret->getSubObject(dot?dot:"",pyObj,mat,true,depth+1);
         }
     }
     return true;
