@@ -666,8 +666,11 @@ void DocumentObject::onChanged(const Property* prop)
 
 bool DocumentObject::onParentChanged(DocumentObject *parent, const Property* prop)
 {
-    (void)parent;
-    (void)prop;
+    auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : exts) {
+        if(!ext->extensionOnParentChanged(parent,prop))
+            return false;
+    }
     return true;
 }
 

@@ -94,6 +94,8 @@ public:
     virtual int extensionSetElementVisible(const char *, bool) {return -1;}
     virtual int extensionIsElementVisible(const char *) {return -1;}
     virtual bool extensionHasChildElement() const {return false;}
+
+    virtual bool extensionOnParentChanged(App::DocumentObject *, const Property *) {return true;}
 };
 
 } //App
