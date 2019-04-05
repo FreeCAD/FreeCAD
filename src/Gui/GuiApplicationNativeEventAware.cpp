@@ -98,6 +98,12 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
     mainWindow = window;
 
 #if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
+#if QT_VERSION >= 0x050200
+    if (!QX11Info::isPlatformX11()) {
+        Base::Console().Log("Application is not running on X11\n");
+        return;
+    }
+#endif
     if (spnav_x11_open(QX11Info::display(), window->winId()) == -1) {
         Base::Console().Log("Couldn't connect to spacenav daemon\n");
     } else {
