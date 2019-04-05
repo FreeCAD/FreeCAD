@@ -66,15 +66,21 @@ Gui::GuiNativeEvent::~GuiNativeEvent()
 
 void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
 {
+#if QT_VERSION >= 0x050200
+    if (!QX11Info::isPlatformX11()) {
+        Base::Console().Log("Application is not running on X11\n");
+        return;
+    }
+#endif
     if (spnav_x11_open(QX11Info::display(), window->winId()) == -1) {
         Base::Console().Log("Couldn't connect to spacenav daemon\n");
     } else {
         Base::Console().Log("Connected to spacenav daemon\n");
-		mainApp->setSpaceballPresent(true);
+        mainApp->setSpaceballPresent(true);
 
-    #if QT_VERSION >= 0x050000
+#if QT_VERSION >= 0x050000
         mainApp->installNativeEventFilter(new Gui::RawInputEventFilter(&xcbEventFilter));
-    #endif // #if QT_VERSION >= 0x050000
+#endif // #if QT_VERSION >= 0x050000
     }
 }
 
