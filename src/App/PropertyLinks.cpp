@@ -834,9 +834,9 @@ unsigned int PropertyLinkList::getMemSize(void) const
     return static_cast<unsigned int>(_lValueList.size() * sizeof(App::DocumentObject *));
 }
 
-DocumentObject *PropertyLinkList::find(const char *name, int *pindex) const {
-    if(!name) return 0;
-    if(_nameMap.empty()) {
+DocumentObject *PropertyLinkList::find(const std::string &name, int *pindex) const {
+    if(_nameMap.empty() || _nameMap.size()>_lValueList.size()) {
+        _nameMap.clear();
         for(int i=0;i<(int)_lValueList.size();++i) {
             auto obj = _lValueList[i];
             if(obj && obj->getNameInDocument()) 

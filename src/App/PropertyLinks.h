@@ -639,7 +639,11 @@ public:
 
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
-    DocumentObject *find(const char *, int *pindex=0) const;
+    DocumentObject *find(const std::string &, int *pindex=0) const;
+    DocumentObject *find(const char *sub, int *pindex=0) const {
+        if(!sub) return 0;
+        return find(std::string(sub),pindex);
+    }
 
 protected:
     DocumentObject *getPyValue(PyObject *item) const override;
