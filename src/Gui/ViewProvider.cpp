@@ -386,14 +386,16 @@ std::string ViewProvider::getActiveDisplayMode(void) const
 
 void ViewProvider::hide(void)
 {
-    if(pcModeSwitch->whichChild.getValue() < 0)
-        return;
+    auto exts = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
 
-    pcModeSwitch->whichChild = -1;
+    if(pcModeSwitch->whichChild.getValue() >= 0) {
+        pcModeSwitch->whichChild = -1;
+        for(auto ext : exts)
+            ext->extensionModeSwitchChange();
+    }
 
     //tell extensions that we hide
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : exts)
         ext->extensionHide();
 }
 
