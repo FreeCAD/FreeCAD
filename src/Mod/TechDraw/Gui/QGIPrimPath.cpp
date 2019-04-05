@@ -234,6 +234,10 @@ void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent * event)
     QGraphicsItem* qparent = parentItem();
     if (qparent != nullptr) {
         parent = dynamic_cast<QGIView *> (qparent);
-        parent->mousePressEvent(event);
+        if (parent != nullptr) {
+            parent->mousePressEvent(event);
+        } else {
+            Base::Console().Log("QGIPP::mousePressEvent - no QGIView parent\n");
+        }
     }
 }
