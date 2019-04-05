@@ -119,16 +119,68 @@ public:
         return(T(int(r*255.0),int(g*255.0),int(b*255.0)));
     }
     /**
-     * returns color as CSS color "#RRGGBB"
+     * returns color as hex color "#RRGGBB"
      *
      */
-    std::string asCSSString() {
+    std::string asHexString() const {
         std::stringstream ss;
         ss << "#" << std::hex << std::uppercase << std::setfill('0') << std::setw(2) << int(r*255.0)
                                                                      << std::setw(2) << int(g*255.0)
                                                                      << std::setw(2) << int(b*255.0);
         return ss.str();
-}
+    }
+    /**
+     * \deprecated
+     */
+    std::string asCSSString() const {
+        return asHexString();
+    }
+    /**
+     * gets color from hex color "#RRGGBB"
+     *
+     */
+    bool fromHexString(const std::string& hex) {
+        if (hex.size() < 7 || hex[0] != '#')
+            return false;
+        // #RRGGBB
+        if (hex.size() == 7) {
+            std::stringstream ss(hex);
+            unsigned int rgb;
+            char c;
+
+            ss >> c >> std::hex >> rgb;
+            int rc = (rgb >> 16) & 0xff;
+            int gc = (rgb >> 8) & 0xff;
+            int bc = rgb & 0xff;
+
+            r = rc / 255.0f;
+            g = gc / 255.0f;
+            b = bc / 255.0f;
+
+            return true;
+        }
+        // #RRGGBBAA
+        if (hex.size() == 9) {
+            std::stringstream ss(hex);
+            unsigned int rgba;
+            char c;
+
+            ss >> c >> std::hex >> rgba;
+            int rc = (rgba >> 24) & 0xff;
+            int gc = (rgba >> 16) & 0xff;
+            int bc = (rgba >> 8) & 0xff;
+            int ac = rgba & 0xff;
+
+            r = rc / 255.0f;
+            g = gc / 255.0f;
+            b = bc / 255.0f;
+            a = ac / 255.0f;
+
+            return true;
+        }
+
+        return false;
+    }
 
     /// color values, public accessible
     float r,g,b,a;
