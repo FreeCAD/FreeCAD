@@ -48,13 +48,11 @@
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
 
-
 #include "Rez.h"
 #include "ZVALUE.h"
 #include "DrawGuiUtil.h"
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
-#include "QGIView.h"
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
 #include "QGCustomText.h"
@@ -71,10 +69,11 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
+#include "QGIView.h"
+
 using namespace TechDrawGui;
 
 const float labelCaptionFudge = 0.2f;   // temp fiddle for devel
-
 
 QGIView::QGIView()
     :QGraphicsItemGroup(),
@@ -625,3 +624,4 @@ void QGIView::makeMark(Base::Vector3d v)
     makeMark(v.x,v.y);
 }
 
+#include <Mod/TechDraw/Gui/moc_QGIView.cpp>

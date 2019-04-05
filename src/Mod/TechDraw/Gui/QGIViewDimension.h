@@ -114,7 +114,7 @@ private:
 
 //*******************************************************************
 
-class TechDrawGuiExport QGIViewDimension : public QObject, public QGIView
+class TechDrawGuiExport QGIViewDimension : public QGIView
 {
     Q_OBJECT
 

@@ -54,7 +54,7 @@ class QGIViewBalloon;
 
 //*******************************************************************
 
-class TechDrawGuiExport QGIViewBalloon : public QObject, public QGIView
+class TechDrawGuiExport QGIViewBalloon : public QGIView
 {
     Q_OBJECT
 
@@ -89,6 +89,7 @@ protected:
     void draw() override;
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
+    void onAttachPointPicked(QGIView *view, QPointF pos);
     virtual void setSvgPens(void);
     virtual void setPens(void);
     QString getPrecision(void);
