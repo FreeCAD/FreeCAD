@@ -98,19 +98,19 @@ DrawViewBalloon::DrawViewBalloon(void)
 
     ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
 
-    OriginX.setStatus(App::Property::Hidden,false);
-    OriginY.setStatus(App::Property::Hidden,false);
+//    OriginX.setStatus(App::Property::Hidden,false);
+//    OriginY.setStatus(App::Property::Hidden,false);
     OriginIsSet.setStatus(App::Property::Hidden,false);
     OriginIsSet.setStatus(App::Property::ReadOnly,true);
 
     sourceView.setScope(App::LinkScope::Global);
-    sourceView.setStatus(App::Property::Hidden,true);
+//    sourceView.setStatus(App::Property::Hidden,true);
     Rotation.setStatus(App::Property::Hidden,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
-    Scale.setStatus(App::Property::Hidden,true);
+//    ScaleType.setStatus(App::Property::Hidden,true);
+//    Scale.setStatus(App::Property::Hidden,true);
     Caption.setStatus(App::Property::Hidden,true);
-    X.setStatus(App::Property::Hidden,true);
-    Y.setStatus(App::Property::Hidden,true);
+//    X.setStatus(App::Property::Hidden,true);
+//    Y.setStatus(App::Property::Hidden,true);
 }
 
 DrawViewBalloon::~DrawViewBalloon()

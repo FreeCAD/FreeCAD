@@ -29,6 +29,7 @@ set(TechDrawGui_MOC_HDRS
     QGITemplate.h
     QGISVGTemplate.h
     QGIDrawingTemplate.h
+    QGIView.h
     QGIViewDimension.h
     QGIViewBalloon.h
     TaskProjGroup.h
