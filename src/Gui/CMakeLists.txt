@@ -270,6 +270,7 @@ set(Gui_MOC_HDRS
     DlgMaterialPropertiesImp.h
     DlgOnlineHelpImp.h
     DlgParameterImp.h
+    DlgParameterFind.h
     DlgPreferencesImp.h
     DlgProjectInformationImp.h
     DlgProjectUtility.h
@@ -389,6 +390,7 @@ SET(Gui_UIC_SRCS
     DlgMaterialProperties.ui
     DlgOnlineHelp.ui
     DlgParameter.ui
+    DlgParameterFind.ui
     DlgPreferences.ui
     DlgProjectInformation.ui
     DlgProjectUtility.ui
@@ -472,6 +474,7 @@ SET(Dialog_CPP_SRCS
     DlgMacroRecordImp.cpp
     DlgMaterialPropertiesImp.cpp
     DlgParameterImp.cpp
+    DlgParameterFind.cpp
     DlgProjectInformationImp.cpp
     DlgProjectUtility.cpp
     DlgPropertyLink.cpp
@@ -504,6 +507,7 @@ SET(Dialog_HPP_SRCS
     DlgMacroRecordImp.h
     DlgMaterialPropertiesImp.h
     DlgParameterImp.h
+    DlgParameterFind.h
     DlgProjectInformationImp.h
     DlgProjectUtility.h
     DlgPropertyLink.h
@@ -541,6 +545,7 @@ SET(Dialog_SRCS
     DlgMacroRecord.ui
     DlgMaterialProperties.ui
     DlgParameter.ui
+    DlgParameterFind.ui
     DlgProjectInformation.ui
     DlgProjectUtility.ui
     DlgPropertyLink.ui

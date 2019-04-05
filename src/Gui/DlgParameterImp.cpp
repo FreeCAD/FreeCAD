@@ -35,6 +35,7 @@
 
 #include "ui_DlgParameter.h"
 #include "DlgParameterImp.h"
+#include "DlgParameterFind.h"
 #include "DlgInputDialogImp.h"
 #include "BitmapFactory.h"
 #include "FileDialog.h"
@@ -115,6 +116,13 @@ DlgParameterImp::~DlgParameterImp()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+void DlgParameterImp::on_buttonFind_clicked()
+{
+    if (finder.isNull())
+        finder = new DlgParameterFind(this);
+    finder->show();
 }
 
 /**
@@ -559,6 +567,11 @@ ParameterValue::~ParameterValue()
 void ParameterValue::setCurrentGroup( const Base::Reference<ParameterGrp>& hGrp )
 {
     _hcGrp = hGrp;
+}
+
+Base::Reference<ParameterGrp> ParameterValue::currentGroup() const
+{
+    return _hcGrp;
 }
 
 bool ParameterValue::edit ( const QModelIndex & index, EditTrigger trigger, QEvent * event )

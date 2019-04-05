@@ -37,6 +37,13 @@
       <number>6</number>
      </property>
      <item>
+      <widget class="QPushButton" name="buttonFind" >
+       <property name="text" >
+        <string>Find...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer>
        <property name="orientation" >
         <enum>Qt::Horizontal</enum>
