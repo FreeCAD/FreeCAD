@@ -262,11 +262,27 @@ const char* DocumentObject::detachFromDocument()
     return name ? name->c_str() : 0;
 }
 
+const std::vector<DocumentObject*> &DocumentObject::getOutList() const {
+    if(!_outListCached) {
+        _outList.clear();
+        getOutList(0,_outList);
+        _outListCached = true;
+    }
+    return _outList;
+}
+
 std::vector<DocumentObject*> DocumentObject::getOutList(int options) const
 {
-    if(_outListCached && !options)
-        return _outList;
-    std::vector<DocumentObject*> ret;
+    std::vector<DocumentObject*> res;
+    getOutList(options,res);
+    return res;
+}
+
+void DocumentObject::getOutList(int options, std::vector<DocumentObject*> &res) const {
+    if(_outListCached && !options) {
+        res.insert(res.end(),_outList.begin(),_outList.end());
+        return;
+    }
     std::vector<Property*> props;
     getPropertyList(props);
     bool noHidden = !!(options & OutListNoHidden);
@@ -274,15 +290,10 @@ std::vector<DocumentObject*> DocumentObject::getOutList(int options) const
     for(auto prop : props) {
         auto link = dynamic_cast<PropertyLinkBase*>(prop);
         if(link && (!noXLinked || !PropertyXLink::supportXLink(prop)))
-            link->getLinks(ret,noHidden);
+            link->getLinks(res,noHidden);
     }
     if(!(options & OutListNoExpression))
-        ExpressionEngine.getLinks(ret);
-    if(!options) {
-        _outList = ret;
-        _outListCached = true;
-    }
-    return ret;
+        ExpressionEngine.getLinks(res);
 }
 
 std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Property* prop) const
@@ -308,7 +319,7 @@ std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
 
 #else // ifndef USE_OLD_DAG
 
-std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
+const std::vector<App::DocumentObject*> &DocumentObject::getInList(void) const
 {
     return _inList;
 }

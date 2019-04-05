@@ -205,7 +205,10 @@ public:
         OutListNoXLinked = 4,
     };
     /// returns a list of objects this object is pointing to by Links
-    std::vector<App::DocumentObject*> getOutList(int options=0) const;
+    const std::vector<App::DocumentObject*> &getOutList() const;
+    std::vector<App::DocumentObject*> getOutList(int option) const;
+    void getOutList(int option, std::vector<App::DocumentObject*> &res) const;
+
     /// returns a list of objects linked by the property
     std::vector<App::DocumentObject*> getOutListOfProperty(App::Property*) const;
     /// returns a list of objects this object is pointing to by Links and all further descended
@@ -214,8 +217,12 @@ public:
     void clearOutListCache() const;
     /// get all possible paths from this to another object following the OutList
     std::vector<std::list<App::DocumentObject*> > getPathsByOutList(App::DocumentObject* to) const;
+#ifdef USE_OLD_DAG
     /// get all objects link to this object
-    std::vector<App::DocumentObject*> getInList(void) const;
+    std::vector<App::DocumentObject*> getInList(void) const
+#else
+    const std::vector<App::DocumentObject*> &getInList(void) const;
+#endif
     /// get all objects link directly or indirectly to this object
     std::vector<App::DocumentObject*> getInListRecursive(void) const;
     /// Get a set of all objects linking to this object, including possible external parent objects
