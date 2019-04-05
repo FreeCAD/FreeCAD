@@ -271,9 +271,37 @@ PyObject* LinkBaseExtensionPy::cacheChildLabel(PyObject *args) {
     if(!PyArg_ParseTuple(args,"|O",&enable))
         return 0;
     PY_TRY {
-        getLinkBaseExtensionPtr()->cacheChildLabel(PyObject_IsTrue(enable));
+        getLinkBaseExtensionPtr()->cacheChildLabel(PyObject_IsTrue(enable)?-1:0);
         Py_Return;
     }PY_CATCH;
+}
+
+PyObject* LinkBaseExtensionPy::flattenSubname(PyObject *args) {
+    const char *subname;
+    if(!PyArg_ParseTuple(args,"s",&subname))
+        return 0;
+    PY_TRY {
+        return Py::new_reference_to(Py::String(
+                    getLinkBaseExtensionPtr()->flattenSubname(subname)));
+    }PY_CATCH;
+}
+
+PyObject* LinkBaseExtensionPy::expandSubname(PyObject *args) {
+    const char *subname;
+    if(!PyArg_ParseTuple(args,"s",&subname))
+        return 0;
+    PY_TRY {
+        std::string sub(subname);
+        getLinkBaseExtensionPtr()->expandSubname(sub);
+        return Py::new_reference_to(Py::String(sub));
+    }PY_CATCH;
+}
+
+Py::List LinkBaseExtensionPy::getLinkedChildren() const {
+    Py::List ret;
+    for(auto o : getLinkBaseExtensionPtr()->getLinkedChildren(true))
+        ret.append(Py::asObject(o->getPyObject()));
+    return ret;
 }
 
 PyObject *LinkBaseExtensionPy::getCustomAttributes(const char* /*attr*/) const

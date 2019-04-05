@@ -47,6 +47,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/GeoFeatureGroupExtension.h>
+#include <App/Link.h>
 
 #include "Tree.h"
 #include "Command.h"
@@ -3552,15 +3553,31 @@ void DocumentObjectItem::testStatus(bool resetStatus) {
     testStatus(resetStatus,icon,icon2);
 }
 
-void DocumentObjectItem::testStatus(bool resetStatus,QIcon &icon1, QIcon &icon2)
+void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2)
 {
     App::DocumentObject* pObject = object()->getObject();
 
     int visible = -1;
     auto parentItem = getParentItem();
-    if(parentItem)
-        visible = parentItem->object()->getObject()->isElementVisible(
-                pObject->getNameInDocument());
+    if(parentItem) {
+        auto parent = parentItem->object()->getObject();
+        auto ext = parent->getExtensionByType<App::GroupExtension>(true,false);
+        if(!ext) 
+            visible = parent->isElementVisible(pObject->getNameInDocument());
+        else {
+            // We are dealing with a plain group. It has special handling when
+            // linked, which allows it to have indpenedent visibility control.
+            // We need to go up the hierarchy and see if there is any link to
+            // it.
+            for(auto pp=parentItem->getParentItem();pp;pp=pp->getParentItem()) {
+                auto obj = pp->object()->getObject();
+                if(!obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false)) {
+                    visible = pp->object()->getObject()->isElementVisible(pObject->getNameInDocument());
+                    break;
+                }
+            }
+        }
+    }
     if(visible<0)
         visible = object()->isShow()?1:0;
 
@@ -3848,13 +3865,21 @@ enum GroupType {
 
 int DocumentObjectItem::isGroup() const {
     auto obj = object()->getObject();
+    auto linked = obj->getLinkedObject(true);
+    if(linked && linked->hasExtension(
+                App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
+        return PartGroup;
     if(obj->hasChildElement())
         return LinkGroup;
-    auto linked = obj->getLinkedObject(true);
-    if(!linked) return NotGroup;
-    auto vp = Application::Instance->getViewProvider(linked);
-    if(vp && vp->getChildRoot())
-        return PartGroup;
+    if(obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false)) {
+        for(auto parent=getParentItem();parent;parent=parent->getParentItem()) {
+            auto pobj = parent->object()->getObject();
+            if(pobj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false))
+                continue;
+            if(pobj->isElementVisible(obj->getNameInDocument())>=0)
+                return LinkGroup;
+        }
+    }
     return NotGroup;
 }
 

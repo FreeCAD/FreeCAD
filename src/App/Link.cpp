@@ -29,7 +29,7 @@
 #include <boost/preprocessor/stringize.hpp>
 #include "Application.h"
 #include "Document.h"
-#include "GeoFeatureGroupExtension.h"
+#include "GroupExtension.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
 #include <Base/Console.h>
@@ -39,6 +39,7 @@
 FC_LOG_LEVEL_INIT("App::Link", true,true)
 
 using namespace App;
+using namespace Base;
 
 EXTENSION_PROPERTY_SOURCE(App::LinkBaseExtension, App::DocumentObjectExtension)
 
@@ -48,6 +49,9 @@ LinkBaseExtension::LinkBaseExtension(void)
     initExtensionType(LinkBaseExtension::getExtensionClassTypeId());
     EXTENSION_ADD_PROPERTY_TYPE(_LinkRecomputed, (false), " Link", 
             PropertyType(Prop_Hidden|Prop_Transient),0);
+    EXTENSION_ADD_PROPERTY_TYPE(_ChildCache, (), " Link", 
+            PropertyType(Prop_Hidden|Prop_Transient|Prop_ReadOnly),0);
+    _ChildCache.setScope(LinkScope::Global);
     props.resize(PropMax,0);
 }
 
@@ -120,7 +124,7 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
     switch(idx) {
     case PropLinkMode: {
         static const char *linkModeEnums[] = {"None","Auto Delete","Auto Link","Auto Unlink",0};
-        auto propLinkMode = dynamic_cast<PropertyEnumeration*>(prop);
+        auto propLinkMode = freecad_dynamic_cast<PropertyEnumeration>(prop);
         if(!propLinkMode->getEnums())
             propLinkMode->setEnums(linkModeEnums);
         break;
@@ -183,24 +187,75 @@ short LinkBaseExtension::extensionMustExecute(void) {
     return link->mustExecute();
 }
 
-bool LinkBaseExtension::hasElements() const {
-    return getElementListProperty()!=0;
+App::GroupExtension *LinkBaseExtension::linkedPlainGroup() const {
+    auto subs = getSubElementsProperty();
+    if(subs && subs->getSize())
+        return 0;
+    auto linked = getTrueLinkedObject(false);
+    if(!linked)
+        return 0;
+    return linked->getExtensionByType<GroupExtension>(true,false);
+}
+
+App::PropertyLinkList *LinkBaseExtension::_getElementListProperty(GroupExtension **_group) const {
+    auto group = linkedPlainGroup();
+    if(_group) 
+        *_group = group;
+    if(group)
+        return &group->Group;
+    return const_cast<PropertyLinkList*>(getElementListProperty());
+}
+
+const std::vector<App::DocumentObject*> &LinkBaseExtension::_getElementListValue() const {
+    if(_ChildCache.getSize())
+        return _ChildCache.getValues();
+    if(getElementListProperty())
+        return getElementListProperty()->getValues();
+    static const std::vector<DocumentObject*> empty;
+    return empty;
+}
+
+App::PropertyBool *LinkBaseExtension::_getShowElementProperty() const {
+    auto prop = getShowElementProperty();
+    if(prop && !linkedPlainGroup())
+        return const_cast<App::PropertyBool*>(prop);
+    return 0;
+}
+
+bool LinkBaseExtension::_getShowElementValue() const {
+    auto prop = _getShowElementProperty();
+    if(prop)
+        return prop->getValue();
+    return true;
+}
+
+App::PropertyInteger *LinkBaseExtension::_getElementCountProperty() const {
+    auto prop = getElementCountProperty();
+    if(prop && !linkedPlainGroup())
+        return const_cast<App::PropertyInteger*>(prop);
+    return 0;
+}
+
+int LinkBaseExtension::_getElementCountValue() const {
+    auto prop = _getElementCountProperty();
+    if(prop)
+        return prop->getValue();
+    return 0;
 }
 
 bool LinkBaseExtension::extensionHasChildElement() const {
-    if(hasElements() || getElementCountValue())
+    if(_getElementListProperty() || _getElementCountValue())
         return true;
-    DocumentObject *linked = getTrueLinkedObject(true);
+    DocumentObject *linked = getTrueLinkedObject(false);
     if(linked) {
         if(linked->hasChildElement())
             return true;
-        // return linked->hasExtension(App::GroupExtension::getExtensionClassTypeId(),true);
     }
     return false;
 }
 
 int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visible) {
-    int index = getShowElementValue()?getElementIndex(element):getArrayIndex(element);
+    int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
     if(index>=0) {
         auto propElementVis = getVisibilityListProperty();
         if(!propElementVis || !element || !element[0]) 
@@ -212,7 +267,7 @@ int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visi
         propElementVis->setStatus(Property::User3,true);
         propElementVis->set1Value(index,visible,true);
         propElementVis->setStatus(Property::User3,false);
-        const auto &elements = getElementListValue();
+        const auto &elements = _getElementListValue();
         if(index<(int)elements.size()) {
             if(!visible)
                 myHiddenElements.insert(elements[index]);
@@ -221,14 +276,14 @@ int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visi
         }
         return 1;
     }
-    DocumentObject *linked = getTrueLinkedObject(true);
+    DocumentObject *linked = getTrueLinkedObject(false);
     if(linked)
         return linked->setElementVisible(element,visible);
     return -1;
 }
 
 int LinkBaseExtension::extensionIsElementVisible(const char *element) {
-    int index = getShowElementValue()?getElementIndex(element):getArrayIndex(element);
+    int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
     if(index>=0) {
         auto propElementVis = getVisibilityListProperty();
         if(propElementVis) {
@@ -238,7 +293,7 @@ int LinkBaseExtension::extensionIsElementVisible(const char *element) {
         }
         return -1;
     }
-    DocumentObject *linked = getTrueLinkedObject(true);
+    DocumentObject *linked = getTrueLinkedObject(false);
     if(linked)
         return linked->isElementVisible(element);
     return -1;
@@ -296,12 +351,12 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
         // If the name start with digits, treat as index reference
         idx = getArrayIndex(subname,0);
         if(idx<0) return -1;
-        if(getElementCountProperty()) {
-            if(idx>=getElementCountValue())
+        if(_getElementCountProperty()) {
+            if(idx>=_getElementCountValue())
                 return -1;
-        }else if(!getElementListProperty() || idx>=getElementListProperty()->getSize())
+        }else if(idx>=(int)_getElementListValue().size()) 
             return -1;
-    }else if(!getShowElementValue() && getElementCountValue()) {
+    }else if(!_getShowElementValue() && _getElementCountValue()) {
         // If elements are collapsed, we check first for LinkElement naming
         // pattern, which is the owner object name + "_i" + index
         const char *name = subname[0]=='$'?subname+1:subname;
@@ -313,7 +368,7 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
                 for(const char *txt=dot-1;txt>=name+ownerName.size();--txt) {
                     if(*txt == 'i') {
                         idx = getArrayIndex(txt+1,0);
-                        if(idx<0 || idx>=getElementCountValue())
+                        if(idx<0 || idx>=_getElementCountValue())
                             idx = -1;
                         break;
                     }
@@ -345,15 +400,29 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
         }
     }else if(subname[0]!='$') {
         // Try search by element objects' name
-        auto prop = getElementListProperty();
-        if(!prop || !prop->find(std::string(subname,dot-subname).c_str(),&idx))
+        std::string name(subname,dot);
+        if(_ChildCache.getSize()) {
+            auto obj=_ChildCache.find(name,&idx);
+            if(obj) {
+                auto group = obj->getExtensionByType<GroupExtension>(true,false);
+                if(group) {
+                    int nidx = getElementIndex(dot+1,psubname);
+                    if(nidx >= 0)
+                        return nidx;
+                }
+            }
+        } else if(getElementListProperty())
+            getElementListProperty()->find(name.c_str(),&idx);
+        if(idx<0)
             return -1;
     }else {
         // Try search by label if the reference name start with '$'
         ++subname;
         std::string name(subname,dot-subname);
-        const auto &elements = getElementListValue();
+        const auto &elements = _getElementListValue();
         if(enableLabelCache) {
+            if(myLabelCache.empty())
+                cacheChildLabel(1);
             auto it = myLabelCache.find(name);
             if(it == myLabelCache.end())
                 return -1;
@@ -368,10 +437,33 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
         }
         if(idx<0 || idx>=(int)elements.size())
             return -1;
+        auto obj = elements[idx];
+        if(obj && _ChildCache.getSize()) {
+            auto group = obj->getExtensionByType<GroupExtension>(true,false);
+            if(group) {
+                int nidx = getElementIndex(dot+1,psubname);
+                if(nidx >= 0)
+                    return nidx;
+            }
+        }
     }
     if(psubname)
         *psubname = dot[0]?dot+1:dot;
     return idx;
+}
+
+void LinkBaseExtension::elementNameFromIndex(int idx, std::ostream &ss) const {
+    const auto &elements = _getElementListValue();
+    if(idx < 0 || idx >= (int)elements.size())
+        return;
+
+    auto obj = elements[idx];
+    if(_ChildCache.getSize()) {
+        auto group = GroupExtension::getGroupOfObject(obj);
+        if(group && _ChildCache.find(group->getNameInDocument(),&idx))
+            elementNameFromIndex(idx,ss);
+    }
+    ss << obj->getNameInDocument() << '.';
 }
 
 Base::Vector3d LinkBaseExtension::getScaleVector() const {
@@ -398,8 +490,8 @@ Base::Matrix4D LinkBaseExtension::getTransform(bool transform) const {
 }
 
 bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret, int reason) const {
-    if(hasElements()) {
-        for(auto obj : getElementListValue()) {
+    if(getElementListProperty()) {
+        for(auto obj : getElementListProperty()->getValues()) {
             if(obj && obj->getNameInDocument()) {
                 std::string name(obj->getNameInDocument());
                 name+='.';
@@ -411,11 +503,11 @@ bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret, in
     if(mySubElement.empty() && getSubElementsValue().empty()) {
         DocumentObject *linked = getTrueLinkedObject(true);
         if(linked) {
-            if(!getElementCountValue())
+            if(!_getElementCountValue())
                 ret = linked->getSubObjects(reason);
             else{
                 char index[30];
-                for(int i=0,count=getElementCountValue();i<count;++i) {
+                for(int i=0,count=_getElementCountValue();i<count;++i) {
                     snprintf(index,sizeof(index),"%d.",i);
                     ret.push_back(index);
                 }
@@ -433,7 +525,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
     auto obj = getContainer();
     if(!subname || !subname[0]) {
         ret = const_cast<DocumentObject*>(obj);
-        if(!hasElements() && !getElementCountValue() && pyObj) {
+        if(!_getElementListProperty() && !_getElementCountValue() && pyObj) {
             Base::Matrix4D matNext;
             if(mat) matNext = *mat;
             auto linked = getTrueLinkedObject(false,mat?&matNext:0,depth);
@@ -450,7 +542,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
     bool isElement = false;
     int idx = getElementIndex(subname,&subname);
     if(idx>=0) {
-        const auto &elements = getElementListValue();
+        const auto &elements = _getElementListValue();
         if(elements.size()) {
             if(idx>=(int)elements.size() || !elements[idx] || !elements[idx]->getNameInDocument())
                 return true;
@@ -463,7 +555,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
             return true;
         }
 
-        int elementCount = getElementCountValue();
+        int elementCount = _getElementCountValue();
         if(idx>=elementCount)
             return true;
         isElement = true;
@@ -556,7 +648,7 @@ bool LinkBaseExtension::extensionGetLinkedObject(DocumentObject *&ret,
     if(mat) 
         *mat *= getTransform(transform);
     ret = 0;
-    if(!getElementCountValue())
+    if(!_getElementCountValue())
         ret = getTrueLinkedObject(recurse,mat,depth);
     if(!ret)
         ret = const_cast<DocumentObject*>(getContainer());
@@ -572,7 +664,7 @@ void LinkBaseExtension::extensionOnChanged(const Property *prop) {
 }
 
 void LinkBaseExtension::parseSubName() const {
-    auto xlink = dynamic_cast<const PropertyXLink*>(getLinkedObjectProperty());
+    auto xlink = freecad_dynamic_cast<const PropertyXLink>(getLinkedObjectProperty());
     const char* subname = xlink?xlink->getSubName():0;
     mySubName.clear();
     mySubElement.clear();
@@ -585,6 +677,9 @@ void LinkBaseExtension::parseSubName() const {
 
 void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop) {
     if(!prop) return;
+
+    GroupExtension *group = 0;
+
     if(prop == getLinkPlacementProperty() || prop == getPlacementProperty()) {
         auto src = getLinkPlacementProperty();
         auto dst = getPlacementProperty();
@@ -594,18 +689,19 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             dst->setValue(src->getValue());
             dst->setStatus(Property::User3,false);
         }
-    }else if(prop == getShowElementProperty()) {
-        auto objs = getElementListValue();
-        if(getShowElementValue()) 
-            update(parent,getElementCountProperty());
-        else if(objs.size()){
+    }else if(prop == _getShowElementProperty()) {
+        if(_getShowElementValue()) 
+            update(parent,_getElementCountProperty());
+        else {
+            auto objs = getElementListValue();
+
             // preseve element properties in ourself
             std::vector<Base::Placement> placements;
             placements.reserve(objs.size());
             std::vector<Base::Vector3d> scales;
             scales.reserve(objs.size());
             for(size_t i=0;i<objs.size();++i) {
-                auto element = dynamic_cast<LinkElement*>(objs[i]);
+                auto element = freecad_dynamic_cast<LinkElement>(objs[i]);
                 if(element) {
                     placements.push_back(element->Placement.getValue());
                     scales.push_back(element->getScaleVector());
@@ -635,7 +731,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     obj->getDocument()->removeObject(obj->getNameInDocument());
             }
         }
-    }else if(prop == getElementCountProperty()) {
+    }else if(prop == _getElementCountProperty()) {
         size_t elementCount = getElementCountValue()<0?0:(size_t)getElementCountValue();
 
         auto propVis = getVisibilityListProperty();
@@ -644,7 +740,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 propVis->setSize(getElementCountValue(),true);
         }
 
-        if(!getShowElementValue()) {
+        if(!_getShowElementValue()) {
             if(getScaleListProperty()) {
                 auto scales = getScaleListValue();
                 scales.resize(elementCount,Base::Vector3d(1,1,1));
@@ -676,7 +772,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 auto placementProp = getPlacementListProperty();
                 auto scaleProp = getScaleListProperty();
                 const auto &vis = getVisibilityListValue();
-                auto proxy = dynamic_cast<PropertyPythonObject*>(parent->getPropertyByName("Proxy"));
+                auto proxy = freecad_dynamic_cast<PropertyPythonObject>(parent->getPropertyByName("Proxy"));
                 Py::Callable method;
                 Py::Tuple args(3);
                 if(proxy) {
@@ -694,7 +790,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     // It is possible to have orphan LinkElement here due to,
                     // for example, undo and redo. So we try to re-claim the
                     // children element first.
-                    auto obj = dynamic_cast<LinkElement*>(doc->getObject(name.c_str()));
+                    auto obj = freecad_dynamic_cast<LinkElement>(doc->getObject(name.c_str()));
                     if(obj && (!obj->myOwner || obj->myOwner==this))
                         obj->Visibility.setValue(false);
                     else {
@@ -733,7 +829,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             }else if(elementCount<objs.size()){
                 std::vector<App::DocumentObject*> tmpObjs;
                 while(objs.size()>elementCount) {
-                    auto element = dynamic_cast<LinkElement*>(objs.back());
+                    auto element = freecad_dynamic_cast<LinkElement>(objs.back());
                     if(element && element->myOwner==this)
                         tmpObjs.push_back(objs.back());
                     objs.pop_back();
@@ -746,8 +842,8 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             }
         }
     }else if(prop == getVisibilityListProperty()) {
-        if(getShowElementValue()) {
-            const auto &elements = getElementListValue();
+        if(_getShowElementValue()) {
+            const auto &elements = _getElementListValue();
             const auto &vis = getVisibilityListValue();
             myHiddenElements.clear();
             for(size_t i=0;i<vis.size();++i) {
@@ -757,14 +853,42 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     myHiddenElements.insert(elements[i]);
             }
         }
-    }else if(prop == getElementListProperty()) {
-        const auto &elements = getElementListValue();
+    }else if(prop == _getElementListProperty(&group) || 
+            (prop == &_LinkRecomputed && (group = linkedPlainGroup()))) {
+
+        if(getShowElementProperty())
+            getShowElementProperty()->setStatus(Property::Hidden, !!group);
+        if(getElementCountProperty())
+            getElementCountProperty()->setStatus(Property::Hidden, !!group);
+
+        if(group) 
+            _ChildCache.setValues(group->getAllChildren());
+        else {
+            std::vector<GroupExtension*> groups;
+            for(auto o : getElementListProperty()->getValues()) {
+                if(!o || !o->getNameInDocument())
+                    continue;
+                auto ext = o->getExtensionByType<GroupExtension>(true,false);
+                if(ext)
+                    groups.push_back(ext);
+            }
+            if(groups.size()) {
+                auto children = getElementListValue();
+                std::set<DocumentObject*> childSet(children.begin(),children.end());
+                for(auto ext : groups)
+                    ext->getAllChildren(children,childSet);
+                _ChildCache.setValues(children);
+            }else if(_ChildCache.getSize())
+                _ChildCache.setValue();
+        }
+
+        const auto &elements = _getElementListValue();
 
         if(enableLabelCache)
-            cacheChildLabel();
+            myLabelCache.clear();
 
         // Element list changed, we need to sychrnoize VisibilityList.
-        if(getShowElementValue() && getVisibilityListProperty()) {
+        if(_getShowElementValue() && getVisibilityListProperty()) {
             if(parent->getDocument()->isPerformingTransaction()) {
                 update(parent,getVisibilityListProperty());
             }else{
@@ -787,12 +911,17 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             }
         }
         syncElementList();
-        if(getShowElementValue() && getElementCountProperty() && 
+        if(_getShowElementValue() && _getElementCountProperty() && 
             getElementCountValue()!=(int)elements.size())
         {
             getElementCountProperty()->setValue(elements.size());
         }
     }else if(prop == getLinkedObjectProperty()) {
+        auto group = linkedPlainGroup();
+        if(group)
+            _ChildCache.setValues(group->getAllChildren());
+        else
+            _ChildCache.setValue();
         parseSubName();
         syncElementList();
     }else if(prop == getSubElementsProperty()) {
@@ -809,15 +938,14 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
     }
 }
 
-void LinkBaseExtension::cacheChildLabel(bool enable) {
-    enableLabelCache = enable;
+void LinkBaseExtension::cacheChildLabel(int enable) const {
+    enableLabelCache = enable?true:false;
     myLabelCache.clear();
-    if(!enable)
+    if(enable<=0)
         return;
 
-    const auto &elements = getElementListValue();
     int idx = 0;
-    for(auto child : elements) {
+    for(auto child : _getElementListValue()) {
         if(child && child->getNameInDocument())
             myLabelCache[child->Label.getStrValue()] = idx;
         ++idx;
@@ -837,14 +965,14 @@ void LinkBaseExtension::syncElementList() {
     auto sub = getSubElementsProperty();
     auto transform = getLinkTransformProperty();
     auto link = getLinkedObjectProperty();
-    auto xlink = dynamic_cast<const PropertyXLink*>(link);
+    auto xlink = freecad_dynamic_cast<const PropertyXLink>(link);
     std::string subname;
     if(xlink) 
         subname = xlink->getSubName();
 
     auto elements = getElementListValue();
     for(size_t i=0;i<elements.size();++i) {
-        auto element = dynamic_cast<LinkElement*>(elements[i]);
+        auto element = freecad_dynamic_cast<LinkElement>(elements[i]);
         if(!element || (element->myOwner && element->myOwner!=this)) 
             continue;
 
@@ -878,7 +1006,7 @@ void LinkBaseExtension::onExtendedDocumentRestored() {
     if(parent) {
         update(parent,getVisibilityListProperty());
         update(parent,getLinkedObjectProperty());
-        update(parent,getElementListProperty());
+        update(parent,_getElementListProperty());
     }
 }
 
@@ -911,7 +1039,7 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
             LINK_THROW(Base::RuntimeError,"Cannot set link element");
 
         DocumentObject *old = 0;
-        const auto &elements = getElementListValue();
+        const auto &elements = getElementListProperty()->getValues();
         if(!obj) {
             if(index>=(int)elements.size())
                 LINK_THROW(Base::ValueError,"Link element index out of bound");
@@ -945,7 +1073,7 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
                 auto linked = link->getTrueLinkedObject(true);
                 if(linked)
                     link->Label.setValue(linked->Label.getValue());
-                auto pla = dynamic_cast<PropertyPlacement*>(obj->getPropertyByName("Placement"));
+                auto pla = freecad_dynamic_cast<PropertyPlacement>(obj->getPropertyByName("Placement"));
                 if(pla)
                     link->Placement.setValue(pla->getValue());
                 link->Visibility.setValue(false);
@@ -977,7 +1105,7 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
 
     // Here means we are assigning a Link
 
-    auto xlink = dynamic_cast<PropertyXLink*>(linkProp);
+    auto xlink = freecad_dynamic_cast<PropertyXLink>(linkProp);
     auto subElementProp = getSubElementsProperty();
     if(subElements.size() && !subElementProp)
         LINK_THROW(Base::RuntimeError,"No SubElements Property configured");
@@ -1018,6 +1146,48 @@ void LinkBaseExtension::detachElement(DocumentObject *obj) {
         return;
     }
     obj->getDocument()->removeObject(obj->getNameInDocument());
+}
+
+std::vector<App::DocumentObject*> LinkBaseExtension::getLinkedChildren(bool filter) const{
+    if(!filter)
+        return _getElementListValue();
+    std::vector<App::DocumentObject*> ret;
+    for(auto o : _getElementListValue()) {
+        if(!o->hasExtension(GroupExtension::getExtensionClassTypeId(),false))
+            ret.push_back(o);
+    }
+    return ret;
+}
+
+const char *LinkBaseExtension::flattenSubname(const char *subname) const {
+    if(subname && _ChildCache.getSize()) {
+        const char *sub = subname;
+        std::string s;
+        for(const char* dot=strchr(sub,'.');dot;sub=dot+1,dot=strchr(sub,'.')) {
+            DocumentObject *obj = 0;
+            s.clear();
+            s.append(sub,dot+1);
+            if(!extensionGetSubObject(obj,s.c_str()))
+                break;
+            if(!obj->hasExtension(GroupExtension::getExtensionClassTypeId(),false))
+                return sub;
+        }
+    }
+    return subname;
+}
+
+void LinkBaseExtension::expandSubname(std::string &subname) const {
+    if(!_ChildCache.getSize())
+        return;
+
+    const char *pos = 0;
+    int index = getElementIndex(subname.c_str(),&pos);
+    if(index<0)
+        return;
+    std::ostringstream ss;
+    elementNameFromIndex(index,ss);
+    ss << pos;
+    subname = ss.str();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1067,7 +1237,7 @@ Link::Link() {
 }
 
 bool Link::canLinkProperties() const {
-    auto prop = dynamic_cast<const PropertyXLink*>(getLinkedObjectProperty());
+    auto prop = freecad_dynamic_cast<const PropertyXLink>(getLinkedObjectProperty());
     const char *subname;
     if(prop && (subname=prop->getSubName()) && *subname) {
         auto len = strlen(subname);

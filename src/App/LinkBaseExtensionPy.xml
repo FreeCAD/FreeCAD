@@ -88,6 +88,30 @@ call this function on any child label change
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="flattenSubname">
+      <Documentation>
+          <UserDocu>
+flattenSubname(subname) -> string
+
+Return a flattened subname in case it references an object inside a linked plain group
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="expandSubname">
+      <Documentation>
+          <UserDocu>
+expandSubname(subname) -> string
+
+Return an expanded subname in case it references an object inside a linked plain group
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
+    <Attribute Name="LinkedChildren" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Return a flattend (in case grouped by plain group) list of linked children</UserDocu>
+        </Documentation>
+        <Parameter Name="LinkedChildren" Type="List"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>

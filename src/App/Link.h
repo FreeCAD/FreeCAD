@@ -35,6 +35,7 @@
 #include "PropertyLinks.h"
 #include "DocumentObjectExtension.h"
 #include "FeaturePython.h"
+#include "GroupExtension.h"
 
 #define LINK_THROW(_type,_msg) do{\
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))\
@@ -55,6 +56,7 @@ public:
     virtual ~LinkBaseExtension();
 
     PropertyBool _LinkRecomputed;
+    PropertyLinkList _ChildCache; // cache for plain group expansion
 
     enum {
         LinkModeNone,
@@ -206,10 +208,26 @@ public:
     // defines get##Name() and get##Name##Property() accessor
     BOOST_PP_SEQ_FOR_EACH(LINK_PROP_GET,_,LINK_PARAMS)
 
+    PropertyLinkList *_getElementListProperty(GroupExtension **group=0) const;
+    const std::vector<App::DocumentObject*> &_getElementListValue() const;
+
+    PropertyBool *_getShowElementProperty() const;
+    bool _getShowElementValue() const;
+
+    PropertyInteger *_getElementCountProperty() const;
+    int _getElementCountValue() const;
+
+    std::vector<DocumentObject*> getLinkedChildren(bool filter=true) const;
+
+    const char *flattenSubname(const char *subname) const;
+    void expandSubname(std::string &subname) const;
+
     DocumentObject *getLink(int depth=0) const;
 
     Base::Matrix4D getTransform(bool transform) const;
     Base::Vector3d getScaleVector() const;
+
+    App::GroupExtension *linkedPlainGroup() const;
 
     bool linkTransform() const;
 
@@ -223,7 +241,8 @@ public:
     }
 
     bool extensionGetSubObject(DocumentObject *&ret, const char *subname, 
-            PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const override;
+            PyObject **pyObj=0, Base::Matrix4D *mat=0, bool transform=false, int depth=0) const override;
+
     bool extensionGetSubObjects(std::vector<std::string>&ret, int reason) const override;
 
     bool extensionGetLinkedObject(DocumentObject *&ret, 
@@ -243,6 +262,7 @@ public:
 
     static int getArrayIndex(const char *subname, const char **psubname=0);
     int getElementIndex(const char *subname, const char **psubname=0) const;
+    void elementNameFromIndex(int idx, std::ostream &ss) const;
 
     DocumentObject *getContainer();
     const DocumentObject *getContainer() const;
@@ -258,12 +278,11 @@ public:
         return getLinkPlacementProperty() || getPlacementProperty();
     }
 
-    void cacheChildLabel(bool enable=true);
+    void cacheChildLabel(int enable=-1) const;
 
 protected:
     void parseSubName() const;
     void update(App::DocumentObject *parent, const Property *prop);
-    bool hasElements() const;
     void syncElementList();
     void detachElement(App::DocumentObject *obj);
     void checkGeoElementMap(const App::DocumentObject *obj, 
@@ -274,8 +293,9 @@ protected:
     std::set<const App::DocumentObject*> myHiddenElements;
     mutable std::string mySubElement;
     mutable std::string mySubName;
-    std::map<std::string,int> myLabelCache; // for label based subname lookup
-    bool enableLabelCache;
+
+    mutable std::unordered_map<std::string,int> myLabelCache; // for label based subname lookup
+    mutable bool enableLabelCache;
 
     // WARNING! Do not try to access through myOwner, the object may have been
     // deleted. Its purpose here is just to distinguish the owner.

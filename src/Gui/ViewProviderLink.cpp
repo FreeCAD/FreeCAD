@@ -61,6 +61,7 @@
 #include "ViewProviderLinkPy.h"
 #include "LinkViewPy.h"
 #include "ViewProviderGeometryObject.h"
+#include "ViewProviderGroupExtension.h"
 #include "View3DInventor.h"
 #include "SoFCUnifiedSelection.h"
 #include "SoFCCSysDragger.h"
@@ -72,6 +73,7 @@
 FC_LOG_LEVEL_INIT("App::Link",true,true)
 
 using namespace Gui;
+using namespace Base;
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -119,7 +121,7 @@ public:
 
     // for group type view providers
     CoinPtr<SoGroup> pcChildGroup;
-    typedef std::map<SoNode *, Pointer> NodeMap;
+    typedef std::unordered_map<SoNode *, Pointer> NodeMap;
     NodeMap nodeMap;
 
     std::map<qint64, QIcon> iconMap;
@@ -408,7 +410,7 @@ public:
     }
 
     bool getElementPicked(bool addname, int type, 
-            const SoPickedPoint *pp, std::stringstream &str) const 
+            const SoPickedPoint *pp, std::ostream &str) const 
     {
         if(!pp || !isLinked() || !pcLinked->isSelectable())
             return false;
@@ -635,20 +637,14 @@ void ViewProviderLinkObserver::extensionBeforeDelete() {
 }
 
 void ViewProviderLinkObserver::extensionOnChanged(const App::Property *prop) {
-    auto owner = dynamic_cast<ViewProviderDocumentObject*>(getExtendedContainer());
+    auto owner = freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
     if(!owner || !linkInfo) return;
     if(prop != &owner->Visibility && prop != &owner->DisplayMode)
         linkInfo->update();
 }
 
 void ViewProviderLinkObserver::extensionModeSwitchChange() {
-    auto owner = dynamic_cast<ViewProviderDocumentObject*>(getExtendedContainer());
-    if(owner && linkInfo)
-        linkInfo->updateSwitch();
-}
-
-void ViewProviderLinkObserver::extensionHide() {
-    auto owner = dynamic_cast<ViewProviderDocumentObject*>(getExtendedContainer());
+    auto owner = freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
     if(owner && linkInfo)
         linkInfo->updateSwitch();
 }
@@ -730,6 +726,8 @@ public:
     CoinPtr<SoSwitch> pcSwitch;
     CoinPtr<SoFCSelectionRoot> pcRoot;
     CoinPtr<SoTransform> pcTransform;
+    int groupIndex = -1;
+    bool isGroup = false;
 
     friend LinkView;
 
@@ -1034,7 +1032,7 @@ void LinkView::setSize(int _size) {
         if(pcLinkedRoot)
             info.pcRoot->addChild(pcLinkedRoot);
         pcLinkRoot->addChild(info.pcSwitch);
-        nodeMap.insert(std::make_pair(info.pcSwitch,(int)nodeArray.size()-1));
+        nodeMap.emplace(info.pcSwitch,(int)nodeArray.size()-1);
     }
 }
 
@@ -1074,20 +1072,40 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
 
     if(nodeArray.size() > children.size())
         nodeArray.resize(children.size());
-    nodeArray.reserve(children.size());
+    else
+        nodeArray.reserve(children.size());
+
+    std::map<App::DocumentObject*, size_t> groups;
     for(size_t i=0;i<children.size();++i) {
         auto obj = children[i];
         if(nodeArray.size()<=i)
             nodeArray.push_back(std::unique_ptr<Element>(new Element(*this)));
         auto &info = *nodeArray[i];
+        info.isGroup = false;
+        info.groupIndex = -1;
         info.pcSwitch->whichChild = (vis.size()<=i||vis[i])?0:-1;
         info.link(obj);
+        if(obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false)) {
+            info.isGroup = true;
+            CLEAR_CHILDREN(info.pcRoot);
+            groups.emplace(obj,i);
+        }
     }
     nodeMap.clear();
     for(size_t i=0;i<nodeArray.size();++i) {
         auto &info = *nodeArray[i];
+        nodeMap.emplace(info.pcSwitch,i);
+        if(groups.size()) {
+            auto iter = groups.find(App::GroupExtension::getGroupOfObject(
+                            info.linkInfo->pcLinked->getObject()));
+            if(iter != groups.end()) {
+                info.groupIndex = iter->second;
+                auto &groupInfo = *nodeArray[iter->second];
+                groupInfo.pcRoot->addChild(info.pcSwitch);
+                continue;
+            }
+        }
         pcLinkRoot->addChild(info.pcSwitch);
-        nodeMap.insert(std::make_pair(info.pcSwitch,i));
     }
 }
 
@@ -1284,7 +1302,7 @@ void LinkView::updateLink() {
 
 bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subname) const 
 {
-    std::stringstream str;
+    std::ostringstream ss;
     CoinPtr<SoPath> path = pp->getPath();
     if(nodeArray.size()) {
         auto idx = path->findNode(pcLinkRoot);
@@ -1294,22 +1312,38 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
         auto it = nodeMap.find(node);
         if(it == nodeMap.end() || !isElementVisible(it->second))
             return false;
-        str << it->second << '.';
-
-        auto &info = *nodeArray[it->second];
-        if(info.isLinked()) {
-            if(!info.linkInfo->getElementPicked(false,childType,pp,str))
+        int nodeIdx = it->second;
+        ++idx;
+        while(nodeArray[nodeIdx]->isGroup) {
+            auto &info = *nodeArray[nodeIdx];
+            if(!info.isLinked())
                 return false;
-            subname = str.str();
-            return true;
+            ss << info.linkInfo->getLinkedName() << '.';
+            idx += 2;
+            if(idx>=path->getLength())
+                return false;
+            auto iter = nodeMap.find(path->getNode(idx));
+            if(iter == nodeMap.end() || !isElementVisible(iter->second))
+                return false;
+            nodeIdx = iter->second;
         }
+        auto &info = *nodeArray[nodeIdx];
+        if(nodeIdx == it->second)
+            ss << it->second << '.';
+        else
+            ss << info.linkInfo->getLinkedName() << '.';
+        if(!info.isLinked()
+            || !info.linkInfo->getElementPicked(false,childType,pp,ss))
+            return false;
+        subname = ss.str();
+        return true;
     }
 
     if(!isLinked()) return false;
 
     if(nodeType >= 0) {
-        if(linkInfo->getElementPicked(false,nodeType,pp,str)) {
-            subname = str.str();
+        if(linkInfo->getElementPicked(false,nodeType,pp,ss)) {
+            subname = ss.str();
             return true;
         }
         return false;
@@ -1320,10 +1354,10 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
     for(auto &v : subInfo) {
         auto &sub = *v.second;
         if(node != sub.pcNode) continue;
-        std::stringstream str2;
-        if(!sub.linkInfo->getElementPicked(false,SnapshotTransform,pp,str2))
+        std::ostringstream ss2;
+        if(!sub.linkInfo->getElementPicked(false,SnapshotTransform,pp,ss2))
             return false;
-        const std::string &element = str2.str();
+        const std::string &element = ss2.str();
         if(sub.subElements.size()) {
             if(sub.subElements.find(element)==sub.subElements.end()) {
                 auto pos = element.find('.');
@@ -1333,12 +1367,23 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
             }
         }
         if(!autoSubLink || subInfo.size()>1)
-            str << v.first;
-        str << element;
-        subname = str.str();
+            ss << v.first;
+        ss << element;
+        subname = ss.str();
         return true;
     }
     return false;
+}
+
+bool LinkView::getGroupHierarchy(int index, SoFullPath *path) const {
+    if(index > (int)nodeArray.size())
+        return false;
+    auto &info = *nodeArray[index];
+    if(info.groupIndex>=0 && !getGroupHierarchy(info.groupIndex,path))
+        return false;
+    appendPath(path,info.pcSwitch);
+    appendPath(path,info.pcRoot);
+    return true;
 }
 
 bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail *&det) const 
@@ -1354,6 +1399,8 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
 
         auto &info = *nodeArray[idx];
         appendPath(path,pcLinkRoot);
+        if(info.groupIndex>=0 && !getGroupHierarchy(info.groupIndex,path))
+            return false;
         appendPath(path,info.pcSwitch);
         appendPath(path,info.pcRoot);
 
@@ -1553,7 +1600,7 @@ QIcon ViewProviderLink::getIcon() const {
 
 QPixmap ViewProviderLink::getOverlayPixmap() const {
     auto ext = getLinkExtension();
-    if(ext && ext->getLinkedObjectProperty() && ext->getElementCountValue())
+    if(ext && ext->getLinkedObjectProperty() && ext->_getElementCountValue())
         return BitmapFactory().pixmap("LinkArrayOverlay");
     else if(hasSubElement)
         return BitmapFactory().pixmap("LinkSubElement");
@@ -1565,7 +1612,7 @@ QPixmap ViewProviderLink::getOverlayPixmap() const {
 
 void ViewProviderLink::onChanged(const App::Property* prop) {
     if(prop==&ChildViewProvider) {
-        childVp = dynamic_cast<ViewProviderDocumentObject*>(ChildViewProvider.getObject().get());
+        childVp = freecad_dynamic_cast<ViewProviderDocumentObject>(ChildViewProvider.getObject().get());
         if(childVp) {
             childVp->setPropertyPrefix("ChildViewProvider.");
             childVp->Visibility.setValue(getObject()->Visibility.getValue());
@@ -1645,9 +1692,13 @@ void ViewProviderLink::updateData(const App::Property *prop) {
 void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App::Property *prop) {
     if(!prop) return;
     if(prop == &ext->_LinkRecomputed) {
-        if(linkView->hasSubs())
-            linkView->updateLink();
-        applyColors();
+        if(ext->linkedPlainGroup())
+            updateElementList(ext);
+        else {
+            if(linkView->hasSubs())
+                linkView->updateLink();
+            applyColors();
+        }
         checkIcon(ext);
     }else if(prop==ext->getColoredElementsProperty()) {
         if(!prop->testStatus(App::Property::User3))
@@ -1694,26 +1745,29 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
 
             auto obj = ext->getLinkedObjectValue();
             linkView->setLink(obj,subs);
-            applyColors();
+
+            updateElementList(ext);
+
+            // applyColors();
             signalChangeIcon();
         }
     }else if(prop == ext->getLinkTransformProperty()) {
         setLinkType(ext);
         applyColors();
-    }else if(prop==ext->getElementCountProperty()) {
-        if(!ext->getShowElementValue()) {
-            linkView->setSize(ext->getElementCountValue());
+    }else if(prop==ext->_getElementCountProperty()) {
+        if(!ext->_getShowElementValue()) {
+            linkView->setSize(ext->_getElementCountValue());
             updateDataPrivate(ext,ext->getVisibilityListProperty());
             updateDataPrivate(ext,ext->getPlacementListProperty());
         }
-    }else if(prop == ext->getShowElementProperty()) {
-        if(!ext->getShowElementValue()) {
+    }else if(prop == ext->_getShowElementProperty()) {
+        if(!ext->_getShowElementValue()) {
 
-            auto linked = dynamic_cast<ViewProviderDocumentObject*>(getLinkedView(true,ext));
+            auto linked = freecad_dynamic_cast<ViewProviderDocumentObject>(getLinkedView(true,ext));
             if(linked && linked->getDocument()==getDocument())
                 linked->hide();
 
-            const auto &elements = ext->getElementListValue();
+            const auto &elements = ext->_getElementListValue();
             // elements is about to be collapsed, preserve the materials
             if(elements.size()) {
                 std::vector<App::Material> materials;
@@ -1723,9 +1777,9 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 bool hasMaterial = false;
                 materials.reserve(elements.size());
                 for(size_t i=0;i<elements.size();++i) {
-                    auto element = dynamic_cast<App::LinkElement*>(elements[i]);
+                    auto element = freecad_dynamic_cast<App::LinkElement>(elements[i]);
                     if(!element) continue;
-                    auto vp = dynamic_cast<ViewProviderLink*>(
+                    auto vp = freecad_dynamic_cast<ViewProviderLink>(
                             Application::Instance->getViewProvider(element));
                     if(!vp) continue;
                     overrideMaterial = overrideMaterial || vp->OverrideMaterial.getValue();
@@ -1745,7 +1799,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 MaterialList.setValue(materials);
                 MaterialList.setStatus(App::Property::User3,false);
                 
-                linkView->setSize(ext->getElementCountValue());
+                linkView->setSize(ext->_getElementCountValue());
                 updateDataPrivate(ext,ext->getVisibilityListProperty());
                 applyMaterial();
                 applyColors();
@@ -1754,7 +1808,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop==ext->getScaleListProperty() || prop==ext->getPlacementListProperty()) {
         if(!prop->testStatus(App::Property::User3) && 
             linkView->getSize() && 
-            !ext->getShowElementValue()) 
+            !ext->_getShowElementValue()) 
         {
             auto propPlacements = ext->getPlacementListProperty();
             auto propScales = ext->getScaleListProperty();
@@ -1798,28 +1852,31 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             else
                 linkView->setElementVisible(i,true);
         }
-    }else if(prop == ext->getElementListProperty()) {
-        if(ext->getShowElementValue()) {
-            const auto &elements = ext->getElementListValue();
-            if(OverrideMaterialList.getSize() || MaterialList.getSize()) {
-                int i=-1;
-                for(auto obj : elements) {
-                    ++i;
-                    auto vp = dynamic_cast<ViewProviderLink*>(
-                            Application::Instance->getViewProvider(obj));
-                    if(!vp) continue;
-                    if(OverrideMaterialList.getSize()>i)
-                        vp->OverrideMaterial.setValue(OverrideMaterialList[i]);
-                    if(MaterialList.getSize()>i)
-                        vp->ShapeMaterial.setValue(MaterialList[i]);
-                }
-                OverrideMaterialList.setSize(0);
-                MaterialList.setSize(0);
-            }
-            linkView->setChildren(elements, ext->getVisibilityListValue());
-            applyColors();
-        }
+    }else if(prop == ext->_getElementListProperty()) {
+        if(ext->_getShowElementValue())
+            updateElementList(ext);
     }
+}
+
+void ViewProviderLink::updateElementList(App::LinkBaseExtension *ext) {
+    const auto &elements = ext->_getElementListValue();
+    if(OverrideMaterialList.getSize() || MaterialList.getSize()) {
+        int i=-1;
+        for(auto obj : elements) {
+            ++i;
+            auto vp = freecad_dynamic_cast<ViewProviderLink>(
+                    Application::Instance->getViewProvider(obj));
+            if(!vp) continue;
+            if(OverrideMaterialList.getSize()>i)
+                vp->OverrideMaterial.setValue(OverrideMaterialList[i]);
+            if(MaterialList.getSize()>i)
+                vp->ShapeMaterial.setValue(MaterialList[i]);
+        }
+        OverrideMaterialList.setSize(0);
+        MaterialList.setSize(0);
+    }
+    linkView->setChildren(elements, ext->getVisibilityListValue());
+    applyColors();
 }
 
 void ViewProviderLink::checkIcon(const App::LinkBaseExtension *ext) {
@@ -1828,12 +1885,12 @@ void ViewProviderLink::checkIcon(const App::LinkBaseExtension *ext) {
         if(!ext) return;
     }
     const char *icon;
-    auto element = dynamic_cast<App::LinkElement*>(getObject());
+    auto element = freecad_dynamic_cast<App::LinkElement>(getObject());
     if(element)
         icon = _LinkElementIcon;
     else if(!ext->getLinkedObjectProperty() && ext->getElementListProperty())
         icon = _LinkGroupIcon;
-    // else if(ext->getElementCountValue())
+    // else if(ext->_getElementCountValue())
     //     icon = _LinkArrayIcon;
     else
         icon = _LinkIcon;
@@ -1871,12 +1928,12 @@ void ViewProviderLink::finishRestoring() {
         updateDataPrivate(ext,ext->getLinkPlacementProperty());
     else
         updateDataPrivate(ext,ext->getPlacementProperty());
-    updateDataPrivate(ext,ext->getElementCountProperty());
+    updateDataPrivate(ext,ext->_getElementCountProperty());
     if(ext->getPlacementListProperty())
         updateDataPrivate(ext,ext->getPlacementListProperty());
     else
         updateDataPrivate(ext,ext->getScaleListProperty());
-    updateDataPrivate(ext,ext->getElementListProperty());
+    updateDataPrivate(ext,ext->_getElementListProperty());
     applyMaterial();
     applyColors();
 
@@ -1893,15 +1950,16 @@ bool ViewProviderLink::hasElements(const App::LinkBaseExtension *ext) const {
         if(!ext) return false;
     }
     const auto &elements = ext->getElementListValue();
-    return elements.size() && (int)elements.size()==ext->getElementCountValue();
+    return elements.size() && (int)elements.size()==ext->_getElementCountValue();
 }
 
-bool ViewProviderLink::isGroup(const App::LinkBaseExtension *ext) const {
+bool ViewProviderLink::isGroup(const App::LinkBaseExtension *ext, bool plainGroup) const {
     if(!ext) {
         ext = getLinkExtension();
         if(!ext) return false;
     }
-    return ext->getElementListProperty() && !ext->getLinkedObjectProperty();
+    return (plainGroup && ext->linkedPlainGroup())
+        || (ext->getElementListProperty() && !ext->getLinkedObjectProperty());
 }
 
 ViewProvider *ViewProviderLink::getLinkedView(
@@ -1918,7 +1976,7 @@ ViewProvider *ViewProviderLink::getLinkedView(
 
 std::vector<App::DocumentObject*> ViewProviderLink::claimChildren(void) const {
     auto ext = getLinkExtension();
-    if(ext && !ext->getShowElementValue() && ext->getElementCountValue()) {
+    if(ext && !ext->_getShowElementValue() && ext->_getElementCountValue()) {
         // in array mode without element objects, we'd better not show the
         // linked object's children to avoid inconsistent behavior on selection.
         // We claim the linked object instead
@@ -2011,7 +2069,7 @@ bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj,
             return linked->canDropObjectEx(obj,owner,subname,elements);
     }
     if(obj->getDocument() != getObject()->getDocument() && 
-       !dynamic_cast<App::PropertyXLink*>(ext->getLinkedObjectValue()))
+       !freecad_dynamic_cast<App::PropertyXLink>(ext->getLinkedObjectValue()))
         return false;
 
     return true;
@@ -2069,15 +2127,15 @@ bool ViewProviderLink::getElementPicked(const SoPickedPoint *pp, std::string &su
             return childVp->getElementPicked(pp,subname);
     }
     bool ret = linkView->linkGetElementPicked(pp,subname);
-    if(ret && (isGroup(ext) || hasElements(ext))) {
-        const auto &elements = ext->getElementListValue();
+    if(!ret)
+        return ret;
+    if(isGroup(ext)) {
         const char *sub = 0;
         int idx = App::LinkBaseExtension::getArrayIndex(subname.c_str(),&sub);
-        assert(idx>=0 && idx<(int)elements.size());
-        assert(sub!=subname.c_str());
-        if(isGroup(ext)) {
+        if(idx>=0 ) {
             --sub;
             assert(*sub == '.');
+            const auto &elements = ext->_getElementListValue();
             subname.replace(0,sub-subname.c_str(),elements[idx]->getNameInDocument());
         }
     }
@@ -2103,7 +2161,7 @@ bool ViewProviderLink::getDetailPath(
     }
     std::string _subname;
     if(subname && subname[0] && 
-       (isGroup(ext) || hasElements(ext) || ext->getElementCountValue())) {
+       (isGroup(ext,true) || hasElements(ext) || ext->getElementCountValue())) {
         int index = ext->getElementIndex(subname,&subname);
         if(index>=0) {
             _subname = std::to_string(index)+'.'+subname;
@@ -2117,7 +2175,7 @@ bool ViewProviderLink::getDetailPath(
 }
 
 bool ViewProviderLink::onDelete(const std::vector<std::string> &) {
-    auto element = dynamic_cast<App::LinkElement*>(getObject());
+    auto element = freecad_dynamic_cast<App::LinkElement>(getObject());
     return !element || element->canDelete();
 }
 
@@ -2135,7 +2193,7 @@ bool ViewProviderLink::linkEdit(const App::LinkBaseExtension *ext) const {
     if(!ext)
         ext = getLinkExtension();
     if(!ext ||
-       (!ext->getShowElementValue() && ext->getElementCountValue()) ||
+       (!ext->_getShowElementValue() && ext->_getElementCountValue()) ||
        hasElements(ext) || 
        isGroup(ext) ||
        hasSubName)
@@ -2290,7 +2348,7 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
         FC_ERR("no linked object");
         return 0;
     }
-    auto vpd = dynamic_cast<ViewProviderDocumentObject*>(
+    auto vpd = freecad_dynamic_cast<ViewProviderDocumentObject>(
                 Application::Instance->getViewProvider(linked));
     if(!vpd) {
         FC_ERR("no linked viewprovider");
@@ -2580,7 +2638,8 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
             auto link = vp->getObject()->getLinkedObject(false);
             if(!link || link==vp->getObject())
                 break;
-            auto next = dynamic_cast<ViewProviderLink*>(Application::Instance->getViewProvider(link));
+            auto next = freecad_dynamic_cast<ViewProviderLink>(
+                    Application::Instance->getViewProvider(link));
             if(!next)
                 break;
             for(auto &v : next->getElementColors(subname))
@@ -2590,7 +2649,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         if(wildcard!=ViewProvider::hiddenMarker()) {
             // Get collapsed array color override.
             auto ext = vp->getLinkExtension();
-            if(ext->getElementCountValue() && !ext->getShowElementValue()) {
+            if(ext->_getElementCountValue() && !ext->_getShowElementValue()) {
                 const auto &overrides = vp->OverrideMaterialList.getValues();
                 int i=-1;
                 for(auto &mat : vp->MaterialList.getValues()) {

@@ -72,7 +72,6 @@ public:
     bool extensionCanDragObject(App::DocumentObject*) const override { return false; }
     bool extensionCanDropObject(App::DocumentObject*) const override { return false; }
     void extensionModeSwitchChange(void) override;
-    void extensionHide(void) override;
 
     bool isLinkVisible() const;
     void setLinkVisible(bool);
@@ -170,6 +169,7 @@ public:
 protected:
     void replaceLinkedRoot(SoSeparator *);
     void resetRoot();
+    bool getGroupHierarchy(int index, SoFullPath *path) const;
 
 protected:
     LinkInfoPtr linkOwner;
@@ -189,7 +189,7 @@ protected:
 
     class Element;
     std::vector<std::unique_ptr<Element> > nodeArray;
-    std::map<SoNode*,int> nodeMap;
+    std::unordered_map<SoNode*,int> nodeMap;
 
     Py::Object PythonObject;
 };
@@ -289,12 +289,12 @@ protected:
     };
 
     bool hasElements(const App::LinkBaseExtension *ext = 0) const;
-    bool isGroup(const App::LinkBaseExtension *ext = 0) const;
+    bool isGroup(const App::LinkBaseExtension *ext=0, bool plainGroup=false) const;
     const App::LinkBaseExtension *getLinkExtension() const;
     App::LinkBaseExtension *getLinkExtension();
 
     void updateDataPrivate(App::LinkBaseExtension *ext, const App::Property*);
-    void updateElementChildren(App::LinkBaseExtension *ext);
+    void updateElementList(App::LinkBaseExtension *ext);
 
     bool setLinkType(App::LinkBaseExtension *ext);
 

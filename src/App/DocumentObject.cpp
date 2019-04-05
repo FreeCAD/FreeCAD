@@ -1004,7 +1004,22 @@ DocumentObject *DocumentObject::resolve(const char *subname,
                 break;
             auto sobj = getSubObject(std::string(subname,dot-subname+1).c_str());
             if(sobj!=obj) {
-                if(parent) *parent = sobj;
+                if(parent) {
+                    // Link/LinkGroup has special visiblility handling of plain
+                    // group, so keep ascending
+                    if(!sobj->hasExtension(GroupExtension::getExtensionClassTypeId(),false)) {
+                        *parent = sobj;
+                        break;
+                    }
+                    for(auto ddot=dot-1;ddot!=subname;--ddot) {
+                        if(*ddot != '.') continue;
+                        auto sobj = getSubObject(std::string(subname,ddot-subname+1).c_str());
+                        if(!sobj->hasExtension(GroupExtension::getExtensionClassTypeId(),false)) {
+                            *parent = sobj;
+                            break;
+                        }
+                    }
+                }
                 break;
             }
         }
