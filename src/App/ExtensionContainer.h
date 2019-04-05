@@ -132,8 +132,8 @@ public:
     
     //returns first of type (or derived from) and throws otherwise
     template<typename ExtensionT>
-    ExtensionT* getExtensionByType(bool no_except=false) const {
-        return static_cast<ExtensionT*>(getExtension(ExtensionT::getExtensionClassTypeId(),true,no_except));
+    ExtensionT* getExtensionByType(bool no_except=false, bool derived=true) const {
+        return static_cast<ExtensionT*>(getExtension(ExtensionT::getExtensionClassTypeId(),derived,no_except));
     };
     
     //get all extensions which have the given base class
