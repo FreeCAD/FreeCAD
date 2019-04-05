@@ -218,24 +218,37 @@ Gui::View3DInventorViewer * PartGui::getViewer()
 
 void PartGui::addLinearDimensions(const BRepExtrema_DistShapeShape &measure)
 {
+  ParameterGrp::handle hPartGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part"); 
+  QString clCone = QString::fromStdString(hPartGrp->GetASCII("DimensionConeColor", "1.0/0.0/0.0")); 
+  QStringList clRGB = clCone.split(QLatin1String("/"));
+  float clR = clRGB.value(0).toFloat();
+  float clG = clRGB.value(1).toFloat();
+  float clB = clRGB.value(2).toFloat();
+
   Gui::View3DInventorViewer *viewer = getViewer();
   if (!viewer)
     return;
   gp_Pnt point1 = measure.PointOnShape1(1);
   gp_Pnt point2 = measure.PointOnShape2(1);
-  viewer->addDimension3d(createLinearDimension(point1, point2, SbColor(1.0, 0.0, 0.0)));
-  
+  viewer->addDimension3d(createLinearDimension(point1, point2, SbColor(clR, clG, clB)));
+
+  QString clLine = QString::fromStdString(hPartGrp->GetASCII("DimensionLinearColor", "0.0/1.0/0.0")); 
+  clRGB = clLine.split(QLatin1String("/"));
+  clR = clRGB.value(0).toFloat();
+  clG = clRGB.value(1).toFloat();
+  clB = clRGB.value(2).toFloat();
+ 
   //create deltas. point1 will always be the same.
   gp_Pnt temp = point1;
   gp_Pnt lastTemp = temp;
   temp.SetX(point2.X());
-  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(clR, clG, clB)));
   lastTemp = temp;
   temp.SetY(point2.Y());
-  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(clR, clG, clB)));
   lastTemp = temp;
   temp.SetZ(point2.Z());
-  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(clR, clG, clB)));
 }
 
 SoNode* PartGui::createLinearDimension(const gp_Pnt &point1, const gp_Pnt &point2, const SbColor &color)
@@ -1002,6 +1015,13 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
     
     dimSys = dimSys.transpose();
   }
+
+  ParameterGrp::handle hPartGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part"); 
+  QString clCone = QString::fromStdString(hPartGrp->GetASCII("DimensionAngularColor", "0.0/0.0/1.0")); 
+  QStringList clRGB = clCone.split(QLatin1String("/"));
+  float clR = clRGB.value(0).toFloat();
+  float clG = clRGB.value(1).toFloat();
+  float clB = clRGB.value(2).toFloat();
   
   DimensionAngular *dimension = new DimensionAngular();
   dimension->ref();
@@ -1009,7 +1029,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   dimension->radius.setValue(radius);
   dimension->angle.setValue(static_cast<float>(displayAngle));
   dimension->text.setValue((Base::Quantity(180 * angle / M_PI, Base::Unit::Angle)).getUserString().toUtf8().constData());
-  dimension->dColor.setValue(SbColor(0.0, 0.0, 1.0));
+  dimension->dColor.setValue(SbColor(clR, clG, clB));
   dimension->setupDimension();
   
   Gui::View3DInventorViewer *viewer = getViewer();
