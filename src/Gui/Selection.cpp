@@ -1326,7 +1326,7 @@ void SelectionSingleton::setVisible(int visible) {
         auto obj = sel.pObject->resolve(sel.SubName.c_str(),&parent,&elementName);
         if(!obj || !obj->getNameInDocument() || (parent && !parent->getNameInDocument()))
             continue;
-        // try call parent object's setElementVisibility
+        // try call parent object's setElementVisible
         if(parent) {
             // prevent setting the same object visibility more than once
             if(!filter.insert(std::make_pair(obj,parent)).second)
