@@ -353,8 +353,8 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
         center = arc.Curve.Center
 
         int = []
-        # first check for coincident endpoints					# Should also check if endpoints are within 'tolerence' to consider conincident (against precision level set) here?
-        if (pt1 in [pt3,pt4]):
+        # first check for coincident endpoints
+        if DraftVecUtils.equals(pt1,pt3) or DraftVecUtils.equals(pt1,pt4):
             if findAll:
                 int.append(pt1)
             else:
