@@ -876,18 +876,19 @@ class BSpline(Line):
         if self.ui:
             if self.ui.continueMode:
                 self.Activated()
-
+        
 class BezCurve(Line):
-    "a FreeCAD command for creating a Bezier Curve"
+    "a FreeCAD command for creating a Bezier Curve chain"
 
     def __init__(self):
         Line.__init__(self,wiremode=True)
+        self.degree = None
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_BezCurve',
                 'Accel' : "B, Z",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_BezCurve", "BezCurve"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates a Bezier curve. CTRL to snap, SHIFT to constrain")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates Bezier curve. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
         Line.Activated(self,name=translate("draft","BezCurve"))
@@ -901,7 +902,7 @@ class BezCurve(Line):
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
-            self.bezcurvetrack.update(self.node + [self.point])                 #existing points + this pointer position
+            self.bezcurvetrack.update(self.node + [self.point],degree=self.degree)                 #existing points + this pointer position
             redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):       #left click
@@ -933,9 +934,10 @@ class BezCurve(Line):
         "undoes last line segment"
         if (len(self.node) > 1):
             self.node.pop()
-            self.bezcurvetrack.update(self.node)
+            self.bezcurvetrack.update(self.node,degree=3)
             self.obj.Shape = self.updateShape(self.node)
             msg(translate("draft", "Last point has been removed")+"\n")
+
 
     def drawUpdate(self,point):
         if (len(self.node) == 1):
@@ -949,11 +951,28 @@ class BezCurve(Line):
 
     def updateShape(self, pts):
         '''creates shape for display during creation process.'''
-# not quite right. draws 1 big bez.  sb segmented
-        c = Part.BezierCurve()
-        c.setPoles(pts)
-        e = Part.Edge(c)
-        w = Part.Wire(e)
+
+        edges = []
+        
+        if len(pts) >= 2: #allow lower degree segment
+            poles=pts[1:]
+        else:
+            poles=[]
+        
+        if self.degree:
+            segpoleslst = [poles[x:x+self.degree] for x in range(0, len(poles), (self.degree or 1))]
+        else:
+            segpoleslst = [pts]
+            
+        startpoint=pts[0]
+        
+        for segpoles in segpoleslst:
+            c = Part.BezierCurve() #last segment may have lower degree
+            c.increase(len(segpoles))
+            c.setPoles([startpoint]+segpoles)
+            edges.append(Part.Edge(c))
+            startpoint = segpoles[-1]
+        w = Part.Wire(edges)
         return(w)
 
     def finish(self,closed=False,cont=False):
@@ -974,7 +993,7 @@ class BezCurve(Line):
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create BezCurve"),
                             ['points = '+pts,
-                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+')',
+                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+',Degree='+str(self.degree)+')',
                              'Draft.autogroup(bez)'])
             except:
                 print("Draft: error delaying commit")
