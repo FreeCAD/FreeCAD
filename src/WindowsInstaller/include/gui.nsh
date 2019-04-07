@@ -33,7 +33,10 @@ BrandingText " "
 !define MUI_WELCOMEPAGE_TEXT $(TEXT_WELCOME)
 !insertmacro MUI_PAGE_WELCOME
 # Show the license.
+!define MUI_LICENSEPAGE_BUTTON $(^NextBtn)
+!define MUI_LICENSEPAGE_TEXT_BOTTOM " "
 !insertmacro MUI_PAGE_LICENSE "${FILES_LICENSE}"
+
 # Decision if it should be installed as admin or not
 !insertmacro MULTIUSER_PAGE_INSTALLMODE
 
