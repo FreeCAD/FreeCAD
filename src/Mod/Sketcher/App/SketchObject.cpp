@@ -5435,18 +5435,17 @@ const Part::Geometry* SketchObject::getGeometry(int GeoId) const
 Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Plane)& gPlane, const Base::Placement& invPlm)
 {
     double first = curve.FirstParameter();
-    bool infinite = false;
+
     if (fabs(first) > 1E99) {
         // TODO: What is OCE's definition of Infinite?
         // TODO: The clean way to do this is to handle a new sketch geometry Geom::Line
         // but its a lot of work to implement...
         first = -10000;
-        //infinite = true;
     }
+
     double last = curve.LastParameter();
     if (fabs(last) > 1E99) {
         last = +10000;
-        //infinite = true;
     }
 
     gp_Pnt P1 = curve.Value(first);
@@ -5468,14 +5467,9 @@ Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Pl
         point->Construction = true;
         return point;
     }
-    else if (!infinite) {
+    else {
         Part::GeomLineSegment* line = new Part::GeomLineSegment();
         line->setPoints(p1,p2);
-        line->Construction = true;
-        return line;
-    } else {
-        Part::GeomLine* line = new Part::GeomLine();
-        line->setLine(p1, p2 - p1);
         line->Construction = true;
         return line;
     }
