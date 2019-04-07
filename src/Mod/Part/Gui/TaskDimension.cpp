@@ -218,24 +218,31 @@ Gui::View3DInventorViewer * PartGui::getViewer()
 
 void PartGui::addLinearDimensions(const BRepExtrema_DistShapeShape &measure)
 {
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+  App::Color c(1.0,0.0,0.0);
+  c.fromHexString(group->GetASCII("Dimensions3dColor", c.asHexString().c_str()));
+  App::Color d(0.0,1.0,0.0);
+  d.fromHexString(group->GetASCII("DimensionsDeltaColor", d.asHexString().c_str()));
+
   Gui::View3DInventorViewer *viewer = getViewer();
   if (!viewer)
     return;
   gp_Pnt point1 = measure.PointOnShape1(1);
   gp_Pnt point2 = measure.PointOnShape2(1);
-  viewer->addDimension3d(createLinearDimension(point1, point2, SbColor(1.0, 0.0, 0.0)));
+  viewer->addDimension3d(createLinearDimension(point1, point2, SbColor(c.r, c.g, c.b)));
   
   //create deltas. point1 will always be the same.
   gp_Pnt temp = point1;
   gp_Pnt lastTemp = temp;
   temp.SetX(point2.X());
-  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(d.r, d.g, d.b)));
   lastTemp = temp;
   temp.SetY(point2.Y());
-  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(d.r, d.g, d.b)));
   lastTemp = temp;
   temp.SetZ(point2.Z());
-  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(d.r, d.g, d.b)));
 }
 
 SoNode* PartGui::createLinearDimension(const gp_Pnt &point1, const gp_Pnt &point2, const SbColor &color)
@@ -1002,14 +1009,19 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
     
     dimSys = dimSys.transpose();
   }
-  
+
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+  App::Color c(0.0,0.0,1.0);
+  c.fromHexString(group->GetASCII("DimensionsAngularColor", c.asHexString().c_str()));
+
   DimensionAngular *dimension = new DimensionAngular();
   dimension->ref();
   dimension->matrix.setValue(dimSys);
   dimension->radius.setValue(radius);
   dimension->angle.setValue(static_cast<float>(displayAngle));
   dimension->text.setValue((Base::Quantity(180 * angle / M_PI, Base::Unit::Angle)).getUserString().toUtf8().constData());
-  dimension->dColor.setValue(SbColor(0.0, 0.0, 1.0));
+  dimension->dColor.setValue(SbColor(c.r, c.g, c.b));
   dimension->setupDimension();
   
   Gui::View3DInventorViewer *viewer = getViewer();

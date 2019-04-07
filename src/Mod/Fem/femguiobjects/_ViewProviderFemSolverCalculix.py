@@ -33,7 +33,6 @@ import FreeCADGui
 import FemGui
 
 # for the panel
-from femtools import ccxtools
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
@@ -77,17 +76,7 @@ class _ViewProviderFemSolverCalculix:
     def doubleClicked(self, vobj):
         doc = FreeCADGui.getDocument(vobj.Object.Document)
         if not doc.getInEdit():
-            # may be go the other way around and just activate the analysis the user has doubleClicked on ?!
-            if FemGui.getActiveAnalysis() is not None:
-                if FemGui.getActiveAnalysis().Document is FreeCAD.ActiveDocument:
-                    if self.Object in FemGui.getActiveAnalysis().Group:
-                        doc.setEdit(vobj.Object.Name)
-                    else:
-                        FreeCAD.Console.PrintError('Activate the analysis this solver belongs to!\n')
-                else:
-                    FreeCAD.Console.PrintError('Active Analysis is not in active Document!\n')
-            else:
-                FreeCAD.Console.PrintError('No active Analysis found!\n')
+            doc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
             message = 'Active Task Dialog found! Please close this one before opening  a new one!'
@@ -108,8 +97,9 @@ class _TaskPanelFemSolverCalculix:
     def __init__(self, solver_object):
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/SolverCalculix.ui")
 
-        # since open the task panel is only possible with an active analysis, we do not need to pass the analysis. it will be found
-        self.fea = ccxtools.FemToolsCcx(None, solver_object)
+        from femtools.ccxtools import CcxTools as ccx
+        # we do not need to pass the analysis, it will be found on fea init
+        self.fea = ccx(solver_object)
         self.fea.setup_working_dir()
         self.fea.setup_ccx()
 

@@ -48,7 +48,7 @@ ConstraintDisplacement::ConstraintDisplacement()
     // each dof has three attributes, but only one of them should evaluate to True!
     // Free is True, Free, Fix should be False and Value should be 0.0
     // Fix is True, totally restrained, Free should be False and Value should be 0.0
-    // Displacment or Rotation not 0.0, prescribed displacement, Free and Fix should be False
+    // Displacement or Rotation not 0.0, prescribed displacement, Free and Fix should be False
 
     // x displacement
     ADD_PROPERTY(xFix,(0));

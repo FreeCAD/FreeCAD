@@ -78,18 +78,26 @@ class ViewProxy(object):
         try:
             machine = run.getMachine(vobj.Object)
         except run.MustSaveError:
-            QtGui.QMessageBox.critical(
-                Gui.getMainWindow(),
-                "Can't open Task Panel",
+            error_message = (
                 "Please save the file before opening the task panel. "
                 "This must be done because the location of the working "
-                "directory is set to \"Beside .FCStd File\".")
-            return False
-        except run.DirectoryDoesNotExist:
+                "directory is set to \"Beside *.FCStd File\"."
+            )
+            App.Console.PrintError(error_message + "\n")
             QtGui.QMessageBox.critical(
                 Gui.getMainWindow(),
                 "Can't open Task Panel",
-                "Selected working directory doesn't exist.")
+                error_message
+            )
+            return False
+        except run.DirectoryDoesNotExistError:
+            error_message = "Selected working directory doesn't exist."
+            App.Console.PrintError(error_message + "\n")
+            QtGui.QMessageBox.critical(
+                Gui.getMainWindow(),
+                "Can't open Task Panel",
+                error_message
+            )
             return False
         task = _TaskPanelFemSolverControl.ControlTaskPanel(machine)
         Gui.Control.showDialog(task)

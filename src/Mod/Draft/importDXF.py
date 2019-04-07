@@ -413,6 +413,18 @@ def vec(pt):
             v.multiply(dxfScaling)
     return v
 
+def placementFromDXFOCS(ent):
+    "return right placement for polyline, arc, circle, etc. in OCS"
+    draftWPlane = FreeCAD.DraftWorkingPlane
+    draftWPlane.alignToPointAndAxis(FreeCAD.Vector(0.0, 0.0, 0.0), vec(ent.extrusion), 0.0)
+    pl = FreeCAD.Placement()
+    pl = draftWPlane.getPlacement()
+    if ((ent.type == "lwpolyline") or (ent.type == "polyline")):
+        pl.Base = draftWPlane.getGlobalCoords(vec([0.0, 0.0, ent.elevation]))
+    else:
+        pl.Base = draftWPlane.getGlobalCoords(vec(ent.loc))
+    return pl
+
 def drawLine(line,forceShape=False):
     "returns a Part shape from a dxf line"
     if (len(line.points) > 1):
@@ -490,13 +502,17 @@ def drawPolyline(polyline,forceShape=False,num=None):
                 elif (dxfCreateDraft or dxfCreateSketch) and (not curves) and (not forceShape):
                     ob = Draft.makeWire(verts)
                     ob.Closed = polyline.closed
+                    ob.Placement = placementFromDXFOCS(polyline)
                     return ob
                 else:
                     if polyline.closed and dxfFillMode:
                         w = Part.Wire(edges)
+                        w.Placement = placementFromDXFOCS(polyline)
                         return(Part.Face(w))
                     else:
-                        return Part.Wire(edges)
+                        w = Part.Wire(edges)
+                        w.Placement = placementFromDXFOCS(polyline)
+                        return(w)
             except Part.OCCError:
                 warn(polyline,num)
     return None
@@ -511,8 +527,7 @@ def drawArc(arc,forceShape=False):
     circle.Radius=vec(arc.radius)
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            pl = FreeCAD.Placement()
-            pl.move(v)
+            pl = placementFromDXFOCS(arc)
             return Draft.makeCircle(arc.radius,pl,False,firstangle,lastangle)
         else:
             return circle.toShape(math.radians(firstangle),math.radians(lastangle))
@@ -528,8 +543,7 @@ def drawCircle(circle,forceShape=False):
     curve.Center = v
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            pl = FreeCAD.Placement()
-            pl.move(v)
+            pl = placementFromDXFOCS(circle)
             return Draft.makeCircle(circle.radius,pl)
         else:
             return curve.toShape()

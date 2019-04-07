@@ -49,6 +49,7 @@
 #include "DrawViewCollection.h"
 #include "DrawViewPart.h"
 #include "DrawViewDimension.h"
+#include "DrawViewBalloon.h"
 
 #include <Mod/TechDraw/App/DrawPagePy.h>  // generated from DrawPagePy.xml
 
@@ -99,8 +100,10 @@ DrawPage::DrawPage(void)
         ADD_PROPERTY(ProjectionType, ((long)projType));
     }
 
-    ADD_PROPERTY_TYPE(Scale, (1.0), group, App::Prop_None, "Scale factor for this Page");
+    ADD_PROPERTY_TYPE(Scale, (1.0), group, (App::PropertyType)(App::Prop_None), "Scale factor for this Page");
     Scale.setConstraints(&scaleRange);
+    double defScale = hGrp->GetFloat("DefaultScale",1.0);
+    Scale.setValue(defScale);
 }
 
 DrawPage::~DrawPage()
@@ -255,8 +258,9 @@ int DrawPage::addView(App::DocumentObject *docObj)
         return -1;
     DrawView* view = static_cast<DrawView*>(docObj);
 
-    //position all new views in center of Page (exceptDVDimension)
-    if (!docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+      //position all new views in center of Page (exceptDVDimension)
+    if (!docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) &&
+        !docObj->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())) {
         view->X.setValue(getPageWidth()/2.0);
         view->Y.setValue(getPageHeight()/2.0);
     }

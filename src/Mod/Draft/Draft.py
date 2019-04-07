@@ -360,7 +360,7 @@ def shapify(obj):
     FreeCAD.ActiveDocument.removeObject(obj.Name)
     newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
     newobj.Shape = shape
-    FreeCAD.ActiveDocument.recompute()
+
     return newobj
 
 def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False,noarchchild=False):
@@ -525,8 +525,6 @@ def formatObject(target,origin=None):
             if matchrep.DisplayMode in obrep.listDisplayModes():
                 obrep.DisplayMode = matchrep.DisplayMode
             if hasattr(matchrep,"DiffuseColor") and hasattr(obrep,"DiffuseColor"):
-                if matchrep.DiffuseColor:
-                    FreeCAD.ActiveDocument.recompute()
                 obrep.DiffuseColor = matchrep.DiffuseColor
 
 def getSelection():
@@ -727,14 +725,35 @@ def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None
             placement = FreeCAD.Placement(edge.Placement)
             delta = edge.Curve.Center.sub(placement.Base)
             placement.move(delta)
+            # Rotation of the edge 
+            rotOk = FreeCAD.Rotation(edge.Curve.XAxis, edge.Curve.YAxis, edge.Curve.Axis, "ZXY")
+            placement.Rotation = rotOk
             if len(edge.Vertexes) > 1:
-                ref = placement.multVec(FreeCAD.Vector(1,0,0))
+                #ref = placement.multVec(FreeCAD.Vector(1,0,0))
+                #ref = ref.sub(edge.Curve.Center)
                 v1 = (edge.Vertexes[0].Point).sub(edge.Curve.Center)
                 v2 = (edge.Vertexes[-1].Point).sub(edge.Curve.Center)
-                a1 = -math.degrees(DraftVecUtils.angle(v1,ref))
-                a2 = -math.degrees(DraftVecUtils.angle(v2,ref))
-                obj.FirstAngle = a1
-                obj.LastAngle = a2
+                #a1 = -math.degrees(DraftVecUtils.angle(v1,ref))
+                #a2 = -math.degrees(DraftVecUtils.angle(v2,ref))
+                v0 = (edge.Curve.XAxis).normalize() 
+                v1.normalize()
+                v2.normalize()
+                # Angle between edge.Curve.XAxis and the vector from center to start of arc 
+                p = (v0.x*v1.x)+(v0.y*v1.y)+(v0.z*v1.z)
+                if (p > 1.0): # sometimes rounding gives errors
+                    p = 1.0
+                elif (p < -1.0):
+                    p = -1.0
+                a0 = math.degrees(math.acos(p))
+                # Angle between edge.Curve.XAxis and the vector from center to end of arc 
+                p = (v0.x*v2.x)+(v0.y*v2.y)+(v0.z*v2.z)
+                if (p > 1.0): # sometimes rounding gives errors
+                    p = 1.0
+                elif (p < -1.0):
+                    p = -1.0
+                a1 = math.degrees(math.acos(p))
+                obj.FirstAngle = a0
+                obj.LastAngle = a1
     else:
         obj.Radius = radius
         if (startangle != None) and (endangle != None):
@@ -747,7 +766,7 @@ def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None
         _ViewProviderDraft(obj.ViewObject)
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeRectangle(length, height, placement=None, face=None, support=None):
@@ -772,7 +791,7 @@ def makeRectangle(length, height, placement=None, face=None, support=None):
         _ViewProviderRectangle(obj.ViewObject)
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeDimension(p1,p2,p3=None,p4=None):
@@ -845,7 +864,7 @@ def makeDimension(p1,p2,p3=None,p4=None):
     if gui:
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeAngularDimension(center,angles,p3,normal=None):
@@ -879,7 +898,7 @@ def makeAngularDimension(center,angles,p3,normal=None):
         _ViewProviderAngularDimension(obj.ViewObject)
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+ 
     return obj
 
 def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
@@ -923,7 +942,7 @@ def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
         _ViewProviderWire(obj.ViewObject)
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=None,support=None):
@@ -953,7 +972,7 @@ def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=None,support=
         _ViewProviderDraft(obj.ViewObject)
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeLine(p1,p2=None):
@@ -1014,7 +1033,7 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
         _ViewProviderWire(obj.ViewObject)
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,Degree=None):
@@ -1052,7 +1071,7 @@ def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,D
 #        obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeText(stringslist,point=Vector(0,0,0),screen=False):
@@ -1189,7 +1208,7 @@ def makeCopy(obj,force=None,reparent=False):
                     for prop in par.PropertiesList:
                         if getattr(par,prop) == obj:
                             setattr(par,prop,newobj)
-                            FreeCAD.ActiveDocument.recompute()
+
     formatObject(newobj,obj)
     return newobj
 
@@ -1248,7 +1267,6 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Arra
         baseobject.ViewObject.hide()
         formatObject(obj,obj.Base)
         if len(obj.Base.ViewObject.DiffuseColor) > 1:
-            FreeCAD.ActiveDocument.recompute()
             obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
@@ -1281,7 +1299,6 @@ def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs
         baseobject.ViewObject.hide()
         formatObject(obj,obj.Base)
         if len(obj.Base.ViewObject.DiffuseColor) > 1:
-            FreeCAD.ActiveDocument.recompute()
             obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
@@ -1297,7 +1314,6 @@ def makePointArray(base, ptlst):
         base.ViewObject.hide()
         formatObject(obj,obj.Base)
         if len(obj.Base.ViewObject.DiffuseColor) > 1:
-            FreeCAD.ActiveDocument.recompute()
             obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
@@ -1324,7 +1340,7 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
         #    obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeVisGroup(group=None,name="VisGroup"):
@@ -1357,14 +1373,14 @@ def extrude(obj,vector,solid=False):
         obj.ViewObject.Visibility = False
         formatObject(newobj,obj)
         select(newobj)
-    FreeCAD.ActiveDocument.recompute()
+
     return newobj
 
 def joinWires(wires, joinAttempts = 0):
     '''joinWires(objects): merges a set of wires where possible, if any of those
     wires have a coincident start and end point'''
     if joinAttempts > len(wires):
-        return FreeCAD.ActiveDocument.recompute()
+        return 
     joinAttempts += 1
     for wire1Index, wire1 in enumerate(wires):
         for wire2Index, wire2 in enumerate(wires):
@@ -1407,7 +1423,6 @@ def split(wire, newPoint, edgeIndex):
         splitClosedWire(wire, edgeIndex)
     else:
         splitOpenWire(wire, newPoint, edgeIndex)
-    FreeCAD.ActiveDocument.recompute()
 
 def splitClosedWire(wire, edgeIndex):
     wire.Closed = False
@@ -1470,7 +1485,7 @@ def fuse(object1,object2):
         object2.ViewObject.Visibility = False
         formatObject(obj,object1)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def cut(object1,object2):
@@ -1486,7 +1501,7 @@ def cut(object1,object2):
     object2.ViewObject.Visibility = False
     formatObject(obj,object1)
     select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def move(objectslist,vector,copy=False):
@@ -2022,7 +2037,7 @@ def draftify(objectslist,makeblock=False,delete=True):
                 nobj.ViewObject.DisplayMode = "Flat Lines"
             if delete:
                 FreeCAD.ActiveDocument.removeObject(obj.Name)
-    FreeCAD.ActiveDocument.recompute()
+
     if makeblock:
         return makeBlock(newobjlist)
     else:
@@ -2189,7 +2204,7 @@ def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
     if facenumbers:
         obj.FaceNumbers = facenumbers
     select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeSketch(objectslist,autoconstraints=False,addTo=None,
@@ -2470,7 +2485,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
     else:
         print("-----error!!! rotation is still None...")
     nobj.addConstraint(constraints)
-    FreeCAD.ActiveDocument.recompute()
+
     return nobj
 
 def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
@@ -2506,7 +2521,7 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
         obj.ViewObject.PointSize = point_size
         obj.ViewObject.Visibility = True
     select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
@@ -2528,7 +2543,7 @@ def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
         obrep = obj.ViewObject
         if "PointSize" in obrep.PropertiesList: obrep.PointSize = 1             # hide the segment end points
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def clone(obj,delta=None,forcedraft=False):
@@ -4812,7 +4827,7 @@ class _ViewProviderWire(_ViewProviderDraft):
                         FreeCAD.ActiveDocument.openTransaction("Flatten wire")
                         FreeCADGui.doCommand("FreeCAD.ActiveDocument."+self.Object.Name+".Points="+str(points).replace("Vector","FreeCAD.Vector").replace(" ",""))
                         FreeCAD.ActiveDocument.commitTransaction()
-                        FreeCAD.ActiveDocument.recompute()
+
                     else:
                         from DraftTools import translate
                         FreeCAD.Console.PrintMessage(translate("Draft","This Wire is already flat")+"\n")
@@ -6370,7 +6385,7 @@ def makeLabel(targetpoint=None,target=None,direction=None,distance=None,labeltyp
         obj.LabelType = labeltype
     if placement:
         obj.Placement = placement
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 

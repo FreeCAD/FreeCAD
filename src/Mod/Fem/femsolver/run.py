@@ -33,10 +33,14 @@ import threading
 import shutil
 
 import FreeCAD as App
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 from . import settings
 from . import signal
 from . import task
+
+if App.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui
 
 
 CHECK = 0
@@ -50,6 +54,64 @@ _machines = {}
 _dirTypes = {}
 
 
+def run_fem_solver(solver, working_dir=None):
+
+    if solver.Proxy.Type == 'Fem::FemSolverCalculixCcxTools':
+        App.Console.PrintMessage("CalxuliX ccx tools solver!\n")
+        from femtools.ccxtools import CcxTools as ccx
+        fea = ccx(solver)
+        fea.reset_mesh_purge_results_checked()
+        if working_dir is None:
+            fea.run()
+        else:
+            fea.update_objects()
+            fea.setup_working_dir(working_dir)
+            fea.setup_ccx()
+            message = fea.check_prerequisites()
+            if not message:
+                fea.write_inp_file()
+                fea.ccx_run()
+                fea.load_results()
+            else:
+                App.Console.PrintError("Houston, we have a problem! {}\n".format(message))
+    else:
+        # App.Console.PrintMessage("Frame work solver!\n")
+        try:
+            if working_dir is not None:
+                machine = getMachine(solver, working_dir)
+            else:
+                machine = getMachine(solver)
+        except MustSaveError:
+            error_message = (
+                "Please save the file before executing the solver. "
+                "This must be done because the location of the working "
+                "directory is set to \"Beside *.FCStd File\"."
+            )
+            App.Console.PrintError(error_message + "\n")
+            if App.GuiUp:
+                QtGui.QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    "Can't start Solver",
+                    error_message
+                )
+            return
+        except DirectoryDoesNotExistError:
+            error_message = "Selected working directory doesn't exist."
+            App.Console.PrintError(error_message + "\n")
+            if App.GuiUp:
+                QtGui.QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    "Can't start Solver",
+                    error_message
+                )
+            return
+        if not machine.running:
+            machine.reset()
+            machine.target = RESULTS
+            machine.start()
+            machine.join()  # wait for the machine to finish.
+
+
 def getMachine(solver, path=None):
     _DocObserver.attach()
     m = _machines.get(solver)
@@ -60,7 +122,7 @@ def getMachine(solver, path=None):
 
 def _isPathValid(m, path):
     t = _dirTypes.get(m.directory)  # setting default None
-    setting = settings.getDirSetting()
+    setting = settings.get_dir_setting()
     if path is not None:
         return t is None and m.directory == path
     if setting == settings.BESIDE:
@@ -80,7 +142,7 @@ def _isPathValid(m, path):
 
 def _createMachine(solver, path, testmode):
     global _dirTypes
-    setting = settings.getDirSetting()
+    setting = settings.get_dir_setting()
     if path is not None:
         _dirTypes[path] = None
     elif setting == settings.BESIDE:
@@ -116,6 +178,18 @@ def _getBesideDir(solver):
 def _getBesideBase(solver):
     fcstdPath = solver.Document.FileName
     if fcstdPath == "":
+        error_message = (
+            "Please save the file before executing the solver. "
+            "This must be done because the location of the working "
+            "directory is set to \"Beside *.FCStd File\"."
+        )
+        App.Console.PrintError(error_message + "\n")
+        if App.GuiUp:
+            QtGui.QMessageBox.critical(
+                FreeCADGui.getMainWindow(),
+                "Can't start Solver",
+                error_message
+            )
         raise MustSaveError()
     return os.path.splitext(fcstdPath)[0]
 
@@ -131,9 +205,17 @@ def _getCustomDir(solver):
 
 
 def _getCustomBase(solver):
-    path = settings.getCustomDir()
+    path = settings.get_custom_dir()
     if not os.path.isdir(path):
-        raise DirectoryDoesNotExist("Invalid path")
+        error_message = "Selected working directory doesn't exist."
+        App.Console.PrintError(error_message + "\n")
+        if App.GuiUp:
+            QtGui.QMessageBox.critical(
+                FreeCADGui.getMainWindow(),
+                "Can't start Solver",
+                error_message
+            )
+        raise DirectoryDoesNotExistError("Invalid path")
     return path
 
 
@@ -157,7 +239,7 @@ class BaseTask(task.Thread):
 
     @property
     def analysis(self):
-        return FemUtils.findAnalysisOfMember(self.solver)
+        return femutils.findAnalysisOfMember(self.solver)
 
 
 class Machine(BaseTask):
@@ -260,7 +342,7 @@ class Machine(BaseTask):
 class Check(BaseTask):
 
     def checkMesh(self):
-        meshes = FemUtils.get_member(
+        meshes = femutils.get_member(
             self.analysis, "Fem::FemMeshObject")
         if len(meshes) == 0:
             self.report.error("Missing a mesh object.")
@@ -275,7 +357,7 @@ class Check(BaseTask):
         return True
 
     def checkMaterial(self):
-        matObjs = FemUtils.get_member(
+        matObjs = femutils.get_member(
             self.analysis, "App::MaterialObjectPython")
         if len(matObjs) == 0:
             self.report.error(
@@ -287,10 +369,10 @@ class Check(BaseTask):
 
     def checkSupported(self, allSupported):
         for m in self.analysis.Group:
-            if FemUtils.is_of_type(m, "Fem::Constraint"):
+            if femutils.is_of_type(m, "Fem::Constraint"):
                 supported = False
                 for sc in allSupported:
-                    if FemUtils.is_of_type(m, *sc):
+                    if femutils.is_of_type(m, *sc):
                         supported = True
                 if not supported:
                     self.report.warning(
@@ -302,15 +384,15 @@ class Solve(BaseTask):
 
     def _observeSolver(self, process):
         output = ""
-        line = FemUtils.pydecode(process.stdout.readline())
+        line = femutils.pydecode(process.stdout.readline())
         self.pushStatus(line)
         output += line
-        line = FemUtils.pydecode(process.stdout.readline())
+        line = femutils.pydecode(process.stdout.readline())
         while line:
             line = "\n%s" % line.rstrip()
             self.pushStatus(line)
             output += line
-            line = FemUtils.pydecode(process.stdout.readline())
+            line = femutils.pydecode(process.stdout.readline())
         return output
 
 
@@ -384,7 +466,7 @@ class _DocObserver(object):
     def _checkEquation(self, obj):
         for o in obj.Document.Objects:
             if (
-                FemUtils.is_derived_from(o, "Fem::FemSolverObject")
+                femutils.is_derived_from(o, "Fem::FemSolverObject")
                 and hasattr(o, "Group")
                 and obj in o.Group
             ):
@@ -392,13 +474,13 @@ class _DocObserver(object):
                     _machines[o].reset()
 
     def _checkSolver(self, obj):
-        analysis = FemUtils.findAnalysisOfMember(obj)
+        analysis = femutils.findAnalysisOfMember(obj)
         for m in iter(_machines.values()):
             if analysis == m.analysis and obj == m.solver:
                 m.reset()
 
     def _checkAnalysis(self, obj):
-        if FemUtils.is_derived_from(obj, "Fem::FemAnalysis"):
+        if femutils.is_derived_from(obj, "Fem::FemAnalysis"):
             deltaObjs = self._getAdded(obj)
             if deltaObjs:
                 reset = False
@@ -410,7 +492,7 @@ class _DocObserver(object):
 
     def _checkModel(self, obj):
         if self._partOfModel(obj):
-            analysis = FemUtils.findAnalysisOfMember(obj)
+            analysis = femutils.findAnalysisOfMember(obj)
             if analysis is not None:
                 self._resetAll(analysis)
 
@@ -428,7 +510,7 @@ class _DocObserver(object):
 
     def _partOfModel(self, obj):
         for t in self._WHITELIST:
-            if FemUtils.is_derived_from(obj, t):
+            if femutils.is_derived_from(obj, t):
                 return True
         return False
 
@@ -437,7 +519,7 @@ class MustSaveError(Exception):
     pass
 
 
-class DirectoryDoesNotExist(Exception):
+class DirectoryDoesNotExistError(Exception):
     pass
 
 ##  @}

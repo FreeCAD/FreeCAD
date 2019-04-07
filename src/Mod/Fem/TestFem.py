@@ -84,6 +84,121 @@ unittest.TextTestRunner().run(mytest)
 # method
 ./bin/FreeCAD --run-test "femtest.testcommon.TestFemCommon.test_pyimport_all_FEM_modules"
 
+# unit test command to run a specific FEM unit test to copy for fast tests :-)
+# to get all command to start FreeCAD from build dir on Linux and run FEM unit test this could be used
+from femtest.utilstest import get_fem_test_defs as gf
+gf()
+
+./bin/FreeCADCmd --run-test "femtest.testccxtools.TestCcxTools.test_1_static_analysis"
+./bin/FreeCADCmd --run-test "femtest.testccxtools.TestCcxTools.test_2_static_multiple_material"
+./bin/FreeCADCmd --run-test "femtest.testccxtools.TestCcxTools.test_3_freq_analysis"
+./bin/FreeCADCmd --run-test "femtest.testccxtools.TestCcxTools.test_4_thermomech_analysis"
+./bin/FreeCADCmd --run-test "femtest.testccxtools.TestCcxTools.test_5_Flow1D_thermomech_analysis"
+./bin/FreeCADCmd --run-test "femtest.testcommon.TestFemCommon.test_adding_refshaps"
+./bin/FreeCADCmd --run-test "femtest.testcommon.TestFemCommon.test_pyimport_all_FEM_modules"
+./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshCommon.test_mesh_seg2_python"
+./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshCommon.test_mesh_seg3_python"
+./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshCommon.test_unv_save_load"
+./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshCommon.test_writeAbaqus_precision"
+./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_create"
+./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_inp"
+./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_unv"
+./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_vkt"
+./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_z88"
+./bin/FreeCADCmd --run-test "femtest.testobject.TestObjectCreate.test_femobjects_make"
+./bin/FreeCADCmd --run-test "femtest.testobject.TestObjectType.test_femobjects_type"
+./bin/FreeCADCmd --run-test "femtest.testobject.TestObjectType.test_femobjects_isoftype"
+./bin/FreeCADCmd --run-test "femtest.testobject.TestObjectType.test_femobjects_derivedfromfem"
+./bin/FreeCADCmd --run-test "femtest.testobject.TestObjectType.test_femobjects_derivedfromstd"
+./bin/FreeCADCmd --run-test "femtest.testresult.TestResult.test_read_frd_massflow_networkpressure"
+./bin/FreeCADCmd --run-test "femtest.testresult.TestResult.test_stress_von_mises"
+./bin/FreeCADCmd --run-test "femtest.testresult.TestResult.test_stress_principal"
+./bin/FreeCADCmd --run-test "femtest.testresult.TestResult.test_disp_abs"
+./bin/FreeCADCmd --run-test "femtest.testsolverframework.TestSolverFrameWork.test_solver_framework"
+
+
+# to get all command to start FreeCAD from build dir on Linux and run FEM unit test this could be used
+from femtest.utilstest import get_fem_test_defs as gf
+gf('in')
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testccxtools.TestCcxTools.test_1_static_analysis"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testccxtools.TestCcxTools.test_2_static_multiple_material"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testccxtools.TestCcxTools.test_3_freq_analysis"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testccxtools.TestCcxTools.test_4_thermomech_analysis"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testccxtools.TestCcxTools.test_5_Flow1D_thermomech_analysis"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testcommon.TestFemCommon.test_adding_refshaps"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testcommon.TestFemCommon.test_pyimport_all_FEM_modules"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshCommon.test_mesh_seg2_python"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshCommon.test_mesh_seg3_python"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshCommon.test_unv_save_load"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshCommon.test_writeAbaqus_precision"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshEleTetra10.test_tetra10_create"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshEleTetra10.test_tetra10_inp"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshEleTetra10.test_tetra10_unv"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshEleTetra10.test_tetra10_vkt"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshEleTetra10.test_tetra10_z88"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testobject.TestObjectCreate.test_femobjects_make"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testobject.TestObjectType.test_femobjects_type"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testobject.TestObjectType.test_femobjects_isoftype"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testobject.TestObjectType.test_femobjects_derivedfromfem"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testobject.TestObjectType.test_femobjects_derivedfromstd"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testresult.TestResult.test_read_frd_massflow_networkpressure"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testresult.TestResult.test_stress_von_mises"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testresult.TestResult.test_stress_principal"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testresult.TestResult.test_disp_abs"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testsolverframework.TestSolverFrameWork.test_solver_framework"))
+
 
 # open files from FEM test suite source code
 # be careful on updating these files, they consist the original results!

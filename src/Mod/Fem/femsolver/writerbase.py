@@ -32,29 +32,31 @@ import os
 
 
 class FemInputWriter():
-    def __init__(self,
-                 analysis_obj,
-                 solver_obj,
-                 mesh_obj,
-                 matlin_obj,
-                 matnonlin_obj,
-                 fixed_obj,
-                 displacement_obj,
-                 contact_obj,
-                 planerotation_obj,
-                 transform_obj,
-                 selfweight_obj,
-                 force_obj,
-                 pressure_obj,
-                 temperature_obj,
-                 heatflux_obj,
-                 initialtemperature_obj,
-                 beamsection_obj,
-                 beamrotation_obj,
-                 shellthickness_obj,
-                 fluidsection_obj,
-                 dir_name
-                 ):
+    def __init__(
+        self,
+        analysis_obj,
+        solver_obj,
+        mesh_obj,
+        matlin_obj,
+        matnonlin_obj,
+        fixed_obj,
+        displacement_obj,
+        contact_obj,
+        planerotation_obj,
+        transform_obj,
+        selfweight_obj,
+        force_obj,
+        pressure_obj,
+        temperature_obj,
+        heatflux_obj,
+        initialtemperature_obj,
+        beamsection_obj,
+        beamrotation_obj,
+        shellthickness_obj,
+        fluidsection_obj,
+        dir_name=None
+    ):
+        # class attributes from parameter values
         self.analysis = analysis_obj
         self.solver_obj = solver_obj
         self.analysis_type = self.solver_obj.AnalysisType
@@ -77,12 +79,15 @@ class FemInputWriter():
         self.fluidsection_objects = fluidsection_obj
         self.shellthickness_objects = shellthickness_obj
         self.dir_name = dir_name
+        # if dir_name was not given or does not exist empty we gone create a temporary one
+        # this makes sure the analysis can be run even on wired situation
         if not dir_name:
             FreeCAD.Console.PrintError('Error: FemInputWriter has no working_dir --> we are going to make a temporary one!\n')
             self.dir_name = FreeCAD.ActiveDocument.TransientDir.replace('\\', '/') + '/FemAnl_' + analysis_obj.Uid[-4:]
-        self.dir_name = os.path.join(self.dir_name, '')  # check dir_name has a slash at the end, if not add one
         if not os.path.isdir(self.dir_name):
             os.mkdir(self.dir_name)
+
+        # new class attributes
         self.fc_ver = FreeCAD.Version()
         self.ccx_nall = 'Nall'
         self.ccx_eall = 'Eall'
@@ -90,11 +95,14 @@ class FemInputWriter():
         self.ccx_efaces = 'Efaces'
         self.ccx_eedges = 'Eedges'
         self.ccx_elsets = []
-        if hasattr(self.mesh_object, "Shape"):
-            self.theshape = self.mesh_object.Shape
-        elif hasattr(self.mesh_object, "Part"):
-            self.theshape = self.mesh_object.Part
-        self.femmesh = self.mesh_object.FemMesh
+        if self.mesh_object:
+            if hasattr(self.mesh_object, "Shape"):
+                self.theshape = self.mesh_object.Shape
+            elif hasattr(self.mesh_object, "Part"):
+                self.theshape = self.mesh_object.Part
+            self.femmesh = self.mesh_object.FemMesh
+        else:
+            FreeCAD.Console.PrintError('No finite elemente mesh object was given to the writer class. In rare cases this might not be an error.\n')
         self.femnodes_mesh = {}
         self.femelement_table = {}
         self.constraint_conflict_nodes = []
@@ -186,6 +194,8 @@ class FemInputWriter():
                 if not self.femelement_table:
                     self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         # get node loads
+        FreeCAD.Console.PrintMessage("  Finite element mesh nodes will be retrieved by searching the appropriate nodes in the finite element mesh.\n")
+        FreeCAD.Console.PrintMessage("  The appropriate finite element mesh node load values will be calculated according to the finite element definition.\n")
         for femobj in self.force_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             frc_obj = femobj['Object']
             if frc_obj.Force == 0:
@@ -218,10 +228,8 @@ class FemInputWriter():
         for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             FreeCAD.Console.PrintMessage("Constraint pressure: " + femobj['Object'].Name + '\n')
             pressure_faces = FemMeshTools.get_pressure_obj_faces(self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj)
-            # print(len(pressure_faces))
             femobj['PressureFaces'] = [(femobj['Object'].Name + ': face load', pressure_faces)]
-            FreeCAD.Console.PrintMessage(femobj['PressureFaces'])
-            FreeCAD.Console.PrintMessage('\n')
+            FreeCAD.Console.PrintLog('{}\n'.format(femobj['PressureFaces']))
 
     def get_element_geometry2D_elements(self):
         # get element ids and write them into the objects

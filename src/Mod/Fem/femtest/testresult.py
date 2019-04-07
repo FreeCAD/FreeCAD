@@ -28,11 +28,14 @@ import unittest
 from . import utilstest as testtools
 from .utilstest import fcc_print
 
+from os.path import join
+
 
 class TestResult(unittest.TestCase):
     fcc_print('import TestResult')
 
     def setUp(self):
+        # init, is executed before every test
         self.doc_name = "TestResult"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
@@ -44,7 +47,7 @@ class TestResult(unittest.TestCase):
 
     def test_read_frd_massflow_networkpressure(self):
         # read data from frd file
-        frd_file = testtools.get_fem_test_home_dir() + 'ccx/Flow1D_thermomech.frd'
+        frd_file = join(testtools.get_fem_test_home_dir(), 'ccx', 'Flow1D_thermomech.frd')
         from feminout.importCcxFrdResults import read_frd_result as read_frd
         frd_content = read_frd(frd_file)
 
@@ -254,6 +257,15 @@ class TestResult(unittest.TestCase):
         # fcc_print(rounded_prin)
         self.assertEqual(rounded_prin, expected_principal, "Calculated principal stresses are not the expected values.")
 
+    def test_disp_abs(self):
+        expected_dispabs = 87.302986
+        disp_xyz = [FreeCAD.Vector(8.12900E+00, 3.38889E-02, -8.69237E+01)]  # x, y, z in node 4 of CalculiX cantilver face load
+        from femresult.resulttools import calculate_disp_abs as dp
+        disp_abs = round(dp(disp_xyz)[0], 6)
+        # fcc_print(disp_abs)
+        self.assertEqual(disp_abs, expected_dispabs, "Calculated displacement abs are not the expected values.")
+
     def tearDown(self):
+        # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
         pass

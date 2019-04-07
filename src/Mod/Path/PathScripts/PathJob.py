@@ -103,6 +103,12 @@ class ObjectJob:
         obj.addProperty("App::PropertyLink", "Operations", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Compound path of all operations in the order they are processed."))
         obj.addProperty("App::PropertyLinkList", "ToolController", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Collection of tool controllers available for this job."))
 
+        obj.addProperty("App::PropertyBool", "SplitOutput", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob","Split output into multiple gcode files"))
+        obj.addProperty("App::PropertyEnumeration", "OrderOutputBy", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "If multiple WCS, order the output this way"))
+        obj.addProperty("App::PropertyStringList", "Fixtures", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "The Work Coordinate Systems for the Job"))
+        obj.OrderOutputBy = ['Fixture', 'Tool', 'Operation']
+        obj.Fixtures = ['G54']
+
         obj.PostProcessorOutputFile = PathPreferences.defaultOutputFile()
         #obj.setEditorMode("PostProcessorOutputFile", 0)  # set to default mode
         obj.PostProcessor = postProcessors = PathPreferences.allEnabledPostProcessors()

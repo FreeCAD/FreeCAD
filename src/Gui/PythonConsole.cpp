@@ -323,7 +323,8 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
         if (PyErr_Occurred()) {                   /* get latest python exception information */
             PyObject *errobj, *errdata, *errtraceback;
             PyErr_Fetch(&errobj, &errdata, &errtraceback);
-            if (PyDict_Check(errdata)) {
+            // the error message can be empty so errdata will be null
+            if (errdata && PyDict_Check(errdata)) {
                 PyObject* value = PyDict_GetItemString(errdata, "swhat");
                 if (value) {
                     Base::RuntimeError e;

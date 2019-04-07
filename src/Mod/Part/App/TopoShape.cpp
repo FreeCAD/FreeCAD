@@ -389,13 +389,13 @@ PyObject * TopoShape::getPySubShape(const char* Type) const
     TopoDS_Shape Shape = getSubShape(Type);
     // destinquish the return type
     std::string shapetype(Type);
-    if (shapetype.size() > 4 && shapetype.substr(0,4) == "Face") 
+    if (shapetype.size() > 4 && shapetype.substr(0,4) == "Face")
         return new TopoShapeFacePy(new TopoShape(Shape));
-    else if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") 
+    else if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge")
         return new TopoShapeEdgePy(new TopoShape(Shape));
-    else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex") 
+    else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex")
         return new TopoShapeVertexPy(new TopoShape(Shape));
-    else 
+    else
         return 0;
 
 }
@@ -517,11 +517,11 @@ Base::Placement TopoShape::getPlacemet(void) const
 void TopoShape::read(const char *FileName)
 {
     Base::FileInfo File(FileName);
-  
+
     // checking on the file
     if (!File.isReadable())
         throw Base::FileException("File to load not existing or not readable", FileName);
-    
+
     if (File.hasExtension("igs") || File.hasExtension("iges")) {
         // read iges file
         importIges(File.filePath().c_str());
@@ -700,7 +700,7 @@ void TopoShape::importBinary(std::istream& str)
 void TopoShape::write(const char *FileName) const
 {
     Base::FileInfo File(FileName);
-    
+
     if (File.hasExtension("igs") || File.hasExtension("iges")) {
         // write iges file
         exportIges(File.filePath().c_str());
@@ -1920,7 +1920,7 @@ TopoDS_Shape TopoShape::makeTube() const
     );
     return mkBuilder.Face();
 }
-#else 
+#else
 static Handle(Law_Function) CreateBsFunction (const Standard_Real theFirst, const Standard_Real theLast, const Standard_Real theRadius)
 {
     (void)theRadius;
@@ -2255,7 +2255,7 @@ TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
     return aTool.Shape();
 }
 
-TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles, 
+TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
                                  Standard_Boolean isSolid,
                                  Standard_Boolean isRuled,
                                  Standard_Boolean isClosed,
@@ -2288,7 +2288,7 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
         Standard_Failure::Raise("Need at least two vertices, edges or wires to create loft face");
     }
     else {
-        // close loft by duplicating initial profile as last profile.  not perfect. 
+        // close loft by duplicating initial profile as last profile.  not perfect.
         if (isClosed) {
         /* can only close loft in certain combinations of Vertex/Wire(Edge):
             - V1-W1-W2-W3-V2  ==> V1-W1-W2-W3-V2-V1  invalid closed
@@ -2313,7 +2313,7 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
                     aGenerator.AddWire(TopoDS::Wire (firstProfile));
                     countShapes++;
                 }
-            }     
+            }
         }
     }
 
@@ -2338,12 +2338,12 @@ TopoDS_Shape TopoShape::revolve(const gp_Ax1& axis, double d, Standard_Boolean i
 {
     if (this->_Shape.IsNull()) Standard_Failure::Raise("cannot revolve empty shape");
 
-    TopoDS_Face f; 
+    TopoDS_Face f;
     TopoDS_Wire w;
     TopoDS_Edge e;
     Standard_Boolean convertFailed = false;
 
-    TopoDS_Shape base = this->_Shape; 
+    TopoDS_Shape base = this->_Shape;
     if ((isSolid) && (BRep_Tool::IsClosed(base)) &&
         ((base.ShapeType() == TopAbs_EDGE) || (base.ShapeType() == TopAbs_WIRE))) {
         if (base.ShapeType() == TopAbs_EDGE) {
@@ -2355,16 +2355,16 @@ TopoDS_Shape TopoShape::revolve(const gp_Ax1& axis, double d, Standard_Boolean i
         }
         else {
              w = TopoDS::Wire(base);}
-        if (!convertFailed) {       
+        if (!convertFailed) {
             BRepBuilderAPI_MakeFace mkFace(w);
             if (mkFace.IsDone()) {
-                f = mkFace.Face(); 
+                f = mkFace.Face();
                 base = f; }
             else {
                 convertFailed = true; }
-        }  
-    }        
-    
+        }
+    }
+
     if (convertFailed) {
         Base::Console().Message("TopoShape::revolve could not make Solid from Wire/Edge.\n");}
 
@@ -3288,8 +3288,14 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
     }
 
     aSewingTool.Load(aComp);
-    aSewingTool.Perform();
+
+    Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
+    pi->NewScope(100, "Sewing Faces...");
+    pi->Show();
+
+    aSewingTool.Perform(pi);
     _Shape = aSewingTool.SewedShape();
+    pi->EndScope();
     if (_Shape.IsNull())
         _Shape = aComp;
 }

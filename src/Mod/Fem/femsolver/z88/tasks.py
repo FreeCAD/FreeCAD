@@ -75,7 +75,8 @@ class Prepare(run.Prepare):
             c.beam_rotations,
             c.shell_thicknesses,
             c.fluid_sections,
-            self.directory)
+            self.directory
+        )
         path = w.write_z88_input()
         # report to user if task succeeded
         if path is not None:
@@ -92,7 +93,7 @@ class Solve(run.Solve):
         # the subprocess was just copied, it seems to work :-)
         # TODO: search out for "Vektor GS" and "Vektor KOI" and print values, may be compared with the used ones
         self.pushStatus("Executing test solver...\n")
-        binary = settings.getBinary("Z88")
+        binary = settings.get_binary("Z88")
         self._process = subprocess.Popen(
             [binary, "-t", "-choly"],
             cwd=self.directory,
@@ -104,7 +105,7 @@ class Solve(run.Solve):
         self.signalAbort.remove(self._process.terminate)
 
         self.pushStatus("Executing real solver...\n")
-        binary = settings.getBinary("Z88")
+        binary = settings.get_binary("Z88")
         self._process = subprocess.Popen(
             [binary, "-c", "-choly"],
             cwd=self.directory,
