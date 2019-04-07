@@ -79,7 +79,10 @@ public:
     void setPrettyPre(void);
     void setPrettyNormal(void);
     void setColor(QColor c);
-    
+
+    bool verticalSep;
+    std::vector<int> seps;
+
     QGCustomText* getDimText(void) { return m_dimText; }
     void setDimText(QGCustomText* newText) { m_dimText = newText; }
     QGCustomText* getTolText(void) { return m_tolText; }
