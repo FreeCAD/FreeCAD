@@ -876,7 +876,7 @@ class BSpline(Line):
         if self.ui:
             if self.ui.continueMode:
                 self.Activated()
-        
+
 class BezCurve(Line):
     "a FreeCAD command for creating a Bezier Curve"
 
