@@ -6348,7 +6348,7 @@ public:
                 }
                 filterGate->setDisabled(true);
             }
-        } else if (Mode == STATUS_SEEK_Second) {
+        } else { //if (Mode == STATUS_SEEK_Second) {
             try {
                 Gui::Command::openCommand("Extend edge");
                 Gui::Command::doCommand(Gui::Command::Doc,
@@ -6390,9 +6390,6 @@ public:
                 Gui::Command::abortCommand();
             }
 
-        } else { // exit extension tool if user clicked on empty space
-            BaseGeoId = -1;
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
         }
         return true;
     }
