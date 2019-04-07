@@ -275,6 +275,21 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
     font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
     balloonLabel->setFont(font);
+
+    QString labelText = QString::fromUtf8(balloon->Text.getStrValue().data());
+    balloonLabel->verticalSep = false;
+
+    if (strcmp(balloon->Symbol.getValueAsString(), "Rectangle") == 0) {
+        while (labelText.contains(QString::fromUtf8("|"))) {
+            int pos = labelText.indexOf(QString::fromUtf8("|"));
+            labelText.replace(pos, 1, QString::fromUtf8("   "));
+            QFontMetrics fm(balloonLabel->getFont());
+            balloonLabel->seps.push_back(fm.width((labelText.left(pos + 2))));
+            balloonLabel->verticalSep = true;
+        }
+    }
+
+    balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
 }
 
 void QGIViewBalloon::balloonLabelDragged(bool ctrl)
@@ -377,8 +392,14 @@ void QGIViewBalloon::draw_modifier(bool modifier)
         offset = (textWidth / 2.0) + Rez::guiX(2.0);
     } else if (strcmp(balloonType, "Rectangle") == 0) {
         //Add some room
-        textWidth = (textWidth * scale) + Rez::guiX(2.0);
         textHeight = (textHeight * scale) + Rez::guiX(1.0);
+        if (balloonLabel->verticalSep) {
+            for (std::vector<int>::iterator it = balloonLabel->seps.begin() ; it != balloonLabel->seps.end(); ++it) {
+                balloonPath.moveTo(lblCenter.x - (textWidth / 2.0) + *it, lblCenter.y - (textHeight / 2.0));
+                balloonPath.lineTo(lblCenter.x - (textWidth / 2.0) + *it, lblCenter.y + (textHeight / 2.0));
+            }
+        }
+        textWidth = (textWidth * scale) + Rez::guiX(2.0);
         balloonPath.addRect(lblCenter.x -(textWidth / 2.0), lblCenter.y - (textHeight / 2.0), textWidth, textHeight);
         offset = (textWidth / 2.0);
     } else if (strcmp(balloonType, "Triangle") == 0) {
