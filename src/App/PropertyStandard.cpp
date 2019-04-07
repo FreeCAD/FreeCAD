@@ -508,7 +508,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
 #endif
             }
 #if PY_MAJOR_VERSION < 3
-            if (PyString_Check(item)) {
+            else if (PyString_Check(item)) {
                 values[i] = PyString_AsString(item);
             }
 #endif
