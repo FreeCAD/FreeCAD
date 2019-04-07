@@ -1180,6 +1180,9 @@ IF(MSVC)
     IF(FREECAD_RELEASE_SEH)
 		SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
     ENDIF(FREECAD_RELEASE_SEH)
+    # set "Build with Multiple Processes"
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+	SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP")
 
 	# Mark 32 bit executables large address aware so they can use > 2GB address space
 	# NOTE: This setting only has an effect on machines with at least 3GB of RAM, although it sets the linker option it doesn't set the linker switch 'Enable Large Addresses'
