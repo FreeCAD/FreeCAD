@@ -878,7 +878,7 @@ class BSpline(Line):
                 self.Activated()
         
 class BezCurve(Line):
-    "a FreeCAD command for creating a Bezier Curve chain"
+    "a FreeCAD command for creating a Bezier Curve"
 
     def __init__(self):
         Line.__init__(self,wiremode=True)
@@ -888,7 +888,7 @@ class BezCurve(Line):
         return {'Pixmap'  : 'Draft_BezCurve',
                 'Accel' : "B, Z",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_BezCurve", "BezCurve"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates Bezier curve. CTRL to snap, SHIFT to constrain")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates a Bezier curve. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
         Line.Activated(self,name=translate("draft","BezCurve"))
@@ -934,10 +934,9 @@ class BezCurve(Line):
         "undoes last line segment"
         if (len(self.node) > 1):
             self.node.pop()
-            self.bezcurvetrack.update(self.node,degree=3)
+            self.bezcurvetrack.update(self.node,degree=self.degree)
             self.obj.Shape = self.updateShape(self.node)
             msg(translate("draft", "Last point has been removed")+"\n")
-
 
     def drawUpdate(self,point):
         if (len(self.node) == 1):
@@ -951,21 +950,16 @@ class BezCurve(Line):
 
     def updateShape(self, pts):
         '''creates shape for display during creation process.'''
-
         edges = []
-        
         if len(pts) >= 2: #allow lower degree segment
             poles=pts[1:]
         else:
             poles=[]
-        
         if self.degree:
             segpoleslst = [poles[x:x+self.degree] for x in range(0, len(poles), (self.degree or 1))]
         else:
             segpoleslst = [pts]
-            
         startpoint=pts[0]
-        
         for segpoles in segpoleslst:
             c = Part.BezierCurve() #last segment may have lower degree
             c.increase(len(segpoles))
