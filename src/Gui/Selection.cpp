@@ -1836,7 +1836,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
 
     PyErr_Clear();
     PyObject *sequence;
-    if (PyArg_ParseTuple(args, "O!OO!", &(App::DocumentObjectPy::Type),&object,
+    if (PyArg_ParseTuple(args, "O!O|O!", &(App::DocumentObjectPy::Type),&object,
                 &sequence,&PyBool_Type,&clearPreselect)) 
     {
         App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
