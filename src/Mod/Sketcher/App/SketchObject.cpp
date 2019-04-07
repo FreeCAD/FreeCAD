@@ -6259,45 +6259,31 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
 {
     //if requireXXX,  GeoUndef is treated as an error. If not requireXXX,
     //GeoUndef is accepted. Index range checking is done on everything regardless.
-    bool requireFirst = true;
+
+    // constraints always require a First!!
     bool requireSecond = false;
     bool requireThird = false;
 
     switch (constraint->Type) {
         case Radius:
-            requireFirst = true;
-            break;
         case Diameter:
-            requireFirst = true;
-            break;
         case Horizontal:
         case Vertical:
-            requireFirst = true;
-            break;
         case Distance:
         case DistanceX:
         case DistanceY:
-            requireFirst = true;
-            break;
         case Coincident:
         case Perpendicular:
         case Parallel:
         case Equal:
         case PointOnObject:
+        case Angle:
+            break;
         case Tangent:
-            requireFirst = true;
             requireSecond = true;
             break;
         case Symmetric:
-            requireFirst = true;
-            requireSecond = true;
-            requireThird = true;
-            break;
-        case Angle:
-            requireFirst = true;
-            break;
         case SnellsLaw:
-            requireFirst = true;
             requireSecond = true;
             requireThird = true;
             break;
@@ -6311,10 +6297,10 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
     //the actual checks
     bool ret = true;
     int geoId;
+
+    // First is always required and GeoId must be within range
     geoId = constraint->First;
-    ret = ret && ((geoId == Constraint::GeoUndef && !requireFirst)
-                  ||
-                  (geoId >= -extGeoCount && geoId < intGeoCount) );
+    ret = ret && (geoId >= -extGeoCount && geoId < intGeoCount);
 
     geoId = constraint->Second;
     ret = ret && ((geoId == Constraint::GeoUndef && !requireSecond)
