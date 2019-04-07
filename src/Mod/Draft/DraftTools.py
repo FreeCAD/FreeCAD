@@ -4304,29 +4304,19 @@ class Edit(Modifier):
                 
                 if self.editing == None:
                     p = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
-                    info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)        
-                    msg(info)
-                    msg("\n")
-                    selObjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(p)        
-                    msg(selObjs)
-                    if info:
-#                        for selObj in selObjs:
-#                            msg(print(selObj))
-#                            if 'EditNode' in selObj["Component"]:
-#                                info = selObj
-#                                #msg("edit node")
-#                                #msg(info)
-#                                break
-#                            else:
-#                                info=selObjs[0]
-#                                #msg("/n oggetto")
-#                                #msg(info)
-                        if info["Object"] != self.obj.Name:
-                            return
+                    done = False
+                    selobjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(p)
+                    if not selobjs:
+                        return
+                    for info in selobjs:
+                        if info["Object"] == self.obj.Name:
+                            if done:
+                                return
                         if self.ui.addButton.isChecked() \
                             and Draft.getType(self.obj) == "Wire" \
                             and 'Edge' in info["Component"]:
                                 self.addPointOnEdge(FreeCAD.Vector(info["x"],info["y"],info["z"]), int(info["Component"][4:]))
+                                done = True
                         elif self.ui.addButton.isChecked():
                             if self.point:
                                 pt = self.point
@@ -4334,35 +4324,43 @@ class Edit(Modifier):
                                     # prefer "real" 3D location over working-plane-driven one if possible
                                     pt = FreeCAD.Vector(info["x"],info["y"],info["z"])
                                 self.addPoint(pt,info)
-                        elif self.ui.delButton.isChecked():
-                            if 'EditNode' in info["Component"]:
-                                self.delPoint(int(info["Component"][8:]))
-                         # don't do tan/sym on DWire/BSpline!
-                        elif ((Draft.getType(self.obj) == "BezCurve") and
-                              (self.ui.sharpButton.isChecked())):
-                            if 'EditNode' in info["Component"]:
-                                self.smoothBezPoint(int(info["Component"][8:]), info, 'Sharp')
-                        elif ((Draft.getType(self.obj) == "BezCurve") and
-                              (self.ui.tangentButton.isChecked())):
-                            if 'EditNode' in info["Component"]:
-                                self.smoothBezPoint(int(info["Component"][8:]), info, 'Tangent')
-                        elif ((Draft.getType(self.obj) == "BezCurve") and
-                              (self.ui.symmetricButton.isChecked())):
-                            if 'EditNode' in info["Component"]:
-                                self.smoothBezPoint(int(info["Component"][8:]), info, 'Symmetric')
-                        elif 'EditNode' in info["Component"]:
-                            if self.ui.arc3PtButton.isChecked():
-                                self.arc3Pt = True#store arc 3 points edit mode
+                                done = True
+                        ep = None
+                        if ('EditNode' in info["Component"]):
+                            ep = int(info["Component"][8:])
+                        elif ('Vertex' in info["Component"]) or ('Edge' in info["Component"]):
+                            p = FreeCAD.Vector(info["x"],info["y"],info["z"])
+                            for i,t in enumerate(self.trackers):
+                                if (t.get().sub(p)).Length <= 0.01:
+                                    ep = i
+                                    break
+                        if ep != None:
+                            if self.ui.delButton.isChecked():
+                                self.delPoint(ep)
+                             # don't do tan/sym on DWire/BSpline!
+                            elif ((Draft.getType(self.obj) == "BezCurve") and
+                                  (self.ui.sharpButton.isChecked())):
+                                self.smoothBezPoint(ep, info, 'Sharp')
+                            elif ((Draft.getType(self.obj) == "BezCurve") and
+                                  (self.ui.tangentButton.isChecked())):
+                                self.smoothBezPoint(ep, info, 'Tangent')
+                            elif ((Draft.getType(self.obj) == "BezCurve") and
+                                  (self.ui.symmetricButton.isChecked())):
+                                self.smoothBezPoint(ep, info, 'Symmetric')
                             else:
-                                self.arc3Pt = False#decide if it's deselected after every editing point
-                            self.ui.pointUi()
-                            self.ui.isRelative.show()
-                            self.editing = int(info["Component"][8:])
-                            self.trackers[self.editing].off()
-                            if hasattr(self.obj.ViewObject,"Selectable"):
-                                self.obj.ViewObject.Selectable = False
-                            self.node.append(self.trackers[self.editing].get())
-                            FreeCADGui.Snapper.setSelectMode(False)
+                                if self.ui.arc3PtButton.isChecked():
+                                    self.arc3Pt = True # store arc 3 points edit mode
+                                else:
+                                    self.arc3Pt = False # decide if it's deselected after every editing point
+                                self.ui.pointUi()
+                                self.ui.isRelative.show()
+                                self.editing = ep
+                                self.trackers[self.editing].off()
+                                if hasattr(self.obj.ViewObject,"Selectable"):
+                                    self.obj.ViewObject.Selectable = False
+                                self.node.append(self.trackers[self.editing].get())
+                                FreeCADGui.Snapper.setSelectMode(False)
+                            done = True
                 else:
                     self.trackers[self.editing].on()
                     #if hasattr(self.obj.ViewObject,"Selectable"):
