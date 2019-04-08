@@ -60,7 +60,9 @@ Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 {
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
-	nativeEvent->initSpaceball(window);
+    nativeEvent->initSpaceball(window);
+#else
+    Q_UNUSED(window);
 #endif
     Spaceball::MotionEvent::MotionEventType = QEvent::registerEventType();
     Spaceball::ButtonEvent::ButtonEventType = QEvent::registerEventType();
