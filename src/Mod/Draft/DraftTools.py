@@ -4304,29 +4304,19 @@ class Edit(Modifier):
                 
                 if self.editing == None:
                     p = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
-                    info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)        
-                    msg(info)
-                    msg("\n")
-                    selObjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(p)        
-                    msg(selObjs)
-                    if info:
-#                        for selObj in selObjs:
-#                            msg(print(selObj))
-#                            if 'EditNode' in selObj["Component"]:
-#                                info = selObj
-#                                #msg("edit node")
-#                                #msg(info)
-#                                break
-#                            else:
-#                                info=selObjs[0]
-#                                #msg("/n oggetto")
-#                                #msg(info)
-                        if info["Object"] != self.obj.Name:
-                            return
+                    done = False
+                    selobjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(p)
+                    if not selobjs:
+                        return
+                    for info in selobjs:
+                        if info["Object"] == self.obj.Name:
+                            if done:
+                                return
                         if self.ui.addButton.isChecked() \
                             and Draft.getType(self.obj) == "Wire" \
                             and 'Edge' in info["Component"]:
                                 self.addPointOnEdge(FreeCAD.Vector(info["x"],info["y"],info["z"]), int(info["Component"][4:]))
+                                done = True
                         elif self.ui.addButton.isChecked():
                             if self.point:
                                 pt = self.point
@@ -4334,35 +4324,43 @@ class Edit(Modifier):
                                     # prefer "real" 3D location over working-plane-driven one if possible
                                     pt = FreeCAD.Vector(info["x"],info["y"],info["z"])
                                 self.addPoint(pt,info)
-                        elif self.ui.delButton.isChecked():
-                            if 'EditNode' in info["Component"]:
-                                self.delPoint(int(info["Component"][8:]))
-                         # don't do tan/sym on DWire/BSpline!
-                        elif ((Draft.getType(self.obj) == "BezCurve") and
-                              (self.ui.sharpButton.isChecked())):
-                            if 'EditNode' in info["Component"]:
-                                self.smoothBezPoint(int(info["Component"][8:]), info, 'Sharp')
-                        elif ((Draft.getType(self.obj) == "BezCurve") and
-                              (self.ui.tangentButton.isChecked())):
-                            if 'EditNode' in info["Component"]:
-                                self.smoothBezPoint(int(info["Component"][8:]), info, 'Tangent')
-                        elif ((Draft.getType(self.obj) == "BezCurve") and
-                              (self.ui.symmetricButton.isChecked())):
-                            if 'EditNode' in info["Component"]:
-                                self.smoothBezPoint(int(info["Component"][8:]), info, 'Symmetric')
-                        elif 'EditNode' in info["Component"]:
-                            if self.ui.arc3PtButton.isChecked():
-                                self.arc3Pt = True#store arc 3 points edit mode
+                                done = True
+                        ep = None
+                        if ('EditNode' in info["Component"]):
+                            ep = int(info["Component"][8:])
+                        elif ('Vertex' in info["Component"]) or ('Edge' in info["Component"]):
+                            p = FreeCAD.Vector(info["x"],info["y"],info["z"])
+                            for i,t in enumerate(self.trackers):
+                                if (t.get().sub(p)).Length <= 0.01:
+                                    ep = i
+                                    break
+                        if ep != None:
+                            if self.ui.delButton.isChecked():
+                                self.delPoint(ep)
+                             # don't do tan/sym on DWire/BSpline!
+                            elif ((Draft.getType(self.obj) == "BezCurve") and
+                                  (self.ui.sharpButton.isChecked())):
+                                self.smoothBezPoint(ep, info, 'Sharp')
+                            elif ((Draft.getType(self.obj) == "BezCurve") and
+                                  (self.ui.tangentButton.isChecked())):
+                                self.smoothBezPoint(ep, info, 'Tangent')
+                            elif ((Draft.getType(self.obj) == "BezCurve") and
+                                  (self.ui.symmetricButton.isChecked())):
+                                self.smoothBezPoint(ep, info, 'Symmetric')
                             else:
-                                self.arc3Pt = False#decide if it's deselected after every editing point
-                            self.ui.pointUi()
-                            self.ui.isRelative.show()
-                            self.editing = int(info["Component"][8:])
-                            self.trackers[self.editing].off()
-                            if hasattr(self.obj.ViewObject,"Selectable"):
-                                self.obj.ViewObject.Selectable = False
-                            self.node.append(self.trackers[self.editing].get())
-                            FreeCADGui.Snapper.setSelectMode(False)
+                                if self.ui.arc3PtButton.isChecked():
+                                    self.arc3Pt = True # store arc 3 points edit mode
+                                else:
+                                    self.arc3Pt = False # decide if it's deselected after every editing point
+                                self.ui.pointUi()
+                                self.ui.isRelative.show()
+                                self.editing = ep
+                                self.trackers[self.editing].off()
+                                if hasattr(self.obj.ViewObject,"Selectable"):
+                                    self.obj.ViewObject.Selectable = False
+                                self.node.append(self.trackers[self.editing].get())
+                                FreeCADGui.Snapper.setSelectMode(False)
+                            done = True
                 else:
                     self.trackers[self.editing].on()
                     #if hasattr(self.obj.ViewObject,"Selectable"):
@@ -5891,6 +5889,74 @@ class Draft_AddConstruction():
                     obrep.Transparency = 80
 
 
+class Draft_Arc_3Points:
+
+
+    def GetResources(self):
+
+        return {'Pixmap'  : "Draft_Arc_3Points.svg",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc 3 points"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates an arc by giving 3 points through which the arc should pass"),
+                'Accel'   : 'A,T'}
+
+    def IsActive(self):
+
+        if FreeCAD.ActiveDocument:
+            return True
+        else:
+            return False
+
+    def Activated(self):
+
+        import DraftTrackers
+        self.points = []
+        self.normal = None
+        self.tracker = DraftTrackers.arcTracker()
+        self.tracker.autoinvert = False
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            FreeCAD.DraftWorkingPlane.setup()
+        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.drawArc)
+
+    def getPoint(self,point,info):
+        if not point: # cancelled
+            self.tracker.off()
+            return
+        if not(point in self.points): # avoid same point twice
+            self.points.append(point)
+        if len(self.points) < 3:
+            if len(self.points) == 2:
+                self.tracker.on()
+            FreeCADGui.Snapper.getPoint(last=self.points[-1],callback=self.getPoint,movecallback=self.drawArc)
+        else:
+            import Part
+            e = Part.Arc(self.points[0],self.points[1],self.points[2]).toShape()
+            if Draft.getParam("UsePartPrimitives",False) or True: # TODO Draft "native" object below is buggy, use common shape for now
+                o = FreeCAD.ActiveDocument.addObject("Part::Feature","Arc")
+                o.Shape = e
+            else:
+                radius = e.Curve.Radius
+                rot = FreeCAD.Rotation(e.Curve.XAxis,e.Curve.YAxis,e.Curve.Axis,"ZXY")
+                placement = FreeCAD.Placement(e.Curve.Center,rot)
+                start = e.FirstParameter
+                end = e.LastParameter
+                Draft.makeCircle(radius,placement,startangle=start,endangle=end)
+            self.tracker.off()
+            FreeCAD.ActiveDocument.recompute()
+
+    def drawArc(self,point,info):
+
+        if len(self.points) == 2:
+            import Part
+            if point.sub(self.points[1]).Length > 0.001:
+                e = Part.Arc(self.points[0],self.points[1],point).toShape()
+                self.tracker.normal = e.Curve.Axis.negative() # for some reason the axis always points "backwards"
+                self.tracker.basevector = self.tracker.getDeviation()
+                self.tracker.setCenter(e.Curve.Center)
+                self.tracker.setRadius(e.Curve.Radius)
+                self.tracker.setStartPoint(self.points[0])
+                self.tracker.setEndPoint(point)
+
+
 #---------------------------------------------------------------------------
 # Snap tools
 #---------------------------------------------------------------------------
@@ -6084,6 +6150,7 @@ FreeCADGui.addCommand('Draft_Line',Line())
 FreeCADGui.addCommand('Draft_Wire',Wire())
 FreeCADGui.addCommand('Draft_Circle',Circle())
 FreeCADGui.addCommand('Draft_Arc',Arc())
+FreeCADGui.addCommand('Draft_Arc_3Points',Draft_Arc_3Points())
 FreeCADGui.addCommand('Draft_Text',Text())
 FreeCADGui.addCommand('Draft_Rectangle',Rectangle())
 FreeCADGui.addCommand('Draft_Dimension',Dimension())
