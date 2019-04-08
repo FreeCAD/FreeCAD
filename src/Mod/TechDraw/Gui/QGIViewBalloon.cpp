@@ -181,20 +181,20 @@ void QGIViewBalloon::onAttachPointPicked(QGIView *view, QPointF pos)
         QGVPage* page;
         if (mdi != nullptr) {
             page = mdi->getQGVPage();
+
+            QString labelText = QString::fromUtf8(std::to_string(page->balloonIndex).c_str());
+            balloon->Text.setValue(std::to_string(page->balloonIndex++).c_str());
+
+            QFont font = balloonLabel->getFont();
+            font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
+            font.setFamily(QString::fromUtf8(vp->Font.getValue()));
+            balloonLabel->setFont(font);
+            prepareGeometryChange();
+
+            // Default label position
+            balloonLabel->setPosFromCenter(pos.x() + 200, pos.y() -200);
+            balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
         }
-
-        QString labelText = QString::fromUtf8(std::to_string(page->balloonIndex).c_str());
-        balloon->Text.setValue(std::to_string(page->balloonIndex++).c_str());
-
-        QFont font = balloonLabel->getFont();
-        font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
-        font.setFamily(QString::fromUtf8(vp->Font.getValue()));
-        balloonLabel->setFont(font);
-        prepareGeometryChange();
-
-        // Default label position
-        balloonLabel->setPosFromCenter(pos.x() + 200, pos.y() -200);
-        balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
     }
 
     draw();

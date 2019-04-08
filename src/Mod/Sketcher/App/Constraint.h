@@ -79,7 +79,7 @@ enum PointPos { none, start, end, mid };
 
 class SketcherExport Constraint : public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     Constraint();
