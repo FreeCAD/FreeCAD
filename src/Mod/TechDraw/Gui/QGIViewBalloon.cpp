@@ -363,7 +363,7 @@ void QGIViewBalloon::draw_modifier(bool modifier)
     const char *balloonType = balloon->Symbol.getValueAsString();
 
     float scale = balloon->SymbolScale.getValue();
-    double offset;
+    double offset = 0;
     QPainterPath balloonPath;
 
     if (strcmp(balloonType, "Circular") == 0) {
