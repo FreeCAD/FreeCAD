@@ -18,3 +18,5 @@ INSTALL(
     DESTINATION
         Ext/freecad
 )
+
+add_subdirectory(fc_cadquery)

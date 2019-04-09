@@ -1045,6 +1045,7 @@ enum PseudoPropertyType {
     PseudoMath,
     PseudoCollections,
     PseudoGui,
+    PseudoCadquery,
 };
 
 std::pair<DocumentObject*,std::string> ObjectIdentifier::getDep(std::vector<std::string> *labels) const {
@@ -1208,6 +1209,7 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
         {"_math", PseudoMath},
         {"_coll", PseudoCollections},
         {"_gui",PseudoGui},
+        {"_cq",PseudoCadquery},
     };
     auto it = _props.find(propertyName);
     if(it == _props.end())
@@ -1452,6 +1454,9 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
         break;
     case PseudoPart:
         GET_MODULE(Part);
+        break;
+    case PseudoCadquery:
+        GET_MODULE(freecad.fc_cadquery);
         break;
     case PseudoRegex:
         GET_MODULE(re);
