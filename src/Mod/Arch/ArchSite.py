@@ -370,6 +370,8 @@ class _Site(ArchFloor._Floor):
             obj.addProperty("App::PropertyBool","RemoveSplitter","Site",QT_TRANSLATE_NOOP("App::Property","Remove splitters from the resulting shape"))
         if not "OriginOffset" in pl:
             obj.addProperty("App::PropertyVector","OriginOffset","Site",QT_TRANSLATE_NOOP("App::Property","An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates"))
+        if not "IfcProperties" in pl:
+            obj.addProperty("App::PropertyMap","IfcProperties","Site",QT_TRANSLATE_NOOP("App::Property","Stores IFC properties"))
         if not hasattr(obj,"Group"):
             obj.addExtension("App::GroupExtensionPython", self)
         self.Type = "Site"
