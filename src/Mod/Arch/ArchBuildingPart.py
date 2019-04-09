@@ -202,7 +202,7 @@ def makeBuildingPart(objectslist=None,baseobj=None,name="BuildingPart"):
     #obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
     obj.Label = translate("Arch","BuildingPart")
     BuildingPart(obj)
-    #obj.IfcRole = "Building Storey" # set default to Floor
+    #obj.IfcType = "Building Storey" # set default to Floor
     if FreeCAD.GuiUp:
         ViewProviderBuildingPart(obj.ViewObject)
     if objectslist:
@@ -216,7 +216,7 @@ def makeFloor(objectslist=None,baseobj=None,name="Floor"):
 
     obj = makeBuildingPart(objectslist)
     obj.Label = name
-    obj.IfcRole = "Building Storey"
+    obj.IfcType = "Building Storey"
     return obj
 
 
@@ -226,7 +226,7 @@ def makeBuilding(objectslist=None,baseobj=None,name="Building"):
 
     obj = makeBuildingPart(objectslist)
     obj.Label = name
-    obj.IfcRole = "Building"
+    obj.IfcType = "Building"
     obj.addProperty("App::PropertyEnumeration","BuildingType","Building",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
     obj.BuildingType = BuildingTypes
     if FreeCAD.GuiUp:
@@ -248,9 +248,9 @@ def convertFloors(floor=None):
         if Draft.getType(obj) in ["Floor","Building"]:
             nobj = makeBuildingPart(obj.Group)
             if Draft.getType(obj) == "Floor":
-                nobj.IfcRole = "Building Storey"
+                nobj.IfcType = "Building Storey"
             else:
-                nobj.IfcRole = "Building"
+                nobj.IfcType = "Building"
                 nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
                 nobj.BuildingType = BuildingTypes
             label = obj.Label
@@ -329,20 +329,13 @@ class BuildingPart:
             obj.addProperty("App::PropertyLength","LevelOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The level of the (0,0,0) point of this level"))
         if not "Area" in pl:
             obj.addProperty("App::PropertyArea","Area", "BuildingPart",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
-        if not "IfcRole" in pl:
-            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-            import ArchComponent
-            obj.IfcRole = ArchComponent.IfcRoles
         if not "Description" in pl:
             obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
         if not "Tag" in pl:
             obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
-        if not "IfcAttributes" in pl:
-            obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
         if not "Shape" in pl:
             obj.addProperty("Part::PropertyPartShape","Shape","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The shape of this object"))
-        if not "IfcProperties" in pl:
-            obj.addProperty("App::PropertyMap","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Stores IFC properties"))
+
         self.Type = "BuildingPart"
 
     def onDocumentRestored(self,obj):
@@ -499,9 +492,9 @@ class ViewProviderBuildingPart:
 
         import Arch_rc
         if hasattr(self,"Object"):
-            if self.Object.IfcRole == "Building Storey":
+            if self.Object.IfcType == "Building Storey":
                 return ":/icons/Arch_Floor_Tree.svg"
-            elif self.Object.IfcRole == "Building":
+            elif self.Object.IfcType == "Building":
                 return ":/icons/Arch_Building_Tree.svg"
         return ":/icons/Arch_BuildingPart_Tree.svg"
 

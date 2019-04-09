@@ -183,7 +183,7 @@ class _Roof(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Roof"
+        obj.IfcType = "Roof"
         obj.Proxy = self
 
     def setProperties(self,obj):

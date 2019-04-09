@@ -165,7 +165,7 @@ class _Rebar(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Reinforcing Bar"
+        obj.IfcType = "Reinforcing Bar"
 
     def setProperties(self,obj):
 

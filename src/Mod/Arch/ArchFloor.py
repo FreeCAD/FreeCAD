@@ -130,7 +130,7 @@ class _Floor:
         obj.Proxy = self
         self.Object = obj
         _Floor.setProperties(self,obj)
-        self.IfcRole = "Building Storey"
+        self.IfcType = "Building Storey"
 
     def setProperties(self,obj):
 
@@ -142,10 +142,10 @@ class _Floor:
         if not hasattr(obj,"Placement"):
             # obj can be a Part Feature and already has a placement
             obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
-        if not "IfcRole" in pl:
-            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-            import ArchComponent
-            obj.IfcRole = ArchComponent.IfcRoles
+        if not "IfcType" in pl:
+            obj.addProperty("App::PropertyEnumeration","IfcType","Component",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
+            import ArchIFC
+            obj.IfcType = ArchIFC.IfcTypes
         self.Type = "Floor"
 
     def onDocumentRestored(self,obj):

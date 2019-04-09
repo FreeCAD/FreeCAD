@@ -164,21 +164,15 @@ class _ArchSchedule:
                             elif args[0].upper() == "!TYPE":
                                 if Draft.getType(o).upper() == args[1].upper():
                                     ok = False
-                            elif args[0].upper() == "ROLE":
-                                if hasattr(o,"IfcRole"):
-                                    if o.IfcRole.upper() != args[1].upper():
-                                        ok = False
-                                elif hasattr(o,"Role"):
-                                    if o.Role.upper() != args[1].upper():
+                            elif args[0].upper() == "IFCTYPE":
+                                if hasattr(o,"IfcType"):
+                                    if o.IfcType.upper() != args[1].upper():
                                         ok = False
                                 else:
                                     ok = False
-                            elif args[0].upper() == "!ROLE":
-                                if hasattr(o,"Role"):
-                                    if o.IfcRole.upper() == args[1].upper():
-                                        ok = False
-                                elif hasattr(o,"Role"):
-                                    if o.Role.upper() == args[1].upper():
+                            elif args[0].upper() == "!IFCTYPE":
+                                if hasattr(o,"IfcType"):
+                                    if o.IfcType.upper() == args[1].upper():
                                         ok = False
                         if ok:
                             nobjs.append(o)
