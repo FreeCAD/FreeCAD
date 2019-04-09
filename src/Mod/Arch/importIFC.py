@@ -1557,8 +1557,12 @@ def export(exportList,filename):
     template = ifctemplate.replace("$version",version[0]+"."+version[1]+" build "+version[2])
     if hasattr(ifcopenshell,"schema_identifier"):
         schema = ifcopenshell.schema_identifier
+    elif hasattr(ifcopenshell,"version") and (float(ifcopenshell.version[:3]) >= 0.6):
+        # v0.6 allows to set our own schema
+        schema = ["IFC4", "IFC2X3"][FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("IfcVersion",0)]
     else:
         schema = "IFC2X3"
+    if DEBUG: print("Exporting an",schema,"file...")
     template = template.replace("$ifcschema",schema)
     template = template.replace("$owner",owner)
     template = template.replace("$company",FreeCAD.ActiveDocument.Company)
