@@ -1,5 +1,5 @@
 
-import cadquery
+from . import Workplane
 from .shapes import Shape
 
 import FreeCAD
@@ -47,7 +47,7 @@ def importStep(fileName):
         for shell in rshape.Shells:
             geometry.append(Shape.cast(shell))
 
-        return cadquery.Workplane("XY").newObject(geometry)
+        return Workplane("XY").newObject(geometry)
 
     except:
         raise ValueError("STEP File Could not be loaded")

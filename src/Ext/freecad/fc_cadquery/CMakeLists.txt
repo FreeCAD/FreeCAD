@@ -4,8 +4,8 @@ SET(FC_CADQUERY_SRCS
     cq.py
     selectors.py
     freecad_impl/__init__.py
-    freecad_impl/console_logging.py
     freecad_impl/exporters.py
+    freecad_impl/console_logging.py
     freecad_impl/geom.py
     freecad_impl/importers.py
     freecad_impl/shapes.py

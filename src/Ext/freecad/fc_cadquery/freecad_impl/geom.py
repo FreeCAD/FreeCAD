@@ -19,7 +19,7 @@
 from __future__ import division
 import math
 from copy import copy
-import cadquery
+from . import Shape
 import FreeCAD
 import Part as FreeCADPart
 
@@ -545,7 +545,7 @@ class Plane(object):
         """
         if isinstance(obj, Vector):
             return Vector(self.fG.multiply(obj.wrapped))
-        elif isinstance(obj, cadquery.Shape):
+        elif isinstance(obj, Shape):
             return obj.transformShape(self.rG)
         else:
             raise ValueError(
@@ -636,7 +636,7 @@ class Plane(object):
                 comp = FreeCADPart.Compound(aEdges)
                 mirroredWire = comp.connectEdgesToWires(False).Wires[0]
 
-                resultWires.append(cadquery.Shape.cast(mirroredWire))
+                resultWires.append(Shape.cast(mirroredWire))
 
         return resultWires
 

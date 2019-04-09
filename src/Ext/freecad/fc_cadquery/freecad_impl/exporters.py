@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-import cadquery
+from . import CQ
 
 import FreeCAD
 import Drawing
@@ -48,7 +48,7 @@ def exportShape(shape,exportType,fileLike,tolerance=0.1):
     """
 
 
-    if isinstance(shape,cadquery.CQ):
+    if isinstance(shape,CQ):
         shape = shape.val()
 
     if exportType == ExportTypes.TJS:
@@ -88,21 +88,12 @@ def exportShape(shape,exportType,fileLike,tolerance=0.1):
             else:
                 raise ValueError("No idea how i got here")
 
-        res = '{}'.format(readAndDeleteFile(outFileName))
+        res = ''
+        with open(outFileName,'r') as f:
+            res = f.read()
+        os.remove(outFileName)
+
         fileLike.write(res)
-
-def readAndDeleteFile(fileName):
-    """
-        read data from file provided, and delete it when done
-        return the contents as a string
-    """
-    res = ''
-    with open(fileName,'r') as f:
-        res = f.read()
-
-    os.remove(fileName)
-    return res
-
 
 def guessUnitOfMeasure(shape):
     """
