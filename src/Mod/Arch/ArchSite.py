@@ -281,7 +281,7 @@ class _CommandSite:
         siteobj = []
         warning = False
         for obj in sel :
-            if (Draft.getType(obj) == "Building") or (hasattr(obj,"IfcRole") and obj.IfcRole == "Building"):
+            if (Draft.getType(obj) == "Building") or (hasattr(obj,"IfcType") and obj.IfcType == "Building"):
                 siteobj.append(obj)
             else :
                 if link == True :
@@ -321,10 +321,12 @@ class _Site(ArchFloor._Floor):
 
         ArchFloor._Floor.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Site"
+        obj.IfcType = "Site"
 
     def setProperties(self,obj):
+
         ArchIFC.setProperties(obj)
+
         pl = obj.PropertiesList
         if not "Terrain" in pl:
             obj.addProperty("App::PropertyLink","Terrain","Site",QT_TRANSLATE_NOOP("App::Property","The base terrain of this site"))
@@ -370,8 +372,6 @@ class _Site(ArchFloor._Floor):
             obj.addProperty("App::PropertyBool","RemoveSplitter","Site",QT_TRANSLATE_NOOP("App::Property","Remove splitters from the resulting shape"))
         if not "OriginOffset" in pl:
             obj.addProperty("App::PropertyVector","OriginOffset","Site",QT_TRANSLATE_NOOP("App::Property","An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates"))
-        if not "IfcProperties" in pl:
-            obj.addProperty("App::PropertyMap","IfcProperties","Site",QT_TRANSLATE_NOOP("App::Property","Stores IFC properties"))
         if not hasattr(obj,"Group"):
             obj.addExtension("App::GroupExtensionPython", self)
         self.Type = "Site"

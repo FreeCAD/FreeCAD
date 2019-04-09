@@ -264,7 +264,7 @@ class _Space(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Space"
+        obj.IfcType = "Space"
 
     def setProperties(self,obj):
 

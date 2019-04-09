@@ -47,36 +47,14 @@ else:
 #  This module provides the base Arch component class, that
 #  is shared by all of the Arch BIM objects
 
-IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in ArchIFCSchema.IfcProducts.keys()]
-
-def convertOldComponents(objs=[]):
-
-    """converts Arch Objects with a Role property to the new IfcRole.
-    if no object is given, all objects of the active document are converted"""
-
-    if not objs:
-        objs = FreeCAD.ActiveDocument.Objects
-    if not isinstance(objs,list):
-        objs = [objs]
-    for obj in objs:
-        if "Role" in obj.PropertiesList:
-            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-            obj.IfcRole = IfcRoles
-            if obj.Role in IfcRoles:
-                obj.IfcRole = obj.Role
-            else:
-                FreeCAD.Console.PrintMessage("Role "+obj.Role+" cannot be mapped for object "+obj.Label+"\n")
-            obj.removeProperty("Role")
-
-
 def addToComponent(compobject,addobject,mod=None):
 
     '''addToComponent(compobject,addobject,mod): adds addobject
     to the given component. Default is in "Additions", "Objects" or
     "Components", the first one that exists in the component. Mod
     can be set to one of those attributes ("Objects", Base", etc...)
-
     to override the default.'''
+
     import Draft
     if compobject == addobject: return
     # first check zis already there
@@ -167,7 +145,11 @@ class Component:
         self.Type = "Component"
 
     def setProperties(self,obj):
+        
+        "Sets the needed properties of this object"
+
         ArchIFC.setProperties(obj)
+
         pl = obj.PropertiesList
         if not "Base" in pl:
             obj.addProperty("App::PropertyLink","Base","Component",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
@@ -189,29 +171,12 @@ class Component:
                 obj.Material = obj.BaseMaterial
                 obj.removeProperty("BaseMaterial")
                 FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" BaseMaterial property to Material\n")
-        if not "IfcRole" in pl:
-            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-            obj.IfcRole = IfcRoles
-        if "Role" in pl:
-            r = obj.Role
-            obj.removeProperty("Role")
-            if r in IfcRoles:
-                obj.IfcRole = r
-                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" Role property to IfcRole\n")
-        if "IfcType" in pl: # for future backwards compatibility
-            r = obj.IfcType
-            obj.removeProperty("IfcType")
-            if r in IfcRoles:
-                obj.IfcRole = r
-                FreeCAD.Console.PrintMessage("Downgrading "+obj.Label+" IfcType property to IfcRole\n")
         if not "MoveBase" in pl:
             obj.addProperty("App::PropertyBool","MoveBase","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if moving this object moves its base instead"))
             obj.MoveBase = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("MoveBase",False)
         if not "MoveWithHost" in pl:
             obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
             obj.MoveWithHost = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("MoveWithHost",False)
-        if not "IfcProperties" in pl:
-            obj.addProperty("App::PropertyMap","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Stores IFC properties"))
         if not "VerticalArea" in pl:
             obj.addProperty("App::PropertyArea","VerticalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
             obj.setEditorMode("VerticalArea",1)
@@ -225,6 +190,7 @@ class Component:
             obj.addProperty("App::PropertyLink","HiRes","Component",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
         if not "Axis" in pl:
             obj.addProperty("App::PropertyLink","Axis","Component",QT_TRANSLATE_NOOP("App::Property","An optional axis or axis system on which this object should be duplicated"))
+
         self.Subvolume = None
         #self.MoveWithHost = False
         self.Type = "Component"
@@ -260,6 +226,7 @@ class Component:
             self.oldPlacement = FreeCAD.Placement(obj.Placement)
 
     def onChanged(self,obj,prop):
+
         ArchIFC.onChanged(obj, prop)
 
         if prop == "Placement":

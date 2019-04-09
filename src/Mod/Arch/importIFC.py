@@ -823,23 +823,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 except ReferenceError:
                     pass
 
-            # setting IFC role
+            # setting IFC type
 
             try:
-                if hasattr(obj,"IfcRole"):
-                    obj.IfcRole = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
-                else:
-                    # pre-0.18 objects, only support a small subset of types
-                    r = ptype[3:]
-                    tr = dict((v,k) for k, v in translationtable.items())
-                    if r in tr.keys():
-                        r = tr[r]
-                    # remove the "StandardCase"
-                    if "StandardCase" in r:
-                        r = r[:-12]
-                    obj.Role = r
+                if hasattr(obj,"IfcType"):
+                    obj.IfcType = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
             except:
-                print("Unable to give IFC role ",ptype," to object ",obj.Label)
+                print("Unable to give IFC type ",ptype," to object ",obj.Label)
 
             # setting uid
 
@@ -878,20 +868,10 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     if product.Description:
                         obj.Description = product.Description
                 try:
-                    if hasattr(obj,"IfcRole"):
-                        obj.IfcRole = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
-                    else:
-                        # pre-0.18 objects, only support a small subset of types
-                        r = ptype[3:]
-                        tr = dict((v,k) for k, v in translationtable.items())
-                        if r in tr.keys():
-                            r = tr[r]
-                        # remove the "StandardCase"
-                        if "StandardCase" in r:
-                            r = r[:-12]
-                        obj.Role = r
+                    if hasattr(obj,"IfcType"):
+                        obj.IfcType = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
                 except:
-                    print("Unable to give IFC role ",ptype," to object ",obj.Label)
+                    print("Unable to give IFC type ",ptype," to object ",obj.Label)
                 if hasattr(obj,"IfcData"):
                     a = obj.IfcData
                     a["IfcUID"] = str(guid)
@@ -1679,7 +1659,7 @@ def export(exportList,filename):
                 d["IfcUID"] = uid
                 obj.IfcData = d
 
-        ifctype = getIfcRoleFromObj(obj)
+        ifctype = getIfcTypeFromObj(obj)
 
         if ifctype == "IfcGroup":
             groups[obj.Name] = [o.Name for o in obj.Group]
@@ -2079,7 +2059,7 @@ def export(exportList,filename):
     # buildingParts can be exported as any "normal" IFC type. In that case, gather their elements first
 
     for bp in Draft.getObjectsOfType(objectslist,"BuildingPart"):
-        if bp.IfcRole not in ["Site","Building","Building Storey","Space","Undefined"]:
+        if bp.IfcType not in ["Site","Building","Building Storey","Space","Undefined"]:
             if bp.Name in products:
                 subs = []
                 for c in bp.Group:
@@ -2092,7 +2072,7 @@ def export(exportList,filename):
     # floors/buildingparts
 
     for floor in Draft.getObjectsOfType(objectslist,"Floor")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
-        if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcRole") and floor.IfcRole == "Building Storey"):
+        if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcType") and floor.IfcType == "Building Storey"):
             objs = Draft.getGroupContents(floor,walls=True,addgroups=True)
             objs = Arch.pruneIncluded(objs)
             children = []
@@ -2111,7 +2091,7 @@ def export(exportList,filename):
     # buildings
 
     for building in Draft.getObjectsOfType(objectslist,"Building")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
-        if (Draft.getType(building) == "Building") or (hasattr(building,"IfcRole") and building.IfcRole == "Building"):
+        if (Draft.getType(building) == "Building") or (hasattr(building,"IfcType") and building.IfcType == "Building"):
             objs = Draft.getGroupContents(building,walls=True,addgroups=True)
             objs = Arch.pruneIncluded(objs)
             children = []
@@ -2168,7 +2148,7 @@ def export(exportList,filename):
                 if not(Draft.getType(FreeCAD.ActiveDocument.getObject(k)) in ["Site","Building","Floor","BuildingPart"]):
                     untreated.append(v)
                 elif Draft.getType(FreeCAD.ActiveDocument.getObject(k)) == "BuildingPart":
-                    if not(FreeCAD.ActiveDocument.getObject(k).IfcRole in ["Building","Building Storey","Site","Space","Undefined"]):
+                    if not(FreeCAD.ActiveDocument.getObject(k).IfcType in ["Building","Building Storey","Site","Space","Undefined"]):
                         untreated.append(v)
     if untreated:
         if not defaulthost:
@@ -2368,14 +2348,12 @@ def export(exportList,filename):
     del ifcbin
 
 
-def getIfcRoleFromObj(obj):
+def getIfcTypeFromObj(obj):
 
-    if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Undefined"):
+    if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcType") and (obj.IfcType == "Undefined"):
         ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitly set
-    elif hasattr(obj,"IfcRole"):
-        ifctype = obj.IfcRole.replace(" ","")
-    elif hasattr(obj,"Role"):
-        ifctype = obj.Role.replace(" ","")
+    elif hasattr(obj,"IfcType"):
+        ifctype = obj.IfcType.replace(" ","")
     else:
         ifctype = Draft.getType(obj)
 
@@ -2389,16 +2367,16 @@ def getIfcRoleFromObj(obj):
 
 def exportIFC2X3Attributes(obj, kwargs):
 
-    role = getIfcRoleFromObj(obj)
-    if role in ["IfcSlab", "IfcFooting", "IfcRoof"]:
+    ifctype = getIfcTypeFromObj(obj)
+    if ifctype in ["IfcSlab", "IfcFooting", "IfcRoof"]:
         kwargs.update({"PredefinedType": "NOTDEFINED"})
-    elif role == "IfcBuilding":
+    elif ifctype == "IfcBuilding":
         kwargs.update({"CompositionType": "ELEMENT"})
-    elif role == "IfcBuildingStorey":
+    elif ifctype == "IfcBuildingStorey":
         kwargs.update({"CompositionType": "ELEMENT"})
-    elif role == "IfcBuildingElementProxy":
+    elif ifctype == "IfcBuildingElementProxy":
         kwargs.update({"CompositionType": "ELEMENT"})
-    elif role == "IfcSpace":
+    elif ifctype == "IfcSpace":
         internal = "NOTDEFINED"
         if hasattr(obj,"Internal"):
             if obj.Internal:
@@ -2408,10 +2386,10 @@ def exportIFC2X3Attributes(obj, kwargs):
         kwargs.update({"CompositionType": "ELEMENT",
             "InteriorOrExteriorSpace": internal,
             "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
-    elif role == "IfcReinforcingBar":
+    elif ifctype == "IfcReinforcingBar":
         kwargs.update({"NominalDiameter": obj.Diameter.Value,
             "BarLength": obj.Length.Value})
-    elif role == "IfcBuildingStorey":
+    elif ifctype == "IfcBuildingStorey":
         kwargs.update({"Elevation": obj.Placement.Base.z/1000.0})
     return kwargs
 

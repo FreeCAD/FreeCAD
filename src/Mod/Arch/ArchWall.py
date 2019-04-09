@@ -519,7 +519,7 @@ class _Wall(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Wall"
+        obj.IfcType = "Wall"
 
     def setProperties(self,obj):
 
