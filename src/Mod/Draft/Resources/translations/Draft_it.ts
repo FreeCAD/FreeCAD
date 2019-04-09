@@ -750,7 +750,7 @@ http://www.freecadweb.org/wiki/Dxf_Importer_Install</translation>
     <message>
       <location filename="../../DraftGui.py" line="2361"/>
       <source>X factor</source>
-      <translation>Fatttore X</translation>
+      <translation>Fattore X</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2362"/>
