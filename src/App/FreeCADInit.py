@@ -135,7 +135,7 @@ def InitApplications():
 					Log('-'*100+'\n')
 					Log(traceback.format_exc())
 					Log('-'*100+'\n')
-					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
+					Err('During initialization the error "' + str(inst) + '" occurred in ' + InstallFile + '\n')
 					Err('Please look into the log file for further information\n')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
@@ -151,25 +151,25 @@ def InitApplications():
 		for _, freecad_module_name, freecad_module_ispkg in pkgutil.iter_modules(freecad.__path__, "freecad."):
 			if freecad_module_ispkg:
 				Log('Init: Initializing ' + freecad_module_name + '\n')
-				freecad_module = importlib.import_module(freecad_module_name)
-				extension_modules += [freecad_module_name]
-				if any (module_name == 'init' for _, module_name, ispkg in pkgutil.iter_modules(freecad_module.__path__)):
-					try:
+				try:
+					freecad_module = importlib.import_module(freecad_module_name)
+					extension_modules += [freecad_module_name]
+					if any (module_name == 'init' for _, module_name, ispkg in pkgutil.iter_modules(freecad_module.__path__)):
 						importlib.import_module(freecad_module_name + '.init')
 						Log('Init: Initializing ' + freecad_module_name + '... done\n')
-					except Exception as inst:
-						Err('During initialization the error ' + str(inst) + ' occurred in ' + freecad_module_name + '\n')
-						Err('-'*80+'\n')
-						Err(traceback.format_exc())
-						Err('-'*80+'\n')
-						Log('Init:      Initializing ' + freecad_module_name + '... failed\n')
-						Log('-'*80+'\n')
-						Log(traceback.format_exc())
-						Log('-'*80+'\n')
-				else:
-					Log('Init: No init module found in ' + freecad_module_name + ', skipping\n')
+					else:
+						Log('Init: No init module found in ' + freecad_module_name + ', skipping\n')
+				except Exception as inst:
+					Err('During initialization the error "' + str(inst) + '" occurred in ' + freecad_module_name + '\n')
+					Err('-'*80+'\n')
+					Err(traceback.format_exc())
+					Err('-'*80+'\n')
+					Log('Init:      Initializing ' + freecad_module_name + '... failed\n')
+					Log('-'*80+'\n')
+					Log(traceback.format_exc())
+					Log('-'*80+'\n')
 	except ImportError as inst:
-		Err('During initialization the error ' + str(inst) + ' occurred\n')
+		Err('During initialization the error "' + str(inst) + '" occurred\n')
 
 	Log("Using "+ModDir+" as module path!\n")
 	# In certain cases the PathExtension list can contain invalid strings. We concatenate them to a single string
