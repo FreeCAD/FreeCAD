@@ -282,9 +282,9 @@ static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
     else if (type == typeid(double)) {
         double v = App::any_cast<double>(value);
         double rv = std::round(v);
-        if(essentiallyEqual(v,rv)) {
+        if(std::abs(v)<=LONG_MAX && essentiallyEqual(v,rv)) {
             long l = (long)rv;
-            if(std::abs(l)<INT_MAX)
+            if(std::abs(l)<=INT_MAX)
                 return Py::Int(l);
             return Py::Long((long)rv);
         }
@@ -292,14 +292,18 @@ static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
     } else if (type == typeid(float)) {
         float v = App::any_cast<float>(value);
         float rv = std::round(v);
-        if(essentiallyEqual(v,rv))
-            return Py::Int((int)rv);
+        if(std::abs(v)<=LONG_MAX && essentiallyEqual(v,rv)) {
+            long l = (long)rv;
+            if(std::abs(l)<=INT_MAX)
+                return Py::Int(l);
+            return Py::Long((long)rv);
+        }
         return Py::Float(v);
     } else if (type == typeid(int)) 
         return Py::Int(App::any_cast<int>(value));
     else if (type == typeid(long)) {
         long l = App::any_cast<long>(value);
-        if(std::abs(l)<INT_MAX)
+        if(std::abs(l)<=INT_MAX)
             return Py::Int(int(l));
         return Py::Long(App::any_cast<long>(value));
     } else if (type == typeid(bool))
@@ -1180,10 +1184,17 @@ ExpressionPtr UnitExpression::_copy() const
 }
 
 App::any UnitExpression::_getValueAsAny() const {
-    if(quantity.getUnit().isEmpty())
-        return App::any(quantity.getValue());
-    else
+    if(!quantity.getUnit().isEmpty())
         return App::any(quantity); 
+    double v = quantity.getValue();
+    double rv = std::round(v);
+    if(std::abs(v)<=LONG_MAX && essentiallyEqual(v,rv)) {
+        long l = (long)rv;
+        if(std::abs(l)<=INT_MAX)
+            return (int)rv;
+        return (long)rv;
+    }
+    return v;
 }
 
 //
