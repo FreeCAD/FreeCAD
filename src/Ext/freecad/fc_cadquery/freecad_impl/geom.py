@@ -19,7 +19,6 @@
 from __future__ import division
 import math
 from copy import copy
-from . import Shape
 import FreeCAD
 import Part as FreeCADPart
 
@@ -543,6 +542,7 @@ class Plane(object):
         orient the box in space correctly.
 
         """
+        from .shapes import Shape
         if isinstance(obj, Vector):
             return Vector(self.fG.multiply(obj.wrapped))
         elif isinstance(obj, Shape):
@@ -613,6 +613,7 @@ class Plane(object):
         # - then rotate about x
         # - then transform back to global coordinates.
 
+        from .shapes import Shape
         resultWires = []
         for w in listOfShapes:
             mirrored = w.transformGeometry(rotationMatrix.wrapped)

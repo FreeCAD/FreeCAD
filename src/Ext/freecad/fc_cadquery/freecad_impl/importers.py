@@ -1,7 +1,4 @@
 
-from . import Workplane
-from .shapes import Shape
-
 import FreeCAD
 import Part
 import sys
@@ -35,6 +32,7 @@ def importStep(fileName):
         Accepts a file name and loads the STEP file into a cadquery shape
         :param fileName: The path and name of the STEP file to be imported
     """
+    from .shapes import Shape
     #Now read and return the shape
     try:
         rshape = Part.read(fileName)
@@ -47,6 +45,7 @@ def importStep(fileName):
         for shell in rshape.Shells:
             geometry.append(Shape.cast(shell))
 
+        from ..cq import Workplane
         return Workplane("XY").newObject(geometry)
 
     except:

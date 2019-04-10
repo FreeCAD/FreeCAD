@@ -1,7 +1,5 @@
 from __future__ import unicode_literals
 
-from . import CQ
-
 import FreeCAD
 import Drawing
 
@@ -48,6 +46,7 @@ def exportShape(shape,exportType,fileLike,tolerance=0.1):
     """
 
 
+    from ..cq import CQ
     if isinstance(shape,CQ):
         shape = shape.val()
 

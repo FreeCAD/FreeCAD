@@ -47,7 +47,7 @@
            object each one returns, so these are better grouped by the type of object they return.
            (who would know that Part.makeCircle() returns an Edge, but Part.makePolygon() returns a Wire ?
 """
-from . import Vector, BoundBox
+from .geom import Vector, BoundBox
 import FreeCAD
 import Part as FreeCADPart
 
