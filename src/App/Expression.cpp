@@ -1377,7 +1377,7 @@ ExpressionPtr OperatorExpression::_calc(const Expression *e1) const {
     case OP_NOT: {
         Base::PyGILStateLocker lock;
         Py::Object o1 = _pyObjectFromAny(e1->getValueAsAny(),left.get());
-        return BooleanExpression::create(owner,o1.isTrue());
+        return BooleanExpression::create(owner,!o1.isTrue());
     } case OP_AND: {
         auto v1 = freecad_dynamic_cast<NumberExpression>(e1);
         if(v1) {
