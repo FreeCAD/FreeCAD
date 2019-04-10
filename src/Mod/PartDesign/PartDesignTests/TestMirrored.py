@@ -71,6 +71,7 @@ class TestMirrored(unittest.TestCase):
 
     def testMirroredOffsetFailureCase(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.Body.SingleSolid = True
         self.Rect = self.Doc.addObject('Sketcher::SketchObject','Rect')
         self.Body.addObject(self.Rect)
         TestSketcherApp.CreateRectangleSketch(self.Rect, (0, 1), (1, 1))

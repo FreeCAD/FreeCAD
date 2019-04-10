@@ -1748,9 +1748,13 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
     FreeCAD.ActiveDocument.removeObject(obj.Name)
-    self.failUnless(self.Obs.signal.pop() == 'ObjDeleted')
-    self.failUnless(self.Obs.parameter.pop() is obj)
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    self.failUnless(self.Obs.signal.pop(0) == 'ObjDeleted')
+    self.failUnless(self.Obs.parameter.pop(0) is obj)
+    # Each object now has a _NotifyList property of type PropertyLinkList, which
+    # will trigger beforeChange and change signal due to the document calling
+    # breakDependencies()
+    #
+    #  self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
     pyobj = self.Doc1.addObject("App::FeaturePython","pyobj")
     self.Obs.signal = []
@@ -1816,8 +1820,6 @@ class DocumentObserverCases(unittest.TestCase):
     self.Obs.signal = []
     self.Obs.parameter = []
     self.Obs.parameter2 = []
-    logger = FreeCAD.Logger('test')
-    logger.info(self.GuiObs.signal)
     self.failUnless(self.GuiObs.signal.pop(0) == 'DocCreated')
     self.failUnless(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
     self.failUnless(self.GuiObs.signal.pop(0) == 'DocActivated')
@@ -1908,9 +1910,13 @@ class DocumentObserverCases(unittest.TestCase):
     
     vo = obj.ViewObject
     FreeCAD.ActiveDocument.removeObject(obj.Name)
-    self.failUnless(self.Obs.signal.pop() == 'ObjDeleted')
-    self.failUnless(self.Obs.parameter.pop() is obj)
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    self.failUnless(self.Obs.signal.pop(0) == 'ObjDeleted')
+    self.failUnless(self.Obs.parameter.pop(0) is obj)
+    # Each object now has a _NotifyList property of type PropertyLinkList, which
+    # will trigger beforeChange and change signal due to the document calling
+    # breakDependencies()
+    #
+    #  self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     self.failUnless(self.GuiObs.signal.pop() == 'ObjDeleted')
     self.failUnless(self.GuiObs.parameter.pop() is vo)
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
