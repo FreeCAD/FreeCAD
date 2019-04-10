@@ -448,7 +448,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant::fromValue(qtAlignment);
         }
         case Qt::DisplayRole: {
-            if(!cell->hasException() && cell->getEditMode()) {
+            if(cell->getEditMode()) {
                 auto res = cell->getEditData(true);
                 if(res.size())
                     return QVariant(QString::fromUtf8(res.front().c_str()));

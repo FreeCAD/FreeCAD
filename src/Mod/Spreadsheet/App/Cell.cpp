@@ -902,7 +902,7 @@ App::Color Cell::decodeColor(const std::string & color, const App::Color & defau
 }
 
 Cell::EditMode Cell::getEditMode() const {
-    return editMode;
+    return hasException()?EditNormal:editMode;
 }
 
 void Cell::setEditData(const char *data) {
@@ -986,7 +986,7 @@ void Cell::setEditData(const char *data) {
 
 std::vector<std::string> Cell::getEditData(bool silent) const {
     std::vector<std::string> res;
-    switch(editMode) {
+    switch(getEditMode()) {
     case EditButton: {
         if(!owner || !owner->getContainer()) {
             if(silent) break;
