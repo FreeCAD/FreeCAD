@@ -197,10 +197,8 @@ App::GroupExtension *LinkBaseExtension::linkedPlainGroup() const {
     return linked->getExtensionByType<GroupExtension>(true,false);
 }
 
-App::PropertyLinkList *LinkBaseExtension::_getElementListProperty(GroupExtension **_group) const {
+App::PropertyLinkList *LinkBaseExtension::_getElementListProperty() const {
     auto group = linkedPlainGroup();
-    if(_group) 
-        *_group = group;
     if(group)
         return &group->Group;
     return const_cast<PropertyLinkList*>(getElementListProperty());
@@ -675,10 +673,81 @@ void LinkBaseExtension::parseSubName() const {
     mySubElement = element;
 }
 
+static inline void registerParent(App::DocumentObject *parent, App::DocumentObject *child) {
+    if(!parent || !child)
+        return;
+    for(auto o : child->_NotifyList.getValues()) {
+        if(o == parent)
+            return;
+    }
+    auto list = child->_NotifyList.getValues();
+    list.push_back(parent);
+    child->_NotifyList.setValues(list);
+}
+
+bool LinkBaseExtension::extensionOnNotification(App::DocumentObject *obj, const App::Property *prop) {
+    auto group = obj->getExtensionByType<GroupExtension>(true,false);
+    if(!group)
+        return false;
+    if(prop != &group->Group)
+        return true;
+    return updateGroup(obj);
+}
+
+bool LinkBaseExtension::updateGroup(App::DocumentObject *obj) {
+    auto group = linkedPlainGroup();
+    std::vector<App::DocumentObject*> children;
+    if(group) {
+       if(obj && group->getExtendedObject()!=obj)
+           return false;
+        children = group->getAllChildren();
+        if(!obj)
+            registerParent(getExtendedObject(),group->getExtendedObject());
+        return true;
+    }
+
+    bool matched = !obj;
+    std::vector<GroupExtension*> groups;
+    for(auto o : getElementListProperty()->getValues()) {
+        if(!o || !o->getNameInDocument())
+            continue;
+        auto ext = o->getExtensionByType<GroupExtension>(true,false);
+        if(ext) {
+            if(o == obj)
+                matched = true;
+            groups.push_back(ext);
+        }
+    }
+    if(groups.size()) {
+        children = getElementListValue();
+        std::set<DocumentObject*> childSet(children.begin(),children.end());
+        auto owner = getExtendedObject();
+        for(auto ext : groups) {
+            if(!obj)
+                registerParent(owner,ext->getExtendedObject());
+            std::size_t count = children.size();
+            ext->getAllChildren(children,childSet);
+            for(;count<children.size();++count) {
+                auto child = children[count];
+                auto g = child->getExtensionByType<GroupExtension>(true,false);
+                if(!g)
+                    continue;
+                if(!obj)
+                    registerParent(owner,child);
+                else if(child == obj)
+                    matched = true;
+            }
+        }
+    }
+    if(children != _ChildCache.getValues())
+        _ChildCache.setValue(children);
+    if(!matched)
+        return false;
+    return true;
+}
+
 void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop) {
     if(!prop) return;
-
-    GroupExtension *group = 0;
 
     if(prop == getLinkPlacementProperty() || prop == getPlacementProperty()) {
         auto src = getLinkPlacementProperty();
@@ -853,33 +922,12 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     myHiddenElements.insert(elements[i]);
             }
         }
-    }else if(prop == _getElementListProperty(&group) || 
-            (prop == &_LinkRecomputed && (group = linkedPlainGroup()))) {
+    }else if(prop == getElementListProperty() || prop == &_ChildCache) {
 
-        if(getShowElementProperty())
-            getShowElementProperty()->setStatus(Property::Hidden, !!group);
-        if(getElementCountProperty())
-            getElementCountProperty()->setStatus(Property::Hidden, !!group);
-
-        if(group) 
-            _ChildCache.setValues(group->getAllChildren());
-        else {
-            std::vector<GroupExtension*> groups;
-            for(auto o : getElementListProperty()->getValues()) {
-                if(!o || !o->getNameInDocument())
-                    continue;
-                auto ext = o->getExtensionByType<GroupExtension>(true,false);
-                if(ext)
-                    groups.push_back(ext);
-            }
-            if(groups.size()) {
-                auto children = getElementListValue();
-                std::set<DocumentObject*> childSet(children.begin(),children.end());
-                for(auto ext : groups)
-                    ext->getAllChildren(children,childSet);
-                _ChildCache.setValues(children);
-            }else if(_ChildCache.getSize())
-                _ChildCache.setValue();
+        if(prop == getElementListProperty()) {
+            _ChildCache.setStatus(Property::User3,true);
+            updateGroup();
+            _ChildCache.setStatus(Property::User3,false);
         }
 
         const auto &elements = _getElementListValue();
@@ -918,9 +966,13 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
         }
     }else if(prop == getLinkedObjectProperty()) {
         auto group = linkedPlainGroup();
+        if(getShowElementProperty())
+            getShowElementProperty()->setStatus(Property::Hidden, !!group);
+        if(getElementCountProperty())
+            getElementCountProperty()->setStatus(Property::Hidden, !!group);
         if(group)
             _ChildCache.setValues(group->getAllChildren());
-        else
+        else if(_ChildCache.getSize())
             _ChildCache.setValue();
         parseSubName();
         syncElementList();
@@ -1006,7 +1058,7 @@ void LinkBaseExtension::onExtendedDocumentRestored() {
     if(parent) {
         update(parent,getVisibilityListProperty());
         update(parent,getLinkedObjectProperty());
-        update(parent,_getElementListProperty());
+        update(parent,getElementListProperty());
     }
 }
 
@@ -1167,7 +1219,8 @@ const char *LinkBaseExtension::flattenSubname(const char *subname) const {
             DocumentObject *obj = 0;
             s.clear();
             s.append(sub,dot+1);
-            if(!extensionGetSubObject(obj,s.c_str()))
+            extensionGetSubObject(obj,s.c_str());
+            if(!obj)
                 break;
             if(!obj->hasExtension(GroupExtension::getExtensionClassTypeId(),false))
                 return sub;

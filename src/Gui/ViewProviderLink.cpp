@@ -77,17 +77,22 @@ using namespace Base;
 
 ////////////////////////////////////////////////////////////////////////////
 
+static inline bool appendPathSafe(SoPath *path, SoNode *node) {
+    if(path->getLength()) {
+        SoNode * tail = path->getTail();
+        const SoChildList * children = tail->getChildren();
+        if(!children || children->find((void *)node)<0)
+            return false;
+    }
+    path->append(node);
+    return true;
+}
+
 #ifdef FC_DEBUG
-#define appendPath(__path,_node)  \
+#define appendPath(_path,_node)  \
 do{\
-    auto _path = __path;\
-    if(_path->getLength()) {\
-        SoNode * tail = _path->getTail();\
-        const SoChildList * children = tail->getChildren();\
-        if(!children || children->find((void *)_node)<0)\
-            LINK_THROW(Base::RuntimeError,"LinkView: coin path error");\
-    }\
-    _path->append(_node);\
+    if(!appendPathSafe(_path,_node))\
+        FC_ERR("LinkView: coin path error");\
 }while(0)
 #else
 #define appendPath(_path, _node) (_path)->append(_node)
@@ -467,8 +472,10 @@ public:
         }
 
         if(pcSnapshots[type]->findChild(pcSwitches[type]) < 0) {
-            if(path) 
-                appendPath(path,pcSnapshots[type]);
+            if(path) {
+                if(!appendPathSafe(path,pcSnapshots[type]))
+                    return false;
+            }
             // this is possible in case of editing, where the switch node
             // of the linked view object is temparaly removed from its root
             return true;
@@ -476,7 +483,8 @@ public:
         int len = 0;
         if(path) {
             len = path->getLength();
-            appendPath(path,pcSnapshots[type]);
+            if(!appendPathSafe(path,pcSnapshots[type]))
+                return false;
             appendPath(path,pcSwitches[type]);
         }
         if(*subname == 0) return true;
@@ -1691,14 +1699,12 @@ void ViewProviderLink::updateData(const App::Property *prop) {
 
 void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App::Property *prop) {
     if(!prop) return;
-    if(prop == &ext->_LinkRecomputed) {
-        if(ext->linkedPlainGroup())
-            updateElementList(ext);
-        else {
-            if(linkView->hasSubs())
-                linkView->updateLink();
-            applyColors();
-        }
+    if(prop == &ext->_ChildCache) {
+        updateElementList(ext);
+    } else if(prop == &ext->_LinkRecomputed) {
+        if(linkView->hasSubs())
+            linkView->updateLink();
+        applyColors();
         checkIcon(ext);
     }else if(prop==ext->getColoredElementsProperty()) {
         if(!prop->testStatus(App::Property::User3))

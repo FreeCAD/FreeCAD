@@ -208,7 +208,7 @@ public:
     // defines get##Name() and get##Name##Property() accessor
     BOOST_PP_SEQ_FOR_EACH(LINK_PROP_GET,_,LINK_PARAMS)
 
-    PropertyLinkList *_getElementListProperty(GroupExtension **group=0) const;
+    PropertyLinkList *_getElementListProperty() const;
     const std::vector<App::DocumentObject*> &_getElementListValue() const;
 
     PropertyBool *_getShowElementProperty() const;
@@ -251,6 +251,7 @@ public:
     virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
     virtual short extensionMustExecute(void) override;
     virtual void extensionOnChanged(const Property* p) override;
+    virtual bool extensionOnNotification(App::DocumentObject *obj, const App::Property *prop) override;
     virtual void onExtendedUnsetupObject () override;
     virtual void onExtendedDocumentRestored() override;
 
@@ -287,6 +288,7 @@ protected:
     void detachElement(App::DocumentObject *obj);
     void checkGeoElementMap(const App::DocumentObject *obj, 
         const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const;
+    bool updateGroup(App::DocumentObject *obj = 0);
 
 protected:
     std::vector<Property *> props;
