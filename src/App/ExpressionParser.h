@@ -73,20 +73,34 @@ struct AppExport Expression::Component {
 ////////////////////////////////////////////////////////////////////////////////////
 
 struct AppExport VarInfo {
-    Py::Object &lhs;
-    Py::Object rhs;
     Py::Object prefix;
+    Py::Object *lhs;
+    Py::Object rhs;
     Expression::ComponentPtr component;
 
+    VarInfo()
+        :lhs(&prefix)
+    {}
+
     VarInfo(Py::Object &v)
-        :lhs(v),rhs(v)
+        :lhs(&v),rhs(v)
     {}
 
     VarInfo(VarInfo &&other)
-        :lhs(other.lhs),rhs(other.rhs),prefix(other.prefix)
+        :prefix(other.prefix)
+        ,lhs(other.lhs==&other.prefix?other.lhs:&prefix)
+        ,rhs(other.rhs)
         ,component(std::move(other.component))
     {}
 
+    VarInfo &operator=(VarInfo &&other) {
+        prefix = other.prefix;
+        if(other.lhs == &other.prefix)
+            lhs = &prefix;
+        rhs = other.rhs;
+        component = std::move(other.component);
+        return *this;
+    }
 };
 
 /**
@@ -428,6 +442,8 @@ public:
             int ftype=0, std::string &&name = std::string(), bool checkArgs=true);
 
     Py::Object evaluate(PyObject *tuple, PyObject *kwds);
+
+    VarInfo getVarInfo(bool mustExist) const;
 
     virtual bool isTouched() const;
 

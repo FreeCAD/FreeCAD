@@ -66,11 +66,11 @@ namespace App {
      %type <NamedArgument> arg arg_def
      %type <NamedArgumentList> args arg_defs
      %type <ExpressionList> exp_list
-     %type <VarList> target_list
+     %type <VarList> target_list target_list2
      %type <ExpressionPtr> primary_exp unary_exp multiply_exp additive_exp relational_exp assignment_exp
      %type <ExpressionPtr> equality_exp or_exp and_exp power_exp assignment_exp2 assignment_exp1
      %type <ExpressionPtr> cond_exp nocond_exp lambda_exp lambda_nocond_exp
-     %type <ExpressionPtr> input exp unit_exp indexable num range callable target
+     %type <ExpressionPtr> input exp unit_exp indexable indexable2 num range callable target target2
      %type <ExpressionPtr> comp_for list tuple dict dict1 idict idict1 string pstring
      %type <ExpressionPtr> stmt statement if_stmt small_stmt simple_stmt while_stmt try_stmt
      %type <ExpressionPtr> function_stmt for_stmt compound_stmt suite import_stmt1 import_stmt2 import_stmt3
@@ -149,7 +149,11 @@ callable
     | indexable '(' args ')'                { $$ = CallableExpression::create(ctx.obj, std::move($1), std::move($3.first), std::move($3.second)); }
     | callable '(' ')'                      { $$ = CallableExpression::create(ctx.obj, std::move($1)); }
     | callable '(' args ')'                 { $$ = CallableExpression::create(ctx.obj, std::move($1), std::move($3.first), std::move($3.second)); }
-    | callable indexer                      { $1->addComponent(std::move($2)); $$ = std::move($1); }
+    | indexable2                            { $$ = std::move($1); }
+    ;
+
+indexable2
+    : callable indexer                      { $1->addComponent(std::move($2)); $$ = std::move($1); }
     | callable '.' IDENTIFIER               { $1->addComponent(Expression::createComponent($3)); $$ = std::move($1); }
     ;
 
@@ -255,8 +259,26 @@ target_list
                                             }
     ;
 
+target2 
+    : target                                { $$ = std::move($1); }
+    | indexable2                            { $$ = std::move($1); }
+    ;
+
+target_list2
+    : target2                               { $$.second=-1; $$.first.push_back(std::move($1)); }
+    | '*' target2                           { $$.second=0; $$.first.push_back(std::move($2)); }
+    | target_list2 ',' target2              { $1.first.push_back(std::move($3)); $$ = std::move($1); }
+    | target_list2 ',' '*' target2          { 
+                                               if($1.second>=0) 
+                                                   PARSER_THROW("Multiple catch all target"); 
+                                               $1.second = (int)$1.first.size(); 
+                                               $1.first.push_back(std::move($4)); 
+                                               $$ = std::move($1); 
+                                            }
+    ;
+
 assignment_exp1
-    : target_list '=' exp_list              { $$ = AssignmentExpression::create(ctx.obj,$1.second,std::move($1.first),std::move($3)); }
+    : target_list2 '=' exp_list             { $$ = AssignmentExpression::create(ctx.obj,$1.second,std::move($1.first),std::move($3)); }
     ;
 
 exp_list 
