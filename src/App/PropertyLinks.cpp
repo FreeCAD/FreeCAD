@@ -601,6 +601,8 @@ static inline void adjustLinkError(bool relative,
 }
 
 bool PropertyLink::adjustLink(const std::set<App::DocumentObject*> &inList) {
+    if (_pcScope==LinkScope::Hidden)
+        return false;
     if(_pcLink && _pcLink->getNameInDocument() && inList.count(_pcLink))
         adjustLinkError(false,this,_pcLink);
     return false;
@@ -880,6 +882,8 @@ void PropertyLinkList::breakLink(App::DocumentObject *obj, bool clear) {
 }
 
 bool PropertyLinkList::adjustLink(const std::set<App::DocumentObject*> &inList) {
+    if (_pcScope==LinkScope::Hidden)
+        return false;
     for(auto o : _lValueList) {
         if(o && o->getNameInDocument() && inList.count(o))
             adjustLinkError(false,this,o);
@@ -1489,6 +1493,8 @@ static App::DocumentObject *adjustLinkSubs(App::PropertyLinkBase *prop,
 }
 
 bool PropertyLinkSub::adjustLink(const std::set<App::DocumentObject*> &inList) {
+    if (_pcScope==LinkScope::Hidden)
+        return false;
     if(!_pcLinkSub || !_pcLinkSub->getNameInDocument() || !inList.count(_pcLinkSub))
         return false;
     auto subs = _cSubList;
@@ -2258,6 +2264,8 @@ void PropertyLinkSubList::breakLink(App::DocumentObject *obj, bool clear) {
 }
 
 bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*> &inList) {
+    if (_pcScope==LinkScope::Hidden)
+        return false;
     auto subs = _lSubList;
     auto links = _lValueList;
     int idx = -1;
@@ -3312,6 +3320,8 @@ void PropertyXLink::getLinks(std::vector<App::DocumentObject *> &objs,
 }
 
 bool PropertyXLink::adjustLink(const std::set<App::DocumentObject*> &inList) {
+    if (_pcScope==LinkScope::Hidden)
+        return false;
     if(!_pcLink || !_pcLink->getNameInDocument() || !inList.count(_pcLink))
         return false;
     auto subs = _SubList;
@@ -3923,6 +3933,8 @@ void PropertyXLinkSubList::breakLink(App::DocumentObject *obj, bool clear) {
 }
 
 bool PropertyXLinkSubList::adjustLink(const std::set<App::DocumentObject*> &inList) {
+    if (_pcScope==LinkScope::Hidden)
+        return false;
     std::map<App::DocumentObject*,std::vector<std::string> > values;
     bool touched = false;
     int count=0;
