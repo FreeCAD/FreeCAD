@@ -148,6 +148,8 @@ inline void Assert(int expr, char *msg)         // C++ assert
 #define Py_Return return Py_INCREF(Py_None), Py_None
 /// returns an error
 #define Py_Error(E, M)   {PyErr_SetString(E, M); return NULL;}
+/// returns an error
+#define Py_ErrorObj(E, O)   {PyErr_SetObject(E, O); return NULL;}
 /// checks on a condition and returns an error on failure
 #define Py_Try(F) {if (!(F)) return NULL;}
 /// assert which returns with an error on failure
@@ -442,18 +444,20 @@ BaseExport extern PyObject* BaseExceptionFreeCADError;
  */
 #define PY_TRY	try 
 
-#ifndef DONT_CATCH_CXX_EXCEPTIONS 
-/// see docu of PY_TRY 
-#  define PY_CATCH catch(Base::Exception &e)                        \
+#define _PY_CATCH                                                   \
+    catch(Base::Exception &e)                                       \
     {                                                               \
-        auto pye = e.getPyExceptionType();                          \
-        if(pye) Py_Error(pye,e.what());                             \
-        std::string str;                                            \
-        str += "FreeCAD exception thrown (";                        \
-        str += e.what();                                            \
-        str += ")";                                                 \
         e.ReportException();                                        \
-        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
+        auto pye = e.getPyExceptionType();                          \
+        if(!pye) {                                                  \
+            pye = Base::BaseExceptionFreeCADError;                  \
+            std::string str;                                        \
+            str += "FreeCAD exception thrown (";                    \
+            str += e.what();                                        \
+            str += ")";                                             \
+            e.setMessage(str);                                      \
+        }                                                           \
+        Py_ErrorObj(pye,e.getPyObject());                           \
     }                                                               \
     catch(std::exception &e)                                        \
     {                                                               \
@@ -472,6 +476,11 @@ BaseExport extern PyObject* BaseExceptionFreeCADError;
     {                                                               \
         Py_Error(Base::BaseExceptionFreeCADError,e);                \
     }                                                               \
+
+#ifndef DONT_CATCH_CXX_EXCEPTIONS 
+/// see docu of PY_TRY 
+#  define PY_CATCH                                                  \
+    _PY_CATCH                                                       \
     catch(...)                                                      \
     {                                                               \
         Py_Error(Base::BaseExceptionFreeCADError,"Unknown C++ exception"); \
@@ -479,35 +488,7 @@ BaseExport extern PyObject* BaseExceptionFreeCADError;
 
 #else
 /// see docu of PY_TRY 
-#  define PY_CATCH catch(Base::Exception &e)                        \
-    {                                                               \
-        auto pye = e.getPyExceptionType();                          \
-        if(pye) Py_Error(pye,e.what());                             \
-        std::string str;                                            \
-        str += "FreeCAD exception thrown (";                        \
-        str += e.what();                                            \
-        str += ")";                                                 \
-        e.ReportException();                                        \
-        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
-    }                                                               \
-    catch(std::exception &e)                                        \
-    {                                                               \
-        std::string str;                                            \
-        str += "STL exception thrown (";                            \
-        str += e.what();                                            \
-        str += ")";                                                 \
-        Base::Console().Error(str.c_str());                         \
-        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
-    }                                                               \
-    catch(const Py::Exception&)                                     \
-    {                                                               \
-        return NULL;                                                \
-    }                                                               \
-    catch(const char *e)                                            \
-    {                                                               \
-        Py_Error(Base::BaseExceptionFreeCADError,e);                \
-    }
-
+#  define PY_CATCH _PY_CATCH
 #endif  // DONT_CATCH_CXX_EXCEPTIONS
 
 /** Python helper class 

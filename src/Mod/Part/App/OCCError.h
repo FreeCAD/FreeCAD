@@ -70,7 +70,6 @@ PartExport extern PyObject* PartExceptionOCCDimensionError;
 
 #define PY_TRY	try 
 
-#ifndef DONT_CATCH_CXX_EXCEPTIONS 
 /// see docu of PY_TRY 
 #  define PY_CATCH_OCC catch (Standard_Failure &e)                  \
     {                                                               \
@@ -83,78 +82,7 @@ PartExport extern PyObject* PartExceptionOCCDimensionError;
         Base::Console().Error(str.c_str());                         \
         Py_Error(Part::PartExceptionOCCError,str.c_str());          \
     }                                                               \
-    catch(Base::Exception &e)                                       \
-    {                                                               \
-        std::string str;                                            \
-        str += "FreeCAD exception thrown (";                        \
-        str += e.what();                                            \
-        str += ")";                                                 \
-        e.ReportException();                                        \
-        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
-    }                                                               \
-    catch(std::exception &e)                                        \
-    {                                                               \
-        std::string str;                                            \
-        str += "STL exception thrown (";                            \
-        str += e.what();                                            \
-        str += ")";                                                 \
-        Base::Console().Error(str.c_str());                         \
-        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
-    }                                                               \
-    catch(const Py::Exception&)                                     \
-    {                                                               \
-        return NULL;                                                \
-    }                                                               \
-    catch(const char *e)                                            \
-    {                                                               \
-        Py_Error(Base::BaseExceptionFreeCADError,e);                \
-    }                                                               \
-    catch(...)                                                      \
-    {                                                               \
-        Py_Error(Base::BaseExceptionFreeCADError,"Unknown C++ exception"); \
-    }
-
-#else
-/// see docu of PY_TRY 
-#  define PY_CATCH_OCC catch (Standard_Failure &e)                  \
-    {                                                               \
-        std::string str;                                            \
-        Standard_CString msg = e.GetMessageString();                \
-        str += typeid(e).name();                                    \
-        str += " ";                                                 \
-        if (msg) {str += msg;}                                      \
-        else     {str += "No OCCT Exception Message";}              \
-        Base::Console().Error(str.c_str());                         \
-        Py_Error(Part::PartExceptionOCCError,str.c_str());          \
-    }                                                               \
-    catch(Base::Exception &e)                                       \
-    {                                                               \
-        std::string str;                                            \
-        str += "FreeCAD exception thrown (";                        \
-        str += e.what();                                            \
-        str += ")";                                                 \
-        e.ReportException();                                        \
-        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
-    }                                                               \
-    catch(std::exception &e)                                        \
-    {                                                               \
-        std::string str;                                            \
-        str += "STL exception thrown (";                            \
-        str += e.what();                                            \
-        str += ")";                                                 \
-        Base::Console().Error(str.c_str());                         \
-        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
-    }                                                               \
-    catch(const Py::Exception&)                                     \
-    {                                                               \
-        return NULL;                                                \
-    }                                                               \
-    catch(const char *e)                                            \
-    {                                                               \
-        Py_Error(Base::BaseExceptionFreeCADError,e);                \
-    }
-
-#endif  // DONT_CATCH_CXX_EXCEPTIONS
+    PY_CATCH
 } //namespace Part
 #endif  // _OCCError_h_
 

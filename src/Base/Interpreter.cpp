@@ -63,6 +63,9 @@ PyException::PyException(const Py::Object &obj) {
 PyException::PyException(void)
 {
     PP_Fetch_Error_Text();    /* fetch (and clear) exception */
+
+    setPyObject(PP_PyDict_Object);
+
     std::string prefix = PP_last_error_type; /* exception name text */
 //  prefix += ": ";
     std::string error = PP_last_error_info;            /* exception data text */
@@ -120,6 +123,7 @@ void PyException::ThrowException(void)
         if (!Base::ExceptionFactory::Instance().CanProduce(exceptionname.c_str()))
             throw myexcp;
 
+        edict.setItem("breported", Py::True());
         Base::ExceptionFactory::Instance().raiseException(edict.ptr());
     }
     else
@@ -128,8 +132,11 @@ void PyException::ThrowException(void)
 
 void PyException::ReportException (void) const
 {
-    Base::Console().Error("%s%s: %s\n",
-        _stackTrace.c_str(), _errorType.c_str(), what());
+    if (!_isReported) {
+        _isReported = true;
+        Base::Console().Error("%s%s: %s\n",
+            _stackTrace.c_str(), _errorType.c_str(), what());
+    }
 }
 
 // ---------------------------------------------------------
