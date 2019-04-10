@@ -166,7 +166,14 @@ void PropertySheet::setDirty(CellAddress address)
 
 void PropertySheet::setDirty()
 {
-    dirty = getUsedCells();
+    AtomicPropertyChange signaller(*this);
+    for(auto &address : getUsedCells()) {
+        auto cell = cellAt(address);
+        std::string content;
+        if(cell && cell->getStringContent(content,false)) {
+            cell->setContent(content.c_str());
+        }
+    }
 }
 
 App::ExpressionPtr PropertySheet::eval(const App::Expression *expr) const {
