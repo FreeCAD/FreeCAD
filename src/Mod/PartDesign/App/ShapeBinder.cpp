@@ -421,7 +421,7 @@ void SubShapeBinder::update() {
     Shape.setValue(result);
 }
 
-bool SubShapeBinder::onParentChanged(App::DocumentObject *parent, const App::Property *) {
+bool SubShapeBinder::onNotification(App::DocumentObject *parent, const App::Property *) {
     if(Context.getValue()!=parent)
         return false;
     if(!isRestoring() 

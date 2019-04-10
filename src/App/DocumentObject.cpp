@@ -666,7 +666,7 @@ void DocumentObject::onChanged(const Property* prop)
 
     auto deps = _NotifyList.getValue();
     for(auto it=deps.begin();it!=deps.end();) {
-        if((*it)->onParentChanged(this,prop))
+        if((*it)->onNotification(this,prop))
             ++it;
         else
             deps.erase(it);
@@ -675,11 +675,11 @@ void DocumentObject::onChanged(const Property* prop)
         _NotifyList.setValues(deps);
 }
 
-bool DocumentObject::onParentChanged(DocumentObject *parent, const Property* prop)
+bool DocumentObject::onNotification(DocumentObject *obj, const Property* prop)
 {
     auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for(auto ext : exts) {
-        if(!ext->extensionOnParentChanged(parent,prop))
+        if(!ext->extensionOnNotification(obj,prop))
             return false;
     }
     return true;

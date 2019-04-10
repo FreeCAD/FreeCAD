@@ -95,7 +95,9 @@ public:
     PropertyString Label2;
     PropertyExpressionEngine ExpressionEngine;
 
-    PropertyLinkList _NotifyList; // To allow reverse dependency recomputation
+    /// To allow reverse dependency recomputation
+    /// @sa onNotification()
+    PropertyLinkList _NotifyList;
 
     /// Allow control visibility status in App name space
     PropertyBool Visibility;
@@ -563,10 +565,10 @@ protected:
     virtual void onBeforeChange(const Property* prop);
     /// get called by the container when a property was changed
     virtual void onChanged(const Property* prop);
-    /** Called when the parent object is changed
+    /** Called when observing object is changed
      *
-     * @param parent: the parent object
-     * @param prop: the changed property of the parent
+     * @param obj: the observing object
+     * @param prop: the changed property of the object
      *
      * The normal dependency recomputation logic makes sure that an object get
      * recomputed whenever any of its depending objects are changed. There are
@@ -574,11 +576,16 @@ protected:
      * parent) object is changed. This notification list can be registerd by
      * adding a link to the parent object's _NotifyList. Once the parent object
      * is changed it will notify each object inside _NotifyList through this
-     * onParentChanged() function.
+     * onNotification() function. The notification registration has no
+     * restriction on parent child relationship between the observing and
+     * observed objects. They can be totally unrelated.
+     *
+     * Note that the _NotifyList is transient, meaning that it is not saved
+     * to file. 
      *
      * @return Return false to cause the link to be removed from _NotifyList.
      */
-    virtual bool onParentChanged(App::DocumentObject *parent, const Property *prop);
+    virtual bool onNotification(App::DocumentObject *obj, const Property *prop);
     /// get called after a document has been fully restored
     virtual void onDocumentRestored();
     /// get called after setting the document

@@ -50,7 +50,7 @@ public:
     void onBeforeChange(const Property* prop);
     bool onBeforeChangeLabel(std::string &newLabel);
     void onChanged(const Property* prop);
-    bool onParentChanged(App::DocumentObject *parent, const Property* prop);
+    bool onNotification(App::DocumentObject *parent, const Property* prop);
     void onDocumentRestored();
     std::string getViewProviderName();
     PyObject *getPyObject(void);
@@ -89,7 +89,7 @@ private:
     FC_PY_ELEMENT(onBeforeChange)\
     FC_PY_ELEMENT(onBeforeChangeLabel)\
     FC_PY_ELEMENT(onChanged)\
-    FC_PY_ELEMENT(onParentChanged)\
+    FC_PY_ELEMENT(onNotification)\
     FC_PY_ELEMENT(onDocumentRestored)\
     FC_PY_ELEMENT(getViewProviderName)\
     FC_PY_ELEMENT(getSubObject)\
@@ -349,9 +349,9 @@ protected:
         imp->onChanged(prop);
         FeatureT::onChanged(prop);
     }
-    virtual bool onParentChanged(App::DocumentObject *parent, const Property* prop) {
-        return imp->onParentChanged(parent,prop) 
-            && FeatureT::onParentChanged(parent,prop);
+    virtual bool onNotification(App::DocumentObject *obj, const Property* prop) {
+        return imp->onNotification(obj,prop) 
+            && FeatureT::onNotification(obj,prop);
     }
     virtual void onDocumentRestored() {
         imp->onDocumentRestored();
