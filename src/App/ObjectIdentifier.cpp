@@ -621,9 +621,10 @@ Py::Object ObjectIdentifier::Component::get(const Py::Object &pyobj) const {
 }
 
 void ObjectIdentifier::Component::set(Py::Object &pyobj, const Py::Object &value) const {
-    if(isSimple()) 
-        pyobj.setAttr(getName(),value);
-    else if(isArray()) {
+    if(isSimple()) {
+        if(PyObject_SetAttrString(*pyobj, getName().c_str(), *value ) == -1)
+            Base::PyException::ThrowException();
+    } else if(isArray()) {
         if(pyobj.isMapping())
             Py::Mapping(pyobj).setItem(Py::Int(begin),value);
         else

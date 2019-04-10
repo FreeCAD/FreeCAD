@@ -650,16 +650,32 @@ struct EvalFrame {
     const char *funcName;
     const App::DocumentObject *funcOwner;
 
-    bool warned = false;
-    bool pushed = false;
-    bool pythonMode = false;
+    std::bitset<32> flags;
+#define EVAL_FRAME_FLAGS \
+    EVAL_FRAME_FLAG(Warn1) \
+    EVAL_FRAME_FLAG(Warn2) \
+    EVAL_FRAME_FLAG(WarnNone) \
+    EVAL_FRAME_FLAG(PythonMode) \
+    EVAL_FRAME_FLAG(Pushed) \
+
+    enum Flags{
+#define EVAL_FRAME_FLAG(_name) F_##_name,
+        EVAL_FRAME_FLAGS
+    };
+
+#undef EVAL_FRAME_FLAG
+#define EVAL_FRAME_FLAG(_name) \
+    bool _name() const {return flags.test(F_##_name);} \
+    void set##_name(bool v=true) {flags.set(F_##_name,v);}
+
+    EVAL_FRAME_FLAGS;
 
     EvalFrame(const char *name=0, const App::DocumentObject *owner=0)
         :funcName(name),funcOwner(owner)
     {}
 
     ~EvalFrame() {
-        if(pushed) {
+        if(Pushed()) {
             assert(_EvalStack.size() && _EvalStack.back()==this);
             _EvalStack.pop_back();
             if(funcName)
@@ -676,8 +692,8 @@ struct EvalFrame {
     }
 
     void push() {
-        assert(!pushed);
-        pushed = true;
+        assert(!Pushed());
+        setPushed();
         _EvalStack.push_back(this);
         if(funcName) {
             lastCallFrame = _EvalCallFrame;
@@ -754,7 +770,7 @@ struct EvalFrame {
                     break;
                 }
             }
-            if(_EvalStack.front()->pythonMode) {
+            if(_EvalStack.front()->PythonMode()) {
                 PyObject *builtin = getBuiltin(name);
                 if(builtin) {
                     // TODO: is it a good idea to bring built-in objects to
@@ -803,9 +819,49 @@ struct EvalFrame {
 
     void setVar(const Expression *owner, VarInfo &info) {
         if(!info.component)
-            info.lhs = info.rhs;
+            *info.lhs = info.rhs;
         else 
             info.component->set(owner,info.prefix,info.rhs);
+    }
+
+    static void warn(int code, PyObject *pyobj=0) {
+        if(!_EvalCallFrame)
+            return;
+        assert(code>0 && code<=F_WarnNone);
+        if(_EvalCallFrame->WarnNone())
+            return;
+        --code;
+        if(_EvalCallFrame->flags.test(code))
+            return;
+        _EvalCallFrame->flags.set(code);
+        switch(code) {
+        case F_Warn1:
+            if(_EvalCallFrame->funcOwner)
+                FC_WARN("Object reference in function has no dependency tracking"
+                        << ": in " << _EvalCallFrame->funcOwner->getFullName() 
+                        << '.' << _EvalCallFrame->funcName);
+            break;
+        case F_Warn2:
+            if(_EvalCallFrame->funcOwner 
+                    && pyobj && PyObject_TypeCheck(pyobj,&DocumentObjectPy::Type))
+            {
+                FC_WARN("Object property assignment may break dependency tracking"
+                        << ": in " << _EvalCallFrame->funcOwner->getFullName() 
+                        << '.' << _EvalCallFrame->funcName);
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+    static void noWarn(int code) {
+        if(!_EvalCallFrame)
+            return;
+        if(code==0)
+            _EvalCallFrame->setWarnNone();
+        else if(code>0 && code<=F_WarnNone)
+            _EvalCallFrame->flags.set(code-1);
     }
 };
 
@@ -1050,7 +1106,7 @@ ExpressionPtr Expression::eval(int options) const {
     if(options) {
         EvalFrame frame;
         if(options & OptionPythonMode)
-            frame.pythonMode = true;
+            frame.setPythonMode();
         frame.push();
         return eval();
     }
@@ -2721,7 +2777,7 @@ private:
 
 void AssignmentExpression::assign(const Expression *owner, const Expression *left, PyObject *right) {
     auto &frame = *_EvalStack.back();
-    auto list = dynamic_cast<const ListExpression*>(left);
+    auto list = freecad_dynamic_cast<ListExpression>(left);
     if(list) {
         int catchAll = -1;
         int i=-1;
@@ -2734,13 +2790,18 @@ void AssignmentExpression::assign(const Expression *owner, const Expression *lef
         }
         auto r = PyObjectExpression::create(owner->getOwner(),right);
         AssignmentExpression::apply(owner,catchAll,list->items,r.get());
-    }else{
-        auto e = dynamic_cast<const VariableExpression*>(left);
-        if(!e) _EXPR_THROW("Invalid left expression in assignment",owner);
+    }else if(left->isDerivedFrom(VariableExpression::getClassTypeId())) {
+        auto e = static_cast<const VariableExpression*>(left);
         VarInfo info(e->push(owner,false));
         info.rhs = right;
         frame.setVar(owner,info);
-    }
+    }else if(left->isDerivedFrom(CallableExpression::getClassTypeId())) {
+        auto e = static_cast<const CallableExpression*>(left);
+        VarInfo info = e->getVarInfo(false);
+        info.rhs = right;
+        frame.setVar(owner,info);
+    }else
+        _EXPR_THROW("Invalid left expression in assignment",owner);
 }
 
 App::any AssignmentExpression::apply(const Expression *owner, int _catchAll, 
@@ -2750,9 +2811,15 @@ App::any AssignmentExpression::apply(const Expression *owner, int _catchAll,
 
     auto &frame = *_EvalStack.back();
     if(left.size()==1) {
-        auto e = dynamic_cast<VariableExpression*>(left[0].get());
-        if(!e) _EXPR_THROW("Invalid assignement",owner);
-        VarInfo info(e->push(owner,!!op));
+        VarInfo info;
+        if(left[0]->isDerivedFrom(VariableExpression::getClassTypeId())) {
+            auto e = static_cast<VariableExpression*>(left[0].get());
+            info = e->push(owner,!!op);
+        }else if(left[0]->isDerivedFrom(CallableExpression::getClassTypeId())) {
+            auto e = static_cast<CallableExpression*>(left[0].get());
+            info = e->getVarInfo(!!op);
+        }else
+            _EXPR_THROW("Invalid assignement",owner);
         if(op) {
             auto res = OperatorExpression::calc(owner,op, 
                     pyObjectToAny(info.rhs), right->getValueAsAny(),0,right,true);
@@ -2789,7 +2856,7 @@ App::any AssignmentExpression::apply(const Expression *owner, int _catchAll,
         Py::List list(seq.size()-left.size()+1);
         for(size_t i=0;i<list.size();++i) 
             list.setItem(i,seq[j++]);
-        auto e = dynamic_cast<VariableExpression*>(left[catchAll].get());
+        auto e = freecad_dynamic_cast<VariableExpression>(left[catchAll].get());
         if(!e) _EXPR_THROW("Invalid catch all in assignment",owner);
         VarInfo info(e->push(owner,false));
         info.rhs = list;
@@ -2864,13 +2931,8 @@ App::any VariableExpression::_getValueAsAny() const {
             return pyObjectToAny(info.rhs);
         }
     }
-    if(_EvalCallFrame && !_EvalCallFrame->warned) {
-        _EvalCallFrame->warned = true;
-        const char *msg = "Object reference in function has no dependency tracking";
-        if(_EvalCallFrame->funcOwner)
-            FC_WARN(msg << ": in " << _EvalCallFrame->funcOwner->getFullName() 
-                    << '.' << _EvalCallFrame->funcName);
-    }
+    if(!var.isLocalProperty())
+        EvalFrame::warn(1);
     return var.getValue(true);
 }
 
@@ -2884,16 +2946,16 @@ void VariableExpression::addComponent(ComponentPtr &&c) {
         }
         long l1=0,l2=0,l3=1;
         if(c->e3) {
-            auto n3 = dynamic_cast<NumberExpression*>(c->e3.get());
+            auto n3 = freecad_dynamic_cast<NumberExpression>(c->e3.get());
             if(!n3 || !essentiallyEqual(n3->getValue(),l3))
                 break;
         }
         if(c->e1) {
-            auto n1 = dynamic_cast<NumberExpression*>(c->e1.get());
+            auto n1 = freecad_dynamic_cast<NumberExpression>(c->e1.get());
             if(!n1) {
                 if(c->e2 || c->e3)
                     break;
-                auto s = dynamic_cast<StringExpression*>(c->e1.get());
+                auto s = freecad_dynamic_cast<StringExpression>(c->e1.get());
                 if(!s)
                     break;
                 var << ObjectIdentifier::MapComponent(
@@ -2910,7 +2972,7 @@ void VariableExpression::addComponent(ComponentPtr &&c) {
                 return;
             }
         }
-        auto n2 = dynamic_cast<NumberExpression*>(c->e2.get());
+        auto n2 = freecad_dynamic_cast<NumberExpression>(c->e2.get());
         if(n2 && essentiallyInteger(n2->getValue(),l2)) {
             var << ObjectIdentifier::RangeComponent(l1,l2,l3);
             return;
@@ -2933,9 +2995,7 @@ void VariableExpression::_toString(std::ostream &ss, bool persistent,int) const 
 
 VarInfo VariableExpression::push(const Expression *owner, bool mustExist, std::string *name) const 
 {
-    if(var.isLocalProperty() || var.hasDocumentObjectName(true))
-        EXPR_THROW("Cannot bind to document object property");
-
+    (void)owner;
     assert(_EvalStack.size());
     auto &frame = *_EvalStack.back();
     const auto &comps = var.getComponents();
@@ -2948,10 +3008,6 @@ VarInfo VariableExpression::push(const Expression *owner, bool mustExist, std::s
         *name = comps[0].getName();
 
     VarInfo info(*frame.getVar(this,comps[0].getName(),type));
-
-    if(mustExist && PyObject_TypeCheck(info.lhs.ptr(),&DocumentObjectPy::Type))
-        _EXPR_THROW("Cannot assign document object properties.",owner);
-
     setVarInfo(info,mustExist);
     return info;
 }
@@ -2964,20 +3020,27 @@ void VariableExpression::setVarInfo(VarInfo &info, bool mustExist) const{
     if(components.empty())
         --count;
     size_t i=1;
-    for(;i<count;++i) 
+    for(;i<count;++i) {
+        EvalFrame::warn(2, info.rhs.ptr());
         info.rhs = comps[i].get(info.rhs);
+    }
     if(components.empty()) {
         info.prefix = info.rhs;
-        info.component.reset(new Component(comps[i]));
+        EvalFrame::warn(2, info.rhs.ptr());
         if(mustExist)
             info.rhs = comps[i].get(info.rhs);
+        info.component.reset(new Component(comps[i]));
     }else{
         count = components.size()-1;
-        for(i=0;i<count;++i)
+        for(i=0;i<count;++i) {
+            EvalFrame::warn(2, info.rhs.ptr());
             info.rhs = components[i]->get(this,info.rhs);
+        }
         info.prefix = info.rhs;
+        EvalFrame::warn(2, info.rhs.ptr());
         if(mustExist)
             info.rhs = components[i]->get(this,info.rhs);
+        info.component.reset(new Component(*components[i]));
     }
 }
 
@@ -3164,6 +3227,25 @@ ExpressionPtr CallableExpression::create(const DocumentObject *owner, Expression
     return _res;
 }
 
+VarInfo CallableExpression::getVarInfo(bool mustExist) const {
+    VarInfo info;
+    info.rhs = pyObjectFromAny(_getValueAsAny());
+    if(components.size()) {
+        std::size_t i;
+        std::size_t count = components.size()-1;
+        for(i=0;i<count;++i) {
+            EvalFrame::warn(2, info.rhs.ptr());
+            info.rhs = components[i]->get(this,info.rhs);
+        }
+        EvalFrame::warn(2, info.rhs.ptr());
+        info.prefix = info.rhs;
+        if(mustExist)
+            info.rhs = components[i]->get(this,info.rhs);
+        info.component.reset(new Component(*components[i]));
+    }
+    return info;
+}
+
 void CallableExpression::_toString(std::ostream &ss, bool persistent,int) const {
     if(expr)
         ss << expr->toStr(persistent);
@@ -3194,7 +3276,7 @@ std::string CallableExpression::getDocString() const {
     {
         auto e = static_cast<SimpleStatement*>(expr.get());
         if(e->getSize()) {
-            auto estr = dynamic_cast<const StringExpression*>(e->getExpr(0));
+            auto estr = freecad_dynamic_cast<const StringExpression>(e->getExpr(0));
             if(estr)
                 return estr->getText();
         }
@@ -3436,7 +3518,7 @@ ExpressionPtr CallableExpression::_eval() const {
 
 App::any CallableExpression::_getValueAsAny() const {
     Py::Object *pyCallable = 0;
-    if(!expr && ftype!=EVAL && _EvalStack.size() && _EvalStack.front()->pythonMode) {
+    if(!expr && ftype!=EVAL && _EvalStack.size() && _EvalStack.front()->PythonMode()) {
         Base::PyGILStateLocker lock;
         auto &frame = *_EvalStack.back();
         pyCallable = frame.getVar(this,name.c_str(),BindQuery);
@@ -3495,15 +3577,12 @@ App::any CallableExpression::_getValueAsAny() const {
                         App::any_cast<const std::string &>(value),this),false);
         } case NO_WARN: {
             App::any value(args[0]->getValueAsAny());
-            if(value.type() != typeid(int))
+            if(value.type() == typeid(int))
+                EvalFrame::noWarn(App::any_cast<int>(value));
+            else if(value.type() == typeid(long))
+                EvalFrame::noWarn(App::any_cast<long>(value));
+            else
                 EXPR_THROW("Function expects the first argument to be an integer.");
-            switch(App::any_cast<int>(value)) {
-            case 0:
-            case 1:
-                if(_EvalCallFrame)
-                    _EvalCallFrame->warned = true;
-                break;
-            }
             return App::any();
         } default:
             return FunctionExpression::evalToAny(this,ftype,args);
@@ -4761,7 +4840,7 @@ App::any PseudoStatement::_getValueAsAny() const {
     case PY_BEGIN:
     case PY_END:
         if(_EvalStack.size())
-            _EvalStack.front()->pythonMode = type==PY_BEGIN;
+            _EvalStack.front()->setPythonMode(type==PY_BEGIN);
         break;
     }
     return App::any();
@@ -5513,7 +5592,7 @@ App::any DelStatement::_getValueAsAny() const {
     CHECK_STACK(DelStatement, this);
     auto &frame = *_EvalStack.back();
     for(auto &target : targets) {
-        auto e = dynamic_cast<VariableExpression*>(target.get());
+        auto e = freecad_dynamic_cast<VariableExpression>(target.get());
         if(!e) EXPR_THROW("Invalid expression");
         std::string name;
         VarInfo info(e->push(this,true,&name));
