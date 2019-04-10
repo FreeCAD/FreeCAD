@@ -97,6 +97,8 @@ struct AppExport VarInfo {
         prefix = other.prefix;
         if(other.lhs == &other.prefix)
             lhs = &prefix;
+        else
+            lhs = other.lhs;
         rhs = other.rhs;
         component = std::move(other.component);
         return *this;
