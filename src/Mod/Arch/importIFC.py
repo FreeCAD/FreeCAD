@@ -837,8 +837,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 a = obj.IfcData
                 a["IfcUID"] = str(guid)
                 obj.IfcData = a
+                
+            # setting IFC attributes
+
                 for attribute in ArchIFCSchema.IfcProducts[product.is_a()]["attributes"]:
-                    if hasattr(product, attribute["name"]) and getattr(product, attribute["name"]):
+                    if hasattr(product, attribute["name"]) and getattr(product, attribute["name"]) and hasattr(obj,attribute["name"]):
                         setattr(obj, attribute["name"], getattr(product, attribute["name"]))
 
             if obj:
@@ -1842,6 +1845,11 @@ def export(exportList,filename):
                                     pvalue = True
                                 else:
                                     pvalue = False
+                            elif ptype == "IfcLogical":
+                                if pvalue.upper() == "TRUE":
+                                    pvalue = True
+                                else:
+                                    pvalue = False
                             elif ptype == "IfcInteger":
                                 pvalue = int(pvalue)
                             else:
@@ -2407,6 +2415,8 @@ def exportIfcAttributes(obj, kwargs):
             value = obj.getPropertyByName(property)
             if isinstance(value, FreeCAD.Units.Quantity):
                 value = float(value)
+                if property in ["ElevationWithFlooring","Elevation"]:
+                    value = value/1000 # some properties must be changed to meters
             kwargs.update({ property: value })
     return kwargs
 
