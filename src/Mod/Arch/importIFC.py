@@ -905,6 +905,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             # handle properties
 
             if pid in properties:
+
                 if IMPORT_PROPERTIES and hasattr(obj,"IfcProperties"):
 
                     # treat as spreadsheet (pref option)
@@ -957,6 +958,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
                     d = obj.IfcProperties
                     for pset in properties[pid].keys():
+                        #print("adding pset",pset,"to object",obj.Label)
                         psetname = ifcfile[pset].Name
                         if six.PY2:
                             psetname = psetname.encode("utf8")
@@ -976,7 +978,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                 if hasattr(e.NominalValue,'Unit'):
                                     if e.NominalValue.Unit:
                                         pvalue += e.NominalValue.Unit
-                                d[pname] = psetname+";;"+ptype+";;"+pvalue
+                                d[pname+";;"+psetname] = ptype+";;"+pvalue
                                 #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
                     obj.IfcProperties = d
 
@@ -1821,22 +1823,29 @@ def export(exportList,filename):
                     psets = {}
                     for key,value in obj.IfcProperties.items():
 
-                            # properties in IfcProperties dict are stored as "key":"pset;;type;;value" or "key":"type;;value"
+                            # in 0.18, properties in IfcProperties dict are stored as "key":"pset;;type;;value" or "key":"type;;value"
+                            # in 0.19, key = name;;pset, value = ptype;;value (because there can be several props with same name)
 
+                            pset = None
+                            pname = key
+                            if ";;" in pname:
+                                pname = key.split(";;")[0]
+                                pset = key.split(";;")[-1]
                             value = value.split(";;")
                             if len(value) == 3:
                                 pset = value[0]
                                 ptype = value[1]
                                 pvalue = value[2]
                             elif len(value) == 2:
-                                pset = "Default property set"
+                                if not pset:
+                                    pset = "Default property set"
                                 ptype = value[0]
                                 pvalue = value[1]
                             else:
-                                if DEBUG:print("      unable to export property:",key,value)
+                                if DEBUG:print("      unable to export property:",pname,value)
                                 continue
 
-                            #if DEBUG: print("      property ",key," : ",pvalue.encode("utf8"), " (", str(ptype), ") in ",pset)
+                            #if DEBUG: print("      property ",pname," : ",pvalue.encode("utf8"), " (", str(ptype), ") in ",pset)
                             if ptype in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
                                 if six.PY2:
                                     pvalue = pvalue.encode("utf8")
@@ -1861,8 +1870,8 @@ def export(exportList,filename):
                                     except:
                                         if six.PY2:
                                             pvalue = pvalue.encode("utf8")
-                                        if DEBUG:print("      warning: unable to export property as numeric value:",key,pvalue)
-                            p = ifcbin.createIfcPropertySingleValue(str(key),str(ptype),pvalue)
+                                        if DEBUG:print("      warning: unable to export property as numeric value:",pname,pvalue)
+                            p = ifcbin.createIfcPropertySingleValue(str(pname),str(ptype),pvalue)
                             psets.setdefault(pset,[]).append(p)
                     for pname,props in psets.items():
                         pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,pname,None,props)
