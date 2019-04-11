@@ -69,7 +69,7 @@ PyObject* SheetPy::set(PyObject *args)
 
     try {
         Sheet * sheet = getSheetPtr();
-        std::string cellAddress = sheet->getAddressFromAlias(address).c_str();
+        std::string cellAddress = sheet->getAddressFromAlias(address);
 
         /* Check to see if address is really an alias first */
         if (cellAddress.size() > 0)
@@ -140,21 +140,29 @@ PyObject* SheetPy::getContents(PyObject *args)
     if (!PyArg_ParseTuple(args, "s:getContents", &strAddress))
         return 0;
 
-    try {        
-        address = stringToAddress(strAddress);
-    }
-    catch (const Base::Exception & e) {
-        PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
-    }
+    PY_TRY {
+        try {        
+            Sheet * sheet = getSheetPtr();
+            std::string addr = sheet->getAddressFromAlias(strAddress);
 
-    std::string contents;
-    const Cell * cell = this->getSheetPtr()->getCell(address);
+            if (addr.empty())
+                address = stringToAddress(strAddress);
+            else
+                address = stringToAddress(addr.c_str());
+        }
+        catch (const Base::Exception & e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
+            return 0;
+        }
 
-    if (cell)
-        cell->getStringContent( contents );
+        std::string contents;
+        const Cell * cell = this->getSheetPtr()->getCell(address);
 
-    return Py::new_reference_to( Py::String( contents ) );
+        if (cell)
+            cell->getStringContent( contents );
+
+        return Py::new_reference_to( Py::String( contents ) );
+    } PY_CATCH
 }
 
 PyObject* SheetPy::clear(PyObject *args)
