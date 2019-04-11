@@ -28,7 +28,7 @@
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
-#include "Expression.h"
+#include "ExpressionParser.h"
 #include "ExpressionVisitors.h"
 #include "PropertyExpressionEngine.h"
 #include "PropertyStandard.h"
@@ -389,6 +389,11 @@ void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
             bool is_output = prop->testStatus(App::Property::Output)||(prop->getType()&App::Prop_Output);
             if((is_output && option==ExecuteNonOutput) || (!is_output && option==ExecuteOutput))
                 continue;
+            if(option == ExecuteOnRestore 
+                    && !prop->testStatus(Property::Transient)
+                    && !(prop->getType() & Prop_Transient)
+                    && !prop->testStatus(Property::EvalOnRestore))
+                continue;
         }
         buildGraphStructures(it->first, it->second.expression, nodes, revNodes, edges);
     }
@@ -444,7 +449,7 @@ std::vector<App::ObjectIdentifier> PropertyExpressionEngine::computeEvaluationOr
  * @return StdReturn on success.
  */
 
-DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption option)
+DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption option, bool *touched)
 {
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
 
@@ -454,13 +459,15 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
     if (running)
         return DocumentObject::StdReturn;
 
-    if(option == ExecuteTransient) {
+    if(option == ExecuteOnRestore) {
         bool found = false;
         for(auto &e : expressions) {
             auto prop = e.first.getProperty();
-            if(prop && 
-               (prop->testStatus(App::Property::Transient)||
-                (prop->getType()&App::Prop_Transient))) 
+            if(!prop)
+                continue;
+            if(prop->testStatus(App::Property::Transient)
+                    || (prop->getType()&App::Prop_Transient)
+                    || prop->testStatus(App::Property::EvalOnRestore))
             {
                 found = true;
                 break;
@@ -468,7 +475,6 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
         }
         if(!found)
             return DocumentObject::StdReturn;
-        option = ExecuteAll;
     }
 
     /* Resetter class, to ensure that the "running" variable gets set to false, even if
@@ -495,7 +501,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
 #endif
 
     /* Evaluate the expressions, and update properties */
-    while (it != evaluationOrder.end()) {
+    for (;it != evaluationOrder.end();++it) {
 
         // Get property to update
         Property * prop = it->getProperty();
@@ -511,7 +517,13 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
 
         /* Set value of property */
         try {
-            auto value = expressions[*it].expression->getValueAsAny();
+            auto value = expressions[*it].expression->getValueAsAny(Expression::OptionCallFrame);
+            if(option == ExecuteOnRestore && prop->testStatus(Property::EvalOnRestore)) {
+                if(isAnyEqual(value, prop->getPathValue(*it)))
+                    continue;
+                if(touched)
+                    *touched = true;
+            }
             prop->setPathValue(*it, value);
         }catch(Base::Exception &e) {
             std::ostringstream ss;
@@ -519,8 +531,6 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
             e.setMessage(ss.str());
             throw;
         }
-
-        ++it;
     }
     return DocumentObject::StdReturn;
 }

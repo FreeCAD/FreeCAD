@@ -172,7 +172,8 @@ void Property::setStatusValue(unsigned long status) {
                                      | (1<<NoRecompute)
                                      | (1<<Output)
                                      | (1<<Single)
-                                     | (1<<Ordered);
+                                     | (1<<Ordered)
+                                     | (1<<EvalOnRestore);
     if(father && (status & _signalMask) != (oldStatus & _signalMask))
         GetApplication().signalChangePropertyEditor(*this);
 }

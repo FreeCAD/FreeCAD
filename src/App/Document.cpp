@@ -2479,12 +2479,16 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray,
         try {
             for(auto prop : propMap[obj])
                 prop->onContainerRestored();
-            auto returnCode = obj->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteTransient);
+            bool touched = false;
+            auto returnCode = obj->ExpressionEngine.execute(
+                    PropertyExpressionEngine::ExecuteOnRestore,&touched);
             if(returnCode!=DocumentObject::StdReturn) {
                 FC_ERR("Expression engine failed to restore " << obj->getFullName() << ": " << returnCode->Why);
                 d->addRecomputeLog(returnCode);
             }
             obj->onDocumentRestored();
+            if(touched)
+                d->touchedObjs.insert(obj);
         }
         catch (const Base::Exception& e) {
             d->addRecomputeLog(e.what(),obj);

@@ -198,8 +198,6 @@ void ExpressionVisitor::offsetCells(Expression &e, int rowOffset, int colOffset)
 /////////////////////////////////////////////////////////////////////////////////////
 // Helper functions
 
-static const double _epsilon = std::numeric_limits<double>::epsilon();
-
 /* The following definitions are from The art of computer programming by Knuth
  * (copied from http://stackoverflow.com/questions/17333/most-effective-way-for-float-and-double-comparison)
  */
@@ -211,24 +209,30 @@ static bool approximatelyEqual(double a, double b, double epsilon)
 }
 */
 
-static inline bool essentiallyEqual(double a, double b)
+template<class T>
+static inline bool essentiallyEqual(T a, T b)
 {
-    return fabs(a - b) <= ( (fabs(a) > fabs(b) ? fabs(b) : fabs(a)) * _epsilon);
+    static const T _epsilon = std::numeric_limits<T>::epsilon();
+    return std::fabs(a - b) <= ( (std::fabs(a) > std::fabs(b) ? std::fabs(b) : std::fabs(a)) * _epsilon);
 }
 
-static inline bool definitelyGreaterThan(double a, double b)
+template<class T>
+static inline bool definitelyGreaterThan(T a, T b)
 {
-    return (a - b) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * _epsilon);
+    static const T _epsilon = std::numeric_limits<T>::epsilon();
+    return (a - b) > ( (std::fabs(a) < std::fabs(b) ? std::fabs(b) : std::fabs(a)) * _epsilon);
 }
 
-static inline bool definitelyLessThan(double a, double b)
+template<class T>
+static inline bool definitelyLessThan(T a, T b)
 {
-    return (b - a) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * _epsilon);
+    static const T _epsilon = std::numeric_limits<T>::epsilon();
+    return (b - a) > ( (std::fabs(a) < std::fabs(b) ? std::fabs(b) : std::fabs(a)) * _epsilon);
 }
 
 static inline bool essentiallyInteger(double a, long &l) {
     l = (long)std::round(a);
-    return essentiallyEqual(a,l);
+    return essentiallyEqual(a,(double)l);
 }
 
 // This class is intended to be contained inside App::any (via a shared_ptr)
@@ -395,6 +399,69 @@ ExpressionPtr expressionFromAny(const DocumentObject *owner, App::any &&value) {
     }
     throw TypeError();
 }
+
+bool isAnyEqual(const App::any &v1, const App::any &v2) {
+    if(v1.empty()) 
+        return v2.empty();
+    else if(v2.empty())
+        return false;
+
+    const auto &type1 = v1.type();
+    const auto &type2 = v2.type();
+    if(type1 != type2) {
+        double d1,d2;
+        if(type1 == typeid(int))
+            d1 = (double)any_cast<int>(v1);
+        else if(type1 == typeid(long))
+            d1 = (double)any_cast<long>(v1);
+        else if(type1 == typeid(float))
+            d1 = (double)any_cast<float>(v1);
+        else if(type1 == typeid(double))
+            d1 = any_cast<double>(v1);
+        else
+            return false;
+        if(type2 == typeid(int))
+            d2 = (double)any_cast<int>(v2);
+        else if(type2 == typeid(long))
+            d2 = (double)any_cast<long>(v2);
+        else if(type2 == typeid(float))
+            d2 = (double)any_cast<float>(v2);
+        else if(type2 == typeid(double))
+            d2 = any_cast<double>(v2);
+        else
+            return false;
+        return essentiallyEqual(d1,d2);
+    }
+    if (type1 == typeid(int)) 
+        return any_cast<int>(v1) == any_cast<int>(v2);
+    if (type1 == typeid(long)) 
+        return any_cast<long>(v1) == any_cast<long>(v2);
+    if (type1 == typeid(std::string)) 
+        return any_cast<const std::string&>(v1) == any_cast<const std::string&>(v2);
+    if (type1 == typeid(bool)) 
+        return any_cast<bool>(v1) == any_cast<bool>(v2);
+    if (type1 == typeid(double)) 
+        return essentiallyEqual(any_cast<double>(v1), any_cast<double>(v2));
+    if (type1 == typeid(float)) 
+        return essentiallyEqual(any_cast<float>(v1), any_cast<float>(v2));
+
+    if (type1 == typeid(Quantity)) 
+        return any_cast<const Quantity&>(v1) == any_cast<const Quantity&>(v2);
+
+    if (!isAnyPyObject(v1))
+        throw Base::TypeError("Unknown type");
+
+    Base::PyGILStateLocker lock;
+    Py::Object o1 = _pyObjectFromAny(v1);
+    Py::Object o2 = _pyObjectFromAny(v2);
+    if(!o1.isType(o2.type()))
+        return false;
+    int res = PyObject_RichCompareBool(o1.ptr(),o2.ptr(),Py_EQ);
+    if(res<0)
+        PyException::ThrowException();
+    return !!res;
+}
+
 
 } // namespace App
 
@@ -2954,7 +3021,7 @@ void VariableExpression::addComponent(ComponentPtr &&c) {
         long l1=0,l2=0,l3=1;
         if(c->e3) {
             auto n3 = freecad_dynamic_cast<NumberExpression>(c->e3.get());
-            if(!n3 || !essentiallyEqual(n3->getValue(),l3))
+            if(!n3 || !essentiallyEqual(n3->getValue(),(double)l3))
                 break;
         }
         if(c->e1) {

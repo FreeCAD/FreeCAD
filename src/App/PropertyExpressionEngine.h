@@ -124,14 +124,14 @@ public:
         ExecuteOutput,
         /// Execute only non-output property bindings
         ExecuteNonOutput,
-        /// Execute all expression if there are trasient property binding
-        ExecuteTransient,
+        /// Execute on document restore
+        ExecuteOnRestore,
     };
     /** Evaluate the expressions
      * 
      * @param option: execution option, see ExecuteOption.
      */
-    DocumentObjectExecReturn * execute(ExecuteOption option=ExecuteAll);
+    DocumentObjectExecReturn * execute(ExecuteOption option=ExecuteAll, bool *touched=0);
 
     void getPathsToDocumentObject(DocumentObject*, std::vector<App::ObjectIdentifier> & paths) const;
 

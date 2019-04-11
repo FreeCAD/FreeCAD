@@ -329,6 +329,7 @@ enum MenuAction {
     MA_ReadOnly,
     MA_Hidden,
     MA_Touched,
+    MA_EvalOnRestore,
 };
 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent *event) {
@@ -390,6 +391,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *event) {
                 ACTION_SETUP(ReadOnly);
                 ACTION_SETUP(Transient);
                 _ACTION_SETUP(Touched);
+                _ACTION_SETUP(EvalOnRestore);
             }
         }
     }
@@ -418,6 +420,9 @@ void PropertyEditor::onMenuAction(QAction *action) {
     ACTION_CHECK(ReadOnly);
     ACTION_CHECK(Output);
     ACTION_CHECK(Hidden);
+    case MA_EvalOnRestore:
+        prop->setStatus(App::Property::EvalOnRestore,action->isChecked());
+        break;
     case MA_Touched:
         if(action->isChecked())
             prop->touch();

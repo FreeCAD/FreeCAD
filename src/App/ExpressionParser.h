@@ -39,7 +39,8 @@ namespace App {
 _ExpressionAllocDefine(_ExpressionFastAlloc,boost::fast_pool_allocator);
 #define ExpressionFastAlloc(_t) _ExpressionFastAlloc<_t> 
 
-ExpressionPtr expressionFromAny(const App::DocumentObject *owner, App::any &&);
+AppExport ExpressionPtr expressionFromAny(const App::DocumentObject *owner, App::any &&);
+AppExport bool isAnyEqual(const App::any &v1, const App::any &v2);
 
 ////////////////////////////////////////////////////////////////////////////////////
 

@@ -76,7 +76,10 @@ public:
         PartialTrigger = 10, // allow change in partial doc
         NoRecompute = 11, // touch owner for recompute on property change
         Single = 12, // for save/load of floating point numbers
-        Ordered = 13, // for PropertyLists whether the order of the elements is relevant for the container using it
+        Ordered = 13, // for PropertyLists whether the order of the elements is
+                      // relevant for the container using it
+        EvalOnRestore = 14, // In case of expression binding, evaluate the
+                            // expression on restore and touch the object on value change.
 
         // The following bits are corresponding to PropertyType set when the
         // property added. These types are meant to be static, and cannot be
