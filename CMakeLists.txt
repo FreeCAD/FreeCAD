@@ -141,7 +141,7 @@ SET(CMAKE_INSTALL_LIBDIR lib CACHE PATH "Output directory for libraries")
 
 if(NOT WIN32)
     if(NOT IS_ABSOLUTE ${CMAKE_INSTALL_LIBDIR})
-	    SET(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+        SET(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
     endif(NOT IS_ABSOLUTE ${CMAKE_INSTALL_LIBDIR})
 endif(NOT WIN32)
 
@@ -719,16 +719,16 @@ endif()
                 find_package(HDF5 COMPONENTS NO_MODULE REQUIRED static)
             else()
                 find_package(PkgConfig)
-		FILE(READ ${meddotH} TMPTXT)
-		STRING(FIND "${TMPTXT}" "#define MED_HAVE_MPI" matchres)
-		if(${matchres} EQUAL -1)
-			message(STATUS "We guess that libmed was built using hdf5-serial version")
-			set(HDF5_VARIANT "hdf5-serial")
-		else()
-			message(STATUS "We guess that libmed was built using hdf5-openmpi version")
-			set(HDF5_VARIANT "hdf5-openmpi")
-			set(HDF5_PREFER_PARALLEL TRUE) # if pkg-config fails, find_package(HDF5) needs this
-		endif()
+        FILE(READ ${meddotH} TMPTXT)
+        STRING(FIND "${TMPTXT}" "#define MED_HAVE_MPI" matchres)
+        if(${matchres} EQUAL -1)
+            message(STATUS "We guess that libmed was built using hdf5-serial version")
+            set(HDF5_VARIANT "hdf5-serial")
+        else()
+            message(STATUS "We guess that libmed was built using hdf5-openmpi version")
+            set(HDF5_VARIANT "hdf5-openmpi")
+            set(HDF5_PREFER_PARALLEL TRUE) # if pkg-config fails, find_package(HDF5) needs this
+        endif()
                 pkg_search_module(HDF5 ${HDF5_VARIANT})
                 if(NOT HDF5_FOUND)
                     find_package(HDF5 REQUIRED)
@@ -1045,21 +1045,21 @@ endif()
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtUiTools.py  "from PySide2.QtUiTools import *\n")
 
-	if(APPLE AND NOT BUILD_WITH_CONDA)
-	    INSTALL(
-	        DIRECTORY
-                    ${CMAKE_BINARY_DIR}/Ext/PySide
-		DESTINATION
-                    MacOS
-            )
-	else()
+        if(APPLE AND NOT BUILD_WITH_CONDA)
             INSTALL(
-	        DIRECTORY
-                    ${CMAKE_BINARY_DIR}/Ext/PySide
+                DIRECTORY
+                        ${CMAKE_BINARY_DIR}/Ext/PySide
                 DESTINATION
-                    Ext
-            )
-	endif()
+                        MacOS
+                )
+        else()
+                INSTALL(
+                    DIRECTORY
+                        ${CMAKE_BINARY_DIR}/Ext/PySide
+                    DESTINATION
+                        Ext
+                )
+        endif()
     else()
         # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
         # Below are two variables that can be left empty for standard python 3 version,
@@ -1139,65 +1139,65 @@ configure_file(LibraryVersions.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/LibraryVersio
 # == Global Compiler and Linker Settings =========================================
 
 include_directories(${CMAKE_BINARY_DIR}/src
-					${CMAKE_SOURCE_DIR}/src)
+                    ${CMAKE_SOURCE_DIR}/src)
 
 # check for 64-bit platform
 IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
-	MESSAGE(STATUS "Platform is 64-bit, set -D_OCC64")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_OCC64")
-	add_definitions(-D_OCC64 )
+    MESSAGE(STATUS "Platform is 64-bit, set -D_OCC64")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_OCC64")
+    add_definitions(-D_OCC64 )
 ELSE(CMAKE_SIZEOF_VOID_P EQUAL 8)
-	MESSAGE(STATUS "Platform is 32-bit")
+    MESSAGE(STATUS "Platform is 32-bit")
 ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 
 
 
 IF(MSVC)
-	# set default compiler settings
-	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zm150")
+    # set default compiler settings
+    SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zm150")
     SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG /Zm150 /bigobj")
-	# set default libs
-	SET (CMAKE_C_STANDARD_LIBRARIES "kernel32.lib user32.lib gdi32.lib winspool.lib SHFolder.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib winmm.lib comsupp.lib Ws2_32.lib dbghelp.lib ")
-	set (CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}")
-	# set linker flag /nodefaultlib
-	set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB")
-	set (CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /NODEFAULTLIB")
-	set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB")
-	IF(FREECAD_RELEASE_PDB)
-		set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
-		set (CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG")
-	ENDIF(FREECAD_RELEASE_PDB)
+    # set default libs
+    SET (CMAKE_C_STANDARD_LIBRARIES "kernel32.lib user32.lib gdi32.lib winspool.lib SHFolder.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib winmm.lib comsupp.lib Ws2_32.lib dbghelp.lib ")
+    set (CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}")
+    # set linker flag /nodefaultlib
+    set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB")
+    set (CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /NODEFAULTLIB")
+    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB")
+    IF(FREECAD_RELEASE_PDB)
+        set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
+        set (CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG")
+    ENDIF(FREECAD_RELEASE_PDB)
     IF(FREECAD_RELEASE_SEH)
-		SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
+        SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
     ENDIF(FREECAD_RELEASE_SEH)
     # set "Build with Multiple Processes"
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-	SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP")
+    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP")
 
-	# Mark 32 bit executables large address aware so they can use > 2GB address space
-	# NOTE: This setting only has an effect on machines with at least 3GB of RAM, although it sets the linker option it doesn't set the linker switch 'Enable Large Addresses'
-	IF(CMAKE_SIZEOF_VOID_P EQUAL 4)
-		set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /LARGEADDRESSAWARE")
-		SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LARGEADDRESSAWARE")
-	ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    # Mark 32 bit executables large address aware so they can use > 2GB address space
+    # NOTE: This setting only has an effect on machines with at least 3GB of RAM, although it sets the linker option it doesn't set the linker switch 'Enable Large Addresses'
+    IF(CMAKE_SIZEOF_VOID_P EQUAL 4)
+        set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /LARGEADDRESSAWARE")
+        SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LARGEADDRESSAWARE")
+    ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 4)
 ELSE(MSVC)
-	SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG")
+    SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG")
         #MESSAGE(STATUS "DEBUG: ${CMAKE_CXX_FLAGS_DEBUG}")
         MESSAGE(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 ENDIF(MSVC)
 IF(MINGW)
-	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=12477
-	# Actually '-Wno-inline-dllimport' should work to suppress warnings of the form:
-	# inline function 'foo' is declared as dllimport: attribute ignored
-	# But it doesn't work with MinGW gcc 4.5.0 while using '-Wno-attributes' seems to
-	# do the trick.
-	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mthreads -Wno-attributes")
-	SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mthreads -Wno-attributes")
-	SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mthreads -Wl,--export-all-symbols")
-	SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -mthreads -Wl,--export-all-symbols")
-	# http://stackoverflow.com/questions/8375310/warning-auto-importing-has-been-activated-without-enable-auto-import-specifie
-	# SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++")
-	LINK_LIBRARIES(-lgdi32)
+    # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=12477
+    # Actually '-Wno-inline-dllimport' should work to suppress warnings of the form:
+    # inline function 'foo' is declared as dllimport: attribute ignored
+    # But it doesn't work with MinGW gcc 4.5.0 while using '-Wno-attributes' seems to
+    # do the trick.
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mthreads -Wno-attributes")
+    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mthreads -Wno-attributes")
+    SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mthreads -Wl,--export-all-symbols")
+    SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -mthreads -Wl,--export-all-symbols")
+    # http://stackoverflow.com/questions/8375310/warning-auto-importing-has-been-activated-without-enable-auto-import-specifie
+    # SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++")
+    LINK_LIBRARIES(-lgdi32)
 ENDIF(MINGW)
 
 # force build directory to be different to source directory
