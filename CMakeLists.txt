@@ -37,7 +37,7 @@ set(PACKAGE_STRING "${PROJECT_NAME} ${PACKAGE_VERSION}")
 include(AddFileDependencies)
 include(cMake/FreeCadMacros.cmake)
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cMake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cMake")
 
 
 #if(CMAKE_CFG_INTDIR STREQUAL .)
