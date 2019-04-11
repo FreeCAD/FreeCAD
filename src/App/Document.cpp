@@ -3019,6 +3019,8 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
 int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force, bool *hasError, int options) 
 {
+    ExpressionParser::clearWarning();
+
     int objectCount = 0;
 
     if (testStatus(Document::PartialDoc)) {

@@ -669,6 +669,10 @@ enum BindType {
     BindNonLocal,
     BindGlobal,
 };
+
+typedef std::pair<const char *, int> EvalWarn;
+std::unordered_set<EvalWarn, boost::hash<EvalWarn> > _EvalWarned;
+
 struct EvalFrame {
     struct Binding {
         Py::Object obj;
@@ -718,6 +722,7 @@ struct EvalFrame {
     const App::DocumentObject *funcOwner;
 
     std::bitset<32> flags;
+
 #define EVAL_FRAME_FLAGS \
     EVAL_FRAME_FLAG(Warn1) \
     EVAL_FRAME_FLAG(Warn2) \
@@ -898,30 +903,36 @@ struct EvalFrame {
             info.component->set(owner,info.prefix,info.rhs);
     }
 
-    static void warn(int code, PyObject *pyobj=0) {
+    static void warn(const Expression *expr, int code, PyObject *pyobj=0) {
         if(!_EvalCallFrame)
             return;
         assert(code>0 && code<=F_WarnNone);
         if(_EvalCallFrame->WarnNone())
             return;
         --code;
-        if(_EvalCallFrame->flags.test(code))
+
+        if(_EvalCallFrame->flags.test(code) 
+                || !_EvalWarned.emplace(_EvalCallFrame->funcName,code).second)
             return;
-        _EvalCallFrame->flags.set(code);
+
         switch(code) {
         case F_Warn1:
             if(_EvalCallFrame->funcOwner)
                 FC_WARN("Object reference in function has no dependency tracking"
-                        << ": in " << _EvalCallFrame->funcOwner->getFullName() 
-                        << '.' << _EvalCallFrame->funcName);
+                        << std::endl << "in function: " 
+                        << _EvalCallFrame->funcOwner->getFullName() << '.' 
+                        << _EvalCallFrame->funcName << std::endl 
+                        << "expression: " << expr->toStr());
             break;
         case F_Warn2:
             if(_EvalCallFrame->funcOwner 
                     && pyobj && PyObject_TypeCheck(pyobj,&DocumentObjectPy::Type))
             {
                 FC_WARN("Object property assignment may break dependency tracking"
-                        << ": in " << _EvalCallFrame->funcOwner->getFullName() 
-                        << '.' << _EvalCallFrame->funcName);
+                        << std::endl << "in function: " 
+                        << _EvalCallFrame->funcOwner->getFullName() << '.' 
+                        << _EvalCallFrame->funcName << std::endl 
+                        << "expression: " << expr->toStr());
             }
             break;
         default:
@@ -3008,12 +3019,12 @@ App::any VariableExpression::_getValueAsAny() const {
             if(comps.size()==1 && components.empty())
                 return pyObjectToAny(*pyobj);
             VarInfo info(*pyobj);
-            setVarInfo(info,true);
+            setVarInfo(info,true,true);
             return pyObjectToAny(info.rhs);
         }
     }
     if(!var.isLocalProperty())
-        EvalFrame::warn(1);
+        EvalFrame::warn(this,1);
     return var.getValue(true);
 }
 
@@ -3093,7 +3104,7 @@ VarInfo VariableExpression::push(const Expression *owner, bool mustExist, std::s
     return info;
 }
 
-void VariableExpression::setVarInfo(VarInfo &info, bool mustExist) const{
+void VariableExpression::setVarInfo(VarInfo &info, bool mustExist, bool noassign) const{
     const auto &comps = var.getComponents();
     if(comps.size()==1 && components.empty())
         return;
@@ -3102,26 +3113,32 @@ void VariableExpression::setVarInfo(VarInfo &info, bool mustExist) const{
         --count;
     size_t i=1;
     for(;i<count;++i) {
-        EvalFrame::warn(2, info.rhs.ptr());
+        if(!noassign)
+            EvalFrame::warn(this, 2, info.rhs.ptr());
         info.rhs = comps[i].get(info.rhs);
     }
     if(components.empty()) {
         info.prefix = info.rhs;
-        EvalFrame::warn(2, info.rhs.ptr());
+        if(!noassign)
+            EvalFrame::warn(this, 2, info.rhs.ptr());
         if(mustExist)
             info.rhs = comps[i].get(info.rhs);
-        info.component.reset(new Component(comps[i]));
+        if(!noassign)
+            info.component.reset(new Component(comps[i]));
     }else{
         count = components.size()-1;
         for(i=0;i<count;++i) {
-            EvalFrame::warn(2, info.rhs.ptr());
+            if(!noassign)
+                EvalFrame::warn(this, 2, info.rhs.ptr());
             info.rhs = components[i]->get(this,info.rhs);
         }
         info.prefix = info.rhs;
-        EvalFrame::warn(2, info.rhs.ptr());
+        if(!noassign)
+            EvalFrame::warn(this, 2, info.rhs.ptr());
         if(mustExist)
             info.rhs = components[i]->get(this,info.rhs);
-        info.component.reset(new Component(*components[i]));
+        if(!noassign)
+            info.component.reset(new Component(*components[i]));
     }
 }
 
@@ -3315,10 +3332,10 @@ VarInfo CallableExpression::getVarInfo(bool mustExist) const {
         std::size_t i;
         std::size_t count = components.size()-1;
         for(i=0;i<count;++i) {
-            EvalFrame::warn(2, info.rhs.ptr());
+            EvalFrame::warn(this, 2, info.rhs.ptr());
             info.rhs = components[i]->get(this,info.rhs);
         }
-        EvalFrame::warn(2, info.rhs.ptr());
+        EvalFrame::warn(this, 2, info.rhs.ptr());
         info.prefix = info.rhs;
         if(mustExist)
             info.rhs = components[i]->get(this,info.rhs);
@@ -6039,6 +6056,10 @@ Base::XMLReader *ExpressionParser::ExpressionImporter::reader() {
 namespace App {
 
 namespace ExpressionParser {
+
+void clearWarning() {
+    _EvalWarned.clear();
+}
 
 bool isModuleImported(PyObject *module) {
     return ImportModules::instance()->isImported(module);

@@ -131,7 +131,7 @@ public:
 protected:
     VariableExpression(const App::DocumentObject *_owner):Expression(_owner) {}
 
-    void setVarInfo(VarInfo &info, bool mustExist) const;
+    void setVarInfo(VarInfo &info, bool mustExist, bool noassign=false) const;
 
     virtual bool _isIndexable() const;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
@@ -1059,6 +1059,8 @@ AppExport bool isTokenAnIndentifier(const std::string & str);
 AppExport bool isTokenAUnit(const std::string & str);
 
 AppExport std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string & str);
+
+AppExport void clearWarning();
 
 enum TokenType {
     FC_TOK_END,
