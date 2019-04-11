@@ -1147,6 +1147,7 @@ void StdCmdDelete::activated(int iMsg)
             }
         } else {
             std::set<QString> affectedLabels;
+            bool more = false;
             auto sels = Selection().getSelectionEx();
             bool autoDeletion = true;
             for(auto &sel : sels) {
@@ -1165,9 +1166,15 @@ void StdCmdDelete::activated(int iMsg)
                                 label += QString::fromLatin1(" (%1)").arg(
                                         QString::fromUtf8(parent->Label.getValue()));
                             affectedLabels.insert(label);
+                            if(affectedLabels.size()>=10) {
+                                more = true;
+                                break;
+                            }
                         }
                     }
                 }
+                if(more)
+                    break;
             }
 
             // The check below is not needed because we now only get selection
@@ -1191,11 +1198,12 @@ void StdCmdDelete::activated(int iMsg)
                 QString bodyMessage;
                 QTextStream bodyMessageStream(&bodyMessage);
                 bodyMessageStream << qApp->translate("Std_Delete",
-                                                     "The following, referencing objects might break.\n\n"
-                                                     "Are you sure you want to continue?\n\n");
+                                                     "The following referencing objects might break.\n\n"
+                                                     "Are you sure you want to continue?\n");
                 for (const auto &currentLabel : affectedLabels)
-                    bodyMessageStream << currentLabel << '\n';
-
+                    bodyMessageStream << '\n' << currentLabel;
+                if(more)
+                    bodyMessageStream << "\n...";
 #if 0
                 //message for inactive items
                 if (!inactiveLabels.empty()) {
