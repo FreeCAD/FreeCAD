@@ -1514,8 +1514,6 @@ if(MSVC)
 endif()
 
 # Print message to start build process
-if (${CMAKE_BUILD_TOOL} MATCHES "make")
-    message("=======================================\n"
-            "Now run 'make' to build ${PROJECT_NAME}\n"
-            "=======================================\n")
-endif()
+message("=================================================\n"
+        "Now run 'cmake --build ${CMAKE_BINARY_DIR}' to build ${PROJECT_NAME}\n"
+        "=================================================\n")
