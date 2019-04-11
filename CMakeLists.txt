@@ -1159,14 +1159,6 @@ if(BUILD_VR)
     find_package(Rift)
 endif(BUILD_VR)
 
-# copy build convenient files for M$
-if(WIN32)
-    if (EXISTS BuildAll.bat)
-        configure_file(BuildAll.bat ${CMAKE_BINARY_DIR}/BuildAll.bat COPYONLY)
-    endif (EXISTS BuildAll.bat)
-    #configure_file(BuildAllNice.bat ${CMAKE_BINARY_DIR}/BuildAllNice.bat COPYONLY)
-endif(WIN32)
-
 
 
 # version information of libraries
