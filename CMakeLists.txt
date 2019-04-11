@@ -47,7 +47,7 @@ endif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
 # ================================================================================
 
 # Allow developers to use Boost < 1.48
-if (NOT ${BOOST_MIN_VERSION})
+if (NOT BOOST_MIN_VERSION)
     set(BOOST_MIN_VERSION 1.48)
 endif()
 
