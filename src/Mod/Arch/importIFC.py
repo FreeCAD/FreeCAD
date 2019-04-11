@@ -1480,13 +1480,15 @@ class recycler:
                 self.rgbs[key] = c
             return c
 
-    def createIfcSurfaceStyleRendering(self,col):
-        key = (col.Red,col.Green,col.Blue)
+    def createIfcSurfaceStyleRendering(self,col,trans=0):
+        key = (col.Red,col.Green,col.Blue,trans)
         if self.compress and key in self.ssrenderings:
             self.spared += 1
             return self.ssrenderings[key]
         else:
-            c = self.ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")
+            if trans == 0:
+                trans = None
+            c = self.ifcfile.createIfcSurfaceStyleRendering(col,trans,None,None,None,None,None,None,"FLAT")
             if self.compress:
                 self.ssrenderings[key] = c
             return c
@@ -1502,7 +1504,7 @@ class recycler:
                 self.transformationoperators[key] = c
             return c
 
-    def createIfcSurfaceStyle(self,name,r,g,b):
+    def createIfcSurfaceStyle(self,name,r,g,b,t=0):
         if name:
             key = name + str((r,g,b))
         else:
@@ -1512,22 +1514,22 @@ class recycler:
             return self.sstyles[key]
         else:
             col = self.createIfcColourRgb(r,g,b)
-            ssr = self.createIfcSurfaceStyleRendering(col)
+            ssr = self.createIfcSurfaceStyleRendering(col,t)
             c = self.ifcfile.createIfcSurfaceStyle(name,"BOTH",[ssr])
             if self.compress:
                 self.sstyles[key] = c
             return c
 
-    def createIfcPresentationStyleAssignment(self,name,r,g,b):
+    def createIfcPresentationStyleAssignment(self,name,r,g,b,t=0):
         if name:
-            key = name+str((r,g,b))
+            key = name+str((r,g,b,t))
         else:
-            key = str((r,g,b))
+            key = str((r,g,b,t))
         if self.compress and key in self.psas:
             self.spared += 1
             return self.psas[key]
         else:
-            iss = self.createIfcSurfaceStyle(name,r,g,b)
+            iss = self.createIfcSurfaceStyle(name,r,g,b,t)
             c = self.ifcfile.createIfcPresentationStyleAssignment([iss])
             if self.compress:
                 self.psas[key] = c
@@ -1599,7 +1601,7 @@ def export(exportList,filename):
                     annotations.append(obj)
     # clean objects list of unwanted types
     objectslist = [obj for obj in objectslist if obj not in annotations]
-    objectslist = Arch.pruneIncluded(objectslist)
+    objectslist = Arch.pruneIncluded(objectslist,strict=True)
     objectslist = [obj for obj in objectslist if Draft.getType(obj) not in ["Material","MaterialContainer","WorkingPlaneProxy"]]
     if FULL_PARAMETRIC:
         objectslist = Arch.getAllChildren(objectslist)
@@ -2962,24 +2964,32 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             # is named after it. Revit will treat surfacestyles as materials (and discard
             # actual ifcmaterial)
             key = None
-            rgb = obj.ViewObject.ShapeColor[:3]
-            if hasattr(obj,"Material"):
-                if obj.Material:
-                    key = obj.Material.Name
-            if not key:
-                key = rgb
-            if key in surfstyles:
-                psa = surfstyles[key]
-            else:
-                m = None
+            rgbt = [obj.ViewObject.ShapeColor[:3]+(obj.ViewObject.Transparency/100.0,) for shape in shapes]
+            if hasattr(obj.ViewObject,"DiffuseColor") \
+            and obj.ViewObject.DiffuseColor \
+            and (len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)) \
+            and (len(obj.Shape.Solids) == len(shapes)):
+                i = 0
+                rgbt = []
+                for sol in obj.Shape.Solids:
+                    rgbt.append(obj.ViewObject.DiffuseColor[i])
+                    i += len(sol.Faces)
+            for i,shape in enumerate(shapes):
+                key = rgbt[i]
                 if hasattr(obj,"Material"):
                     if obj.Material:
-                        m = obj.Material.Label
-                        if six.PY2:
-                            m = m.encode("utf8")
-                psa = ifcbin.createIfcPresentationStyleAssignment(m,rgb[0],rgb[1],rgb[2])
-                surfstyles[key] = psa
-            for shape in shapes:
+                        key = obj.Material.Name #TODO handle multimaterials
+                if key in surfstyles:
+                    psa = surfstyles[key]
+                else:
+                    m = None
+                    if hasattr(obj,"Material"):
+                        if obj.Material:
+                            m = obj.Material.Label
+                            if six.PY2:
+                                m = m.encode("utf8")
+                    psa = ifcbin.createIfcPresentationStyleAssignment(m,rgbt[i][0],rgbt[i][1],rgbt[i][2],rgbt[i][3])
+                    surfstyles[key] = psa
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)
 
         xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
