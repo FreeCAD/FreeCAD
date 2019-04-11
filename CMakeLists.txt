@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
-project(FreeCAD_trunk)
+project(FreeCAD)
 
-set(PACKAGE_NAME "FreeCAD")
 set(PACKAGE_VERSION_NAME "Vulcan")
 set(PACKAGE_VERSION_MAJOR "0")
 set(PACKAGE_VERSION_MINOR "19")
@@ -9,7 +8,7 @@ set(PACKAGE_VERSION_PATCH "16100")
 
 set(FREECAD_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}")
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
-set(PACKAGE_STRING "${PACKAGE_NAME} ${PACKAGE_VERSION}")
+set(PACKAGE_STRING "${PROJECT_NAME} ${PACKAGE_VERSION}")
 
 if(COMMAND cmake_policy)
     cmake_policy(SET CMP0003 NEW)
@@ -277,19 +276,19 @@ if(APPLE)
     if(FREECAD_CREATE_MAC_APP)
         install(
             DIRECTORY ${CMAKE_SOURCE_DIR}/src/MacAppBundle/FreeCAD.app/
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/${PACKAGE_NAME}.app
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.app
         )
 
         # It should be safe to assume we've got sed on OSX...
         install(CODE "
             execute_process(COMMAND
                 sed -i \"\" -e s/VERSION_STRING_FROM_CMAKE/${PACKAGE_VERSION}/
-                -e s/NAME_STRING_FROM_CMAKE/${PACKAGE_NAME}/
-                ${CMAKE_INSTALL_PREFIX}/${PACKAGE_NAME}.app/Contents/Info.plist)
+                -e s/NAME_STRING_FROM_CMAKE/${PROJECT_NAME}/
+                ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.app/Contents/Info.plist)
                ")
 
         set(CMAKE_INSTALL_PREFIX
-            ${CMAKE_INSTALL_PREFIX}/${PACKAGE_NAME}.app/Contents)
+            ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.app/Contents)
         set(CMAKE_INSTALL_LIBDIR ${CMAKE_INSTALL_PREFIX}/lib)
     endif(FREECAD_CREATE_MAC_APP)
     set(CMAKE_MACOSX_RPATH TRUE)
@@ -1534,6 +1533,6 @@ endif()
 # Print message to start build process
 if (${CMAKE_BUILD_TOOL} MATCHES "make")
     message("=======================================\n"
-            "Now run 'make' to build ${PACKAGE_NAME}\n"
+            "Now run 'make' to build ${PROJECT_NAME}\n"
             "=======================================\n")
 endif()
