@@ -1409,11 +1409,7 @@ ELSE(DOXYGEN_FOUND)
   MESSAGE(STATUS "Doxygen:             not found")
 ENDIF(DOXYGEN_FOUND)
 
-
-
 # Print message to start build process
-if (${CMAKE_BUILD_TOOL} MATCHES "make")
-    MESSAGE("=======================================\n"
-            "Now run 'make' to build ${PROJECT_NAME}\n"
-            "=======================================\n")
-endif()
+MESSAGE("=======================================\n"
+        "Now run 'cmake --build ${CMAKE_BINARY_DIR}' to build ${PROJECT_NAME}\n"
+        "=======================================\n")
