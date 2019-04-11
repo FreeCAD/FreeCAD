@@ -17,6 +17,11 @@ if(COMMAND cmake_policy)
     endif(POLICY CMP0072)
 endif(COMMAND cmake_policy)
 
+find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
+if(CCACHE_PROGRAM)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif()
+
 project(FreeCAD)
 
 set(PACKAGE_VERSION_NAME "Vulcan")
@@ -27,11 +32,6 @@ set(PACKAGE_VERSION_PATCH "16100")
 set(FREECAD_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}")
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
 set(PACKAGE_STRING "${PROJECT_NAME} ${PACKAGE_VERSION}")
-
-find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
-if(CCACHE_PROGRAM)
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
-endif()
 
 # include local  modules
 include(AddFileDependencies)
