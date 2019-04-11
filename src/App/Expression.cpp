@@ -918,7 +918,7 @@ struct EvalFrame {
         switch(code) {
         case F_Warn1:
             if(_EvalCallFrame->funcOwner)
-                FC_WARN("Object reference in function has no dependency tracking"
+                FC_WARN("Object or property reference in function has no dependency tracking"
                         << std::endl << "in function: " 
                         << _EvalCallFrame->funcOwner->getFullName() << '.' 
                         << _EvalCallFrame->funcName << std::endl 
@@ -3023,8 +3023,7 @@ App::any VariableExpression::_getValueAsAny() const {
             return pyObjectToAny(info.rhs);
         }
     }
-    if(!var.isLocalProperty())
-        EvalFrame::warn(this,1);
+    EvalFrame::warn(this,1);
     return var.getValue(true);
 }
 
