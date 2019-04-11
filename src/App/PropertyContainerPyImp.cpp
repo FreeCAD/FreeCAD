@@ -139,12 +139,10 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
             return 0;
         }
 
-        unsigned long status = prop->getStatus();
-        prop->setStatus(Property::ReadOnly,(type & 1) > 0);
-        prop->setStatus(Property::Hidden,(type & 2) > 0);
-
-        if (status != prop->getStatus())
-            GetApplication().signalChangePropertyEditor(*prop);
+        std::bitset<32> status(prop->getStatus());
+        status.set(Property::ReadOnly, (type & 1) > 0);
+        status.set(Property::Hidden, (type & 2) > 0);
+        prop->setStatusValue(status.to_ulong());
 
         Py_Return;
     }
@@ -161,20 +159,17 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
             }
 
             // reset all bits first
-            unsigned long status = prop->getStatus();
-            prop->setStatus(Property::ReadOnly, false);
-            prop->setStatus(Property::Hidden, false);
-
+            std::bitset<32> status(prop->getStatus());
+            status.reset(Property::ReadOnly);
+            status.reset(Property::Hidden);
             for (Py::Sequence::iterator it = seq.begin();it!=seq.end();++it) {
                 std::string str = (std::string)Py::String(*it);
                 if (str == "ReadOnly")
-                    prop->setStatus(Property::ReadOnly, true);
+                    status.set(Property::ReadOnly);
                 else if (str == "Hidden")
-                    prop->setStatus(Property::Hidden, true);
+                    status.set(Property::Hidden);
             }
-
-            if (status != prop->getStatus())
-                GetApplication().signalChangePropertyEditor(*prop);
+            prop->setStatusValue(status.to_ulong());
 
             Py_Return;
         }
@@ -214,7 +209,7 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
     }
     auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
 
-    std::map<int,bool> status;
+    std::bitset<32> status(prop->getStatus());
     size_t count = 1;
     bool isSeq = false;
     if(PyList_Check(pyValue) || PyTuple_Check(pyValue)) {
@@ -244,7 +239,7 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
                 PyErr_Format(PyExc_ValueError, "Unknown property status '%s'", v.c_str());
                 return 0;
             }
-            status.insert(std::make_pair(it->second,value));
+            status.set(it->second,value);
         }else if(item.isNumeric()) {
             int v = Py::Int(item);
             if(v<0) {
@@ -253,24 +248,14 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
             }
             if(v==0 || v>31)
                 PyErr_Format(PyExc_ValueError, "Status value out of range '%d'", v);
-            status.insert(std::make_pair(v,value));
+            status.set(v,value);
         } else {
             PyErr_SetString(PyExc_TypeError, "Expects status type to be Int or String");
             return 0;
         }
     }
 
-    bool changed = false;
-    for(auto &v : status) {
-        Property::Status s = (Property::Status)v.first;
-        if(prop->testStatus(s)!=v.second) {
-            changed = true;
-            prop->setStatus(s, v.second);
-        }
-    }
-    if(changed)
-        GetApplication().signalChangePropertyEditor(*prop);
-
+    prop->setStatusValue(status.to_ulong());
     Py_Return;
 }
 

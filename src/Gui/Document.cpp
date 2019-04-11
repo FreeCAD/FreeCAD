@@ -123,6 +123,7 @@ struct DocumentP
     Connection connectTransactionAppend;
     Connection connectTransactionRemove;
     Connection connectTouchedObject;
+    Connection connectChangePropertyEditor;
 
     typedef boost::signals2::shared_connection_block ConnectionBlock;
     ConnectionBlock connectActObjectBlocker;
@@ -174,6 +175,8 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::slotFinishRestoreDocument, this, _1));
     d->connectShowHidden = App::GetApplication().signalShowHidden.connect
         (boost::bind(&Gui::Document::slotShowHidden, this, _1));
+    d->connectChangePropertyEditor = App::GetApplication().signalChangePropertyEditor.connect
+        (boost::bind(&Gui::Document::slotChangePropertyEditor, this, _1));
 
     d->connectFinishRestoreObject = pcDocument->signalFinishRestoreObject.connect
         (boost::bind(&Gui::Document::slotFinishRestoreObject, this, _1));
@@ -237,6 +240,7 @@ Document::~Document()
     d->connectTransactionAppend.disconnect();
     d->connectTransactionRemove.disconnect();
     d->connectTouchedObject.disconnect();
+    d->connectChangePropertyEditor.disconnect();
 
     // e.g. if document gets closed from within a Python command
     d->_isClosing = true;
@@ -2110,5 +2114,9 @@ void Document::toggleInSceneGraph(ViewProvider *vp) {
         }else if(!vp->canAddToSceneGraph())
             scenegraph->removeChild(idx);
     }
+}
+
+void Document::slotChangePropertyEditor(const App::Property &) {
+    setModified(true);
 }
 

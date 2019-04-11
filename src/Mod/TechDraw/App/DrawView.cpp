@@ -117,7 +117,6 @@ void DrawView::onChanged(const App::Property* prop)
             auto page = findParentPage();
             if (ScaleType.isValue("Page")) {
                 Scale.setStatus(App::Property::ReadOnly,true);
-                App::GetApplication().signalChangePropertyEditor(Scale);
                 if (page != nullptr) {
                     if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                        Scale.setValue(page->Scale.getValue());
@@ -127,10 +126,8 @@ void DrawView::onChanged(const App::Property* prop)
             } else if ( ScaleType.isValue("Custom") ) {
                 //don't change Scale
                 Scale.setStatus(App::Property::ReadOnly,false);
-                App::GetApplication().signalChangePropertyEditor(Scale);
             } else if ( ScaleType.isValue("Automatic") ) {
                 Scale.setStatus(App::Property::ReadOnly,true);
-                App::GetApplication().signalChangePropertyEditor(Scale);
                 if (!checkFit(page)) {
                     double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
                     if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop

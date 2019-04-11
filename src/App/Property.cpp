@@ -122,10 +122,7 @@ void Property::touch()
 
 void Property::setReadOnly(bool readOnly)
 {
-    unsigned long status = this->getStatus();
     this->setStatus(App::Property::ReadOnly, readOnly);
-    if (status != this->getStatus())
-        App::GetApplication().signalChangePropertyEditor(*this);
 }
 
 void Property::hasSetValue(void)
@@ -163,14 +160,27 @@ void Property::setStatusValue(unsigned long status) {
     static const unsigned long mask = 
         (1<<PropNoRecompute)|(1<<PropReadOnly)|(1<<PropTransient)|(1<<PropOutput)|(1<<PropHidden);
     status |= StatusBits.to_ulong() & mask;
+    unsigned long oldStatus = StatusBits.to_ulong();
     StatusBits = decltype(StatusBits)(status);
+
+    static unsigned long _signalMask = (1<<Immutable)
+                                     | (1<<ReadOnly)
+                                     | (1<<Hidden)
+                                     | (1<<Transient)
+                                     | (1<<NoModify)
+                                     | (1<<PartialTrigger)
+                                     | (1<<NoRecompute)
+                                     | (1<<Output)
+                                     | (1<<Single)
+                                     | (1<<Ordered);
+    if(father && (status & _signalMask) != (oldStatus & _signalMask))
+        GetApplication().signalChangePropertyEditor(*this);
 }
 
 void Property::setStatus(Status pos, bool on) {
-    // Those PropXXXX bits corresponding to PropertyType which can only be
-    // initialize once
-    if(on || !(pos<=PropStaticBegin && pos>=PropStaticEnd))
-        StatusBits.set(static_cast<size_t>(pos), on);
+    auto bits = StatusBits;
+    bits.set(pos,on);
+    setStatusValue(bits.to_ulong());
 }
 //**************************************************************************
 //**************************************************************************
