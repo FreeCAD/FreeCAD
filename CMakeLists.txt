@@ -1189,14 +1189,8 @@ IF(MINGW)
     LINK_LIBRARIES(-lgdi32)
 ENDIF(MINGW)
 
-# force build directory to be different to source directory
-#if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-#MESSAGE(SEND_ERROR "The build directory (${CMAKE_BINARY_DIR}) must be different to the source directory "
-#                   "(${CMAKE_SOURCE_DIR}). Please choose another build directory!")
-#elseif()
 add_subdirectory(src)
 add_subdirectory(data)
-#endif()
 
 # ================================================================================
 # == Packaging ===================================================================
