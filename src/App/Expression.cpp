@@ -806,6 +806,13 @@ struct EvalFrame {
         return it->second;
     }
 
+    Py::Object *getLocalVar(const std::string &name) {
+        auto iter = vars.find(name);
+        if(iter == vars.end())
+            return 0;
+        return &iter->second->obj;
+    }
+
     Py::Object *getVar(const Expression *owner, const std::string &name, BindType type) {
         auto res = vars.emplace(name,nullptr);
         auto it = res.first;
@@ -3567,10 +3574,20 @@ ExpressionPtr CallableExpression::_eval() const {
     Base::PyGILStateLocker lock;
 
     EvalFrame frame;
-    prepareArguments(this,frame,names,args);
+    prepareArguments(this,frame,names,args,names[0].empty()?1:0);
     frame.push();
+
+    StringList cmds;
+    if(names[0].empty())
+        cmds = prepareCommands(this,args[0].get());
+    else {
+        auto pycmd = frame.getLocalVar("cmd");
+        if(!pycmd) 
+            EXPR_THROW("eval() excepts the command argument to be named as 'cmd'");
+        cmds = prepareCommands(this,PyObjectExpression::create(owner,pycmd->ptr()).get());
+    }
     ExpressionPtr res;
-    for(auto &cmd : prepareCommands(this,args[0].get())) {
+    for(auto &cmd : cmds) {
         res = Expression::parse(owner,cmd,true)->eval();
         switch(res->jump()) {
         case JUMP_RETURN:
