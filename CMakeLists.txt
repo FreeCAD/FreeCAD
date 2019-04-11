@@ -1134,7 +1134,6 @@ include_directories(${CMAKE_BINARY_DIR}/src
 # check for 64-bit platform
 IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
     MESSAGE(STATUS "Platform is 64-bit, set -D_OCC64")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_OCC64")
     add_definitions(-D_OCC64 )
 ELSE(CMAKE_SIZEOF_VOID_P EQUAL 8)
     MESSAGE(STATUS "Platform is 32-bit")
