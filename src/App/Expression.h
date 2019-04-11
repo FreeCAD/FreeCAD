@@ -163,6 +163,8 @@ public:
     };
     ExpressionPtr eval(int options=0) const;
 
+    App::any getValueAsAny(int options=0) const;
+
     bool isSame(const Expression &other) const;
 
     std::string toString(bool persistent=false, bool checkPriority=false, int indent=0) const;
@@ -235,8 +237,6 @@ public:
     };
 
     App::DocumentObject *getOwner() const { return owner; }
-
-    App::any getValueAsAny() const;
 
     struct Component;
     typedef std::unique_ptr<Component> ComponentPtr;

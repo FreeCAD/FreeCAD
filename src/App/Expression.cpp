@@ -1076,7 +1076,14 @@ ExpressionPtr Expression::updateLabelReference(
     return 0;
 }
 
-App::any Expression::getValueAsAny() const {
+App::any Expression::getValueAsAny(int options) const {
+    if(options & OptionCallFrame) {
+        EvalFrame frame;
+        if(options & OptionPythonMode)
+            frame.setPythonMode();
+        frame.push();
+        return getValueAsAny();
+    }
     try {
         if(components.empty())
             return _getValueAsAny();
@@ -1103,7 +1110,7 @@ void Expression::visit(ExpressionVisitor &v) {
 }
 
 ExpressionPtr Expression::eval(int options) const {
-    if(options) {
+    if(options & OptionCallFrame) {
         EvalFrame frame;
         if(options & OptionPythonMode)
             frame.setPythonMode();
