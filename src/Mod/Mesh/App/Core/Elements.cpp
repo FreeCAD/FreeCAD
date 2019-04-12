@@ -1187,6 +1187,21 @@ float MeshGeomFacet::MaximumAngle () const
   return fMaxAngle;
 }
 
+float MeshGeomFacet::MinimumAngle () const
+{
+  float fMinAngle = Mathf::PI;
+
+  for ( int i=0; i<3; i++ ) {
+    Base::Vector3f dir1(_aclPoints[(i+1)%3]-_aclPoints[i]);
+    Base::Vector3f dir2(_aclPoints[(i+2)%3]-_aclPoints[i]);
+    float fAngle = dir1.GetAngle(dir2);
+    if (fAngle < fMinAngle)
+      fMinAngle = fAngle;
+  }
+
+  return fMinAngle;
+}
+
 bool MeshGeomFacet::IsPointOfSphere(const Base::Vector3f& rP) const
 {
   float radius;
@@ -1216,20 +1231,44 @@ bool MeshGeomFacet::IsPointOfSphere(const MeshGeomFacet& rFacet) const
 
 float MeshGeomFacet::AspectRatio() const
 {
-    Base::Vector3f center;
-    float radius = CenterOfCircumCircle(center);
+    Base::Vector3f d0 = _aclPoints[0] - _aclPoints[1];
+    Base::Vector3f d1 = _aclPoints[1] - _aclPoints[2];
+    Base::Vector3f d2 = _aclPoints[2] - _aclPoints[0];
 
-    float minLength = FLOAT_MAX;
-    for (int i=0; i<3; i++) {
-        const Base::Vector3f& p0 = _aclPoints[i];
-        const Base::Vector3f& p1 = _aclPoints[(i+1)%3];
-        float distance = Base::Distance(p0, p1);
-        if (distance < minLength) {
-            minLength = distance;
-        }
-    }
+    float l2, maxl2 = d0.Sqr();
+    if ((l2=d1.Sqr()) > maxl2)
+        maxl2 = l2;
 
-    if (minLength == 0)
-        return FLOAT_MAX;
-    return radius / minLength;
+    d1 = d2;
+    if ((l2=d1.Sqr()) > maxl2)
+        maxl2 = l2;
+
+    // squared area of the parallelogram spanned by d0 and d1
+    float a2 = (d0 % d1).Sqr();
+    return float(sqrt( (maxl2 * maxl2) / a2 ));
+}
+
+float MeshGeomFacet::AspectRatio2() const
+{
+    const Base::Vector3f& rcP1 = _aclPoints[0];
+    const Base::Vector3f& rcP2 = _aclPoints[1];
+    const Base::Vector3f& rcP3 = _aclPoints[2];
+
+    float a = Base::Distance(rcP1, rcP2);
+    float b = Base::Distance(rcP2, rcP3);
+    float c = Base::Distance(rcP3, rcP1);
+
+    // https://stackoverflow.com/questions/10289752/aspect-ratio-of-a-triangle-of-a-meshed-surface
+    return a * b * c / ((b + c - a) * (c + a - b) * (a + b - c));
+}
+
+float MeshGeomFacet::Roundness() const
+{
+    const double FOUR_ROOT3 = 6.928203230275509;
+    double area = Area();
+    Base::Vector3f d0 = _aclPoints[0] - _aclPoints[1];
+    Base::Vector3f d1 = _aclPoints[1] - _aclPoints[2];
+    Base::Vector3f d2 = _aclPoints[2] - _aclPoints[0];
+
+    return (float) (FOUR_ROOT3 * area / (d0.Sqr() + d1.Sqr() + d2.Sqr()));
 }

@@ -369,7 +369,7 @@ public:
    */
   bool IsDegenerated(float epsilon) const;
   /**
-   * Checks whether the triangle is deformed. A triangle is deformed if the an angle
+   * Checks whether the triangle is deformed. A triangle is deformed if an angle
    * exceeds a given maximum angle or falls below a given minimum angle.
    * For performance reasons the cosine of minimum and maximum angle is expected.
    */
@@ -415,6 +415,8 @@ public:
   inline float Area () const;
   /** Calculates the maximum angle of a facet. */
   float MaximumAngle () const;
+  /** Calculates the minimum angle of a facet. */
+  float MinimumAngle () const;
   /** Checks if the facet is inside the bounding box or intersects with it. */
   inline bool ContainedByOrIntersectBoundingBox (const Base::BoundBox3f &rcBB) const;
   /** Checks if the facet intersects with the given bounding box. */
@@ -484,9 +486,15 @@ public:
    * If one of the facet's points is inside the sphere true is returned, otherwise false.
    */
   bool IsPointOfSphere(const MeshGeomFacet& rFacet) const;
-  /** The aspect ratio is the ratio of the radius of the circum-circle to the shortest edge length.
+  /** The aspect ratio is the longest edge length divided by its height.
    */
   float AspectRatio() const;
+  /** The alternative aspect ration is the ratio of the radius of the circum-circle and twice the radius of the in-circle.
+   */
+  float AspectRatio2() const;
+  /** The roundness is in the range between 0.0 (colinear) and 1.0 (equilateral).
+   */
+  float Roundness() const;
 
 protected:
   Base::Vector3f  _clNormal; /**< Normal of the facet. */
