@@ -1582,9 +1582,12 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
  * @return The value of the property or field.
  */
 
-App::any ObjectIdentifier::getValue(bool pathValue) const
+App::any ObjectIdentifier::getValue(bool pathValue, bool *isPseudoProperty) const
 {
     ResolveResults rs(*this);
+
+    if(isPseudoProperty)
+        *isPseudoProperty = rs.propertyType!=PseudoNone;
 
     if(rs.resolvedProperty && rs.propertyType==PseudoNone && pathValue)
         return rs.resolvedProperty->getPathValue(*this);

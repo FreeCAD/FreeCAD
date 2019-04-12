@@ -333,7 +333,7 @@ public:
 
     // Getter
 
-    App::any getValue(bool pathValue=false) const;
+    App::any getValue(bool pathValue=false, bool *isPseudoProperty=0) const;
 
     // Setter; is const because it does not alter the object state,
     // but does have a aide effect.
