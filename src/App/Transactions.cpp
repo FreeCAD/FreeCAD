@@ -34,10 +34,13 @@
 using Base::Writer;
 #include <Base/Reader.h>
 using Base::XMLReader;
+#include <Base/Console.h>
 #include "Transactions.h"
 #include "Property.h"
 #include "Document.h"
 #include "DocumentObject.h"
+
+FC_LOG_LEVEL_INIT("App",true,true);
 
 using namespace App;
 using namespace std;
@@ -158,14 +161,26 @@ void Transaction::removeProperty(TransactionalObject *Obj,
 void Transaction::apply(Document &Doc, bool forward)
 {
     TransactionList::iterator It;
-    //for (It= _Objects.begin();It!=_Objects.end();++It)
-    //    It->second->apply(Doc,const_cast<DocumentObject*>(It->first));
-    for (It= _Objects.begin();It!=_Objects.end();++It)
-        It->second->applyDel(Doc, const_cast<TransactionalObject*>(It->first));
-    for (It= _Objects.begin();It!=_Objects.end();++It)
-        It->second->applyNew(Doc, const_cast<TransactionalObject*>(It->first));
-    for (It= _Objects.begin();It!=_Objects.end();++It)
-        It->second->applyChn(Doc, const_cast<TransactionalObject*>(It->first), forward);
+    std::string errMsg;
+    try {
+        for (It= _Objects.begin();It!=_Objects.end();++It)
+            It->second->applyDel(Doc, const_cast<TransactionalObject*>(It->first));
+        for (It= _Objects.begin();It!=_Objects.end();++It)
+            It->second->applyNew(Doc, const_cast<TransactionalObject*>(It->first));
+        for (It= _Objects.begin();It!=_Objects.end();++It)
+            It->second->applyChn(Doc, const_cast<TransactionalObject*>(It->first), forward);
+    }catch(Base::Exception &e) {
+        e.ReportException();
+        errMsg = e.what();
+    }catch(std::exception &e) {
+        errMsg = e.what();
+    }catch(...) {
+        errMsg = "Unknown exception";
+    }
+    if(errMsg.size()) {
+        FC_ERR("Exception on " << (forward?"redo":"undo") << " '" 
+                << Name << "':" << errMsg);
+    }
 }
 
 void Transaction::addObjectNew(TransactionalObject *Obj)
