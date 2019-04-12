@@ -1128,13 +1128,19 @@ void MeshObject::refine()
     this->_segments.clear();
 }
 
-void MeshObject::removeSmallEdges(float length)
+void MeshObject::removeNeedles(float length)
 {
     unsigned long count = _kernel.CountFacets();
-    MeshCore::MeshRemoveSmallEdges eval(_kernel, length);
+    MeshCore::MeshRemoveNeedles eval(_kernel, length);
     eval.Fixup();
     if (_kernel.CountFacets() < count)
         this->_segments.clear();
+}
+
+void MeshObject::validateCaps(float fMaxAngle, float fSplitFactor)
+{
+    MeshCore::MeshFixCaps eval(_kernel, fMaxAngle, fSplitFactor);
+    eval.Fixup();
 }
 
 void MeshObject::optimizeTopology(float fMaxAngle)
@@ -1383,6 +1389,15 @@ void MeshObject::removeInvalidPoints()
 {
     MeshCore::MeshEvalNaNPoints nan(_kernel);
     deletePoints(nan.GetIndices());
+}
+
+void MeshObject::mergeFacets()
+{
+    unsigned long count = _kernel.CountFacets();
+    MeshCore::MeshFixMergeFacets merge(_kernel);
+    merge.Fixup();
+    if (_kernel.CountFacets() < count)
+        this->_segments.clear();
 }
 
 void MeshObject::validateIndices()
