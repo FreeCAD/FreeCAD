@@ -731,6 +731,7 @@ protected:
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
     virtual ExpressionPtr _eval() const;
+    virtual App::any _getValueAsAny() const;
 
 protected:
     ExpressionPtr expr;

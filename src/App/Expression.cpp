@@ -4908,8 +4908,10 @@ App::any IDictExpression::_getValueAsAny() const {
 EXPR_TYPESYSTEM_SOURCE(App::BaseStatement, App::Expression);
 
 App::any BaseStatement::_getValueAsAny() const {
-    FC_ERR("Invalid call to _getValueAsAny()");
-    return App::any();
+    auto expr = _eval();
+    if(!expr)
+        return App::any();
+    return expr->getValueAsAny();
 }
 
 /////////////////////////////////////////////////////////////
@@ -5030,6 +5032,11 @@ ExpressionPtr JumpStatement::_eval() const {
     if(!expr)
         return copy();
     return JumpStatement::create(owner,type,expr->eval());
+}
+
+App::any JumpStatement::_getValueAsAny() const {
+    FC_ERR("Invalid statement: " << toStr());
+    return App::any();
 }
 
 int JumpStatement::jump() const {
