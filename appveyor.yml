@@ -55,7 +55,7 @@ build_script:
   - mkdir bin
   - xcopy C:\projects\freecad\FreeCADLibs\bin C:\projects\freecad\build\bin /E /Q
   - ps: fsutil behavior set disablelastaccess 0 # Enable Access time feature on Windows (for clcache)
-  - msbuild FreeCAD_Trunk.sln /p:TrackFileAccess=false /p:CLToolExe=clcache.exe /p:CLToolPath=c:\Python37\Scripts\ /m
+  - msbuild FreeCAD.sln /p:TrackFileAccess=false /p:CLToolExe=clcache.exe /p:CLToolPath=c:\Python37\Scripts\ /m
   - ps: fsutil behavior set disablelastaccess 1
   - clcache -s
 
