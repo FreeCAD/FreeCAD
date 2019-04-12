@@ -679,12 +679,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         if DEBUG: print("clone ",end="")
                     else:
                         if GET_EXTRUSIONS and (MERGE_MODE_ARCH != 1):
-                            if ptype in ["IfcWall","IfcWallStandardCase"]:
+                            if ptype in ["IfcWall","IfcWallStandardCase","IfcSpace"]:
                                 sortmethod = "z"
                             else:
                                 sortmethod = "area"
                             ex = Arch.getExtrusionData(shape,sortmethod) # is this an extrusion?
                             if ex:
+                                #print("found extrusion:",ex)
                                 # check for extrusion profile
                                 baseface = None
                                 profileid = None
@@ -841,8 +842,12 @@ def insert(filename,docname,skip=[],only=[],root=None):
             # setting IFC attributes
 
                 for attribute in ArchIFCSchema.IfcProducts[product.is_a()]["attributes"]:
+                    #print("attribute:",attribute["name"])
                     if hasattr(product, attribute["name"]) and getattr(product, attribute["name"]) and hasattr(obj,attribute["name"]):
+                        #print("Setting attribute",attribute["name"],"to",getattr(product, attribute["name"]))
                         setattr(obj, attribute["name"], getattr(product, attribute["name"]))
+                        # TODO: ArchIFCSchema.IfcProducts uses the IFC version from the FreeCAD prefs. 
+                        # This might not coincide with the file being opened, hence some attributes are not properly read.
 
             if obj:
                 s = ""
@@ -1947,7 +1952,7 @@ def export(exportList,filename):
                 #if DEBUG : print("      adding ifc attributes")
                 props = []
                 for key in obj.IfcData:
-                    if not (key in ["IfcUID","FlagForceBrep"]):
+                    if not (key in ["attributes","IfcUID","FlagForceBrep"]):
 
                         # (deprecated) properties in IfcData dict are stored as "key":"type(value)"
 
