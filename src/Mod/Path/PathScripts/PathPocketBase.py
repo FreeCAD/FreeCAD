@@ -46,6 +46,9 @@ def translate(context, text, disambig=None):
 class ObjectPocket(PathAreaOp.ObjectOp):
     '''Base class for proxy objects of all pocket operations.'''
 
+    rotateFlag = False
+    axialFeed = 360.0 # degres per minute
+
     def areaOpFeatures(self, obj):
         '''areaOpFeatures(obj) ... Pockets have a FinishDepth and work on Faces'''
         return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth | self.pocketOpFeatures(obj)
