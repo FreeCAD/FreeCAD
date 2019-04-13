@@ -177,11 +177,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                             elif len(e.Vertexes) == 1 and isellipse:
                                 #svg = getEllipse(e)
                                 #return svg
-                                endpoints = (getProj(c.value((c.LastParameter-\
-                                        c.FirstParameter)/2.0), plane), \
-                                        getProj(vs[-1].Point, plane))
+                                endpoints = [getProj(c.value((c.LastParameter-c.FirstParameter)/2.0), plane),
+                                             getProj(vs[-1].Point, plane)]
                             else:
-                                endpoints = (getProj(vs[-1].Point), plane)
+                                endpoints = [getProj(vs[-1].Point, plane)]
                             # arc
                             if iscircle:
                                 rx = ry = c.Radius
