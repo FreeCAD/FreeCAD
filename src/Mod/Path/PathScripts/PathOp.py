@@ -35,8 +35,12 @@ from PySide import QtCore
 
 __title__ = "Base class for all operations."
 __author__ = "sliptonic (Brad Collette)"
+__contributors__ = ""
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties implementation for all Path operations."
+__scriptVersion__ = "1a Stable"
+__created__ = "2017"
+__lastModified__ = "2017"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
