@@ -454,7 +454,6 @@ class ObjectOp(PathOp.ObjectOp):
 
         if angle != 500.0 and angle != 0.0:
             self.rotateFlag = True
-            obj.IndexAngle = angle
             rtn = True
             if orientation == 'Y':
                 axis = 'X'
