@@ -1154,7 +1154,7 @@ class CubicBezCurve(Line):
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create BezCurve"),
                             ['points = '+pts,
-                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+')',
+                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+',Degree='+str(self.degree)+')',
                              'Draft.autogroup(bez)',
                              'FreeCAD.ActiveDocument.recompute()'])
             except:
