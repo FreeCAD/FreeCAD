@@ -606,7 +606,8 @@ class Line(Creator):
                              'line.X2 = '+str(p2.x),
                              'line.Y2 = '+str(p2.y),
                              'line.Z2 = '+str(p2.z),
-                             'Draft.autogroup(line)'])
+                             'Draft.autogroup(line)',
+                             'FreeCAD.ActiveDocument.recompute()'])
             else:
                 # building command string
                 rot,sup,pts,fil = self.getStrings()
@@ -617,7 +618,8 @@ class Line(Creator):
                              'pl.Base = '+DraftVecUtils.toString(self.node[0]),
                              'points = '+pts,
                              'line = Draft.makeWire(points,placement=pl,closed='+str(closed)+',face='+fil+',support='+sup+')',
-                             'Draft.autogroup(line)'])
+                             'Draft.autogroup(line)',
+                             'FreeCAD.ActiveDocument.recompute()'])
         Creator.finish(self)
         if self.ui:
             if self.ui.continueMode:
@@ -772,7 +774,8 @@ class Wire(Line):
                     rems = ["FreeCAD.ActiveDocument.removeObject(\""+o.Name+"\")" for o in FreeCADGui.Selection.getSelection()]
                     FreeCADGui.addModule("Draft")
                     todo.delayCommit([(translate("draft","Convert to Wire"),
-                            ['wire = Draft.makeWire(['+pts+'])']+rems+['Draft.autogroup(wire)'])])
+                            ['wire = Draft.makeWire(['+pts+'])']+rems+['Draft.autogroup(wire)',
+                             'FreeCAD.ActiveDocument.recompute()'])])
                     return
 
         Line.Activated(self,name=translate("draft","DWire"))
@@ -869,7 +872,8 @@ class BSpline(Line):
                 self.commit(translate("draft","Create B-spline"),
                             ['points = '+pts,
                              'spline = Draft.makeBSpline(points,closed='+str(closed)+',face='+fil+',support='+sup+')',
-                             'Draft.autogroup(spline)'])
+                             'Draft.autogroup(spline)',
+                             'FreeCAD.ActiveDocument.recompute()'])
             except:
                 print("Draft: error delaying commit")
         Creator.finish(self)
@@ -882,6 +886,7 @@ class BezCurve(Line):
 
     def __init__(self):
         Line.__init__(self,wiremode=True)
+        self.degree = None
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_BezCurve',
@@ -901,7 +906,7 @@ class BezCurve(Line):
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
-            self.bezcurvetrack.update(self.node + [self.point])                 #existing points + this pointer position
+            self.bezcurvetrack.update(self.node + [self.point],degree=self.degree)                 #existing points + this pointer position
             redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):       #left click
@@ -933,7 +938,7 @@ class BezCurve(Line):
         "undoes last line segment"
         if (len(self.node) > 1):
             self.node.pop()
-            self.bezcurvetrack.update(self.node)
+            self.bezcurvetrack.update(self.node,degree=self.degree)
             self.obj.Shape = self.updateShape(self.node)
             msg(translate("draft", "Last point has been removed")+"\n")
 
@@ -949,11 +954,23 @@ class BezCurve(Line):
 
     def updateShape(self, pts):
         '''creates shape for display during creation process.'''
-# not quite right. draws 1 big bez.  sb segmented
-        c = Part.BezierCurve()
-        c.setPoles(pts)
-        e = Part.Edge(c)
-        w = Part.Wire(e)
+        edges = []
+        if len(pts) >= 2: #allow lower degree segment
+            poles=pts[1:]
+        else:
+            poles=[]
+        if self.degree:
+            segpoleslst = [poles[x:x+self.degree] for x in range(0, len(poles), (self.degree or 1))]
+        else:
+            segpoleslst = [pts]
+        startpoint=pts[0]
+        for segpoles in segpoleslst:
+            c = Part.BezierCurve() #last segment may have lower degree
+            c.increase(len(segpoles))
+            c.setPoles([startpoint]+segpoles)
+            edges.append(Part.Edge(c))
+            startpoint = segpoles[-1]
+        w = Part.Wire(edges)
         return(w)
 
     def finish(self,closed=False,cont=False):
@@ -974,7 +991,7 @@ class BezCurve(Line):
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create BezCurve"),
                             ['points = '+pts,
-                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+')',
+                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+',Degree='+str(self.degree)+')',
                              'Draft.autogroup(bez)'])
             except:
                 print("Draft: error delaying commit")
@@ -982,6 +999,171 @@ class BezCurve(Line):
         if self.ui:
             if self.ui.continueMode:
                 self.Activated()
+
+class CubicBezCurve(Line):
+    "a FreeCAD command for creating a 3rd degree Bezier Curve"
+
+    def __init__(self):
+        Line.__init__(self,wiremode=True)
+        self.degree = 3
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_BezCurve',
+                #'Accel' : "B, Z",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "CubicBezCurve"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Cubic Bezier curve \nClick and drag to define control points. CTRL to snap, SHIFT to constrain")}
+
+    def Activated(self):
+        Line.Activated(self,name=translate("draft","CubicBezCurve"))
+        if self.doc:
+            self.bezcurvetrack = bezcurveTracker()
+
+    def action(self,arg):
+        "scene event handler"
+        if arg["Type"] == "SoKeyboardEvent":
+            if arg["Key"] == "ESCAPE":
+                self.finish()
+        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+            self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
+            if (len(self.node)-1) % self.degree == 0 and len(self.node) > 2 :
+                    prevctrl = 2 * self.node[-1] - self.point
+                    self.bezcurvetrack.update(self.node[0:-2] + [prevctrl] + [self.node[-1]] +[self.point],degree=self.degree)                 #existing points + this pointer position
+            else:
+                self.bezcurvetrack.update(self.node + [self.point],degree=self.degree)                 #existing points + this pointer position
+            redraw3DView()
+        elif arg["Type"] == "SoMouseButtonEvent":
+            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):       #left click
+                if (arg["Position"] == self.pos):                               #double click?
+                    if len(self.node) > 2:
+                        self.node = self.node[0:-2]
+                    else:
+                        self.node = []
+                    return
+                else:
+                    if (not self.node) and (not self.support):                  #first point
+                        getSupport(arg)
+                        self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
+                    if self.point:
+                        self.ui.redraw()
+                        self.pos = arg["Position"]
+                        self.node.append(self.point)                            #add point to "clicked list"
+                        # sb add a control point, if mod(len(cpoints),2) == 0) then create 2 handle points?
+                        self.drawUpdate(self.point)                             #???
+                        if (not self.isWire and len(self.node) == 2):
+                            self.finish(False,cont=True)
+                        if (len(self.node) > 2):                                #does this make sense for a BCurve?
+                            self.node.append(self.point)                            #add point to "clicked list"
+                            self.drawUpdate(self.point)
+                            # DNC: allows to close the curve
+                            # by placing ends close to each other
+                            # with tol = Draft tolerance
+                            # old code has been to insensitive
+                            if ((self.point-self.node[0]).Length < Draft.tolerance()) and len(self.node) >= 4:
+                                #self.undolast()
+                                self.node=self.node[0:-2]
+                                self.node.append(2 * self.node[0] - self.node[1]) #close the curve with a smooth simmetric knot                                
+                                self.finish(True,cont=True)
+                                msg(translate("draft", "Bezier curve has been closed")+"\n")
+            if (arg["State"] == "UP") and (arg["Button"] == "BUTTON1"):       #left click
+                if (arg["Position"] == self.pos):                               #double click?
+                    self.node = self.node[0:-2]
+                    return
+                else:
+                    if (not self.node) and (not self.support):                  #first point
+                        return
+                    if self.point:
+                        self.ui.redraw()
+                        self.pos = arg["Position"]
+                        self.node.append(self.point)                            #add point to "clicked list"
+                        # sb add a control point, if mod(len(cpoints),2) == 0) then create 2 handle points?
+                        self.drawUpdate(self.point)                             #???
+                        if (not self.isWire and len(self.node) == 2):
+                            self.finish(False,cont=True)
+                        if (len(self.node) > 2):                                #does this make sense for a BCurve?
+                            self.node[-3] = 2 * self.node[-2] - self.node[-1]
+                            self.drawUpdate(self.point)  
+                            # DNC: allows to close the curve
+                            # by placing ends close to each other
+                            # with tol = Draft tolerance
+                            # old code has been to insensitive
+
+    def undolast(self):
+        "undoes last line segment"
+        if (len(self.node) > 1):
+            self.node.pop()
+            self.bezcurvetrack.update(self.node,degree=self.degree)
+            self.obj.Shape = self.updateShape(self.node)
+            msg(translate("draft", "Last point has been removed")+"\n")
+
+
+    def drawUpdate(self,point):
+        if (len(self.node) == 1):
+            self.bezcurvetrack.on()
+            if self.planetrack:
+                self.planetrack.set(self.node[0])
+            msg(translate("draft", "Click and drag to define next knot:\n"))
+        elif (len(self.node)-1) % self.degree == 1 and len(self.node) > 2 : #is a knot
+            self.obj.Shape = self.updateShape(self.node[:-1])
+            msg(translate("draft", "Click and drag to define next knot: ESC to Finish or close (o):")+"\n")
+
+    def updateShape(self, pts):
+        '''creates shape for display during creation process.'''
+# not quite right. draws 1 big bez.  sb segmented
+        edges = []
+        
+        if len(pts) >= 2: #allow lower degree segment
+            poles=pts[1:]
+        else:
+            poles=[]
+        
+        if self.degree:
+            segpoleslst = [poles[x:x+self.degree] for x in range(0, len(poles), (self.degree or 1))]
+        else:
+            segpoleslst = [pts]
+            
+        startpoint=pts[0]
+        
+        for segpoles in segpoleslst:
+            c = Part.BezierCurve() #last segment may have lower degree
+            c.increase(len(segpoles))
+            c.setPoles([startpoint]+segpoles)
+            edges.append(Part.Edge(c))
+            startpoint = segpoles[-1]
+        w = Part.Wire(edges)
+        return(w)
+
+    def finish(self,closed=False,cont=False):
+        "terminates the operation and closes the poly if asked"
+        if self.ui:
+            if hasattr(self,"bezcurvetrack"):
+                self.bezcurvetrack.finalize()
+        if not Draft.getParam("UiMode",1):
+            FreeCADGui.Control.closeDialog()
+        if self.obj:
+            # remove temporary object, if any
+            old = self.obj.Name
+            todo.delay(self.doc.removeObject,old)
+        if closed == False :
+            cleannd=(len(self.node)-1) % self.degree
+            if cleannd == 0 : self.node = self.node[0:-3]
+            if cleannd > 0 : self.node = self.node[0:-cleannd]
+        if (len(self.node) > 1):
+            try:
+                # building command string
+                rot,sup,pts,fil = self.getStrings()
+                FreeCADGui.addModule("Draft")
+                self.commit(translate("draft","Create BezCurve"),
+                            ['points = '+pts,
+                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+')',
+                             'Draft.autogroup(bez)',
+                             'FreeCAD.ActiveDocument.recompute()'])
+            except:
+                print("Draft: error delaying commit")
+        Creator.finish(self)
+        if self.ui:
+            if self.ui.continueMode:
+                self.Activated()
+
 
 class FinishLine:
     "a FreeCAD command to finish any running Line drawing operation"
@@ -1104,7 +1286,8 @@ class Rectangle(Creator):
                              'pl.Rotation.Q='+rot,
                              'pl.Base = '+DraftVecUtils.toString(base),
                              'plane.Placement = pl',
-                             'Draft.autogroup(plane)'])
+                             'Draft.autogroup(plane)',
+                             'FreeCAD.ActiveDocument.recompute()'])
             else:
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create Rectangle"),
@@ -1112,7 +1295,8 @@ class Rectangle(Creator):
                              'pl.Rotation.Q = '+rot,
                              'pl.Base = '+DraftVecUtils.toString(base),
                              'rec = Draft.makeRectangle(length='+str(length)+',height='+str(height)+',placement=pl,face='+fil+',support='+sup+')',
-                             'Draft.autogroup(rec)'])
+                             'Draft.autogroup(rec)',
+                             'FreeCAD.ActiveDocument.recompute()'])
         except:
             print("Draft: error delaying commit")
         self.finish(cont=True)
@@ -1369,7 +1553,8 @@ class Arc(Creator):
                                  'pl.Rotation.Q = '+rot,
                                  'pl.Base = '+DraftVecUtils.toString(self.center),
                                  'circle.Placement = pl',
-                                 'Draft.autogroup(circle)'])
+                                 'Draft.autogroup(circle)',
+                                 'FreeCAD.ActiveDocument.recompute()'])
                 else:
                     # building command string
                     FreeCADGui.addModule("Draft")
@@ -1378,7 +1563,8 @@ class Arc(Creator):
                                  'pl.Rotation.Q='+rot,
                                  'pl.Base='+DraftVecUtils.toString(self.center),
                                  'circle = Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',support='+sup+')',
-                                 'Draft.autogroup(circle)'])
+                                 'Draft.autogroup(circle)',
+                                 'FreeCAD.ActiveDocument.recompute()'])
             except:
                 print("Draft: error delaying commit")
         else:
@@ -1404,7 +1590,8 @@ class Arc(Creator):
                                  'pl.Rotation.Q = '+rot,
                                  'pl.Base = '+DraftVecUtils.toString(self.center),
                                  'circle.Placement = pl',
-                                 'Draft.autogroup(circle)'])
+                                 'Draft.autogroup(circle)',
+                                 'FreeCAD.ActiveDocument.recompute()'])
                 else:
                     # building command string
                     FreeCADGui.addModule("Draft")
@@ -1413,7 +1600,8 @@ class Arc(Creator):
                                  'pl.Rotation.Q='+rot,
                                  'pl.Base='+DraftVecUtils.toString(self.center),
                                  'circle = Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',startangle='+str(sta)+',endangle='+str(end)+',support='+sup+')',
-                                 'Draft.autogroup(circle)'])
+                                 'Draft.autogroup(circle)',
+                                 'FreeCAD.ActiveDocument.recompute()'])
             except:
                     print("Draft: error delaying commit")
         self.finish(cont=True)
@@ -1640,7 +1828,8 @@ class Polygon(Creator):
                          'pl.Rotation.Q = ' + rot,
                          'pl.Base = ' + DraftVecUtils.toString(self.center),
                          'pol = Draft.makePolygon(' + str(self.ui.numFaces.value()) + ',radius=' + str(self.rad) + ',inscribed=True,placement=pl,face=' + fil + ',support=' + sup + ')',
-                         'Draft.autogroup(pol)'])
+                         'Draft.autogroup(pol)',
+                         'FreeCAD.ActiveDocument.recompute()'])
         FreeCAD.ActiveDocument.recompute()
         self.finish(cont=True)
 
@@ -1737,7 +1926,8 @@ class Ellipse(Creator):
                              'pl.Rotation.Q='+rot,
                              'pl.Base = '+DraftVecUtils.toString(center),
                              'ellipse.Placement = pl',
-                             'Draft.autogroup(ellipse)'])
+                             'Draft.autogroup(ellipse)',
+                             'FreeCAD.ActiveDocument.recompute()'])
             else:
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create Ellipse"),
@@ -1745,7 +1935,8 @@ class Ellipse(Creator):
                              'pl.Rotation.Q = '+rot,
                              'pl.Base = '+DraftVecUtils.toString(center),
                              'ellipse = Draft.makeEllipse('+str(r1)+','+str(r2)+',placement=pl,face='+fil+',support='+sup+')',
-                             'Draft.autogroup(ellipse)'])
+                             'Draft.autogroup(ellipse)',
+                             'FreeCAD.ActiveDocument.recompute()'])
         except:
             print("Draft: Error: Unable to create object.")
         self.finish(cont=True)
@@ -1837,7 +2028,8 @@ class Text(Creator):
         FreeCADGui.addModule("Draft")
         self.commit(translate("draft","Create Text"),
                     ['text = Draft.makeText('+tx+',point='+DraftVecUtils.toString(self.node[0])+')',
-                    'Draft.autogroup(text)'])
+                    'Draft.autogroup(text)',
+                    'FreeCAD.ActiveDocument.recompute()'])
         FreeCAD.ActiveDocument.recompute()
 
         self.finish(cont=True)
@@ -1974,7 +2166,8 @@ class Dimension(Creator):
             self.commit(translate("draft","Create Dimension"),
                         ['dim = Draft.makeDimension('+DraftVecUtils.toString(p1)+','+DraftVecUtils.toString(p2)+','+DraftVecUtils.toString(p3)+')',
                          'FreeCAD.ActiveDocument.removeObject("'+o.Name+'")',
-                         'Draft.autogroup(dim)'])
+                         'Draft.autogroup(dim)',
+                         'FreeCAD.ActiveDocument.recompute()'])
 
     def createObject(self):
         "creates an object in the current doc"
@@ -1988,29 +2181,35 @@ class Dimension(Creator):
                 normal = DraftVecUtils.toString((v1.cross(v2)).normalize())
             self.commit(translate("draft","Create Dimension"),
                         ['dim = Draft.makeAngularDimension(center='+DraftVecUtils.toString(self.center)+',angles=['+str(self.angledata[0])+','+str(self.angledata[1])+'],p3='+DraftVecUtils.toString(self.node[-1])+',normal='+normal+')',
-                        'Draft.autogroup(dim)'])
+                        'Draft.autogroup(dim)',
+                        'FreeCAD.ActiveDocument.recompute()'])
         elif self.link and (not self.arcmode):
             ops = []
             if self.force == 1:
                 self.commit(translate("draft","Create Dimension"),
                         ['dim = Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+','+str(self.link[2])+','+DraftVecUtils.toString(self.node[2])+')','dim.Direction=FreeCAD.Vector(0,1,0)',
-                        'Draft.autogroup(dim)'])
+                        'Draft.autogroup(dim)',
+                        'FreeCAD.ActiveDocument.recompute()'])
             elif self.force == 2:
                 self.commit(translate("draft","Create Dimension"),
                         ['dim = Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+','+str(self.link[2])+','+DraftVecUtils.toString(self.node[2])+')','dim.Direction=FreeCAD.Vector(1,0,0)',
-                        'Draft.autogroup(dim)'])
+                        'Draft.autogroup(dim)',
+                        'FreeCAD.ActiveDocument.recompute()'])
             else:
                 self.commit(translate("draft","Create Dimension"),
                         ['dim = Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+','+str(self.link[2])+','+DraftVecUtils.toString(self.node[2])+')',
-                        'Draft.autogroup(dim)'])
+                        'Draft.autogroup(dim)',
+                        'FreeCAD.ActiveDocument.recompute()'])
         elif self.arcmode:
             self.commit(translate("draft","Create Dimension"),
                         ['dim = Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+',"'+str(self.arcmode)+'",'+DraftVecUtils.toString(self.node[2])+')',
-                        'Draft.autogroup(dim)'])
+                        'Draft.autogroup(dim)',
+                        'FreeCAD.ActiveDocument.recompute()'])
         else:
             self.commit(translate("draft","Create Dimension"),
                         ['dim = Draft.makeDimension('+DraftVecUtils.toString(self.node[0])+','+DraftVecUtils.toString(self.node[1])+','+DraftVecUtils.toString(self.node[2])+')',
-                        'Draft.autogroup(dim)'])
+                        'Draft.autogroup(dim)',
+                        'FreeCAD.ActiveDocument.recompute()'])
         if self.ui.continueMode:
             self.cont = self.node[2]
             if not self.dir:
@@ -2277,7 +2476,8 @@ class ShapeString(Creator):
                          'plm.Rotation.Q='+qr,
                          'ss.Placement=plm',
                          'ss.Support='+sup,
-                         'Draft.autogroup(ss)'])
+                         'Draft.autogroup(ss)',
+                         'FreeCAD.ActiveDocument.recompute()'])
         except Exception as e:
             msg("Draft_ShapeString: error delaying commit", "error")
         self.finish()
@@ -4304,29 +4504,19 @@ class Edit(Modifier):
                 
                 if self.editing == None:
                     p = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
-                    info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)        
-                    msg(info)
-                    msg("\n")
-                    selObjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(p)        
-                    msg(selObjs)
-                    if info:
-#                        for selObj in selObjs:
-#                            msg(print(selObj))
-#                            if 'EditNode' in selObj["Component"]:
-#                                info = selObj
-#                                #msg("edit node")
-#                                #msg(info)
-#                                break
-#                            else:
-#                                info=selObjs[0]
-#                                #msg("/n oggetto")
-#                                #msg(info)
-                        if info["Object"] != self.obj.Name:
-                            return
+                    done = False
+                    selobjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(p)
+                    if not selobjs:
+                        return
+                    for info in selobjs:
+                        if info["Object"] == self.obj.Name:
+                            if done:
+                                return
                         if self.ui.addButton.isChecked() \
                             and Draft.getType(self.obj) == "Wire" \
                             and 'Edge' in info["Component"]:
                                 self.addPointOnEdge(FreeCAD.Vector(info["x"],info["y"],info["z"]), int(info["Component"][4:]))
+                                done = True
                         elif self.ui.addButton.isChecked():
                             if self.point:
                                 pt = self.point
@@ -4334,35 +4524,43 @@ class Edit(Modifier):
                                     # prefer "real" 3D location over working-plane-driven one if possible
                                     pt = FreeCAD.Vector(info["x"],info["y"],info["z"])
                                 self.addPoint(pt,info)
-                        elif self.ui.delButton.isChecked():
-                            if 'EditNode' in info["Component"]:
-                                self.delPoint(int(info["Component"][8:]))
-                         # don't do tan/sym on DWire/BSpline!
-                        elif ((Draft.getType(self.obj) == "BezCurve") and
-                              (self.ui.sharpButton.isChecked())):
-                            if 'EditNode' in info["Component"]:
-                                self.smoothBezPoint(int(info["Component"][8:]), info, 'Sharp')
-                        elif ((Draft.getType(self.obj) == "BezCurve") and
-                              (self.ui.tangentButton.isChecked())):
-                            if 'EditNode' in info["Component"]:
-                                self.smoothBezPoint(int(info["Component"][8:]), info, 'Tangent')
-                        elif ((Draft.getType(self.obj) == "BezCurve") and
-                              (self.ui.symmetricButton.isChecked())):
-                            if 'EditNode' in info["Component"]:
-                                self.smoothBezPoint(int(info["Component"][8:]), info, 'Symmetric')
-                        elif 'EditNode' in info["Component"]:
-                            if self.ui.arc3PtButton.isChecked():
-                                self.arc3Pt = True#store arc 3 points edit mode
+                                done = True
+                        ep = None
+                        if ('EditNode' in info["Component"]):
+                            ep = int(info["Component"][8:])
+                        elif ('Vertex' in info["Component"]) or ('Edge' in info["Component"]):
+                            p = FreeCAD.Vector(info["x"],info["y"],info["z"])
+                            for i,t in enumerate(self.trackers):
+                                if (t.get().sub(p)).Length <= 0.01:
+                                    ep = i
+                                    break
+                        if ep != None:
+                            if self.ui.delButton.isChecked():
+                                self.delPoint(ep)
+                             # don't do tan/sym on DWire/BSpline!
+                            elif ((Draft.getType(self.obj) == "BezCurve") and
+                                  (self.ui.sharpButton.isChecked())):
+                                self.smoothBezPoint(ep, info, 'Sharp')
+                            elif ((Draft.getType(self.obj) == "BezCurve") and
+                                  (self.ui.tangentButton.isChecked())):
+                                self.smoothBezPoint(ep, info, 'Tangent')
+                            elif ((Draft.getType(self.obj) == "BezCurve") and
+                                  (self.ui.symmetricButton.isChecked())):
+                                self.smoothBezPoint(ep, info, 'Symmetric')
                             else:
-                                self.arc3Pt = False#decide if it's deselected after every editing point
-                            self.ui.pointUi()
-                            self.ui.isRelative.show()
-                            self.editing = int(info["Component"][8:])
-                            self.trackers[self.editing].off()
-                            if hasattr(self.obj.ViewObject,"Selectable"):
-                                self.obj.ViewObject.Selectable = False
-                            self.node.append(self.trackers[self.editing].get())
-                            FreeCADGui.Snapper.setSelectMode(False)
+                                if self.ui.arc3PtButton.isChecked():
+                                    self.arc3Pt = True # store arc 3 points edit mode
+                                else:
+                                    self.arc3Pt = False # decide if it's deselected after every editing point
+                                self.ui.pointUi()
+                                self.ui.isRelative.show()
+                                self.editing = ep
+                                self.trackers[self.editing].off()
+                                if hasattr(self.obj.ViewObject,"Selectable"):
+                                    self.obj.ViewObject.Selectable = False
+                                self.node.append(self.trackers[self.editing].get())
+                                FreeCADGui.Snapper.setSelectMode(False)
+                            done = True
                 else:
                     self.trackers[self.editing].on()
                     #if hasattr(self.obj.ViewObject,"Selectable"):
@@ -5074,6 +5272,7 @@ class Shape2DView(Modifier):
                 return
         for o in objs:
             Draft.makeShape2DView(o,vec)
+        FreeCAD.ActiveDocument.recompute()
         self.finish()
 
 
@@ -5292,13 +5491,15 @@ class Point(Creator):
                                          'point.X = '+str(self.stack[0][0]),
                                          'point.Y = '+str(self.stack[0][1]),
                                          'point.Z = '+str(self.stack[0][2]),
-                                         'Draft.autogroup(point)']))
+                                         'Draft.autogroup(point)',
+                                         'FreeCAD.ActiveDocument.recompute()']))
                 else:
                     # building command string
                     FreeCADGui.addModule("Draft")
                     commitlist.append((translate("draft","Create Point"),
                                         ['point = Draft.makePoint('+str(self.stack[0][0])+','+str(self.stack[0][1])+','+str(self.stack[0][2])+')',
-                                         'Draft.autogroup(point)']))
+                                         'Draft.autogroup(point)',
+                                         'FreeCAD.ActiveDocument.recompute()']))
                 todo.delayCommit(commitlist)
                 FreeCADGui.Snapper.off()
             self.finish()
@@ -5439,6 +5640,7 @@ class Draft_Facebinder(Creator):
             FreeCADGui.doCommand("s = FreeCADGui.Selection.getSelectionEx()")
             FreeCADGui.doCommand("f = Draft.makeFacebinder(s)")
             FreeCADGui.doCommand('Draft.autogroup(f)')
+            FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         self.finish()
@@ -5472,11 +5674,13 @@ class VisGroup():
             if s[0].isDerivedFrom("App::DocumentObjectGroup"):
                 FreeCADGui.doCommand("v = Draft.makeVisGroup(FreeCAD.ActiveDocument."+s[0].Name+")")
                 FreeCADGui.doCommand('Draft.autogroup(v)')
+                FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
                 return
         FreeCADGui.doCommand("v = Draft.makeVisGroup()")
         FreeCADGui.doCommand('Draft.autogroup(v)')
+        FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
@@ -5891,6 +6095,74 @@ class Draft_AddConstruction():
                     obrep.Transparency = 80
 
 
+class Draft_Arc_3Points:
+
+
+    def GetResources(self):
+
+        return {'Pixmap'  : "Draft_Arc_3Points.svg",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc 3 points"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates an arc by giving 3 points through which the arc should pass"),
+                'Accel'   : 'A,T'}
+
+    def IsActive(self):
+
+        if FreeCAD.ActiveDocument:
+            return True
+        else:
+            return False
+
+    def Activated(self):
+
+        import DraftTrackers
+        self.points = []
+        self.normal = None
+        self.tracker = DraftTrackers.arcTracker()
+        self.tracker.autoinvert = False
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            FreeCAD.DraftWorkingPlane.setup()
+        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.drawArc)
+
+    def getPoint(self,point,info):
+        if not point: # cancelled
+            self.tracker.off()
+            return
+        if not(point in self.points): # avoid same point twice
+            self.points.append(point)
+        if len(self.points) < 3:
+            if len(self.points) == 2:
+                self.tracker.on()
+            FreeCADGui.Snapper.getPoint(last=self.points[-1],callback=self.getPoint,movecallback=self.drawArc)
+        else:
+            import Part
+            e = Part.Arc(self.points[0],self.points[1],self.points[2]).toShape()
+            if Draft.getParam("UsePartPrimitives",False) or True: # TODO Draft "native" object below is buggy, use common shape for now
+                o = FreeCAD.ActiveDocument.addObject("Part::Feature","Arc")
+                o.Shape = e
+            else:
+                radius = e.Curve.Radius
+                rot = FreeCAD.Rotation(e.Curve.XAxis,e.Curve.YAxis,e.Curve.Axis,"ZXY")
+                placement = FreeCAD.Placement(e.Curve.Center,rot)
+                start = e.FirstParameter
+                end = e.LastParameter
+                Draft.makeCircle(radius,placement,startangle=start,endangle=end)
+            self.tracker.off()
+            FreeCAD.ActiveDocument.recompute()
+
+    def drawArc(self,point,info):
+
+        if len(self.points) == 2:
+            import Part
+            if point.sub(self.points[1]).Length > 0.001:
+                e = Part.Arc(self.points[0],self.points[1],point).toShape()
+                self.tracker.normal = e.Curve.Axis.negative() # for some reason the axis always points "backwards"
+                self.tracker.basevector = self.tracker.getDeviation()
+                self.tracker.setCenter(e.Curve.Center)
+                self.tracker.setRadius(e.Curve.Radius)
+                self.tracker.setStartPoint(self.points[0])
+                self.tracker.setEndPoint(point)
+
+
 #---------------------------------------------------------------------------
 # Snap tools
 #---------------------------------------------------------------------------
@@ -6084,12 +6356,26 @@ FreeCADGui.addCommand('Draft_Line',Line())
 FreeCADGui.addCommand('Draft_Wire',Wire())
 FreeCADGui.addCommand('Draft_Circle',Circle())
 FreeCADGui.addCommand('Draft_Arc',Arc())
+FreeCADGui.addCommand('Draft_Arc_3Points',Draft_Arc_3Points())
 FreeCADGui.addCommand('Draft_Text',Text())
 FreeCADGui.addCommand('Draft_Rectangle',Rectangle())
 FreeCADGui.addCommand('Draft_Dimension',Dimension())
 FreeCADGui.addCommand('Draft_Polygon',Polygon())
 FreeCADGui.addCommand('Draft_BSpline',BSpline())
+
+class CommandBezierGroup:
+    def GetCommands(self):
+        return tuple(['Draft_BezCurve','Draft_CubicBezCurve'])
+    def GetResources(self):
+        return { 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_BezierTools",'Bezier tools'),
+                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BezierTools",'Bezier tools')
+               }
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
 FreeCADGui.addCommand('Draft_BezCurve',BezCurve())
+FreeCADGui.addCommand('Draft_CubicBezCurve',CubicBezCurve())
+FreeCADGui.addCommand('Draft_BezierTools', CommandBezierGroup())
+    
 FreeCADGui.addCommand('Draft_Point',Point())
 FreeCADGui.addCommand('Draft_Ellipse',Ellipse())
 FreeCADGui.addCommand('Draft_ShapeString',ShapeString())

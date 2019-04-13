@@ -68,10 +68,10 @@ class DraftWorkbench (Workbench):
             FreeCAD.Console.PrintError("Error: Initializing one or more of the Draft modules failed, Draft will not work as expected.\n")
 
         # setup menus
-        self.cmdList = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
+        self.cmdList = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Arc_3Points","Draft_Ellipse",
                         "Draft_Polygon","Draft_Rectangle", "Draft_Text",
                         "Draft_Dimension", "Draft_BSpline","Draft_Point",
-                        "Draft_ShapeString","Draft_Facebinder","Draft_BezCurve","Draft_Label"]
+                        "Draft_ShapeString","Draft_Facebinder","Draft_BezierTools","Draft_Label"]
         self.modList = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Join", "Draft_Split", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",

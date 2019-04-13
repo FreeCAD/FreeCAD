@@ -255,7 +255,7 @@ public:
     /** @name Topological operations */
     //@{
     void refine();
-    void removeSmallEdges(float);
+    void removeNeedles(float);
     void optimizeTopology(float);
     void optimizeEdges();
     void splitEdges();
@@ -275,6 +275,7 @@ public:
     void flipNormals();
     void harmonizeNormals();
     void validateIndices();
+    void validateCaps(float fMaxAngle, float fSplitFactor);
     void validateDeformations(float fMaxAngle, float fEps);
     void validateDegenerations(float fEps);
     void removeDuplicatedPoints();
@@ -289,6 +290,7 @@ public:
     void removeFullBoundaryFacets();
     bool hasInvalidPoints() const;
     void removeInvalidPoints();
+    void mergeFacets();
     //@}
 
     /** @name Mesh segments */

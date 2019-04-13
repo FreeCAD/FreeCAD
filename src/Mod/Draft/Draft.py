@@ -729,29 +729,13 @@ def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None
             rotOk = FreeCAD.Rotation(edge.Curve.XAxis, edge.Curve.YAxis, edge.Curve.Axis, "ZXY")
             placement.Rotation = rotOk
             if len(edge.Vertexes) > 1:
-                #ref = placement.multVec(FreeCAD.Vector(1,0,0))
-                #ref = ref.sub(edge.Curve.Center)
+                v0 = edge.Curve.XAxis
                 v1 = (edge.Vertexes[0].Point).sub(edge.Curve.Center)
                 v2 = (edge.Vertexes[-1].Point).sub(edge.Curve.Center)
-                #a1 = -math.degrees(DraftVecUtils.angle(v1,ref))
-                #a2 = -math.degrees(DraftVecUtils.angle(v2,ref))
-                v0 = (edge.Curve.XAxis).normalize() 
-                v1.normalize()
-                v2.normalize()
                 # Angle between edge.Curve.XAxis and the vector from center to start of arc 
-                p = (v0.x*v1.x)+(v0.y*v1.y)+(v0.z*v1.z)
-                if (p > 1.0): # sometimes rounding gives errors
-                    p = 1.0
-                elif (p < -1.0):
-                    p = -1.0
-                a0 = math.degrees(math.acos(p))
+                a0 = math.degrees(FreeCAD.Vector.getAngle(v0, v1))
                 # Angle between edge.Curve.XAxis and the vector from center to end of arc 
-                p = (v0.x*v2.x)+(v0.y*v2.y)+(v0.z*v2.z)
-                if (p > 1.0): # sometimes rounding gives errors
-                    p = 1.0
-                elif (p < -1.0):
-                    p = -1.0
-                a1 = math.degrees(math.acos(p))
+                a1 = math.degrees(FreeCAD.Vector.getAngle(v0, v2))
                 obj.FirstAngle = a0
                 obj.LastAngle = a1
     else:
@@ -5171,6 +5155,7 @@ class _Shape2DView(_DraftObject):
         obj.addProperty("App::PropertyEnumeration","ProjectionMode","Draft",QT_TRANSLATE_NOOP("App::Property","The way the viewed object must be projected"))
         obj.addProperty("App::PropertyIntegerList","FaceNumbers","Draft",QT_TRANSLATE_NOOP("App::Property","The indices of the faces to be projected in Individual Faces mode"))
         obj.addProperty("App::PropertyBool","HiddenLines","Draft",QT_TRANSLATE_NOOP("App::Property","Show hidden lines"))
+        obj.addProperty("App::PropertyBool","FuseArch","Draft",QT_TRANSLATE_NOOP("App::Property","Fuse wall and structure objects of same type and material"))
         obj.addProperty("App::PropertyBool","Tessellation","Draft",QT_TRANSLATE_NOOP("App::Property","Tessellate Ellipses and B-splines into line segments"))
         obj.addProperty("App::PropertyBool","InPlace","Draft",QT_TRANSLATE_NOOP("App::Property","For Cutlines and Cutfaces modes, this leaves the faces at the cut location"))
         obj.addProperty("App::PropertyFloat","SegmentLength","Draft",QT_TRANSLATE_NOOP("App::Property","Length of line segments if tessellating Ellipses or B-splines into line segments"))
@@ -5222,12 +5207,36 @@ class _Shape2DView(_DraftObject):
                     objs = getGroupContents(obj.Base.Objects,walls=True)
                     objs = removeHidden(objs)
                     shapes = []
-                    for o in objs:
-                        if o.isDerivedFrom("Part::Feature"):
-                            if onlysolids:
-                                shapes.extend(o.Shape.Solids)
+                    if hasattr(obj,"FuseArch") and obj.FuseArch:
+                        shtypes = {}
+                        for o in objs:
+                            if getType(o) in ["Wall","Structure"]:
+                                if onlysolids:
+                                    shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).extend(o.Shape.Solids)
+                                else:
+                                    shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).append(o.Shape.copy())
+                            elif o.isDerivedFrom("Part::Feature"):
+                                if onlysolids:
+                                    shapes.extend(o.Shape.Solids)
+                                else:
+                                    shapes.append(o.Shape.copy())
+                        for k,v in shtypes.items():
+                            v1 = v.pop()
+                            if v:
+                                v1 = v1.multiFuse(v)
+                                v1 = v1.removeSplitter()
+                            if v1.Solids:
+                                shapes.extend(v1.Solids)
                             else:
-                                shapes.append(o.Shape.copy())
+                                print("Shape2DView: Fusing Arch objects produced non-solid results")
+                                shapes.append(v1)
+                    else:
+                        for o in objs:
+                            if o.isDerivedFrom("Part::Feature"):
+                                if onlysolids:
+                                    shapes.extend(o.Shape.Solids)
+                                else:
+                                    shapes.append(o.Shape.copy())
                     cutp,cutv,iv =Arch.getCutVolume(obj.Base.Shape,shapes)
                     cuts = []
                     opl = FreeCAD.Placement(obj.Base.Placement)
