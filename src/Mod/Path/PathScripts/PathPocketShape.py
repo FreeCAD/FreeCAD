@@ -180,9 +180,6 @@ class Extension(object):
 class ObjectPocket(PathPocketBase.ObjectPocket):
     '''Proxy object for Pocket operation.'''
 
-    rotateFlag = False
-    axialFeed = 360.0 # degres per minute
-
     def areaOpFeatures(self, obj):
         return super(self.__class__, self).areaOpFeatures(obj) | PathOp.FeatureLocations
 
