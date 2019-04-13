@@ -58,6 +58,9 @@ class ObjectOp(PathOp.ObjectOp):
     to Path.Area so subclasses only have to provide the shapes for the
     operations.'''
 
+    rotateFlag = False
+    axialFeed = 360.0 # degres per minute
+
     def opFeatures(self, obj):
         '''opFeatures(obj) ... returns the base features supported by all Path.Area based operations.
         The standard feature list is OR'ed with the return value of areaOpFeatures().
@@ -458,11 +461,9 @@ class ObjectOp(PathOp.ObjectOp):
             if orientation == 'Y':
                 axis = 'X'
                 axisVect = FreeCAD.Vector(1,0,0)
-                obj.RotationAxis = axis
             else:
                 axis = 'Y'
                 axisVect = FreeCAD.Vector(0,1,0)
-                obj.RotationAxis = axis
         else:
             angle = 0.0 # No rotation needed
 
