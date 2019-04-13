@@ -33,8 +33,12 @@ from PySide import QtCore
 
 __title__ = "Base class for PathArea based operations."
 __author__ = "sliptonic (Brad Collette)"
+__contributors__ = "mlampert [FreeCAD], russ4262 (Russell Johnson)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties for Path.Area based operations."
+__scriptVersion__ = "1a Stable"
+__created__ = "2017"
+__lastModified__ = "2019-04-13 13:17 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -163,7 +167,7 @@ class ObjectOp(PathOp.ObjectOp):
         Can safely be overwritten by subclasses.'''
         pass
 
-    def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
+    def _buildPathArea(self, obj, baseobject, isHole, angle, axis, start, getsim, depthparams, safeDep):
         '''_buildPathArea(obj, baseobject, isHole, start, getsim) ... internal function.'''
         PathLog.track()
         area = Path.Area()
@@ -172,7 +176,8 @@ class ObjectOp(PathOp.ObjectOp):
 
         areaParams = self.areaOpAreaParams(obj, isHole)
 
-        heights = [i for i in self.depthparams]
+        #heights = [i for i in self.depthparams]
+        heights = [i for i in depthparams]
         PathLog.debug('depths: {}'.format(heights))
         area.setParams(**areaParams)
         obj.AreaParams = str(area.getParams())
@@ -207,6 +212,7 @@ class ObjectOp(PathOp.ObjectOp):
         PathLog.debug("Path with params: {}".format(obj.PathParams))
 
         (pp, end_vector) = Path.fromShapes(**pathParams)
+
         PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
         self.endVector = end_vector
 
@@ -217,8 +223,19 @@ class ObjectOp(PathOp.ObjectOp):
             area.setParams(**areaParams)
             sec = area.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
             simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
+        
+        # Russ4262
+        print("_buildPathArea() in PathAreaOp.py: angle: " + str(angle) + ", axis: " + str(axis))
+        cmds = []
+        cmds = pp.Commands
+        axisOfRot = 'A'
+        if axis == 'Y':
+            axisOfRot = 'B'
+        cmds.insert(0, Path.Command('G0', {axisOfRot: angle, 'F': self.axialFeed}))
+        cmds.append(Path.Command('G0', {'Z': safeDep, 'F': self.vertRapid}))
+        cmds.append(Path.Command('G0', {axisOfRot: 0.0, 'F': self.axialFeed}))
 
-        return pp, simobj
+        return cmds, simobj
 
     def opExecute(self, obj, getsim=False):
         '''opExecute(obj, getsim=False) ... implementation of Path.Area ops.
@@ -247,6 +264,19 @@ class ObjectOp(PathOp.ObjectOp):
         else:
             start = None
 
+        # Calculate operation heights based upon rotation radii
+        opHeights = self.opDetermineRotationRadius(obj)  #return is [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
+        (xRotRad, yRotRad, zRotRad) = opHeights[0]
+        (clrOfst, safOfset) = opHeights[1]
+
+        obj.ClearanceHeight.Value = xRotRad + clrOfst
+        if yRotRad > xRotRad:
+            obj.ClearanceHeight.Value = yRotRad + clrOfst
+        
+        obj.SafeHeight.Value = xRotRad + safOfset
+        if yRotRad > xRotRad:
+            obj.SafeHeight.Value = yRotRad + safOfset
+
         shapes = self.areaOpShapes(obj)
 
         jobs = [{
@@ -260,10 +290,30 @@ class ObjectOp(PathOp.ObjectOp):
         shapes = [j['shape'] for j in jobs]
 
         sims = []
-        for (shape, isHole) in shapes:
+        for (shape, isHole, depths, (angle, axis), rotang) in shapes:
+            (strDep, finDep) = depths  # unpack tuple
+            clearDep = obj.ClearanceHeight.Value
+            safeDep = obj.SafeHeight.Value
+            
+            startDep = strDep + safOfset
+            #if angle != rotang:
+            #    print("angle != rotang")
+            #    # startDep = strDep + 10
+
+            finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
+            #self.depthparams = PathUtils.depth_params(
+            depthparams = PathUtils.depth_params(
+                    clearance_height=clearDep,  #obj.ClearanceHeight.Value
+                    safe_height=safeDep,  #obj.SafeHeight.Value
+                    start_depth=startDep,  #obj.StartDepth.Value
+                    step_down=obj.StepDown.Value,
+                    z_finish_step=finish_step,  #obj.FinalDepth.Value
+                    final_depth=finDep,
+                    user_depths=None)
+
             try:
-                (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
-                self.commandlist.extend(pp.Commands)
+                (cmds, sim) = self._buildPathArea(obj, shape, isHole, rotang, axis, start, getsim, depthparams, safeDep)
+                self.commandlist.extend(cmds)
                 sims.append(sim)
             except Exception as e:
                 FreeCAD.Console.PrintError(e)
@@ -271,6 +321,12 @@ class ObjectOp(PathOp.ObjectOp):
 
             if self.areaOpRetractTool(obj):
                 self.endVector = None
+        
+        # Russ4262
+        if self.rotateFlag == True:
+            self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+            self.commandlist.append(Path.Command('G0', {'A': 0.0, 'F': self.axialFeed}))
+            self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialFeed}))
 
         return sims
 
@@ -296,3 +352,154 @@ class ObjectOp(PathOp.ObjectOp):
         '''areaOpUseProcjection(obj) ... return True if the operation can use procjection, defaults to False.
         Can safely be overwritten by subclasses.'''
         return False
+    
+    def areaOpDetermineFaceRotationNeeded(self, obj, objRef, sub):
+        '''areaOpDetermineFaceRotationNeeded(self, obj, objRef, sub) ... Determine X and Y independent rotation necessary to make normalAt = Z=1 -- '''
+        
+        import math
+        rtn = False
+        axis = 'X'
+        orientation = 'X'
+        angle = 500.0
+        axisVect = FreeCAD.Vector(1,0,0)
+        zeroTolerance = 0.00000001
+        nineNineTolerance = 1.0 - zeroTolerance
+        testId = "areaOpDetermineFaceRotationNeeded() in PathOp.py::  "
+        reverse = 1
+
+        face = objRef.Shape.getElement(sub)
+        #norm = face.normalAt(0,0)
+        #print("normalAt: " + str(norm))
+        norm = face.Surface.Axis
+        #print("PRE::: sub: " + str(sub) + " - Surface.Axis: " + str(face.Surface.Axis))
+        nX = norm.x
+        nY = norm.y
+        nZ = norm.z
+
+        # Convert VALxe-15 numbers to zero
+        if math.fabs(nX) <= zeroTolerance:
+            nX = 0.0 
+        if math.fabs(nY) <= zeroTolerance:
+            nY = 0.0 
+        if math.fabs(nZ) <= zeroTolerance:
+            nZ = 0.0 
+        
+        if nX % 1 > nineNineTolerance:
+            nX = round(nX)
+
+        if nX == 0.0:
+            testId += 'X0'
+            if nY == 0.0:
+                testId += 'Y0'
+                orientation = 'Z'
+                if nZ == 1.0:
+                    testId += 'Z1'
+                    angle = 0.0
+                elif nZ == -1.0:
+                    testId += 'Z-1'
+                    angle = 180.0
+            elif nY == 1.0:
+                testId += 'Y1'
+                orientation = 'Y'
+                angle = 90.0
+            elif nY == -1.0:
+                testId += 'Y-1'
+                orientation = 'Y'
+                angle = -90.0
+            else:
+                testId += 'Y!0'
+                if nZ != 0.0:
+                    testId += 'Z!0'
+                    angle = math.degrees(math.atan(nY / nZ))
+                    orientation = 'Y'
+        elif nY == 0.0:
+            testId += 'Y0'
+            if nZ == 0.0:
+                testId += 'Z0'
+                orientation = 'X'
+                if nX == 1.0:
+                    testId += 'X1'
+                    angle = -90.0
+                    reverse = -1
+                elif nX == -1.0:
+                    testId += 'X-1'
+                    angle = 90.0
+            else:
+                testId += 'Z!0'
+                if nX < 0.0:
+                    testId += ' -X'
+                else:
+                    testId += ' +X'
+                if nZ < 0.0:
+                    testId += ' -Z'
+                else:
+                    testId += ' +Z'
+                
+                ratio = nX / nZ
+                angle = math.degrees(math.atan(ratio))
+                if ratio < 0.0:
+                    testId += ' NEG-ratio'
+                    reverse = -1
+                    angle -= 90
+                else:
+                    angle = -1 * angle
+                orientation = 'X'
+        elif nZ == 0.0:
+            testId += 'Z0'
+            if nY != 0.0:
+                testId += 'Y!0'
+                angle = math.degrees(math.atan(nX / nY))
+                orientation = 'Y'
+        #print("testId: " + testId)
+
+        if angle != 500.0 and angle != 0.0:
+            self.rotateFlag = True
+            obj.IndexAngle = angle
+            rtn = True
+            if orientation == 'Y':
+                axis = 'X'
+                axisVect = FreeCAD.Vector(1,0,0)
+                obj.RotationAxis = axis
+            else:
+                axis = 'Y'
+                axisVect = FreeCAD.Vector(0,1,0)
+                obj.RotationAxis = axis
+        else:
+            angle = 0.0 # No rotation needed
+
+        rotate = angle * reverse
+
+        print("Suggested rotation to normal::: angle: " + str(angle) + ",   axis: " + str(axis) + ",   rotate: " + str(rotate))
+        return (rtn, angle, axis, rotate)
+    def opDetermineRotationRadius(self, obj):
+        '''opDetermineRotationRadius(self, obj) ... Determine rotational radii for 4th-axis rotations, for clearance/safe heights -- '''
+        import math
+        parentJob = PathUtils.findParentJob(obj)
+        bb = parentJob.Stock.Shape.BoundBox
+        # Determine boundbox radius based upon xzy limits data
+        if math.fabs(bb.ZMin) > math.fabs(bb.ZMax):
+            zlim = bb.ZMin
+        else:
+            zlim = bb.ZMax                    
+
+        # Rotation is around X-axis, cutter moves along same axis
+        if math.fabs(bb.YMin) > math.fabs(bb.YMax):
+            ylim = bb.YMin
+        else:
+            ylim = bb.YMax
+
+        # Rotation is around Y-axis, cutter moves along same axis
+        if math.fabs(bb.XMin) > math.fabs(bb.XMax):
+            xlim = bb.XMin
+        else:
+            xlim = bb.XMax
+        
+        xRotRad = math.sqrt(ylim**2 + zlim**2)
+        yRotRad = math.sqrt(xlim**2 + zlim**2)
+        zRotRad = math.sqrt(xlim**2 + ylim**2)
+
+        clrOfst = parentJob.SetupSheet.ClearanceHeightOffset.Value
+        safOfst = parentJob.SetupSheet.ClearanceHeightOffset.Value
+    
+        return [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
+
