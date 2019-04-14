@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DrawLeaderLinePy"
+    Name="DrawTextLeaderPy"
+    Twin="DrawTextLeader"
+    TwinPointer="DrawTextLeader"
+    Include="Mod/TechDraw/App/DrawTextLeader.h"
+    Namespace="TechDraw"
+    FatherInclude="Mod/TechDraw/App/DrawLeaderLinePy.h"
+    FatherNamespace="TechDraw">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>Feature for adding text leaders to Technical Drawings</UserDocu>
+    </Documentation>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

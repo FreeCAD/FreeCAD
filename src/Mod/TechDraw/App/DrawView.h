@@ -37,6 +37,7 @@ namespace TechDraw
 
 class DrawPage;
 class DrawViewClip;
+class DrawLeaderLine;
 
 /** Base class of all View Features in the drawing module
  */
@@ -77,11 +78,11 @@ public:
     //return PyObject as DrawViewPy
     virtual PyObject *getPyObject(void) override;
 
-    DrawPage* findParentPage() const;
+    virtual DrawPage* findParentPage() const;
     virtual QRectF getRect() const;                      //must be overridden by derived class
     virtual double autoScale(double w, double h) const;
     virtual bool checkFit(DrawPage*) const;
-    virtual void setPosition(double x, double y);
+    virtual void setPosition(double x, double y, bool force = false);
     bool keepUpdated(void);
     boost::signals2::signal<void (const DrawView*)> signalGuiPaint;
     virtual double getScale(void) const;
@@ -89,6 +90,8 @@ public:
     void requestPaint(void);
     virtual void handleXYLock(void);
     virtual bool isLocked(void) const;
+    virtual void addRandomVertex(Base::Vector3d pos);
+    std::vector<TechDraw::DrawLeaderLine*> getLeaders() const;
 
 protected:
     virtual void onChanged(const App::Property* prop) override;

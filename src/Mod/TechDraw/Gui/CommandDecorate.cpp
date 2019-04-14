@@ -57,6 +57,7 @@
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "TaskGeomHatch.h"
+#include "TaskTextLeader.h"
 #include "ViewProviderGeomHatch.h"
 #include "ViewProviderPage.h"
 
@@ -66,6 +67,133 @@ using namespace std;
 
 //internal functions
 bool _checkSelectionHatch(Gui::Command* cmd);
+
+//===========================================================================
+// TechDraw_Leader
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawLeaderLine);
+
+CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
+  : Command("TechDraw_LeaderLine")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Add a line to a view");
+    sToolTipText    = QT_TR_NOOP("Add a line to a view");
+    sWhatsThis      = "TechDraw_LeaderLine";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-mline";
+}
+
+void CmdTechDrawLeaderLine::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Not Available"),
+            QObject::tr("Line function is not available. Use Text Leader."));
+    return;
+
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    TechDraw::DrawView* baseFeat = nullptr;
+    if (!selection.empty()) {
+        baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
+        if( baseFeat == nullptr ) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("Can not attach leader.  No base View selected."));
+            return;
+        }
+    } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("You must select a base View for the line."));
+            return;
+    }
+
+    Gui::Control().showDialog(new TaskDlgTextLeader(LINEMODE,
+                                                    baseFeat,
+                                                    page));
+//    Gui::Control().showDialog(new TaskDlgLeaderLine(1,
+//                                                    baseFeat,
+//                                                    page));
+}
+
+bool CmdTechDrawLeaderLine::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
+
+//===========================================================================
+// TechDraw_TextLeader
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawTextLeader);
+
+CmdTechDrawTextLeader::CmdTechDrawTextLeader()
+  : Command("TechDraw_TextLeader")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Add a text leader to a view");
+    sToolTipText    = QT_TR_NOOP("Add a text leader to a view");
+    sWhatsThis      = "TechDraw_TextLeader";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-textleader";
+}
+
+void CmdTechDrawTextLeader::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    TechDraw::DrawView* baseFeat = nullptr;
+    if (!selection.empty()) {
+        baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
+        if( baseFeat == nullptr ) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("Can not attach leader.  No base View selected."));
+            return;
+        }
+    } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("You must select a base View for the line."));
+            return;
+    }
+
+    Gui::Control().showDialog(new TaskDlgTextLeader(TEXTMODE,
+                                                    baseFeat,
+                                                    page));
+}
+
+bool CmdTechDrawTextLeader::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
 
 //===========================================================================
 // TechDraw_NewHatch
@@ -347,7 +475,9 @@ void CreateTechDrawCommandsDecorate(void)
     rcCmdMgr.addCommand(new CmdTechDrawNewGeomHatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
-    rcCmdMgr.addCommand(new CmdTechDrawRedrawPage());
+//    rcCmdMgr.addCommand(new CmdTechDrawRedrawPage());
+    rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
+    rcCmdMgr.addCommand(new CmdTechDrawTextLeader());
 }
 
 //===========================================================================
