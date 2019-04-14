@@ -1447,8 +1447,9 @@ Property *PropertySheet::CopyOnLabelChange(App::DocumentObject *obj,
 std::map<App::ObjectIdentifier, const App::Expression*> PropertySheet::getExpressions() const {
     std::map<App::ObjectIdentifier, const Expression*> res;
     for(auto &d : data) {
-        if(d.second->expression)
-            res[ObjectIdentifier(owner,d.first.toString())] = d.second->expression.get();
+        if(d.second->expression) {
+            res[ObjectIdentifier(owner,d.first.toString())] = d.second->getExpression(true);
+        }
     }
     return res;
 }

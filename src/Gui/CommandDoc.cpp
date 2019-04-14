@@ -38,6 +38,7 @@
 #include <algorithm>
 
 #include <boost/regex.hpp>
+#include <boost/algorithm/string/replace.hpp>
 
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
@@ -1591,8 +1592,22 @@ protected:
                     for(auto &v : p->getExpressions()) {
                         ss << "##@@ " << v.first.toString() << ' '
                            << obj->getFullName() << '.' << p->getName()
-                           << " (" << obj->Label.getValue() << ')' << std::endl
-                           << v.second->toStr(true,true) << std::endl << std::endl;
+                           << " (" << obj->Label.getValue() << ')' << std::endl;
+                        ss << "##@@";
+                        if(v.second->comment.size()) {
+                            if(v.second->comment[0] == '&' 
+                                    || v.second->comment.find('\n') != std::string::npos
+                                    || v.second->comment.find('\r') != std::string::npos)
+                            {
+                                std::string comment = v.second->comment;
+                                boost::replace_all(comment,"&","&amp;");
+                                boost::replace_all(comment,"\n","&#10;");
+                                boost::replace_all(comment,"\r","&#13;");
+                                ss << '&' << comment;
+                            }else
+                                ss << v.second->comment;
+                        }
+                        ss << std::endl << v.second->toStr(true,true) << std::endl << std::endl;
                     }
                 }
             }
@@ -1609,7 +1624,7 @@ protected:
         const char *tstart = txt.c_str();
         const char *tend = tstart + txt.size();
 
-        static boost::regex rule("^##@@ ([^ ]+) (\\w+)#(\\w+)\\.(\\w+) [^\n]+\n");
+        static boost::regex rule("^##@@ ([^ ]+) (\\w+)#(\\w+)\\.(\\w+) [^\n]+\n##@@([^\n]*)\n");
         boost::cmatch m;
         if(!boost::regex_search(tstart,m,rule)) {
             FC_WARN("No expression header found");
@@ -1624,6 +1639,7 @@ protected:
             auto docName = m.str(2);
             auto objName = m.str(3);
             auto propName = m.str(4);
+            auto comment = m.str(5);
 
             App::Document *doc = App::GetApplication().getDocument(docName.c_str());
             if(!doc) {
@@ -1646,8 +1662,17 @@ protected:
 
             size_t len = (found?m2[0].first:tend) - m[0].second;
             try {
-                exprs[doc][prop][App::ObjectIdentifier::parse(obj,pathName)] = 
-                        App::Expression::parse(obj,m[0].second,len,true);
+                auto expr = App::Expression::parse(obj,m[0].second,len,true);
+                if(expr && comment.size()) {
+                    if(comment[0] == '&') {
+                        expr->comment = comment.c_str()+1;
+                        boost::replace_all(expr->comment,"&amp;","&");
+                        boost::replace_all(expr->comment,"&#10;","\n");
+                        boost::replace_all(expr->comment,"&#13;","\r");
+                    } else
+                        expr->comment = comment;
+                }
+                exprs[doc][prop][App::ObjectIdentifier::parse(obj,pathName)] = std::move(expr);
             } catch(Base::Exception &e) {
                 FC_ERR(e.what() << std::endl << m[0].str());
                 failed = true;

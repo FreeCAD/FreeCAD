@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include "Cell.h"
 #include "Utils.h"
@@ -46,6 +47,22 @@ FC_LOG_LEVEL_INIT("Spreadsheet",true,true);
 using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
+
+/////////////////////////////////////////////////////////
+
+// expose the read() function for simpler partial xml reading in setExpression()
+class ReaderPrivate: public Base::XMLReader {
+public:
+    ReaderPrivate(const char* FileName, std::istream &is)
+        :XMLReader(FileName,is)
+    {}
+
+    bool read() {
+        return XMLReader::read();
+    }
+};
+
+///////////////////////////////////////////////////////////
 
 const int Cell::EXPRESSION_SET       = 1;
 const int Cell::ALIGNMENT_SET        = 4;
@@ -163,16 +180,43 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
     /* Remove dependencies */
     owner->removeDependencies(address);
 
-    expression = std::move(expr);
+    auto func = SimpleStatement::cast<FunctionStatement>(expression.get());
+    if(func)
+        setAlias(func->getName());
+
+    if(expr && expr->comment.size()) {
+        if(!boost::starts_with(expr->comment,"<Cell "))
+            FC_WARN("Unknown style of cell "
+                << owner->sheet()->getFullName() << '.' << address.toString());
+        else {
+            try {
+                std::istringstream in(expr->comment);
+                ReaderPrivate reader("<memory>", in);
+                reader.read();
+                restore(reader,true);
+            }catch(Base::Exception &e) {
+                e.ReportException();
+                FC_ERR("Failed to restore style of cell "
+                    << owner->sheet()->getFullName() << '.' 
+                    << address.toString() << ": " << e.what());
+            }
+        }
+        expr->comment.clear();
+    }
+
+    auto simple = Base::freecad_dynamic_cast<SimpleStatement>(expr.get());
+    if(simple)
+        expression = simple->reduce();
+    else
+        expression.reset();
+    if(!expression)
+        expression = std::move(expr);
+
     setUsed(EXPRESSION_SET, !!expression);
 
     /* Update dependencies */
     owner->addDependencies(address);
     owner->setDirty(address);
-
-    auto func = SimpleStatement::cast<FunctionStatement>(expression.get());
-    if(func)
-        setAlias(func->getName());
 
     signaller.tryInvoke();
 }
@@ -182,8 +226,22 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
   *
   */
 
-const App::Expression *Cell::getExpression() const
+const App::Expression *Cell::getExpression(bool withFormat) const
 {
+    if(withFormat && expression) {
+        if(editMode || (used & (ALIGNMENT_SET
+                                | STYLE_SET
+                                | FOREGROUND_COLOR_SET
+                                | BACKGROUND_COLOR_SET
+                                | DISPLAY_UNIT_SET 
+                                | ALIAS_SET
+                                | SPANS_SET)))
+        {
+            std::ostringstream ss;
+            save(ss,"",true);
+            expression->comment = ss.str();
+        }
+    }
     return expression.get();
 }
 
@@ -663,49 +721,55 @@ void Cell::restore(Base::XMLReader &reader, bool checkAlias)
   *
   */
 
-void Cell::save(Base::Writer &writer) const
-{
+void Cell::save(Base::Writer &writer) const {
+    save(writer.Stream(),writer.ind(),true);
+}
+
+void Cell::save(std::ostream &os, const char *indent, bool noContent) const {
     if (!isUsed())
         return;
 
-    writer.Stream() << writer.ind() << "<Cell ";
+    os << indent << "<Cell ";
 
-    writer.Stream() << "address=\"" << address.toString() << "\" ";
+    if (!noContent) {
+        os << "address=\"" << address.toString() << "\" ";
 
-    if (isUsed(EXPRESSION_SET)) {
-        std::string content;
-
-        getStringContent(content,true);
-        writer.Stream() << "content=\"" << App::Property::encodeAttribute(content) << "\" ";
+        if(isUsed(EXPRESSION_SET)) {
+            std::string content;
+            getStringContent(content,true);
+            os << "content=\"" << App::Property::encodeAttribute(content) << "\" ";
+        }
     }
 
     if (isUsed(ALIGNMENT_SET))
-        writer.Stream() << "alignment=\"" << encodeAlignment(alignment) << "\" ";
+        os << "alignment=\"" << encodeAlignment(alignment) << "\" ";
 
     if (isUsed(STYLE_SET))
-        writer.Stream() << "style=\"" << encodeStyle(style) << "\" ";
+        os << "style=\"" << encodeStyle(style) << "\" ";
 
     if (isUsed(FOREGROUND_COLOR_SET))
-        writer.Stream() << "foregroundColor=\"" << encodeColor(foregroundColor) << "\" ";
+        os << "foregroundColor=\"" << encodeColor(foregroundColor) << "\" ";
 
     if (isUsed(BACKGROUND_COLOR_SET))
-        writer.Stream() << "backgroundColor=\"" << encodeColor(backgroundColor) << "\" ";
+        os << "backgroundColor=\"" << encodeColor(backgroundColor) << "\" ";
 
     if (isUsed(DISPLAY_UNIT_SET))
-        writer.Stream() << "displayUnit=\"" << App::Property::encodeAttribute(displayUnit.stringRep) << "\" ";
+        os << "displayUnit=\"" << App::Property::encodeAttribute(displayUnit.stringRep) << "\" ";
 
     if (isUsed(ALIAS_SET))
-        writer.Stream() << "alias=\"" << App::Property::encodeAttribute(alias) << "\" ";
+        os << "alias=\"" << App::Property::encodeAttribute(alias) << "\" ";
 
     if (isUsed(SPANS_SET)) {
-        writer.Stream() << "rowSpan=\"" << rowSpan<< "\" ";
-        writer.Stream() << "colSpan=\"" << colSpan << "\" ";
+        os << "rowSpan=\"" << rowSpan<< "\" ";
+        os << "colSpan=\"" << colSpan << "\" ";
     }
 
     if(editMode) 
-        writer.Stream() << "editMode=\"" << editMode << "\" ";
+        os << "editMode=\"" << editMode << "\" ";
 
-    writer.Stream() << "/>" << std::endl;
+    os << "/>";
+    if(!noContent)
+        os << std::endl;
 }
 
 /**

@@ -55,7 +55,7 @@ public:
 
     ~Cell();
 
-    const App::Expression * getExpression() const;
+    const App::Expression * getExpression(bool withFormat=false) const;
 
     bool getStringContent(std::string & s, bool persistent=false) const;
 
@@ -106,6 +106,7 @@ public:
     void afterRestore();
 
     void save(Base::Writer &writer) const;
+    void save(std::ostream &os, const char *indent, bool noContent) const;
 
     bool isUsed() const;
 
@@ -185,7 +186,7 @@ private:
     PropertySheet * owner;
 
     int used;
-    App::ExpressionPtr expression;
+    mutable App::ExpressionPtr expression;
     int alignment;
     std::set<std::string> style;
     App::Color foregroundColor;
