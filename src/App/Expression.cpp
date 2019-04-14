@@ -5418,15 +5418,19 @@ void SimpleStatement::_toString(std::ostream &ss, bool persistent, int) const {
 }
 
 ExpressionPtr SimpleStatement::_eval() const {
+    Expression *lastString = 0;
     ExpressionPtr expr;
     for(auto &e : exprs) {
         // Optimization for using string as comment, i.e. do not evaluate
-        // string if it used as a statement. The side effect is that string
-        // expression won't be used as implicit return value
-        if(e->getTypeId() == StringExpression::getClassTypeId()) {
+        // string if it is used as a statement.
+        if(!e->hasComponent() 
+                && e->getTypeId() == StringExpression::getClassTypeId())
+        {
             expr.reset();
+            lastString = e.get();
             continue;
         }
+        lastString = 0;
         expr = e->eval();
         switch(expr->jump()) {
         case JUMP_RETURN:
@@ -5442,6 +5446,8 @@ ExpressionPtr SimpleStatement::_eval() const {
     }
     if(expr)
         return expr;
+    else if(lastString)
+        return lastString->eval();
     return PyObjectExpression::create(owner);
 }
 

@@ -841,10 +841,10 @@ public:
 
     template<typename T>
     static const T *cast(const Expression *expr) {
-        auto res = dynamic_cast<const T*>(expr);
+        auto res = Base::freecad_dynamic_cast<const T>(expr);
         if(res)
             return res;
-        auto stmt = dynamic_cast<const SimpleStatement*>(expr);
+        auto stmt = Base::freecad_dynamic_cast<const SimpleStatement>(expr);
         if(stmt && stmt->getSize()==1)
             return cast<T>(stmt->getExpr(0));
         return 0;

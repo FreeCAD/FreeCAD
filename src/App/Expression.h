@@ -253,6 +253,8 @@ public:
 
     virtual bool needLineEnd() const {return false;};
 
+    bool hasComponent() const {return !components.empty();}
+
 protected:
     virtual bool _isIndexable() const {return false;}
     virtual ExpressionPtr _copy() const = 0;
