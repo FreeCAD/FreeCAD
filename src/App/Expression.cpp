@@ -5451,6 +5451,16 @@ ExpressionPtr SimpleStatement::_eval() const {
     return PyObjectExpression::create(owner);
 }
 
+ExpressionPtr SimpleStatement::reduce() const {
+    if(exprs.size() == 1) {
+        auto e = freecad_dynamic_cast<const SimpleStatement>(exprs[0].get());
+        if(e)
+            return e->reduce();
+        return exprs[0]->copy();
+    }
+    return 0;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////
 
 EXPR_TYPESYSTEM_SOURCE(App::Statement, App::SimpleStatement);

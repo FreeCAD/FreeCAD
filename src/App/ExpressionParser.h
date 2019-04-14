@@ -850,6 +850,8 @@ public:
         return 0;
     }
 
+    ExpressionPtr reduce() const;
+
 protected:
     SimpleStatement(const App::DocumentObject *_owner):BaseStatement(_owner) {}
 
