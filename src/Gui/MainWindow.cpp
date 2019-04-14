@@ -634,7 +634,12 @@ int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckb
 
 bool MainWindow::closeAllDocuments (bool close)
 {
-    auto docs = App::Document::getDependentDocuments(App::GetApplication().getDocuments(),true);
+    auto docs = App::GetApplication().getDocuments();
+    try {
+        docs = App::Document::getDependentDocuments(docs,true);
+    }catch(Base::Exception &e) {
+        e.ReportException();
+    }
     bool checkModify = true;
     bool saveAll = false;
     for(auto doc : docs) {
