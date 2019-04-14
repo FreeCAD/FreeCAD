@@ -1018,12 +1018,12 @@ void LinkView::setSize(int _size) {
     if(!size || childType>=0) {
         nodeArray.clear();
         nodeMap.clear();
-        childType = (SnapshotType)-1;
         if(!size && childType<0) {
             if(pcLinkedRoot)
                 pcLinkRoot->addChild(pcLinkedRoot);
             return;
         }
+        childType = SnapshotContainer;
     }
     if(size<nodeArray.size()) {
         for(size_t i=size;i<nodeArray.size();++i)
@@ -1061,7 +1061,7 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
         if(nodeArray.size()) {
             nodeArray.clear();
             nodeMap.clear();
-            childType = (SnapshotType)-1;
+            childType = SnapshotContainer;
             resetRoot();
             if(pcLinkedRoot)
                 pcLinkRoot->addChild(pcLinkedRoot);
@@ -1340,11 +1340,12 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
             ss << it->second << '.';
         else
             ss << info.linkInfo->getLinkedName() << '.';
-        if(!info.isLinked()
-            || !info.linkInfo->getElementPicked(false,childType,pp,ss))
-            return false;
-        subname = ss.str();
-        return true;
+        if(info.isLinked()) {
+            if(!info.linkInfo->getElementPicked(false,childType,pp,ss))
+                return false;
+            subname = ss.str();
+            return true;
+        }
     }
 
     if(!isLinked()) return false;
