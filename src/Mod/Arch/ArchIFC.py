@@ -121,15 +121,21 @@ def addIfcAttributeValueExpressions(obj, attribute):
         obj.setExpression("BarLength", "Length.Value")
     elif attribute["name"] == "RefElevation":
         obj.setExpression("RefElevation", "Elevation.Value")
+    elif attribute["name"] == "LongName":
+        obj.LongName = obj.Label
 
 def setObjIfcAttributeValue(obj, attributeName, value):
     
     "Sets the value of a given attribute property"
     
     IfcData = obj.IfcData
+    if "attributes" not in IfcData:
+        IfcData["attributes"] = "{}"
     IfcAttributes = json.loads(IfcData["attributes"])
     if isinstance(value, FreeCAD.Units.Quantity):
         value = float(value)
+    if not attributeName in IfcAttributes:
+        IfcAttributes[attributeName] = {}
     IfcAttributes[attributeName]["value"] = value
     IfcData["attributes"] = json.dumps(IfcAttributes)
     obj.IfcData = IfcData

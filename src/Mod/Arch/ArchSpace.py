@@ -474,6 +474,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.LineWidth = 1
         vobj.LineColor = (1.0,0.0,0.0,1.0)
         vobj.DrawStyle = "Dotted"
+        vobj.DisplayMode = "Wireframe"
 
     def setProperties(self,vobj):
 
@@ -511,10 +512,6 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
     def onDocumentRestored(self,vobj):
 
         self.setProperties(vobj)
-
-    def getDefaultDisplayMode(self):
-
-        return "Wireframe"
 
     def getIcon(self):
 
