@@ -89,6 +89,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_Image";
     *draw << "TechDraw_ToggleFrame";
 //    *decor << "TechDraw_RedrawPage";
+    *draw << "TechDraw_LeaderLine";
+    *draw << "TechDraw_TextLeader";
 
     return root;
 }
@@ -145,6 +147,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
 //    *decor << "TechDraw_RedrawPage";
+    *decor << "TechDraw_LeaderLine";
+    *decor << "TechDraw_TextLeader";
     return root;
 }
 
@@ -199,6 +203,8 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
 //    *decor << "TechDraw_RedrawPage";
+    *decor << "TechDraw_LeaderLine";
+    *decor << "TechDraw_TextLeader";
 
     return root;
 }

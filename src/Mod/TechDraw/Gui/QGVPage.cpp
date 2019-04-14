@@ -68,6 +68,8 @@
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawTextLeader.h>
 
 #include "Rez.h"
 #include "QGIDrawingTemplate.h"
@@ -86,6 +88,8 @@
 #include "QGIViewSpreadsheet.h"
 #include "QGIViewImage.h"
 #include "QGIFace.h"
+#include "QGILeaderLine.h"
+#include "QGITextLeader.h"
 
 #include "ZVALUE.h"
 #include "ViewProviderPage.h"
@@ -106,6 +110,8 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     setObjectName(QString::fromLocal8Bit(name));
 
     setScene(s);
+    setMouseTracking(true);
+    viewport()->setMouseTracking(true);
 
     setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setCacheMode(QGraphicsView::CacheBackground);
@@ -463,6 +469,43 @@ void QGVPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
     dim->setZValue(ZVALUE::DIMENSION);
 }
 
+
+QGIView * QGVPage::addViewLeader(TechDraw::DrawLeaderLine *leader)
+{
+    QGILeaderLine* leaderGroup = nullptr;
+    QGITextLeader* textGroup = nullptr;
+
+    App::DocumentObject* parentObj = leader->LeaderParent.getValue();
+    TechDraw::DrawView*  parentDV  = dynamic_cast<TechDraw::DrawView*>(parentObj);
+    TechDraw::DrawTextLeader* textFeat = dynamic_cast<TechDraw::DrawTextLeader*>(leader);
+    
+    if (parentDV != nullptr) {
+        QGIView* parentQV = findQViewForDocObj(parentObj);
+        if (parentQV != nullptr) {
+            if (textFeat != nullptr) {
+                textGroup = new QGITextLeader(parentQV, textFeat);
+                textGroup->updateView(true);
+                return textGroup;
+            } else {                
+                leaderGroup = new QGILeaderLine(parentQV, leader);
+                leaderGroup->updateView(true);            //this is different from everybody else,
+                                                          //but it works. 
+                return leaderGroup;
+            }
+        } else {
+            throw Base::TypeError("QGVP::addViewLeader - parent DV has no QGIV");
+        }
+//    } else if (parentDP != nullptr) {
+//        leaderGroup = new QGILeaderLine(nullptr,leader);
+//        ourScene->addItem(leaderGroup);
+    } else {
+        //TARFU
+        throw Base::TypeError("QGVP::addViewLeader - parent obj wrong type");
+    }
+
+    return nullptr;
+}
+
 //! find the graphic for a DocumentObject
 QGIView * QGVPage::findQViewForDocObj(App::DocumentObject *obj) const
 {
@@ -497,11 +540,11 @@ QGIView* QGVPage::getQGIVByName(std::string name)
 QGIView * QGVPage::findParent(QGIView *view) const
 {
     const std::vector<QGIView *> qviews = getViews();
-    TechDraw::DrawView *myView = view->getViewObject();
+    TechDraw::DrawView *myFeat = view->getViewObject();
 
     //If type is dimension we check references first
     TechDraw::DrawViewDimension *dim = 0;
-    dim = dynamic_cast<TechDraw::DrawViewDimension *>(myView);
+    dim = dynamic_cast<TechDraw::DrawViewDimension *>(myFeat);
 
     if(dim) {
         std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
@@ -519,7 +562,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
 
     //If type is balloon we check references first
     TechDraw::DrawViewBalloon *balloon = 0;
-    balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(myView);
+    balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(myFeat);
 
     if(balloon) {
         App::DocumentObject* obj = balloon->sourceView.getValue();
@@ -544,7 +587,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
             if(collection) {
                 std::vector<App::DocumentObject *> objs = collection->Views.getValues();
                 for( std::vector<App::DocumentObject *>::iterator it = objs.begin(); it != objs.end(); ++it) {
-                    if(strcmp(myView->getNameInDocument(), (*it)->getNameInDocument()) == 0)
+                    if(strcmp(myFeat->getNameInDocument(), (*it)->getNameInDocument()) == 0)
 
                         return grp;
                 }
@@ -553,7 +596,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
      }
 
     // Not found a parent
-    return 0;
+    return nullptr;
 }
 
 void QGVPage::setPageTemplate(TechDraw::DrawTemplate *obj)
@@ -832,7 +875,7 @@ void QGVPage::keyPressEvent(QKeyEvent *event)
             }
         }
     }
-    event->accept();
+    QGraphicsView::keyPressEvent(event);
 }
 
 void QGVPage::kbPanScroll(int xMove, int yMove) 
@@ -856,6 +899,7 @@ void QGVPage::kbPanScroll(int xMove, int yMove)
 void QGVPage::enterEvent(QEvent *event)
 {
     QGraphicsView::enterEvent(event);
+    setCursor(Qt::ArrowCursor);
     viewport()->setCursor(Qt::ArrowCursor);
 }
 
@@ -886,13 +930,19 @@ void QGVPage::leaveEvent(QEvent * event)
 void QGVPage::mousePressEvent(QMouseEvent *event)
 {
     QGraphicsView::mousePressEvent(event);
-    viewport()->setCursor(Qt::ClosedHandCursor);
+//    setCursor(Qt::ArrowCursor);
+}
+
+void QGVPage::mouseMoveEvent(QMouseEvent *event)
+{
+    QGraphicsView::mouseMoveEvent(event);
 }
 
 void QGVPage::mouseReleaseEvent(QMouseEvent *event)
 {
     QGraphicsView::mouseReleaseEvent(event);
-    viewport()->setCursor(Qt::ArrowCursor);
+//    setCursor(Qt::ArrowCursor);
+//    viewport()->setCursor(Qt::ArrowCursor);
 }
 
 TechDraw::DrawPage* QGVPage::getDrawPage()

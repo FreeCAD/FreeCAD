@@ -60,7 +60,10 @@
         <file>icons/actions/techdraw-spreadsheet.svg</file>
         <file>icons/actions/techdraw-image.svg</file>
         <file>icons/actions/techdraw-viewdetail.svg</file>
-        <file>icons/actions/section-up.svg</file>
+        <file>icons/actions/techdraw-mline.svg</file>
+        <file>icons/actions/techdraw-textleader.svg</file>
+        <file>icons/actions/techdraw-point.svg</file>
+        <file>icons/actions/section-up.svg</file>  
         <file>icons/actions/section-down.svg</file>
         <file>icons/actions/section-left.svg</file>
         <file>icons/actions/section-right.svg</file>
@@ -72,6 +75,11 @@
         <file>icons/arrow-cw.svg</file>
         <file>icons/techdraw-lock.png</file>
         <file>icons/cursor-balloon.png</file>
+        <file>icons/MRTE/menu.svg</file>
+        <file>icons/MRTE/bgColor.svg</file>
+        <file>icons/MRTE/fgColor.svg</file>
+        <file>icons/MRTE/listBullet.svg</file>
+        <file>icons/MRTE/listNumber.svg</file>
         <file>translations/TechDraw_af.qm</file>
         <file>translations/TechDraw_zh-CN.qm</file>
         <file>translations/TechDraw_zh-TW.qm</file>

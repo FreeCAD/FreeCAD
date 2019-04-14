@@ -41,6 +41,12 @@ QGICaption: 180
 QGIViewImage: 200
 QGCustomImage: 201
 QGIMatting: 205
+QGTracker: 210
+QGILeaderLine: 232
+QGITextLeader: 233
+QGMText: 300
+QGEPath: 301
+QGMarker: 302
 */
 
 /*

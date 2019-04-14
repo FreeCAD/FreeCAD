@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2019 WandererFan        (wandererfan@gmail.com)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,40 +20,35 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVERTEX_H
-#define DRAWINGGUI_QGRAPHICSITEMVERTEX_H
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#endif
 
-# include "QGIPrimPath.h"
+#include <Base/Console.h>
+#include <Base/PyObjectBase.h>
+#include <Base/Vector3D.h>
 
-namespace TechDrawGui
+#include "DrawLeaderLine.h"
+
+// inclusion of the generated files (generated out of DrawLeaderLinePy.xml)
+#include <Base/VectorPy.h>
+#include <Mod/TechDraw/App/DrawLeaderLinePy.h>
+#include <Mod/TechDraw/App/DrawLeaderLinePy.cpp>
+
+using namespace TechDraw;
+
+// returns a string which represents the object e.g. when printed in python
+std::string DrawLeaderLinePy::representation(void) const
 {
-
-class TechDrawGuiExport QGIVertex : public QGIPrimPath
-{
-public:
-    explicit QGIVertex(int index);
-    ~QGIVertex() {}
-
-    enum {Type = QGraphicsItem::UserType + 105};
-    int type() const override { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
-
-    int getProjIndex() const { return projIndex; }
-
-    float getRadius() { return m_radius; }
-    virtual void setRadius(float r);
-    Qt::BrushStyle getFill() { return m_fill; }
-    void setFill(Qt::BrushStyle f) { m_fill = f; }
-
-protected:
-    int projIndex;
-    float m_radius;
-    QBrush m_brush;
-    Qt::BrushStyle m_fill;
-
-private:
-};
-
+    return std::string("<DrawLeaderLine object>");
 }
 
-#endif // DRAWINGGUI_QGRAPHICSITEMVERTEX_H
+PyObject *DrawLeaderLinePy::getCustomAttributes(const char* /*attr*/) const
+{
+    return 0;
+}
+
+int DrawLeaderLinePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
+}

@@ -81,6 +81,7 @@
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
 
 #include "Rez.h"
 #include "QGIDrawingTemplate.h"
@@ -94,6 +95,7 @@
 #include "QGIFace.h"
 #include "ViewProviderPage.h"
 #include "QGVPage.h"
+#include "QGILeaderLine.h"
 
 
 using namespace TechDrawGui;
@@ -108,6 +110,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     m_frameState(true)
 {
 
+    setMouseTracking(true);
     m_scene = new QGraphicsScene(this);
     m_view = new QGVPage(pageVp,m_scene,this);
 
@@ -331,6 +334,9 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewImage::getClassTypeId()) ) {
         qview = m_view->addDrawViewImage( static_cast<TechDraw::DrawViewImage *>(obj) );
+
+    } else if (typeId.isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId()) ) {
+        qview = m_view->addViewLeader( static_cast<TechDraw::DrawLeaderLine *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawHatch::getClassTypeId()) ) {
         //Hatch is not attached like other Views (since it isn't really a View)
@@ -1082,7 +1088,7 @@ void MDIViewPage::sceneSelectionChanged()
 {
     sceneSelectionManager();
 
-    QList<QGraphicsItem*> dbsceneSel = m_view->scene()->selectedItems();
+//    QList<QGraphicsItem*> dbsceneSel = m_view->scene()->selectedItems();
 
     if(isSelectionBlocked)  {
         return;

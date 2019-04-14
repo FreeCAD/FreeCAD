@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,40 +20,63 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVERTEX_H
-#define DRAWINGGUI_QGRAPHICSITEMVERTEX_H
+//QGMText.h
+//a movable, editable text item
 
-# include "QGIPrimPath.h"
+#ifndef TECHDRAWGUI_MOVABLETEXT_H
+#define TECHDRAWGUI_MOVABLETEXT_H
+
+#include <QGraphicsTextItem>
+#include <QObject>
+//#include <QDocument>
+
+#include "QGCustomText.h"
+
+QT_BEGIN_NAMESPACE
+class QPainter;
+class QStyleOptionGraphicsItem;
+QT_END_NAMESPACE
 
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIVertex : public QGIPrimPath
+//
+class TechDrawGuiExport QGMText : public QGCustomText
 {
+Q_OBJECT
+
 public:
-    explicit QGIVertex(int index);
-    ~QGIVertex() {}
+    explicit QGMText(void);
+    ~QGMText() {}
 
-    enum {Type = QGraphicsItem::UserType + 105};
-    int type() const override { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
+    enum {Type = QGraphicsItem::UserType + 300};
+    int type() const { return Type;}
+    virtual void paint( QPainter * painter,
+                        const QStyleOptionGraphicsItem * option,
+                        QWidget * widget = 0 ) override;
 
-    int getProjIndex() const { return projIndex; }
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void showBox(bool b) { m_showBox = b; }
+    virtual bool showBox(void) { return m_showBox; }
 
-    float getRadius() { return m_radius; }
-    virtual void setRadius(float r);
-    Qt::BrushStyle getFill() { return m_fill; }
-    void setFill(Qt::BrushStyle f) { m_fill = f; }
+Q_SIGNALS:
+    void dragging();
+    void hover(bool state);
+    void selected(bool state);
+    void dragFinished();
 
 protected:
-    int projIndex;
-    float m_radius;
-    QBrush m_brush;
-    Qt::BrushStyle m_fill;
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
 private:
+    bool m_showBox;
+
 };
 
 }
 
-#endif // DRAWINGGUI_QGRAPHICSITEMVERTEX_H
+#endif // TECHDRAWGUI_MOVABLETEXT_H
