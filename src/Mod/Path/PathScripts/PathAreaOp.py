@@ -367,7 +367,7 @@ class ObjectOp(PathOp.ObjectOp):
         axisVect = FreeCAD.Vector(1,0,0)
         zeroTolerance = 0.00000001
         nineNineTolerance = 1.0 - zeroTolerance
-        testId = "areaOpDetermineFaceRotationNeeded() in PathOp.py::  "
+        testId = "areaOpDetermineFaceRotationNeeded() in PathAreaOp.py::\n"
         reverse = 1
 
         face = objRef.Shape.getElement(sub)
@@ -375,6 +375,7 @@ class ObjectOp(PathOp.ObjectOp):
         #print("normalAt: " + str(norm))
         norm = face.Surface.Axis
         #print("PRE::: sub: " + str(sub) + " - Surface.Axis: " + str(face.Surface.Axis))
+        testId += " -Surface.Axis: " + str(face.Surface.Axis) + "  :: "
         nX = norm.x
         nY = norm.y
         nZ = norm.z
@@ -404,11 +405,11 @@ class ObjectOp(PathOp.ObjectOp):
             elif nY == 1.0:
                 testId += 'Y1'
                 orientation = 'Y'
-                angle = 90.0
+                angle = -90.0
             elif nY == -1.0:
                 testId += 'Y-1'
                 orientation = 'Y'
-                angle = -90.0
+                angle = 90.0
             else:
                 testId += 'Y!0'
                 if nZ != 0.0:
@@ -453,7 +454,6 @@ class ObjectOp(PathOp.ObjectOp):
                 testId += 'Y!0'
                 angle = math.degrees(math.atan(nX / nY))
                 orientation = 'Y'
-        #print("testId: " + testId)
 
         if angle != 500.0 and angle != 0.0:
             self.rotateFlag = True
@@ -469,7 +469,8 @@ class ObjectOp(PathOp.ObjectOp):
 
         rotate = angle * reverse
 
-        print("Suggested rotation to normal::: angle: " + str(angle) + ",   axis: " + str(axis) + ",   rotate: " + str(rotate))
+        testId += "\n -Suggested rotation::  FC_angle: " + str(angle) + ",   axis: " + str(axis) + ",   Gcode_rotate: " + str(rotate)
+        print("testId: " + testId)
         return (rtn, angle, axis, rotate)
     def opDetermineRotationRadius(self, obj):
         '''opDetermineRotationRadius(self, obj) ... Determine rotational radii for 4th-axis rotations, for clearance/safe heights -- '''
