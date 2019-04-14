@@ -1215,7 +1215,7 @@ bool Expression::isSame(const Expression &other) const {
         return true;
     if(getTypeId()!=other.getTypeId())
         return false;
-    return toString(true,true) == other.toString(true,true);
+    return comment==other.comment && toString(true,true) == other.toString(true,true);
 }
 
 std::string Expression::toString(bool persistent, bool checkPriority, int indent) const {
@@ -1247,6 +1247,7 @@ void Expression::toString(std::ostream &ss, bool persistent, bool checkPriority,
 ExpressionPtr Expression::copy() const {
     auto expr = _copy();
     copy_vector(expr->components,components);
+    expr->comment = comment;
     return expr;
 }
 

@@ -283,6 +283,9 @@ protected:
     App::DocumentObject * owner; /**< The document object used to access unqualified variables (i.e local scope) */
 
     ComponentList components;
+
+public:
+    std::string comment;
 };
 
 #define EXPR_TYPESYSTEM_HEADER() \

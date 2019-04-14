@@ -7161,7 +7161,7 @@ void SketchObject::constraintsRemoved(const std::set<App::ObjectIdentifier> &rem
     std::set<App::ObjectIdentifier>::const_iterator i = removed.begin();
 
     while (i != removed.end()) {
-        ExpressionEngine.setValue(*i, boost::shared_ptr<App::Expression>(), 0);
+        ExpressionEngine.setValue(*i, boost::shared_ptr<App::Expression>());
         ++i;
     }
 }
@@ -7664,9 +7664,9 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint *cstr, bool bForce, bool
     return true;
 }
 
-void SketchObject::setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr, const char * comment)
+void SketchObject::setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr)
 {
-    DocumentObject::setExpression(path, expr, comment);
+    DocumentObject::setExpression(path, expr);
 
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver, constraints and UI
         solve();

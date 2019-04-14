@@ -342,8 +342,10 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
         const char * exprStr = PyString_AsString(expr);
 #endif
         boost::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), exprStr));
+        if(shared_expr && comment)
+            shared_expr->comment = comment;
 
-        getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
+        getDocumentObjectPtr()->setExpression(p, shared_expr);
     }
     else if (PyUnicode_Check(expr)) {
 #if PY_MAJOR_VERSION >= 3
@@ -355,7 +357,9 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
             Py_DECREF(unicode);
             boost::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), exprStr.c_str()));
 
-            getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
+            if(shared_expr && comment)
+                shared_expr->comment = comment;
+            getDocumentObjectPtr()->setExpression(p, shared_expr);
         }
         else {
             // utf-8 encoding failed

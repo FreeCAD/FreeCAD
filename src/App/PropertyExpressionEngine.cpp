@@ -83,7 +83,7 @@ Property *PropertyExpressionEngine::Copy() const
     PropertyExpressionEngine * engine = new PropertyExpressionEngine();
 
     for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it)
-        engine->expressions[it->first] = ExpressionInfo(boost::shared_ptr<Expression>(it->second.expression->copy()), it->second.comment.c_str());
+        engine->expressions[it->first] = ExpressionInfo(boost::shared_ptr<Expression>(it->second.expression->copy()));
 
     engine->validator = validator;
 
@@ -126,7 +126,7 @@ void PropertyExpressionEngine::Paste(const Property &from)
     expressions.clear();
     for(auto &e : fromee->expressions) {
         expressions[e.first] = ExpressionInfo(
-                boost::shared_ptr<Expression>(e.second.expression->copy()), e.second.comment.c_str());
+                boost::shared_ptr<Expression>(e.second.expression->copy()));
         expressionChanged(e.first);
     }
     validator = fromee->validator;
@@ -148,8 +148,9 @@ void PropertyExpressionEngine::Save(Base::Writer &writer) const
         writer.Stream() << writer.ind() << "<Expression path=\"" 
             << Property::encodeAttribute(it->first.toString()) <<"\" expression=\"" 
             << Property::encodeAttribute(it->second.expression->toString(true)) << "\"";
-        if (it->second.comment.size() > 0)
-            writer.Stream() << " comment=\"" << Property::encodeAttribute(it->second.comment) << "\"";
+        if (it->second.expression->comment.size() > 0)
+            writer.Stream() << " comment=\"" 
+                << Property::encodeAttribute(it->second.expression->comment) << "\"";
         writer.Stream() << "/>" << std::endl;
     }
     writer.decInd();
@@ -273,7 +274,9 @@ void PropertyExpressionEngine::afterRestore()
         for(auto &info : *restoredExpressions) {
             ObjectIdentifier path = ObjectIdentifier::parse(docObj, info.path);
             boost::shared_ptr<Expression> expression(Expression::parse(docObj, info.expr.c_str()));
-            setValue(path, expression, info.comment.size()?info.comment.c_str():0);
+            if(expression)
+                expression->comment = std::move(info.comment);
+            setValue(path, expression);
         }
         PropertyXLinkContainer::afterRestore();
         signaller.tryInvoke();
@@ -318,7 +321,7 @@ App::any PropertyExpressionEngine::getPathValue(const App::ObjectIdentifier & pa
  * @param comment Optional comment.
  */
 
-void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::shared_ptr<Expression> expr, const char *comment)
+void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::shared_ptr<Expression> expr)
 {
     ObjectIdentifier usePath(canonicalPath(path));
     const Property * prop = usePath.getProperty();
@@ -336,7 +339,7 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
         if (error.size() > 0)
             throw Base::RuntimeError(error.c_str());
         AtomicPropertyChange signaller(*this);
-        expressions[usePath] = ExpressionInfo(expr, comment);
+        expressions[usePath] = ExpressionInfo(expr);
         expressionChanged(usePath);
         signaller.tryInvoke();
     } else {
@@ -781,12 +784,11 @@ Property *PropertyExpressionEngine::CopyOnImportExternal(
             engine.reset(new PropertyExpressionEngine);
             for(auto it2=expressions.begin();it2!=it;++it2) {
                 engine->expressions[it2->first] = ExpressionInfo(
-                        boost::shared_ptr<Expression>(it2->second.expression->copy()), 
-                        it2->second.comment.c_str());
+                        boost::shared_ptr<Expression>(it2->second.expression->copy()));
             }
         }else if(!expr)
             expr = it->second.expression;
-        engine->expressions[it->first] = ExpressionInfo(expr,it->second.comment.c_str());
+        engine->expressions[it->first] = ExpressionInfo(expr);
     }
     if(!engine)
         return 0;
@@ -806,12 +808,11 @@ Property *PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject *obj,
             engine.reset(new PropertyExpressionEngine);
             for(auto it2=expressions.begin();it2!=it;++it2) {
                 engine->expressions[it2->first] = ExpressionInfo(
-                        boost::shared_ptr<Expression>(it2->second.expression->copy()), 
-                        it2->second.comment.c_str());
+                        boost::shared_ptr<Expression>(it2->second.expression->copy()));
             }
         }else if(!expr)
             expr = it->second.expression;
-        engine->expressions[it->first] = ExpressionInfo(expr,it->second.comment.c_str());
+        engine->expressions[it->first] = ExpressionInfo(expr);
     }
     if(!engine)
         return 0;

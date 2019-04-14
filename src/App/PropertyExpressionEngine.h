@@ -74,22 +74,17 @@ public:
 
     struct ExpressionInfo {
         boost::shared_ptr<App::Expression> expression; /**< The actual expression tree */
-        std::string comment; /**< Optional comment for this expression */
 
-        ExpressionInfo(boost::shared_ptr<App::Expression> expression = boost::shared_ptr<App::Expression>(), const char * comment = 0) {
+        ExpressionInfo(boost::shared_ptr<App::Expression> expression = boost::shared_ptr<App::Expression>()) {
             this->expression = expression;
-            if (comment)
-                this->comment = comment;
         }
 
         ExpressionInfo(const ExpressionInfo & other) {
             expression = other.expression;
-            comment = other.comment;
         }
 
         ExpressionInfo & operator=(const ExpressionInfo & other) {
             expression = other.expression;
-            comment = other.comment;
             return *this;
         }
     };
@@ -112,7 +107,7 @@ public:
 
     void Restore(Base::XMLReader &reader);
 
-    void setValue(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr, const char * comment = 0);
+    void setValue(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr);
 
     App::any getPathValue(const App::ObjectIdentifier & path) const;
 

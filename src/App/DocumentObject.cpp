@@ -827,12 +827,11 @@ void DocumentObject::Save (Base::Writer &writer) const
  * @brief Associate the expression \expr with the object identifier \a path in this document object.
  * @param path Target object identifier for the result of the expression
  * @param expr Expression tree
- * @param comment Optional comment describing the expression
  */
 
-void DocumentObject::setExpression(const ObjectIdentifier &path, boost::shared_ptr<Expression> expr, const char * comment)
+void DocumentObject::setExpression(const ObjectIdentifier &path, boost::shared_ptr<Expression> expr)
 {
-    ExpressionEngine.setValue(path, expr, comment);
+    ExpressionEngine.setValue(path, expr);
 }
 
 /**
