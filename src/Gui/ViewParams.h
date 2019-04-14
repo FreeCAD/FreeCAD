@@ -53,6 +53,7 @@ public:
     FC_VIEW_PARAM(DefaultShapeLineColor,unsigned long,Unsigned,421075455UL) \
     FC_VIEW_PARAM(DefaultShapeColor,unsigned long,Unsigned,0xCCCCCC00) \
     FC_VIEW_PARAM(DefaultShapeLineWidth,int,Int,2) \
+    FC_VIEW_PARAM(CoinCycleCheck,bool,Bool,true) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \

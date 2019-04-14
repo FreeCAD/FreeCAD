@@ -93,6 +93,7 @@
 #include "SoFCSelectionAction.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderGeometryObject.h"
+#include "ViewParams.h"
 
 FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true,true);
 
@@ -1121,7 +1122,7 @@ void SoFCSeparator::finish()
 // ---------------------------------------------------------------------------------
 
 SoFCSelectionRoot::Stack SoFCSelectionRoot::SelStack;
-std::map<SoAction*,SoFCSelectionRoot::Stack> SoFCSelectionRoot::ActionStacks;
+std::unordered_map<SoAction*,SoFCSelectionRoot::Stack> SoFCSelectionRoot::ActionStacks;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::SelColorStack;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::HlColorStack;
 SoFCSelectionRoot* SoFCSelectionRoot::ShapeColorNode;
@@ -1130,7 +1131,6 @@ SO_NODE_SOURCE(SoFCSelectionRoot);
 
 SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode)
     :SoFCSeparator(trackCacheMode)
-    ,pushed(false)
 {
     SO_NODE_CONSTRUCTOR(SoFCSelectionRoot);
 }
@@ -1245,89 +1245,99 @@ std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContex
     return res;
 }
 
-void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, RenderFunc render) {
-    if(pushed)
-        (this->*render)(action);
-    else {
-        pushed = true;
-        SelStack.push_back(this);
-        auto ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(SelStack,this,SelContext::merge));
-        if(!ctx2 || !ctx2->hideAll) {
-            auto state = action->getState();
-            SelContextPtr ctx = getRenderContext<SelContext>(this);
-            bool colorPushed = false;
-            if(!ShapeColorNode && overrideColor && 
-               !SoOverrideElement::getDiffuseColorOverride(state) &&
-               (!ctx || (!ctx->selAll && !ctx->hideAll))) 
-            {
-                ShapeColorNode = this;
-                colorPushed = true;
-                state->push();
-                auto &packer = ShapeColorNode->shapeColorPacker;
-                auto &trans = ShapeColorNode->transOverride;
-                auto &color = ShapeColorNode->colorOverride;
-                if(!SoOverrideElement::getTransparencyOverride(state) && trans) {
-                    SoLazyElement::setTransparency(state, ShapeColorNode, 1, &trans, &packer);
-                    SoOverrideElement::setTransparencyOverride(state,ShapeColorNode,true);
-                }
-                SoLazyElement::setDiffuse(state, ShapeColorNode, 1, &color, &packer);
-                SoOverrideElement::setDiffuseColorOverride(state,ShapeColorNode,true);
-                SoMaterialBindingElement::set(state, ShapeColorNode, SoMaterialBindingElement::OVERALL);
-                SoOverrideElement::setMaterialBindingOverride(state,ShapeColorNode,true);
+static std::time_t _CyclicLastReported;
 
-                SoTextureEnabledElement::set(state,ShapeColorNode,false);
+void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, bool inPath) {
+    if(ViewParams::instance()->getCoinCycleCheck()
+            && !SelStack.nodeSet.insert(this).second) 
+    {
+        std::time_t t = std::time(0);
+        if(_CyclicLastReported < t) {
+            _CyclicLastReported = t+5;
+            FC_ERR("Cyclic scene graph: " << getName());
+        }
+        return;
+    }
+    SelStack.push_back(this);
+    auto ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(SelStack,this,SelContext::merge));
+    if(!ctx2 || !ctx2->hideAll) {
+        auto state = action->getState();
+        SelContextPtr ctx = getRenderContext<SelContext>(this);
+        bool colorPushed = false;
+        if(!ShapeColorNode && overrideColor && 
+            !SoOverrideElement::getDiffuseColorOverride(state) &&
+            (!ctx || (!ctx->selAll && !ctx->hideAll))) 
+        {
+            ShapeColorNode = this;
+            colorPushed = true;
+            state->push();
+            auto &packer = ShapeColorNode->shapeColorPacker;
+            auto &trans = ShapeColorNode->transOverride;
+            auto &color = ShapeColorNode->colorOverride;
+            if(!SoOverrideElement::getTransparencyOverride(state) && trans) {
+                SoLazyElement::setTransparency(state, ShapeColorNode, 1, &trans, &packer);
+                SoOverrideElement::setTransparencyOverride(state,ShapeColorNode,true);
             }
-            if(!ctx) 
-                (this->*render)(action);
-            else {
-                bool selPushed;
-                bool hlPushed;
-                if((selPushed = ctx->selAll)) {
-                    SelColorStack.push_back(ctx->selColor);
-                    state->push();
-                    auto &color = SelColorStack.back();
-                    SoLazyElement::setEmissive(state, &color);
-                    SoOverrideElement::setEmissiveColorOverride(state,this,true);
-                    if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
-                        auto &packer = shapeColorPacker;
-                        SoLazyElement::setDiffuse(state, this, 1, &color, &packer);
-                        SoOverrideElement::setDiffuseColorOverride(state,this,true);
-                        SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::OVERALL);
-                        SoOverrideElement::setMaterialBindingOverride(state,this,true);
-                    }
+            SoLazyElement::setDiffuse(state, ShapeColorNode, 1, &color, &packer);
+            SoOverrideElement::setDiffuseColorOverride(state,ShapeColorNode,true);
+            SoMaterialBindingElement::set(state, ShapeColorNode, SoMaterialBindingElement::OVERALL);
+            SoOverrideElement::setMaterialBindingOverride(state,ShapeColorNode,true);
+
+            SoTextureEnabledElement::set(state,ShapeColorNode,false);
+        }
+        if(!ctx) {
+            if(inPath)
+                SoSeparator::GLRenderInPath(action);
+            else
+                SoSeparator::GLRenderBelowPath(action);
+        } else {
+            bool selPushed;
+            bool hlPushed;
+            if((selPushed = ctx->selAll)) {
+                SelColorStack.push_back(ctx->selColor);
+                state->push();
+                auto &color = SelColorStack.back();
+                SoLazyElement::setEmissive(state, &color);
+                SoOverrideElement::setEmissiveColorOverride(state,this,true);
+                if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
+                    auto &packer = shapeColorPacker;
+                    SoLazyElement::setDiffuse(state, this, 1, &color, &packer);
+                    SoOverrideElement::setDiffuseColorOverride(state,this,true);
+                    SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::OVERALL);
+                    SoOverrideElement::setMaterialBindingOverride(state,this,true);
                 }
-                if((hlPushed = ctx->hlAll)) 
-                    HlColorStack.push_back(ctx->hlColor);
-                (this->*render)(action);
-                if(selPushed) {
-                    SelColorStack.pop_back();
-                    state->pop();
-                }
-                if(hlPushed)
-                    HlColorStack.pop_back();
             }
-            if(colorPushed) {
-                ShapeColorNode = 0;
+            if((hlPushed = ctx->hlAll)) 
+                HlColorStack.push_back(ctx->hlColor);
+            if(inPath)
+                SoSeparator::GLRenderInPath(action);
+            else
+                SoSeparator::GLRenderBelowPath(action);
+            if(selPushed) {
+                SelColorStack.pop_back();
                 state->pop();
             }
+            if(hlPushed)
+                HlColorStack.pop_back();
         }
-        SelStack.pop_back();
-        pushed = false;
+        if(colorPushed) {
+            ShapeColorNode = 0;
+            state->pop();
+        }
     }
+    SelStack.pop_back();
+    SelStack.nodeSet.erase(this);
 }
 
-#define DEFINE_RENDER(_name) \
-void SoFCSelectionRoot::_name(SoGLRenderAction * action) {\
-    renderPrivate(action,&SoFCSelectionRoot::_name##Private);\
-}\
-void SoFCSelectionRoot::_name##Private(SoGLRenderAction * action) {\
-    inherited::_name(action);\
+void SoFCSelectionRoot::GLRenderBelowPath(SoGLRenderAction * action) {
+    renderPrivate(action,false);
 }
 
-DEFINE_RENDER(GLRender)
-DEFINE_RENDER(GLRenderBelowPath)
-DEFINE_RENDER(GLRenderInPath)
-DEFINE_RENDER(GLRenderOffPath)
+void SoFCSelectionRoot::GLRenderInPath(SoGLRenderAction * action) {
+    if(action->getCurPathCode() == SoAction::BELOW_PATH)
+        return GLRenderBelowPath(action);
+    renderPrivate(action,true);
+}
 
 bool SoFCSelectionRoot::checkColorOverride(SoState *state) {
     if(ShapeColorNode) {
@@ -1365,29 +1375,86 @@ void SoFCSelectionRoot::resetContext() {
     contextMap.clear();
 }
 
+
+#define BEGIN_ACTION \
+    auto &stack = ActionStacks[action];\
+    if(ViewParams::instance()->getCoinCycleCheck() \
+        && !stack.nodeSet.insert(this).second) \
+    {\
+        std::time_t t = std::time(0);\
+        if(_CyclicLastReported < t) {\
+            _CyclicLastReported = t+5;\
+            FC_ERR("Cyclic scene graph: " << getName());\
+        }\
+        return;\
+    }\
+    stack.push_back(this);\
+    auto size = stack.size();
+
+#define END_ACTION \
+    if(stack.size()!=size || stack.back()!=this)\
+        FC_ERR("action stack fault");\
+    else {\
+        stack.nodeSet.erase(this);\
+        stack.pop_back();\
+        if(stack.empty())\
+            ActionStacks.erase(action);\
+    }
+
 void SoFCSelectionRoot::pick(SoPickAction * action) {
-    doAction(action);
+    BEGIN_ACTION;
+    inherited::pick(action);
+    END_ACTION;
 }
 
 void SoFCSelectionRoot::rayPick(SoRayPickAction * action) {
-    doAction(action);
+    BEGIN_ACTION;
+    inherited::rayPick(action);
+    END_ACTION;
+}
+
+void SoFCSelectionRoot::handleEvent(SoHandleEventAction * action) {
+    BEGIN_ACTION;
+    inherited::handleEvent(action);
+    END_ACTION;
+}
+
+void SoFCSelectionRoot::search(SoSearchAction * action) {
+    BEGIN_ACTION;
+    inherited::search(action);
+    END_ACTION;
+}
+
+void SoFCSelectionRoot::getPrimitiveCount(SoGetPrimitiveCountAction * action) {
+    BEGIN_ACTION;
+    inherited::getPrimitiveCount(action);
+    END_ACTION;
+}
+
+void SoFCSelectionRoot::getBoundingBox(SoGetBoundingBoxAction * action)
+{
+    BEGIN_ACTION;
+    inherited::getBoundingBox(action);
+    END_ACTION;
+}
+
+void SoFCSelectionRoot::getMatrix(SoGetMatrixAction * action) {
+    BEGIN_ACTION;
+    inherited::getMatrix(action);
+    END_ACTION;
+}
+
+void SoFCSelectionRoot::callback(SoCallbackAction *action) {
+    BEGIN_ACTION;
+    inherited::callback(action);
+    END_ACTION;
 }
 
 void SoFCSelectionRoot::doAction(SoAction *action) {
-    auto &stack = ActionStacks[action];
-    stack.push_back(this);
-    auto size = stack.size();
-
+    BEGIN_ACTION
     if(doActionPrivate(stack,action))
         inherited::doAction(action);
-
-    if(stack.size()!=size || stack.back()!=this)
-        FC_WARN("action stack fault");
-    else {
-        stack.pop_back();
-        if(stack.empty())
-            ActionStacks.erase(action);
-    }
+    END_ACTION
 }
 
 bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {

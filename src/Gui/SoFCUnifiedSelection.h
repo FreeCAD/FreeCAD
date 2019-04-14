@@ -209,13 +209,17 @@ public:
     SoFCSelectionRoot(bool trackCacheMode=false);
 
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
-    virtual void GLRender(SoGLRenderAction * action);
     virtual void GLRenderInPath(SoGLRenderAction * action);
-    virtual void GLRenderOffPath(SoGLRenderAction * action);
 
     virtual void doAction(SoAction *action);
     virtual void pick(SoPickAction * action);
     virtual void rayPick(SoRayPickAction * action);
+    virtual void handleEvent(SoHandleEventAction * action);
+    virtual void search(SoSearchAction * action);
+    virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+    virtual void getMatrix(SoGetMatrixAction * action);
+    virtual void callback(SoCallbackAction *action);
 
     template<class T>
     static std::shared_ptr<T> getRenderContext(SoNode *node, std::shared_ptr<T> def = std::shared_ptr<T>()) {
@@ -322,16 +326,11 @@ public:
 protected:
     virtual ~SoFCSelectionRoot();
 
-    typedef void (SoFCSelectionRoot::*RenderFunc)(SoGLRenderAction*);
-    void renderPrivate(SoGLRenderAction *, RenderFunc);
-
-    void GLRenderBelowPathPrivate(SoGLRenderAction * action);
-    void GLRenderPrivate(SoGLRenderAction * action);
-    void GLRenderInPathPrivate(SoGLRenderAction * action);
-    void GLRenderOffPathPrivate(SoGLRenderAction * action);
+    void renderPrivate(SoGLRenderAction *, bool inPath);
 
     class Stack : public std::vector<SoFCSelectionRoot*> {
     public:
+        std::unordered_set<SoFCSelectionRoot*> nodeSet;
         size_t offset = 0;
     };
 
@@ -343,7 +342,7 @@ protected:
             SoAction *action, SoNode *node, bool create, bool erase);
 
     static Stack SelStack;
-    static std::map<SoAction*,Stack> ActionStacks;
+    static std::unordered_map<SoAction*,Stack> ActionStacks;
 
     struct StackComp {
         bool operator()(const Stack &a, const Stack &b) const;
@@ -373,8 +372,6 @@ protected:
     SoColorPacker shapeColorPacker;
 
     bool doActionPrivate(Stack &stack, SoAction *);
-
-    bool pushed;//to prevent double push into the stack
 };
 
 /**

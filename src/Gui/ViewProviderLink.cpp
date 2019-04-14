@@ -1562,6 +1562,7 @@ bool ViewProviderLink::isSelectable() const {
 
 void ViewProviderLink::attach(App::DocumentObject *pcObj) {
     SoNode *node = linkView->getLinkRoot();
+    node->setName(pcObj->getFullName().c_str());
     addDisplayMaskMode(node,"Link");
     if(childVp) {
         childVpLink = LinkInfo::get(childVp,0);
