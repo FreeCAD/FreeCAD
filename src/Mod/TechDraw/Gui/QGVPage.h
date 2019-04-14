@@ -41,8 +41,8 @@ class DrawViewClip;
 class DrawViewCollection;
 class DrawViewSpreadsheet;
 class DrawViewImage;
-class DrawViewBalloon;
-}
+class DrawLeaderLine;
+class DrawViewBalloon;}
 
 namespace TechDrawGui
 {
@@ -51,6 +51,7 @@ class QGIViewDimension;
 class QGITemplate;
 class ViewProviderPage;
 class QGIViewBalloon;
+class QGILeaderLine;
 
 class TechDrawGuiExport QGVPage : public QGraphicsView
 {
@@ -77,7 +78,7 @@ public:
     QGIView * addDrawViewClip(TechDraw::DrawViewClip *view);
     QGIView * addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *view);
     QGIView * addDrawViewImage(TechDraw::DrawViewImage *view);
-
+    QGIView * addViewLeader(TechDraw::DrawLeaderLine* view);
 
     QGIView* findQViewForDocObj(App::DocumentObject *obj) const;
     QGIView* getQGIVByName(std::string name);
@@ -121,6 +122,7 @@ protected:
     void enterEvent(QEvent *event) override;
     void leaveEvent(QEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void kbPanScroll(int xMove = 1, int yMove = 1); 
