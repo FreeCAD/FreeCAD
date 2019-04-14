@@ -1062,6 +1062,7 @@ boost::any ObjectIdentifier::getValue() const
 
     destructor d1(pyvalue);
 
+    Base::PyGILStateLocker locker;
     if (!pyvalue)
         throw Base::RuntimeError("Failed to get property value.");
 #if PY_MAJOR_VERSION < 3
@@ -1078,12 +1079,12 @@ boost::any ObjectIdentifier::getValue() const
         return boost::any(PyString_AsString(pyvalue));
 #endif
     else if (PyUnicode_Check(pyvalue)) {
+#if PY_MAJOR_VERSION >= 3
+        return boost::any(PyUnicode_AsUTF8(pyvalue));
+#else
         PyObject * s = PyUnicode_AsUTF8String(pyvalue);
         destructor d2(s);
 
-#if PY_MAJOR_VERSION >= 3
-        return boost::any(PyUnicode_AsUTF8(s));
-#else
         return boost::any(PyString_AsString(s));
 #endif
     }
