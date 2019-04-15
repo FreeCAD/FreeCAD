@@ -47,11 +47,11 @@ SET(Measure_SRCS
     ${Python_SRCS}
 )
 
-if(BUILD_USE_PCH)
+if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Measure_CPP_SRCS ${Measure_SRCS})
     ADD_MSVC_PRECOMPILED_HEADER(Measure PreCompiled.h PreCompiled.cpp Measure_CPP_SRCS)
-endif(BUILD_USE_PCH)
+endif(FREECAD_USE_PCH)
 
 SET(Measure_Scripts
     ../Init.py
