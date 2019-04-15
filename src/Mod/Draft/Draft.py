@@ -6774,10 +6774,7 @@ class ViewProviderDraftText:
         self.onChanged(vobj,"LineSpacing")
 
     def getDisplayModes(self,vobj):
-        return ["2D text","3D text"]
-
-    def getDefaultDisplayMode(self):
-        return "3D text"
+        return ["3D text","2D text"]
 
     def setDisplayMode(self,mode):
         return mode
