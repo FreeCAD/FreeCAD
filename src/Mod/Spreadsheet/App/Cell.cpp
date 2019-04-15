@@ -722,7 +722,7 @@ void Cell::restore(Base::XMLReader &reader, bool checkAlias)
   */
 
 void Cell::save(Base::Writer &writer) const {
-    save(writer.Stream(),writer.ind(),true);
+    save(writer.Stream(),writer.ind(),false);
 }
 
 void Cell::save(std::ostream &os, const char *indent, bool noContent) const {
