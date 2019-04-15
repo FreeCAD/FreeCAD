@@ -69,6 +69,7 @@
 # include <QMessageBox>
 # include <QPainter>
 # include <QTextStream>
+# include <QKeyEvent>
 #endif
 
 #ifndef _PreComp_
@@ -281,7 +282,8 @@ ViewProviderSketch::ViewProviderSketch()
     Mode(STATUS_NONE),
     visibleInformationChanged(true),
     combrepscalehyst(0),
-    isShownVirtualSpace(false)
+    isShownVirtualSpace(false),
+    listener(0)
 {
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
     ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
@@ -296,6 +298,9 @@ ViewProviderSketch::ViewProviderSketch()
         this->ShowLinks.setValue(hGrp->GetBool("ShowLinks", true));
         this->ShowSupport.setValue(hGrp->GetBool("ShowSupport", true));
         this->RestoreCamera.setValue(hGrp->GetBool("RestoreCamera", true));
+
+        // well it is not visibility automation but a good place nevertheless
+        this->Autoconstraints.setValue(hGrp->GetBool("AutoConstraints",false));
     }
 
     sPixmap = "Sketcher_Sketch";
@@ -1190,11 +1195,17 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             return true;
         }
         case STATUS_SKETCH_UseRubberBand: {
+            // Here we must use the device-pixel-ratio to compute the correct y coordinate (#0003130)
+#if QT_VERSION >= 0x050600
+            qreal dpr = viewer->getGLWidget()->devicePixelRatioF();
+#else
+            qreal dpr = 1;
+#endif
             newCursorPos = cursorPos;
             rubberband->setCoords(prvCursorPos.getValue()[0],
-                       viewer->getGLWidget()->height() - prvCursorPos.getValue()[1],
+                       viewer->getGLWidget()->height()*dpr - prvCursorPos.getValue()[1],
                        newCursorPos.getValue()[0],
-                       viewer->getGLWidget()->height() - newCursorPos.getValue()[1]);
+                       viewer->getGLWidget()->height()*dpr - newCursorPos.getValue()[1]);
             viewer->redraw();
             return true;
         }
@@ -1310,8 +1321,8 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
             Constr->LabelDistance = vec.x * dir.x + vec.y * dir.y;
             Constr->LabelPosition = atan2(dir.y, dir.x);
         } else {
-            Base::Vector3d norm(-dir.y,dir.x,0);
-            Constr->LabelDistance = vec.x * norm.x + vec.y * norm.y;
+            Base::Vector3d normal(-dir.y,dir.x,0);
+            Constr->LabelDistance = vec.x * normal.x + vec.y * normal.y;
             if (Constr->Type == Distance ||
                 Constr->Type == DistanceX || Constr->Type == DistanceY) {
                 vec = Base::Vector3d(toPos.x, toPos.y, 0) - (p2 + p1) / 2;
@@ -3785,7 +3796,18 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             for(int i = 0; i < ndiv; i++) {
                 paramlist[i] = firstparam + i * step;
                 pointatcurvelist[i] = spline->pointAtParameter(paramlist[i]);
-                curvaturelist[i] = spline->curvatureAt(paramlist[i]);
+
+                try {
+                    curvaturelist[i] = spline->curvatureAt(paramlist[i]);
+                }
+                catch(Base::CADKernelError &e) {
+                    // it is "just" a visualisation matter OCC could not calculate the curvature
+                    // terminating here would mean that the other shapes would not be drawed.
+                    // Solution: Report the issue and set dummy curvature to 0
+                    e.ReportException();
+                    Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", GeoId);
+                    curvaturelist[i] = 0;
+                }
 
                 if(curvaturelist[i] > maxcurv)
                     maxcurv = curvaturelist[i];
@@ -3899,18 +3921,18 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             mat->ref();
             mat->diffuseColor = InformationColor;
 
-            SoLineSet *lineset = new SoLineSet;
+            SoLineSet *polygon = new SoLineSet;
 
-            SoCoordinate3 *coords = new SoCoordinate3;
+            SoCoordinate3 *polygoncoords = new SoCoordinate3;
 
             if(spline->isPeriodic()) {
-                coords->point.setNum(poles.size()+1);
+                polygoncoords->point.setNum(poles.size()+1);
             }
             else {
-                coords->point.setNum(poles.size());
+                polygoncoords->point.setNum(poles.size());
             }
 
-            SbVec3f *vts = coords->point.startEditing();
+            SbVec3f *vts = polygoncoords->point.startEditing();
 
             int i=0;
             for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it, i++) {
@@ -3921,11 +3943,11 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 vts[poles.size()].setValue(poles[0].x,poles[0].y,zInfo);
             }
 
-            coords->point.finishEditing();
+            polygoncoords->point.finishEditing();
 
             sep->addChild(mat);
-            sep->addChild(coords);
-            sep->addChild(lineset);
+            sep->addChild(polygoncoords);
+            sep->addChild(polygon);
 
             sw->addChild(sep);
 
@@ -3941,16 +3963,16 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoSeparator *sep = static_cast<SoSeparator *>(sw->getChild(0));
 
-            SoCoordinate3 *coords = static_cast<SoCoordinate3 *>(sep->getChild(GEOINFO_BSPLINE_POLYGON));
+            SoCoordinate3 *polygoncoords = static_cast<SoCoordinate3 *>(sep->getChild(GEOINFO_BSPLINE_POLYGON));
 
             if(spline->isPeriodic()) {
-                coords->point.setNum(poles.size()+1);
+                polygoncoords->point.setNum(poles.size()+1);
             }
             else {
-                coords->point.setNum(poles.size());
+                polygoncoords->point.setNum(poles.size());
             }
 
-            SbVec3f *vts = coords->point.startEditing();
+            SbVec3f *vts = polygoncoords->point.startEditing();
 
             int i=0;
             for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it, i++) {
@@ -3961,7 +3983,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 vts[poles.size()].setValue(poles[0].x,poles[0].y,zInfo);
             }
 
-            coords->point.finishEditing();
+            polygoncoords->point.finishEditing();
 
         }
         currentInfoNode++; // switch to next node
@@ -3986,7 +4008,18 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         for(int i = 0; i < ndiv; i++) {
             paramlist[i] = firstparam + i * step;
             pointatcurvelist[i] = spline->pointAtParameter(paramlist[i]);
-            curvaturelist[i] = spline->curvatureAt(paramlist[i]);
+
+            try {
+                curvaturelist[i] = spline->curvatureAt(paramlist[i]);
+            }
+            catch(Base::CADKernelError &e) {
+                // it is "just" a visualisation matter OCC could not calculate the curvature
+                // terminating here would mean that the other shapes would not be drawed.
+                // Solution: Report the issue and set dummy curvature to 0
+                e.ReportException();
+                Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", GeoId);
+                curvaturelist[i] = 0;
+            }
 
             try {
                 spline->normalAt(paramlist[i],normallist[i]);
@@ -4018,15 +4051,15 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             mat->ref();
             mat->diffuseColor = InformationColor;
 
-            SoLineSet *lineset = new SoLineSet;
+            SoLineSet *comblineset = new SoLineSet;
 
-            SoCoordinate3 *coords = new SoCoordinate3;
+            SoCoordinate3 *combcoords = new SoCoordinate3;
 
-            coords->point.setNum(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
-            lineset->numVertices.setNum(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
+            combcoords->point.setNum(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
+            comblineset->numVertices.setNum(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
 
-            int32_t *index = lineset->numVertices.startEditing();
-            SbVec3f *vts = coords->point.startEditing();
+            int32_t *index = comblineset->numVertices.startEditing();
+            SbVec3f *vts = combcoords->point.startEditing();
 
             for(int i = 0; i < ndiv; i++) {
                 vts[2*i].setValue(pointatcurvelist[i].x, pointatcurvelist[i].y, zInfo); // radials
@@ -4038,12 +4071,12 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             index[ndiv] = ndiv; // comb endpoint closing segment
 
-            coords->point.finishEditing();
-            lineset->numVertices.finishEditing();
+            combcoords->point.finishEditing();
+            comblineset->numVertices.finishEditing();
 
             sep->addChild(mat);
-            sep->addChild(coords);
-            sep->addChild(lineset);
+            sep->addChild(combcoords);
+            sep->addChild(comblineset);
 
             sw->addChild(sep);
 
@@ -4059,15 +4092,15 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoSeparator *sep = static_cast<SoSeparator *>(sw->getChild(0));
 
-            SoCoordinate3 *coords = static_cast<SoCoordinate3 *>(sep->getChild(GEOINFO_BSPLINE_POLYGON));
+            SoCoordinate3 *combcoords = static_cast<SoCoordinate3 *>(sep->getChild(GEOINFO_BSPLINE_POLYGON));
 
-            SoLineSet *lineset = static_cast<SoLineSet *>(sep->getChild(GEOINFO_BSPLINE_POLYGON+1));
+            SoLineSet *comblineset = static_cast<SoLineSet *>(sep->getChild(GEOINFO_BSPLINE_POLYGON+1));
 
-            coords->point.setNum(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
-            lineset->numVertices.setNum(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
+            combcoords->point.setNum(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
+            comblineset->numVertices.setNum(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
 
-            int32_t *index = lineset->numVertices.startEditing();
-            SbVec3f *vts = coords->point.startEditing();
+            int32_t *index = comblineset->numVertices.startEditing();
+            SbVec3f *vts = combcoords->point.startEditing();
 
             for(int i = 0; i < ndiv; i++) {
                 vts[2*i].setValue(pointatcurvelist[i].x, pointatcurvelist[i].y, zInfo); // radials
@@ -4079,8 +4112,8 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             index[ndiv] = ndiv; // comb endpoint closing segment
 
-            coords->point.finishEditing();
-            lineset->numVertices.finishEditing();
+            combcoords->point.finishEditing();
+            comblineset->numVertices.finishEditing();
 
         }
 
@@ -5188,7 +5221,9 @@ Restart:
                         SbVec3f p2(pnt2.x,pnt2.y,zConstr);
 
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                        asciiText->string = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
+
+                        // Get display string with units hidden if so requested
+                        asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
 
                         asciiText->datumtype    = SoDatumLabel::RADIUS;
                         asciiText->param1       = Constr->LabelDistance;
@@ -5689,6 +5724,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     getSketchObject()->getSolvedSketch().RecalculateInitialSolutionWhileMovingPoint = hGrp2->GetBool("RecalculateInitialSolutionWhileDragging",true);
 
+
+    // intercept del key press from main app
+    listener = new ShortcutListener(this);
+
+    Gui::getMainWindow()->installEventFilter(listener);
+
     return true;
 }
 
@@ -5814,10 +5855,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->PointsCoordinate->setName("PointsCoordinate");
     pointsRoot->addChild(edit->PointsCoordinate);
 
-    SoDrawStyle *DrawStyle = new SoDrawStyle;
-    DrawStyle->setName("PointsDrawStyle");
-    DrawStyle->pointSize = 8;
-    pointsRoot->addChild(DrawStyle);
+    SoDrawStyle *drawStyle = new SoDrawStyle;
+    drawStyle->setName("PointsDrawStyle");
+    drawStyle->pointSize = 8;
+    pointsRoot->addChild(drawStyle);
 
     edit->PointSet = new SoMarkerSet;
     edit->PointSet->setName("PointSet");
@@ -5840,10 +5881,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->CurvesCoordinate->setName("CurvesCoordinate");
     curvesRoot->addChild(edit->CurvesCoordinate);
 
-    DrawStyle = new SoDrawStyle;
-    DrawStyle->setName("CurvesDrawStyle");
-    DrawStyle->lineWidth = 3;
-    curvesRoot->addChild(DrawStyle);
+    drawStyle = new SoDrawStyle;
+    drawStyle->setName("CurvesDrawStyle");
+    drawStyle->lineWidth = 3;
+    curvesRoot->addChild(drawStyle);
 
     edit->CurveSet = new SoLineSet;
     edit->CurveSet->setName("CurvesLineSet");
@@ -5860,10 +5901,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     MtlBind->value = SoMaterialBinding::PER_FACE;
     crossRoot->addChild(MtlBind);
 
-    DrawStyle = new SoDrawStyle;
-    DrawStyle->setName("RootCrossDrawStyle");
-    DrawStyle->lineWidth = 2;
-    crossRoot->addChild(DrawStyle);
+    drawStyle = new SoDrawStyle;
+    drawStyle->setName("RootCrossDrawStyle");
+    drawStyle->lineWidth = 2;
+    crossRoot->addChild(drawStyle);
 
     edit->RootCrossMaterials = new SoMaterial;
     edit->RootCrossMaterials->setName("RootCrossMaterials");
@@ -5890,10 +5931,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditCurvesCoordinate->setName("EditCurvesCoordinate");
     editCurvesRoot->addChild(edit->EditCurvesCoordinate);
 
-    DrawStyle = new SoDrawStyle;
-    DrawStyle->setName("EditCurvesDrawStyle");
-    DrawStyle->lineWidth = 3;
-    editCurvesRoot->addChild(DrawStyle);
+    drawStyle = new SoDrawStyle;
+    drawStyle->setName("EditCurvesDrawStyle");
+    drawStyle->lineWidth = 3;
+    editCurvesRoot->addChild(drawStyle);
 
     edit->EditCurveSet = new SoLineSet;
     edit->EditCurveSet->setName("EditCurveLineSet");
@@ -5937,10 +5978,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(MtlBind);
 
     // use small line width for the Constraints
-    DrawStyle = new SoDrawStyle;
-    DrawStyle->setName("ConstraintDrawStyle");
-    DrawStyle->lineWidth = 1;
-    edit->EditRoot->addChild(DrawStyle);
+    drawStyle = new SoDrawStyle;
+    drawStyle->setName("ConstraintDrawStyle");
+    drawStyle->lineWidth = 1;
+    edit->EditRoot->addChild(drawStyle);
 
     // add the group where all the constraints has its SoSeparator
     edit->constrGroup = new SmSwitchboard();
@@ -5954,16 +5995,15 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(MtlBind);
 
     // use small line width for the information visual
-    DrawStyle = new SoDrawStyle;
-    DrawStyle->setName("InformationDrawStyle");
-    DrawStyle->lineWidth = 1;
-    edit->EditRoot->addChild(DrawStyle);
+    drawStyle = new SoDrawStyle;
+    drawStyle->setName("InformationDrawStyle");
+    drawStyle->lineWidth = 1;
+    edit->EditRoot->addChild(drawStyle);
 
     // add the group where all the information entity has its SoSeparator
     edit->infoGroup = new SoGroup();
     edit->infoGroup->setName("InformationGroup");
     edit->EditRoot->addChild(edit->infoGroup);
-
 }
 
 void ViewProviderSketch::unsetEdit(int ModNum)
@@ -5971,6 +6011,11 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     Q_UNUSED(ModNum);
     ShowGrid.setValue(false);
     TightGrid.setValue(true);
+
+    if(listener) {
+        Gui::getMainWindow()->removeEventFilter(listener);
+        delete listener;
+    }
 
     if (edit) {
         if (edit->sketchHandler)
@@ -6224,6 +6269,31 @@ Sketcher::SketchObject *ViewProviderSketch::getSketchObject(void) const
     return dynamic_cast<Sketcher::SketchObject *>(pcObject);
 }
 
+void ViewProviderSketch::deleteSelected()
+{
+    std::vector<Gui::SelectionObject> selection;
+    selection = Gui::Selection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        Base::Console().Warning("Delete: Selection not restricted to one sketch and its subelements");
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+
+    if(SubNames.size()>0) {
+        App::Document* doc = getSketchObject()->getDocument();
+
+        doc->openTransaction("delete sketch geometry");
+
+        onDelete(SubNames);
+
+        doc->commitTransaction();
+    }
+}
+
 bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 {
     if (edit) {
@@ -6349,8 +6419,20 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         // This function is generally called from StdCmdDelete::activated
         // Since 2015-05-03 that function includes a recompute at the end.
 
-        /*this->drawConstraintIcons();
-        this->updateColor();*/
+        // Since December 2018, the function is no longer called from StdCmdDelete::activated,
+        // as there is an event filter installed that intercepts the del key event. So now we do
+        // need to tidy up after ourselves again.
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+        if (autoRecompute) {
+            Gui::Command::updateActive();
+        }
+        else {
+            this->drawConstraintIcons();
+            this->updateColor();
+        }
 
         // if in edit not delete the object
         return false;

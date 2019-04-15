@@ -53,9 +53,10 @@ enum HighlightMode {  Underlined,
 };
 
 /// highlight modes for the tree items
-enum TreeItemMode {  Expand,
-                     Collapse,
-                     Toggle
+enum TreeItemMode {  ExpandItem,
+                     ExpandPath,
+                     CollapseItem,
+                     ToggleItem
 };
 
 
@@ -144,6 +145,13 @@ private:
     static QPixmap* documentPixmap;
     std::map<const Gui::Document*,DocumentItem*> DocumentMap;
     bool fromOutside;
+
+    typedef boost::signals2::connection Connection;
+    Connection connectNewDocument;
+    Connection connectDelDocument;
+    Connection connectRenDocument;
+    Connection connectActDocument;
+    Connection connectRelDocument;
 };
 
 /** The link between the tree and a document.

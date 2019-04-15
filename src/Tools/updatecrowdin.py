@@ -2,7 +2,7 @@
 
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *  
+#*   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Library General Public License (LGPL)   *
@@ -22,6 +22,7 @@
 #*                                                                         *
 #***************************************************************************
 
+from __future__ import print_function
 
 '''
 This utility offers several commands to interact with the FreeCAD project on crowdin.
@@ -31,14 +32,14 @@ the API key that gives access to the crowdin FreeCAD project.
 Usage:
 
     updatecrowdin.py command
-    
+
 Available commands:
 
     status:   prints a status of the translations
     update:   updates crowdin the current version of .ts files found in the source code
-    build:    builds a new downloadable package on crowdin with all trasnlated strings
+    build:    builds a new downloadable package on crowdin with all translated strings
     download: downloads the latest build
-    
+
 Example:
 
     ./updatecrowdin.py update
@@ -53,26 +54,26 @@ import sys,os,xml.sax,pycurl,StringIO
 
 
 files = [ ["Arch.ts",              "/Mod/Arch/Resources/translations/Arch.ts"],
-          ["Assembly.ts",          "/Mod/Assembly/Gui/Resources/translations/Assembly_de.ts"],
+          ["Assembly.ts",          "/Mod/Assembly/Gui/Resources/translations/Assembly.ts"],
           ["draft.ts",             "/Mod/Draft/Resources/translations/Draft.ts"],
-          ["Drawing.ts",           "/Mod/Drawing/Gui/Resources/translations/Drawing_de.ts"],
+          ["Drawing.ts",           "/Mod/Drawing/Gui/Resources/translations/Drawing.ts"],
           ["Fem.ts",               "/Mod/Fem/Gui/Resources/translations/Fem.ts"],
           ["FreeCAD.ts",           "/Gui/Language/FreeCAD.ts"],
-          ["Image.ts",             "/Mod/Image/Gui/Resources/translations/Image_de.ts"],
-          ["Mesh.ts",              "/Mod/Mesh/Gui/Resources/translations/Mesh_de.ts"],
-          ["MeshPart.ts",          "/Mod/MeshPart/Gui/Resources/translations/MeshPart_de.ts"],
+          ["Image.ts",             "/Mod/Image/Gui/Resources/translations/Image.ts"],
+          ["Mesh.ts",              "/Mod/Mesh/Gui/Resources/translations/Mesh.ts"],
+          ["MeshPart.ts",          "/Mod/MeshPart/Gui/Resources/translations/MeshPart.ts"],
           ["OpenSCAD.ts",          "/Mod/OpenSCAD/Resources/translations/OpenSCAD.ts"],
-          ["Part.ts",              "/Mod/Part/Gui/Resources/translations/Part_de.ts"],
-          ["PartDesign.ts",        "/Mod/PartDesign/Gui/Resources/translations/PartDesign_de.ts"],
+          ["Part.ts",              "/Mod/Part/Gui/Resources/translations/Part.ts"],
+          ["PartDesign.ts",        "/Mod/PartDesign/Gui/Resources/translations/PartDesign.ts"],
           ["Plot.ts",              "/Mod/Plot/resources/translations/Plot.ts"],
-          ["Points.ts",            "/Mod/Points/Gui/Resources/translations/Points_de.ts"],
-          ["Raytracing.ts",        "/Mod/Raytracing/Gui/Resources/translations/Raytracing_de.ts"],
-          ["ReverseEngineering.ts","/Mod/ReverseEngineering/Gui/Resources/translations/ReverseEngineering_de.ts"],
-          ["Robot.ts",             "/Mod/Robot/Gui/Resources/translations/Robot_de.ts"],
+          ["Points.ts",            "/Mod/Points/Gui/Resources/translations/Points.ts"],
+          ["Raytracing.ts",        "/Mod/Raytracing/Gui/Resources/translations/Raytracing.ts"],
+          ["ReverseEngineering.ts","/Mod/ReverseEngineering/Gui/Resources/translations/ReverseEngineering.ts"],
+          ["Robot.ts",             "/Mod/Robot/Gui/Resources/translations/Robot.ts"],
           ["Ship.ts",              "/Mod/Ship/resources/translations/Ship.ts"],
-          ["Sketcher.ts",          "/Mod/Sketcher/Gui/Resources/translations/Sketcher_de.ts"],
+          ["Sketcher.ts",          "/Mod/Sketcher/Gui/Resources/translations/Sketcher.ts"],
           ["StartPage.ts",         "/Mod/Start/Gui/Resources/translations/StartPage.ts"],
-          ["Test.ts",              "/Mod/Test/Gui/Resources/translations/Test_de.ts"],
+          ["Test.ts",              "/Mod/Test/Gui/Resources/translations/Test.ts"],
           ["Web.ts",               "/Mod/Web/Gui/Resources/translations/Web.ts"],
           ["Spreadsheet.ts",       "/Mod/Spreadsheet/Gui/Resources/translations/Spreadsheet.ts"],
           ["Path.ts",              "/Mod/Path/Gui/Resources/translations/Path.ts"],
@@ -83,7 +84,7 @@ files = [ ["Arch.ts",              "/Mod/Arch/Resources/translations/Arch.ts"],
 
 # handler for the command responses
 class ResponseHandler( xml.sax.ContentHandler ):
-    
+
     def __init__(self):
         self.current = ""
         self.data = ""
@@ -119,14 +120,14 @@ class ResponseHandler( xml.sax.ContentHandler ):
 
 
 if __name__ == "__main__":
-    
+
     # only one argument allowed
     arg = sys.argv[1:]
     if len(arg) != 1:
         print(__doc__)
         sys.exit()
     arg = arg[0]
-    
+
     # getting API key stored in ~/.crowdin-freecad
     configfile = os.path.expanduser("~")+os.sep+".crowdin-freecad"
     if not os.path.exists(configfile):
@@ -136,35 +137,35 @@ if __name__ == "__main__":
     url = "https://api.crowdin.com/api/project/freecad/"
     key = "?key="+f.read().strip()
     f.close()
-    
+
     if arg == "status":
         c = pycurl.Curl()
         c.setopt(pycurl.URL, url+"status"+key+"&xml")
         b = StringIO.StringIO()
-        c.setopt(pycurl.WRITEFUNCTION, b.write) 
+        c.setopt(pycurl.WRITEFUNCTION, b.write)
         c.perform()
         c.close()
         handler = ResponseHandler()
         xml.sax.parseString(b.getvalue(),handler)
         print(handler.data)
-        
+
     elif arg == "build":
         print("Building (warning, this can be invoked only once per 30 minutes)...")
         c = pycurl.Curl()
         c.setopt(pycurl.URL, url+"export"+key)
         b = StringIO.StringIO()
-        c.setopt(pycurl.WRITEFUNCTION, b.write) 
+        c.setopt(pycurl.WRITEFUNCTION, b.write)
         c.perform()
         c.close()
         handler = ResponseHandler()
         xml.sax.parseString(b.getvalue(),handler)
         print(handler.data)
-        
+
     elif arg == "download":
         print("Downloading all.zip in current directory...")
         cmd = "wget -O freecad.zip "+url+"download/all.zip"+key
         os.system(cmd)
-        
+
     elif arg == "update":
         basepath = os.path.dirname(os.path.abspath("."))
         for f in files:
@@ -174,7 +175,7 @@ if __name__ == "__main__":
             c.setopt(pycurl.URL, url+"update-file"+key)
             c.setopt(pycurl.HTTPPOST, fields)
             b = StringIO.StringIO()
-            c.setopt(pycurl.WRITEFUNCTION, b.write) 
+            c.setopt(pycurl.WRITEFUNCTION, b.write)
             c.perform()
             c.close()
             handler = ResponseHandler()
@@ -183,5 +184,3 @@ if __name__ == "__main__":
 
     else:
         print(__doc__)
-        
-

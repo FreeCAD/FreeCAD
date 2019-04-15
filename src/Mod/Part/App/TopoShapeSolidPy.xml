@@ -80,19 +80,19 @@ shape if the solid has no shells</UserDocu>
       </Documentation>
       <Parameter Name="OuterShell" Type="Object"/>
     </Attribute>
-    <Methode Name="getMomentOfInertia">
+    <Methode Name="getMomentOfInertia" Const="true">
       <Documentation>
         <UserDocu>computes the moment of inertia of the material system about the axis A.
 mySolid.getMomentOfInertia( point, direction )</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getRadiusOfGyration">
+    <Methode Name="getRadiusOfGyration" Const="true">
       <Documentation>
         <UserDocu>Returns the radius of gyration of the current system about the axis A.
 mySolid.getRadiusOfGyration( point, direction )</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="offsetFaces" ReadOnly="true">
+    <Methode Name="offsetFaces" Const="true">
       <Documentation>
         <UserDocu>Extrude single faces of the solid.
 Example:

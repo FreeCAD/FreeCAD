@@ -34,6 +34,7 @@ class TestObjectCreate(unittest.TestCase):
     fcc_print('import TestObjectCreate')
 
     def setUp(self):
+        # init, is executed before every test
         self.doc_name = "TestObjectCreate"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
@@ -83,7 +84,13 @@ class TestObjectCreate(unittest.TestCase):
         analysis.addObject(ObjectsFem.makeMeshNetgen(doc))
         analysis.addObject(ObjectsFem.makeMeshResult(doc))
 
-        analysis.addObject(ObjectsFem.makeResultMechanical(doc))
+        res = analysis.addObject(ObjectsFem.makeResultMechanical(doc))[0]
+        if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
+            vres = analysis.addObject(ObjectsFem.makePostVtkResult(doc, res))[0]
+            analysis.addObject(ObjectsFem.makePostVtkFilterClipRegion(doc, vres))
+            analysis.addObject(ObjectsFem.makePostVtkFilterClipScalar(doc, vres))
+            analysis.addObject(ObjectsFem.makePostVtkFilterCutFunction(doc, vres))
+            analysis.addObject(ObjectsFem.makePostVtkFilterWarp(doc, vres))
 
         analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc))
         analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
@@ -95,13 +102,19 @@ class TestObjectCreate(unittest.TestCase):
         analysis.addObject(ObjectsFem.makeEquationFlow(doc, sol))
         analysis.addObject(ObjectsFem.makeEquationFluxsolver(doc, sol))
         analysis.addObject(ObjectsFem.makeEquationHeat(doc, sol))
-        # is = 43 (just copy in empty file to test, or run unit test case, it is printed)
+        # is = 48 (just copy in empty file to test, or run unit test case, it is printed)
         # TODO if the equations and gmsh mesh childs are added to the analysis,
         # they show up twice on Tree (on solver resp. gemsh mesh obj and on analysis)
         # https://forum.freecadweb.org/viewtopic.php?t=25283
 
         doc.recompute()
-        self.assertEqual(len(analysis.Group), testtools.get_defmake_count() - 1)  # because of the analysis itself count -1
+
+        # if FEM VTK post processing is disabled, we are not able to create VTK post objects
+        if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
+            fem_vtk_post = True
+        else:
+            fem_vtk_post = False
+        self.assertEqual(len(analysis.Group), testtools.get_defmake_count(fem_vtk_post) - 1)  # because of the analysis itself count -1
 
     def tearDown(self):
         FreeCAD.closeDocument(self.doc_name)
@@ -463,5 +476,6 @@ class TestObjectType(unittest.TestCase):
         # is = 43 (just copy in empty file to test)
 
     def tearDown(self):
+        # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
         pass

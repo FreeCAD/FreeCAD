@@ -51,7 +51,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         code += convertobject(obj)
 
-    gfile = pythonopen(filename,"wb")
+    gfile = pythonopen(filename,"w")
     gfile.write(code)
     gfile.close()
 

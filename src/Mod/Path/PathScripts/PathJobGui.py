@@ -45,6 +45,7 @@ import sys
 import traceback
 
 from PySide import QtCore, QtGui
+from collections import Counter
 from contextlib import contextmanager
 from pivy import coin
 
@@ -526,9 +527,6 @@ class TaskPanel:
         self.obj.PostProcessor = postProcessors
         self.obj.PostProcessor = currentPostProcessor
 
-        for base in self.obj.Model.Group:
-            self.form.jobModel.addItem(base.Label)
-
         self.postProcessorDefaultTooltip = self.form.postProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
 
@@ -601,6 +599,17 @@ class TaskPanel:
             self.obj.Label = str(self.form.jobLabel.text())
             self.obj.Description = str(self.form.jobDescription.toPlainText())
             self.obj.Operations.Group = [self.form.operationsList.item(i).data(self.DataObject) for i in range(self.form.operationsList.count())]
+            try:
+                self.obj.SplitOutput = self.form.splitOutput.isChecked()
+                self.obj.OrderOutputBy = str(self.form.orderBy.currentText())
+
+                flist = []
+                for i in range(self.form.wcslist.count()):
+                    if self.form.wcslist.item(i).checkState() == QtCore.Qt.CheckState.Checked:
+                        flist.append(self.form.wcslist.item(i).text())
+                self.obj.Fixtures = flist
+            except:
+                FreeCAD.Console.PrintWarning("The Job was created without fixture support.  Please delete and recreate the job\r\n") 
 
             self.updateTooltips()
             self.stockEdit.getFields(self.obj)
@@ -682,6 +691,17 @@ class TaskPanel:
         self.form.jobLabel.setText(self.obj.Label)
         self.form.jobDescription.setPlainText(self.obj.Description)
 
+        if hasattr(self.obj, "SplitOutput"):
+            self.form.splitOutput.setChecked(self.obj.SplitOutput)
+        if hasattr(self.obj, "OrderOutputBy"):
+            self.selectComboBoxText(self.form.orderBy, self.obj.OrderOutputBy)
+
+        if hasattr(self.obj, "Fixtures"):
+            for f in self.obj.Fixtures:
+                item = self.form.wcslist.findItems(f, QtCore.Qt.MatchExactly)[0]
+                item.setCheckState(QtCore.Qt.Checked)
+
+
         self.form.postProcessorOutputFile.setText(self.obj.PostProcessorOutputFile)
         self.selectComboBoxText(self.form.postProcessor, self.obj.PostProcessor)
         self.form.postProcessorArguments.setText(self.obj.PostProcessorArgs)
@@ -695,8 +715,11 @@ class TaskPanel:
             self.form.operationsList.addItem(item)
 
         self.form.jobModel.clear()
-        for base in self.obj.Model.Group:
-            self.form.jobModel.addItem(base.Label)
+        for name, count in PathUtil.keyValueIter(Counter([self.obj.Proxy.baseObject(self.obj, o).Label for o in self.obj.Model.Group])):
+            if count == 1:
+                self.form.jobModel.addItem(name)
+            else:
+                self.form.jobModel.addItem("%s (%d)" % (name, count))
 
         self.updateToolController()
         self.stockEdit.setFields(self.obj)
@@ -1072,23 +1095,30 @@ class TaskPanel:
                 obj = self.obj
                 proxy = obj.Proxy
 
-                # first remove all retired base models
-                retired = [base for base in self.obj.Model.Group if not proxy.baseObject(obj, base) in models]
-                for base in retired:
-                    self.vproxy.forgetBaseVisibility(obj, base)
-                    self.obj.Proxy.removeBase(obj, base, True)
+                want = Counter(models)
+                have = Counter([proxy.baseObject(obj, o) for o in obj.Model.Group])
+
+                obsolete  = have - want
+                additions = want - have
+
+                # first remove all obsolete base models
+                for model, count in PathUtil.keyValueIter(obsolete):
+                    for i in range(count):
+                        # it seems natural to remove the last of all the base objects for a given model
+                        base = [b for b in obj.Model.Group if proxy.baseObject(obj, b) == model][-1]
+                        self.vproxy.forgetBaseVisibility(obj, base)
+                        self.obj.Proxy.removeBase(obj, base, True)
                 # do not access any of the retired objects after this point, they don't exist anymore
 
                 # then add all rookie base models
-                baseOrigNames = [proxy.baseObject(obj, base).Name for base in obj.Model.Group]
-                rookies = [base for base in models if not base.Name in baseOrigNames]
-                for orig in rookies:
-                    base = PathJob.createModelResourceClone(obj, orig)
-                    obj.Model.addObject(base)
-                    self.vproxy.rememberBaseVisibility(obj, base)
+                for model, count in PathUtil.keyValueIter(additions):
+                    for i in range(count):
+                        base = PathJob.createModelResourceClone(obj, model)
+                        obj.Model.addObject(base)
+                        self.vproxy.rememberBaseVisibility(obj, base)
 
                 # refresh the view
-                if retired or rookies:
+                if obsolete or additions:
                     self.setFields()
                 else:
                     PathLog.track('no changes to model')

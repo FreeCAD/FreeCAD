@@ -49,5 +49,7 @@
         <file>translations/Ship_id.qm</file>
         <file>translations/Ship_lt.qm</file>
         <file>translations/Ship_val-ES.qm</file>
+        <file>translations/Ship_ar.qm</file>
+        <file>translations/Ship_vi.qm</file>
     </qresource>
 </RCC>

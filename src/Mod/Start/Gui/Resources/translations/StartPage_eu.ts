@@ -4,359 +4,479 @@
   <context>
     <name>StartPage</name>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
-      <source>FreeCAD Start Center</source>
-      <translation>FreeCAD abio-gunea</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
+      <source>Start</source>
+      <translation>Hasi</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
-      <source>Start a new project</source>
-      <translation>Hasi proiektu berria</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
+      <source>Documents</source>
+      <translation>Dokumentuak</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
-      <source>Recent Files</source>
+      <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
+      <source>Help</source>
+      <translation>Laguntza</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
+      <source>Activity</source>
+      <translation>Jarduera</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
+      <source>Recent files</source>
       <translation>Azken fitxategiak</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="96"/>
-      <source>Tutorials</source>
-      <translation>Tutorialak</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
+      <source>Tip</source>
+      <translation>Aholkua</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
-      <source>FreeCAD Homepage</source>
-      <translation>FreeCAD webgunea</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
+      <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
+      <translation>Egokitu hemen erakutsiko diren azken fitxategiak 'Editatu -&gt; Hobespenak -&gt; Orokorra -&gt; Azken fitxategien zerrendaren luzera' menuan</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
-      <source>Example projects</source>
-      <translation>Adibideko proiektuak</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
+      <source>Examples</source>
+      <translation>Adibideak</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
-      <source>Schenkel STEP file</source>
-      <translation>Schenkel STEP fitxategia</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
+      <source>General documentation</source>
+      <translation>Dokumentazio orokorra</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
-      <source>Load a PartDesign example</source>
-      <translation>Kargatu PartDesign adibide bat</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
+      <source>User hub</source>
+      <translation>Erabiltzaileen gunea</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
-      <source>Load a Drawing extraction</source>
-      <translation>Kargatu marrazki-erauzketa bat</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
+      <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
+      <translation>Atal honek FreeCAD erabiltzaile orokorrentzako dokumentazio erabilgarria du: lan-mahai guztien zerrenda bat, FreeCAD aplikazioa instalatu eta erabiltzeko argibide xeheak, tutorialak, eta lanean hasteko behar duzun guztia.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
-      <source>Load a Robot simulation example</source>
-      <translation>Kargatu robot-simulazio baten adibidea</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
+      <source>Power users hub</source>
+      <translation>Erabiltzaile aurreratuen gunea</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
-      <source>Projects from the Web</source>
-      <translation>Proiektuak webetik</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
+      <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
+      <translation>Atal honek erabiltzaile aurreratuentzako eta Python scriptak idazteko interesa duten pertsonentzako dokumentazioa biltzen du. Horrez gain, makroen biltegi bat, haiek instalatu eta erabiltzeko argibideak eta FreeCADek zure beharrak bete ditzan pertsonalizatzeko informazio gehiago duzu.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
-      <source>Schenkel STEP</source>
-      <translation>Schenkel STEP</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
+      <source>Developers hub</source>
+      <translation>Garatzaileen gunea</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
-      <source>Complex Part</source>
-      <translation>Pieza konplexua</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
+      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
+      <translation>Atal honek garatzaileentzako materiala du: Nola konpilatu FreeCAD, nola dagoen FreeCAD iturburu-kodea egituratuta eta nola arakatu kode hori, nola garatu lan-mahai berriak eta nola kapsulatu FreeCAD zuk garatutako beste aplikazioren batean.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
-      <source>Close this window after opening or creating a file</source>
-      <translation>Itxi leiho hau fitxategi bat ireki edo sortu ondoren</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
+      <source>Manual</source>
+      <translation>Eskuliburua</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
-      <source>Don't show me this window again next time</source>
-      <translation>Ez erakutsi leiho hau berriro hurrengoan</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
+      <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
+      <translation>FreeCAD eskuliburua wiki horretan dagoen informazio aurkezteko beste modu bat da. Liburu bat bailitzan irakurtzeko moduan prestatuta dago, eta goiko guneetako beste orri batzuetarako sarrera emango dizu. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;Bertsio elektronikoak&lt;/a&gt; ere eskuragarri daude.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
-      <source>Designing parts</source>
-      <translation>Piezen diseinua</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
+      <source>Workbenches documentation</source>
+      <translation>Lan-mahaien dokumentazioa</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
-      <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation>&lt;b&gt;Piezen diseinua (PartDesign)&lt;/b&gt; lan-mahaia 2D murrizketak dituzten krokisetan oinarrituz pieza konplexuak sortzeko diseinatuta dago. Erabil ezazu 2D formak marrazteko, haien zenbait elementu murrizteko eta haien estrusioaren bidez 3D piezak sortzeko.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
-      <source>Example workflow</source>
-      <translation>Adibideko lan-fluxua</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
-      <source>Part Design</source>
-      <translation>Piezen diseinua</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
-      <source>Designing architectural elements</source>
-      <translation>Arkitektura-elementuen diseinua</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="83"/>
-      <source>Working with Meshes</source>
-      <translation>Lana sareekin</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="84"/>
-      <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation>&lt;b&gt;Sareen lan-mahaia&lt;/b&gt; sareekin lan egiteko erabiltzen da. Sareak 3D objektuak dira, piezak baino sinpleagoak dira, baina errazago inportatzen eta esportatzen dira beste aplikazio batzuetatik/batzuetara.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="85"/>
-      <source>FreeCAD offers you several tools to convert between Mesh and Part objects.</source>
-      <translation>FeerCADek hainbat tresna eskaintzen dizkizu sare-objektuak pieza-objektu bihurtzeko eta alderantziz.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="86"/>
-      <source>Work with Meshes</source>
-      <translation>Lana sareekin</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="87"/>
-      <source>The complete workbench</source>
-      <translation>Lan-mahai osoa</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="88"/>
-      <source>FreeCAD Complete workbench</source>
-      <translation>FreeCADen lan-mahai osoa</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="90"/>
-      <source>file size:</source>
-      <translation>fitxategi tamaina:</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="91"/>
-      <source>creation time:</source>
-      <translation>sorrera-data:</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="92"/>
-      <source>last modified:</source>
-      <translation>azken aldaketa:</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="89"/>
-      <source>populated with some of the most commonly used tools.</source>
-      <translation>gehien erabiltzen diren tresnetako batzuekin betea.</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
+      <source>These are the help pages of all the workbenches currently installed on this computer.</source>
+      <translation>Ordenagailu honetan instalatutako lan-mahai guztien laguntza-orriak dira hauek.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
-      <source>Latest videos</source>
-      <translation>Azken bideoak</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
-      <source>On the web</source>
-      <translation>Webean</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
-      <source>This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.</source>
-      <translation>Hau FreeCADen orri nagusia da. FrreCADi buruzko informazio asko aurkituko duzu hemen, besteak beste tutorialak, adibideak eta erabiltzaile-dokumentazioa.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="93"/>
-      <source>location:</source>
-      <translation>kokapena:</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="94"/>
-      <source>User manual</source>
-      <translation>Erabiltzaile-eskuliburua</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="97"/>
-      <source>Python resources</source>
-      <translation>Python baliabideak</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>File not found</source>
-      <translation>Fitxategia ez da aurkitu</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="99"/>
-      <source>from &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</source>
-      <translation>&lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt; gunetik</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="100"/>
-      <source>The FreeCAD-tutorial blog</source>
-      <translation>FreeCAD-tutorial bloga</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="101"/>
-      <source>from &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews channel&lt;/a&gt;</source>
-      <translation>&lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews kanaletik&lt;/a&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
-      <source>This is the official user manual of FreeCAD, built, maintained and translated by the FreeCAD community.</source>
-      <translation>FreeCADen erabiltzaile-eskuliburu ofiziala da hau. FreeCAD komunitateak eraiki, mantendu eta itzultzen du.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="103"/>
-      <source>The tutorials section on the FreeCAD website</source>
-      <translation>FreeCAD webguneko eskuliburu-atala</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="105"/>
-      <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
-      <translation>FreeCAD irakastera zuzendutako bloga, FreeCAD komunitatearen kideek mantendutakoa</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
-      <source>Getting started</source>
-      <translation>Nola hasi</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="107"/>
-      <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
-      <translation>FreeCADen interfazea lan-mahaietan antolatuta dago. Lan-mahaiak zeregin espezifikoetarako moldatutako tresnen multzoak dira. Zerrenda honetako lan-mahaietako batekin has zaitezke, edo lan-mahai osoarekin. Azken horrek gainerako lan-mahaietan gehien erabiltzen diren tresnetako batzuk ematen dizkizu. Sakatu lan-mahaiei buruzko informazio gehiago jasotzeko FreeCADen webgunean.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="109"/>
-      <source>Ship Design</source>
-      <translation>Ontzien diseinua</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="110"/>
-      <source>Designing and calculating ships</source>
-      <translation>Ontzien diseinua eta kalkulua</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="111"/>
-      <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
-      <translation>&lt;b&gt;Ontzien diseinua&lt;/b&gt; moduluak hainbat tresna eskaintzen ditu diseinatzaileei ontzi-kroskoen profilak eta beste zenbait propietate espezifiko bistaratu, modelizatu eta kalkulatzen laguntzeko.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="112"/>
-      <source>Load an Architectural example model</source>
-      <translation>Kargatu arkitektura-ereduen adibide bat</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
-      <source>Architectural Design</source>
-      <translation>Arkitektura-diseinua</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="104"/>
-      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation>FreeCAD webgunean Python script-ak azaltzera zuzendutako atala: adibideak, azalpenak eta API komandoak aurki daitezke bertan.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
-      <source>Your version of FreeCAD is up to date.</source>
-      <translation>Zure FreeCAD bertsioa eguneratuta dago.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="116"/>
-      <source>There is a new release of FreeCAD available.</source>
-      <translation>FreeCADen bertsio berria eskuragarri dago.</translation>
+      <source>Getting help from the community</source>
+      <translation>Eskuratu komunitatearen laguntza</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
-      <source>Latest commits</source>
+      <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>&lt;a href="http://forum.freecadweb.org"&gt;FreeCAD foroa&lt;/a&gt; leku ona da FreeCADen beste erabiltzaile batzuek eta garatzaileen laguntza jasotzeko. Foroak atal desberdinak ditu arazo eta eztabaida mota askotarikoak bideratzeko. Zalantzarik baduzu, argitaratu zure mezuak &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; atal orokorrean.</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
+      <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
+      <translation>Foroan zerbait idazten duzun lehen aldia da, ziurtatu &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;gidalerroak irakurri dituzula&lt;/a&gt;!</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
+      <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
+      <translation>FreeCADek &lt;a href="https://www.freecadweb.org/tracker"&gt;akatsen zerrenda&lt;/a&gt; publiko bat dauka. Edozeinek bidali ditzake akatsak eta eginbide berriak proposatu. Gehiegizko lana sortzea saihesteko eta zure akatsa konpondua izan dadin aukera gehiago izateko, mesedez irakurri &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;akatsak bidaltzeko gida&lt;/a&gt; ezer bidali baino lehenago.</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
+      <source>Available addons</source>
+      <translation>Gehigarri erabilgarriak</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
+      <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
+      <translation>Behean zure FreeCAD instalazioari gehitu ahal zaizkion beste lan-mahai batzuk zerrendatu dira. Arakatu eta instalatu lan-mahai horiek 'Tresnak -&gt; Gehigarrien kudeatzailea' erabilita. Haiei buruzko informazio gehiago eskura dezakezu beheko esteketan klik eginda.</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
+      <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
+      <translation>Zure FreeCAD bertsioarekin paketatuta ez badator, instalatu FreeCADen dokumentazio-paketea Interneterako konexiorik ez duzunean dokumentazio-guneak, lan-mahaien laguntza eta banakako komandoen dokumentazioa kontsultatu ahal izateko.</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
+      <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
+      <translation>Ezin izan da informazioa atzitu GitHub gunetik. &lt;a href="EnableDownload.py"&gt;Baimendu FreeCADi Internetera sartzen&lt;/a&gt; eta birkargatu hasierako orria.</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
+      <source>Recent commits</source>
       <translation>Azken aldaketak</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="118"/>
-      <source>Obtain a development version</source>
-      <translation>Eskuratu garapen-bertsio bat</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
+      <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
+      <translation>Behean &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCADen iturburu-kodeari&lt;/a&gt; gehitutako azken aldaketak ikus daitezke. Aldaketa horiek ez dute zertan adierazi beharrik zein FreeCAD bertsioa ari zaren erabiltzen. Begiratu &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;aukera erabilgarriak&lt;/a&gt; garapen-bertsio bat eskuratu nahi baduzu.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
-      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation>Aldian behin, komunitateko kideek &lt;b&gt;garapen-bertsioak&lt;/b&gt; argitaratzen dituzte. Azken berrikuntzak dituzte bertsio horiek, baina baita akatsak ere.</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
+      <source>See all commits on github</source>
+      <translation>Ikusi aldaketa guztiak github-en</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="120"/>
-      <source>See all commits</source>
-      <translation>Ikusi igorpen guztiak</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
+      <source>See all commits on github</source>
+      <translation>Ikusi aldaketa guztiak github-en</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="117"/>
-      <source>Load an FEM 3D example analysis</source>
-      <translation>Kargatu FEM 3D analisi-adibide bat</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
+      <source>version</source>
+      <translation>bertsioa</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="121"/>
-      <source>Load an FEM 2D example analysis</source>
-      <translation>Kargatu FEM 2D analisi-adibide bat</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
+      <source>build</source>
+      <translation>paketea</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="95"/>
-      <source>http://www.freecadweb.org/wiki/Online_Help_Toc</source>
-      <translation>http://www.freecadweb.org/wiki/Online_Help_Toc</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
+      <source>Create new...</source>
+      <translation>Sortu berria...</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="113"/>
-      <source>http://www.freecadweb.org/wiki/Tutorials</source>
-      <translation>http://www.freecadweb.org/wiki/Tutorials</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
+      <source>Unknown</source>
+      <translation>Ezezaguna</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="114"/>
-      <source>http://www.freecadweb.org/wiki/Power_users_hub</source>
-      <translation>http://www.freecadweb.org/wiki/Power_users_hub</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
+      <source>Forum</source>
+      <translation>Foroa</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="122"/>
-      <source>FreeCAD Standard File</source>
-      <translation>FreeCAD fitxategi estandarra</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
+      <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
+      <translation>&lt;a href="https://forum.freecadweb.org"&gt;FreeCAD foroko&lt;/a&gt; azken bidalketak:</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
-      <source>Author</source>
-      <translation>Egilea</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
+      <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
+      <translation>Goiko estekak zure mahaigaineko nabigatzailearekin irekitzeko, egin eskuineko klik eta hautatu 'Ireki kanpoko nabigatzailean'</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="124"/>
-      <source>Company</source>
-      <translation>Enpresa</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="125"/>
-      <source>License</source>
-      <translation>Lizentzia</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
+      <source>Creation date</source>
+      <translation>Sortze-data</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
-      <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</source>
-      <translation>&lt;b&gt;Arkitektura-diseinua&lt;/b&gt; lan-mahaia arkitektura-elementuekin -paretak, leihoak- lan egiteko bereziki prestatua dago. Hasi 2D formak marrazten, eta erabili horiek arkitektura-objektuak eraikitzeko gida modura.</translation>
+      <source>Last modification</source>
+      <translation>Azken aldaketa</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
-      <source>http://www.freecadweb.org/wiki/Getting_started</source>
-      <translation>http://www.freecadweb.org/wiki/Getting_started</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
+      <source>Notes</source>
+      <translation>Oharrak</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
-      <source>Load an FEM 3D new solver example analysis</source>
-      <translation>Kargatu FEM 3D ebazle berriaren analisi-adibide bat</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
+      <source>Notes</source>
+      <translation>Oharrak</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="65"/>
+      <source>Start page</source>
+      <translation>Hasierako orria</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
-      <source>Click here</source>
-      <translation type="unfinished">Click here</translation>
+      <location filename="../../../StartPage/StartPage.py" line="545"/>
+      <source>Start page</source>
+      <translation>Hasierako orria</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdStartPage</name>
+    <message>
+      <location filename="../../Command.cpp" line="44"/>
+      <source>Start</source>
+      <translation>Hasi</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
-      <source>to allow FreeCAD to access the internet</source>
-      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
+      <location filename="../../Command.cpp" line="45"/>
+      <source>Start Page</source>
+      <translation>Hasierako orria</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="46"/>
+      <source>Displays the start page in a browser view</source>
+      <translation>Hasierako orria nabigatzaile batean irekitzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgStartPreferences</name>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="14"/>
+      <source>Start page options</source>
+      <translation>Hasierako orriaren aukerak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="20"/>
+      <source>Start page template</source>
+      <translation>Hasierako orriaren txantiloia</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="26"/>
+      <source>An optional HTML template that will be used instead of the default start page.</source>
+      <translation>Aukerako HTML txantiloi bat, hasierako orri lehenetsiaren ordez erakutsiko dena.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="42"/>
+      <source>Contents</source>
+      <translation>Edukiak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="48"/>
+      <source>Show forum</source>
+      <translation>Erakutsi foroa</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="55"/>
+      <source>Show examples folder contents</source>
+      <translation>Erakutsi adibideen karpetako edukiak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="62"/>
+      <source>Show additional folder</source>
+      <translation>Erakutsi karpeta gehigarria</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="69"/>
+      <source>If you want the examples to show on the first page</source>
+      <translation>Adibideak lehen orrian erakutsi nahi badituzu</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="91"/>
+      <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
+      <translation>Hau markatuta badago, FreeCAD foroko azken bidalketak bistaratuko dira 'Jarduera' fitxan</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="110"/>
+      <source>An optional custom folder to be displayed at the bottom of the first page</source>
+      <translation>Lehen orriaren behealdean bistaratuko den aukerako karpeta pertsonalizatu bat</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="126"/>
+      <source>Show notepad</source>
+      <translation>Erakutsi ohar-bloka</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="133"/>
+      <source>Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</source>
+      <translation>Ohar-blok bat erakusten du fitxategi-miniaturen alboan, FreeCAD saioen artean oharrak hartu ahal ditzazun</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="155"/>
+      <source>Fonts and colors</source>
+      <translation>Letra-tipoak eta koloreak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="167"/>
+      <source>The background of the main start page area</source>
+      <translation>Hasierako orriaren area nagusiaren atzeko planoa</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="187"/>
+      <source>Background color</source>
+      <translation>Atzeko planoaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="199"/>
+      <source>in FreeCAD</source>
+      <translation>FreeCADen</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="218"/>
+      <source>In external browser</source>
+      <translation>Kanpoko nabigatzailean</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="236"/>
+      <source>Background color gradient down</source>
+      <translation>Atzeko planoaren kolorearen beheranzko gradientea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="249"/>
+      <source>The color of the version text</source>
+      <translation>Bertsio-testuaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="269"/>
+      <source>Link color</source>
+      <translation>Estekatu kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="276"/>
+      <source>An optional image to display as background</source>
+      <translation>Atzeko planoan erakutsiko den aukerako irudi bat</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="289"/>
+      <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
+      <translation>Hau markatuta badago, estilo-orri bat adierazi bada hobespen orokorretan, hura erabiliko da eta hemengo koloreak gainidatziko dira</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="308"/>
+      <source>Page background color</source>
+      <translation>Orriaren atzeko planoaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="321"/>
+      <source>The color of the text on the main pages</source>
+      <translation>Orri nagusien testuaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="341"/>
+      <source>Background image</source>
+      <translation>Atzeko planoko irudia</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="348"/>
+      <source>Page text color</source>
+      <translation>Orriko testuaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="361"/>
+      <source>The color of the links</source>
+      <translation>Esteken kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="387"/>
+      <source>The background color of the boxes inside the pages</source>
+      <translation>Orri barruko kutxen atzeko planoaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="407"/>
+      <source>Box background color</source>
+      <translation>Kutxen atzeko planoaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="420"/>
+      <source>The background color behind the panels</source>
+      <translation>Panelen atzeko planoaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="449"/>
+      <source>The down gradient for the background color (currently unsupported)</source>
+      <translation>Atzeko planoaren kolorearen beheranzko gradientea (momentuz ez da onartzen)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="472"/>
+      <source>Open links</source>
+      <translation>Ireki estekak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="479"/>
+      <source>Background text color</source>
+      <translation>Atzeko planoko testuaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="486"/>
+      <source>Use FreeCAD style sheet</source>
+      <translation>Erabili FreeCADen estilo-orria</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="493"/>
+      <source>Font family</source>
+      <translation>Letra-tipoa</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="502"/>
+      <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
+      <translation>Hasierako orrian erabiliko den letra-tipoa. Letra-tipo baten izena izan daiteke, edo komaz banandutako ordezko letra-tipoen izenak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="508"/>
+      <source>Arial,Helvetica,sans</source>
+      <translation>Arial,Helvetica,sans</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="521"/>
+      <source>The base font size to use for all texts of the Start page</source>
+      <translation>Hasierako orriko testu guztiek erabiliko duten oinarrizko letra-tamaina</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="524"/>
+      <source>px</source>
+      <translation>px</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="542"/>
+      <source>Use gradient for New File icon</source>
+      <translation>Erabili gradientea 'Fitxategi berria' ikonorako</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="568"/>
+      <source>Options</source>
+      <translation>Aukerak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="577"/>
+      <source>Should the start page be closed after loading?</source>
+      <translation>Hasierako orria itxi beharko litzateke kargaren ondoren?</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="596"/>
+      <source>Switch workbench after loading</source>
+      <translation>Txandakatu lan-mahaia kargaren ondoren</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="603"/>
+      <source>Close start page after loading</source>
+      <translation>Itxi hasierako orria kargaren ondoren</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="610"/>
+      <source>Close &amp; switch on file open</source>
+      <translation>Itxi eta txandakatu fitxategia irekitzean</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="617"/>
+      <source>If FreeCAD is started by opening a file, apply the two settings above</source>
+      <translation>FreeCAD fitxategi bat irekita hasten bada, aplikatu goiko bi ezarpenak</translation>
     </message>
   </context>
 </TS>

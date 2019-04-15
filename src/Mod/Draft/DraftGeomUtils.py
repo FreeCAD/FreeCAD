@@ -47,7 +47,14 @@ params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 def precision():
     "precision(): returns the Draft precision setting"
-    return params.GetInt("precision",6)
+    # Set precision level with a cap to avoid overspecification that:-
+    #  1 - whilst it is precise enough (e.g. that OCC would consider 2 points are conincident) (not sure what it should be 10 or otherwise);
+    #  2 - but FreeCAD / OCC can handle 'internally' (e.g. otherwise user may set something like 15 that the code would never consider 2 points are coincident as internal float is not that precise);
+
+    precisionMax = 10
+    precisionInt = params.GetInt("precision",6)
+    precisionInt = (precisionInt if precisionInt <=10 else precisionMax)
+    return precisionInt								#return params.GetInt("precision",6)
 
 def vec(edge):
     "vec(edge) or vec(line): returns a vector from an edge or a Part.LineSegment"
@@ -347,7 +354,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
 
         int = []
         # first check for coincident endpoints
-        if (pt1 in [pt3,pt4]):
+        if DraftVecUtils.equals(pt1,pt3) or DraftVecUtils.equals(pt1,pt4):
             if findAll:
                 int.append(pt1)
             else:
@@ -1169,7 +1176,7 @@ def offsetWire(wire,dvec,bind=False,occ=False):
     the wire. If bind is True (and the shape is open), the original
     wire and the offsetted one are bound by 2 edges, forming a face.
     '''
-    edges = Part.__sortEdges__(wire.Edges)
+    edges = wire.Edges								# Seems has repeatedly sortEdges, remark out here - edges = Part.__sortEdges__(wire.Edges)
     norm = getNormal(wire)
     closed = isReallyClosed(wire)
     nedges = []
@@ -1186,6 +1193,14 @@ def offsetWire(wire,dvec,bind=False,occ=False):
             return None
         else:
             return off
+
+    # vec of first edge depends on its geometry
+    e = edges[0]
+    if isinstance(e.Curve,Part.Circle):
+        firstVec = e.tangentAt(e.FirstParameter)
+    else:
+        firstVec = vec(e)
+
     for i in range(len(edges)):
         curredge = edges[i]
         delta = dvec
@@ -1194,7 +1209,7 @@ def offsetWire(wire,dvec,bind=False,occ=False):
                 v = curredge.tangentAt(curredge.FirstParameter)
             else:
                 v = vec(curredge)
-            angle = DraftVecUtils.angle(vec(edges[0]),v,norm)
+            angle = DraftVecUtils.angle(firstVec,v,norm)			# use vec deduced depending on geometry instead of - angle = DraftVecUtils.angle(vec(edges[0]),v,norm)
             delta = DraftVecUtils.rotate(delta,angle,norm)
         #print("edge ",i,": ",curredge.Curve," ",curredge.Orientation," parameters:",curredge.ParameterRange," vector:",delta)
         nedge = offset(curredge,delta,trim=True)
@@ -1215,6 +1230,8 @@ def offsetWire(wire,dvec,bind=False,occ=False):
 def connect(edges,closed=False):
         '''connects the edges in the given list by their intersections'''
         nedges = []
+        v2 = None
+
         for i in range(len(edges)):
             curr = edges[i]
             #print("debug: DraftGeomUtils.connect edge ",i," : ",curr.Vertexes[0].Point,curr.Vertexes[-1].Point)
@@ -1232,7 +1249,13 @@ def connect(edges,closed=False):
                 else:
                     next = None
             if prev:
-                #print("debug: DraftGeomUtils.connect prev : ",prev.Vertexes[0].Point,prev.Vertexes[-1].Point)
+              #print("debug: DraftGeomUtils.connect prev : ",prev.Vertexes[0].Point,prev.Vertexes[-1].Point)
+
+              # If prev v2 had been calculated, do not calculate again, just use it as current v1 - avoid chance of slight difference in result
+              if v2:
+                v1 = v2
+
+              else:
                 i = findIntersection(curr,prev,True,True)
                 if i:
                     v1 = i[DraftVecUtils.closest(curr.Vertexes[0].Point,i)]
@@ -1384,8 +1407,8 @@ def findClosestCircle(point,circles):
             closest = c
     return closest
 
-def isCoplanar(faces):
-    "checks if all faces in the given list are coplanar"
+def isCoplanar(faces,tolerance=0):
+    "isCoplanar(faces,[tolerance]): checks if all faces in the given list are coplanar. Tolerance is the max deviation to be considered coplanar"
     if len(faces) < 2:
         return True
     base =faces[0].normalAt(0,0)
@@ -1393,7 +1416,7 @@ def isCoplanar(faces):
         for v in faces[i].Vertexes:
             chord = v.Point.sub(faces[0].Vertexes[0].Point)
             dist = DraftVecUtils.project(chord,base)
-            if round(dist.Length,precision()) > 0:
+            if round(dist.Length,precision()) > tolerance:
                 return False
     return True
 

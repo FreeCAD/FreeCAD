@@ -26,9 +26,9 @@
 #include <QGraphicsItemGroup>
 #include <QPen>
 #include <QFont>
+#include <QObject>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
 #include <Base/Parameter.h>
 #include <Gui/ViewProvider.h>
 
@@ -48,12 +48,14 @@ class QGCustomText;
 class QGICaption;
 class MDIViewPage;
 class QGIViewClip;
+class QGCustomImage;
 
-class TechDrawGuiExport  QGIView : public QGraphicsItemGroup
+class TechDrawGuiExport  QGIView : public QObject, public QGraphicsItemGroup
 {
+    Q_OBJECT
 public:
     QGIView();
-    virtual ~QGIView() = default;
+    virtual ~QGIView();
 
     enum {Type = QGraphicsItem::UserType + 101};
     int type() const override { return Type;}
@@ -72,8 +74,8 @@ public:
     virtual void toggleCache(bool state);
     virtual void updateView(bool update = false);
     virtual void drawBorder(void);
-    virtual void isVisible(bool state) { m_visibility = state; };
-    virtual bool isVisible(void) {return m_visibility;};
+    virtual void isVisible(bool state) { m_visibility = state; }
+    virtual bool isVisible(void) {return m_visibility;}
     virtual void draw(void);
     virtual void drawCaption(void);
     virtual void rotateView(void);
@@ -93,7 +95,7 @@ public:
 
 
     void alignTo(QGraphicsItem*, const QString &alignment);
-    void setLocked(bool /*state*/ = true) { locked = true; }
+    void setLocked(bool b) { m_locked = b; }
 
     virtual QColor getNormalColor(void);
     virtual QColor getPreColor(void);
@@ -101,6 +103,9 @@ public:
     
     static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
     MDIViewPage* getMDIViewPage(void) const;
+    // Mouse handling
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    boost::signals2::signal<void (QGIView*, QPointF)> signalSelectPoint;
 
 protected:
     QGIView* getQGIVByName(std::string name);
@@ -108,7 +113,6 @@ protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     // Mouse handling
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     // Preselection events:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
@@ -125,7 +129,7 @@ protected:
     QHash<QString, QGraphicsItem*> alignHash;
     //std::string alignMode;
     //QGIView* alignAnchor;
-    bool locked;
+    bool m_locked;
     bool borderVisible;
     bool m_visibility;
     bool m_innerView;                                                  //View is inside another View
@@ -140,7 +144,11 @@ protected:
     QGCustomLabel* m_label;
     QGCustomBorder* m_border;
     QGICaption* m_caption;
+    QGCustomImage* m_lock;
     QPen m_decorPen;
+    double m_lockWidth;
+    double m_lockHeight;
+
 };
 
 } // namespace

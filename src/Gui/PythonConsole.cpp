@@ -323,7 +323,8 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
         if (PyErr_Occurred()) {                   /* get latest python exception information */
             PyObject *errobj, *errdata, *errtraceback;
             PyErr_Fetch(&errobj, &errdata, &errtraceback);
-            if (PyDict_Check(errdata)) {
+            // the error message can be empty so errdata will be null
+            if (errdata && PyDict_Check(errdata)) {
                 PyObject* value = PyDict_GetItemString(errdata, "swhat");
                 if (value) {
                     Base::RuntimeError e;
@@ -468,7 +469,7 @@ PythonConsole::PythonConsole(QWidget *parent)
 #endif
     d->info = QString::fromLatin1("Python %1 on %2\n"
     "Type 'help', 'copyright', 'credits' or 'license' for more information.")
-    .arg(QString::fromLatin1(version)).arg(QString::fromLatin1(platform));
+    .arg(QString::fromLatin1(version), QString::fromLatin1(platform));
     d->output = d->info;
     printPrompt(PythonConsole::Complete);
 }
@@ -514,8 +515,10 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
         QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
-            unsigned long col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
-            col = hPrefGrp->GetUnsigned( sReason, col);
+            unsigned int col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+            unsigned long value = static_cast<unsigned long>(col);
+            value = hPrefGrp->GetUnsigned(sReason, value);
+            col = static_cast<unsigned int>(value);
             color.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
             pythonSyntax->setColor(QString::fromLatin1(sReason), color);
         }
@@ -578,6 +581,9 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
         QTextBlock inputBlock = inputLineBegin.block();              //< get the last paragraph's text
         QString    inputLine  = inputBlock.text();
         QString    inputStrg  = stripPromptFrom( inputLine );
+        if (this->_sourceDrain && !this->_sourceDrain->isEmpty()) {
+            inputStrg = inputLine.mid(this->_sourceDrain->length());
+        }
 
         switch (e->key())
         {
@@ -926,10 +932,11 @@ void PythonConsole::changeEvent(QEvent *e)
     else if (e->type() == QEvent::StyleChange) {
         QPalette pal = palette();
         QColor color = pal.windowText().color();
-        unsigned long text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned long value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
-        text = getWindowParameter()->GetUnsigned("Text", text);
-        getWindowParameter()->SetUnsigned("Text", text);
+        value = getWindowParameter()->GetUnsigned("Text", value);
+        getWindowParameter()->SetUnsigned("Text", value);
     }
     TextEdit::changeEvent(e);
 }
@@ -1021,41 +1028,49 @@ void PythonConsole::insertFromMimeData (const QMimeData * source)
         return;
     // First check on urls instead of text otherwise it may happen that a url
     // is handled as text
+    bool existingFile = false;
     if (source->hasUrls()) {
         QList<QUrl> uri = source->urls();
         for (QList<QUrl>::ConstIterator it = uri.begin(); it != uri.end(); ++it) {
             // get the file name and check the extension
             QFileInfo info((*it).toLocalFile());
             QString ext = info.suffix().toLower();
-            if (info.exists() && info.isFile() && 
-                (ext == QLatin1String("py") || ext == QLatin1String("fcmacro"))) {
-                // load the file and read-in the source code
-                QFile file(info.absoluteFilePath());
-                if (file.open(QIODevice::ReadOnly)) {
-                    QTextStream str(&file);
-                    runSourceFromMimeData(str.readAll());
+            if (info.exists()) {
+                existingFile = true;
+                if (info.isFile() && (ext == QLatin1String("py") || ext == QLatin1String("fcmacro"))) {
+                    // load the file and read-in the source code
+                    QFile file(info.absoluteFilePath());
+                    if (file.open(QIODevice::ReadOnly)) {
+                        QTextStream str(&file);
+                        runSourceFromMimeData(str.readAll());
+                    }
+                    file.close();
                 }
-                file.close();
             }
         }
-
-        return;
     }
-    if (source->hasText()) {
+
+    // Some applications copy text into the clipboard with the formats
+    // 'text/plain' and 'text/uri-list'. In case the url is not an existing
+    // file we can handle it as normal text, then. See forum thread:
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=34618
+    if (source->hasText() && !existingFile) {
         runSourceFromMimeData(source->text());
-        return;
     }
 }
 
-QTextCursor PythonConsole::inputBegin( void ) const
+QTextCursor PythonConsole::inputBegin(void) const
 {
-  // construct cursor at begin of input line ...
-  QTextCursor inputLineBegin( this->textCursor() );
-  inputLineBegin.movePosition( QTextCursor::End );
-  inputLineBegin.movePosition( QTextCursor::StartOfBlock );
-  // ... and move cursor right beyond the prompt.
-  inputLineBegin.movePosition( QTextCursor::Right, QTextCursor::MoveAnchor, promptLength( inputLineBegin.block().text() ) );
-  return inputLineBegin;
+    // construct cursor at begin of input line ...
+    QTextCursor inputLineBegin(this->textCursor());
+    inputLineBegin.movePosition(QTextCursor::End);
+    inputLineBegin.movePosition(QTextCursor::StartOfBlock);
+    // ... and move cursor right beyond the prompt.
+    int prompt = promptLength(inputLineBegin.block().text());
+    if (this->_sourceDrain && !this->_sourceDrain->isEmpty())
+        prompt = this->_sourceDrain->length();
+    inputLineBegin.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, prompt);
+    return inputLineBegin;
 }
 
 QMimeData * PythonConsole::createMimeDataFromSelection () const
@@ -1333,9 +1348,11 @@ void PythonConsole::onCopyCommand()
 QString PythonConsole::readline( void )
 {
     QEventLoop loop;
-    QString    inputBuffer;
+    // output is set to the current prompt which we need to extract
+    // the actual user input
+    QString    inputBuffer = d->output;
 
-    printPrompt( PythonConsole::Special );
+    printPrompt(PythonConsole::Special);
     this->_sourceDrain = &inputBuffer;     //< enable source drain ...
     // ... and wait until we get notified about pendingSource
     QObject::connect( this, SIGNAL(pendingSource()), &loop, SLOT(quit()) );

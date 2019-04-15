@@ -70,18 +70,20 @@ DrawProjGroup::DrawProjGroup(void)
     ADD_PROPERTY_TYPE(Source    ,(0), group, App::Prop_None,"Shape to view");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Anchor, (0), group, App::Prop_None, "The root view to align projections with");
+    Anchor.setScope(App::LinkScope::Global);
     ProjectionType.setEnums(ProjectionTypeEnums);
     ADD_PROPERTY(ProjectionType, ((long)0));
 
     ADD_PROPERTY_TYPE(AutoDistribute ,(autoDist),agroup,App::Prop_None,"Distribute Views Automatically or Manually");
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
+    Rotation.setStatus(App::Property::Hidden,true);   //DPG does not rotate
+
 }
 
 DrawProjGroup::~DrawProjGroup()
 {
 }
-
 
 void DrawProjGroup::onChanged(const App::Property* prop)
 {
@@ -90,23 +92,27 @@ void DrawProjGroup::onChanged(const App::Property* prop)
     TechDraw::DrawPage *page = getPage();
     if (!isRestoring() && page) {
         if (prop == &Source) {
-            std::vector<App::DocumentObject*> sourceObjs = Source.getValues();
-            if (!sourceObjs.empty()) {
-                if (!hasAnchor()) {
-                    // if we have a Source, but no Anchor, make an anchor
-//                    Base::Console().Message("TRACE - DPG::onChanged - adding Front\n");
-                    Anchor.setValue(addProjection("Front"));
-                    Anchor.purgeTouched();                      //don't need to mark this
-                }
-            } else {
-                //Source has been changed to null! Why? What to do?
-            }
+//            std::vector<App::DocumentObject*> sourceObjs = Source.getValues();
+//            if (!sourceObjs.empty()) {
+//                if (!hasAnchor()) {
+//                    // if we have a Source, but no Anchor, make an anchor
+//                    Anchor.setValue(addProjection("Front"));      //<<<<< semi-loop here!
+//                    //add projection marks object as changed -> onChanged, but anchor value isn't set
+//                    Anchor.purgeTouched();                      //don't need to mark this
+//                }
+//            } else {
+//                //Source has been changed to null! Why? What to do?
+//            }
         }
         if (prop == &Scale) {
             updateChildren();
         }
         if (prop == &Source) {
             updateChildrenSource();
+        }
+
+        if (prop == &LockPosition) {
+            updateChildrenLock();
         }
         
         if (prop == &ScaleType) {
@@ -124,14 +130,21 @@ void DrawProjGroup::onChanged(const App::Property* prop)
                 }
             }
         }
-
+        if (prop == &Rotation) {
+            if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+                Rotation.setValue(0.0);
+                purgeTouched();
+                Base::Console().Log("DPG: Projection Groups do not rotate. Change ignored.\n");
+            }
+        }
     }
-        
+
     TechDraw::DrawViewCollection::onChanged(prop);
 }
 
 App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 {
+//    Base::Console().Message("DPG::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -149,12 +162,13 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 
     App::DocumentObject* docObj = Anchor.getValue();
     if (docObj == nullptr) {
+        //no anchor yet.  nothing to do.
         return DrawViewCollection::execute();
     }
     
-    for (auto& v: Views.getValues()) {
-        v->recomputeFeature();
-    }
+//    for (auto& v: Views.getValues()) {          //is this needed here? Up to DPGI to keep up to date. 
+//        v->recomputeFeature();
+//    }
 
     for (auto& item: getViewsAsDPGI()) {
         item->autoPosition();
@@ -174,6 +188,7 @@ short DrawProjGroup::mustExecute() const
                  ProjectionType.isTouched() ||
                  Anchor.isTouched() ||
                  AutoDistribute.isTouched() ||
+                 LockPosition.isTouched()||
                  spacingX.isTouched() ||
                  spacingY.isTouched();
     }
@@ -187,6 +202,12 @@ Base::BoundBox3d DrawProjGroup::getBoundingBox() const
 
     std::vector<App::DocumentObject*> views = Views.getValues();
     TechDraw::DrawProjGroupItem *anchorView = dynamic_cast<TechDraw::DrawProjGroupItem *>(Anchor.getValue());
+    if (anchorView == nullptr) {
+        //if an element in Views is not a DPGI, something really bad has happened somewhere
+        Base::Console().Log("PROBLEM - DPG::getBoundingBox - non DPGI entry in Views! %s\n",
+                                getNameInDocument());
+        throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+    }
     for (std::vector<App::DocumentObject*>::const_iterator it = views.begin(); it != views.end(); ++it) {
          if ((*it)->getTypeId().isDerivedFrom(DrawViewPart::getClassTypeId())) {
             DrawViewPart *part = static_cast<DrawViewPart *>(*it);
@@ -203,13 +224,6 @@ Base::BoundBox3d DrawProjGroup::getBoundingBox() const
 
             bbox.Add(bb);
         }
-    }
-    // This /should/ leave the centre of the bounding box at (0,0) except when
-    // we're in the process of updating the anchor view's position (eg called
-    // by moveToCentre())
-    if (anchorView) { //TODO: It looks like we might be getting called before an anchor view is set - weird...
-        bbox.MoveX(anchorView->X.getValue());
-        bbox.MoveY(anchorView->Y.getValue());
     }
     return bbox;
 }
@@ -302,24 +316,16 @@ void DrawProjGroup::minimumBbViews(DrawProjGroupItem *viewPtrs[10],
     height = row0h + row1h + row2h;
 }
 
-
-void DrawProjGroup::moveToCentre(void)
-{
-    // Update the anchor view's X and Y to keep the bounding box centred on the origin
-    Base::BoundBox3d tempbbox = getBoundingBox();
-    DrawProjGroupItem *anchorView = dynamic_cast<DrawProjGroupItem *>(Anchor.getValue());
-    if (anchorView) {
-        anchorView->X.setValue((tempbbox.MinX + tempbbox.MaxX) / -2.0);
-        anchorView->Y.setValue((tempbbox.MinY + tempbbox.MaxY) / -2.0);
-    }
-}
-
 App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
 {
     for( auto it : Views.getValues() ) {
         auto projPtr( dynamic_cast<DrawProjGroupItem *>(it) );
-        if( projPtr &&
-            strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
+        if (projPtr == nullptr) {
+            //if an element in Views is not a DPGI, something really bad has happened somewhere
+            Base::Console().Log("PROBLEM - DPG::getProjObj - non DPGI entry in Views! %s / %s\n",
+                                    getNameInDocument(),viewProjType);
+            throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+        } else if(strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
             return it;
         }
     }
@@ -330,10 +336,16 @@ App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
 DrawProjGroupItem* DrawProjGroup::getProjItem(const char *viewProjType) const
 {
     App::DocumentObject* docObj = getProjObj(viewProjType);
-    DrawProjGroupItem* result = static_cast<DrawProjGroupItem*>(docObj);
+    auto result( dynamic_cast<TechDraw::DrawProjGroupItem *>(docObj) );
+    if ( (result == nullptr) &&
+         (docObj != nullptr) ) {
+        //should never have a item in DPG that is not a DPGI. 
+        Base::Console().Log("PROBLEM - DPG::getProjItem finds non-DPGI in Group %s / %s\n",
+                                getNameInDocument(),viewProjType);
+        throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+    }
     return result;
 }
-
 
 bool DrawProjGroup::checkViewProjType(const char *in)
 {
@@ -359,7 +371,14 @@ bool DrawProjGroup::hasProjection(const char *viewProjType) const
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
-        if( view && strcmp(viewProjType, view->Type.getValueAsString()) == 0 ) {
+        if (view == nullptr) {
+            //should never have a item in DPG that is not a DPGI. 
+            Base::Console().Log("PROBLEM - DPG::hasProjection finds non-DPGI in Group %s / %s\n",
+                                    getNameInDocument(),viewProjType);
+            throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+        }
+
+        if (strcmp(viewProjType, view->Type.getValueAsString()) == 0 ) {
             return true;
         }
     }
@@ -376,25 +395,41 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         std::string FeatName = getDocument()->getUniqueObjectName("ProjItem");
         auto docObj( getDocument()->addObject( "TechDraw::DrawProjGroupItem",     //add to Document
                                                FeatName.c_str() ) );
-        view = static_cast<TechDraw::DrawProjGroupItem *>( docObj );
-        view->Source.setValues( Source.getValues() );
-        view->Scale.setValue( getScale() );
-        view->Type.setValue( viewProjType );
-        view->Label.setValue( viewProjType );
-        view->Source.setValues( Source.getValues() );
-        if (strcmp(viewProjType, "Front") != 0 ) {
-            vecs = getDirsFromFront(view);
-            view->Direction.setValue(vecs.first);
-            view->RotationVector.setValue(vecs.second);
+        view = dynamic_cast<TechDraw::DrawProjGroupItem *>(docObj);
+        if ( (view == nullptr) &&
+             (docObj != nullptr) ) {
+            //should never happen that we create a DPGI that isn't a DPGI!! 
+            Base::Console().Log("PROBLEM - DPG::addProjection - created a non DPGI! %s / %s\n",
+                                    getNameInDocument(),viewProjType);
+            throw Base::TypeError("Error: new projection is not a DPGI!");
         }
-
-        addView(view);         //from DrawViewCollection
-        moveToCentre();
-        if (view != getAnchor()) {                //anchor is done elsewhere
-            view->recomputeFeature();
+        if (view != nullptr) {                        //coverity CID 151722
+            addView(view);                            //from DrawViewCollection
+            view->Source.setValues( Source.getValues() );
+            view->Scale.setValue( getScale() );
+            view->Type.setValue( viewProjType );
+            view->Label.setValue( viewProjType );
+            view->Source.setValues( Source.getValues() );
+            if (strcmp(viewProjType, "Front") != 0 ) {  //not Front!
+                vecs = getDirsFromFront(view);
+                view->Direction.setValue(vecs.first);
+                view->RotationVector.setValue(vecs.second);
+                view->recomputeFeature();
+            } else {  //Front
+                Anchor.setValue(view);
+                Anchor.purgeTouched();
+                view->LockPosition.setValue(true);  //lock "Front" position within DPG (note not Page!).
+                view->LockPosition.setStatus(App::Property::ReadOnly,true); //Front should stay locked.
+                App::GetApplication().signalChangePropertyEditor(view->LockPosition);
+                view->LockPosition.purgeTouched();
+                requestPaint();   //make sure the group object is on the Gui page
+            }
+        //        addView(view);                            //from DrawViewCollection
+        //        if (view != getAnchor()) {                //anchor is done elsewhere
+        //            view->recomputeFeature();
+        //        }
         }
     }
-
     return view;
 }
 
@@ -410,13 +445,17 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
         // Iterate through the child views and find the projection type
         for( auto it : Views.getValues() ) {
             auto projPtr( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
-            if( projPtr ) {
+            if( projPtr != nullptr) {
                 if ( strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
-                    removeView(projPtr);                                        // Remove from collection
+                    removeView(projPtr);                                           // Remove from collection
                     getDocument()->removeObject( it->getNameInDocument() );        // Remove from the document
-                    moveToCentre();
                     return Views.getValues().size();
                 }
+            } else {
+                //if an element in Views is not a DPGI, something really bad has happened somewhere
+                Base::Console().Log("PROBLEM - DPG::removeProjection - tries to remove non DPGI! %s / %s\n",
+                                    getNameInDocument(),viewProjType);
+                throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
             }
         }
     }
@@ -432,9 +471,14 @@ int DrawProjGroup::purgeProjections()
         DrawProjGroupItem* dpgi;
         DocumentObject* dObj =  views.back();
         dpgi = dynamic_cast<DrawProjGroupItem*>(dObj);
-        if (dpgi) {
+        if (dpgi != nullptr) {
             std::string itemName = dpgi->Type.getValueAsString();
             removeProjection(itemName.c_str());
+        } else {
+            //if an element in Views is not a DPGI, something really bad has happened somewhere
+            Base::Console().Log("PROBLEM - DPG::purgeProjection - tries to remove non DPGI! %s\n",
+                                    getNameInDocument());
+            throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
     }
     auto page = findParentPage();
@@ -459,6 +503,10 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawProjGroup::getDirsFromFront(std::st
 
     Base::Vector3d projDir, rotVec;
     DrawProjGroupItem* anch = getAnchor();
+    if (anch == nullptr) {
+        Base::Console().Warning("DPG::getDirsFromFront - %s - No Anchor!\n",Label.getValue());
+        throw Base::RuntimeError("Project Group missing Anchor projection item");
+    }
      
     Base::Vector3d dirAnch = anch->Direction.getValue();
     Base::Vector3d rotAnch = anch->RotationVector.getValue();
@@ -517,7 +565,11 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawProjGroup::getDirsFromFront(std::st
 
 Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
 {
-    Base::Vector3d result;
+    Base::Vector3d result(0.0,0.0,0.0);
+    //Front view position is always (0,0)
+    if (strcmp(viewTypeCStr, "Front") == 0 ) {  // Front!
+        return result;
+    }
     const int idxCount = 10;
     DrawProjGroupItem *viewPtrs[idxCount];
     arrangeViewPointers(viewPtrs);
@@ -526,7 +578,8 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
         //TODO: bounding boxes do not take view orientation into account
         //      ie X&Y widths might be swapped on page
 
-    if (AutoDistribute.getValue()) {
+//    if (AutoDistribute.getValue()) {
+    if (true) {
         std::vector<Base::Vector3d> position(idxCount);
         int idx = 0;
         for (;idx < idxCount; idx++) {
@@ -632,7 +685,6 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
     return result;
 }
 
-
 int DrawProjGroup::getViewIndex(const char *viewTypeCStr) const
 {
     int result = 4;                                        //default to front view's position
@@ -712,7 +764,12 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
         bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
         for (auto it : Views.getValues()) {
             auto oView( dynamic_cast<DrawProjGroupItem *>(it) );
-            if (oView) {
+            if (oView == nullptr) {
+                //if an element in Views is not a DPGI, something really bad has happened somewhere
+                Base::Console().Log("PROBLEM - DPG::arrangeViewPointers - non DPGI in Views! %s\n",
+                                    getNameInDocument());
+                throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+            } else {
                 const char *viewTypeCStr = oView->Type.getValueAsString();
                 if (strcmp(viewTypeCStr, "Front") == 0) {
                   //viewPtrs[thirdAngle ? 4 : 4] = oView;
@@ -773,16 +830,16 @@ void DrawProjGroup::updateChildren(void)
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if( view ) {
+        if (view == nullptr) {
+            //if an element in Views is not a DPGI, something really bad has happened somewhere
+            Base::Console().Log("PROBLEM - DPG::updateChildren - non DPGI entry in Views! %s\n",
+                                    getNameInDocument());
+            throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+        } else {
             view->Scale.setValue(Scale.getValue());
         }
     }
 }
-
-//void DrawProjGroup::updateChildren(const App::Property* prop)
-//{
-//    view->....setValue(s)(prop->getValue(s));
-//}
 
 /*! 
  * tell children DPGIs that parent DPG has changed Source
@@ -791,8 +848,30 @@ void DrawProjGroup::updateChildrenSource(void)
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if( view ) {
+        if (view == nullptr) {
+            //if an element in Views is not a DPGI, something really bad has happened somewhere
+            Base::Console().Log("PROBLEM - DPG::updateChildrenSource - non DPGI entry in Views! %s\n",
+                                    getNameInDocument());
+            throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+        } else {
             view->Source.setValues(Source.getValues());
+        }
+    }
+}
+
+/*! 
+ * tell children DPGIs that parent DPG has changed LockPosition
+ * (really for benefit of QGIV on Gui side)
+ */
+void DrawProjGroup::updateChildrenLock(void)
+{
+    for( const auto it : Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if (view == nullptr) {
+            //if an element in Views is not a DPGI, something really bad has happened somewhere
+            Base::Console().Log("PROBLEM - DPG::updateChildrenLock - non DPGI entry in Views! %s\n",
+                                    getNameInDocument());
+            throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
     }
 }
@@ -858,7 +937,6 @@ TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor(void)
     return result;
 }
 
-
 void DrawProjGroup::setAnchorDirection(const Base::Vector3d dir)
 {
     App::DocumentObject* docObj = Anchor.getValue();
@@ -878,7 +956,6 @@ Base::Vector3d DrawProjGroup::getAnchorDirection(void)
     }
     return result;
 }
-
 
 //*************************************
 //* view direction manipulation routines
@@ -1048,7 +1125,7 @@ void DrawProjGroup::spinCW()
     Base::Vector3d org(0.0,0.0,0.0);
     Base::Vector3d curRot = anchor->RotationVector.getValue(); 
     Base::Vector3d curDir = anchor->Direction.getValue();
-    Base::Vector3d newRot = DrawUtil::vecRotate(curRot,-angle,curDir,org);
+    Base::Vector3d newRot = DrawUtil::vecRotate(curRot,angle,curDir,org);
     anchor->RotationVector.setValue(newRot);
     updateSecondaryDirs();
 }
@@ -1061,7 +1138,7 @@ void DrawProjGroup::spinCCW()
     Base::Vector3d org(0.0,0.0,0.0);
     Base::Vector3d curRot = anchor->RotationVector.getValue(); 
     Base::Vector3d curDir = anchor->Direction.getValue();
-    Base::Vector3d newRot = DrawUtil::vecRotate(curRot,angle,curDir,org);
+    Base::Vector3d newRot = DrawUtil::vecRotate(curRot,-angle,curDir,org);
     anchor->RotationVector.setValue(newRot);
 
     updateSecondaryDirs();

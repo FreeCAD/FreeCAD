@@ -400,8 +400,8 @@ def p_offset_action(p):
        newobj=doc.addObject("Part::Offset",'offset')
        newobj.Shape = subobj[0].Shape.makeOffset(offset)
     newobj.Document.recompute()
-    subobj[0].ViewObject.hide()
-#    if gui:
+    if gui:
+        subobj[0].ViewObject.hide()
 #        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
 #            GetBool('useViewProviderTree'):
 #            from OpenSCADFeatures import ViewProviderTree

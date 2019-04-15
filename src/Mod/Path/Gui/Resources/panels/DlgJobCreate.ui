@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>388</width>
+    <width>532</width>
     <height>616</height>
    </rect>
   </property>
@@ -43,30 +43,13 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
-          <widget class="QTreeWidget" name="modelTree">
+          <widget class="QTreeView" name="modelTree">
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
            </property>
            <property name="tabKeyNavigation">
             <bool>true</bool>
            </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::MultiSelection</enum>
-           </property>
-           <property name="columnCount">
-            <number>1</number>
-           </property>
-           <attribute name="headerVisible">
-            <bool>false</bool>
-           </attribute>
-           <attribute name="headerCascadingSectionResizes">
-            <bool>true</bool>
-           </attribute>
-           <column>
-            <property name="text">
-             <string notr="true">1</string>
-            </property>
-           </column>
           </widget>
          </item>
         </layout>

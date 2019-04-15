@@ -64,7 +64,7 @@ namespace nglib {
 
 #include <occgeom.hpp>
 #include <meshing.hpp>
-//#include <meshtype.hpp>
+//#include <meshing/meshtype.hpp>
 namespace netgen {
 #if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);
@@ -538,7 +538,7 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
               netgen::mparam.maxh = Max( netgen::mparam.maxh, segLen );
             }
           }
-          //cerr << "min " << netgen::mparam.minh << " max " << netgen::mparam.maxh << endl;
+          //cerr << "min " << netgen::mparam.minh << " max " << netgen::mparam.maxh << std::endl;
           netgen::mparam.minh *= 0.9;
           netgen::mparam.maxh *= 1.1;
           continue;
@@ -637,7 +637,7 @@ double NETGENPlugin_NETGEN_2D_ONLY::GetProgress() const
   //   const_cast<NETGENPlugin_NETGEN_2D_ONLY*>( this )->_progressTic++;
   //   progress = Max( progress, _progressByTic * _progressTic );
   // }
-  // //cout << netgen::multithread.task << " " << _progressTic << endl;
+  // //cout << netgen::multithread.task << " " << _progressTic << std::endl;
   // return Min( progress, 0.99 );
 }
 

@@ -218,7 +218,10 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>The number of decimals in internal coordinates operations (for ex. 3 = 0.001)</string>
+           <string>The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</string>
+          </property>
+          <property name="maximum">
+           <number>10</number>
           </property>
           <property name="value">
            <number>6</number>
@@ -265,7 +268,7 @@
           </property>
           <property name="toolTip">
            <string>This is the value used by functions that use a tolerance.
-Values with differences below this value will be treated as same.</string>
+Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</string>
           </property>
           <property name="suffix">
            <string/>

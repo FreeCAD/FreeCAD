@@ -1,24 +1,24 @@
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 # here the usage description if you use this tool from the command line ("__main__")
 CommandlineUsage = """Material - Tool to work with FreeCAD Material definition cards
@@ -47,6 +47,10 @@ Author:
 Version:
   0.1
 """
+
+
+# see comments in module importFCMat, there is an independent parser implementation for reading and writing FCMat files
+# inside FreeCAD a mixture of these parsers and the ones in importFCMat.py is used
 
 
 def importFCMat(fileName):
@@ -96,85 +100,58 @@ def exportFCMat(fileName, matDict):
 
 
 def getMaterialAttributeStructure(withSpaces=None):
+
+    ''''''
+
     # material properties
     # see the following resources in the FreeCAD wiki for more information about the material specific properties:
     # https://www.freecadweb.org/wiki/Material_data_model
     # https://www.freecadweb.org/wiki/Material
-    materialPropertyGroups = (
-        ("Meta", (
-            "CardName",
-            "AuthorAndLicense",
-            "Source"
-        )),
-        ("General", (
-            "Name",
-            "Father",
-            "Description",
-            "Density",
-            "Vendor",
-            "ProductURL",
-            "SpecificPrice"
-        )),
-        ("Mechanical", (
-            "YoungsModulus",  # https://en.wikipedia.org/wiki/Young%27s_modulus
-            "PoissonRatio",  # https://en.wikipedia.org/wiki/Poisson%27s_ratio
-            "UltimateTensileStrength",  # https://en.wikipedia.org/wiki/Ultimate_tensile_strength
-            "CompressiveStrength",  # https://en.wikipedia.org/wiki/Compressive_strength
-            "YieldStrength",  # https://en.wikipedia.org/wiki/Yield_Strength
-            "UltimateStrain",  # https://en.wikipedia.org/wiki/Ultimate_tensile_strength
-            "FractureToughness",  # https://en.wikipedia.org/wiki/Fracture_toughness
-            "AngleOfFriction"  # https://en.wikipedia.org/wiki/Friction#Angle_of_friction and https://en.m.wikipedia.org/wiki/Mohr%E2%80%93Coulomb_theory
-        )),
-        ("Thermal", (
-            "ThermalConductivity",  # https://en.wikipedia.org/wiki/Thermal_conductivity
-            "ThermalExpansionCoefficient",  # https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient
-            "SpecificHeat"  # https://en.wikipedia.org/wiki/Heat_capacity
-        )),
-        ("Architectural", (
-            "Model",
-            "ExecutionInstructions",
-            "FireResistanceClass",
-            "StandardCode",
-            "SoundTransmissionClass",
-            "Color",
-            "Finish",
-            "UnitsPerQuantity",
-            "EnvironmentalEfficiencyClass"
-        )),
-        ("Rendering", (
-            "DiffuseColor",
-            "AmbientColor",
-            "SpecularColor",
-            "Shininess",
-            "EmissiveColor",
-            "Transparency",
-            "VertexShader",
-            "FragmentShader",
-            "TexturePath",
-            "TextureScaling"
-        )),
-        ("Vector rendering", (
-            "ViewColor",
-            "ViewFillPattern",
-            "SectionFillPattern",
-            "ViewLinewidth",
-            "SectionLinewidth"
-        )),
-        ("User defined", (
-        ))
-    )
+
+    import os
+    import xml.etree.ElementTree as ElementTree
+
+    infile = os.path.dirname(__file__) + os.sep + "MatPropDict.xml"
+    tree = ElementTree.parse(infile)
+
     if withSpaces:
         # on attributes, add a space before a capital letter, will be used for better display in the ui
         import re
-        newMatProp = []
-        for group in materialPropertyGroups:
-            newAttr = []
-            for attr in group[1]:
-                newAttr.append(re.sub(r"(\w)([A-Z])", r"\1 \2", attr))
-            newMatProp.append([group[0], newAttr])
-        materialPropertyGroups = newMatProp
-    # print(materialPropertyGroups)
-    return materialPropertyGroups
+        root = tree.getroot()
+        for group in root.getchildren():
+            for proper in group.getchildren():
+                proper.set('Name', re.sub(r"(\w)([A-Z]+)", r"\1 \2",
+                           proper.attrib['Name']))
+
+    return tree
+
+
+def read_cards_from_path(cards_path):
+    from os import listdir
+    from os.path import isfile, join, basename, splitext
+    from importFCMat import read
+    only_files = [f for f in listdir(cards_path) if isfile(join(cards_path, f))]
+    mat_files = [f for f in only_files if basename(splitext(f)[1]) == '.FCMat' or basename(splitext(f)[1]) == '.fcmat']
+    # print(mat_files)
+    mat_cards = []
+    for f in sorted(mat_files):
+        mat_cards.append(read(join(cards_path, f)))
+    return mat_cards
+
+
+def write_cards_to_path(cards_path, cards_data, write_group_section=True, write_template=False):
+    from importFCMat import write
+    from os.path import join
+    for card_data in cards_data:
+        if (card_data['CardName'] == 'TEMPLATE') and (write_template is False):
+            continue
+        else:
+            card_path = join(cards_path, (card_data['CardName'] + '.FCMat'))
+            print(card_path)
+            if write_group_section is True:
+                write(card_path, card_data, True)
+            else:
+                write(card_path, card_data, False)
 
 
 if __name__ == '__main__':

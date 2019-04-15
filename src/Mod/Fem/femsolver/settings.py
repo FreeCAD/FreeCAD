@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,84 +21,142 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM solver settings"
-__author__ = "Markus Hovorka"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
 
-import distutils.spawn
-import FreeCAD as App
+'''
+parameter in FreeCAD can be edited in two ways, either in the
+Preferences: menu Edit --> Preferences
+or
+Parameter editor: menu Tools --> Edit parameter
+'''
+
+import FreeCAD
 
 
+# working directory: possible choices
 TEMPORARY = "temporary"
 BESIDE = "beside"
 CUSTOM = "custom"
 
-_ELMER_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Elmer"
-_GRID_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Grid"
-_CCX_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Ccx"
-_Z88_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Z88"
+
+# FEM parameter location path
+_PARAM_PATH = "User parameter:BaseApp/Preferences/Mod/Fem/"
+_GENERAL_PARAM = _PARAM_PATH + "General"
 
 
-class _BinaryDlg(object):
+# ******** binary parameter **********************************************************************
+class _SolverDlg(object):
 
-    def __init__(self, default, param, useDefault, customPath):
+    def __init__(self, default, param_path, use_default, custom_path):
+
+        # set the parameter identifier
         self.default = default
-        self.param = param
-        self.useDefault = useDefault
-        self.customPath = customPath
+        self.param_path = param_path
+        self.use_default = use_default
+        self.custom_path = custom_path
+        self.write_comments = "writeCommentsToInputFile"
 
-    def getBinary(self):
-        paramObj = App.ParamGet(self.param)
+        # get the parameter object where the paramete are saved in
+        self.param_group = FreeCAD.ParamGet(self.param_path)
+
+    def get_binary(self):
+
+        # set the binary path to the FreeCAD defaults, ATM pure unix shell commands without path names are used
+        # TODO see todo on use_default later in this module
         binary = self.default
-        if not paramObj.GetBool(self.useDefault):
-            binary = paramObj.GetString(self.customPath)
-        return distutils.spawn.find_executable(binary)
+        FreeCAD.Console.PrintLog('Solver binary path: {} \n'.format(binary))
+
+        # check if use_default is set to True
+        # if True the standard binary path will be overwritten with a user binary path
+        if self.param_group.GetBool(self.use_default, True) is False:
+            binary = self.param_group.GetString(self.custom_path)
+        FreeCAD.Console.PrintLog('Solver binary path: {} \n'.format(binary))
+
+        # get the whole binary path name for the given command or binary path and return it
+        from distutils.spawn import find_executable as find_bin
+        return find_bin(binary)
+
+    def get_write_comments(self):
+        return self.param_group.GetBool(self.write_comments, True)
 
 
-_BINARIES = {
-    "ElmerSolver": _BinaryDlg(
-        default="ElmerSolver",
-        param=_ELMER_PARAM,
-        useDefault="UseStandardElmerLocation",
-        customPath="elmerBinaryPath"),
-    "ElmerGrid": _BinaryDlg(
-        default="ElmerGrid",
-        param=_GRID_PARAM,
-        useDefault="UseStandardGridLocation",
-        customPath="gridBinaryPath"),
-    "Calculix": _BinaryDlg(
+'''
+default:
+    default command to run the binary, this one is taken if the UseStandardXXXLocation is not given or set to True
+param:
+    path where these settings are saved, in FEM normally one path in one Tab in Preferences GUI
+use_default:
+    the UseStandardXXXLocation parameter identifier
+    if this parameter is set to True FreeCAD standards for the binary are used, or FreeCAD tries to find the binary
+    TODO: see method setup_ccx in ccx tools module, which sets up ccx binary for various os
+custom_path:
+    the xxxBinaryPath parameter identifier
+    binary path given by the user
+'''
+_SOLVER_PARAM = {
+    "Calculix": _SolverDlg(
         default="ccx",
-        param=_CCX_PARAM,
-        useDefault="UseStandardCcxLocation",
-        customPath="ccxBinaryPath"),
-    "Z88": _BinaryDlg(
+        param_path=_PARAM_PATH + "Ccx",
+        use_default="UseStandardCcxLocation",
+        custom_path="ccxBinaryPath"),
+    "ElmerSolver": _SolverDlg(
+        default="ElmerSolver",
+        param_path=_PARAM_PATH + "Elmer",
+        use_default="UseStandardElmerLocation",
+        custom_path="elmerBinaryPath"),
+    "ElmerGrid": _SolverDlg(
+        default="ElmerGrid",
+        param_path=_PARAM_PATH + "Elmer",
+        use_default="UseStandardGridLocation",
+        custom_path="gridBinaryPath"),
+    "Z88": _SolverDlg(
         default="z88r",
-        param=_Z88_PARAM,
-        useDefault="UseStandardZ88Location",
-        customPath="z88BinaryPath"),
+        param_path=_PARAM_PATH + "Z88",
+        use_default="UseStandardZ88Location",
+        custom_path="z88BinaryPath"),
 }
 
 
-def getBinary(name):
-    if name in _BINARIES:
-        return _BINARIES[name].getBinary()
-    return None
+def get_binary(name):
+    if name in _SOLVER_PARAM:
+        binary = _SOLVER_PARAM[name].get_binary()
+        FreeCAD.Console.PrintMessage('Solver binary path: {} \n'.format(binary))
+        return binary
+    else:
+        FreeCAD.Console.PrintError(
+            'Settings solver name: {} not found in solver settings modules _SOLVER_PARAM dirctionary.\n'.format(name)
+        )
+        return None
 
 
-def getCustomDir():
-    param = App.ParamGet(_ELMER_PARAM)
-    return param.GetString("CustomDirectoryPath")
+def get_write_comments(name):
+    if name in _SOLVER_PARAM:
+        return _SOLVER_PARAM[name].get_write_comments()
+    else:
+        FreeCAD.Console.PrintError(
+            'Settings solver name: {} not found in solver settings modules _SOLVER_PARAM dirctionary.\n'.format(name)
+        )
+        return None
 
 
-def getDirSetting():
-    param = App.ParamGet(_ELMER_PARAM)
-    if param.GetBool("UseTempDirectory"):
+# ******** working directory parameter ***********************************************************
+def get_custom_dir():
+    param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
+    return param_group.GetString("CustomDirectoryPath")
+
+
+def get_dir_setting():
+    param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
+    if param_group.GetBool("UseTempDirectory"):
         return TEMPORARY
-    elif param.GetBool("UseBesideDirectory"):
+    elif param_group.GetBool("UseBesideDirectory"):
         return BESIDE
-    elif param.GetBool("UseCustomDirectory"):
+    elif param_group.GetBool("UseCustomDirectory"):
         return CUSTOM
+
 
 ##  @}

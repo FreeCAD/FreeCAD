@@ -198,6 +198,8 @@ def getType(obj):
         return "Points"
     if (obj.TypeId == "App::DocumentObjectGroup"):
         return "Group"
+    if (obj.TypeId == "App::Part"):
+        return "App::Part"
     return "Unknown"
 
 def getObjectsOfType(objectslist,typ):
@@ -358,7 +360,7 @@ def shapify(obj):
     FreeCAD.ActiveDocument.removeObject(obj.Name)
     newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
     newobj.Shape = shape
-    FreeCAD.ActiveDocument.recompute()
+
     return newobj
 
 def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False,noarchchild=False):
@@ -389,7 +391,7 @@ def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False,noarch
         objectslist = [objectslist]
     for obj in objectslist:
         if obj:
-            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["Building","BuildingPart","Space","Site"]) and hasattr(obj,"Group")):
+            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["App::Part","Building","BuildingPart","Space","Site"]) and hasattr(obj,"Group")):
                 if getType(obj) == "Site":
                     if obj.Shape:
                         newlist.append(obj)
@@ -523,8 +525,6 @@ def formatObject(target,origin=None):
             if matchrep.DisplayMode in obrep.listDisplayModes():
                 obrep.DisplayMode = matchrep.DisplayMode
             if hasattr(matchrep,"DiffuseColor") and hasattr(obrep,"DiffuseColor"):
-                if matchrep.DiffuseColor:
-                    FreeCAD.ActiveDocument.recompute()
                 obrep.DiffuseColor = matchrep.DiffuseColor
 
 def getSelection():
@@ -616,28 +616,48 @@ def loadTexture(filename,size=None):
             img = coin.SoSFImage()
             width = size[0]
             height = size[1]
-            bytes = ""
+            byteList = []
+            isPy2 = sys.version_info.major < 3
 
             for y in range(height):
                 #line = width*numcomponents*(height-(y));
                 for x in range(width):
                     rgb = p.pixel(x,y)
                     if numcomponents == 1:
-                        bytes = bytes + chr(QtGui.qGray( rgb ))
+                        if isPy2:
+                            byteList.append(chr(QtGui.qGray( rgb )))
+                        else:
+                            byteList.append(chr(QtGui.qGray( rgb )).encode('latin-1'))
                     elif numcomponents == 2:
-                        bytes = bytes + chr(QtGui.qGray( rgb ))
-                        bytes = bytes + chr(QtGui.qAlpha( rgb ))
+                        if isPy2:
+                            byteList.append(chr(QtGui.qGray( rgb )))
+                            byteList.append(chr(QtGui.qAlpha( rgb )))
+                        else:
+                            byteList.append(chr(QtGui.qGray( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qAlpha( rgb )).encode('latin-1'))
                     elif numcomponents == 3:
-                        bytes = bytes + chr(QtGui.qRed( rgb ))
-                        bytes = bytes + chr(QtGui.qGreen( rgb ))
-                        bytes = bytes + chr(QtGui.qBlue( rgb ))
+                        if isPy2:
+                            byteList.append(chr(QtGui.qRed( rgb )))
+                            byteList.append(chr(QtGui.qGreen( rgb )))
+                            byteList.append(chr(QtGui.qBlue( rgb )))
+                        else:
+                            byteList.append(chr(QtGui.qRed( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qGreen( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qBlue( rgb )).encode('latin-1'))
                     elif numcomponents == 4:
-                        bytes = bytes + chr(QtGui.qRed( rgb ))
-                        bytes = bytes + chr(QtGui.qGreen( rgb ))
-                        bytes = bytes + chr(QtGui.qBlue( rgb ))
-                        bytes = bytes + chr(QtGui.qAlpha( rgb ))
+                        if isPy2:
+                            byteList.append(chr(QtGui.qRed( rgb )))
+                            byteList.append(chr(QtGui.qGreen( rgb )))
+                            byteList.append(chr(QtGui.qBlue( rgb )))
+                            byteList.append(chr(QtGui.qAlpha( rgb )))
+                        else:
+                            byteList.append(chr(QtGui.qRed( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qGreen( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qBlue( rgb )).encode('latin-1'))
+                            byteList.append(chr(QtGui.qAlpha( rgb )).encode('latin-1'))
                     #line += numcomponents
-
+            
+            bytes = b"".join(byteList)
             img.setValue(size, numcomponents, bytes)
         except:
             print("Draft: unable to load texture")
@@ -705,14 +725,19 @@ def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None
             placement = FreeCAD.Placement(edge.Placement)
             delta = edge.Curve.Center.sub(placement.Base)
             placement.move(delta)
+            # Rotation of the edge 
+            rotOk = FreeCAD.Rotation(edge.Curve.XAxis, edge.Curve.YAxis, edge.Curve.Axis, "ZXY")
+            placement.Rotation = rotOk
             if len(edge.Vertexes) > 1:
-                ref = placement.multVec(FreeCAD.Vector(1,0,0))
+                v0 = edge.Curve.XAxis
                 v1 = (edge.Vertexes[0].Point).sub(edge.Curve.Center)
                 v2 = (edge.Vertexes[-1].Point).sub(edge.Curve.Center)
-                a1 = -math.degrees(DraftVecUtils.angle(v1,ref))
-                a2 = -math.degrees(DraftVecUtils.angle(v2,ref))
-                obj.FirstAngle = a1
-                obj.LastAngle = a2
+                # Angle between edge.Curve.XAxis and the vector from center to start of arc 
+                a0 = math.degrees(FreeCAD.Vector.getAngle(v0, v1))
+                # Angle between edge.Curve.XAxis and the vector from center to end of arc 
+                a1 = math.degrees(FreeCAD.Vector.getAngle(v0, v2))
+                obj.FirstAngle = a0
+                obj.LastAngle = a1
     else:
         obj.Radius = radius
         if (startangle != None) and (endangle != None):
@@ -725,7 +750,7 @@ def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None
         _ViewProviderDraft(obj.ViewObject)
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeRectangle(length, height, placement=None, face=None, support=None):
@@ -750,7 +775,7 @@ def makeRectangle(length, height, placement=None, face=None, support=None):
         _ViewProviderRectangle(obj.ViewObject)
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeDimension(p1,p2,p3=None,p4=None):
@@ -823,7 +848,7 @@ def makeDimension(p1,p2,p3=None,p4=None):
     if gui:
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeAngularDimension(center,angles,p3,normal=None):
@@ -857,7 +882,7 @@ def makeAngularDimension(center,angles,p3,normal=None):
         _ViewProviderAngularDimension(obj.ViewObject)
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+ 
     return obj
 
 def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
@@ -901,7 +926,7 @@ def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
         _ViewProviderWire(obj.ViewObject)
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=None,support=None):
@@ -931,7 +956,7 @@ def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=None,support=
         _ViewProviderDraft(obj.ViewObject)
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeLine(p1,p2=None):
@@ -960,22 +985,21 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    from DraftTools import msg
     if not isinstance(pointslist,list):
         nlist = []
         for v in pointslist.Vertexes:
             nlist.append(v.Point)
         pointslist = nlist
     if len(pointslist) < 2:
-        msg(translate("draft","Draft.makeBSpline: not enough points")+"\n", 'error')
+        FreeCAD.Console.PrintError(translate("draft","Draft.makeBSpline: not enough points")+"\n")
         return
     if (pointslist[0] == pointslist[-1]):
         if len(pointslist) > 2:
             closed = True
             pointslist.pop()
-            msg(translate("draft","Draft.makeBSpline: Equal endpoints forced Closed")+"\n", 'warning')
+            FreeCAD.Console.PrintWarning(translate("draft","Draft.makeBSpline: Equal endpoints forced Closed")+"\n")
         else:                                                                            # len == 2 and first == last   GIGO
-            msg(translate("draft","Draft.makeBSpline: Invalid pointslist")+"\n", 'error')
+            FreeCAD.Console.PrintError(translate("draft","Draft.makeBSpline: Invalid pointslist")+"\n")
             return
     # should have sensible parms from here on
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeBSpline")
@@ -993,7 +1017,7 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
         _ViewProviderWire(obj.ViewObject)
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,Degree=None):
@@ -1031,7 +1055,7 @@ def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,D
 #        obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeText(stringslist,point=Vector(0,0,0),screen=False):
@@ -1168,7 +1192,7 @@ def makeCopy(obj,force=None,reparent=False):
                     for prop in par.PropertiesList:
                         if getattr(par,prop) == obj:
                             setattr(par,prop,newobj)
-                            FreeCAD.ActiveDocument.recompute()
+
     formatObject(newobj,obj)
     return newobj
 
@@ -1227,7 +1251,6 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Arra
         baseobject.ViewObject.hide()
         formatObject(obj,obj.Base)
         if len(obj.Base.ViewObject.DiffuseColor) > 1:
-            FreeCAD.ActiveDocument.recompute()
             obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
@@ -1260,7 +1283,6 @@ def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs
         baseobject.ViewObject.hide()
         formatObject(obj,obj.Base)
         if len(obj.Base.ViewObject.DiffuseColor) > 1:
-            FreeCAD.ActiveDocument.recompute()
             obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
@@ -1276,7 +1298,6 @@ def makePointArray(base, ptlst):
         base.ViewObject.hide()
         formatObject(obj,obj.Base)
         if len(obj.Base.ViewObject.DiffuseColor) > 1:
-            FreeCAD.ActiveDocument.recompute()
             obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
@@ -1303,7 +1324,7 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
         #    obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeVisGroup(group=None,name="VisGroup"):
@@ -1336,8 +1357,81 @@ def extrude(obj,vector,solid=False):
         obj.ViewObject.Visibility = False
         formatObject(newobj,obj)
         select(newobj)
-    FreeCAD.ActiveDocument.recompute()
+
     return newobj
+
+def joinWires(wires, joinAttempts = 0):
+    '''joinWires(objects): merges a set of wires where possible, if any of those
+    wires have a coincident start and end point'''
+    if joinAttempts > len(wires):
+        return 
+    joinAttempts += 1
+    for wire1Index, wire1 in enumerate(wires):
+        for wire2Index, wire2 in enumerate(wires):
+            if wire2Index <= wire1Index:
+                continue
+            if joinTwoWires(wire1, wire2):
+                wires.pop(wire2Index)
+                break
+    joinWires(wires, joinAttempts)
+
+def joinTwoWires(wire1, wire2):
+    '''joinTwoWires(object, object): joins two wires if they share a common
+    point as a start or an end'''
+    wire1AbsPoints = [wire1.Placement.multVec(point) for point in wire1.Points]
+    wire2AbsPoints = [wire2.Placement.multVec(point) for point in wire2.Points]
+    if (wire1AbsPoints[0] == wire2AbsPoints[-1] and wire1AbsPoints[-1] == wire2AbsPoints[0]) \
+        or (wire1AbsPoints[0] == wire2AbsPoints[0] and wire1AbsPoints[-1] == wire2AbsPoints[-1]):
+        wire2AbsPoints.pop()
+        wire1.Closed = True
+    elif wire1AbsPoints[0] == wire2AbsPoints[0]:
+        wire1AbsPoints = list(reversed(wire1AbsPoints))
+    elif wire1AbsPoints[0] == wire2AbsPoints[-1]:
+        wire1AbsPoints = list(reversed(wire1AbsPoints))
+        wire2AbsPoints = list(reversed(wire2AbsPoints))
+    elif wire1AbsPoints[-1] == wire2AbsPoints[-1]:
+        wire2AbsPoints = list(reversed(wire2AbsPoints))
+    elif wire1AbsPoints[-1] == wire2AbsPoints[0]:
+        pass
+    else:
+        return False
+    wire2AbsPoints.pop(0)
+    wire1.Points = [wire1.Placement.inverse().multVec(point) for point in wire1AbsPoints] + [wire1.Placement.inverse().multVec(point) for point in wire2AbsPoints]
+    FreeCAD.ActiveDocument.removeObject(wire2.Name)
+    return True
+
+def split(wire, newPoint, edgeIndex):
+    if getType(wire) != "Wire":
+        return
+    elif wire.Closed:
+        splitClosedWire(wire, edgeIndex)
+    else:
+        splitOpenWire(wire, newPoint, edgeIndex)
+
+def splitClosedWire(wire, edgeIndex):
+    wire.Closed = False
+    if edgeIndex == len(wire.Points):
+        makeWire([wire.Placement.multVec(wire.Points[0]),
+            wire.Placement.multVec(wire.Points[-1])], placement=wire.Placement)
+    else:
+        makeWire([wire.Placement.multVec(wire.Points[edgeIndex-1]),
+            wire.Placement.multVec(wire.Points[edgeIndex])], placement=wire.Placement)
+        wire.Points = list(reversed(wire.Points[0:edgeIndex])) + list(reversed(wire.Points[edgeIndex:]))
+
+def splitOpenWire(wire, newPoint, edgeIndex):
+    wire1Points = []
+    wire2Points = []
+    for index, point in enumerate(wire.Points):
+        if index == edgeIndex:
+            wire1Points.append(wire.Placement.inverse().multVec(newPoint))
+            wire2Points.append(newPoint)
+            wire2Points.append(wire.Placement.multVec(point))
+        elif index < edgeIndex:
+            wire1Points.append(point)
+        elif index > edgeIndex:
+            wire2Points.append(wire.Placement.multVec(point))
+    wire.Points = wire1Points
+    makeWire(wire2Points, placement=wire.Placement)
 
 def fuse(object1,object2):
     '''fuse(oject1,object2): returns an object made from
@@ -1375,7 +1469,7 @@ def fuse(object1,object2):
         object2.ViewObject.Visibility = False
         formatObject(obj,object1)
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def cut(object1,object2):
@@ -1391,7 +1485,7 @@ def cut(object1,object2):
     object2.ViewObject.Visibility = False
     formatObject(obj,object1)
     select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def move(objectslist,vector,copy=False):
@@ -1405,12 +1499,8 @@ def move(objectslist,vector,copy=False):
     objectslist.extend(getMovableChildren(objectslist))
     newobjlist = []
     newgroups = {}
+    objectslist = filterObjectsForModifiers(objectslist, copy)
     for obj in objectslist:
-        if hasattr(obj,"Placement"):
-           if obj.getEditorMode("Placement") == ["ReadOnly"]:
-               if not copy:
-                   FreeCAD.Console.PrintError(obj.Name+" cannot be moved because its placement is readonly.")
-                   continue
         if getType(obj) == "Point":
             v = Vector(obj.X,obj.Y,obj.Z)
             v = v.add(vector)
@@ -1540,6 +1630,27 @@ def array(objectslist,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None):
     else:
         polarArray(objectslist,arg1,arg2,arg3)
 
+def filterObjectsForModifiers(objects, isCopied=False):
+    filteredObjects = []
+    for object in objects:
+        if hasattr(object, "MoveBase") and object.MoveBase and object.Base:
+            parents = []
+            for parent in object.Base.InList:
+                if parent.isDerivedFrom("Part::Feature"):
+                    parents.append(parent.Name)
+            if len(parents) > 1:
+                warningMessage = translate("draft","%s shares a base with %d other objects. Please check if you want to modify this.") % (object.Name,len(parents) - 1)
+                FreeCAD.Console.PrintError(warningMessage)
+                if FreeCAD.GuiUp:
+                    FreeCADGui.getMainWindow().showMessage(warningMessage, 0)
+            filteredObjects.append(object.Base)
+        elif hasattr(object,"Placement") and object.getEditorMode("Placement") == ["ReadOnly"] and not isCopied:
+           FreeCAD.Console.PrintError(translate("%s cannot be modified because its placement is readonly.") % obj.Name)
+           continue
+        else:
+           filteredObjects.append(object)
+    return filteredObjects
+
 def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False):
     '''rotate(objects,angle,[center,axis,copy]): Rotates the objects contained
     in objects (that can be a list of objects or an object) of the given angle
@@ -1553,12 +1664,8 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     objectslist.extend(getMovableChildren(objectslist))
     newobjlist = []
     newgroups = {}
+    objectslist = filterObjectsForModifiers(objectslist, copy)
     for obj in objectslist:
-        if hasattr(obj,"Placement"):
-           if obj.getEditorMode("Placement") == ["ReadOnly"]:
-               if not copy:
-                   FreeCAD.Console.PrintError(obj.Name+" cannot be rotated because its placement is readonly.")
-                   continue
         if copy:
             newobj = makeCopy(obj)
         else:
@@ -1914,7 +2021,7 @@ def draftify(objectslist,makeblock=False,delete=True):
                 nobj.ViewObject.DisplayMode = "Flat Lines"
             if delete:
                 FreeCAD.ActiveDocument.removeObject(obj.Name)
-    FreeCAD.ActiveDocument.recompute()
+
     if makeblock:
         return makeBlock(newobjlist)
     else:
@@ -1985,811 +2092,6 @@ def getDXF(obj,direction=None):
 
     return result
 
-def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False,rotation=0):
-    '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction],[linestyle],[color],[linespacing]):
-    returns a string containing a SVG representation of the given object,
-    with the given linewidth and fontsize (used if the given object contains
-    any text). You can also supply an arbitrary projection vector. the
-    scale parameter allows to scale linewidths down, so they are resolution-independant.'''
-
-    # if this is a group, gather all the svg views of its children
-    if hasattr(obj,"isDerivedFrom"):
-        if obj.isDerivedFrom("App::DocumentObjectGroup"):
-            svg = ""
-            for child in obj.Group:
-                svg += getSVG(child,scale,linewidth,fontsize,fillstyle,direction,linestyle,color,linespacing,techdraw)
-            return svg
-
-    import Part, DraftGeomUtils
-    pathdata = []
-    svg = ""
-    linewidth = float(linewidth)/scale
-    fontsize = (float(fontsize)/scale)/2
-    if linespacing:
-        linespacing = float(linespacing)/scale
-    else:
-        linespacing = 0.5
-    #print obj.Label," line spacing ",linespacing,"scale ",scale
-    pointratio = .75 # the number of times the dots are smaller than the arrow size
-    plane = None
-    if direction:
-        if isinstance(direction,FreeCAD.Vector):
-            if direction != Vector(0,0,0):
-                plane = WorkingPlane.plane()
-                plane.alignToPointAndAxis_SVG(Vector(0,0,0),direction.negative().negative(),0)
-        elif isinstance(direction,WorkingPlane.plane):
-            plane = direction
-    stroke = "#000000"
-    if color:
-        if "#" in color:
-            stroke = color
-        else:
-            stroke = getrgb(color)
-    elif gui:
-        if hasattr(obj,"ViewObject"):
-            if hasattr(obj.ViewObject,"LineColor"):
-                stroke = getrgb(obj.ViewObject.LineColor)
-
-    def getLineStyle():
-        "returns a linestyle"
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        l = None
-        if linestyle == "Dashed":
-            l = p.GetString("svgDashedLine","0.09,0.05")
-        elif linestyle == "Dashdot":
-            l = p.GetString("svgDashdotLine","0.09,0.05,0.02,0.05")
-        elif linestyle == "Dotted":
-            l = p.GetString("svgDottedLine","0.02,0.02")
-        elif linestyle:
-            if "," in linestyle:
-                l = linestyle
-        if l:
-            l = l.split(",")
-            try:
-                # scale dashes
-                l = ",".join([str(float(d)/scale) for d in l])
-                #print "lstyle ",l
-            except:
-                return "none"
-            else:
-                return l
-        return "none"
-
-    def getProj(vec):
-        if not plane: return vec
-        nx = DraftVecUtils.project(vec,plane.u)
-        lx = nx.Length
-        if abs(nx.getAngle(plane.u)) > 0.1: lx = -lx
-        ny = DraftVecUtils.project(vec,plane.v)
-        ly = ny.Length
-        if abs(ny.getAngle(plane.v)) > 0.1: ly = -ly
-        #if techdraw: buggy - we now simply do it at the end
-        #    ly = -ly
-        return Vector(lx,ly,0)
-
-    def getDiscretized(edge):
-        ml = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat("svgDiscretization",10.0)
-        if ml == 0:
-            ml = 10
-        d = int(edge.Length/ml)
-        if d == 0:
-            d = 1
-        edata = ""
-        for i in range(d+1):
-            v = getProj(edge.valueAt(edge.FirstParameter+((float(i)/d)*(edge.LastParameter-edge.FirstParameter))))
-            if not edata:
-                edata += 'M ' + str(v.x) +' '+ str(v.y) + ' '
-            else:
-                edata += 'L ' + str(v.x) +' '+ str(v.y) + ' '
-        return edata
-
-    def getPattern(pat):
-        if pat in svgpatterns():
-            return svgpatterns()[pat][0]
-        return ''
-
-    def getPath(edges=[],wires=[],pathname=None):
-        import Part,DraftGeomUtils
-        svg = "<path "
-        if pathname is None:
-            svg += 'id="%s" ' % obj.Name
-        elif pathname != "":
-            svg += 'id="%s" ' % pathname
-        svg += ' d="'
-        if not wires:
-            egroups = Part.sortEdges(edges)
-        else:
-            egroups = []
-            for w in wires:
-                w1=w.copy()
-                w1.fixWire()
-                egroups.append(Part.__sortEdges__(w1.Edges))
-        for egroupindex, edges in enumerate(egroups):
-            edata = ""
-            vs=() #skipped for the first edge
-            for edgeindex,e in enumerate(edges):
-                previousvs = vs
-                # vertexes of an edge (reversed if needed)
-                vs = e.Vertexes
-                if previousvs:
-                    if (vs[0].Point-previousvs[-1].Point).Length > 1e-6:
-                        vs.reverse()
-                if edgeindex == 0:
-                    v = getProj(vs[0].Point)
-                    edata += 'M '+ str(v.x) +' '+ str(v.y) + ' '
-                else:
-                    if (vs[0].Point-previousvs[-1].Point).Length > 1e-6:
-                        raise ValueError('edges not ordered')
-                iscircle = DraftGeomUtils.geomType(e) == "Circle"
-                isellipse = DraftGeomUtils.geomType(e) == "Ellipse"
-                if iscircle or isellipse:
-                    import math
-                    if hasattr(FreeCAD,"DraftWorkingPlane"):
-                        drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
-                    else:
-                        drawing_plane_normal = FreeCAD.Vector(0,0,1)
-                    if plane: drawing_plane_normal = plane.axis
-                    c = e.Curve
-                    if round(c.Axis.getAngle(drawing_plane_normal),2) in [0,3.14]:
-                        occversion = Part.OCC_VERSION.split(".")
-                        done = False
-                        if (int(occversion[0]) >= 7) and (int(occversion[1]) >= 1):
-                            # if using occ >= 7.1, use HLR algorithm
-                            import Drawing
-                            snip = Drawing.projectToSVG(e,drawing_plane_normal)
-                            if snip:
-                                try:
-                                    a = "A " + snip.split("path d=\"")[1].split("\"")[0].split("A")[1]
-                                except:
-                                    pass
-                                else:
-                                    edata += a
-                                    done = True
-                        if not done:
-                            if len(e.Vertexes) == 1 and iscircle: #complete curve
-                                svg = getCircle(e)
-                                return svg
-                            elif len(e.Vertexes) == 1 and isellipse:
-                                #svg = getEllipse(e)
-                                #return svg
-                                endpoints = (getProj(c.value((c.LastParameter-\
-                                        c.FirstParameter)/2.0)), \
-                                        getProj(vs[-1].Point))
-                            else:
-                                endpoints = (getProj(vs[-1].Point),)
-                            # arc
-                            if iscircle:
-                                rx = ry = c.Radius
-                                rot = 0
-                            else: #ellipse
-                                rx = c.MajorRadius
-                                ry = c.MinorRadius
-                                rot = math.degrees(c.AngleXU * (c.Axis * \
-                                    FreeCAD.Vector(0,0,1)))
-                                if rot > 90:
-                                    rot -=180
-                                if rot < -90:
-                                    rot += 180
-                                #be careful with the sweep flag
-                            flag_large_arc = (((e.ParameterRange[1] - \
-                                    e.ParameterRange[0]) / math.pi) % 2) > 1
-                            #flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
-                            #         == (e.LastParameter > e.FirstParameter)
-                            #        == (e.Orientation == "Forward")
-                            # other method: check the direction of the angle between tangents
-                            t1 = e.tangentAt(e.FirstParameter)
-                            t2 = e.tangentAt(e.FirstParameter + (e.LastParameter-e.FirstParameter)/10)
-                            flag_sweep = (DraftVecUtils.angle(t1,t2,drawing_plane_normal) < 0)
-                            for v in endpoints:
-                                edata += 'A %s %s %s %s %s %s %s ' % \
-                                        (str(rx),str(ry),str(rot),\
-                                        str(int(flag_large_arc)),\
-                                        str(int(flag_sweep)),str(v.x),str(v.y))
-                    else:
-                        edata += getDiscretized(e)
-                elif DraftGeomUtils.geomType(e) == "Line":
-                    v = getProj(vs[-1].Point)
-                    edata += 'L '+ str(v.x) +' '+ str(v.y) + ' '
-                else:
-                    bspline=e.Curve.toBSpline(e.FirstParameter,e.LastParameter)
-                    if bspline.Degree > 3 or bspline.isRational():
-                        try:
-                            bspline=bspline.approximateBSpline(0.05,50, 3,'C0')
-                        except RuntimeError:
-                            print("Debug: unable to approximate bspline")
-                    if bspline.Degree <= 3 and not bspline.isRational():
-                        for bezierseg in bspline.toBezier():
-                            if bezierseg.Degree>3: #should not happen
-                                raise AssertionError
-                            elif bezierseg.Degree==1:
-                                edata +='L '
-                            elif bezierseg.Degree==2:
-                                edata +='Q '
-                            elif bezierseg.Degree==3:
-                                edata +='C '
-                            for pole in bezierseg.getPoles()[1:]:
-                                v = getProj(pole)
-                                edata += str(v.x) +' '+ str(v.y) + ' '
-                    else:
-                        print("Debug: one edge (hash ",e.hashCode(),\
-                                ") has been discretized with parameter 0.1")
-                        for linepoint in bspline.discretize(0.1)[1:]:
-                            v = getProj(linepoint)
-                            edata += 'L '+ str(v.x) +' '+ str(v.y) + ' '
-            if fill != 'none':
-                edata += 'Z '
-            if edata in pathdata:
-                # do not draw a path on another identical path
-                return ""
-            else:
-                svg += edata
-                pathdata.append(edata)
-        svg += '" '
-        svg += 'stroke="' + stroke + '" '
-        svg += 'stroke-width="' + str(linewidth) + ' px" '
-        svg += 'style="stroke-width:'+ str(linewidth)
-        svg += ';stroke-miterlimit:4'
-        svg += ';stroke-dasharray:' + lstyle
-        svg += ';fill:' + fill
-        try:
-            svg += ';fill-opacity:' + str(fill_opacity)
-        except NameError:
-            pass
-        svg += ';fill-rule: evenodd "'
-        svg += '/>\n'
-        return svg
-
-    def getCircle(edge):
-        cen = getProj(edge.Curve.Center)
-        rad = edge.Curve.Radius
-        if hasattr(FreeCAD,"DraftWorkingPlane"):
-            drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
-        else:
-            drawing_plane_normal = FreeCAD.Vector(0,0,1)
-        if plane: drawing_plane_normal = plane.axis
-        if round(edge.Curve.Axis.getAngle(drawing_plane_normal),2) == 0:
-            # perpendicular projection: circle
-            svg = '<circle cx="' + str(cen.x)
-            svg += '" cy="' + str(cen.y)
-            svg += '" r="' + str(rad)+'" '
-        else:
-            # any other projection: ellipse
-            svg = '<path d="'
-            svg += getDiscretized(edge)
-            svg += '" '
-        svg += 'stroke="' + stroke + '" '
-        svg += 'stroke-width="' + str(linewidth) + ' px" '
-        svg += 'style="stroke-width:'+ str(linewidth)
-        svg += ';stroke-miterlimit:4'
-        svg += ';stroke-dasharray:' + lstyle
-        svg += ';fill:' + fill + '"'
-        svg += '/>\n'
-        return svg
-
-    def getEllipse(edge):
-        cen = getProj(edge.Curve.Center)
-        mir = edge.Curve.MinorRadius
-        mar = edge.Curve.MajorRadius
-        svg = '<ellipse cx="' + str(cen.x)
-        svg += '" cy="' + str(cen.y)
-        svg += '" rx="' + str(mar)
-        svg += '" ry="' + str(mir)+'" '
-        svg += 'stroke="' + stroke + '" '
-        svg += 'stroke-width="' + str(linewidth) + ' px" '
-        svg += 'style="stroke-width:'+ str(linewidth)
-        svg += ';stroke-miterlimit:4'
-        svg += ';stroke-dasharray:' + lstyle
-        svg += ';fill:' + fill + '"'
-        svg += '/>\n'
-        return svg
-
-    def getArrow(arrowtype,point,arrowsize,color,linewidth,angle=0):
-        svg = ""
-        if gui:
-            if not obj.ViewObject:
-                return svg
-            if obj.ViewObject.ArrowType == "Circle":
-                svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
-                svg += '" r="'+str(arrowsize)+'" '
-                svg += 'fill="none" stroke="'+ color + '" '
-                svg += 'style="stroke-width:'+ str(linewidth) + ';stroke-miterlimit:4;stroke-dasharray:none" '
-                svg += 'freecad:skip="1"'
-                svg += '/>\n'
-            elif obj.ViewObject.ArrowType == "Dot":
-                svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
-                svg += '" r="'+str(arrowsize)+'" '
-                svg += 'fill="'+ color +'" stroke="none" '
-                svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
-                svg += 'freecad:skip="1"'
-                svg += '/>\n'
-            elif obj.ViewObject.ArrowType == "Arrow":
-                svg += '<path transform="rotate('+str(math.degrees(angle))
-                svg += ','+ str(point.x) + ',' + str(point.y) + ') '
-                svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
-                svg += 'scale('+str(arrowsize)+','+str(arrowsize)+')" freecad:skip="1" '
-                svg += 'fill="'+ color +'" stroke="none" '
-                svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
-                svg += 'd="M 0 0 L 4 1 L 4 -1 Z"/>\n'
-            elif obj.ViewObject.ArrowType == "Tick":
-                svg += '<path transform="rotate('+str(math.degrees(angle))
-                svg += ','+ str(point.x) + ',' + str(point.y) + ') '
-                svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
-                svg += 'scale('+str(arrowsize)+','+str(arrowsize)+')" freecad:skip="1" '
-                svg += 'fill="'+ color +'" stroke="none" '
-                svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
-                svg += 'd="M -1 -2 L 0 2 L 1 2 L 0 -2 Z"/>\n'
-            elif obj.ViewObject.ArrowType == "Tick-2":
-                svg += '<line transform="rotate('+str(math.degrees(angle)+45)
-                svg += ','+ str(point.x) + ',' + str(point.y) + ') '
-                svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
-                svg += '" freecad:skip="1" '
-                svg += 'fill="none" stroke="'+ color +'" '
-                svg += 'style="stroke-dasharray:none;stroke-linecap:square;'
-                svg += 'stroke-width:'+ str(linewidth) +'" '
-                svg += 'x1="-'+ str(arrowsize*2) +'" y1="0" '
-                svg += 'x2="' + str(arrowsize*2) +'" y2="0" />\n'
-            else:
-                print("getSVG: arrow type not implemented")
-        return svg
-
-    def getOvershoot(point,shootsize,color,linewidth,angle=0):
-        svg = '<line transform="rotate('+str(math.degrees(angle))
-        svg += ','+ str(point.x) + ',' + str(point.y) + ') '
-        svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
-        svg += '" freecad:skip="1" '
-        svg += 'fill="none" stroke="'+ color +'" '
-        svg += 'style="stroke-dasharray:none;stroke-linecap:square;'
-        svg += 'stroke-width:'+ str(linewidth) +'" '
-        svg += 'x1="0" y1="0" '
-        svg += 'x2="'+ str(shootsize*-1) +'" y2="0" />\n'
-        return svg
-
-    def getText(color,fontsize,fontname,angle,base,text,linespacing=0.5,align="center",flip=True):
-        if isinstance(angle,FreeCAD.Rotation):
-            if not plane:
-                angle = angle.Angle
-            else:
-                if plane.axis.getAngle(angle.Axis) < 0.001:
-                    angle = angle.Angle
-                elif abs(plane.axis.getAngle(angle.Axis)-math.pi) < 0.001:
-                    return "" # text is perpendicular to view, so it shouldn't appear
-                else:
-                    angle = 0 #TODO maybe there is something better to do here?
-        if not isinstance(text,list):
-            text = text.split("\n")
-        if align.lower() == "center":
-            anchor = "middle"
-        elif align.lower() == "left":
-            anchor = "start"
-        else:
-            anchor = "end"
-        if techdraw:
-            svg = ""
-            for i in range(len(text)):
-                t = text[i]
-                if sys.version_info.major < 3 and (not isinstance(t,unicode)):
-                    t = t.decode("utf8")
-                # possible workaround if UTF8 is unsupported
-                #    import unicodedata
-                #    t = u"".join([c for c in unicodedata.normalize("NFKD",t) if not unicodedata.combining(c)]).encode("utf8")
-                svg += '<text fill="' + color +'" font-size="' + str(fontsize) + '" '
-                svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
-                svg += 'font-family:'+ fontname +'" '
-                svg += 'transform="rotate('+str(math.degrees(angle))
-                svg += ','+ str(base.x) + ',' + str(base.y-linespacing*i) + ') '
-                svg += 'translate(' + str(base.x) + ',' + str(base.y-linespacing*i) + ') '
-                svg += 'scale(1,-1)" '
-                #svg += '" freecad:skip="1"'
-                svg += '>\n' + t + '</text>\n'
-        else:
-            svg = '<text fill="'
-            svg += color +'" font-size="'
-            svg += str(fontsize) + '" '
-            svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
-            svg += 'font-family:'+ fontname +'" '
-            svg += 'transform="rotate('+str(math.degrees(angle))
-            svg += ','+ str(base.x) + ',' + str(base.y) + ') '
-            if flip:
-                svg += 'translate(' + str(base.x) + ',' + str(base.y) + ')'
-            else:
-                svg += 'translate(' + str(base.x) + ',' + str(-base.y) + ')'
-            #svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+') '
-            if flip:
-                svg += ' scale(1,-1) '
-            else:
-                svg += ' scale(1,1) '
-            svg += '" freecad:skip="1"'
-            svg += '>\n'
-            if len(text) == 1:
-                try:
-                    svg += text[0]
-                except:
-                    svg += text[0].decode("utf8")
-            else:
-                for i in range(len(text)):
-                    if i == 0:
-                        svg += '<tspan>'
-                    else:
-                        svg += '<tspan x="0" dy="'+str(linespacing)+'">'
-                    try:
-                        svg += text[i]
-                    except:
-                        svg += text[i].decode("utf8")
-                    svg += '</tspan>\n'
-            svg += '</text>\n'
-        return svg
-
-
-    if not obj:
-        pass
-
-    elif isinstance(obj,Part.Shape):
-        if "#" in fillstyle:
-            fill = fillstyle
-        elif fillstyle == "shape color":
-            fill = "#888888"
-        else:
-            fill = 'url(#'+fillstyle+')'
-        lstyle = getLineStyle()
-        svg += getPath(obj.Edges,pathname="")
-
-
-    elif getType(obj) == "Dimension":
-        if gui:
-            if not obj.ViewObject:
-                print ("export of dimensions to SVG is only available in GUI mode")
-            elif obj.ViewObject.Proxy:
-                if hasattr(obj.ViewObject.Proxy,"p1"):
-                    prx = obj.ViewObject.Proxy
-                    ts = (len(prx.string)*obj.ViewObject.FontSize.Value)/4.0
-                    rm = ((prx.p3.sub(prx.p2)).Length/2.0)-ts
-                    p2a = getProj(prx.p2.add(DraftVecUtils.scaleTo(prx.p3.sub(prx.p2),rm)))
-                    p2b = getProj(prx.p3.add(DraftVecUtils.scaleTo(prx.p2.sub(prx.p3),rm)))
-                    p1 = getProj(prx.p1)
-                    p2 = getProj(prx.p2)
-                    p3 = getProj(prx.p3)
-                    p4 = getProj(prx.p4)
-                    tbase = getProj(prx.tbase)
-                    r = prx.textpos.rotation.getValue().getValue()
-                    rv = FreeCAD.Rotation(r[0],r[1],r[2],r[3]).multVec(FreeCAD.Vector(1,0,0))
-                    angle = -DraftVecUtils.angle(getProj(rv))
-                    #angle = -DraftVecUtils.angle(p3.sub(p2))
-
-                    # drawing lines
-                    svg = '<path '
-                    if obj.ViewObject.DisplayMode == "2D":
-                        tangle = angle
-                        if tangle > math.pi/2:
-                            tangle = tangle-math.pi
-                        #elif (tangle <= -math.pi/2) or (tangle > math.pi/2):
-                        #    tangle = tangle+math.pi
-                        #tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
-                        if rotation != 0:
-                            #print "dim: tangle:",tangle," rot: ",rotation," text: ",prx.string
-                            if abs(tangle+math.radians(rotation)) < 0.0001:
-                                tangle += math.pi
-                                tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
-                        svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
-                        svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
-                        svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
-                        svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
-                    else:
-                        tangle = 0
-                        if rotation != 0:
-                            tangle = -math.radians(rotation)
-                        tbase = tbase.add(Vector(0,-2.0/scale,0))
-                        svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
-                        svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
-                        svg += 'L '+str(p2a.x)+' '+str(p2a.y)+' '
-                        svg += 'M '+str(p2b.x)+' '+str(p2b.y)+' '
-                        svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
-                        svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
-
-                    svg += 'fill="none" stroke="'
-                    svg += stroke + '" '
-                    svg += 'stroke-width="' + str(linewidth) + ' px" '
-                    svg += 'style="stroke-width:'+ str(linewidth)
-                    svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
-                    svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
-                    svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
-                    svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
-                    svg += '/>\n'
-
-                    # drawing dimension and extension lines overshoots
-                    if hasattr(obj.ViewObject,"DimOvershoot") and obj.ViewObject.DimOvershoot.Value:
-                        shootsize = obj.ViewObject.DimOvershoot.Value/pointratio
-                        svg += getOvershoot(p2,shootsize,stroke,linewidth,angle)
-                        svg += getOvershoot(p3,shootsize,stroke,linewidth,angle+math.pi)
-                    if hasattr(obj.ViewObject,"ExtOvershoot") and obj.ViewObject.ExtOvershoot.Value:
-                        shootsize = obj.ViewObject.ExtOvershoot.Value/pointratio
-                        shootangle = -DraftVecUtils.angle(p1.sub(p2))
-                        svg += getOvershoot(p2,shootsize,stroke,linewidth,shootangle)
-                        svg += getOvershoot(p3,shootsize,stroke,linewidth,shootangle)
-
-                    # drawing arrows
-                    if hasattr(obj.ViewObject,"ArrowType"):
-                        arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
-                        if hasattr(obj.ViewObject,"FlipArrows"):
-                            if obj.ViewObject.FlipArrows:
-                                angle = angle+math.pi
-                        svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
-                        svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle+math.pi)
-
-                    # drawing text
-                    svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
-
-    elif getType(obj) == "AngularDimension":
-        if gui:
-            if not obj.ViewObject:
-                print ("export of dimensions to SVG is only available in GUI mode")
-            elif obj.ViewObject.Proxy:
-                if hasattr(obj.ViewObject.Proxy,"circle"):
-                    prx = obj.ViewObject.Proxy
-
-                    # drawing arc
-                    fill= "none"
-                    lstyle = getLineStyle()
-                    if obj.ViewObject.DisplayMode == "2D":
-                        svg += getPath([prx.circle])
-                    else:
-                        if hasattr(prx,"circle1"):
-                            svg += getPath([prx.circle1])
-                            svg += getPath([prx.circle2])
-                        else:
-                            svg += getPath([prx.circle])
-
-                    # drawing arrows
-                    if hasattr(obj.ViewObject,"ArrowType"):
-                        p2 = getProj(prx.p2)
-                        p3 = getProj(prx.p3)
-                        arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
-                        arrowlength = 4*obj.ViewObject.ArrowSize.Value
-                        u1 = getProj((prx.circle.valueAt(prx.circle.FirstParameter+arrowlength)).sub(prx.circle.valueAt(prx.circle.FirstParameter)))
-                        u2 = getProj((prx.circle.valueAt(prx.circle.LastParameter-arrowlength)).sub(prx.circle.valueAt(prx.circle.LastParameter)))
-                        angle1 = -DraftVecUtils.angle(u1)
-                        angle2 = -DraftVecUtils.angle(u2)
-                        if hasattr(obj.ViewObject,"FlipArrows"):
-                            if obj.ViewObject.FlipArrows:
-                                angle1 = angle1+math.pi
-                                angle2 = angle2+math.pi
-                        svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle1)
-                        svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle2)
-
-                    # drawing text
-                    if obj.ViewObject.DisplayMode == "2D":
-                        t = prx.circle.tangentAt(prx.circle.FirstParameter+(prx.circle.LastParameter-prx.circle.FirstParameter)/2.0)
-                        t = getProj(t)
-                        tangle = DraftVecUtils.angle(t)
-                        if (tangle <= -math.pi/2) or (tangle > math.pi/2):
-                            tangle = tangle + math.pi
-                        tbase = getProj(prx.circle.valueAt(prx.circle.FirstParameter+(prx.circle.LastParameter-prx.circle.FirstParameter)/2.0))
-                        tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2.0/scale,0),tangle))
-                        #print(tbase)
-                    else:
-                        tangle = 0
-                        tbase = getProj(prx.tbase)
-                    svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
-
-    elif getType(obj) == "Label":
-        if getattr(obj.ViewObject, "Line", True):  # some Labels may have no Line property
-            def format_point(coords, action='L'):
-                return "{action}{x},{y}".format(
-                    x=coords.x, y=coords.y, action=action
-                )
-
-            # Draw multisegment line
-            proj_points = list(map(getProj, obj.Points))
-            path_dir_list = [format_point(proj_points[0], action='M')]
-            path_dir_list += map(format_point, proj_points[1:])
-            path_dir_str = " ".join(path_dir_list)
-            svg_path = '<path fill="none" stroke="{stroke}" stroke-width="{linewidth}" d="{directions}"/>'.format(
-                stroke=stroke,
-                linewidth=linewidth,
-                directions=path_dir_str
-            )
-            svg += svg_path
-
-            # Draw arrow.
-            # We are different here from 3D view
-            # if Line is set to 'off', no arrow is drawn
-            if hasattr(obj.ViewObject, "ArrowType") and len(obj.Points) >= 2:
-                last_segment = FreeCAD.Vector(obj.Points[-1] - obj.Points[-2])
-                angle = -DraftVecUtils.angle(getProj(last_segment)) + math.pi
-                svg += getArrow(
-                    arrowtype=obj.ViewObject.ArrowType,
-                    point=proj_points[-1],
-                    arrowsize=obj.ViewObject.ArrowSize.Value/pointratio,
-                    color=stroke,
-                    linewidth=linewidth,
-                    angle=angle
-                )
-
-        # print text
-        if gui:
-            if not obj.ViewObject:
-                print("export of texts to SVG is only available in GUI mode")
-            else:
-                fontname = obj.ViewObject.TextFont
-                position = getProj(obj.Placement.Base)
-                rotation = obj.Placement.Rotation
-                justification = obj.ViewObject.TextAlignment
-                text = obj.Text
-                svg += getText(stroke, fontsize, fontname, rotation, position,
-                               text, linespacing, justification)
-
-    elif getType(obj) in ["Annotation","DraftText"]:
-        "returns an svg representation of a document annotation"
-        if gui:
-            if not obj.ViewObject:
-                print ("export of texts to SVG is only available in GUI mode")
-            else:
-                n = obj.ViewObject.FontName
-                if getType(obj) == "Annotation":
-                    p = getProj(obj.Position)
-                    r = obj.ViewObject.Rotation.getValueAs("rad")
-                    t = obj.LabelText
-                else: # DraftText
-                    p = getProj(obj.Placement.Base)
-                    r = obj.Placement.Rotation
-                    t = obj.Text
-                j = obj.ViewObject.Justification
-                svg += getText(stroke,fontsize,n,r,p,t,linespacing,j)
-
-    elif getType(obj) == "Axis":
-        "returns the SVG representation of an Arch Axis system"
-        if gui:
-            if not obj.ViewObject:
-                print ("export of axes to SVG is only available in GUI mode")
-            else:
-                vobj = obj.ViewObject
-                lorig = getLineStyle()
-                fill = 'none'
-                rad = vobj.BubbleSize.Value/2
-                n = 0
-                for e in obj.Shape.Edges:
-                    lstyle = lorig
-                    svg += getPath([e])
-                    lstyle = "none"
-                    pos = ["Start"]
-                    if hasattr(vobj,"BubblePosition"):
-                        if vobj.BubblePosition == "Both":
-                            pos = ["Start","End"]
-                        else:
-                            pos = [vobj.BubblePosition]
-                    for p in pos:
-                        if p == "Start":
-                            p1 = e.Vertexes[0].Point
-                            p2 = e.Vertexes[1].Point
-                        else:
-                            p1 = e.Vertexes[1].Point
-                            p2 = e.Vertexes[0].Point
-                        dv = p2.sub(p1)
-                        dv.normalize()
-                        center = p2.add(dv.scale(rad,rad,rad))
-                        svg += getCircle(Part.makeCircle(rad,center))
-                        if hasattr(vobj.Proxy,"bubbletexts"):
-                            if len (vobj.Proxy.bubbletexts) >= n:
-                                svg += '<text fill="' + stroke + '" '
-                                svg += 'font-size="' + str(rad) + '" '
-                                svg += 'style="text-anchor:middle;'
-                                svg += 'text-align:center;'
-                                svg += 'font-family: sans;" '
-                                svg += 'transform="translate(' + str(center.x+rad/4.0) + ',' + str(center.y-rad/3.0) + ') '
-                                svg += 'scale(1,-1)"> '
-                                svg += '<tspan>' + obj.ViewObject.Proxy.bubbletexts[n].string.getValues()[0] + '</tspan>\n'
-                                svg += '</text>\n'
-                                n += 1
-
-    elif getType(obj) == "Pipe":
-        fill = stroke
-        lstyle = getLineStyle()
-        if obj.Base and obj.Diameter:
-            svg += getPath(obj.Base.Shape.Edges)
-        for f in obj.Shape.Faces:
-            if len(f.Edges) == 1:
-                if isinstance(f.Edges[0].Curve,Part.Circle):
-                    svg += getCircle(f.Edges[0])
-
-    elif getType(obj) == "Rebar":
-        fill = "none"
-        lstyle = getLineStyle()
-        if obj.Proxy:
-            if not hasattr(obj.Proxy,"wires"):
-                obj.Proxy.execute(obj)
-            if hasattr(obj.Proxy,"wires"):
-                svg += getPath(wires=obj.Proxy.wires)
-
-    elif getType(obj) == "PipeConnector":
-        pass
-
-    elif getType(obj) == "Space":
-        "returns an SVG fragment for the text of a space"
-        if gui:
-            if not obj.ViewObject:
-                print ("export of spaces to SVG is only available in GUI mode")
-            else:
-                c = getrgb(obj.ViewObject.TextColor)
-                n = obj.ViewObject.FontName
-                a = 0
-                if rotation != 0:
-                    a = math.radians(rotation)
-                t1 = obj.ViewObject.Proxy.text1.string.getValues()
-                t2 = obj.ViewObject.Proxy.text2.string.getValues()
-                scale = obj.ViewObject.FirstLine.Value/obj.ViewObject.FontSize.Value
-                f1 = fontsize*scale
-                p2 = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
-                lspc = FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue())
-                p1 = p2.add(lspc)
-                j = obj.ViewObject.TextAlign
-                svg += getText(c,f1,n,a,getProj(p1),t1,linespacing,j,flip=True)
-                if t2:
-                    ofs = FreeCAD.Vector(0,lspc.Length,0)
-                    if a:
-                        ofs = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),-rotation).multVec(ofs)
-                    svg += getText(c,fontsize,n,a,getProj(p1).add(ofs),t2,linespacing,j,flip=True)
-
-    elif obj.isDerivedFrom('Part::Feature'):
-        if obj.Shape.isNull():
-            return ''
-        # setting fill
-        if obj.Shape.Faces:
-            if gui:
-                try:
-                    m = obj.ViewObject.DisplayMode
-                except AttributeError:
-                    m = None
-                if (m != "Wireframe"):
-                    if fillstyle == "shape color":
-                        fill = getrgb(obj.ViewObject.ShapeColor,testbw=False)
-                        fill_opacity = 1 - (obj.ViewObject.Transparency / 100.0)
-                    else:
-                        fill = 'url(#'+fillstyle+')'
-                        svg += getPattern(fillstyle)
-                else:
-                    fill = "none"
-            else:
-                fill = "#888888"
-        else:
-            fill = 'none'
-        lstyle = getLineStyle()
-
-        if len(obj.Shape.Vertexes) > 1:
-            wiredEdges = []
-            if obj.Shape.Faces:
-                for i,f in enumerate(obj.Shape.Faces):
-                    svg += getPath(wires=f.Wires,pathname='%s_f%04d' % \
-                            (obj.Name,i))
-                    wiredEdges.extend(f.Edges)
-            else:
-                for i,w in enumerate(obj.Shape.Wires):
-                    svg += getPath(w.Edges,pathname='%s_w%04d' % \
-                            (obj.Name,i))
-                    wiredEdges.extend(w.Edges)
-            if len(wiredEdges) != len(obj.Shape.Edges):
-                for i,e in enumerate(obj.Shape.Edges):
-                    if (DraftGeomUtils.findEdge(e,wiredEdges) == None):
-                        svg += getPath([e],pathname='%s_nwe%04d' % \
-                                (obj.Name,i))
-        else:
-            # closed circle or spline
-            if obj.Shape.Edges:
-                if isinstance(obj.Shape.Edges[0].Curve,Part.Circle):
-                    svg = getCircle(obj.Shape.Edges[0])
-                else:
-                    svg = getPath(obj.Shape.Edges)
-        if FreeCAD.GuiUp:
-            if hasattr(obj.ViewObject,"EndArrow") and hasattr(obj.ViewObject,"ArrowType") and (len(obj.Shape.Vertexes) > 1):
-                if obj.ViewObject.EndArrow:
-                    p1 = getProj(obj.Shape.Vertexes[-2].Point)
-                    p2 = getProj(obj.Shape.Vertexes[-1].Point)
-                    angle = -DraftVecUtils.angle(p2.sub(p1))
-                    arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
-                    svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
-
-    # techdraw expects bottom-to-top coordinates
-    if techdraw:
-        svg = '<g transform ="scale(1,-1)">'+svg+'</g>'
-    return svg
 
 def getrgb(color,testbw=True):
     """getRGB(color,[testbw]): returns a rgb value #000000 from a freecad color
@@ -2804,6 +2106,13 @@ def getrgb(color,testbw=True):
             if getParam('SvgLinesBlack',True):
                 col = "#000000"
     return col
+
+
+import getSVG as svg
+
+
+getSVG = svg.getSVG
+
 
 def makeDrawingView(obj,page,lwmod=None,tmod=None,otherProjection=None):
     '''
@@ -2879,7 +2188,7 @@ def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
     if facenumbers:
         obj.FaceNumbers = facenumbers
     select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeSketch(objectslist,autoconstraints=False,addTo=None,
@@ -3160,7 +2469,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
     else:
         print("-----error!!! rotation is still None...")
     nobj.addConstraint(constraints)
-    FreeCAD.ActiveDocument.recompute()
+
     return nobj
 
 def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
@@ -3196,7 +2505,7 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
         obj.ViewObject.PointSize = point_size
         obj.ViewObject.Visibility = True
     select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
@@ -3218,7 +2527,7 @@ def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
         obrep = obj.ViewObject
         if "PointSize" in obrep.PropertiesList: obrep.PointSize = 1             # hide the segment end points
         select(obj)
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 def clone(obj,delta=None,forcedraft=False):
@@ -3428,7 +2737,6 @@ def upgrade(objects,delete=False,force=None):
     of objects to be deleted"""
 
     import Part, DraftGeomUtils
-    from DraftTools import msg
 
     if not isinstance(objects,list):
         objects = [objects]
@@ -3482,7 +2790,7 @@ def upgrade(objects,delete=False,force=None):
                     newobj.Shape = sol
                     addList.append(newobj)
                     deleteList.append(obj)
-            return newob
+            return newobj
 
     def closeWire(obj):
         """closes a wire object, if possible"""
@@ -3596,7 +2904,7 @@ def upgrade(objects,delete=False,force=None):
         if DraftGeomUtils.isCoplanar(faces):
             u = DraftGeomUtils.concatenate(u)
             if not DraftGeomUtils.hasCurves(u):
-                # several coplanar and non-curved faces: they can becoem a Draft wire
+                # several coplanar and non-curved faces: they can become a Draft wire
                 newobj = makeWire(u.Wires[0],closed=True,face=True)
             else:
                 # if not possible, we do a non-parametric union
@@ -3702,7 +3010,7 @@ def upgrade(objects,delete=False,force=None):
                      "makeShell","makeFaces","draftify","joinFaces","makeSketchFace","makeWires","turnToLine"]:
             result = eval(force)(objects)
         else:
-            msg(translate("Upgrade: Unknown force method:")+" "+force)
+            FreeCAD.Console.PrintMessage(translate("Upgrade: Unknown force method:")+" "+force)
             result = None
 
     else:
@@ -3714,12 +3022,14 @@ def upgrade(objects,delete=False,force=None):
         # if we have a group: turn each closed wire inside into a face
         if groups:
             result = closeGroupWires(groups)
-            if result: msg(translate("draft", "Found groups: closing each open object inside")+"\n")
+            if result:
+                FreeCAD.Console.PrintMessage(translate("draft", "Found groups: closing each open object inside")+"\n")
 
         # if we have meshes, we try to turn them into shapes
         elif meshes:
             result = turnToParts(meshes)
-            if result: msg(translate("draft", "Found mesh(es): turning into Part shapes")+"\n")
+            if result:
+                FreeCAD.Console.PrintMessage(translate("draft", "Found mesh(es): turning into Part shapes")+"\n")
 
         # we have only faces here, no lone edges
         elif faces and (len(wires) + len(openwires) == len(facewires)):
@@ -3727,40 +3037,47 @@ def upgrade(objects,delete=False,force=None):
             # we have one shell: we try to make a solid
             if (len(objects) == 1) and (len(faces) > 3):
                 result = makeSolid(objects[0])
-                if result: msg(translate("draft", "Found 1 solidificable object: solidifying it")+"\n")
+                if result:
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found 1 solidifiable object: solidifying it")+"\n")
 
             # we have exactly 2 objects: we fuse them
             elif (len(objects) == 2) and (not curves):
                 result = makeFusion(objects[0],objects[1])
-                if result: msg(translate("draft", "Found 2 objects: fusing them")+"\n")
+                if result:
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found 2 objects: fusing them")+"\n")
 
             # we have many separate faces: we try to make a shell
             elif (len(objects) > 2) and (len(faces) > 1) and (not loneedges):
                 result = makeShell(objects)
-                if result: msg(translate("draft", "Found several objects: creating a shell")+"\n")
+                if result:
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found several objects: creating a shell")+"\n")
 
             # we have faces: we try to join them if they are coplanar
             elif len(faces) > 1:
                 result = joinFaces(objects)
-                if result: msg(translate("draft", "Found several coplanar objects or faces: creating one face")+"\n")
+                if result:
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found several coplanar objects or faces: creating one face")+"\n")
 
             # only one object: if not parametric, we "draftify" it
             elif len(objects) == 1 and (not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
                 result = draftify(objects[0])
-                if result: msg(translate("draft", "Found 1 non-parametric objects: draftifying it")+"\n")
+                if result:
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found 1 non-parametric objects: draftifying it")+"\n")
 
         # we have only one object that contains one edge
         elif (not faces) and (len(objects) == 1) and (len(edges) == 1):
             # we have a closed sketch: Extract a face
             if objects[0].isDerivedFrom("Sketcher::SketchObject") and (len(edges[0].Vertexes) == 1):
                 result = makeSketchFace(objects[0])
-                if result: msg(translate("draft", "Found 1 closed sketch object: creating a face from it")+"\n")
+                if result:
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found 1 closed sketch object: creating a face from it")+"\n")
             else:
                 # turn to Draft line
                 e = objects[0].Shape.Edges[0]
                 if isinstance(e.Curve,(Part.LineSegment,Part.Line)):
                     result = turnToLine(objects[0])
-                    if result: msg(translate("draft", "Found 1 linear object: converting to line")+"\n")
+                    if result:
+                        FreeCAD.Console.PrintMessage(translate("draft", "Found 1 linear object: converting to line")+"\n")
 
         # we have only closed wires, no faces
         elif wires and (not faces) and (not openwires):
@@ -3768,36 +3085,42 @@ def upgrade(objects,delete=False,force=None):
             # we have a sketch: Extract a face
             if (len(objects) == 1) and objects[0].isDerivedFrom("Sketcher::SketchObject"):
                 result = makeSketchFace(objects[0])
-                if result: msg(translate("draft", "Found 1 closed sketch object: creating a face from it")+"\n")
+                if result:
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found 1 closed sketch object: creating a face from it")+"\n")
 
             # only closed wires
             else:
                 result = makeFaces(objects)
-                if result: msg(translate("draft", "Found closed wires: creating faces")+"\n")
+                if result:
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found closed wires: creating faces")+"\n")
 
         # special case, we have only one open wire. We close it, unless it has only 1 edge!"
         elif (len(openwires) == 1) and (not faces) and (not loneedges):
             result = closeWire(objects[0])
-            if result: msg(translate("draft", "Found 1 open wire: closing it")+"\n")
+            if result:
+                FreeCAD.Console.PrintMessage(translate("draft", "Found 1 open wire: closing it")+"\n")
 
         # only open wires and edges: we try to join their edges
         elif openwires and (not wires) and (not faces):
             result = makeWires(objects)
-            if result: msg(translate("draft", "Found several open wires: joining them")+"\n")
+            if result:
+                FreeCAD.Console.PrintMessage(translate("draft", "Found several open wires: joining them")+"\n")
 
         # only loneedges: we try to join them
         elif loneedges and (not facewires):
             result = makeWires(objects)
-            if result: msg(translate("draft", "Found several edges: wiring them")+"\n")
+            if result:
+                FreeCAD.Console.PrintMessage(translate("draft", "Found several edges: wiring them")+"\n")
 
         # all other cases, if more than 1 object, make a compound
         elif (len(objects) > 1):
             result = makeCompound(objects)
-            if result: msg(translate("draft", "Found several non-treatable objects: creating compound")+"\n")
+            if result:
+                FreeCAD.Console.PrintMessage(translate("draft", "Found several non-treatable objects: creating compound")+"\n")
 
         # no result has been obtained
         if not result:
-            msg(translate("draft", "Unable to upgrade these objects.")+"\n")
+            FreeCAD.Console.PrintMessage(translate("draft", "Unable to upgrade these objects.")+"\n")
 
     if delete:
         names = []
@@ -3819,7 +3142,6 @@ def downgrade(objects,delete=False,force=None):
     of objects to be deleted"""
 
     import Part, DraftGeomUtils
-    from DraftTools import msg
 
     if not isinstance(objects,list):
         objects = [objects]
@@ -3956,7 +3278,7 @@ def downgrade(objects,delete=False,force=None):
         if force in ["explode","shapify","subtr","splitFaces","cut2","getWire","splitWires"]:
             result = eval(force)(objects)
         else:
-            msg(translate("Upgrade: Unknown force method:")+" "+force)
+            FreeCAD.Console.PrintMessage(translate("Upgrade: Unknown force method:")+" "+force)
             result = None
 
     else:
@@ -3966,52 +3288,59 @@ def downgrade(objects,delete=False,force=None):
         # we have a block, we explode it
         if (len(objects) == 1) and (getType(objects[0]) == "Block"):
             result = explode(objects[0])
-            if result: msg(translate("draft", "Found 1 block: exploding it")+"\n")
+            if result:
+                FreeCAD.Console.PrintMessage(translate("draft", "Found 1 block: exploding it")+"\n")
 
         # we have one multi-solids compound object: extract its solids
         elif (len(objects) == 1) and (getType(objects[0]) == "Part") and (len(solids) > 1):
             result = splitCompounds(objects)
             #print(result)
-            if result: msg(translate("draft", "Found 1 multi-solids compound: exploding it")+"\n")
+            if result:
+                FreeCAD.Console.PrintMessage(translate("draft", "Found 1 multi-solids compound: exploding it")+"\n")
 
         # special case, we have one parametric object: we "de-parametrize" it
         elif (len(objects) == 1) and (objects[0].isDerivedFrom("Part::Feature")) and ("Base" in objects[0].PropertiesList):
             result = shapify(objects[0])
             if result:
-                msg(translate("draft", "Found 1 parametric object: breaking its dependencies")+"\n")
+                FreeCAD.Console.PrintMessage(translate("draft", "Found 1 parametric object: breaking its dependencies")+"\n")
                 addList.append(result)
                 #deleteList.append(objects[0])
 
         # we have only 2 objects: cut 2nd from 1st
         elif len(objects) == 2:
             result = cut2(objects)
-            if result: msg(translate("draft", "Found 2 objects: subtracting them")+"\n")
+            if result:
+                FreeCAD.Console.PrintMessage(translate("draft", "Found 2 objects: subtracting them")+"\n")
 
         elif (len(faces) > 1):
 
             # one object with several faces: split it
             if len(objects) == 1:
                 result = splitFaces(objects)
-                if result: msg(translate("draft", "Found several faces: splitting them")+"\n")
+                if result:
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found several faces: splitting them")+"\n")
 
             # several objects: remove all the faces from the first one
             else:
                 result = subtr(objects)
-                if result: msg(translate("draft", "Found several objects: subtracting them from the first one")+"\n")
+                if result:
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found several objects: subtracting them from the first one")+"\n")
 
         # only one face: we extract its wires
         elif (len(faces) > 0):
             result = getWire(objects[0])
-            if result: msg(translate("draft", "Found 1 face: extracting its wires")+"\n")
+            if result:
+                FreeCAD.Console.PrintMessage(translate("draft", "Found 1 face: extracting its wires")+"\n")
 
         # no faces: split wire into single edges
         elif not onlyedges:
             result = splitWires(objects)
-            if result: msg(translate("draft", "Found only wires: extracting their edges")+"\n")
+            if result:
+                FreeCAD.Console.PrintMessage(translate("draft", "Found only wires: extracting their edges")+"\n")
 
         # no result has been obtained
         if not result:
-            msg(translate("draft", "No more downgrade possible")+"\n")
+            FreeCAD.Console.PrintMessage(translate("draft", "No more downgrade possible")+"\n")
 
     if delete:
         names = []
@@ -5205,7 +4534,7 @@ class _Ellipse(_DraftObject):
         import Part
         plm = obj.Placement
         if obj.MajorRadius.Value < obj.MinorRadius.Value:
-            msg(translate("Error: Major radius is smaller than the minor radius"))
+            FreeCAD.Console.PrintMessage(translate("Error: Major radius is smaller than the minor radius"))
             return
         if obj.MajorRadius.Value and obj.MinorRadius.Value:
             ell = Part.Ellipse(Vector(0,0,0),obj.MajorRadius.Value,obj.MinorRadius.Value)
@@ -5394,7 +4723,7 @@ class _ViewProviderWire(_ViewProviderDraft):
     "A View Provider for the Wire object"
     def __init__(self, obj):
         _ViewProviderDraft.__init__(self,obj)
-        obj.addProperty("App::PropertyBool","EndArrow","Draft",QT_TRANSLATE_NOOP("App::Property","Displays a dim symbol at the end of the wire"))
+        obj.addProperty("App::PropertyBool","EndArrow","Draft",QT_TRANSLATE_NOOP("App::Property","Displays a Dimension symbol at the end of the wire"))
         obj.addProperty("App::PropertyLength","ArrowSize","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
         obj.addProperty("App::PropertyEnumeration","ArrowType","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
         obj.ArrowSize = getParam("arrowsize",0.1)
@@ -5482,7 +4811,7 @@ class _ViewProviderWire(_ViewProviderDraft):
                         FreeCAD.ActiveDocument.openTransaction("Flatten wire")
                         FreeCADGui.doCommand("FreeCAD.ActiveDocument."+self.Object.Name+".Points="+str(points).replace("Vector","FreeCAD.Vector").replace(" ",""))
                         FreeCAD.ActiveDocument.commitTransaction()
-                        FreeCAD.ActiveDocument.recompute()
+
                     else:
                         from DraftTools import translate
                         FreeCAD.Console.PrintMessage(translate("Draft","This Wire is already flat")+"\n")
@@ -5641,14 +4970,13 @@ class _BSpline(_DraftObject):
 
     def execute(self, obj):
         import Part
-        from DraftTools import msg
         self.assureProperties(obj)
         if obj.Points:
             self.knotSeq = self.parameterization(obj.Points, obj.Parameterization, obj.Closed)
             plm = obj.Placement
             if obj.Closed and (len(obj.Points) > 2):
                 if obj.Points[0] == obj.Points[-1]:  # should not occur, but OCC will crash
-                    msg(translate('draft',  "_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.")+"\n", "error")
+                    FreeCAD.Console.PrintError(translate('draft',  "_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.")+"\n")
                     return
                 spline = Part.BSplineCurve()
                 spline.interpolate(obj.Points, PeriodicFlag = True, Parameters = self.knotSeq)
@@ -5827,6 +5155,7 @@ class _Shape2DView(_DraftObject):
         obj.addProperty("App::PropertyEnumeration","ProjectionMode","Draft",QT_TRANSLATE_NOOP("App::Property","The way the viewed object must be projected"))
         obj.addProperty("App::PropertyIntegerList","FaceNumbers","Draft",QT_TRANSLATE_NOOP("App::Property","The indices of the faces to be projected in Individual Faces mode"))
         obj.addProperty("App::PropertyBool","HiddenLines","Draft",QT_TRANSLATE_NOOP("App::Property","Show hidden lines"))
+        obj.addProperty("App::PropertyBool","FuseArch","Draft",QT_TRANSLATE_NOOP("App::Property","Fuse wall and structure objects of same type and material"))
         obj.addProperty("App::PropertyBool","Tessellation","Draft",QT_TRANSLATE_NOOP("App::Property","Tessellate Ellipses and B-splines into line segments"))
         obj.addProperty("App::PropertyBool","InPlace","Draft",QT_TRANSLATE_NOOP("App::Property","For Cutlines and Cutfaces modes, this leaves the faces at the cut location"))
         obj.addProperty("App::PropertyFloat","SegmentLength","Draft",QT_TRANSLATE_NOOP("App::Property","Length of line segments if tessellating Ellipses or B-splines into line segments"))
@@ -5878,12 +5207,36 @@ class _Shape2DView(_DraftObject):
                     objs = getGroupContents(obj.Base.Objects,walls=True)
                     objs = removeHidden(objs)
                     shapes = []
-                    for o in objs:
-                        if o.isDerivedFrom("Part::Feature"):
-                            if onlysolids:
-                                shapes.extend(o.Shape.Solids)
+                    if hasattr(obj,"FuseArch") and obj.FuseArch:
+                        shtypes = {}
+                        for o in objs:
+                            if getType(o) in ["Wall","Structure"]:
+                                if onlysolids:
+                                    shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).extend(o.Shape.Solids)
+                                else:
+                                    shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).append(o.Shape.copy())
+                            elif o.isDerivedFrom("Part::Feature"):
+                                if onlysolids:
+                                    shapes.extend(o.Shape.Solids)
+                                else:
+                                    shapes.append(o.Shape.copy())
+                        for k,v in shtypes.items():
+                            v1 = v.pop()
+                            if v:
+                                v1 = v1.multiFuse(v)
+                                v1 = v1.removeSplitter()
+                            if v1.Solids:
+                                shapes.extend(v1.Solids)
                             else:
-                                shapes.append(o.Shape.copy())
+                                print("Shape2DView: Fusing Arch objects produced non-solid results")
+                                shapes.append(v1)
+                    else:
+                        for o in objs:
+                            if o.isDerivedFrom("Part::Feature"):
+                                if onlysolids:
+                                    shapes.extend(o.Shape.Solids)
+                                else:
+                                    shapes.append(o.Shape.copy())
                     cutp,cutv,iv =Arch.getCutVolume(obj.Base.Shape,shapes)
                     cuts = []
                     opl = FreeCAD.Placement(obj.Base.Placement)
@@ -6502,7 +5855,6 @@ class _ShapeString(_DraftObject):
         import Part
         # import OpenSCAD2Dgeom
         import os
-        from DraftTools import msg
         if obj.String and obj.FontFile:
             if obj.Placement:
                 plm = obj.Placement
@@ -6514,7 +5866,7 @@ class _ShapeString(_DraftObject):
             else:
                 CharList = Part.makeWireString(obj.String,obj.FontFile,obj.Size,obj.Tracking)
             if len(CharList) == 0:
-                msg(translate("draft","ShapeString: string has no wires")+"\n", 'warning')
+                FreeCAD.Console.PrintWarning(translate("draft","ShapeString: string has no wires")+"\n")
                 return
             SSChars = []
 
@@ -7042,7 +6394,7 @@ def makeLabel(targetpoint=None,target=None,direction=None,distance=None,labeltyp
         obj.LabelType = labeltype
     if placement:
         obj.Placement = placement
-    FreeCAD.ActiveDocument.recompute()
+
     return obj
 
 

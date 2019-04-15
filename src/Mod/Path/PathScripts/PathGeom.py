@@ -71,7 +71,7 @@ class Side:
         Determine the side of pt in relation to ptRef.
         If both Points are viewed as vectors with their origin in (0,0,0)
         then the two vectors either form a straight line (On) or pt
-        lies in the left or right hemishpere in regards to ptRef."""
+        lies in the left or right hemisphere in regards to ptRef."""
         d = -ptRef.x*pt.y + ptRef.y*pt.x
         if d < 0:
             return cls.Left
@@ -111,8 +111,8 @@ def edgeConnectsTo(edge, vector, error=Tolerance):
 def getAngle(vector):
     """(vector)
     Returns the angle [-pi,pi] of a vector using the X-axis as the reference.
-    Positive angles for vertexes in the upper hemishpere (positive y values)
-    and negative angles for the lower hemishpere."""
+    Positive angles for vertexes in the upper hemisphere (positive y values)
+    and negative angles for the lower hemisphere."""
     a = vector.getAngle(Vector(1,0,0))
     if vector.y < 0:
         return -a
@@ -208,7 +208,30 @@ def xy(point):
     Convenience function to return the projection of the Vector in the XY-plane."""
     return Vector(point.x, point.y, 0)
 
-def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50):
+def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
+    if isRoughly(hSpeed, vSpeed):
+        return hSpeed
+
+    d = p1 - p0
+    if isRoughly(0.0, d.z):
+        return hSpeed
+    if isRoughly(0.0, d.x) and isRoughly(0.0, d.y):
+        return vSpeed
+    # need to interpolate between hSpeed and vSpeed depending on the pitch
+    pitch = 2 * math.atan2(xy(d).Length, math.fabs(d.z)) / math.pi
+    while pitch < 0:
+        pitch = pitch + 1
+    while pitch > 1:
+        pitch = pitch - 1
+    print("  pitch = %g %g (%.2f, %.2f, %.2f) -> %.2f" % (pitch, math.atan2(xy(d).Length, d.z), d.x, d.y, d.z, xy(d).Length))
+    speed = vSpeed + pitch * (hSpeed - vSpeed)
+    if speed > hSpeed and speed > vSpeed:
+        return max(hSpeed, vSpeed)
+    if speed < hSpeed and speed < vSpeed:
+        return min(hSpeed, vSpeed)
+    return speed
+
+def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50, hSpeed = 0, vSpeed = 0):
     """(edge, flip=False, useHelixForBSpline=True, segm=50) -> List(Path.Command)
     Returns a list of Path.Command representing the given edge.
     If flip is True the edge is considered to be backwards.
@@ -220,6 +243,9 @@ def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50):
     pt = edge.valueAt(edge.LastParameter) if not flip else edge.valueAt(edge.FirstParameter)
     params = {'X': pt.x, 'Y': pt.y, 'Z': pt.z}
     if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+        if hSpeed > 0 and vSpeed > 0:
+            pt2 = edge.valueAt(edge.FirstParameter) if not flip else edge.valueAt(edge.LastParameter)
+            params.update({'F': speedBetweenPoints(pt, pt2, hSpeed, vSpeed)})
         commands =  [Path.Command('G1', params)]
     else:
         p1 = edge.valueAt(edge.FirstParameter) if not flip else edge.valueAt(edge.LastParameter)
@@ -251,6 +277,9 @@ def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50):
             PathLog.debug("**** (%.2f, %.2f, %.2f)" % (offset.x, offset.y, offset.z))
 
             params.update({'I': offset.x, 'J': offset.y, 'K': (p3.z - p1.z)/2})
+            # G2/G3 commands are always performed at hSpeed
+            if hSpeed > 0:
+                params.update({'F': hSpeed})
             commands = [ Path.Command(cmd, params) ]
 
         else:
@@ -266,14 +295,19 @@ def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50):
             segments = int(math.ceil((deviation / eStraight.Length) * segm))
             #print("**** pixellation with %d segments" % segments)
             dParameter = (edge.LastParameter - edge.FirstParameter) / segments
+            # starting point
+            p0 = edge.valueAt(edge.LastParameter) if flip else edge.valueAt(edge.FirstParameter)
             for i in range(0, segments):
                 if flip:
                     p = edge.valueAt(edge.LastParameter - (i + 1) * dParameter)
                 else:
                     p = edge.valueAt(edge.FirstParameter + (i + 1) * dParameter)
+                if hSpeed > 0 and vSpeed > 0:
+                    params.update({'F': speedBetweenPoints(p0, p, hSpeed, vSpeed)})
                 cmd = Path.Command('G1', {'X': p.x, 'Y': p.y, 'Z': p.z})
                 #print("***** %s" % cmd)
                 commands.append(cmd)
+                p0 = p
     #print commands
     return commands
 

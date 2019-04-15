@@ -110,15 +110,24 @@ CmdPartShapeFromMesh::CmdPartShapeFromMesh()
     sToolTipText  = QT_TR_NOOP("Create shape from selected mesh object");
     sWhatsThis    = "Part_ShapeFromMesh";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Shape_from_Mesh.svg";
+    sPixmap       = "Part_Shape_from_Mesh";
 }
 
 void CmdPartShapeFromMesh::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    double STD_OCC_TOLERANCE = 1e-6;
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
+    int decimals = hGrp->GetInt("Decimals");
+    double tolerance_from_decimals = pow(10., -decimals);
+
+    double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE : tolerance_from_decimals;
+
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Sewing Tolerance"),
-        QObject::tr("Enter tolerance for sewing shape:"), 0.1, 0.01,10.0,2,&ok);
+        QObject::tr("Enter tolerance for sewing shape:"), 0.1, minimal_tolerance, 10.0, decimals, &ok);
     if (!ok)
         return;
     Base::Type meshid = Base::Type::fromName("Mesh::Feature");
@@ -174,7 +183,7 @@ CmdPartSimpleCopy::CmdPartSimpleCopy()
     sToolTipText  = QT_TR_NOOP("Create a simple non-parametric copy");
     sWhatsThis    = "Part_SimpleCopy";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Tree_Part.svg";
+    sPixmap       = "Tree_Part";
 }
 
 void CmdPartSimpleCopy::activated(int iMsg)
@@ -291,7 +300,7 @@ void CmdPartDefeaturing::activated(int iMsg)
             shape.append(".");
             shape.append(it->getFeatName());
             shape.append(".Shape\n");
-            
+
             std::string faces;
             std::vector<std::string> subnames = it->getSubNames();
             for (std::vector<std::string>::iterator sub = subnames.begin(); sub != subnames.end(); ++sub) {

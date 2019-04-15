@@ -23,11 +23,6 @@
 ## TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 ## SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-
-
-# from __future__ import generators   # only needed for Python 2.2
-
 import sys
 import os.path
 import time
@@ -35,7 +30,6 @@ import getopt
 import urllib2
 from xml.sax import handler, make_parser
 import xml.sax.xmlreader
-
 
 ##from IPython.Shell import IPShellEmbed
 ##args = ''
@@ -135,11 +129,11 @@ def set_type_constants(nameSpace):
 DEBUG = 1
 def dbgprint(level, msg):
     if DEBUG and level > 0:
-        print msg
+        print (msg)
 
 def pplist(lst):
     for count, item in enumerate(lst):
-        print '%d. %s' % (count, item)
+        print ('%d. %s' % (count, item))
 
 
 
@@ -433,7 +427,7 @@ class XschemaElement:
                     attr = attrGroup.get(name)
                     self.attributeDefs[name] = attr
             else:
-                print '*** Error. attributeGroup %s not defined.' % groupName
+                print ('*** Error. attributeGroup %s not defined.' % groupName)
 
     def __str__(self):
         s1 = '<"%s" XschemaElement instance at 0x%x>' % \
@@ -560,7 +554,7 @@ class XschemaHandler(handler.ContentHandler):
         return self.root
 
     def showError(self, msg):
-        print msg
+        print (msg)
         sys.exit(-1)
 
     def startElement(self, name, attrs):
@@ -710,7 +704,7 @@ class XschemaHandler(handler.ContentHandler):
         elif name == SchemaType:
             self.inSchema = 0
             if len(self.stack) != 1:
-                print '*** error stack.  len(self.stack): %d' % len(self.stack)
+                print ('*** error stack.  len(self.stack): %d' % len(self.stack))
                 sys.exit(-1)
             self.root = self.stack[0]
         elif name == ComplexContentType:
@@ -1957,8 +1951,8 @@ def generateClasses(outfile, prefix, element, delayed):
         return
     AlreadyGenerated.append(element.getName())
     if element.getMixedExtensionError():
-        print '*** Element %s extension chain contains mixed and non-mixed content.  Not generated.' % \
-            (element.getName(),)
+        print ('*** Element %s extension chain contains mixed and non-mixed content.  Not generated.' % \
+            (element.getName(),))
         return
     ElementsForSubclasses.append(element)
     name = element.getCleanName()
@@ -2549,7 +2543,7 @@ class SaxSelectorHandler(handler.ContentHandler):
 
 
 def parseSelect(inFileName):
-    infile = file(inFileName, 'r')
+    infile = open(inFileName, 'r')
     topElementName = None
     parser = make_parser()
     documentHandler = SaxSelectorHandler()
@@ -2735,7 +2729,7 @@ def get_impl_body(classBehavior, baseImplUrl, implUrl):
             impl = implFile.read()
             implFile.close()
         except urllib2.HTTPError:
-            print '*** Implementation at %s not found.' % implUrl
+            print ('*** Implementation at %s not found.' % implUrl)
     return impl
 
 ###
@@ -2758,11 +2752,11 @@ def get_impl_body(classBehavior, baseImplUrl, implUrl):
 ##            trylocal = 1
 ##        if trylocal:
 ##            try:
-##                implFile = file(implUrl)
+##                implFile = open(implUrl)
 ##                impl = implFile.read()
 ##                implFile.close()
 ##            except:
-##                print '*** Implementation at %s not found.' % implUrl
+##                print ('*** Implementation at %s not found.' % implUrl)
 ##    return impl
 
 
@@ -2888,7 +2882,7 @@ class SaxSelectorHandler(handler.ContentHandler):
 
 
 def parseSelect(inFileName):
-    infile = file(inFileName, 'r')
+    infile = open(inFileName, 'r')
     topElementName = None
     parser = make_parser()
     documentHandler = SaxSelectorHandler()
@@ -3030,9 +3024,9 @@ def generateSubclasses(root, subclassFilename, behaviorFilename,
                 sys.path.insert(0, '.')
                 import xmlbehavior_sub as xmlbehavior
             except ImportError:
-                print '*** You have requested generation of extended methods.'
-                print '*** But, no xmlbehavior module is available.'
-                print '*** Generation of extended behavior methods is omitted.'
+                print ('*** You have requested generation of extended methods.')
+                print ('*** But, no xmlbehavior module is available.')
+                print ('*** Generation of extended behavior methods is omitted.')
             if xmlbehavior:
                 behaviors = xmlbehavior.parse(behaviorFilename)
                 behaviors.make_class_dictionary(cleanupName)
@@ -3146,9 +3140,9 @@ def makeFile(outFileName):
     if (not Force) and os.path.exists(outFileName):
         reply = raw_input('File %s exists.  Overwrite? (y/n): ' % outFileName)
         if reply == 'y':
-            outFile = file(outFileName, 'w')
+            outFile = open(outFileName, 'w')
     else:
-        outFile = file(outFileName, 'w')
+        outFile = open(outFileName, 'w')
     return outFile
 
 
@@ -3227,7 +3221,7 @@ python generateDS.py -o generateModel_Module.py generateMetaModel_Module.xsd
 """
 
 def usage():
-    print USAGE_TEXT
+    print (USAGE_TEXT)
     sys.exit(-1)
 
 
@@ -3266,7 +3260,7 @@ def main():
             superModule = option[1]
     set_type_constants(nameSpace)
     if behaviorFilename and not subclassFilename:
-        print '\n*** Error.  -b requires -s'
+        print ('\n*** Error.  -b requires -s')
         usage()
     if len(args) != 1:
         usage()

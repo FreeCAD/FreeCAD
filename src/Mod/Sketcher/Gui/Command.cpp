@@ -206,7 +206,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
 
         openCommand("Create a Sketch on Face");
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
-        if (mapmode >= 0 && mapmode < Attacher::mmDummy_NumberOfModes)
+        if (mapmode < Attacher::mmDummy_NumberOfModes)
             doCommand(Gui,"App.activeDocument().%s.MapMode = \"%s\"",FeatName.c_str(),AttachEngine::getModeName(mapmode).c_str());
         else
             assert(0 /* mapmode index out of range */);
@@ -324,14 +324,14 @@ void CmdSketcherLeaveSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::Document *doc = getActiveGuiDocument();
-    
+
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
         if (vp && vp->getSketchMode() != ViewProviderSketch::STATUS_NONE)
             vp->purgeHandler();
     }
-    
+
     openCommand("Sketch changed");
     doCommand(Gui,"Gui.activeDocument().resetEdit()");
     doCommand(Doc,"App.ActiveDocument.recompute()");
@@ -614,7 +614,7 @@ void CmdSketcherViewSketch::activated(int iMsg)
     Gui::Document *doc = getActiveGuiDocument();
     SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     if (vp) {
-        doCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation(App.ActiveDocument.%s.Placement.Rotation.Q)"
+        doCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation(App.ActiveDocument.%s.getGlobalPlacement().Rotation.Q)"
                      ,vp->getObject()->getNameInDocument());
     }
 }
@@ -690,60 +690,60 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
             qApp->translate("CmdSketcherMirrorSketch", "Select one or more sketches, please."));
         return;
     }
-    
+
     // Ask the user which kind of mirroring he wants
     SketchMirrorDialog * smd = new SketchMirrorDialog();
-    
+
     int refgeoid=-1;
     Sketcher::PointPos refposid=Sketcher::none;
-    
+
     if( smd->exec() == QDialog::Accepted ){
         refgeoid=smd->RefGeoid;
         refposid=smd->RefPosid;
-        
+
         delete smd;
     }
     else {
         delete smd;
         return;
     }
-    
+
     App::Document* doc = App::GetApplication().getActiveDocument();
-    
+
     openCommand("Create a mirror Sketch for each sketch");
-    
+
     for (std::vector<Gui::SelectionObject>::const_iterator it=selection.begin(); it != selection.end(); ++it) {
-        // create Sketch 
+        // create Sketch
         std::string FeatName = getUniqueObjectName("MirroredSketch");
-        
+
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
-        
-        Sketcher::SketchObject* mirrorsketch = static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));       
-        
+
+        Sketcher::SketchObject* mirrorsketch = static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));
+
         const Sketcher::SketchObject* Obj = static_cast<const Sketcher::SketchObject*>((*it).getObject());
-        
+
         Base::Placement pl = Obj->Placement.getValue();
-        
+
         Base::Vector3d p = pl.getPosition();
         Base::Rotation r = pl.getRotation();
-        
+
         doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",
                   FeatName.c_str(),
                   p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
-        
+
         Sketcher::SketchObject* tempsketch = new Sketcher::SketchObject();
-        
+
         int addedGeometries=tempsketch->addGeometry(Obj->getInternalGeometry());
-        
+
         int addedConstraints=tempsketch->addConstraints(Obj->Constraints.getValues());
 
         std::vector<int> geoIdList;
-        
+
         for(int i=0;i<=addedGeometries;i++)
             geoIdList.push_back(i);
-        
+
         tempsketch->addSymmetric(geoIdList, refgeoid, refposid);
-                
+
         std::vector<Part::Geometry *> tempgeo = tempsketch->getInternalGeometry();
         std::vector<Sketcher::Constraint *> tempconstr = tempsketch->Constraints.getValues();
 
@@ -751,7 +751,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
         std::vector<Sketcher::Constraint *> mirrorconstr (tempconstr.begin()+addedConstraints+1,tempconstr.end());
 
         for (std::vector<Sketcher::Constraint *>::const_iterator itc=mirrorconstr.begin(); itc != mirrorconstr.end(); ++itc) {
- 
+
             if ((*itc)->First!=Sketcher::Constraint::GeoUndef || (*itc)->First==Sketcher::GeoEnum::HAxis || (*itc)->First==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
                 (*itc)->First-=(addedGeometries+1);
             if ((*itc)->Second!=Sketcher::Constraint::GeoUndef || (*itc)->Second==Sketcher::GeoEnum::HAxis || (*itc)->Second==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
@@ -759,15 +759,15 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
             if ((*itc)->Third!=Sketcher::Constraint::GeoUndef || (*itc)->Third==Sketcher::GeoEnum::HAxis || (*itc)->Third==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
                 (*itc)->Third-=(addedGeometries+1);
         }
-        
+
         mirrorsketch->addGeometry(mirrorgeo);
         mirrorsketch->addConstraints(mirrorconstr);
-        
+
         delete tempsketch;
     }
-    
+
     doCommand(Gui,"App.activeDocument().recompute()");
-    
+
 }
 
 bool CmdSketcherMirrorSketch::isActive(void)
@@ -803,7 +803,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
 
     App::Document* doc = App::GetApplication().getActiveDocument();
 
-    // create Sketch 
+    // create Sketch
     std::string FeatName = getUniqueObjectName("Sketch");
 
     openCommand("Create a merge Sketch");

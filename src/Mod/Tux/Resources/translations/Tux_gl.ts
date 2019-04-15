@@ -6,7 +6,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="62"/>
       <source>Select</source>
-      <translation>Seleccionar</translation>
+      <translation>Escolmar</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="63"/>
@@ -44,11 +44,6 @@
       <translation>Foco de rotación</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="70"/>
-      <source>Middle mouse button or key H.</source>
-      <translation>Botón central ou tecla H.</translation>
-    </message>
-    <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
       <translation>Botón central do rato.</translation>
@@ -61,7 +56,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="291"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Axustes</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="292"/>
@@ -91,7 +86,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
-      <translation type="unfinished">Undefined</translation>
+      <translation>Indeterminado</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="70"/>
+      <source>Middle mouse button or H key.</source>
+      <translation>Botón central do rato ou tecla H.</translation>
     </message>
   </context>
 </TS>

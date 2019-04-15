@@ -28,7 +28,9 @@ __url__ = "http://www.freecadweb.org"
 
 import subprocess
 import os.path
-import femtools.femutils as FemUtils
+
+import FreeCAD
+import femtools.femutils as femutils
 
 from .. import run
 from .. import settings
@@ -45,8 +47,8 @@ class Check(run.Check):
         self.checkEquations()
 
     def checkMeshType(self):
-        mesh = FemUtils.get_single_member(self.analysis, "Fem::FemMeshObject")
-        if not FemUtils.is_of_type(mesh, "Fem::FemMeshGmsh"):
+        mesh = femutils.get_single_member(self.analysis, "Fem::FemMeshObject")
+        if not femutils.is_of_type(mesh, "Fem::FemMeshGmsh"):
             self.report.error(
                 "Unsupported type of mesh. "
                 "Mesh must be created with gmsh.")
@@ -67,7 +69,7 @@ class Prepare(run.Prepare):
 
     def run(self):
         self.pushStatus("Preparing input files...\n")
-        print("Prepare testmode: " + str(self.testmode))
+        FreeCAD.Console.PrintMessage("Machine testmode: {}".format(self.testmode))
         if self.testmode:
             w = writer.Writer(self.solver, self.directory, True)  # test mode
         else:
@@ -78,13 +80,13 @@ class Prepare(run.Prepare):
         except writer.WriteError as e:
             self.report.error(str(e))
             self.fail()
-        except IOError as e:
+        except IOError:
             self.report.error("Can't access working directory.")
             self.fail()
 
     def checkHandled(self, w):
         handled = w.getHandledConstraints()
-        allConstraints = FemUtils.get_member(self.analysis, "Fem::Constraint")
+        allConstraints = femutils.get_member(self.analysis, "Fem::Constraint")
         for obj in set(allConstraints) - handled:
             self.report.warning("Ignored constraint %s." % obj.Label)
 
@@ -93,7 +95,7 @@ class Solve(run.Solve):
 
     def run(self):
         self.pushStatus("Executing solver...\n")
-        binary = settings.getBinary("ElmerSolver")
+        binary = settings.get_binary("ElmerSolver")
         if binary is not None:
             self._process = subprocess.Popen(
                 [binary], cwd=self.directory,
@@ -108,19 +110,6 @@ class Solve(run.Solve):
         else:
             self.report.error("ElmerSolver executable not found.")
             self.fail()
-
-    def _observeSolver(self, process):
-        output = b""
-        line = process.stdout.readline()
-        self.pushStatus(line)
-        output += line
-        line = process.stdout.readline()
-        while line:
-            line = b"\n%s" % line.rstrip()
-            self.pushStatus(line)
-            output += line
-            line = process.stdout.readline()
-        return output
 
     def _updateOutput(self, output):
         if self.solver.ElmerOutput is None:

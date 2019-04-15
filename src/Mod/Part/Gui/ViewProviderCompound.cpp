@@ -39,6 +39,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderCompound,PartGui::ViewProviderPart)
 
 ViewProviderCompound::ViewProviderCompound()
 {
+    sPixmap = "Part_Compound.svg";
 }
 
 ViewProviderCompound::~ViewProviderCompound()

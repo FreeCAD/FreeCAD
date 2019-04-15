@@ -147,7 +147,8 @@ class ArchReference:
                                 shapedata = shapedata.decode("utf8")
                             shape.importBrepFromString(shapedata)
                             obj.Shape = shape
-                            obj.Placement = obj.Shape.Placement.multiply(pl)
+                            if not pl.isIdentity():
+                                obj.Placement = pl
                         else:
                             print("Part not found in file")
             self.reload = False
@@ -165,13 +166,21 @@ class ArchReference:
         if not os.path.exists(filename):
             # search for the file in the current directory if not found
             basename = os.path.basename(filename)
-            currentdir = os.path.dirname(FreeCAD.ActiveDocument.FileName)
+            currentdir = os.path.dirname(obj.Document.FileName)
             altfile = os.path.join(currentdir,basename)
-            if altfile == FreeCAD.ActiveDocument.FileName:
+            if altfile == obj.Document.FileName:
                 return None
             elif os.path.exists(altfile):
-                filename = altfile
+                return altfile
             else:
+                # search for subpaths in current folder
+                altfile = None
+                subdirs = splitall(os.path.dirname(filename))
+                for i in range(len(subdirs)):
+                    subpath = [currentdir]+subdirs[-i:]+[basename]
+                    altfile = os.path.join(*subpath)
+                    if os.path.exists(altfile):
+                        return altfile
                 return None
         return filename
 
@@ -383,6 +392,7 @@ class ViewProviderArchReference:
         if hasattr(self,"timer"):
             self.timer.stop()
             del self.timer
+            return True
 
     def setupContextMenu(self,vobj,menu):
 
@@ -454,6 +464,28 @@ class ArchReferenceTaskPanel:
         QtCore.QObject.connect(self.fileButton, QtCore.SIGNAL("clicked()"), self.chooseFile)
         QtCore.QObject.connect(self.openButton, QtCore.SIGNAL("clicked()"), self.openFile)
 
+    def accept(self):
+
+        if self.filename:
+            if self.filename != self.obj.File:
+                self.obj.File = self.filename
+                FreeCAD.ActiveDocument.recompute()
+        if self.partCombo.currentText():
+            i = self.partCombo.currentIndex()
+            if self.partCombo.itemData(i) != self.obj.Part:
+                self.obj.Part = self.partCombo.itemData(i)
+                if self.obj.Label == "External Reference":
+                    self.obj.Label = self.partCombo.itemText(i)
+                FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
+
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
     def chooseFile(self):
 
         loc = QtCore.QDir.homePath()
@@ -473,27 +505,11 @@ class ArchReferenceTaskPanel:
                         self.partCombo.setCurrentIndex(sorted(parts.keys()).index(self.obj.Part))
 
     def openFile(self):
+
         if self.obj.File:
             FreeCAD.openDocument(self.obj.File)
             FreeCADGui.Control.closeDialog()
             FreeCADGui.ActiveDocument.resetEdit()
-
-    def accept(self):
-
-        if self.filename:
-            if self.filename != self.obj.File:
-                self.obj.File = self.filename
-                FreeCAD.ActiveDocument.recompute()
-        if self.partCombo.currentText():
-            i = self.partCombo.currentIndex()
-            if self.partCombo.itemData(i) != self.obj.Part:
-                self.obj.Part = self.partCombo.itemData(i)
-                if self.obj.Label == "External Reference":
-                    self.obj.Label = self.partCombo.itemText(i)
-                FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.ActiveDocument.resetEdit()
-        return True
-
 
 
 class ArchReferenceCommand:
@@ -525,3 +541,19 @@ class ArchReferenceCommand:
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Reference', ArchReferenceCommand())
+
+
+def splitall(path):
+    allparts = []
+    while 1:
+        parts = os.path.split(path)
+        if parts[0] == path:  # sentinel for absolute paths
+            allparts.insert(0, parts[0])
+            break
+        elif parts[1] == path: # sentinel for relative paths
+            allparts.insert(0, parts[1])
+            break
+        else:
+            path = parts[0]
+            allparts.insert(0, parts[1])
+    return allparts

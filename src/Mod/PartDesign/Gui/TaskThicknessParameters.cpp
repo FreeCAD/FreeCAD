@@ -96,6 +96,7 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
+    action->setShortcut(QString::fromLatin1("Del"));
     ui->listWidgetReferences->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -104,7 +105,7 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     ui->modeComboBox->setCurrentIndex(mode);
 
     int join = pcThickness->Join.getValue();
-    ui->modeComboBox->setCurrentIndex(join);
+    ui->joinComboBox->setCurrentIndex(join);
 }
 
 void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& msg)

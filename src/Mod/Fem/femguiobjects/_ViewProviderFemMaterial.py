@@ -85,7 +85,7 @@ class _ViewProviderFemMaterial:
             guidoc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
             QMessageBox.critical(None, "Error in tree view", message)
             FreeCAD.Console.PrintError(message + '\n')
         return True
@@ -120,17 +120,17 @@ class _TaskPanelFemMaterial:
         QtCore.QObject.connect(self.parameterWidget.chbu_allow_edit, QtCore.SIGNAL("clicked()"), self.toggleInputFieldsReadOnly)
         QtCore.QObject.connect(self.parameterWidget.pushButton_editMat, QtCore.SIGNAL("clicked()"), self.edit_material)
         # basic properties must be provided
-        QtCore.QObject.connect(self.parameterWidget.input_fd_density, QtCore.SIGNAL("valueChanged(double)"), self.density_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_density, QtCore.SIGNAL("editingFinished()"), self.density_changed)
         # mechanical properties
-        QtCore.QObject.connect(self.parameterWidget.input_fd_young_modulus, QtCore.SIGNAL("valueChanged(double)"), self.ym_changed)
-        QtCore.QObject.connect(self.parameterWidget.spinBox_poisson_ratio, QtCore.SIGNAL("valueChanged(double)"), self.pr_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_young_modulus, QtCore.SIGNAL("editingFinished()"), self.ym_changed)
+        QtCore.QObject.connect(self.parameterWidget.spinBox_poisson_ratio, QtCore.SIGNAL("editingFinished()"), self.pr_changed)
         # thermal properties
-        QtCore.QObject.connect(self.parameterWidget.input_fd_thermal_conductivity, QtCore.SIGNAL("valueChanged(double)"), self.tc_changed)
-        QtCore.QObject.connect(self.parameterWidget.input_fd_expansion_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.tec_changed)
-        QtCore.QObject.connect(self.parameterWidget.input_fd_specific_heat, QtCore.SIGNAL("valueChanged(double)"), self.sh_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_thermal_conductivity, QtCore.SIGNAL("editingFinished()"), self.tc_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_expansion_coefficient, QtCore.SIGNAL("editingFinished()"), self.tec_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_specific_heat, QtCore.SIGNAL("editingFinished()"), self.sh_changed)
         # fluidic properties, only volumetric thermal expansion coeff makes sense
-        QtCore.QObject.connect(self.parameterWidget.input_fd_kinematic_viscosity, QtCore.SIGNAL("valueChanged(double)"), self.kinematic_viscosity_changed)
-        QtCore.QObject.connect(self.parameterWidget.input_fd_vol_expansion_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.vtec_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_kinematic_viscosity, QtCore.SIGNAL("editingFinished()"), self.kinematic_viscosity_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_vol_expansion_coefficient, QtCore.SIGNAL("editingFinished()"), self.vtec_changed)
 
         # init all parameter input files with read only
         self.parameterWidget.chbu_allow_edit.setCheckState(QtCore.Qt.CheckState.Unchecked)
@@ -165,7 +165,7 @@ class _TaskPanelFemMaterial:
             self.choose_material(index)  # fill input fields and set the current material in the cb widget
         else:
             # we found our exact material in self.materials dict :-)
-            FreeCAD.Console.PrintMessage("Previously used material card was found in material directories. We gone use this material.\n")
+            FreeCAD.Console.PrintMessage("Previously used material card was found in material directories. We will use this material.\n")
             index = self.parameterWidget.cb_materials.findData(self.card_path)
             # print(index)
             self.choose_material(index)  # fill input fields and set the current material in the cb widget
@@ -179,7 +179,7 @@ class _TaskPanelFemMaterial:
         # check references, has to be after initialisation of selectionWidget
         self.selectionWidget.has_equal_references_shape_types()
 
-    # ********* leave task panel *********
+    # leave task panel **********************************************
     def accept(self):
         # print(self.material)
         if self.selectionWidget.has_equal_references_shape_types():
@@ -200,7 +200,7 @@ class _TaskPanelFemMaterial:
             FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
         doc.resetEdit()
 
-    # ********* choose material *********
+    # choose material ***********************************************
     def get_material_card(self, material):
         for a_mat in self.materials:
             unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
@@ -240,11 +240,17 @@ class _TaskPanelFemMaterial:
         self.parameterWidget.cb_materials.addItem(QtGui.QIcon(":/icons/help-browser.svg"), self.card_path, self.card_path)
         self.set_transient_material()
 
-    # ********* how to edit a material *********
+    # how to edit a material ****************************************
     def edit_material(self):
+        # opens the material editor to choose a material or edit material params
         # self.print_material_params()
         import MaterialEditor
-        self.material = MaterialEditor.editMaterial(self.material)
+        new_material_params = self.material.copy()
+        new_material_params = MaterialEditor.editMaterial(new_material_params)
+        # if the material editor was canceled a empty params dict will be returned, do not change the self.material
+        # self.print_material_params(new_material_params)
+        if new_material_params:  # returns True if dict is not empty (do not use 'is True', this would return False for a non empty dict)
+            self.material = new_material_params
         self.check_material_keys()
         self.set_mat_params_in_input_fields(self.material)
         if self.has_transient_mat is False:
@@ -274,15 +280,22 @@ class _TaskPanelFemMaterial:
             self.parameterWidget.input_fd_kinematic_viscosity.setReadOnly(True)
             self.parameterWidget.input_fd_vol_expansion_coefficient.setReadOnly(True)
 
-    # ********* material parameter input fields *********
+    # material parameter input fields *******************************
     def print_material_params(self, material=None):
-        if not material:
+        # in rare cases we gone pass a empty dict
+        # in such a case a empty dict should be printed and not self.material thus we check for None
+        if material is None:
             material = self.material
-        for p in material:
-            print('   ' + p + ' --> ' + material[p])
+        if not material:
+            # empty dict
+            print('   ' + str(material))
+        else:
+            for p in material:
+                print('   ' + p + ' --> ' + material[p])
         print('\n')
 
     def check_material_keys(self):
+        # FreeCAD units definition is at file end of src/Base/Unit.cpp
         if not self.material:
             print('For some reason all material data is empty!')
             self.material['Name'] = 'Empty'
@@ -302,7 +315,14 @@ class _TaskPanelFemMaterial:
             else:
                 print('YoungsModulus not found in material data of: ' + self.material['Name'])
                 self.material['YoungsModulus'] = '0 MPa'
-            if 'PoissonRatio' not in self.material:  # PoissonRatio does not have a unit, we're not going to check for a unit
+            if 'PoissonRatio' in self.material:
+                # PoissonRatio does not have a unit, but it is checked it there is no value at all
+                try:
+                    float(self.material['PoissonRatio'])
+                except:
+                    print('PoissonRatio has wrong or no data (reset the value): ' + self.material['PoissonRatio'])
+                    self.material['PoissonRatio'] = '0'
+            else:
                 print('PoissonRatio not found in material data of: ' + self.material['Name'])
                 self.material['PoissonRatio'] = '0'
         if self.obj.Category == 'Fluid':
@@ -346,8 +366,9 @@ class _TaskPanelFemMaterial:
             self.material['SpecificHeat'] = '0 J/kg/K'
 
     # mechanical input fields
-    def ym_changed(self, value):
+    def ym_changed(self):
         # FreeCADs standard unit for stress is kPa
+        value = self.parameterWidget.input_fd_young_modulus.property("rawValue")
         old_ym = Units.Quantity(self.material['YoungsModulus']).getValueAs("kPa")
         variation = 0.001
         if value:
@@ -361,8 +382,9 @@ class _TaskPanelFemMaterial:
                 else:
                     self.set_transient_material()
 
-    def density_changed(self, value):
+    def density_changed(self):
         # FreeCADs standard unit for density is kg/mm^3
+        value = self.parameterWidget.input_fd_density.property("rawValue")
         old_density = Units.Quantity(self.material['Density']).getValueAs("kg/m^3")
         variation = 0.001
         if value:
@@ -377,7 +399,8 @@ class _TaskPanelFemMaterial:
                 else:
                     self.set_transient_material()
 
-    def pr_changed(self, value):
+    def pr_changed(self):
+        value = self.parameterWidget.spinBox_poisson_ratio.value()
         old_pr = Units.Quantity(self.material['PoissonRatio'])
         variation = 0.001
         if value:
@@ -401,7 +424,8 @@ class _TaskPanelFemMaterial:
                 self.set_transient_material()
 
     # thermal input fields
-    def tc_changed(self, value):
+    def tc_changed(self):
+        value = self.parameterWidget.input_fd_thermal_conductivity.property("rawValue")
         old_tc = Units.Quantity(self.material['ThermalConductivity']).getValueAs("W/m/K")
         variation = 0.001
         if value:
@@ -416,7 +440,8 @@ class _TaskPanelFemMaterial:
                 else:
                     self.set_transient_material()
 
-    def tec_changed(self, value):
+    def tec_changed(self):
+        value = self.parameterWidget.input_fd_expansion_coefficient.property("rawValue")
         old_tec = Units.Quantity(self.material['ThermalExpansionCoefficient']).getValueAs("um/m/K")
         variation = 0.001
         if value:
@@ -431,7 +456,8 @@ class _TaskPanelFemMaterial:
                 else:
                     self.set_transient_material()
 
-    def sh_changed(self, value):
+    def sh_changed(self):
+        value = self.parameterWidget.input_fd_specific_heat.property("rawValue")
         old_sh = Units.Quantity(self.material['SpecificHeat']).getValueAs("J/kg/K")
         variation = 0.001
         if value:
@@ -447,7 +473,8 @@ class _TaskPanelFemMaterial:
                     self.set_transient_material()
 
     # fluidic input fields
-    def vtec_changed(self, value):
+    def vtec_changed(self):
+        value = self.parameterWidget.input_fd_vol_expansion_coefficient.property("rawValue")
         old_vtec = Units.Quantity(self.material['VolumetricThermalExpansionCoefficient']).getValueAs("m/m/K")
         variation = 0.001
         if value:
@@ -462,7 +489,8 @@ class _TaskPanelFemMaterial:
                 else:
                     self.set_transient_material()
 
-    def kinematic_viscosity_changed(self, value):
+    def kinematic_viscosity_changed(self):
+        value = self.parameterWidget.input_fd_kinematic_viscosity.property("rawValue")
         old_nu = Units.Quantity(self.material['KinematicViscosity']).getValueAs("m^2/s")
         variation = 0.000001
         if value:
@@ -527,7 +555,7 @@ class _TaskPanelFemMaterial:
             q = FreeCAD.Units.Quantity("{} {}".format(sh_with_new_unit, sh_new_unit))
             self.parameterWidget.input_fd_specific_heat.setText(q.UserString)
 
-    # ********* material import and export *********
+    # material import and export ************************************
     def print_materialsdict(self):
         print('\n\n')
         for mat_card in self.materials:

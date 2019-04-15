@@ -75,6 +75,7 @@
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawViewCollection.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
@@ -86,6 +87,7 @@
 #include "QGIView.h"
 #include "QGIViewPart.h"
 #include "QGIViewDimension.h"
+#include "QGIViewBalloon.h"
 #include "QGIViewClip.h"
 #include "QGIVertex.h"
 #include "QGIEdge.h"
@@ -118,9 +120,17 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
     connect(m_exportSVGAction, SIGNAL(triggered()), this, SLOT(saveSVG()));
 
+    m_exportDXFAction = new QAction(tr("Export DXF"), this);
+    connect(m_exportDXFAction, SIGNAL(triggered()), this, SLOT(saveDXF()));
+
+    m_exportPDFAction = new QAction(tr("Export PDF"), this);
+    connect(m_exportPDFAction, SIGNAL(triggered()), this, SLOT(savePDF()));
+
     isSelectionBlocked = false;
 
-    setWindowTitle(tr("dummy[*]"));      //Yuck. prevents "QWidget::setWindowModified: The window title does not contain a '[*]' placeholder"
+    QString tabText = QString::fromUtf8(pageVp->getDrawPage()->getNameInDocument());
+    tabText += QString::fromUtf8("[*]");
+    setWindowTitle(tabText);
     setCentralWidget(m_view);            //this makes m_view a Qt child of MDIViewPage
 
     // Connect Signals and Slots
@@ -153,6 +163,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     //when restoring, it is possible for a Dimension to be loaded before the ViewPart it applies to
     //therefore we need to make sure parentage of the graphics representation is set properly. bit of a kludge.
     setDimensionGroups();
+    setBalloonGroups();
 
     App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
@@ -192,6 +203,23 @@ void MDIViewPage::setDimensionGroups(void)
             if (parent) {
                 QGIViewDimension* dim = dynamic_cast<QGIViewDimension*>((*itInspect));
                 m_view->addDimToParent(dim,parent);
+            }
+        }
+    }
+}
+
+void MDIViewPage::setBalloonGroups(void)
+{
+    const std::vector<QGIView *> &allItems = m_view->getViews();
+    std::vector<QGIView *>::const_iterator itInspect;
+    int balloonItemType = QGraphicsItem::UserType + 140;
+
+    for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
+        if (((*itInspect)->type() == balloonItemType) && (!(*itInspect)->group())) {
+            QGIView* parent = m_view->findParent((*itInspect));
+            if (parent) {
+                QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>((*itInspect));
+                m_view->addBalloonToParent(balloon,parent);
             }
         }
     }
@@ -260,6 +288,11 @@ void MDIViewPage::centerOnPage(void)
     }
 }
 
+bool MDIViewPage::addView(const App::DocumentObject *obj)
+{
+    return attachView(const_cast<App::DocumentObject*>(obj));
+}
+
 bool MDIViewPage::attachView(App::DocumentObject *obj)
 {
     auto typeId(obj->getTypeId());
@@ -280,6 +313,9 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) ) {
         qview = m_view->addViewDimension( static_cast<TechDraw::DrawViewDimension *>(obj) );
+
+    } else if (typeId.isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()) ) {
+        qview = m_view->addViewBalloon( static_cast<TechDraw::DrawViewBalloon *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId()) ) {
         qview = m_view->addDrawViewAnnotation( static_cast<TechDraw::DrawViewAnnotation *>(obj) );
@@ -313,6 +349,9 @@ void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
     //if this page has a QView for this obj, delete it.
     if (obj.isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         (void) m_view->removeQViewByName(obj.getNameInDocument());
+    } else if (m_objectName == obj.getNameInDocument()) {
+        // if obj is me, hide myself and my tab
+        m_vpPage->hide();
     }
 }
 
@@ -482,11 +521,9 @@ bool MDIViewPage::onMsg(const char *pMsg, const char **)
         return true;
     } else if (strcmp("Save", pMsg) == 0 ) {
         doc->save();
-        Gui::Command::updateActive();
         return true;
     } else if (strcmp("SaveAs", pMsg) == 0 ) {
         doc->saveAs();
-        Gui::Command::updateActive();
         return true;
     } else if (strcmp("Undo", pMsg) == 0 ) {
         doc->undo(1);
@@ -560,7 +597,12 @@ void MDIViewPage::printPdf(std::string file)
     printer.setFullPage(true);
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(filename);
-    printer.setOrientation(m_orientation);
+//    printer.setOrientation(m_orientation);
+    if (m_paperSize == QPrinter::Ledger)  {
+        printer.setOrientation((QPrinter::Orientation) (1 - m_orientation));  //reverse 0/1
+    } else {
+        printer.setOrientation(m_orientation);
+    }
     printer.setPaperSize(m_paperSize);
     print(&printer);
 }
@@ -645,7 +687,7 @@ void MDIViewPage::print(QPrinter* printer)
     if (!p.isActive() && !printer->outputFileName().isEmpty()) {
         qApp->setOverrideCursor(Qt::ArrowCursor);
         QMessageBox::critical(this, tr("Opening file failed"),
-            tr("Can't open file %1 for writing.").arg(printer->outputFileName()));
+            tr("Can not open file %1 for writing.").arg(printer->outputFileName()));
         qApp->restoreOverrideCursor();
         return;
     }
@@ -717,8 +759,8 @@ QPrinter::PaperSize MDIViewPage::getPaperSize(int w, int h) const
         {105, 241}, // US Common
         {110, 220}, // DLE
         {210, 330}, // Folio
-        {431.8f, 279.4f}, // Ledger
-        {279.4f, 431.8f} // Tabloid
+        {431.8f, 279.4f}, // Ledger (28)   note, two names for same size paper (ANSI B)
+        {279.4f, 431.8f} // Tabloid (29)   causes trouble with orientation on PDF export
     };
 
     QPrinter::PaperSize ps = QPrinter::Custom;
@@ -728,13 +770,19 @@ QPrinter::PaperSize MDIViewPage::getPaperSize(int w, int h) const
             ps = static_cast<QPrinter::PaperSize>(i);
             break;
         }
-        else
+        else                                          //handle landscape & portrait w/h
         if (std::abs(paperSizes[i][0]-h) <= 1 &&
             std::abs(paperSizes[i][1]-w) <= 1) {
             ps = static_cast<QPrinter::PaperSize>(i);
             break;
         }
     }
+    if (ps == QPrinter::Ledger)  {                    //check if really Tabloid
+        if (w < 431) {
+            ps = QPrinter::Tabloid;
+        }
+    }
+
     return ps;
 }
 
@@ -758,6 +806,8 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
     menu.addAction(m_toggleFrameAction);
     menu.addAction(m_toggleKeepUpdatedAction);
     menu.addAction(m_exportSVGAction);
+    menu.addAction(m_exportDXFAction);
+    menu.addAction(m_exportPDFAction);
     menu.exec(event->globalPos());
 }
 
@@ -804,6 +854,42 @@ void MDIViewPage::saveSVG(std::string file)
     m_view->saveSvg(filename);
 }
 
+void MDIViewPage::saveDXF()
+{
+//    TechDraw::DrawPage* page = m_vpPage->getDrawPage();
+    QString defaultDir;
+    QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
+                                                   QString::fromUtf8(QT_TR_NOOP("Save Dxf File ")),
+                                                   defaultDir,
+                                                   QString::fromUtf8(QT_TR_NOOP("Dxf (*.dxf)")));
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    std::string sFileName = fileName.toUtf8().constData();
+    saveDXF(sFileName);
+}
+
+void MDIViewPage::saveDXF(std::string fileName)
+{
+    TechDraw::DrawPage* page = m_vpPage->getDrawPage();
+    std::string PageName = page->getNameInDocument();
+    Gui::Command::openCommand("Save page to dxf");
+    Gui::Command::doCommand(Gui::Command::Doc,"import TechDraw");
+    Gui::Command::doCommand(Gui::Command::Doc,"TechDraw.writeDXFPage(App.activeDocument().%s,u\"%s\")",
+                            PageName.c_str(),(const char*)fileName.c_str());
+    Gui::Command::commitCommand();
+}
+
+void MDIViewPage::savePDF()
+{
+    printPdf();
+}
+
+void MDIViewPage::savePDF(std::string file)
+{
+    printPdf(file);
+}
 
 /////////////// Selection Routines ///////////////////
 // wf: this is never executed???
@@ -973,10 +1059,10 @@ void MDIViewPage::sceneSelectionManager()
         }
         if (!found) {
             m_sceneSelected.push_back(qts);
-            break;    
+            break;
         }
     }
-    
+
     //remove items from m_sceneSelected that are not in q_sceneSel
     QList<QGraphicsItem*> m_new;
     for (auto m: m_sceneSelected) {
@@ -997,7 +1083,7 @@ void MDIViewPage::sceneSelectionChanged()
     sceneSelectionManager();
 
     QList<QGraphicsItem*> dbsceneSel = m_view->scene()->selectedItems();
- 
+
     if(isSelectionBlocked)  {
         return;
     }
@@ -1005,7 +1091,7 @@ void MDIViewPage::sceneSelectionChanged()
     std::vector<Gui::SelectionObject> treeSel = Gui::Selection().getSelectionEx();
 //    QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();
     QList<QGraphicsItem*> sceneSel = m_sceneSelected;
-    
+
     //check if really need to change selection
     bool sameSel = compareSelections(treeSel,sceneSel);
     if (sameSel) {
@@ -1213,12 +1299,11 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, Q
 
 void MDIViewPage::showStatusMsg(const char* s1, const char* s2, const char* s3) const
 {
-    QString msg = QString::fromUtf8("Selected: ");
-    msg.append(QObject::tr(" %1.%2.%3 ")
-               .arg(QString::fromUtf8(s1))
-               .arg(QString::fromUtf8(s2))
-               .arg(QString::fromUtf8(s3))
-               );
+    QString msg = QString::fromLatin1("%1 %2.%3.%4 ")
+            .arg(tr("Selected:"),
+                 QString::fromUtf8(s1),
+                 QString::fromUtf8(s2),
+                 QString::fromUtf8(s3));
     if (Gui::getMainWindow()) {
         Gui::getMainWindow()->showMessage(msg,3000);
     }

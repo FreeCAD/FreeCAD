@@ -4,60 +4,60 @@
   <context>
     <name>BoundarySelector</name>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="122"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="129"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Selectaţi feţe/muchii/vârfuri</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="123"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation type="unfinished">To add references select them in the 3D view and then click "Add".</translation>
+      <translation>Pentru a adăuga referinţe selectaţi le în 3D Vezi şi apoi faceţi clic pe "Adauga".</translation>
     </message>
   </context>
   <context>
     <name>ControlWidget</name>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="212"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="213"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>Rezolvitorul Control</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="223"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="224"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Directorul de serviciu</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="302"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="303"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Scrie</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
       <source>Edit</source>
       <translation>Editare</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="242"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="243"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>Timp scurs:</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="308"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="309"/>
       <source>Run</source>
-      <translation type="unfinished">Run</translation>
+      <translation>Execută</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="310"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Re-scrie</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="313"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>Re-execută</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="314"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
       <source>Abort</source>
       <translation>Renunta</translation>
     </message>
@@ -67,64 +67,85 @@
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Container de Analiză</translation>
     </message>
     <message>
       <location filename="_CommandFemAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
+      <translation>Creează un container de analiza cu standard Rezolvitor ritm</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="37"/>
+      <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates an analysis container with standard solver CalculiX</translation>
+      <translation>Creează un container de analiza cu rezolvitorul standard CalculiX</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ClippingPlaneAdd</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="60"/>
+      <source>Clipping plane on face</source>
+      <translation>Planul de secționare pe fațetă</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="62"/>
+      <source>Add a clipping plane on a selected face</source>
+      <translation>Adauga un plan de secționare pe o fațetă selectată</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ClippingPlaneRemoveAll</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="96"/>
+      <source>Remove all clipping planes</source>
+      <translation>Elimină toate planurile de secționare</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintBodyHeatSource</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="57"/>
+      <location filename="../../../femcommands/commands.py" line="115"/>
       <source>Constraint body heat source</source>
-      <translation type="unfinished">Constraint body heat source</translation>
+      <translation>Constrângere la sursa de căldură pentru corpuri</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="60"/>
+      <location filename="../../../femcommands/commands.py" line="118"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation type="unfinished">Creates a FEM constraint body heat source</translation>
+      <translation>Creează o constrângere FEM pentru sursa de caldura corpului</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintElectrostaticPotential</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="77"/>
-      <source>Constraint Potential</source>
-      <translation type="unfinished">Constraint Potential</translation>
+      <location filename="../../../femcommands/commands.py" line="136"/>
+      <source>Constraint electrostatic potential</source>
+      <translation>Constrângere Fem pentru potențialul elelctrostatic</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="80"/>
+      <location filename="../../../femcommands/commands.py" line="139"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation type="unfinished">Creates a FEM constraint electrostatic potential</translation>
+      <translation>Creează o constrângere FEM pentru potențialul electrostatic</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="97"/>
-      <source>Constraint Flow Velocity</source>
-      <translation type="unfinished">Constraint Flow Velocity</translation>
+      <location filename="../../../femcommands/commands.py" line="159"/>
+      <source>Constraint flow velocity</source>
+      <translation>Constrângere pentru Viteza de curgere</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="100"/>
+      <location filename="../../../femcommands/commands.py" line="162"/>
       <source>Creates a FEM constraint flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint flow velocity</translation>
+      <translation>Creează o constrângere FEM pentru Viteza de curgere</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintInitialFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="117"/>
-      <source>Constraint Initial Flow Velocity</source>
-      <translation type="unfinished">Constraint Initial Flow Velocity</translation>
+      <location filename="../../../femcommands/commands.py" line="182"/>
+      <source>Constraint initial flow velocity</source>
+      <translation>Constrângere pentru Viteza de curgere inițială</translation>
     </message>
   </context>
   <context>
@@ -132,12 +153,12 @@
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weight</source>
-      <translation type="unfinished">Constraint self weight</translation>
+      <translation>Constrângere pentru greutate proprie</translation>
     </message>
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation type="unfinished">Creates a FEM constraint self weight</translation>
+      <translation>Crează o constrângere FEM pentru greutatea proprie</translation>
     </message>
   </context>
   <context>
@@ -145,12 +166,12 @@
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>Secțiunea fluidului pentru curgere 1D</translation>
     </message>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+      <translation>Crează secțiunea fluidului pentru curgere 1D</translation>
     </message>
   </context>
   <context>
@@ -158,12 +179,12 @@
     <message>
       <location filename="_CommandFemElementGeometry1D.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Secțiunea transversală a grinzii</translation>
     </message>
     <message>
       <location filename="_CommandFemElementGeometry1D.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Crează secțiunea transversală a grinzii</translation>
     </message>
   </context>
   <context>
@@ -171,87 +192,87 @@
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Grosimea plăcii de coajă</translation>
     </message>
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Crează grosimea plăcii de coajă</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="184"/>
+      <location filename="../../../femcommands/commands.py" line="259"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Grosimea plăcii de coajă</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="186"/>
+      <location filename="../../../femcommands/commands.py" line="261"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Crează grosimea plăcii de coajă</translation>
     </message>
   </context>
   <context>
     <name>FEM_ElementRotation1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="200"/>
+      <location filename="../../../femcommands/commands.py" line="278"/>
       <source>Beam rotation</source>
-      <translation type="unfinished">Beam rotation</translation>
+      <translation>Rotația grinzii</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="202"/>
+      <location filename="../../../femcommands/commands.py" line="280"/>
       <source>Creates a FEM beam rotation</source>
-      <translation type="unfinished">Creates a FEM beam rotation</translation>
+      <translation>Creează rotația grinzii</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationElasticity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="232"/>
+      <location filename="../../../femcommands/commands.py" line="314"/>
       <source>Elasticity equation</source>
-      <translation type="unfinished">Elasticity equation</translation>
+      <translation>Ecuația de elasticitate</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="233"/>
+      <location filename="../../../femcommands/commands.py" line="315"/>
       <source>Creates a FEM equation for elasticity</source>
-      <translation type="unfinished">Creates a FEM equation for elasticity</translation>
+      <translation>Creează o ecuație FEM pentru elasticitate</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationElectrostatic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="216"/>
+      <location filename="../../../femcommands/commands.py" line="297"/>
       <source>Electrostatic equation</source>
-      <translation type="unfinished">Electrostatic equation</translation>
+      <translation>Ecuaţia electrostatică</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="217"/>
+      <location filename="../../../femcommands/commands.py" line="298"/>
       <source>Creates a FEM equation for electrostatic</source>
-      <translation type="unfinished">Creates a FEM equation for electrostatic</translation>
+      <translation>Creează o ecuație FEM pentru electrostatica</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationFlow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="248"/>
+      <location filename="../../../femcommands/commands.py" line="331"/>
       <source>Flow equation</source>
-      <translation type="unfinished">Flow equation</translation>
+      <translation>Ecuaţia de curgere</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="249"/>
+      <location filename="../../../femcommands/commands.py" line="332"/>
       <source>Creates a FEM equation for flow</source>
-      <translation type="unfinished">Creates a FEM equation for flow</translation>
+      <translation>Creează o ecuație FEM pentru curgere</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationFluxsolver</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="264"/>
+      <location filename="../../../femcommands/commands.py" line="348"/>
       <source>Fluxsolver equation</source>
-      <translation type="unfinished">Fluxsolver equation</translation>
+      <translation>Ecuația Fluxsolver</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="265"/>
+      <location filename="../../../femcommands/commands.py" line="349"/>
       <source>Creates a FEM equation for fluxsolver</source>
-      <translation type="unfinished">Creates a FEM equation for fluxsolver</translation>
+      <translation>Creează o ecuație FEM pentru fluxsolver</translation>
     </message>
   </context>
   <context>
@@ -259,22 +280,22 @@
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Convertește o Plasă FEM într-o Plasă Rețeaua FEM mesh</translation>
     </message>
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Convertește o suprafaţa de Plasă FEM (Metoda Elementului Finit) într-o Plasă</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="366"/>
+      <location filename="../../../femcommands/commands.py" line="470"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Convertește o Plasă FEM într-o Plasă Rețeaua FEM mesh</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="367"/>
+      <location filename="../../../femcommands/commands.py" line="471"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Convertește o suprafaţa de Plasă FEM (Metoda Elementului Finit) într-o Plasă</translation>
     </message>
   </context>
   <context>
@@ -282,25 +303,30 @@
     <message>
       <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="42"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Materialul mecanic neliniar</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="44"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Creează un material mecanic neliniar</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="415"/>
+      <source>Nonlinear mechanical material</source>
+      <translation>Materialul mecanic neliniar</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="_CommandFemMaterialSolid.py" line="42"/>
-      <source>FEM material for solid</source>
-      <translation type="unfinished">FEM material for solid</translation>
-    </message>
-    <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Creează un material MEF pentru solide</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialSolid.py" line="42"/>
+      <source>FEM material for solid</source>
+      <translation>Material FEM pentru solide</translation>
     </message>
   </context>
   <context>
@@ -308,12 +334,12 @@
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="41"/>
       <source>FEM mesh boundary layer</source>
-      <translation type="unfinished">FEM mesh boundary layer</translation>
+      <translation>Stratul limită FEM ochiurilor de Plasă</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="43"/>
       <source>Creates a FEM mesh boundary layer</source>
-      <translation type="unfinished">Creates a FEM mesh boundary layer</translation>
+      <translation>Creează un strat limită FEM ochiurilor de Plasă</translation>
     </message>
   </context>
   <context>
@@ -321,35 +347,30 @@
     <message>
       <location filename="_CommandFemMeshClear.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Șterge ochiurile Plasei FEM</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshClear.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Șterge Plasa la un obiect tip Plasă FEM</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="518"/>
+      <source>Clear FEM mesh</source>
+      <translation>Șterge ochiurile Plasei FEM</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="520"/>
+      <source>Clear the Mesh of a FEM mesh object</source>
+      <translation>Șterge Plasa la un obiect tip Plasă FEM</translation>
     </message>
   </context>
   <context>
-    <name>FEM_MeshFromShape</name>
+    <name>FEM_MeshDisplayInfo</name>
     <message>
-      <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
-      <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
-      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="472"/>
-      <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="473"/>
-      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
+      <location filename="../../../femcommands/commands.py" line="538"/>
+      <source>Display FEM mesh info</source>
+      <translation>Afişează informaţii FEM -Metoda Elementului Finit despre Plasă</translation>
     </message>
   </context>
   <context>
@@ -357,20 +378,22 @@
     <message>
       <location filename="_CommandFemMeshGroup.py" line="41"/>
       <source>FEM mesh group</source>
-      <translation type="unfinished">FEM mesh group</translation>
+      <translation>Grupul de Plasă FEM</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGroup.py" line="43"/>
       <source>Creates a FEM mesh group</source>
-      <translation type="unfinished">Creates a FEM mesh group</translation>
+      <translation>Creează un grup de Plasă FEM</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MeshPrintInfo</name>
     <message>
-      <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
-      <source>Print FEM mesh info</source>
-      <translation type="unfinished">Print FEM mesh info</translation>
+      <location filename="../../../femcommands/commands.py" line="584"/>
+      <source>FEM mesh group</source>
+      <translation>Grupul de Plasă FEM</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="586"/>
+      <source>Creates a FEM mesh group</source>
+      <translation>Creează un grup de Plasă FEM</translation>
     </message>
   </context>
   <context>
@@ -378,12 +401,12 @@
     <message>
       <location filename="_CommandFemMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>Regiunea de Plasă FEM</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>Creează o regiune de Plasă FEM</translation>
     </message>
   </context>
   <context>
@@ -396,7 +419,7 @@
     <message>
       <location filename="_CommandFemResultShow.py" line="43"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Arată datele pentru rezultatele selecționate</translation>
     </message>
   </context>
   <context>
@@ -404,35 +427,35 @@
     <message>
       <location filename="_CommandFemResultsPurge.py" line="41"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Elimina resultats</translation>
     </message>
     <message>
       <location filename="_CommandFemResultsPurge.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Elimină toate rezultatele la analiza activă</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="548"/>
+      <location filename="../../../femcommands/commands.py" line="664"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Elimina resultats</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="550"/>
+      <location filename="../../../femcommands/commands.py" line="666"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Elimină toate rezultatele la analiza activă</translation>
     </message>
   </context>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="592"/>
+      <location filename="../../../femcommands/commands.py" line="708"/>
       <source>Solver CalculiX (experimental)</source>
-      <translation type="unfinished">Solver CalculiX (experimental)</translation>
+      <translation>Rezolvitor CalculiX (experimental)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="594"/>
+      <location filename="../../../femcommands/commands.py" line="710"/>
       <source>Creates a FEM solver CalculiX (experimental)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX (experimental)</translation>
+      <translation>Crează un rezolvitor FEM CalculiX (experimental)</translation>
     </message>
   </context>
   <context>
@@ -440,22 +463,22 @@
     <message>
       <location filename="_CommandFemSolverControl.py" line="40"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Controlul sarcinilor rezolvitorului</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverControl.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Modifică atributele Rezolvitorului şi se execută calcule pentru Rezolvitorul selectat</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="610"/>
+      <location filename="../../../femcommands/commands.py" line="726"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Controlul sarcinilor rezolvitorului</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="612"/>
+      <location filename="../../../femcommands/commands.py" line="728"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Modifică atributele Rezolvitorului şi se execută calcule pentru Rezolvitorul selectat</translation>
     </message>
   </context>
   <context>
@@ -463,12 +486,12 @@
     <message>
       <location filename="_CommandFemSolverRun.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Executa calculele Rezolvitorului</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverRun.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Se execută calcule pentru Rezolvitorul selectat</translation>
     </message>
   </context>
   <context>
@@ -476,12 +499,12 @@
     <message>
       <location filename="_CommandFemSolverZ88.py" line="41"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Rezolvitorul Z88</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverZ88.py" line="43"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>Creează un Rezolvitor de FEM Z88</translation>
     </message>
   </context>
   <context>
@@ -489,46 +512,87 @@
     <message>
       <location filename="FemCommands.py" line="39"/>
       <source>Default Fem Command MenuText</source>
-      <translation type="unfinished">Default Fem Command MenuText</translation>
+      <translation>Implicit Fem Comanda MenuText</translation>
     </message>
     <message>
       <location filename="FemCommands.py" line="41"/>
       <source>Default Fem Command ToolTip</source>
-      <translation type="unfinished">Default Fem Command ToolTip</translation>
+      <translation>Implicit Fem Comanda ToolTip</translation>
     </message>
     <message>
       <location filename="../../../femcommands/manager.py" line="41"/>
       <source>Default Fem Command MenuText</source>
-      <translation type="unfinished">Default Fem Command MenuText</translation>
+      <translation>Implicit Fem Comanda MenuText</translation>
     </message>
     <message>
       <location filename="../../../femcommands/manager.py" line="43"/>
       <source>Default Fem Command ToolTip</source>
-      <translation type="unfinished">Default Fem Command ToolTip</translation>
+      <translation>Implicit Fem Comanda ToolTip</translation>
+    </message>
+  </context>
+  <context>
+    <name>GeometryElementsSelection</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Geometrie selectorul de referinţă pentru o </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
+      <source>Add</source>
+      <translation>Adaugă</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
+      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
+      <translation>Faceți clic pe "Adăugați" și selectați elemente geometrice pentru a le adăuga în listă. Dacă nu se adaugă nicio geometrie în listă, sunt folosite toate celelalte. Următoarele elemente geometrice sunt permise a fi selectate: </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
+      <source>Selection mode</source>
+      <translation>Mod de selectare</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
+      <source>Solid</source>
+      <translation>Solid</translation>
+    </message>
+  </context>
+  <context>
+    <name>Material_Editor</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="382"/>
+      <source>Material editor</source>
+      <translation>Editor de Material</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="384"/>
+      <source>Opens the FreeCAD material editor</source>
+      <translation>Deschide editorul de materiale FreeCAD</translation>
     </message>
   </context>
   <context>
     <name>SolidSelector</name>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="140"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
       <source>Select Solids</source>
-      <translation type="unfinished">Select Solids</translation>
+      <translation>Selectaţi solide</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="141"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
       <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</translation>
+      <translation>Selectaţi elemente solide Part care se adaugă la lista. Pentru a adăuga solide faceţi clic pe "Add".</translation>
     </message>
   </context>
   <context>
     <name>_Selector</name>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="42"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
       <source>Add</source>
       <translation>Adaugă</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="43"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
       <source>Remove</source>
       <translation>Elimină</translation>
     </message>
@@ -538,12 +602,25 @@
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
       <source>FEM material for Fluid</source>
-      <translation type="unfinished">FEM material for Fluid</translation>
+      <translation>Material FEM pentru lichid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="44"/>
       <source>Creates a FEM material for Fluid</source>
-      <translation type="unfinished">Creates a FEM material for Fluid</translation>
+      <translation>Creează un material FEM pentru lichide</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshFromShape</name>
+    <message>
+      <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>O Plasă FEM plecând de la o formă cu Netgen</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>O Plasă FEM plecând de la o formă cu Netgen</translation>
     </message>
   </context>
   <context>
@@ -551,12 +628,20 @@
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
       <source>FEM mesh from shape by GMSH</source>
-      <translation type="unfinished">FEM mesh from shape by GMSH</translation>
+      <translation>Plasă FEM plecând de la o formă cu GMSH</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
       <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by GMSH mesher</translation>
+      <translation>Creaţi o Plasă plecând de la o formă cu GMSH mesher</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshPrintInfo</name>
+    <message>
+      <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
+      <source>Print FEM mesh info</source>
+      <translation>Imprimă informaţii despre Plasa FEM</translation>
     </message>
   </context>
   <context>
@@ -564,12 +649,12 @@
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="42"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>Rezolvitor CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="44"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>Creați un rezolvitor FEM Calculix</translation>
     </message>
   </context>
   <context>
@@ -577,12 +662,12 @@
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Secțiunea transversală a grinzii</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Crează secțiunea transversală a grinzii</translation>
     </message>
   </context>
   <context>
@@ -590,12 +675,12 @@
     <message>
       <location filename="_CommandFemFluidSection.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>Secțiunea fluidului pentru curgere 1D</translation>
     </message>
     <message>
       <location filename="_CommandFemFluidSection.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+      <translation>Crează secțiunea fluidului pentru curgere 1D</translation>
     </message>
   </context>
   <context>
@@ -603,12 +688,12 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Grosimea plăcii de coajă</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Crează grosimea plăcii de coajă</translation>
     </message>
   </context>
   <context>
@@ -616,22 +701,22 @@
     <message>
       <location filename="_CommandAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Container de Analiză</translation>
     </message>
     <message>
       <location filename="_CommandAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
+      <translation>Creează un container de analiza cu standard Rezolvitor ritm</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
       <source>New mechanical analysis</source>
-      <translation type="unfinished">New mechanical analysis</translation>
+      <translation>Nouă analiză mecanică</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
       <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
+      <translation>Creaţi o nouă analiză mecanică</translation>
     </message>
   </context>
   <context>
@@ -639,22 +724,22 @@
     <message>
       <location filename="_CommandBeamSection.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Secțiunea transversală a grinzii</translation>
     </message>
     <message>
       <location filename="_CommandBeamSection.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Crează secțiunea transversală a grinzii</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
       <source>FEM Beam Cross Section Definition ...</source>
-      <translation type="unfinished">FEM Beam Cross Section Definition ...</translation>
+      <translation>Definirea secțiunii transversale la o Grindă FEM ...</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM Beam Cross Section</source>
-      <translation type="unfinished">Creates a FEM Beam Cross Section</translation>
+      <translation>Crează o secțiunea transversală a grinzii FEM</translation>
     </message>
   </context>
   <context>
@@ -662,12 +747,12 @@
     <message>
       <location filename="_CommandClearMesh.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Șterge ochiurile Plasei FEM</translation>
     </message>
     <message>
       <location filename="_CommandClearMesh.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Șterge Plasa la un obiect tip Plasă FEM</translation>
     </message>
   </context>
   <context>
@@ -675,12 +760,12 @@
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weigt</source>
-      <translation type="unfinished">Constraint self weigt</translation>
+      <translation>Constrângere pentru greutate proprie</translation>
     </message>
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weigt</source>
-      <translation type="unfinished">Creates a FEM constraint self weigt</translation>
+      <translation>Creează o constrângere FEM pentru propria greutate</translation>
     </message>
   </context>
   <context>
@@ -688,12 +773,12 @@
     <message>
       <location filename="_CommandControlSolver.py" line="40"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Controlul sarcinilor rezolvitorului</translation>
     </message>
     <message>
       <location filename="_CommandControlSolver.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Modifică atributele Rezolvitorului şi se execută calcule pentru Rezolvitorul selectat</translation>
     </message>
   </context>
   <context>
@@ -701,12 +786,12 @@
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Convertește o Plasă FEM într-o Plasă Rețeaua FEM mesh</translation>
     </message>
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Convertește o suprafaţa de Plasă FEM (Metoda Elementului Finit) într-o Plasă</translation>
     </message>
   </context>
   <context>
@@ -714,12 +799,12 @@
     <message>
       <location filename="_CommandMaterialMechanicalNonlinear.py" line="42"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Materialul mecanic neliniar</translation>
     </message>
     <message>
       <location filename="_CommandMaterialMechanicalNonlinear.py" line="44"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Creează un material mecanic neliniar</translation>
     </message>
   </context>
   <context>
@@ -732,17 +817,17 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation type="unfinished">Mechanical material...</translation>
+      <translation>Material mecanic...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates a mechanical material</source>
-      <translation type="unfinished">Creates a mechanical material</translation>
+      <translation>Creează un material mecanic</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+      <translation>Creați sau editaţi definiţia materialelor mecanice.</translation>
     </message>
   </context>
   <context>
@@ -750,12 +835,12 @@
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="41"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <translation>O Plasă FEM plecând de la o formă cu Netgen</translation>
     </message>
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>O Plasă FEM plecând de la o formă cu Netgen</translation>
     </message>
   </context>
   <context>
@@ -763,12 +848,12 @@
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="42"/>
       <source>FEM mesh from shape by GMSH</source>
-      <translation type="unfinished">FEM mesh from shape by GMSH</translation>
+      <translation>Plasă FEM plecând de la o formă cu GMSH</translation>
     </message>
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="43"/>
       <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by GMSH mesher</translation>
+      <translation>Creaţi o Plasă plecând de la o formă cu GMSH mesher</translation>
     </message>
   </context>
   <context>
@@ -776,12 +861,12 @@
     <message>
       <location filename="_CommandMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>Regiunea de Plasă FEM</translation>
     </message>
     <message>
       <location filename="_CommandMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>Creează o regiune de Plasă FEM</translation>
     </message>
   </context>
   <context>
@@ -789,7 +874,7 @@
     <message>
       <location filename="_CommandPrintMeshInfo.py" line="44"/>
       <source>Print FEM mesh info</source>
-      <translation type="unfinished">Print FEM mesh info</translation>
+      <translation>Imprimă informaţii despre Plasa FEM</translation>
     </message>
   </context>
   <context>
@@ -797,17 +882,17 @@
     <message>
       <location filename="_CommandPurgeFemResults.py" line="40"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Elimina resultats</translation>
     </message>
     <message>
       <location filename="_CommandPurgeFemResults.py" line="42"/>
       <source>Purge results from an analysis</source>
-      <translation type="unfinished">Purge results from an analysis</translation>
+      <translation>Elimină rezultatele la o analiza</translation>
     </message>
     <message>
       <location filename="_CommandPurgeResults.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Elimină toate rezultatele la analiza activă</translation>
     </message>
   </context>
   <context>
@@ -815,12 +900,12 @@
     <message>
       <location filename="_CommandRunSolver.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Executa calculele Rezolvitorului</translation>
     </message>
     <message>
       <location filename="_CommandRunSolver.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Se execută calcule pentru Rezolvitorul selectat</translation>
     </message>
   </context>
   <context>
@@ -828,22 +913,22 @@
     <message>
       <location filename="_CommandShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Grosimea plăcii de coajă</translation>
     </message>
     <message>
       <location filename="_CommandShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Crează grosimea plăcii de coajă</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
       <source>FEM Shell Plate Thickness Definition ...</source>
-      <translation type="unfinished">FEM Shell Plate Thickness Definition ...</translation>
+      <translation>Definiția pentru grosimea plăcii la o FEM Shell...</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM Shell Thickness</source>
-      <translation type="unfinished">Creates a FEM Shell Thickness</translation>
+      <translation>Crează grosimea de coajă FEM</translation>
     </message>
   </context>
   <context>
@@ -856,12 +941,12 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
       <source>Show result information of an analysis</source>
-      <translation type="unfinished">Show result information of an analysis</translation>
+      <translation>Afișare informații despre rezultatul unei analize</translation>
     </message>
     <message>
       <location filename="_CommandShowResult.py" line="42"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Arată datele pentru rezultatele selecționate</translation>
     </message>
   </context>
   <context>
@@ -869,22 +954,22 @@
     <message>
       <location filename="_CommandSolverCalculix.py" line="42"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>Rezolvitor CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandSolverCalculix.py" line="44"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>Creați un rezolvitor FEM Calculix</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="41"/>
       <source>Create FEM Solver CalculiX ...</source>
-      <translation type="unfinished">Create FEM Solver CalculiX ...</translation>
+      <translation>Crează un rezolvitor FEM Calculix ...</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="43"/>
       <source>Creates FEM Solver CalculiX</source>
-      <translation type="unfinished">Creates FEM Solver CalculiX</translation>
+      <translation>Creați un rezolvitor FEM Calculix</translation>
     </message>
   </context>
   <context>
@@ -892,12 +977,12 @@
     <message>
       <location filename="_CommandSolverZ88.py" line="41"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Rezolvitorul Z88</translation>
     </message>
     <message>
       <location filename="_CommandSolverZ88.py" line="43"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>Creează un Rezolvitor de FEM Z88</translation>
     </message>
   </context>
   <context>
@@ -918,12 +1003,12 @@
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
       <source>New mechanical analysis</source>
-      <translation type="unfinished">New mechanical analysis</translation>
+      <translation>Nouă analiză mecanică</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
       <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
+      <translation>Creaţi o nouă analiză mecanică</translation>
     </message>
   </context>
   <context>
@@ -931,12 +1016,12 @@
     <message>
       <location filename="_CommandQuickAnalysis.py" line="40"/>
       <source>Run CalculiX ccx</source>
-      <translation type="unfinished">Run CalculiX ccx</translation>
+      <translation>Rulează Calculix</translation>
     </message>
     <message>
       <location filename="_CommandQuickAnalysis.py" line="42"/>
       <source>Write .inp file and run CalculiX ccx</source>
-      <translation type="unfinished">Write .inp file and run CalculiX ccx</translation>
+      <translation>Scrie un fișier .inp şi rulează CalculiX cxx</translation>
     </message>
   </context>
   <context>
@@ -944,12 +1029,12 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
+      <translation>Start Controlul sarcinilor rezolvitorului</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
+      <translation>Dialog de start al calculului la Rezolvitorul selectat</translation>
     </message>
   </context>
   <context>
@@ -957,12 +1042,12 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
+      <translation>Start Controlul sarcinilor rezolvitorului</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
+      <translation>Dialog de start al calculului la Rezolvitorul selectat</translation>
     </message>
   </context>
   <context>
@@ -970,12 +1055,12 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation type="unfinished">Mechanical material...</translation>
+      <translation>Material mecanic...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+      <translation>Creați sau editaţi definiţia materialelor mecanice.</translation>
     </message>
   </context>
   <context>
@@ -988,7 +1073,7 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
       <source>Show result information of an analysis</source>
-      <translation type="unfinished">Show result information of an analysis</translation>
+      <translation>Afișare informații despre rezultatul unei analize</translation>
     </message>
   </context>
   <context>
@@ -1015,12 +1100,12 @@
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Create FEM bearing constraint</source>
-      <translation type="unfinished">Create FEM bearing constraint</translation>
+      <translation>Creează o constrângere pivot FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create FEM constraint for a bearing</source>
-      <translation type="unfinished">Create FEM constraint for a bearing</translation>
+      <translation>Crea FEM restricţie pentru un rulment</translation>
     </message>
   </context>
   <context>
@@ -1033,12 +1118,12 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create FEM displacement constraint</source>
-      <translation type="unfinished">Create FEM displacement constraint</translation>
+      <translation>Creează restricție de deplasare FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Create FEM constraint for a displacement acting on a face</source>
-      <translation type="unfinished">Create FEM constraint for a displacement acting on a face</translation>
+      <translation>Crea constrângere FEM pentru o deplasare pe o fațetă</translation>
     </message>
   </context>
   <context>
@@ -1051,12 +1136,12 @@
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create FEM fixed constraint</source>
-      <translation type="unfinished">Create FEM fixed constraint</translation>
+      <translation>Crea constrângere FEM fixă</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Create FEM constraint for a fixed geometric entity</source>
-      <translation type="unfinished">Create FEM constraint for a fixed geometric entity</translation>
+      <translation>Creează o constrângere FEM pentru o entitate geometrică fixă</translation>
     </message>
   </context>
   <context>
@@ -1069,12 +1154,12 @@
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Create FEM force constraint</source>
-      <translation type="unfinished">Create FEM force constraint</translation>
+      <translation>Creează o constrângere FEM pentru forță</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="358"/>
       <source>Create FEM constraint for a force acting on a geometric entity</source>
-      <translation type="unfinished">Create FEM constraint for a force acting on a geometric entity</translation>
+      <translation>Creează o constrângere FEM pentru o forță acționând ca o entitate geometrică</translation>
     </message>
   </context>
   <context>
@@ -1087,12 +1172,12 @@
     <message>
       <location filename="../../Command.cpp" line="446"/>
       <source>Create FEM gear constraint</source>
-      <translation type="unfinished">Create FEM gear constraint</translation>
+      <translation>Creează o constrângere FEM pentru angrenaj</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
       <source>Create FEM constraint for a gear</source>
-      <translation type="unfinished">Create FEM constraint for a gear</translation>
+      <translation>Crea o constrângere FEM pentru o transmisie</translation>
     </message>
   </context>
   <context>
@@ -1105,12 +1190,12 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create FEM pressure constraint</source>
-      <translation type="unfinished">Create FEM pressure constraint</translation>
+      <translation>Creează o constrângere FEM pentru presiune</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create FEM constraint for a pressure acting on a face</source>
-      <translation type="unfinished">Create FEM constraint for a pressure acting on a face</translation>
+      <translation>Creează o constrângere FEM pentru presiune acționând pe o fațetă</translation>
     </message>
   </context>
   <context>
@@ -1123,12 +1208,12 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Create FEM pulley constraint</source>
-      <translation type="unfinished">Create FEM pulley constraint</translation>
+      <translation>Creează o constrângere FEM pentru scripete</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Create FEM constraint for a pulley</source>
-      <translation type="unfinished">Create FEM constraint for a pulley</translation>
+      <translation>Creează o constrângere FEM pentru un scripete</translation>
     </message>
   </context>
   <context>
@@ -1146,21 +1231,6 @@
     </message>
   </context>
   <context>
-    <name>CmdFemCreateFromShape</name>
-    <message>
-      <source>Fem</source>
-      <translation>Metoda elementelor finite</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh</source>
-      <translation>Crează rețea FEM</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh from shape</source>
-      <translation>Crează rețea FEM dintr-o formă</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -1171,7 +1241,7 @@
       <location filename="../../Command.cpp" line="720"/>
       <location filename="../../Command.cpp" line="721"/>
       <source>Define/create a nodes set...</source>
-      <translation>Definește/crează o configurare a nodurilor...</translation>
+      <translation>Definește/creează o configurare a nodurilor...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="749"/>
@@ -1181,7 +1251,7 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation type="unfinished">Select a single FEM mesh or nodes set, please.</translation>
+      <translation>Selectaţi o singură reţea FEM sau set de noduri, vă rugăm să.</translation>
     </message>
   </context>
   <context>
@@ -1195,7 +1265,7 @@
       <location filename="../../Command.cpp" line="229"/>
       <location filename="../../Command.cpp" line="230"/>
       <source>Add a solver to the Analysis</source>
-      <translation type="unfinished">Add a solver to the Analysis</translation>
+      <translation>Adauga un Rezolvitor de analiza</translation>
     </message>
   </context>
   <context>
@@ -1210,7 +1280,7 @@
       <location filename="../../Command.cpp" line="664"/>
       <location filename="../../Command.cpp" line="666"/>
       <source>Create node set by Poly</source>
-      <translation type="unfinished">Create node set by Poly</translation>
+      <translation>Creați un nod definit de Poly</translation>
     </message>
   </context>
   <context>
@@ -1223,57 +1293,57 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="37"/>
       <source>CalculiX</source>
-      <translation type="unfinished">CalculiX</translation>
+      <translation>CalculiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="51"/>
       <source>Use internal editor for .inp files</source>
-      <translation type="unfinished">Use internal editor for .inp files</translation>
+      <translation>Utilizare editorului intern pentru fişierele .inp</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="78"/>
       <source>External editor:</source>
-      <translation type="unfinished">External editor:</translation>
+      <translation>Editor extern:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="122"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation type="unfinished">Leave blank to use default CalculiX ccx binary file</translation>
+      <translation>Lăsaţi necompletat pentru a utiliza implicit CalculiX ccx fişier binar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="141"/>
       <source>ccx binary</source>
-      <translation type="unfinished">ccx binary</translation>
+      <translation>ccx binar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="157"/>
       <source>Working directory</source>
-      <translation type="unfinished">Working directory</translation>
+      <translation>Directorul de serviciu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="199"/>
       <source>Default analysis settings</source>
-      <translation type="unfinished">Default analysis settings</translation>
+      <translation>Setările de analiză implicite</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="213"/>
       <source>Default type on analysis</source>
-      <translation type="unfinished">Default type on analysis</translation>
+      <translation>Tipul implicit de analiză</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="223"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Static</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="232"/>
       <source>Frequency</source>
-      <translation type="unfinished">Frequency</translation>
+      <translation>Frecvență</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="244"/>
       <source>Eigenmode number</source>
-      <translation type="unfinished">Eigenmode number</translation>
+      <translation>Numărul de mod propriu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="251"/>
@@ -1283,66 +1353,43 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="274"/>
       <source>High frequency limit</source>
-      <translation type="unfinished">High frequency limit</translation>
+      <translation>Limita de frecvenţă înaltă</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="303"/>
       <source>Low frequency limit</source>
-      <translation type="unfinished">Low frequency limit</translation>
+      <translation>Limita de frecvenţă joasă</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="335"/>
       <location filename="../../DlgSettingsFem.ui" line="342"/>
       <source>Hz</source>
-      <translation type="unfinished">Hz</translation>
+      <translation>Hz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="354"/>
       <source>Materials</source>
-      <translation type="unfinished">Materials</translation>
+      <translation>Materiale</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="362"/>
       <source>Use built-in materials</source>
-      <translation type="unfinished">Use built-in materials</translation>
+      <translation>Utilizarea built-in materiale</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="378"/>
       <source>Use materials from .FreeCAD/Materials directory</source>
-      <translation type="unfinished">Use materials from .FreeCAD/Materials directory</translation>
+      <translation>Folosesc materiale de la directorul FreeCAD/Materials</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="394"/>
       <source>Use materials from user defined directory</source>
-      <translation type="unfinished">Use materials from user defined directory</translation>
+      <translation>Utilizați materiale din directorul definit de utilizator</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
-      <translation type="unfinished">User directory</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::HypothesisWidget</name>
-    <message>
-      <source>Hypothesis</source>
-      <translation>Ipoteză</translation>
-    </message>
-    <message>
-      <source>Quadrangle</source>
-      <translation>Patrulater</translation>
-    </message>
-    <message>
-      <source>Maximum length</source>
-      <translation>Lungimea maximă</translation>
-    </message>
-    <message>
-      <source>Local length</source>
-      <translation>Lungimea locală</translation>
-    </message>
-    <message>
-      <source>Maximum element area</source>
-      <translation>Zona maximă a elementului</translation>
+      <translation>Directorul utilizatorului</translation>
     </message>
   </context>
   <context>
@@ -1402,7 +1449,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="358"/>
       <source>Please specify a force greater than 0</source>
-      <translation type="unfinished">Please specify a force greater than 0</translation>
+      <translation>Precizați vă rog o forță mai mare de 0</translation>
     </message>
   </context>
   <context>
@@ -1424,7 +1471,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="257"/>
       <source>Please specify a pressure greater than 0</source>
-      <translation type="unfinished">Please specify a pressure greater than 0</translation>
+      <translation>Precizați vă rog o presiune mai mare de 0</translation>
     </message>
   </context>
   <context>
@@ -1440,12 +1487,12 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="75"/>
       <source>Edit FEM mesh</source>
-      <translation type="unfinished">Edit FEM mesh</translation>
+      <translation>Edit FEM mesh</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Eşecul de Meshing</translation>
     </message>
   </context>
   <context>
@@ -1461,7 +1508,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="67"/>
       <source>FEM constraint parameters</source>
-      <translation type="unfinished">FEM constraint parameters</translation>
+      <translation>Parametrii de constrângere FEM</translation>
     </message>
   </context>
   <context>
@@ -1484,7 +1531,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
       <source>Please use only a single reference for bearing constraint</source>
-      <translation type="unfinished">Please use only a single reference for bearing constraint</translation>
+      <translation>Vă rugăm să utilizaţi numai o singură referinţă pentru constrângere</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="178"/>
@@ -1531,13 +1578,13 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="412"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
       <source>Nothing selected!</source>
-      <translation type="unfinished">Nothing selected!</translation>
+      <translation>Nicio selecție!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="422"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Obiectul selectat nu este o Part!</translation>
     </message>
   </context>
   <context>
@@ -1556,12 +1603,12 @@
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="135"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+      <translation>Diferite tipuri de forme imposibile. Impuneți o a doua constrângere</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="140"/>
       <source>Only faces, edges and vertices can be picked</source>
-      <translation type="unfinished">Only faces, edges and vertices can be picked</translation>
+      <translation>Numai fațete, margini şi nodurile pot fi selecționate</translation>
     </message>
   </context>
   <context>
@@ -1598,12 +1645,12 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+      <translation>Diferite tipuri de forme imposibile. Impuneți o a doua constrângere</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="182"/>
       <source>Only faces, edges and vertices can be picked</source>
-      <translation type="unfinished">Only faces, edges and vertices can be picked</translation>
+      <translation>Numai fațete, margini şi nodurile pot fi selecționate</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="213"/>
@@ -1619,18 +1666,6 @@
       <location filename="../../TaskFemConstraintForce.cpp" line="224"/>
       <source>Only faces and edges can be picked</source>
       <translation>Numai fețe și margini pot fi ridicate</translation>
-    </message>
-    <message>
-      <source>Point load [N]</source>
-      <translation type="unfinished">Point load [N]</translation>
-    </message>
-    <message>
-      <source>Line load [N/mm]</source>
-      <translation type="unfinished">Line load [N/mm]</translation>
-    </message>
-    <message>
-      <source>Area load [N/mm²]</source>
-      <translation type="unfinished">Area load [N/mm²]</translation>
     </message>
   </context>
   <context>
@@ -1694,7 +1729,7 @@
     <message>
       <location filename="../../TaskObjectName.cpp" line="48"/>
       <source>TaskObjectName</source>
-      <translation type="unfinished">TaskObjectName</translation>
+      <translation>TaskObjectName</translation>
     </message>
   </context>
   <context>
@@ -1710,7 +1745,7 @@
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="84"/>
       <source>Activate analysis</source>
-      <translation type="unfinished">Activate analysis</translation>
+      <translation>Activează analiza</translation>
     </message>
   </context>
   <context>
@@ -1718,12 +1753,12 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="76"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Eşecul de Meshing</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation type="unfinished">The FEM module is built without NETGEN support. Meshing will not work!!!</translation>
+      <translation>Modulul FEM este construit fără sprijin NETGEN. Plasa nu va funcţiona!!!</translation>
     </message>
   </context>
   <context>
@@ -1737,36 +1772,36 @@
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="26"/>
       <source>Cross Section</source>
-      <translation type="unfinished">Cross Section</translation>
+      <translation>Secţiune transversală</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="32"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="32"/>
       <source>Use FreeCAD Property Editor</source>
-      <translation type="unfinished">Use FreeCAD Property Editor</translation>
+      <translation>Utilizaţi editorul de proprietăți FreeCAD</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="39"/>
       <source>to edit the cross section values</source>
-      <translation type="unfinished">to edit the cross section values</translation>
+      <translation>pentru a edita valorile secţiunii transversale</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="49"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="49"/>
       <source>References</source>
-      <translation type="unfinished">References</translation>
+      <translation>Referințe</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="55"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="55"/>
       <source>Leave references blank </source>
-      <translation type="unfinished">Leave references blank </translation>
+      <translation>Lăsați necompletate referinţele </translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="62"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="62"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>selecția tuturor formelor rămase</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="72"/>
@@ -1782,7 +1817,7 @@
     <message>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="39"/>
       <source>to edit the thickness value</source>
-      <translation type="unfinished">to edit the thickness value</translation>
+      <translation>pentru a edita valoarea grosimii</translation>
     </message>
   </context>
   <context>
@@ -1795,7 +1830,7 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="20"/>
       <source>Working directory</source>
-      <translation type="unfinished">Working directory</translation>
+      <translation>Directorul de serviciu</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="45"/>
@@ -1805,27 +1840,27 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="55"/>
       <source>Analysis type</source>
-      <translation type="unfinished">Analysis type</translation>
+      <translation>Tip de analiză</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="67"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Static</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="77"/>
       <source>Frequency</source>
-      <translation type="unfinished">Frequency</translation>
+      <translation>Frecvență</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="89"/>
       <source>Write .inp file</source>
-      <translation type="unfinished">Write .inp file</translation>
+      <translation>Scrie fișier .inp</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="99"/>
       <source>Edit .inp file</source>
-      <translation type="unfinished">Edit .inp file</translation>
+      <translation>Editează fișier .inp</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="109"/>
@@ -1836,14 +1871,6 @@
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="130"/>
       <source>Time:</source>
       <translation>Timp:</translation>
-    </message>
-    <message>
-      <source>Write Calculix Input File</source>
-      <translation type="unfinished">Write Calculix Input File</translation>
-    </message>
-    <message>
-      <source>Edit Calculix Input File</source>
-      <translation type="unfinished">Edit Calculix Input File</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
@@ -1863,22 +1890,22 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="41"/>
       <source>Material Description</source>
-      <translation type="unfinished">Material Description</translation>
+      <translation>Descriere material</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="54"/>
       <source>References</source>
-      <translation type="unfinished">References</translation>
+      <translation>Referințe</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="60"/>
       <source>Leave references blank </source>
-      <translation type="unfinished">Leave references blank </translation>
+      <translation>Lăsați necompletate referinţele </translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="67"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>selecția tuturor formelor rămase</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="77"/>
@@ -1888,17 +1915,17 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="96"/>
       <source>Properties</source>
-      <translation type="unfinished">Properties</translation>
+      <translation>Proprietăți</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="107"/>
       <source>Young's Modulus:</source>
-      <translation>Young's Modulus:</translation>
+      <translation>Modulul lui Young:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="148"/>
       <source>Poisson Ratio:</source>
-      <translation type="unfinished">Poisson Ratio:</translation>
+      <translation>Coeficientul lui Poisson:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="186"/>
@@ -1908,20 +1935,12 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="241"/>
       <source>External material resources</source>
-      <translation type="unfinished">External material resources</translation>
+      <translation>Resurse externe de materiale</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="247"/>
       <source>MatWeb database...</source>
       <translation>Baza de date MatWeb...</translation>
-    </message>
-    <message>
-      <source>0 kg/m^3</source>
-      <translation type="unfinished">0 kg/m^3</translation>
-    </message>
-    <message>
-      <source>Pa</source>
-      <translation>Pa</translation>
     </message>
   </context>
   <context>
@@ -1986,26 +2005,6 @@
       <translation>Editare restricţie</translation>
     </message>
     <message>
-      <source>Combo View</source>
-      <translation>Vizualizare combo</translation>
-    </message>
-    <message>
-      <source>combiTab</source>
-      <translation type="unfinished">combiTab</translation>
-    </message>
-    <message>
-      <source>qt_tabwidget_stackedwidget</source>
-      <translation type="unfinished">qt_tabwidget_stackedwidget</translation>
-    </message>
-    <message>
-      <source>ShaftWizard</source>
-      <translation type="unfinished">ShaftWizard</translation>
-    </message>
-    <message>
-      <source>ShaftWizardLayout</source>
-      <translation type="unfinished">ShaftWizardLayout</translation>
-    </message>
-    <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="74"/>
       <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
@@ -2026,23 +2025,23 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="62"/>
       <source>Meshing</source>
-      <translation type="unfinished">Meshing</translation>
+      <translation>Meshing</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="343"/>
       <source>Constraint force</source>
-      <translation type="unfinished">Constraint force</translation>
+      <translation>Forţa de constrângere</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="587"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="243"/>
       <source>Constraint normal stress</source>
-      <translation type="unfinished">Constraint normal stress</translation>
+      <translation>Constrângere la stres normală</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="98"/>
       <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</source>
-      <translation type="unfinished">[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</translation>
+      <translation>[Noduri: %1, margini: %2, fațete: %3, poligoane: %4, volume: %5, Polyhedrons: %6]</translation>
     </message>
   </context>
   <context>
@@ -2055,22 +2054,22 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="22"/>
       <source>Result type</source>
-      <translation type="unfinished">Result type</translation>
+      <translation>Tip de rezultat</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
       <source>Y displacement</source>
-      <translation type="unfinished">Y displacement</translation>
+      <translation>Deplasare Y</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="37"/>
       <source>X displacement</source>
-      <translation type="unfinished">X displacement</translation>
+      <translation>Deplasare X</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="44"/>
       <source>Z displacement</source>
-      <translation type="unfinished">Z displacement</translation>
+      <translation>Deplasare Z</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
@@ -2080,12 +2079,12 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="61"/>
       <source>Von Mises stress</source>
-      <translation type="unfinished">Von Mises stress</translation>
+      <translation>Constrângeri von Mises</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="68"/>
       <source>Abs displacement</source>
-      <translation type="unfinished">Abs displacement</translation>
+      <translation>Deplasare absolută</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="79"/>
@@ -2120,15 +2119,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
-      <translation type="unfinished">Slider max:</translation>
-    </message>
-    <message>
-      <source>Colors</source>
-      <translation>Culori</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>mm</translation>
+      <translation>Cursor max:</translation>
     </message>
   </context>
   <context>
@@ -2141,7 +2132,7 @@
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="32"/>
       <source>Meshes:</source>
-      <translation type="unfinished">Meshes:</translation>
+      <translation>Mesh:</translation>
     </message>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
@@ -2199,12 +2190,12 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
       <source>Collect adjancent nodes</source>
-      <translation type="unfinished">Collect adjancent nodes</translation>
+      <translation>Colecta nodurile adiancente</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
       <source>Stop angle:</source>
-      <translation>Oprire unghi:</translation>
+      <translation>Unghi de oprire:</translation>
     </message>
   </context>
   <context>
@@ -2240,12 +2231,12 @@
     <message>
       <location filename="../../TaskFemConstraint.ui" line="86"/>
       <source>Other diameter</source>
-      <translation>Alte diametru</translation>
+      <translation>Alt diametru</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="113"/>
       <source>Center distance</source>
-      <translation>Centrul distanței</translation>
+      <translation>Distanța centrului</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="137"/>
@@ -2288,12 +2279,12 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="62"/>
       <source>Other pulley dia</source>
-      <translation type="unfinished">Other pulley dia</translation>
+      <translation>Alt diametru la scripete</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="86"/>
       <source>Center distance</source>
-      <translation>Centrul distanței</translation>
+      <translation>Distanța centrului</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="110"/>
@@ -2303,32 +2294,32 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="134"/>
       <source>Belt tension force</source>
-      <translation>Forță tensiune centură</translation>
+      <translation>Forța de tensionare a curelei</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="156"/>
       <source>Driven pulley</source>
-      <translation type="unfinished">Driven pulley</translation>
+      <translation>Scripete antrenat</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="165"/>
       <source>Force location [deg]</source>
-      <translation>Forțează locația [deg]</translation>
+      <translation>Amplasarea forței [deg]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="192"/>
       <source>Force Direction</source>
-      <translation>Forțează direcția</translation>
+      <translation>Direcția forței</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="204"/>
       <source>Reversed direction</source>
-      <translation>Direcţie inversă</translation>
+      <translation>Sens invers</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="211"/>
       <source>Axial free</source>
-      <translation>Axial liber</translation>
+      <translation>Axă liberă</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="220"/>
@@ -2346,12 +2337,12 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation type="unfinished">Prescribed Displacement</translation>
+      <translation>Deplasare prescrisă</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation type="unfinished">Select multiple face(s), click Add or Remove</translation>
+      <translation>Selectaţi mai multe feţe, faceţi clic pe Add sau Eliminare</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="59"/>
@@ -2366,7 +2357,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
       <source>Displacement x</source>
-      <translation type="unfinished">Displacement x</translation>
+      <translation>Deplasare x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
@@ -2376,7 +2367,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="288"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="330"/>
       <source>Free</source>
-      <translation type="unfinished">Free</translation>
+      <translation>Liber</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="111"/>
@@ -2386,37 +2377,37 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Fixă</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation type="unfinished">Displacement y</translation>
+      <translation>Deplasare y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation type="unfinished">Displacement z</translation>
+      <translation>Deplasare z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
       <source>Rotations are only valid for Beam and Shell elements.</source>
-      <translation type="unfinished">Rotations are only valid for Beam and Shell elements.</translation>
+      <translation>Rotațiile sunt valabile doar pentru elemente tip grindă şi coajă.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>
       <source>Rotation x</source>
-      <translation type="unfinished">Rotation x</translation>
+      <translation>Rotaţie pe x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="279"/>
       <source>Rotation y</source>
-      <translation type="unfinished">Rotation y</translation>
+      <translation>Rotaţie pe y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
       <source>Rotation z</source>
-      <translation type="unfinished">Rotation z</translation>
+      <translation>Rotaţie pe z</translation>
     </message>
   </context>
   <context>
@@ -2475,12 +2466,12 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="32"/>
       <source>Pressure</source>
-      <translation type="unfinished">Pressure</translation>
+      <translation>Presiune</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="39"/>
       <source>1 MPa</source>
-      <translation type="unfinished">1 MPa</translation>
+      <translation>1 MPa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="51"/>
@@ -2556,12 +2547,12 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="111"/>
       <source>Nbr. Segs per Edge:</source>
-      <translation type="unfinished">Nbr. Segs per Edge:</translation>
+      <translation>Nr de Segmente pe Margine:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="128"/>
       <source>Nbr. Segs per Radius:</source>
-      <translation type="unfinished">Nbr. Segs per Radius:</translation>
+      <translation>Nr de Segmente pe Rază:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="144"/>
@@ -2571,7 +2562,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="166"/>
       <source>Node count: </source>
-      <translation>Numărul de nod: </translation>
+      <translation>Numărul de noduri: </translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="180"/>

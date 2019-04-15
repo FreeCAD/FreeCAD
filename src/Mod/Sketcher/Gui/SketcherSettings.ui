@@ -56,7 +56,7 @@
          <item>
           <widget class="Gui::PrefCheckBox" name="checkBoxNotifyConstraintSubstitutions">
            <property name="toolTip">
-            <string>Notify automatic constraint substitutions.</string>
+            <string>Notify automatic constraint substitutions</string>
            </property>
            <property name="text">
             <string>Notify automatic constraint substitutions</string>
@@ -120,7 +120,7 @@
       <item row="3" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="dialogOnDistanceConstraint">
         <property name="text">
-         <string>Ask for value after creating a distance constraint</string>
+         <string>Ask for value after creating a dimensional constraint</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -159,7 +159,7 @@
       <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="constraintMode">
         <property name="text">
-         <string>Constraint Creation &quot;Continue Mode&quot; (Experimental)</string>
+         <string>Constraint Creation &quot;Continue Mode&quot;</string>
         </property>
         <property name="checked">
          <bool>true</bool>

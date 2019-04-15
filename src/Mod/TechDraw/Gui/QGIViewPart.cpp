@@ -56,6 +56,7 @@
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 #include "Rez.h"
 #include "ZVALUE.h"
@@ -124,9 +125,7 @@ void QGIViewPart::setViewPartFeature(TechDraw::DrawViewPart *obj)
     if (!obj)
         return;
 
-    // called from QGVPage
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));
-    draw();
 }
 
 QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) const
@@ -314,7 +313,7 @@ void QGIViewPart::updateView(bool update)
     auto end   = std::chrono::high_resolution_clock::now();
     auto diff  = end - start;
     double diffOut = std::chrono::duration <double, std::milli> (diff).count();
-    Base::Console().Log("TIMING - QGIVP::updateView - total %.3f millisecs\n",diffOut);
+    Base::Console().Log("TIMING - QGIVP::updateView - %s - total %.3f millisecs\n",getViewName(),diffOut);
 }
 
 void QGIViewPart::draw() {
@@ -323,7 +322,6 @@ void QGIViewPart::draw() {
     QGIView::draw();
     drawCenterLines(true);   //have to draw centerlines after border to get size correct.
     drawAllSectionLines();   //same for section lines
-
 }
 
 void QGIViewPart::drawViewPart()
@@ -742,16 +740,24 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         addToGroup(highlight);
         highlight->setPos(0.0,0.0);   //sb setPos(center.x,center.y)?
         highlight->setReference(const_cast<char*>(viewDetail->Reference.getValue()));
+
         Base::Vector3d center = viewDetail->AnchorPoint.getValue() * viewPart->getScale();
+
         double radius = viewDetail->Radius.getValue() * viewPart->getScale();
         highlight->setBounds(center.x - radius, center.y + radius,center.x + radius, center.y - radius);
         highlight->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
         highlight->setFont(m_font, fontSize);
         highlight->setZValue(ZVALUE::HIGHLIGHT);
+
+        QPointF rotCenter = highlight->mapFromParent(transformOriginPoint());
+        highlight->setTransformOriginPoint(rotCenter);
+
+        double rotation = viewPart->Rotation.getValue() + 
+                          vp->HighlightAdjust.getValue();
+        highlight->setRotation(rotation);
         highlight->draw();
     }
 }
-
 
 void QGIViewPart::drawMatting()
 {

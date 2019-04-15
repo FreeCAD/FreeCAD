@@ -72,10 +72,9 @@ DrawView::DrawView(void):
     mouseMove(false)
 {
     static const char *group = "Base";
-
-    ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in modelling units (mm)");
-    ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the page in modelling units (mm)");
-    ADD_PROPERTY_TYPE(LockPosition ,(false),group,App::Prop_None,"Prevent View from moving in Gui");
+    ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in internal units (mm)");
+    ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the page in internal units (mm)");
+    ADD_PROPERTY_TYPE(LockPosition ,(false),group,App::Prop_None,"Lock View position to parent Page or Group");
     ADD_PROPERTY_TYPE(Rotation ,(0),group,App::Prop_None,"Rotation of the view on the page in degrees counterclockwise");
 
     ScaleType.setEnums(ScaleTypeEnums);
@@ -92,8 +91,9 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
+    handleXYLock();
     requestPaint();
-    return App::DocumentObject::StdReturn;                //DO::execute returns 0
+    return App::DocumentObject::execute();
 }
 
 void DrawView::checkScale(void)
@@ -139,13 +139,45 @@ void DrawView::onChanged(const App::Property* prop)
                     }
                 }
             }
+        } else if (prop == &LockPosition) {
+            handleXYLock();
+            LockPosition.purgeTouched(); 
         }
-//        if (prop == &X ||       //nothing needs to be calculated, just the graphic needs to be shifted.
-//            prop == &Y) {
-//            requestPaint();
-//        }
     }
     App::DocumentObject::onChanged(prop);
+}
+
+bool DrawView::isLocked(void) const
+{
+    return LockPosition.getValue();
+}
+
+//override this for View inside a group (ex DPGI in DPG)
+void DrawView::handleXYLock(void) 
+{
+    if (isLocked()) {
+        if (!X.testStatus(App::Property::ReadOnly)) {
+            X.setStatus(App::Property::ReadOnly,true);
+            App::GetApplication().signalChangePropertyEditor(X);
+            X.purgeTouched();
+        }
+        if (!Y.testStatus(App::Property::ReadOnly)) {
+            Y.setStatus(App::Property::ReadOnly,true);
+            App::GetApplication().signalChangePropertyEditor(Y);
+            Y.purgeTouched();
+        }
+    } else {
+        if (X.testStatus(App::Property::ReadOnly)) {
+            X.setStatus(App::Property::ReadOnly,false);
+            App::GetApplication().signalChangePropertyEditor(X);
+            X.purgeTouched();
+        }
+        if (Y.testStatus(App::Property::ReadOnly)) {
+            Y.setStatus(App::Property::ReadOnly,false);
+            App::GetApplication().signalChangePropertyEditor(Y);
+            Y.purgeTouched();
+        }
+    }
 }
 
 short DrawView::mustExecute() const
@@ -172,6 +204,7 @@ QRectF DrawView::getRect() const
 
 void DrawView::onDocumentRestored()
 {
+    handleXYLock();
     DrawView::execute();
 }
 
@@ -255,8 +288,11 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
 
 void DrawView::setPosition(double x, double y)
 {
-    X.setValue(x);
-    Y.setValue(y);
+//    Base::Console().Message("DV::setPosition(%.3f,%.3f) - \n",x,y,getNameInDocument());
+    if (!isLocked()) {
+        X.setValue(x);
+        Y.setValue(y);
+    }
 }
 
 //TODO: getScale is no longer needed and could revert to Scale.getValue

@@ -31,8 +31,10 @@ import os
 import subprocess
 import os.path
 
-import FreeCAD as App
-import femtools.femutils as FemUtils
+import FreeCAD
+if FreeCAD.GuiUp:
+    from PySide import QtGui
+import femtools.femutils as femutils
 import feminout.importCcxFrdResults as importCcxFrdResults
 import feminout.importCcxDatResults as importCcxDatResults
 
@@ -59,18 +61,31 @@ class Prepare(run.Prepare):
         self.pushStatus("Preparing input files...\n")
         c = _Container(self.analysis)
         w = writer.FemInputWriterCcx(
-            self.analysis, self.solver, c.mesh, c.materials_linear,
-            c.materials_nonlinear, c.fixed_constraints,
-            c.displacement_constraints, c.contact_constraints,
-            c.planerotation_constraints, c.transform_constraints,
-            c.selfweight_constraints, c.force_constraints,
-            c.pressure_constraints, c.temperature_constraints,
-            c.heatflux_constraints, c.initialtemperature_constraints,
-            c.beam_sections, c.beam_rotations, c.shell_thicknesses, c.fluid_sections,
-            self.directory)
+            self.analysis,
+            self.solver,
+            c.mesh,
+            c.materials_linear,
+            c.materials_nonlinear,
+            c.constraints_fixed,
+            c.constraints_displacement,
+            c.constraints_contact,
+            c.constraints_planerotation,
+            c.constraints_transform,
+            c.constraints_selfweight,
+            c.constraints_force,
+            c.constraints_pressure,
+            c.constraints_temperature,
+            c.constraints_heatflux,
+            c.constraints_initialtemperature,
+            c.beam_sections,
+            c.beam_rotations,
+            c.shell_thicknesses,
+            c.fluid_sections,
+            self.directory
+        )
         path = w.write_calculix_input_file()
         # report to user if task succeeded
-        if path is not None:
+        if path != "":
             self.pushStatus("Write completed!")
         else:
             self.pushStatus("Writing CalculiX input file failed!")
@@ -80,8 +95,11 @@ class Prepare(run.Prepare):
 class Solve(run.Solve):
 
     def run(self):
+        if not _inputFileName:
+            # TODO do not run solver, do not try to read results in a smarter way than an Exception
+            raise Exception('Error on writing CalculiX input file.\n')
         self.pushStatus("Executing solver...\n")
-        binary = settings.getBinary("Calculix")
+        binary = settings.get_binary("Calculix")
         self._process = subprocess.Popen(
             [binary, "-i", _inputFileName],
             cwd=self.directory,
@@ -95,24 +113,14 @@ class Solve(run.Solve):
         #     self._updateOutput(output)
         del output   # get flake8 quiet
 
-    def _observeSolver(self, process):
-        output = ""
-        line = process.stdout.readline()
-        self.pushStatus(line)
-        output += line
-        line = process.stdout.readline()
-        while line:
-            line = "\n%s" % line.rstrip()
-            self.pushStatus(line)
-            output += line
-            line = process.stdout.readline()
-        return output
-
 
 class Results(run.Results):
 
     def run(self):
-        prefs = App.ParamGet(
+        if not _inputFileName:
+            # TODO do not run solver, do not try to read results in a smarter way than an Exception
+            raise Exception('Error on writing CalculiX input file.\n')
+        prefs = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
             self.purge_results()
@@ -120,11 +128,11 @@ class Results(run.Results):
         self.load_results_ccxdat()
 
     def purge_results(self):
-        for m in FemUtils.get_member(self.analysis, "Fem::FemResultObject"):
-            if FemUtils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
+        for m in femutils.get_member(self.analysis, "Fem::FemResultObject"):
+            if femutils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
-        App.ActiveDocument.recompute()
+        FreeCAD.ActiveDocument.recompute()
 
     def load_results_ccxfrd(self):
         frd_result_file = os.path.join(
@@ -147,7 +155,7 @@ class Results(run.Results):
             raise Exception(
                 'FEM: No .dat results found at {}!'.format(dat_result_file))
         if mode_frequencies:
-            for m in FemUtils.get_member(self.analysis, "Fem::FemResultObject"):
+            for m in femutils.get_member(self.analysis, "Fem::FemResultObject"):
                 if m.Eigenmode > 0:
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf['eigenmode']:
@@ -158,33 +166,38 @@ class _Container(object):
 
     def __init__(self, analysis):
         self.analysis = analysis
-        self.mesh = None
+
+        # get mesh
+        mesh, message = femutils.get_mesh_to_solve(self.analysis)
+        if mesh is not None:
+            self.mesh = mesh
+        else:
+            if FreeCAD.GuiUp:
+                QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+            raise Exception(message + '\n')
+
+        # get member
         self.materials_linear = self.get_several_member('Fem::Material')
         self.materials_nonlinear = self.get_several_member('Fem::MaterialMechanicalNonlinear')
-        self.fixed_constraints = self.get_several_member('Fem::ConstraintFixed')
-        self.selfweight_constraints = self.get_several_member('Fem::ConstraintSelfWeight')
-        self.force_constraints = self.get_several_member('Fem::ConstraintForce')
-        self.pressure_constraints = self.get_several_member('Fem::ConstraintPressure')
+
         self.beam_sections = self.get_several_member('Fem::FemElementGeometry1D')
         self.beam_rotations = self.get_several_member('Fem::FemElementRotation1D')
         self.fluid_sections = self.get_several_member('Fem::FemElementFluid1D')
         self.shell_thicknesses = self.get_several_member('Fem::FemElementGeometry2D')
-        self.displacement_constraints = self.get_several_member('Fem::ConstraintDisplacement')
-        self.temperature_constraints = self.get_several_member('Fem::ConstraintTemperature')
-        self.heatflux_constraints = self.get_several_member('Fem::ConstraintHeatflux')
-        self.initialtemperature_constraints = self.get_several_member('Fem::ConstraintInitialTemperature')
-        self.planerotation_constraints = self.get_several_member('Fem::ConstraintPlaneRotation')
-        self.contact_constraints = self.get_several_member('Fem::ConstraintContact')
-        self.transform_constraints = self.get_several_member('Fem::ConstraintTransform')
 
-        for m in self.analysis.Group:
-            if m.isDerivedFrom("Fem::FemMeshObject"):
-                if not self.mesh:
-                    self.mesh = m
-                else:
-                    raise Exception('FEM: Multiple mesh in analysis not yet supported!')
+        self.constraints_contact = self.get_several_member('Fem::ConstraintContact')
+        self.constraints_displacement = self.get_several_member('Fem::ConstraintDisplacement')
+        self.constraints_fixed = self.get_several_member('Fem::ConstraintFixed')
+        self.constraints_force = self.get_several_member('Fem::ConstraintForce')
+        self.constraints_heatflux = self.get_several_member('Fem::ConstraintHeatflux')
+        self.constraints_initialtemperature = self.get_several_member('Fem::ConstraintInitialTemperature')
+        self.constraints_planerotation = self.get_several_member('Fem::ConstraintPlaneRotation')
+        self.constraints_pressure = self.get_several_member('Fem::ConstraintPressure')
+        self.constraints_selfweight = self.get_several_member('Fem::ConstraintSelfWeight')
+        self.constraints_temperature = self.get_several_member('Fem::ConstraintTemperature')
+        self.constraints_transform = self.get_several_member('Fem::ConstraintTransform')
 
     def get_several_member(self, t):
-        return FemUtils.get_several_member(self.analysis, t)
+        return femutils.get_several_member(self.analysis, t)
 
 ##  @}

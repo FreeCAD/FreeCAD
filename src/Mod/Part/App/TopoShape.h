@@ -35,6 +35,10 @@ class gp_Ax1;
 class gp_Ax2;
 class gp_Vec;
 
+namespace App {
+class Color;
+}
+
 namespace Part
 {
 
@@ -175,7 +179,7 @@ public:
     void exportBrep(std::ostream&) const;
     void exportBinary(std::ostream&);
     void exportStl (const char *FileName, double deflection) const;
-    void exportFaceSet(double, double, std::ostream&) const;
+    void exportFaceSet(double, double, const std::vector<App::Color>&, std::ostream&) const;
     void exportLineSet(std::ostream&) const;
     //@}
 

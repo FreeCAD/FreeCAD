@@ -349,7 +349,7 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         pcPointStyle->pointSize = PointSize.getValue();
     }
     else if (prop == &CreaseAngle) {
-        pShapeHints->creaseAngle = (F_PI*CreaseAngle.getValue())/180.0;
+        pShapeHints->creaseAngle = Base::toRadians<float>(CreaseAngle.getValue());
     }
     else if (prop == &OpenEdges) {
         showOpenEdges(OpenEdges.getValue());
@@ -1476,6 +1476,10 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
                 view->removeGraphicsItem(*it);
                 delete *it;
             }
+
+            // See comment below
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+            hGrp->SetBool("ShowNaviCube", hGrp->GetBool("ShowNaviCube", true));
         }
     }
     else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
@@ -1492,11 +1496,19 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
         Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
         if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId()))
             return;
+
+        // FIXME: The Flag class doesn't work well (flickering) when the NaviCube is enabled.
+        // To avoid this the NaviCube is disabled for the time the flags are shown.
+        // When leaving this mode the NaviCube can be displayed again.
+        // For a proper solution it's best to move the Flag class to the QGraphicsView API.
+        view->setEnabledNaviCube(false);
+
         ViewProviderMesh* that = static_cast<ViewProviderMesh*>(vp);
         const SoDetail* detail = point->getDetail(that->getShapeNode());
         if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
             // get the boundary to the picked facet
-            unsigned long uFacet = ((SoFaceDetail*)detail)->getFaceIndex();
+            const SoFaceDetail* faceDetail = static_cast<const SoFaceDetail*>(detail);
+            unsigned long uFacet = faceDetail->getFaceIndex();
             that->faceInfo(uFacet);
             Gui::GLFlagWindow* flags = 0;
             std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
@@ -1508,8 +1520,16 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
                 flags = static_cast<Gui::GLFlagWindow*>(glItems.front());
             }
 
+            int point1 = static_cast<const SoPointDetail*>(faceDetail->getPoint(0))->getCoordinateIndex();
+            int point2 = static_cast<const SoPointDetail*>(faceDetail->getPoint(1))->getCoordinateIndex();
+            int point3 = static_cast<const SoPointDetail*>(faceDetail->getPoint(2))->getCoordinateIndex();
             Gui::Flag* flag = new Gui::Flag;
             flag->setText(QObject::tr("Index: %1").arg(uFacet));
+            QString toolTip = QString::fromLatin1("Facet index: %1\n"
+                                                  "Points: <%2, %3, %4>")
+                    .arg(uFacet)
+                    .arg(point1).arg(point2).arg(point3);
+            flag->setToolTip(toolTip);
             flag->setOrigin(point->getPoint());
             flags->addFlag(flag, Gui::FlagLayout::TopRight);
         }
@@ -1628,7 +1648,7 @@ void ViewProviderMesh::markPartCallback(void * ud, SoEventCallback * n)
 
 void ViewProviderMesh::faceInfo(unsigned long uFacet)
 {
-    Mesh::Feature* fea = reinterpret_cast<Mesh::Feature*>(this->getObject());
+    Mesh::Feature* fea = static_cast<Mesh::Feature*>(this->getObject());
     const MeshCore::MeshKernel& rKernel = fea->Mesh.getValue().getKernel();
     const MeshCore::MeshFacetArray& facets = rKernel.GetFacets();
     if (uFacet < facets.size()) {

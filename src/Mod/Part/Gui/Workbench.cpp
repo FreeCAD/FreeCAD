@@ -40,6 +40,10 @@ using namespace PartGui;
     qApp->translate("Workbench", "Solids");
     qApp->translate("Workbench", "Part tools");
     qApp->translate("Workbench", "Boolean");
+    qApp->translate("Workbench", "Primitives");
+    qApp->translate("Workbench", "Join");
+    qApp->translate("Workbench", "Split");
+    qApp->translate("Workbench", "Compound");
 #endif
 
 /// @namespace PartGui @class Workbench
@@ -64,7 +68,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Cylinder"
           << "Part_Sphere"
           << "Part_Cone"
-          << "Part_Torus";
+          << "Part_Torus"
+          << "Separator"
+          << "Part_MakeTube";
 
     Gui::MenuItem* bop = new Gui::MenuItem;
     bop->setCommand("Boolean");
@@ -82,12 +88,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* split = new Gui::MenuItem;
     split->setCommand("Split");
     *split << "Part_BooleanFragments"
+           << "Part_SliceApart"
            << "Part_Slice"
            << "Part_XOR";
 
     Gui::MenuItem* compound = new Gui::MenuItem;
     compound->setCommand("Compound");
     *compound << "Part_Compound"
+              << "Part_ExplodeCompound"
               << "Part_CompoundFilter";
 
     Gui::MenuItem* part = new Gui::MenuItem;
@@ -126,6 +134,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Offset"
           << "Part_Offset2D"
           << "Part_Thickness"
+          << "Part_projectionOnSurface"
           << "Separator"
           << "Part_EditAttachment";
 
@@ -180,11 +189,13 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Part_Loft"
           << "Part_Sweep"
           << "Part_CompOffset"
-          << "Part_Thickness";
+          << "Part_Thickness"
+          << "Part_projectionOnSurface";
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");
-    *boolop << "Part_Boolean"
+    *boolop << "Part_CompCompoundTools"
+            << "Part_Boolean"
             << "Part_Cut"
             << "Part_Fuse"
             << "Part_Common"

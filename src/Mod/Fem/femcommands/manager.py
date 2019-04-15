@@ -29,6 +29,7 @@ __url__ = "http://www.freecadweb.org"
 #  @{
 
 import FreeCAD
+import femtools.femutils as femutils
 if FreeCAD.GuiUp:
     import FreeCADGui
     import FemGui
@@ -60,7 +61,7 @@ class CommandManager(object):
             elif self.is_active == 'with_analysis':
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc()
             elif self.is_active == 'with_results':
-                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.results_present()
+                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and (self.results_present() or self.result_mesh_present())
             elif self.is_active == 'with_selresult':
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.result_selected()
             elif self.is_active == 'with_part_feature':
@@ -90,6 +91,14 @@ class CommandManager(object):
                 if o.isDerivedFrom('Fem::FemResultObject'):
                     results = True
             return results
+
+        def result_mesh_present(self):
+            result_mesh = False
+            analysis_members = FemGui.getActiveAnalysis().Group
+            for o in analysis_members:
+                if femutils.is_of_type(o, 'Fem::FemMeshResult'):
+                    result_mesh = True
+            return result_mesh
 
         def result_selected(self):
             sel = FreeCADGui.Selection.getSelection()

@@ -61,14 +61,16 @@
         </Methode>
         <Methode Name="read">
             <Documentation>
-                <UserDocu>Read in a DAT, UNV, MED or STL file.</UserDocu>
+                <UserDocu>Read in a various FEM mesh file formats.
+                    read(file.endingToExportTo)
+                    supported formats: DAT, INP, MED, STL, UNV, VTK, Z88</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="write" Const="true">
             <Documentation>
                 <UserDocu>Write out various FEM mesh file formats.
                     write(file.endingToExportTo)
-                    supported formats: DAT, INP, MED, STL, UNV, VTK, Z88
+                    supported formats: BDF, DAT, INP, MED, STL, UNV, VTK, Z88
                 </UserDocu>
             </Documentation>
         </Methode>
@@ -154,6 +156,16 @@
         <Methode Name="getGroupElements" Const="true">
             <Documentation>
                 <UserDocu>Return a tuple of ElementIDs to a given group ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getElementType" Const="true">
+            <Documentation>
+                <UserDocu>Return the element type of a given ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getIdByElementType" Const="true">
+            <Documentation>
+                <UserDocu>Return a tuple of IDs to a given element type</UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="Nodes" ReadOnly="true">

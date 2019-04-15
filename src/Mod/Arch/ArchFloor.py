@@ -2,8 +2,7 @@
 
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -99,9 +98,9 @@ class _CommandFloor:
                 else:
                     warning = True
         if warning :
-            message = translate( "Arch" , "You can put anything but Site, Building, Floor object in a Floor object.\n\
-Floor object are not allowed to accept Site or Building object.\n\
-Site, Building and Floor objects will be removed from the selection.\n\
+            message = translate( "Arch" , "You can put anything but the following objects: Site, Building, and Floor - in a Floor object.\n\
+Floor object is not allowed to accept Site, Building, or Floor objects.\n\
+Site, Building, and Floor objects will be removed from the selection.\n\
 You can change that in the preferences.") + "\n"
             ArchCommands.printMessage( message )
         if sel and len(floorobj) == 0:
@@ -131,7 +130,7 @@ class _Floor:
         obj.Proxy = self
         self.Object = obj
         _Floor.setProperties(self,obj)
-        self.IfcRole = "Building Storey"
+        self.IfcType = "Building Storey"
 
     def setProperties(self,obj):
 
@@ -143,10 +142,10 @@ class _Floor:
         if not hasattr(obj,"Placement"):
             # obj can be a Part Feature and already has a placement
             obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
-        if not "IfcRole" in pl:
-            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-            import ArchComponent
-            obj.IfcRole = ArchComponent.IfcRoles
+        if not "IfcType" in pl:
+            obj.addProperty("App::PropertyEnumeration","IfcType","Component",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
+            import ArchIFC
+            obj.IfcType = ArchIFC.IfcTypes
         self.Type = "Floor"
 
     def onDocumentRestored(self,obj):

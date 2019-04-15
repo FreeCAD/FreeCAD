@@ -24,7 +24,6 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 #define DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 
-#include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 
@@ -53,6 +52,7 @@ public:
     App::PropertyBool   HorizCenterLine;
     App::PropertyBool   VertCenterLine;
     App::PropertyBool   ShowSectionLine;
+    App::PropertyFloat  HighlightAdjust;
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);

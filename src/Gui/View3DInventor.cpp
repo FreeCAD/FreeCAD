@@ -112,9 +112,9 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     : MDIView(pcDocument, parent, wflags), _viewerPy(0)
 {
     stack = new QStackedWidget(this);
-    // important for highlighting 
+    // important for highlighting
     setMouseTracking(true);
-    // accept drops on the window, get handled in dropEvent, dragEnterEvent   
+    // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
 
     // attach parameter Observer
@@ -196,7 +196,7 @@ View3DInventor::~View3DInventor()
 {
     hGrp->Detach(this);
 
-    //If we destroy this viewer by calling 'delete' directly the focus proxy widget which is defined 
+    //If we destroy this viewer by calling 'delete' directly the focus proxy widget which is defined
     //by a widget in SoQtViewer isn't reset. This widget becomes a dangling pointer and makes
     //the application crash. (Probably it's better to destroy this viewer by calling close().)
     //See also Gui::Document::~Document().
@@ -337,7 +337,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->navigationStyle()->setResetCursorPosition(on);
     }
     else if (strcmp(Reason,"InvertZoom") == 0) {
-        bool on = rGrp.GetBool("InvertZoom", false);
+        bool on = rGrp.GetBool("InvertZoom", true);
         _viewer->navigationStyle()->setZoomInverted(on);
     }
     else if (strcmp(Reason,"ZoomAtCursor") == 0) {
@@ -462,7 +462,7 @@ void View3DInventor::print()
 
 void View3DInventor::printPdf()
 {
-    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(), 
+    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
         QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         Gui::WaitCursor wc;
@@ -574,40 +574,37 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         return true;
     }
     else if(strcmp("ViewBottom",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation(0, -1, 0, 0));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Bottom));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewFront",pMsg) == 0 ) {
-        float root = (float)(sqrt(2.0)/2.0);
-        _viewer->setCameraOrientation(SbRotation(-root, 0, 0, -root));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Front));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewLeft",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation(-0.5, 0.5, 0.5, -0.5));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Left));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewRear",pMsg) == 0 ) {
-        float root = (float)(sqrt(2.0)/2.0);
-        _viewer->setCameraOrientation(SbRotation(0, root, root, 0));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Rear));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewRight",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation(0.5, 0.5, 0.5, 0.5));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Right));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewTop",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation(0, 0, 0, 1));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Top));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewAxo",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation
-            (-0.353553f, -0.146447f, -0.353553f, -0.853553f));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Isometric));
         _viewer->viewAll();
         return true;
     }
@@ -660,11 +657,11 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return doc && doc->getAvailableRedos() > 0;
     }
     else if (strcmp("Print",pMsg) == 0)
-        return true; 
+        return true;
     else if (strcmp("PrintPreview",pMsg) == 0)
-        return true; 
+        return true;
     else if (strcmp("PrintPdf",pMsg) == 0)
-        return true; 
+        return true;
     else if(strcmp("SetStereoRedGreen",pMsg) == 0)
         return true;
     else if(strcmp("SetStereoQuadBuff",pMsg) == 0)
@@ -688,7 +685,7 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return true;
 #else
         return false;
-#endif 
+#endif
     else if(strcmp("ViewSelection",pMsg) == 0)
         return true;
     else if(strcmp("ViewBottom",pMsg) == 0)
@@ -731,7 +728,7 @@ bool View3DInventor::setCamera(const char* pCamera)
         throw Base::RuntimeError("Camera settings failed to read");
     }
 
-    // toggle between persepective and orthographic camera
+    // toggle between perspective and orthographic camera
     if (Cam->getTypeId() != CamViewer->getTypeId())
     {
         _viewer->setCameraType(Cam->getTypeId());
@@ -825,7 +822,7 @@ void View3DInventor::windowStateChanged(MDIView* view)
 {
     bool canStartTimer = false;
     if (this != view) {
-        // If both views are child widgets of the workspace and view is maximized this view 
+        // If both views are child widgets of the workspace and view is maximized this view
         // must be hidden, hence we can start the timer.
         // Note: If view is top-level or fullscreen it doesn't necessarily hide the other view
         // e.g. if it is on a second monitor.
@@ -909,7 +906,7 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
     //}
 #endif
 
-    // This widget becomes the focus proxy of the embedded GL widget if we leave 
+    // This widget becomes the focus proxy of the embedded GL widget if we leave
     // the 'Child' mode. If we reenter 'Child' mode the focus proxy is reset to 0.
     // If we change from 'TopLevel' mode to 'Fullscreen' mode or vice versa nothing
     // happens.
@@ -921,7 +918,7 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
     // control after redirecting the first key event to the GL widget.
     if (oldmode == Child) {
         // To make a global shortcut working from this window we need to add
-        // all existing actions from the mainwindow and its sub-widgets 
+        // all existing actions from the mainwindow and its sub-widgets
         QList<QAction*> acts = getMainWindow()->findChildren<QAction*>();
         this->addActions(acts);
         _viewer->getGLWidget()->setFocusProxy(this);
@@ -947,7 +944,7 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
 bool View3DInventor::eventFilter(QObject* watched, QEvent* e)
 {
     // As long as this widget is a top-level window (either in 'TopLevel' or 'FullScreen' mode) we
-    // need to be notified when an action is added to a widget. This action must also be added to 
+    // need to be notified when an action is added to a widget. This action must also be added to
     // this window to allow to make use of its shortcut (if defined).
     // Note: We don't need to care about removing an action if its parent widget gets destroyed.
     // This does the action itself for us.
@@ -970,7 +967,7 @@ void View3DInventor::keyPressEvent (QKeyEvent* e)
     ViewMode mode = MDIView::currentViewMode();
     if (mode != Child) {
         // If the widget is in fullscreen mode then we can return to normal mode either
-        // by pressing the matching accelerator or ESC. 
+        // by pressing the matching accelerator or ESC.
         if (e->key() == Qt::Key_Escape) {
             setCurrentViewMode(Child);
         }

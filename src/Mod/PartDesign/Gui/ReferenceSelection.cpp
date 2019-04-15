@@ -143,10 +143,10 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     if (edge && subName.size() > 4 && subName.substr(0,4) == "Edge") {
         const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
         TopoDS_Shape sh = shape.getSubShape(subName.c_str());
-        const TopoDS_Edge& edge = TopoDS::Edge(sh);
-        if (!edge.IsNull()) {
+        const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
+        if (!edgeShape.IsNull()) {
             if (planar) {
-                BRepAdaptor_Curve adapt(edge);
+                BRepAdaptor_Curve adapt(edgeShape);
                 if (adapt.GetType() == GeomAbs_Line)
                     return true;
             } else {

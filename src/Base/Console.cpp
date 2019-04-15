@@ -146,7 +146,7 @@ ConsoleSingleton::~ConsoleSingleton()
  */
 void ConsoleSingleton::SetConsoleMode(ConsoleMode m)
 {
-    if(m && Verbose)
+    if (m & Verbose)
         _bVerbose = true;
 }
 
@@ -155,7 +155,7 @@ void ConsoleSingleton::SetConsoleMode(ConsoleMode m)
  */
 void ConsoleSingleton::UnsetConsoleMode(ConsoleMode m)
 {
-    if(m && Verbose)
+    if (m & Verbose)
         _bVerbose = false;
 }
 

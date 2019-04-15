@@ -83,7 +83,7 @@ void FileDialog::onSelectedFilter(const QString& /*filter*/)
     QString suf = selectedNameFilter();
     if (rx.indexIn(suf) >= 0) {
         suf = rx.cap(1);
-        setDefaultSuffix(suf.toLower());
+        setDefaultSuffix(suf);
     }
 }
 
@@ -115,7 +115,7 @@ void FileDialog::accept()
             // #0001928: do not add a suffix if a file with suffix is entered
             // #0002209: make sure that the entered suffix is part of one of the filters
             if (!ext.isEmpty() && (suffix.isEmpty() || !hasSuffix(suffix))) {
-                file = QString::fromLatin1("%1.%2").arg(file).arg(ext);
+                file = QString::fromLatin1("%1.%2").arg(file, ext);
                 // That's the built-in line edit
                 QLineEdit* fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));
                 if (fileNameEdit)
@@ -525,7 +525,7 @@ void FileOptionsDialog::accept()
         if (ext.isEmpty())
             setDefaultSuffix(suf);
         else if (ext.toLower() != suf.toLower()) {
-            fn = QString::fromLatin1("%1.%2").arg(fn).arg(suf);
+            fn = QString::fromLatin1("%1.%2").arg(fn, suf);
             selectFile(fn);
             // That's the built-in line edit (fixes Debian bug #811200)
             QLineEdit* fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));
@@ -823,7 +823,7 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
             module = module.left(pos);
         }
 
-        button->setText(QString::fromLatin1("%1 (%2)").arg(filter).arg(module));
+        button->setText(QString::fromLatin1("%1 (%2)").arg(filter, module));
         button->setObjectName(it.value());
         gridLayout1->addWidget(button, index, 0, 1, 1);
         group->addButton(button, index);

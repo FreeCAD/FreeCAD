@@ -284,13 +284,13 @@ Gui::Action * CmdSketcherCompBSplineShowHideGeometryInformation::createAction(vo
     applyCommandData(this->className(), pcAction);
     
     QAction* c1 = pcAction->addAction(QString());
-    c1->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplineDegree"));
+    c1->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineDegree"));
     QAction* c2 = pcAction->addAction(QString());
-    c2->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplinePolygon"));
+    c2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplinePolygon"));
     QAction* c3 = pcAction->addAction(QString());
-    c3->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplineComb"));
+    c3->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineComb"));
     QAction* c4 = pcAction->addAction(QString());
-    c4->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplineKnotMultiplicity"));
+    c4->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineKnotMultiplicity"));
 
     _pcAction = pcAction;
     languageChange();
@@ -856,9 +856,9 @@ Gui::Action * CmdSketcherCompModifyKnotMultiplicity::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* c1 = pcAction->addAction(QString());
-    c1->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplineIncreaseKnotMultiplicity"));
+    c1->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineIncreaseKnotMultiplicity"));
     QAction* c2 = pcAction->addAction(QString());
-    c2->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplineDecreaseKnotMultiplicity"));
+    c2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineDecreaseKnotMultiplicity"));
 
     _pcAction = pcAction;
     languageChange();

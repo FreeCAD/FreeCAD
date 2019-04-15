@@ -133,7 +133,9 @@ CGRP     '\,'[0-9][0-9][0-9]
 "rad"      yylval = Quantity::Radian;              return UNIT; // radian
 "gon"      yylval = Quantity::Gon;                 return UNIT; // gon
 "M"        yylval = Quantity::AngMinute;           return UNIT; // minute(Angular)
+"\xE2\x80\xB2" yylval = Quantity::AngMinute;       return UNIT; // minute(Angular)
 "S"        yylval = Quantity::AngSecond;           return UNIT; // second(Angular) 
+"\xE2\x80\xB3" yylval = Quantity::AngSecond;       return UNIT; // second(Angular) 
 
 "1"        yylval = Quantity(1.0);                 return ONE;
 {DIGIT}+"."?{DIGIT}*{EXPO}?                         {  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }

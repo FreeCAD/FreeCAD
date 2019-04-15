@@ -27,27 +27,43 @@
 
 #include <Gui/MDIView.h>
 #include <Gui/Window.h>
+#include <QLineEdit>
 
-#if QT_VERSION >= 0x040400
+#if QT_VERSION >= 0x050700 && defined(QTWEBENGINE)
+#include <QWebEngineView>
+namespace WebGui {
+class WebEngineUrlRequestInterceptor;
+};
+#elif QT_VERSION >= 0x040400 && defined(QTWEBKIT)
 #include <QWebView>
 #endif
 
-class QWebView;
 class QUrl;
 class QNetworkRequest;
 class QNetworkReply;
 
 namespace WebGui {
+class UrlWidget;
 
+#ifdef QTWEBENGINE
+class WebGuiExport WebView : public QWebEngineView
+#else
 class WebGuiExport WebView : public QWebView
+#endif
 {
     Q_OBJECT
 
 public:
     WebView(QWidget *parent = 0);
+#ifdef QTWEBENGINE
+    // reimplement setTextSizeMultiplier
+    void setTextSizeMultiplier(qreal factor);
+#endif
 
 protected:
+#ifdef QTWEBKIT
     void mousePressEvent(QMouseEvent *event);
+#endif
     void wheelEvent(QWheelEvent *event);
     void contextMenuEvent(QContextMenuEvent *event);
 
@@ -55,8 +71,9 @@ private Q_SLOTS:
     void triggerContextMenuAction(int);
 
 Q_SIGNALS:
-    void openLinkInExternalBrowser(const QUrl& url);
+    void openLinkInExternalBrowser(const QUrl&);
     void openLinkInNewWindow(const QUrl&);
+    void viewSource(const QUrl&);
 };
 
 /**
@@ -76,6 +93,7 @@ public:
     void load(const QUrl & url);
     void setHtml(const QString& HtmlCode,const QUrl & BaseUrl);
     void stop(void);
+    QUrl url() const;
 
     void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
 
@@ -91,17 +109,42 @@ protected Q_SLOTS:
     void onLoadStarted();
     void onLoadProgress(int);
     void onLoadFinished(bool);
-    void onLinkClicked (const QUrl& url);
     bool chckHostAllowed(const QString& host);
+#ifdef QTWEBENGINE
+    void onDownloadRequested(QWebEngineDownloadItem *request);
+    void setWindowIcon(const QIcon &icon);
+    void urlFilter(const QUrl &url);
+#else
     void onDownloadRequested(const QNetworkRequest& request);
     void onUnsupportedContent(QNetworkReply* reply);
+    void onLinkClicked (const QUrl& url);
+#endif
+    void onViewSource(const QUrl &url);
     void onOpenLinkInExternalBrowser(const QUrl& url);
     void onOpenLinkInNewWindow(const QUrl&);
 
 private:
     WebView* view;
     bool isLoading;
+    UrlWidget *urlWgt;
+#ifdef QTWEBENGINE
+    WebEngineUrlRequestInterceptor *interceptLinks;
+#else
     float textSizeMultiplier;
+#endif
+};
+
+// the URL ardressbar lineedit
+class UrlWidget : public QLineEdit
+{
+    Q_OBJECT
+    BrowserView *m_view;
+public:
+    explicit UrlWidget(BrowserView *view);
+    ~UrlWidget();
+    void display();
+protected:
+    void keyPressEvent(QKeyEvent *keyEvt);
 };
 
 } // namespace WebGui

@@ -179,7 +179,7 @@ def export(objectslist,filename,argstring):
 
     print("done postprocessing.")
 
-    gfile = pythonopen(filename,"wb")
+    gfile = pythonopen(filename,"w")
     gfile.write(final)
     gfile.close()
 

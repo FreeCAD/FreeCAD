@@ -19,12 +19,12 @@
     <message>
       <location filename="../../PlotGui.py" line="62"/>
       <source>Configure axes</source>
-      <translation>Configurar eixes</translation>
+      <translation>Configurar eixos</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="65"/>
       <source>Configure the axes parameters</source>
-      <translation>Configurar os parámetros dos eixes</translation>
+      <translation>Configurar os parámetros dos eixos</translation>
     </message>
   </context>
   <context>
@@ -50,7 +50,7 @@
     <message>
       <location filename="../../PlotGui.py" line="155"/>
       <source>Set title and axes labels</source>
-      <translation>Estabelecer títulos e etiquetas dos eixes</translation>
+      <translation>Estabelecer títulos e etiquetas dos eixos</translation>
     </message>
   </context>
   <context>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="175"/>
       <source>Configure axes</source>
-      <translation>Configurar eixes</translation>
+      <translation>Configurar eixos</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="179"/>
@@ -120,7 +120,7 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="211"/>
       <source>Apply to all axes</source>
-      <translation>Aplicar a tódolos eixes</translation>
+      <translation>Aplicar a tódolos eixos</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="215"/>
@@ -130,12 +130,12 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="219"/>
       <source>X axis position</source>
-      <translation>Posición do eixe X</translation>
+      <translation>Posición do eixo X</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="223"/>
       <source>Y axis position</source>
-      <translation>Posición do eixe Y</translation>
+      <translation>Posición do eixo Y</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="199"/>
@@ -155,62 +155,62 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="227"/>
       <source>Index of the active axes</source>
-      <translation>Índice de eixes activos</translation>
+      <translation>Índice de eixos activos</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="231"/>
       <source>Add new axes to the plot</source>
-      <translation>Engadir novos eixes o trazado</translation>
+      <translation>Engadir novos eixos o trazado</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="236"/>
       <source>Remove selected axes</source>
-      <translation>Rexeitar os eixes escolmados</translation>
+      <translation>Rexeitar os eixos escolmados</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="241"/>
       <source>Check it to apply transformations to all axes</source>
-      <translation>Marcalo para aplicar transformacións a tódolos eixes</translation>
+      <translation>Marcalo para aplicar transformacións a tódolos eixos</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="246"/>
       <source>Left bound of axes</source>
-      <translation>Límite esquerdo dos eixes</translation>
+      <translation>Límite esquerdo dos eixos</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="251"/>
       <source>Right bound of axes</source>
-      <translation>Límite dereito dos eixes</translation>
+      <translation>Límite dereito dos eixos</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="256"/>
       <source>Bottom bound of axes</source>
-      <translation>Límite inferior dos eixes</translation>
+      <translation>Límite inferior dos eixos</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="261"/>
       <source>Top bound of axes</source>
-      <translation>Límite superior dos eixes</translation>
+      <translation>Límite superior dos eixos</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="266"/>
       <source>Outward offset of X axis</source>
-      <translation>Desprazamento cara fóra do eixe X</translation>
+      <translation>Desprazamento cara fóra do eixo X</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="271"/>
       <source>Outward offset of Y axis</source>
-      <translation>Desprazamento cara fóra do eixe Y</translation>
+      <translation>Desprazamento cara fóra do eixo Y</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="276"/>
       <source>X axis scale autoselection</source>
-      <translation>Auto-escolma da escala do eixe X</translation>
+      <translation>Auto-escolma da escala do eixo X</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="281"/>
       <source>Y axis scale autoselection</source>
-      <translation>Auto-escolma da escala do eixe Y</translation>
+      <translation>Auto-escolma da escala do eixo Y</translation>
     </message>
   </context>
   <context>
@@ -233,7 +233,7 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="340"/>
       <source>Axes 0 can not be deleted</source>
-      <translation>Os eixes 0 non se poden desbotar</translation>
+      <translation>Os eixos 0 non se poden desbotar</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="97"/>
@@ -276,12 +276,12 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="153"/>
       <source>Index of the active axes</source>
-      <translation>Índice de eixes activos</translation>
+      <translation>Índice de eixos activos</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="157"/>
       <source>Title (associated to active axes)</source>
-      <translation>Título (vencellado ó eixe activo)</translation>
+      <translation>Título (vencellado ó eixo activo)</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="162"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="172"/>
       <source>X axis title font size</source>
-      <translation>Tamaño da fonte do título do eixe X</translation>
+      <translation>Tamaño da fonte do título do eixo X</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="177"/>
@@ -306,7 +306,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="182"/>
       <source>Y axis title font size</source>
-      <translation>Tamaño da fonte do título do eixe Y</translation>
+      <translation>Tamaño da fonte do título do eixo Y</translation>
     </message>
   </context>
   <context>

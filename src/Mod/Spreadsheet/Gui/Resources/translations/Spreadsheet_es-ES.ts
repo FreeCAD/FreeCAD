@@ -102,8 +102,8 @@
       <translation>Centrar verticalmente</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Centra verticalmente el conetnido de las celdas seleccionadas</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Alineado verticalmente centrado del contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Subrayado</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
+      <source>Underline text in selected cells</source>
       <translation>Texto subrayado en las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Personalizado</translation>
+      <source>Custom Color</source>
+      <translation>Color Personalizado</translation>
     </message>
   </context>
   <context>

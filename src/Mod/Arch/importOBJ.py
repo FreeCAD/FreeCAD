@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, os
+import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, os, sys
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
@@ -43,6 +43,13 @@ p = Draft.precision()
 if open.__module__ in ['__builtin__','io']:
     pythonopen = open
 
+def decode(txt):
+
+    if sys.version_info.major < 3:
+        if isinstance(txt,unicode):
+            return txt.encode("utf8")
+    return txt
+
 def findVert(aVertex,aList):
     "finds aVertex in aList, returns index"
     for i in range(len(aList)):
@@ -64,11 +71,11 @@ def getIndices(shape,offset):
                 if not isinstance(e.Curve,Part.LineSegment):
                     if not curves:
                         curves = shape.tessellate(1)
-                        FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating").decode('utf8')+"\n")
+                        FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                         break
             except: # unimplemented curve type
                 curves = shape.tessellate(1)
-                FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating").decode('utf8')+"\n")
+                FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                 break
     elif isinstance(shape,Mesh.Mesh):
         curves = shape.Topology
@@ -186,7 +193,7 @@ def export(exportList,filename):
                     for f in flist:
                         outfile.write("f" + f + "\n")
     outfile.close()
-    FreeCAD.Console.PrintMessage(translate("Arch","Successfully written").decode('utf8') + " " + filename + "\n")
+    FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + " " + decode(filename) + "\n")
     if materials: 
         outfile = pythonopen(filenamemtl,"wb")
         outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
@@ -209,7 +216,7 @@ def export(exportList,filename):
                     done.append(mat.Name)
         outfile.write("# Material Count: " + str(len(materials)))
         outfile.close()
-        FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + ' ' + filenamemtl + "\n")
+        FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + ' ' + decode(filenamemtl) + "\n")
 
 
 def decode(name):
@@ -287,7 +294,7 @@ def insert(filename,docname):
                 material = line[7:]
         if activeobject:
             makeMesh(doc,activeobject,verts,facets,material,colortable)
-    FreeCAD.Console.PrintMessage(translate("Arch","Successfully imported") + ' ' + filename + "\n")
+    FreeCAD.Console.PrintMessage(translate("Arch","Successfully imported") + ' ' + decode(filename) + "\n")
     return doc
 
 def makeMesh(doc,activeobject,verts,facets,material,colortable):

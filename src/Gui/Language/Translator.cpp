@@ -164,6 +164,8 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Indonesian"           )] = "id";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Lithuanian"           )] = "lt";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"            )] = "val-ES";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Arabic"               )] = "ar";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"           )] = "vi";
     
     d->activatedLanguage = "English";
 

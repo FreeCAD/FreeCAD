@@ -45,6 +45,7 @@
 #include <Gui/ViewProviderOrigin.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <App/Origin.h>
 #include <boost/bind.hpp>
 
@@ -525,9 +526,9 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                     "App.ActiveDocument.%1.Width=%3\n"
                     "App.ActiveDocument.%1.Height=%4\n")
                     .arg(name)
-                    .arg(ui.boxLength->value().getValue(),0,'f',2)
-                    .arg(ui.boxWidth->value().getValue(),0,'f',2)
-                    .arg(ui.boxHeight->value().getValue(),0,'f',2);
+                    .arg(ui.boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
         
             case 2:  // cylinder
@@ -536,9 +537,9 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                     "App.ActiveDocument.%1.Height=%3\n"
                     "App.ActiveDocument.%1.Angle=%4\n")
                     .arg(name)
-                    .arg(ui.cylinderRadius->value().getValue(),0,'f',2)
-                    .arg(ui.cylinderHeight->value().getValue(),0,'f',2)
-                    .arg(ui.cylinderAngle->value().getValue(),0,'f',2);
+                    .arg(ui.cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.cylinderHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
                 
             case 3:  // cone
@@ -548,10 +549,10 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                     "App.ActiveDocument.%1.Height=%4\n"
                     "App.ActiveDocument.%1.Angle=%5\n")
                     .arg(name)
-                    .arg(ui.coneRadius1->value().getValue(),0,'f',2)
-                    .arg(ui.coneRadius2->value().getValue(),0,'f',2)
-                    .arg(ui.coneHeight->value().getValue(),0,'f',2)
-                    .arg(ui.coneAngle->value().getValue(),0,'f',2);
+                    .arg(ui.coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.coneHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.coneAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                  break;
 
             case 4:  // sphere
@@ -561,10 +562,10 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                     "App.ActiveDocument.%1.Angle2=%4\n"
                     "App.ActiveDocument.%1.Angle3=%5\n")
                     .arg(name)
-                    .arg(ui.sphereRadius->value().getValue(),0,'f',2)
-                    .arg(ui.sphereAngle1->value().getValue(),0,'f',2)
-                    .arg(ui.sphereAngle2->value().getValue(),0,'f',2)
-                    .arg(ui.sphereAngle3->value().getValue(),0,'f',2);
+                    .arg(ui.sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.sphereAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.sphereAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.sphereAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
             case 5:  // ellipsoid
                 cmd = QString::fromLatin1(
@@ -575,12 +576,12 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                     "App.ActiveDocument.%1.Angle2=%6\n"
                     "App.ActiveDocument.%1.Angle3=%7\n")
                     .arg(name)
-                    .arg(ui.ellipsoidRadius1->value().getValue(),0,'f',2)
-                    .arg(ui.ellipsoidRadius2->value().getValue(),0,'f',2)
-                    .arg(ui.ellipsoidRadius3->value().getValue(),0,'f',2)
-                    .arg(ui.ellipsoidAngle1->value().getValue(),0,'f',2)
-                    .arg(ui.ellipsoidAngle2->value().getValue(),0,'f',2)
-                    .arg(ui.ellipsoidAngle3->value().getValue(),0,'f',2);
+                    .arg(ui.ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.ellipsoidRadius3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.ellipsoidAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.ellipsoidAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.ellipsoidAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
                 
             case 6:  // torus
@@ -591,11 +592,11 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                     "App.ActiveDocument.%1.Angle2=%5\n"
                     "App.ActiveDocument.%1.Angle3=%6\n")
                     .arg(name)
-                    .arg(ui.torusRadius1->value().getValue(),0,'f',2)
-                    .arg(ui.torusRadius2->value().getValue(),0,'f',2)
-                    .arg(ui.torusAngle1->value().getValue(),0,'f',2)
-                    .arg(ui.torusAngle2->value().getValue(),0,'f',2)
-                    .arg(ui.torusAngle3->value().getValue(),0,'f',2);
+                    .arg(ui.torusRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.torusRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.torusAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.torusAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.torusAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
             case 7:  // prism
                 cmd = QString::fromLatin1(
@@ -604,8 +605,8 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                     "App.ActiveDocument.%1.Height=%4\n")
                     .arg(name)
                     .arg(ui.prismPolygon->value())
-                    .arg(ui.prismCircumradius->value().getValue(),0,'f',2)
-                    .arg(ui.prismHeight->value().getValue(),0,'f',2);
+                    .arg(ui.prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.prismHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
             case 8:  // wedge
                 cmd = QString::fromLatin1(
@@ -620,16 +621,16 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                     "App.ActiveDocument.%1.X2max=%10\n"
                     "App.ActiveDocument.%1.Z2max=%11\n")
                     .arg(name)
-                    .arg(ui.wedgeXmin->value().getValue(),0,'f',2)
-                    .arg(ui.wedgeYmin->value().getValue(),0,'f',2)
-                    .arg(ui.wedgeZmin->value().getValue(),0,'f',2)
-                    .arg(ui.wedgeX2min->value().getValue(),0,'f',2)
-                    .arg(ui.wedgeZ2min->value().getValue(),0,'f',2)
-                    .arg(ui.wedgeXmax->value().getValue(),0,'f',2)
-                    .arg(ui.wedgeYmax->value().getValue(),0,'f',2)
-                    .arg(ui.wedgeZmax->value().getValue(),0,'f',2)
-                    .arg(ui.wedgeX2max->value().getValue(),0,'f',2)
-                    .arg(ui.wedgeZ2max->value().getValue(),0,'f',2);
+                    .arg(ui.wedgeXmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.wedgeYmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.wedgeZmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.wedgeX2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.wedgeZ2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.wedgeXmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.wedgeYmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.wedgeZmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.wedgeX2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui.wedgeZ2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
             
             default:

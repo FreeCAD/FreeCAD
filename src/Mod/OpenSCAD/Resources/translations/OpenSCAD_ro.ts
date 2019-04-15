@@ -111,83 +111,83 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="73"/>
       <source>Print debug information in the Console</source>
-      <translation type="unfinished">Print debug information in the Console</translation>
+      <translation>Imprimaţi informaţii de depanare în consolă</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="47"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation type="unfinished">The path to the OpenSCAD executable</translation>
+      <translation>Calea către executabilul OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>Unghiul minim pentru un fragment</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>Marimea minima a unui fragment</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="148"/>
+      <location filename="../../OpenSCADCommands.py" line="145"/>
       <source>Convert Edges to Faces</source>
       <translation>Convertiti marginile in fete</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="227"/>
+      <location filename="../../OpenSCADCommands.py" line="224"/>
       <source>Please select 3 objects first</source>
       <translation>Selectati mai intai 3 obiecte</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1200"/>
+      <location filename="../../importCSG.py" line="1204"/>
       <source>Unsupported Function</source>
       <translation>Functia nu este suportata</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1200"/>
+      <location filename="../../importCSG.py" line="1204"/>
       <source>Press OK</source>
       <translation>Apasati Ok</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="271"/>
+      <location filename="../../OpenSCADCommands.py" line="268"/>
       <source>Add</source>
       <translation>Adaugă</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="272"/>
+      <location filename="../../OpenSCADCommands.py" line="269"/>
       <source>Clear</source>
-      <translation>Eliberează</translation>
+      <translation>Șterge</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="273"/>
+      <location filename="../../OpenSCADCommands.py" line="270"/>
       <source>as Mesh</source>
       <translation>o retea</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="274"/>
+      <location filename="../../OpenSCADCommands.py" line="271"/>
       <source>Add OpenSCAD Element</source>
       <translation>Adauga element OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="347"/>
+      <location filename="../../OpenSCADCommands.py" line="344"/>
       <source>Perform</source>
       <translation>Efectuează</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="348"/>
+      <location filename="../../OpenSCADCommands.py" line="345"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>Plasă Boolean</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="566"/>
+      <location filename="../../OpenSCADUtils.py" line="585"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation type="unfinished">Error all shapes must be either 2D or both must be 3D</translation>
+      <translation>Eroare toate formele trebuie să fie fie 2D sau ambele trebuie să fie 3D</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="98"/>
+      <location filename="../../OpenSCADCommands.py" line="95"/>
       <source>Unable to explode %s</source>
       <translation>Nu se poate exploda %s</translation>
     </message>
@@ -195,12 +195,12 @@
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="389"/>
+      <location filename="../../OpenSCADCommands.py" line="386"/>
       <source>Add OpenSCAD Element...</source>
       <translation>Adauga element OpenSCAD...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="391"/>
+      <location filename="../../OpenSCADCommands.py" line="388"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>Adauga u element OpenSCAD prin introducerea unui cod OpenSCAD si executarea codului binar</translation>
     </message>
@@ -208,12 +208,12 @@
   <context>
     <name>OpenSCAD_ColorCodeShape</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="125"/>
+      <location filename="../../OpenSCADCommands.py" line="122"/>
       <source>Color Shapes</source>
       <translation>Forme de culoare</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="127"/>
+      <location filename="../../OpenSCADCommands.py" line="124"/>
       <source>Color Shapes by validity and type</source>
       <translation>Forme de culoare dupa validitate si tip</translation>
     </message>
@@ -221,7 +221,7 @@
   <context>
     <name>OpenSCAD_Edgestofaces</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="146"/>
+      <location filename="../../OpenSCADCommands.py" line="143"/>
       <source>Convert Edges To Faces</source>
       <translation>Conversie margini in fete</translation>
     </message>
@@ -229,12 +229,12 @@
   <context>
     <name>OpenSCAD_ExpandPlacements</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="207"/>
+      <location filename="../../OpenSCADCommands.py" line="204"/>
       <source>Expand Placements</source>
       <translation>Amplasamente expandate</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="209"/>
+      <location filename="../../OpenSCADCommands.py" line="206"/>
       <source>Expand all placements downwards the FeatureTree</source>
       <translation>Extinde toate amplasamentele mai jos de FeatureTree</translation>
     </message>
@@ -242,25 +242,25 @@
   <context>
     <name>OpenSCAD_ExplodeGroup</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="107"/>
+      <location filename="../../OpenSCADCommands.py" line="104"/>
       <source>Explode Group</source>
       <translation>Explodare grup</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="109"/>
+      <location filename="../../OpenSCADCommands.py" line="106"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation type="unfinished">Remove fusion, apply placement to children, and color randomly</translation>
+      <translation>Scoateţi fusion, aplica plasarea copiilor şi culoare la întâmplare</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="424"/>
+      <location filename="../../OpenSCADCommands.py" line="421"/>
       <source>Hull</source>
       <translation>carenă</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="426"/>
+      <location filename="../../OpenSCADCommands.py" line="423"/>
       <source>Perform Hull</source>
       <translation>Efectuează Hull</translation>
     </message>
@@ -268,12 +268,12 @@
   <context>
     <name>OpenSCAD_IncreaseToleranceFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="188"/>
+      <location filename="../../OpenSCADCommands.py" line="185"/>
       <source>Increase Tolerance Feature</source>
       <translation>Crește funcția toleranței</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="190"/>
+      <location filename="../../OpenSCADCommands.py" line="187"/>
       <source>Create Feature that allows to increase the tolerance</source>
       <translation>Creează o funcție care permite creșterea toleranței</translation>
     </message>
@@ -281,25 +281,25 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="403"/>
+      <location filename="../../OpenSCADCommands.py" line="400"/>
       <source>Mesh Boolean...</source>
-      <translation type="unfinished">Mesh Boolean...</translation>
+      <translation>Ochiurilor de plasă Boolean...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="405"/>
+      <location filename="../../OpenSCADCommands.py" line="402"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation</translation>
+      <translation>Exporta obiectele ca plase şi de a folosi OpenSCAD pentru a efectua o operaţiune tip boolean</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="445"/>
+      <location filename="../../OpenSCADCommands.py" line="442"/>
       <source>Minkowski</source>
       <translation>Minkowski</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="447"/>
+      <location filename="../../OpenSCADCommands.py" line="444"/>
       <source>Perform Minkowski</source>
       <translation>Efectuează Minkowski</translation>
     </message>
@@ -307,12 +307,12 @@
   <context>
     <name>OpenSCAD_RefineShapeFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="167"/>
+      <location filename="../../OpenSCADCommands.py" line="164"/>
       <source>Refine Shape Feature</source>
       <translation>Rafineaza caracteristica de forma</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="169"/>
+      <location filename="../../OpenSCADCommands.py" line="166"/>
       <source>Create Refine Shape Feature</source>
       <translation>Creaza rafinament de forma</translation>
     </message>
@@ -320,12 +320,12 @@
   <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="246"/>
+      <location filename="../../OpenSCADCommands.py" line="243"/>
       <source>Remove Objects and their Children</source>
       <translation>Elimina obiectele si copii lor</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="248"/>
+      <location filename="../../OpenSCADCommands.py" line="245"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
       <translation>Elimina obiectele selectate si toti copiii care nu sunt referentiati de alte obiecte</translation>
     </message>
@@ -333,14 +333,14 @@
   <context>
     <name>OpenSCAD_ReplaceObject</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="231"/>
+      <location filename="../../OpenSCADCommands.py" line="228"/>
       <source>Replace Object</source>
       <translation>Inlocuieste obiectul</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="233"/>
+      <location filename="../../OpenSCADCommands.py" line="230"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
-      <translation type="unfinished">Replace an object in the Feature Tree. Please select old, new, and parent object</translation>
+      <translation>Inlocuieste un obiect in FeatureTree. Selectati obiectul vechi, cel nou si obiectul parinte</translation>
     </message>
   </context>
   <context>
@@ -348,7 +348,7 @@
     <message>
       <location filename="../../InitGui.py" line="80"/>
       <source>OpenSCAD Part tools</source>
-      <translation type="unfinished">OpenSCAD Part tools</translation>
+      <translation>Instrumente de OpenSCAD Part</translation>
     </message>
   </context>
   <context>

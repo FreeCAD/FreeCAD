@@ -479,7 +479,7 @@ bool GeomCurve::intersect(  GeomCurve * c,
 
 bool GeomCurve::intersect(const Handle(Geom_Curve) curve1, const Handle(Geom_Curve) curve2,
                 std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
-                double tol) const
+                double tol)
 {
     // https://forum.freecadweb.org/viewtopic.php?f=10&t=31700
     if (curve1->IsKind(STANDARD_TYPE(Geom_BoundedCurve)) &&
@@ -547,8 +547,7 @@ bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
         }
     }
     catch (StdFail_NotDone& e) {
-
-        if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))){
+        if (c->IsKind(STANDARD_TYPE(Geom_BoundedCurve))){
             Base::Vector3d firstpoint = this->pointAtParameter(c->FirstParameter());
             Base::Vector3d lastpoint = this->pointAtParameter(c->LastParameter());
 
@@ -1548,6 +1547,25 @@ bool GeomTrimmedCurve::intersectBasisCurves(  const GeomTrimmedCurve * c,
     else
         return false;
 
+}
+
+void GeomTrimmedCurve::getRange(double& u, double& v) const
+{
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    u = curve->FirstParameter();
+    v = curve->LastParameter();
+}
+
+void GeomTrimmedCurve::setRange(double u, double v)
+{
+    try {
+        Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+
+        curve->SetTrim(u, v);
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError,e.GetMessageString())
+    }
 }
 
 // -------------------------------------------------

@@ -1211,11 +1211,11 @@ void printBacktrace(size_t skip=0)
 void segmentation_fault_handler(int sig)
 {
 #if defined(FC_OS_LINUX)
+    (void)sig;
     std::cerr << "Program received signal SIGSEGV, Segmentation fault.\n";
     printBacktrace(2);
     exit(1);
-#endif
-
+#else
     switch (sig) {
         case SIGSEGV:
             std::cerr << "Illegal storage access..." << std::endl;
@@ -1233,6 +1233,7 @@ void segmentation_fault_handler(int sig)
             std::cerr << "Unknown error occurred..." << std::endl;
             break;
     }
+#endif // FC_OS_LINUX
 }
 
 void unhandled_exception_handler()
@@ -1549,20 +1550,23 @@ void Application::initConfig(int argc, char ** argv)
         _pConsoleObserverFile = 0;
 
     // Banner ===========================================================
-    if (!(mConfig["Verbose"] == "Strict"))
-        Console().Message("%s %s, Libs: %s.%sR%s\n%s",mConfig["ExeName"].c_str(),
-                          mConfig["ExeVersion"].c_str(),
-                          mConfig["BuildVersionMajor"].c_str(),
-                          mConfig["BuildVersionMinor"].c_str(),
-                          mConfig["BuildRevision"].c_str(),
-                          mConfig["CopyrightInfo"].c_str());
-    else
-        Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
-                          mConfig["ExeVersion"].c_str(),
-                          mConfig["BuildVersionMajor"].c_str(),
-                          mConfig["BuildVersionMinor"].c_str(),
-                          mConfig["BuildRevision"].c_str());
-
+    if (!(mConfig["RunMode"] == "Cmd")) {
+        // Remove banner if FreeCAD is invoked via the -c command as regular
+        // Python interpreter
+        if (!(mConfig["Verbose"] == "Strict"))
+            Console().Message("%s %s, Libs: %s.%sR%s\n%s",mConfig["ExeName"].c_str(),
+                              mConfig["ExeVersion"].c_str(),
+                              mConfig["BuildVersionMajor"].c_str(),
+                              mConfig["BuildVersionMinor"].c_str(),
+                              mConfig["BuildRevision"].c_str(),
+                              mConfig["CopyrightInfo"].c_str());
+        else
+            Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
+                              mConfig["ExeVersion"].c_str(),
+                              mConfig["BuildVersionMajor"].c_str(),
+                              mConfig["BuildVersionMinor"].c_str(),
+                              mConfig["BuildRevision"].c_str());
+    }
     LoadParameters();
 
     auto loglevelParam = _pcUserParamMngr->GetGroup("BaseApp/LogLevels");

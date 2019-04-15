@@ -44,11 +44,6 @@
       <translation>Osredotoči vrtilno središče</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="70"/>
-      <source>Middle mouse button or key H.</source>
-      <translation>Srednji miškin gumb ali tipka H.</translation>
-    </message>
-    <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
       <translation>Srednji miškin gumb.</translation>
@@ -81,7 +76,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="295"/>
       <source>Turntable</source>
-      <translation>Vrtilna plošča</translation>
+      <translation>Sukajoča pogled</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="296"/>
@@ -92,6 +87,11 @@
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
       <translation>Nedoločeno</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="70"/>
+      <source>Middle mouse button or H key.</source>
+      <translation>Srednji gumb miške ali tipka H.</translation>
     </message>
   </context>
 </TS>

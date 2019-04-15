@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemMeshGmsh
 
+import sys
 import FreeCAD
 import FreeCADGui
 import FemGui
@@ -135,7 +136,7 @@ class _ViewProviderFemMeshGmsh:
                 gui_doc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
             QMessageBox.critical(None, "Error in tree view", message)
             FreeCAD.Console.PrintError(message + '\n')
         return True
@@ -269,7 +270,7 @@ class _TaskPanelFemMeshGmsh:
         self.form.cb_dimension.setCurrentIndex(index_dimension)
 
     def console_log(self, message="", color="#000000"):
-        if not isinstance(message, bytes):
+        if (not isinstance(message, bytes)) and (sys.version_info.major < 3):
             message = message.encode('utf-8', 'replace')
         self.console_message_gmsh = self.console_message_gmsh + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
             format(time.time() - self.Start, color, message)

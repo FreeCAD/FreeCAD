@@ -331,6 +331,13 @@ class ObjectDressup:
                     newpath.append(curCommand)
                     continue
 
+                if curCommand.x is None:
+                    curCommand.x = currLocation['X']
+                if curCommand.y is None:
+                    curCommand.y = currLocation['Y']
+                if curCommand.z is None:
+                    curCommand.z = currLocation['Z']
+
                 # rapid retract triggers exit move, else just add to output
                 if curCommand.Name in rapidcommands:
                     if (curCommand.z > obj.pivotheight) and (len(queue) == 3):

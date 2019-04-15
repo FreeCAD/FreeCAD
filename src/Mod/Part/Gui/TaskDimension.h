@@ -120,6 +120,7 @@ public:
   DimensionLinear();
   static void initClass();
   virtual SbBool affectsState() const;
+  void setupDimension();
 
   SoSFVec3f point1;
   SoSFVec3f point2;
@@ -132,7 +133,6 @@ protected:
 
 private:
   virtual ~DimensionLinear();
-  void setupDimension();
 };
 
 /*kit for anglular dimensions*/
@@ -156,9 +156,9 @@ public:
   SoSFString text;
   SoSFColor dColor;
   SoSFMatrix matrix;
+  void setupDimension();
 private:
   virtual ~DimensionAngular();
-  void setupDimension();
 };
 
 /*used for generating points for arc display*/

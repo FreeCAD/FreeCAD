@@ -119,7 +119,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_useVBO">
         <property name="text">
-         <string>Use OpenGL Vertex Buffer Object (experimental)</string>
+         <string>Use OpenGL Vertex Buffer Object</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>UseVBO</cstring>
@@ -241,6 +241,17 @@
             <string>MSAA 8x</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="newDocViewLabel">
+          <property name="text">
+           <string>New Document Camera Orientation</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QComboBox" name="comboNewDocView">
          </widget>
         </item>
        </layout>
@@ -675,6 +686,7 @@
   <tabstop>comboNavigationStyle</tabstop>
   <tabstop>mouseButton</tabstop>
   <tabstop>comboOrbitStyle</tabstop>
+  <tabstop>comboNewDocView</tabstop>
   <tabstop>checkBoxZoomAtCursor</tabstop>
   <tabstop>spinBoxZoomStep</tabstop>
   <tabstop>checkBoxInvertZoom</tabstop>

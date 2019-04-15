@@ -233,7 +233,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Background color gradient down</string>
+         <string>Background color down gradient</string>
         </property>
        </widget>
       </item>
@@ -286,7 +286,7 @@
       <item row="0" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_5">
         <property name="toolTip">
-         <string>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</string>
+         <string>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -607,7 +607,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_13">
         <property name="text">
-         <string>Close &amp; switch on file open</string>
+         <string>Close and switch on opening file</string>
         </property>
        </widget>
       </item>

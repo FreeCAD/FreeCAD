@@ -165,7 +165,7 @@ void UnitExpression::setUnit(const Quantity &_quantity)
 }
 
 /**
-  * Evaulate the expression
+  * Evaluate the expression
   *
   * @returns A NumberExpression set to 1.0.
   */
@@ -268,7 +268,7 @@ void NumberExpression::negate()
 std::string NumberExpression::toString() const
 {
     std::stringstream s;
-    s << std::setprecision(std::numeric_limits<double>::digits10 + 2) << quantity.getValue();
+    s << std::setprecision(std::numeric_limits<double>::digits10 + 1) << quantity.getValue();
 
     /* Trim of any extra spaces */
     //while (s.size() > 0 && s[s.size() - 1] == ' ')

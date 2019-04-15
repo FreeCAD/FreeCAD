@@ -260,6 +260,7 @@ QWidget* setupMainWindow()
         Base::PyGILStateLocker lock;
         PyObject* input = PySys_GetObject("stdin");
         Gui::MainWindow *mw = new Gui::MainWindow();
+        mw->setAttribute(Qt::WA_DeleteOnClose);
         hasMainWindow = true;
 
         QIcon icon = qApp->windowIcon();
@@ -325,7 +326,7 @@ PyMOD_INIT_FUNC(FreeCADGui)
         Base::Interpreter().loadModule("FreeCAD");
         App::Application::Config()["AppIcon"] = "freecad";
         App::Application::Config()["SplashScreen"] = "freecadsplash";
-        App::Application::Config()["CopyrightInfo"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2018\n";
+        App::Application::Config()["CopyrightInfo"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2019\n";
         // it's possible that the GUI is already initialized when the Gui version of the executable
         // is started in command mode
         if (Base::Type::fromName("Gui::BaseView").isBad())

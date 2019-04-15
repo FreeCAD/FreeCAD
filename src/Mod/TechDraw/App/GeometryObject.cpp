@@ -182,11 +182,15 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
             brep_hlr->Projector(projector);
         }
         brep_hlr->Update();
-        brep_hlr->Hide();                           //XXXX: what happens if we don't call Hide()?? and only look at VCompound?
-                                                    // WF: you get back all the edges in the shape, but very fast!!
+        brep_hlr->Hide();
     }
+    catch (Standard_Failure e) {
+        Base::Console().Error("GO::projectShape - OCC error - %s - while projecting shape\n",
+                              e.GetMessageString());
+        }
     catch (...) {
-        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while projecting shape");
+        throw Base::RuntimeError("GeometryObject::projectShape - unknown error occurred while projecting shape");
+//        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while projecting shape");
     }
     auto end   = chrono::high_resolution_clock::now();
     auto diff  = end - start;
@@ -221,14 +225,17 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         BRepLib::BuildCurves3d(hidOutline);
         BRepLib::BuildCurves3d(hidIso);
     }
+    catch (Standard_Failure e) {
+        Base::Console().Error("GO::projectShape - OCC error - %s - while extracting edges\n",
+                              e.GetMessageString());
+    }
     catch (...) {
-        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while extracting edges");
+        throw Base::RuntimeError("GeometryObject::projectShape - error occurred while extracting edges");
     }
     end   = chrono::high_resolution_clock::now();
     diff  = end - start;
     diffOut = chrono::duration <double, milli> (diff).count();
     Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in hlrToShape and BuildCurves\n",m_parentName.c_str(),diffOut);
-
 }
 
 //!set up a hidden line remover and project a shape with it
@@ -278,8 +285,13 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
         }
         brep_hlrPoly->Update();
     }
+    catch (Standard_Failure e) {
+        Base::Console().Error("GO::projectShapeWithPolygonAlgo - OCC error - %s - while projecting shape\n",
+                              e.GetMessageString());
+    }
     catch (...) {
-        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
+        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
+//        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
     }
 
     try {
@@ -305,8 +317,13 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
         BRepLib::BuildCurves3d(hidSeam);
         BRepLib::BuildCurves3d(hidOutline);
     }
+    catch (Standard_Failure e) {
+        Base::Console().Error("GO::projectShapeWithPolygonAlgo - OCC error - %s - while extracting edges\n",
+                              e.GetMessageString());
+    }
     catch (...) {
-        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo - error occurred while extracting edges");
+        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while extracting edges");
+//        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo - error occurred while extracting edges");
     }
     auto end = chrono::high_resolution_clock::now();
     auto diff = end - start;

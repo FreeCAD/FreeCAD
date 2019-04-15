@@ -25,7 +25,8 @@
 import FreeCAD
 import FreeCADGui
 import Path
-from PySide import QtCore, QtGui
+import PathScripts.PathUtils as PathUtils
+from PySide import QtCore#, QtGui
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -46,7 +47,10 @@ class Fixture:
         obj.Path = Path.Path(str(obj.Fixture))
         obj.Label = "Fixture" + str(fixture)
         if obj.Active:
-            obj.Path = Path.Path(str(obj.Fixture))
+            job = PathUtils.findParentJob(obj)
+            c1 = Path.Command(str(obj.Fixture))
+            c2 = Path.Command("G0" + str(job.Stock.Shape.BoundBox.ZMax))
+            obj.Path = Path.Path([c1, c2])
             obj.ViewObject.Visibility = True
         else:
             obj.Path = Path.Path("(inactive operation)")

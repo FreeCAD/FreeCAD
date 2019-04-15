@@ -15,6 +15,7 @@ SET(Draft_SRCS
     DraftVecUtils.py
     DraftGeomUtils.py
     WorkingPlane.py
+    getSVG.py
     importDXF.py
     importOCA.py
     importSVG.py

@@ -102,8 +102,8 @@
       <translation>Okomito poravnaj</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Poravnavanje sadržaja odabranih ćelija u sredinu vodoravno</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Poravnavanje sadržaja odabranih ćelija u sredinu</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Podcrtavanje teksta</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Postavite podcrtavanje teksta u odabranim ćelijama</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Podcrtavanje teksta u odabranim ćelijama</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Prilagođeno</translation>
+      <source>Custom Color</source>
+      <translation>Prilagođena boja</translation>
     </message>
   </context>
   <context>
@@ -265,7 +265,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Središte</translation>
     </message>
     <message>
       <source>Right</source>
@@ -445,7 +445,7 @@
     <name>SpreadsheetGui::Module</name>
     <message>
       <source>Unnamed</source>
-      <translation type="unfinished">Unnamed</translation>
+      <translation>Neimenovano</translation>
     </message>
   </context>
   <context>

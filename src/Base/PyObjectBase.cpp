@@ -177,7 +177,8 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
     PyObject* value = pyObj->_getattr(attr);
 #if 1
     if (value && PyObject_TypeCheck(value, &(PyObjectBase::Type))) {
-        if (!static_cast<PyObjectBase*>(value)->isConst()) {
+        if (!static_cast<PyObjectBase*>(value)->isConst() &&
+            !static_cast<PyObjectBase*>(value)->isNotTracking()) {
             static_cast<PyObjectBase*>(value)->setAttributeOf(attr, pyObj);
             pyObj->trackAttribute(attr, value);
         }

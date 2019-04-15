@@ -56,34 +56,30 @@ PyObject* BodyPy::insertObject(PyObject *args)
 {
     PyObject* featurePy;
     PyObject* targetPy;
-    PyObject* afterPy = 0;
-    if (!PyArg_ParseTuple(args, "O!O|O", &(App::DocumentObjectPy::Type), &featurePy, &targetPy, &afterPy)) {
+    PyObject* afterPy = Py_False;
+    if (!PyArg_ParseTuple(args, "O!O|O!", &(App::DocumentObjectPy::Type), &featurePy,
+                                          &targetPy, &PyBool_Type, &afterPy)) {
         return 0;
     }
 
     App::DocumentObject* feature = static_cast<App::DocumentObjectPy*>(featurePy)->getDocumentObjectPtr();
-    App::DocumentObject* target = static_cast<App::DocumentObjectPy*>(targetPy)->getDocumentObjectPtr();
-    int after = 0;
+    App::DocumentObject* target = nullptr;
+    if (PyObject_TypeCheck(targetPy, &(App::DocumentObjectPy::Type))) {
+        target = static_cast<App::DocumentObjectPy*>(targetPy)->getDocumentObjectPtr();
+    }
 
     if (!Body::isAllowed(feature)) {
         PyErr_SetString(PyExc_SystemError, "Only PartDesign features, datum features and sketches can be inserted into a Body");
         return 0;
     }
 
-    if (afterPy) {
-        after = PyObject_IsTrue(afterPy);
-        if ( after == -1) {
-            // Note: shouldn't happen
-            PyErr_SetString(PyExc_ValueError, "The after parameter should be of boolean type");
-            return 0;
-        }
-    }
-
+    bool after = PyObject_IsTrue(afterPy) ? true : false;
     Body* body = this->getBodyPtr();
 
     try {
         body->insertObject(feature, target, after);
-    } catch (Base::Exception& e) {
+    }
+    catch (Base::Exception& e) {
         PyErr_SetString(PyExc_SystemError, e.what());
         return 0;
     }

@@ -144,24 +144,15 @@ QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &fac
 
 QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
 {
-    double UnitValue = std::abs(quant.getValue());
+    //double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();
     // for imperial user/programmer mind; UnitValue is in internal system, that means
     // mm/kg/s. And all combined units have to be calculated from there!
 
     // now do special treatment on all cases seems necessary:
     if (unit == Unit::Length) {  // Length handling ============================
-        if (UnitValue < 0.00000254) {// smaller then 0.001 thou -> inch and scientific notation
-            unitString = QString::fromLatin1("in");
-            factor = 25.4;
-        //}else if(UnitValue < 2.54){ // smaller then 0.1 inch -> Thou (mil)
-        //    unitString = QString::fromLatin1("thou");
-        //    factor = 0.0254;
-        }
-        else { // bigger then 1000 mi -> scientific notation
-            unitString = QString::fromLatin1("in");
-            factor = 25.4;
-        }
+        unitString = QString::fromLatin1("in");
+        factor = 25.4;
     }
     else if (unit == Unit::Area) {
         // TODO Cascade for the Areas
@@ -182,14 +173,8 @@ QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant,
         factor = 0.45359237;
     }
     else if (unit == Unit::Pressure) {
-        if (UnitValue < 6894.744) {// psi is the smallest
-            unitString = QString::fromLatin1("psi");
-            factor = 6.894744825494;
-        }
-        else { // bigger then 1000 ksi -> psi + scientific notation
-            unitString = QString::fromLatin1("psi");
-            factor = 6.894744825494;
-        }
+        unitString = QString::fromLatin1("psi");
+        factor = 6.894744825494;
     }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("in/min");
@@ -363,12 +348,12 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, d
     // this schema expresses angles in degrees + minutes + seconds
     else if (unit == Unit::Angle) {
         unitString = QString::fromUtf8("deg");
-        QString degreeString = QString::fromUtf8("\xC2\xB0");
-        QString minuteString = QString::fromUtf8("M");
-        QString secondString = QString::fromUtf8("S");
+        QString degreeString = QString::fromUtf8("\xC2\xB0");          //degree symbol
+        QString minuteString = QString::fromUtf8("\xE2\x80\xB2");      //prime symbol
+        QString secondString = QString::fromUtf8("\xE2\x80\xB3");      //double prime symbol
         factor = 1.0;                                  //1deg = 1"\xC2\xB0 "
 
-        double totalDegrees = std::abs(quant.getValue())/factor;
+        double totalDegrees = quant.getValue()/factor;
         double wholeDegrees = std::floor(totalDegrees);
         double sumMinutes = totalDegrees * 60.0;            //quant as minutes
         double rawMinutes = sumMinutes - wholeDegrees * 60.0;
@@ -385,10 +370,10 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, d
         std::stringstream output;
         output << outDeg << degreeString.toUtf8().constData();
         if ((outMin > 0) || (outSec > 0)) {
-            output << outMin << minuteString.toStdString();
+            output << outMin << minuteString.toUtf8().constData();
         }
         if (outSec > 0) {
-            output << outSec << secondString.toStdString();
+            output << outSec << secondString.toUtf8().constData();
         }
 // uncomment this for decimals on seconds
 //        if (remainSeconds < (1.0 * pow(10.0,-Base::UnitsApi::getDecimals())) ) {

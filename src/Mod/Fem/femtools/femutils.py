@@ -27,14 +27,15 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
+import sys
 import FreeCAD
-import FreeCAD as App
 
 
+# analysis and its members
 def createObject(doc, name, proxy, viewProxy):
     obj = doc.addObject(proxy.BaseType, name)
     proxy(obj)
-    if App.GuiUp:
+    if FreeCAD.GuiUp:
         viewProxy(obj.ViewObject)
     return obj
 
@@ -88,6 +89,20 @@ def get_several_member(analysis, t):
     return members
 
 
+def get_mesh_to_solve(analysis):
+    mesh_to_solve = None
+    for m in analysis.Group:
+        if m.isDerivedFrom("Fem::FemMeshObject") and not is_of_type(m, 'Fem::FemMeshResult'):
+            if not mesh_to_solve:
+                mesh_to_solve = m
+            else:
+                return (None, 'FEM: multiple mesh in analysis not yet supported!')
+    if mesh_to_solve is not None:
+        return (mesh_to_solve, '')
+    else:
+        return (None, 'FEM: no mesh object found in analysis.')
+
+
 # typeID and object type defs
 def type_of_obj(obj):
     '''returns objects TypeId (C++ objects) or Proxy.Type (Python objects)'''
@@ -107,12 +122,30 @@ def is_derived_from(obj, t):
     '''returns True if an object or its inheritance chain is of a given TypeId (C++ objects) or Proxy.Type (Python objects)'''
     # returns true for all FEM objects if given t == 'App::DocumentObject' since this is a father of the given object
     # see https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
-    if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and
-            obj.Proxy.Type == t):
+    if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and obj.Proxy.Type == t):
         return True
     return obj.isDerivedFrom(t)
 
 
+# working dir
+def get_pref_working_dir(solver_obj):
+    # _dirTypes from run are not used
+    # be aware beside could get an error if the document has not been saved
+    from femsolver import settings
+    from femsolver import run
+    dir_setting = settings.get_dir_setting()
+    if dir_setting == settings.TEMPORARY:
+        setting_working_dir = run._getTempDir(solver_obj)
+    elif dir_setting == settings.BESIDE:
+        setting_working_dir = run._getBesideDir(solver_obj)
+    elif dir_setting == settings.CUSTOM:
+        setting_working_dir = run._getCustomDir(solver_obj)
+    else:
+        setting_working_dir = ''
+    return setting_working_dir
+
+
+# other
 def getBoundBoxOfAllDocumentShapes(doc):
     overalboundbox = None
     for o in doc.Objects:
@@ -166,3 +199,10 @@ def get_refshape_type(fem_doc_object):
     else:
         FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has empty References.\n')
         return ''
+
+
+def pydecode(bytestring):
+    if sys.version_info.major < 3:
+        return bytestring
+    else:
+        return bytestring.decode("utf-8")

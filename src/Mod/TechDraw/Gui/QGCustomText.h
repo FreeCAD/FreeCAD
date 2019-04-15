@@ -33,6 +33,7 @@ class QStyleOptionGraphicsItem;
 QT_END_NAMESPACE
 
 #include <Base/Parameter.h>
+#include <Base/Vector3D.h>
 
 namespace TechDrawGui
 {
@@ -57,6 +58,9 @@ public:
     virtual QColor getNormalColor(void);
     virtual QColor getPreColor(void);
     virtual QColor getSelectColor(void);
+    virtual void setColor(QColor c) { m_colNormal = c; }
+    void makeMark(double x, double y);
+    void makeMark(Base::Vector3d v);
 
 protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -67,6 +71,7 @@ protected:
 
     bool isHighlighted;
     QColor m_colCurrent;
+    QColor m_colNormal;
 
 private:
 

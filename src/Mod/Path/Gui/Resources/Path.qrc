@@ -30,6 +30,7 @@
         <file>icons/Path-MachineLathe.svg</file>
         <file>icons/Path-MachineMill.svg</file>
         <file>icons/Path-Machine.svg</file>
+        <file>icons/Path-OpActive.svg</file>
         <file>icons/Path-OperationA.svg</file>
         <file>icons/Path-OperationB.svg</file>
         <file>icons/Path-OpCopy.svg</file>
@@ -96,6 +97,7 @@
         <file>panels/PageOpDrillingEdit.ui</file>
         <file>panels/PageOpEngraveEdit.ui</file>
         <file>panels/PageOpHelixEdit.ui</file>
+        <file>panels/PageOpPocketExtEdit.ui</file>
         <file>panels/PageOpPocketFullEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>
@@ -143,5 +145,7 @@
         <file>translations/Path_id.qm</file>
         <file>translations/Path_lt.qm</file>
         <file>translations/Path_val-ES.qm</file>
+        <file>translations/Path_ar.qm</file>
+        <file>translations/Path_vi.qm</file>
     </qresource>
 </RCC>

@@ -23,7 +23,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchCommands,ArchFloor,math,re,datetime
+import FreeCAD,Draft,ArchCommands,ArchFloor,math,re,datetime,ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -281,7 +281,7 @@ class _CommandSite:
         siteobj = []
         warning = False
         for obj in sel :
-            if (Draft.getType(obj) == "Building") or (hasattr(obj,"IfcRole") and obj.IfcRole == "Building"):
+            if (Draft.getType(obj) == "Building") or (hasattr(obj,"IfcType") and obj.IfcType == "Building"):
                 siteobj.append(obj)
             else :
                 if link == True :
@@ -321,9 +321,11 @@ class _Site(ArchFloor._Floor):
 
         ArchFloor._Floor.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Site"
+        obj.IfcType = "Site"
 
     def setProperties(self,obj):
+
+        ArchIFC.setProperties(obj)
 
         pl = obj.PropertiesList
         if not "Terrain" in pl:
@@ -424,6 +426,7 @@ class _Site(ArchFloor._Floor):
                     self.computeAreas(obj)
 
     def onChanged(self,obj,prop):
+        ArchIFC.onChanged(obj, prop)
 
         ArchFloor._Floor.onChanged(self,obj,prop)
         if prop == "Terrain":

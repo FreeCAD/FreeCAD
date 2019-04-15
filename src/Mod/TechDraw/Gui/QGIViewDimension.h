@@ -73,10 +73,12 @@ public:
     void setFont(QFont f);
     QFont getFont(void) { return m_dimText->font(); }
     void setDimString(QString t);
+    void setDimString(QString t, qreal maxWidth);
     void setTolString();
     void setPrettySel(void);
     void setPrettyPre(void);
     void setPrettyNormal(void);
+    void setColor(QColor c);
     
     QGCustomText* getDimText(void) { return m_dimText; }
     void setDimText(QGCustomText* newText) { m_dimText = newText; }
@@ -84,7 +86,7 @@ public:
     void setTolText(QGCustomText* newTol) { m_tolText = newTol; }
 
 Q_SIGNALS:
-    void dragging();
+    void dragging(bool);
     void hover(bool state);
     void selected(bool state);
     void dragFinished();
@@ -101,6 +103,8 @@ protected:
     QGCustomText* m_tolText;
     int getPrecision(void);
     double getTolAdjust(void);
+    QColor m_colNormal;
+    bool m_ctrl;
 
     double posX;
     double posY;
@@ -110,7 +114,7 @@ private:
 
 //*******************************************************************
 
-class TechDrawGuiExport QGIViewDimension : public QObject, public QGIView
+class TechDrawGuiExport QGIViewDimension : public QGIView
 {
     Q_OBJECT
 
@@ -132,7 +136,7 @@ public:
     QString getLabelText(void);
 
 public Q_SLOTS:
-    void datumLabelDragged(void);
+    void datumLabelDragged(bool ctrl);
     void datumLabelDragFinished(void);
     void select(bool state);
     void hover(bool state);

@@ -21,7 +21,9 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,math,DraftVecUtils,ArchCommands,sys
+import six
+
+import FreeCAD,Draft,math,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -57,7 +59,7 @@ def makeAxis(num=5,size=1000,name="Axes"):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Axis")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Axis")
     obj.Label = translate("Arch",name)
     _Axis(obj)
     if FreeCAD.GuiUp:
@@ -225,6 +227,7 @@ class _Axis:
 
     def execute(self,obj):
 
+        pl = obj.Placement
         import Part
         geoms = []
         dist = 0
@@ -242,13 +245,13 @@ class _Axis:
                     geoms.append(Part.LineSegment(p1,p2).toShape())
         if geoms:
             sh = Part.Compound(geoms)
-            sh.Placement = obj.Placement
             obj.Shape = sh
+            obj.Placement = pl
 
-    def onChanged(self,obj,prop):
+    #def onChanged(self,obj,prop):
 
-        if prop in ["Angles","Distances","Placement"]:
-            self.execute(obj)
+    #    if prop in ["Angles","Distances","Placement"]:
+    #        self.execute(obj)
 
     def __getstate__(self):
 
@@ -306,7 +309,7 @@ class _ViewProviderAxis:
         if not "DrawStyle" in pl:
             vobj.addProperty("App::PropertyEnumeration","DrawStyle","Axis",QT_TRANSLATE_NOOP("App::Property","The type of line to draw this axis"))
             vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"]
-            vobj.DrawStyle = "Dashdot"
+        vobj.DrawStyle = "Dashdot"
         if not "BubblePosition" in pl:
             vobj.addProperty("App::PropertyEnumeration","BubblePosition","Axis",QT_TRANSLATE_NOOP("App::Property","Where to add bubbles to this axis: Start, end, both or none"))
             vobj.BubblePosition = ["Start","End","Both","None"]
@@ -315,7 +318,7 @@ class _ViewProviderAxis:
             vobj.LineWidth = 1
         if not "LineColor" in pl:
             vobj.addProperty("App::PropertyColor","LineColor","Axis",QT_TRANSLATE_NOOP("App::Property","The color of this axis"))
-            vobj.LineColor = ArchCommands.getDefaultColor("Helpers")
+        vobj.LineColor = ArchCommands.getDefaultColor("Helpers")
         if not "StartNumber" in pl:
             vobj.addProperty("App::PropertyInteger","StartNumber","Axis",QT_TRANSLATE_NOOP("App::Property","The number of the first axis"))
             vobj.StartNumber = 1
@@ -389,7 +392,7 @@ class _ViewProviderAxis:
                     i = 0
                     for e in obj.Shape.Edges:
                         for v in e.Vertexes:
-                            verts.append([v.X,v.Y,v.Z])
+                            verts.append(tuple(obj.Placement.inverse().multVec(v.Point)))
                             vset.append(i)
                             i += 1
                         vset.append(-1)
@@ -441,13 +444,13 @@ class _ViewProviderAxis:
                                 pos = [vobj.BubblePosition]
                         for i in range(len(vobj.Object.Shape.Edges)):
                             for p in pos:
-                                verts = vobj.Object.Shape.Edges[i].Vertexes
+                                verts = [vobj.Object.Placement.inverse().multVec(v.Point) for v in vobj.Object.Shape.Edges[i].Vertexes]
                                 if p == "Start":
-                                    p1 = verts[0].Point
-                                    p2 = verts[1].Point
+                                    p1 = verts[0]
+                                    p2 = verts[1]
                                 else:
-                                    p1 = verts[1].Point
-                                    p2 = verts[0].Point
+                                    p1 = verts[1]
+                                    p2 = verts[0]
                                 dv = p2.sub(p1)
                                 dv.normalize()
                                 if hasattr(vobj.BubbleSize,"Value"):
@@ -543,7 +546,7 @@ class _ViewProviderAxis:
                                 tx = coin.SoAsciiText()
                                 tx.justification = coin.SoText2.LEFT
                                 t = vobj.Object.Labels[i]
-                                if sys.version_info.major < 3 and isinstance(t,unicode):
+                                if six.PY2 and isinstance(t,six.text_type):
                                     t = t.encode("utf8")
                                 tx.string.setValue(t)
                                 if hasattr(vobj,"FontSize"):
@@ -576,7 +579,7 @@ class _ViewProviderAxis:
                ('C',100),('XC',90),('L',50),('XL',40),
                ('X',10),('IX',9),('V',5),('IV',4),('I',1))
         if hasattr(vobj.Object,"CustomNumber") and vobj.Object.CustomNumber:
-            if sys.version_info.major < 3:
+            if six.PY2:
                 return vobj.Object.CustomNumber.encode("utf8")
             else:
                 return vobj.Object.CustomNumber

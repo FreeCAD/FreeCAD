@@ -835,6 +835,72 @@ void MeshTopoAlgorithm::Cleanup()
     _needsCleanup = false;
 }
 
+bool MeshTopoAlgorithm::CollapseVertex(const VertexCollapse& vc)
+{
+    if (vc._circumFacets.size() != vc._circumPoints.size())
+        return false;
+
+    if (vc._circumFacets.size() != 3)
+        return false;
+
+    if (!_rclMesh._aclPointArray[vc._point].IsValid())
+        return false; // the point is marked invalid from a previous run
+
+    MeshFacet& rFace1 = _rclMesh._aclFacetArray[vc._circumFacets[0]];
+    MeshFacet& rFace2 = _rclMesh._aclFacetArray[vc._circumFacets[1]];
+    MeshFacet& rFace3 = _rclMesh._aclFacetArray[vc._circumFacets[2]];
+
+    // get the point that is not shared by rFace1
+    unsigned long ptIndex = ULONG_MAX;
+    std::vector<unsigned long>::const_iterator it;
+    for (it = vc._circumPoints.begin(); it != vc._circumPoints.end(); ++it) {
+        if (!rFace1.HasPoint(*it)) {
+            ptIndex = *it;
+            break;
+        }
+    }
+
+    if (ptIndex == ULONG_MAX)
+        return false;
+
+    unsigned long neighbour1 = ULONG_MAX;
+    unsigned long neighbour2 = ULONG_MAX;
+
+    const std::vector<unsigned long>& faces = vc._circumFacets;
+    // get neighbours that are not part of the faces to be removed
+    for (int i=0; i<3; i++) {
+        if (std::find(faces.begin(), faces.end(), rFace2._aulNeighbours[i]) == faces.end()) {
+            neighbour1 = rFace2._aulNeighbours[i];
+        }
+        if (std::find(faces.begin(), faces.end(), rFace3._aulNeighbours[i]) == faces.end()) {
+            neighbour2 = rFace3._aulNeighbours[i];
+        }
+    }
+
+    // adjust point and neighbour indices
+    rFace1.Transpose(vc._point, ptIndex);
+    rFace1.ReplaceNeighbour(vc._circumFacets[1], neighbour1);
+    rFace1.ReplaceNeighbour(vc._circumFacets[2], neighbour2);
+
+    if (neighbour1 != ULONG_MAX) {
+        MeshFacet& rFace4 = _rclMesh._aclFacetArray[neighbour1];
+        rFace4.ReplaceNeighbour(vc._circumFacets[1], vc._circumFacets[0]);
+    }
+    if (neighbour2 != ULONG_MAX) {
+        MeshFacet& rFace5 = _rclMesh._aclFacetArray[neighbour2];
+        rFace5.ReplaceNeighbour(vc._circumFacets[2], vc._circumFacets[0]);
+    }
+
+    // the two facets and the point can be marked for removal
+    rFace2.SetInvalid();
+    rFace3.SetInvalid();
+    _rclMesh._aclPointArray[vc._point].SetInvalid();
+
+    _needsCleanup = true;
+
+    return true;
+}
+
 bool MeshTopoAlgorithm::CollapseEdge(unsigned long ulFacetPos, unsigned long ulNeighbour)
 {
   MeshFacet& rclF = _rclMesh._aclFacetArray[ulFacetPos];
@@ -885,6 +951,35 @@ bool MeshTopoAlgorithm::CollapseEdge(unsigned long ulFacetPos, unsigned long ulN
   _needsCleanup = true;
 
   return true;
+}
+
+bool MeshTopoAlgorithm::IsCollapseEdgeLegal(const EdgeCollapse& ec) const
+{
+    std::vector<unsigned long>::const_iterator it;
+    for (it = ec._changeFacets.begin(); it != ec._changeFacets.end(); ++it) {
+        MeshFacet f = _rclMesh._aclFacetArray[*it];
+        if (!f.IsValid())
+            return false;
+
+        // ignore the facet(s) at this edge
+        if (f.HasPoint(ec._fromPoint) && f.HasPoint(ec._toPoint))
+            continue;
+
+        MeshGeomFacet tria1 = _rclMesh.GetFacet(f);
+        f.Transpose(ec._fromPoint, ec._toPoint);
+        MeshGeomFacet tria2 = _rclMesh.GetFacet(f);
+
+        if (tria1.GetNormal() * tria2.GetNormal() < 0.0f)
+            return false;
+    }
+
+    if (!_rclMesh._aclPointArray[ec._fromPoint].IsValid())
+        return false;
+
+    if (!_rclMesh._aclPointArray[ec._toPoint].IsValid())
+        return false;
+
+    return true;
 }
 
 bool MeshTopoAlgorithm::CollapseEdge(const EdgeCollapse& ec)

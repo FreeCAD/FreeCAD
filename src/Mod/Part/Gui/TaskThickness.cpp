@@ -42,6 +42,7 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -59,7 +60,7 @@ public:
     QString text;
     std::string selection;
     Part::Thickness* thickness;
-    Private()
+    Private() : thickness(nullptr)
     {
     }
     ~Private()
@@ -97,11 +98,29 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
 
     d->thickness = thickness;
     d->ui.setupUi(this);
+    d->ui.labelOffset->setText(tr("Thickness"));
+    d->ui.fillOffset->hide();
+
+    QSignalBlocker blockOffset(d->ui.spinOffset);
     d->ui.spinOffset->setRange(-INT_MAX, INT_MAX);
     d->ui.spinOffset->setSingleStep(0.1);
     d->ui.spinOffset->setValue(d->thickness->Value.getValue());
-    d->ui.labelOffset->setText(tr("Thickness"));
-    d->ui.fillOffset->hide();
+
+    int mode = d->thickness->Mode.getValue();
+    d->ui.modeType->setCurrentIndex(mode);
+
+    int join = d->thickness->Join.getValue();
+    d->ui.joinType->setCurrentIndex(join);
+
+    QSignalBlocker blockIntSct(d->ui.intersection);
+    bool intsct = d->thickness->Intersection.getValue();
+    d->ui.intersection->setChecked(intsct);
+
+    QSignalBlocker blockSelfInt(d->ui.selfIntersection);
+    bool selfint = d->thickness->SelfIntersection.getValue();
+    d->ui.selfIntersection->setChecked(selfint);
+
+    d->ui.spinOffset->bind(d->thickness->Value);
 }
 
 ThicknessWidget::~ThicknessWidget()

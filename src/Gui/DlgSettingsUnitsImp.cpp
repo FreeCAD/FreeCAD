@@ -27,6 +27,8 @@
 # include <QRegExp>
 #endif
 
+#include <limits>
+
 #include "ui_DlgSettingsUnits.h"
 #include "DlgSettingsUnitsImp.h"
 #include "NavigationStyle.h"
@@ -49,6 +51,7 @@ DlgSettingsUnitsImp::DlgSettingsUnitsImp(QWidget* parent)
     : PreferencePage( parent ), ui(new Ui_DlgSettingsUnits)
 {
     ui->setupUi(this);
+    ui->spinBoxDecimals->setMaximum(std::numeric_limits<double>::digits10 + 1);
 
     //fillUpListBox();
     ui->tableWidget->setVisible(false);
@@ -78,8 +81,6 @@ void DlgSettingsUnitsImp::on_comboBox_ViewSystem_currentIndexChanged(int index)
     if (index < 0)
         return; // happens when clearing the combo box in retranslateUi()
 
-    UnitsApi::setSchema((UnitSystem)index);
-
     // Enable/disable the fractional inch option depending on system
     if( (UnitSystem)index == ImperialBuilding )
     {
@@ -96,6 +97,7 @@ void DlgSettingsUnitsImp::saveSettings()
     // must be done as very first because we create a new instance of NavigatorStyle
     // where we set some attributes afterwards
     int FracInch;  // minimum fractional inch to display
+    int viewSystemIndex; // currently selected View System (unit system)
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Units");
@@ -116,6 +118,10 @@ void DlgSettingsUnitsImp::saveSettings()
 
     // Set the actual format value
     Base::QuantityFormat::setDefaultDenominator(FracInch);
+
+    // Set and save the Unit System
+    viewSystemIndex = ui->comboBox_ViewSystem->currentIndex();
+    UnitsApi::setSchema((UnitSystem)viewSystemIndex);
 }
 
 void DlgSettingsUnitsImp::loadSettings()

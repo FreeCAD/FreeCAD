@@ -264,7 +264,7 @@ class _Space(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Space"
+        obj.IfcType = "Space"
 
     def setProperties(self,obj):
 
@@ -331,7 +331,8 @@ class _Space(ArchComponent.Component):
             if obj.Zone:
                 if obj.Zone.ViewObject:
                     if hasattr(obj.Zone.ViewObject,"Proxy"):
-                        obj.Zone.ViewObject.Proxy.claimChildren()
+                        if hasattr(obj.Zone.ViewObject.Proxy,"claimChildren"):
+                            obj.Zone.ViewObject.Proxy.claimChildren()
         if hasattr(obj,"Area"):
             obj.setEditorMode('Area',1)
         ArchComponent.Component.onChanged(self,obj,prop)
@@ -473,6 +474,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.LineWidth = 1
         vobj.LineColor = (1.0,0.0,0.0,1.0)
         vobj.DrawStyle = "Dotted"
+        vobj.DisplayMode = "Wireframe"
 
     def setProperties(self,vobj):
 
@@ -510,10 +512,6 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
     def onDocumentRestored(self,vobj):
 
         self.setProperties(vobj)
-
-    def getDefaultDisplayMode(self):
-
-        return "Wireframe"
 
     def getIcon(self):
 

@@ -67,6 +67,14 @@ Multiply a matrix or vector with this matrix
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="multVec" Const="true">
+      <Documentation>
+        <UserDocu>
+multVec(Vector) -> Vector
+Compute the transformed vector using the matrix
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="invert">
       <Documentation>
         <UserDocu>

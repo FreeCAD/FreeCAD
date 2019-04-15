@@ -69,7 +69,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         PathLog.track()
 
         # Pocket Properties
-        obj.addProperty("App::PropertyEnumeration", "CutMode", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
+        obj.addProperty("App::PropertyEnumeration", "CutMode", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)"))
         obj.CutMode = ['Climb', 'Conventional']
         obj.addProperty("App::PropertyDistance", "ExtraOffset", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra offset to apply to the operation. Direction is operation dependent."))
         obj.addProperty("App::PropertyEnumeration", "StartAt", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Start pocketing at center or boundary"))
@@ -140,4 +140,3 @@ def SetupProperties():
     setup.append('ZigZagAngle')
     setup.append('OffsetPattern')
     return setup
-

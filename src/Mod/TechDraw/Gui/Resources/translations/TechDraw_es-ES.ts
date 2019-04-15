@@ -4,138 +4,147 @@
   <context>
     <name>CmdTechDrawAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="562"/>
+      <location filename="../../Command.cpp" line="649"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="563"/>
-      <source>&amp;Annotation</source>
-      <translation>&amp;Anotación</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="564"/>
-      <location filename="../../Command.cpp" line="566"/>
-      <source>Inserts an Annotation in the active drawing</source>
-      <translation>Introduce una anotación en el dibujo activo</translation>
+      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="651"/>
+      <source>Insert Annotation</source>
+      <translation>Insertar anotación</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="908"/>
+      <location filename="../../Command.cpp" line="994"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="909"/>
-      <source>Insert an ArchView</source>
-      <translation>Inserta un ArchView</translation>
+      <location filename="../../Command.cpp" line="995"/>
+      <source>Insert a Section Plane</source>
+      <translation>Inserte un plano de sección</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="910"/>
-      <location filename="../../Command.cpp" line="912"/>
-      <source>Inserts a view of an Arch Section Plane into the active drawing</source>
-      <translation>Inserta una vista de un plano de sección de arquitectura en el dibujo activo</translation>
+      <location filename="../../Command.cpp" line="996"/>
+      <source>Inserts a view of a Section Plane from Arch Workbench</source>
+      <translation>Inserta una vista de un plano de sección desde el Entorno de Trabajo Arch</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawClip</name>
     <message>
-      <location filename="../../Command.cpp" line="603"/>
+      <location filename="../../Command.cpp" line="690"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="604"/>
-      <source>&amp;Clip</source>
-      <translation>&amp;Clip</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="605"/>
-      <location filename="../../Command.cpp" line="607"/>
-      <source>Inserts a clip group in the active drawing</source>
-      <translation>Inserta un clip de grupo en el actual dibujo</translation>
+      <location filename="../../Command.cpp" line="691"/>
+      <location filename="../../Command.cpp" line="692"/>
+      <source>Insert Clip group</source>
+      <translation>Insertar grupo Clip</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawClipMinus</name>
     <message>
-      <location filename="../../Command.cpp" line="730"/>
+      <location filename="../../Command.cpp" line="812"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="731"/>
-      <source>&amp;ClipMinus</source>
-      <translation>Y ClipMinus</translation>
+      <location filename="../../Command.cpp" line="813"/>
+      <source>Remove View from ClipGroup</source>
+      <translation>Quitar la vista de ClipGroup</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="732"/>
-      <location filename="../../Command.cpp" line="734"/>
-      <source>Remove a View from a clip group in the active drawing</source>
-      <translation>Eliminar una vista de un grupo de clip en el dibujo activo</translation>
+      <location filename="../../Command.cpp" line="814"/>
+      <source>Remove a View from Clip group</source>
+      <translation>Quitar la vista de ClipGroup</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawClipPlus</name>
     <message>
-      <location filename="../../Command.cpp" line="642"/>
+      <location filename="../../Command.cpp" line="729"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="643"/>
-      <source>&amp;ClipPlus</source>
-      <translation>Y ClipPlus</translation>
+      <location filename="../../Command.cpp" line="730"/>
+      <source>Add View to Clip group</source>
+      <translation>Añadir una Vista a ClipGroup</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="644"/>
-      <source>Add a View to a clip group in the active drawing</source>
-      <translation>Añadir una vista a un grupo de clip en el dibujo activo</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="646"/>
-      <source>Adds a View into a clip group in the active drawing</source>
-      <translation>Añadir una vista dentro de un grupo de clip en el dibujo activo</translation>
+      <location filename="../../Command.cpp" line="731"/>
+      <source>Add a View to Clip group</source>
+      <translation>Añadir una Vista a ClipGroup</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="855"/>
+      <location filename="../../Command.cpp" line="941"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="856"/>
-      <source>Insert a DraftView</source>
-      <translation>Inserta un ArchView</translation>
+      <location filename="../../Command.cpp" line="942"/>
+      <source>Insert a DraftWB object</source>
+      <translation>Inserta un objeto del Entorno de Trabajo Draft</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="857"/>
-      <location filename="../../Command.cpp" line="859"/>
-      <source>Inserts a Draft WB object into the active drawing</source>
-      <translation>Inserta un objeto de dibujo WD en el dibujo activo</translation>
+      <location filename="../../Command.cpp" line="943"/>
+      <source>Insert a View of a Draft Workbench object</source>
+      <translation>Insertar una vista de un objeto del Entorno de Trabajo Draft</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="1024"/>
+      <location filename="../../Command.cpp" line="1120"/>
       <source>File</source>
       <translation>Archivo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1025"/>
-      <source>&amp;Export page...</source>
-      <translation>&amp;Exportar página...</translation>
+      <location filename="../../Command.cpp" line="1121"/>
+      <source>Export page as SVG</source>
+      <translation>Exportar página como SVG</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1026"/>
-      <location filename="../../Command.cpp" line="1028"/>
+      <location filename="../../Command.cpp" line="1122"/>
       <source>Export a page to an SVG file</source>
       <translation>Exportar una página a un archivo SVG</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExportPageDxf</name>
+    <message>
+      <location filename="../../Command.cpp" line="1164"/>
+      <source>File</source>
+      <translation>Archivo</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1165"/>
+      <source>Export page as DXF</source>
+      <translation>Exportar página como DXF</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1166"/>
+      <source>Export a page to a DXF file</source>
+      <translation>Exportar página como archivo DXF</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1183"/>
+      <source>Save Dxf File </source>
+      <translation>Guardar archivo Dxf </translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1185"/>
+      <source>Dxf (*.dxf)</source>
+      <translation>Dxf (*.dxf)</translation>
     </message>
   </context>
   <context>
@@ -153,8 +162,8 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="214"/>
       <location filename="../../CommandDecorate.cpp" line="216"/>
-      <source>Inserts a bitmap from a file in the active drawing</source>
-      <translation>Inserta un mapa de bits desde un archivo en el dibujo activo</translation>
+      <source>Inserts a bitmap from a file into a Page</source>
+      <translation>Inserta un mapa de bits desde un archivo en una página</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="233"/>
@@ -170,31 +179,41 @@
   <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="822"/>
+      <location filename="../../CommandCreateDims.cpp" line="962"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="823"/>
-      <location filename="../../CommandCreateDims.cpp" line="824"/>
+      <location filename="../../CommandCreateDims.cpp" line="963"/>
+      <location filename="../../CommandCreateDims.cpp" line="964"/>
       <source>Link a dimension to 3D geometry</source>
       <translation>Vincular una dimensión a geometría 3D</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawNewAngleDimension</name>
+    <name>CmdTechDrawNewAngle3PtDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="733"/>
+      <location filename="../../CommandCreateDims.cpp" line="870"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="734"/>
-      <source>Insert a new angle dimension into the drawing</source>
-      <translation>Inserte una nueva cota de ángulo en el dibujo</translation>
+      <location filename="../../CommandCreateDims.cpp" line="871"/>
+      <location filename="../../CommandCreateDims.cpp" line="872"/>
+      <source>Insert a new 3 point Angle dimension</source>
+      <translation>Inserte una nueva dimensión de ángulo de 3 puntos</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawNewAngleDimension</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="782"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="735"/>
+      <location filename="../../CommandCreateDims.cpp" line="783"/>
+      <location filename="../../CommandCreateDims.cpp" line="784"/>
       <source>Insert a new angle dimension</source>
       <translation>Inserte una nueva dimensión de ángulo</translation>
     </message>
@@ -202,35 +221,35 @@
   <context>
     <name>CmdTechDrawNewDiameterDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="323"/>
+      <location filename="../../CommandCreateDims.cpp" line="344"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="324"/>
-      <source>Insert a new diameter dimension into the drawing</source>
-      <translation>Inserte una nueva cota de diámetro en el dibujo</translation>
+      <location filename="../../CommandCreateDims.cpp" line="345"/>
+      <source>Insert a new diameter dimension</source>
+      <translation>Inserte una nueva cota de diámetro</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="325"/>
-      <source>Insert a new diameter dimension feature for the selected view</source>
-      <translation>Inserte una nueva operación de cota de diámetro de la vista seleccionada</translation>
+      <location filename="../../CommandCreateDims.cpp" line="346"/>
+      <source>Insert a new diameter dimension feature</source>
+      <translation>Inserte una nueva función de cota de diámetro</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawNewDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="110"/>
+      <location filename="../../CommandCreateDims.cpp" line="117"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="111"/>
-      <source>Insert a dimension into the drawing</source>
-      <translation>Inserte una cota en el dibujo</translation>
+      <location filename="../../CommandCreateDims.cpp" line="118"/>
+      <source>Insert a dimension into a drawing</source>
+      <translation>Inserte una cota a un dibujo</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="112"/>
+      <location filename="../../CommandCreateDims.cpp" line="119"/>
       <source>Insert a new dimension</source>
       <translation>Inserte una nueva dimensión</translation>
     </message>
@@ -238,35 +257,35 @@
   <context>
     <name>CmdTechDrawNewDistanceXDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="518"/>
+      <location filename="../../CommandCreateDims.cpp" line="557"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="519"/>
-      <source>Insert a new horizontal dimension into the drawing</source>
-      <translation>Inserte una nueva cota horizontal en el dibujo</translation>
+      <location filename="../../CommandCreateDims.cpp" line="558"/>
+      <source>Insert a new horizontal dimension</source>
+      <translation>Inserte una nueva cota horizontal</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="520"/>
-      <source>Insert a new horizontal-distance dimension</source>
+      <location filename="../../CommandCreateDims.cpp" line="559"/>
+      <source>Insert a new horizontal distance dimension</source>
       <translation>Inserte una nueva cota de la distancia horizontal</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawNewDistanceYDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="626"/>
+      <location filename="../../CommandCreateDims.cpp" line="670"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="627"/>
-      <source>Insert a new vertical dimension into the drawing</source>
-      <translation>Inserte una nueva cota vertical en el dibujo</translation>
+      <location filename="../../CommandCreateDims.cpp" line="671"/>
+      <source>Insert a new vertical dimension</source>
+      <translation>Inserte una nueva cota vertical</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="628"/>
+      <location filename="../../CommandCreateDims.cpp" line="672"/>
       <source>Insert a new vertical distance dimension</source>
       <translation>Inserte una nueva cota de la distancia vertical</translation>
     </message>
@@ -302,17 +321,13 @@
   <context>
     <name>CmdTechDrawNewLengthDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="410"/>
+      <location filename="../../CommandCreateDims.cpp" line="444"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="411"/>
-      <source>Insert a new length dimension into the drawing</source>
-      <translation>Inserte una nueva cota de la longitud en el dibujo</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="412"/>
+      <location filename="../../CommandCreateDims.cpp" line="445"/>
+      <location filename="../../CommandCreateDims.cpp" line="446"/>
       <source>Insert a new length dimension</source>
       <translation>Insertar una nueva dimensión de la longitud</translation>
     </message>
@@ -320,23 +335,23 @@
   <context>
     <name>CmdTechDrawNewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="162"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="163"/>
-      <location filename="../../Command.cpp" line="164"/>
-      <source>Insert new drawing page from template</source>
-      <translation>Insertar nueva página de dibujo desde la plantilla</translation>
+      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="175"/>
+      <source>Insert new Page using Template</source>
+      <translation>Insertar nueva Página usando Plantilla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="179"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Select a Template File</source>
       <translation>Seleccione un archivo de plantilla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="181"/>
+      <location filename="../../Command.cpp" line="192"/>
       <source>Template (*.svg *.dxf)</source>
       <translation>Plantilla (*.svg *.dxf)</translation>
     </message>
@@ -344,105 +359,89 @@
   <context>
     <name>CmdTechDrawNewPageDef</name>
     <message>
-      <location filename="../../Command.cpp" line="92"/>
+      <location filename="../../Command.cpp" line="103"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="93"/>
-      <location filename="../../Command.cpp" line="94"/>
-      <source>Insert new default drawing page</source>
-      <translation>Insertar el nuevo valor por defecto para el dibujo de la página</translation>
+      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="105"/>
+      <source>Insert new default Page</source>
+      <translation>Insertar una nueva página por defecto</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawNewRadiusDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="236"/>
+      <location filename="../../CommandCreateDims.cpp" line="244"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="237"/>
-      <source>Insert a new radius dimension into the drawing</source>
-      <translation>Inserte una nueva cota de radio en el dibujo</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="238"/>
-      <source>Insert a new radius dimension feature for the selected view</source>
-      <translation>Inserte una nueva característica de cota del radio de la vista seleccionada</translation>
+      <location filename="../../CommandCreateDims.cpp" line="245"/>
+      <location filename="../../CommandCreateDims.cpp" line="246"/>
+      <source>Insert a new radius dimension</source>
+      <translation>Inserte una nueva cota de radio</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawNewView</name>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="253"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
-      <source>Insert view in drawing</source>
-      <translation>Insertar vista en el dibujo</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="244"/>
-      <source>Insert a new View of a Part in the active drawing</source>
-      <translation>Insertar una nueva Vista de una Pieza en el dibujo activo</translation>
+      <location filename="../../Command.cpp" line="254"/>
+      <location filename="../../Command.cpp" line="255"/>
+      <source>Insert View in Page</source>
+      <translation>Insertar vista de página</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawNewViewDetail</name>
     <message>
-      <location filename="../../Command.cpp" line="371"/>
+      <location filename="../../Command.cpp" line="418"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="372"/>
-      <source>Insert detail view in drawing</source>
-      <translation>Insertar vista de detalle en el dibujo</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="373"/>
-      <source>Insert a new Detail View of a Part in the active drawing</source>
-      <translation>Inserte una nueva vista de detalle de una pieza del dibujo activo</translation>
+      <location filename="../../Command.cpp" line="419"/>
+      <location filename="../../Command.cpp" line="420"/>
+      <source>Insert Detail View</source>
+      <translation>Insertar vista de detalle</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawNewViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="302"/>
+      <location filename="../../Command.cpp" line="348"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="303"/>
-      <source>Insert section view in drawing</source>
-      <translation>Insertar vista de sección en dibujo</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="304"/>
-      <source>Insert a new Section View of a Part in the active drawing</source>
-      <translation>Inserte una nueva vista de sección de una pieza en el plano activo</translation>
+      <location filename="../../Command.cpp" line="349"/>
+      <location filename="../../Command.cpp" line="350"/>
+      <source>Insert Section View in Page</source>
+      <translation>Insertar vista de sección en página</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawProjGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="487"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="488"/>
       <source>Insert Projection Group</source>
       <translation>Insertar Grupo de proyección</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
-      <source>Insert multiple views of a single part into the active drawing</source>
-      <translation>Introduzca múltiples vistas de una sola pieza en el plano activo</translation>
+      <location filename="../../Command.cpp" line="489"/>
+      <source>Insert multiple linked views of drawable object(s)</source>
+      <translation>Insertar varias vistas vinculadas del objeto(s) dibujable</translation>
     </message>
   </context>
   <context>
@@ -462,39 +461,37 @@
   <context>
     <name>CmdTechDrawSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="1061"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="966"/>
-      <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <location filename="../../Command.cpp" line="1062"/>
+      <source>Insert Spreadsheet view</source>
+      <translation>Insertar vista de hoja de cálculo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="967"/>
-      <location filename="../../Command.cpp" line="969"/>
-      <source>Inserts a view of a selected spreadsheet into a drawing</source>
-      <translation>Inserta una vista de una hoja de cálculo seleccionada en un dibujo</translation>
+      <location filename="../../Command.cpp" line="1063"/>
+      <source>Inserts a view of a selected spreadsheet</source>
+      <translation>Inserta una vista de una hoja de cálculo seleccionada</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="805"/>
+      <location filename="../../Command.cpp" line="887"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="806"/>
-      <source>Insert SVG &amp;Symbol</source>
-      <translation>Insertar SVG y símbolo</translation>
+      <location filename="../../Command.cpp" line="888"/>
+      <source>Insert SVG Symbol</source>
+      <translation>Insertar símbolo SVG</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="807"/>
-      <location filename="../../Command.cpp" line="809"/>
-      <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>Inserta un símbolo desde un archivo svg en el dibujo activo</translation>
+      <location filename="../../Command.cpp" line="889"/>
+      <source>Insert symbol from a svg file</source>
+      <translation>Insertar el símbolo de un archivo svg</translation>
     </message>
   </context>
   <context>
@@ -507,153 +504,171 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="265"/>
       <location filename="../../CommandDecorate.cpp" line="266"/>
-      <source>Turn View Frames on or off</source>
+      <source>Turn View Frames On/Off</source>
       <translation>Activar o desactivar la vista marcos</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="262"/>
-      <location filename="../../Command.cpp" line="320"/>
-      <location filename="../../Command.cpp" line="389"/>
-      <location filename="../../Command.cpp" line="460"/>
-      <location filename="../../Command.cpp" line="655"/>
-      <location filename="../../Command.cpp" line="671"/>
-      <location filename="../../Command.cpp" line="676"/>
-      <location filename="../../Command.cpp" line="685"/>
-      <location filename="../../Command.cpp" line="744"/>
-      <location filename="../../Command.cpp" line="764"/>
-      <location filename="../../Command.cpp" line="874"/>
-      <location filename="../../Command.cpp" line="926"/>
-      <location filename="../../Command.cpp" line="933"/>
-      <location filename="../../Command.cpp" line="978"/>
+      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="508"/>
+      <location filename="../../Command.cpp" line="742"/>
+      <location filename="../../Command.cpp" line="758"/>
+      <location filename="../../Command.cpp" line="763"/>
+      <location filename="../../Command.cpp" line="772"/>
+      <location filename="../../Command.cpp" line="826"/>
+      <location filename="../../Command.cpp" line="846"/>
+      <location filename="../../Command.cpp" line="961"/>
+      <location filename="../../Command.cpp" line="1012"/>
+      <location filename="../../Command.cpp" line="1029"/>
+      <location filename="../../Command.cpp" line="1074"/>
       <source>Wrong selection</source>
       <translation>Selección incorrecta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="263"/>
-      <source>Can not make a View from this selection</source>
-      <translation>No fue posible crear una vista desde esta seleccoón</translation>
+      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="509"/>
+      <source>No Shapes or Groups in this selection</source>
+      <translation>No hay formas o grupos en esta selección</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="321"/>
-      <location filename="../../Command.cpp" line="390"/>
+      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
       <translation>Seleccione al menos 1 objeto de DrawViewPart como Base.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="461"/>
-      <source>Can not make a ProjectionGroup from this selection</source>
-      <translation>No fue posible crear un grupo de proyección desde esta Selección</translation>
+      <location filename="../../Command.cpp" line="743"/>
+      <source>Select 1 Clip group and 1 View.</source>
+      <translation>Seleccione 1 grupo de recorte y 1 Vista.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="656"/>
-      <source>Select 1 DrawViewClip and 1 DrawView.</source>
-      <translation>Seleccione 1 DrawViewClip y 1 DrawView.</translation>
+      <location filename="../../Command.cpp" line="759"/>
+      <source>Select exactly one View to add to group.</source>
+      <translation>Seleccione exactamente una vista para añadir al grupo.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="672"/>
-      <location filename="../../Command.cpp" line="745"/>
-      <source>Select exactly one Drawing View object.</source>
-      <translation>Seleccione exactamente un objeto de vista de dibujo.</translation>
+      <location filename="../../Command.cpp" line="764"/>
+      <source>Select exactly one Clip group.</source>
+      <translation>Seleccione exactamente un único grupo de Clip.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="677"/>
-      <source>Select exactly one Clip object.</source>
-      <translation>Seleccione exactamente un único objeto Clip.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="686"/>
+      <location filename="../../Command.cpp" line="773"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Clip y vista deben ser de la misma página.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="765"/>
+      <location filename="../../Command.cpp" line="827"/>
+      <source>Select exactly one View to remove from Group.</source>
+      <translation>Seleccione exactamente una vista para eliminar del grupo.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="847"/>
       <source>View does not belong to a Clip</source>
       <translation>La vista no pertenece a un Clip</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="823"/>
+      <location filename="../../Command.cpp" line="905"/>
       <source>Choose an SVG file to open</source>
       <translation>Seleccionar un archivo SVG para abrir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="824"/>
+      <location filename="../../Command.cpp" line="906"/>
       <source>Scalable Vector Graphic</source>
       <translation>Gráfico vectorial escalable</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="875"/>
+      <location filename="../../Command.cpp" line="962"/>
+      <location filename="../../Command.cpp" line="1013"/>
       <source>Select at least one object.</source>
       <translation>Seleccione al menos un objeto.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="927"/>
-      <source>Select exactly one Arch Section Plane object.</source>
-      <translation>Seleccione exactamente un objeto arco de sección plano.</translation>
+      <location filename="../../Command.cpp" line="1030"/>
+      <source>There is no Section Plane in selection.</source>
+      <translation>No hay ningún plano de la sección en la selección.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="934"/>
-      <source>The selected object is not an Arch Section Plane.</source>
-      <translation>El objeto seleccionado no es un arco de sección plano.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="979"/>
+      <location filename="../../Command.cpp" line="1075"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Seleccione exactamente un objeto de hoja de cálculo.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1048"/>
+      <location filename="../../Command.cpp" line="1144"/>
       <source>No Drawing View</source>
       <translation>Sin vistas de dibujo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1049"/>
+      <location filename="../../Command.cpp" line="1145"/>
       <source>Open Drawing View before attempting export to SVG.</source>
       <translation>Vista del dibujo abierta antes de intentar exportar a SVG.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="195"/>
-      <location filename="../../CommandCreateDims.cpp" line="281"/>
-      <location filename="../../CommandCreateDims.cpp" line="368"/>
-      <location filename="../../CommandCreateDims.cpp" line="477"/>
-      <location filename="../../CommandCreateDims.cpp" line="584"/>
-      <location filename="../../CommandCreateDims.cpp" line="692"/>
-      <location filename="../../CommandCreateDims.cpp" line="778"/>
-      <location filename="../../CommandCreateDims.cpp" line="862"/>
-      <location filename="../../CommandCreateDims.cpp" line="868"/>
+      <location filename="../../CommandCreateDims.cpp" line="202"/>
+      <location filename="../../CommandCreateDims.cpp" line="301"/>
+      <location filename="../../CommandCreateDims.cpp" line="401"/>
+      <location filename="../../CommandCreateDims.cpp" line="511"/>
+      <location filename="../../CommandCreateDims.cpp" line="623"/>
+      <location filename="../../CommandCreateDims.cpp" line="736"/>
+      <location filename="../../CommandCreateDims.cpp" line="827"/>
+      <location filename="../../CommandCreateDims.cpp" line="916"/>
+      <location filename="../../CommandCreateDims.cpp" line="1002"/>
+      <location filename="../../CommandCreateDims.cpp" line="1008"/>
       <location filename="../../CommandDecorate.cpp" line="381"/>
       <location filename="../../CommandDecorate.cpp" line="387"/>
       <source>Incorrect Selection</source>
       <translation>Selección incorrecta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="196"/>
-      <source>Can&apos;t make a Dimension from this selection</source>
-      <translation>Can&apos;t hacer una cota desde esta selección</translation>
+      <location filename="../../CommandCreateDims.cpp" line="203"/>
+      <source>Can not make a Dimension from this selection</source>
+      <translation>No puede hacer una cota desde esta selección</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="779"/>
-      <source>Can&apos;t make an angle Dimension from this selection</source>
-      <translation>Can&apos;t hacer una cota angular desde esta selección</translation>
+      <location filename="../../CommandCreateDims.cpp" line="288"/>
+      <location filename="../../CommandCreateDims.cpp" line="388"/>
+      <source>Selection Warning</source>
+      <translation>Advertencia de selección</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="863"/>
+      <location filename="../../CommandCreateDims.cpp" line="289"/>
+      <source>Selected edge is a BSpline.  Radius will be approximate.</source>
+      <translation>El borde seleccionado es una BSpline. El radio será aproximado.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="389"/>
+      <source>Selected edge is a BSpline.  Diameter will be approximate.</source>
+      <translation>El borde seleccionado es una BSpline. El diámetro será aproximado.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="828"/>
+      <source>Need two straight edges to make an Angle Dimension</source>
+      <translation>Necesita dos bordes rectos para hacer una cota de ángulo</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="917"/>
+      <source>Need three points to make a 3 point Angle Dimension</source>
+      <translation>Necesita tres puntos para hacer una cota de ángulo de 3 puntos</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1003"/>
       <source>There is no 3D object in your selection</source>
       <translation>No hay ningún objeto 3D en su selección</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="869"/>
+      <location filename="../../CommandCreateDims.cpp" line="1009"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
       <translation>No hay bordes o vértices 3D en su selección</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="914"/>
-      <location filename="../../CommandCreateDims.cpp" line="921"/>
-      <location filename="../../CommandCreateDims.cpp" line="928"/>
-      <location filename="../../CommandCreateDims.cpp" line="940"/>
-      <location filename="../../CommandCreateDims.cpp" line="957"/>
+      <location filename="../../CommandCreateDims.cpp" line="1055"/>
+      <location filename="../../CommandCreateDims.cpp" line="1062"/>
+      <location filename="../../CommandCreateDims.cpp" line="1069"/>
+      <location filename="../../CommandCreateDims.cpp" line="1081"/>
+      <location filename="../../CommandCreateDims.cpp" line="1098"/>
       <location filename="../../CommandDecorate.cpp" line="360"/>
       <location filename="../../CommandDecorate.cpp" line="367"/>
       <location filename="../../CommandDecorate.cpp" line="374"/>
@@ -661,27 +676,29 @@
       <translation>Selección incorrecta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="915"/>
+      <location filename="../../CommandCreateDims.cpp" line="1056"/>
       <source>Select an object first</source>
       <translation>Seleccione un objeto en primer lugar</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="922"/>
+      <location filename="../../CommandCreateDims.cpp" line="1063"/>
       <source>Too many objects selected</source>
       <translation>Demasiados objetos seleccionados</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="929"/>
-      <location filename="../../DrawGuiUtil.cpp" line="97"/>
-      <location filename="../../DrawGuiUtil.cpp" line="120"/>
+      <location filename="../../CommandCreateDims.cpp" line="1070"/>
       <source>Create a page first.</source>
       <translation>Cree una página de dibujo primero.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="941"/>
-      <location filename="../../CommandCreateDims.cpp" line="958"/>
-      <source>No DrawViewPart in selection.</source>
-      <translation>Sin DrawViewPart en la selección.</translation>
+      <location filename="../../CommandCreateDims.cpp" line="1082"/>
+      <source>No View of a Part in selection.</source>
+      <translation>Sin vista de un objeto Part en la selección.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1099"/>
+      <source>No Feature with Shape in selection.</source>
+      <translation>No hay ninguna operación asociada a una Forma en la selección.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
@@ -710,69 +727,73 @@
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="382"/>
-      <source>Can&apos;t make a Hatched area from this selection</source>
-      <translation>Can&apos;t hacer un área rallada desde esta selección</translation>
-    </message>
-    <message>
       <location filename="../../CommandDecorate.cpp" line="388"/>
-      <source>No Face in this selection</source>
-      <translation>Sin cara en esta selección</translation>
+      <source>No Faces to hatch in this selection</source>
+      <translation>No hay caras para sombrear en esta selección</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="96"/>
-      <location filename="../../DrawGuiUtil.cpp" line="119"/>
+      <location filename="../../DrawGuiUtil.cpp" line="136"/>
       <source>No page found</source>
       <translation>No se ha encontrado una página de dibujo</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="101"/>
-      <location filename="../../DrawGuiUtil.cpp" line="109"/>
+      <location filename="../../DrawGuiUtil.cpp" line="137"/>
+      <source>Create/select a page first.</source>
+      <translation>Crear/seleccionar una página primero.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawGuiUtil.cpp" line="140"/>
+      <source>Which page?</source>
+      <translation>¿Qué página?</translation>
+    </message>
+    <message>
+      <location filename="../../DrawGuiUtil.cpp" line="144"/>
       <source>Too many pages</source>
       <translation>Demasiadas páginas</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="102"/>
+      <location filename="../../DrawGuiUtil.cpp" line="141"/>
       <source>Can not determine correct page.</source>
       <translation>No se puede determinar la página correcta.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="110"/>
+      <location filename="../../DrawGuiUtil.cpp" line="145"/>
       <source>Select exactly 1 page.</source>
       <translation>Seleccione 1 página exactamente.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="566"/>
+      <location filename="../../MDIViewPage.cpp" line="544"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="567"/>
-      <location filename="../../MDIViewPage.cpp" line="811"/>
+      <location filename="../../MDIViewPage.cpp" line="545"/>
+      <location filename="../../MDIViewPage.cpp" line="791"/>
       <source>All Files (*.*)</source>
       <translation>Todos los archivos (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="568"/>
+      <location filename="../../MDIViewPage.cpp" line="546"/>
       <source>Export Page As PDF</source>
       <translation>Exportar página como PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="810"/>
+      <location filename="../../MDIViewPage.cpp" line="790"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="812"/>
+      <location filename="../../MDIViewPage.cpp" line="792"/>
       <source>Export page as SVG</source>
       <translation>Exportar página como SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1089"/>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
+      <location filename="../../MDIViewPage.cpp" line="1223"/>
+      <source>%1.%2.%3</source>
+      <translation>%1.%2.%3</translation>
     </message>
     <message>
-      <location filename="../../QGVPage.cpp" line="579"/>
+      <location filename="../../QGVPage.cpp" line="595"/>
       <source>FreeCAD SVG Export</source>
       <translation>Exportación de SVG de FreeCAD</translation>
     </message>
@@ -794,11 +815,6 @@
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDraw2Imp</name>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
-      <source>TechDraw 2</source>
-      <translation>TechDraw 2</translation>
-    </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="20"/>
       <source>Dimensions</source>
@@ -838,6 +854,11 @@
       <location filename="../../DlgPrefsTechDraw2.ui" line="85"/>
       <source>Alternate Decimals</source>
       <translation>Decimales alternativos</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
+      <source>TechDraw Dimensions</source>
+      <translation>Cotas de TechDraw</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
@@ -895,89 +916,99 @@
       <translation>Decoraciones</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="287"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="297"/>
+      <source>Adjusts size of vertices in drawing</source>
+      <translation>Ajusta tamaño de vértices en el dibujo</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="313"/>
+      <source>Vertex Scale</source>
+      <translation>Escala de vértices</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="327"/>
       <source>Round</source>
       <translation>Redondo</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="292"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="332"/>
       <source>Square</source>
       <translation>Cuadrado</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="300"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="340"/>
       <source>Section Line Style</source>
       <translation>Selección estilo de línea</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="307"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="347"/>
       <source>Center Line Style</source>
       <translation>Centro estilo de línea</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="314"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="354"/>
       <source>Matting Style</source>
       <translation>Estilo de Tapete</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="348"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="391"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="371"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="414"/>
       <source>NeverShow</source>
       <translation>No Mostrar</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="468"/>
-      <source>Line Group</source>
-      <translation>Grupo de líneas</translation>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="491"/>
+      <source>Line Group Name</source>
+      <translation>Nombre de grupo de línea</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="358"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="401"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="511"/>
+      <source>Vertex Color</source>
+      <translation>Color de vértices</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="381"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="424"/>
       <source>Dash</source>
       <translation>Tablero</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="363"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="406"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="386"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="429"/>
       <source>Dot</source>
       <translation>Punto</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="368"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="411"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="391"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="434"/>
       <source>DashDot</source>
       <translation>DashDot</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="373"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="416"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="396"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="439"/>
       <source>DashDotDot</source>
       <translation>DashDotDot</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="353"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="396"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="376"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="419"/>
       <source>Solid</source>
       <translation>Sólido</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="424"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="447"/>
       <source>Center Line Color</source>
       <translation>Color de la línea central</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="431"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="454"/>
       <source>Section Line Color</source>
       <translation>Color de la sección de la línea</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDrawImp</name>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
-      <source>TechDraw 1</source>
-      <translation>TechDraw 1</translation>
-    </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="20"/>
       <source>General</source>
@@ -1000,7 +1031,7 @@
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="58"/>
-      <location filename="../../DlgPrefsTechDraw.ui" line="336"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="355"/>
       <source>Hidden Line</source>
       <translation>Líneas ocultas</translation>
     </message>
@@ -1050,19 +1081,9 @@
       <translation>Mantener páginas al día</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="617"/>
-      <source>Font for View Labels</source>
-      <translation>Fuente para las etiquetas de vista</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="635"/>
-      <source>Template Dot Size</source>
-      <translation>Plantilla tamaño de punto</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="183"/>
-      <source>Colors</source>
-      <translation>Colores</translation>
+      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
+      <source>TechDraw General</source>
+      <translation>TechDraw general</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
@@ -1085,107 +1106,142 @@
       <translation>Actualización de páginas en horario previsto o saltar</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="191"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="165"/>
+      <source>Automatically distribute secondary views.</source>
+      <translation>Distribuir automáticamente vistas secundarias.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="168"/>
+      <source>AutoDistribute Secondary Views</source>
+      <translation>Auto distribuir vistas secundarias</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
+      <source>Colors</source>
+      <translation>Colores</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="210"/>
       <source>Section Hatch</source>
       <translation>Sección de rallado</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="198"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="217"/>
       <source>Section Face</source>
       <translation>Cara de la sección</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="239"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="258"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="329"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="348"/>
       <source>PreSelected</source>
       <translation>Pre-seleccion</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="360"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="379"/>
       <source>Selected</source>
       <translation>Seleccionado</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="384"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="403"/>
       <source>Background</source>
       <translation>Fondo</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="391"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="410"/>
       <source>Geom Hatch</source>
       <translation>Geometría de rallado</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="433"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="452"/>
       <source>Files</source>
       <translation>Archivos</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="441"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="460"/>
       <source>Template Directory</source>
       <translation>Directorio de plantillas</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="448"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="467"/>
       <source>Default Template</source>
       <translation>Plantilla por defecto</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="468"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="487"/>
       <source>Hatch Image</source>
       <translation>Imagen de rallado</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="485"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="494"/>
+      <source>Line Group File</source>
+      <translation>Archivo de grupo de línea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="511"/>
       <source>Location of default svg/png fill file</source>
       <translation>Ubicación de archivo por defecto de relleno svg/png</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="498"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="524"/>
       <source>PAT File</source>
       <translation>Archivo PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="505"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="531"/>
       <source>Default location for PAT file</source>
       <translation>Ubicación predeterminada de archivos PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="522"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="544"/>
+      <source>Alternate Line Group file</source>
+      <translation>Archivo de grupo de línea alternativo</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="561"/>
       <source>Default PAT pattern</source>
       <translation>Patrón PAT por defecto</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="535"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="574"/>
       <source>Pattern Name</source>
       <translation>Nombre del patrón</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="579"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="618"/>
       <source>Labels</source>
       <translation>Etiquetas</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="603"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="642"/>
       <source>Label Font</source>
       <translation>Fuente de etiqueta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="668"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="656"/>
+      <source>Font for View Labels</source>
+      <translation>Fuente para las etiquetas de vista</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
+      <source>Editable Text Marker Size</source>
+      <translation>Tamaño del marcador de texto editable</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="707"/>
       <source>View Label size in units</source>
       <translation>Ver tamaño de la etiqueta en unidades</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="684"/>
-      <source>Green edit dot size in units</source>
-      <translation>Edición del tamaño de punto verde en unidades</translation>
+      <location filename="../../DlgPrefsTechDraw.ui" line="723"/>
+      <source>Size of editable text marker in Templates (green dot).</source>
+      <translation>Tamaño del marcador de texto editable en Plantillas (punto verde).</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="610"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="649"/>
       <source>Label Size</source>
       <translation>Tamaño de la etiqueta</translation>
     </message>
@@ -1193,88 +1249,73 @@
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="111"/>
+      <location filename="../../MDIViewPage.cpp" line="118"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exportar SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="114"/>
-      <source>&amp;Native</source>
-      <translation>&amp;Nativo</translation>
+      <location filename="../../MDIViewPage.cpp" line="112"/>
+      <source>Toggle &amp;Keep Updated</source>
+      <translation>Alternar y mantener actualizados</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="118"/>
-      <source>&amp;OpenGL</source>
-      <translation>&amp;OpenGL</translation>
+      <location filename="../../MDIViewPage.cpp" line="115"/>
+      <source>Toggle &amp;Frames</source>
+      <translation>Alternar Marcos</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="121"/>
-      <source>&amp;Image</source>
-      <translation>&amp;Imagen</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="125"/>
-      <source>&amp;High Quality Antialiasing</source>
-      <translation>&amp;Antialiasing alta calidad</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="144"/>
-      <source>dummy[*]</source>
-      <translation>dummy[*]</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="250"/>
-      <source>&amp;Renderer</source>
-      <translation>&amp;Renderizador</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="646"/>
+      <location filename="../../MDIViewPage.cpp" line="624"/>
       <source>Different orientation</source>
       <translation>Orientación diferente de la hoja</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="647"/>
+      <location filename="../../MDIViewPage.cpp" line="625"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>La impresora utiliza una orientación de papel distinta a la del dibujo.
 ¿Desea continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="654"/>
-      <location filename="../../MDIViewPage.cpp" line="662"/>
+      <location filename="../../MDIViewPage.cpp" line="632"/>
+      <location filename="../../MDIViewPage.cpp" line="640"/>
       <source>Different paper size</source>
-      <translation>Distinto tamaño de papel</translation>
+      <translation>Tamaño de papel diferente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="655"/>
-      <location filename="../../MDIViewPage.cpp" line="663"/>
+      <location filename="../../MDIViewPage.cpp" line="633"/>
+      <location filename="../../MDIViewPage.cpp" line="641"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>La impresora usa un tamaño de papel distinto al del dibujo.
 ¿Desea continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="674"/>
+      <location filename="../../MDIViewPage.cpp" line="652"/>
       <source>Opening file failed</source>
       <translation>No se pudo abrir el archivo</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="675"/>
-      <source>Can&apos;t open file %1 for writing.</source>
+      <location filename="../../MDIViewPage.cpp" line="653"/>
+      <source>Can not open file %1 for writing.</source>
       <translation>No se puede abrir el archivo %1 para la escritura.</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="1221"/>
+      <source>Selected:</source>
+      <translation>Seleccionado:</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::QGVPage</name>
     <message>
-      <location filename="../../QGVPage.cpp" line="564"/>
-      <source>Drawing page: </source>
-      <translation>Página de dibujo: </translation>
+      <location filename="../../QGVPage.cpp" line="580"/>
+      <source>Drawing page:</source>
+      <translation>Página de dibujo:</translation>
     </message>
     <message>
-      <location filename="../../QGVPage.cpp" line="566"/>
-      <source> exported from FreeCAD document: </source>
-      <translation> exportar documento de FreeCAD: </translation>
+      <location filename="../../QGVPage.cpp" line="582"/>
+      <source> exported from FreeCAD document:</source>
+      <translation> exportado desde documento de FreeCAD:</translation>
     </message>
   </context>
   <context>
@@ -1468,8 +1509,8 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="230"/>
-      <source>Primary View Direction</source>
-      <translation>Dirección de la visión primaria</translation>
+      <source>Current primary view direction</source>
+      <translation>Dirección actual de la vista principal</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="243"/>
@@ -1487,92 +1528,72 @@ Do you want to continue?</source>
       <translation>Girar a la izquierda</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="315"/>
-      <source>This function is temporarily unavailable.</source>
-      <translation>Esta función no está disponible temporalmente.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.ui" line="318"/>
-      <source>Match 3D</source>
-      <translation>Match 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.ui" line="325"/>
+      <location filename="../../TaskProjGroup.ui" line="312"/>
       <source>Rotate down</source>
       <translation>Gire hacia abajo</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="346"/>
-      <source>Return Primary Direction to Initial Value</source>
-      <translation>Volver a la vista frontal predefinida</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.ui" line="349"/>
-      <source>Reset</source>
-      <translation>Reiniciar</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.ui" line="367"/>
+      <location filename="../../TaskProjGroup.ui" line="370"/>
       <source>Secondary Projections</source>
       <translation>Proyecciones secundarias</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="384"/>
+      <location filename="../../TaskProjGroup.ui" line="387"/>
       <source>Bottom</source>
       <translation>Inferior</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="417"/>
+      <location filename="../../TaskProjGroup.ui" line="420"/>
       <source>Primary</source>
       <translation>Primaria</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="437"/>
+      <location filename="../../TaskProjGroup.ui" line="440"/>
       <source>Right</source>
       <translation>Derecha</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="467"/>
+      <location filename="../../TaskProjGroup.ui" line="470"/>
       <source>Left</source>
       <translation>Izquierda</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="484"/>
+      <location filename="../../TaskProjGroup.ui" line="487"/>
       <source>LeftFrontBottom</source>
       <translation>IzquierdaFrenteInferior</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="501"/>
+      <location filename="../../TaskProjGroup.ui" line="504"/>
       <source>Top</source>
       <translation>Planta</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="518"/>
+      <location filename="../../TaskProjGroup.ui" line="521"/>
       <source>RightFrontBottom</source>
       <translation>DerechaFrenteInferior</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="535"/>
+      <location filename="../../TaskProjGroup.ui" line="538"/>
       <source>RightFrontTop</source>
       <translation>DerechaFrenteSuperior</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="552"/>
+      <location filename="../../TaskProjGroup.ui" line="555"/>
       <source>Rear</source>
       <translation>Posterior</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="569"/>
+      <location filename="../../TaskProjGroup.ui" line="572"/>
       <source>LeftFrontTop</source>
       <translation>IzquierdaFrenteSuperior</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="609"/>
+      <location filename="../../TaskProjGroup.ui" line="612"/>
       <source>Spin CW</source>
       <translation>Girar H</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="637"/>
+      <location filename="../../TaskProjGroup.ui" line="640"/>
       <source>Spin CCW</source>
       <translation>Girar AH</translation>
     </message>

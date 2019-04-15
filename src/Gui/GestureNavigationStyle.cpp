@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Victor Titov (DeepSOIC)                                 *
- *                                           (vv.titov@gmail.com) 2015     *
+ *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -101,13 +100,13 @@ const char* GestureNavigationStyle::mouseButtons(ViewerMode mode)
 {
     switch (mode) {
     case NavigationStyle::SELECTION:
-        return QT_TR_NOOP("Tap. Or click left mouse button.");
+        return QT_TR_NOOP("Tap OR click left mouse button.");
     case NavigationStyle::PANNING:
-        return QT_TR_NOOP("Drag screen with two fingers. Or press right mouse button.");
+        return QT_TR_NOOP("Drag screen with two fingers OR press right mouse button.");
     case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
+        return QT_TR_NOOP("Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.");
+        return QT_TR_NOOP("Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.");
     default:
         return "No description";
     }
@@ -311,7 +310,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //mode-independent spaceball/joystick handling
     if (evIsLoc3) {
-        const SoMotion3Event * const event = static_cast<const SoMotion3Event * const>(ev);
+        const SoMotion3Event * const event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;
@@ -547,7 +546,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 processed=true;
             } else if (gesture->state == SoGestureEvent::SbGSUpdate){
                 if(type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())){
-                    const SoGesturePinchEvent* const event = static_cast<const SoGesturePinchEvent* const>(ev);
+                    const SoGesturePinchEvent* const event = static_cast<const SoGesturePinchEvent*>(ev);
                     if (this->zoomAtCursor){
                         //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
                         SbVec2f panDist = this->normalizePixelPos(event->deltaCenter.getValue());
@@ -559,7 +558,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     processed = true;
                 }
                 if(type.isDerivedFrom(SoGesturePanEvent::getClassTypeId())){
-                    const SoGesturePanEvent* const event = static_cast<const SoGesturePanEvent* const>(ev);
+                    const SoGesturePanEvent* const event = static_cast<const SoGesturePanEvent*>(ev);
                         //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
                     SbVec2f panDist = this->normalizePixelPos(event->deltaOffset);
                     NavigationStyle::panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, panDist, SbVec2f(0,0));

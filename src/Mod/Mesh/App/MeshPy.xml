@@ -136,7 +136,17 @@ mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserD
 				<UserDocu>Remove a list of facet indices from the mesh</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getInternalFacets" Const="true">
+        <Methode Name="removeNeedles">
+            <Documentation>
+                <UserDocu>Remove all edges that are smaller than a given length</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removeFullBoundaryFacets">
+            <Documentation>
+                <UserDocu>Remove facets whose all three points are on the boundary</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getInternalFacets" Const="true">
 			<Documentation>
 				<UserDocu>Builds a list of facet indices with triangles that are inside a volume mesh</UserDocu>
 			</Documentation>
@@ -289,7 +299,12 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Repair any invalid indices</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="fixDeformations">
+        <Methode Name="fixCaps">
+            <Documentation>
+                <UserDocu>Repair caps by swapping the edge</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="fixDeformations">
 			<Documentation>
 				<UserDocu>Repair deformed facets</UserDocu>
 			</Documentation>
@@ -422,7 +437,12 @@ smooth([iteration=1,maxError=FLT_MAX])</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="optimizeTopology" Const="true">
+        <Methode Name="mergeFacets">
+            <Documentation>
+                <UserDocu>Merge facets to optimize topology</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="optimizeTopology" Const="true">
 			<Documentation>
 				<UserDocu>Optimize the edges to get nicer facets</UserDocu>
 			</Documentation>

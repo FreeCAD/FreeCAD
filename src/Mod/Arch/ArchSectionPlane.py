@@ -85,7 +85,7 @@ def makeSectionView(section,name="View"):
             page = o
             break
     if not page:
-        page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage",translate("Arch","Page"))
+        page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage","Page")
         page.Template = Draft.getParam("template",FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg')
 
     view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython",name)
@@ -95,51 +95,90 @@ def makeSectionView(section,name="View"):
     view.Label = translate("Arch","View of")+" "+section.Name
     return view
 
+def looksLikeDraft(o):
+    # If there is no shape at all ignore it
+    if not hasattr(o, 'Shape') or o.Shape.isNull():
+        return False
+    
+    # If there are solids in the object, it will be handled later
+    # by getCutShapes
+    if len(o.Shape.Solids) > 0:
+        return False
+    
+    # If we have a shape, but no volume, it looks like a flat 2D object
+    return o.Shape.Volume == 0
 
-def getCutShapes(objs,section,showHidden):
+def getCutShapes(objs,section,showHidden,groupSshapesByObject=False):
 
     import Part,DraftGeomUtils
     shapes = []
     hshapes = []
     sshapes = []
+    objectShapes = []
+    objectSshapes = []
     for o in objs:
         if o.isDerivedFrom("Part::Feature"):
             if o.Shape.isNull():
                 pass
             elif section.OnlySolids:
                 if o.Shape.isValid():
-                    shapes.extend(o.Shape.Solids)
+                    solids = []
+                    solids.extend(o.Shape.Solids)
+
+                    shapes.extend(solids)
+
+                    objectShapes.append((o, solids))
                 else:
                     print(section.Label,": Skipping invalid object:",o.Label)
             else:
                 shapes.append(o.Shape)
+                objectShapes.append((o, [o.Shape]))
     cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(section.Shape.copy(),shapes)
     if cutvolume:
-        nsh = []
-        for sh in shapes:
-            for sol in sh.Solids:
-                if sol.Volume < 0:
-                    sol.reverse()
-                c = sol.cut(cutvolume)
-                s = sol.section(cutface)
-                try:
-                    wires = DraftGeomUtils.findWires(s.Edges)
-                    for w in wires:
-                        f = Part.Face(w)
-                        sshapes.append(f)
-                    #s = Part.Wire(s.Edges)
-                    #s = Part.Face(s)
-                except Part.OCCError:
-                    #print "ArchDrawingView: unable to get a face"
-                    sshapes.append(s)
-                nsh.extend(c.Solids)
-                #sshapes.append(s)
-                if showHidden:
-                    c = sol.cut(invcutvolume)
-                    hshapes.append(c)
-        shapes = nsh
-    return shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume
+        for o, shapeList in objectShapes:
+            tmpSshapes = []
+            for sh in shapeList:
+                for sol in sh.Solids:
+                    if sol.Volume < 0:
+                        sol.reverse()
+                    c = sol.cut(cutvolume)
+                    s = sol.section(cutface)
+                    try:
+                        wires = DraftGeomUtils.findWires(s.Edges)
+                        for w in wires:
+                            f = Part.Face(w)
+                            tmpSshapes.append(f)
+                        #s = Part.Wire(s.Edges)
+                        #s = Part.Face(s)
+                    except Part.OCCError:
+                        #print "ArchDrawingView: unable to get a face"
+                        tmpSshapes.append(s)
+                    shapes.extend(c.Solids)
+                    #sshapes.append(s)
+                    if showHidden:
+                        c = sol.cut(invcutvolume)
+                        hshapes.append(c)
 
+            if len(tmpSshapes) > 0:
+                sshapes.extend(tmpSshapes)
+                
+                if groupSshapesByObject:
+                    objectSshapes.append((o, tmpSshapes))
+    
+    if groupSshapesByObject:
+        return shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes
+    else:
+        return shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume
+
+def getFillForObject(o, defaultFill, section):
+    if hasattr(section, 'UseMaterialColorForFill') and section.UseMaterialColorForFill:
+        if hasattr(o, 'Material') and o.Material:
+            material = o.Material
+            
+            if hasattr(material, 'Color') and material.Color:
+                return o.Material.Color
+    
+    return defaultFill
 
 def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale=1, rotation=0, linewidth=1, lineColor=(0.0,0.0,0.0), fontsize=1, showFill=False, fillColor=(0.8,0.8,0.8), techdraw=False):
 
@@ -177,6 +216,8 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
         elif Draft.getType(o) in ["Dimension","Annotation","Label"]:
             drafts.append(o)
         elif o.isDerivedFrom("Part::Part2DObject"):
+            drafts.append(o)
+        elif looksLikeDraft(o):
             drafts.append(o)
         else:
             nonspaces.append(o)
@@ -238,11 +279,15 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
             # print(render.info())
             section.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill]
     else:
+        if showFill:
+            shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes = getCutShapes(objs,section,showHidden, True)
+        else:
+            shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
+
         if not svgcache:
             svgcache = ""
             # render using the Drawing module
             import Drawing, Part
-            shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
             if shapes:
                 baseshape = Part.makeCompound(shapes)
                 style = {'stroke':       "SVGLINECOLOR",
@@ -264,14 +309,16 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
                 if showFill:
                     #svgcache += fillpattern
                     svgcache += '<g transform="rotate(180)">\n'
-                    for s in sshapes:
-                        if s.Edges:
-                            #svg += Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
-                            # temporarily disabling fill patterns
-                            svgcache += Draft.getSVG(s, direction=direction.negative(),
-                                linewidth=0,
-                                fillstyle=Draft.getrgb(fillColor),
-                                color=lineColor)
+                    for o, shapes in objectSshapes:
+                        for s in shapes:
+                            if s.Edges:
+                                objectFill = getFillForObject(o, fillColor, section)
+                                #svg += Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
+                                # temporarily disabling fill patterns
+                                svgcache += Draft.getSVG(s, direction=direction.negative(),
+                                    linewidth=0,
+                                    fillstyle=Draft.getrgb(objectFill),
+                                    color=lineColor)
                     svgcache += "</g>\n"
                 sshapes = Part.makeCompound(sshapes)
                 style = {'stroke':       "SVGLINECOLOR",
@@ -438,6 +485,9 @@ class _SectionPlane:
         if not "OnlySolids" in pl:
             obj.addProperty("App::PropertyBool","OnlySolids","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If false, non-solids will be cut too, with possible wrong results."))
             obj.OnlySolids = True
+        if not "UseMaterialColorForFill" in pl:
+            obj.addProperty("App::PropertyBool","UseMaterialColorForFill","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If true, the color of the objects material will be used to fill cut areas."))
+            obj.UseMaterialColorForFill = False
         self.Type = "SectionPlane"
 
     def onDocumentRestored(self,obj):
@@ -467,7 +517,7 @@ class _SectionPlane:
     def onChanged(self,obj,prop):
 
         # clean svg cache if needed
-        if prop in ["Placement","Objects","OnlySolids"]:
+        if prop in ["Placement","Objects","OnlySolids","UseMaterialColorForFill"]:
             self.svgcache = None
 
     def getNormal(self,obj):

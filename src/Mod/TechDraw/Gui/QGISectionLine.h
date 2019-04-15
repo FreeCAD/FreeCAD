@@ -85,7 +85,7 @@ private:
     double             m_arrowSize;
     //QColor             m_color;
     double             m_extLen;
-    int                m_sectionFormat;     //0 = ASME, 1 = ISO
+//    int                m_sectionFormat;     //0 = ASME, 1 = ISO
 };
 
 }

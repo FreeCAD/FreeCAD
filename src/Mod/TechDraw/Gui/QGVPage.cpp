@@ -33,6 +33,7 @@
 # include <QPainter>
 # include <QPaintEvent>
 # include <QSvgGenerator>
+#include <QScrollBar>
 # include <QWheelEvent>
 #include <QTemporaryFile>
 #include <QDomDocument>
@@ -57,6 +58,7 @@
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawParametricTemplate.h>
 #include <Mod/TechDraw/App/DrawViewCollection.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -74,6 +76,7 @@
 #include "TemplateTextField.h"
 #include "QGIViewCollection.h"
 #include "QGIViewDimension.h"
+#include "QGIViewBalloon.h"
 #include "QGIProjGroup.h"
 #include "QGIViewPart.h"
 #include "QGIViewSection.h"
@@ -104,14 +107,19 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
 
     setScene(s);
 
-
     setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setCacheMode(QGraphicsView::CacheBackground);
- 
+
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
     m_atCursor = hGrp->GetBool("ZoomAtCursor", 1l);
     m_invertZoom = hGrp->GetBool("InvertZoom", 0l);
+    m_zoomIncrement = hGrp->GetFloat("ZoomStep",0.02);
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    m_reversePan = hGrp->GetInt("KbPan",1);
+    m_reverseScroll = hGrp->GetInt("KbScroll",1);
+
 
     if (m_atCursor) {
         setResizeAnchor(AnchorUnderMouse);
@@ -128,6 +136,8 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
 
     bkgBrush = new QBrush(getBackgroundColor());
 
+    balloonIndex = 1;
+
     resetCachedContent();
 }
 
@@ -143,6 +153,10 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     if(!drawBkg)
         return;
 
+    if(!m_vpPage) {
+        return;
+    }
+
     if (!m_vpPage->getDrawPage()) {
         //Base::Console().Log("TROUBLE - QGVP::drawBackground - no Page Object!\n");
         return;
@@ -154,10 +168,6 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
 
     p->setBrush(*bkgBrush);
     p->drawRect(viewport()->rect().adjusted(-2,-2,2,2));   //just bigger than viewport to prevent artifacts
-
-    if(!m_vpPage) {
-        return;
-    }
 
     // Default to A3 landscape, though this is currently relevant
     // only for opening corrupt docs, etc.
@@ -197,30 +207,33 @@ std::vector<QGIView *> QGVPage::getViews() const
 
 int QGVPage::addQView(QGIView *view)
 {
-    auto ourScene( scene() );
-    assert(ourScene);
+    //don't add twice!
+    QGIView* existing = getQGIVByName(view->getViewName());
+    if (existing == nullptr) {
+        auto ourScene( scene() );
+        assert(ourScene);
 
-    ourScene->addItem(view);
+        ourScene->addItem(view);
 
-    // Find if it belongs to a parent
-    QGIView *parent = 0;
-    parent = findParent(view);
+        // Find if it belongs to a parent
+        QGIView *parent = 0;
+        parent = findParent(view);
 
-    QPointF viewPos(Rez::guiX(view->getViewObject()->X.getValue()),
-                    Rez::guiX(view->getViewObject()->Y.getValue() * -1));
+        QPointF viewPos(Rez::guiX(view->getViewObject()->X.getValue()),
+                        Rez::guiX(view->getViewObject()->Y.getValue() * -1));
 
-    if(parent) {
-        // move child view to center of parent
-        QPointF posRef(0.,0.);
-        QPointF mapPos = view->mapToItem(parent, posRef);
-        view->moveBy(-mapPos.x(), -mapPos.y());
+        if(parent) {
+            // move child view to center of parent
+            QPointF posRef(0.,0.);
+            QPointF mapPos = view->mapToItem(parent, posRef);
+            view->moveBy(-mapPos.x(), -mapPos.y());
 
-        parent->addToGroup(view);
+            parent->addToGroup(view);
+        }
+
+        view->setPos(viewPos);
+        view->updateView(true);
     }
-
-    view->setPos(viewPos);
-    view->updateView(true);
-    
     return 0;
 }
 
@@ -246,7 +259,13 @@ int QGVPage::removeQViewByName(const char* name)
             break;
         }
     }
+
     if (found) {
+        int balloonItemType = QGraphicsItem::UserType + 140;
+        if (ourItem->type() == balloonItemType) {
+            QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>(ourItem);
+            balloon->disconnect();
+        }
         removeQViewFromScene(ourItem);
         delete ourItem;
     }
@@ -273,6 +292,11 @@ void QGVPage::removeQViewFromScene(QGIView *view)
 
 QGIView * QGVPage::addViewPart(TechDraw::DrawViewPart *part)
 {
+    QGIView* existing = findQViewForDocObj(part);
+    if (existing != nullptr) {
+       return existing;
+    }
+
     auto viewPart( new QGIViewPart );
 
     viewPart->setViewPartFeature(part);
@@ -369,6 +393,39 @@ QGIView * QGVPage::addDrawViewImage(TechDraw::DrawViewImage *view)
     return qview;
 }
 
+QGIView * QGVPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
+{
+    auto balloonGroup( new QGIViewBalloon );
+
+    auto ourScene( scene() );
+    assert(ourScene);
+    ourScene->addItem(balloonGroup);
+
+    balloonGroup->setViewPartFeature(balloon);
+
+    // Find if it belongs to a parent
+    QGIView *parent = 0;
+    parent = findParent(balloonGroup);
+
+    if(parent) {
+        balloonGroup->connect(parent);
+        addBalloonToParent(balloonGroup,parent);
+    }
+
+    return balloonGroup;
+}
+
+void QGVPage::addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent)
+{
+    assert(balloon);
+    assert(parent);          //blow up if we don't have Dimension or Parent
+    QPointF posRef(0.,0.);
+    QPointF mapPos = balloon->mapToItem(parent, posRef);
+    balloon->moveBy(-mapPos.x(), -mapPos.y());
+    parent->addToGroup(balloon);
+    balloon->setZValue(ZVALUE::DIMENSION);
+}
+
 QGIView * QGVPage::addViewDimension(TechDraw::DrawViewDimension *dim)
 {
     auto dimGroup( new QGIViewDimension );
@@ -449,6 +506,23 @@ QGIView * QGVPage::findParent(QGIView *view) const
             // Attach the dimension to the first object's group
             for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
                 if(strcmp((*it)->getViewName(), objs.at(0)->getNameInDocument()) == 0) {
+                    return *it;
+                }
+            }
+        }
+    }
+
+    //If type is balloon we check references first
+    TechDraw::DrawViewBalloon *balloon = 0;
+    balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(myView);
+
+    if(balloon) {
+        App::DocumentObject* obj = balloon->sourceView.getValue();
+
+        if(obj) {
+            // Attach the dimension to the first object's group
+            for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
+                if(strcmp((*it)->getViewName(), obj->getNameInDocument()) == 0) {
                     return *it;
                 }
             }
@@ -577,16 +651,16 @@ void QGVPage::saveSvg(QString filename)
 
     const QString docName( QString::fromUtf8(page->getDocument()->getName()) );
     const QString pageName( QString::fromUtf8(page->getNameInDocument()) );
-    QString svgDescription = tr("Drawing page: ") +
+    QString svgDescription = tr("Drawing page:") + QString::fromUtf8(" ") +
                              pageName +
-                             tr(" exported from FreeCAD document: ") +
+                             tr(" exported from FreeCAD document:") + QString::fromUtf8(" ") +
                              docName;
 
     QSvgGenerator svgGen;
     QTemporaryFile* tempFile = new QTemporaryFile();;
     svgGen.setOutputDevice(tempFile);
     svgGen.setSize(QSize((int) Rez::guiX(page->getPageWidth()), (int) Rez::guiX(page->getPageHeight())));   //expects pixels, gets mm
-    //"By default this property is set to QSize(-1, -1), which indicates that the generator should not output 
+    //"By default this property is set to QSize(-1, -1), which indicates that the generator should not output
     // the width and height attributes of the <svg> element."  >> but Inkscape won't read it without size info??
     svgGen.setViewBox(QRect(0, 0, Rez::guiX(page->getPageWidth()), Rez::guiX(page->getPageHeight())));
 
@@ -624,7 +698,7 @@ void QGVPage::saveSvg(QString filename)
 }
 
 void QGVPage::postProcessXml(QTemporaryFile* tempFile, QString fileName, QString pageName)
-{    
+{
     QDomDocument doc(QString::fromUtf8("SvgDoc"));
     QFile file(tempFile->fileName());
     if (!file.open(QIODevice::ReadOnly)) {
@@ -660,7 +734,7 @@ void QGVPage::postProcessXml(QTemporaryFile* tempFile, QString fileName, QString
 
     QFile outFile( fileName );
     if( !outFile.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
-        Base::Console().Message("QGVP::ppxml - failed to open file for writing: %s\n.",qPrintable(fileName) );
+        Base::Console().Message("QGVP::ppxml - failed to open file for writing: %s\n",qPrintable(fileName) );
     }
     QTextStream stream( &outFile );
     stream << doc.toString();
@@ -710,6 +784,68 @@ void QGVPage::wheelEvent(QWheelEvent *event)
     translate(change.x(), change.y());
 
     event->accept();
+}
+
+void QGVPage::keyPressEvent(QKeyEvent *event)
+{
+    if(event->modifiers().testFlag(Qt::ControlModifier)) {
+        switch(event->key()) {
+            case Qt::Key_Plus: { 
+                scale(1.0 + m_zoomIncrement, 1.0 + m_zoomIncrement);
+                break; 
+            }
+            case Qt::Key_Minus: {
+                scale(1.0 - m_zoomIncrement, 1.0 - m_zoomIncrement);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    if(event->modifiers().testFlag( Qt::NoModifier)) {
+        switch(event->key()) {
+            case Qt::Key_Left: {
+                kbPanScroll(1, 0);
+                break;
+            }
+            case Qt::Key_Up: {
+                kbPanScroll(0, 1);
+                break;
+            }
+            case Qt::Key_Right: {
+                kbPanScroll(-1, 0);
+                break;
+            }
+            case Qt::Key_Down: {
+                kbPanScroll(0, -1);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+    event->accept();
+}
+
+void QGVPage::kbPanScroll(int xMove, int yMove) 
+{
+    if (xMove != 0) {
+        QScrollBar* hsb = horizontalScrollBar();
+//        int hRange = hsb->maximum() - hsb->minimum();     //default here is 100?
+//        int hDelta = xMove/hRange
+        int hStep = hsb->singleStep() * xMove * m_reversePan;
+        int hNow = hsb->value();
+        hsb->setValue(hNow + hStep);
+    }
+    if (yMove != 0) {
+        QScrollBar* vsb = verticalScrollBar();
+        int vStep = vsb->singleStep() * yMove * m_reverseScroll;
+        int vNow = vsb->value();
+        vsb->setValue(vNow + vStep);
+    }
 }
 
 void QGVPage::enterEvent(QEvent *event)

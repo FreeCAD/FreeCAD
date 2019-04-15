@@ -204,8 +204,10 @@ void PartGui::dumpLinearResults(const BRepExtrema_DistShapeShape &measure)
 
 Gui::View3DInventorViewer * PartGui::getViewer()
 {
-  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->
-    activeDocument()->getActiveView());
+  Gui::Document *doc = Gui::Application::Instance->activeDocument();
+  if (!doc)
+    return 0;
+  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView());
   if (!view)
     return 0;
   Gui::View3DInventorViewer *viewer = view->getViewer();
@@ -216,24 +218,31 @@ Gui::View3DInventorViewer * PartGui::getViewer()
 
 void PartGui::addLinearDimensions(const BRepExtrema_DistShapeShape &measure)
 {
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+  App::Color c(1.0,0.0,0.0);
+  c.fromHexString(group->GetASCII("Dimensions3dColor", c.asHexString().c_str()));
+  App::Color d(0.0,1.0,0.0);
+  d.fromHexString(group->GetASCII("DimensionsDeltaColor", d.asHexString().c_str()));
+
   Gui::View3DInventorViewer *viewer = getViewer();
   if (!viewer)
     return;
   gp_Pnt point1 = measure.PointOnShape1(1);
   gp_Pnt point2 = measure.PointOnShape2(1);
-  viewer->addDimension3d(createLinearDimension(point1, point2, SbColor(1.0, 0.0, 0.0)));
+  viewer->addDimension3d(createLinearDimension(point1, point2, SbColor(c.r, c.g, c.b)));
   
   //create deltas. point1 will always be the same.
   gp_Pnt temp = point1;
   gp_Pnt lastTemp = temp;
   temp.SetX(point2.X());
-  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(d.r, d.g, d.b)));
   lastTemp = temp;
   temp.SetY(point2.Y());
-  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(d.r, d.g, d.b)));
   lastTemp = temp;
   temp.SetZ(point2.Z());
-  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(d.r, d.g, d.b)));
 }
 
 SoNode* PartGui::createLinearDimension(const gp_Pnt &point1, const gp_Pnt &point2, const SbColor &color)
@@ -245,6 +254,7 @@ SoNode* PartGui::createLinearDimension(const gp_Pnt &point1, const gp_Pnt &point
   PartGui::DimensionLinear *dimension = new PartGui::DimensionLinear();
   dimension->point1.setValue(vec1);
   dimension->point2.setValue(vec2);
+  dimension->setupDimension();
   
   Base::Quantity quantity(static_cast<double>((vec2-vec1).length()), Base::Unit::Length);
   dimension->text.setValue(quantity.getUserString().toUtf8().constData());
@@ -255,8 +265,10 @@ SoNode* PartGui::createLinearDimension(const gp_Pnt &point1, const gp_Pnt &point
 
 void PartGui::eraseAllDimensions()
 {
-  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->
-    activeDocument()->getActiveView());
+  Gui::Document *doc = Gui::Application::Instance->activeDocument();
+  if (!doc)
+    return;
+  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView());
   if (!view)
     return;
   Gui::View3DInventorViewer *viewer = view->getViewer();
@@ -340,11 +352,6 @@ PartGui::DimensionLinear::DimensionLinear()
     SO_NODE_ADD_FIELD(origin, (0.0, 0.0, 0.0));//static
     SO_NODE_ADD_FIELD(text, ("test"));//dimension text
     SO_NODE_ADD_FIELD(dColor, (1.0, 0.0, 0.0));//dimension color.
-    
-    point1.setValue(SbVec3f(0.0, 0.0, 0.0));
-    point2.setValue(SbVec3f(1.0, 0.0, 0.0));
-
-    setupDimension();
 }
 
 PartGui::DimensionLinear::~DimensionLinear()
@@ -370,6 +377,7 @@ void PartGui::DimensionLinear::setupDimension()
   hyp->expression.set1Value(1, "oB = normalize(oA)");
   hyp->expression.set1Value(2, "oa = length(oA)");
   length.connectFrom(&hyp->oa);
+
   //build engine for rotation.
   SoComposeRotationFromTo *rotationEngine = new SoComposeRotationFromTo();
   rotationEngine->from.setValue(SbVec3f(1.0, 0.0, 0.0));
@@ -380,18 +388,27 @@ void PartGui::DimensionLinear::setupDimension()
   SoMaterial *material = new SoMaterial;
   material->diffuseColor.connectFrom(&dColor);
 
-  //dimension arrows.
+  //dimension arrows
+  float dimLength = (point2.getValue()-point1.getValue()).length();
+  float coneHeight = dimLength * 0.05;
+  float coneRadius = coneHeight * 0.5;
+
   SoCone *cone = new SoCone();
-  cone->bottomRadius.setValue(0.25);
-  cone->height.setValue(0.5);
+  cone->bottomRadius.setValue(coneRadius);
+  cone->height.setValue(coneHeight);
+
+  char lStr[100];
+  char rStr[100];
+  snprintf(lStr, sizeof(lStr), "translation %.6f 0.0 0.0", coneHeight * 0.5);
+  snprintf(rStr, sizeof(rStr), "translation 0.0 -%.6f 0.0", coneHeight * 0.5);
 
   setPart("leftArrow.shape", cone);
   set("leftArrow.transform", "rotation 0.0 0.0 1.0 1.5707963");
-  set("leftArrow.transform", "translation 0.25 0.0 0.0"); //half cone height.
+  set("leftArrow.transform", lStr);
   setPart("rightArrow.shape", cone);
   set("rightArrow.transform", "rotation 0.0 0.0 -1.0 1.5707963"); //no constant for PI.
   //have use local here to do the offset because the main is wired up to length of dimension.
-  set("rightArrow.localTransform", "translation 0.0 -0.25 0.0"); //half cone height.
+  set("rightArrow.localTransform", rStr);
 
   SoTransform *transform = static_cast<SoTransform *>(getPart("rightArrow.transform", false));
   if (!transform)
@@ -947,7 +964,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
       dimensionOriginPoint = extremaPoint1;
     else
     {
-      //find half way point in between extrema points for dimension origin.
+      //find halfway point in between extrema points for dimension origin.
       gp_Vec vec1(extremaPoint1.XYZ());
       gp_Vec vec2(extremaPoint2.XYZ());
       gp_Vec connection(vec2-vec1);
@@ -992,19 +1009,25 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
     
     dimSys = dimSys.transpose();
   }
-  
+
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+  App::Color c(0.0,0.0,1.0);
+  c.fromHexString(group->GetASCII("DimensionsAngularColor", c.asHexString().c_str()));
+
   DimensionAngular *dimension = new DimensionAngular();
+  dimension->ref();
   dimension->matrix.setValue(dimSys);
   dimension->radius.setValue(radius);
   dimension->angle.setValue(static_cast<float>(displayAngle));
   dimension->text.setValue((Base::Quantity(180 * angle / M_PI, Base::Unit::Angle)).getUserString().toUtf8().constData());
-  dimension->dColor.setValue(SbColor(0.0, 0.0, 1.0));
+  dimension->dColor.setValue(SbColor(c.r, c.g, c.b));
+  dimension->setupDimension();
   
   Gui::View3DInventorViewer *viewer = getViewer();
-  if (!viewer)
-    return;
-  
-  viewer->addDimension3d(dimension);
+  if (viewer)
+    viewer->addDimension3d(dimension);
+  dimension->unref();
 }
 
 SO_KIT_SOURCE(PartGui::DimensionAngular);
@@ -1035,8 +1058,6 @@ PartGui::DimensionAngular::DimensionAngular()
                                0.0, 1.0, 0.0, 0.0,
 			       0.0, 0.0, 1.0, 0.0,
 			       0.0, 0.0, 0.0, 1.0));
-    
-    setupDimension();
 }
 
 PartGui::DimensionAngular::~DimensionAngular()
@@ -1058,19 +1079,28 @@ void PartGui::DimensionAngular::setupDimension()
 
   //color
   SoMaterial *material = new SoMaterial;
+  material->ref();
   material->diffuseColor.connectFrom(&dColor);
 
-  //dimension arrows.
+  //dimension arrows
+  float coneHeight = radius.getValue() * 0.1;
+  float coneRadius = coneHeight * 0.5;
+
   SoCone *cone = new SoCone();
-  cone->bottomRadius.setValue(0.25);
-  cone->height.setValue(0.5);
+  cone->bottomRadius.setValue(coneRadius);
+  cone->height.setValue(coneHeight);
+
+  char str1[100];
+  char str2[100];
+  snprintf(str1, sizeof(str1), "translation 0.0 %.6f 0.0", coneHeight * 0.5);
+  snprintf(str2, sizeof(str2), "translation 0.0 -%.6f 0.0", coneHeight * 0.5);
 
   setPart("arrow1.shape", cone);
   set("arrow1.localTransform", "rotation 0.0 0.0 1.0 3.1415927");
-  set("arrow1.localTransform", "translation 0.0 0.25 0.0"); //half cone height.
+  set("arrow1.localTransform", str1);
   setPart("arrow2.shape", cone);
   set("arrow2.transform", "rotation 0.0 0.0 1.0 0.0");
-  set("arrow2.localTransform", "translation 0.0 -0.25 0.0"); //half cone height.
+  set("arrow2.localTransform", str2);
   
   //I was getting errors if I didn't manually allocate for these transforms. Not sure why.
   SoTransform *arrow1Transform = new SoTransform();
@@ -1110,22 +1140,21 @@ void PartGui::DimensionAngular::setupDimension()
   coordinates->point.connectFrom(&arcEngine->points);
   
   SoLineSet *lineSet = new SoLineSet();
+  lineSet->ref();
   lineSet->vertexProperty.setValue(coordinates);
   lineSet->numVertices.connectFrom(&arcEngine->pointCount);
   lineSet->startIndex.setValue(0);
   
   SoSeparator *arcSep = static_cast<SoSeparator *>(getPart("arcSep", true));
-  if (!arcSep)
-    return;
-  arcSep->addChild(material);
-  arcSep->addChild(lineSet);
+  if (arcSep) {
+    arcSep->addChild(material);
+    arcSep->addChild(lineSet);
+  }
 
   //text
   SoSeparator *textSep = static_cast<SoSeparator *>(getPart("textSep", true));
-  if (!textSep)
-      return;
-
-  textSep->addChild(material);
+  if (textSep)
+    textSep->addChild(material);
 
   SoCalculator *textVecCalc = new SoCalculator();
   textVecCalc->a.connectFrom(&angle);
@@ -1158,6 +1187,9 @@ void PartGui::DimensionAngular::setupDimension()
   SoResetTransform *rTrans = new SoResetTransform;
   rTrans->whatToReset = SoResetTransform::BBOX;
   textSep->addChild(rTrans);
+
+  lineSet->unref();
+  material->unref();
 }
 
 SO_ENGINE_SOURCE(PartGui::ArcEngine);

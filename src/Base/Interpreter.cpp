@@ -354,13 +354,15 @@ void InterpreterSingleton::runInteractiveString(const char *sCmd)
         PyErr_Fetch(&errobj, &errdata, &errtraceback);
 
         RuntimeError exc(""); // do not use PyException since this clears the error indicator
+        if (errdata) {
 #if PY_MAJOR_VERSION >= 3
-        if (PyUnicode_Check(errdata))
-            exc.setMessage(PyUnicode_AsUTF8(errdata));
+            if (PyUnicode_Check(errdata))
+                exc.setMessage(PyUnicode_AsUTF8(errdata));
 #else
-        if (PyString_Check(errdata))
-            exc.setMessage(PyString_AsString(errdata));
+            if (PyString_Check(errdata))
+                exc.setMessage(PyString_AsString(errdata));
 #endif
+        }
         PyErr_Restore(errobj, errdata, errtraceback);
         if (PyErr_Occurred())
             PyErr_Print();

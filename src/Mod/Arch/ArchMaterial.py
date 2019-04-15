@@ -250,6 +250,7 @@ class _ArchMaterial:
     "The Material object"
 
     def __init__(self,obj):
+
         self.Type = "Material"
         obj.Proxy = self
         obj.addProperty("App::PropertyString","Description","Arch",QT_TRANSLATE_NOOP("App::Property","A description for this material"))
@@ -258,13 +259,22 @@ class _ArchMaterial:
         obj.addProperty("App::PropertyPercent","Transparency","Arch",QT_TRANSLATE_NOOP("App::Property","The transparency value of this material"))
         obj.addProperty("App::PropertyColor","Color","Arch",QT_TRANSLATE_NOOP("App::Property","The color of this material"))
 
+    def isSameColor(self,c1,c2):
+        
+        if round(c1[0],6) == round(c2[0],6):
+            if round(c1[1],6) == round(c2[1],6):
+                if round(c1[2],6) == round(c2[2],6):
+                    return True
+        return False
+
     def onChanged(self,obj,prop):
-        d = None
+
+        d = obj.Material
         if prop == "Material":
             if "DiffuseColor" in obj.Material:
                 c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").split(",")])
                 if hasattr(obj,"Color"):
-                    if obj.Color != c:
+                    if not self.isSameColor(obj.Color,c):
                         obj.Color = c
             if "Transparency" in obj.Material:
                 t = int(obj.Material['Transparency'])
@@ -283,57 +293,55 @@ class _ArchMaterial:
                 if hasattr(obj,"Description"):
                     if obj.Description != obj.Material["Description"]:
                         obj.Description = obj.Material["Description"]
+            if "Name" in obj.Material:
+                if hasattr(obj,"Label"):
+                    if obj.Label != obj.Material["Name"]:
+                        obj.Label = obj.Material["Name"]
+        elif prop == "Label":
+            if "Name" in d:
+                if d["Name"] == obj.Label:
+                    return
+            d["Name"] = obj.Label
         elif prop == "Color":
             if hasattr(obj,"Color"):
-                if obj.Material:
-                    d = obj.Material
-                    val = str(obj.Color[:3])
-                    if "DiffuseColor" in d:
-                        if d["DiffuseColor"] == val:
-                            return
-                    d["DiffuseColor"] = val
+                if "DiffuseColor" in d:
+                    if self.isSameColor(tuple([float(f) for f in d['DiffuseColor'].strip("()").split(",")]),obj.Color[:3]):
+                        return
+                d["DiffuseColor"] = str(obj.Color[:3])
         elif prop == "Transparency":
             if hasattr(obj,"Transparency"):
-                if obj.Material:
-                    d = obj.Material
-                    val = str(obj.Transparency)
-                    if "Transparency" in d:
-                        if d["Transparency"] == val:
-                            return
-                    d["Transparency"] = val
+                val = str(obj.Transparency)
+                if "Transparency" in d:
+                    if d["Transparency"] == val:
+                        return
+                d["Transparency"] = val
         elif prop == "ProductURL":
             if hasattr(obj,"ProductURL"):
-                if obj.Material:
-                    d = obj.Material
-                    val = obj.ProductURL
-                    if "ProductURL" in d:
-                        if d["ProductURL"] == val:
-                            return
-                    obj.Material["ProductURL"] = val
+                val = obj.ProductURL
+                if "ProductURL" in d:
+                    if d["ProductURL"] == val:
+                        return
+                obj.Material["ProductURL"] = val
         elif prop == "StandardCode":
             if hasattr(obj,"StandardCode"):
-                if obj.Material:
-                    d = obj.Material
-                    val = obj.StandardCode
-                    if "StandardCode" in d:
-                        if d["StandardCode"] == val:
-                            return
-                    d["StandardCode"] = val
+                val = obj.StandardCode
+                if "StandardCode" in d:
+                    if d["StandardCode"] == val:
+                        return
+                d["StandardCode"] = val
         elif prop == "Description":
             if hasattr(obj,"Description"):
-                if obj.Material:
-                    d = obj.Material
-                    val = obj.Description
-                    if "Description" in d:
-                        if d["Description"] == val:
-                            return
-                    d["Description"] = val
-        if d:
+                val = obj.Description
+                if "Description" in d:
+                    if d["Description"] == val:
+                        return
+                d["Description"] = val
+        if d and (d != obj.Material):
             obj.Material = d
-            if FreeCAD.GuiUp:
-                import FreeCADGui
+            #if FreeCAD.GuiUp:
+                #import FreeCADGui
                 # not sure why this is needed, but it is...
-                FreeCADGui.ActiveDocument.resetEdit()
+                #FreeCADGui.ActiveDocument.resetEdit()
 
     def execute(self,obj):
         if obj.Material:
@@ -383,6 +391,8 @@ class _ViewProviderArchMaterial:
     def setEdit(self,vobj,mode):
         self.taskd = _ArchMaterialTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(self.taskd)
+        self.taskd.form.FieldName.setFocus()
+        self.taskd.form.FieldName.selectAll()
         return True
 
     def unsetEdit(self,vobj,mode):
@@ -401,7 +411,7 @@ class _ViewProviderArchMaterial:
     def claimChildren(self):
         ch = []
         if hasattr(self,"Object"):
-            for o in FreeCAD.ActiveDocument.Objects:
+            for o in self.Object.Document.Objects:
                 if o.isDerivedFrom("App::MaterialObject"):
                     if o.Material:
                         if "Father" in o.Material:

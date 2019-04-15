@@ -1128,6 +1128,21 @@ void MeshObject::refine()
     this->_segments.clear();
 }
 
+void MeshObject::removeNeedles(float length)
+{
+    unsigned long count = _kernel.CountFacets();
+    MeshCore::MeshRemoveNeedles eval(_kernel, length);
+    eval.Fixup();
+    if (_kernel.CountFacets() < count)
+        this->_segments.clear();
+}
+
+void MeshObject::validateCaps(float fMaxAngle, float fSplitFactor)
+{
+    MeshCore::MeshFixCaps eval(_kernel, fMaxAngle, fSplitFactor);
+    eval.Fixup();
+}
+
 void MeshObject::optimizeTopology(float fMaxAngle)
 {
     MeshCore::MeshTopoAlgorithm topalg(_kernel);
@@ -1376,6 +1391,15 @@ void MeshObject::removeInvalidPoints()
     deletePoints(nan.GetIndices());
 }
 
+void MeshObject::mergeFacets()
+{
+    unsigned long count = _kernel.CountFacets();
+    MeshCore::MeshFixMergeFacets merge(_kernel);
+    merge.Fixup();
+    if (_kernel.CountFacets() < count)
+        this->_segments.clear();
+}
+
 void MeshObject::validateIndices()
 {
     unsigned long count = _kernel.CountFacets();
@@ -1411,8 +1435,8 @@ void MeshObject::validateDeformations(float fMaxAngle, float fEps)
 {
     unsigned long count = _kernel.CountFacets();
     MeshCore::MeshFixDeformedFacets eval(_kernel,
-                                         Base::toRadians(30.0f),
-                                         Base::toRadians(120.0f),
+                                         Base::toRadians(15.0f),
+                                         Base::toRadians(150.0f),
                                          fMaxAngle, fEps);
     eval.Fixup();
     if (_kernel.CountFacets() < count)

@@ -48,6 +48,8 @@ texts, colors,layers (from groups)
 TEXTSCALING = 1.35 # scaling factor between autocad font sizes and coin font sizes
 CURRENTDXFLIB = 1.40 # the minimal version of the dxfLibrary needed to run
 
+import six
+
 import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
 from Draft import _Dimension, _ViewProviderDimension
 from FreeCAD import Vector
@@ -74,7 +76,7 @@ def errorDXFLib(gui):
     dxfAllowDownload = p.GetBool("dxfAllowDownload",False)
     if dxfAllowDownload:
         files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
-        baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/Draft-dxf-importer/'+str(CURRENTDXFLIB)+"/"
+        baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/Draft-dxf-importer/'+'{0:.2f}'.format(CURRENTDXFLIB)+"/"
         import ArchCommands
         from FreeCAD import Base
         progressbar = Base.ProgressIndicator()
@@ -128,8 +130,8 @@ Please either enable FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.""")
-            if sys.version_info.major < 3:
-                if not isinstance(message,unicode):
+            if six.PY2:
+                if not isinstance(message,six.text_type):
                     message = message.decode('utf8')
             reply = QtGui.QMessageBox.question(None,"",message,
                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
@@ -206,7 +208,7 @@ def deformat(text):
         #print(ss, type(ss))
         if ss.startswith("U+"):
             ucode = "0x"+ss[2:]
-            ns += unichr(eval(ucode)) #Python3 - unichr doesn't exist anymore
+            ns += six.unichr(eval(ucode))  # Python3 - unichr doesn't exist anymore
         else:
             try:
                 ns += ss.decode("utf8")
@@ -411,6 +413,18 @@ def vec(pt):
             v.multiply(dxfScaling)
     return v
 
+def placementFromDXFOCS(ent):
+    "return right placement for polyline, arc, circle, etc. in OCS"
+    draftWPlane = FreeCAD.DraftWorkingPlane
+    draftWPlane.alignToPointAndAxis(FreeCAD.Vector(0.0, 0.0, 0.0), vec(ent.extrusion), 0.0)
+    pl = FreeCAD.Placement()
+    pl = draftWPlane.getPlacement()
+    if ((ent.type == "lwpolyline") or (ent.type == "polyline")):
+        pl.Base = draftWPlane.getGlobalCoords(vec([0.0, 0.0, ent.elevation]))
+    else:
+        pl.Base = draftWPlane.getGlobalCoords(vec(ent.loc))
+    return pl
+
 def drawLine(line,forceShape=False):
     "returns a Part shape from a dxf line"
     if (len(line.points) > 1):
@@ -488,13 +502,17 @@ def drawPolyline(polyline,forceShape=False,num=None):
                 elif (dxfCreateDraft or dxfCreateSketch) and (not curves) and (not forceShape):
                     ob = Draft.makeWire(verts)
                     ob.Closed = polyline.closed
+                    ob.Placement = placementFromDXFOCS(polyline)
                     return ob
                 else:
                     if polyline.closed and dxfFillMode:
                         w = Part.Wire(edges)
+                        w.Placement = placementFromDXFOCS(polyline)
                         return(Part.Face(w))
                     else:
-                        return Part.Wire(edges)
+                        w = Part.Wire(edges)
+                        w.Placement = placementFromDXFOCS(polyline)
+                        return(w)
             except Part.OCCError:
                 warn(polyline,num)
     return None
@@ -509,8 +527,7 @@ def drawArc(arc,forceShape=False):
     circle.Radius=vec(arc.radius)
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            pl = FreeCAD.Placement()
-            pl.move(v)
+            pl = placementFromDXFOCS(arc)
             return Draft.makeCircle(arc.radius,pl,False,firstangle,lastangle)
         else:
             return circle.toShape(math.radians(firstangle),math.radians(lastangle))
@@ -526,8 +543,7 @@ def drawCircle(circle,forceShape=False):
     curve.Center = v
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            pl = FreeCAD.Placement()
-            pl.move(v)
+            pl = placementFromDXFOCS(circle)
             return Draft.makeCircle(circle.radius,pl)
         else:
             return curve.toShape()
@@ -1566,14 +1582,13 @@ def warn(dxfobject,num=None):
 
 def open(filename):
     "called when freecad opens a file."
-    import sys
     readPreferences()
     if dxfUseLegacyImporter:
         getDXFlibs()
         if dxfReader:
             docname = os.path.splitext(os.path.basename(filename))[0]
-            if sys.version_info.major < 3:
-                if isinstance(docname,unicode): 
+            if six.PY2:
+                if isinstance(docname,six.text_type): 
                     #workaround since newDocument currently can't handle unicode filenames
                     docname = docname.encode(sys.getfilesystemencoding())
             doc = FreeCAD.newDocument(docname)
@@ -1584,8 +1599,8 @@ def open(filename):
             errorDXFLib(gui)
     else:
         docname = os.path.splitext(os.path.basename(filename))[0]
-        if sys.version_info.major < 3:
-            if isinstance(docname,unicode): 
+        if six.PY2:
+            if isinstance(docname,six.text_type): 
                 #workaround since newDocument currently can't handle unicode filenames
                 docname = docname.encode(sys.getfilesystemencoding())
         doc = FreeCAD.newDocument(docname)
@@ -1606,8 +1621,8 @@ def insert(filename,docname):
         getDXFlibs()
         if dxfReader:
             groupname = os.path.splitext(os.path.basename(filename))[0]
-            if sys.version_info.major < 3:
-                if isinstance(groupname,unicode): 
+            if six.PY2:
+                if isinstance(groupname,six.text_type): 
                     #workaround since newDocument currently can't handle unicode filenames
                     groupname = groupname.encode(sys.getfilesystemencoding())
             importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
@@ -1922,8 +1937,8 @@ def writePanelCut(ob,dxf,nospline,lwPoly,parent=None):
 def getStrGroup(ob):
     "gets a string version of the group name"
     l = getGroup(ob)
-    if sys.version_info.major < 3:
-        if isinstance(l,unicode):
+    if six.PY2:
+        if isinstance(l,six.text_type):
             # dxf R12 files are rather over-sensitive with utf8...
             try:
                 import unicodedata
@@ -1939,8 +1954,14 @@ def getStrGroup(ob):
 def export(objectslist,filename,nospline=False,lwPoly=False):
 
     "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs. lwPoly=True is for OpenSCAD DXF"
-
     readPreferences()
+    if not dxfUseLegacyExporter:
+        import Import
+        version = 14
+        if nospline:
+            version = 12
+        Import.writeDXFObject(objectslist,filename,version,lwPoly)
+        return
     getDXFlibs()
     if dxfLibrary:
         global exportList
@@ -2134,8 +2155,8 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                     dxf.append(dxfLibrary.Dimension(pbase,p1,p2,color=getACI(ob),
                                                     layer=getStrGroup(ob)))
 
-            if sys.version_info.major < 3:
-                if isinstance(filename,unicode):
+            if six.PY2:
+                if isinstance(filename,six.text_type):
                     filename = filename.encode("utf8")
             dxf.saveas(filename)
 
@@ -2306,6 +2327,7 @@ def readPreferences():
     global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth, dxfImportTexts, dxfImportLayouts
     global dxfImportPoints, dxfImportHatches, dxfUseStandardSize, dxfGetColors, dxfUseDraftVisGroups
     global dxfFillMode, dxfBrightBackground, dxfDefaultColor, dxfUseLegacyImporter, dxfExportBlocks, dxfScaling
+    global dxfUseLegacyExporter
     dxfCreatePart = p.GetBool("dxfCreatePart",True)
     dxfCreateDraft = p.GetBool("dxfCreateDraft",False)
     dxfCreateSketch = p.GetBool("dxfCreateSketch",False)
@@ -2323,6 +2345,7 @@ def readPreferences():
     dxfUseDraftVisGroups = p.GetBool("dxfUseDraftVisGroups",False)
     dxfFillMode = p.GetBool("fillmode",True)
     dxfUseLegacyImporter = p.GetBool("dxfUseLegacyImporter",False)
+    dxfUseLegacyExporter = p.GetBool("dxfUseLegacyExporter",False)
     dxfBrightBackground = isBrightBackground()
     dxfDefaultColor = getColor()
     dxfExportBlocks = p.GetBool("dxfExportBlocks",True)

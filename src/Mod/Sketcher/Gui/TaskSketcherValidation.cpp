@@ -220,9 +220,9 @@ void SketcherValidation::on_findReversed_clicked()
                 tr("%1 reversed external-geometry arcs were found. Their endpoints are"
                    " encircled in 3d view.\n\n"
                    "%2 constraints are linking to the endpoints. The constraints have"
-                   " been listed in Report view (menu View -> Views -> Report view).\n\n"
+                   " been listed in Report view (menu View -> Panels -> Report view).\n\n"
                    "Click \"Swap endpoints in constraints\" button to reassign endpoints."
-                   " Do this only once to sketches created in FreeCAD older than v0.15.???"
+                   " Do this only once to sketches created in FreeCAD older than v0.15"
                    ).arg(points.size()/2).arg(nc)
                                  );
             ui->swapReversed->setEnabled(true);
@@ -261,7 +261,7 @@ void SketcherValidation::on_orientLockEnable_clicked()
     int n = sketch->changeConstraintsLocking(/*bLock=*/true);
     QMessageBox::warning(this, tr("Constraint orientation locking"),
         tr("Orientation locking was enabled and recomputed for %1 constraints. The"
-           " constraints have been listed in Report view (menu View -> Views ->"
+           " constraints have been listed in Report view (menu View -> Panels ->"
            " Report view).").arg(n));
 
     doc->commitTransaction();
@@ -275,7 +275,7 @@ void SketcherValidation::on_orientLockDisable_clicked()
     int n = sketch->changeConstraintsLocking(/*bLock=*/false);
     QMessageBox::warning(this, tr("Constraint orientation locking"),
         tr("Orientation locking was disabled for %1 constraints. The"
-           " constraints have been listed in Report view (menu View -> Views ->"
+           " constraints have been listed in Report view (menu View -> Panels ->"
            " Report view). Note that for all future constraints, the locking still"
            " defaults to ON.").arg(n));
 

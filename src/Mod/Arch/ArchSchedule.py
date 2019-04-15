@@ -127,7 +127,7 @@ class _ArchSchedule:
                 if objs:
                     objs = objs.split(";")
                     objs = [FreeCAD.ActiveDocument.getObject(o) for o in objs]
-                    objs = [obj for obj in objs if obj != None]
+                    objs = [o for o in objs if o != None]
                 else:
                     objs = FreeCAD.ActiveDocument.Objects
                 if len(objs) == 1:
@@ -136,6 +136,9 @@ class _ArchSchedule:
                         objs = objs[0].Group
                 objs = Draft.getGroupContents(objs,walls=True,addgroups=True)
                 objs = Arch.pruneIncluded(objs,strict=True)
+                # remove the schedule object and its result from the list
+                objs = [o for o in objs if not o == obj]
+                objs = [o for o in objs if not o == obj.Result]
                 if obj.Filter[i]:
                     # apply filters
                     nobjs = []
@@ -161,21 +164,15 @@ class _ArchSchedule:
                             elif args[0].upper() == "!TYPE":
                                 if Draft.getType(o).upper() == args[1].upper():
                                     ok = False
-                            elif args[0].upper() == "ROLE":
-                                if hasattr(o,"IfcRole"):
-                                    if o.IfcRole.upper() != args[1].upper():
-                                        ok = False
-                                elif hasattr(o,"Role"):
-                                    if o.Role.upper() != args[1].upper():
+                            elif args[0].upper() == "IFCTYPE":
+                                if hasattr(o,"IfcType"):
+                                    if o.IfcType.upper() != args[1].upper():
                                         ok = False
                                 else:
                                     ok = False
-                            elif args[0].upper() == "!ROLE":
-                                if hasattr(o,"Role"):
-                                    if o.IfcRole.upper() == args[1].upper():
-                                        ok = False
-                                elif hasattr(o,"Role"):
-                                    if o.Role.upper() == args[1].upper():
+                            elif args[0].upper() == "!IFCTYPE":
+                                if hasattr(o,"IfcType"):
+                                    if o.IfcType.upper() == args[1].upper():
                                         ok = False
                         if ok:
                             nobjs.append(o)
@@ -231,6 +228,7 @@ class _ArchSchedule:
                         obj.Result.set("B"+str(i+2),str(val))
                     if verbose:
                         print ("TOTAL:"+34*" "+str(val))
+        obj.Result.recompute()
 
     def __getstate__(self):
         return self.Type

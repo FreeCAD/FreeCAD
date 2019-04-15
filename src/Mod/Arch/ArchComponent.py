@@ -25,62 +25,7 @@ __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-# IFC types
-
-IFCTYPES = ["IfcActuator", "IfcAirTerminal", "IfcAirTerminalBox", "IfcAirToAirHeatRecovery",
-"IfcAlarm", "IfcAnnotation", "IfcAudioVisualAppliance", "IfcBeam", "IfcBeamStandardCase",
-"IfcBoiler", "IfcBuilding", "IfcBuildingElement", "IfcBuildingElementPart", "IfcBuildingElementProxy",
-"IfcBuildingStorey", "IfcBurner", "IfcCableCarrierFitting", "IfcCableCarrierSegment",
-"IfcCableFitting", "IfcCableSegment", "IfcChiller", "IfcChimney", "IfcCivilElement",
-"IfcCoil", "IfcColumn", "IfcColumnStandardCase", "IfcCommunicationsAppliance", "IfcCompressor",
-"IfcCondenser", "IfcController", "IfcCooledBeam", "IfcCoolingTower", "IfcCovering",
-"IfcCurtainWall", "IfcDamper", "IfcDiscreteAccessory", "IfcDistributionChamberElement",
-"IfcDistributionControlElement", "IfcDistributionElement", "IfcDistributionFlowElement",
-"IfcDistributionPort", "IfcDoor", "IfcDoorStandardCase", "IfcDuctFitting", "IfcDuctSegment",
-"IfcDuctSilencer", "IfcElectricAppliance", "IfcElectricDistributionBoard", "IfcElectricFlowStorageDevice",
-"IfcElectricGenerator", "IfcElectricMotor", "IfcElectricTimeControl",
-"IfcElementAssembly", "IfcElementComponent", "IfcEnergyConversionDevice", "IfcEngine",
-"IfcEvaporativeCooler", "IfcEvaporator", "IfcExternalSpatialElement", "IfcExternalSpatialStructureElement",
-"IfcFan", "IfcFastener", "IfcFeatureElement", "IfcFeatureElementAddition", "IfcFeatureElementSubtraction",
-"IfcFilter", "IfcFireSuppressionTerminal", "IfcFlowController", "IfcFlowFitting", "IfcFlowInstrument",
-"IfcFlowMeter", "IfcFlowMovingDevice", "IfcFlowSegment", "IfcFlowStorageDevice", "IfcFlowTerminal",
-"IfcFlowTreatmentDevice", "IfcFooting", "IfcFurnishingElement", "IfcFurniture", "IfcGeographicElement",
-"IfcGrid", "IfcHeatExchanger", "IfcHumidifier", "IfcInterceptor", "IfcJunctionBox", "IfcLamp",
-"IfcLightFixture", "IfcMechanicalFastener", "IfcMedicalDevice", "IfcMember", "IfcMemberStandardCase",
-"IfcMotorConnection", "IfcOpeningElement", "IfcOpeningStandardCase", "IfcOutlet", "IfcPile",
-"IfcPipeFitting", "IfcPipeSegment", "IfcPlate", "IfcPlateStandardCase", "IfcPort",
-"IfcProjectionElement", "IfcProtectiveDevice", "IfcProtectiveDeviceTrippingUnit",
-"IfcProxy", "IfcPump", "IfcRailing", "IfcRamp", "IfcRampFlight", "IfcReinforcingBar",
-"IfcReinforcingElement", "IfcReinforcingMesh", "IfcRoof", "IfcSanitaryTerminal",
-"IfcSensor", "IfcShadingDevice", "IfcSite", "IfcSlab", "IfcSlabElementedCase", "IfcSlabStandardCase",
-"IfcSolarDevice", "IfcSpace", "IfcSpaceHeater", "IfcSpatialElement", "IfcSpatialStructureElement",
-"IfcSpatialZone", "IfcStackTerminal", "IfcStair", "IfcStairFlight", "IfcStructuralAction",
-"IfcStructuralActivity", "IfcStructuralConnection", "IfcStructuralCurveAction",
-"IfcStructuralCurveConnection", "IfcStructuralCurveMember", "IfcStructuralCurveMemberVarying",
-"IfcStructuralCurveReaction", "IfcStructuralItem", "IfcStructuralLinearAction",
-"IfcStructuralMember", "IfcStructuralPlanarAction", "IfcStructuralPointAction",
-"IfcStructuralPointConnection", "IfcStructuralPointReaction", "IfcStructuralReaction",
-"IfcStructuralSurfaceAction", "IfcStructuralSurfaceConnection", "IfcStructuralSurfaceMember",
-"IfcStructuralSurfaceMemberVarying", "IfcStructuralSurfaceReaction", "IfcSurfaceFeature",
-"IfcSwitchingDevice", "IfcSystemFurnitureElement", "IfcTank", "IfcTendon", "IfcTendonAnchor",
-"IfcTransformer", "IfcTransportElement", "IfcTubeBundle", "IfcUnitaryControlElement",
-"IfcUnitaryEquipment", "IfcValve", "IfcVibrationIsolator", "IfcVirtualElement", "IfcVoidingFeature",
-"IfcWall", "IfcWallElementedCase", "IfcWallStandardCase", "IfcWasteTerminal", "IfcWindow",
-"IfcWindowStandardCase"]
-
-# Possible roles for FreeCAD BIM objects
-IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in IFCTYPES]
-
-# Property types
-SimplePropertyTypes = ["IfcInteger","IfcReal","IfcBoolean","IfcIdentifier","IfcText","IfcLabel","IfcLogical"]
-MeasurePropertyTypes = ["IfcVolumeMeasure","IfcTimeMeasure","IfcThermodynamicTemperatureMeasure","IfcSolidAngleMeasure",
-                        "IfcPositiveRatioMeasure","IfcRatioMeasure","IfcPositivePlaneAngleMeasure","IfcPlaneAngleMeasure",
-                        "IfcParameterValue","IfcNumericMeasure","IfcMassMeasure","IfcPositiveLengthMeasure",
-                        "IfcLengthMeasure","IfcElectricCurrentMeasure","IfcDescriptiveMeasure","IfcCountMeasure",
-                        "IfcContextDependentMeasure","IfcAreaMeasure","IfcAmountOfSubstanceMeasure",
-                        "IfcLuminousIntensityMeasure","IfcNormalisedRatioMeasure","IfcComplexNumber"]
-
-import FreeCAD,Draft,ArchCommands,math,sys
+import FreeCAD,Draft,ArchCommands,math,sys,json,os,ArchIFC,ArchIFCSchema
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -102,36 +47,14 @@ else:
 #  This module provides the base Arch component class, that
 #  is shared by all of the Arch BIM objects
 
-
-
-def convertOldComponents(objs=[]):
-
-    """converts Arch Objects with a Role property to the new IfcRole.
-    if no object is given, all objects of the active document are converted"""
-
-    if not objs:
-        objs = FreeCAD.ActiveDocument.Objects
-    if not isinstance(objs,list):
-        objs = [objs]
-    for obj in objs:
-        if "Role" in obj.PropertiesList:
-            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-            obj.IfcRole = IfcRoles
-            if obj.Role in IfcRoles:
-                obj.IfcRole = obj.Role
-            else:
-                FreeCAD.Console.PrintMessage("Role "+obj.Role+" cannot be mapped for object "+obj.Label+"\n")
-            obj.removeProperty("Role")
-
-
 def addToComponent(compobject,addobject,mod=None):
 
     '''addToComponent(compobject,addobject,mod): adds addobject
     to the given component. Default is in "Additions", "Objects" or
     "Components", the first one that exists in the component. Mod
     can be set to one of those attributes ("Objects", Base", etc...)
-
     to override the default.'''
+
     import Draft
     if compobject == addobject: return
     # first check zis already there
@@ -222,6 +145,10 @@ class Component:
         self.Type = "Component"
 
     def setProperties(self,obj):
+        
+        "Sets the needed properties of this object"
+
+        ArchIFC.setProperties(obj)
 
         pl = obj.PropertiesList
         if not "Base" in pl:
@@ -238,28 +165,18 @@ class Component:
             obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
         if not "StandardCode" in pl:
             obj.addProperty("App::PropertyString","StandardCode","Component",QT_TRANSLATE_NOOP("App::Property","An optional standard (OmniClass, etc...) code for this component"))
-        if not "IfcAttributes" in pl:
-            obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
         if not "Material" in pl:
             obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
         if "BaseMaterial" in pl:
                 obj.Material = obj.BaseMaterial
                 obj.removeProperty("BaseMaterial")
                 FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" BaseMaterial property to Material\n")
-        if not "IfcRole" in pl:
-            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-            obj.IfcRole = IfcRoles
-        if "Role" in pl:
-            r = obj.Role
-            obj.removeProperty("Role")
-            if r in IfcRoles:
-                obj.IfcRole = r
-                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" Role property to IfcRole\n")
+        if not "MoveBase" in pl:
+            obj.addProperty("App::PropertyBool","MoveBase","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if moving this object moves its base instead"))
+            obj.MoveBase = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("MoveBase",False)
         if not "MoveWithHost" in pl:
             obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
             obj.MoveWithHost = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("MoveWithHost",False)
-        if not "IfcProperties" in pl:
-            obj.addProperty("App::PropertyMap","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Stores IFC properties"))
         if not "VerticalArea" in pl:
             obj.addProperty("App::PropertyArea","VerticalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
             obj.setEditorMode("VerticalArea",1)
@@ -273,6 +190,7 @@ class Component:
             obj.addProperty("App::PropertyLink","HiRes","Component",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
         if not "Axis" in pl:
             obj.addProperty("App::PropertyLink","Axis","Component",QT_TRANSLATE_NOOP("App::Property","An optional axis or axis system on which this object should be duplicated"))
+
         self.Subvolume = None
         #self.MoveWithHost = False
         self.Type = "Component"
@@ -308,6 +226,8 @@ class Component:
             self.oldPlacement = FreeCAD.Placement(obj.Placement)
 
     def onChanged(self,obj,prop):
+
+        ArchIFC.onChanged(obj, prop)
 
         if prop == "Placement":
             if hasattr(self,"oldPlacement"):
@@ -399,7 +319,20 @@ class Component:
                         if data:
                             return data
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Extrusion"):
+            # the base is another arch object which can provide extrusion data
+            if hasattr(obj.Base,"Proxy") and hasattr(obj.Base.Proxy,"getExtrusionData") and (not obj.Additions) and (not obj.Subtractions):
+                if obj.Base.Base:
+                    if obj.Placement.Rotation.Angle < 0.0001:
+                        # if the final obj is rotated, this will screw all our IFC orientation. Better leave it like that then...
+                        data = obj.Base.Proxy.getExtrusionData(obj.Base)
+                        if data:
+                            # add the displacement of the final object
+                            if isinstance(data[2],(list,tuple)):
+                                return (data[0],data[1],[p.multiply(obj.Placement) for p in data[2]])
+                            else:
+                                return (data[0],data[1],data[2].multiply(obj.Placement))
+            # the base is a Part Extrusion
+            elif obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base:
                     base,placement = self.rebase(obj.Base.Base.Shape)
                     extrusion = FreeCAD.Vector(obj.Base.Dir)
@@ -758,6 +691,11 @@ class ViewProviderComponent:
                             if obj.ViewObject:
                                 if obj.ViewObject.ShapeColor != c:
                                     obj.ViewObject.ShapeColor = c
+                    if 'Transparency' in obj.Material.Material:
+                            t = int(obj.Material.Material['Transparency'])
+                            if obj.ViewObject:
+                                if obj.ViewObject.Transparency != t:
+                                    obj.ViewObject.Transparency = t
         elif prop == "Shape":
             if obj.Base:
                 if obj.Base.isDerivedFrom("Part::Compound"):
@@ -810,6 +748,11 @@ class ViewProviderComponent:
                 if len(vobj.DiffuseColor) > 1:
                     d = vobj.DiffuseColor
                     vobj.DiffuseColor = d
+        elif prop == "Visibility":
+            for host in self.getHosts():
+                if hasattr(host, 'ViewObject'):
+                    host.ViewObject.Visibility = vobj.Visibility
+
         return
 
     def attach(self,vobj):
@@ -906,15 +849,9 @@ class ViewProviderComponent:
                     objlink = getattr(self.Object,link)
                     if objlink:
                         c.append(objlink)
-            for link in self.Object.InList:
-                if hasattr(link,"Host"):
-                    if link.Host:
-                        if link.Host == self.Object:
-                            c.append(link)
-                elif hasattr(link,"Hosts"):
-                    for host in link.Hosts:
-                        if host == self.Object:
-                            c.append(link)
+            for link in self.getHosts():
+                c.append(link)
+
             return c
         return []
 
@@ -958,6 +895,22 @@ class ViewProviderComponent:
         if obj.CloneOf:
             if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
                 obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
+    
+    def getHosts(self):
+        hosts = []
+
+        if hasattr(self,"Object"):
+            for link in self.Object.InList:
+                if hasattr(link,"Host"):
+                    if link.Host:
+                        if link.Host == self.Object:
+                            hosts.append(link)
+                elif hasattr(link,"Hosts"):
+                    for host in link.Hosts:
+                        if host == self.Object:
+                            hosts.append(link)
+        
+        return hosts
 
 
 class ArchSelectionObserver:
@@ -1226,10 +1179,10 @@ class ComponentTaskPanel:
             return
         if not isinstance(self.obj.IfcProperties,dict):
             return
-        import Arch_rc,csv,os
+        import Arch_rc, csv, os, ArchIFCSchema
 
         # get presets
-        self.ptypes = SimplePropertyTypes + MeasurePropertyTypes
+        self.ptypes = ArchIFCSchema.IfcTypes.keys()
         self.plabels = [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in self.ptypes]
         self.psetdefs = {}
         psetspath = os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","pset_definitions.csv")
@@ -1257,8 +1210,8 @@ class ComponentTaskPanel:
         self.ifcEditor.comboPset.addItems([QtGui.QApplication.translate("Arch", "Add property set...", None),
                                            QtGui.QApplication.translate("Arch", "New...", None)]+self.psetkeys)
         # set UUID
-        if "IfcUID" in self.obj.IfcAttributes:
-            self.ifcEditor.labelUUID.setText(self.obj.IfcAttributes["IfcUID"])
+        if "IfcUID" in self.obj.IfcData:
+            self.ifcEditor.labelUUID.setText(self.obj.IfcData["IfcUID"])
         # fill the tree
         psets = {}
         for pname,value in self.obj.IfcProperties.items():
@@ -1304,10 +1257,10 @@ class ComponentTaskPanel:
         QtCore.QObject.connect(self.ifcEditor.buttonDelete, QtCore.SIGNAL("clicked()"), self.removeIfcProperty)
         self.ifcEditor.treeProperties.setSortingEnabled(True)
         # set checkboxes
-        if "FlagForceBrep" in self.obj.IfcAttributes:
-            self.ifcEditor.checkBrep.setChecked(self.obj.IfcAttributes["FlagForceBrep"] == "True")
-        if "FlagParametric" in self.obj.IfcAttributes:
-            self.ifcEditor.checkParametric.setChecked(self.obj.IfcAttributes["FlagParametric"] == "True")
+        if "FlagForceBrep" in self.obj.IfcData:
+            self.ifcEditor.checkBrep.setChecked(self.obj.IfcData["FlagForceBrep"] == "True")
+        if "FlagParametric" in self.obj.IfcData:
+            self.ifcEditor.checkParametric.setChecked(self.obj.IfcData["FlagParametric"] == "True")
         self.ifcEditor.show()
 
     def acceptIfcProperties(self):
@@ -1329,16 +1282,16 @@ class ComponentTaskPanel:
                         else:
                             # keys cannot be unicode
                             ifcdict[prop.encode("utf8")] = pset+";;"+ptype+";;"+pvalue
-            ifcattrs = self.obj.IfcAttributes
-            ifcattrs["IfcUID"] = self.ifcEditor.labelUUID.text()
-            ifcattrs["FlagForceBrep"] = str(self.ifcEditor.checkBrep.isChecked())
-            ifcattrs["FlagParametric"] = str(self.ifcEditor.checkParametric.isChecked())
-            if (ifcdict != self.obj.IfcProperties) or (ifcattrs != self.obj.IfcAttributes):
+            ifcData = self.obj.IfcData
+            ifcData["IfcUID"] = self.ifcEditor.labelUUID.text()
+            ifcData["FlagForceBrep"] = str(self.ifcEditor.checkBrep.isChecked())
+            ifcData["FlagParametric"] = str(self.ifcEditor.checkParametric.isChecked())
+            if (ifcdict != self.obj.IfcProperties) or (ifcData != self.obj.IfcData):
                 FreeCAD.ActiveDocument.openTransaction("Change Ifc Properties")
                 if ifcdict != self.obj.IfcProperties:
                     self.obj.IfcProperties = ifcdict
-                if ifcattrs != self.obj.IfcAttributes:
-                    self.obj.IfcAttributes = ifcattrs
+                if ifcData != self.obj.IfcData:
+                    self.obj.IfcData = ifcData
                 FreeCAD.ActiveDocument.commitTransaction()
             del self.ifcEditor
 
@@ -1502,10 +1455,3 @@ if FreeCAD.GuiUp:
                 else:
                     model.setData(index,editor.text())
             self.dialog.update()
-
-
-
-
-
-
-

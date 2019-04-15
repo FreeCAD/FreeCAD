@@ -60,13 +60,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
+      <location filename="../../Command.cpp" line="164"/>
       <source>Stop loading</source>
       <translation>Yüklemeyi durdur</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="164"/>
-      <source>Stop the current loading</source>
-      <translation>Geçerli yüklemeyi durdur</translation>
     </message>
   </context>
   <context>
@@ -78,13 +74,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Zoom in</source>
       <translation>Yakınlaş</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="194"/>
-      <source>Zoom into the page</source>
-      <translation>Sayfaya yakınlaştır</translation>
     </message>
   </context>
   <context>
@@ -96,13 +88,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Zoom out</source>
       <translation>Uzaklaş</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="223"/>
-      <source>Zoom out of the page</source>
-      <translation>Sayfadan uzaklaştır</translation>
     </message>
   </context>
   <context>
@@ -124,123 +112,15 @@
     </message>
   </context>
   <context>
-    <name>Form</name>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="14"/>
-      <source>Sketchfab exporter</source>
-      <translation>Sketchfab çıkarıcısı</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="39"/>
-      <source>What to upload?</source>
-      <translation>Karşıya ne yüklensin?</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="46"/>
-      <source>Selection</source>
-      <translation>seçim</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="56"/>
-      <source>All visible objects</source>
-      <translation>Görüntülenebilir tüm nesneler</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="81"/>
-      <source>Model name</source>
-      <translation>Model ismi</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="88"/>
-      <source>Private</source>
-      <translation>Kişisel</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="100"/>
-      <source>Description</source>
-      <translation>Açıklama</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="110"/>
-      <source>Tags (separated by commas)</source>
-      <translation>Etiketler (virgül ile ayrılmış)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
-      <source>FreeCAD,</source>
-      <translation>FreeCAD,</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
-      <source>Format</source>
-      <translation>Biçim</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
-      <source>OBJ + MTL (Arch exporter)</source>
-      <translation>OBJ + MTL (Tepeden görünüm dışarıya aktarıcısı)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="148"/>
-      <source>OBJ (standard Mesh exporter)</source>
-      <translation>OBJ (standard Mesh çıkarıcısı)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="153"/>
-      <source>DAE (Collada)</source>
-      <translation>DAE (Collada)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="158"/>
-      <source>STL</source>
-      <translation>STL</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="163"/>
-      <source>IGES (shapes only)</source>
-      <translation>IGES (yalnızca şekiller)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="168"/>
-      <source>IV</source>
-      <translation>IV</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="176"/>
-      <source>Sketchfab API token</source>
-      <translation>Sketchfab API belirteci</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="192"/>
-      <source>Obtain</source>
-      <translation>Elde et</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
-      <source>Upload</source>
-      <translation>Yükle</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>
-      <source>uploading</source>
-      <translation>karşıya yükleniyor</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="218"/>
-      <source>Success! View uploaded online</source>
-      <translation>Başarılı! Karşıya yüklenen görüntüyü aç</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="412"/>
+      <location filename="../../BrowserView.cpp" line="441"/>
       <source>Browser</source>
       <translation>Tarayıcı</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="309"/>
+      <location filename="../../BrowserView.cpp" line="338"/>
       <source>File does not exist!</source>
       <translation>Dosya mevcut değil!</translation>
     </message>
@@ -248,12 +128,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="329"/>
+      <location filename="../../BrowserView.cpp" line="334"/>
       <source>Error</source>
       <translation>Hata</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="383"/>
+      <location filename="../../BrowserView.cpp" line="334"/>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Dosya yüklemesi esnasında hatalar vardı. Bazı veriler değiştirilmiş veya hiç kurtarılmamış olabilir. İlgili nesneler hakkında daha spesifik bilgi için rapor görünümüne bakın.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="412"/>
       <source>Loading %1...</source>
       <translation>Yükleniyor %1...</translation>
     </message>
@@ -261,12 +147,12 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="181"/>
+      <location filename="../../BrowserView.cpp" line="185"/>
       <source>Open in External Browser</source>
       <translation>Dış tarayıcıda aç</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="185"/>
+      <location filename="../../BrowserView.cpp" line="189"/>
       <source>Open in new window</source>
       <translation>Yeni pencerede aç</translation>
     </message>

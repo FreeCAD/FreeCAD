@@ -165,7 +165,7 @@ class _Rebar(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Reinforcing Bar"
+        obj.IfcType = "Reinforcing Bar"
 
     def setProperties(self,obj):
 
@@ -226,11 +226,11 @@ class _Rebar(ArchComponent.Component):
 
     def getRebarData(self,obj):
 
-        if len(obj.InList) != 1:
+        if not obj.Host:
             return
-        if Draft.getType(obj.InList[0]) != "Structure":
+        if Draft.getType(obj.Host) != "Structure":
             return
-        if not obj.InList[0].Shape:
+        if not obj.Host.Shape:
             return
         if not obj.Base:
             return
@@ -242,9 +242,13 @@ class _Rebar(ArchComponent.Component):
             return
         if not obj.Amount:
             return
-        father = obj.InList[0]
+        father = obj.Host
         wire = obj.Base.Shape.Wires[0]
-        axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
+        if Draft.getType(obj.Base) == "Wire": # Draft Wires can have "wrong" placement
+            import DraftGeomUtils
+            axis = DraftGeomUtils.getNormal(obj.Base.Shape)
+        else:
+            axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
         size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
         if hasattr(obj,"Direction"):
             if not DraftVecUtils.isNull(obj.Direction):

@@ -223,7 +223,7 @@ class TempoVis(FrozenClass):
             self.restore()
 
     def __getstate__(self):
-        return (self.data.items(), 
+        return (list(self.data.items()),
                 self.cam_string,
                 self.restore_on_delete)
 

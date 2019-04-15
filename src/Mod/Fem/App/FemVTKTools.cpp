@@ -438,12 +438,12 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
 void FemVTKTools::exportVTKMesh(const FemMesh* mesh, vtkSmartPointer<vtkUnstructuredGrid> grid, float scale)
 {
 
-    Base::Console().Message("Start: VTK mesh builder ======================\n");
+    Base::Console().Log("Start: VTK mesh builder ======================\n");
     SMESH_Mesh* smesh = const_cast<SMESH_Mesh*>(mesh->getSMesh());
     SMESHDS_Mesh* meshDS = smesh->GetMeshDS();
 
     // nodes
-    Base::Console().Message("  Start: VTK mesh builder nodes.\n");
+    Base::Console().Log("  Start: VTK mesh builder nodes.\n");
 
     vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
     SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
@@ -451,15 +451,18 @@ void FemVTKTools::exportVTKMesh(const FemMesh* mesh, vtkSmartPointer<vtkUnstruct
     while (aNodeIter->more()) {
         const SMDS_MeshNode* node = aNodeIter->next();  // why float, not double?
         double coords[3] = {double(node->X()*scale), double(node->Y()*scale), double(node->Z()*scale)};
-        points->InsertPoint(node->GetID()-1, coords);  // memory is allocated by VTK points size = max node id, points will be inserted in SMESH point gaps too
+        points->InsertPoint(node->GetID()-1, coords);
+        // memory is allocated by VTK points size for max node id, not for point count
+        // if the SMESH mesh has gaps in node numbering, points without any element assignment will be inserted in these point gaps too
+        // this needs to be taken into account on node mapping when FreeCAD FEM results are exported to vtk
     }
     grid->SetPoints(points);
     // nodes debugging
     const SMDS_MeshInfo& info = meshDS->GetMeshInfo();
-    Base::Console().Message("    Size of nodes in SMESH grid: %i.\n", info.NbNodes());
+    Base::Console().Log("    Size of nodes in SMESH grid: %i.\n", info.NbNodes());
     const vtkIdType nNodes = grid->GetNumberOfPoints();
-    Base::Console().Message("    Size of nodes in VTK grid: %i.\n", nNodes);
-    Base::Console().Message("  End: VTK mesh builder nodes.\n");
+    Base::Console().Log("    Size of nodes in VTK grid: %i.\n", nNodes);
+    Base::Console().Log("  End: VTK mesh builder nodes.\n");
 
     // faces
     SMDS_FaceIteratorPtr aFaceIter = meshDS->facesIterator();
@@ -469,20 +472,20 @@ void FemVTKTools::exportVTKMesh(const FemMesh* mesh, vtkSmartPointer<vtkUnstruct
     SMDS_VolumeIteratorPtr aVolIter = meshDS->volumesIterator();
     exportFemMeshCells(grid, aVolIter);
 
-    Base::Console().Message("End: VTK mesh builder ======================\n");
+    Base::Console().Log("End: VTK mesh builder ======================\n");
 }
 
 void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
 {
 
     Base::TimeInfo Start;
-    Base::Console().Message("Start: write FemMesh from VTK unstructuredGrid ======================\n");
+    Base::Console().Log("Start: write FemMesh from VTK unstructuredGrid ======================\n");
     Base::FileInfo f(filename);
 
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     exportVTKMesh(mesh, grid);
     //vtkSmartPointer<vtkDataSet> dataset = vtkDataSet::SafeDownCast(grid);
-    Base::Console().Message("Start: writing mesh data ======================\n");
+    Base::Console().Log("Start: writing mesh data ======================\n");
     if(f.hasExtension("vtu")){
         writeVTKFile<vtkXMLUnstructuredGridWriter>(filename, grid);
     }
@@ -493,7 +496,7 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
         Base::Console().Error("file name extension is not supported to write VTK\n");
     }
 
-    Base::Console().Message("    %f: Done \n",Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
 }
 
 
@@ -549,7 +552,7 @@ App::DocumentObject* createObjectByType(const Base::Type type)
 App::DocumentObject* FemVTKTools::readResult(const char* filename, App::DocumentObject* res)
 {
     Base::TimeInfo Start;
-    Base::Console().Message("Start: read FemResult with FemMesh from VTK file ======================\n");
+    Base::Console().Log("Start: read FemResult with FemMesh from VTK file ======================\n");
     Base::FileInfo f(filename);
 
     vtkSmartPointer<vtkDataSet> ds;
@@ -601,8 +604,8 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     importFreeCADResult(dataset, result);
 
     pcDoc->recompute();
-    Base::Console().Message("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
-    Base::Console().Message("End: read FemResult with FemMesh from VTK file ======================\n");
+    Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("End: read FemResult with FemMesh from VTK file ======================\n");
 
     return result;
 }
@@ -625,7 +628,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     }
 
     Base::TimeInfo Start;
-    Base::Console().Message("Start: write FemResult to VTK unstructuredGrid dataset =======\n");
+    Base::Console().Log("Start: write FemResult to VTK unstructuredGrid dataset =======\n");
     Base::FileInfo f(filename);
 
     // mesh
@@ -634,7 +637,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     const FemMesh& fmesh = static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->getValue();
     FemVTKTools::exportVTKMesh(&fmesh, grid);
 
-    Base::Console().Message("    %f: vtk mesh builder finished\n",Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: vtk mesh builder finished\n",Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
 
     // result
     FemVTKTools::exportFreeCADResult(res, grid);
@@ -650,45 +653,61 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
         Base::Console().Error("file name extension is not supported to write VTK\n");
     }
 
-    Base::Console().Message("    %f: writing result object to vtk finished\n",Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
-    Base::Console().Message("End: write FemResult to VTK unstructuredGrid dataset =======\n");
+    Base::Console().Log("    %f: writing result object to vtk finished\n",Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("End: write FemResult to VTK unstructuredGrid dataset =======\n");
 }
 
 
-std::map<std::string, std::vector<std::string>> _getFreeCADMechResultProperties(){
+std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
     // see src/Mod/Fem/femobjects/_FemResultMechanical
     // App::PropertyVectorList will be a list of vectors in vtk
-    std::map<std::string, std::vector<std::string>> resFCProperties;
-    resFCProperties["vectors"] = {
-    "DisplacementVectors",
-    "StressVectors",
-    "StrainVectors"
-    };
-    // App::PropertyFloatList will be a list of scalars in vtk
-    resFCProperties["scalars"] = {
-    "Peeq",
-    "DisplacementLengths",
-    "StressValues",
-    "PrincipalMax",
-    "PrincipalMed",
-    "PrincipalMin",
-    "MaxShear",
-    "MassFlowRate",
-    "NetworkPressure",
-    "UserDefined",
-    "Temperature"
-    };
+    std::map<std::string, std::string> resFCVecProp;
+    resFCVecProp["DisplacementVectors"] = "Displacement";
 
-    return resFCProperties;
+    return resFCVecProp;
+}
+
+// see https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=30#p277434 for further information regarding names etc...
+// some scalar list are not needed on VTK file export but they are needed for internal VTK pipeline
+// TODO some filter to only export the needed values to VTK file but have all in FreeCAD VTK pipline
+std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
+    // see src/Mod/Fem/femobjects/_FemResultMechanical
+    // App::PropertyFloatList will be a list of scalars in vtk
+    std::map<std::string, std::string> resFCScalProp;
+    resFCScalProp["DisplacementLengths"] = "Displacement Magnitude";  // can be plotted in Paraview as THE DISPLACEMENT MAGNITUDE
+    resFCScalProp["MaxShear"] = "Tresca Stress";
+    resFCScalProp["NodeStressXX"] = "Stress xx component";
+    resFCScalProp["NodeStressYY"] = "Stress yy component";
+    resFCScalProp["NodeStressZZ"] = "Stress zz component";
+    resFCScalProp["NodeStressXY"] = "Stress xy component";
+    resFCScalProp["NodeStressXZ"] = "Stress xz component";
+    resFCScalProp["NodeStressYZ"] = "Stress yz component";
+    resFCScalProp["NodeStrainXX"] = "Strain xx component";
+    resFCScalProp["NodeStrainYY"] = "Strain yy component";
+    resFCScalProp["NodeStrainZZ"] = "Strain zz component";
+    resFCScalProp["NodeStrainXY"] = "Strain xy component";
+    resFCScalProp["NodeStrainXZ"] = "Strain xz component";
+    resFCScalProp["NodeStrainYZ"] = "Strain yz component";
+    resFCScalProp["Peeq"] = "Equivalent Plastic Strain";
+    resFCScalProp["PrincipalMax"] = "Major Principal Stress";  // can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
+    resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress";  // can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE
+    resFCScalProp["PrincipalMin"] = "Minor Principal Stress";  // can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
+    resFCScalProp["StressValues"] = "von Mises Stress";
+    resFCScalProp["Temperature"] = "Temperature";
+
+    resFCScalProp["UserDefined"] = "UserDefinedMyName";  // this is empty or am I wrong ?!
+    resFCScalProp["MassFlowRate"] = "Mass Flow Rate";
+    resFCScalProp["NetworkPressure"] = "Network Pressure";
+
+    return resFCScalProp;
 }
 
 
 void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* result) {
-    Base::Console().Message("Start: import vtk result file data into a FreeCAD result object.\n");
+    Base::Console().Log("Start: import vtk result file data into a FreeCAD result object.\n");
 
-    std::map<std::string, std::vector<std::string>> resFCProperties = _getFreeCADMechResultProperties();
-    std::vector<std::string> vectors = resFCProperties["vectors"];
-    std::vector<std::string> scalars = resFCProperties["scalars"];
+    std::map<std::string, std::string> vectors = _getFreeCADMechResultVectorProperties();
+    std::map<std::string, std::string> scalars = _getFreeCADMechResultScalarProperties();
 
     double ts = 0.0;  // t=0.0 for static simulation
     static_cast<App::PropertyFloat*>(result->getPropertyByName("Time"))->setValue(ts);
@@ -707,14 +726,14 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
         nodeIds[i] = i+1;
     }
     static_cast<App::PropertyIntegerList*>(result->getPropertyByName("NodeNumbers"))->setValues(nodeIds);
-    Base::Console().Message("    NodeNumbers have been filled with values.\n");
+    Base::Console().Log("    NodeNumbers have been filled with values.\n");
 
     // vectors
-    int dim = 3;  // Fixme: currently 3D only
-    for (std::vector<std::string>::iterator it = vectors.begin(); it != vectors.end(); ++it ) {
-        vtkDataArray* vector_field = vtkDataArray::SafeDownCast(pd->GetArray(it->c_str()));
+    for (std::map<std::string, std::string>::iterator it = vectors.begin(); it != vectors.end(); ++it) {
+        int dim = 3;  // Fixme: currently 3D only, here we could run into trouble, FreeCAD only supports dim 3D, I do not know about VTK
+        vtkDataArray* vector_field = vtkDataArray::SafeDownCast(pd->GetArray(it->second.c_str()));
         if(vector_field && vector_field->GetNumberOfComponents() == dim) {
-            App::PropertyVectorList* vector_list = static_cast<App::PropertyVectorList*>(result->getPropertyByName(it->c_str()));
+            App::PropertyVectorList* vector_list = static_cast<App::PropertyVectorList*>(result->getPropertyByName(it->first.c_str()));
             if(vector_list) {
                 std::vector<Base::Vector3d> vec(nPoints);
                 for(vtkIdType i=0; i<nPoints; ++i) {
@@ -723,24 +742,24 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
                 }
                 // PropertyVectorList will not show up in PropertyEditor
                 vector_list->setValues(vec);
-                Base::Console().Message("    A PropertyVectorList has been filled with values: %s\n", it->c_str());
+                Base::Console().Log("    A PropertyVectorList has been filled with values: %s\n", it->first.c_str());
             }
             else {
-                Base::Console().Error("static_cast<App::PropertyVectorList*>((result->getPropertyByName(\"%s\")) failed.\n", it->c_str());
+                Base::Console().Error("static_cast<App::PropertyVectorList*>((result->getPropertyByName(\"%s\")) failed.\n", it->first.c_str());
                 continue;
             }
         }
         else
-            Base::Console().Message("    PropertyVectorList NOT found in vkt file data: %s\n", it->c_str());
+            Base::Console().Message("    PropertyVectorList NOT found in vkt file data: %s\n", it->first.c_str());
     }
 
     // scalars
-    for (std::vector<std::string>::iterator it = scalars.begin(); it != scalars.end(); ++it ) {
-        vtkDataArray* vec = vtkDataArray::SafeDownCast(pd->GetArray(it->c_str()));
+    for (std::map<std::string, std::string>::iterator it = scalars.begin(); it != scalars.end(); ++it) {
+        vtkDataArray* vec = vtkDataArray::SafeDownCast(pd->GetArray(it->second.c_str()));
         if(nPoints && vec && vec->GetNumberOfComponents() == 1) {
-            App::PropertyFloatList* field = static_cast<App::PropertyFloatList*>(result->getPropertyByName(it->c_str()));
+            App::PropertyFloatList* field = static_cast<App::PropertyFloatList*>(result->getPropertyByName(it->first.c_str()));
             if (!field) {
-                Base::Console().Error("static_cast<App::PropertyFloatList*>((result->getPropertyByName(\"%s\")) failed.\n", it->c_str());
+                Base::Console().Error("static_cast<App::PropertyFloatList*>((result->getPropertyByName(\"%s\")) failed.\n", it->first.c_str());
                 continue;
             }
 
@@ -754,85 +773,114 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
                 if(v < vmin) vmin = v;
             }
             field->setValues(values);
-            Base::Console().Message("    A PropertyFloatList has been filled with vales: %s\n", it->c_str());
+            Base::Console().Log("    A PropertyFloatList has been filled with vales: %s\n", it->first.c_str());
         }
         else
-            Base::Console().Message("    PropertyFloatList NOT found in vkt file data %s\n", it->c_str());
+            Base::Console().Message("    PropertyFloatList NOT found in vkt file data %s\n", it->first.c_str());
     }
 
     // stats
     // stats are added by importVTKResults
 
-    Base::Console().Message("End: import vtk result file data into a FreeCAD result object.\n");
+    Base::Console().Log("End: import vtk result file data into a FreeCAD result object.\n");
 }
 
 
 void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet> grid) {
-    Base::Console().Message("Start: Create VTK result data from FreeCAD result data.\n");
+    Base::Console().Log("Start: Create VTK result data from FreeCAD result data.\n");
 
-    std::map<std::string, std::vector<std::string>> resFCProperties = _getFreeCADMechResultProperties();
-    std::vector<std::string> vectors = resFCProperties["vectors"];
-    std::vector<std::string> scalars = resFCProperties["scalars"];
+    std::map<std::string, std::string> vectors = _getFreeCADMechResultVectorProperties();
+    std::map<std::string, std::string> scalars = _getFreeCADMechResultScalarProperties();
 
     const Fem::FemResultObject* res = static_cast<const Fem::FemResultObject*>(result);
     const vtkIdType nPoints = grid->GetNumberOfPoints();
 
+    // we need the corresponding mesh to get the correct id for the result data (when the freecad smesh mesh has gaps in the points
+    // vtk has more points. Vtk does not support point gaps, thus the gaps are filled with points. Then the mapping must be correct)
+    App::DocumentObject* meshObj = res->Mesh.getValue();
+    if (!meshObj || !meshObj->isDerivedFrom(FemMeshObject::getClassTypeId())) {
+        Base::Console().Error("Result object does not correctly link to mesh");
+        return;
+    }
+    SMESH_Mesh* smesh = const_cast<SMESH_Mesh*>(static_cast<FemMeshObject*>(meshObj)->FemMesh.getValue().getSMesh());
+    SMESHDS_Mesh* meshDS = smesh->GetMeshDS();
+
     // vectors
-    for (std::vector<std::string>::iterator it = vectors.begin(); it != vectors.end(); ++it ) {
-        const int dim=3;  //Fixme, detect dim
+    for (std::map<std::string, std::string>::iterator it = vectors.begin(); it != vectors.end(); ++it) {
+        const int dim=3;  //Fixme, detect dim, but FreeCAD PropertyVectorList ATM only has DIM of 3
         App::PropertyVectorList* field = nullptr;
-        if (res->getPropertyByName(it->c_str()))
-            field = static_cast<App::PropertyVectorList*>(res->getPropertyByName(it->c_str()));
+        if (res->getPropertyByName(it->first.c_str()))
+            field = static_cast<App::PropertyVectorList*>(res->getPropertyByName(it->first.c_str()));
         else
-            Base::Console().Error("    PropertyVectorList not found: %s\n", it->c_str());
+            Base::Console().Error("    PropertyVectorList not found: %s\n", it->first.c_str());
         if (field && field->getSize() > 0) {
-            if (nPoints != field->getSize())
-                Base::Console().Error("Size of PropertyVectorList = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
+            //if (nPoints != field->getSize())
+            //    Base::Console().Error("Size of PropertyVectorList = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
             const std::vector<Base::Vector3d>& vel = field->getValues();
             vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
             data->SetNumberOfComponents(dim);
-            data->SetNumberOfTuples(vel.size());
-            data->SetName(it->c_str());
+            data->SetNumberOfTuples(nPoints);
+            data->SetName(it->second.c_str());
 
-            vtkIdType i=0;
+            //we need to set values for the unused points.
+            //TODO: ensure that the result bar does not include the used 0 if it is not part of the result (e.g. does the result bar show 0 as smallest value?)
+            if (nPoints != field->getSize()) {
+                double tuple[] = {0,0,0};
+                for (vtkIdType i=0; i<nPoints; ++i) {
+                    data->SetTuple(i, tuple);
+                }
+            }
+
+            SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
             for (std::vector<Base::Vector3d>::const_iterator jt=vel.begin(); jt!=vel.end(); ++jt) {
+                const SMDS_MeshNode* node = aNodeIter->next();
                 double tuple[] = {jt->x, jt->y, jt->z};
-                data->SetTuple(i, tuple);
-                ++i;
+                data->SetTuple(node->GetID()-1, tuple);
             }
             grid->GetPointData()->AddArray(data);
-            Base::Console().Message("    A PropertyVectorList was exported: %s\n", it->c_str());
+            Base::Console().Log("    The PropertyVectorList %s was exported to VTK vector list: %s\n", it->first.c_str(), it->second.c_str());
         }
         else
-            Base::Console().Message("    PropertyVectorList NOT exported to vtk: %s size is: %i\n", it->c_str(), field->getSize());
+            Base::Console().Message("    PropertyVectorList NOT exported to vtk: %s size is: %i\n", it->first.c_str(), field->getSize());
     }
 
     // scalars
-    for (std::vector<std::string>::iterator it = scalars.begin(); it != scalars.end(); ++it ) {
+    for (std::map<std::string, std::string>::iterator it = scalars.begin(); it != scalars.end(); ++it) {
         App::PropertyFloatList* field = nullptr;
-        if (res->getPropertyByName(it->c_str()))
-            field = static_cast<App::PropertyFloatList*>(res->getPropertyByName(it->c_str()));
+        if (res->getPropertyByName(it->first.c_str()))
+            field = static_cast<App::PropertyFloatList*>(res->getPropertyByName(it->first.c_str()));
         else
-            Base::Console().Error("PropertyFloatList %s not found \n", it->c_str());
+            Base::Console().Error("PropertyFloatList %s not found \n", it->first.c_str());
         if (field && field->getSize() > 0) {
-            if (nPoints != field->getSize())
-                Base::Console().Error("Size of PropertyFloatList = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
+            //if (nPoints != field->getSize())
+            //    Base::Console().Error("Size of PropertyFloatList = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
             const std::vector<double>& vec = field->getValues();
             vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
-            data->SetNumberOfValues(vec.size());
-            data->SetName(it->c_str());
+            data->SetNumberOfValues(nPoints);
+            data->SetName(it->second.c_str());
 
-            for (size_t i=0; i<vec.size(); ++i)
-                data->SetValue(i, vec[i]);
+            //we need to set values for the unused points.
+            //TODO: ensure that the result bar does not include the used 0 if it is not part of the result (e.g. does the result bar show 0 as smallest value?)
+            if (nPoints != field->getSize()) {
+                for (vtkIdType i=0; i<nPoints; ++i) {
+                    data->SetValue(i, 0);
+                }
+             }
+
+            SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
+            for (size_t i=0; i<vec.size(); ++i) {
+                const SMDS_MeshNode* node = aNodeIter->next();
+                data->SetValue(node->GetID()-1, vec[i]);
+            }
 
             grid->GetPointData()->AddArray(data);
-            Base::Console().Message("    A PropertyFloatList was exported: %s\n", it->c_str(), it->c_str());
-        }
+            Base::Console().Log("    The PropertyFloatList %s was exported to VTK scalar list: %s\n", it->first.c_str(), it->second.c_str());
+       }
         else
-            Base::Console().Message("    PropertyFloatList NOT exported to vtk: %s size is: %i\n", it->c_str(), field->getSize());
+            Base::Console().Message("    PropertyFloatList NOT exported to vtk: %s size is: %i\n", it->first.c_str(), field->getSize());
     }
 
-    Base::Console().Message("End: Create VTK result data from FreeCAD result data.\n");
+    Base::Console().Log("End: Create VTK result data from FreeCAD result data.\n");
 }
 
 } // namespace
