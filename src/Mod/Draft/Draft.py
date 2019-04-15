@@ -3556,8 +3556,8 @@ class _Dimension(_DraftObject):
     def onChanged(self,obj,prop):
         if hasattr(obj,"Distance"):
             obj.setEditorMode('Distance',1)
-        if hasattr(obj,"Normal"):
-            obj.setEditorMode('Normal',2)
+        #if hasattr(obj,"Normal"):
+        #    obj.setEditorMode('Normal',2)
         if hasattr(obj,"Support"):
             obj.setEditorMode('Support',2)
 
