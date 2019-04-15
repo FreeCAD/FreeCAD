@@ -47,6 +47,7 @@
 # include <sstream>
 #endif
 
+#include <Base/Console.h>
 #include "DocumentRecovery.h"
 #include "ui_DocumentRecovery.h"
 #include "WaitCursor.h"
@@ -62,6 +63,8 @@
 
 #include <QDomDocument>
 #include <boost/interprocess/sync/file_lock.hpp>
+
+FC_LOG_LEVEL_INIT("Gui",true,true);
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -294,16 +297,46 @@ void DocumentRecovery::accept()
                     item->setToolTip(1, QString::fromUtf8(errs[index].c_str()));
                     item->setForeground(1, QColor(170,0,0));
                 }
+                // write back current status
+                d->writeRecoveryInfo(info);
             }else{
+                auto gdoc = Application::Instance->getDocument(docs[i]);
+                if(gdoc)
+                    gdoc->setModified(true);
+
                 info.status = DocumentRecoveryPrivate::Success;
                 if (item) {
                     item->setText(1, tr("Successfully recovered"));
                     item->setForeground(1, QColor(0,170,0));
                 }
-            }
 
-            // write back current status
-            d->writeRecoveryInfo(info);
+                QDir transDir(QString::fromUtf8(docs[i]->TransientDir.getValue()));
+
+                QFileInfo xfi(info.xmlFile);
+                QFileInfo fi(info.projectFile);
+                bool res = false;
+                if(fi.fileName() == QLatin1String("fc_recovery_file.fcstd")) {
+                    transDir.remove(fi.fileName());
+                    res = transDir.rename(fi.absoluteFilePath(),fi.fileName());
+                }else{
+                    transDir.rmdir(fi.dir().dirName());
+                    res = transDir.rename(fi.absolutePath(),fi.dir().dirName());
+                }
+                if(res) {
+                    transDir.remove(xfi.fileName());
+                    res = transDir.rename(xfi.absoluteFilePath(),xfi.fileName());
+                }
+                if(!res) {
+                    FC_WARN("Failed to move recovery file of document '"
+                            << docs[i]->Label.getValue() << "'");
+                }else{
+                    clearDirectory(xfi.absolutePath());
+                    QDir().rmdir(xfi.absolutePath());
+                }
+
+                // DO NOT write success into recovery info, in case the program
+                // crash again before the user save the just recovered file.
+            }
         }
 
         d->ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Finish"));
