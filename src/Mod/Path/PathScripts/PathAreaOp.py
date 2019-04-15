@@ -423,7 +423,7 @@ class ObjectOp(PathOp.ObjectOp):
                 if nX == 1.0:
                     testId += 'X1'
                     angle = -90.0
-                    reverse = -1
+                    #reverse = -1
                 elif nX == -1.0:
                     testId += 'X-1'
                     angle = 90.0
@@ -442,7 +442,7 @@ class ObjectOp(PathOp.ObjectOp):
                 angle = math.degrees(math.atan(ratio))
                 if ratio < 0.0:
                     testId += ' NEG-ratio'
-                    reverse = -1
+                    #reverse = -1
                     angle -= 90
                 else:
                     angle = -1 * angle
@@ -467,7 +467,7 @@ class ObjectOp(PathOp.ObjectOp):
         else:
             angle = 0.0 # No rotation needed
 
-        rotate = angle * reverse
+        rotate = angle * reverse  # Was necessary for certain X oriented pockets due to rendering in FC
 
         print("Suggested rotation to normal::: angle: " + str(angle) + ",   axis: " + str(axis) + ",   rotate: " + str(rotate))
         return (rtn, angle, axis, rotate)
