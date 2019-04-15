@@ -36,6 +36,7 @@
   # include <QPainter>
   # include <QPaintDevice>
   # include <QSvgGenerator>
+  # include <QApplication>
 
   # include <math.h>
 #endif
@@ -171,8 +172,9 @@ void QGIViewBalloon::onAttachPointPicked(QGIView *view, QPointF pos)
     auto bnd = boost::bind(&QGIViewBalloon::parentViewMousePressed, this, _1, _2);
 
     if (balloon->OriginIsSet.getValue() == false) {
-        balloon->OriginX.setValue(pos.x());
-        balloon->OriginY.setValue(pos.y());
+        /* Move origin by half of cursor size */
+        balloon->OriginX.setValue(pos.x() - 16);
+        balloon->OriginY.setValue(pos.y() + 16);
         balloon->OriginIsSet.setValue(true);
 
         m_parent->signalSelectPoint.disconnect(bnd);
@@ -181,6 +183,8 @@ void QGIViewBalloon::onAttachPointPicked(QGIView *view, QPointF pos)
         QGVPage* page;
         if (mdi != nullptr) {
             page = mdi->getQGVPage();
+
+            page->balloonPlacing(false);
 
             QString labelText = QString::fromUtf8(std::to_string(page->balloonIndex).c_str());
             balloon->Text.setValue(std::to_string(page->balloonIndex++).c_str());
@@ -194,6 +198,8 @@ void QGIViewBalloon::onAttachPointPicked(QGIView *view, QPointF pos)
             // Default label position
             balloonLabel->setPosFromCenter(pos.x() + 200, pos.y() -200);
             balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
+
+            QApplication::setOverrideCursor(Qt::ArrowCursor);
         }
     }
 
