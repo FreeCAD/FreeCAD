@@ -137,6 +137,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     bkgBrush = new QBrush(getBackgroundColor());
 
     balloonIndex = 1;
+    balloonPlacing(false);
 
     resetCachedContent();
 }
@@ -407,9 +408,13 @@ QGIView * QGVPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
     QGIView *parent = 0;
     parent = findParent(balloonGroup);
 
-    if(parent) {
-        balloonGroup->connect(parent);
-        addBalloonToParent(balloonGroup,parent);
+    if(balloon->OriginIsSet.getValue() == false) {
+        if(parent) {
+            balloonPlacing(true);
+            QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png"))));
+            balloonGroup->connect(parent);
+            addBalloonToParent(balloonGroup,parent);
+        }
     }
 
     return balloonGroup;
@@ -852,6 +857,30 @@ void QGVPage::enterEvent(QEvent *event)
 {
     QGraphicsView::enterEvent(event);
     viewport()->setCursor(Qt::ArrowCursor);
+}
+
+void QGVPage::leaveEvent(QEvent * event)
+{
+    if(m_balloonPlacing) {
+
+        // Get the window geometry & cursor position
+        const QRect &rect = geometry();
+        QPoint position = this->mapFromGlobal(QCursor::pos());
+
+        // Check the bounds
+        qint32 x = qBound(rect.left(), position.x(), rect.right());
+        qint32 y = qBound(rect.top(), position.y(), rect.bottom());
+
+        QPoint newPoint(x, y);
+
+        // Adjust the cursor
+        if (x != position.x() || y != position.y())
+            QCursor::setPos(this->mapToGlobal(newPoint));
+
+        event->accept();
+    }
+
+    QGraphicsView::leaveEvent(event);
 }
 
 void QGVPage::mousePressEvent(QMouseEvent *event)
