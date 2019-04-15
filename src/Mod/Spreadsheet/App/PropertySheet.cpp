@@ -334,7 +334,7 @@ void PropertySheet::Restore(Base::XMLReader &reader)
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Cell");
 
-        const char* strAddress = reader.hasAttribute("address") ? reader.getAttribute("address") : 0;
+        const char* strAddress = reader.hasAttribute("address") ? reader.getAttribute("address") : "";
 
         try {
             CellAddress address(strAddress);

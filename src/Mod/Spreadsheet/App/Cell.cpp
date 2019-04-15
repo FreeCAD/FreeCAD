@@ -180,7 +180,7 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
     /* Remove dependencies */
     owner->removeDependencies(address);
 
-    auto func = SimpleStatement::cast<FunctionStatement>(expression.get());
+    auto func = SimpleStatement::cast<FunctionStatement>(expr.get());
     if(func)
         setAlias(func->getName());
 
