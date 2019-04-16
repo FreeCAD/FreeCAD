@@ -981,6 +981,7 @@ std::string DrawViewDimension::getDefaultFormatSpec() const
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
     std::string prefFormat = hGrp->GetASCII("formatSpec","");
     QString formatSpec;
+    QString qPrefix;
     if (prefFormat.empty()) {
         QString format1 = Base::Tools::fromStdString("%.");
         QString format2 = Base::Tools::fromStdString("f");
@@ -993,14 +994,18 @@ std::string DrawViewDimension::getDefaultFormatSpec() const
         QString formatPrecision = QString::number(precision);
 
         std::string prefix = getPrefix();
-        QString qPrefix;
+        
         if (!prefix.empty()) {
             qPrefix = QString::fromUtf8(prefix.data(),prefix.size());
         }
 
         formatSpec = qPrefix + format1 + formatPrecision + format2;
     } else {
-        return prefFormat;
+        
+        std::string prefix = getPrefix();
+        qPrefix = QString::fromUtf8(prefix.data(),prefix.size());
+        formatSpec = qPrefix + QString::fromStdString(prefFormat);
+        
     }
     
     return Base::Tools::toStdString(formatSpec);
