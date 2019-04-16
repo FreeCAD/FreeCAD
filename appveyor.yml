@@ -1,13 +1,12 @@
 #version:
 
+image: Visual Studio 2015
+
 environment:
   matrix:
-    - generator: "Visual Studio 12 Win64"
+    - generator: "Visual Studio 14 Win64"
       ARCH: "Win64"
-      Compiler: "MSVC2013"
-    - generator: "Visual Studio 12"
-      ARCH: "Win32"
-      Compiler: "MSVC2013"
+      Compiler: "MSVC2015"
 
 #cache: #
 
@@ -29,14 +28,15 @@ clone_depth: 1600
 #todo cleanup libpacks on the FreeCAD-ports-cache repo
 install:
   - cd C:\projects\freecad
-  - if [%ARCH%] == [Win64] (appveyor DownloadFile https://github.com/FreeCAD/FreeCAD-ports-cache/releases/download/v0.17/FreeCADLibs_11.5.1_x64_VC12.7z)
+  - if [%ARCH%] == [Win64] (appveyor DownloadFile https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z)
   - if [%ARCH%] == [Win64] (
-      powershell -Command 7z x FreeCADLibs_11.5.1_x64_VC12.7z > nul &&
-      ren FreeCADLibs_11.5_x64_VC12 FreeCADLibs)
-  - if [%ARCH%] == [Win32] (appveyor DownloadFile https://github.com/FreeCAD/FreeCAD-ports-cache/releases/download/v0.17/FreeCADLibs_11.5.1_x86_VC12.7z)
-  - if [%ARCH%] == [Win32] (
-      powershell -Command 7z x FreeCADLibs_11.5.1_x86_VC12.7z > nul &&
-      ren FreeCADLibs_11.5_x86_VC12 FreeCADLibs)
+      powershell -Command 7z x FreeCADLibs_12.1.2_x64_VC15.7z -oFreeCADLibs > nul &&
+      call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 &&
+      call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64)
+#  - if [%ARCH%] == [Win32] (appveyor DownloadFile https://github.com/FreeCAD/FreeCAD-ports-cache/releases/download/v0.17/FreeCADLibs_11.5.1_x86_VC12.7z)
+#  - if [%ARCH%] == [Win32] (
+#      powershell -Command 7z x FreeCADLibs_11.5.1_x86_VC12.7z > nul &&
+#      ren FreeCADLibs_11.5_x86_VC12 FreeCADLibs)
   - dir
 
 build_script:
@@ -44,7 +44,38 @@ build_script:
   - mkdir build
   - cd build
   - cmake -DFREECAD_LIBPACK_DIR=C:\projects\freecad\FreeCADLibs
+    -DBoost_FILESYSTEM_LIBRARY_RELEASE=C:\projects\freecad\FreeCADLibs\lib\boost_filesystem-vc141-mt-x64-1_67.lib
+    -DBoost_PROGRAM_OPTIONS_LIBRARY_RELEASE=C:\projects\freecad\FreeCADLibs\lib\boost_program_options-vc141-mt-x64-1_67.lib
+    -DBoost_REGEX_LIBRARY_RELEASE=C:\projects\freecad\FreeCADLibs\lib\boost_regex-vc141-mt-x64-1_67.lib
+    -DBoost_SYSTEM_LIBRARY_RELEASE=C:\projects\freecad\FreeCADLibs\lib\boost_system-vc141-mt-x64-1_67.lib
+    -DBoost_THREAD_LIBRARY_RELEASE=C:\projects\freecad\FreeCADLibs\lib\boost_thread-vc141-mt-x64-1_67.lib
+    -DBoost_PYTHON36_LIBRARY_RELEASE=C:\projects\freecad\FreeCADLibs\lib\boost_python36-vc141-mt-x64-1_67.lib
     -DBUILD_FEM_NETGEN=OFF
+    -DBUILD_PATH=OFF
+    -DBUILD_QT5=ON
+    -DBUILD_FEM=OFF
+    -DBUILD_ADDONMGR=OFF
+    -DBUILD_COMPLETE=OFF
+    -DBUILD_ARCH=OFF
+    -DBUILD_DRAFT=OFF
+    -DBUILD_DRAWING=OFF
+    -DBUILD_IMPORT=OFF
+    -DBUILD_INSPECTION=OFF
+    -DBUILD_MATERIAL=OFF
+    -DBUILD_MESH=OFF
+    -DBUILD_MESH_PART=OFF
+    -DBUILD_OPENSCAD=OFF
+    -DBUILD_PATH=OFF
+    -DBUILD_PLOT=OFF
+    -DBUILD_POINTS=OFF
+    -DBUILD_RAYTRACING=OFF
+    -DBUILD_REVERSEENGINEERING=OFF
+    -DBUILD_ROBOT=OFF
+    -DBUILD_SHIP=OFF
+    -DBUILD_SHOW=OFF
+    -DBUILD_SPREADSHEET=OFF
+    -DBUILD_TECHDRAW=OFF
+    -DBUILD_SURFACE=OFF
     -G "%generator%" ..
   - mkdir bin
   - xcopy C:\projects\freecad\FreeCADLibs\bin C:\projects\freecad\build\bin /E /Q
