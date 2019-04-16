@@ -524,13 +524,16 @@ bool MeshRemoveNeedles::Fixup()
                         std::vector<FaceEdgePriority>,
                         std::greater<FaceEdgePriority> > todo;
     for (std::size_t index = 0; index < facetCount; index++) {
+        const MeshFacet& facet = rclFAry[index];
+        MeshGeomFacet tria(_rclMesh.GetFacet(facet));
+        float perimeter = tria.Perimeter();
+        float fMinLen = perimeter * fMinEdgeLength;
         for (int i=0; i<3; i++) {
-            const MeshFacet& facet = rclFAry[index];
             const Base::Vector3f& p1 = rclPAry[facet._aulPoints[i]];
             const Base::Vector3f& p2 = rclPAry[facet._aulPoints[(i+1)%3]];
 
             float distance = Base::Distance(p1, p2);
-            if (distance < fMinEdgeLength) {
+            if (distance < fMinLen) {
                 unsigned long facetIndex = static_cast<unsigned long>(index);
                 todo.push(std::make_pair(distance, std::make_pair(facetIndex, i)));
             }
@@ -548,10 +551,13 @@ bool MeshRemoveNeedles::Fixup()
 
         // the facet points may have changed, so check the current distance again
         const MeshFacet& facet = rclFAry[faceedge.first];
+        MeshGeomFacet tria(_rclMesh.GetFacet(facet));
+        float perimeter = tria.Perimeter();
+        float fMinLen = perimeter * fMinEdgeLength;
         const Base::Vector3f& p1 = rclPAry[facet._aulPoints[faceedge.second]];
         const Base::Vector3f& p2 = rclPAry[facet._aulPoints[(faceedge.second+1)%3]];
         float distance = Base::Distance(p1, p2);
-        if (distance >= fMinEdgeLength)
+        if (distance >= fMinLen)
             continue;
 
         // collect the collapse-edge information
