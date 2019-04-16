@@ -31,6 +31,8 @@
 #include "Console.h"
 #include <CXX/Objects.hxx>
 
+FC_LOG_LEVEL_INIT("Exception", true, true);
+
 using namespace Base;
 
 
@@ -88,32 +90,17 @@ const char* Exception::what(void) const throw()
 void Exception::ReportException (void) const
 {
     if (!_isReported) {
-        std::string str = "";
-
-        if (!_sErrMsg.empty())
-            str+= (_sErrMsg + " ");
-
-        if (!_function.empty()) {
-            str+="\nIn ";
-            str+=_function;
-            str+= " ";
-        }
-
-        std::string _linestr = std::to_string(_line);
-
-        if (!_file.empty() && !_linestr.empty()) {
-            // strip absolute path
-            std::size_t pos = _file.find("src");
-
-            if (pos!=std::string::npos) {
-                str+="\nin ";
-                str+= _file.substr(pos);
-                str+= ":";
-                str+=_linestr;
-            }
-        }
-
-        Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
+        const char *msg;
+        if(_sErrMsg.empty())
+            msg = typeid(*this).name();
+        else
+            msg = _sErrMsg.c_str();
+#ifdef FC_DEBUG
+        if(_function.size()) {
+            _FC_ERR(_file.c_str(),_line, _function << " -- " << msg);
+        }else
+#endif
+            _FC_ERR(_file.c_str(),_line,msg);
         _isReported = true;
     }
 }
@@ -315,32 +302,17 @@ const char* FileException::what() const throw()
 void FileException::ReportException (void) const
 {
     if (!_isReported) {
-        std::string str = "";
-        
-        if (!_sErrMsgAndFileName.empty())
-            str+= (_sErrMsgAndFileName + " ");
-        
-        if (!_function.empty()) {
-            str+="In ";
-            str+=_function;
-            str+= " ";
-        }
-        
-        std::string _linestr = std::to_string(_line);
-        
-        if (!_file.empty() && !_linestr.empty()) {
-            // strip absolute path
-            std::size_t pos = _file.find("src");
-            
-            if (pos!=std::string::npos) {
-                str+="in ";
-                str+= _file.substr(pos);
-                str+= ":";
-                str+=_linestr;
-            }
-        }
-        
-        Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
+        const char *msg;
+        if(_sErrMsgAndFileName.empty())
+            msg = typeid(*this).name();
+        else
+            msg = _sErrMsgAndFileName.c_str();
+#ifdef FC_DEBUG
+        if(_function.size()) {
+            _FC_ERR(_file.c_str(),_line, _function << " -- " << msg);
+        }else
+#endif
+            _FC_ERR(_file.c_str(),_line,msg);
         _isReported = true;
     }
 }
