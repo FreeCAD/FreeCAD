@@ -1060,11 +1060,19 @@ std::pair<DocumentObject*,std::string> ObjectIdentifier::getDep(std::vector<std:
         if(subObjectName.getString().size()) 
             PropertyLinkBase::getLabelReferences(*labels,subObjectName.getString().c_str());
     }
-    if(result.propertyType==PseudoNone && subObjectName.getString().empty()) {
-        CellAddress addr;
-        if(addr.parseAbsoluteAddress(result.propertyName.c_str())) 
-            return std::make_pair(result.resolvedDocumentObject,addr.toString(true));
-        return std::make_pair(result.resolvedDocumentObject,result.propertyName);
+    if(subObjectName.getString().empty()) {
+        if(result.propertyType==PseudoNone) {
+            CellAddress addr;
+            if(addr.parseAbsoluteAddress(result.propertyName.c_str())) 
+                return std::make_pair(result.resolvedDocumentObject,addr.toString(true));
+            return std::make_pair(result.resolvedDocumentObject,result.propertyName);
+        }else if(result.propertyType == PseudoSelf
+                    && result.resolvedDocumentObject
+                    && result.propertyIndex+1 < (int)components.size())
+        {
+            return std::make_pair(result.resolvedDocumentObject,
+                    components[result.propertyIndex+1].getName());
+        }
     }
     return std::make_pair(result.resolvedDocumentObject,std::string());
 }
@@ -1586,8 +1594,16 @@ App::any ObjectIdentifier::getValue(bool pathValue, bool *isPseudoProperty) cons
 {
     ResolveResults rs(*this);
 
-    if(isPseudoProperty)
+    if(isPseudoProperty) {
         *isPseudoProperty = rs.propertyType!=PseudoNone;
+        if(rs.propertyType == PseudoSelf
+                && isLocalProperty()
+                && rs.propertyIndex+1 < (int)components.size()
+                && owner->getPropertyByName(components[rs.propertyIndex+1].getName().c_str()))
+        {
+            *isPseudoProperty = false;
+        }
+    }
 
     if(rs.resolvedProperty && rs.propertyType==PseudoNone && pathValue)
         return rs.resolvedProperty->getPathValue(*this);
