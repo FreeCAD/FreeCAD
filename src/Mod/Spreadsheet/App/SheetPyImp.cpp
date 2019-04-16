@@ -1035,6 +1035,9 @@ PyObject* SheetPy::getEditMode(PyObject *args)
             PyErr_SetString(PyExc_ValueError, "unknown edit mode");
             return 0;
         }
+    }else{
+        PyErr_SetString(PyExc_ValueError, "invalid cell");
+        return 0;
     }
 
     return Py::new_reference_to( Py::String( mode ) );
