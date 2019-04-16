@@ -404,6 +404,7 @@ BaseExport extern PyObject* BaseExceptionFreeCADError;
 #define PY_FCERROR (Base::BaseExceptionFreeCADError ? \
  BaseExceptionFreeCADError : PyExc_RuntimeError)
 
+BaseExport extern PyObject* BaseExceptionFreeCADAbort;
 
 /** Exception handling for python callback functions
  * Is a convenience macro to manage the exception handling of python callback
@@ -445,6 +446,11 @@ BaseExport extern PyObject* BaseExceptionFreeCADError;
 #define PY_TRY	try 
 
 #define _PY_CATCH                                                   \
+    catch(Base::AbortException &e)                                  \
+    {                                                               \
+        e.ReportException();                                        \
+        Py_ErrorObj(Base::BaseExceptionFreeCADAbort,e.getPyObject());\
+    }                                                               \
     catch(Base::Exception &e)                                       \
     {                                                               \
         e.ReportException();                                        \

@@ -109,25 +109,33 @@ void PyException::ThrowException(void)
 {
     PyException myexcp;
     myexcp.ReportException();
+    myexcp.raiseException();
+}
 
+void PyException::raiseException() {
     PyGILStateLocker locker;
+
     if (PP_PyDict_Object!=NULL) {
         // delete the Python dict upon destruction of edict
         Py::Dict edict(PP_PyDict_Object, true);
         PP_PyDict_Object = 0;
 
-        if (!edict.hasKey("sclassname"))
-            throw myexcp;
-
-        std::string exceptionname = static_cast<std::string>(Py::String(edict.getItem("sclassname")));
-        if (!Base::ExceptionFactory::Instance().CanProduce(exceptionname.c_str()))
-            throw myexcp;
-
-        edict.setItem("breported", Py::True());
+        std::string exceptionname;
+        if (_exceptionType == Base::BaseExceptionFreeCADAbort)
+            edict.setItem("sclassname", 
+                    Py::String(typeid(Base::AbortException).name()));
+        if(_isReported)
+            edict.setItem("breported", Py::True());
         Base::ExceptionFactory::Instance().raiseException(edict.ptr());
     }
-    else
-        throw myexcp;
+
+    if (_exceptionType == Base::BaseExceptionFreeCADAbort) {
+        Base::AbortException e(_sErrMsg.c_str());
+        e.setReported(_isReported);
+        throw e;
+    }
+
+    throw *this;
 }
 
 void PyException::ReportException (void) const

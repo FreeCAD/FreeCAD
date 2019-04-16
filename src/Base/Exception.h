@@ -111,12 +111,16 @@ public:
   inline int getLine() const;
   inline std::string getFunction() const;
   inline bool getTranslatable() const;
+  inline bool getReported() const { return _isReported; }
   
   /// setter methods for including debug information
   /// intended to use via macro for autofilling of debugging information
   inline void setDebugInformation(const std::string & file, const int line, const std::string & function);
   
   inline void setTranslatable(bool translatable);
+
+  inline void setReported(bool reported) { _isReported = reported; }
+
   /// returns a Python dictionary containing the exception data
   virtual PyObject * getPyObject(void);
   /// returns sets the exception data from a Python dictionary
@@ -152,6 +156,7 @@ protected:
  */
 class BaseExport AbortException : public Exception
 {
+  TYPESYSTEM_HEADER();
 public:
   /// Construction
   AbortException(const char * sMessage);

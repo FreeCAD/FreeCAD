@@ -151,6 +151,7 @@ void Exception::setPyObject( PyObject * pydict)
 
 // ---------------------------------------------------------
 
+TYPESYSTEM_SOURCE(Base::AbortException,Base::Exception);
 
 AbortException::AbortException(const char * sMessage)
   : Exception( sMessage )

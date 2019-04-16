@@ -101,6 +101,8 @@ public:
     PyException(void);
     PyException(const Py::Object &obj);
     ~PyException() throw();
+
+    void raiseException();
     
     /// this method determines if the original exception
     /// can be reconstructed or not, if yes throws the reconstructed version

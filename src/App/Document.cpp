@@ -102,6 +102,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
+#include <Base/Sequencer.h>
 
 #ifdef _MSC_VER
 #include <zipios++/zipios-config.h>
@@ -3075,59 +3076,70 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
     std::set<App::DocumentObject *> filter;
     size_t idx = 0;
-    // maximum two passes to allow some form of dependency inversion
-    for(int passes=0; passes<2 && idx<topoSortedObjects.size(); ++passes) {
-        FC_LOG("Recompute pass " << passes);
-        for (;idx<topoSortedObjects.size();++idx) {
-            auto obj = topoSortedObjects[idx];
-            if(!obj->getNameInDocument() || filter.find(obj)!=filter.end())
-                continue;
-            // ask the object if it should be recomputed
-            bool doRecompute = false;
-            if (obj->mustRecompute()) {
-                doRecompute = true;
-                ++objectCount;
-                if (_recomputeFeature(obj)) {
-                    // if something happened filter all object in its
-                    // inListRecursive from the queue then proceed
-                    obj->getInListEx(filter,true);
-                    filter.insert(obj);
-                    if(hasError)
-                        *hasError = true;
+    try {
+        // maximum two passes to allow some form of dependency inversion
+        for(int passes=0; passes<2 && idx<topoSortedObjects.size(); ++passes) {
+            Base::SequencerLauncher seq("Recompute...", topoSortedObjects.size());
+            FC_LOG("Recompute pass " << passes);
+            for (;idx<topoSortedObjects.size();seq.next(true),++idx) {
+                auto obj = topoSortedObjects[idx];
+                if(!obj->getNameInDocument() || filter.find(obj)!=filter.end())
                     continue;
-                }
-                signalRecomputedObject(*obj);
-            }
-            if(obj->isTouched() || doRecompute) {
-                obj->purgeTouched();
-                // set all dependent object touched to force recompute
-                for (auto inObjIt : obj->getInList())
-                    inObjIt->enforceRecompute();
-            }
-        }
-        // check if all objects are recomputed but still thouched 
-        for (size_t i=0;i<topoSortedObjects.size();++i) {
-            auto obj = topoSortedObjects[i];
-            obj->setStatus(ObjectStatus::Recompute2,false);
-            if(!filter.count(obj) && obj->isTouched()) {
-                if(passes>0) 
-                    FC_ERR(obj->getFullName() << " still touched after recompute");
-                else{
-                    FC_LOG(obj->getFullName() << " still touched after recompute");
-                    if(idx>=topoSortedObjects.size()) {
-                        // let's start the next pass on the first touched object
-                        idx = i;
+                // ask the object if it should be recomputed
+                bool doRecompute = false;
+                if (obj->mustRecompute()) {
+                    doRecompute = true;
+                    ++objectCount;
+                    int res = _recomputeFeature(obj);
+                    if(res) {
+                        if(hasError)
+                            *hasError = true;
+                        if(res < 0) {
+                            passes = 2;
+                            break;
+                        }
+                        // if something happened filter all object in its
+                        // inListRecursive from the queue then proceed
+                        obj->getInListEx(filter,true);
+                        filter.insert(obj);
+                        continue;
                     }
-                    obj->setStatus(ObjectStatus::Recompute2,true);
+                    signalRecomputedObject(*obj);
+                }
+                if(obj->isTouched() || doRecompute) {
+                    obj->purgeTouched();
+                    // set all dependent object touched to force recompute
+                    for (auto inObjIt : obj->getInList())
+                        inObjIt->enforceRecompute();
+                }
+            }
+            // check if all objects are recomputed but still thouched 
+            for (size_t i=0;i<topoSortedObjects.size();++i) {
+                auto obj = topoSortedObjects[i];
+                obj->setStatus(ObjectStatus::Recompute2,false);
+                if(!filter.count(obj) && obj->isTouched()) {
+                    if(passes>0) 
+                        FC_ERR(obj->getFullName() << " still touched after recompute");
+                    else{
+                        FC_LOG(obj->getFullName() << " still touched after recompute");
+                        if(idx>=topoSortedObjects.size()) {
+                            // let's start the next pass on the first touched object
+                            idx = i;
+                        }
+                        obj->setStatus(ObjectStatus::Recompute2,true);
+                    }
                 }
             }
         }
+    }catch(Base::Exception &e) {
+        e.ReportException();
     }
 
     for(auto obj : topoSortedObjects) {
         if(!obj->getNameInDocument())
             continue;
         obj->setStatus(ObjectStatus::PendingRecompute,false);
+        obj->setStatus(ObjectStatus::Recompute2,false);
         if(obj->testStatus(ObjectStatus::PendingRemove))
             obj->getDocument()->removeObject(obj->getNameInDocument());
     }
@@ -3312,7 +3324,7 @@ const char * Document::getErrorDescription(const App::DocumentObject*Obj) const
 }
 
 // call the recompute of the Feature and handle the exceptions and errors.
-bool Document::_recomputeFeature(DocumentObject* Feat)
+int Document::_recomputeFeature(DocumentObject* Feat)
 {
     FC_LOG("Recomputing " << Feat->getFullName());
 
@@ -3328,28 +3340,28 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
     catch(Base::AbortException &e){
         e.ReportException();
         d->addRecomputeLog("User abort",Feat);
-        return true;
+        return -1;
     }
     catch (const Base::MemoryException& e) {
         FC_ERR("Memory exception in " << Feat->getFullName() << " thrown: " << e.what());
         d->addRecomputeLog("Out of memory exception",Feat);
-        return true;
+        return 1;
     }
     catch (Base::Exception &e) {
         e.ReportException();
         d->addRecomputeLog(e.what(),Feat);
-        return true;
+        return 1;
     }
     catch (std::exception &e) {
         FC_ERR("exception in " << Feat->getFullName() << " thrown: " << e.what());
         d->addRecomputeLog(e.what(),Feat);
-        return true;
+        return 1;
     }
 #ifndef FC_DEBUG
     catch (...) {
         FC_ERR("Unknown exception in " << Feat->getFullName() << " thrown");
         d->addRecomputeLog("Unknown exception!",Feat);
-        return true;
+        return 1;
     }
 #endif
 
@@ -3363,9 +3375,9 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
 #else
         FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << returnCode->Why);
 #endif
-        return true;
+        return 1;
     }
-    return false;
+    return 0;
 }
 
 bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)

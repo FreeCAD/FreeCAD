@@ -48,6 +48,7 @@ struct SequencerPrivate
     WaitCursor* waitCursor;
     QTime measureTime;
     QTime progressTime;
+    QTime checkAbortTime;
     QString text;
     bool guiThread;
 };
@@ -134,6 +135,7 @@ void Sequencer::startStep()
         d->bar->setRange(0, (int)nTotalSteps);
         if (nTotalSteps == 0) {
             d->progressTime.start();
+            d->checkAbortTime.start();
         }
         d->measureTime.start();
         QMetaObject::invokeMethod(d->bar, "aboutToShow", Qt::QueuedConnection);
@@ -143,12 +145,37 @@ void Sequencer::startStep()
         d->bar->setRange(0, (int)nTotalSteps);
         if (nTotalSteps == 0) {
             d->progressTime.start();
+            d->checkAbortTime.start();
         }
 
         d->measureTime.start();
         d->waitCursor = new Gui::WaitCursor;
         d->bar->enterControlEvents();
         d->bar->aboutToShow();
+    }
+}
+
+void Sequencer::checkAbort() {
+    if(d->bar->thread() != QThread::currentThread())
+        return;
+    if (!wasCanceled()) {
+        if(d->checkAbortTime.elapsed() < 500)
+            return;
+        d->checkAbortTime.restart();
+        qApp->processEvents();
+        return;
+    }
+    // restore cursor
+    pause();
+    bool ok = d->bar->canAbort();
+    // continue and show up wait cursor if needed
+    resume();
+
+    // force to abort the operation
+    if ( ok ) {
+        abort();
+    } else {
+        rejectCancel();
     }
 }
 
@@ -305,7 +332,7 @@ void Sequencer::abort()
 {
     //resets
     resetData();
-    Base::AbortException exc("Aborting...");
+    Base::AbortException exc("User aborted");
     throw exc;
 }
 

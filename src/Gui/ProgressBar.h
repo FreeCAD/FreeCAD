@@ -102,6 +102,8 @@ public:
     /** Returns an instance of the progress bar. It creates one if needed. */
     QProgressBar* getProgressBar(QWidget* parent=0);
 
+    virtual void checkAbort() override;
+
 protected:
     /** Construction */
     Sequencer ();

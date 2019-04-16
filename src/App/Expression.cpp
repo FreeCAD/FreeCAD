@@ -29,6 +29,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/Sequencer.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentPy.h>
@@ -104,7 +105,7 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 #define _EXPR_PY_THROW(_msg,_expr) do {\
     Base::PyException _e;\
     __EXPR_SET_MSG(_e,_msg,_expr);\
-    throw _e;\
+    _e.raiseException();\
 }while(0)
 
 #define EXPR_PY_THROW(_expr) _EXPR_PY_THROW("",_expr)
@@ -543,6 +544,7 @@ Py::Object Expression::Component::get(const Expression *owner, const Py::Object 
     }catch(Py::Exception &) {
         EXPR_PY_THROW(owner);
     }
+    return Py::Object();
 }
 
 void Expression::Component::set(const Expression *owner, Py::Object &pyobj, const Py::Object &value) const 
@@ -1180,6 +1182,7 @@ App::any Expression::getValueAsAny(int options) const {
     }catch(Py::Exception &) {
         EXPR_PY_THROW(this);
     }
+    return App::any();
 }
 
 void Expression::addComponent(ComponentPtr &&component) {
@@ -2008,7 +2011,7 @@ public:
             return Py::Object(it->second);
         it->second = PyImport_ImportModule(name.c_str());
         if(!it->second) 
-            Base::PyException::ThrowException();
+            EXPR_PY_THROW(e);
         imports.insert(it->second);
         // Not ref counted inside modules or ipmorts
         return Py::Object(it->second,true);
@@ -3783,12 +3786,9 @@ App::any CallableExpression::_getValueAsAny() const {
         ImportParamLock lock;
         return pyObjectToAny(Py::Callable(pyobj).apply(tuple,dict));
     }catch (Py::Exception&) {
-        Base::PyException e;
-        std::ostringstream ss;
-        ss << e.what() << std::endl << toStr();
-        e.setMessage(ss.str().c_str());
-        throw e;
+        EXPR_PY_THROW(this);
     }
+    return App::any();
 }
 
 ExpressionPtr CallableExpression::_copy() const {
@@ -5210,6 +5210,7 @@ bool WhileStatement::needLineEnd() const {
 
 ExpressionPtr WhileStatement::_eval() const {
     ExpressionPtr expr;
+    int count = 0;
     while(condition && evalCondition(*condition)) {
         expr = statement->eval();
         switch(expr->jump()) {
@@ -5220,6 +5221,8 @@ ExpressionPtr WhileStatement::_eval() const {
         case JUMP_NONE:
         case JUMP_CONTINUE:
             expr.reset();
+            if(++count % 100)
+                Base::Sequencer().checkAbort();
             continue;
         default:
             assert(0);

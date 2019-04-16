@@ -775,10 +775,15 @@ void Sheet::recomputeCell(CellAddress p)
         setStringProperty(p, Base::Tools::toStdString(msg));
         if (cell)
             cell->setException(e.what());
+        else
+            e.ReportException();
 
         // Mark as erroneous
         cellErrors.insert(p);
         cellUpdated(p);
+
+        if(e.isDerivedFrom(Base::AbortException::getClassTypeId()))
+            throw;
     }
 
     updateAlias(p);

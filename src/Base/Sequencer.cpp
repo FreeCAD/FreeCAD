@@ -380,3 +380,4 @@ Py::Object ProgressIndicatorPy::stop(const Py::Tuple& args)
     _seq.reset();
     return Py::None();
 }
+

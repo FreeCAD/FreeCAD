@@ -45,6 +45,7 @@
 #include <Base/Factory.h>
 #include <Base/FileInfo.h>
 #include <Base/UnitsApi.h>
+#include <Base/Sequencer.h>
 
 //using Base::GetConsole;
 using namespace Base;
@@ -170,6 +171,12 @@ PyMethodDef Application::Methods[] = {
      "isRestoring() -> Bool -- Test if the application is opening some document"},
     {"dumpSWIG", (PyCFunction) Application::sDumpSWIG, METH_VARARGS,
      "dumpSWIG() -- Dump SWIG internal types"},
+    {"checkAbort", (PyCFunction) Application::sCheckAbort, METH_VARARGS,
+     "checkAbort() -- check for user abort in length operation.\n\n"
+     "This only works if there is an active sequencer (or ProgressIndicator in Python).\n"
+     "There is an active sequencer during document restore and recomputation. User may\n"
+     "abort the operation by pressing the ESC key. Once detected, this function will\n"
+     "trigger a BaseExceptionFreeCADAbort exception."},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -925,3 +932,13 @@ PyObject *Application::sDumpSWIG(PyObject * /*self*/, PyObject *args)
     Py_Return;
 }
 
+PyObject *Application::sCheckAbort(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    PY_TRY {
+        Base::Sequencer().checkAbort();
+        Py_Return;
+    }PY_CATCH
+}

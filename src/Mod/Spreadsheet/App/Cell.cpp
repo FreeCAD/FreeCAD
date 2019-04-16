@@ -316,7 +316,7 @@ void Cell::setContent(const char * value)
             else {
                 try {
                     expr = owner->parse(value);
-                    owner->eval(expr.get());
+                    // owner->eval(expr.get());
                 }
                 catch (Base::Exception &e) {
                     expr = App::StringExpression::create(owner->sheet(), value);

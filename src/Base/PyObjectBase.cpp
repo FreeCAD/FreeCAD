@@ -35,6 +35,7 @@
 using namespace Base;
 
 PyObject* Base::BaseExceptionFreeCADError = 0;
+PyObject* Base::BaseExceptionFreeCADAbort = 0;
 
 // Constructor
 PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
