@@ -437,7 +437,7 @@ int *ConsoleSingleton::GetLogLevel(const char *tag, bool create) {
 
 void ConsoleSingleton::Refresh() {
     if(_bCanRefresh)
-        QCoreApplication::sendPostedEvents();
+        qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 }
 
 void ConsoleSingleton::EnableRefresh(bool enable) {
@@ -941,18 +941,18 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
         str << d.count() << ' ';
     }
     if(print_tag) str << '<' << tag << "> ";
-    if(print_src) {
-        if(print_src==2) {
-            PyFrameObject* frame = PyEval_GetFrame();
-            if(frame) {
-                line = PyFrame_GetLineNumber(frame);
+    if(print_src==2) {
+        PyFrameObject* frame = PyEval_GetFrame();
+        if(frame) {
+            line = PyFrame_GetLineNumber(frame);
 #if PY_MAJOR_VERSION >= 3
-                src = PyUnicode_AsUTF8(frame->f_code->co_filename);
+            src = PyUnicode_AsUTF8(frame->f_code->co_filename);
 #else
-                src = PyString_AsString(frame->f_code->co_filename);
+            src = PyString_AsString(frame->f_code->co_filename);
 #endif
-            }
         }
+    }
+    if(print_src && src && src[0]) {
 #ifdef FC_OS_WIN32
         const char *_f = std::strrchr(src, '\\');
 #else
