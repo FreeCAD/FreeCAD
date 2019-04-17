@@ -356,13 +356,16 @@ class BuildingPart:
             self.oldPlacement = FreeCAD.Placement(obj.Placement)
 
     def onChanged(self,obj,prop):
+
         ArchIFC.onChanged(obj, prop)
+
         if prop == "Height":
             for child in obj.Group:
                 if Draft.getType(child) in ["Wall","Structure"]:
                     if not child.Height.Value:
                         #print("Executing ",child.Label)
                         child.Proxy.execute(child)
+
         elif prop == "Placement":
             if hasattr(self,"oldPlacement"):
                 if self.oldPlacement:
@@ -391,6 +394,9 @@ class BuildingPart:
                             if deltap:
                                 child.Placement.move(deltap)
 
+        elif prop == "Group":
+            obj.Area = self.getArea(obj)
+
     def execute(self,obj):
 
         # gather all the child shapes into a compound
@@ -398,6 +404,19 @@ class BuildingPart:
         if shapes:
             import Part
             obj.Shape = Part.makeCompound(shapes)
+
+    def getArea(self,obj):
+        
+        "computes the area of this floor by adding its inner spaces"
+        
+        area = 0
+        if hasattr(obj,"Group"):
+            for child in obj.Group:
+                if hasattr(child,"Area") and hasattr(child,"IfcType"):
+                    # only add arch objects that have an Area property
+                    # TODO only spaces? ATM only spaces and windows have an Area property
+                    area += child.Area.Value
+        return area
 
     def getShapes(self,obj):
 
