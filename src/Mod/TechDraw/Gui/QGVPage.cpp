@@ -411,7 +411,7 @@ QGIView * QGVPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
     if(balloon->OriginIsSet.getValue() == false) {
         if(parent) {
             balloonPlacing(true);
-            QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png"))));
+            QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png")),0,32));
             balloonGroup->connect(parent);
             addBalloonToParent(balloonGroup,parent);
         }
