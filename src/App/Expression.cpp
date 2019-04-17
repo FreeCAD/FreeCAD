@@ -112,6 +112,8 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 
 #define EXPR_THROW(_msg) _EXPR_THROW(_msg,this)
 
+#define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError,_msg, (Expression*)0)
+
 #define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError,_msg, (Expression*)0)
 
 #define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError,_msg, (Expression*)0)
@@ -942,13 +944,25 @@ struct EvalFrame {
         }
     }
 
-    static void noWarn(int code) {
+    static void pragmaNoWarn(int code, bool enable) {
         if(!_EvalCallFrame)
             return;
         if(code==0)
-            _EvalCallFrame->setWarnNone();
+            _EvalCallFrame->setWarnNone(enable);
         else if(code>0 && code<=F_WarnNone)
-            _EvalCallFrame->flags.set(code-1);
+            _EvalCallFrame->flags.set(code-1,enable);
+    }
+
+#define EVAL_DEFAULT_LOOPCHECK 100
+    int loopCheck = EVAL_DEFAULT_LOOPCHECK;
+
+    static void pragmaLoopCheck(int v) {
+        if(_EvalCallFrame)
+            _EvalCallFrame->loopCheck = v;
+    }
+
+    static int getLookCheck() {
+        return _EvalCallFrame?_EvalCallFrame->loopCheck:EVAL_DEFAULT_LOOPCHECK;
     }
 };
 
@@ -2080,7 +2094,7 @@ enum ExpressionFunctionType {
     GET_VAR,
     HAS_VAR,
     IMPORT_PY,
-    NO_WARN,
+    PRAGMA,
 
     CALLABLE_START,
 
@@ -2143,7 +2157,7 @@ void init_functions() {
     registered_functions["getvar"] = GET_VAR;
     registered_functions["hasvar"] = HAS_VAR;
     registered_functions["import_py"] = IMPORT_PY;
-    registered_functions["nowarn"] = NO_WARN;
+    registered_functions["pragma"] = PRAGMA;
 
     // Aggregates
     registered_functions["sum"] = SUM;
@@ -3691,14 +3705,30 @@ App::any CallableExpression::_getValueAsAny() const {
             Base::PyGILStateLocker lock;
             return pyObjectToAny(ImportModules::instance()->getModule(
                         App::any_cast<const std::string &>(value),this),false);
-        } case NO_WARN: {
+        } case PRAGMA: {
             App::any value(args[0]->getValueAsAny());
-            if(value.type() == typeid(int))
-                EvalFrame::noWarn(App::any_cast<int>(value));
-            else if(value.type() == typeid(long))
-                EvalFrame::noWarn(App::any_cast<long>(value));
-            else
-                EXPR_THROW("Function expects the first argument to be an integer.");
+            if(value.type() != typeid(std::string))
+                EXPR_THROW("Function expects the first argument to be a string.");
+            const auto &arg = App::any_cast<const std::string &>(value);
+
+            bool hasArg2 = false;
+            int arg2;
+            if(args.size() > 1) {
+                App::any value(args[1]->getValueAsAny());
+                if(value.type() == typeid(int)) {
+                    arg2 = App::any_cast<int>(value);
+                    hasArg2 = true;
+                } else if(value.type() == typeid(long)) {
+                    arg2 = (int)App::any_cast<long>(value);
+                    hasArg2 = true;
+                }
+            }
+            if(!hasArg2)
+                EXPR_THROW("Function expects the second argument to be an integer.");
+            if(arg == "nowarn" || arg == "warn") 
+                EvalFrame::pragmaNoWarn(arg2,arg=="nowarn");
+            else if(arg == "loop_check")
+                EvalFrame::pragmaLoopCheck(arg2);
             return App::any();
         } default:
             return FunctionExpression::evalToAny(this,ftype,args);
@@ -5211,6 +5241,7 @@ bool WhileStatement::needLineEnd() const {
 ExpressionPtr WhileStatement::_eval() const {
     ExpressionPtr expr;
     int count = 0;
+    int limit = EvalFrame::getLookCheck();
     while(condition && evalCondition(*condition)) {
         expr = statement->eval();
         switch(expr->jump()) {
@@ -5221,7 +5252,7 @@ ExpressionPtr WhileStatement::_eval() const {
         case JUMP_NONE:
         case JUMP_CONTINUE:
             expr.reset();
-            if(++count % 100)
+            if(limit>0 && ++count % limit)
                 Base::Sequencer().checkAbort();
             continue;
         default:
