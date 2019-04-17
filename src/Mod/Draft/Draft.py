@@ -2567,6 +2567,7 @@ def clone(obj,delta=None,forcedraft=False):
         except:
             pass
         if gui:
+            formatObject(cl,base)
             cl.ViewObject.DiffuseColor = base.ViewObject.DiffuseColor
             if getType(obj[0]) in ["Window","BuildingPart"]:
                 from DraftGui import todo
