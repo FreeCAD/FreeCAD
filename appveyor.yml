@@ -32,8 +32,7 @@ install:
   - if [%ARCH%] == [Win64] (
       powershell -Command 7z x FreeCADLibs_12.1.2_x64_VC15.7z -oFreeCADLibs > nul &&
       call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 &&
-      dir "C:\Program Files (x86)\" &&
-      call "C:\Program Files (x86)\Microsoft Visual Studio 15.9\VC\vcvarsall.bat" x86_amd64)
+      call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64)
 #  - if [%ARCH%] == [Win32] (appveyor DownloadFile https://github.com/FreeCAD/FreeCAD-ports-cache/releases/download/v0.17/FreeCADLibs_11.5.1_x86_VC12.7z)
 #  - if [%ARCH%] == [Win32] (
 #      powershell -Command 7z x FreeCADLibs_11.5.1_x86_VC12.7z > nul &&
