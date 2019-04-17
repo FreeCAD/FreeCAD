@@ -25,6 +25,7 @@
 from __future__ import print_function
 
 import FreeCAD
+import Mesh
 import MeshPart
 # import Part
 import Path
@@ -140,8 +141,15 @@ class ObjectSurface(PathOp.ObjectOp):
                 except AttributeError:
                     import PathScripts.PathPreferences as PathPreferences
                     deflection = PathPreferences.defaultGeometryTolerance()
-                base.Shape.tessellate(0.5)
-                mesh = MeshPart.meshFromShape(base.Shape, Deflection=deflection)
+                tessellation = base.Shape.tessellate(0.5)
+                faces = []
+                for triangle in tessellation[1]:
+                    face = []
+                    for i in range(3):
+                        vindex = triangle[i]
+                        face.append(tessellation[0][vindex])
+                    faces.append(face)
+                mesh = Mesh.Mesh(faces)
             if obj.BoundBox == "BaseBoundBox":
                 bb = mesh.BoundBox
             else:
