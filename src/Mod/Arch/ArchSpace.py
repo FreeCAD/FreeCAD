@@ -419,7 +419,7 @@ class _Space(ArchComponent.Component):
                 #print("setting objects shape")
                 shape = shape.Solids[0]
                 obj.Shape = shape
-                pl = pl.multiply(obj.Placement)
+                #pl = pl.multiply(obj.Placement)
                 obj.Placement = pl
                 if hasattr(obj.Area,"Value"):
                     a = self.getArea(obj)
@@ -569,6 +569,8 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                     pos = FreeCAD.Vector()
             else:
                 pos = vobj.TextPosition
+        # placement's displacement will be already added by the coin node
+        pos = vobj.Object.Placement.inverse().multVec(pos)
         return pos
 
     def onChanged(self,vobj,prop):
@@ -626,6 +628,9 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         elif (prop == "FontSize"):
             if hasattr(self,"font") and hasattr(vobj,"FontSize"):
                 self.font.size = vobj.FontSize.Value
+                if hasattr(vobj,"FirstLine"):
+                    scale = vobj.FirstLine.Value/vobj.FontSize.Value
+                    self.header.scaleFactor.setValue([scale,scale,scale])
 
         elif (prop == "FirstLine"):
             if hasattr(self,"header") and hasattr(vobj,"FontSize") and hasattr(vobj,"FirstLine"):

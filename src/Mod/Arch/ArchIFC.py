@@ -4,6 +4,9 @@ import FreeCAD, os, json
 
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
+else:
+    def QT_TRANSLATE_NOOP(ctx,txt):
+        return txt
 
 import ArchIFCSchema
 IfcTypes = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in ArchIFCSchema.IfcProducts.keys()]
