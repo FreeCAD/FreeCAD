@@ -1,12 +1,12 @@
 #version:
 
-image: Visual Studio 2015
+image: Visual Studio 2017
 
 environment:
   matrix:
-    - generator: "Visual Studio 14 Win64"
+    - generator: "Visual Studio 15 2017 Win64"
       ARCH: "Win64"
-      Compiler: "MSVC2015"
+      Compiler: "MSVC2017"
 
 #cache: #
 
