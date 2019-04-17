@@ -89,7 +89,7 @@ Q_DECLARE_METATYPE(Py::Object)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyItem)
 
-PropertyItem::PropertyItem() : parentItem(0), readonly(false), cleared(false)
+PropertyItem::PropertyItem() : parentItem(0), readonly(false), cleared(false), linked(false)
 {
     precision = Base::UnitsApi::getDecimals();
     setAutoApply(true);
@@ -262,6 +262,18 @@ void PropertyItem::setReadOnly(bool ro)
 bool PropertyItem::isReadOnly() const
 {
     return readonly;
+}
+
+void PropertyItem::setLinked(bool l)
+{
+    linked = l;
+    for (QList<PropertyItem*>::iterator it = childItems.begin(); it != childItems.end(); ++it)
+        (*it)->setLinked(l);
+}
+
+bool PropertyItem::isLinked() const
+{
+    return linked;
 }
 
 bool PropertyItem::testStatus(App::Property::Status pos) const
@@ -495,6 +507,8 @@ QVariant PropertyItem::data(int column, int role) const
             return QVariant();
         else if (role == Qt::ToolTipRole)
             return toolTip(propertyItems[0]);
+        else if (role == Qt::TextColorRole && linked)
+            return QVariant::fromValue(QColor(0,0xb3,0));
         else
             return QVariant();
     }

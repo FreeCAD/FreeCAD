@@ -27,6 +27,8 @@
 # include <cfloat>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include "PropertyModel.h"
 #include "PropertyItem.h"
 #include "PropertyView.h"
@@ -207,6 +209,15 @@ QModelIndex PropertyModel::propertyIndexFromPath(const QStringList& path) const
     return parent;
 }
 
+struct PropItemInfo {
+    const std::string &name;
+    const std::vector<App::Property*> &props;
+
+    PropItemInfo(const std::string &n, const std::vector<App::Property*> &p)
+        :name(n),props(p)
+    {}
+};
+
 void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
 {
     beginResetModel();
@@ -215,19 +226,17 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
     rootItem->reset();
 
     // sort the properties into their groups
-    std::map<std::string, std::vector<std::vector<App::Property*> > > propGroup;
+    std::map<std::string, std::vector<PropItemInfo> > propGroup;
     PropertyModel::PropertyList::const_iterator jt;
     for (jt = props.begin(); jt != props.end(); ++jt) {
         App::Property* prop = jt->second.front();
         const char* group = prop->getGroup();
         bool isEmpty = (group == 0 || group[0] == '\0');
         std::string grp = isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group;
-        propGroup[grp].push_back(jt->second);
+        propGroup[grp].emplace_back(jt->first,jt->second);
     }
 
-    std::map<std::string, std::vector<std::vector<App::Property*> > >
-        ::const_iterator kt;
-    for (kt = propGroup.begin(); kt != propGroup.end(); ++kt) {
+    for (auto kt = propGroup.begin(); kt != propGroup.end(); ++kt) {
         // set group item
         PropertyItem* group = static_cast<PropertyItem*>(PropertySeparatorItem::create());
         group->setParent(rootItem);
@@ -235,9 +244,9 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
         group->setPropertyName(QString::fromLatin1(kt->first.c_str()));
 
         // setup the items for the properties
-        std::vector<std::vector<App::Property*> >::const_iterator it;
-        for (it = kt->second.begin(); it != kt->second.end(); ++it) {
-            App::Property* prop = it->front();
+        for (auto it = kt->second.begin(); it != kt->second.end(); ++it) {
+            const auto &info = *it;
+            App::Property* prop = info.props.front();
             std::string editor(prop->getEditorName());
             if(editor.empty() && PropertyView::showAll())
                 editor = "Gui::PropertyEditor::PropertyItem";
@@ -248,11 +257,13 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
                     continue;
                 }
                 else {
+                    if(boost::ends_with(info.name,"*"))
+                        item->setLinked(true);
                     PropertyItem* child = (PropertyItem*)item;
                     child->setParent(rootItem);
                     rootItem->appendChild(child);
                     child->setPropertyName(QString::fromLatin1(prop->getName()));
-                    child->setPropertyData(*it);
+                    child->setPropertyData(info.props);
                 }
             }
         }

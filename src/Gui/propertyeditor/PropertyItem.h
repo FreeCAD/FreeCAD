@@ -149,6 +149,9 @@ public:
     void setDecimals(int);
     int decimals() const;
 
+    void setLinked(bool);
+    bool isLinked() const;
+
     PropertyItem *child(int row);
     int childCount() const;
     int columnCount() const;
@@ -176,13 +179,13 @@ protected:
 private:
     QString propName;
     QString displayText;
-    QVariant propData;
     std::vector<App::Property*> propertyItems;
     PropertyItem *parentItem;
     QList<PropertyItem*> childItems;
     bool readonly;
     int precision;
     bool cleared;
+    bool linked;
 };
 
 /**

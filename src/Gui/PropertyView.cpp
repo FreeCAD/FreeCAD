@@ -164,10 +164,9 @@ void PropertyView::setShowAll(bool enable) {
 void PropertyView::hideEvent(QHideEvent *ev) {
     this->timer->stop();
     this->detachSelection();
-    PropertyModel::PropertyList props;
     // clear the properties before hiding.
-    propertyEditorData->buildUp(props);
-    propertyEditorView->buildUp(props);
+    propertyEditorData->buildUp();
+    propertyEditorView->buildUp();
     clearPropertyItemSelection();
     QWidget::hideEvent(ev);
 }
@@ -296,10 +295,9 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         msg.Type != SelectionChanges::ClrSelection)
         return;
 
-    PropertyModel::PropertyList props;
     // clear the properties.
-    propertyEditorData->buildUp(props);
-    propertyEditorView->buildUp(props);
+    propertyEditorData->buildUp();
+    propertyEditorView->buildUp();
     clearPropertyItemSelection();
     timer->start(100);
 }
@@ -440,7 +438,7 @@ void PropertyView::onTimer() {
                 if(it!=propMap.end() && !isPropertyHidden(it->second))
                     continue;
                 std::vector<App::Property*> v(1,prop);
-                dataProps.push_back(std::make_pair(name, v));
+                dataProps.emplace_back(name+"*", v);
             }
             auto vpLinked = Application::Instance->getViewProvider(linked);
             if(vpLinked) {
@@ -456,7 +454,7 @@ void PropertyView::onTimer() {
                     if(it!=propMap.end() && !isPropertyHidden(it->second))
                         continue;
                     std::vector<App::Property*> v(1,prop);
-                    viewProps.push_back(std::make_pair(name, v));
+                    viewProps.emplace_back(name+"*", v);
                 }
             }
         }
@@ -467,14 +465,14 @@ void PropertyView::onTimer() {
             dataProps.push_back(std::make_pair(it->propName, it->propList));
     }
 
-    propertyEditorData->buildUp(dataProps);
+    propertyEditorData->buildUp(std::move(dataProps));
 
     for (it = propViewMap.begin(); it != propViewMap.end(); ++it) {
         if (it->propList.size() == array.size())
             viewProps.push_back(std::make_pair(it->propName, it->propList));
     }
 
-    propertyEditorView->buildUp(viewProps);
+    propertyEditorView->buildUp(std::move(viewProps));
 
     // make sure the editors are enabled/disabled properly
     setEnabled(enableEditor || array.empty());

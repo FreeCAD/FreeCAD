@@ -68,7 +68,7 @@ public:
     ~PropertyEditor();
 
     /** Builds up the list view with the properties. */
-    void buildUp(const PropertyModel::PropertyList& props);
+    void buildUp(PropertyModel::PropertyList &&props = PropertyModel::PropertyList());
     void updateProperty(const App::Property&);
     void updateEditorMode(const App::Property&);
     void appendProperty(const App::Property&);
