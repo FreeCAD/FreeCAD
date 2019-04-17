@@ -326,11 +326,20 @@ class Component:
                         # if the final obj is rotated, this will screw all our IFC orientation. Better leave it like that then...
                         data = obj.Base.Proxy.getExtrusionData(obj.Base)
                         if data:
+                            return data
+                            # TODO above doesn't work if underlying shape is not at (0,0,0). But code below doesn't work well yet
                             # add the displacement of the final object
+                            disp = obj.Shape.CenterOfMass.sub(obj.Base.Shape.CenterOfMass)
                             if isinstance(data[2],(list,tuple)):
-                                return (data[0],data[1],[p.multiply(obj.Placement) for p in data[2]])
+                                ndata2 = []
+                                for p in data[2]:
+                                    p.move(disp)
+                                    ndata2.append(p)
+                                return (data[0],data[1],ndata2)
                             else:
-                                return (data[0],data[1],data[2].multiply(obj.Placement))
+                                ndata2 = data[2]
+                                ndata2.move(disp)
+                                return (data[0],data[1],ndata2)
             # the base is a Part Extrusion
             elif obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base:
