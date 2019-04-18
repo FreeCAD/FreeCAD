@@ -644,7 +644,10 @@ class ViewProviderBuildingPart:
                         u = vobj.OverrideUnit
                     else:
                         u = q.getUserPreferred()[2]
-                    q = q.getValueAs(u)
+                    try:
+                        q = q.getValueAs(u)
+                    except:
+                        q = q.getValueAs(q.getUserPreferred()[2])
                     d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
                     fmt = "{0:."+ str(d) + "f}"
                     if not vobj.ShowUnit:
@@ -686,6 +689,9 @@ class ViewProviderBuildingPart:
         action3 = QtGui.QAction(QtGui.QIcon(),"Create group...",menu)
         QtCore.QObject.connect(action3,QtCore.SIGNAL("triggered()"),self.createGroup)
         menu.addAction(action3)
+        action4 = QtGui.QAction(QtGui.QIcon(),"Reorder children alphabetically",menu)
+        QtCore.QObject.connect(action4,QtCore.SIGNAL("triggered()"),self.reorder)
+        menu.addAction(action4)
 
     def setWorkingPlane(self,restore=False):
 
@@ -730,6 +736,15 @@ class ViewProviderBuildingPart:
         if hasattr(self,"Object"):
             s = "FreeCAD.ActiveDocument.getObject(\"%s\").newObject(\"App::DocumentObjectGroup\",\"Group\")" % self.Object.Name
             FreeCADGui.doCommand(s)
+
+    def reorder(self):
+        
+        if hasattr(self,"Object"):
+            if hasattr(self.Object,"Group") and self.Object.Group:
+                g = self.Object.Group
+                g.sort(key=lambda obj: obj.Label)
+                self.Object.Group = g
+                FreeCAD.ActiveDocument.recompute()
 
     def __getstate__(self):
         return None
