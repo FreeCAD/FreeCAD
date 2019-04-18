@@ -172,7 +172,7 @@ void QGIViewBalloon::onAttachPointPicked(QGIView *view, QPointF pos)
     auto bnd = boost::bind(&QGIViewBalloon::parentViewMousePressed, this, _1, _2);
 
     if (balloon->OriginIsSet.getValue() == false) {
-        /* Move origin by half of cursor size */
+   
         balloon->OriginX.setValue(pos.x());
         balloon->OriginY.setValue(pos.y());
         balloon->OriginIsSet.setValue(true);
