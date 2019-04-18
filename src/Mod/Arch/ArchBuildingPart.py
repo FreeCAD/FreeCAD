@@ -394,9 +394,6 @@ class BuildingPart:
                             if deltap:
                                 child.Placement.move(deltap)
 
-        elif prop == "Group":
-            obj.Area = self.getArea(obj)
-
     def execute(self,obj):
 
         # gather all the child shapes into a compound
@@ -404,6 +401,7 @@ class BuildingPart:
         if shapes:
             import Part
             obj.Shape = Part.makeCompound(shapes)
+        obj.Area = self.getArea(obj)
 
     def getArea(self,obj):
         
@@ -692,6 +690,9 @@ class ViewProviderBuildingPart:
         action4 = QtGui.QAction(QtGui.QIcon(),"Reorder children alphabetically",menu)
         QtCore.QObject.connect(action4,QtCore.SIGNAL("triggered()"),self.reorder)
         menu.addAction(action4)
+        action5 = QtGui.QAction(QtGui.QIcon(),"Clone level up",menu)
+        QtCore.QObject.connect(action5,QtCore.SIGNAL("triggered()"),self.cloneUp)
+        menu.addAction(action5)
 
     def setWorkingPlane(self,restore=False):
 
@@ -745,6 +746,37 @@ class ViewProviderBuildingPart:
                 g.sort(key=lambda obj: obj.Label)
                 self.Object.Group = g
                 FreeCAD.ActiveDocument.recompute()
+
+    def cloneUp(self):
+        
+        if hasattr(self,"Object"):
+            if not self.Object.Height.Value:
+                FreeCAD.Console.PrintError("This level has no height value. Please define a height before using this function.\n")
+                return
+            height = self.Object.Height.Value
+            ng = []
+            if hasattr(self.Object,"Group") and self.Object.Group:
+                for o in self.Object.Group:
+                    no = Draft.clone(o)
+                    Draft.move(no,FreeCAD.Vector(0,0,height))
+                    ng.append(no)
+            nobj = makeBuildingPart()
+            Draft.formatObject(nobj,self.Object)
+            nobj.Placement = self.Object.Placement
+            nobj.Placement.move(FreeCAD.Vector(0,0,height))
+            nobj.IfcType = self.Object.IfcType
+            nobj.Height = height
+            nobj.Label = self.Object.Label
+            nobj.Group = ng
+            for parent in self.Object.InList:
+                if hasattr(parent,"Group") and hasattr(parent,"addObject") and (self.Object in parent.Group):
+                    parent.addObject(nobj)
+            FreeCAD.ActiveDocument.recompute()
+            # fix for missing IFC attributes
+            for no in ng:
+                if hasattr(no,"LongName") and hasattr(no,"CloneOf") and no.CloneOf and hasattr(no.CloneOf,"LongName"):
+                    no.LongName = no.CloneOf.LongName
+            FreeCAD.ActiveDocument.recompute()
 
     def __getstate__(self):
         return None

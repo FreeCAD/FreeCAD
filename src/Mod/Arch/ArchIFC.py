@@ -97,8 +97,8 @@ def addIfcProductAttribute(obj, attribute):
 def addIfcAttributeValueExpressions(obj, attribute):
     
     "Binds the given attribute properties with expressions"
-    
-    if obj.getGroupOfProperty(attribute["name"]) != "Ifc Attributes":
+
+    if obj.getGroupOfProperty(attribute["name"]) != "IFC Attributes":
         return
     if attribute["name"] == "OverallWidth":
         if hasattr(obj, "Length"):
