@@ -331,6 +331,8 @@ void QGIViewPart::drawViewPart()
         return;
     }
     if (!viewPart->hasGeometry()) {
+        removePrimitives();                      //clean the slate
+        removeDecorations();
         return;
     }
 
@@ -751,10 +753,6 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
     TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
     if (!viewPart ||
         !viewDetail)  {
-        return;
-    }
-
-    if (!viewDetail->hasGeometry()) {
         return;
     }
 
