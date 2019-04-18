@@ -70,26 +70,24 @@ DrawViewArch::~DrawViewArch()
 {
 }
 
-void DrawViewArch::onChanged(const App::Property* prop)
+short DrawViewArch::mustExecute() const
 {
+    short result = 0;
     if (!isRestoring()) {
-        if (prop == &Source ||
-            prop == &AllOn ||
-            prop == &RenderMode ||
-            prop == &ShowHidden ||
-            prop == &ShowFill ||
-            prop == &LineWidth ||
-            prop == &FontSize) {
-            try {
-                App::DocumentObjectExecReturn *ret = recompute();
-                delete ret;
-            }
-            catch (...) {
-            }
-        }
+        result = (Source.isTouched() ||
+                AllOn.isTouched() ||
+                RenderMode.isTouched() ||
+                ShowHidden.isTouched() ||
+                ShowFill.isTouched() ||
+                LineWidth.isTouched() ||
+                FontSize.isTouched());
     }
-    TechDraw::DrawViewSymbol::onChanged(prop);
+    if ((bool) result) {
+        return result;
+    }
+    return DrawViewSymbol::mustExecute();
 }
+
 
 App::DocumentObjectExecReturn *DrawViewArch::execute(void)
 {
@@ -123,7 +121,7 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
         Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
                                           FeatName.c_str(),svgHead.c_str(),svgTail.c_str());
     }
-    requestPaint();
+//    requestPaint();
     return DrawView::execute();
 }
 
