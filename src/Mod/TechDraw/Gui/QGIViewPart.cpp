@@ -618,6 +618,15 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         Base::Vector3d arrowDir(0,1,0);                //for drawing only, not geom
         Base::Vector3d lineDir(1,0,0);
         bool horiz = false;
+
+        //this is a hack we can use since we don't support oblique section lines yet.
+        //better solution will be need if oblique is ever implemented
+        double rot = viewPart->Rotation.getValue();
+        bool switchWH = false;
+        if (TechDraw::DrawUtil::fpCompare(fabs(rot), 90.0)) {
+            switchWH = true;
+        }
+
         if (viewSection->SectionDirection.isValue("Right")) {
             arrowDir = Base::Vector3d(1,0,0);
             lineDir = Base::Vector3d(0,1,0);
@@ -649,11 +658,24 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         double xVal, yVal;
         double fontSize = getPrefFontSize();
         if (horiz)  {
-            sectionSpan = m_border->rect().width() + sectionFudge;
+            double width = Rez::guiX(viewPart->getBoxX());
+            double height = Rez::guiX(viewPart->getBoxY());
+            if (switchWH) {
+                sectionSpan = height + sectionFudge;
+            } else {
+                sectionSpan = width + sectionFudge;
+            }
             xVal = sectionSpan / 2.0;
             yVal = 0.0;
         } else {
-            sectionSpan = (m_border->rect().height() - m_label->boundingRect().height()) + sectionFudge;
+            double width = Rez::guiX(viewPart->getBoxX());
+            double height = Rez::guiX(viewPart->getBoxY());
+            if (switchWH) {
+                sectionSpan = width + sectionFudge;
+            } else {
+                sectionSpan = height + sectionFudge;
+            }
+//            sectionSpan = (m_border->rect().height() - m_label->boundingRect().height()) + sectionFudge;
             xVal = 0.0;
             yVal = sectionSpan / 2.0;
         }
@@ -690,28 +712,35 @@ void QGIViewPart::drawCenterLines(bool b)
             centerLine = new QGICenterLine();
             addToGroup(centerLine);
             centerLine->setPos(0.0,0.0);
-            sectionSpan = m_border->rect().width() + sectionFudge;
+            //this should work from the viewPart's bbox, not the border
+//            double scale = viewPart->getScale();
+            double width = Rez::guiX(viewPart->getBoxX());
+            sectionSpan = width + sectionFudge;
+//            sectionSpan = m_border->rect().width() + sectionFudge;
             xVal = sectionSpan / 2.0;
             yVal = 0.0;
             centerLine->setIntersection(horiz && vert);
             centerLine->setBounds(-xVal,-yVal,xVal,yVal);
             centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
             centerLine->setZValue(ZVALUE::SECTIONLINE);
-            centerLine->setRotation(viewPart->Rotation.getValue());
+//            centerLine->setRotation(viewPart->Rotation.getValue());
             centerLine->draw();
         }
         if (vert) {
             centerLine = new QGICenterLine();
             addToGroup(centerLine);
             centerLine->setPos(0.0,0.0);
-            sectionSpan = (m_border->rect().height() - m_label->boundingRect().height()) + sectionFudge;
+//            double scale = viewPart->getScale();
+            double height = Rez::guiX(viewPart->getBoxY());
+            sectionSpan = height + sectionFudge;
+//            sectionSpan = (m_border->rect().height() - m_label->boundingRect().height()) + sectionFudge;
             xVal = 0.0;
             yVal = sectionSpan / 2.0;
             centerLine->setIntersection(horiz && vert);
             centerLine->setBounds(-xVal,-yVal,xVal,yVal);
             centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
             centerLine->setZValue(ZVALUE::SECTIONLINE);
-            centerLine->setRotation(viewPart->Rotation.getValue());
+//            centerLine->setRotation(viewPart->Rotation.getValue());
             centerLine->draw();
         }
     }
