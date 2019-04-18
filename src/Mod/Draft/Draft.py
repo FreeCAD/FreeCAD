@@ -2587,6 +2587,8 @@ def clone(obj,delta=None,forcedraft=False):
     elif len(obj) == 1:
         cl.Placement = obj[0].Placement
     formatObject(cl,obj[0])
+    if hasattr(cl,"LongName") and hasattr(obj[0],"LongName"):
+        cl.LongName = obj[0].LongName
     if gui and (len(obj) > 1):
         cl.ViewObject.Proxy.resetColors(cl.ViewObject)
     select(cl)
