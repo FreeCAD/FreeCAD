@@ -239,14 +239,18 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
 
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
 {
+//    Base::Console().Message("VPDV::onGuiRepaint(%s)\n",dv->getNameInDocument());
     if (dv == getViewObject()) {
-        QGIView* qgiv = getQView();
-        if (qgiv) {
-            qgiv->updateView(true);
-        } else {                                //we are not part of the Gui page yet. ask page to add us.
-            MDIViewPage* page = getMDIViewPage();
-            if (page != nullptr) {
-                page->addView(dv);
+        if (!dv->isRemoving() &&
+            !dv->isRestoring()) {
+            QGIView* qgiv = getQView();
+            if (qgiv) {
+                qgiv->updateView(true);
+            } else {                                //we are not part of the Gui page yet. ask page to add us.
+                MDIViewPage* page = getMDIViewPage();
+                if (page != nullptr) {
+                    page->addView(dv);
+                }
             }
         }
     }
