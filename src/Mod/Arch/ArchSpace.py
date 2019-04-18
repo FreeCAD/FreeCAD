@@ -516,6 +516,10 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
     def getIcon(self):
 
         import Arch_rc
+        if hasattr(self,"Object"):
+            if hasattr(self.Object,"CloneOf"):
+                if self.Object.CloneOf:
+                    return ":/icons/Arch_Space_Clone.svg"
         return ":/icons/Arch_Space_Tree.svg"
 
     def attach(self,vobj):
