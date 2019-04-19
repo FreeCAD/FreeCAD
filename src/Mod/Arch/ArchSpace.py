@@ -429,7 +429,7 @@ class _Space(ArchComponent.Component):
 
         print("Arch: error computing space boundary")
 
-    def getArea(self,obj):
+    def getArea(self,obj,notouch=False):
 
         "returns the horizontal area at the center of the space"
 
@@ -444,23 +444,24 @@ class _Space(ArchComponent.Component):
             e = sh.section(cutplane)
             e = Part.__sortEdges__(e.Edges)
             w = Part.Wire(e)
-            f = Part.Face(w)
+            self.face = Part.Face(w)
         except Part.OCCError:
             return 0
         else:
-            if hasattr(obj,"PerimeterLength"):
-                if w.Length != obj.PerimeterLength.Value:
-                    obj.PerimeterLength = w.Length
-            if hasattr(obj,"VerticalArea"):
-                a = 0
-                for f in sh.Faces:
-                    ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
-                    if (ang > 1.57) and (ang < 1.571):
-                        a += f.Area
-                    if a != obj.VerticalArea.Value:
-                        obj.VerticalArea = a
+            if not notouch:
+                if hasattr(obj,"PerimeterLength"):
+                    if w.Length != obj.PerimeterLength.Value:
+                        obj.PerimeterLength = w.Length
+                if hasattr(obj,"VerticalArea"):
+                    a = 0
+                    for f in sh.Faces:
+                        ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
+                        if (ang > 1.57) and (ang < 1.571):
+                            a += f.Area
+                        if a != obj.VerticalArea.Value:
+                            obj.VerticalArea = a
             #print "area of ",obj.Label," : ",f.Area
-            return f.Area
+            return self.face.Area
 
 
 class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
