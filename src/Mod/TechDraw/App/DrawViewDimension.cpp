@@ -521,14 +521,16 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         }
 
         QString repl = userVal;
-        if (useDecimals()) {
-            if (showUnits()) {
+       if (useDecimals()) {
+            if (showUnits() || (Type.isValue("Angle")) ||
+         (Type.isValue("Angle3Pt")) ) {
                 repl = userStr;
             } else {
                 repl = userVal;
             }
         } else {
-            if (showUnits()) {
+            if (showUnits() || (Type.isValue("Angle")) ||
+         (Type.isValue("Angle3Pt"))) {
                 repl = specVal + userUnits;
             } else {
                 repl = specVal;
