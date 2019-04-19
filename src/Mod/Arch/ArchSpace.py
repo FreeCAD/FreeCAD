@@ -471,11 +471,13 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
         self.setProperties(vobj)
-        vobj.Transparency = 85
-        vobj.LineWidth = 1
-        vobj.LineColor = (1.0,0.0,0.0,1.0)
-        vobj.DrawStyle = "Dotted"
-        vobj.DisplayMode = "Wireframe"
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        vobj.Transparency = prefs.GetInt("defaultSpaceTransparency",85)
+        vobj.LineWidth = Draft.getParam("linewidth")
+        vobj.LineColor = ArchCommands.getDefaultColor("Space")
+        vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"][prefs.GetInt("defaultSpaceStyle",2)]
+        if prefs.GetInt("defaultSpaceTransparency",85) == 100:
+            vobj.DisplayMode = "Wireframe"
 
     def setProperties(self,vobj):
 
