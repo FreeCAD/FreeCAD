@@ -61,11 +61,14 @@ public:
     virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderDraft";
     }
+
+    virtual short mustExecute() const override;
+
     void Restore(Base::XMLReader &reader) override;
 
 
 protected:
-    virtual void onChanged(const App::Property* prop) override;
+/*    virtual void onChanged(const App::Property* prop) override;*/
     Base::BoundBox3d bbox;
     std::string getSVGHead(void);
     std::string getSVGTail(void);

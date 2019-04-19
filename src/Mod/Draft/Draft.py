@@ -2567,6 +2567,7 @@ def clone(obj,delta=None,forcedraft=False):
         except:
             pass
         if gui:
+            formatObject(cl,base)
             cl.ViewObject.DiffuseColor = base.ViewObject.DiffuseColor
             if getType(obj[0]) in ["Window","BuildingPart"]:
                 from DraftGui import todo
@@ -2586,6 +2587,8 @@ def clone(obj,delta=None,forcedraft=False):
     elif len(obj) == 1:
         cl.Placement = obj[0].Placement
     formatObject(cl,obj[0])
+    if hasattr(cl,"LongName") and hasattr(obj[0],"LongName"):
+        cl.LongName = obj[0].LongName
     if gui and (len(obj) > 1):
         cl.ViewObject.Proxy.resetColors(cl.ViewObject)
     select(cl)
@@ -4415,6 +4418,7 @@ class _Rectangle(_DraftObject):
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
         obj.addProperty("App::PropertyInteger","Rows","Draft",QT_TRANSLATE_NOOP("App::Property","Horizontal subdivisions of this rectangle"))
         obj.addProperty("App::PropertyInteger","Columns","Draft",QT_TRANSLATE_NOOP("App::Property","Vertical subdivisions of this rectangle"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Length=1
         obj.Height=1
@@ -4484,6 +4488,8 @@ class _Rectangle(_DraftObject):
                 else:
                     shape = Part.Face(shape)
             obj.Shape = shape
+            if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
 
@@ -4501,6 +4507,7 @@ class _Circle(_DraftObject):
         obj.addProperty("App::PropertyAngle","LastAngle","Draft",QT_TRANSLATE_NOOP("App::Property","End angle of the arc (for a full circle, give it same value as First Angle)"))
         obj.addProperty("App::PropertyLength","Radius","Draft",QT_TRANSLATE_NOOP("App::Property","Radius of the circle"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
 
     def execute(self, obj):
@@ -4515,6 +4522,8 @@ class _Circle(_DraftObject):
             else:
                 shape = Part.Face(shape)
         obj.Shape = shape
+        if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+            obj.Area = shape.Area
         obj.Placement = plm
         obj.positionBySupport()
 
@@ -4528,6 +4537,7 @@ class _Ellipse(_DraftObject):
         obj.addProperty("App::PropertyLength","MinorRadius","Draft",QT_TRANSLATE_NOOP("App::Property","The minor radius of the ellipse"))
         obj.addProperty("App::PropertyLength","MajorRadius","Draft",QT_TRANSLATE_NOOP("App::Property","The major radius of the ellipse"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
 
     def execute(self, obj):
@@ -4552,6 +4562,8 @@ class _Ellipse(_DraftObject):
                 else:
                     shape = Part.Face(shape)
             obj.Shape = shape
+            if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
 
@@ -4571,6 +4583,7 @@ class _Wire(_DraftObject):
         obj.addProperty("App::PropertyLength","ChamferSize","Draft",QT_TRANSLATE_NOOP("App::Property","Size of the chamfer to give to the corners"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face if this object is closed"))
         obj.addProperty("App::PropertyInteger","Subdivisions","Draft",QT_TRANSLATE_NOOP("App::Property","The number of subdivisions of each edge"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
 
@@ -4677,6 +4690,8 @@ class _Wire(_DraftObject):
                             shape = w
             if shape:
                 obj.Shape = shape
+                if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                    obj.Area = shape.Area
                 if hasattr(obj,"Length"):
                     obj.Length = shape.Length
         obj.Placement = plm
@@ -4827,6 +4842,7 @@ class _Polygon(_DraftObject):
         obj.addProperty("App::PropertyLength","FilletRadius","Draft",QT_TRANSLATE_NOOP("App::Property","Radius to use to fillet the corners"))
         obj.addProperty("App::PropertyLength","ChamferSize","Draft",QT_TRANSLATE_NOOP("App::Property","Size of the chamfer to give to the corners"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
         obj.DrawMode = ['inscribed','circumscribed']
         obj.FacesNumber = 0
@@ -4863,6 +4879,8 @@ class _Polygon(_DraftObject):
             else:
                 shape = Part.Face(shape)
             obj.Shape = shape
+            if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
 
@@ -4937,6 +4955,7 @@ class _BSpline(_DraftObject):
         obj.addProperty("App::PropertyVectorList","Points","Draft", QT_TRANSLATE_NOOP("App::Property","The points of the B-spline"))
         obj.addProperty("App::PropertyBool","Closed","Draft",QT_TRANSLATE_NOOP("App::Property","If the B-spline is closed or not"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face if this spline is closed"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
         obj.Points = []
@@ -4993,10 +5012,15 @@ class _BSpline(_DraftObject):
                 except Part.OCCError:
                     pass
                 obj.Shape = shape
+                if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                    obj.Area = shape.Area
             else:
                 spline = Part.BSplineCurve()
                 spline.interpolate(obj.Points, PeriodicFlag = False, Parameters = self.knotSeq)
-                obj.Shape = spline.toShape()
+                shape = spline.toShape()
+                obj.Shape = shape
+                if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                    obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
 
@@ -5013,6 +5037,7 @@ class _BezCurve(_DraftObject):
         obj.addProperty("App::PropertyIntegerList","Continuity","Draft",QT_TRANSLATE_NOOP("App::Property","Continuity"))
         obj.addProperty("App::PropertyBool","Closed","Draft",QT_TRANSLATE_NOOP("App::Property","If the Bezier curve should be closed or not"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face if this curve is closed"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
         obj.Degree = 3
@@ -5082,6 +5107,8 @@ class _BezCurve(_DraftObject):
                 except Part.OCCError:
                     pass
             fp.Shape = w
+            if hasattr(obj,"Area") and hasattr(w,"Area"): 
+                obj.Area = w.Area
         fp.Placement = plm
 
     @classmethod

@@ -36,6 +36,7 @@ QGICMark: 171
 QGISectionLine: 172
 QGIDecoration: 173
 QGICenterLine: 174
+QGIDimLines: 175
 QGICaption: 180
 QGIViewImage: 200
 QGCustomImage: 201
