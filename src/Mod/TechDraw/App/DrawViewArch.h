@@ -45,6 +45,7 @@ public:
     App::PropertyLink         Source;
     App::PropertyBool         AllOn;
     App::PropertyEnumeration  RenderMode; // "Wireframe","Solid"
+    App::PropertyBool         FillSpaces;
     App::PropertyBool         ShowHidden;
     App::PropertyBool         ShowFill;
     App::PropertyFloat        LineWidth;

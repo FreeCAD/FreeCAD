@@ -466,10 +466,15 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
     Base::UnitSystem uniSys = Base::UnitsApi::getSchema();
 
 //handle multi value schemes
+    std::string pre = getPrefix();
+    QString qPre = QString::fromUtf8(pre.data(),pre.size());
     if (((uniSys == Base::UnitSystem::Imperial1) ||
          (uniSys == Base::UnitSystem::ImperialBuilding) ) &&
          !angularMeasure) {
         specStr = userStr;
+        if (!pre.empty()) {
+            specStr = qPre + userStr;
+        }
     } else if ((uniSys == Base::UnitSystem::ImperialCivil) &&
          angularMeasure) {
         QString dispMinute = QString::fromUtf8("\'");
@@ -478,6 +483,9 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         QString schemeSecond = QString::fromUtf8("S");
         specStr = userStr.replace(schemeMinute,dispMinute);
         specStr = specStr.replace(schemeSecond,dispSecond);
+        if (!pre.empty()) {
+            specStr = qPre + userStr;
+        }
     } else {
 //handle single value schemes
         QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
