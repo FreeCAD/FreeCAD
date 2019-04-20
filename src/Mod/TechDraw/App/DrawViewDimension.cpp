@@ -487,9 +487,10 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
             specStr = qPre + userStr;
         }
     } else {
+      
 //handle single value schemes
-        QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
-
+        QRegExp rxUnits(QString::fromUtf8(" \\D*$"));              //space + any non digits at end of string
+                
         QString userVal = userStr;
         userVal.remove(rxUnits);                                          //getUserString(defaultDecimals) without units
 
@@ -542,6 +543,13 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         QChar dp = QChar::fromLatin1('.');
         if (loc.decimalPoint() != dp) {
             specStr.replace(dp,loc.decimalPoint());
+        }
+        
+        //Remove space between dimension and degree sign
+        if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
+            QRegExp space(QString::fromUtf8("\\s"));
+            specStr.remove(space);
+            
         }
     }
 
