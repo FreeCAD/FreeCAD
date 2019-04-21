@@ -37,7 +37,7 @@
 #ifdef _GCS_DEBUG
 #define     EIGEN_DEFAULT_IO_FORMAT   Eigen::IOFormat(3,0,",",",\n","[","]","[","]")
 /* Parameters:
- * 
+ *
  * StreamPrecision,
  * int _flags = 0,
  * const std::string &     _coeffSeparator = " ",
@@ -914,7 +914,7 @@ int System::addConstraintEqualRadii(Ellipse &e1, Ellipse &e2, int tagId, bool dr
 int System::addConstraintEqualRadii(ArcOfHyperbola &a1, ArcOfHyperbola &a2, int tagId, bool driving)
 {
     addConstraintEqual(a1.radmin, a2.radmin, tagId, driving);
-    
+
     Constraint *constr = new ConstraintEqualMajorAxesConic(&a1,&a2);
     constr->setTag(tagId);
     constr->setDriving(driving);
@@ -967,7 +967,7 @@ int System::addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, I
 {
     Constraint *constr = new ConstraintInternalAlignmentPoint2Ellipse(e, p1, alignmentType);
     constr->setTag(tagId);
-    constr->setDriving(driving);    
+    constr->setDriving(driving);
     return addConstraint(constr);
 }
 
@@ -1125,7 +1125,7 @@ int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola &e, P
     double X_F1=*e.focus1.x;
     double Y_F1=*e.focus1.y;
     double b=*e.radmin;
-    
+
     // Same idea as for major above, but for minor
     // DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
     double closertopositiveminor= pow(-X_1 + X_c + b*(Y_F1 - Y_c)/sqrt(pow(X_F1 - X_c, 2) +
@@ -1140,7 +1140,7 @@ int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola &e, P
         b*(X_F1 - X_c)/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)) + (Y_F1 -
         Y_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c,
         2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
-    
+
     if(closertopositiveminor<0){
         addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMinorX,tagId, driving);
         addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMinorY,tagId, driving);
@@ -3709,36 +3709,37 @@ int System::diagnose(Algorithm alg)
     for (int j=0; j < int(plist.size()); j++) {
         auto result1 = std::find(std::begin(pdrivenlist), std::end(pdrivenlist), plist[j]);
 
-        if (result1 == std::end(pdrivenlist))
+        if (result1 == std::end(pdrivenlist)) {
             pdiagnoselist.push_back(plist[j]);
+        }
     }
-    
+
     // map tag to a tag multiplicity (the number of solver constraints associated with the same tag)
     std::map< int , int> tagmultiplicity;
-    
+
     Eigen::MatrixXd J = Eigen::MatrixXd::Zero(clist.size(), pdiagnoselist.size());
-    
+
     // The jacobian has been reduced to only contain driving constraints. Identification
     // of constraint indices from this reduced jacobian requires a mapping.
     std::map<int,int> jacobianconstraintmap;
-    
+
     int jacobianconstraintcount=0;
     int allcount=0;
     for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr) {
         (*constr)->revertParams();
-        ++allcount;        
+        ++allcount;
         if ((*constr)->getTag() >= 0 && (*constr)->isDriving()) {
             jacobianconstraintcount++;
             for (int j=0; j < int(pdiagnoselist.size()); j++) {
                     J(jacobianconstraintcount-1,j) = (*constr)->grad(pdiagnoselist[j]);
             }
-            
+
             // parallel processing: create tag multiplicity map
             if(tagmultiplicity.find((*constr)->getTag()) == tagmultiplicity.end())
                 tagmultiplicity[(*constr)->getTag()] = 0;
             else
                 tagmultiplicity[(*constr)->getTag()]++;
-            
+
             jacobianconstraintmap[jacobianconstraintcount-1] = allcount-1;
         }
     }
@@ -3912,7 +3913,7 @@ int System::diagnose(Algorithm alg)
                 rowPermutations.applyTranspositionOnTheRight(k, rowTranspositions.coeff(k));
         }
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
-        else if(qrAlgorithm==EigenSparseQR){ 
+        else if(qrAlgorithm==EigenSparseQR){
             // J.P = Q.R, see https://eigen.tuxfamily.org/dox/classEigen_1_1SparseQR.html
             // There is no rowsTransposition in this QR decomposition.
             // TODO: This detection method won't work for SparseQR
@@ -4024,7 +4025,7 @@ int System::diagnose(Algorithm alg)
                             origCol=SqrJT.colsPermutation().indices()[row];
 #endif
                         //conflictGroups[j-rank].push_back(clist[origCol]);
-                        conflictGroups[j-rank].push_back(clist[jacobianconstraintmap[origCol]]);
+                        conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
                     }
                 }
                 int origCol = 0;
@@ -4037,9 +4038,9 @@ int System::diagnose(Algorithm alg)
                     origCol=SqrJT.colsPermutation().indices()[j];
 #endif
                 //conflictGroups[j-rank].push_back(clist[origCol]);
-                conflictGroups[j-rank].push_back(clist[jacobianconstraintmap[origCol]]);
+                conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
             }
-            
+
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 
         stream.flush();
@@ -4047,16 +4048,16 @@ int System::diagnose(Algorithm alg)
         stream << "ConflictGroups: [";
         for(auto group :conflictGroups)  {
             stream << "[";
-            
+
             for(auto c :group)
                 stream << c->getTag();
-            
+
             stream << "]";
         }
         stream << "]" << std::endl;
 
         tmp = stream.str();
-        LogString(tmp);        
+        LogString(tmp);
 #endif
 
             // try to remove the conflicting constraints and solve the
@@ -4084,12 +4085,12 @@ int System::diagnose(Algorithm alg)
                      it != conflictingMap.end(); ++it) {
                     if (static_cast<int>(it->second.size()) > maxPopularity ||
                         (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
-                        tagmultiplicity[it->first->getTag()] < tagmultiplicity[mostPopular->getTag()]) ||
+                        tagmultiplicity.at(it->first->getTag()) < tagmultiplicity.at(mostPopular->getTag())) ||
 
                         (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
-                        tagmultiplicity[it->first->getTag()] == tagmultiplicity[mostPopular->getTag()] &&
+                        tagmultiplicity.at(it->first->getTag()) == tagmultiplicity.at(mostPopular->getTag()) &&
                          it->first->getTag() > mostPopular->getTag())
-                       
+
                     ) {
                         mostPopular = it->first;
                         maxPopularity = it->second.size();
