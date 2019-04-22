@@ -75,6 +75,13 @@
         <file>icons/arrow-cw.svg</file>
         <file>icons/techdraw-lock.png</file>
         <file>icons/cursor-balloon.png</file>
+        <file>icons/none.svg</file>
+        <file>icons/circular.svg</file>
+        <file>icons/hexagon.svg</file>
+        <file>icons/inspection.svg</file>
+        <file>icons/rectangle.svg</file>
+        <file>icons/triangle.svg</file>
+        <file>icons/square.svg</file>
         <file>icons/MRTE/menu.svg</file>
         <file>icons/MRTE/bgColor.svg</file>
         <file>icons/MRTE/fgColor.svg</file>

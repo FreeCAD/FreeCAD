@@ -48,6 +48,7 @@
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <string>
 
 #include <Mod/Part/App/PartFeature.h>
@@ -68,6 +69,7 @@
 #include "QGIViewDimension.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
+#include "TaskBalloon.h"
 
 #define PI  3.14159
 
@@ -75,6 +77,12 @@
 
 using namespace TechDraw;
 using namespace TechDrawGui;
+
+void QGIBalloonLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+{
+    Gui::Control().showDialog(new TaskDlgBalloon(parent));
+    QGraphicsItem::mouseDoubleClickEvent(event);
+}
 
 //**************************************************************
 QGIViewBalloon::QGIViewBalloon() :
@@ -85,7 +93,9 @@ QGIViewBalloon::QGIViewBalloon() :
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setCacheMode(QGraphicsItem::NoCache);
 
-    balloonLabel = new QGIDatumLabel();
+    balloonLabel = new QGIBalloonLabel();
+    balloonLabel->parent = this;
+
     addToGroup(balloonLabel);
     balloonLabel->setColor(getNormalColor());
     balloonLabel->setPrettyNormal();
