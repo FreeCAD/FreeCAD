@@ -95,6 +95,13 @@
         <file>icons/MRTE/edit-undo.svg</file>
         <file>icons/MRTE/edit-redo.svg</file>
         <file>icons/MRTE/internet-web-browser.svg</file>
+        <file>icons/none.svg</file>
+        <file>icons/circular.svg</file>
+        <file>icons/hexagon.svg</file>
+        <file>icons/inspection.svg</file>
+        <file>icons/rectangle.svg</file>
+        <file>icons/triangle.svg</file>
+        <file>icons/square.svg</file>
         <file>translations/TechDraw_af.qm</file>
         <file>translations/TechDraw_zh-CN.qm</file>
         <file>translations/TechDraw_zh-TW.qm</file>
