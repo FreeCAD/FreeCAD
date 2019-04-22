@@ -1075,7 +1075,7 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     obj.Placement.Base = point
     if FreeCAD.GuiUp:
         ViewProviderDraftText(obj.ViewObject)
-        if not screen:
+        if screen:
             obj.ViewObject.DisplayMode = "3D text"
         h = getParam("textheight",0.20)
         if screen:
@@ -6775,11 +6775,11 @@ class ViewProviderDraftText:
         textdrawstyle.style = coin.SoDrawStyle.FILLED
         self.trans = coin.SoTransform()
         self.font = coin.SoFont()
-        self.text2d = coin.SoText2()
-        self.text3d = coin.SoAsciiText()
+        self.text2d = coin.SoAsciiText()
+        self.text3d = coin.SoText2()
         self.text2d.string = self.text3d.string = "Label" # need to init with something, otherwise, crash!
-        self.text2d.justification = coin.SoText2.LEFT
-        self.text3d.justification = coin.SoAsciiText.LEFT
+        self.text2d.justification = coin.SoAsciiText.LEFT
+        self.text3d.justification = coin.SoText2.LEFT
         self.node2d = coin.SoGroup()
         self.node2d.addChild(self.trans)
         self.node2d.addChild(self.mattext)
@@ -6801,7 +6801,7 @@ class ViewProviderDraftText:
         self.onChanged(vobj,"LineSpacing")
 
     def getDisplayModes(self,vobj):
-        return ["3D text","2D text"]
+        return ["2D text","3D text"]
 
     def setDisplayMode(self,mode):
         return mode
@@ -6835,14 +6835,14 @@ class ViewProviderDraftText:
                 from pivy import coin
                 try:
                     if vobj.Justification == "Left":
-                        self.text2d.justification = coin.SoText2.LEFT
-                        self.text3d.justification = coin.SoAsciiText.LEFT
+                        self.text2d.justification = coin.SoAsciiText.LEFT
+                        self.text3d.justification = coin.SoText2.LEFT
                     elif vobj.Justification == "Right":
-                        self.text2d.justification = coin.SoText2.RIGHT
-                        self.text3d.justification = coin.SoAsciiText.RIGHT
+                        self.text2d.justification = coin.SoAsciiText.RIGHT
+                        self.text3d.justification = coin.SoText2.RIGHT
                     else:
-                        self.text2d.justification = coin.SoText2.CENTER
-                        self.text3d.justification = coin.SoAsciiText.CENTER
+                        self.text2d.justification = coin.SoAsciiText.CENTER
+                        self.text3d.justification = coin.SoText2.CENTER
                 except AssertionError:
                     pass # Race condition - Justification enum has not been set yet
         elif prop == "LineSpacing":
