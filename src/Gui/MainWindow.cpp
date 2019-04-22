@@ -992,8 +992,11 @@ void MainWindow::setActiveWindow(MDIView* view)
 {
     if(!view || d->activeView == view)
         return;
-    if(view->getGuiDocument()->getDocument()->testStatus(App::Document::PartialDoc))
+    if(view->getGuiDocument()->getDocument()->testStatus(App::Document::PartialDoc)
+            && view->isDerivedFrom(View3DInventor::getClassTypeId()))
+    {
         return;
+    }
     onSetActiveSubWindow(view->parentWidget());
     d->activeView = view;
     Application::Instance->viewActivated(view);
