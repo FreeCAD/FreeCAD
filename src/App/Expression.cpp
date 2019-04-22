@@ -1938,13 +1938,15 @@ int OperatorExpression::priority() const
     case OP_DIV:
     case OP_FDIV:
         return 6;
-    case OP_POW:
-        return 7;
     case OP_UNIT:
+        return 7;
+    case OP_POW:
+    case OP_POW2:
+        return 8;
     case OP_NEG:
     case OP_POS:
     case OP_NOT:
-        return 8;
+        return 9;
     default:
         return 0;
     }
