@@ -72,13 +72,14 @@ public:
         return "TechDrawGui::ViewProviderBalloon";
     }
 
+    static const char* balloonTypeEnums[];
+    static const char* endTypeEnums[];
+
 protected:
     void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
 
 private:
-    static const char* endTypeEnums[];
-    static const char* balloonTypeEnums[];
 };
 
 } //namespace TechDraw

@@ -52,6 +52,21 @@ class QGIArrow;
 class QGIDimLines;
 class QGIViewBalloon;
 
+class QGIBalloonLabel : public QGIDatumLabel
+{
+Q_OBJECT
+
+public:
+    enum {Type = QGraphicsItem::UserType + 141};
+    int type() const override { return Type;}
+
+    virtual QRectF boundingRect() const override;
+    QGIViewBalloon *parent;
+
+protected:
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+};
+
 //*******************************************************************
 
 class TechDrawGuiExport QGIViewBalloon : public QGIView
@@ -96,7 +111,7 @@ protected:
 
 protected:
     bool hasHover;
-    QGIDatumLabel* balloonLabel;
+    QGIBalloonLabel* balloonLabel;
     QGIDimLines* balloonLines;
     QGIDimLines* balloonShape;
     QGIArrow* arrow;

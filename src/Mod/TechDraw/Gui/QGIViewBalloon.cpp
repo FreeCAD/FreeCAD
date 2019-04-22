@@ -69,12 +69,46 @@
 #include "QGVPage.h"
 #include "MDIViewPage.h"
 
+#include "DlgBalloon.h"
+
 #define PI  3.14159
 
 //TODO: hide the Qt coord system (+y down).  
 
 using namespace TechDraw;
 using namespace TechDrawGui;
+
+QRectF QGIBalloonLabel::boundingRect() const
+{
+    return childrenBoundingRect();
+}
+
+void QGIBalloonLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+{
+    DlgBalloon ui;
+
+    /* Populate Text */
+    ui.setValue(parent->dvBalloon->Text.getValue());
+
+    /* Populate symbol */
+    ui.populateComboBox(ui.comboSymbol, DrawViewBalloon::balloonTypeEnums, parent->dvBalloon->Symbol.getValueAsString());
+ 
+    /* Populate End Type */
+    ui.populateComboBox(ui.comboEndType, DrawViewBalloon::endTypeEnums, parent->dvBalloon->EndType.getValueAsString());
+
+    /* Populate scale */
+    ui.setScale(parent->dvBalloon->SymbolScale.getValue());
+
+    if (ui.exec() == QDialog::Accepted) {
+        parent->dvBalloon->Text.setValue(ui.getValue().toUtf8().constData());
+        parent->dvBalloon->SymbolScale.setValue(ui.getScale());
+        parent->dvBalloon->EndType.setValue(ui.comboEndType->currentText().toUtf8().constData());
+        parent->dvBalloon->Symbol.setValue(ui.comboSymbol->currentText().toUtf8().constData());
+        parent->updateView(true);
+    }
+
+    QGraphicsItem::mouseDoubleClickEvent(event);
+}
 
 //**************************************************************
 QGIViewBalloon::QGIViewBalloon() :
@@ -85,7 +119,9 @@ QGIViewBalloon::QGIViewBalloon() :
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setCacheMode(QGraphicsItem::NoCache);
 
-    balloonLabel = new QGIDatumLabel();
+    balloonLabel = new QGIBalloonLabel();
+    balloonLabel->parent = this;
+
     addToGroup(balloonLabel);
     balloonLabel->setColor(getNormalColor());
     balloonLabel->setPrettyNormal();
