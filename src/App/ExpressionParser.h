@@ -165,6 +165,8 @@ public:
 
     void negate();
 
+    bool isInteger(long *v=0) const;
+
 protected:
     NumberExpression(const App::DocumentObject *_owner, const Base::Quantity &q)
         :UnitExpression(_owner,q) 

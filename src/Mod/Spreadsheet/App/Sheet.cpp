@@ -259,6 +259,8 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
             field << static_cast<PropertyQuantity*>(prop)->getValue();
         else if (prop->isDerivedFrom((PropertyFloat::getClassTypeId())))
             field << static_cast<PropertyFloat*>(prop)->getValue();
+        else if (prop->isDerivedFrom((PropertyInteger::getClassTypeId())))
+            field << static_cast<PropertyInteger*>(prop)->getValue();
         else if (prop->isDerivedFrom((PropertyString::getClassTypeId())))
             field << static_cast<PropertyString*>(prop)->getValue();
         else
@@ -511,6 +513,30 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
     return floatProp;
 }
 
+Property * Sheet::setIntegerProperty(CellAddress key, long value)
+{
+    Property * prop = props.getPropertyByName(key.toString().c_str());
+    PropertyInteger * intProp;
+
+    if (!prop || prop->getTypeId() != PropertyInteger::getClassTypeId()) {
+        if (prop) {
+            this->removeDynamicProperty(key.toString().c_str());
+            propAddress.erase(prop);
+        }
+        intProp = freecad_dynamic_cast<PropertyInteger>(props.addDynamicProperty(
+                    "App::PropertyInteger", key.toString().c_str(), 0, 0, 
+                    Prop_ReadOnly | Prop_Hidden | Prop_Transient));
+    }
+    else
+        intProp = static_cast<PropertyInteger*>(prop);
+
+    propAddress[intProp] = key;
+    intProp->setValue(value);
+
+    return intProp;
+}
+
+
 /**
   * Set the property for cell \p key to a PropertyQuantity with \a value and \a unit.
   * If the Property exists, but of wrong type, the previous Property is destroyed and recreated as the correct type.
@@ -677,10 +703,13 @@ void Sheet::updateProperty(CellAddress key)
          * PyObjectExpression objects */
         auto number = freecad_dynamic_cast<NumberExpression>(output.get());
         if(number) {
-            if (number->getUnit().isEmpty())
-                setFloatProperty(key, number->getValue());
-            else
+            long l;
+            if (!number->getUnit().isEmpty())
                 setQuantityProperty(key, number->getValue(), number->getUnit());
+            else if(number->isInteger(&l))
+                setIntegerProperty(key,l);
+            else
+                setFloatProperty(key, number->getValue());
         }else{
             auto str_expr = freecad_dynamic_cast<StringExpression>(output.get());
             if(str_expr) 

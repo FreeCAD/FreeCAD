@@ -382,9 +382,15 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) 
+                || prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) 
+    {
         /* Number */
-        const App::PropertyFloat * floatProp = static_cast<const App::PropertyFloat*>(prop);
+        double d;
+        if(prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()))
+            d = static_cast<const App::PropertyFloat*>(prop)->getValue();
+        else
+            d = static_cast<const App::PropertyInteger*>(prop)->getValue();
 
         switch (role) {
         case  Qt::TextColorRole: {
@@ -393,7 +399,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             if (cell->getForeground(color))
                 return QVariant::fromValue(QColor(255.0 * color.r, 255.0 * color.g, 255.0 * color.b, 255.0 * color.a));
             else {
-                if (floatProp->getValue() < 0)
+                if (d < 0)
                     return QVariant::fromValue(QColor(negativeFgColor));
                 else
                     return QVariant::fromValue(QColor(positiveFgColor));
@@ -415,9 +421,9 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             DisplayUnit displayUnit;
 
             if (cell->getDisplayUnit(displayUnit))
-                v = QString::number(floatProp->getValue() / displayUnit.scaler) + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+                v = QString::number(d / displayUnit.scaler) + Base::Tools::fromStdString(" " + displayUnit.stringRep);
             else
-                v = QString::number(floatProp->getValue());
+                v = QString::number(d);
             return QVariant(v);
         }
         default:

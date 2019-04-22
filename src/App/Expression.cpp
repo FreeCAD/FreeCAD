@@ -382,9 +382,45 @@ static inline bool definitelyLessThan(T a, T b)
     return (b - a) > ( (std::fabs(a) < std::fabs(b) ? std::fabs(b) : std::fabs(a)) * _epsilon);
 }
 
+static inline int essentiallyInteger(double a, long &l, int &i) {
+    double intpart;
+    if(std::modf(a,&intpart) == 0.0) {
+        if(intpart<0.0) {
+            if(intpart >= INT_MIN) {
+                i = (int)intpart;
+                l = i;
+                return 1;
+            }
+            if(intpart >= LONG_MIN) {
+                l = (long)intpart;
+                return 2;
+            }
+        }else if(intpart <= INT_MAX) {
+            i = (int)intpart;
+            l = i;
+            return 1;
+        }else if(intpart <= LONG_MAX) {
+            l = (int)intpart;
+            return 2;
+        }
+    }
+    return 0;
+}
+
 static inline bool essentiallyInteger(double a, long &l) {
-    l = (long)std::round(a);
-    return essentiallyEqual(a,(double)l);
+    double intpart;
+    if(std::modf(a,&intpart) == 0.0) {
+        if(intpart<0.0) {
+            if(intpart >= LONG_MIN) {
+                l = (long)intpart;
+                return true;
+            }
+        }else if(intpart <= LONG_MAX) {
+            l = (long)intpart;
+            return true;
+        }
+    }
+    return false;
 }
 
 // This class is intended to be contained inside App::any (via a shared_ptr)
@@ -436,31 +472,11 @@ static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
         return __pyObjectFromAny(value);
     if (is_type(value,typeid(Quantity)))
         return Py::Object(new QuantityPy(new Quantity(cast<Quantity>(value))));
-    else if (is_type(value,typeid(double))) {
-        double v = cast<double>(value);
-        double rv = std::round(v);
-        if(std::abs(v)<=LONG_MAX && essentiallyEqual(v,rv)) {
-            long l = (long)rv;
-#if PY_MAJOR_VERSION < 3
-            if(std::abs(l)<=INT_MAX)
-                return Py::Int(l);
-#endif
-            return Py::Long((long)rv);
-        }
-        return Py::Float(v);
-    } else if (is_type(value,typeid(float))) {
-        float v = cast<float>(value);
-        float rv = std::round(v);
-        if(std::abs(v)<=LONG_MAX && essentiallyEqual(v,rv)) {
-            long l = (long)rv;
-#if PY_MAJOR_VERSION < 3
-            if(std::abs(l)<=INT_MAX)
-                return Py::Int(l);
-#endif
-            return Py::Long((long)rv);
-        }
-        return Py::Float(v);
-    } else if (is_type(value,typeid(int))) 
+    else if (is_type(value,typeid(double)))
+        return Py::Float(cast<double>(value));
+    else if (is_type(value,typeid(float)))
+        return Py::Float(cast<float>(value));
+    else if (is_type(value,typeid(int))) 
 #if PY_MAJOR_VERSION < 3
         return Py::Int(cast<int>(value));
 #else
@@ -587,16 +603,18 @@ Py::Object pyFromQuantity(const Quantity &quantity) {
     if(!quantity.getUnit().isEmpty())
         return Py::Object(new QuantityPy(new Quantity(quantity)));
     double v = quantity.getValue();
-    double rv = std::round(v);
-    if(std::abs(v)<=LONG_MAX && essentiallyEqual(v,rv)) {
-        long l = (long)rv;
+    long l;
+    int i;
+    switch(essentiallyInteger(v,l,i)) {
+    case 1:
 #if PY_MAJOR_VERSION < 3
-        if(std::abs(l)<=INT_MAX)
-            return Py::Int((int)l);
+        return Py::Int(i);
 #endif
+    case 2:
         return Py::Long(l);
+    default:
+        return Py::Float(v);
     }
-    return Py::Float(v);
 }
 
 Quantity anyToQuantity(const Expression *e, 
@@ -1654,6 +1672,13 @@ void NumberExpression::_toString(std::ostream &ss, bool,int) const
 //        s.erase(s.size() - 1);
 }
 
+bool NumberExpression::isInteger(long *l) const {
+    long _l;
+    if(!l)
+        l = &_l;
+    return essentiallyInteger(getValue(),*l);
+}
+
 //
 // OperatorExpression class
 //
@@ -2514,6 +2539,7 @@ Py::Object FunctionExpression::evalAggregate(const Expression *owner, int f, con
                 Property * p = owner->getOwner()->getPropertyByName(range.address().c_str());
                 PropertyQuantity * qp;
                 PropertyFloat * fp;
+                PropertyInteger * ip;
 
                 if (!p)
                     continue;
@@ -2522,6 +2548,8 @@ Py::Object FunctionExpression::evalAggregate(const Expression *owner, int f, con
                     c->collect(qp->getQuantityValue());
                 else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)) != 0)
                     c->collect(Quantity(fp->getValue()));
+                else if ((ip = freecad_dynamic_cast<PropertyInteger>(p)) != 0)
+                    c->collect(Quantity(ip->getValue()));
                 else
                     _EXPR_THROW("Invalid property type for aggregate.", owner);
             } while (range.next());

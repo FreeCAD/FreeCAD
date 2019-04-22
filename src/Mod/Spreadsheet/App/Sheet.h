@@ -277,6 +277,8 @@ protected:
 
     App::Property *setFloatProperty(App::CellAddress key, double value);
 
+    App::Property *setIntegerProperty(App::CellAddress key, long value);
+
     App::Property *setQuantityProperty(App::CellAddress key, double value, const Base::Unit &unit);
 
     void aliasRemoved(App::CellAddress address, const std::string &alias);
