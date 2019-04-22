@@ -165,6 +165,8 @@ public:
 
     App::any getValueAsAny(int options=0) const;
 
+    Py::Object getPyValue(int options=0, int *jumpCode=0) const;
+
     bool isSame(const Expression &other) const;
 
     std::string toString(bool persistent=false, bool checkPriority=false, int indent=0) const;
@@ -208,8 +210,6 @@ public:
     }
 
     virtual int priority() const;
-
-    virtual int jump() const {return 0;}
 
     void getIdentifiers(std::set<App::ObjectIdentifier> &) const;
     std::set<App::ObjectIdentifier> getIdentifiers() const;
@@ -271,8 +271,7 @@ protected:
                                          const ObjectIdentifier &, ExpressionVisitor &) {return false;}
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) {}
     virtual void _offsetCells(int, int, ExpressionVisitor &) {}
-    virtual App::any _getValueAsAny() const = 0;
-    virtual ExpressionPtr _eval() const {return 0;}
+    virtual Py::Object _getPyValue(int *jumpCode=0) const = 0;
     virtual void _visit(ExpressionVisitor &) {}
 
     void swapComponents(Expression &other) {components.swap(other.components);}

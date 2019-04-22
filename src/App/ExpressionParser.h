@@ -39,7 +39,6 @@ namespace App {
 _ExpressionAllocDefine(_ExpressionFastAlloc,boost::fast_pool_allocator);
 #define ExpressionFastAlloc(_t) _ExpressionFastAlloc<_t> 
 
-AppExport ExpressionPtr expressionFromAny(const App::DocumentObject *owner, App::any &&);
 AppExport bool isAnyEqual(const App::any &v1, const App::any &v2);
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +79,7 @@ struct AppExport VarInfo {
     Expression::ComponentPtr component;
 
     VarInfo()
-        :lhs(&prefix)
+        :lhs(0)
     {}
 
     VarInfo(Py::Object &v)
@@ -89,17 +88,14 @@ struct AppExport VarInfo {
 
     VarInfo(VarInfo &&other)
         :prefix(other.prefix)
-        ,lhs(other.lhs==&other.prefix?other.lhs:&prefix)
+        ,lhs(other.lhs)
         ,rhs(other.rhs)
         ,component(std::move(other.component))
     {}
 
     VarInfo &operator=(VarInfo &&other) {
+        lhs = other.lhs;
         prefix = other.prefix;
-        if(other.lhs == &other.prefix)
-            lhs = &prefix;
-        else
-            lhs = other.lhs;
         rhs = other.rhs;
         component = std::move(other.component);
         return *this;
@@ -119,6 +115,8 @@ public:\
 class  AppExport UnitExpression : public Expression {
     EXPR_TYPESYSTEM_HEADER();
 public:
+    ~UnitExpression();
+
     static ExpressionPtr create(const App::DocumentObject *owner, 
             const Base::Quantity &quantity, std::string &&unitStr);
 
@@ -127,7 +125,7 @@ public:
 
     virtual ExpressionPtr simplify() const;
 
-    void setUnit(const Base::Quantity &_quantity);
+    void setQuantity(const Base::Quantity &_quantity);
 
     double getValue() const { return quantity.getValue(); }
 
@@ -140,14 +138,17 @@ public:
     double getScaler() const { return quantity.getValue(); }
 
 protected:
-    UnitExpression(const App::DocumentObject *_owner):Expression(_owner) {}
+    UnitExpression(const App::DocumentObject *_owner, 
+            const Base::Quantity &q, std::string &&unitStr=std::string());
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual ExpressionPtr _eval() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
+    mutable PyObject *cache = 0;
+
+private:
     Base::Quantity quantity;
     std::string unitStr; /**< The unit string from the original parsed string */
 };
@@ -165,7 +166,9 @@ public:
     void negate();
 
 protected:
-    NumberExpression(const App::DocumentObject *_owner):UnitExpression(_owner) {}
+    NumberExpression(const App::DocumentObject *_owner, const Base::Quantity &q)
+        :UnitExpression(_owner,q) 
+    {}
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
@@ -185,10 +188,11 @@ public:
     virtual ExpressionPtr simplify() const;
 
 protected:
-    ConstantExpression(const App::DocumentObject *_owner):NumberExpression(_owner){}
+    ConstantExpression(const App::DocumentObject *_owner, const Base::Quantity &q)
+        :NumberExpression(_owner,q)
+    {}
 
-    virtual ExpressionPtr _eval() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
 
@@ -237,7 +241,7 @@ protected:
                                          const ObjectIdentifier &, ExpressionVisitor &);
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &);
     virtual void _offsetCells(int, int, ExpressionVisitor &);
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     ObjectIdentifier var; /**< Variable name  */
@@ -306,6 +310,8 @@ struct ExpressionString {
 class AppExport StringExpression : public Expression {
     EXPR_TYPESYSTEM_HEADER();
 public:
+    ~StringExpression();
+
     static ExpressionPtr create(const App::DocumentObject *owner, ExpressionString &&text);
 
     static ExpressionPtr create(const App::DocumentObject *owner, const char *txt) {
@@ -322,10 +328,11 @@ protected:
     virtual bool _isIndexable() const { return true; }
     virtual ExpressionPtr _copy() const;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
-protected:
+private:
     ExpressionString str;
+    mutable PyObject *cache = 0;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -345,7 +352,7 @@ public:
 protected:
     PyObjectExpression(const App::DocumentObject *_owner):Expression(_owner) {}
 
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
     virtual void _toString(std::ostream &,bool, int) const;
     virtual ExpressionPtr _copy() const;
 
@@ -364,8 +371,10 @@ public:
     static ExpressionPtr create(const App::DocumentObject *owner, bool value);
 
 protected:
-    BooleanExpression(const App::DocumentObject *_owner):NumberExpression(_owner){}
-
+    BooleanExpression(const App::DocumentObject *_owner, const Base::Quantity &q)
+        :NumberExpression(_owner,q)
+    {}
+    virtual Py::Object _getPyValue(int *jumpCode=0) const override;
     virtual ExpressionPtr _copy() const;
 };
 
@@ -375,7 +384,7 @@ protected:
   *
   */
 
-class AppExport OperatorExpression : public UnitExpression {
+class AppExport OperatorExpression : public Expression {
     EXPR_TYPESYSTEM_HEADER();
 public:
     static ExpressionPtr create(const App::DocumentObject *owner, 
@@ -393,22 +402,13 @@ public:
 
     const Expression * getRight() const { return right.get(); }
 
-    static App::any calc(const Expression *owner, int op,
-            const App::any &l, const App::any &r, 
-            const Expression *left=0, const Expression *right=0, bool inplace=false);
-
 protected:
-    OperatorExpression(const App::DocumentObject *_owner):UnitExpression(_owner){}
-
-    ExpressionPtr _calc(const Expression *l, const Expression *r) const;
-    ExpressionPtr _calc(const Expression *l) const;
-    ExpressionPtr _calc(const App::any &l) const;
+    OperatorExpression(const App::DocumentObject *_owner):Expression(_owner){}
 
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual ExpressionPtr _eval() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
     virtual bool isCommutative() const;
 
@@ -433,8 +433,8 @@ public:
 
     virtual bool isTouched() const;
 
-    static App::any apply(const Expression *owner, int catchAll, const ExpressionList &left, 
-            const Expression *right, int op=0, bool needReturn=false);
+    static Py::Object apply(const Expression *owner, int catchAll, 
+            const ExpressionList &left, const Expression *right, int op=0);
 
 protected:
     AssignmentExpression(const App::DocumentObject *_owner) :Expression(_owner) {}
@@ -442,7 +442,7 @@ protected:
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
     static void assign(const Expression *owner, const Expression *left, PyObject *right);
 
@@ -474,8 +474,7 @@ protected:
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual ExpressionPtr _eval() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
     ExpressionPtr condition;  /**< Condition */
     ExpressionPtr trueExpr;  /**< Expression if abs(condition) is > 0.5 */
@@ -488,7 +487,7 @@ protected:
   *
   */
 
-class AppExport FunctionExpression : public UnitExpression {
+class AppExport FunctionExpression : public Expression {
     EXPR_TYPESYSTEM_HEADER();
 public:
     static ExpressionPtr create(const App::DocumentObject *owner, int f, ExpressionList &&args);
@@ -499,18 +498,16 @@ public:
 
     int type() const {return f;}
 
-    static ExpressionPtr evaluate(const Expression *owner, int type, const ExpressionList &args);
-    static App::any evalToAny(const Expression *owner, int type, const ExpressionList &args);
+    static Py::Object evaluate(const Expression *owner, int type, const ExpressionList &args);
 
 protected:
-    FunctionExpression(const App::DocumentObject *_owner):UnitExpression(_owner){}
+    FunctionExpression(const App::DocumentObject *_owner):Expression(_owner){}
 
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual ExpressionPtr _eval() const;
-    virtual App::any _getValueAsAny() const;
-    static ExpressionPtr evalAggregate(const Expression *owner, int type, const ExpressionList &args);
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
+    static Py::Object evalAggregate(const Expression *owner, int type, const ExpressionList &args);
 
     int f;        /**< Function to execute */
     ExpressionList args; /** Arguments to function*/
@@ -547,8 +544,7 @@ protected:
 
     virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const { return true; }
-    virtual ExpressionPtr _eval() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
 
@@ -580,7 +576,7 @@ protected:
                                          const ObjectIdentifier &, ExpressionVisitor &);
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &);
     virtual void _offsetCells(int, int, ExpressionVisitor &);
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     std::string begin;
@@ -609,7 +605,7 @@ protected:
 
     virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const {return true;}
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
     virtual void _toString(std::ostream &, bool, int) const;
     virtual ExpressionPtr _copy() const;
 
@@ -671,7 +667,7 @@ protected:
 
     virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const {return true;}
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
     virtual void _toString(std::ostream &, bool, int) const;
     virtual ExpressionPtr _copy() const;
 
@@ -698,7 +694,7 @@ public:
 protected:
     TupleExpression(const App::DocumentObject *_owner):ListExpression(_owner) {}
 
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
     virtual ExpressionPtr _copy() const;
     virtual void _toString(std::ostream &, bool, int) const;
 };
@@ -726,7 +722,7 @@ protected:
 
     virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const {return true;}
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
     virtual void _toString(std::ostream &, bool, int) const;
     virtual ExpressionPtr _copy() const;
 
@@ -759,7 +755,7 @@ protected:
 
     virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const {return true;}
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
     virtual void _toString(std::ostream &, bool, int) const;
     virtual ExpressionPtr _copy() const;
 
@@ -775,8 +771,6 @@ class AppExport BaseStatement : public Expression {
 public:
 protected:
     BaseStatement(const App::DocumentObject *owner):Expression(owner){}
-
-    virtual App::any _getValueAsAny() const;
 };
 
 /////////////////////////////////////////////////////////////////
@@ -794,7 +788,7 @@ protected:
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     int type;
@@ -810,8 +804,6 @@ public:
                     int type, ExpressionPtr &&expr = ExpressionPtr());
 
     virtual bool isTouched() const;
-    virtual int jump() const;
-    virtual ExpressionPtr simplify() const;
 
 protected:
     JumpStatement(const App::DocumentObject *_owner) :BaseStatement(_owner) {}
@@ -819,8 +811,7 @@ protected:
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual ExpressionPtr _eval() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     ExpressionPtr expr;
@@ -848,7 +839,7 @@ protected:
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual ExpressionPtr _eval() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     ExpressionList conditions;
@@ -875,7 +866,7 @@ protected:
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual ExpressionPtr _eval() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     ExpressionPtr condition;
@@ -903,7 +894,7 @@ protected:
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual ExpressionPtr _eval() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     ExpressionList targets;
@@ -947,7 +938,7 @@ protected:
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual ExpressionPtr _eval() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     ExpressionList exprs;
@@ -985,7 +976,7 @@ protected:
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     StringList names;
@@ -1011,7 +1002,7 @@ protected:
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     std::string name;
@@ -1034,7 +1025,7 @@ protected:
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     ExpressionList targets;
@@ -1053,7 +1044,7 @@ protected:
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     StringList names;
@@ -1079,9 +1070,9 @@ protected:
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual ExpressionPtr _eval() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
-    ExpressionPtr findException(Base::Exception &e, PyObject *pyobj) const;
+    bool findException(Py::Object &res, int *jumpCode, Base::Exception &e, PyObject *pyobj) const;
 
 protected:
     ExpressionPtr body;
@@ -1108,7 +1099,7 @@ protected:
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     StringList modules;
@@ -1131,7 +1122,7 @@ protected:
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual App::any _getValueAsAny() const;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
 
 protected:
     std::string module;
