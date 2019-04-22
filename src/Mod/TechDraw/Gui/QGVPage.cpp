@@ -426,6 +426,7 @@ QGIView * QGVPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
     ourScene->addItem(vBalloon);
 
     vBalloon->setViewPartFeature(balloon);
+    vBalloon->dvBalloon = balloon;
 
     QGIView *parent = 0;
     parent = findParent(vBalloon);
