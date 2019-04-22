@@ -76,3 +76,11 @@ bool TransactionalObject::removeDynamicProperty(const char*)
     str << "Type " << this->getTypeId().getName() << " cannot dynamically remove properties";
     throw Base::RuntimeError(str.str());
 }
+
+void TransactionalObject::onPropertyStatusChanged(
+        const App::Property &prop, unsigned long oldStatus)
+{
+    if(isAttachedToDocument())
+        ExtensionContainer::onPropertyStatusChanged(prop,oldStatus);
+}
+

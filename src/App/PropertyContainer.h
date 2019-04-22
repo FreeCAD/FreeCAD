@@ -195,6 +195,8 @@ public:
   virtual void addDynamicProperties(const PropertyContainer*) {
   }
 
+  virtual void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus);
+
   virtual void Save (Base::Writer &writer) const;
   virtual void Restore(Base::XMLReader &reader);
 

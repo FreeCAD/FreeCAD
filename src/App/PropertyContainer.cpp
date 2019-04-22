@@ -35,6 +35,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 
+#include "Application.h"
 #include "Property.h"
 #include "PropertyContainer.h"
 #include "PropertyLinks.h"
@@ -339,6 +340,23 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
             reader.readEndElement("Property");
     }
     reader.readEndElement("Properties");
+}
+
+void PropertyContainer::onPropertyStatusChanged(const Property &prop, unsigned long oldStatus)
+{
+    static unsigned long _signalMask = (1<<Property::Immutable)
+                                     | (1<<Property::ReadOnly)
+                                     | (1<<Property::Hidden)
+                                     | (1<<Property::Transient)
+                                     | (1<<Property::NoModify)
+                                     | (1<<Property::PartialTrigger)
+                                     | (1<<Property::NoRecompute)
+                                     | (1<<Property::Output)
+                                     | (1<<Property::Single)
+                                     | (1<<Property::Ordered)
+                                     | (1<<Property::EvalOnRestore);
+    if((prop.getStatus() & _signalMask) != (oldStatus & _signalMask))
+        App::GetApplication().signalChangePropertyEditor(prop);
 }
 
 void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup , PropertyType Type, const char* PropertyDocu)
