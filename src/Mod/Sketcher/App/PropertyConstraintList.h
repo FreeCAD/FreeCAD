@@ -134,6 +134,8 @@ public:
     virtual App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const;
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
+    virtual bool getPyPathValue(const App::ObjectIdentifier &path, Py::Object &res) const override;
+
     typedef std::pair<int, const Constraint*> ConstraintInfo ;
 
     boost::signals2::signal<void (const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &)> signalConstraintsRenamed;

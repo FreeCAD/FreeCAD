@@ -352,8 +352,7 @@ void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Prope
         temp.Index = (short)propertyData.size()-1;
         temp.Offset = offsetBase.getOffsetTo(Prop);
         assert(temp.Offset>=0);
-        auto res = propertyMap.emplace(temp.Offset,&temp);
-        assert(res.second);
+        propertyMap.emplace(temp.Offset,&temp);
     }
 
 #define SYNC_PTYPE(_name) do{\

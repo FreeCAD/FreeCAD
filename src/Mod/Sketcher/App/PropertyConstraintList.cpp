@@ -246,6 +246,30 @@ PyObject *PropertyConstraintList::getPyObject(void)
     return list;
 }
 
+bool PropertyConstraintList::getPyPathValue(const App::ObjectIdentifier &path, Py::Object &res) const {
+    if(path.numSubComponents()!=2 || path.getPropertyComponent(0).getName()!=getName())
+        return false;
+
+    const ObjectIdentifier::Component & c1 = path.getPropertyComponent(1);
+
+    if (c1.isArray()) {
+        res = _lValueList[c1.getIndex(_lValueList.size())]->getPyObject();
+        return true;
+    }
+    else if (c1.isSimple()) {
+        ObjectIdentifier::Component c1 = path.getPropertyComponent(1);
+
+        for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+            if ((*it)->Name == c1.getName()) {
+                res = (*it)->getPyObject();
+                return true;
+            }
+        }
+    }
+    FC_THROWM(Base::ValueError,"Invalid constraint path " << path.toString());
+    return false;
+}
+
 void PropertyConstraintList::setPyObject(PyObject *value)
 {
     if (PyList_Check(value)) {

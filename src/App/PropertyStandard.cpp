@@ -154,8 +154,8 @@ void PropertyInteger::setPathValue(const ObjectIdentifier &path, const App::any 
         setValue(App::any_cast<long>(value));
     else if (value.type() == typeid(double))
         setValue(boost::math::round(App::any_cast<double>(value)));
-    else if (value.type() == typeid(Quantity) && App::any_cast<Quantity>(value).getUnit().isEmpty())
-        setValue(boost::math::round(App::any_cast<Quantity>(value).getValue()));
+    else if (value.type() == typeid(Quantity) && App::any_cast<const Quantity &>(value).getUnit().isEmpty())
+        setValue(boost::math::round(App::any_cast<const Quantity &>(value).getValue()));
     else if (value.type() == typeid(int))
         setValue(App::any_cast<int>(value));
     else
@@ -585,7 +585,7 @@ void PropertyEnumeration::setPathValue(const ObjectIdentifier &path, const App::
     else if (value.type() == typeid(short))
         setValue(App::any_cast<short>(value));
     else if (value.type() == typeid(std::string))
-        setValue(App::any_cast<std::string>(value).c_str());
+        setValue(App::any_cast<const std::string &>(value).c_str());
     else if (value.type() == typeid(char*))
         setValue(App::any_cast<char*>(value));
     else if (value.type() == typeid(const char*))
@@ -1055,8 +1055,8 @@ void PropertyFloat::setPathValue(const ObjectIdentifier &path, const App::any &v
 
     if (value.type() == typeid(double))
         setValue(App::any_cast<double>(value));
-    else if (value.type() == typeid(Quantity) && App::any_cast<Quantity>(value).getUnit().isEmpty())
-        setValue((App::any_cast<Quantity>(value)).getValue());
+    else if (value.type() == typeid(Quantity) && App::any_cast<const Quantity&>(value).getUnit().isEmpty())
+        setValue((App::any_cast<const Quantity&>(value)).getValue());
     else
         throw bad_cast();
 }
@@ -1578,7 +1578,7 @@ void PropertyString::setPathValue(const ObjectIdentifier &path, const App::any &
     else if (value.type() == typeid(Quantity))
         setValue(App::any_cast<Quantity>(value).getUserString().toUtf8().constData());
     else if (value.type() == typeid(std::string))
-        setValue(App::any_cast<std::string>(value));
+        setValue(App::any_cast<const std::string &>(value));
     else {
         Base::PyGILStateLocker lock;
         setValue(pyObjectFromAny(value).as_string());
@@ -2141,8 +2141,8 @@ void PropertyBool::setPathValue(const ObjectIdentifier &path, const App::any &va
         setValue(App::any_cast<int>(value) != 0);
     else if (value.type() == typeid(double))
         setValue(boost::math::round(App::any_cast<double>(value)));
-    else if (value.type() == typeid(Quantity) && App::any_cast<Quantity>(value).getUnit().isEmpty())
-        setValue(App::any_cast<Quantity>(value).getValue() != 0);
+    else if (value.type() == typeid(Quantity) && App::any_cast<const Quantity&>(value).getUnit().isEmpty())
+        setValue(App::any_cast<const Quantity&>(value).getValue() != 0);
     else
         throw bad_cast();
 }

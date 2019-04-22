@@ -39,6 +39,7 @@
 #include <Base/VectorPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
+#include <Base/QuantityPy.h>
 
 #include "Document.h"
 #include "DocumentObject.h"
@@ -203,6 +204,38 @@ void PropertyVector::getPaths(std::vector<ObjectIdentifier> &paths) const
                     << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
 }
 
+App::any PropertyVector::getPathValue(const ObjectIdentifier &path) const
+{
+    Base::Unit unit = getUnit();
+    if(!unit.isEmpty()) {
+        std::string p = path.getSubPathStr();
+        if (p == ".x" || p == ".y" || p == ".z") {
+            // Convert double to quantity
+            return Base::Quantity(App::any_cast<double>(Property::getPathValue(path)), unit);
+        }
+    }
+    return Property::getPathValue(path);
+}
+
+bool PropertyVector::getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const
+{
+    Base::Unit unit = getUnit();
+    if(unit.isEmpty())
+        return false;
+
+    std::string p = path.getSubPathStr();
+    if (p == ".x") {
+        res = new QuantityPy(new Quantity(getValue().x,unit));
+    } else if(p == ".y") {
+        res = new QuantityPy(new Quantity(getValue().y,unit));
+    } else if(p == ".z") {
+        res = new QuantityPy(new Quantity(getValue().z,unit));
+    } else
+        return false;
+    return true;
+}
+
+
 //**************************************************************************
 // PropertyVectorDistance
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -216,18 +249,6 @@ TYPESYSTEM_SOURCE(App::PropertyVectorDistance , App::PropertyVector);
 PropertyVectorDistance::PropertyVectorDistance()
 {
 
-}
-
-App::any PropertyVectorDistance::getPathValue(const ObjectIdentifier &path) const
-{
-    std::string p = path.getSubPathStr();
-
-    if (p == ".x" || p == ".y" || p == ".z") {
-        // Convert double to quantity
-        return Base::Quantity(App::any_cast<double>(Property::getPathValue(path)), Unit::Length);
-    }
-    else
-        return Property::getPathValue(path);
 }
 
 PropertyVectorDistance::~PropertyVectorDistance()
@@ -255,18 +276,6 @@ PropertyPosition::~PropertyPosition()
 
 }
 
-App::any PropertyPosition::getPathValue(const ObjectIdentifier &path) const
-{
-    std::string p = path.getSubPathStr();
-
-    if (p == ".x" || p == ".y" || p == ".z") {
-        // Convert double to quantity
-        return Base::Quantity(App::any_cast<double>(Property::getPathValue(path)), Unit::Length);
-    }
-    else
-        return Property::getPathValue(path);
-}
-
 //**************************************************************************
 // PropertyPosition
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -285,18 +294,6 @@ PropertyDirection::PropertyDirection()
 PropertyDirection::~PropertyDirection()
 {
 
-}
-
-App::any PropertyDirection::getPathValue(const ObjectIdentifier &path) const
-{
-    std::string p = path.getSubPathStr();
-
-    if (p == ".x" || p == ".y" || p == ".z") {
-        // Convert double to quantity
-        return Base::Quantity(App::any_cast<double>(Property::getPathValue(path)), Unit::Length);
-    }
-    else
-        return Property::getPathValue(path);
 }
 
 //**************************************************************************
@@ -623,7 +620,7 @@ void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const App::an
         double avalue;
 
         if (value.type() == typeid(Base::Quantity))
-            avalue = App::any_cast<Base::Quantity>(value).getValue();
+            avalue = App::any_cast<const Base::Quantity&>(value).getValue();
         else if (value.type() == typeid(double))
             avalue = App::any_cast<double>(value);
         else if (value.type() == typeid(int))
@@ -657,6 +654,24 @@ App::any PropertyPlacement::getPathValue(const ObjectIdentifier &path) const
     }
     else
         return Property::getPathValue(path);
+}
+
+bool PropertyPlacement::getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const
+{
+    std::string p = path.getSubPathStr();
+    if (p == ".Rotation.Angle") {
+        Base::Vector3d axis; double angle;
+        _cPos.getRotation().getValue(axis,angle);
+        res = new QuantityPy(new Quantity(Base::toDegrees(angle),Unit::Angle));
+    } else if (p == ".Base.x") {
+        res = new QuantityPy(new Quantity(_cPos.getPosition().x,Unit::Length));
+    } else if (p == ".Base.y") {
+        res = new QuantityPy(new Quantity(_cPos.getPosition().y,Unit::Length));
+    } else if (p == ".Base.z") {
+        res = new QuantityPy(new Quantity(_cPos.getPosition().z,Unit::Length));
+    } else
+        return false;
+    return true;
 }
 
 PyObject *PropertyPlacement::getPyObject(void)

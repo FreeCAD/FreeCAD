@@ -1618,6 +1618,35 @@ App::any ObjectIdentifier::getValue(bool pathValue, bool *isPseudoProperty) cons
     return App::any();
 }
 
+Py::Object ObjectIdentifier::getPyValue(bool pathValue, bool *isPseudoProperty) const
+{
+    ResolveResults rs(*this);
+
+    if(isPseudoProperty) {
+        *isPseudoProperty = rs.propertyType!=PseudoNone;
+        if(rs.propertyType == PseudoSelf
+                && isLocalProperty()
+                && rs.propertyIndex+1 < (int)components.size()
+                && owner->getPropertyByName(components[rs.propertyIndex+1].getName().c_str()))
+        {
+            *isPseudoProperty = false;
+        }
+    }
+
+    if(rs.resolvedProperty && rs.propertyType==PseudoNone && pathValue) {
+        Py::Object res;
+        if(rs.resolvedProperty->getPyPathValue(*this,res))
+            return res;
+    }
+
+    try {
+        return access(rs);
+    }catch(Py::Exception &) {
+        Base::PyException::ThrowException();
+    }
+    return Py::Object();
+}
+
 /**
  * @brief Set value of a property or field pointed to by this object identifier.
  *

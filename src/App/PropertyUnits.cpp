@@ -143,7 +143,7 @@ void PropertyQuantity::setPathValue(const ObjectIdentifier & /*path*/, const App
     if (value.type() == typeid(double))
         setValue(App::any_cast<double>(value));
     else if (value.type() == typeid(Base::Quantity))
-        setValue((App::any_cast<Quantity>(value)).getValue());
+        setValue((App::any_cast<const Quantity&>(value)).getValue());
     else
         throw bad_cast();
 }

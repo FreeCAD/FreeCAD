@@ -30,6 +30,7 @@
 #include <Base/Matrix.h>
 #include <Base/BoundBox.h>
 #include <Base/Placement.h>
+#include <Base/Unit.h>
 
 #include "Property.h"
 #include "PropertyLinks.h"
@@ -98,6 +99,14 @@ public:
         return sizeof(Base::Vector3d);
     }
 
+    virtual App::any getPathValue(const ObjectIdentifier &path) const override;
+
+    virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const override;
+
+    virtual Base::Unit getUnit() const {
+        return Base::Unit();
+    }
+
 private:
     Base::Vector3d _cVec;
 };
@@ -120,7 +129,9 @@ public:
      */
     virtual ~PropertyVectorDistance();
 
-    App::any getPathValue(const ObjectIdentifier &path) const;
+    virtual Base::Unit getUnit() const {
+        return Base::Unit::Length;
+    }
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyVectorDistanceItem";
@@ -144,7 +155,9 @@ public:
      */
     virtual ~PropertyPosition();
 
-    App::any getPathValue(const ObjectIdentifier &path) const;
+    virtual Base::Unit getUnit() const {
+        return Base::Unit::Length;
+    }
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyPositionItem";
@@ -168,7 +181,9 @@ public:
      */
     virtual ~PropertyDirection();
 
-    App::any getPathValue(const ObjectIdentifier &path) const;
+    virtual Base::Unit getUnit() const {
+        return Base::Unit::Length;
+    }
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyDirectionItem";
@@ -301,6 +316,8 @@ public:
     void setPathValue(const ObjectIdentifier &path, const App::any &value);
 
     App::any getPathValue(const ObjectIdentifier &path) const;
+
+    virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const;
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyPlacementItem";

@@ -40,6 +40,9 @@
 #include <string>
 #include <bitset>
 
+namespace Py {
+class Object;
+}
 
 namespace App
 {
@@ -140,6 +143,11 @@ public:
 
     /// Get value of property
     virtual App::any getPathValue(const App::ObjectIdentifier & path) const;
+
+    /// Get Python value of property
+    virtual bool getPyPathValue(const App::ObjectIdentifier &, Py::Object &) const {
+        return false;
+    }
 
     /// Convert p to a canonical representation of it
     virtual App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const;
