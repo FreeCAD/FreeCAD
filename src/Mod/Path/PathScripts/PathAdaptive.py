@@ -54,6 +54,7 @@ def sceneDrawPath(path, color=(0, 0, 1)):
     global sceneGraph
     global scenePathNodes
     coPoint = coin.SoCoordinate3()
+
     pts = []
     for pt in path:
         pts.append([pt[0], pt[1], topZ])
@@ -72,41 +73,54 @@ def sceneDrawPath(path, color=(0, 0, 1)):
 
 def sceneClean():
     global scenePathNodes
+
     for n in scenePathNodes:
         sceneGraph.removeChild(n)
+
     del scenePathNodes[:]
 
-def discretize(edge, flipDirection=False):
-    pts=edge.discretize(Deflection=0.0001)
-    if flipDirection: pts.reverse()
+def discretize(edge, flipDirection = False):
+    pts = edge.discretize(Deflection = 0.0001)
+    if flipDirection:
+        pts.reverse()
+
     return pts
 
 def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
-    if len(adaptiveResults)==0 or len(adaptiveResults[0]["AdaptivePaths"])==0:
-      return
+    if len(adaptiveResults) == 0 or len(adaptiveResults[0]["AdaptivePaths"]) == 0:
+        return
 
     minLiftDistance = op.tool.Diameter
-    helixRadius=0
+    helixRadius = 0
     for region in adaptiveResults:
         p1 =  region["HelixCenterPoint"]
         p2 =  region["StartPoint"]
         r =math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) +  (p1[1]-p2[1]) * (p1[1]-p2[1]))
-        if r>helixRadius: helixRadius=r
+        if r > helixRadius:
+            helixRadius = r
 
     stepDown = obj.StepDown.Value
     passStartDepth=obj.StartDepth.Value
-    if stepDown<0.1 : stepDown=0.1
+
+    if stepDown < 0.1 :
+        stepDown = 0.1
+
     length = 2*math.pi * helixRadius
-    if float(obj.HelixAngle)<1: obj.HelixAngle=1
-    helixAngleRad = math.pi * float(obj.HelixAngle)/180.0
+
+    if float(obj.HelixAngle) < 1:
+        obj.HelixAngle = 1
+
+    helixAngleRad = math.pi * float(obj.HelixAngle) / 180.0
     depthPerOneCircle=length * math.tan(helixAngleRad)
-    stepUp =  obj.LiftDistance.Value
-    if stepUp<0:
-        stepUp=0
+
+    stepUp = obj.LiftDistance.Value
+    if stepUp < 0:
+        stepUp = 0
 
 
     finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-    if finish_step>stepDown: finish_step = stepDown
+    if finish_step > stepDown:
+        finish_step = stepDown
         
     depth_params = PathUtils.depth_params(
             clearance_height=obj.ClearanceHeight.Value,
@@ -119,111 +133,137 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
 
 
-    lx=adaptiveResults[0]["HelixCenterPoint"][0]
-    ly=adaptiveResults[0]["HelixCenterPoint"][1]
-    lz=passStartDepth
-    step=0
+    lx = adaptiveResults[0]["HelixCenterPoint"][0]
+    ly = adaptiveResults[0]["HelixCenterPoint"][1]
+    lz = passStartDepth
+    step = 0
+
     for passEndDepth in depth_params.data:
-        step=step+1
+        step = step + 1
+
         for region in adaptiveResults:
             startAngle = math.atan2(region["StartPoint"][1] - region["HelixCenterPoint"][1], region["StartPoint"][0] - region["HelixCenterPoint"][0])
 
-            lx=region["HelixCenterPoint"][0]
-            ly=region["HelixCenterPoint"][1]
+            lx = region["HelixCenterPoint"][0]
+            ly = region["HelixCenterPoint"][1]
 
             passDepth = (passStartDepth - passEndDepth)
 
-            p1 =  region["HelixCenterPoint"]
-            p2 =  region["StartPoint"]
-            helixRadius =math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) +  (p1[1]-p2[1]) * (p1[1]-p2[1]))
+            p1 = region["HelixCenterPoint"]
+            p2 = region["StartPoint"]
+            helixRadius = math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) +  (p1[1]-p2[1]) * (p1[1]-p2[1]))
 
-            #helix ramp
-            if helixRadius>0.0001:
+            # helix ramp
+            if helixRadius > 0.001:
                 r = helixRadius - 0.01
-                maxfi =  passDepth / depthPerOneCircle *  2 * math.pi
+                maxfi =  passDepth / depthPerOneCircle * 2 * math.pi
                 fi = 0
                 offsetFi =-maxfi + startAngle-math.pi/16
 
                 helixStart = [region["HelixCenterPoint"][0] + r * math.cos(offsetFi), region["HelixCenterPoint"][1] + r * math.sin(offsetFi)]
 
-                op.commandlist.append(Path.Command("(helix to depth: %f)"%passEndDepth))
+                op.commandlist.append(Path.Command("(Helix to depth: %f)"%passEndDepth))
 
-                #rapid move to start point
-                op.commandlist.append(Path.Command(
-                    "G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
-                #rapid move to safe height
-                op.commandlist.append(Path.Command(
-                    "G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.SafeHeight.Value}))
+                # rapid move to start point
+                op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
 
-                op.commandlist.append(Path.Command("G1", {
-                                    "X": helixStart[0], "Y": helixStart[1], "Z": passStartDepth, "F": op.vertFeed}))
+                # rapid move to safe height
+                op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.SafeHeight.Value}))
 
-                while fi<maxfi:
+                # move to start depth
+                op.commandlist.append(Path.Command("G1", {"X": helixStart[0], "Y": helixStart[1], "Z": passStartDepth, "F": op.vertFeed}))
+
+                while fi < maxfi:
                     x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
                     y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
                     z = passStartDepth - fi / maxfi * (passStartDepth - passEndDepth)
                     op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.vertFeed}))
-                    lx=x
-                    ly=y
+                    lx = x
+                    ly = y
                     fi=fi+math.pi/16
+
                 # one more circle at target depth to make sure center is cleared
-                maxfi=maxfi+2*math.pi
-                while fi<maxfi:
+                maxfi = maxfi + 2*math.pi
+                while fi < maxfi:
                     x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
                     y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
                     z = passEndDepth
                     op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.horizFeed}))
-                    lx=x
-                    ly=y
-                    fi=fi+math.pi/16
-            else: # no helix entry
-                op.commandlist.append(Path.Command(
-                    "G0", {"X": region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": obj.ClearanceHeight.Value}))
-                op.commandlist.append(Path.Command("G1", {
-                           "X":region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": passEndDepth,"F": op.vertFeed}))
+                    lx = x
+                    ly = y
+                    fi = fi + math.pi/16
 
-            lz=passEndDepth
-            z=obj.ClearanceHeight.Value
+            else: # no helix entry
+                # rapid move to clearance height
+                op.commandlist.append(Path.Command("G0", {"X": region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": obj.ClearanceHeight.Value}))
+                # straight plunge to target depth
+                op.commandlist.append(Path.Command("G1", {"X":region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": passEndDepth,"F": op.vertFeed}))
+
+            lz = passEndDepth
+            z = obj.ClearanceHeight.Value
             op.commandlist.append(Path.Command("(Adaptive - depth: %f)"%passEndDepth))
-            #add adaptive paths
+
+            # add adaptive paths
             for pth in region["AdaptivePaths"]:
                 motionType = pth[0]  #[0] contains motion type
+
                 for pt in pth[1]: #[1] contains list of points
-                    x=pt[0]
-                    y=pt[1]
-                    dist=math.sqrt((x-lx)*(x-lx) + (y-ly)*(y-ly))
+                    x = pt[0]
+                    y = pt[1]
+
+                    dist = math.sqrt((x-lx)*(x-lx) + (y-ly)*(y-ly))
+
                     if motionType == area.AdaptiveMotionType.Cutting:
-                        z=passEndDepth
-                        if z!=lz: op.commandlist.append(Path.Command("G1", { "Z":z,"F": op.vertFeed}))
+                        z = passEndDepth
+                        if z != lz:
+                            op.commandlist.append(Path.Command("G1", { "Z":z,"F": op.vertFeed}))
+
                         op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "F": op.horizFeed}))
+
                     elif motionType == area.AdaptiveMotionType.LinkClear:
-                        z=passEndDepth+stepUp
-                        if z!=lz: op.commandlist.append(Path.Command("G0", { "Z":z}))
+                        z = passEndDepth + stepUp
+                        if z != lz:
+                            op.commandlist.append(Path.Command("G0", { "Z":z}))
+
                         op.commandlist.append(Path.Command("G0", { "X": x, "Y":y}))
+
                     elif motionType == area.AdaptiveMotionType.LinkNotClear:
-                        z=obj.ClearanceHeight.Value
-                        if z!=lz: op.commandlist.append(Path.Command("G0", { "Z":z}))
+                        z = obj.ClearanceHeight.Value
+                        if z != lz:
+                            op.commandlist.append(Path.Command("G0", { "Z":z}))
+
                         op.commandlist.append(Path.Command("G0", { "X": x, "Y":y}))
+
                     # elif motionType == area.AdaptiveMotionType.LinkClearAtPrevPass:
                     #     if lx!=x or ly!=y:
                     #         op.commandlist.append(Path.Command("G0", { "X": lx, "Y":ly, "Z":passStartDepth+stepUp}))
                     #     op.commandlist.append(Path.Command("G0", { "X": x, "Y":y, "Z":passStartDepth+stepUp}))
-                    lx=x
-                    ly=y
-                    lz=z
-            #return to safe height in this Z pass
-            z=obj.ClearanceHeight.Value
-            if z!=lz: op.commandlist.append(Path.Command("G0", { "Z":z}))
-            lz=z
-        passStartDepth=passEndDepth
-        #return to safe height in this Z pass
-        z=obj.ClearanceHeight.Value
-        if z!=lz: op.commandlist.append(Path.Command("G0", { "Z":z}))
-        lz=z
-    z=obj.ClearanceHeight.Value
-    if z!=lz: op.commandlist.append(Path.Command("G0", { "Z":z}))
-    lz=z
 
+                    lx = x
+                    ly = y
+                    lz = z
+
+            # return to safe height in this Z pass
+            z = obj.ClearanceHeight.Value
+            if z != lz:
+                op.commandlist.append(Path.Command("G0", { "Z":z}))
+
+            lz = z
+
+        passStartDepth = passEndDepth
+
+        # return to safe height in this Z pass
+        z = obj.ClearanceHeight.Value
+        if z != lz:
+            op.commandlist.append(Path.Command("G0", { "Z":z}))
+
+        lz = z
+
+    z = obj.ClearanceHeight.Value
+    if z != lz:
+        op.commandlist.append(Path.Command("G0", { "Z":z}))
+
+    lz = z
 
 def Execute(op,obj):
     global sceneGraph
@@ -234,7 +274,7 @@ def Execute(op,obj):
     Console.PrintMessage("*** Adaptive toolpath processing started...\n")
 
     #hide old toolpaths during recalculation
-    obj.Path = Path.Path("(calculating...)")
+    obj.Path = Path.Path("(Calculating...)")
 
     #store old visibility state
     job = op.getJob(obj)
@@ -246,16 +286,17 @@ def Execute(op,obj):
 
     FreeCADGui.updateGui()
     try:
-        helixDiameter =obj.HelixDiameterLimit.Value
-        topZ=op.stock.Shape.BoundBox.ZMax
+        helixDiameter = obj.HelixDiameterLimit.Value
+        topZ = op.stock.Shape.BoundBox.ZMax
         obj.Stopped = False
         obj.StopProcessing = False
-        if obj.Tolerance<0.001: obj.Tolerance=0.001
+        if obj.Tolerance < 0.001:
+            obj.Tolerance = 0.001
 
-        pathArray=[]
+        pathArray = []
         for base, subs in obj.Base:
             for sub in subs:
-                shape=base.Shape.getElement(sub)
+                shape = base.Shape.getElement(sub)
                 for edge in shape.Edges:
                     pathArray.append([discretize(edge)])
 
@@ -265,6 +306,7 @@ def Execute(op,obj):
         stockPaths = []
         if op.stock.StockType == "CreateCylinder":
             stockPaths.append([discretize(op.stock.Shape.Edges[0])])
+
         else:
             stockBB = op.stock.Shape.BoundBox
             v=[]
@@ -281,17 +323,22 @@ def Execute(op,obj):
         if obj.OperationType == "Clearing":
             if obj.Side == "Outside":
                 opType = area.AdaptiveOperationType.ClearingOutside
+
             else:
                 opType = area.AdaptiveOperationType.ClearingInside
+
         else: # profiling
             if obj.Side == "Outside":
                 opType = area.AdaptiveOperationType.ProfilingOutside
+
             else:
                 opType = area.AdaptiveOperationType.ProfilingInside
 
 
-        keepToolDownRatio=3.0
-        if hasattr(obj, 'KeepToolDownRatio'): keepToolDownRatio = float(obj.KeepToolDownRatio)
+        keepToolDownRatio = 3.0
+        if hasattr(obj, 'KeepToolDownRatio'):
+            keepToolDownRatio = float(obj.KeepToolDownRatio)
+
         # put here all properties that influence calculation of adaptive base paths,
 
         inputStateObject = {
@@ -308,29 +355,32 @@ def Execute(op,obj):
             "stockToLeave": float(obj.StockToLeave)
         }
 
-        inputStateChanged=False
-        adaptiveResults=None
+        inputStateChanged = False
+        adaptiveResults = None
 
-        if obj.AdaptiveOutputState !=None and obj.AdaptiveOutputState != "":
+        if obj.AdaptiveOutputState != None and obj.AdaptiveOutputState != "":
              adaptiveResults = obj.AdaptiveOutputState
 
         if json.dumps(obj.AdaptiveInputState) != json.dumps(inputStateObject):
-             inputStateChanged=True
-             adaptiveResults=None
+             inputStateChanged = True
+             adaptiveResults = None
 
         # progress callback fn, if return true it will stop processing
         def progressFn(tpaths):
-            for path in tpaths: #path[0] contains the MotionType,#path[1] contains list of points
+            for path in tpaths: #path[0] contains the MotionType, #path[1] contains list of points
                 if path[0] == area.AdaptiveMotionType.Cutting:
                     sceneDrawPath(path[1],(0,0,1))
+
                 else:
                     sceneDrawPath(path[1],(1,0,1))
+
             FreeCADGui.updateGui()
+
             return  obj.StopProcessing
 
-        start=time.time()
+        start = time.time()
 
-        if inputStateChanged or adaptiveResults==None:
+        if inputStateChanged or adaptiveResults == None:
             a2d = area.Adaptive2d()
             a2d.stepOverFactor = 0.01*obj.StepOver
             a2d.toolDiameter = float(op.tool.Diameter)
@@ -340,10 +390,11 @@ def Execute(op,obj):
             a2d.tolerance = float(obj.Tolerance)
             a2d.forceInsideOut = obj.ForceInsideOut
             a2d.opType = opType
-            #EXECUTE
+
+            # EXECUTE
             results = a2d.Execute(stockPath2d,path2d,progressFn)
 
-            #need to convert results to python object to be JSON serializable
+            # need to convert results to python object to be JSON serializable
             adaptiveResults = []
             for result in results:
                 adaptiveResults.append({
@@ -353,26 +404,27 @@ def Execute(op,obj):
                     "ReturnMotionType": result.ReturnMotionType })
 
 
-
+        # GENERATE
         GenerateGCode(op,obj,adaptiveResults,helixDiameter)
 
         if not obj.StopProcessing:
-            Console.PrintMessage("*** Done. Elapsed: %f sec\n\n" %(time.time()-start))
+            Console.PrintMessage("*** Done. Elapsed time: %f sec\n\n" %(time.time()-start))
             obj.AdaptiveOutputState = adaptiveResults
             obj.AdaptiveInputState=inputStateObject
+
         else:
             Console.PrintMessage("*** Processing cancelled (after: %f sec).\n\n" %(time.time()-start))
+
     finally:
         obj.ViewObject.Visibility = oldObjVisibility
         job.ViewObject.Visibility = oldJobVisibility
         sceneClean()
 
 
-
 class PathAdaptive(PathOp.ObjectOp):
     def opFeatures(self, obj):
         '''opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.
-        The default implementation returns "FeatureTool | FeatureDeptsh | FeatureHeights | FeatureStartPoint"
+        The default implementation returns "FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint"
         Should be overwritten by subclasses.'''
         return PathOp.FeatureTool | PathOp.FeatureBaseEdges | PathOp.FeatureDepths | PathOp.FeatureFinishDepth | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureBaseGeometry
 
@@ -425,8 +477,8 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.HelixDiameterLimit = 0.0
         obj.AdaptiveInputState =""
         obj.AdaptiveOutputState = ""
-        obj.StockToLeave= 0
-        obj.KeepToolDownRatio=3.0
+        obj.StockToLeave = 0
+        obj.KeepToolDownRatio = 3.0
 
     def opExecute(self, obj):
         '''opExecute(obj) ... called whenever the receiver needs to be recalculated.
