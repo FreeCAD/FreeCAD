@@ -25,6 +25,7 @@
 #include "PropertiesDialog.h"
 #include <Base/Tools.h>
 #include <App/Range.h>
+#include <App/ExpressionParser.h>
 #include <App/Document.h>
 #include <Gui/Command.h>
 #include "ui_PropertiesDialog.h"

@@ -35,6 +35,7 @@
 #include <App/Application.h>
 #include <App/PropertyUnits.h>
 #include <App/DocumentObject.h>
+#include "App/ExpressionParser.h"
 #include "ExpressionCompleter.h"
 #include "Command.h"
 #include "InputField.h"

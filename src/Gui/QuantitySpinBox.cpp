@@ -46,7 +46,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include <App/PropertyGeo.h>
 #include <sstream>
 #include <boost/math/special_functions/round.hpp>
