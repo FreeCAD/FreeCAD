@@ -1749,7 +1749,10 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                             b != edit->combinedConstrBoxes[constrIdsStr].end(); ++b) {
 
 #ifdef FC_DEBUG
-                            Base::Console().Log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n", absPos[0],absPos[1],trans[0], trans[1], cursorPos[0], cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY, iconSize[0], iconSize[1], b->first.topLeft().x(),b->first.topLeft().y(),b->first.bottomRight().x(),b->first.bottomRight().y());
+                            // Useful code to debug coordinates and bounding boxes that does not need to be compiled in for
+                            // any debug operations.
+
+                            /*Base::Console().Log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n", absPos[0],absPos[1],trans[0], trans[1], cursorPos[0], cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY, iconSize[0], iconSize[1], b->first.topLeft().x(),b->first.topLeft().y(),b->first.bottomRight().x(),b->first.bottomRight().y());*/
 #endif
 
                             if (b->first.contains(iconX, iconY)) {
