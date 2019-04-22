@@ -495,7 +495,7 @@ class BaseExport ConsoleSingleton
 {
 
 public:
-    static constexpr unsigned int BufferSize = 4024;
+    static const unsigned int BufferSize = 4024;
     // exported functions goes here +++++++++++++++++++++++++++++++++++++++
     /// Prints a Message
     virtual void Message ( const char * pMsg, ... ) ;
