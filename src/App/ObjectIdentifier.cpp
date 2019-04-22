@@ -596,28 +596,29 @@ size_t ObjectIdentifier::Component::getIndex(size_t count) const {
 }
 
 Py::Object ObjectIdentifier::Component::get(const Py::Object &pyobj) const {
+    Py::Object res;
     if(isSimple()) {
-        Py::Object res = pyobj.getAttr(getName());
-        if(PyModule_Check(res.ptr()) && !ExpressionParser::isModuleImported(res.ptr()))
-            FC_THROWM(Base::RuntimeError, "Module '" << getName() << "' access denied.");
-        return res;
+        res = pyobj.getAttr(getName());
     } else if(isArray()) {
         if(pyobj.isMapping())
-            return Py::Mapping(pyobj).getItem(Py::Int(begin));
+            res = Py::Mapping(pyobj).getItem(Py::Int(begin));
         else
-            return Py::Sequence(pyobj).getItem(begin);
+            res = Py::Sequence(pyobj).getItem(begin);
     }else if(isMap())
-        return Py::Mapping(pyobj).getItem(getName());
+        res = Py::Mapping(pyobj).getItem(getName());
     else {
         assert(isRange());
         Py::Object slice(PySlice_New(Py::Int(begin).ptr(),
                                     end!=INT_MAX?Py::Int(end).ptr():0,
                                     step!=1?Py::Int(step).ptr():0));
-        PyObject *res = PyObject_GetItem(pyobj.ptr(),slice.ptr());
-        if(!res)
+        PyObject *r = PyObject_GetItem(pyobj.ptr(),slice.ptr());
+        if(!r)
             Base::PyException::ThrowException();
-        return Py::asObject(res);
+        res = Py::asObject(r);
     }
+    if(PyModule_Check(res.ptr()) && !ExpressionParser::isModuleImported(res.ptr()))
+        FC_THROWM(Base::RuntimeError, "Module '" << getName() << "' access denied.");
+    return res;
 }
 
 void ObjectIdentifier::Component::set(Py::Object &pyobj, const Py::Object &value) const {
