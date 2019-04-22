@@ -2328,34 +2328,35 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                 elif hasattr(obj,"Closed"):
                     closed = obj.Closed
 
-                if len(obj.Shape.Vertexes) < 3:
-                    e = obj.Shape.Edges[0]
-                    nobj.addGeometry(Part.LineSegment(e.Curve,e.FirstParameter,e.LastParameter))
-                else:
-                    # Use the first three points to make a working plane. We've already
-                    # checked to make sure everything is coplanar
-                    plane = Part.Plane(*[i.Point for i in obj.Shape.Vertexes[:3]])
-                    normal = plane.Axis
-                    if rotation is None:
-                        axis = FreeCAD.Vector(0,0,1).cross(normal)
-                        angle = DraftVecUtils.angle(normal, FreeCAD.Vector(0,0,1)) * FreeCAD.Units.Radian
-                        rotation = FreeCAD.Rotation(axis, angle)
-                    for edge in obj.Shape.Edges:
-                        # edge.rotate(FreeCAD.Vector(0,0,0), rotAxis, rotAngle)
-                        edge = DraftGeomUtils.orientEdge(edge, normal)
-                        nobj.addGeometry(edge)
-                    if autoconstraints:
-                        last = nobj.GeometryCount
-                        segs = list(range(last-len(obj.Shape.Edges),last-1))
-                        for seg in segs:
-                            constraints.append(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
-                            if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
-                                constraints.append(Constraint("Vertical",seg))
-                            elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
-                                constraints.append(Constraint("Horizontal",seg))
-                        if closed:
-                            constraints.append(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
-                ok = True
+                if obj.Shape.Edges:
+                    if (len(obj.Shape.Vertexes) < 3):
+                        e = obj.Shape.Edges[0]
+                        nobj.addGeometry(Part.LineSegment(e.Curve,e.FirstParameter,e.LastParameter))
+                    else:
+                        # Use the first three points to make a working plane. We've already
+                        # checked to make sure everything is coplanar
+                        plane = Part.Plane(*[i.Point for i in obj.Shape.Vertexes[:3]])
+                        normal = plane.Axis
+                        if rotation is None:
+                            axis = FreeCAD.Vector(0,0,1).cross(normal)
+                            angle = DraftVecUtils.angle(normal, FreeCAD.Vector(0,0,1)) * FreeCAD.Units.Radian
+                            rotation = FreeCAD.Rotation(axis, angle)
+                        for edge in obj.Shape.Edges:
+                            # edge.rotate(FreeCAD.Vector(0,0,0), rotAxis, rotAngle)
+                            edge = DraftGeomUtils.orientEdge(edge, normal)
+                            nobj.addGeometry(edge)
+                        if autoconstraints:
+                            last = nobj.GeometryCount
+                            segs = list(range(last-len(obj.Shape.Edges),last-1))
+                            for seg in segs:
+                                constraints.append(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
+                                if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
+                                    constraints.append(Constraint("Vertical",seg))
+                                elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
+                                    constraints.append(Constraint("Horizontal",seg))
+                            if closed:
+                                constraints.append(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
+                    ok = True
         elif tp == "BSpline":
             nobj.addGeometry(obj.Shape.Edges[0].Curve)
             nobj.exposeInternalGeometry(nobj.GeometryCount-1)
