@@ -609,7 +609,7 @@ class _TaskPanelFemMaterial:
     def add_cards_from_a_dir(self, mat_dir, icon):
         import glob
         import os
-        import Material
+        from importFCMat import read
         mat_file_extension = ".FCMat"
         ext_len = len(mat_file_extension)
         dir_path_list = glob.glob(mat_dir + '/*' + mat_file_extension)
@@ -617,7 +617,7 @@ class _TaskPanelFemMaterial:
         card_name_list = []
         for a_path in dir_path_list:
             card_name = os.path.basename(a_path[:-ext_len])
-            self.materials[a_path] = Material.importFCMat(a_path)
+            self.materials[a_path] = read(a_path)
             card_name_list.append([card_name, a_path])
         card_name_list.sort()
         for mat in card_name_list:
