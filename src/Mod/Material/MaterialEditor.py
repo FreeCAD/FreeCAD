@@ -197,7 +197,9 @@ class MaterialEditor:
                         self.updateContents(d)
 
     def getMaterialResources(self):
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources")
+        self.fem_prefs = FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/Material/Resources"
+        )
         use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
         use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
         use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
@@ -207,7 +209,10 @@ class MaterialEditor:
         # FreeCAD returns paths with / at the end, thus not os.sep is needed on first +
         self.resources = []
         if use_built_in_materials:
-            self.resources.append(FreeCAD.getResourceDir() + "Mod" + os.sep + "Material" + os.sep + "StandardMaterial")
+            res_dir = FreeCAD.getResourceDir()
+            self.resources.append(
+                res_dir + "Mod" + os.sep + "Material" + os.sep + "StandardMaterial"
+            )
         if use_mat_from_config_dir:
             self.resources.append(FreeCAD.ConfigGet("UserAppData") + "Material")
         if use_mat_from_custom_dir:
