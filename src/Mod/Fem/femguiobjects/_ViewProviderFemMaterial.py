@@ -251,6 +251,7 @@ class _TaskPanelFemMaterial:
     def accept(self):
         # print(self.material)
         if self.selectionWidget.has_equal_references_shape_types():
+            self.do_not_set_thermal_zeros()
             self.obj.Material = self.material
             self.obj.References = self.selectionWidget.references
             self.recompute_and_set_back_all()
@@ -268,11 +269,35 @@ class _TaskPanelFemMaterial:
             FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
         doc.resetEdit()
 
+    def do_not_set_thermal_zeros(self):
+        ''' thermal material parameter are set to 0.0 if not available
+        this leads to wrong material values and to not finding the card
+        on reopen the task pane, thus do not write thermal parameter,
+        if they are 0.0
+        '''
+        if Units.Quantity(self.material['ThermalConductivity']) == 0.0:
+            self.material.pop('ThermalConductivity', None)
+            FreeCAD.Console.PrintMessage(
+                'Zero ThermalConductivity value. It is not saved in the card data.\n'
+            )
+        if Units.Quantity(self.material['ThermalExpansionCoefficient']) == 0.0:
+            self.material.pop('ThermalExpansionCoefficient', None)
+            FreeCAD.Console.PrintMessage(
+                'Zero ThermalExpansionCoefficient value. It is not saved in the card data.\n'
+            )
+        if Units.Quantity(self.material['SpecificHeat']) == 0.0:
+            self.material.pop('SpecificHeat', None)
+            FreeCAD.Console.PrintMessage(
+                'Zero SpecificHeat value. It is not saved in the card data.\n'
+            )
+
     # choose material ****************************************************************************
     def get_material_card(self, material):
         for a_mat in self.materials:
             unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
             # print(a_mat + '  -->  unmatched_items = ' + str(len(unmatched_items)))
+            # if len(unmatched_items) < 4:
+            #     print(unmatched_items)
             if len(unmatched_items) == 0:
                 return a_mat
         return ""
