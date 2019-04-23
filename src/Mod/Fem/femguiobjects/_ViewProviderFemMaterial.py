@@ -108,6 +108,7 @@ class _TaskPanelFemMaterial:
         self.material = self.obj.Material  # FreeCAD material dictionary of current material
         self.card_path = ''
         self.materials = {}  # { card_path : FreeCAD material dict }
+        self.icons = {}  # { card_path : icon_path }
         # mat_card is the FCMat file
         # card_name is the file name of the mat_card
         # card_path is the whole file path of the mat_card
@@ -196,8 +197,10 @@ class _TaskPanelFemMaterial:
             self.parameterWidget.label_vol_expansion_coefficient.setVisible(0)
             self.parameterWidget.input_fd_vol_expansion_coefficient.setVisible(0)
 
-        # fill self.materials dict and fill the combobox with material cards
+        # get all available materials (fill self.materials and self.icons)
         self.import_materials()
+        # fill the material comboboxes with material cards
+        self.add_cards_to_combo_box()
 
         # search for exact this mat_card in all known cards, choose the current material
         self.card_path = self.get_material_card(self.material)
@@ -697,7 +700,20 @@ class _TaskPanelFemMaterial:
             q = FreeCAD.Units.Quantity("{} {}".format(sh_with_new_unit, sh_new_unit))
             self.parameterWidget.input_fd_specific_heat.setText(q.UserString)
 
-    # material import and export *****************************************************************
+    # fill the combo box with cards **************************************************************
+    def add_cards_to_combo_box(self):
+        # fill combobox, in combo box the card name is used not the material name
+        from os.path import basename
+        self.parameterWidget.cb_materials.clear()
+        card_name_list = []
+        for a_path in self.materials:
+            card_name = basename(a_path[:-(len(".FCMat"))])
+            card_name_list.append([card_name, a_path, self.icons[a_path]])
+        card_name_list.sort()
+        for mat in card_name_list:
+            self.parameterWidget.cb_materials.addItem(QtGui.QIcon(mat[2]), mat[0], mat[1])
+
+    # material card handling *********************************************************************
     def print_materialsdict(self):
         print('\n\n')
         for mat_card in self.materials:
@@ -706,9 +722,6 @@ class _TaskPanelFemMaterial:
         print('\n\n')
 
     def import_materials(self):
-        self.pathList = []
-        self.parameterWidget.cb_materials.clear()
-
         self.fem_prefs = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Material/Resources"
         )
@@ -751,18 +764,15 @@ class _TaskPanelFemMaterial:
             self.add_cards_from_a_dir(custom_mat_dir, ":/icons/user.svg")
 
     def add_cards_from_a_dir(self, mat_dir, icon):
+        # fill self.materials and self.icons
         import glob
-        import os
         from importFCMat import read
-        mat_file_extension = ".FCMat"
-        ext_len = len(mat_file_extension)
-        dir_path_list = glob.glob(mat_dir + '/*' + mat_file_extension)
-        self.pathList = self.pathList + dir_path_list
-        card_name_list = []
+        dir_path_list = glob.glob(mat_dir + '/*' + ".FCMat")
+
         for a_path in dir_path_list:
-            card_name = os.path.basename(a_path[:-ext_len])
-            self.materials[a_path] = read(a_path)
-            card_name_list.append([card_name, a_path])
-        card_name_list.sort()
-        for mat in card_name_list:
-            self.parameterWidget.cb_materials.addItem(QtGui.QIcon(icon), mat[0], mat[1])
+            mat_dict = read(a_path)
+            # check if the dict exists in materials
+            # TODO if the unit is different two cards would be different too
+            if mat_dict not in self.materials.values():
+                self.materials[a_path] = mat_dict
+                self.icons[a_path] = icon
