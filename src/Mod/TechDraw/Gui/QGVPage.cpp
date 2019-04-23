@@ -402,28 +402,29 @@ QGIView * QGVPage::addDrawViewImage(TechDraw::DrawViewImage *view)
 
 QGIView * QGVPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
 {
-    auto balloonGroup( new QGIViewBalloon );
+    auto viewBalloon( new QGIViewBalloon );
 
     auto ourScene( scene() );
     assert(ourScene);
-    ourScene->addItem(balloonGroup);
+    ourScene->addItem(viewBalloon);
 
-    balloonGroup->setViewPartFeature(balloon);
+    viewBalloon->dvBalloon = balloon;
+    viewBalloon->setViewPartFeature(balloon);
 
     // Find if it belongs to a parent
     QGIView *parent = 0;
-    parent = findParent(balloonGroup);
+    parent = findParent(viewBalloon);
 
     if(balloon->OriginIsSet.getValue() == false) {
         if(parent) {
             balloonPlacing(true);
             QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png")),0,32));
-            balloonGroup->connect(parent);
-            addBalloonToParent(balloonGroup,parent);
+            viewBalloon->connect(parent);
+            addBalloonToParent(viewBalloon,parent);
         }
     }
 
-    return balloonGroup;
+    return viewBalloon;
 }
 
 void QGVPage::addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent)

@@ -160,7 +160,7 @@ void QGIViewBalloon::parentViewMousePressed(QGIView *view, QPointF pos)
 void QGIViewBalloon::onAttachPointPicked(QGIView *view, QPointF pos)
 {
     Q_UNUSED(view);
-    auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
+    TechDraw::DrawViewBalloon *balloon = this->dvBalloon;
     if( balloon == nullptr )
         return;
 
@@ -243,7 +243,8 @@ void QGIViewBalloon::hover(bool state)
 void QGIViewBalloon::updateView(bool update)
 {
     Q_UNUSED(update);
-    auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
+
+    TechDraw::DrawViewBalloon *balloon = this->dvBalloon;
     if( balloon == nullptr )
         return;
 
@@ -265,10 +266,11 @@ void QGIViewBalloon::updateView(bool update)
 void QGIViewBalloon::updateBalloon(bool obtuse)
 {
     (void) obtuse;
-    const auto balloon( dynamic_cast<TechDraw::DrawViewBalloon *>(getViewObject()) );
-    if( balloon == nullptr ) {
+
+    TechDraw::DrawViewBalloon *balloon = this->dvBalloon;
+    if( balloon == nullptr )
         return;
-    }
+
     auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
     if ( vp == nullptr ) {
         return;
@@ -305,17 +307,15 @@ void QGIViewBalloon::balloonLabelDragged(bool ctrl)
 
 void QGIViewBalloon::balloonLabelDragFinished()
 {
-    auto dim( dynamic_cast<TechDraw::DrawViewBalloon *>(getViewObject()) );
-
-    if( dim == nullptr ) {
+    TechDraw::DrawViewBalloon *balloon = this->dvBalloon;
+    if( balloon == nullptr )
         return;
-    }
 
     double x = Rez::appX(balloonLabel->X()),
            y = Rez::appX(balloonLabel->Y());
     Gui::Command::openCommand("Drag Balloon");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", dim->getNameInDocument(), x);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dim->getNameInDocument(), -y);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", balloon->getNameInDocument(), x);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", balloon->getNameInDocument(), -y);
     Gui::Command::commitCommand();
 }
 
@@ -330,7 +330,7 @@ void QGIViewBalloon::draw_modifier(bool modifier)
         return;
     }
 
-    TechDraw::DrawViewBalloon *balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getViewObject());
+    TechDraw::DrawViewBalloon *balloon = this->dvBalloon;
     if((!balloon) ||                                                       //nothing to draw, don't try
        (!balloon->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()))) {
         balloonLabel->hide();
@@ -586,7 +586,7 @@ QColor QGIViewBalloon::getNormalColor()
     fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
     m_colNormal = fcColor.asValue<QColor>();
 
-    auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
+    TechDraw::DrawViewBalloon *balloon = this->dvBalloon;
     if( balloon == nullptr )
         return m_colNormal;
 

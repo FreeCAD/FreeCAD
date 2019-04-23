@@ -77,6 +77,7 @@ public:
     void connect(QGIView *parent);
     void disconnect(void);
     void draw_modifier(bool modifier);
+    TechDraw::DrawViewBalloon *dvBalloon;
 
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
