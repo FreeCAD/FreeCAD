@@ -220,7 +220,7 @@ class MaterialEditor:
 
     def outputCards(self):
         print('material cards:')
-        for card in self.cards:
+        for card in sorted(self.cards.keys()):
             print('  ' + card + ': ' + self.cards[card])
         print('\n')
 
@@ -238,8 +238,8 @@ class MaterialEditor:
         if self.cards:
             self.widget.ComboMaterial.clear()
             self.widget.ComboMaterial.addItem("")  # add a blank item first
-            for k, i in self.cards.items():
-                self.widget.ComboMaterial.addItem(k)
+            for card in sorted(self.cards.keys()):
+                self.widget.ComboMaterial.addItem(card)
 
     def openProductURL(self):
         "opens the contents of the ProductURL field in an external browser."
