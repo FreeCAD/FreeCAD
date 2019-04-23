@@ -251,12 +251,14 @@ class _TaskPanelFemMaterial:
         # self.print_material_params(new_material_params)
         if new_material_params:  # returns True if dict is not empty (do not use 'is True', this would return False for a non empty dict)
             self.material = new_material_params
-        self.check_material_keys()
-        self.set_mat_params_in_input_fields(self.material)
-        if self.has_transient_mat is False:
-            self.add_transient_material()
+            self.check_material_keys()
+            self.set_mat_params_in_input_fields(self.material)
+            if self.has_transient_mat is False:
+                self.add_transient_material()
+            else:
+                self.set_transient_material()
         else:
-            self.set_transient_material()
+            FreeCAD.Console.PrintMessage('No changes where made by the material editor.\n')
         # self.print_material_params()
         # material editor returns the mat_dict only not a card_path, if a standard FreeCAD mat_card was used
 
