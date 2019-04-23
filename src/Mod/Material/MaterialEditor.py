@@ -187,8 +187,8 @@ class MaterialEditor:
             if k:
                 if k in self.cards:
 
-                    import importFCMat
-                    d = importFCMat.read(self.cards[k])
+                    from importFCMat import read
+                    d = read(self.cards[k])
                     if d:
                         self.updateContents(d)
 
@@ -416,9 +416,9 @@ class MaterialEditor:
         filetuple = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), 'Open FreeCAD Material file', self.directory, '*.FCMat')
         filename = filetuple[0]  # a tuple of two empty strings returns True, so use the filename directly
         if filename:
-            import importFCMat
+            from importFCMat import read
             self.directory = os.path.dirname(filename)
-            d = importFCMat.read(filename)
+            d = read(filename)
             if d:
                 self.updateContents(d)
 
@@ -446,8 +446,8 @@ class MaterialEditor:
             d = self.getDict()
             # self.outputDict(d)
             if d:
-                import importFCMat
-                importFCMat.write(filename, d)
+                from importFCMat import write
+                write(filename, d)
                 self.updateCards()
 
     def show(self):
