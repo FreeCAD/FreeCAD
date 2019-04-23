@@ -240,4 +240,5 @@ void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent * event)
             Base::Console().Log("QGIPP::mousePressEvent - no QGIView parent\n");
         }
     }
+    QGraphicsPathItem::mousePressEvent(event);
 }

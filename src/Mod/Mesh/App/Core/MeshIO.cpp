@@ -718,7 +718,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
             char space_format_string, space_format_version;
             str >> space_format_string >> std::ws
                 >> format_string >> space_format_version
-                >> std::ws >> version >> std::ws;
+                >> std::ws >> version;
             if (!str || !str.eof() ||
                 !std::isspace(space_format_string) ||
                 !std::isspace(space_format_version)) {
@@ -748,7 +748,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
             char space_element_name, space_name_count;
             str >> space_element_name >> std::ws
                 >> name >> space_name_count >> std::ws
-                >> count >> std::ws;
+                >> count;
             if (!str || !str.eof() ||
                 !std::isspace(space_element_name) ||
                 !std::isspace(space_name_count)) {

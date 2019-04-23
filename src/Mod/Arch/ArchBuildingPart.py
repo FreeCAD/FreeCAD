@@ -202,7 +202,7 @@ def makeBuildingPart(objectslist=None,baseobj=None,name="BuildingPart"):
     #obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
     obj.Label = translate("Arch","BuildingPart")
     BuildingPart(obj)
-    #obj.IfcRole = "Building Storey" # set default to Floor
+    #obj.IfcType = "Building Storey" # set default to Floor
     if FreeCAD.GuiUp:
         ViewProviderBuildingPart(obj.ViewObject)
     if objectslist:
@@ -216,7 +216,7 @@ def makeFloor(objectslist=None,baseobj=None,name="Floor"):
 
     obj = makeBuildingPart(objectslist)
     obj.Label = name
-    obj.IfcRole = "Building Storey"
+    obj.IfcType = "Building Storey"
     return obj
 
 
@@ -226,7 +226,7 @@ def makeBuilding(objectslist=None,baseobj=None,name="Building"):
 
     obj = makeBuildingPart(objectslist)
     obj.Label = name
-    obj.IfcRole = "Building"
+    obj.IfcType = "Building"
     obj.addProperty("App::PropertyEnumeration","BuildingType","Building",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
     obj.BuildingType = BuildingTypes
     if FreeCAD.GuiUp:
@@ -248,9 +248,9 @@ def convertFloors(floor=None):
         if Draft.getType(obj) in ["Floor","Building"]:
             nobj = makeBuildingPart(obj.Group)
             if Draft.getType(obj) == "Floor":
-                nobj.IfcRole = "Building Storey"
+                nobj.IfcType = "Building Storey"
             else:
-                nobj.IfcRole = "Building"
+                nobj.IfcType = "Building"
                 nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
                 nobj.BuildingType = BuildingTypes
             label = obj.Label
@@ -329,20 +329,13 @@ class BuildingPart:
             obj.addProperty("App::PropertyLength","LevelOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The level of the (0,0,0) point of this level"))
         if not "Area" in pl:
             obj.addProperty("App::PropertyArea","Area", "BuildingPart",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
-        if not "IfcRole" in pl:
-            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-            import ArchComponent
-            obj.IfcRole = ArchComponent.IfcRoles
         if not "Description" in pl:
             obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
         if not "Tag" in pl:
             obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
-        if not "IfcAttributes" in pl:
-            obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
         if not "Shape" in pl:
             obj.addProperty("Part::PropertyPartShape","Shape","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The shape of this object"))
-        if not "IfcProperties" in pl:
-            obj.addProperty("App::PropertyMap","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Stores IFC properties"))
+
         self.Type = "BuildingPart"
 
     def onDocumentRestored(self,obj):
@@ -363,13 +356,16 @@ class BuildingPart:
             self.oldPlacement = FreeCAD.Placement(obj.Placement)
 
     def onChanged(self,obj,prop):
+
         ArchIFC.onChanged(obj, prop)
+
         if prop == "Height":
             for child in obj.Group:
                 if Draft.getType(child) in ["Wall","Structure"]:
                     if not child.Height.Value:
                         #print("Executing ",child.Label)
                         child.Proxy.execute(child)
+
         elif prop == "Placement":
             if hasattr(self,"oldPlacement"):
                 if self.oldPlacement:
@@ -405,6 +401,20 @@ class BuildingPart:
         if shapes:
             import Part
             obj.Shape = Part.makeCompound(shapes)
+        obj.Area = self.getArea(obj)
+
+    def getArea(self,obj):
+        
+        "computes the area of this floor by adding its inner spaces"
+        
+        area = 0
+        if hasattr(obj,"Group"):
+            for child in obj.Group:
+                if hasattr(child,"Area") and hasattr(child,"IfcType"):
+                    # only add arch objects that have an Area property
+                    # TODO only spaces? ATM only spaces and windows have an Area property
+                    area += child.Area.Value
+        return area
 
     def getShapes(self,obj):
 
@@ -499,9 +509,9 @@ class ViewProviderBuildingPart:
 
         import Arch_rc
         if hasattr(self,"Object"):
-            if self.Object.IfcRole == "Building Storey":
+            if self.Object.IfcType == "Building Storey":
                 return ":/icons/Arch_Floor_Tree.svg"
-            elif self.Object.IfcRole == "Building":
+            elif self.Object.IfcType == "Building":
                 return ":/icons/Arch_Building_Tree.svg"
         return ":/icons/Arch_BuildingPart_Tree.svg"
 
@@ -632,7 +642,10 @@ class ViewProviderBuildingPart:
                         u = vobj.OverrideUnit
                     else:
                         u = q.getUserPreferred()[2]
-                    q = q.getValueAs(u)
+                    try:
+                        q = q.getValueAs(u)
+                    except:
+                        q = q.getValueAs(q.getUserPreferred()[2])
                     d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
                     fmt = "{0:."+ str(d) + "f}"
                     if not vobj.ShowUnit:
@@ -674,6 +687,12 @@ class ViewProviderBuildingPart:
         action3 = QtGui.QAction(QtGui.QIcon(),"Create group...",menu)
         QtCore.QObject.connect(action3,QtCore.SIGNAL("triggered()"),self.createGroup)
         menu.addAction(action3)
+        action4 = QtGui.QAction(QtGui.QIcon(),"Reorder children alphabetically",menu)
+        QtCore.QObject.connect(action4,QtCore.SIGNAL("triggered()"),self.reorder)
+        menu.addAction(action4)
+        action5 = QtGui.QAction(QtGui.QIcon(),"Clone level up",menu)
+        QtCore.QObject.connect(action5,QtCore.SIGNAL("triggered()"),self.cloneUp)
+        menu.addAction(action5)
 
     def setWorkingPlane(self,restore=False):
 
@@ -718,6 +737,46 @@ class ViewProviderBuildingPart:
         if hasattr(self,"Object"):
             s = "FreeCAD.ActiveDocument.getObject(\"%s\").newObject(\"App::DocumentObjectGroup\",\"Group\")" % self.Object.Name
             FreeCADGui.doCommand(s)
+
+    def reorder(self):
+        
+        if hasattr(self,"Object"):
+            if hasattr(self.Object,"Group") and self.Object.Group:
+                g = self.Object.Group
+                g.sort(key=lambda obj: obj.Label)
+                self.Object.Group = g
+                FreeCAD.ActiveDocument.recompute()
+
+    def cloneUp(self):
+        
+        if hasattr(self,"Object"):
+            if not self.Object.Height.Value:
+                FreeCAD.Console.PrintError("This level has no height value. Please define a height before using this function.\n")
+                return
+            height = self.Object.Height.Value
+            ng = []
+            if hasattr(self.Object,"Group") and self.Object.Group:
+                for o in self.Object.Group:
+                    no = Draft.clone(o)
+                    Draft.move(no,FreeCAD.Vector(0,0,height))
+                    ng.append(no)
+            nobj = makeBuildingPart()
+            Draft.formatObject(nobj,self.Object)
+            nobj.Placement = self.Object.Placement
+            nobj.Placement.move(FreeCAD.Vector(0,0,height))
+            nobj.IfcType = self.Object.IfcType
+            nobj.Height = height
+            nobj.Label = self.Object.Label
+            nobj.Group = ng
+            for parent in self.Object.InList:
+                if hasattr(parent,"Group") and hasattr(parent,"addObject") and (self.Object in parent.Group):
+                    parent.addObject(nobj)
+            FreeCAD.ActiveDocument.recompute()
+            # fix for missing IFC attributes
+            for no in ng:
+                if hasattr(no,"LongName") and hasattr(no,"CloneOf") and no.CloneOf and hasattr(no.CloneOf,"LongName"):
+                    no.LongName = no.CloneOf.LongName
+            FreeCAD.ActiveDocument.recompute()
 
     def __getstate__(self):
         return None

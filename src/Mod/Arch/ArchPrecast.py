@@ -90,7 +90,7 @@ class _PrecastBeam(_Precast):
 
         _Precast.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Beam"
+        obj.IfcType = "Beam"
 
     def setProperties(self,obj):
 
@@ -209,7 +209,7 @@ class _PrecastIbeam(_Precast):
 
         _Precast.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Beam"
+        obj.IfcType = "Beam"
 
     def setProperties(self,obj):
 
@@ -272,7 +272,7 @@ class _PrecastPillar(_Precast):
 
         _Precast.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Column"
+        obj.IfcType = "Column"
 
     def setProperties(self,obj):
 
@@ -410,7 +410,7 @@ class _PrecastPanel(_Precast):
 
         _Precast.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Plate"
+        obj.IfcType = "Plate"
 
     def setProperties(self,obj):
 
@@ -518,7 +518,7 @@ class _PrecastSlab(_Precast):
 
         _Precast.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Slab"
+        obj.IfcType = "Slab"
 
     def setProperties(self,obj):
 
@@ -627,7 +627,7 @@ class _PrecastStairs(_Precast):
 
         _Precast.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Stair"
+        obj.IfcType = "Stair"
 
     def setProperties(self,obj):
 

@@ -259,6 +259,15 @@ class _ArchMaterial:
         obj.addProperty("App::PropertyPercent","Transparency","Arch",QT_TRANSLATE_NOOP("App::Property","The transparency value of this material"))
         obj.addProperty("App::PropertyColor","Color","Arch",QT_TRANSLATE_NOOP("App::Property","The color of this material"))
 
+    def isSameColor(self,c1,c2):
+        
+        r = 4
+        if round(c1[0],r) == round(c2[0],r):
+            if round(c1[1],r) == round(c2[1],r):
+                if round(c1[2],r) == round(c2[2],r):
+                    return True
+        return False
+
     def onChanged(self,obj,prop):
 
         d = obj.Material
@@ -266,7 +275,7 @@ class _ArchMaterial:
             if "DiffuseColor" in obj.Material:
                 c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").split(",")])
                 if hasattr(obj,"Color"):
-                    if obj.Color != c:
+                    if not self.isSameColor(obj.Color,c):
                         obj.Color = c
             if "Transparency" in obj.Material:
                 t = int(obj.Material['Transparency'])
@@ -296,11 +305,10 @@ class _ArchMaterial:
             d["Name"] = obj.Label
         elif prop == "Color":
             if hasattr(obj,"Color"):
-                val = str(obj.Color[:3])
                 if "DiffuseColor" in d:
-                    if d["DiffuseColor"] == val:
+                    if self.isSameColor(tuple([float(f) for f in d['DiffuseColor'].strip("()").split(",")]),obj.Color[:3]):
                         return
-                d["DiffuseColor"] = val
+                d["DiffuseColor"] = str(obj.Color[:3])
         elif prop == "Transparency":
             if hasattr(obj,"Transparency"):
                 val = str(obj.Transparency)
@@ -331,10 +339,10 @@ class _ArchMaterial:
                 d["Description"] = val
         if d and (d != obj.Material):
             obj.Material = d
-            if FreeCAD.GuiUp:
-                import FreeCADGui
+            #if FreeCAD.GuiUp:
+                #import FreeCADGui
                 # not sure why this is needed, but it is...
-                FreeCADGui.ActiveDocument.resetEdit()
+                #FreeCADGui.ActiveDocument.resetEdit()
 
     def execute(self,obj):
         if obj.Material:

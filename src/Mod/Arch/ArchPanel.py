@@ -397,7 +397,7 @@ class _Panel(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Plate"
+        obj.IfcType = "Plate"
 
     def setProperties(self,obj):
 

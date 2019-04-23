@@ -97,9 +97,9 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
             # gets wrong
             obj.Length = p.GetFloat("StructureLength",100)
     if not height and not length:
-        obj.IfcRole = "Undefined"
+        obj.IfcType = "Undefined"
     elif obj.Height > obj.Length:
-        obj.IfcRole = "Column"
+        obj.IfcType = "Column"
     return obj
 
 def makeStructuralSystem(objects=[],axes=[],name="StructuralSystem"):
@@ -486,7 +486,7 @@ class _Structure(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Beam"
+        obj.IfcType = "Beam"
 
     def setProperties(self,obj):
 
@@ -596,10 +596,10 @@ class _Structure(ArchComponent.Component):
 
         """returns (shape,extrusion vector,placement) or None"""
 
-        if hasattr(obj,"IfcRole"):
-            role = obj.IfcRole
+        if hasattr(obj,"IfcType"):
+            IfcType = obj.IfcType
         else:
-            role = obj.Role
+            IfcType = None
         import Part,DraftGeomUtils
         data = ArchComponent.Component.getExtrusionData(self,obj)
         if data:
@@ -675,7 +675,7 @@ class _Structure(ArchComponent.Component):
                         baseface = Part.Face(w)
                         base,placement = self.rebase(baseface)
         elif length and width and height:
-            if (length > height) and (role != "Slab"):
+            if (length > height) and (IfcType != "Slab"):
                 h2 = height/2 or 0.5
                 w2 = width/2 or 0.5
                 v1 = Vector(0,-w2,-h2)
@@ -704,7 +704,7 @@ class _Structure(ArchComponent.Component):
             if not normal.Length:
                 normal = Vector(0,0,1)
             extrusion = normal
-            if (length > height) and (role != "Slab"):
+            if (length > height) and (IfcType != "Slab"):
                 if length:
                     extrusion = normal.multiply(length)
             else:
@@ -715,12 +715,10 @@ class _Structure(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
 
-        if hasattr(obj,"IfcRole"):
-            role = obj.IfcRole
-        elif hasattr(obj,"Role"):
-            role = obj.Role
+        if hasattr(obj,"IfcType"):
+            IfcType = obj.IfcType
         else:
-            role = None
+            IfcType = None
         self.hideSubobjects(obj,prop)
         if prop in ["Shape","ResetNodes","NodesOffset"]:
             # ResetNodes is not a property but it allows us to use this function to force reset the nodes
@@ -729,7 +727,7 @@ class _Structure(ArchComponent.Component):
             if extdata and not isinstance(extdata[0],list):
                 nodes = extdata[0]
                 nodes.Placement = nodes.Placement.multiply(extdata[2])
-                if role not in ["Slab"]:
+                if IfcType not in ["Slab"]:
                     if obj.Tool:
                         nodes = obj.Tool.Shape
                     elif extdata[1].Length > 0:
@@ -832,13 +830,13 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                             self.lineset.coordIndex.setValues(0,len(p)+2,range(len(p)+1)+[-1])
                             self.faceset.coordIndex.setValues(0,len(p)+1,range(len(p))+[-1])
 
-        elif prop in ["Role","IfcRole"]:
+        elif prop in ["IfcType"]:
             if hasattr(obj.ViewObject,"NodeType"):
-                if hasattr(obj,"IfcRole"):
-                    role = obj.IfcRole
+                if hasattr(obj,"IfcType"):
+                    IfcType = obj.IfcType
                 else:
-                    role = obj.Role
-                if role == "Slab":
+                    IfcType = None
+                if IfcType == "Slab":
                     obj.ViewObject.NodeType = "Area"
                 else:
                     obj.ViewObject.NodeType = "Linear"

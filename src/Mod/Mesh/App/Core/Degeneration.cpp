@@ -506,7 +506,7 @@ bool MeshFixDegeneratedFacets::Fixup()
     return true;
 }
 
-bool MeshRemoveSmallEdges::Fixup()
+bool MeshRemoveNeedles::Fixup()
 {
     typedef std::pair<unsigned long, int> FaceEdge; // (face, edge) pair
     typedef std::pair<float, FaceEdge> FaceEdgePriority;
@@ -524,13 +524,16 @@ bool MeshRemoveSmallEdges::Fixup()
                         std::vector<FaceEdgePriority>,
                         std::greater<FaceEdgePriority> > todo;
     for (std::size_t index = 0; index < facetCount; index++) {
+        const MeshFacet& facet = rclFAry[index];
+        MeshGeomFacet tria(_rclMesh.GetFacet(facet));
+        float perimeter = tria.Perimeter();
+        float fMinLen = perimeter * fMinEdgeLength;
         for (int i=0; i<3; i++) {
-            const MeshFacet& facet = rclFAry[index];
             const Base::Vector3f& p1 = rclPAry[facet._aulPoints[i]];
             const Base::Vector3f& p2 = rclPAry[facet._aulPoints[(i+1)%3]];
 
             float distance = Base::Distance(p1, p2);
-            if (distance < fMinEdgeLength) {
+            if (distance < fMinLen) {
                 unsigned long facetIndex = static_cast<unsigned long>(index);
                 todo.push(std::make_pair(distance, std::make_pair(facetIndex, i)));
             }
@@ -548,10 +551,13 @@ bool MeshRemoveSmallEdges::Fixup()
 
         // the facet points may have changed, so check the current distance again
         const MeshFacet& facet = rclFAry[faceedge.first];
+        MeshGeomFacet tria(_rclMesh.GetFacet(facet));
+        float perimeter = tria.Perimeter();
+        float fMinLen = perimeter * fMinEdgeLength;
         const Base::Vector3f& p1 = rclPAry[facet._aulPoints[faceedge.second]];
         const Base::Vector3f& p2 = rclPAry[facet._aulPoints[(faceedge.second+1)%3]];
         float distance = Base::Distance(p1, p2);
-        if (distance >= fMinEdgeLength)
+        if (distance >= fMinLen)
             continue;
 
         // collect the collapse-edge information
@@ -681,6 +687,77 @@ bool MeshRemoveSmallEdges::Fixup()
 
     return ulCtFacets > _rclMesh.CountFacets();
 #endif
+}
+
+// ----------------------------------------------------------------------
+
+bool MeshFixCaps::Fixup()
+{
+    typedef std::pair<unsigned long, int> FaceVertex; // (face, vertex) pair
+    typedef std::pair<float, FaceVertex> FaceVertexPriority;
+
+    MeshTopoAlgorithm topAlg(_rclMesh);
+    const MeshFacetArray &rclFAry = _rclMesh.GetFacets();
+    const MeshPointArray &rclPAry = _rclMesh.GetPoints();
+    std::size_t facetCount = rclFAry.size();
+
+    float fCosMaxAngle = static_cast<float>(cos(fMaxAngle));
+
+    std::priority_queue<FaceVertexPriority,
+                        std::vector<FaceVertexPriority>,
+                        std::greater<FaceVertexPriority> > todo;
+    for (std::size_t index = 0; index < facetCount; index++) {
+        for (int i=0; i<3; i++) {
+            const MeshFacet& facet = rclFAry[index];
+            const Base::Vector3f& p1 = rclPAry[facet._aulPoints[i]];
+            const Base::Vector3f& p2 = rclPAry[facet._aulPoints[(i+1)%3]];
+            const Base::Vector3f& p3 = rclPAry[facet._aulPoints[(i+2)%3]];
+            Base::Vector3f dir1(p2-p1); dir1.Normalize();
+            Base::Vector3f dir2(p3-p1); dir2.Normalize();
+
+            float fCosAngle = dir1.Dot(dir2);
+            if (fCosAngle < fCosMaxAngle) {
+                unsigned long facetIndex = static_cast<unsigned long>(index);
+                todo.push(std::make_pair(fCosAngle, std::make_pair(facetIndex, i)));
+            }
+        }
+    }
+
+    while (!todo.empty()) {
+        FaceVertex facevertex = todo.top().second;
+        todo.pop();
+
+        // the facet points may have changed, so check the current distance again
+        const MeshFacet& facet = rclFAry[facevertex.first];
+        const Base::Vector3f& p1 = rclPAry[facet._aulPoints[facevertex.second]];
+        const Base::Vector3f& p2 = rclPAry[facet._aulPoints[(facevertex.second+1)%3]];
+        const Base::Vector3f& p3 = rclPAry[facet._aulPoints[(facevertex.second+2)%3]];
+        Base::Vector3f dir1(p2-p1); dir1.Normalize();
+        Base::Vector3f dir2(p3-p1); dir2.Normalize();
+
+        // check that the criterion is still OK in case
+        // an earlier edge-swap has an impact
+        float fCosAngle = dir1.Dot(dir2);
+        if (fCosAngle >= fCosMaxAngle)
+            continue;
+
+        // the triangle shouldn't be a needle, therefore the projection of the point with
+        // the maximum angle must have a clear distance to the other corner points
+        // as factor we choose a default value of 25% of the corresponding edge length
+        Base::Vector3f p4 = p1.Perpendicular(p2, p3-p2);
+        float distP2P3 = Base::Distance(p2,p3);
+        float distP2P4 = Base::Distance(p2,p4);
+        float distP3P4 = Base::Distance(p3,p4);
+        if (distP2P4/distP2P3 < fSplitFactor || distP3P4/distP2P3 < fSplitFactor)
+            continue;
+
+        unsigned long facetpos = facevertex.first;
+        unsigned long neighbour = rclFAry[facetpos]._aulNeighbours[(facevertex.second+1)%3];
+        if (neighbour != ULONG_MAX)
+            topAlg.SwapEdge(facetpos, neighbour);
+    }
+
+    return true;
 }
 
 // ----------------------------------------------------------------------

@@ -262,7 +262,7 @@ class _Stairs(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Stair"
+        obj.IfcType = "Stair"
 
     def setProperties(self,obj):
 

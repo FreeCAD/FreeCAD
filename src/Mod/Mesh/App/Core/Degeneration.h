@@ -330,22 +330,27 @@ private:
 };
 
 /**
- * The MeshRemoveSmallEdges class tries to fix degenerations by removing small edges.
+ * The MeshRemoveNeedles class tries to fix degenerations by removing needles.
+ * Needles are triangles where its longest edge is much longer than its shortest edge.
+ * https://graphics.uni-bielefeld.de/publications/vmv01.pdf
  * @see MeshFixDegeneratedFacets
+ * @see MeshFixCaps
  * @author Werner Mayer
  */
-class MeshExport MeshRemoveSmallEdges : public MeshValidation
+class MeshExport MeshRemoveNeedles : public MeshValidation
 {
 public:
-  /**
-   * Construction.
-   */
-  MeshRemoveSmallEdges (MeshKernel &rclM, float fMinEdgeLen = MeshDefinitions::_fMinPointDistance)
-      : MeshValidation(rclM), fMinEdgeLength(fMinEdgeLen) { }
+    /**
+     * Construction. The \arg fMinEdgeLen must be in the range of 0.0 and 0.25.
+     * It defines the amount of perimeter of a triangle for which the shortest
+     * edge is considered for removal.
+     */
+  MeshRemoveNeedles (MeshKernel &rclM, float fMinEdgeLen = 0.05f)
+      : MeshValidation(rclM), fMinEdgeLength(std::min(fMinEdgeLen, 0.25f)) {}
   /**
    * Destruction.
    */
-  ~MeshRemoveSmallEdges () { }
+  ~MeshRemoveNeedles () { }
   /**
    * Removes all facets with an edge smaller than \a fMinEdgeLength without leaving holes or gaps
    * in the mesh.
@@ -354,6 +359,37 @@ public:
 
 private:
   float fMinEdgeLength;
+};
+
+/**
+ * The MeshFixCaps class tries to fix degenerations by swapping the common edge of a cap
+ * and its neighbour.
+ * Caps are triangles with one angle close to 180 degree. The definitions of caps and needles
+ * are not mutually exclusive but here we only consider triangles that are caps but no needles.
+ * https://graphics.uni-bielefeld.de/publications/vmv01.pdf
+ * @see MeshFixDegeneratedFacets
+ * @see MeshRemoveNeedles
+ * @author Werner Mayer
+ */
+class MeshExport MeshFixCaps : public MeshValidation
+{
+public:
+  /**
+   * Construction. The \arg fFactor must be in the range of 0.0 and 0.5.
+   */
+  MeshFixCaps (MeshKernel &rclM, float fMaxAng = 2.61f, float fFactor = 0.25f) // ~150 degree
+      : MeshValidation(rclM), fMaxAngle(fMaxAng), fSplitFactor(fFactor) { }
+  /**
+   * Destruction.
+   */
+  ~MeshFixCaps () { }
+  /**
+   */
+  bool Fixup ();
+
+private:
+  float fMaxAngle;
+  float fSplitFactor;
 };
 
 /**
