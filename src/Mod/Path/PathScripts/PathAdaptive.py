@@ -17,8 +17,12 @@
 # *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
 # *   Suite 330, Boston, MA  02111-1307, USA                                *
 # *                                                                         *
-# ***************************************************************************/
-
+# ***************************************************************************
+# *                                                                         *
+# *   Additional modifications and contributions beginning 2019             *
+# *   by Schildkroet.       (https://github.com/Schildkroet)                *
+# *                                                                         *
+# **************************************************************************/
 
 
 import PathScripts.PathOp as PathOp
