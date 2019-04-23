@@ -1267,6 +1267,42 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
     PY_TRY {
         ParameterGrp::handle const hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
+        //find the appropriate marker style string token
+        std::string marker_arg = pstr;
+
+        std::list<std::pair<std::string, std::string> > markerList = {
+            {"square", "DIAMOND_FILLED"},
+            {"cross", "CROSS"},
+            {"plus", "PLUS"},
+            {"empty", "SQUARE_LINE"},
+            {"quad", "SQUARE_FILLED"},
+            {"circle", "CIRCLE_LINE"},
+            {"default", "CIRCLE_FILLED"}
+        };
+
+        std::list<std::pair<std::string, std::string>>::iterator markerStyle;
+
+        for (markerStyle = markerList.begin(); markerStyle != markerList.end(); ++markerStyle)
+        {
+            if (marker_arg == (*markerStyle).first || marker_arg == (*markerStyle).second)
+                break;
+        }
+
+        marker_arg = "CIRCLE_FILLED";
+
+        if (markerStyle != markerList.end())
+            marker_arg = (*markerStyle).second;
+
+        //get the marker size
+        int sizeList[]={5, 7, 9};
+
+        if (std::find(std::begin(sizeList), std::end(sizeList), defSize) == std::end(sizeList))
+            defSize = 9;
+        
+
+        return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex(marker_arg, defSize));
+
+/*
         if (strcmp(pstr, "square") == 0)
             return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("DIAMOND_FILLED", hGrp->GetInt("MarkerSize", defSize)));
         else if (strcmp(pstr, "cross") == 0)
@@ -1280,7 +1316,7 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
         else if (strcmp(pstr, "circle") == 0)
             return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_LINE", hGrp->GetInt("MarkerSize", defSize)));
         else
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", hGrp->GetInt("MarkerSize", defSize)));
+            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", hGrp->GetInt("MarkerSize", defSize)));*/
     }PY_CATCH;
 }
 
