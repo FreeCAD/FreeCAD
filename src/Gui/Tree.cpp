@@ -42,6 +42,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Sequencer.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -1235,6 +1236,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
     if (this->isItemSelected(targetItem))
         return;
 
+    Base::EmptySequencer seq;
+
     // filter out the selected items we cannot handle
     std::vector<std::pair<DocumentObjectItem*,std::vector<std::string> > > items;
     auto sels = selectedItems();
@@ -1560,6 +1563,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         Selection().clearCompleteSelection();
 
         // Open command
+        auto manager = Application::Instance->macroManager();
         Gui::Document* gui = Gui::Application::Instance->getDocument(thisDoc);
         gui->openCommand("Move object");
         try {
@@ -1615,7 +1619,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     std::ostringstream ss;
                     ss << Command::getObjectCmd(vpp->getObject())
                         << ".ViewObject.dragObject(" << Command::getObjectCmd(obj) << ')';
-                    auto manager = Application::Instance->macroManager();
                     auto lines = manager->getLines();
                     vpp->dragObject(obj);
                     if(manager->getLines() == lines)
@@ -1636,7 +1639,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     droppedObjs.push_back(obj);
                     if(propPlacement) 
                         propPlacement->setValue(Base::Placement(mat));
-                }else{
+                }else if(dropOnly) {
                     std::string name = thisDoc->getUniqueObjectName("Link");
                     FCMD_DOC_CMD(thisDoc,"addObject('App::Link','" << name << "').setLink("
                             << Command::getObjectCmd(obj)  << ")");
@@ -1648,6 +1651,19 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     if(propPlacement) 
                         propPlacement->setValue(Base::Placement(mat));
                     droppedObjs.push_back(link);
+                } else {
+                    std::ostringstream ss;
+                    ss << "FreeCAD.getDocument('" << thisDoc->getName() << "').moveObject('"
+                        << Command::getObjectCmd(obj) << ", True)";
+                    auto moved = thisDoc->moveObject({obj},true);
+                    if(moved) {
+                        propPlacement = dynamic_cast<App::PropertyPlacement*>(
+                                moved->getPropertyByName("Placement"));
+                        if(propPlacement) 
+                            propPlacement->setValue(Base::Placement(mat));
+                        droppedObjs.push_back(moved);
+                    }
+                    manager->addLine(MacroManager::App,ss.str().c_str());
                 }
             }
             DocumentObjectItem *scrollItem = 0;

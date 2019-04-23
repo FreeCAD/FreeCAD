@@ -3959,9 +3959,36 @@ Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
 
 DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
 {
+    if(!obj)
+        return 0;
     Document* that = obj->getDocument();
     if (that == this)
         return 0; // nothing todo
+
+    if(recursive) {
+        auto deps = getDependencyList({obj},DepNoXLinked|DepSort);
+        auto objs = copyObject(deps,false);
+        if(objs.empty()) 
+            return 0;
+        // Some object may delete its children if deleted, so we collect the IDs
+        // or all depdending objects for saftey reason.
+        std::vector<int> ids;
+        ids.reserve(deps.size());
+        for(auto o : deps)
+            ids.push_back(o->getID());
+
+        // We only remove object if it is the moving object or it has no
+        // depending objects, i.e. an empty inList, which is why we need to
+        // iterate the depending list backwards.
+        for(auto iter=ids.rbegin();iter!=ids.rend();++iter) {
+            auto o = that->getObjectByID(*iter);
+            if(!o) continue;
+            if(iter==ids.rbegin()
+                    || o->getInList().empty())
+                that->removeObject(o->getNameInDocument());
+        }
+        return objs.back();
+    }
 
     // all object of the other document that refer to this object must be nullified
     that->breakDependency(obj, false);
@@ -3969,33 +3996,6 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     that->_removeObject(obj);
     this->_addObject(obj, objname.c_str());
     obj->setDocument(this);
-
-    std::map<std::string,App::Property*> props;
-    obj->getPropertyMap(props);
-    for (std::map<std::string,App::Property*>::iterator it = props.begin(); it != props.end(); ++it) {
-        if (it->second->getTypeId().isDerivedFrom(PropertyLink::getClassTypeId())) {
-            DocumentObject* link = static_cast<PropertyLink*>(it->second)->getValue();
-            if (recursive) {
-                moveObject(link, recursive);
-                static_cast<PropertyLink*>(it->second)->setValue(link);
-            }
-            else {
-                static_cast<PropertyLink*>(it->second)->setValue(0);
-            }
-        }
-        else if (it->second->getTypeId().isDerivedFrom(PropertyLinkList::getClassTypeId())) {
-            std::vector<DocumentObject*> links = static_cast<PropertyLinkList*>(it->second)->getValues();
-            if (recursive) {
-                for (std::vector<DocumentObject*>::iterator jt = links.begin(); jt != links.end(); ++jt)
-                    moveObject(*jt, recursive);
-                static_cast<PropertyLinkList*>(it->second)->setValues(links);
-            }
-            else {
-                static_cast<PropertyLinkList*>(it->second)->setValues(std::vector<DocumentObject*>());
-            }
-        }
-    }
-
     return obj;
 }
 
