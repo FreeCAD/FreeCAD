@@ -116,7 +116,8 @@ def getMaterialAttributeStructure(withSpaces=None):
     ''''''
 
     # material properties
-    # see the following resources in the FreeCAD wiki for more information about the material specific properties:
+    # see the following resources in the FreeCAD wiki for more information
+    # about the material specific properties:
     # https://www.freecadweb.org/wiki/Material_data_model
     # https://www.freecadweb.org/wiki/Material
 
@@ -127,7 +128,8 @@ def getMaterialAttributeStructure(withSpaces=None):
     tree = ElementTree.parse(infile)
 
     if withSpaces:
-        # on attributes, add a space before a capital letter, will be used for better display in the ui
+        # on attributes, add a space before a capital letter
+        # will be used for better display in the ui
         import re
         root = tree.getroot()
         for group in root.getchildren():
@@ -143,7 +145,7 @@ def read_cards_from_path(cards_path):
     from os.path import isfile, join, basename, splitext
     from importFCMat import read
     only_files = [f for f in listdir(cards_path) if isfile(join(cards_path, f))]
-    mat_files = [f for f in only_files if basename(splitext(f)[1]) == '.FCMat' or basename(splitext(f)[1]) == '.fcmat']
+    mat_files = [f for f in only_files if basename(splitext(f)[1]).upper() == '.FCMAT']
     # print(mat_files)
     mat_cards = []
     for f in sorted(mat_files):
