@@ -350,14 +350,29 @@ class _TaskPanelFemMaterial:
         # check if dict is not empty (do not use 'is True'
         if new_material_params:
             self.material = new_material_params
+            self.card_path = self.get_material_card(self.material)
+            # print('card_path: ' + self.card_path)
             self.check_material_keys()
             self.set_mat_params_in_input_fields(self.material)
-            if self.has_transient_mat is False:
-                self.add_transient_material()
+            if not self.card_path:
+                if self.has_transient_mat is False:
+                    self.add_transient_material()
+                else:
+                    self.set_transient_material()
             else:
-                self.set_transient_material()
+                # we found our exact material in self.materials dict :-)
+                FreeCAD.Console.PrintMessage(
+                    "Material card was found in material directories. "
+                    "We will use this material.\n"
+                )
+                index = self.parameterWidget.cb_materials.findData(self.card_path)
+                # print(index)
+                # set the current material in the cb widget
+                self.choose_material(index)
         else:
-            FreeCAD.Console.PrintMessage('No changes where made by the material editor.\n')
+            FreeCAD.Console.PrintMessage(
+                'No changes where made by the material editor.\n'
+            )
         # self.print_material_params()
         # material editor returns the mat_dict only not a card_path
         # if a standard FreeCAD mat_card was used
