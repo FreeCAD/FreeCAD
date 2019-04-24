@@ -80,7 +80,7 @@ bool TransactionalObject::removeDynamicProperty(const char*)
 void TransactionalObject::onPropertyStatusChanged(
         const App::Property &prop, unsigned long oldStatus)
 {
-    if(isAttachedToDocument())
+    if(!Document::isAnyRestoring() && isAttachedToDocument())
         ExtensionContainer::onPropertyStatusChanged(prop,oldStatus);
 }
 
