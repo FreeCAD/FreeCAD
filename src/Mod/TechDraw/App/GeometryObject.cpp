@@ -162,7 +162,8 @@ void GeometryObject::clear()
 void GeometryObject::projectShape(const TopoDS_Shape& input,
                                   const gp_Ax2 viewAxis)
 {
-    // Clear previous Geometry
+//    Base::Console().Message("GO::projectShape()\n");
+   // Clear previous Geometry
     clear();
 
     auto start = chrono::high_resolution_clock::now();
@@ -183,6 +184,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         }
         brep_hlr->Update();
         brep_hlr->Hide();
+
     }
     catch (Standard_Failure e) {
         Base::Console().Error("GO::projectShape - OCC error - %s - while projecting shape\n",
@@ -386,6 +388,7 @@ void GeometryObject::extractGeometry(edgeClass category, bool visible)
 //! update edgeGeom and vertexGeom from Compound of edges
 void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool visible)
 {
+//    Base::Console().Message("GO::addGeomFromCompound()\n");
     if(edgeCompound.IsNull()) {
         Base::Console().Log("TechDraw::GeometryObject::addGeomFromCompound edgeCompound is NULL\n");
         return; // There is no OpenCascade Geometry to be calculated
@@ -393,7 +396,8 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
 
     BaseGeom* base;
     TopExp_Explorer edges(edgeCompound, TopAbs_EDGE);
-    for (int i = 1 ; edges.More(); edges.Next(),i++) {
+    int i = 1;
+    for ( ; edges.More(); edges.Next(),i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
         if (edge.IsNull()) {
             //Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is NULL\n",i);
@@ -406,7 +410,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
 
         base = BaseGeom::baseFactory(edge);
         if (base == nullptr) {
-            Base::Console().Message("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
+            Base::Console().Log("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
             throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
         }
         base->classOfEdge = category;
@@ -533,18 +537,22 @@ bool GeometryObject::isWithinArc(double theta, double first,
 
 Base::BoundBox3d GeometryObject::calcBoundingBox() const
 {
+//    Base::Console().Message("GO::calcBoundingBox() - edges: %d\n", edgeGeom.size());
     Bnd_Box testBox;
     testBox.SetGap(0.0);
-    for (std::vector<BaseGeom *>::const_iterator it( edgeGeom.begin() );
-            it != edgeGeom.end(); ++it) {
-         BRepBndLib::Add((*it)->occEdge, testBox);
+    if (!edgeGeom.empty()) {
+        for (std::vector<BaseGeom *>::const_iterator it( edgeGeom.begin() );
+                it != edgeGeom.end(); ++it) {
+             BRepBndLib::Add((*it)->occEdge, testBox);
+        }
     }
+
+    double xMin = 0,xMax = 0,yMin = 0,yMax = 0, zMin = 0, zMax = 0;
     if (testBox.IsVoid()) {
         Base::Console().Log("INFO - GO::calcBoundingBox - testBox is void\n");
+    } else {
+        testBox.Get(xMin,yMin,zMin,xMax,yMax,zMax);
     }
-    double xMin,xMax,yMin,yMax,zMin,zMax;
-    testBox.Get(xMin,yMin,zMin,xMax,yMax,zMax);
-
     Base::BoundBox3d bbox(xMin,yMin,zMin,xMax,yMax,zMax);
     return bbox;
 }
