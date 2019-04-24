@@ -955,6 +955,18 @@ bool MeshTopoAlgorithm::CollapseEdge(unsigned long ulFacetPos, unsigned long ulN
 
 bool MeshTopoAlgorithm::IsCollapseEdgeLegal(const EdgeCollapse& ec) const
 {
+    // http://stackoverflow.com/a/27049418/148668
+    // Check connectivity
+    //
+    std::vector<unsigned long> commonPoints;
+    std::set_intersection(ec._adjacentFrom.begin(), ec._adjacentFrom.end(),
+                          ec._adjacentTo.begin(), ec._adjacentTo.end(),
+                          std::back_insert_iterator<std::vector<unsigned long> >(commonPoints));
+    if (commonPoints.size() > 2) {
+        return false;
+    }
+
+    // Check geometry
     std::vector<unsigned long>::const_iterator it;
     for (it = ec._changeFacets.begin(); it != ec._changeFacets.end(); ++it) {
         MeshFacet f = _rclMesh._aclFacetArray[*it];
