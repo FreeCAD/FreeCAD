@@ -672,7 +672,7 @@ void SheetTableView::cutSelection()
 void SheetTableView::pasteClipboard()
 {
     const QMimeData* mimeData = QApplication::clipboard()->mimeData();
-    if(!mimeData || (!mimeData->hasText() && !mimeData->hasText()))
+    if(!mimeData || !mimeData->hasText())
         return;
 
     if(selectionModel()->selectedIndexes().size()>1) {
