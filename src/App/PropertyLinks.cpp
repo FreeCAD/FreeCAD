@@ -2318,6 +2318,7 @@ public:
     Connection connDeletedObject;
 
     DocInfoMap::iterator myPos;
+    std::string myPath;
     App::Document *pcDoc;
     std::set<PropertyXLink*> links;
 
@@ -2397,7 +2398,7 @@ public:
     }
 
     const char *filePath() const {
-        return myPos->first.toUtf8().constData();
+        return myPath.c_str();
     }
 
     DocInfo()
@@ -2418,11 +2419,13 @@ public:
         auto me = shared_from_this();
         _DocInfoMap.erase(myPos);
         myPos = _DocInfoMap.end();
+        myPath.clear();
         pcDoc = 0;
     }
 
     void init(DocInfoMap::iterator pos, const char *objName, PropertyXLink *l) {
         myPos = pos;
+        myPath = myPos->first.toUtf8().constData();
         App::Application &app = App::GetApplication();
         connFinishRestoreDocument = app.signalFinishRestoreDocument.connect(
             boost::bind(&DocInfo::slotFinishRestoreDocument,this,_1));
@@ -2957,7 +2960,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
                 path = _path.c_str();
         }
         writer.Stream() << writer.ind() 
-            << "<XLink file=\"" << path
+            << "<XLink file=\"" << encodeAttribute(path)
             << "\" stamp=\"" << (docInfo&&docInfo->pcDoc?docInfo->pcDoc->LastModifiedDate.getValue():"")
             << "\" name=\"" << objectName;
     }
