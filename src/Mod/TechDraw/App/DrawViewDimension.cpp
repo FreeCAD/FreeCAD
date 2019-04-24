@@ -466,10 +466,15 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
     Base::UnitSystem uniSys = Base::UnitsApi::getSchema();
 
 //handle multi value schemes
+    std::string pre = getPrefix();
+    QString qPre = QString::fromUtf8(pre.data(),pre.size());
     if (((uniSys == Base::UnitSystem::Imperial1) ||
          (uniSys == Base::UnitSystem::ImperialBuilding) ) &&
          !angularMeasure) {
         specStr = userStr;
+        if (!pre.empty()) {
+            specStr = qPre + userStr;
+        }
     } else if ((uniSys == Base::UnitSystem::ImperialCivil) &&
          angularMeasure) {
         QString dispMinute = QString::fromUtf8("\'");
@@ -478,6 +483,9 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         QString schemeSecond = QString::fromUtf8("S");
         specStr = userStr.replace(schemeMinute,dispMinute);
         specStr = specStr.replace(schemeSecond,dispSecond);
+        if (!pre.empty()) {
+            specStr = qPre + userStr;
+        }
     } else {
 //handle single value schemes
         QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
@@ -514,13 +522,13 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
 
         QString repl = userVal;
         if (useDecimals()) {
-            if (showUnits()) {
+            if (showUnits() || (Type.isValue("Angle")) ||(Type.isValue("Angle3Pt")) ) {
                 repl = userStr;
             } else {
                 repl = userVal;
             }
         } else {
-            if (showUnits()) {
+            if (showUnits() || (Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
                 repl = specVal + userUnits;
             } else {
                 repl = specVal;
@@ -532,6 +540,11 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         QChar dp = QChar::fromLatin1('.');
         if (loc.decimalPoint() != dp) {
             specStr.replace(dp,loc.decimalPoint());
+        }
+        //Remove space between dimension and degree sign
+        if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
+            QRegExp space(QString::fromUtf8("\\s"));
+            specStr.remove(space);
         }
     }
 
@@ -981,6 +994,7 @@ std::string DrawViewDimension::getDefaultFormatSpec() const
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
     std::string prefFormat = hGrp->GetASCII("formatSpec","");
     QString formatSpec;
+    QString qPrefix;
     if (prefFormat.empty()) {
         QString format1 = Base::Tools::fromStdString("%.");
         QString format2 = Base::Tools::fromStdString("f");
@@ -993,14 +1007,18 @@ std::string DrawViewDimension::getDefaultFormatSpec() const
         QString formatPrecision = QString::number(precision);
 
         std::string prefix = getPrefix();
-        QString qPrefix;
+        
         if (!prefix.empty()) {
             qPrefix = QString::fromUtf8(prefix.data(),prefix.size());
         }
 
         formatSpec = qPrefix + format1 + formatPrecision + format2;
     } else {
-        return prefFormat;
+        
+        std::string prefix = getPrefix();
+        qPrefix = QString::fromUtf8(prefix.data(),prefix.size());
+        formatSpec = qPrefix + QString::fromStdString(prefFormat);
+        
     }
     
     return Base::Tools::toStdString(formatSpec);

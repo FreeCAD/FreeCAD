@@ -1075,7 +1075,7 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     obj.Placement.Base = point
     if FreeCAD.GuiUp:
         ViewProviderDraftText(obj.ViewObject)
-        if not screen:
+        if screen:
             obj.ViewObject.DisplayMode = "3D text"
         h = getParam("textheight",0.20)
         if screen:
@@ -2328,34 +2328,35 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                 elif hasattr(obj,"Closed"):
                     closed = obj.Closed
 
-                if len(obj.Shape.Vertexes) < 3:
-                    e = obj.Shape.Edges[0]
-                    nobj.addGeometry(Part.LineSegment(e.Curve,e.FirstParameter,e.LastParameter))
-                else:
-                    # Use the first three points to make a working plane. We've already
-                    # checked to make sure everything is coplanar
-                    plane = Part.Plane(*[i.Point for i in obj.Shape.Vertexes[:3]])
-                    normal = plane.Axis
-                    if rotation is None:
-                        axis = FreeCAD.Vector(0,0,1).cross(normal)
-                        angle = DraftVecUtils.angle(normal, FreeCAD.Vector(0,0,1)) * FreeCAD.Units.Radian
-                        rotation = FreeCAD.Rotation(axis, angle)
-                    for edge in obj.Shape.Edges:
-                        # edge.rotate(FreeCAD.Vector(0,0,0), rotAxis, rotAngle)
-                        edge = DraftGeomUtils.orientEdge(edge, normal)
-                        nobj.addGeometry(edge)
-                    if autoconstraints:
-                        last = nobj.GeometryCount
-                        segs = list(range(last-len(obj.Shape.Edges),last-1))
-                        for seg in segs:
-                            constraints.append(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
-                            if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
-                                constraints.append(Constraint("Vertical",seg))
-                            elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
-                                constraints.append(Constraint("Horizontal",seg))
-                        if closed:
-                            constraints.append(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
-                ok = True
+                if obj.Shape.Edges:
+                    if (len(obj.Shape.Vertexes) < 3):
+                        e = obj.Shape.Edges[0]
+                        nobj.addGeometry(Part.LineSegment(e.Curve,e.FirstParameter,e.LastParameter))
+                    else:
+                        # Use the first three points to make a working plane. We've already
+                        # checked to make sure everything is coplanar
+                        plane = Part.Plane(*[i.Point for i in obj.Shape.Vertexes[:3]])
+                        normal = plane.Axis
+                        if rotation is None:
+                            axis = FreeCAD.Vector(0,0,1).cross(normal)
+                            angle = DraftVecUtils.angle(normal, FreeCAD.Vector(0,0,1)) * FreeCAD.Units.Radian
+                            rotation = FreeCAD.Rotation(axis, angle)
+                        for edge in obj.Shape.Edges:
+                            # edge.rotate(FreeCAD.Vector(0,0,0), rotAxis, rotAngle)
+                            edge = DraftGeomUtils.orientEdge(edge, normal)
+                            nobj.addGeometry(edge)
+                        if autoconstraints:
+                            last = nobj.GeometryCount
+                            segs = list(range(last-len(obj.Shape.Edges),last-1))
+                            for seg in segs:
+                                constraints.append(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
+                                if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
+                                    constraints.append(Constraint("Vertical",seg))
+                                elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
+                                    constraints.append(Constraint("Horizontal",seg))
+                            if closed:
+                                constraints.append(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
+                    ok = True
         elif tp == "BSpline":
             nobj.addGeometry(obj.Shape.Edges[0].Curve)
             nobj.exposeInternalGeometry(nobj.GeometryCount-1)
@@ -2567,6 +2568,7 @@ def clone(obj,delta=None,forcedraft=False):
         except:
             pass
         if gui:
+            formatObject(cl,base)
             cl.ViewObject.DiffuseColor = base.ViewObject.DiffuseColor
             if getType(obj[0]) in ["Window","BuildingPart"]:
                 from DraftGui import todo
@@ -2586,6 +2588,8 @@ def clone(obj,delta=None,forcedraft=False):
     elif len(obj) == 1:
         cl.Placement = obj[0].Placement
     formatObject(cl,obj[0])
+    if hasattr(cl,"LongName") and hasattr(obj[0],"LongName"):
+        cl.LongName = obj[0].LongName
     if gui and (len(obj) > 1):
         cl.ViewObject.Proxy.resetColors(cl.ViewObject)
     select(cl)
@@ -3556,8 +3560,8 @@ class _Dimension(_DraftObject):
     def onChanged(self,obj,prop):
         if hasattr(obj,"Distance"):
             obj.setEditorMode('Distance',1)
-        if hasattr(obj,"Normal"):
-            obj.setEditorMode('Normal',2)
+        #if hasattr(obj,"Normal"):
+        #    obj.setEditorMode('Normal',2)
         if hasattr(obj,"Support"):
             obj.setEditorMode('Support',2)
 
@@ -4415,6 +4419,7 @@ class _Rectangle(_DraftObject):
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
         obj.addProperty("App::PropertyInteger","Rows","Draft",QT_TRANSLATE_NOOP("App::Property","Horizontal subdivisions of this rectangle"))
         obj.addProperty("App::PropertyInteger","Columns","Draft",QT_TRANSLATE_NOOP("App::Property","Vertical subdivisions of this rectangle"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Length=1
         obj.Height=1
@@ -4484,6 +4489,8 @@ class _Rectangle(_DraftObject):
                 else:
                     shape = Part.Face(shape)
             obj.Shape = shape
+            if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
 
@@ -4501,6 +4508,7 @@ class _Circle(_DraftObject):
         obj.addProperty("App::PropertyAngle","LastAngle","Draft",QT_TRANSLATE_NOOP("App::Property","End angle of the arc (for a full circle, give it same value as First Angle)"))
         obj.addProperty("App::PropertyLength","Radius","Draft",QT_TRANSLATE_NOOP("App::Property","Radius of the circle"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
 
     def execute(self, obj):
@@ -4515,6 +4523,8 @@ class _Circle(_DraftObject):
             else:
                 shape = Part.Face(shape)
         obj.Shape = shape
+        if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+            obj.Area = shape.Area
         obj.Placement = plm
         obj.positionBySupport()
 
@@ -4528,6 +4538,7 @@ class _Ellipse(_DraftObject):
         obj.addProperty("App::PropertyLength","MinorRadius","Draft",QT_TRANSLATE_NOOP("App::Property","The minor radius of the ellipse"))
         obj.addProperty("App::PropertyLength","MajorRadius","Draft",QT_TRANSLATE_NOOP("App::Property","The major radius of the ellipse"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
 
     def execute(self, obj):
@@ -4552,6 +4563,8 @@ class _Ellipse(_DraftObject):
                 else:
                     shape = Part.Face(shape)
             obj.Shape = shape
+            if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
 
@@ -4571,6 +4584,7 @@ class _Wire(_DraftObject):
         obj.addProperty("App::PropertyLength","ChamferSize","Draft",QT_TRANSLATE_NOOP("App::Property","Size of the chamfer to give to the corners"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face if this object is closed"))
         obj.addProperty("App::PropertyInteger","Subdivisions","Draft",QT_TRANSLATE_NOOP("App::Property","The number of subdivisions of each edge"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
 
@@ -4677,6 +4691,8 @@ class _Wire(_DraftObject):
                             shape = w
             if shape:
                 obj.Shape = shape
+                if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                    obj.Area = shape.Area
                 if hasattr(obj,"Length"):
                     obj.Length = shape.Length
         obj.Placement = plm
@@ -4827,6 +4843,7 @@ class _Polygon(_DraftObject):
         obj.addProperty("App::PropertyLength","FilletRadius","Draft",QT_TRANSLATE_NOOP("App::Property","Radius to use to fillet the corners"))
         obj.addProperty("App::PropertyLength","ChamferSize","Draft",QT_TRANSLATE_NOOP("App::Property","Size of the chamfer to give to the corners"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
         obj.DrawMode = ['inscribed','circumscribed']
         obj.FacesNumber = 0
@@ -4863,6 +4880,8 @@ class _Polygon(_DraftObject):
             else:
                 shape = Part.Face(shape)
             obj.Shape = shape
+            if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
 
@@ -4937,6 +4956,7 @@ class _BSpline(_DraftObject):
         obj.addProperty("App::PropertyVectorList","Points","Draft", QT_TRANSLATE_NOOP("App::Property","The points of the B-spline"))
         obj.addProperty("App::PropertyBool","Closed","Draft",QT_TRANSLATE_NOOP("App::Property","If the B-spline is closed or not"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face if this spline is closed"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
         obj.Points = []
@@ -4993,10 +5013,15 @@ class _BSpline(_DraftObject):
                 except Part.OCCError:
                     pass
                 obj.Shape = shape
+                if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                    obj.Area = shape.Area
             else:
                 spline = Part.BSplineCurve()
                 spline.interpolate(obj.Points, PeriodicFlag = False, Parameters = self.knotSeq)
-                obj.Shape = spline.toShape()
+                shape = spline.toShape()
+                obj.Shape = shape
+                if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                    obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
 
@@ -5013,6 +5038,7 @@ class _BezCurve(_DraftObject):
         obj.addProperty("App::PropertyIntegerList","Continuity","Draft",QT_TRANSLATE_NOOP("App::Property","Continuity"))
         obj.addProperty("App::PropertyBool","Closed","Draft",QT_TRANSLATE_NOOP("App::Property","If the Bezier curve should be closed or not"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face if this curve is closed"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
         obj.Degree = 3
@@ -5082,6 +5108,8 @@ class _BezCurve(_DraftObject):
                 except Part.OCCError:
                     pass
             fp.Shape = w
+            if hasattr(obj,"Area") and hasattr(w,"Area"): 
+                obj.Area = w.Area
         fp.Placement = plm
 
     @classmethod
@@ -6748,11 +6776,11 @@ class ViewProviderDraftText:
         textdrawstyle.style = coin.SoDrawStyle.FILLED
         self.trans = coin.SoTransform()
         self.font = coin.SoFont()
-        self.text2d = coin.SoText2()
-        self.text3d = coin.SoAsciiText()
+        self.text2d = coin.SoAsciiText()
+        self.text3d = coin.SoText2()
         self.text2d.string = self.text3d.string = "Label" # need to init with something, otherwise, crash!
-        self.text2d.justification = coin.SoText2.LEFT
-        self.text3d.justification = coin.SoAsciiText.LEFT
+        self.text2d.justification = coin.SoAsciiText.LEFT
+        self.text3d.justification = coin.SoText2.LEFT
         self.node2d = coin.SoGroup()
         self.node2d.addChild(self.trans)
         self.node2d.addChild(self.mattext)
@@ -6775,9 +6803,6 @@ class ViewProviderDraftText:
 
     def getDisplayModes(self,vobj):
         return ["2D text","3D text"]
-
-    def getDefaultDisplayMode(self):
-        return "3D text"
 
     def setDisplayMode(self,mode):
         return mode
@@ -6811,14 +6836,14 @@ class ViewProviderDraftText:
                 from pivy import coin
                 try:
                     if vobj.Justification == "Left":
-                        self.text2d.justification = coin.SoText2.LEFT
-                        self.text3d.justification = coin.SoAsciiText.LEFT
+                        self.text2d.justification = coin.SoAsciiText.LEFT
+                        self.text3d.justification = coin.SoText2.LEFT
                     elif vobj.Justification == "Right":
-                        self.text2d.justification = coin.SoText2.RIGHT
-                        self.text3d.justification = coin.SoAsciiText.RIGHT
+                        self.text2d.justification = coin.SoAsciiText.RIGHT
+                        self.text3d.justification = coin.SoText2.RIGHT
                     else:
-                        self.text2d.justification = coin.SoText2.CENTER
-                        self.text3d.justification = coin.SoAsciiText.CENTER
+                        self.text2d.justification = coin.SoAsciiText.CENTER
+                        self.text3d.justification = coin.SoText2.CENTER
                 except AssertionError:
                     pass # Race condition - Justification enum has not been set yet
         elif prop == "LineSpacing":

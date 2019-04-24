@@ -288,7 +288,13 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     testBox.SetGap(0.0);
     BRepBndLib::Add(detail, testBox);
     if (testBox.IsVoid()) {
-        Base::Console().Message("DrawViewDetail - detail area contains no geometry\n");
+//        Base::Console().Warning("DrawViewDetail - detail area contains no geometry\n");
+        TechDrawGeometry::GeometryObject* go = getGeometryObject();
+        if (go != nullptr) {
+            go->clear();
+        }
+        requestPaint();
+        dvp->requestPaint();
         return new App::DocumentObjectExecReturn("DVDetail - detail area contains no geometry");
     }
 

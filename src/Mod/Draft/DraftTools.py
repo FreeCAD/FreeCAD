@@ -1154,7 +1154,7 @@ class CubicBezCurve(Line):
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create BezCurve"),
                             ['points = '+pts,
-                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+')',
+                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+',Degree='+str(self.degree)+')',
                              'Draft.autogroup(bez)',
                              'FreeCAD.ActiveDocument.recompute()'])
             except:
@@ -1352,7 +1352,7 @@ class Arc(Creator):
         return {'Pixmap'  : 'Draft_Arc',
                 'Accel' : "A, R",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Arc", "Arc"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Arc", "Creates an arc. CTRL to snap, SHIFT to constrain")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Arc", "Creates an arc by center point and radius. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
         Creator.Activated(self,self.featureName)
@@ -6102,7 +6102,7 @@ class Draft_Arc_3Points:
 
         return {'Pixmap'  : "Draft_Arc_3Points.svg",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc 3 points"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates an arc by giving 3 points through which the arc should pass"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates an arc by 3 points"),
                 'Accel'   : 'A,T'}
 
     def IsActive(self):
@@ -6136,7 +6136,7 @@ class Draft_Arc_3Points:
         else:
             import Part
             e = Part.Arc(self.points[0],self.points[1],self.points[2]).toShape()
-            if Draft.getParam("UsePartPrimitives",False) or True: # TODO Draft "native" object below is buggy, use common shape for now
+            if Draft.getParam("UsePartPrimitives",False):
                 o = FreeCAD.ActiveDocument.addObject("Part::Feature","Arc")
                 o.Shape = e
             else:
@@ -6144,7 +6144,7 @@ class Draft_Arc_3Points:
                 rot = FreeCAD.Rotation(e.Curve.XAxis,e.Curve.YAxis,e.Curve.Axis,"ZXY")
                 placement = FreeCAD.Placement(e.Curve.Center,rot)
                 start = e.FirstParameter
-                end = e.LastParameter
+                end = e.LastParameter/math.pi*180
                 Draft.makeCircle(radius,placement,startangle=start,endangle=end)
             self.tracker.off()
             FreeCAD.ActiveDocument.recompute()
@@ -6355,14 +6355,23 @@ FreeCADGui.addCommand('Draft_SelectPlane',SelectPlane())
 FreeCADGui.addCommand('Draft_Line',Line())
 FreeCADGui.addCommand('Draft_Wire',Wire())
 FreeCADGui.addCommand('Draft_Circle',Circle())
+class CommandArcGroup:
+    def GetCommands(self):
+        return tuple(['Draft_Arc','Draft_Arc_3Points'])
+    def GetResources(self):
+        return { 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ArcTools",'Arc tools'),
+                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ArcTools",'Arc tools')
+               }
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
 FreeCADGui.addCommand('Draft_Arc',Arc())
 FreeCADGui.addCommand('Draft_Arc_3Points',Draft_Arc_3Points())
+FreeCADGui.addCommand('Draft_ArcTools', CommandArcGroup())
 FreeCADGui.addCommand('Draft_Text',Text())
 FreeCADGui.addCommand('Draft_Rectangle',Rectangle())
 FreeCADGui.addCommand('Draft_Dimension',Dimension())
 FreeCADGui.addCommand('Draft_Polygon',Polygon())
 FreeCADGui.addCommand('Draft_BSpline',BSpline())
-
 class CommandBezierGroup:
     def GetCommands(self):
         return tuple(['Draft_BezCurve','Draft_CubicBezCurve'])
@@ -6375,7 +6384,6 @@ class CommandBezierGroup:
 FreeCADGui.addCommand('Draft_BezCurve',BezCurve())
 FreeCADGui.addCommand('Draft_CubicBezCurve',CubicBezCurve())
 FreeCADGui.addCommand('Draft_BezierTools', CommandBezierGroup())
-    
 FreeCADGui.addCommand('Draft_Point',Point())
 FreeCADGui.addCommand('Draft_Ellipse',Ellipse())
 FreeCADGui.addCommand('Draft_ShapeString',ShapeString())

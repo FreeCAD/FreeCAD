@@ -319,7 +319,29 @@ class Component:
                         if data:
                             return data
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Extrusion"):
+            # the base is another arch object which can provide extrusion data
+            if hasattr(obj.Base,"Proxy") and hasattr(obj.Base.Proxy,"getExtrusionData") and (not obj.Additions) and (not obj.Subtractions):
+                if obj.Base.Base:
+                    if obj.Placement.Rotation.Angle < 0.0001:
+                        # if the final obj is rotated, this will screw all our IFC orientation. Better leave it like that then...
+                        data = obj.Base.Proxy.getExtrusionData(obj.Base)
+                        if data:
+                            return data
+                            # TODO above doesn't work if underlying shape is not at (0,0,0). But code below doesn't work well yet
+                            # add the displacement of the final object
+                            disp = obj.Shape.CenterOfMass.sub(obj.Base.Shape.CenterOfMass)
+                            if isinstance(data[2],(list,tuple)):
+                                ndata2 = []
+                                for p in data[2]:
+                                    p.move(disp)
+                                    ndata2.append(p)
+                                return (data[0],data[1],ndata2)
+                            else:
+                                ndata2 = data[2]
+                                ndata2.move(disp)
+                                return (data[0],data[1],ndata2)
+            # the base is a Part Extrusion
+            elif obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base:
                     base,placement = self.rebase(obj.Base.Base.Shape)
                     extrusion = FreeCAD.Vector(obj.Base.Dir)
