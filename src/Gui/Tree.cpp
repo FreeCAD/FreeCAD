@@ -974,7 +974,8 @@ void TreeWidget::selectAllLinks(App::DocumentObject *obj) {
         TREE_ERR("invlaid object");
         return;
     }
-    for(auto link: App::GetApplication().getLinksTo(obj,true)) {
+    for(auto link: App::GetApplication().getLinksTo(obj,App::GetLinkRecursive|App::GetLinkArray)) 
+    {
         if(!link || !link->getNameInDocument()) {
             TREE_ERR("invalid linked object");
             continue;
@@ -1792,14 +1793,14 @@ void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::P
 
 void TreeWidget::slotShowHidden(const Gui::Document& Doc)
 {
-    std::map<const Gui::Document*, DocumentItem*>::iterator it = DocumentMap.find(&Doc);
+    auto it = DocumentMap.find(&Doc);
     if (it != DocumentMap.end())
         it->second->updateItemsVisibility(it->second,it->second->showHidden());
 }
 
 void TreeWidget::slotRelabelDocument(const Gui::Document& Doc)
 {
-    std::map<const Gui::Document*, DocumentItem*>::iterator it = DocumentMap.find(&Doc);
+    auto it = DocumentMap.find(&Doc);
     if (it != DocumentMap.end()) {
         it->second->setText(0, QString::fromUtf8(Doc.getDocument()->Label.getValue()));
     }
@@ -1807,11 +1808,11 @@ void TreeWidget::slotRelabelDocument(const Gui::Document& Doc)
 
 void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
 {
-    std::map<const Gui::Document*, DocumentItem*>::iterator jt = DocumentMap.find(&Doc);
+    auto jt = DocumentMap.find(&Doc);
     if (jt == DocumentMap.end())
         return; // signal is emitted before the item gets created
     int displayMode = FC_TREEPARAM(DocumentMode);
-    for (std::map<const Gui::Document*, DocumentItem*>::iterator it = DocumentMap.begin();
+    for (auto it = DocumentMap.begin();
          it != DocumentMap.end(); ++it)
     {
         QFont f = it->second->font(0);
@@ -1831,10 +1832,17 @@ void TreeWidget::onUpdateStatus(void)
         statusTimer->stop();
         if(isVisible()) {
             FC_LOG("update item status");
-            std::map<const Gui::Document*,DocumentItem*>::iterator pos;
-            for (pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
+            for (auto pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
                 pos->second->testStatus();
             }
+
+            for(auto &v : ChangedObjects) {
+                auto iter = ObjectTable.find(v.first);
+                if(iter == ObjectTable.end())
+                    continue;
+                updateChildren(iter->first, iter->second, v.second, false);
+            }
+            ChangedObjects.clear();
         }
     }
     statusUpdateDelay = 0;
@@ -1914,8 +1922,7 @@ void TreeWidget::scrollItemToTop()
             continue;
 
         if(doc && Gui::Selection().hasSelection(doc->getDocument()->getName(),false)) {
-            std::map<const Gui::Document*,DocumentItem*>::iterator it;
-            it = tree->DocumentMap.find(doc);
+            auto it = tree->DocumentMap.find(doc);
             if (it != tree->DocumentMap.end()) {
                 bool lock = tree->blockConnection(true);
                 it->second->selectItems(true);
@@ -2065,8 +2072,7 @@ void TreeWidget::onItemSelectionChanged ()
         if(FC_TREEPARAM(RecordSelection))
             Gui::Selection().selStackPush();
     }else{
-        std::map<const Gui::Document*,DocumentItem*>::iterator pos;
-        for (pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
+        for (auto pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
             currentDocItem = pos->second;
             pos->second->updateSelection(pos->second);
             currentDocItem = 0;
@@ -2822,15 +2828,28 @@ void TreeWidget::slotChangeObject(
             return;
     }
 
+    bool output = prop.testStatus(App::Property::Output) 
+                  || prop.testStatus(App::Property::NoRecompute);
+
+    if(force)
+        updateChildren(itEntry->first,itEntry->second,output,true);
+    else
+        ChangedObjects.emplace(obj,output);
+}
+
+void TreeWidget::updateChildren(App::DocumentObject *obj,
+        const std::set<DocumentObjectDataPtr> &dataSet, bool propOutput, bool force)
+{
     bool childrenChanged = false;
     std::vector<App::DocumentObject*> children;
-    bool removeChildrenFromRoot = view.canRemoveChildrenFromRoot();
+    bool removeChildrenFromRoot = true;
 
     DocumentObjectDataPtr found;
-    for(auto data : itEntry->second) {
+    for(auto data : dataSet) {
         if(!found) {
             found = data;
             childrenChanged = found->updateChildren(force);
+            removeChildrenFromRoot = found->viewObject->canRemoveChildrenFromRoot();
             if(!childrenChanged && found->removeChildrenFromRoot==removeChildrenFromRoot)
                 return;
         }else if(childrenChanged)
@@ -2844,11 +2863,13 @@ void TreeWidget::slotChangeObject(
     if(force)
         return;
 
-    if(childrenChanged && prop.testStatus(App::Property::Output)) {
+    if(childrenChanged && propOutput) {
         // When a property is marked as output, it will not touch its object,
         // and thus, its property change will not be propagated through
         // recomputation. So we have to manually check for each links here.
-        for(auto link : App::GetApplication().getLinksTo(obj,true)) {
+        for(auto link : App::GetApplication().getLinksTo(obj,App::GetLinkRecursive)) {
+            if(ChangedObjects.count(link))
+                continue;
             std::vector<App::DocumentObject*> linkedChildren;
             DocumentObjectDataPtr found;
             auto it = ObjectTable.find(link);
@@ -2871,14 +2892,11 @@ void TreeWidget::slotChangeObject(
     if(childrenChanged) {
         //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children 
         //of the geofeaturegroup depends on what the childs claim
-        auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(view.getObject());
-        if(grp) {
-            auto vp = dynamic_cast<ViewProviderDocumentObject*>(
-                    Application::Instance->getViewProvider(grp));
-            if (vp) {
-                App::PropertyBool dummy;
-                slotChangeObject(*vp,dummy,false);
-            }
+        auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+        if(grp && !ChangedObjects.count(grp)) {
+            auto iter = ObjectTable.find(grp);
+            if(iter!=ObjectTable.end())
+                updateChildren(grp,iter->second,true,false);
         }
     }
 }

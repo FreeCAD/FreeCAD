@@ -183,6 +183,9 @@ private:
     void changeEvent(QEvent *e);
     void setupText();
 
+    void updateChildren(App::DocumentObject *obj, 
+            const std::set<DocumentObjectDataPtr> &data, bool output, bool force);
+
 private:
     QAction* createGroupAction;
     QAction* relabelObjectAction;
@@ -209,8 +212,9 @@ private:
     QTime preselectTime;
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
-    std::map<const Gui::Document*,DocumentItem*> DocumentMap;
-    std::map<App::DocumentObject*,std::set<DocumentObjectDataPtr> > ObjectTable;
+    std::unordered_map<const Gui::Document*,DocumentItem*> DocumentMap;
+    std::unordered_map<App::DocumentObject*,std::set<DocumentObjectDataPtr> > ObjectTable;
+    std::unordered_map<App::DocumentObject*,bool> ChangedObjects;
     bool fromOutside;
     int statusUpdateDelay;
 
@@ -289,14 +293,14 @@ protected:
 
     App::DocumentObject *getTopParent(App::DocumentObject *obj, std::string &subname);
 
-    typedef std::map<const ViewProvider *, std::vector<ViewProviderDocumentObject*> > ViewParentMap;
+    typedef std::unordered_map<const ViewProvider *, std::vector<ViewProviderDocumentObject*> > ViewParentMap;
     void populateParents(const ViewProvider *vp, ViewParentMap &);
 
 private:
     const char *treeName; // for debugging purpose
     Gui::Document* pDocument;
-    std::map<App::DocumentObject*,DocumentObjectDataPtr> ObjectMap;
-    std::map<App::DocumentObject*, std::set<App::DocumentObject*> > _ParentMap;
+    std::unordered_map<App::DocumentObject*,DocumentObjectDataPtr> ObjectMap;
+    std::unordered_map<App::DocumentObject*, std::set<App::DocumentObject*> > _ParentMap;
     std::vector<long> TransactingObjects;
 
     typedef boost::signals2::connection Connection;
