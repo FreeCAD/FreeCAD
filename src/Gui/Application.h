@@ -77,6 +77,10 @@ public:
     bool sendMsgToActiveView(const char* pMsg, const char** ppReturn=0);
     /// send Messages test to the active view
     bool sendHasMsgToActiveView(const char* pMsg);
+    /// send Messages to the focused view
+    bool sendMsgToFocusView(const char* pMsg, const char** ppReturn=0);
+    /// send Messages test to the focused view
+    bool sendHasMsgToFocusView(const char* pMsg);
     /// Attach a view (get called by the FCView constructor)
     void attachView(Gui::BaseView* pcView);
     /// Detach a view (get called by the FCView destructor)
@@ -232,6 +236,7 @@ public:
     static PyObject* sGetIcon                  (PyObject *self,PyObject *args); // get an icon from the cache
 
     static PyObject* sSendActiveView           (PyObject *self,PyObject *args);
+    static PyObject* sSendFocusView            (PyObject *self,PyObject *args);
 
     static PyObject* sGetMainWindow            (PyObject *self,PyObject *args);
     static PyObject* sUpdateGui                (PyObject *self,PyObject *args);

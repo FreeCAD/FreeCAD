@@ -851,6 +851,31 @@ bool Application::sendHasMsgToActiveView(const char* pMsg)
     return pView ? pView->onHasMsg(pMsg) : false;
 }
 
+/// send Messages to the active view
+bool Application::sendMsgToFocusView(const char* pMsg, const char** ppReturn)
+{
+    MDIView* pView = getMainWindow()->activeWindow();
+    if(!pView)
+        return false;
+    for(auto focus=qApp->focusWidget();focus;focus=focus->parentWidget()) {
+        if(focus == pView)
+            return pView->onMsg(pMsg,ppReturn);
+    }
+    return false;
+}
+
+bool Application::sendHasMsgToFocusView(const char* pMsg)
+{
+    MDIView* pView = getMainWindow()->activeWindow();
+    if(!pView)
+        return false;
+    for(auto focus=qApp->focusWidget();focus;focus=focus->parentWidget()) {
+        if(focus == pView)
+            return pView->onHasMsg(pMsg);
+    }
+    return false;
+}
+
 Gui::MDIView* Application::activeView(void) const
 {
     if (activeDocument())

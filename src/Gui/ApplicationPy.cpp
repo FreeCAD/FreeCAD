@@ -143,6 +143,8 @@ PyMethodDef Application::Methods[] = {
    "Returns a list of all commands known to FreeCAD."},
   {"SendMsgToActiveView",     (PyCFunction) Application::sSendActiveView, METH_VARARGS,
    "deprecated -- use class View"},
+  {"sendMsgToFocusView",     (PyCFunction) Application::sSendFocusView, METH_VARARGS,
+   "send message to the focused view"},
   {"hide",                    (PyCFunction) Application::sHide, METH_VARARGS,
    "deprecated"},
   {"show",                    (PyCFunction) Application::sShow, METH_VARARGS,
@@ -618,6 +620,28 @@ PyObject* Application::sSendActiveView(PyObject * /*self*/, PyObject *args)
 
     const char* ppReturn=0;
     if (!Instance->sendMsgToActiveView(psCommandStr,&ppReturn)) {
+        if (!PyObject_IsTrue(suppress))
+            Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
+    }
+
+    // Print the return value to the output
+    if (ppReturn) {
+        return Py_BuildValue("s",ppReturn);
+    }
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* Application::sSendFocusView(PyObject * /*self*/, PyObject *args)
+{
+    char *psCommandStr;
+    PyObject *suppress=Py_False;
+    if (!PyArg_ParseTuple(args, "s|O!",&psCommandStr,&PyBool_Type,&suppress))
+        return NULL;
+
+    const char* ppReturn=0;
+    if (!Instance->sendMsgToFocusView(psCommandStr,&ppReturn)) {
         if (!PyObject_IsTrue(suppress))
             Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
     }

@@ -916,7 +916,7 @@ StdCmdCopy::StdCmdCopy()
 void StdCmdCopy::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    bool done = getGuiApplication()->sendMsgToActiveView("Copy");
+    bool done = getGuiApplication()->sendMsgToFocusView("Copy");
     if (!done) {
         QMimeData * mimeData = getMainWindow()->createMimeDataFromSelection();
         QClipboard* cb = QApplication::clipboard();
@@ -926,7 +926,7 @@ void StdCmdCopy::activated(int iMsg)
 
 bool StdCmdCopy::isActive(void)
 {
-    if (getGuiApplication()->sendHasMsgToActiveView("Copy"))
+    if (getGuiApplication()->sendHasMsgToFocusView("Copy"))
         return true;
     return Selection().hasSelection();
 }
@@ -951,7 +951,7 @@ StdCmdPaste::StdCmdPaste()
 void StdCmdPaste::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    bool done = getGuiApplication()->sendMsgToActiveView("Paste");
+    bool done = getGuiApplication()->sendMsgToFocusView("Paste");
     if (!done) {
         QClipboard* cb = QApplication::clipboard();
         const QMimeData* mimeData = cb->mimeData();
@@ -964,7 +964,7 @@ void StdCmdPaste::activated(int iMsg)
 
 bool StdCmdPaste::isActive(void)
 {
-    if (getGuiApplication()->sendHasMsgToActiveView("Paste"))
+    if (getGuiApplication()->sendHasMsgToFocusView("Paste"))
         return true;
     QClipboard* cb = QApplication::clipboard();
     const QMimeData* mime = cb->mimeData();
@@ -1117,19 +1117,9 @@ void StdCmdDelete::activated(int iMsg)
     std::set<App::Document*> docs;
     try {
         App::GetApplication().setActiveTransaction("Delete");
-        auto activeView = getMainWindow()->activeWindow();
-        if(activeView) {
-            bool found = false;
-            for(auto focus=qApp->focusWidget();focus;focus=focus->parentWidget()) {
-                if(focus == activeView) {
-                    found = true;
-                    break;
-                }
-            }
-            if(found && activeView->onMsg(getName(),0)) {
-                App::GetApplication().closeActiveTransaction();
-                return;
-            }
+        if (getGuiApplication()->sendHasMsgToFocusView(getName())) {
+            App::GetApplication().closeActiveTransaction();
+            return;
         }
         Gui::getMainWindow()->setUpdatesEnabled(false);
         auto editDoc = Application::Instance->editDocument();
