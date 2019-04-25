@@ -355,3 +355,33 @@ def get_and_output_all_carddata(cards):
     # which are not used in other materials
     # but the tmplate is handled here like a material
     print('--------------------\nget_and_output_all_carddata--END\n\n\n')
+
+
+# ***** process multiple material cards **********************************************************
+def read_cards_from_path(cards_path):
+    from os import listdir
+    from os.path import isfile, join, basename, splitext
+    from importFCMat import read
+    only_files = [f for f in listdir(cards_path) if isfile(join(cards_path, f))]
+    # to make sure all file lower and upper and mixed endings are found, use upper and .FCMAT
+    mat_files = [f for f in only_files if basename(splitext(f)[1]).upper() == '.FCMAT']
+    # print(mat_files)
+    mat_cards = []
+    for f in sorted(mat_files):
+        mat_cards.append(read(join(cards_path, f)))
+    return mat_cards
+
+
+def write_cards_to_path(cards_path, cards_data, write_group_section=True, write_template=False):
+    from importFCMat import write
+    from os.path import join
+    for card_data in cards_data:
+        if (card_data['CardName'] == 'TEMPLATE') and (write_template is False):
+            continue
+        else:
+            card_path = join(cards_path, (card_data['CardName'] + '.FCMat'))
+            print(card_path)
+            if write_group_section is True:
+                write(card_path, card_data, True)
+            else:
+                write(card_path, card_data, False)
