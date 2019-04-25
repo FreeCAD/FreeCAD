@@ -1117,11 +1117,12 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
             if(index < (int)elements.size())
                 old = elements[index];
 
+            int idx = -1;
             if(getLinkModeValue()>=LinkModeAutoLink ||
                (subname && subname[0]) ||
                subElements.size() ||
                obj->getDocument()!=parent->getDocument() ||
-               getElementListProperty()->find(obj->getNameInDocument()))
+               (getElementListProperty()->find(obj->getNameInDocument(),&index) && idx!=index))
             {
                 std::string name = parent->getDocument()->getUniqueObjectName("Link");
                 auto link = new Link;
@@ -1151,7 +1152,7 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
         // Reaching here means, we are group (i.e. no LinkedObject), and
         // index<0, and 'obj' is zero. We shall clear the whole group
 
-        if(obj || getElementListProperty())
+        if(obj || !getElementListProperty())
             LINK_THROW(Base::RuntimeError,"No PropertyLink or PropertyLinkList configured");
 
         auto objs = getElementListValue();
