@@ -91,6 +91,8 @@ public:
 
     void clearDirty();
 
+    void setDirty();
+
     void setResolveException(const std::string &e);
 
     void clearResolveException();

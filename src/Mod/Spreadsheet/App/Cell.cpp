@@ -134,6 +134,7 @@ Cell::Cell(PropertySheet *_owner, const Cell &other)
     , editMode(other.editMode)
 {
     setUsed(MARK_SET, false);
+    setDirty();
 }
 
 Cell &Cell::operator =(const Cell &rhs)
@@ -154,6 +155,7 @@ Cell &Cell::operator =(const Cell &rhs)
     editMode = rhs.editMode;
 
     setUsed(MARK_SET, false);
+    setDirty();
 
     signaller.tryInvoke();
     return *this;
@@ -176,6 +178,8 @@ Cell::~Cell()
 void Cell::setExpression(App::ExpressionPtr &&expr)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
+
+    owner->setDirty(address);
 
     /* Remove dependencies */
     owner->removeDependencies(address);
@@ -216,7 +220,6 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
 
     /* Update dependencies */
     owner->addDependencies(address);
-    owner->setDirty(address);
 
     signaller.tryInvoke();
 }
@@ -288,12 +291,11 @@ void Cell::setContent(const char * value)
     PropertySheet::AtomicPropertyChange signaller(*owner);
     App::ExpressionPtr expr;
 
-    setUsed(PARSE_EXCEPTION_SET, false);
+    clearException();
     if (value != 0) {
         if(owner->sheet()->isRestoring()) {
             expression = StringExpression::create(owner->sheet(),value);
             setUsed(EXPRESSION_SET, true);
-            signaller.tryInvoke();
             return;
         }
         if (*value == '=') {
@@ -356,6 +358,7 @@ void Cell::setAlignment(int _alignment)
 
         alignment = _alignment;
         setUsed(ALIGNMENT_SET, alignment != (ALIGNMENT_HIMPLIED | ALIGNMENT_LEFT | ALIGNMENT_VIMPLIED | ALIGNMENT_VCENTER));
+        setDirty();
         signaller.tryInvoke();
     }
 }
@@ -383,6 +386,7 @@ void Cell::setStyle(const std::set<std::string> & _style)
 
         style = _style;
         setUsed(STYLE_SET, style.size() > 0);
+        setDirty();
 
         signaller.tryInvoke();
     }
@@ -411,6 +415,7 @@ void Cell::setForeground(const App::Color &color)
 
         foregroundColor = color;
         setUsed(FOREGROUND_COLOR_SET, foregroundColor != App::Color(0, 0, 0, 1));
+        setDirty();
 
         signaller.tryInvoke();
     }
@@ -439,6 +444,7 @@ void Cell::setBackground(const App::Color &color)
 
         backgroundColor = color;
         setUsed(BACKGROUND_COLOR_SET, backgroundColor != App::Color(1, 1, 1, 0));
+        setDirty();
 
         signaller.tryInvoke();
     }
@@ -478,6 +484,7 @@ void Cell::setDisplayUnit(const std::string &unit)
 
         displayUnit = newDisplayUnit;
         setUsed(DISPLAY_UNIT_SET, !displayUnit.isEmpty());
+        setDirty();
 
         signaller.tryInvoke();
     }
@@ -514,6 +521,7 @@ void Cell::setAlias(const std::string &n)
             owner->aliasProp.erase(address);
 
         setUsed(ALIAS_SET, !alias.empty());
+        setDirty();
 
         signaller.tryInvoke();
     }
@@ -536,6 +544,7 @@ void Cell::setComputedUnit(const Base::Unit &unit)
 
     computedUnit = unit;
     setUsed(COMPUTED_UNIT_SET, !computedUnit.isEmpty());
+    setDirty();
 
     signaller.tryInvoke();
 }
@@ -568,6 +577,7 @@ void Cell::setSpans(int rows, int columns)
         colSpan = (columns == -1 ? 1 : columns);
         setUsed(SPANS_SET, (rowSpan != 1 || colSpan != 1) );
         setUsed(SPANS_UPDATED);
+        setDirty();
         signaller.tryInvoke();
     }
 }
@@ -607,7 +617,7 @@ void Cell::setParseException(const std::string &e)
 void Cell::setResolveException(const std::string &e)
 {
     if(e.size() && owner && owner->sheet()) {
-        FC_ERR(owner->sheet()->getFullName() << '.' 
+        FC_LOG(owner->sheet()->getFullName() << '.' 
                 << address.toString() << ": " << e);
     }
     exceptionStr = e;
@@ -621,14 +631,22 @@ void Cell::clearResolveException()
 
 void Cell::clearException()
 {
-    if (!isUsed(PARSE_EXCEPTION_SET))
-        exceptionStr = "";
+    exceptionStr.clear();
     setUsed(EXCEPTION_SET, false);
+    setUsed(RESOLVE_EXCEPTION_SET, false);
+    setUsed(PARSE_EXCEPTION_SET, false);
 }
 
 void Cell::clearDirty()
 {
-    owner->clearDirty(address);
+    if(owner)
+        owner->clearDirty(address);
+}
+
+void Cell::setDirty()
+{
+    if(owner)
+        owner->setDirty(address);
 }
 
 /**
@@ -783,9 +801,6 @@ void Cell::setUsed(int mask, bool state)
         used |= mask;
     else
         used &= ~mask;
-
-    if(owner)
-        owner->setDirty(address);
 }
 
 /**
