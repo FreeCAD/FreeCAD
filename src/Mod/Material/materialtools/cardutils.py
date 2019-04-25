@@ -408,3 +408,79 @@ def write_cards_to_path(cards_path, cards_data, write_group_section=True, write_
                 write(card_path, card_data, True)
             else:
                 write(card_path, card_data, False)
+
+
+# ***** some code examples ***********************************************************************
+'''
+# cards, params, icons and resources **********
+from materialtools.cardutils import get_material_resources as getres
+from materialtools.cardutils import output_resources as outres
+outres(getres())
+
+
+from materialtools.cardutils import import_materials as getmats
+from materialtools.cardutils import output_materials as outmats
+from materialtools.cardutils import output_trio as outtrio
+
+outmats(getmats()[0])
+
+outtrio(getmats())
+
+a,b,c=getmats()
+
+
+# param template, header, template card **********
+from materialtools.cardutils import get_material_template as gettemplate
+gettemplate()
+
+from materialtools.cardutils import get_material_template as gettemplate
+template_data=gettemplate()
+for group in template_data:
+    gname = list(group.keys())[0]  # group dict has only one key
+    for prop_name in group[gname]:
+        #prop_dict = group[gname][prop_name]
+        #print(prop_dict)
+        #print(prop_dict['Description'])
+        print(group[gname][prop_name]['Description'])
+
+
+from materialtools.cardutils import create_mat_tools_header as createheader
+createheader()
+
+
+from materialtools.cardutils import create_mat_template_card as createtemplate
+createtemplate()
+createtemplate(False)
+
+
+from materialtools.cardutils import get_source_path as getsrc
+getsrc()
+
+
+# generate all cards **********
+# run tools in source dir
+./make_ods.sh 
+./make_FCMats.sh 
+
+# read cards
+from materialtools.cardutils import read_cards_from_path as readcards
+from materialtools.cardutils import get_source_path as getsrc
+cards_data = readcards(getsrc() + '/src/Mod/Material/StandardMaterial/')
+
+# print cards
+for c in cards_data:
+    print(c)
+
+# write cards
+from materialtools.cardutils import write_cards_to_path as writecards
+from materialtools.cardutils import get_source_path as getsrc
+
+# True writes sections ( method write_group_section is used =)
+writecards(getsrc() + '/src/Mod/Material/StandardMaterial/', cards_data, True)
+
+writecards(getsrc() + '/src/Mod/Material/StandardMaterial/', cards_data, False)
+
+# last True writes the TEMPLATE card which has no mat params because they have no values
+writecards(getsrc() + '/src/Mod/Material/StandardMaterial/', cards_data, True, True)
+
+'''
