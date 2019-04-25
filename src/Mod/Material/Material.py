@@ -111,35 +111,6 @@ def exportFCMat(fileName, matDict):
         Config.write(configfile)
 
 
-def getMaterialAttributeStructure(withSpaces=None):
-
-    ''''''
-
-    # material properties
-    # see the following resources in the FreeCAD wiki for more information
-    # about the material specific properties:
-    # https://www.freecadweb.org/wiki/Material_data_model
-    # https://www.freecadweb.org/wiki/Material
-
-    import os
-    import xml.etree.ElementTree as ElementTree
-
-    infile = os.path.dirname(__file__) + os.sep + "MatPropDict.xml"
-    tree = ElementTree.parse(infile)
-
-    if withSpaces:
-        # on attributes, add a space before a capital letter
-        # will be used for better display in the ui
-        import re
-        root = tree.getroot()
-        for group in root.getchildren():
-            for proper in group.getchildren():
-                proper.set('Name', re.sub(r"(\w)([A-Z]+)", r"\1 \2",
-                           proper.attrib['Name']))
-
-    return tree
-
-
 def read_cards_from_path(cards_path):
     from os import listdir
     from os.path import isfile, join, basename, splitext

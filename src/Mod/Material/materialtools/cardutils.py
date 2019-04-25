@@ -179,3 +179,30 @@ def output_material_param(mat_dict):
         for p in mat_dict:
             FreeCAD.Console.PrintMessage('   {} --> {}\n'.format(p, mat_dict[p]))
     FreeCAD.Console.PrintMessage('\n')
+
+
+# ***** material card template *******************************************************************
+def get_material_template(withSpaces=False):
+    # material properties
+    # see the following resources in the FreeCAD wiki for more
+    # information about the material specific properties:
+    # https://www.freecadweb.org/wiki/Material_data_model
+    # https://www.freecadweb.org/wiki/Material
+
+    import yaml
+    template_data = yaml.safe_load(
+        open(join(FreeCAD.ConfigGet('AppHomePath'), 'Mod/Material/Templatematerial.yml'))
+    )
+    if withSpaces:
+        # on attributes, add a space before a capital letter
+        # will be used for better display in the ui
+        import re
+        for group in template_data:
+            gg = list(group.keys())[0]  # group dict has only one key
+            # iterating over a dict and changing it is not allowed
+            # thus it is iterated over a list of the keys
+            for proper in list(group[gg].keys()):
+                new_proper = re.sub(r"(\w)([A-Z]+)", r"\1 \2", proper)
+                group[gg][new_proper] = group[gg][proper]
+                del group[gg][proper]
+    return template_data
