@@ -1,6 +1,6 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2013 - Yorik van Havre <yorik@uncreated.net>            *
+# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD material editor"
-__author__ = "Yorik van Havre"
+__author__ = "Yorik van Havre, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 import os
