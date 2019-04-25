@@ -1251,7 +1251,7 @@ endif(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 
 # -------------------------------- The final report ----------------------------------
 
-MESSAGE(STATUS "==============\n"
+MESSAGE(STATUS "\n==============\n"
                "Summary report\n"
                "==============\n")
 
