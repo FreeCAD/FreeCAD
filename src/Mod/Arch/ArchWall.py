@@ -622,7 +622,7 @@ class _Wall(ArchComponent.Component):
                                             if offset:
                                                 t = edge.tangentAt(offset)
                                                 p = t.cross(n)
-                                                p.multiply(1.1*obj.Width.Value)
+                                                p.multiply(1.1*obj.Width.Value+obj.Offset.Value)
                                                 p1 = edge.valueAt(offset).add(p)
                                                 p2 = edge.valueAt(offset).add(p.negative())
                                                 sh = Part.LineSegment(p1,p2).toShape()
