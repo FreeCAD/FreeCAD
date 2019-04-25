@@ -68,6 +68,12 @@ matrix:
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -G \"Visual Studio 15 2017 Win64\""
           - PYTHON_MAJOR_VERSION=3        
+          - VS15=true
+        script:
+          - curl -L https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z --output FreeCADLibs.7z
+          - 7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
+          - ls
+          - cmake -G "Visual Studio 15 2017 Win64" -DFREECAD_LIBPACK_DIR="C:\Users\USERNAME\Downloads\FreeCADLibs_12.1.2_x64_VC15" -DBUILD_QT5=TRUE -DCMAKE_BUILD_TYPE=Release .
 
       - language: python
         python: 3.7
@@ -216,9 +222,6 @@ before_install:
        ;;
 
    "windows")
-       curl -L https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z --output FreeCADLibs.7z
-       7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
-       using "c/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvars64.bat"
        ;;
 
    *)
