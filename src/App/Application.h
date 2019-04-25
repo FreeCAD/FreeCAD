@@ -49,6 +49,12 @@ class DocumentObject;
 class ApplicationObserver;
 class Property;
 
+enum GetLinkOption {
+    /// Get all links (both directly and in directly) linked to the given object
+    GetLinkRecursive = 1,
+    /// Get link array instead of the array element
+    GetLinkArray = 2,
+};
 
 
 /** The Application
@@ -350,10 +356,10 @@ public:
     int checkLinkDepth(int depth, bool no_exception=true);
 
     std::set<DocumentObject*> getLinksTo(
-            const DocumentObject *, bool recursive, int maxCount=0) const;
+            const DocumentObject *, int options, int maxCount=0) const;
 
     bool hasLinksTo(const DocumentObject *obj) const {
-        return !getLinksTo(obj,false,1).empty();
+        return !getLinksTo(obj,GetLinkArray,1).empty();
     }
     //@}
 

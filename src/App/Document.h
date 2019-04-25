@@ -501,17 +501,13 @@ public:
     /** Return the object linked to this object
      *
      * @param links: holds the links found
-     * @param recursive: whether to find indirectly linked links
+     * @param option: @sa App::GetLinkOptions
      * @param maxCount: limit the number of links returned, 0 means no limit
      */
     void getLinksTo(std::set<DocumentObject*> &links, 
-            const DocumentObject *obj, bool recursive, int maxCount=0) const;
+            const DocumentObject *obj, int options, int maxCount=0) const;
 
-    bool hasLinksTo(const DocumentObject *obj) const {
-        std::set<DocumentObject *> links;
-        getLinksTo(links,obj,false,1);
-        return !links.empty();
-    }
+    bool hasLinksTo(const DocumentObject *obj) const;
 
     /// Called by objects during restore to ask for recompute
     void addRecomputeObject(DocumentObject *obj);

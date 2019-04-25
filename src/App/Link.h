@@ -271,7 +271,8 @@ public:
     void setLink(int index, DocumentObject *obj, const char *subname=0,
         const std::vector<std::string> &subs = std::vector<std::string>());
 
-    DocumentObject *getTrueLinkedObject(bool recurse,Base::Matrix4D *mat=0,int depth=0) const;
+    DocumentObject *getTrueLinkedObject(bool recurse,
+            Base::Matrix4D *mat=0,int depth=0, bool noElement=false) const;
 
     typedef std::map<const Property*,std::pair<LinkBaseExtension*,int> > LinkPropMap;
 

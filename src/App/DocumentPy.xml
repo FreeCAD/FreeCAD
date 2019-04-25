@@ -174,9 +174,9 @@ Both parameters are optional.</UserDocu>
     <Methode Name="getLinksTo">
         <Documentation>
             <UserDocu>
-                getLinksTo(obj, recursive=True, maxCount=0): return objects linked to 'obj'
+                getLinksTo(obj, options=0, maxCount=0): return objects linked to 'obj'
 
-                recursive: set to True to also return indirect links.
+                options: 1: recursive, 2: check link array. Options can combine.
                 maxCount: to limit the number of links returned
             </UserDocu>
         </Documentation>

@@ -357,6 +357,9 @@ Application::~Application()
 /// get called by the document when the name is changing
 void Application::renameDocument(const char *OldName, const char *NewName)
 {
+#if 1
+    throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
+#else
     std::map<std::string,Document*>::iterator pos;
     pos = DocMap.find(OldName);
 
@@ -370,6 +373,7 @@ void Application::renameDocument(const char *OldName, const char *NewName)
     else {
         throw Base::RuntimeError("Application::renameDocument(): no document with this name to rename!");
     }
+#endif
 }
 
 Document* Application::newDocument(const char * Name, const char * UserName)
@@ -953,11 +957,11 @@ int Application::checkLinkDepth(int depth, bool no_exception) {
 }
 
 std::set<DocumentObject *> Application::getLinksTo(
-        const DocumentObject *obj, bool recursive, int maxCount) const
+        const DocumentObject *obj, int options, int maxCount) const
 {
     std::set<DocumentObject *> links;
     for(auto &v : DocMap) {
-        v.second->getLinksTo(links,obj,recursive,maxCount);
+        v.second->getLinksTo(links,obj,options,maxCount);
         if(maxCount && (int)links.size()>=maxCount)
             break;
     }

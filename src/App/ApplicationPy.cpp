@@ -149,7 +149,9 @@ PyMethodDef Application::Methods[] = {
     {"checkLinkDepth",       (PyCFunction) Application::sCheckLinkDepth, METH_VARARGS,
      "checkLinkDepth(depth) -- check link recursion depth"},
     {"getLinksTo",       (PyCFunction) Application::sGetLinksTo, METH_VARARGS,
-     "getLinksTo(obj,recursive=True,maxCount=0) -- return the objects linked to 'obj'"},
+     "getLinksTo(obj,options=0,maxCount=0) -- return the objects linked to 'obj'\n\n"
+     "options: 1: recursive, 2: check link array. Options can combine.\n"
+     "maxCount: to limit the number of links returned\n"},
     {"getDependentObjects", (PyCFunction) Application::sGetDependentObjects, METH_VARARGS,
      "getDependentObjects(obj|[obj,...], options=0)\n"
      "Return a list of dependent objects including the given objects.\n\n"
@@ -819,14 +821,14 @@ PyObject *Application::sCheckLinkDepth(PyObject * /*self*/, PyObject *args)
 PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args)
 {
     PyObject *obj;
-    PyObject *recursive = Py_True;
+    int options = 0;
     short count = 0;
-    if (!PyArg_ParseTuple(args, "O!|Oh", &DocumentObjectPy::Type,&obj,&recursive, &count))
+    if (!PyArg_ParseTuple(args, "O!|ih", &DocumentObjectPy::Type,&obj,&options, &count))
         return NULL;
 
     PY_TRY {
         auto links = GetApplication().getLinksTo(
-            static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr(),PyObject_IsTrue(recursive),count);
+            static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr(),options,count);
         Py::Tuple ret(links.size());
         int i=0;
         for(auto o : links) 

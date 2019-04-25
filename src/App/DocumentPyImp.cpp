@@ -811,16 +811,15 @@ int DocumentPy::setCustomAttributes(const char* attr, PyObject *)
 PyObject* DocumentPy::getLinksTo(PyObject *args)
 {
     PyObject *obj;
-    PyObject *recursive = Py_True;
+    int options = 0;
     short count = 0;
-    if (!PyArg_ParseTuple(args, "O!|Oh", &DocumentObjectPy::Type,&obj,&recursive, &count))
+    if (!PyArg_ParseTuple(args, "O!|ih", &DocumentObjectPy::Type,&obj,&options, &count))
         return NULL;
 
     PY_TRY {
         std::set<DocumentObject *> links;
         getDocumentPtr()->getLinksTo(links,
-                static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr(),
-                PyObject_IsTrue(recursive),count);
+                static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr(),options,count);
         Py::Tuple ret(links.size());
         int i=0;
         for(auto o : links) 

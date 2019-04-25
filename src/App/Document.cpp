@@ -117,6 +117,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "GeoFeatureGroupExtension.h"
 #include "Origin.h"
 #include "OriginGroupExtension.h"
+#include "Link.h"
 #include "GeoFeature.h"
 
 FC_LOG_LEVEL_INIT("App", true, true, true);
@@ -2606,29 +2607,58 @@ int Document::countObjects(void) const
 }
 
 void Document::getLinksTo(std::set<DocumentObject*> &links, 
-        const DocumentObject *obj, bool recursive, int maxCount) const 
+        const DocumentObject *obj, int options, int maxCount) const 
 {
-    std::vector<const DocumentObject*> current;
-    current.push_back(obj);
+    std::map<const App::DocumentObject*,App::DocumentObject*> linkMap;
+
+    for(auto o : d->objectArray) {
+        if(o == obj) continue;
+        auto linked = o;
+        if(options & GetLinkArray) {
+            auto ext = o->getExtensionByType<LinkBaseExtension>(true);
+            if(ext) 
+                linked = ext->getTrueLinkedObject(false,0,0,true);
+            else
+                linked = o->getLinkedObject(false);
+        } else 
+            linked = o->getLinkedObject(false);
+
+        if(linked && linked!=o) {
+            if(options & GetLinkRecursive)
+                linkMap.emplace(linked,o);
+            else if(linked == obj) {
+                links.insert(o);
+                if(maxCount && maxCount<=(int)links.size())
+                    return;
+            }
+        }
+    }
+
+    if(!(options & GetLinkRecursive))
+        return;
+
+    std::vector<const DocumentObject*> current(1,obj);
     for(int depth=0;current.size();++depth) {
         if(!GetApplication().checkLinkDepth(depth))
             break;
         std::vector<const DocumentObject*> next;
         for(auto o : current) {
-            for(auto &v : d->objectMap) {
-                if(v.second == o || 
-                   v.second->getLinkedObject(false)!=o ||
-                   !links.insert(v.second).second)
-                    continue;
-                if(maxCount && (int)links.size()>=maxCount)
+            auto iter = linkMap.find(o);
+            if(iter!=linkMap.end() && links.insert(iter->second).second) {
+                if(maxCount && maxCount<=(int)links.size())
                     return;
-                if(recursive)
-                    next.push_back(v.second);
+                next.push_back(iter->second);
             }
         }
         current.swap(next);
     }
     return;
+}
+
+bool Document::hasLinksTo(const DocumentObject *obj) const {
+    std::set<DocumentObject *> links;
+    getLinksTo(links,obj,App::GetLinkArray,1);
+    return !links.empty();
 }
 
 std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) const
