@@ -227,28 +227,27 @@ before_install:
   esac
 
 install:
-####
-#  Build FreeCAD with cmake options set above for each platform
-##
-  - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
-
-script:
   - curl -L https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z --output FreeCADLibs.7z
   - 7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
   - ls
-  - cmake -G "Visual Studio 15 2017 Win64" -DFREECAD_LIBPACK_DIR="$TRAVIS_BUILD_DIR\FreeCADLibs" -DBUILD_QT5=TRUE -DCMAKE_BUILD_TYPE=Release .
+  - mkdir build && cd build
+  - cmake -G "Visual Studio 15 2017 Win64" -DFREECAD_LIBPACK_DIR="$TRAVIS_BUILD_DIR\FreeCADLibs" -DBUILD_QT5=TRUE -DCMAKE_BUILD_TYPE=Release ../
 
+####
+#  Build FreeCAD with cmake options set above for each platform
+##
+#  - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
-
+script:
 ####
 #  Install FreeCAD and run unit tests.  Test failures will fail the build
 ##
-#  - sudo make -j2 install
-#  - ${INSTALLED_APP_PATH} --console --run-test 0
-#  - ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
-#  - sleep 10 && pkill FreeCAD
-#  - cat /tmp/FreeCAD_installed.log
-#  - grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
+  - sudo make -j2 install
+  - ${INSTALLED_APP_PATH} --console --run-test 0
+  - ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
+  - sleep 10 && pkill FreeCAD
+  - cat /tmp/FreeCAD_installed.log
+  - grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
 
 after_success:
 ####
