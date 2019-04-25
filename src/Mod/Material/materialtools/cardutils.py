@@ -206,3 +206,152 @@ def get_material_template(withSpaces=False):
                 group[gg][new_proper] = group[gg][proper]
                 del group[gg][proper]
     return template_data
+
+
+def create_mat_tools_header():
+    headers = join(get_source_path(), 'src/Mod/Material/StandardMaterial/Tools/headers')
+    print(headers)
+    if not os.path.isfile(headers):
+        FreeCAD.Console.PrintError(
+            'file not found: {}'.format(headers)
+        )
+        return
+    template_data = get_material_template()
+    f = open(headers, "w")
+    for group in template_data:
+        gg = list(group.keys())[0]  # group dict has only one key
+        # do not write group UserDefined
+        if gg != 'UserDefined':
+            for prop_name in group[gg]:
+                if prop_name != 'None':
+                    f.write(prop_name + '\n')
+    f.close
+
+
+def create_mat_template_card(write_group_section=True):
+    template_card = join(get_source_path(), 'src/Mod/Material/StandardMaterial/TEMPLATE.FCMat')
+    if not os.path.isfile(template_card):
+        FreeCAD.Console.PrintError(
+            'file not found: {}'.format(template_card)
+        )
+        return
+    rev = "{}.{}.{}".format(
+        FreeCAD.ConfigGet("BuildVersionMajor"),
+        FreeCAD.ConfigGet("BuildVersionMinor"),
+        FreeCAD.ConfigGet("BuildRevision")
+    )
+    template_data = get_material_template()
+    f = open(template_card, "w")
+    f.write('; TEMPLATE\n')
+    f.write('; (c) 2013-2015 Juergen Riegel (CC-BY 3.0)\n')
+    f.write('; information about the content of such cards can be found on the wiki:\n')
+    f.write('; https://www.freecadweb.org/wiki/Material\n')
+    f.write(': this template card was created by FreeCAD ' + rev + '\n\n')
+    f.write('; localized Name, Description and KindOfMaterial uses 2 letter codes\n')
+    f.write('; defined in ISO-639-1, see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes\n')
+    f.write('; find unit information in src/App/FreeCADInit.py')
+    # write sections
+    # write standard FCMat section if write group section parameter is set to False
+    if write_group_section is False:
+        f.write("\n[FCMat]\n")
+    for group in template_data:
+        gg = list(group.keys())[0]  # group dict has only one key
+        # do not write groups Meta and UserDefined
+        if (gg != 'Meta') and (gg != 'UserDefined'):
+            # only write group section if write group section parameter is set to True
+            if write_group_section is True:
+                f.write("\n\n[" + gg + "]")
+            for prop_name in group[gg]:
+                f.write('\n')
+                description = group[gg][prop_name]['Description']
+                if not description.strip():
+                    f.write('; Description to be updated\n')
+                else:
+                    f.write('; ' + description + '\n')
+                url = group[gg][prop_name]['URL']
+                if url.strip():
+                    f.write('; ' + url + '\n')
+                f.write(prop_name + ' =\n')
+    f.close
+
+
+# card tools will not be copied into build ... thus they are not there ...
+# thus the source dir is needed, this might not work on windows
+def get_source_path():
+    # in the file 'Makefile' in build directory the cmake variable CMAKE_SOURCE_DIR has the dir
+    source_dir = ''
+    make_file = join(FreeCAD.ConfigGet('AppHomePath'), 'Makefile')
+    f = open(make_file, 'r')
+    lines = f.readlines()
+    f.close()
+    for line in lines:
+        if line.startswith('CMAKE_SOURCE_DIR'):
+            source_dir = line.lstrip('CMAKE_SOURCE_DIR = ')
+            source_dir = source_dir.rstrip()  # get rid on new line and white spaces etc.
+            break
+    # print(source_dir)
+    return source_dir
+
+
+# ***** debug known and not known material parameter *********************************************
+def get_and_output_all_carddata(cards):
+    print('\n\n\nSTART--get_and_output_all_carddata\n--------------------')
+    # get all registered material property keys
+    registed_cardkeys = []
+    template_data = get_material_template()
+    # print(template_data)
+    for group in template_data:
+        gg = list(group.keys())[0]  # group dict has only one key
+        for key in group[gg]:
+            registed_cardkeys.append(key)
+    registed_cardkeys = sorted(registed_cardkeys)
+    # print(registed_cardkeys)
+
+    # get all data from all known cards
+    all_cards_and_data = {}  # {cardfilename: ['path', materialdict]}
+    for card in cards:
+        from importFCMat import read
+        d = read(cards[card])
+        all_cards_and_data[card] = [cards[card], d]
+    '''
+    for card in all_cards_and_data:
+        print(card)
+        print(all_cards_and_data[card][0])
+        print(all_cards_and_data[card][1])
+        print('\n')
+    '''
+
+    # find not registered and registered keys in the used data
+    used_and_registered_cardkeys = []
+    used_and_not_registered_cardkeys = []
+    registered_and_not_used_cardkeys = []
+    for card in all_cards_and_data:
+        for k in all_cards_and_data[card][1]:
+            if k in registed_cardkeys:
+                used_and_registered_cardkeys.append(k)
+            else:
+                used_and_not_registered_cardkeys.append(k)
+    for k in registed_cardkeys:
+        if (k not in used_and_registered_cardkeys) and (k not in used_and_not_registered_cardkeys):
+            registered_and_not_used_cardkeys.append(k)
+
+    used_and_registered_cardkeys = sorted(list(set(used_and_registered_cardkeys)))
+    used_and_not_registered_cardkeys = sorted(list(set(used_and_not_registered_cardkeys)))
+    registered_and_not_used_cardkeys = sorted(list(set(registered_and_not_used_cardkeys)))
+    FreeCAD.Console.PrintMessage(
+        '\nused_and_registered_cardkeys:\n{}\n'
+        .format(used_and_registered_cardkeys)
+    )
+    FreeCAD.Console.PrintMessage(
+        '\nused_and_not_registered_cardkeys:\n{}\n'
+        .format(used_and_not_registered_cardkeys)
+    )
+    FreeCAD.Console.PrintMessage(
+        '\nregistered_and_not_used_cardkeys:\n{}\n'
+        .format(registered_and_not_used_cardkeys)
+    )
+
+    # still there might be lots of properties in the template
+    # which are not used in other materials
+    # but the tmplate is handled here like a material
+    print('--------------------\nget_and_output_all_carddata--END\n\n\n')
