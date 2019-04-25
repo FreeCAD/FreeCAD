@@ -348,8 +348,7 @@ class _TaskPanelFemMaterial:
     def edit_material(self):
         # opens the material editor to choose a material or edit material params
         import MaterialEditor
-        new_material_params = self.material.copy()
-￼        new_material_params = MaterialEditor.editMaterial(new_material_params)
+        new_material_params = MaterialEditor.editMaterial(card_path=self.card_path)
         # material editor returns the mat_dict only, not a card_path
         # if the material editor was canceled a empty dict will be returned
         # do not change the self.material
