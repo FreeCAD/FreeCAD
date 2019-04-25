@@ -891,3 +891,7 @@ Py::Boolean DocumentPy::getTransacting() const {
     return Py::Boolean(getDocumentPtr()->isPerformingTransaction());
 }
 
+Py::String DocumentPy::getOldLabel() const {
+    return Py::String(getDocumentPtr()->getOldLabel());
+}
+

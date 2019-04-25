@@ -334,6 +334,12 @@ sort: whether to topologically sort the return list
 	  </Documentation>
 	  <Parameter Name="Transacting" Type="Boolean" />
 	</Attribute>
+    <Attribute Name="OldLabel" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Contains the old label before change</UserDocu>
+        </Documentation>
+        <Parameter Name="OldLabel" Type="String"/>
+    </Attribute>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

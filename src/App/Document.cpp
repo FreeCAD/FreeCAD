@@ -1337,6 +1337,8 @@ unsigned int Document::getMaxUndoStackSize(void)const
 
 void Document::onBeforeChange(const Property* prop)
 {
+    if(prop == &Label)
+        oldLabel = Label.getValue();
     signalBeforeChange(*this, *prop);
 }
 

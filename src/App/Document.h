@@ -512,6 +512,8 @@ public:
     /// Called by objects during restore to ask for recompute
     void addRecomputeObject(DocumentObject *obj);
 
+    const std::string &getOldLabel() const {return oldLabel;}
+
     /// Function called to signal that an object identifier has been renamed
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths, const std::function<bool(const App::DocumentObject*)> &selector = [](const App::DocumentObject *) { return true; });
 
@@ -570,6 +572,8 @@ private:
     // pointer to the python class
     Py::Object DocumentPythonObject;
     struct DocumentP* d;
+
+    std::string oldLabel;
 };
 
 template<typename T>
