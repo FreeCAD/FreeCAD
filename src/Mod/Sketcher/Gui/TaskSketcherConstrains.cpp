@@ -671,9 +671,12 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
                             ConstraintItem* item = static_cast<ConstraintItem*>
                                 (ui->listWidgetConstraints->item(i));
                             if (item->ConstraintNbr == ConstrId) {
-                                ui->listWidgetConstraints->blockSignals(true);
-                                item->setSelected(select);
-                                ui->listWidgetConstraints->blockSignals(false);
+                                if(!item->isSelected()) {
+                                    ui->listWidgetConstraints->blockSignals(true);
+                                    item->setSelected(select);
+                                    ui->listWidgetConstraints->blockSignals(false);
+                                    ui->listWidgetConstraints->scrollToItem(item);
+                                }
                                 break;
                             }
                         }
