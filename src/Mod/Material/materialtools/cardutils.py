@@ -34,6 +34,37 @@ if sys.version_info.major >= 3:
     unicode = str
 
 
+# TODO:
+# move material GUI preferences from FEM to an own preference tab in Material
+# move preference GUI code to material module
+# https://forum.freecadweb.org/viewtopic.php?f=10&t=35515
+
+
+# TODO:
+# implement method check_material_keys from FEM material task panel for material editor
+# may be move out of the FEM material task panel to here
+# make the method more generic to be compatible with all known params
+# the material template knows the units
+
+
+# ***** card handling data models ****************************************************************
+'''
+data model:
+materials = { card_path: mat_dict, ... }
+cards = { card_path: card_name, ... }
+icons = { card_path: icon_path, ... }
+
+- duplicates are allowed
+- the whole card_path is saved into the combo box widget, this makes card unique
+- sorting happens on adding to the combo box widgets
+
+a data modell which uses a class and attributes as well as methods to access the attributes
+would makes sense, like some material library class
+this has been done already by eivind see
+https://forum.freecadweb.org/viewtopic.php?f=38&t=16714
+'''
+
+
 # ***** get resources for cards ******************************************************************
 def get_material_resources(category='Solid'):
 
