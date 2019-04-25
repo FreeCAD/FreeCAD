@@ -64,7 +64,6 @@ matrix:
           - PYTHON_MAJOR_VERSION=3
 
       - os: windows
-	language: sh
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -G \"Visual Studio 15 2017 Win64\""
           - PYTHON_MAJOR_VERSION=3        
@@ -215,7 +214,7 @@ before_install:
        export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
        ;;
 
-   windows)
+   "windows")
        curl -L https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z --output FreeCADLibs.7z
        7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
        using "c/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvars64.bat"
