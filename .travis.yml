@@ -64,6 +64,7 @@ matrix:
           - PYTHON_MAJOR_VERSION=3
 
       - os: windows
+        language: cpp
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -G \"Visual Studio 15 2017 Win64\""
           - PYTHON_MAJOR_VERSION=3        
