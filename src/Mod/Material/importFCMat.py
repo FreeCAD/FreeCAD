@@ -78,13 +78,16 @@ def decode(name):
     return decodedName
 
 
-# the reader and writer do not use some Library to read and write the ini file format, they are implemented here
+# the reader and writer do not use some Library to read and write the ini file format
+# they are implemented here
 # thus non standard ini files will be read and written too
-# in standard ini file format a = in the value without any encapsulation or string quotes is not allowed (AFAIK)
+# in standard ini file format:
+# a = in the value without any encapsulation or string quotes is not allowed (AFAIK)
 # https://en.wikipedia.org/wiki/INI_file
 # http://www.docuxplorer.com/WebHelp/INI_File_Format.htm
 # mainly this parser here is used in FreeCAD
-# in the module Material.py is another implementation of reading and writing FCMat files which uses the module ConfigParser
+# in the module Material.py is another implementation of reading and writing FCMat files
+# this implementation uses the ConfigParser module
 # in ViewProviderFemMaterial in add_cards_from_a_dir() the parser from Material.py is used
 # since this mixture seams to be there for ages it should not be changed for 0.18
 # TODO: get rid of this mixture in FreeCAD 0.19
@@ -117,7 +120,10 @@ def read(filename):
                 v = v.decode('utf-8')
             card_name_content = v
             if card_name_content != d["CardName"]:
-                FreeCAD.Console.PrintError("File CardName (" + card_name_file + ") is not content CardName (" + card_name_content + ")\n")
+                FreeCAD.Console.PrintLog(
+                    "File CardName ( {} ) is not content CardName ( {} )\n"
+                    .format(card_name_file, card_name_content)
+                )
         elif ln == 1:
             v = line.split(";")[1].strip()  # Line 2
             if hasattr(v, "decode"):
@@ -128,7 +134,9 @@ def read(filename):
             # # might be a comment too ?
             # [ is a Section
             if line[0] not in ";#[":
-                k = line.split("=", 1)  # only split once on first occurrence, a link could contain a = and thus would be splitted
+                # split once on first occurrence
+                # a link could contain a = and thus would be split
+                k = line.split("=", 1)
                 if len(k) == 2:
                     v = k[1].strip()
                     if hasattr(v, "decode"):
@@ -166,12 +174,18 @@ def write(filename, dictionary, write_group_section=True):
             user[k] = i
     # delete empty properties
     for group in contents:
-        for k in list(group.keys()):  # iterating over a dict and changing it is not allowed, thus we iterate over a list of the keys
+        # iterating over a dict and changing it is not allowed
+        # thus it is iterated over a list of the keys
+        for k in list(group.keys()):
             if group[k] == '':
                 del group[k]
 
     # card writer
-    rev = FreeCAD.ConfigGet("BuildVersionMajor") + "." + FreeCAD.ConfigGet("BuildVersionMinor") + "." + FreeCAD.ConfigGet("BuildRevision")
+    rev = "{}.{}.{}".format(
+        FreeCAD.ConfigGet("BuildVersionMajor"),
+        FreeCAD.ConfigGet("BuildVersionMinor"),
+        FreeCAD.ConfigGet("BuildRevision")
+    )
     if isinstance(filename, unicode):
         if sys.version_info.major < 3:
             filename = filename.encode(sys.getfilesystemencoding())
@@ -182,7 +196,8 @@ def write(filename, dictionary, write_group_section=True):
     # write header
     # first five lines are the same in any card file, see comment above read def
     if header["CardName"] != card_name_file:
-        FreeCAD.Console.PrintMessage("File CardName is used: " + card_name_file + " \n")  # CardName is the MatCard file name
+        # CardName is the MatCard file name
+        FreeCAD.Console.PrintMessage("File CardName is used: {}\n".format(card_name_file))
     if sys.version_info.major >= 3:
         f.write("; " + card_name_file + "\n")
         f.write("; " + header["AuthorAndLicense"] + "\n")
