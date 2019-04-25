@@ -231,7 +231,7 @@ before_install:
        ;;
   esac
 
-install:
+#install:
 
 
 ####
@@ -239,33 +239,32 @@ install:
 ##
 #  - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
-script:
+#script:
 ####
 #  Install FreeCAD and run unit tests.  Test failures will fail the build
 ##
-  - sudo make -j2 install
-  - ${INSTALLED_APP_PATH} --console --run-test 0
-  - ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
-  - sleep 10 && pkill FreeCAD
-  - cat /tmp/FreeCAD_installed.log
-  - grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
+#  - sudo make -j2 install
+#  - ${INSTALLED_APP_PATH} --console --run-test 0
+#  - ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
+#  - sleep 10 && pkill FreeCAD
+#  - cat /tmp/FreeCAD_installed.log
+#  - grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
 
-after_success:
+#after_success:
 ####
 #  Package and deploy the build to GitHub.  This will only run for builds on
 #  master (i.e. pull requests are only built and tested but not deployed).
 #
 #  GH_TOKEN must be set in order to deploy releases to GitHub
 ##
-- |
-  if [ "${TRAVIS_OS_NAME}" == "osx" -a "${TRAVIS_PULL_REQUEST}" == "false" -a "${DEPLOY}" == "1" ]; then
-     brew ls --versions jq || brew install jq
-     npm install -g appdmg
-     export VSN=$(python ${TRAVIS_BUILD_DIR}/src/Tools/ArchiveNameFromVersionHeader.py ${TRAVIS_BUILD_DIR}/build/src/Build/Version.h)
-     export DEPLOYMENT_ARCHIVE=${VSN}-${QT}.dmg
-     appdmg ${TRAVIS_BUILD_DIR}/src/MacAppBundle/DiskImage/layout.json "${DEPLOYMENT_ARCHIVE}"
-     deployContext=$(create_helper_context repo=${TRAVIS_REPO_SLUG} auth_token=${GH_TOKEN} release=${DEPLOY_RELEASE})
-     gitHub_deploy_asset_to_release_named $deployContext ${DEPLOYMENT_ARCHIVE}
-     gitHub_prune_assets_for_release_named $deployContext "-${QT}" 1
-  fi
-
+#- |
+#  if [ "${TRAVIS_OS_NAME}" == "osx" -a "${TRAVIS_PULL_REQUEST}" == "false" -a "${DEPLOY}" == "1" ]; then
+#     brew ls --versions jq || brew install jq
+#     npm install -g appdmg
+#     export VSN=$(python ${TRAVIS_BUILD_DIR}/src/Tools/ArchiveNameFromVersionHeader.py ${TRAVIS_BUILD_DIR}/build/src/Build/Version.h)
+#     export DEPLOYMENT_ARCHIVE=${VSN}-${QT}.dmg
+#     appdmg ${TRAVIS_BUILD_DIR}/src/MacAppBundle/DiskImage/layout.json "${DEPLOYMENT_ARCHIVE}"
+#     deployContext=$(create_helper_context repo=${TRAVIS_REPO_SLUG} auth_token=${GH_TOKEN} release=${DEPLOY_RELEASE})
+#     gitHub_deploy_asset_to_release_named $deployContext ${DEPLOYMENT_ARCHIVE}
+#     gitHub_prune_assets_for_release_named $deployContext "-${QT}" 1
+#  fi
