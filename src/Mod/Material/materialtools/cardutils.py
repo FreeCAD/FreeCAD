@@ -119,14 +119,6 @@ def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon):
         card_name = os.path.splitext(os.path.basename(a_path))[0]
         if delete_duplicates is False:
             materials[a_path] = mat_dict
-            i = 1
-            while card_name in cards.values():
-                if i == 1:
-                    card_name += ('_' + str(i))
-                else:
-                    card_name = card_name[:-1] + str(i)
-                i += 1
-                # print(card_name)
             cards[a_path] = card_name
             icons[a_path] = icon
         else:
