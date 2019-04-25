@@ -224,3 +224,16 @@ def write(filename, dictionary, write_group_section=True):
                         else:
                             f.write(k + " = " + i.encode('utf-8') + "\n")
     f.close()
+
+
+# ***** some code examples ***********************************************************************
+'''
+from materialtools.cardutils import get_source_path as getsrc
+from importFCMat import read, write
+readmatfile = getsrc() + '/src/Mod/Material/StandardMaterial/Concrete-Generic.FCMat'
+writematfile = '/tmp/Concrete-Generic.FCMat'
+matdict = read(readmatfile)
+matdict
+write(writematfile, matdict)
+
+'''
