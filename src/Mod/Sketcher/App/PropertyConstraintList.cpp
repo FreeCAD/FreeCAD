@@ -33,6 +33,7 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
+#include <Base/QuantityPy.h>
 #include <App/ObjectIdentifier.h>
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
@@ -252,22 +253,24 @@ bool PropertyConstraintList::getPyPathValue(const App::ObjectIdentifier &path, P
 
     const ObjectIdentifier::Component & c1 = path.getPropertyComponent(1);
 
-    if (c1.isArray()) {
-        res = _lValueList[c1.getIndex(_lValueList.size())]->getPyObject();
-        return true;
-    }
+    const Constraint *cstr = 0;
+
+    if (c1.isArray()) 
+        cstr = _lValueList[c1.getIndex(_lValueList.size())];
     else if (c1.isSimple()) {
         ObjectIdentifier::Component c1 = path.getPropertyComponent(1);
-
-        for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-            if ((*it)->Name == c1.getName()) {
-                res = (*it)->getPyObject();
-                return true;
+        for(auto c : _lValueList) {
+            if(c->Name == c1.getName()) {
+                cstr = c;
+                break;
             }
         }
     }
-    FC_THROWM(Base::ValueError,"Invalid constraint path " << path.toString());
-    return false;
+    if(!cstr)
+        return false;
+    Quantity q = cstr->getPresentationValue();
+    res = new Base::QuantityPy(new Base::Quantity(q));
+    return true;
 }
 
 void PropertyConstraintList::setPyObject(PyObject *value)
