@@ -63,6 +63,14 @@ matrix:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
           - PYTHON_MAJOR_VERSION=3
 
+      - os: windows
+        language: cpp
+        env:
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -G \"Visual Studio 15 2017 Win64\""
+          - PYTHON_MAJOR_VERSION=3        
+          - MSBUILD_EXE="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin\MSBuild.exe /m FreeCAD_Trunk.sln"
+          - VS15=true
+
       - language: python
         python: 3.7
         dist: xenial  # required for Python >= 3.7 (travis-ci/travis-ci#9069)
@@ -209,6 +217,9 @@ before_install:
        export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
        ;;
 
+   "windows")
+       ;;
+
    *)
        echo "Invalid or unsupported operating system ${TRAVIS_OS_NAME}"
        exit 1
@@ -216,10 +227,16 @@ before_install:
   esac
 
 install:
+  - curl -L https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z --output FreeCADLibs.7z
+  - 7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
+  - ls
+  - mkdir build && cd build
+  - cmake -G "Visual Studio 15 2017 Win64" -DFREECAD_LIBPACK_DIR="$TRAVIS_BUILD_DIR\FreeCADLibs" -DPYTHON_EXECUTABLE="$TRAVIS_BUILD_DIR\FreeCADLibs\bin\python.exe" -DBUILD_QT5=TRUE -DCMAKE_BUILD_TYPE=Release ../
+
 ####
 #  Build FreeCAD with cmake options set above for each platform
 ##
-  - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
+#  - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
 script:
 ####
@@ -250,3 +267,4 @@ after_success:
      gitHub_deploy_asset_to_release_named $deployContext ${DEPLOYMENT_ARCHIVE}
      gitHub_prune_assets_for_release_named $deployContext "-${QT}" 1
   fi
+
