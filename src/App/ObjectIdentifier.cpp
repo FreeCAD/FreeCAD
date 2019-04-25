@@ -1282,6 +1282,18 @@ ObjectIdentifier ObjectIdentifier::canonicalPath() const
     return result.resolvedProperty->canonicalPath(res);
 }
 
+static const std::map<std::string,std::string> *_DocumentMap;
+ObjectIdentifier::DocumentMapper::DocumentMapper(const std::map<std::string,std::string> &map)
+{
+    assert(!_DocumentMap);
+    _DocumentMap = &map;
+}
+
+ObjectIdentifier::DocumentMapper::~DocumentMapper()
+{
+    _DocumentMap = 0;
+}
+
 /**
  * @brief Set the document name for this object identifier.
  *
@@ -1293,9 +1305,26 @@ ObjectIdentifier ObjectIdentifier::canonicalPath() const
 
 void ObjectIdentifier::setDocumentName(ObjectIdentifier::String &&name, bool force)
 {
-    documentName = std::move(name);
+    if(name.getString().empty())
+        force = false;
     documentNameSet = force;
     _cache.clear();
+    if(name.getString().size() && _DocumentMap) {
+        if(name.isRealString()) {
+            auto iter = _DocumentMap->find(name.getString());
+            if(iter!=_DocumentMap->end()) {
+                documentName = String(iter->second);
+                return;
+            }
+        }else{
+            auto iter = _DocumentMap->find(name.toString());
+            if(iter!=_DocumentMap->end()) {
+                documentName = String(iter->second,true);
+                return;
+            }
+        }
+    }
+    documentName = std::move(name);
 }
 
 /**

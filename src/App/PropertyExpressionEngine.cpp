@@ -94,7 +94,7 @@ void PropertyExpressionEngine::hasSetValue()
 {
     App::DocumentObject *owner = dynamic_cast<App::DocumentObject*>(getContainer());
     if(!owner || !owner->getNameInDocument() || owner->isRestoring() || testFlag(LinkDetached)) {
-        PropertyXLinkContainer::hasSetValue();
+        PropertyExpressionContainer::hasSetValue();
         return;
     }
 
@@ -114,7 +114,7 @@ void PropertyExpressionEngine::hasSetValue()
 
     updateDeps(std::move(deps));
 
-    PropertyXLinkContainer::hasSetValue();
+    PropertyExpressionContainer::hasSetValue();
 }
 
 void PropertyExpressionEngine::Paste(const Property &from)
@@ -136,13 +136,13 @@ void PropertyExpressionEngine::Paste(const Property &from)
 void PropertyExpressionEngine::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<ExpressionEngine count=\"" <<  expressions.size();
-    if(PropertyXLinkContainer::_XLinks.empty()) {
+    if(PropertyExpressionContainer::_XLinks.empty()) {
         writer.Stream() << "\">" << std::endl;
         writer.incInd();
     } else {
         writer.Stream() << "\" xlink=\"1\">" << std::endl;
         writer.incInd();
-        PropertyXLinkContainer::Save(writer);
+        PropertyExpressionContainer::Save(writer);
     }
     for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
         writer.Stream() << writer.ind() << "<Expression path=\"" 
@@ -163,7 +163,7 @@ void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
     int count = reader.getAttributeAsFloat("count");
 
     if(reader.hasAttribute("xlink") && reader.getAttributeAsInteger("xlink"))
-        PropertyXLinkContainer::Restore(reader);
+        PropertyExpressionContainer::Restore(reader);
 
     restoredExpressions.reset(new std::vector<RestoredExpression>);
     restoredExpressions->reserve(count);
@@ -271,6 +271,10 @@ void PropertyExpressionEngine::afterRestore()
     if(restoredExpressions && docObj) {
         Base::FlagToggler<bool> flag(restoring);
         AtomicPropertyChange signaller(*this);
+
+        PropertyExpressionContainer::afterRestore();
+        ObjectIdentifier::DocumentMapper mapper(this->_DocMap);
+
         for(auto &info : *restoredExpressions) {
             ObjectIdentifier path = ObjectIdentifier::parse(docObj, info.path);
             boost::shared_ptr<Expression> expression(Expression::parse(docObj, info.expr.c_str()));
@@ -278,7 +282,6 @@ void PropertyExpressionEngine::afterRestore()
                 expression->comment = std::move(info.comment);
             setValue(path, expression);
         }
-        PropertyXLinkContainer::afterRestore();
         signaller.tryInvoke();
     }
     restoredExpressions.reset();

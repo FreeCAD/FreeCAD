@@ -51,7 +51,7 @@ using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
 
-TYPESYSTEM_SOURCE(Spreadsheet::PropertySheet , App::PropertyXLinkContainer);
+TYPESYSTEM_SOURCE(Spreadsheet::PropertySheet , App::PropertyExpressionContainer);
 
 void PropertySheet::clear()
 {
@@ -307,7 +307,7 @@ void PropertySheet::Save(Base::Writer &writer) const
 
     writer.incInd();
 
-    PropertyXLinkContainer::Save(writer);
+    PropertyExpressionContainer::Save(writer);
 
     ci = data.begin();
     while (ci != data.end()) {
@@ -329,7 +329,7 @@ void PropertySheet::Restore(Base::XMLReader &reader)
     Cnt = reader.getAttributeAsInteger("Count");
 
     if(reader.hasAttribute("xlink") && reader.getAttributeAsInteger("xlink"))
-        PropertyXLinkContainer::Restore(reader);
+        PropertyExpressionContainer::Restore(reader);
 
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Cell");
@@ -1120,7 +1120,7 @@ void PropertySheet::onBreakLink(App::DocumentObject *obj) {
 
 void PropertySheet::hasSetChildValue(App::Property &prop) {
     ++updateCount;
-    PropertyXLinkContainer::hasSetChildValue(prop);
+    PropertyExpressionContainer::hasSetChildValue(prop);
 }
 
 void PropertySheet::invalidateDependants(const App::DocumentObject *docObj)
@@ -1271,7 +1271,7 @@ void PropertySheet::hasSetValue()
        this!=&owner->cells ||
        testFlag(LinkDetached)) 
     {
-        PropertyXLinkContainer::hasSetValue();
+        PropertyExpressionContainer::hasSetValue();
         return;
     }
 
@@ -1293,7 +1293,7 @@ void PropertySheet::hasSetValue()
 
     updateDeps(std::move(deps));
 
-    PropertyXLinkContainer::hasSetValue();
+    PropertyExpressionContainer::hasSetValue();
 }
 
 PyObject *PropertySheet::getPyObject()
@@ -1316,10 +1316,13 @@ void PropertySheet::afterRestore()
 {
     Base::FlagToggler<bool> flag(restoring);
     AtomicPropertyChange signaller(*this);
-    for(auto &d : data)
-        d.second->afterRestore();
 
-    PropertyXLinkContainer::afterRestore();
+    PropertyExpressionContainer::afterRestore();
+    {
+        ObjectIdentifier::DocumentMapper mapper(this->_DocMap);
+        for(auto &d : data)
+            d.second->afterRestore();
+    }
 
     for(auto &v : _XLinks) {
         auto &xlink = *v.second;

@@ -1223,10 +1223,16 @@ protected:
 protected:
     std::set<App::DocumentObject*> _Deps;
     std::map<std::string, std::unique_ptr<PropertyXLink> > _XLinks;
+    std::map<std::string, std::string> _DocMap;
     bool _LinkRestored;
 
 private:
-    std::unique_ptr<std::vector<std::unique_ptr<PropertyXLink> > > _XLinkRestores;
+    struct RestoreInfo {
+        std::unique_ptr<PropertyXLink> xlink;
+        std::string docName;
+        std::string docLabel;
+    };
+    std::unique_ptr<std::vector<RestoreInfo> > _XLinkRestores;
 };
 
 } // namespace App

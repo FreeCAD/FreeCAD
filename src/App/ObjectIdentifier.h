@@ -69,6 +69,12 @@ class AppExport ObjectIdentifier {
 
 public:
 
+    class AppExport DocumentMapper {
+    public:
+        DocumentMapper(const std::map<std::string,std::string> &);
+        ~DocumentMapper();
+    };
+
     class String {
         friend class ObjectIdentifier;
 

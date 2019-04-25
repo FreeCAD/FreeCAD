@@ -1143,6 +1143,8 @@ bool PropertyLinkSub::referenceChanged() const {
 }
 
 std::string PropertyLinkBase::importSubName(Base::XMLReader &reader, const char *sub, bool &restoreLabel) {
+    if(!reader.doNameMapping())
+        return sub;
     std::ostringstream str;
     for(const char *dot=strchr(sub,'.');dot;sub=dot+1,dot=strchr(sub,'.')) {
         size_t count = dot-sub;
@@ -4030,15 +4032,22 @@ PropertyXLinkContainer::~PropertyXLinkContainer() {
 }
 
 void PropertyXLinkContainer::afterRestore() {
+    _DocMap.clear();
     if(!_XLinkRestores)
         return;
     _Deps.clear();
-    for(auto &pxlink : *_XLinkRestores) {
-        auto &xlink = *pxlink;
-        auto obj = xlink.getValue();
-        if(!obj || !_Deps.insert(obj).second)
+    for(auto &info : *_XLinkRestores) {
+        auto obj = info.xlink->getValue();
+        if(!obj)
             continue;
-        _XLinks[obj->getFullName()] = std::move(pxlink);
+        if(info.docName.size()) {
+            if(info.docName != obj->getDocument()->getName())
+                _DocMap[info.docName] = obj->getDocument()->getName();
+            if(info.docLabel != obj->getDocument()->Label.getValue())
+                _DocMap[App::quote(info.docLabel)] = obj->getDocument()->Label.getValue();
+        }
+        if(_Deps.insert(obj).second)
+            _XLinks[obj->getFullName()] = std::move(info.xlink);
     }
     _XLinkRestores.reset();
 }
@@ -4085,10 +4094,37 @@ int PropertyXLinkContainer::checkRestore() const {
 }
 
 void PropertyXLinkContainer::Save (Base::Writer &writer) const {
-    writer.Stream() << writer.ind() << "<XLinks count=\"" 
-        << _XLinks.size() << "\">" << std::endl;
 
+    writer.Stream() << writer.ind() << "<XLinks count=\"" << _XLinks.size();
+
+    std::map<App::Document*,int> docSet;
+    auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    if(owner && !owner->isExporting()) {
+        // Document name and label can change on restore, we shall record the
+        // current document name and label and pair it with the associated
+        // xlink, so that we can restore them correctly.
+        int i=-1;
+        for(auto &v : _XLinks) {
+            ++i;
+            auto obj = v.second->getValue();
+            if(obj && obj->getDocument())
+                docSet.insert(std::make_pair(obj->getDocument(),i));
+        }
+
+        if(docSet.size())
+            writer.Stream() << "\" docs=\"" << docSet.size();
+    }
+
+    writer.Stream() << "\">" << std::endl;
     writer.incInd();
+
+    for(auto &v : docSet) {
+        writer.Stream() << writer.ind() << "<DocMap "
+            << "name=\"" << v.first->getName() 
+            << "\" label=\"" << encodeAttribute(v.first->Label.getValue()) 
+            << "\" index=\"" << v.second << "\"/>" << std::endl;
+    }
+
     for(auto &v : _XLinks) 
         v.second->Save(writer);
     writer.decInd();
@@ -4098,12 +4134,29 @@ void PropertyXLinkContainer::Save (Base::Writer &writer) const {
 
 void PropertyXLinkContainer::Restore(Base::XMLReader &reader) {
     reader.readElement("XLinks");
-    int count = reader.getAttributeAsInteger("count");
-    _XLinkRestores.reset(new std::vector<std::unique_ptr<PropertyXLink> >);
-    _XLinkRestores->reserve(count);
-    for(int i=0;i<count;++i) {
-        _XLinkRestores->emplace_back(createXLink());
-        _XLinkRestores->back()->Restore(reader);
+    auto count = reader.getAttributeAsUnsigned("count");
+    _XLinkRestores.reset(new std::vector<RestoreInfo>(count));
+
+    if(reader.hasAttribute("docs")) {
+        auto docCount = reader.getAttributeAsUnsigned("docs");
+        _DocMap.clear();
+        std::vector<std::string> docs(count*2);
+        for(unsigned i=0;i<docCount;++i) {
+            reader.readElement("DocMap");
+            auto index = reader.getAttributeAsUnsigned("index");
+            if(index>=count) {
+                FC_ERR(propertyName(this) << " invalid document map entry");
+                continue;
+            }
+            auto &info = _XLinkRestores->at(index);
+            info.docName = reader.getAttribute("name");
+            info.docLabel = reader.getAttribute("label");
+        }
+    }
+
+    for(auto &info : *_XLinkRestores) {
+        info.xlink.reset(createXLink());
+        info.xlink->Restore(reader);
     }
     reader.readEndElement("XLinks");
 }
@@ -4124,7 +4177,7 @@ PropertyXLink *PropertyXLinkContainer::createXLink() {
 }
 
 void PropertyXLinkContainer::updateDeps(std::set<DocumentObject*> &&newDeps) {
-    auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
+    auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     if(!owner || !owner->getNameInDocument())
         return;
     newDeps.erase(owner);
