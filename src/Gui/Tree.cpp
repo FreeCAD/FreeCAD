@@ -1654,7 +1654,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     droppedObjs.push_back(link);
                 } else {
                     std::ostringstream ss;
-                    ss << "FreeCAD.getDocument('" << thisDoc->getName() << "').moveObject('"
+                    ss << "App.getDocument('" << thisDoc->getName() << "').moveObject("
                         << Command::getObjectCmd(obj) << ", True)";
                     auto moved = thisDoc->moveObject({obj},true);
                     if(moved) {
