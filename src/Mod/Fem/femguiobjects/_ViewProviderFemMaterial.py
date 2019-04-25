@@ -109,6 +109,7 @@ class _TaskPanelFemMaterial:
         self.material = self.obj.Material  # FreeCAD material dictionary of current material
         self.card_path = ''
         self.materials = {}  # { card_path : FreeCAD material dict, ... }
+        self.cards = {}  # { card_path : card_names, ... }
         self.icons = {}  # { card_path : icon_path, ... }
         # mat_card is the FCMat file
         # card_name is the file name of the mat_card
@@ -198,8 +199,9 @@ class _TaskPanelFemMaterial:
             self.parameterWidget.label_vol_expansion_coefficient.setVisible(0)
             self.parameterWidget.input_fd_vol_expansion_coefficient.setVisible(0)
 
-        # get all available materials (fill self.materials and self.icons)
-        self.import_materials()
+        # get all available materials (fill self.materials, self.cards and self.icons)
+        from materialtools.cardutils import import_materials as getmats
+        self.materials, self.cards, self.icons = getmats()
         # fill the material comboboxes with material cards
         self.add_cards_to_combo_box()
 
@@ -407,20 +409,6 @@ class _TaskPanelFemMaterial:
             self.parameterWidget.input_fd_vol_expansion_coefficient.setReadOnly(True)
 
     # material parameter input fields ************************************************************
-    def print_material_params(self, material=None):
-        # in rare cases we gone pass a empty dict
-        # in such a case a empty dict should be printed and not self.material
-        # thus we check for None
-        if material is None:
-            material = self.material
-        if not material:
-            # empty dict
-            print('   ' + str(material))
-        else:
-            for p in material:
-                print('   ' + p + ' --> ' + material[p])
-        print('\n')
-
     def check_material_keys(self):
         # FreeCAD units definition is at file end of src/Base/Unit.cpp
         if not self.material:
@@ -753,76 +741,26 @@ class _TaskPanelFemMaterial:
     # fill the combo box with cards **************************************************************
     def add_cards_to_combo_box(self):
         # fill combobox, in combo box the card name is used not the material name
-        from os.path import basename
         self.parameterWidget.cb_materials.clear()
-        card_name_list = []
-        for a_path in self.materials:
-            card_name = basename(a_path[:-(len(".FCMat"))])
-            card_name_list.append([card_name, a_path, self.icons[a_path]])
-        card_name_list.sort()
+
+        mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Cards")
+        sort_by_resources = mat_prefs.GetBool("SortByResources", False)
+
+        card_name_list = []  # [ [card_name, card_path, icon_path], ... ]
+
+        if sort_by_resources is True:
+            for a_path in sorted(self.materials.keys()):
+                card_name_list.append([self.cards[a_path], a_path, self.icons[a_path]])
+        else:
+            card_names_tmp = {}
+            for path, name in self.cards.items():
+                card_names_tmp[name] = path
+            for a_name in sorted(card_names_tmp.keys()):
+                a_path = card_names_tmp[a_name]
+                card_name_list.append([a_name, a_path, self.icons[a_path]])
+
         for mat in card_name_list:
             self.parameterWidget.cb_materials.addItem(QtGui.QIcon(mat[2]), mat[0], mat[1])
-
-    # material card handling *********************************************************************
-    def print_materialsdict(self):
-        print('\n\n')
-        for mat_card in self.materials:
-            print(mat_card)
-            self.print_material_params(self.materials[mat_card])
-        print('\n\n')
-
-    def import_materials(self):
-        self.fem_prefs = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Material/Resources"
-        )
-        if self.obj.Category == 'Fluid':
-            self.import_fluid_materials()
-        else:
-            self.import_solid_materials()
-        # self.print_materialsdict()
-
-    def import_solid_materials(self):
-        use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
-        if use_built_in_materials:
-            system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/StandardMaterial"
-            self.add_cards_from_a_dir(system_mat_dir, ":/icons/freecad.svg")
-
-        use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
-        if use_mat_from_config_dir:
-            user_mat_dirname = FreeCAD.getUserAppDataDir() + "Material"
-            self.add_cards_from_a_dir(user_mat_dirname, ":/icons/preferences-general.svg")
-
-        use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
-        if use_mat_from_custom_dir:
-            custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
-            self.add_cards_from_a_dir(custom_mat_dir, ":/icons/user.svg")
-
-    def import_fluid_materials(self):
-        # use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
-        # if use_built_in_materials:
-        system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/FluidMaterial"
-        self.add_cards_from_a_dir(system_mat_dir, ":/icons/freecad.svg")
-
-        use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
-        if use_mat_from_config_dir:
-            user_mat_dirname = FreeCAD.getUserAppDataDir() + "FluidMaterial"
-            self.add_cards_from_a_dir(user_mat_dirname, ":/icons/preferences-general.svg")
-
-        use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
-        if use_mat_from_custom_dir:
-            custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
-            self.add_cards_from_a_dir(custom_mat_dir, ":/icons/user.svg")
-
-    def add_cards_from_a_dir(self, mat_dir, icon):
-        # fill self.materials and self.icons
-        import glob
-        from importFCMat import read
-        dir_path_list = glob.glob(mat_dir + '/*' + ".FCMat")
-
-        for a_path in dir_path_list:
-            mat_dict = read(a_path)
-            # check if the dict exists in materials
-            # TODO if the unit is different two cards would be different too
-            if mat_dict not in self.materials.values():
-                self.materials[a_path] = mat_dict
-                self.icons[a_path] = icon
+            # the whole card path is added to the combo box to make it unique
+            # see def choose_material:
+            # for assignment of self.card_path the path form the parameterWidget ist used
