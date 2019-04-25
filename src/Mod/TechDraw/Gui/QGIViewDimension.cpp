@@ -516,6 +516,9 @@ void QGIViewDimension::draw()
 
     const char *dimType = dim->Type.getValueAsString();
 
+    datumLabel->show();
+    show();
+
    if (strcmp(dimType, "Distance") == 0 ||
         strcmp(dimType, "DistanceX") == 0 ||
         strcmp(dimType, "DistanceY") == 0) {
