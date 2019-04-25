@@ -218,6 +218,11 @@ before_install:
        ;;
 
    "windows")
+       curl -L https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z --output FreeCADLibs.7z
+       7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
+       ls
+       mkdir build && cd build
+       cmake -G "Visual Studio 15 2017 Win64" -DFREECAD_LIBPACK_DIR="$TRAVIS_BUILD_DIR\FreeCADLibs" -DPYTHON_EXECUTABLE="$TRAVIS_BUILD_DIR\FreeCADLibs\bin\python.exe" -DBUILD_QT5=TRUE -DCMAKE_BUILD_TYPE=Release ../
        ;;
 
    *)
@@ -227,11 +232,7 @@ before_install:
   esac
 
 install:
-  - curl -L https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z --output FreeCADLibs.7z
-  - 7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
-  - ls
-  - mkdir build && cd build
-  - cmake -G "Visual Studio 15 2017 Win64" -DFREECAD_LIBPACK_DIR="$TRAVIS_BUILD_DIR\FreeCADLibs" -DPYTHON_EXECUTABLE="$TRAVIS_BUILD_DIR\FreeCADLibs\bin\python.exe" -DBUILD_QT5=TRUE -DCMAKE_BUILD_TYPE=Release ../
+
 
 ####
 #  Build FreeCAD with cmake options set above for each platform
