@@ -48,8 +48,17 @@ class AppExport PropertyExpressionContainer : public App::PropertyXLinkContainer
 {
     TYPESYSTEM_HEADER();
 public:
+    PropertyExpressionContainer();
+    virtual ~PropertyExpressionContainer();
+
     virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const = 0;
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) = 0;
+
+protected:
+    virtual void onRelabeledDocument(const App::Document &doc) = 0;
+
+private:
+    static void slotRelabelDocument(const App::Document &doc);
 };
 
 class AppExport PropertyExpressionEngine : public App::PropertyExpressionContainer, 
@@ -96,6 +105,7 @@ public:
 
     virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
+    virtual void onRelabeledDocument(const App::Document &doc) override;
 
     void setValue() { } // Dummy
 

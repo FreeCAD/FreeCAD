@@ -608,7 +608,7 @@ indexer
 
 document
     : STRING                                { $$ = ObjectIdentifier::String(std::move($1), true); }
-    | IDENTIFIER                            { $$ = ObjectIdentifier::String(std::move($1), false);}
+    | IDENTIFIER                            { $$ = ObjectIdentifier::String(std::move($1), false, true);}
     ;
 
 object

@@ -314,11 +314,11 @@ public:
 
     bool updateLabelReference(App::DocumentObject *, const std::string &, const char *);
 
-    bool renameDocument(ExpressionVisitor &v, const std::string &oldName, const std::string &newName);
+    bool relabeledDocument(ExpressionVisitor &v, const std::string &oldLabel, const std::string &newLabel);
 
     std::pair<App::DocumentObject*,std::string> getDep(std::vector<std::string> *labels=0) const;
 
-    App::Document *getDocument(String name = String()) const;
+    App::Document *getDocument(String name = String(), bool *ambiguous=0) const;
 
     App::DocumentObject *getDocumentObject() const;
     

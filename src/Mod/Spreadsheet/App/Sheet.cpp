@@ -92,10 +92,6 @@ Sheet::Sheet()
     ADD_PROPERTY_TYPE(hiddenRows, (), "Spreadsheet", (PropertyType)(Prop_Hidden|Prop_Output), "Hidden rows");
     ADD_PROPERTY_TYPE(hiddenColumns, (), "Spreadsheet", (PropertyType)(Prop_Hidden|Prop_Output), "Hidden columns");
     ADD_PROPERTY_TYPE(PythonMode, (false), "Spreadsheet", Prop_None, "Set default expression syntax mode");
-
-    onRenamedDocumentConnection = GetApplication().signalRenameDocument.connect(boost::bind(&Spreadsheet::Sheet::onRenamedDocument, this, _1));
-    onRelabledDocumentConnection = GetApplication().signalRelabelDocument.connect(boost::bind(&Spreadsheet::Sheet::onRelabledDocument, this, _1));
-
 }
 
 /**
@@ -179,12 +175,14 @@ bool Sheet::importFromFile(const std::string &filename, char delimiter, char quo
                 }
             }
             catch (...) {
+                signaller.tryInvoke();
                 return false;
             }
 
             ++row;
         }
         file.close();
+        signaller.tryInvoke();
         return true;
     }
     else
@@ -371,14 +369,6 @@ void Sheet::setCell(CellAddress address, const char * value)
         return;
     }
 
-    // Update expression, delete old first if necessary
-    Cell * cell = getNewCell(address);
-
-    PropertySheet::AtomicPropertyChange signaller(cells);
-
-    if (cell->getExpression()) {
-        setContent(address, 0);
-    }
     setContent(address, value);
 }
 
@@ -785,18 +775,20 @@ void Sheet::touchCells(Range range) {
 void Sheet::recomputeCell(CellAddress p)
 {
     Cell * cell = cells.getValue(p);
-    std::string docName = getDocument()->Label.getValue();
-    std::string docObjName = std::string(getNameInDocument());
-    std::string name = docName + "#" + docObjName + "." + p.toString();
 
     try {
-        if (cell) {
-            cell->clearException();
-            cell->clearResolveException();
+        if (cell && cell->hasException()) {
+            std::string content;
+            cell->getStringContent(content);
+            cell->setContent(content.c_str());
         }
+
         updateProperty(p);
-        cells.clearDirty(p);
-        cellErrors.erase(p);
+
+        if(!cell || !cell->hasException()) {
+            cells.clearDirty(p);
+            cellErrors.erase(p);
+        }
     }
     catch (const Base::Exception & e) {
         QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
@@ -984,8 +976,7 @@ short Sheet::mustExecute(void) const
 {
     if (cellErrors.size() > 0 || cells.isDirty())
         return 1;
-    else
-        return 0;
+    return DocumentObject::mustExecute();
 }
 
 
@@ -1423,28 +1414,6 @@ void Sheet::onDocumentRestored()
         FC_ERR("Failed to restore " << getFullName() << ": " << ret->Why);
         delete ret;
     }
-}
-
-/**
- * @brief Slot called when a document is relabelled.
- * @param document Relabelled document.
- */
-
-void Sheet::onRelabledDocument(const Document &document)
-{
-    bool touched = cells.isTouched();
-    cells.renamedDocument(&document);
-    if(!touched)
-        cells.purgeTouched();
-}
-
-/**
- * @brief Unimplemented.
- * @param document
- */
-
-void Sheet::onRenamedDocument(const Document & /*document*/)
-{
 }
 
 /**

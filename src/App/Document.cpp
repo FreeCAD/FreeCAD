@@ -155,6 +155,7 @@ namespace App {
 typedef boost::bimap<StringHasherRef,int> HasherMap;
 
 static bool _IsRestoring;
+static bool _IsRelabeling;
 
 // Pimpl class
 struct DocumentP
@@ -1348,6 +1349,7 @@ void Document::onChanged(const Property* prop)
 
     // the Name property is a label for display purposes
     if (prop == &Label) {
+        Base::FlagToggler<> flag(_IsRelabeling);
         App::GetApplication().signalRelabelDocument(*this);
     } else if(prop == &ShowHidden) {
         App::GetApplication().signalShowHidden(*this);
@@ -1395,7 +1397,7 @@ void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Prop
 {
     if(Who->isDerivedFrom(App::DocumentObject::getClassTypeId()))
         signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
-    if(!d->rollback) {
+    if(!d->rollback && !_IsRelabeling) {
         _checkTransaction(0,What,__LINE__);
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectChange(Who,What);

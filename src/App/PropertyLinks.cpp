@@ -4176,6 +4176,17 @@ PropertyXLink *PropertyXLinkContainer::createXLink() {
     return new PropertyXLink(false,this);
 }
 
+bool PropertyXLinkContainer::isLinkedToDocument(const App::Document &doc) const {
+    auto iter = _XLinks.lower_bound(doc.getName());
+    if(iter != _XLinks.end()) {
+        size_t len = strlen(doc.getName());
+        return iter->first.size()>len 
+            && iter->first[len] == '#'
+            && boost::starts_with(iter->first,doc.getName());
+    }
+    return false;
+}
+
 void PropertyXLinkContainer::updateDeps(std::set<DocumentObject*> &&newDeps) {
     auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     if(!owner || !owner->getNameInDocument())

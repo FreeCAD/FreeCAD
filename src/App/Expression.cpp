@@ -312,10 +312,10 @@ bool ExpressionVisitor::updateElementReference(Expression &e, App::DocumentObjec
     return e._updateElementReference(feature,reverse,*this);
 }
 
-bool ExpressionVisitor::renameDocument(
+bool ExpressionVisitor::relabeledDocument(
         Expression &e, const std::string &oldName, const std::string &newName) 
 {
-    return e._renameDocument(oldName,newName,*this);
+    return e._relabeledDocument(oldName,newName,*this);
 }
 
 bool ExpressionVisitor::renameObjectIdentifier(Expression &e,
@@ -3344,10 +3344,10 @@ void VariableExpression::_getIdentifiers(std::set<App::ObjectIdentifier> &deps) 
     deps.insert(var);
 }
 
-bool VariableExpression::_renameDocument(const std::string &oldName,
+bool VariableExpression::_relabeledDocument(const std::string &oldName,
         const std::string &newName, ExpressionVisitor &v)
 {
-    return var.renameDocument(v, oldName, newName);
+    return var.relabeledDocument(v, oldName, newName);
 }
 
 bool VariableExpression::_adjustLinks(

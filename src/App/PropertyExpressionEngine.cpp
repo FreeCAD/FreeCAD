@@ -45,6 +45,34 @@ using namespace boost;
 
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyExpressionContainer , App::PropertyXLinkContainer);
 
+static std::set<PropertyExpressionContainer*> _ExprContainers;
+
+PropertyExpressionContainer::PropertyExpressionContainer() {
+    static bool inited;
+    if(!inited) {
+        inited = true;
+        GetApplication().signalRelabelDocument.connect(PropertyExpressionContainer::slotRelabelDocument);
+    }
+    _ExprContainers.insert(this);
+}
+
+PropertyExpressionContainer::~PropertyExpressionContainer() {
+    _ExprContainers.erase(this);
+}
+
+void PropertyExpressionContainer::slotRelabelDocument(const App::Document &doc) {
+    // For use a private _ExprContainers to track all living
+    // PropertyExpressionContainer including those inside undo/redo stack,
+    // because document relabel is not undoable/redoable.
+    
+    if(doc.getOldLabel() != doc.Label.getValue()) {
+        for(auto prop : _ExprContainers)
+            prop->onRelabeledDocument(doc);
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
 TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::PropertyExpressionContainer);
 
 /**
@@ -838,4 +866,11 @@ void PropertyExpressionEngine::setExpressions(
     AtomicPropertyChange signaller(*this);
     for(auto &v : exprs)
         setValue(v.first,std::move(v.second));
+}
+
+void PropertyExpressionEngine::onRelabeledDocument(const App::Document &doc)
+{
+    RelabelDocumentExpressionVisitor v(doc);
+    for(auto &e : expressions) 
+        e.second.expression->visit(v);
 }

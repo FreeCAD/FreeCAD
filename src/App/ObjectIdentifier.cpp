@@ -338,15 +338,18 @@ const std::string &ObjectIdentifier::toString() const
         result.propertyIndex==0))
     {
         s << '.';
-    }else{
-        if (documentNameSet && documentName.getString().size())
-            s << documentName.toString() << "#";
-        if (documentObjectNameSet && documentObjectName.getString().size()) {
-            s << documentObjectName.toString() << '.';
-        } else if (result.propertyIndex > 0) {
-            components[0].toString(s);
-            s << ".";
-        }
+    }else if (documentNameSet && documentName.getString().size()) {
+        if(documentObjectNameSet && documentObjectName.getString().size())
+            s << documentName.toString() << "#"
+              << documentObjectName.toString() << '.';
+        else if(result.resolvedDocumentObjectName.getString().size())
+            s << documentName.toString() << "#"
+              << result.resolvedDocumentObjectName.toString() << '.';
+    } else if (documentObjectNameSet && documentObjectName.getString().size()) {
+        s << documentObjectName.toString() << '.';
+    } else if (result.propertyIndex > 0) {
+        components[0].toString(s);
+        s << '.';
     }
 
     if(subObjectName.getString().size())
@@ -377,31 +380,26 @@ std::string ObjectIdentifier::toPersistentString() const {
         result.propertyIndex==0))
     {
         s << '.';
-    }else{
-        if(result.resolvedDocumentObject &&
-           result.resolvedDocumentObject!=owner &&
-           result.resolvedDocumentObject->isExporting())
-        {
-            s << result.resolvedDocumentObject->getExportName(true);
-            if(documentObjectName.isRealString())
-                s << '@';
-            s << '.';
-        } else {
-            if (documentNameSet && documentName.getString().size())
-                s << documentName.toString() << "#";
-            else if(owner->isExporting()) {
-                if(documentName.getString().size())
-                    s << documentName.toString() << "#";
-                else if(result.resolvedDocumentObject)
-                    s << result.resolvedDocumentObject->getDocument()->getName() << "#";
-            }
-            if (documentObjectNameSet && documentObjectName.getString().size()) {
-                s << documentObjectName.toString() << '.';
-            } else if (result.propertyIndex > 0) {
-                components[0].toString(s);
-                s << ".";
-            }
-        }
+    }else if(result.resolvedDocumentObject &&
+        result.resolvedDocumentObject!=owner &&
+        result.resolvedDocumentObject->isExporting())
+    {
+        s << result.resolvedDocumentObject->getExportName(true);
+        if(documentObjectName.isRealString())
+            s << '@';
+        s << '.';
+    } else if (documentNameSet && documentName.getString().size()) {
+        if(documentObjectNameSet && documentObjectName.getString().size())
+            s << documentName.toString() << "#"
+                << documentObjectName.toString() << '.';
+        else if(result.resolvedDocumentObjectName.getString().size())
+            s << documentName.toString() << "#"
+                << result.resolvedDocumentObjectName.toString() << '.';
+    } else if (documentObjectNameSet && documentObjectName.getString().size()) {
+        s << documentObjectName.toString() << '.';
+    } else if (result.propertyIndex > 0) {
+        components[0].toString(s);
+        s << '.';
     }
 
     if(subObjectName.getString().size()) {
@@ -456,10 +454,7 @@ bool ObjectIdentifier::updateLabelReference(
         }
     }
 
-    if(documentName.getString().size()) {
-        if(documentName.getString()!=obj->getDocument()->getName())
-            return false;
-    }else if(owner->getDocument()!=obj->getDocument())
+    if(result.resolvedDocument != obj->getDocument())
         return false;
 
     if(documentObjectName.getString().size()) {
@@ -507,27 +502,14 @@ bool ObjectIdentifier::updateLabelReference(
     return false;
 }
 
-bool ObjectIdentifier::renameDocument(ExpressionVisitor &v,
-        const std::string &oldName, const std::string &newName)
+bool ObjectIdentifier::relabeledDocument(ExpressionVisitor &v,
+        const std::string &oldLabel, const std::string &newLabel)
 {
-    if (oldName == newName)
-        return false;
-
-    if (documentNameSet && documentName == oldName) {
+    if (documentNameSet && documentName.isRealString() && documentName.getString()==oldLabel) {
         v.setExpressionChanged();
-        documentName = newName;
+        documentName = String(newLabel,true);
         _cache.clear();
         return true;
-    }
-    else {
-        ResolveResults result(*this);
-
-        if (result.resolvedDocumentName == oldName) {
-            v.setExpressionChanged();
-            documentName = newName;
-            _cache.clear();
-            return true;
-        }
     }
     return false;
 }
@@ -869,9 +851,11 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
     if(!owner)
         return;
 
+    bool docAmbiguous = false;
+
     /* Document name specified? */
     if (documentName.getString().size() > 0) {
-        results.resolvedDocument = getDocument(documentName);
+        results.resolvedDocument = getDocument(documentName,&docAmbiguous);
         results.resolvedDocumentName = documentName;
     }
     else {
@@ -885,8 +869,11 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
 
     // Assume document name and object name from owner if not found
     if (results.resolvedDocument == 0) {
-        if (documentName.getString().size() > 0)
+        if (documentName.getString().size() > 0) {
+            if(docAmbiguous)
+                results.flags.set(ResolveAmbiguous);
             return;
+        }
 
         results.resolvedDocument = owner->getDocument();
         if (results.resolvedDocument == 0)
@@ -978,15 +965,18 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
  * @return Pointer to document, or 0 if it is not found or not uniquely defined by name.
  */
 
-Document * ObjectIdentifier::getDocument(String name) const
+Document * ObjectIdentifier::getDocument(String name, bool *ambiguous) const
 {
     if (name.getString().size() == 0)
         name = getDocumentName();
 
-    App::Document * docById = App::GetApplication().getDocument(name);
-
-    if (name.isForceIdentifier())
-        return docById;
+    App::Document * docById = 0;
+    
+    if(!name.isRealString()) {
+        docById = App::GetApplication().getDocument(name);
+        if (name.isForceIdentifier())
+            return docById;
+    }
 
     App::Document * docByLabel = 0;
     const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
@@ -994,8 +984,10 @@ Document * ObjectIdentifier::getDocument(String name) const
     for (std::vector<App::Document*>::const_iterator i = docs.begin(); i != docs.end(); ++i) {
         if ((*i)->Label.getValue() == name.getString()) {
             /* Multiple hits for same label? */
-            if (docByLabel != 0)
+            if (docByLabel != 0) {
+                if(ambiguous) *ambiguous = true;
                 return 0;
+            }
             docByLabel = *i;
         }
     }
@@ -1009,7 +1001,10 @@ Document * ObjectIdentifier::getDocument(String name) const
             return docById;
 
         /* docByLabel and docById could be equal; that is ok */
-        return docByLabel == docById ? docById : 0;
+        if(docByLabel==docById)
+            return docById;
+        if(ambiguous) *ambiguous = true;
+        return 0;
     }
 }
 
@@ -1311,15 +1306,15 @@ void ObjectIdentifier::setDocumentName(ObjectIdentifier::String &&name, bool for
     _cache.clear();
     if(name.getString().size() && _DocumentMap) {
         if(name.isRealString()) {
-            auto iter = _DocumentMap->find(name.getString());
-            if(iter!=_DocumentMap->end()) {
-                documentName = String(iter->second);
-                return;
-            }
-        }else{
             auto iter = _DocumentMap->find(name.toString());
             if(iter!=_DocumentMap->end()) {
                 documentName = String(iter->second,true);
+                return;
+            }
+        }else{
+            auto iter = _DocumentMap->find(name.getString());
+            if(iter!=_DocumentMap->end()) {
+                documentName = String(iter->second,false,true);
                 return;
             }
         }
@@ -1376,12 +1371,22 @@ void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, boo
 
     if(obj == owner)
         force = false;
+    else
+        localProperty = false;
     if(obj->getDocument() == owner->getDocument())
         setDocumentName(String());
-    else {
-        documentNameSet = force;
+    else if(!documentNameSet) {
+        if(obj->getDocument() == owner->getDocument())
+            setDocumentName(String());
+        else {
+            documentNameSet = true;
+            documentName = String(obj->getDocument()->getName(),false,true);
+        }
+    }else if(documentName.isRealString()) 
+        documentName = String(obj->getDocument()->Label.getStrValue(),true);
+    else
         documentName = String(obj->getDocument()->getName(),false,true);
-    }
+
     documentObjectNameSet = force;
     documentObjectName = String(obj->getNameInDocument(),false,true);
     subObjectName = std::move(subname);
@@ -1802,7 +1807,7 @@ bool ObjectIdentifier::isTouched() const {
 }
 
 void ObjectIdentifier::resolveAmbiguity() {
-    if(!owner || !owner->getNameInDocument() ||
+    if(!owner || !owner->getNameInDocument() || isLocalProperty() ||
        (documentObjectNameSet && documentObjectName.getString().size() && 
         (documentObjectName.isRealString() || documentObjectName.isForceIdentifier())))
     {
@@ -1857,7 +1862,11 @@ std::string ObjectIdentifier::ResolveResults::resolveErrorString() const
 {
     std::ostringstream ss;
     if (resolvedDocument == 0) {
-        ss << "Document '" << resolvedDocumentName.toString() << "' not found";
+        if(flags.test(ResolveAmbiguous)) 
+            ss << "Ambiguous document name/label '" 
+               << resolvedDocumentName.getString() << "'";
+        else
+            ss << "Document '" << resolvedDocumentName.toString() << "' not found";
     } else if (resolvedDocumentObject == 0) {
         if(flags.test(ResolveAmbiguous))
             ss << "Ambiguous document object name '" 

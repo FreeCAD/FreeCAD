@@ -257,10 +257,6 @@ protected:
 
     void onDocumentRestored();
 
-    void onRelabledDocument(const App::Document & document);
-
-    void onRenamedDocument(const App::Document & document);
-
     void recomputeCell(App::CellAddress p);
 
     App::Property *getProperty(App::CellAddress key) const;
@@ -313,9 +309,6 @@ protected:
     /* Document observers to track changes to external properties */
     typedef std::map<std::string, SheetObserver* > ObserverMap;
     ObserverMap observers;
-
-    boost::signals2::scoped_connection onRelabledDocumentConnection;
-    boost::signals2::scoped_connection onRenamedDocumentConnection;
 
     int currentRow = -1;
     int currentCol = -1;

@@ -64,7 +64,7 @@ protected:
     void getDeps(Expression &e, ExpressionDeps &); 
     void getDepObjects(Expression &e, std::set<App::DocumentObject*> &, std::vector<std::string> *); 
     bool adjustLinks(Expression &e, const std::set<App::DocumentObject*> &inList);
-    bool renameDocument(Expression &e, const std::string &oldName, const std::string &newName);
+    bool relabeledDocument(Expression &e, const std::string &oldName, const std::string &newName);
     bool renameObjectIdentifier(Expression &e,const std::map<ObjectIdentifier,ObjectIdentifier> &paths,
             const ObjectIdentifier &path);
     bool updateElementReference(Expression &e, App::DocumentObject *feature,bool reverse);
@@ -264,7 +264,7 @@ protected:
     virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const  {}
     virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &) {return false;}
     virtual bool _updateElementReference(App::DocumentObject *,bool,ExpressionVisitor &) {return false;}
-    virtual bool _renameDocument(const std::string &, const std::string &, ExpressionVisitor &) {return false;}
+    virtual bool _relabeledDocument(const std::string &, const std::string &, ExpressionVisitor &) {return false;}
     virtual void _importSubNames(const ObjectIdentifier::SubNameMap &) {}
     virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *) {}
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 

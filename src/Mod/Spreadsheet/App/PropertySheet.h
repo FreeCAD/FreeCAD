@@ -51,6 +51,7 @@ public:
 
     virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
+    virtual void onRelabeledDocument(const App::Document &doc) override;
 
     virtual void updateElementReference(
             App::DocumentObject *feature,bool reverse=false,bool notify=false) override;
@@ -161,9 +162,6 @@ public:
     void invalidateDependants(const App::DocumentObject *docObj);
 
     void renamedDocumentObject(const App::DocumentObject *docObj);
-
-    void renamedDocument(const App::Document *doc);
-
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths);
 
     void deletedDocumentObject(const App::DocumentObject *docObj);
@@ -243,9 +241,6 @@ private:
 
     /*! DocumentObject this cell depends on */
     std::map<App::CellAddress, std::set< std::string > > cellToDocumentObjectMap;
-
-    /*! Name of documents, used for renaming */
-    std::map<const App::Document*, std::string> documentName;
 
     /*! Mapping of cell position to alias property */
     std::map<App::CellAddress, std::string> aliasProp;

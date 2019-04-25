@@ -1210,6 +1210,8 @@ public:
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
     virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+    
+    bool isLinkedToDocument(const App::Document &doc) const;
 
 protected:
     virtual void aboutToSetChildValue(App::Property &prop) override;

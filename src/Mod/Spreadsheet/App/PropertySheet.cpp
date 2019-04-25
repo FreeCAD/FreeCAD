@@ -215,7 +215,6 @@ PropertySheet::PropertySheet(const PropertySheet &other)
     , cellToPropertyNameMap(other.cellToPropertyNameMap)
     , documentObjectToCellMap(other.documentObjectToCellMap)
     , cellToDocumentObjectMap(other.cellToDocumentObjectMap)
-    , documentName(other.documentName)
     , aliasProp(other.aliasProp)
     , revAliasProp(other.revAliasProp)
     , updateCount(other.updateCount)
@@ -993,8 +992,6 @@ void PropertySheet::addDependencies(CellAddress key)
         std::string docName = doc->Label.getValue();
         std::string docObjName = docName + "#" + docObj->getNameInDocument();
 
-        documentName[doc] = docName;
-
         owner->observeDocument(doc);
 
         documentObjectToCellMap[docObjName].insert(key);
@@ -1183,31 +1180,24 @@ void PropertySheet::renamedDocumentObject(const App::DocumentObject * docObj)
 #endif
 }
 
-void PropertySheet::renamedDocument(const App::Document * doc)
+void PropertySheet::onRelabeledDocument(const App::Document &doc)
 {
-    if (documentName.find(doc) == documentName.end())
-        return;
-
-    std::map<CellAddress, Cell* >::iterator i = data.begin();
-
-    while (i != data.end()) {
-        RelabelDocumentExpressionVisitor<PropertySheet> v(*this, documentName[doc], doc->Label.getValue());
-        i->second->visit(v);
-        if(v.changed()) {
-            v.reset();
-            recomputeDependencies(i->first);
-            setDirty(i->first);
-        }
-        ++i;
-    }
+    RelabelDocumentExpressionVisitor v(doc);
+    for(auto &c : data) 
+        c.second->visit(v);
 }
 
 void PropertySheet::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths)
 {
     RenameObjectIdentifierExpressionVisitor<PropertySheet> v(*this, paths, *this);
-
-    for (std::map<CellAddress, Cell*>::iterator it = data.begin(); it != data.end(); ++it)
-        it->second->visit(v);
+    for(auto &c : data) {
+        c.second->visit(v);
+        if(v.changed()) {
+            v.reset();
+            recomputeDependencies(c.first);
+            setDirty(c.first);
+        }
+    }
 }
 
 void PropertySheet::deletedDocumentObject(const App::DocumentObject *docObj)
@@ -1230,7 +1220,6 @@ void PropertySheet::deletedDocumentObject(const App::DocumentObject *docObj)
 
 void PropertySheet::documentSet()
 {
-    documentName[owner->getDocument()] = owner->getDocument()->Label.getValue();
 }
 
 const std::set<CellAddress> &PropertySheet::getDeps(const std::string &name) const

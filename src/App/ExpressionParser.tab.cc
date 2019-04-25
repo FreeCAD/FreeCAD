@@ -4662,7 +4662,7 @@ namespace App { namespace ExpressionParser {
 
   case 247:
 #line 611 "ExpressionParser.y" // lalr1.cc:871
-    { yylhs.value.as< ObjectIdentifier::String > () = ObjectIdentifier::String(std::move(yystack_[0].value.as< std::string > ()), false);}
+    { yylhs.value.as< ObjectIdentifier::String > () = ObjectIdentifier::String(std::move(yystack_[0].value.as< std::string > ()), false, true);}
 #line 4667 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 

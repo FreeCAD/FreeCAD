@@ -238,7 +238,7 @@ protected:
     virtual void _importSubNames(const ObjectIdentifier::SubNameMap &);
     virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *);
     virtual bool _updateElementReference(App::DocumentObject *,bool,ExpressionVisitor &);
-    virtual bool _renameDocument(const std::string &, const std::string &, ExpressionVisitor &);
+    virtual bool _relabeledDocument(const std::string &, const std::string &, ExpressionVisitor &);
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
                                          const ObjectIdentifier &, ExpressionVisitor &);
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &);

@@ -70,23 +70,24 @@ private:
     bool reverse;
 };
 
-template<class P> class RelabelDocumentExpressionVisitor : public ExpressionModifier<P> {
+// Document relabel is not undoable, so we don't derive from
+// ExpressionModifier, hence not calling aboutToSetValue/hasSetValue().
+// By right, modification of document label should not change evaluation result
+// of any expression.
+class RelabelDocumentExpressionVisitor : public ExpressionVisitor {
 public:
 
-    RelabelDocumentExpressionVisitor(P & prop, const std::string & _oldName, const std::string & _newName)
-         : ExpressionModifier<P>(prop)
-         , oldName(_oldName)
-         , newName(_newName)
+    RelabelDocumentExpressionVisitor(const App::Document &doc)
+         : doc(doc)
     {
     }
 
     void visit(Expression &node) {
-        this->renameDocument(node,oldName,newName);
+        this->relabeledDocument(node,doc.getOldLabel(),doc.Label.getStrValue());
     }
 
 private:
-    std::string oldName;
-    std::string newName;
+    const App::Document &doc;
 };
 
 template<class P> class MoveCellsExpressionVisitor : public ExpressionModifier<P> {
