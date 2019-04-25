@@ -3905,16 +3905,34 @@ std::vector<DocumentObject*> Document::copyObject(
     for (std::vector<App::DocumentObject*>::iterator it = deps.begin(); it != deps.end(); ++it)
         memsize += (*it)->getMemSize();
 
+    // if less than ~10 MB
+    bool use_buffer=(memsize < 0xA00000);
     QByteArray res;
-    res.reserve(memsize);
-    Base::ByteArrayOStreambuf obuf(res);
-    std::ostream ostr(&obuf);
-    this->exportObjects(deps, ostr);
+    try {
+        res.reserve(memsize);
+    }
+    catch (const Base::MemoryException&) {
+        use_buffer = false;
+    }
 
-    Base::ByteArrayIStreambuf ibuf(res);
-    std::istream istr(0);
-    istr.rdbuf(&ibuf);
-    return md.importObjects(istr);
+    if (use_buffer) {
+        Base::ByteArrayOStreambuf obuf(res);
+        std::ostream ostr(&obuf);
+        exportObjects(deps, ostr);
+
+        Base::ByteArrayIStreambuf ibuf(res);
+        std::istream istr(0);
+        istr.rdbuf(&ibuf);
+        return md.importObjects(istr);
+    } else {
+        static Base::FileInfo fi(App::Application::getTempFileName());
+        Base::ofstream ostr(fi, std::ios::out | std::ios::binary);
+        exportObjects(deps, ostr);
+        ostr.close();
+
+        Base::ifstream istr(fi, std::ios::in | std::ios::binary);
+        return md.importObjects(istr);
+    }
 }
 
 std::vector<App::DocumentObject*> 
