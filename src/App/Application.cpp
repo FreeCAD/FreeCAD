@@ -358,6 +358,8 @@ Application::~Application()
 void Application::renameDocument(const char *OldName, const char *NewName)
 {
 #if 1
+    (void)OldName;
+    (void)NewName;
     throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
 #else
     std::map<std::string,Document*>::iterator pos;
