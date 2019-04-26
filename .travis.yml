@@ -24,6 +24,7 @@ env:
     - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
     - OSX_PORTS_CACHE=${OSX_PORTS_CACHE:-FreeCAD/FreeCAD-ports-cache}
     - DEPLOY=${DEPLOY:-0}
+    - GENERATOR="Unix Makefiles"
   matrix:
     # chunk.io key (if needed, obtain it with Yorik, PrzemoF, Kunda1)
     secure: MJu0ZU/9Yqut6bUkHoSrXTV/c/WhCLR0KnHKCsnEU081PYoukzH6ngzgKk7/trAH2In080d/ra4B2OmTNl/LAgV6DXKFY9dO1aG8QwcrHgaMPf0pHYUy/OfwQSFYFByQDV2OEMAHcIWc/dtNkzK2QUi44Kn7d0GtSEiN4s816lriWtjg0vmEGAU8MjvcAGss4gKyn05Xm1NUCYPKgpgIHsywLbpE76lv0eOYoosEuKv5Q9Pb4FMQts02+JUlqE8eY4ZZ3nV8iQbgIDdseOSA7Ixn05zWjU/ZRZ74TrYxMnzfUAwQcJe9OcqoESq+pPWQt5HYG66VmeVxQim1gmsiDASH51U/nswKt0Q4bISj3tVk0YZMFV8Ax+SzPvLEmFZJQGfgO1mg7HdNcz9N9G5JHPawrV19DwYIEFbAw8MCSAoIXFOcPQZUWXCbtjm7NO9vCjMrqyVJMDD9L8omvQajHoajuHbOT8KB250gFokeLj3z8yu++Tz+IrZX5inUMrXsARVt/ALXpi8rJPXmoFMpMUjyWmDPqPWlnqUhLtTtEtKpuOWP8ZnWVwkg4QYOUhCy95C1okJSGkG+ylHWncWfY4mS+UBT525laoh+GOhH+sRW+p2xkI21xGFRqg1oHjjgY1yIYF6nnSHPzxMBRYmZwagyXsjkFG5FPMWR2oYk0Yg
@@ -66,7 +67,8 @@ matrix:
       - os: windows
         language: cpp
         env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -G \"Visual Studio 15 2017 Win64\""
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
+          - GENERATOR="Visual Studio 15 2017 Win64"
           - PYTHON_MAJOR_VERSION=3        
           - MSBUILD_EXE="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin\MSBuild.exe /m FreeCAD_Trunk.sln"
           - VS15=true
@@ -220,8 +222,11 @@ before_install:
    "windows")
        curl -L https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z --output FreeCADLibs.7z
        7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
+       export LIBPACK_DIR="$TRAVIS_BUILD_DIR\FreeCADLibs"
+
        export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_LIBPACK_DIR=$TRAVIS_BUILD_DIR\FreeCADLibs -DPYTHON_EXECUTABLE=$TRAVIS_BUILD_DIR\FreeCADLibs\bin\python.exe \
        -DBUILD_QT5=TRUE"
+       echo $CMAKE_ARGS
        ;;
 
    *)
@@ -234,7 +239,8 @@ install:
 ####
 #  Build FreeCAD with cmake options set above for each platform
 ##
-  - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
+  
+  - mkdir build && cd build && cmake -G"${GENERATOR}" ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
 script:
 ####
