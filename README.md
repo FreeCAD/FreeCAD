@@ -28,7 +28,11 @@
 
 </div>
 
+<div align=center>
+
 ![screenshot](http://www.freecadweb.org/wiki/images/thumb/7/72/Freecad016_screenshot1.jpg/800px-Freecad016_screenshot1.jpg)
+
+</div>
 
 FreeCAD is a general purpose feature-based, parametric 3D modeler for 
 CAD, MCAD, CAx, CAE and PLM, aimed directly at mechanical engineering 
