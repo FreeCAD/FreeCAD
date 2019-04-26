@@ -226,7 +226,7 @@ before_install:
 
        export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_LIBPACK_DIR=$TRAVIS_BUILD_DIR\FreeCADLibs -DPYTHON_EXECUTABLE=$TRAVIS_BUILD_DIR\FreeCADLibs\bin\python.exe \
        -DBUILD_QT5=TRUE"
-       echo $CMAKE_ARGS
+       export PATH=$MSBUILD_PATH:$PATH
        ;;
 
    *)
@@ -239,14 +239,18 @@ install:
 ####
 #  Build FreeCAD with cmake options set above for each platform
 ##
-  
   - mkdir build && cd build && cmake -G"${GENERATOR}" ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
 script:
 ####
 #  Install FreeCAD and run unit tests.  Test failures will fail the build
 ##
-  - sudo make -j2 install
+  - |
+    if [[ ${TRAVIS_OS_NAME} == "windows" ]]; then 
+	msbuild.exe /m FreeCAD_Trunk.sln
+    else
+        sudo make -j2 install
+    fi
   - ${INSTALLED_APP_PATH} --console --run-test 0
   - ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
   - sleep 10 && pkill FreeCAD
