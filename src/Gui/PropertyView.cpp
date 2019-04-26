@@ -321,6 +321,10 @@ void PropertyView::onTimer() {
         App::DocumentObject *parent = 0;
         App::DocumentObject *ob = sel.pObject->resolve(sel.SubName,&parent);
         if(!ob) continue;
+
+        // App::Link should be able to handle special case below now, besides, the new
+        // support of plain group in App::Link breaks because of the code below
+#if 0
         if(parent) {
             auto parentVp = Application::Instance->getViewProvider(parent);
             if(parentVp) {
@@ -339,6 +343,7 @@ void PropertyView::onTimer() {
                     ob = parent;
             }
         }
+#endif
 
         // Do not process an object more than once
         if(!objSet.insert(ob).second)
