@@ -8,6 +8,18 @@
 
 <h3 align="center">Your own 3D parametric modeler</h3>
 
+<p align="center">
+    <strong>
+        <a href="https://www.freecadweb.org">Website</a>
+        •
+        <a href="https://www.freecadweb.org/wiki/">Docs</a>
+        •
+        <a href="https://forum.freecadweb.org/">Forum</a>
+        •
+        <a href="http://www.freecadweb.org/tracker/">Bug tracker</a>
+    </strong>
+</p>
+
 ![screenshot](http://www.freecadweb.org/wiki/images/thumb/7/72/Freecad016_screenshot1.jpg/800px-Freecad016_screenshot1.jpg)
 
 FreeCAD is a general purpose feature-based, parametric 3D modeler for 
@@ -23,11 +35,6 @@ Coin 3D library, and a broad Python API. The interface is built with Qt.
 FreeCAD runs exactly the same way on Windows, Mac OSX, BSD and Linux 
 platforms.
 
-- [Home page](http://www.freecadweb.org)
-- [Documentation wiki](http://www.freecadweb.org/wiki/)
-- [Forum](http://forum.freecadweb.org/)
-- [Bug tracker](http://www.freecadweb.org/tracker/)
-- [Git repository](https://github.com/FreeCAD/FreeCAD)
 
 Installing
 ----------
