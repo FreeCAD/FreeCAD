@@ -1129,7 +1129,7 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What,
             std::list<Transaction*>::iterator it;
             for (it = mUndoTransactions.begin(); it != mUndoTransactions.end(); ++it) {
                 if ((*it)->hasObject(pcDelObj)) {
-                    _openTransaction();
+                    _openTransaction("Delete");
                     break;
                 }
             }
@@ -4017,38 +4017,45 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     if (that == this)
         return 0; // nothing todo
 
-    if(recursive) {
-        auto deps = getDependencyList({obj},DepNoXLinked|DepSort);
-        auto objs = copyObject(deps,false);
-        if(objs.empty()) 
-            return 0;
-        // Some object may delete its children if deleted, so we collect the IDs
-        // or all depdending objects for saftey reason.
-        std::vector<int> ids;
-        ids.reserve(deps.size());
-        for(auto o : deps)
-            ids.push_back(o->getID());
-
-        // We only remove object if it is the moving object or it has no
-        // depending objects, i.e. an empty inList, which is why we need to
-        // iterate the depending list backwards.
-        for(auto iter=ids.rbegin();iter!=ids.rend();++iter) {
-            auto o = that->getObjectByID(*iter);
-            if(!o) continue;
-            if(iter==ids.rbegin()
-                    || o->getInList().empty())
-                that->removeObject(o->getNameInDocument());
-        }
-        return objs.back();
+    // True object move without copy is only safe when undo is off on both
+    // documents.
+    if(!recursive && !d->iUndoMode && !that->d->iUndoMode) {
+        // all object of the other document that refer to this object must be nullified
+        that->breakDependency(obj, false);
+        std::string objname = getUniqueObjectName(obj->getNameInDocument());
+        that->_removeObject(obj);
+        this->_addObject(obj, objname.c_str());
+        obj->setDocument(this);
+        return obj;
     }
 
-    // all object of the other document that refer to this object must be nullified
-    that->breakDependency(obj, false);
-    std::string objname = getUniqueObjectName(obj->getNameInDocument());
-    that->_removeObject(obj);
-    this->_addObject(obj, objname.c_str());
-    obj->setDocument(this);
-    return obj;
+    std::vector<App::DocumentObject*> deps;
+    if(recursive) 
+        deps = getDependencyList({obj},DepNoXLinked|DepSort);
+    else
+        deps.push_back(obj);
+
+    auto objs = copyObject(deps,false);
+    if(objs.empty()) 
+        return 0;
+    // Some object may delete its children if deleted, so we collect the IDs
+    // or all depdending objects for saftey reason.
+    std::vector<int> ids;
+    ids.reserve(deps.size());
+    for(auto o : deps)
+        ids.push_back(o->getID());
+
+    // We only remove object if it is the moving object or it has no
+    // depending objects, i.e. an empty inList, which is why we need to
+    // iterate the depending list backwards.
+    for(auto iter=ids.rbegin();iter!=ids.rend();++iter) {
+        auto o = that->getObjectByID(*iter);
+        if(!o) continue;
+        if(iter==ids.rbegin()
+                || o->getInList().empty())
+            that->removeObject(o->getNameInDocument());
+    }
+    return objs.back();
 }
 
 DocumentObject * Document::getActiveObject(void) const
