@@ -1828,24 +1828,59 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
 
 void TreeWidget::onUpdateStatus(void)
 {
-    if (statusUpdateDelay<=0) {
-        statusTimer->stop();
-        if(isVisible()) {
-            FC_LOG("update item status");
-            for (auto pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
-                pos->second->testStatus();
-            }
+    int delay = statusUpdateDelay;
+    statusUpdateDelay = 0;
+    if (delay>0)
+        return;
 
-            for(auto &v : ChangedObjects) {
-                auto iter = ObjectTable.find(v.first);
-                if(iter == ObjectTable.end())
-                    continue;
-                updateChildren(iter->first, iter->second, v.second, false);
-            }
-            ChangedObjects.clear();
+    for(auto it=NewObjects.begin(),itNext=it;it!=NewObjects.end();NewObjects.erase(it),it=itNext) {
+        ++itNext;
+        auto doc = App::GetApplication().getDocument(it->first.c_str());
+        if(!doc) 
+            continue;
+
+        if(doc->isPerformingTransaction()) {
+            // We have to delay item creation until undo/redo is done, because the
+            // object re-creation while in transaction may break tree view item
+            // update logic. For example, a parent object re-created before its
+            // children, but the parent's link property already contains all the
+            // (detached) children.
+            statusTimer->stop();
+            _updateStatus(true);
+            return;
+        }
+        auto gdoc = Application::Instance->getDocument(doc);
+        if(!gdoc) 
+            continue;
+        auto docItem = getDocumentItem(gdoc);
+        if(!docItem) 
+            continue;
+        for(auto id : it->second) {
+            auto obj = doc->getObjectByID(id);
+            if(!obj || docItem->ObjectMap.find(obj)!=docItem->ObjectMap.end())
+                continue;
+            auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(gdoc->getViewProvider(obj));
+            if(vpd)
+                docItem->createNewItem(*vpd);
         }
     }
-    statusUpdateDelay = 0;
+
+    statusTimer->stop();
+
+    for(auto &v : ChangedObjects) {
+        auto iter = ObjectTable.find(v.first);
+        if(iter == ObjectTable.end())
+            continue;
+        updateChildren(iter->first, iter->second, v.second, false);
+    }
+    ChangedObjects.clear();
+
+    if(isVisible()) {
+        FC_LOG("update item status");
+        for (auto pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
+            pos->second->testStatus();
+        }
+    }
 }
 
 void TreeWidget::onItemEntered(QTreeWidgetItem * item)
@@ -2085,6 +2120,10 @@ void TreeWidget::onItemSelectionChanged ()
 }
 
 void TreeWidget::onSelectTimer() {
+    if(statusTimer->isActive()) {
+        statusUpdateDelay = 0;
+        onUpdateStatus();
+    }
     bool syncSelect = FC_TREEPARAM(SyncSelection);
     this->blockConnection(true);
     if(Selection().hasSelection()) {
@@ -2281,8 +2320,6 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     connectRecomputed = adoc->signalRecomputed.connect(boost::bind(&DocumentItem::slotRecomputed, this, _1, _2));
     connectRecomputedObj = adoc->signalRecomputedObject.connect(
             boost::bind(&DocumentItem::slotRecomputedObject, this, _1));
-    connectUndo = adoc->signalUndo.connect(boost::bind(&DocumentItem::slotTransactionDone, this, _1));
-    connectRedo = adoc->signalRedo.connect(boost::bind(&DocumentItem::slotTransactionDone, this, _1));
 
     setFlags(Qt::ItemIsEnabled/*|Qt::ItemIsEditable*/);
 
@@ -2301,8 +2338,6 @@ DocumentItem::~DocumentItem()
     connectScrObject.disconnect();
     connectRecomputed.disconnect();
     connectRecomputedObj.disconnect();
-    connectUndo.disconnect();
-    connectRedo.disconnect();
 }
 
 TreeWidget *DocumentItem::getTree() const{
@@ -2373,27 +2408,8 @@ void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
 }
 
 void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj) {
-    if(pDocument->getDocument()->isPerformingTransaction()) {
-        // We have to delay item creation until undo/redo is done, because the
-        // object re-creation while in transaction may break tree view item
-        // update logic. For example, a parent object re-created before its
-        // children, but the parent's link property already contains all the
-        // (detached) children.
-        TransactingObjects.push_back(obj.getObject()->getID());
-    }else
-        createNewItem(obj);
-}
-
-void DocumentItem::slotTransactionDone(const App::Document& doc) {
-    for(auto id : TransactingObjects) {
-        auto obj = doc.getObjectByID(id);
-        if(!obj || ObjectMap.find(obj)!=ObjectMap.end())
-            continue;
-        auto vpd = dynamic_cast<ViewProviderDocumentObject*>(pDocument->getViewProvider(obj));
-        if(vpd)
-            createNewItem(*vpd);
-    }
-    TransactingObjects.clear();
+    getTree()->NewObjects[pDocument->getDocument()->getName()].push_back(obj.getObject()->getID());
+    getTree()->_updateStatus(true);
 }
 
 bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
@@ -2438,12 +2454,8 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
         item->setText(1, QString::fromUtf8(data->label2.c_str()));
     if(!obj.showInTree() && !showHidden())
         item->setHidden(true);
-    populateItem(item);
 
-    // Not calling item testStatus below because there seems to have some delay
-    // between new object, and its visual status update. Need to figure out why
-    // item->testStatus(true);
-    getTree()->updateStatus(true);
+    populateItem(item);
     return true;
 }
 
@@ -2511,6 +2523,10 @@ void TreeWidget::slotFinishRestoreDocument(const App::Document& Doc)
     auto docItem = it->second;
     docItem->connectChgObject = docItem->document()->signalChangedObject.connect(
             boost::bind(&TreeWidget::slotChangeObject, this, _1, _2, false));
+    
+    statusUpdateDelay = 0;
+    onUpdateStatus();
+
     App::PropertyBool dummy;
     for(auto &v : docItem->ObjectMap)
         slotChangeObject(*v.second->viewObject,dummy,true);
@@ -2666,6 +2682,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
 
     item->populated = true;
     bool checkHidden = !showHidden();
+    bool updated = false;
 
     int i=-1;
     // iterate through the claimed children, and try to synchronize them with the 
@@ -2704,8 +2721,10 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
                     delete childItem->myData->rootItem;
                     getTree()->blockConnection(lock);
                 }
-            }else if(childItem->requiredAtRoot())
+            }else if(childItem->requiredAtRoot()) {
                 createNewItem(*childItem->object(),this,-1,childItem->myData);
+                updated = true;
+            }
             break;
         }
 
@@ -2720,6 +2739,8 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
             auto vp = getViewProvider(child);
             if(!vp || !createNewItem(*vp,item,i,it==ObjectMap.end()?DocumentObjectDataPtr():it->second))
                 --i;
+            else
+                updated = true;
             continue;
         }
 
@@ -2727,6 +2748,8 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
             DocumentObjectItem *childItem = *it->second->items.begin();
             if(!createNewItem(*childItem->object(),item,i,it->second))
                 --i;
+            else
+                updated = true;
         }else {
             DocumentObjectItem *childItem = it->second->rootItem;
             if(item->isChildOfItem(childItem)) {
@@ -2766,6 +2789,8 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
         getTree()->blockConnection(lock);
     }
     getTree()->updateGeometries();
+    if(updated)
+        getTree()->_updateStatus(true);
 }
 
 void DocumentItem::checkRemoveChildrenFromRoot(const Gui::ViewProviderDocumentObject& view)
@@ -2787,8 +2812,6 @@ void TreeWidget::slotChangeObject(
     if(!obj || !obj->getNameInDocument())
         return;
 
-    _updateStatus(true);
-
     // Let's not waste time on the newly added Visibility property in
     // DocumentObject.
     if(&prop == &obj->Visibility)
@@ -2797,6 +2820,9 @@ void TreeWidget::slotChangeObject(
     auto itEntry = ObjectTable.find(obj);
     if(itEntry == ObjectTable.end() || itEntry->second.empty())
         return;
+
+    if(!force)
+        _updateStatus(true);
 
     if(force || &prop == &obj->Label) {
         const char *label = obj->Label.getValue();

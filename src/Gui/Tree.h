@@ -215,6 +215,7 @@ private:
     std::unordered_map<const Gui::Document*,DocumentItem*> DocumentMap;
     std::unordered_map<App::DocumentObject*,std::set<DocumentObjectDataPtr> > ObjectTable;
     std::unordered_map<App::DocumentObject*,bool> ChangedObjects;
+    std::unordered_map<std::string,std::vector<long> > NewObjects;
     bool fromOutside;
     int statusUpdateDelay;
 
@@ -278,7 +279,6 @@ protected:
     void slotScrollToObject  (const Gui::ViewProviderDocumentObject&);
     void slotRecomputed      (const App::Document &doc, const std::vector<App::DocumentObject*> &objs);
     void slotRecomputedObject(const App::DocumentObject &);
-    void slotTransactionDone (const App::Document &doc);
 
     bool updateObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
 
@@ -301,7 +301,6 @@ private:
     Gui::Document* pDocument;
     std::unordered_map<App::DocumentObject*,DocumentObjectDataPtr> ObjectMap;
     std::unordered_map<App::DocumentObject*, std::set<App::DocumentObject*> > _ParentMap;
-    std::vector<long> TransactingObjects;
 
     typedef boost::signals2::connection Connection;
     Connection connectNewObject;
@@ -314,8 +313,6 @@ private:
     Connection connectScrObject;
     Connection connectRecomputed;
     Connection connectRecomputedObj;
-    Connection connectUndo;
-    Connection connectRedo;
 
     friend class TreeWidget;
     friend class DocumentObjectData;
