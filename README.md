@@ -1,6 +1,6 @@
 <h1 align="center">
     <img
-        width="200"
+        width="150"
         alt="FreeCAD Logo"
         src="https://www.freecadweb.org/images/logo.png">
     </div>
