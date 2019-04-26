@@ -34,18 +34,31 @@
 
 </div>
 
-FreeCAD is a general purpose feature-based, parametric 3D modeler for 
-CAD, MCAD, CAx, CAE and PLM, aimed directly at mechanical engineering 
-and product design but also fits a wider range of uses in engineering, 
-such as architecture or other engineering specialties. It is 100% Open 
-Source (LGPL2+ license) and extremely modular, allowing for very 
-advanced extension and customization.
+Overview
+--------
 
-FreeCAD is based on OpenCASCADE, a powerful geometry kernel, features an 
-Open Inventor-compliant 3D scene representation model provided by the 
-Coin 3D library, and a broad Python API. The interface is built with Qt. 
-FreeCAD runs exactly the same way on Windows, Mac OSX, BSD and Linux 
-platforms.
+* **Freedom to build what you want**  FreeCAD is an open-source parametric 3D 
+modeler made primarily to design real-life objects of any size. 
+Parametric modeling allows you to easily modify your design by going back into 
+your model history and changing its parameters. 
+
+* **Create 3D from 2D & back** FreeCAD allows you to sketch geometry constrained
+ 2D shapes and use them as a base to build other objects. 
+ It contains many components to adjust dimensions or extract design details from 
+ 3D models to create high quality production ready drawings.
+
+* **Designed for your needs** FreeCAD is designed to fit a wide range of uses
+ including product design, mechanical engineering and architecture. 
+ Whether you are a hobbyist, a programmer, an experienced CAD user, 
+ a student or a teacher, you will feel right at home with FreeCAD.
+
+* **Cross platform** FreeCAD runs on Windows, Mac and Linux
+
+* **Underlying technology**
+    * **Based on OpenCASCADE** A powerful geometry kernel
+    * **Coin3D library** Open Inventor-compliant 3D scene representation model
+    * **Python** FreeCAD offers a broad Python API
+    * **Qt** Graphical User Interface built with Qt
 
 
 Installing
