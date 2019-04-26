@@ -20,6 +20,14 @@
     </strong>
 </p>
 
+<div align=center>
+
+[![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+<br>
+[![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Master][freecad-master-status]][travis-branches] [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)
+
+</div>
+
 ![screenshot](http://www.freecadweb.org/wiki/images/thumb/7/72/Freecad016_screenshot1.jpg/800px-Freecad016_screenshot1.jpg)
 
 FreeCAD is a general purpose feature-based, parametric 3D modeler for 
@@ -80,8 +88,6 @@ The pages below contain up-to-date build instructions:
 
 Usage & Getting help
 --------------------
-
-[![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 The FreeCAD wiki contains documentation on 
 general FreeCAD usage, Python scripting, and development. These 
