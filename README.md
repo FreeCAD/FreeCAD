@@ -1,5 +1,12 @@
-FreeCAD
--------
+<h1 align="center">
+    <img
+        width="200"
+        alt="FreeCAD Logo"
+        src="https://www.freecadweb.org/images/logo.png">
+    </div>
+</h1>
+
+<h3 align="center">Your own 3D parametric modeler</h3>
 
 ![screenshot](http://www.freecadweb.org/wiki/images/thumb/7/72/Freecad016_screenshot1.jpg/800px-Freecad016_screenshot1.jpg)
 
