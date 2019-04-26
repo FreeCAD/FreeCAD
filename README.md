@@ -36,11 +36,11 @@ Other options are described at the [wiki Download page](http://www.freecadweb.or
 Build Status <img src="https://blog.travis-ci.com/images/travis-mascot-200px.png" height="30"/>
 ------------
 
-| Master | 0.17 | Translation |
+| Master | 0.18 | Translation |
 |:------:|:----:|:-----------:|
-|[![Master][freecad-master-status]][travis-branches]|[![0.17][freecad-0.17-status]][travis-branches]|[![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)|
+|[![Master][freecad-master-status]][travis-branches]|[![0.18][freecad-0.18-status]][travis-branches]|[![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)|
 
-[freecad-0.17-status]: https://travis-ci.org/FreeCAD/FreeCAD.svg?branch=releases/FreeCAD-0-17
+[freecad-0.18-status]: https://travis-ci.org/FreeCAD/FreeCAD.svg?branch=releases/FreeCAD-0-18
 [freecad-master-status]: https://travis-ci.org/FreeCAD/FreeCAD.svg?branch=master
 [travis-branches]: https://travis-ci.org/FreeCAD/FreeCAD/branches
 [travis-builds]: https://travis-ci.org/FreeCAD/FreeCAD/builds
