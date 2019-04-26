@@ -3379,7 +3379,7 @@ bool VariableExpression::_renameObjectIdentifier(const std::map<ObjectIdentifier
     const auto &oldPath = var.canonicalPath();
     auto it = paths.find(oldPath);
     if (it != paths.end()) {
-        v.setExpressionChanged();
+        v.aboutToChange();
         var = it->second.relativeTo(path);
         return true;
     }
@@ -3400,7 +3400,7 @@ void VariableExpression::_moveCells(const CellAddress &address,
     int thisRow = addr.row();
     int thisCol = addr.col();
     if (thisRow >= address.row() || thisCol >= address.col()) {
-        v.setExpressionChanged();
+        v.aboutToChange();
         addr.setRow(thisRow + rowCount);
         addr.setCol(thisCol + colCount);
         comp = ObjectIdentifier::SimpleComponent(addr.toString());
@@ -3416,7 +3416,7 @@ void VariableExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVi
     if(!addr.isValid() || (addr.isAbsoluteCol() && addr.isAbsoluteRow()))
         return;
 
-    v.setExpressionChanged();
+    v.aboutToChange();
     if(!addr.isAbsoluteCol())
         addr.setCol(addr.col()+colOffset);
     if(!addr.isAbsoluteRow())
@@ -4475,13 +4475,13 @@ bool RangeExpression::_renameObjectIdentifier(const std::map<ObjectIdentifier,Ob
     bool touched =false;
     auto it = paths.find(ObjectIdentifier(owner,begin));
     if (it != paths.end()) {
-        v.setExpressionChanged();
+        v.aboutToChange();
         begin = it->second.relativeTo(path).getPropertyName();
         touched = true;
     }
     it = paths.find(ObjectIdentifier(owner,end));
     if (it != paths.end()) {
-        v.setExpressionChanged();
+        v.aboutToChange();
         end = it->second.relativeTo(path).getPropertyName();
         touched = true;
     }
@@ -4496,7 +4496,7 @@ void RangeExpression::_moveCells(const CellAddress &address,
         int thisRow = addr.row();
         int thisCol = addr.col();
         if (thisRow >= address.row() || thisCol >= address.col()) {
-            v.setExpressionChanged();
+            v.aboutToChange();
             addr.setRow(thisRow+rowCount);
             addr.setCol(thisCol+colCount);
             begin = addr.toString();
@@ -4507,7 +4507,7 @@ void RangeExpression::_moveCells(const CellAddress &address,
         int thisRow = addr.row();
         int thisCol = addr.col();
         if (thisRow >= address.row() || thisCol >= address.col()) {
-            v.setExpressionChanged();
+            v.aboutToChange();
             addr.setRow(thisRow + rowCount);
             addr.setCol(thisCol + colCount);
             end = addr.toString();
@@ -4519,7 +4519,7 @@ void RangeExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVisit
 {
     CellAddress addr = stringToAddress(begin.c_str(),true);
     if(addr.isValid() && (!addr.isAbsoluteRow() || !addr.isAbsoluteCol())) {
-        v.setExpressionChanged();
+        v.aboutToChange();
         if(!addr.isAbsoluteRow())
             addr.setRow(addr.row()+rowOffset);
         if(!addr.isAbsoluteCol()) 
@@ -4528,7 +4528,7 @@ void RangeExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVisit
     }
     addr = stringToAddress(end.c_str(),true);
     if(addr.isValid() && (!addr.isAbsoluteRow() || !addr.isAbsoluteCol())) {
-        v.setExpressionChanged();
+        v.aboutToChange();
         if(!addr.isAbsoluteRow())
             addr.setRow(addr.row()+rowOffset);
         if(!addr.isAbsoluteCol()) 

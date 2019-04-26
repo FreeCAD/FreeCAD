@@ -506,7 +506,7 @@ bool ObjectIdentifier::relabeledDocument(ExpressionVisitor &v,
         const std::string &oldLabel, const std::string &newLabel)
 {
     if (documentNameSet && documentName.isRealString() && documentName.getString()==oldLabel) {
-        v.setExpressionChanged();
+        v.aboutToChange();
         documentName = String(newLabel,true);
         _cache.clear();
         return true;
@@ -1765,7 +1765,7 @@ bool ObjectIdentifier::updateElementReference(ExpressionVisitor &v,
     if(v.getPropertyLink()->_updateElementReference(
             feature,result.resolvedDocumentObject,subObjectName.str,shadowSub,reverse)) {
         _cache.clear();
-        v.setExpressionChanged();
+        v.aboutToChange();
         return true;
     }
     return false;
@@ -1783,7 +1783,7 @@ bool ObjectIdentifier::adjustLinks(ExpressionVisitor &v, const std::set<App::Doc
         PropertyLinkSub prop;
         prop.setValue(result.resolvedDocumentObject, {subObjectName.getString()});
         if(prop.adjustLink(inList)) {
-            v.setExpressionChanged();
+            v.aboutToChange();
             documentObjectName = String(prop.getValue()->getNameInDocument(),false,true);
             subObjectName = String(prop.getSubValues().front(),true);
             _cache.clear();

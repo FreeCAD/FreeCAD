@@ -430,16 +430,23 @@ protected:
 
 template<class P> class AtomicPropertyChangeInterface {
 protected:
-    AtomicPropertyChangeInterface() : signalCounter(0) { }
+    AtomicPropertyChangeInterface() : signalCounter(0), hasChanged(false) { }
 
 public:
+
     class AtomicPropertyChange {
     public:
-        AtomicPropertyChange(P & prop) : mProp(prop) {
+        AtomicPropertyChange(P & prop, bool markChange=true) : mProp(prop) {
             mProp.signalCounter++;
-            // Signal counter == 1? Then we are the first one, so invoke the aboutToSetValue in the property.
-            if (mProp.signalCounter == 1)
+            if (markChange)
+                aboutToChange();
+        }
+
+        void aboutToChange() {
+            if(!mProp.hasChanged) {
+                mProp.hasChanged = true;
                 mProp.aboutToSetValue();
+            }
         }
 
         ~AtomicPropertyChange() {
@@ -447,7 +454,8 @@ public:
             // hasSetValue() before decrease counter to prevent recursive call
             // triggered by another AtomicPropertyChange created inside
             // hasSetValue(), as it has now been changed to a virtual function.
-            if (mProp.signalCounter == 1) {
+            if (mProp.signalCounter == 1 && mProp.hasChanged) {
+                mProp.hasChanged = false;
                 // Must make sure to not throw in a destructor
                 try {
                     mProp.hasSetValue();
@@ -462,7 +470,8 @@ public:
         // Destructor cannot throw. So we provide this function to allow error
         // propagation.
         void tryInvoke() {
-            if(mProp.signalCounter==1) {
+            if(mProp.signalCounter==1 && mProp.hasChanged) {
+                mProp.hasChanged = false;
                 mProp.hasSetValue();
                 if(mProp.signalCounter>0)
                     --mProp.signalCounter;
@@ -474,10 +483,10 @@ public:
     };
 
     static AtomicPropertyChange * getAtomicPropertyChange(P & prop) { return new AtomicPropertyChange(prop); }
-
+    
 private:
-
     int signalCounter; /**< Counter for invoking transaction start/stop */
+    bool hasChanged;
 };
 
 } // namespace App

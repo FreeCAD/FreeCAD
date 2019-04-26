@@ -559,9 +559,7 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
     assert(cell != 0);
 
     /* Mark cells depending on this cell dirty; they need to be resolved when an alias changes or disappears */
-    const char * docName = owner->getDocument()->Label.getValue();
-    const char * docObjName = owner->getNameInDocument();
-    std::string fullName = std::string(docName) + "#" + std::string(docObjName) + "." + address.toString();
+    std::string fullName = owner->getFullName() + "." + address.toString();
 
     std::map<std::string, std::set< CellAddress > >::const_iterator j = propertyNameToCellMap.find(fullName);
     if (j != propertyNameToCellMap.end()) {
@@ -989,8 +987,7 @@ void PropertySheet::addDependencies(CellAddress key)
         App::DocumentObject *docObj = dep.first;
         App::Document *doc = docObj->getDocument();
 
-        std::string docName = doc->Label.getValue();
-        std::string docObjName = docName + "#" + docObj->getNameInDocument();
+        std::string docObjName = docObj->getFullName();
 
         owner->observeDocument(doc);
 
@@ -1084,17 +1081,12 @@ void PropertySheet::removeDependencies(CellAddress key)
 
 void PropertySheet::recomputeDependants(const App::DocumentObject *owner, const char *propName)
 {
-    const char * nameInDoc = owner->getNameInDocument();
-    if (!nameInDoc)
-        return;
-    const char * docName = owner->getDocument()->Label.getValue();
-
     // First, search without actual property name for sub-object/link
     // references, i.e indirect references. The depenedecies of these
     // references are too complex to track exactly, so we only track the
     // top parent object instead, and mark the involved expression
     // whenever the top parent changes.
-    std::string fullName = std::string(docName) + "#" + std::string(nameInDoc) + ".";
+    std::string fullName = owner->getFullName() + ".";
     auto it = propertyNameToCellMap.find(fullName);
     if (it != propertyNameToCellMap.end()) {
         for(auto &cell : it->second)
@@ -1111,6 +1103,11 @@ void PropertySheet::recomputeDependants(const App::DocumentObject *owner, const 
     }
 }
 
+void PropertySheet::breakLink(App::DocumentObject *obj, bool clear) {
+    AtomicPropertyChange signaller(*this,false);
+    PropertyExpressionContainer::breakLink(obj,clear);
+}
+
 void PropertySheet::onBreakLink(App::DocumentObject *obj) {
     invalidateDependants(obj);
 }
@@ -1124,20 +1121,17 @@ void PropertySheet::invalidateDependants(const App::DocumentObject *docObj)
 {
     depConnections.erase(docObj);
 
-    const char * docName = docObj->getDocument()->Label.getValue();
-    const char * docObjName = docObj->getNameInDocument();
-
     // Recompute cells that depend on this cell
-    std::string fullName = std::string(docName) + "#" + std::string(docObjName);
-    std::map<std::string, std::set< CellAddress > >::const_iterator i = documentObjectToCellMap.find(fullName);
-
-    if (i == documentObjectToCellMap.end())
+    auto iter = documentObjectToCellMap.find(docObj->getFullName());
+    if (iter == documentObjectToCellMap.end())
         return;
 
     // Touch to force recompute
     touch();
-    
-    for(const auto &address : i->second) {
+
+    AtomicPropertyChange signaller(*this);
+
+    for(const auto &address : iter->second) {
         Cell * cell = getValue(address);
         cell->setResolveException("Unresolved dependency");
         setDirty(address);
@@ -1339,7 +1333,8 @@ void PropertySheet::onContainerRestored() {
 }
 
 bool PropertySheet::adjustLink(const std::set<DocumentObject*> &inList) {
-    std::unique_ptr<AtomicPropertyChange> signaler;
+    AtomicPropertyChange signaller(*this,false);
+    bool changed = false;
 
     for(auto &d : data) {
         auto expr = d.second->expression.get();
@@ -1355,8 +1350,9 @@ bool PropertySheet::adjustLink(const std::set<DocumentObject*> &inList) {
             }
             if(!need_adjust)
                 continue;
-            if(!signaler)
-                signaler.reset(new AtomicPropertyChange(*this));
+
+            signaller.aboutToChange();
+            changed = true;
 
             removeDependencies(d.first);
             expr->adjustLinks(inList);
@@ -1370,7 +1366,7 @@ bool PropertySheet::adjustLink(const std::set<DocumentObject*> &inList) {
             throw Base::RuntimeError(ss.str());
         }
     }
-    return !!signaler;
+    return changed;
 }
 
 void PropertySheet::updateElementReference(DocumentObject *feature,bool reverse,bool notify) 

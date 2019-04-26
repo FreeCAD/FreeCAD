@@ -60,6 +60,7 @@ public:
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
     virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
                         const std::string &ref, const char *newLabel) const override;
+    virtual void breakLink(App::DocumentObject *obj, bool clear) override;
 
     virtual void afterRestore() override;
     virtual void onContainerRestored() override;

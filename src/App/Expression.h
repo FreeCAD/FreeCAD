@@ -54,7 +54,7 @@ class AppExport ExpressionVisitor {
 public:
     virtual ~ExpressionVisitor() {}
     virtual void visit(Expression &e) = 0;
-    virtual void setExpressionChanged() {}
+    virtual void aboutToChange() {}
     virtual int changed() const { return 0;}
     virtual void reset() {}
     virtual App::PropertyLinkBase* getPropertyLink() {return 0;}
@@ -78,17 +78,17 @@ protected:
 template<class P> class ExpressionModifier : public ExpressionVisitor {
 public:
     ExpressionModifier(P & _prop)
-        : prop(_prop),_changed(0) 
-    { 
-        propLink = dynamic_cast<App::PropertyLinkBase*>(&prop);
-    }
+        : prop(_prop)
+        , propLink(Base::freecad_dynamic_cast<App::PropertyLinkBase>(&prop))
+        , signaller(_prop,false)
+        , _changed(0) 
+    {}
 
     virtual ~ExpressionModifier() { }
 
-    virtual void setExpressionChanged() override{
+    virtual void aboutToChange() override{
         ++_changed;
-        if (!signaller)
-            signaller = boost::shared_ptr<typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange>(AtomicPropertyChangeInterface<P>::getAtomicPropertyChange(prop));
+        signaller.aboutToChange();
     }
 
     virtual int changed() const override { return _changed; }
@@ -100,7 +100,7 @@ public:
 protected:
     P & prop;
     App::PropertyLinkBase *propLink;
-    boost::shared_ptr<typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange> signaller;
+    typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange signaller;
     int _changed;
 };
 
