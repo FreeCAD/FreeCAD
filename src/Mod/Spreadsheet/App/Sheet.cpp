@@ -1384,13 +1384,11 @@ std::set<std::string> Sheet::dependsOn(CellAddress address) const
 
 void Sheet::providesTo(CellAddress address, std::set<std::string> & result) const
 {
-    const char * docName = getDocument()->Label.getValue();
-    const char * docObjName = getNameInDocument();
-    std::string fullName = std::string(docName) + "#" + std::string(docObjName) + "." + address.toString();
-    std::set<CellAddress> tmpResult = cells.getDeps(fullName);
+    std::string fullName = getFullName() + ".";
+    std::set<CellAddress> tmpResult = cells.getDeps(fullName + address.toString());
 
     for (std::set<CellAddress>::const_iterator i = tmpResult.begin(); i != tmpResult.end(); ++i)
-        result.insert(std::string(docName) + "#" + std::string(docObjName) + "." + i->toString());
+        result.insert(fullName + i->toString());
 }
 
 /**
@@ -1401,10 +1399,7 @@ void Sheet::providesTo(CellAddress address, std::set<std::string> & result) cons
 
 std::set<CellAddress>  Sheet::providesTo(CellAddress address) const
 {
-    const char * docName = getDocument()->Label.getValue();
-    const char * docObjName = getNameInDocument();
-    std::string fullName = std::string(docName) + "#" + std::string(docObjName) + "." + address.toString();
-    return cells.getDeps(fullName);
+    return cells.getDeps(getFullName()+"."+address.toString());
 }
 
 void Sheet::onDocumentRestored()
