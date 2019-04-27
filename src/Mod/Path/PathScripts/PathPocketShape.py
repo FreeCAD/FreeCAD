@@ -41,9 +41,11 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 __contributors__ = "russ4262 (Russell Johnson)"
-__scriptVersion__ = "1d testing"
+__scriptVersion__ = "1f testing"
 __created__ = "2017"
-__lastModified__ = "2019-04-23 23:03 CST"
+__lastModified__ = "2019-04-26 20:40 CST"
+print("\n\nPathPocketShape.py")
+print(" -Script version: " + __scriptVersion__ + "  Lm: " + __lastModified__)
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -208,6 +210,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if not hasattr(obj, 'ReverseDirection'):
             obj.addProperty('App::PropertyBool', 'ReverseDirection', 'Pocket', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Reverse direction of pocket operation.'))
             obj.ReverseDirection = False
+        #if not hasattr(obj, 'UseRotation'):
+        #    obj.addProperty("App::PropertyEnumeration", "UseRotation", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use rotation to gain access to pockets/areas."))
+        #    obj.UseRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
         obj.setEditorMode('ExtensionFeature', 2)
 
@@ -221,6 +226,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return shapes representing the solids to be removed.'''
         PathLog.track()
+        print("areaOpShapes() in PathPocketShape.py")
 
         def judgeFinalDepth(obj, fD):
             if obj.FinalDepth.Value >= fD:
@@ -240,37 +246,70 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             self.horiz = []
             vertical = []
             horizTuples = []
+            axis = 'X'
+            angle = 0.0
             reset = False
             resetPlacement = None
+            trans = FreeCAD.Vector(0,0,0)
 
             for o in obj.Base:
                 PathLog.debug('Base item: {}'.format(o))
                 base = o[0]
-                resetPlacement = base.Placement
+                ##print("-------- base.Name: " + str(base.Name) + " --------")
+                
+                # Limit sub faces to children of single Model object.
+                if self.modelName == None:
+                    self.modelName = base.Name
+                else:
+                    if base.Name != self.modelName:
+                        for sub in o[1]:
+                            print(sub + " is not a part of Model object: " + self.modelName)
+                        o[1] = []
+                        print("Only processing faces on a single Model object per operation.")
+                        print("You will need to separate faces per Model object within the Job.")
+
+                startBase = FreeCAD.Vector(base.Placement.Base.x, base.Placement.Base.y, base.Placement.Base.z)
+                startAngle = base.Placement.Rotation.Angle
+                startAxis = base.Placement.Rotation.Axis
+                startRotation = FreeCAD.Rotation(startAxis, startAngle)
+                resetPlacement = FreeCAD.Placement(startBase, startRotation)
+                ##print("PRE base.Placement: " + str(base.Placement))
                 for sub in o[1]:
                     if 'Face' in sub:
                         # Determine angle of rotation needed to make normal vector = (0,0,1)
-                        print("Initial analysis: " + str(sub) + ".Surface.Axis " + str(base.Shape.getElement(sub).Surface.Axis))
                         strDep = obj.StartDepth.Value
                         finDep = obj.FinalDepth.Value
-                        (rtn, angle, axis) = self.pocketRotationAnalysis(obj, base, sub, True)
+                        trans = FreeCAD.Vector(0,0,0)
+                        rtn = False
+                        
+                        if obj.UseRotation != 'Off':
+                            (rtn, angle, axis) = self.pocketRotationAnalysis(obj, base, sub, prnt=True)
+                        
                         if rtn == True:
                             reset = True
-                            # Rotate base to such that Surface.Axis of pocket bottom is Z=1
-                            vect = FreeCAD.Vector(1,0,0)
-                            if axis == 'Y':
+                            ##print("... rotating model ...")
+                            if axis == 'X':
+                                bX = 0.0
+                                bY = 0.0
+                                bZ = math.sin(math.radians(angle)) * base.Placement.Base.y
+                                vect = FreeCAD.Vector(1,0,0)
+                            elif axis == 'Y':
+                                bX = 0.0
+                                bY = 0.0
+                                bZ = math.sin(math.radians(angle)) * base.Placement.Base.x
+                                if obj.B_AxisErrorOverride == True:
+                                    bZ = -1 * bZ
                                 vect = FreeCAD.Vector(0,1,0)
-                            base.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(vect, angle))
+                            #base.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(vect, angle))
+                            # Rotate base to such that Surface.Axis of pocket bottom is Z=1
+                            base.Placement.Rotation = FreeCAD.Rotation(vect, angle)
                             base.recompute()
-                            # Set start and finish depths for pocket
-                            ###strDep = base.Shape.getElement(sub).BoundBox.ZMax + self.leadIn
-                            ###finDep = judgeFinalDepth(obj, base.Shape.getElement(sub).BoundBox.ZMin)  #base.Shape.getElement(sub).Placement.Base.z
-                            # Over-write default final depth value, leaves manual override by user
-                            ###obj.StartDepth.Value = strDep
-                            ###obj.FinalDepth.Value = finDep
+                            trans = FreeCAD.Vector(bX, bY, bZ)
+                            ##print("trans: " + str(trans))
                         else:
                             axis = 'X'
                             angle = 0.0
+                        ##print("POST base.Placement: " + str(base.Placement))
                         tag = axis + str(round(angle, 7))
                         face = base.Shape.getElement(sub)
 
@@ -281,59 +320,64 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             strDep = base.Shape.BoundBox.ZMax + self.leadIn
                             finDep = judgeFinalDepth(obj, face.BoundBox.ZMin)
                             # Over-write default final depth value, leaves manual override by user
-                            obj.StartDepth.Value = strDep
-                            obj.FinalDepth.Value = finDep
+                            obj.StartDepth.Value = trans.z + strDep
+                            obj.FinalDepth.Value = trans.z + finDep
 
-
-                            tup = face, sub, angle, axis, tag, strDep, finDep
+                            tup = face, sub, angle, axis, tag, strDep, finDep, trans
                             horizTuples.append(tup)
                         elif type(face.Surface) == Part.Cylinder and PathGeom.isVertical(face.Surface.Axis):
                             print("== Part.Cylinder")
                             # vertical cylinder wall
                             if any(e.isClosed() for e in face.Edges):
-                                print("e.isClosed()")
+                                ##print("e.isClosed()")
                                 # complete cylinder
                                 circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
                                 disk = Part.Face(Part.Wire(circle))
 
                                 # Adjust start and finish depths for pocket
-                                strDep = face.BoundBox.ZMax + self.leadIn# base.Shape.BoundBox.ZMax + self.leadIn
+                                strDep = face.BoundBox.ZMax + self.leadIn # base.Shape.BoundBox.ZMax + self.leadIn
                                 finDep = judgeFinalDepth(obj, face.BoundBox.ZMin)
                                 # Over-write default final depth value, leaves manual override by user
-                                obj.StartDepth.Value = strDep
-                                obj.FinalDepth.Value = finDep
+                                obj.StartDepth.Value = trans.z + strDep
+                                obj.FinalDepth.Value = trans.z + finDep
 
-                                tup = disk, sub, angle, axis, tag, strDep, finDep
+                                tup = disk, sub, angle, axis, tag, strDep, finDep, trans
                                 horizTuples.append(tup)
                             else:
                                 # partial cylinder wall
                                 vertical.append(face)
-                                print(sub + "is vertical after rotation. Ignored for pocket.")
+                                print(sub + "is vertical after rotation.")
                         elif type(face.Surface) == Part.Plane and PathGeom.isHorizontal(face.Surface.Axis):
                             vertical.append(face)
-                            print(sub + "is vertical after rotation. Ignored for pocket.")
+                            print(sub + "is vertical after rotation.")
                         else:
                             PathLog.error(translate('PathPocket', 'Pocket does not support shape %s.%s') % (base.Label, sub))
                         
                         if reset == True:
-                            base.Placement = resetPlacement
+                            base.Placement.Rotation = startRotation
                             base.recompute()
                             reset = False
                     # End IF
                 # End FOR
+                base.Placement = resetPlacement
+                base.recompute()
             # End FOR
             
-            '''
+            #'''
             self.vertical = PathGeom.combineConnectedShapes(vertical)
             self.vWires = [TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1)) for shape in self.vertical]
             for wire in self.vWires:
                 w = PathGeom.removeDuplicateEdges(wire)
                 face = Part.Face(w)
-                face.tessellate(0.1)
+                face.tessellate(0.05)
                 if PathGeom.isRoughly(face.Area, 0):
                     PathLog.error(translate('PathPocket', 'Vertical faces do not form a loop - ignoring'))
                 else:
-                    self.horiz.append(face)
+                    # self.horiz.append(face)
+                    strDep = base.Shape.BoundBox.ZMax + self.leadIn
+                    finDep = judgeFinalDepth(obj, face.BoundBox.ZMin)
+                    tup = face, 'vertFace', 0.0, 'X', 'X0.0', strDep, finDep, FreeCAD.Vector(0,0,0)
+                    horizTuples.append(tup)
 
             # add faces for extensions
             self.exts = []
@@ -341,21 +385,34 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 wire = Part.Face(ext.getWire())
                 if wire:
                     face = Part.Face(wire)
-                    self.horiz.append(face)
+                    #self.horiz.append(face)
+                    strDep = base.Shape.BoundBox.ZMax + self.leadIn
+                    finDep = judgeFinalDepth(obj, face.BoundBox.ZMin)
+                    tup = face, 'vertFace', 0.0, 'X', 'X0.0', strDep, finDep, FreeCAD.Vector(0,0,0)
+                    horizTuples.append(tup)
                     self.exts.append(face)
-            '''
-
+            #'''
 
             # move all horizontal faces to FinalDepth
-            for (face, sub, angle, axis, tag, strDep, finDep) in horizTuples:
+            for (face, sub, angle, axis, tag, strDep, finDep, trans) in horizTuples:
                 #face.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - face.BoundBox.ZMin))
-                face.translate(FreeCAD.Vector(0, 0, finDep - face.BoundBox.ZMin))
+                if angle <= 0.0:
+                    if axis == 'X':
+                        face.translate(FreeCAD.Vector(0, trans.z, trans.z + finDep - face.BoundBox.ZMin))
+                    elif axis == 'Y':
+                        face.translate(FreeCAD.Vector(-1 * trans.z, 0, trans.z + finDep - face.BoundBox.ZMin))
+                else:
+                    if axis == 'X':
+                        face.translate(FreeCAD.Vector(0, -1 * trans.z, trans.z + finDep - face.BoundBox.ZMin))
+                    elif axis == 'Y':
+                        face.translate(FreeCAD.Vector(trans.z, 0, trans.z + finDep - face.BoundBox.ZMin))
+                ##print(" -translate: " + str(face.Placement))
 
             # Separate elements, regroup by orientation (axis_angle combination)
             hTags = ['X34.2']
             hGrps = [[(2.3, 3.4, 'X')]]
             for tup in horizTuples:
-                (face, sub, angle, axis, tag, strDep, finDep) = tup
+                (face, sub, angle, axis, tag, strDep, finDep, trans) = tup
                 if tag in hTags:
                     # Determine index of found string
                     i = 0
@@ -376,7 +433,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             shpList = []
             for o in range(0, len(hTags)):
                 shpList = []
-                for (face, sub, angle, axis, tag, strDep, finDep) in hGrps[o]:  #face, depths, trans, rotate
+                for (face, sub, angle, axis, tag, strDep, finDep, trans) in hGrps[o]:  #face, depths, trans, rotate
                     shpList.append(face)
                 # check all faces and see if they are touching/overlapping and combine those into a compound
                 # Original Code in For loop
@@ -386,20 +443,23 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     if obj.UseOutline:
                         wire = TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1))
                         wire.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - wire.BoundBox.ZMin))
-                        print("obj.UseOutline: obj.FinalDepth.Value" + str(obj.FinalDepth.Value))
-                        print("obj.UseOutline: wire.BoundBox.ZMin" + str(wire.BoundBox.ZMin))
-                        tup = Part.Face(wire), sub, angle, axis, tag, strDep, finDep
+                        print(" -obj.UseOutline: obj.FinalDepth.Value" + str(obj.FinalDepth.Value))
+                        print(" -obj.UseOutline: wire.BoundBox.ZMin" + str(wire.BoundBox.ZMin))
+                        tup = Part.Face(wire), sub, angle, axis, tag, strDep, finDep, trans
                         self.horizontal.append(tup)
                     else:
-                        tup = face, sub, angle, axis, tag, strDep, finDep
+                        tup = face, sub, angle, axis, tag, strDep, finDep, trans
                         self.horizontal.append(tup)
             # Eol
 
             # extrude all faces up to StartDepth and those are the removal shapes
-            for (face, sub, angle, axis, tag, strDep, finDep) in self.horizontal:
-                extent = FreeCAD.Vector(0, 0, strDep - finDep)
+            for (face, sub, angle, axis, tag, strDep, finDep, trans) in self.horizontal:
                 #extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
-                tup = face.removeSplitter().extrude(extent), False, sub, angle, axis, tag, strDep, finDep
+                extent = FreeCAD.Vector(0, 0, strDep - finDep)
+                shp = face.removeSplitter().extrude(extent)
+                ###print(" -extrude(extent): " + str(sub) + ".Placement: " + str(shp.Placement))
+                #tup = shp, False, sub, angle, axis, tag, strDep, finDep, trans
+                tup = shp, False, sub, angle, axis  #shape, isHole, sub, angle, axis
                 self.removalshapes.append(tup)
 
 
@@ -407,7 +467,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             PathLog.debug("processing the whole job base object")
             self.outlines = [Part.Face(TechDraw.findShapeOutline(base.Shape, 1, FreeCAD.Vector(0, 0, 1))) for base in self.model]
             stockBB = self.stock.Shape.BoundBox
-            print("Using outlines; no obj.Base")
+            print(" -Using outlines; no obj.Base")
 
             self.removalshapes = []
             self.bodies = []
@@ -415,9 +475,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 outline.translate(FreeCAD.Vector(0, 0, stockBB.ZMin - 1))
                 body = outline.extrude(FreeCAD.Vector(0, 0, stockBB.ZLength + 2))
                 self.bodies.append(body)
-                self.removalshapes.append((self.stock.Shape.cut(body), False, 'outline', 0.0, 'X', 'X0.0', obj.StartDepth.Value, obj.FinalDepth.Value))
+                self.removalshapes.append((self.stock.Shape.cut(body), False, 'outline', 0.0, 'X'))
 
-        for (shape, isHole, sub, angle, axis, tag, strDep, finDep) in self.removalshapes:
+        for (shape, isHole, sub, angle, axis) in self.removalshapes:
             shape.tessellate(0.05)
 
         if self.removalshapes:
@@ -438,6 +498,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         obj.ZigZagAngle = 45
         obj.B_AxisErrorOverride = False
         obj.ReverseDirection = False
+        #obj.UseRotation = 'Off'
         obj.setExpression('ExtensionLengthDefault', 'OpToolDiameter / 2')
 
     def createExtension(self, obj, extObj, extFeature, extSub):

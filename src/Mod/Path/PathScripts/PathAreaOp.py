@@ -37,9 +37,11 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "mlampert [FreeCAD], russ4262 (Russell Johnson)"
-__scriptVersion__ = "1d testing"
+__scriptVersion__ = "1f testing"
 __createdDate__ = "2017"
-__lastModified__ = "2019-04-23 23:03 CST"
+__lastModified__ = "2019-04-26 20:40 CST"
+print("\n\nPathAreaOp.py")
+print(" -Script version: " + __scriptVersion__ + "  Lm: " + __lastModified__)
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -88,6 +90,9 @@ class ObjectOp(PathOp.ObjectOp):
         obj.setEditorMode('PathParams', 2)  # hide
         obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
         obj.setEditorMode('removalshape', 2)  # hide
+        if not hasattr(obj, 'UseRotation'):
+            obj.addProperty("App::PropertyEnumeration", "UseRotation", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use rotation to gain access to pockets/areas."))
+            obj.UseRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
         self.initAreaOp(obj)
 
@@ -198,6 +203,7 @@ class ObjectOp(PathOp.ObjectOp):
                 obj.OpStartDepth      =  1.0
                 obj.OpFinalDepth      =  0.0
             '''
+        obj.UseRotation = 'A & B'
 
         self.areaOpSetDefaultValues(obj, job)
 
@@ -275,37 +281,40 @@ class ObjectOp(PathOp.ObjectOp):
         PathLog.track()
         self.endVector = None
         print("opExecute() in PathAreaOp.py")
-        print(" -Script version: " + __scriptVersion__ + "  Lm: " + __lastModified__)
 
         # Import OpFinalDepth from pre-existing operation for recompute() scenarios
+        # if obj.OpFinalDepth.Value != self.initOpFinalDepth and self.initOpFinalDepth != None:
         if obj.OpFinalDepth.Value != self.initOpFinalDepth:
             if obj.OpFinalDepth.Value == obj.FinalDepth.Value:
-                obj.FinalDepth.Value = self.initOpFinalDepth
-                obj.OpFinalDepth.Value = self.initOpFinalDepth
+                if self.initOpFinalDepth != None:
+                    obj.FinalDepth.Value = self.initOpFinalDepth
+                    obj.OpFinalDepth.Value = self.initOpFinalDepth
             if self.initOpFinalDepth != None:
                 obj.OpFinalDepth.Value = self.initOpFinalDepth
 
         # Instantiate class variables for operation reference
         self.rotateFlag = False
+        self.modelName = None
+        self.leadIn = 2.0 #safOfset / 2.0
 
-        # Calculate operation heights based upon rotation radii
-        opHeights = self.opDetermineRotationRadius(obj)  #return is [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
-        (xRotRad, yRotRad, zRotRad) = opHeights[0]
-        (clrOfst, safOfset) = opHeights[1]
-        self.leadIn = safOfset / 2.0
-        
-        # Set clearnance and safe heights based upon rotation radii
-        obj.ClearanceHeight.Value = xRotRad + clrOfst
-        obj.SafeHeight.Value = xRotRad + safOfset
-        if yRotRad > xRotRad:
-            obj.ClearanceHeight.Value = yRotRad + clrOfst        
-            obj.SafeHeight.Value = yRotRad + safOfset
-        
+        if obj.UseRotation != 'Off':
+            # Calculate operation heights based upon rotation radii
+            opHeights = self.opDetermineRotationRadius(obj)  #return is [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
+            (xRotRad, yRotRad, zRotRad) = opHeights[0]
+            (clrOfst, safOfset) = opHeights[1]
+            #self.leadIn = 0.0 #safOfset / 2.0
+            
+            # Set clearnance and safe heights based upon rotation radii
+            obj.ClearanceHeight.Value = xRotRad + clrOfst
+            obj.SafeHeight.Value = xRotRad + safOfset
+            if yRotRad > xRotRad:
+                obj.ClearanceHeight.Value = yRotRad + clrOfst        
+                obj.SafeHeight.Value = yRotRad + safOfset
 
-        # Set axial feed rates based upon horizontal feed rates
-        safeCircum = 2 * math.pi * obj.SafeHeight.Value
-        self.axialFeed = 360 / safeCircum * self.horizFeed
-        self.axialRapid = 360 / safeCircum * self.horizRapid
+            # Set axial feed rates based upon horizontal feed rates
+            safeCircum = 2 * math.pi * obj.SafeHeight.Value
+            self.axialFeed = 360 / safeCircum * self.horizFeed
+            self.axialRapid = 360 / safeCircum * self.horizRapid
 
         # Set start point
         if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
@@ -327,8 +336,8 @@ class ObjectOp(PathOp.ObjectOp):
 
         sims = []
 
-        for (shape, isHole, sub, angle, axis, tag, strDep, finDep) in shapes:
-            startDep = obj.StartDepth.Value + safOfset #strDep
+        for (shape, isHole, sub, angle, axis) in shapes:
+            startDep = obj.StartDepth.Value # + safOfset
             safeDep = obj.SafeHeight.Value         
             clearDep = obj.ClearanceHeight.Value
             finalDep = obj.FinalDepth.Value #finDep
@@ -346,17 +355,19 @@ class ObjectOp(PathOp.ObjectOp):
             try:
                 (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
                 ppCmds = pp.Commands
-                # Rotate model to index for cut
-                axisOfRot = 'A'
-                if axis == 'Y':
-                    axisOfRot = 'B'
-                    # Reverse angle temporarily to match model. Error in FreeCAD render of B axis rotations
-                    if obj.B_AxisErrorOverride == True:
-                        angle = -1 * angle
-                ppCmds.insert(0, Path.Command('G0', {axisOfRot: angle, 'F': self.axialFeed}))
-                # Raise cutter to safe depth and return index to starting position
-                ppCmds.append(Path.Command('G0', {'Z': safeDep, 'F': self.vertRapid}))
-                ppCmds.append(Path.Command('G0', {axisOfRot: 0.0, 'F': self.axialFeed}))
+                if obj.UseRotation != 'Off' and self.rotateFlag == True:
+                    # Rotate model to index for cut
+                    axisOfRot = 'A'
+                    if axis == 'Y':
+                        axisOfRot = 'B'
+                        # Reverse angle temporarily to match model. Error in FreeCAD render of B axis rotations
+                        if obj.B_AxisErrorOverride == True:
+                            angle = -1 * angle
+                    # Rotate Model to correct angle
+                    ppCmds.insert(0, Path.Command('G0', {axisOfRot: angle, 'F': self.axialFeed}))
+                    # Raise cutter to safe depth and return index to starting position
+                    ppCmds.append(Path.Command('G0', {'Z': safeDep, 'F': self.vertRapid}))
+                    ppCmds.append(Path.Command('G0', {axisOfRot: 0.0, 'F': self.axialFeed}))
                 # Save gcode commands to object command list
                 self.commandlist.extend(ppCmds)
                 sims.append(sim)
@@ -372,7 +383,9 @@ class ObjectOp(PathOp.ObjectOp):
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
             self.commandlist.append(Path.Command('G0', {'A': 0.0, 'F': self.axialFeed}))
             self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialFeed}))
+            FreeCAD.ActiveDocument.getObject(self.modelName).purgeTouched()
 
+        print("obj.Name: " + str(obj.Name))
         return sims
 
     def areaOpRetractTool(self, obj):
@@ -522,21 +535,27 @@ class ObjectOp(PathOp.ObjectOp):
             if nX != 0.0:
                 angle = -1 * angle
 
+        if orientation == 'Y':
+            axis = 'X'
+            if obj.UseRotation == 'B(y)': # Axis disabled
+                angle = 500.0  
+        else:
+            axis = 'Y'
+            if obj.UseRotation == 'A(x)': # Axis disabled
+                angle = 500.0  
+        
+        
         if angle != 500.0 and angle != 0.0:
             self.rotateFlag = True
             rtn = True
-            if orientation == 'Y':
-                axis = 'X'
-            else:
-                axis = 'Y'
             if obj.ReverseDirection == True:
                 if angle < 180.0:
                     angle = angle + 180.0
                 else:
                     angle = angle - 180.0
-                
+            testId += "\n - ... rotation triggered"
         else:
-            angle = 0.0 # No rotation needed
+            testId += "\n - ... NO rotation triggered"
 
         testId += "\n -Suggested rotation:  angle: " + str(angle) + ",   axis: " + str(axis)
         if prnt == True:
