@@ -246,9 +246,9 @@ script:
 ####
 #  Install FreeCAD and run unit tests.  Test failures will fail the build
 ##
+#        MSBuild.exe /m FreeCAD_Trunk.sln
   - |
     if [ "${TRAVIS_OS_NAME}" == "windows" ]; then 
-#        MSBuild.exe /m FreeCAD_Trunk.sln
         MSBuild.exe /m
     else
         sudo make -j2 install
