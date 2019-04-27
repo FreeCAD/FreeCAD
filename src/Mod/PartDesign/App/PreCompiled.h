@@ -33,8 +33,8 @@
 # define MeshExport     __declspec(dllimport)
 #else // for Linux
 # define PartDesignExport
-# define PartExport 
-# define MeshExport   
+# define PartExport
+# define MeshExport
 #endif
 
 #ifdef _MSC_VER
@@ -59,6 +59,24 @@
 
 // OpenCasCade =====================================================================================
 #include <Mod/Part/App/OpenCascadeAll.h>
+
+// Apart from the Part OpenCascadeAll, I need:
+# include <GProp_GProps.hxx>
+# include <BRepGProp.hxx>
+# include <BRepProj_Projection.hxx>
+# include <BRepFeat_MakePrism.hxx>
+# include <BRepBuilderAPI_MakeSolid.hxx>
+# include <BRepBuilderAPI_Sewing.hxx>
+# include <BRepClass3d_SolidClassifier.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
+# include <BRepOffsetAPI_ThruSections.hxx>
+# include <BRepAlgo.hxx>
+# include <ShapeFix_Shape.hxx>
+# include <ShapeFix_ShapeTolerance.hxx>
+# include <BRepFilletAPI_MakeChamfer.hxx>
+# include <BRepOffsetAPI_DraftAngle.hxx>
+# include <GeomAPI_IntSS.hxx>
+
 
 #include <Python.h>
 
