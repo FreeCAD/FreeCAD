@@ -192,7 +192,6 @@ getElementMapVersion(property_name): return element map version of a given geome
                 </UserDocu>
             </Documentation>
         </Methode>
-
     <Attribute Name="OutList" ReadOnly="true">
       <Documentation>
         <UserDocu>A list of all objects this object links to.</UserDocu>

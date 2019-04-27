@@ -23,6 +23,7 @@
 #ifndef APP_LINK_H
 #define APP_LINK_H
 
+#include <boost/signals2.hpp>
 #include <boost/preprocessor/facilities/expand.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/seq/for_each.hpp>
@@ -251,7 +252,6 @@ public:
     virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
     virtual short extensionMustExecute(void) override;
     virtual void extensionOnChanged(const Property* p) override;
-    virtual bool extensionOnNotification(App::DocumentObject *obj, const App::Property *prop) override;
     virtual void onExtendedUnsetupObject () override;
     virtual void onExtendedDocumentRestored() override;
 
@@ -289,13 +289,17 @@ protected:
     void detachElement(App::DocumentObject *obj);
     void checkGeoElementMap(const App::DocumentObject *obj, 
         const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const;
-    bool updateGroup(App::DocumentObject *obj = 0);
+    void updateGroup();
+    void slotChangedPlainGroup(const App::DocumentObject &, const App::Property &);
 
 protected:
     std::vector<Property *> props;
     std::set<const App::DocumentObject*> myHiddenElements;
     mutable std::string mySubElement;
     mutable std::string mySubName;
+
+    std::map<const App::DocumentObject*, 
+        boost::signals2::scoped_connection> plainGroupConns;
 
     mutable std::unordered_map<std::string,int> myLabelCache; // for label based subname lookup
     mutable bool enableLabelCache;

@@ -270,7 +270,7 @@ void SubShapeBinder::update() {
     std::string errMsg;
     auto parent = Context.getValue();
     std::string parentSub  = Context.getSubName(false);
-    if(!Relative.getValue())
+    if(!Relative.getValue()) 
         parent = 0;
     else {
         if(parent && parent->getSubObject(parentSub.c_str())==this) {
@@ -288,10 +288,8 @@ void SubShapeBinder::update() {
                 parentSub = parents.begin()->second;
             }
         }
-        if(parent && (parent!=Context.getValue() || parentSub!=Context.getSubName(false))) {
+        if(parent && (parent!=Context.getValue() || parentSub!=Context.getSubName(false)))
             Context.setValue(parent,parentSub.c_str());
-            parent->_NotifyList.set1Value(-1,this,true);
-        }
     }
     bool first = false;
     std::map<const App::DocumentObject*, Base::Matrix4D> mats;
@@ -421,16 +419,12 @@ void SubShapeBinder::update() {
     Shape.setValue(result);
 }
 
-bool SubShapeBinder::onNotification(App::DocumentObject *parent, const App::Property *) {
-    if(Context.getValue()!=parent)
-        return false;
-    if(!isRestoring() 
-            && !parent->isRestoring() 
-            && !this->testStatus(App::ObjectStatus::Recompute2))
+void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
+    if(Context.getValue() == &Obj
+        && !this->testStatus(App::ObjectStatus::Recompute2))
     {
         touch();
     }
-    return true;
 }
 
 App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
@@ -444,13 +438,21 @@ App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
 void SubShapeBinder::onDocumentRestored() {
     if(Shape.testStatus(App::Property::Transient))
         update();
-    else if(Context.getValue()) 
-        Context.getValue()->_NotifyList.set1Value(-1,this,false);
     inherited::onDocumentRestored();
 }
 
 void SubShapeBinder::onChanged(const App::Property *prop) {
-    if(!isRestoring()) {
+    if(prop == &Context || prop == &Relative) {
+        if(!Context.getValue() || !Relative.getValue()) {
+            connRecomputedObj.disconnect();
+        } else if(contextDoc != Context.getValue()->getDocument() 
+                || !connRecomputedObj.connected()) 
+        {
+            contextDoc = Context.getValue()->getDocument();
+            connRecomputedObj = contextDoc->signalRecomputedObject.connect(
+                    boost::bind(&SubShapeBinder::slotRecomputedObject, this, _1));
+        }
+    }else if(!isRestoring()) {
         if(prop == &Support) {
             if(Support.getSubListValues().size()) {
                 update(); 

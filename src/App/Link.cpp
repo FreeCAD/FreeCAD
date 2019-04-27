@@ -679,77 +679,68 @@ void LinkBaseExtension::parseSubName() const {
     mySubElement = element;
 }
 
-static inline void registerParent(App::DocumentObject *parent, App::DocumentObject *child) {
-    if(!parent || !child)
-        return;
-    for(auto o : child->_NotifyList.getValues()) {
-        if(o == parent)
-            return;
-    }
-    auto list = child->_NotifyList.getValues();
-    list.push_back(parent);
-    child->_NotifyList.setValues(list);
+void LinkBaseExtension::slotChangedPlainGroup(const App::DocumentObject &obj, const App::Property &prop) {
+    auto group = obj.getExtensionByType<GroupExtension>(true,false);
+    if(group && &prop == &group->Group)
+        updateGroup();
 }
 
-bool LinkBaseExtension::extensionOnNotification(App::DocumentObject *obj, const App::Property *prop) {
-    auto group = obj->getExtensionByType<GroupExtension>(true,false);
-    if(!group)
-        return false;
-    if(prop != &group->Group)
-        return true;
-    return updateGroup(obj);
-}
-
-bool LinkBaseExtension::updateGroup(App::DocumentObject *obj) {
-    auto group = linkedPlainGroup();
-    std::vector<App::DocumentObject*> children;
-    if(group) {
-       if(obj && group->getExtendedObject()!=obj)
-           return false;
-        children = group->getAllChildren();
-        if(!obj)
-            registerParent(getExtendedObject(),group->getExtendedObject());
-        return true;
-    }
-
-    bool matched = !obj;
+void LinkBaseExtension::updateGroup() {
     std::vector<GroupExtension*> groups;
-    for(auto o : getElementListProperty()->getValues()) {
-        if(!o || !o->getNameInDocument())
-            continue;
-        auto ext = o->getExtensionByType<GroupExtension>(true,false);
-        if(ext) {
-            if(o == obj)
-                matched = true;
-            groups.push_back(ext);
+    std::unordered_set<const App::DocumentObject*> groupSet;
+    auto group = linkedPlainGroup();
+    if(group) {
+        groups.push_back(group);
+        groupSet.insert(group->getExtendedObject());
+    }else{
+        for(auto o : getElementListProperty()->getValues()) {
+            if(!o || !o->getNameInDocument())
+                continue;
+            auto ext = o->getExtensionByType<GroupExtension>(true,false);
+            if(ext) {
+                groups.push_back(ext);
+                groupSet.insert(o);
+            }
         }
     }
+    std::vector<App::DocumentObject*> children;
     if(groups.size()) {
         children = getElementListValue();
         std::set<DocumentObject*> childSet(children.begin(),children.end());
-        auto owner = getExtendedObject();
         for(auto ext : groups) {
-            if(!obj)
-                registerParent(owner,ext->getExtendedObject());
+            auto group = ext->getExtendedObject();
+            auto &conn = plainGroupConns[group];
+            if(!conn.connected()) {
+                FC_LOG("new group connection " << getExtendedObject()->getFullName() 
+                        << " -> " << group->getFullName());
+                conn = group->signalChanged.connect(
+                        boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,_1,_2));
+            }
             std::size_t count = children.size();
             ext->getAllChildren(children,childSet);
             for(;count<children.size();++count) {
                 auto child = children[count];
-                auto g = child->getExtensionByType<GroupExtension>(true,false);
-                if(!g)
+                if(!child->getExtensionByType<GroupExtension>(true,false))
                     continue;
-                if(!obj)
-                    registerParent(owner,child);
-                else if(child == obj)
-                    matched = true;
+                groupSet.insert(child);
+                auto &conn = plainGroupConns[child];
+                if(!conn.connected()) {
+                    FC_LOG("new group connection " << getExtendedObject()->getFullName() 
+                            << " -> " << child->getFullName());
+                    conn = child->signalChanged.connect(
+                            boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,_1,_2));
+                }
             }
         }
     }
+    for(auto it=plainGroupConns.begin();it!=plainGroupConns.end();) {
+        if(!groupSet.count(it->first))
+            it = plainGroupConns.erase(it);
+        else
+            ++it;
+    }
     if(children != _ChildCache.getValues())
         _ChildCache.setValue(children);
-    if(!matched)
-        return false;
-    return true;
 }
 
 void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop) {
@@ -977,7 +968,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
         if(getElementCountProperty())
             getElementCountProperty()->setStatus(Property::Hidden, !!group);
         if(group)
-            _ChildCache.setValues(group->getAllChildren());
+            updateGroup();
         else if(_ChildCache.getSize())
             _ChildCache.setValue();
         parseSubName();

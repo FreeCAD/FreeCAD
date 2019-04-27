@@ -104,7 +104,6 @@ public:
 protected:
     virtual App::DocumentObjectExecReturn* execute(void) override;
     virtual void onChanged(const App::Property *prop) override;
-    virtual bool onNotification(App::DocumentObject *obj, const App::Property *prop) override;
 
     virtual void handleChangedPropertyType(
             Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
@@ -113,6 +112,12 @@ protected:
     virtual void setupObject() override;
 
     void checkPropertyStatus();
+
+    void slotRecomputedObject(const App::DocumentObject& Obj);
+
+    typedef boost::signals2::scoped_connection Connection;
+    Connection connRecomputedObj;
+    App::Document *contextDoc=0;
 };
 
 } //namespace PartDesign
