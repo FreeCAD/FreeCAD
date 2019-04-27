@@ -174,7 +174,7 @@ Quantity& Quantity::operator +=(const Quantity &p)
 Quantity Quantity::operator -(const Quantity &p) const
 {
     if (this->_Unit != p._Unit)
-        throw Base::UnitsMismatchError("Quantity::operator +(): Unit mismatch in minus operation");
+        throw Base::UnitsMismatchError("Quantity::operator -(): Unit mismatch in minus operation");
     return Quantity(this->_Value - p._Value,this->_Unit);
 }
 
