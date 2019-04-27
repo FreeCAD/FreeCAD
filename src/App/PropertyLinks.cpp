@@ -64,9 +64,9 @@ using namespace std;
 
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLinkBase , App::Property)
 
-static std::map<std::string, std::set<PropertyLinkBase*> > _LabelMap;
+static std::unordered_map<std::string, std::set<PropertyLinkBase*> > _LabelMap;
 
-static std::map<App::DocumentObject *, std::set<PropertyLinkBase*> > _ElementRefMap;
+static std::unordered_map<App::DocumentObject *, std::unordered_set<PropertyLinkBase*> > _ElementRefMap;
 
 PropertyLinkBase::PropertyLinkBase()
 {}
