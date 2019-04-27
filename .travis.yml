@@ -249,7 +249,7 @@ script:
   - |
     if [ "${TRAVIS_OS_NAME}" == "windows" ]; then 
 #        msbuild.exe /m FreeCAD_Trunk.sln
-	echo "Building with MSVC...sort of :)"
+	echo "Building with MSVC...sort of - :)"
     else
         sudo make -j2 install
     fi
