@@ -118,6 +118,8 @@ protected:
     typedef boost::signals2::scoped_connection Connection;
     Connection connRecomputedObj;
     App::Document *contextDoc=0;
+
+    std::vector<Part::TopoShape> _Cache;
 };
 
 } //namespace PartDesign

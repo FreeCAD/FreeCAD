@@ -277,7 +277,7 @@ void SubShapeBinder::update() {
             auto parents = parent->getParents();
             if(parents.size()) {
                 parent = parents.begin()->first;
-                parentSub = parents.begin()->second;
+                parentSub = parents.begin()->second + parentSub;
             }
         } else
             parent = 0;
@@ -374,12 +374,27 @@ void SubShapeBinder::update() {
     if(errMsg.size()) 
         FC_THROWM(Base::RuntimeError, errMsg);
 
-    if(shapes.empty()) {
+    if(shapes.size()==_Cache.size()) {
+        bool hit = true;
+        for(size_t i=0;i<shapes.size();++i) {
+            if(!shapes[i].getShape().IsPartner(_Cache[i].getShape())
+                    || shapes[i].getPlacement() != _Cache[i].getPlacement())
+            {
+                hit = false;
+                break;
+            }
+        }
+        if(hit)
+            return;
+    }
+    _Cache = std::move(shapes);
+
+    if(_Cache.empty()) {
         Shape.resetElementMapVersion();
         return;
     }
 
-    result = Part::TopoShape(0,getDocument()->getStringHasher()).makECompound(shapes);
+    result = Part::TopoShape(0,getDocument()->getStringHasher()).makECompound(_Cache);
 
     bool fused = false;
     if(Fuse.getValue()) {
@@ -423,7 +438,7 @@ void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
     if(Context.getValue() == &Obj
         && !this->testStatus(App::ObjectStatus::Recompute2))
     {
-        touch();
+        update();
     }
 }
 
