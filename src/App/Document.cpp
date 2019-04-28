@@ -3138,9 +3138,9 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                         filter.insert(obj);
                         continue;
                     }
-                    signalRecomputedObject(*obj);
                 }
                 if(obj->isTouched() || doRecompute) {
+                    signalRecomputedObject(*obj);
                     obj->purgeTouched();
                     // set all dependent object touched to force recompute
                     for (auto inObjIt : obj->getInList())
