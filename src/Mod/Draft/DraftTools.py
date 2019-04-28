@@ -4322,7 +4322,8 @@ class Edit(Modifier):
                     if "Shape" in self.obj.PropertiesList:
                         plane.alignToFace(self.obj.Shape)
                     if self.planetrack:
-                        self.planetrack.set(self.editpoints[0])
+                        self.planetrack.set(self.obj.Shape.Edges[0].Curve.\
+                                            getPole(1))
                         
                 elif Draft.getType(self.obj) == "Circle":
                     self.setCirclePts()
@@ -4621,7 +4622,7 @@ class Edit(Modifier):
                         knot = 0
                         changep = 1
                     if knot is not None: # we need to modify the opposite pole
-                        segment = knot / self.obj.Degree -1
+                        segment = int(knot / self.obj.Degree) -1
                         cont=self.obj.Continuity[segment] if \
                             len(self.obj.Continuity) > segment else 0
                         if cont == 1: #tangent
