@@ -1833,6 +1833,11 @@ void TreeWidget::onUpdateStatus(void)
     if (delay>0)
         return;
 
+    if(App::Document::isAnyRestoring()) {
+        _updateStatus(true);
+        return;
+    }
+
     for(auto it=NewObjects.begin(),itNext=it;it!=NewObjects.end();NewObjects.erase(it),it=itNext) {
         ++itNext;
         auto doc = App::GetApplication().getDocument(it->first.c_str());
@@ -1845,7 +1850,6 @@ void TreeWidget::onUpdateStatus(void)
             // update logic. For example, a parent object re-created before its
             // children, but the parent's link property already contains all the
             // (detached) children.
-            statusTimer->stop();
             _updateStatus(true);
             return;
         }
@@ -1865,8 +1869,6 @@ void TreeWidget::onUpdateStatus(void)
         }
     }
 
-    statusTimer->stop();
-
     for(auto &v : ChangedObjects) {
         auto iter = ObjectTable.find(v.first);
         if(iter == ObjectTable.end())
@@ -1881,6 +1883,10 @@ void TreeWidget::onUpdateStatus(void)
             pos->second->testStatus();
         }
     }
+
+    updateGeometries();
+    statusTimer->stop();
+
 }
 
 void TreeWidget::onItemEntered(QTreeWidgetItem * item)
@@ -2788,7 +2794,6 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
         delete ci;
         getTree()->blockConnection(lock);
     }
-    getTree()->updateGeometries();
     if(updated)
         getTree()->_updateStatus(true);
 }
