@@ -55,7 +55,8 @@
 #include <Mod/Part/App/OpenCascadeAll.h>
 // Other needed opencascade
 # include <ShapeFix_Wire.hxx>
-
+# include <BRepOffsetAPI_NormalProjection.hxx>
+# include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 
 #include <Python.h>
 
