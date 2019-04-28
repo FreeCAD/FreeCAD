@@ -250,7 +250,7 @@ script:
   - |
     if [ "${TRAVIS_OS_NAME}" == "windows" ]; then 
         MSBuild.exe FreeCAD_Trunk.sln //m //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
-        cd $TRAVIS_BUILD_DIR\build\bin\
+        cd $TRAVIS_BUILD_DIR/build/bin/
         FreeCADCmd.exe --run-test 0
     else
         sudo make -j2 install
