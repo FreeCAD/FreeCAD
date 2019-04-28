@@ -282,6 +282,13 @@ class Compass(object):
     def setZOffset(self, offsetInMillimeters):
         from pivy import coin
         self.transform.translation.setValue(0, 0, offsetInMillimeters)
+    
+    def scale(self, area):
+        from pivy import coin
+        
+        scale = round(max(math.sqrt(area.getValueAs("m^2").Value) / 10, 1))
+
+        self.transform.scaleFactor.setValue(coin.SbVec3f(scale, scale, 1))
 
     def setupCoin(self):
         from pivy import coin
@@ -744,6 +751,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
 
         self.compass = Compass()
         self.updateCompassVisibility(self.Object)
+        self.updateCompassScale(self.Object)
         self.rotateCompass(self.Object)
 
         vobj.Annotation.addChild(self.compass.rootNode)
@@ -761,6 +769,8 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
             self.updateCompassVisibility(obj)
         elif prop == "CompassRotation":
             self.rotateCompass(obj)
+        elif prop == "ProjectedArea":
+            self.updateCompassScale(obj)
 
     def onChanged(self,vobj,prop):
 
@@ -856,6 +866,12 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         zOffset = boundBox.ZMax = pos.z
 
         self.compass.setZOffset(zOffset + 1000)
+    
+    def updateCompassScale(self, obj):
+        if not hasattr(self, 'compass'):
+            return
+        
+        self.compass.scale(obj.ProjectedArea)
 
 
 if FreeCAD.GuiUp:
