@@ -180,10 +180,10 @@ def getFillForObject(o, defaultFill, section):
     
     return defaultFill
 
-def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale=1, rotation=0, linewidth=1, lineColor=(0.0,0.0,0.0), fontsize=1, showFill=False, fillColor=(0.8,0.8,0.8), techdraw=False):
+def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale=1, rotation=0, linewidth=1, lineColor=(0.0,0.0,0.0), fontsize=1, showFill=False, fillColor=(0.8,0.8,0.8), techdraw=False,fillSpaces=False):
 
     """getSVG(section, [renderMode, allOn, showHidden, scale, rotation,
-              linewidth, lineColor, fontsize, showFill, fillColor, techdraw]):
+              linewidth, lineColor, fontsize, showFill, fillColor, techdraw, fillSpaces]):
 
     returns an SVG fragment from an Arch section plane. If
     allOn is True, all cut objects are shown, regardless if they are visible or not.
@@ -193,6 +193,7 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
     lineColor -- Color of lines for the renderMode "Wireframe".
     fillColor -- If showFill is True and renderMode is "Wireframe",
                  the cut areas are filled with fillColor.
+    fillSpaces - If True, shows space objects as filled surfaces 
     """
 
     if not section.Objects:
@@ -250,6 +251,8 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
         if section.Proxy.svgcache[2] != showHidden:
             svgcache = None
         if section.Proxy.svgcache[3] != showFill:
+            svgcache = None
+        if section.Proxy.svgcache[4] != fillSpaces:
             svgcache = None
 
     # generating SVG
@@ -327,7 +330,7 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
                     sshapes, direction,
                     hStyle=style, h0Style=style, h1Style=style,
                     vStyle=style, v0Style=style, v1Style=style)
-            section.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill]
+            section.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces]
     svgcache = svgcache.replace("SVGLINECOLOR",svgLineColor)
     svgcache = svgcache.replace("SVGLINEWIDTH",svgLineWidth)
     svgcache = svgcache.replace("SVGHIDDENPATTERN",svgHiddenPattern)
@@ -353,7 +356,7 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
         for s in spaces:
             svg += Draft.getSVG(s, scale=scale, linewidth=svgSymbolLineWidth,
                                 fontsize=fontsize, direction=direction, color=lineColor,
-                                techdraw=techdraw, rotation=rotation)
+                                techdraw=techdraw, rotation=rotation, fillSpaces=fillSpaces)
         if not techdraw:
             svg += '</g>'
 

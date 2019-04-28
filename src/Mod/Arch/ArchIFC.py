@@ -4,6 +4,9 @@ import FreeCAD, os, json
 
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
+else:
+    def QT_TRANSLATE_NOOP(ctx,txt):
+        return txt
 
 import ArchIFCSchema
 IfcTypes = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in ArchIFCSchema.IfcProducts.keys()]
@@ -94,8 +97,8 @@ def addIfcProductAttribute(obj, attribute):
 def addIfcAttributeValueExpressions(obj, attribute):
     
     "Binds the given attribute properties with expressions"
-    
-    if obj.getGroupOfProperty(attribute["name"]) != "Ifc Attributes":
+
+    if obj.getGroupOfProperty(attribute["name"]) != "IFC Attributes":
         return
     if attribute["name"] == "OverallWidth":
         if hasattr(obj, "Length"):
@@ -121,15 +124,21 @@ def addIfcAttributeValueExpressions(obj, attribute):
         obj.setExpression("BarLength", "Length.Value")
     elif attribute["name"] == "RefElevation":
         obj.setExpression("RefElevation", "Elevation.Value")
+    elif attribute["name"] == "LongName":
+        obj.LongName = obj.Label
 
 def setObjIfcAttributeValue(obj, attributeName, value):
     
     "Sets the value of a given attribute property"
     
     IfcData = obj.IfcData
+    if "attributes" not in IfcData:
+        IfcData["attributes"] = "{}"
     IfcAttributes = json.loads(IfcData["attributes"])
     if isinstance(value, FreeCAD.Units.Quantity):
         value = float(value)
+    if not attributeName in IfcAttributes:
+        IfcAttributes[attributeName] = {}
     IfcAttributes[attributeName]["value"] = value
     IfcData["attributes"] = json.dumps(IfcAttributes)
     obj.IfcData = IfcData

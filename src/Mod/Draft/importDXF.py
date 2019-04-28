@@ -528,7 +528,7 @@ def drawArc(arc,forceShape=False):
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
             pl = placementFromDXFOCS(arc)
-            return Draft.makeCircle(arc.radius,pl,False,firstangle,lastangle)
+            return Draft.makeCircle(circle.Radius,pl,False,firstangle,lastangle)
         else:
             return circle.toShape(math.radians(firstangle),math.radians(lastangle))
     except Part.OCCError:
@@ -1115,6 +1115,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
             shape = drawLine(line)
             if shape:
                 if dxfCreateSketch:
+                    FreeCAD.ActiveDocument.recompute()
                     if dxfMakeBlocks or dxfJoin:
                         if sketch:
                             shape = Draft.makeSketch(shape,autoconstraints=True,addTo=sketch)
@@ -1160,6 +1161,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
                         t = FreeCAD.ActiveDocument.addObject("Part::Feature","Shape")
                         t.Shape = shape
                         shape = t
+                    FreeCAD.ActiveDocument.recompute()
                     if dxfMakeBlocks or dxfJoin:
                         if sketch:
                             shape = Draft.makeSketch(shape,autoconstraints=True,addTo=sketch)
@@ -1189,6 +1191,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
             shape = drawArc(arc)
             if shape:
                 if dxfCreateSketch:
+                    FreeCAD.ActiveDocument.recompute()
                     if dxfMakeBlocks or dxfJoin:
                         if sketch:
                             shape = Draft.makeSketch(shape,autoconstraints=True,addTo=sketch)
@@ -1241,6 +1244,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
             shape = drawCircle(circle)
             if shape:
                 if dxfCreateSketch:
+                    FreeCAD.ActiveDocument.recompute()
                     if dxfMakeBlocks or dxfJoin:
                         if sketch:
                             shape = Draft.makeSketch(shape,autoconstraints=True,addTo=sketch)

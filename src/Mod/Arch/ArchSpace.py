@@ -419,7 +419,7 @@ class _Space(ArchComponent.Component):
                 #print("setting objects shape")
                 shape = shape.Solids[0]
                 obj.Shape = shape
-                pl = pl.multiply(obj.Placement)
+                #pl = pl.multiply(obj.Placement)
                 obj.Placement = pl
                 if hasattr(obj.Area,"Value"):
                     a = self.getArea(obj)
@@ -429,7 +429,7 @@ class _Space(ArchComponent.Component):
 
         print("Arch: error computing space boundary")
 
-    def getArea(self,obj):
+    def getArea(self,obj,notouch=False):
 
         "returns the horizontal area at the center of the space"
 
@@ -444,23 +444,24 @@ class _Space(ArchComponent.Component):
             e = sh.section(cutplane)
             e = Part.__sortEdges__(e.Edges)
             w = Part.Wire(e)
-            f = Part.Face(w)
+            self.face = Part.Face(w)
         except Part.OCCError:
             return 0
         else:
-            if hasattr(obj,"PerimeterLength"):
-                if w.Length != obj.PerimeterLength.Value:
-                    obj.PerimeterLength = w.Length
-            if hasattr(obj,"VerticalArea"):
-                a = 0
-                for f in sh.Faces:
-                    ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
-                    if (ang > 1.57) and (ang < 1.571):
-                        a += f.Area
-                    if a != obj.VerticalArea.Value:
-                        obj.VerticalArea = a
+            if not notouch:
+                if hasattr(obj,"PerimeterLength"):
+                    if w.Length != obj.PerimeterLength.Value:
+                        obj.PerimeterLength = w.Length
+                if hasattr(obj,"VerticalArea"):
+                    a = 0
+                    for f in sh.Faces:
+                        ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
+                        if (ang > 1.57) and (ang < 1.571):
+                            a += f.Area
+                        if a != obj.VerticalArea.Value:
+                            obj.VerticalArea = a
             #print "area of ",obj.Label," : ",f.Area
-            return f.Area
+            return self.face.Area
 
 
 class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
@@ -470,10 +471,13 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
         self.setProperties(vobj)
-        vobj.Transparency = 85
-        vobj.LineWidth = 1
-        vobj.LineColor = (1.0,0.0,0.0,1.0)
-        vobj.DrawStyle = "Dotted"
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        vobj.Transparency = prefs.GetInt("defaultSpaceTransparency",85)
+        vobj.LineWidth = Draft.getParam("linewidth")
+        vobj.LineColor = ArchCommands.getDefaultColor("Space")
+        vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"][prefs.GetInt("defaultSpaceStyle",2)]
+        if prefs.GetInt("defaultSpaceTransparency",85) == 100:
+            vobj.DisplayMode = "Wireframe"
 
     def setProperties(self,vobj):
 
@@ -512,13 +516,13 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
         self.setProperties(vobj)
 
-    def getDefaultDisplayMode(self):
-
-        return "Wireframe"
-
     def getIcon(self):
 
         import Arch_rc
+        if hasattr(self,"Object"):
+            if hasattr(self.Object,"CloneOf"):
+                if self.Object.CloneOf:
+                    return ":/icons/Arch_Space_Clone.svg"
         return ":/icons/Arch_Space_Tree.svg"
 
     def attach(self,vobj):
@@ -572,6 +576,8 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                     pos = FreeCAD.Vector()
             else:
                 pos = vobj.TextPosition
+        # placement's displacement will be already added by the coin node
+        pos = vobj.Object.Placement.inverse().multVec(pos)
         return pos
 
     def onChanged(self,vobj,prop):
@@ -629,6 +635,9 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         elif (prop == "FontSize"):
             if hasattr(self,"font") and hasattr(vobj,"FontSize"):
                 self.font.size = vobj.FontSize.Value
+                if hasattr(vobj,"FirstLine"):
+                    scale = vobj.FirstLine.Value/vobj.FontSize.Value
+                    self.header.scaleFactor.setValue([scale,scale,scale])
 
         elif (prop == "FirstLine"):
             if hasattr(self,"header") and hasattr(vobj,"FontSize") and hasattr(vobj,"FirstLine"):

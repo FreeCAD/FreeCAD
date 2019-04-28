@@ -39,7 +39,7 @@ public:
     explicit QGIDimLines();
     ~QGIDimLines() {}
 
-    enum {Type = QGraphicsItem::UserType + 172};
+    enum {Type = QGraphicsItem::UserType + 175};
     int type() const { return Type;}
 
 public:

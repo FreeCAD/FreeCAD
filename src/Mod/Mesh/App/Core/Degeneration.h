@@ -340,11 +340,13 @@ private:
 class MeshExport MeshRemoveNeedles : public MeshValidation
 {
 public:
-  /**
-   * Construction.
-   */
-  MeshRemoveNeedles (MeshKernel &rclM, float fMinEdgeLen = MeshDefinitions::_fMinPointDistance)
-      : MeshValidation(rclM), fMinEdgeLength(fMinEdgeLen) { }
+    /**
+     * Construction. The \arg fMinEdgeLen must be in the range of 0.0 and 0.25.
+     * It defines the amount of perimeter of a triangle for which the shortest
+     * edge is considered for removal.
+     */
+  MeshRemoveNeedles (MeshKernel &rclM, float fMinEdgeLen = 0.05f)
+      : MeshValidation(rclM), fMinEdgeLength(std::min(fMinEdgeLen, 0.25f)) {}
   /**
    * Destruction.
    */
