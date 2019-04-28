@@ -159,6 +159,7 @@ DrawViewPart::~DrawViewPart()
 
 TopoDS_Shape DrawViewPart::getSourceShape(void) const
 {
+//     Base::Console().Message("DVP::getSourceShape() - %s\n", getNameInDocument());
     TopoDS_Shape result;
     const std::vector<App::DocumentObject*>& links = Source.getValues();
     if (links.empty())  {
@@ -203,6 +204,7 @@ TopoDS_Shape DrawViewPart::getSourceShape(void) const
 
 std::vector<TopoDS_Shape> DrawViewPart::getShapesFromObject(App::DocumentObject* docObj) const
 {
+//    Base::Console().Message("DVP::getShapesFromObject() - %s\n", getNameInDocument());
     std::vector<TopoDS_Shape> result;
     App::GroupExtension* gex = dynamic_cast<App::GroupExtension*>(docObj);
     App::Property* gProp = docObj->getPropertyByName("Group");
@@ -250,6 +252,7 @@ std::vector<TopoDS_Shape> DrawViewPart::getShapesFromObject(App::DocumentObject*
 
 TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
 {
+//     Base::Console().Message("DVP::getSourceShapeFused() - %s\n", getNameInDocument());
     TopoDS_Shape baseShape = getSourceShape();
     if (!baseShape.IsNull()) {
         TopoDS_Iterator it(baseShape);
@@ -272,6 +275,7 @@ TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
+//    Base::Console().Message("DVP::execute() - %s\n",getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -341,6 +345,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
     requestPaint();
+//    Base::Console().Message("DVP::execute - %s - exits\n",getNameInDocument());
     return App::DocumentObject::StdReturn;
 }
 
@@ -382,6 +387,7 @@ void DrawViewPart::onChanged(const App::Property* prop)
 //note: slightly different than routine with same name in DrawProjectSplit
 TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis)
 {
+//    Base::Console().Message("DVP::buildGO() - %s\n", getNameInDocument());
     TechDrawGeometry::GeometryObject* go = new TechDrawGeometry::GeometryObject(getNameInDocument(), this);
     go->setIsoCount(IsoCount.getValue());
     go->isPerspective(Perspective.getValue());
@@ -441,6 +447,10 @@ TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape
     double diffOut = chrono::duration <double, milli> (diff).count();
     Base::Console().Log("TIMING - %s DVP spent: %.3f millisecs in GO::extractGeometry\n",getNameInDocument(),diffOut);
 
+    const std::vector<TechDrawGeometry::BaseGeom  *> & edges = go->getEdgeGeometry();
+    if (edges.empty()) {
+        Base::Console().Log("DVP::buildGO - NO extracted edges!\n");
+    }
     bbox = go->calcBoundingBox();
     return go;
 }

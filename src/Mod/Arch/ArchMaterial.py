@@ -261,9 +261,10 @@ class _ArchMaterial:
 
     def isSameColor(self,c1,c2):
         
-        if round(c1[0],6) == round(c2[0],6):
-            if round(c1[1],6) == round(c2[1],6):
-                if round(c1[2],6) == round(c2[2],6):
+        r = 4
+        if round(c1[0],r) == round(c2[0],r):
+            if round(c1[1],r) == round(c2[1],r):
+                if round(c1[2],r) == round(c2[2],r):
                     return True
         return False
 

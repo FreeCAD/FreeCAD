@@ -677,7 +677,7 @@ class ghostTracker(Tracker):
 
 class editTracker(Tracker):
     "A node edit tracker"
-    def __init__(self,pos=Vector(0,0,0),name="None",idx=0,objcol=None,\
+    def __init__(self,pos=Vector(0,0,0),name=None,idx=0,objcol=None,\
             marker=FreeCADGui.getMarkerIndex("quad", 9),inactive=False):
         color = coin.SoBaseColor()
         if objcol:
@@ -692,9 +692,10 @@ class editTracker(Tracker):
             selnode = coin.SoSeparator()
         else:
             selnode = coin.SoType.fromName("SoFCSelection").createInstance()
-            selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
-            selnode.objectName.setValue(name)
-            selnode.subElementName.setValue("EditNode"+str(idx))
+            if name:
+                selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
+                selnode.objectName.setValue(name)
+                selnode.subElementName.setValue("EditNode"+str(idx))
         node = coin.SoAnnotation()
         selnode.addChild(self.coords)
         selnode.addChild(color)

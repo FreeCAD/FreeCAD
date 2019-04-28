@@ -191,7 +191,7 @@ if(MSVC)
     ELSE()
         set(FREECAD_LIBPACK_DIR ${CMAKE_SOURCE_DIR} CACHE PATH  "Directory of the FreeCAD LibPack")
     ENDIF()
-    OPTION(BUILD_USE_PCH "Activate precompiled headers where it's used." ON)
+    OPTION(FREECAD_USE_PCH "Activate precompiled headers where it's used." ON)
 else(MSVC)
     OPTION(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." OFF)
     set(FREECAD_LIBPACK_DIR ""  CACHE PATH  "Directory of the FreeCAD LibPack")
@@ -1180,10 +1180,14 @@ IF(MSVC)
     IF(FREECAD_RELEASE_SEH)
 		SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
     ENDIF(FREECAD_RELEASE_SEH)
+  
+  OPTION(FREECAD_USE_MP_COMPILE_FLAG "Add /MP flag to the compiler definitions. Speeds up the compile on multi processor machines" OFF)
+  if(FREECAD_USE_MP_COMPILE_FLAG)
     # set "Build with Multiple Processes"
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-	SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP")
-
+    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP")
+  endif()
+  
 	# Mark 32 bit executables large address aware so they can use > 2GB address space
 	# NOTE: This setting only has an effect on machines with at least 3GB of RAM, although it sets the linker option it doesn't set the linker switch 'Enable Large Addresses'
 	IF(CMAKE_SIZEOF_VOID_P EQUAL 4)
