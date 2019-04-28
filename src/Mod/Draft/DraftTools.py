@@ -4530,19 +4530,21 @@ class Edit(Modifier):
                         ep = None
                         if ('EditNode' in info["Component"]):#True as a result of getObjectInfo
                             ep = int(info["Component"][8:])
-                        elif ('Vertex' in info["Component"]):
+                        elif ('Vertex' in info["Component"]):# if vertex is clicked, the edit point is selected only if (distance < tolerance)
                             p = FreeCAD.Vector(info["x"],info["y"],info["z"])
                             for i,t in enumerate(self.trackers):
                                 if (t.get().sub(p)).Length <= 0.01:
                                     ep = i
                                     break
-                        elif ('Edge' in info["Component"]):
+                        elif ('Edge' in info["Component"]) or ('Face' in info["Component"]) : # if edge is clicked, the nearest edit point is selected, then tolerance is verified
                             p = FreeCAD.Vector(info["x"],info["y"],info["z"])
                             d = 1000000.0
                             for i,t in enumerate(self.trackers):
                                 if (t.get().sub(p)).Length < d:
                                     d = (t.get().sub(p)).Length
                                     ep = i
+                            if d > 20:# should find a way to link the tolerance to zoom
+                                return
                         if ep != None:
                             if self.ui.delButton.isChecked():
                                 self.delPoint(ep)
