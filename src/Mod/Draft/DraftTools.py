@@ -4508,6 +4508,8 @@ class Edit(Modifier):
                     selobjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(p)
                     if not selobjs:
                         selobjs = [FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)]
+                    if not selobjs or selobjs == [None]:
+                        return
                     for info in selobjs:
                         if info["Object"] == self.obj.Name:
                             if done:
@@ -4526,14 +4528,22 @@ class Edit(Modifier):
                                 self.addPoint(pt,info)
                                 done = True
                         ep = None
-                        if ('EditNode' in info["Component"]):
+                        if ('EditNode' in info["Component"]):#getObjectsInfo never return the edit node
                             ep = int(info["Component"][8:])
-                        elif ('Vertex' in info["Component"]) or ('Edge' in info["Component"]):
+                        elif ('Vertex' in info["Component"]):
                             p = FreeCAD.Vector(info["x"],info["y"],info["z"])
                             for i,t in enumerate(self.trackers):
                                 if (t.get().sub(p)).Length <= 0.01:
                                     ep = i
                                     break
+                        elif ('Edge' in info["Component"]):
+                            msg("selezionata una edge"+str(info))
+                            p = FreeCAD.Vector(info["x"],info["y"],info["z"])
+                            d = 1000000.0
+                            for i,t in enumerate(self.trackers):
+                                if (t.get().sub(p)).Length < d:
+                                    d = (t.get().sub(p)).Length
+                                    ep = i
                         if ep != None:
                             if self.ui.delButton.isChecked():
                                 self.delPoint(ep)
