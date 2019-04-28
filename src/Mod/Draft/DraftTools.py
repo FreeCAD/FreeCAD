@@ -4528,7 +4528,7 @@ class Edit(Modifier):
                                 self.addPoint(pt,info)
                                 done = True
                         ep = None
-                        if ('EditNode' in info["Component"]):#getObjectsInfo never return the edit node
+                        if ('EditNode' in info["Component"]):#True as a result of getObjectInfo
                             ep = int(info["Component"][8:])
                         elif ('Vertex' in info["Component"]):
                             p = FreeCAD.Vector(info["x"],info["y"],info["z"])
@@ -4537,7 +4537,6 @@ class Edit(Modifier):
                                     ep = i
                                     break
                         elif ('Edge' in info["Component"]):
-                            msg("selezionata una edge"+str(info))
                             p = FreeCAD.Vector(info["x"],info["y"],info["z"])
                             d = 1000000.0
                             for i,t in enumerate(self.trackers):
