@@ -250,14 +250,16 @@ script:
   - |
     if [ "${TRAVIS_OS_NAME}" == "windows" ]; then 
         MSBuild.exe FreeCAD_Trunk.sln //m //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
+        cd $TRAVIS_BUILD_DIR\build\bin\
+        FreeCADCmd.exe --run-test 0
     else
         sudo make -j2 install
+        ${INSTALLED_APP_PATH} --console --run-test 0
+        ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
+        sleep 10 && pkill FreeCAD
+        cat /tmp/FreeCAD_installed.log
+        grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
     fi
-  - ${INSTALLED_APP_PATH} --console --run-test 0
-  - ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
-  - sleep 10 && pkill FreeCAD
-  - cat /tmp/FreeCAD_installed.log
-  - grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
 
 after_success:
 ####
