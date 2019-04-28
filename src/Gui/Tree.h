@@ -173,7 +173,6 @@ private:
     void slotRelabelDocument(const Gui::Document&);
     void slotShowHidden(const Gui::Document &);
     void slotChangedViewObject(const Gui::ViewProvider &, const App::Property &);
-    void slotFinishRestoreDocument(const App::Document&);
     void slotStartOpenDocument();
     void slotFinishOpenDocument();
     void _slotDeleteObject(const Gui::ViewProviderDocumentObject&, DocumentItem *deletingDoc);
@@ -203,7 +202,6 @@ private:
     Gui::Document *searchDoc;
     Gui::Document *searchContextDoc;
     DocumentObjectItem *editingItem;
-    QTreeWidgetItem* errItem;
     DocumentItem *currentDocItem;
     QTreeWidgetItem* rootItem;
     QTimer* statusTimer;
@@ -216,7 +214,6 @@ private:
     std::unordered_map<App::DocumentObject*,std::set<DocumentObjectDataPtr> > ObjectTable;
     std::unordered_map<App::DocumentObject*,bool> ChangedObjects;
     std::unordered_map<std::string,std::vector<long> > NewObjects;
-    bool fromOutside;
     int statusUpdateDelay;
 
     static std::set<TreeWidget*> Instances;

@@ -293,7 +293,7 @@ QWidget* TreeWidgetEditDelegate::createEditor(
 TreeWidget::TreeWidget(const char *name, QWidget* parent)
     : QTreeWidget(parent), SelectionObserver(false,0), contextItem(0)
     , searchObject(0), searchDoc(0), searchContextDoc(0)
-    , editingItem(0), errItem(0), currentDocItem(0),fromOutside(false)
+    , editingItem(0), currentDocItem(0)
     ,statusUpdateDelay(0),myName(name)
 {
     Instances.insert(this);
@@ -369,9 +369,6 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     App::GetApplication().signalFinishOpenDocument.connect(
             boost::bind(&TreeWidget::slotFinishOpenDocument,this));
 
-    App::GetApplication().signalFinishRestoreDocument.connect
-        (boost::bind(&TreeWidget::slotFinishRestoreDocument, this, _1));
-    
     // Gui::Document::signalChangedObject informs the App::Document property
     // change, not view provider's own property, which is what the signal below
     // for
@@ -1739,15 +1736,10 @@ void TreeWidget::slotNewDocument(const Gui::Document& Doc)
 }
 
 void TreeWidget::slotStartOpenDocument() {
-    errItem = 0;
     setVisible(false);
 }
 
 void TreeWidget::slotFinishOpenDocument() {
-    if(errItem) {
-        scrollToItem(errItem);
-        errItem = 0;
-    }
     setVisible(true);
 }
 
@@ -1833,10 +1825,12 @@ void TreeWidget::onUpdateStatus(void)
     if (delay>0)
         return;
 
-    if(App::Document::isAnyRestoring()) {
+    if(App::GetApplication().isRestoring()) {
         _updateStatus(true);
         return;
     }
+
+    // Checking for new objects
 
     for(auto it=NewObjects.begin(),itNext=it;it!=NewObjects.end();NewObjects.erase(it),it=itNext) {
         ++itNext;
@@ -1869,6 +1863,7 @@ void TreeWidget::onUpdateStatus(void)
         }
     }
 
+    // Update children of changed objects
     for(auto &v : ChangedObjects) {
         auto iter = ObjectTable.find(v.first);
         if(iter == ObjectTable.end())
@@ -1883,6 +1878,46 @@ void TreeWidget::onUpdateStatus(void)
             pos->second->testStatus();
         }
     }
+
+    // Checking for just restored documents
+    DocumentObjectItem *errItem = 0;
+    for(auto &v : DocumentMap) {
+        auto docItem = v.second;
+        if(docItem->connectChgObject.connected())
+            continue;
+        docItem->connectChgObject = docItem->document()->signalChangedObject.connect(
+                boost::bind(&TreeWidget::slotChangeObject, this, _1, _2, false));
+
+        bool partial = docItem->document()->getDocument()->testStatus(App::Document::PartialDoc);
+        if(partial) {
+            this->collapseItem(docItem);
+            docItem->setIcon(0, *documentPartialPixmap);
+        }
+
+        App::PropertyBool dummy;
+        for(auto &v : docItem->ObjectMap)
+            slotChangeObject(*v.second->viewObject,dummy,true);
+
+        for(auto &v : docItem->ObjectMap) {
+            if(v.second->viewObject->Visibility.getValue() &&
+                    !docItem->isObjectShowable(v.second->viewObject->getObject()))
+            {
+                v.second->viewObject->hide();
+            }
+            if(v.first->isError() && v.second->items.size() && !partial) {
+                auto item = v.second->rootItem;
+                if(!item) {
+                    item = *v.second->items.begin();
+                    docItem->showItem(item,false,true);
+                }
+                if(!errItem)
+                    errItem = item;
+            }
+        }
+    }
+
+    if(errItem)
+        scrollToItem(errItem);
 
     updateGeometries();
     statusTimer->stop();
@@ -2516,54 +2551,6 @@ void TreeWidget::slotDeleteDocument(const Gui::Document& Doc)
         delete docItem;
         DocumentMap.erase(it);
     }
-}
-
-void TreeWidget::slotFinishRestoreDocument(const App::Document& Doc)
-{
-    auto doc = Application::Instance->getDocument(&Doc);
-    if(!doc) return;
-    auto it = DocumentMap.find(doc);
-    if(it==DocumentMap.end())
-        return;
-
-    auto docItem = it->second;
-    docItem->connectChgObject = docItem->document()->signalChangedObject.connect(
-            boost::bind(&TreeWidget::slotChangeObject, this, _1, _2, false));
-    
-    statusUpdateDelay = 0;
-    onUpdateStatus();
-
-    App::PropertyBool dummy;
-    for(auto &v : docItem->ObjectMap)
-        slotChangeObject(*v.second->viewObject,dummy,true);
-
-    for(auto &v : docItem->ObjectMap) {
-        if(v.second->viewObject->Visibility.getValue() &&
-           !docItem->isObjectShowable(v.second->viewObject->getObject()))
-        {
-           v.second->viewObject->hide();
-        }
-        if(v.first->isError()
-                && v.second->items.size() 
-                && !Doc.testStatus(App::Document::PartialDoc))
-        {
-            auto item = v.second->rootItem;
-            if(!item) {
-                item = *v.second->items.begin();
-                docItem->showItem(item,false,true);
-            }
-            if(!errItem)
-                errItem = item;
-        }
-    }
-
-    if(!Doc.testStatus(App::Document::PartialDoc))
-        return;
-
-    auto item = it->second;
-    this->collapseItem(item);
-
-    item->setIcon(0, *documentPartialPixmap);
 }
 
 void TreeWidget::slotDeleteObject(const Gui::ViewProviderDocumentObject& view) {
