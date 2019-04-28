@@ -1796,11 +1796,20 @@ MDIView* Document::getActiveView(void) const
         }
     }
 
-    // the active view is not part of this document, just use the last view
-    if (!ok && !mdis.empty())
-        active = mdis.back();
+    if (ok) 
+        return active;
 
-    return active;
+    // the active view is not part of this document, just use the last view
+    const auto &windows = Gui::getMainWindow()->windows();
+    for(auto rit=mdis.rbegin();rit!=mdis.rend();++rit) {
+        // Some view is removed from window list for some reason, e.g. TechDraw
+        // hidden page has view but not in the list. By right, the view will
+        // self delete, but not the case for TechDraw, especially during
+        // document restore.
+        if(windows.contains(*rit))
+            return *rit;
+    }
+    return 0;
 }
 
 MDIView *Document::setActiveView(ViewProviderDocumentObject *vp, Base::Type typeId) const {
