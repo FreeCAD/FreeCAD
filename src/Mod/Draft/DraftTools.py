@@ -4507,7 +4507,7 @@ class Edit(Modifier):
                     done = False
                     selobjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(p)
                     if not selobjs:
-                        return
+                        selobjs = [FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)]
                     for info in selobjs:
                         if info["Object"] == self.obj.Name:
                             if done:
