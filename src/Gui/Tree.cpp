@@ -1914,6 +1914,13 @@ void TreeWidget::onUpdateStatus(void)
                     errItem = item;
             }
         }
+
+        for(auto o : docItem->_ExpandedObjects) {
+            auto iter = docItem->ObjectMap.find(o);
+            if(iter!=docItem->ObjectMap.end()) 
+                docItem->slotExpandObject(*iter->second->viewObject,Gui::Expand,0,0);
+        }
+        docItem->_ExpandedObjects.clear();
     }
 
     if(errItem)
@@ -2355,7 +2362,8 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     connectResObject = doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
     connectHltObject = doc->signalHighlightObject.connect(
             boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3,_4,_5));
-    connectExpObject = doc->signalExpandObject.connect(boost::bind(&DocumentItem::slotExpandObject, this, _1,_2));
+    connectExpObject = doc->signalExpandObject.connect(
+            boost::bind(&DocumentItem::slotExpandObject, this, _1,_2,_3,_4));
     connectScrObject = doc->signalScrollToObject.connect(boost::bind(&DocumentItem::slotScrollToObject, this, _1));
     auto adoc = doc->getDocument();
     connectRecomputed = adoc->signalRecomputed.connect(boost::bind(&DocumentItem::slotRecomputed, this, _1, _2));
@@ -2945,30 +2953,44 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
     END_FOREACH_ITEM
 }
 
-void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,const Gui::TreeItemMode& mode)
+void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
+        const Gui::TreeItemMode& mode, const App::DocumentObject *parent, const char *subname)
 {
-    // In the past it was checked if the parent item is collapsed and if yes nothing was done.
-    // Now with the auto-expand mechanism of active part containers or bodies it must be made
-    // sure to expand all parent items when expanding a child item.
-    // Example:
-    // When there are two nested part containers and if first the outer and then the inner is
-    // activated the outer will be collapsed and thus hides the inner item.
-    // Alternatively, this could be handled inside ActiveObjectList::setObject() but querying
-    // the parent-children relationship of the view providers is rather inefficient.
+    if(mode==Gui::Expand && obj.getDocument()->getDocument()->testStatus(App::Document::Restoring)) {
+        _ExpandedObjects.push_back(obj.getObject());
+        return;
+    }
+
+    if(parent && parent->getDocument()!=document()->getDocument()) {
+        auto it = getTree()->DocumentMap.find(Application::Instance->getDocument(parent->getDocument()));
+        if(it!=getTree()->DocumentMap.end())
+            it->second->slotExpandObject(obj,mode,parent,subname);
+        return;
+    }
+
     FOREACH_ITEM(item,obj)
         // All document object items must always have a parent, either another
         // object item or document item. If not, then there is a bug somewhere
         // else.
         assert(item->parent());
+
+        if(parent) {
+            App::DocumentObject *topParent = 0;
+            std::ostringstream ss;
+            item->getSubName(ss,topParent);
+            if(!topParent) {
+                if(parent!=obj.getObject())
+                    continue;
+            }else if(topParent!=parent)
+                continue;
+            showItem(item,false,true);
+        } else if (!item->parent()->isExpanded()) 
+            continue;
+
         switch (mode) {
-        case Gui::Expand: {
-            QTreeWidgetItem* parent = item->parent();
-            while (parent) {
-                parent->setExpanded(true);
-                parent = parent->parent();
-            }
+        case Gui::Expand:
             item->setExpanded(true);
-        }   break;
+            break;
         case Gui::Collapse:
             item->setExpanded(false);
             break;
@@ -2983,7 +3005,10 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
             // not defined enum
             assert(0);
         }
-        populateItem(item);
+        if(item->isExpanded())
+            populateItem(item);
+        if(parent)
+            return;
     END_FOREACH_ITEM
 }
 

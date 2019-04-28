@@ -295,20 +295,30 @@ PyObject* DocumentPy::mergeProject(PyObject *args)
 PyObject* DocumentPy::toggleTreeItem(PyObject *args)
 {
     PyObject *object=0;
+    const char *subname=0;
     int mod = 0;
-    if (PyArg_ParseTuple(args,"O!|i",&(App::DocumentObjectPy::Type), &object,&mod)) {
+    if (PyArg_ParseTuple(args,"O!|is",&(App::DocumentObjectPy::Type), &object,&mod,&subname)) {
         App::DocumentObject* Object = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
         // Should be set!
         assert(Object);    
 
+        App::DocumentObject *parent = 0;
+        if(subname) {
+            auto sobj = Object->getSubObject(subname);
+            if(!sobj) 
+                throw Py::RuntimeError("Sub-object not found");
+            parent = Object;
+            Object = sobj;
+        }
+            
         // get the gui document of the Assembly Item 
         //ActiveAppDoc = Item->getDocument();
         //ActiveGuiDoc = Gui::Application::Instance->getDocument(getDocumentPtr());
         Gui::ViewProviderDocumentObject* ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (getDocumentPtr()->getViewProvider(Object)) ;
         switch(mod) {
-            case 0: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::Toggle); break;
-            case 1: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::Collapse); break;
-            case 2: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::Expand); break;
+            case 0: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::Toggle,parent,subname); break;
+            case 1: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::Collapse,parent,subname); break;
+            case 2: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::Expand,parent,subname); break;
         }
     }
 

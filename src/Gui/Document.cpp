@@ -1209,7 +1209,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
                 pObj->Restore(xmlReader);
             if (pObj && expanded) {
                 Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
-                this->signalExpandObject(*vp, Gui::Expand);
+                this->signalExpandObject(*vp, Gui::Expand,0,0);
             }
             xmlReader.readEndElement("ViewProvider");
         }

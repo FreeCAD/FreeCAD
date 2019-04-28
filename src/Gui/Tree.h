@@ -272,7 +272,8 @@ protected:
     void slotResetEdit       (const Gui::ViewProviderDocumentObject&);
     void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool,
                               const App::DocumentObject *parent, const char *subname);
-    void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&);
+    void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&,
+                              const App::DocumentObject *parent, const char *subname);
     void slotScrollToObject  (const Gui::ViewProviderDocumentObject&);
     void slotRecomputed      (const App::Document &doc, const std::vector<App::DocumentObject*> &objs);
     void slotRecomputedObject(const App::DocumentObject &);
@@ -298,6 +299,7 @@ private:
     Gui::Document* pDocument;
     std::unordered_map<App::DocumentObject*,DocumentObjectDataPtr> ObjectMap;
     std::unordered_map<App::DocumentObject*, std::set<App::DocumentObject*> > _ParentMap;
+    std::vector<App::DocumentObject*> _ExpandedObjects;
 
     typedef boost::signals2::connection Connection;
     Connection connectNewObject;

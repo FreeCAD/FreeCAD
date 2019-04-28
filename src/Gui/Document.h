@@ -122,7 +122,9 @@ public:
                                           const char *subname)> signalHighlightObject; 
     /// signal on changed Object, the 2nd argument is the highlite mode to use
     mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&,
-                                          const Gui::TreeItemMode&)>               signalExpandObject;
+                                          const Gui::TreeItemMode&,
+                                          App::DocumentObject *parent, 
+                                          const char *subname)> signalExpandObject;
     /// signal on changed ShowInTree property in view provider
     mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalShowItem;
     /// signal on scrolling to an object
