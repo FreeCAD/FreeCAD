@@ -99,12 +99,12 @@ def looksLikeDraft(o):
     # If there is no shape at all ignore it
     if not hasattr(o, 'Shape') or o.Shape.isNull():
         return False
-    
+
     # If there are solids in the object, it will be handled later
     # by getCutShapes
     if len(o.Shape.Solids) > 0:
         return False
-    
+
     # If we have a shape, but no volume, it looks like a flat 2D object
     return o.Shape.Volume == 0
 
@@ -133,7 +133,11 @@ def getCutShapes(objs,section,showHidden,groupSshapesByObject=False):
             else:
                 shapes.append(o.Shape)
                 objectShapes.append((o, [o.Shape]))
-    cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(section.Shape.copy(),shapes)
+    clip = False
+    if hasattr(section, "Clip"):
+        clip = section.Clip
+    cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(section.Shape.copy(),shapes,clip)
+    shapes =[]
     if cutvolume:
         for o, shapeList in objectShapes:
             tmpSshapes = []
@@ -161,10 +165,10 @@ def getCutShapes(objs,section,showHidden,groupSshapesByObject=False):
 
             if len(tmpSshapes) > 0:
                 sshapes.extend(tmpSshapes)
-                
+
                 if groupSshapesByObject:
                     objectSshapes.append((o, tmpSshapes))
-    
+
     if groupSshapesByObject:
         return shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes
     else:
@@ -174,10 +178,10 @@ def getFillForObject(o, defaultFill, section):
     if hasattr(section, 'UseMaterialColorForFill') and section.UseMaterialColorForFill:
         if hasattr(o, 'Material') and o.Material:
             material = o.Material
-            
+
             if hasattr(material, 'Color') and material.Color:
                 return o.Material.Color
-    
+
     return defaultFill
 
 def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale=1, rotation=0, linewidth=1, lineColor=(0.0,0.0,0.0), fontsize=1, showFill=False, fillColor=(0.8,0.8,0.8), techdraw=False,fillSpaces=False):
@@ -193,7 +197,7 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
     lineColor -- Color of lines for the renderMode "Wireframe".
     fillColor -- If showFill is True and renderMode is "Wireframe",
                  the cut areas are filled with fillColor.
-    fillSpaces - If True, shows space objects as filled surfaces 
+    fillSpaces - If True, shows space objects as filled surfaces
     """
 
     if not section.Objects:
@@ -255,6 +259,22 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
         if section.Proxy.svgcache[4] != fillSpaces:
             svgcache = None
 
+    if hasattr(section.Proxy,"boolcache") and section.Proxy.boolcache:
+        vshapes = section.Proxy.boolcache[0]
+        hshapes = section.Proxy.boolcache[1]
+        sshapes = section.Proxy.boolcache[2]
+        cutface = section.Proxy.boolcache[3]
+        cutvolume = section.Proxy.boolcache[4]
+        invcutvolume = section.Proxy.boolcache[5]
+        objectSshapes = section.Proxy.boolcache[6]
+    else:
+        if showFill:
+            vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes = getCutShapes(objs,section,showHidden, True)
+        else:
+            vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
+            objectSshapes = []
+        section.Proxy.boolcache = [vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes]
+
     # generating SVG
     if renderMode in ["Solid",1]:
         if not svgcache:
@@ -282,17 +302,13 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
             # print(render.info())
             section.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill]
     else:
-        if showFill:
-            shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes = getCutShapes(objs,section,showHidden, True)
-        else:
-            shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
 
         if not svgcache:
             svgcache = ""
             # render using the Drawing module
             import Drawing, Part
-            if shapes:
-                baseshape = Part.makeCompound(shapes)
+            if vshapes:
+                baseshape = Part.makeCompound(vshapes)
                 style = {'stroke':       "SVGLINECOLOR",
                          'stroke-width': "SVGLINEWIDTH"}
                 svgcache += Drawing.projectToSVG(
@@ -425,9 +441,9 @@ def getDXF(obj):
     nonspaces = []
     drafts = []
     objs = [o for o in objs if ((not(Draft.getType(o) in ["Space","Dimension","Annotation"])) and (not (o.isDerivedFrom("Part::Part2DObject"))))]
-    shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
-    if shapes:
-        result.append(Drawing.projectToDXF(Part.makeCompound(shapes),direction))
+    vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
+    if vshapes:
+        result.append(Drawing.projectToDXF(Part.makeCompound(vshapes),direction))
     if sshapes:
         result.append(Drawing.projectToDXF(Part.makeCompound(sshapes),direction))
     if hshapes:
@@ -488,6 +504,8 @@ class _SectionPlane:
         if not "OnlySolids" in pl:
             obj.addProperty("App::PropertyBool","OnlySolids","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If false, non-solids will be cut too, with possible wrong results."))
             obj.OnlySolids = True
+        if not "Clip" in pl:
+            obj.addProperty("App::PropertyBool","Clip","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If True, resulting views will be clipped to the section plane area."))
         if not "UseMaterialColorForFill" in pl:
             obj.addProperty("App::PropertyBool","UseMaterialColorForFill","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If true, the color of the objects material will be used to fill cut areas."))
             obj.UseMaterialColorForFill = False
@@ -510,7 +528,7 @@ class _SectionPlane:
                 # old objects
                 l = obj.ViewObject.DisplaySize.Value
                 h = obj.ViewObject.DisplaySize.Value
-        p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
+        p = Part.makePlane(l,h,Vector(l/2,-h/2,0),Vector(0,0,-1))
         # make sure the normal direction is pointing outwards, you never know what OCC will decide...
         if p.normalAt(0,0).getAngle(obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))) > 1:
             p.reverse()
@@ -520,8 +538,9 @@ class _SectionPlane:
     def onChanged(self,obj,prop):
 
         # clean svg cache if needed
-        if prop in ["Placement","Objects","OnlySolids","UseMaterialColorForFill"]:
+        if prop in ["Placement","Objects","OnlySolids","UseMaterialColorForFill","Clip"]:
             self.svgcache = None
+            self.boolcache = None
 
     def getNormal(self,obj):
 
@@ -891,7 +910,7 @@ class SectionPlaneTaskPanel:
         self.delButton = QtGui.QPushButton(self.form)
         self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
         self.grid.addWidget(self.delButton, 3, 1, 1, 1)
-        
+
         # rotate / resize buttons
         self.rlabel = QtGui.QLabel(self.form)
         self.grid.addWidget(self.rlabel, 4, 0, 1, 2)
@@ -958,7 +977,7 @@ class SectionPlaneTaskPanel:
                 comp = FreeCAD.ActiveDocument.getObject(str(it.toolTip(0)))
                 ArchComponent.removeFromComponent(self.obj,comp)
             self.update()
-    
+
     def rotate(self,axis):
         if self.obj and self.obj.Shape and self.obj.Shape.Faces:
             face = self.obj.Shape.copy()
@@ -966,7 +985,7 @@ class SectionPlaneTaskPanel:
             face.rotate(self.obj.Placement.Base, axis, 90)
             self.obj.Placement = face.Placement
             self.obj.Proxy.execute(self.obj)
-    
+
     def rotateX(self):
         self.rotate(FreeCAD.Vector(1,0,0))
 
@@ -975,7 +994,7 @@ class SectionPlaneTaskPanel:
 
     def rotateZ(self):
         self.rotate(FreeCAD.Vector(0,0,1))
-    
+
     def getBB(self):
         bb = FreeCAD.BoundBox()
         if self.obj:
