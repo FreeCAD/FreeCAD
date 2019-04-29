@@ -263,7 +263,7 @@ script:
   - |
     if [ "${TRAVIS_OS_NAME}" == "windows" ]; then 
         # /p:TrackFileAccess=false /p:CLToolExe=clcache.exe build_msvc/bitcoin.sln /m /v:q /nologo
-        MSBuild.exe //p:TrackFileAccess=false //p:CLToolExe=clcache.exe FreeCAD_Trunk.sln //m //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
+        MSBuild.exe //p:TrackFileAccess=false //p:CLToolExe=clcache.exe FreeCAD_Trunk.sln //m:2 //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
         # ls -lahR
         cp -a ../FreeCADLibs/bin/* bin/
         cd bin  
