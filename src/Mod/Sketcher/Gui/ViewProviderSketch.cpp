@@ -3805,7 +3805,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 }
                 catch(Base::CADKernelError &e) {
                     // it is "just" a visualisation matter OCC could not calculate the curvature
-                    // terminating here would mean that the other shapes would not be drawed.
+                    // terminating here would mean that the other shapes would not be drawn.
                     // Solution: Report the issue and set dummy curvature to 0
                     e.ReportException();
                     Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", GeoId);
@@ -4017,7 +4017,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             }
             catch(Base::CADKernelError &e) {
                 // it is "just" a visualisation matter OCC could not calculate the curvature
-                // terminating here would mean that the other shapes would not be drawed.
+                // terminating here would mean that the other shapes would not be drawn.
                 // Solution: Report the issue and set dummy curvature to 0
                 e.ReportException();
                 Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", GeoId);
