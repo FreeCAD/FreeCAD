@@ -46,8 +46,6 @@ __contributors__ = "mlampert [FreeCAD], russ4262 (Russell Johnson)"
 __scriptVersion__ = "1g testing"
 __createdDate__ = "2017"
 __lastModified__ = "2019-04-29 10:43 CST"
-print("\n\nPathAreaOp.py")
-print(" -Script version: " + __scriptVersion__ + "  Lm: " + __lastModified__)
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -156,8 +154,8 @@ class ObjectOp(PathOp.ObjectOp):
         self.initFinalDepth = obj.FinalDepth.Value
         self.initOpFinalDepth = obj.OpFinalDepth.Value
         self.docRestored = True
-        print("Imported existing OpFinalDepth of " + str(self.initOpFinalDepth) + " for recompute() purposes.")
-        print("Imported existing FinalDepth of " + str(self.initFinalDepth) + " for recompute() purposes.")
+        PathLog.debug("Imported existing OpFinalDepth of " + str(self.initOpFinalDepth) + " for recompute() purposes.")
+        PathLog.debug("Imported existing FinalDepth of " + str(self.initFinalDepth) + " for recompute() purposes.")
 
         self.areaOpOnDocumentRestored(obj)
 
@@ -187,18 +185,18 @@ class ObjectOp(PathOp.ObjectOp):
 
             # Manage operation start and final depths
             if self.docRestored == True:  # This op is NOT the first in the Operations list
-                print("doc restored")
+                PathLog.debug("doc restored")
                 obj.FinalDepth.Value = obj.OpFinalDepth.Value
             else:
-                print("new operation")
+                PathLog.debug("new operation")
                 obj.OpFinalDepth.Value = -1 * maxDep
                 obj.OpStartDepth.Value = maxDep
                 if self.initOpFinalDepth == None and self.initFinalDepth == None:
                     self.initFinalDepth = -1 * maxDep
                     self.initOpFinalDepth = -1 * maxDep
                 else:
-                    print("-initFinalDepth" + str(self.initFinalDepth))
-                    print("-initOpFinalDepth" + str(self.initOpFinalDepth))
+                    PathLog.debug("-initFinalDepth" + str(self.initFinalDepth))
+                    PathLog.debug("-initOpFinalDepth" + str(self.initOpFinalDepth))
 
             '''
             # Original code, replaced with code above for rotation integration.
@@ -287,7 +285,7 @@ class ObjectOp(PathOp.ObjectOp):
         instead.'''
         PathLog.track()
         self.endVector = None
-        print("opExecute() in PathAreaOp.py")
+        PathLog.debug("opExecute() in PathAreaOp.py")
 
         # Import OpFinalDepth from pre-existing operation for recompute() scenarios
         # if obj.OpFinalDepth.Value != self.initOpFinalDepth and self.initOpFinalDepth != None:
@@ -392,7 +390,7 @@ class ObjectOp(PathOp.ObjectOp):
             self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialFeed}))
             FreeCAD.ActiveDocument.getObject(self.modelName).purgeTouched()
 
-        print("obj.Name: " + str(obj.Name))
+        PathLog.debug("obj.Name: " + str(obj.Name))
         return sims
 
     def areaOpRetractTool(self, obj):
@@ -574,5 +572,5 @@ class ObjectOp(PathOp.ObjectOp):
 
         testId += "\n -Suggested rotation:  angle: " + str(angle) + ",   axis: " + str(axis)
         if prnt == True:
-            print("testId: " + testId)
+            PathLog.debug("testId: " + testId)
         return (rtn, angle, axis)
