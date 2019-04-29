@@ -74,7 +74,7 @@ matrix:
           - PYTHON_MAJOR_VERSION=3        
           - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
           - TEST_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\build\bin"
-          - CLCACHE_PATH="C:\Users\travis\"
+          - CLCACHE_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\"
           - VS15=true
           - CCACHE_TEMPDIR=/tmp/.ccache-temp
           - CCACHE_COMPRESS=1
@@ -266,7 +266,8 @@ script:
   - |
     if [ "${TRAVIS_OS_NAME}" == "windows" ]; then 
         # /p:TrackFileAccess=false /p:CLToolExe=clcache.exe build_msvc/bitcoin.sln /m /v:q /nologo
-        MSBuild.exe //p:TrackFileAccess=false //p:CLToolExe=clcache.exe FreeCAD_Trunk.sln //m:2 //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
+        # /p:CLToolPath=$CLCACHE_PATH
+        MSBuild.exe //p:TrackFileAccess=false //p:CLToolExe=clcache.exe //p:CLToolPath=${CLCACHE_PATH} FreeCAD_Trunk.sln //m:2 //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
         # ls -lahR
         cp -a ../FreeCADLibs/bin/* bin/
         cd bin  
