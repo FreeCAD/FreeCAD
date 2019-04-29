@@ -268,12 +268,14 @@ script:
         # /p:TrackFileAccess=false /p:CLToolExe=clcache.exe build_msvc/bitcoin.sln /m /v:q /nologo
         # /p:CLToolPath=$CLCACHE_PATH
         #MSBuild.exe //p:TrackFileAccess=false //p:CLToolExe=clcache.exe //p:CLToolPath=${CLCACHE_PATH} FreeCAD_Trunk.sln //m:2 //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
-        MSBuild.exe FreeCAD_Trunk.sln //m:2 //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64         
+        cmd.exe /C 'MSBuild.exe FreeCAD_Trunk.sln //m:2 //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64'
         # ls -lahR
         cp -a ../FreeCADLibs/bin/* bin/
         cd bin  
-        export PATH=$TEST_PATH:$PATH
-        FreeCADCmd.exe --run-test 0
+        #export PATH=$TEST_PATH:$PATH
+        #FreeCADCmd.exe --run-test 0
+        # This to try running from the bin directory in case this is affecting some tests
+        cmd.exe /C 'cd bin && FreeCADCmd.exe --run-test 0'
     else
         sudo make -j2 install
         ${INSTALLED_APP_PATH} --console --run-test 0
