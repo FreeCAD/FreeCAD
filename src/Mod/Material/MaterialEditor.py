@@ -1,6 +1,6 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2013 - Yorik van Havre <yorik@uncreated.net>            *
+# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD material editor"
-__author__ = "Yorik van Havre"
+__author__ = "Yorik van Havre, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 import os
@@ -32,13 +32,14 @@ from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
 
+# is this still needed after the move to card utils???
 if sys.version_info.major >= 3:
     unicode = str
 
 
 class MaterialEditor:
 
-    def __init__(self, obj=None, prop=None, material=None):
+    def __init__(self, obj=None, prop=None, material=None, card_path=''):
 
         """Initializes, optionally with an object name and a material property
         name to edit, or directly with a material dictionary."""
@@ -50,6 +51,10 @@ class MaterialEditor:
         self.internalprops = []
         self.groups = []
         self.directory = FreeCAD.getResourceDir() + "Mod/Material"
+        self.materials = {}
+        self.cards = {}
+        self.icons = {}
+        self.card_path = card_path
 
         # load the UI file from the same directory as this script
         self.widget = FreeCADGui.PySideUic.loadUi(
@@ -75,7 +80,7 @@ class MaterialEditor:
         buttonDeleteProperty.setEnabled(False)
         standardButtons.button(QtGui.QDialogButtonBox.Ok).setAutoDefault(False)
         standardButtons.button(QtGui.QDialogButtonBox.Cancel).setAutoDefault(False)
-        self.updateCards()
+        self.updateCardsInCombo()
         # TODO allow to enter a custom property by pressing Enter in the lineedit
         # currently closes the dialog
 
@@ -84,7 +89,7 @@ class MaterialEditor:
         buttonOpen.clicked.connect(self.openfile)
         buttonSave.clicked.connect(self.savefile)
         buttonURL.clicked.connect(self.openProductURL)
-        comboMaterial.currentIndexChanged[str].connect(self.updateContents)
+        comboMaterial.currentIndexChanged[int].connect(self.chooseMaterial)
         buttonAddProperty.clicked.connect(self.addCustomProperty)
         buttonDeleteProperty.clicked.connect(self.deleteCustomProperty)
         treeView.clicked.connect(self.checkDeletable)
@@ -94,6 +99,9 @@ class MaterialEditor:
         treeView.setUniformRowHeights(True)
         treeView.setItemDelegate(MaterialsDelegate())
 
+        # init model
+        self.implementModel()
+
         # update the editor with the contents of the property, if we have one
         d = None
         if self.prop and self.obj:
@@ -101,9 +109,18 @@ class MaterialEditor:
         elif self.material:
             d = self.material
 
-        self.implementModel()
         if d:
-            self.updateContents(d)
+            self.updateMatParamsInTree(d)
+            self.widget.ComboMaterial.setCurrentIndex(0)
+            # set after tree params to the none material
+
+        if self.card_path:
+            # we need the index of this path
+            index = self.widget.ComboMaterial.findData(self.card_path)
+            self.chooseMaterial(index)
+
+        # TODO what if material and card_name was given.
+        # In such case ATM mateial is chosen, give some feedback for all those corner cases.
 
     def implementModel(self):
 
@@ -118,26 +135,23 @@ class MaterialEditor:
         treeView.setColumnWidth(1, 250)
         treeView.setColumnHidden(2, True)
 
-        from Material import getMaterialAttributeStructure
-        tree = getMaterialAttributeStructure(True)
-        MatPropDict = tree.getroot()
+        from materialtools.cardutils import get_material_template
+        template_data = get_material_template(True)
 
-        for group in MatPropDict.getchildren():
-            gg = group.attrib['Name']
+        for group in template_data:
+            gg = list(group.keys())[0]  # group dict has only one key
             top = QtGui.QStandardItem(gg)
             model.appendRow([top])
             self.groups.append(gg)
 
-            for proper in group.getchildren():
-                properDict = proper.attrib
-
-                pp = properDict['Name']
+            for properName in group[gg]:
+                pp = properName  # property name
                 item = QtGui.QStandardItem(pp)
                 self.internalprops.append(pp)
 
                 it = QtGui.QStandardItem()
 
-                tt = properDict['Type']
+                tt = group[gg][properName]['Type']
                 itType = QtGui.QStandardItem(tt)
 
                 top.appendRow([item, it, itType])
@@ -146,111 +160,85 @@ class MaterialEditor:
 
         treeView.expandAll()
 
-    def updateContents(self, data):
+    def updateMatParamsInTree(self, data):
 
-        '''updates the contents of the editor with the given data, can be:
-           - a dictionary, if the editor was called  with data
-           - a string, the name of a card, if material is changed in editors combo box
+        '''updates the contents of the editor with the given dictionary
            the material property keys where added to the editor already
            not known material property keys will be added to the user defined group'''
 
-        # print type(data)
-        if isinstance(data, dict):
-            # a standard material property dict is provided
-            model = self.widget.treeView.model()
-            root = model.invisibleRootItem()
-            for gg in range(root.rowCount() - 1):
-                group = root.child(gg, 0)
-                for pp in range(group.rowCount()):
-                    item = group.child(pp, 0)
-                    it = group.child(pp, 1)
-                    kk = self.collapseKey(item.text())
+        # print(data)
+        model = self.widget.treeView.model()
+        root = model.invisibleRootItem()
+        for gg in range(root.rowCount() - 1):
+            group = root.child(gg, 0)
+            for pp in range(group.rowCount()):
+                item = group.child(pp, 0)
+                it = group.child(pp, 1)
+                kk = self.collapseKey(item.text())
 
-                    try:
-                        value = data[kk]
-                        it.setText(value)
-                        del data[kk]
-                    except KeyError:
-                        it.setText("")
+                try:
+                    value = data[kk]
+                    it.setText(value)
+                    del data[kk]
+                except KeyError:
+                    it.setText("")
 
-            userGroup = root.child(gg + 1, 0)
-            userGroup.setRowCount(0)
-            self.customprops = []
+        userGroup = root.child(gg + 1, 0)
+        userGroup.setRowCount(0)
+        self.customprops = []
 
-            for k, i in data.items():
-                k = self.expandKey(k)
-                item = QtGui.QStandardItem(k)
-                it = QtGui.QStandardItem(i)
-                userGroup.appendRow([item, it])
-                self.customprops.append(k)
+        for k, i in data.items():
+            k = self.expandKey(k)
+            item = QtGui.QStandardItem(k)
+            it = QtGui.QStandardItem(i)
+            userGroup.appendRow([item, it])
+            self.customprops.append(k)
 
-        elif isinstance(data, unicode):
-            # a card name is provided, search card, read material data and call
-            # this def once more with std material property dict
-            k = str(data)
-            if k:
-                if k in self.cards:
-
-                    from importFCMat import read
-                    d = read(self.cards[k])
-                    if d:
-                        self.updateContents(d)
-
-    def getMaterialResources(self):
-        self.fem_prefs = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Material/Resources"
+    def chooseMaterial(self, index):
+        if index < 0:
+            return
+        self.card_path = self.widget.ComboMaterial.itemData(index)
+        FreeCAD.Console.PrintMessage(
+            'choose_material in material editor:\n'
+            '    {}\n'.format(self.card_path)
         )
-        use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
-        use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
-        use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
-        if use_mat_from_custom_dir:
-            custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
-        # later found cards with same name will override cards
-        # FreeCAD returns paths with / at the end, thus not os.sep is needed on first +
-        self.resources = []
-        if use_built_in_materials:
-            res_dir = FreeCAD.getResourceDir()
-            self.resources.append(
-                res_dir + "Mod" + os.sep + "Material" + os.sep + "StandardMaterial"
-            )
-        if use_mat_from_config_dir:
-            self.resources.append(FreeCAD.ConfigGet("UserAppData") + "Material")
-        if use_mat_from_custom_dir:
-            custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
-            if os.path.exists(custom_mat_dir):
-                self.resources.append(custom_mat_dir)
-        self.outputResources()
+        if os.path.isfile(self.card_path):
+            from importFCMat import read
+            d = read(self.card_path)
+            self.updateMatParamsInTree(d)
+            # be careful with reading from materials dict
+            # the card could be updated the dict not
+            self.widget.ComboMaterial.setCurrentIndex(index)  # set after tree params
+        else:
+            FreeCAD.Console.PrintError('material card not found: {}\n'.format(self.card_path))
 
-    def outputResources(self):
-        print('locations to look for material cards:')
-        for path in self.resources:
-            print('  ' + path)
-        print('\n')
-
-    def outputCards(self):
-        print('material cards:')
-        for card in sorted(self.cards.keys()):
-            print('  ' + card + ': ' + self.cards[card])
-        print('\n')
-
-    def updateCards(self):
+    def updateCardsInCombo(self):
 
         '''updates the contents of the materials combo with existing material cards'''
 
-        self.getMaterialResources()
-        self.cards = {}
-        for p in self.resources:
-            if os.path.exists(p):
-                for f in sorted(os.listdir(p)):
-                    b, e = os.path.splitext(f)
-                    if e.upper() == ".FCMAT":
-                        self.cards[b] = p + os.sep + f
-        # self.outputCards()
-        if self.cards:
-            self.widget.ComboMaterial.clear()
-            self.widget.ComboMaterial.addItem("")  # add a blank item first
-            for card in sorted(self.cards.keys()):
-                self.widget.ComboMaterial.addItem(card)  # all keys in self.cards are unicode
+        mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Cards")
+        sort_by_resources = mat_prefs.GetBool("SortByResources", False)
+
+        # get all available materials (fill self.materials, self.cards and self.icons)
+        from materialtools.cardutils import import_materials as getmats
+        self.materials, self.cards, self.icons = getmats()
+
+        card_name_list = []  # [ [card_name, card_path, icon_path], ... ]
+
+        if sort_by_resources is True:
+            for a_path in sorted(self.materials.keys()):
+                card_name_list.append([self.cards[a_path], a_path, self.icons[a_path]])
+        else:
+            card_names_tmp = {}
+            for path, name in self.cards.items():
+                card_names_tmp[name] = path
+            for a_name in sorted(card_names_tmp.keys()):
+                a_path = card_names_tmp[a_name]
+                card_name_list.append([a_name, a_path, self.icons[a_path]])
+
+        card_name_list.insert(0, [None, '', ''])
+        for mat in card_name_list:
+            self.widget.ComboMaterial.addItem(QtGui.QIcon(mat[2]), mat[0], mat[1])
 
     def openProductURL(self):
 
@@ -434,14 +422,28 @@ class MaterialEditor:
             self.directory,
             '*.FCMat'
         )
-        # a tuple of two empty strings returns True, so use the filename directly
-        filename = filetuple[0]
-        if filename:
-            from importFCMat import read
-            self.directory = os.path.dirname(filename)
-            d = read(filename)
-            if d:
-                self.updateContents(d)
+        self.card_path = filetuple[0]
+        index = self.widget.ComboMaterial.findData(self.card_path)
+        print(index)
+
+        # check if card_path is in known path, means it is in combo box already
+        # if not print message, and give some feedbach that the card parameter are loaded
+        if os.path.isfile(self.card_path):
+            if index == -1:
+                FreeCAD.Console.PrintMessage(
+                    'Card path: {} not found in known cards.'
+                    'The material parameter only are loaded.\n'
+                    .format(self.card_path)
+                )
+                from importFCMat import read
+                d = read(self.card_path)
+                if d:
+                    self.updateMatParamsInTree(d)
+                    self.widget.ComboMaterial.setCurrentIndex(0)
+                    # set combo box to the none material after tree params
+            else:
+                self.chooseMaterial(index)
+        self.directory = os.path.dirname(self.card_path)
 
     def savefile(self):
         "Saves a FCMat file."
@@ -467,12 +469,13 @@ class MaterialEditor:
         filename = filetuple[0]
         if filename:
             self.directory = os.path.dirname(filename)
+            # should not be resource dir but user result dir instead
             d = self.getDict()
             # self.outputDict(d)
             if d:
                 from importFCMat import write
                 write(filename, d)
-                self.updateCards()
+                self.updateCardsInCombo()
 
     def show(self):
         return self.widget.show()
@@ -664,7 +667,7 @@ def openEditor(obj=None, prop=None):
     editor.exec_()
 
 
-def editMaterial(material):
+def editMaterial(material=None, card_path=None):
     """editMaterial(material): opens the editor to edit the contents
     of the given material dictionary. Returns the modified material dictionary."""
     # if the material editor is opened with this def the combo box with the card name is empty
@@ -673,12 +676,13 @@ def editMaterial(material):
     # TODO: add some text in combo box, may be "custom material data" or "user material data"
     # TODO: all card could be checked if one fits exact ALL provided data
     # than this card name could be displayed
-    editor = MaterialEditor(material=material)
+    editor = MaterialEditor(material=material, card_path=card_path)
     result = editor.exec_()
     if result:
         return editor.getDict()
     else:
-        return material
+        # on chancel button an empty dict is returned
+        return {}
 
 
 '''

@@ -691,6 +691,73 @@ PyObject* TopoShapeFacePy::curveOnSurface(PyObject *args)
     }
 }
 
+PyObject* TopoShapeFacePy::cutHoles(PyObject *args)
+{
+    PyObject *holes=0;
+    if (PyArg_ParseTuple(args, "O!", &(PyList_Type), &holes)) {
+        try {
+            std::vector<TopoDS_Wire> wires;
+            Py::List list(holes);
+            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+                PyObject* item = (*it).ptr();
+                if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+                    const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
+                    if (sh.ShapeType() == TopAbs_WIRE)
+                        wires.push_back(TopoDS::Wire(sh));
+                    else
+                        Standard_Failure::Raise("shape is not a wire");
+                }
+                else
+                    Standard_Failure::Raise("argument is not a shape");
+            }
+
+            if (!wires.empty()) {
+                const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->getShape());
+                BRepBuilderAPI_MakeFace mkFace(f);
+                for (std::vector<TopoDS_Wire>::iterator it = wires.begin(); it != wires.end(); ++it)
+                    mkFace.Add(*it);
+                if (!mkFace.IsDone()) {
+                    switch (mkFace.Error()) {
+                    case BRepBuilderAPI_NoFace:
+                        Standard_Failure::Raise("No face");
+                        break;
+                    case BRepBuilderAPI_NotPlanar:
+                        Standard_Failure::Raise("Not planar");
+                        break;
+                    case BRepBuilderAPI_CurveProjectionFailed:
+                        Standard_Failure::Raise("Curve projection failed");
+                        break;
+                    case BRepBuilderAPI_ParametersOutOfRange:
+                        Standard_Failure::Raise("Parameters out of range");
+                        break;
+#if OCC_VERSION_HEX < 0x060500
+                    case BRepBuilderAPI_SurfaceNotC2:
+                        Standard_Failure::Raise("Surface not C2");
+                        break;
+#endif
+                    default:
+                        Standard_Failure::Raise("Unknown failure");
+                        break;
+                    }
+                }
+
+                getTopoShapePtr()->setShape(mkFace.Face());
+                Py_Return;
+            }
+            else {
+                Standard_Failure::Raise("empty wire list");
+            }
+        }
+        catch (Standard_Failure& e) {
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+            return 0;
+        }
+    }
+    PyErr_SetString(PyExc_RuntimeError, "invalid list of wires");
+    return 0;
+}
+
+
 Py::Object TopoShapeFacePy::getSurface() const
 {
     const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->getShape());

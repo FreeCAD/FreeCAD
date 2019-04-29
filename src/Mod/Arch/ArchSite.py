@@ -257,6 +257,152 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
         numsep.addChild(item)
     return mastersep
 
+# Values in mm
+COMPASS_POINTER_LENGTH = 1000
+COMPASS_POINTER_WIDTH = 100
+
+
+class Compass(object):
+    def __init__(self):
+        self.rootNode = self.setupCoin()
+
+    def show(self):
+        from pivy import coin
+        self.compassswitch.whichChild = coin.SO_SWITCH_ALL
+
+    def hide(self):
+        from pivy import coin
+        self.compassswitch.whichChild = coin.SO_SWITCH_NONE
+
+    def rotate(self, angleInDegrees):
+        from pivy import coin
+        self.transform.rotation.setValue(
+            coin.SbVec3f(0, 0, 1), math.radians(angleInDegrees))
+
+    def setZOffset(self, offsetInMillimeters):
+        from pivy import coin
+        self.transform.translation.setValue(0, 0, offsetInMillimeters)
+    
+    def scale(self, area):
+        from pivy import coin
+        
+        scale = round(max(math.sqrt(area.getValueAs("m^2").Value) / 10, 1))
+
+        self.transform.scaleFactor.setValue(coin.SbVec3f(scale, scale, 1))
+
+    def setupCoin(self):
+        from pivy import coin
+
+        compasssep = coin.SoSeparator()
+
+        self.transform = coin.SoTransform()
+
+        darkNorthMaterial = coin.SoMaterial()
+        darkNorthMaterial.diffuseColor.set1Value(
+            0, 0.5, 0, 0)  # north dark color
+
+        lightNorthMaterial = coin.SoMaterial()
+        lightNorthMaterial.diffuseColor.set1Value(
+            0, 0.9, 0, 0)  # north light color
+
+        darkGreyMaterial = coin.SoMaterial()
+        darkGreyMaterial.diffuseColor.set1Value(0, 0.9, 0.9, 0.9)  # dark color
+
+        lightGreyMaterial = coin.SoMaterial()
+        lightGreyMaterial.diffuseColor.set1Value(
+            0, 0.5, 0.5, 0.5)  # light color
+
+        coords = self.buildCoordinates()
+
+        # coordIndex = [0, 1, 2, -1, 2, 3, 0, -1]
+
+        lightColorFaceset = coin.SoIndexedFaceSet()
+        lightColorCoordinateIndex = [4, 5, 6, -1, 8, 9, 10, -1, 12, 13, 14, -1]
+        lightColorFaceset.coordIndex.setValues(
+            0, len(lightColorCoordinateIndex), lightColorCoordinateIndex)
+
+        darkColorFaceset = coin.SoIndexedFaceSet()
+        darkColorCoordinateIndex = [6, 7, 4, -1, 10, 11, 8, -1, 14, 15, 12, -1]
+        darkColorFaceset.coordIndex.setValues(
+            0, len(darkColorCoordinateIndex), darkColorCoordinateIndex)
+
+        lightNorthFaceset = coin.SoIndexedFaceSet()
+        lightNorthCoordinateIndex = [2, 3, 0, -1]
+        lightNorthFaceset.coordIndex.setValues(
+            0, len(lightNorthCoordinateIndex), lightNorthCoordinateIndex)
+
+        darkNorthFaceset = coin.SoIndexedFaceSet()
+        darkNorthCoordinateIndex = [0, 1, 2, -1]
+        darkNorthFaceset.coordIndex.setValues(
+            0, len(darkNorthCoordinateIndex), darkNorthCoordinateIndex)
+
+        self.compassswitch = coin.SoSwitch()
+        self.compassswitch.whichChild = coin.SO_SWITCH_NONE
+        self.compassswitch.addChild(compasssep)
+
+        lightGreySeparator = coin.SoSeparator()
+        lightGreySeparator.addChild(lightGreyMaterial)
+        lightGreySeparator.addChild(lightColorFaceset)
+
+        darkGreySeparator = coin.SoSeparator()
+        darkGreySeparator.addChild(darkGreyMaterial)
+        darkGreySeparator.addChild(darkColorFaceset)
+
+        lightNorthSeparator = coin.SoSeparator()
+        lightNorthSeparator.addChild(lightNorthMaterial)
+        lightNorthSeparator.addChild(lightNorthFaceset)
+
+        darkNorthSeparator = coin.SoSeparator()
+        darkNorthSeparator.addChild(darkNorthMaterial)
+        darkNorthSeparator.addChild(darkNorthFaceset)
+
+        compasssep.addChild(coords)
+        compasssep.addChild(self.transform)
+        compasssep.addChild(lightGreySeparator)
+        compasssep.addChild(darkGreySeparator)
+        compasssep.addChild(lightNorthSeparator)
+        compasssep.addChild(darkNorthSeparator)
+
+        return self.compassswitch
+
+    def buildCoordinates(self):
+        from pivy import coin
+
+        coords = coin.SoCoordinate3()
+
+        # North Arrow
+        coords.point.set1Value(0, 0, 0, 0)
+        coords.point.set1Value(1, COMPASS_POINTER_WIDTH,
+                               COMPASS_POINTER_WIDTH, 0)
+        coords.point.set1Value(2, 0, COMPASS_POINTER_LENGTH, 0)
+        coords.point.set1Value(3, -COMPASS_POINTER_WIDTH,
+                               COMPASS_POINTER_WIDTH, 0)
+
+        # East Arrow
+        coords.point.set1Value(4, 0, 0, 0)
+        coords.point.set1Value(
+            5, COMPASS_POINTER_WIDTH, -COMPASS_POINTER_WIDTH, 0)
+        coords.point.set1Value(6, COMPASS_POINTER_LENGTH, 0, 0)
+        coords.point.set1Value(7, COMPASS_POINTER_WIDTH,
+                               COMPASS_POINTER_WIDTH, 0)
+
+        # South Arrow
+        coords.point.set1Value(8, 0, 0, 0)
+        coords.point.set1Value(
+            9, -COMPASS_POINTER_WIDTH, -COMPASS_POINTER_WIDTH, 0)
+        coords.point.set1Value(10, 0, -COMPASS_POINTER_LENGTH, 0)
+        coords.point.set1Value(
+            11, COMPASS_POINTER_WIDTH, -COMPASS_POINTER_WIDTH, 0)
+
+        # West Arrow
+        coords.point.set1Value(12, 0, 0, 0)
+        coords.point.set1Value(13, -COMPASS_POINTER_WIDTH,
+                               COMPASS_POINTER_WIDTH, 0)
+        coords.point.set1Value(14, -COMPASS_POINTER_LENGTH, 0, 0)
+        coords.point.set1Value(
+            15, -COMPASS_POINTER_WIDTH, -COMPASS_POINTER_WIDTH, 0)
+
+        return coords
 
 class _CommandSite:
 
@@ -374,6 +520,15 @@ class _Site(ArchFloor._Floor):
             obj.addProperty("App::PropertyVector","OriginOffset","Site",QT_TRANSLATE_NOOP("App::Property","An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates"))
         if not hasattr(obj,"Group"):
             obj.addExtension("App::GroupExtensionPython", self)
+        if not "Compass" in pl:
+            obj.addProperty("App::PropertyBool", "Compass", "Compass", QT_TRANSLATE_NOOP(
+                "App::Property", "Show compass or not"))
+        if not "CompassRotation" in pl:
+            obj.addProperty("App::PropertyAngle", "CompassRotation", "Compass", QT_TRANSLATE_NOOP(
+                "App::Property", "The rotation of the Compass relative to the Site"))
+        if not "UpdateDeclination" in pl:
+            obj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP(
+                "App::Property", "Update the Declination value based on the compass roation"))
         self.Type = "Site"
         obj.setEditorMode('Height',2)
 
@@ -434,6 +589,17 @@ class _Site(ArchFloor._Floor):
                 if FreeCAD.GuiUp:
                     obj.Terrain.ViewObject.hide()
                 self.execute(obj)
+        if prop in ["UpdateDeclination", "CompassRotation", "Placement"]:
+            self.updateDeclination()
+
+    def updateDeclination(self):
+        if not hasattr(self.Object, 'UpdateDeclination') or not self.Object.UpdateDeclination:
+            return
+
+        compassRotation = self.Object.CompassRotation.Value
+        siteRotation = math.degrees(self.Object.Placement.Rotation.Angle)
+
+        self.Object.Declination = compassRotation + siteRotation
 
     def computeAreas(self,obj):
 
@@ -527,6 +693,12 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         if not "SolarDiagramColor" in pl:
             vobj.addProperty("App::PropertyColor","SolarDiagramColor","Site",QT_TRANSLATE_NOOP("App::Property","The color of the solar diagram"))
             vobj.SolarDiagramColor = (0.16,0.16,0.25)
+        if not "Orientation" in pl:
+            vobj.addProperty("App::PropertyEnumeration", "Orientation", "Site", QT_TRANSLATE_NOOP(
+                "App::Property", "When set to 'True North' the whole geometry will be rotated to match the true north of this site"))
+            
+            vobj.Orientation = ["Project North", "True North"]
+            vobj.Orientation = "Project North"
 
     def onDocumentRestored(self,vobj):
 
@@ -577,12 +749,28 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         self.diagramsep.addChild(self.color)
         vobj.Annotation.addChild(self.diagramswitch)
 
+        self.compass = Compass()
+        self.updateCompassVisibility(self.Object)
+        self.updateCompassScale(self.Object)
+        self.rotateCompass(self.Object)
+
+        vobj.Annotation.addChild(self.compass.rootNode)
+
     def updateData(self,obj,prop):
 
         if prop in ["Longitude","Latitude"]:
             self.onChanged(obj.ViewObject,"SolarDiagram")
         elif prop == "Declination":
             self.onChanged(obj.ViewObject,"SolarDiagramPosition")
+            self.updateTrueNorthRotation()
+        elif prop == "Terrain":
+            self.updateCompassLocation(obj)
+        elif prop == "Compass":
+            self.updateCompassVisibility(obj)
+        elif prop == "CompassRotation":
+            self.rotateCompass(obj)
+        elif prop == "ProjectedArea":
+            self.updateCompassScale(obj)
 
     def onChanged(self,vobj,prop):
 
@@ -611,6 +799,79 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
                         del self.diagramnode
                 else:
                     self.diagramswitch.whichChild = -1
+        elif prop == 'Visibility':
+            if vobj.Visibility:
+                self.updateCompassVisibility(self.Object)
+            else:
+                self.compass.hide()
+        elif prop == 'Orientation':
+            if vobj.Orientation == 'True North':
+                self.addTrueNorthRotation()
+            else:
+                self.removeTrueNorthRotation()
+    
+    def addTrueNorthRotation(self):
+        if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
+            return
+        
+        from pivy import coin
+        
+        self.trueNorthRotation = coin.SoTransform()
+
+        sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+        sg.insertChild(self.trueNorthRotation, 0)
+
+        self.updateTrueNorthRotation()
+    
+    def removeTrueNorthRotation(self):
+        if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
+            sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+
+            sg.removeChild(self.trueNorthRotation)
+            self.trueNorthRotation = None
+    
+    def updateTrueNorthRotation(self):
+        if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
+            from pivy import coin
+            
+            angle = self.Object.Declination.Value
+
+            self.trueNorthRotation.rotation.setValue(coin.SbVec3f(0, 0, 1), math.radians(-angle))
+
+    def updateCompassVisibility(self, obj):
+        if not hasattr(self, 'compass'):
+            return
+
+        show = hasattr(obj, 'Compass') and obj.Compass
+
+        if show:
+            self.compass.show()
+        else:
+            self.compass.hide()
+
+    def rotateCompass(self, obj):
+        if not hasattr(self, 'compass'):
+            return
+
+        if hasattr(obj, 'CompassRotation'):
+            self.compass.rotate(obj.CompassRotation.Value)
+
+    def updateCompassLocation(self, obj):
+        if not hasattr(self, 'compass'):
+            return
+
+        boundBox = obj.Shape.BoundBox
+        pos = obj.Placement.Base
+
+        zOffset = boundBox.ZMax = pos.z
+
+        self.compass.setZOffset(zOffset + 1000)
+    
+    def updateCompassScale(self, obj):
+        if not hasattr(self, 'compass'):
+            return
+        
+        self.compass.scale(obj.ProjectedArea)
 
 
 if FreeCAD.GuiUp:

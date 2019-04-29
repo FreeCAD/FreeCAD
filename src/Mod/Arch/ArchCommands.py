@@ -398,9 +398,10 @@ def closeHole(shape):
     else:
         return solid
 
-def getCutVolume(cutplane,shapes):
-    """getCutVolume(cutplane,shapes): returns a cut face and a cut volume
-    from the given shapes and the given cutting plane"""
+def getCutVolume(cutplane,shapes,clip=False):
+    """getCutVolume(cutplane,shapes,[clip]): returns a cut face and a cut volume
+    from the given shapes and the given cutting plane. If clip is True, the cutvolume will
+    also cut off everything outside the cutplane projection"""
     if not shapes:
         return None,None,None
     if not cutplane.Faces:
@@ -462,6 +463,13 @@ def getCutVolume(cutplane,shapes):
         cutvolume = cutface.extrude(cutnormal)
         cutnormal = cutnormal.negative()
         invcutvolume = cutface.extrude(cutnormal)
+        if clip:
+            extrudedplane = p.extrude(cutnormal)
+            bordervolume = invcutvolume.cut(extrudedplane)
+            cutvolume = cutvolume.fuse(bordervolume)
+            cutvolume = cutvolume.removeSplitter()
+            invcutvolume = extrudedplane
+            cutface = p
         return cutface,cutvolume,invcutvolume
 
 def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
