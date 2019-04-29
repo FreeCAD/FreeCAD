@@ -182,18 +182,19 @@ class ObjectOp(PathOp.ObjectOp):
             maxDep = xRotRad
             if yRotRad > xRotRad:
                 maxDep = yRotRad
-
+            minDep = -1 * maxDep
+            
             # Manage operation start and final depths
-            if self.docRestored == True:  # This op is NOT the first in the Operations list
+            if self.docRestored == True:
                 PathLog.debug("doc restored")
                 obj.FinalDepth.Value = obj.OpFinalDepth.Value
             else:
                 PathLog.debug("new operation")
-                obj.OpFinalDepth.Value = -1 * maxDep
+                obj.OpFinalDepth.Value = minDep
                 obj.OpStartDepth.Value = maxDep
                 if self.initOpFinalDepth == None and self.initFinalDepth == None:
-                    self.initFinalDepth = -1 * maxDep
-                    self.initOpFinalDepth = -1 * maxDep
+                    self.initFinalDepth = minDep
+                    self.initOpFinalDepth = minDep
                 else:
                     PathLog.debug("-initFinalDepth" + str(self.initFinalDepth))
                     PathLog.debug("-initOpFinalDepth" + str(self.initOpFinalDepth))
