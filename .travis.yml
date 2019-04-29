@@ -30,6 +30,8 @@ env:
     secure: MJu0ZU/9Yqut6bUkHoSrXTV/c/WhCLR0KnHKCsnEU081PYoukzH6ngzgKk7/trAH2In080d/ra4B2OmTNl/LAgV6DXKFY9dO1aG8QwcrHgaMPf0pHYUy/OfwQSFYFByQDV2OEMAHcIWc/dtNkzK2QUi44Kn7d0GtSEiN4s816lriWtjg0vmEGAU8MjvcAGss4gKyn05Xm1NUCYPKgpgIHsywLbpE76lv0eOYoosEuKv5Q9Pb4FMQts02+JUlqE8eY4ZZ3nV8iQbgIDdseOSA7Ixn05zWjU/ZRZ74TrYxMnzfUAwQcJe9OcqoESq+pPWQt5HYG66VmeVxQim1gmsiDASH51U/nswKt0Q4bISj3tVk0YZMFV8Ax+SzPvLEmFZJQGfgO1mg7HdNcz9N9G5JHPawrV19DwYIEFbAw8MCSAoIXFOcPQZUWXCbtjm7NO9vCjMrqyVJMDD9L8omvQajHoajuHbOT8KB250gFokeLj3z8yu++Tz+IrZX5inUMrXsARVt/ALXpi8rJPXmoFMpMUjyWmDPqPWlnqUhLtTtEtKpuOWP8ZnWVwkg4QYOUhCy95C1okJSGkG+ylHWncWfY4mS+UBT525laoh+GOhH+sRW+p2xkI21xGFRqg1oHjjgY1yIYF6nnSHPzxMBRYmZwagyXsjkFG5FPMWR2oYk0Yg
 cache:
     ccache: true
+    directories:
+      - $HOME/.ccache
 
 language: cpp
 python:
@@ -73,6 +75,9 @@ matrix:
           - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
           - TEST_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\build\bin"
           - VS15=true
+        cache:
+        directories:
+          - $HOME/clcache
 
       - language: python
         python: 3.7
@@ -228,6 +233,9 @@ before_install:
        export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_LIBPACK_DIR=$TRAVIS_BUILD_DIR\FreeCADLibs -DPYTHON_EXECUTABLE=$TRAVIS_BUILD_DIR\FreeCADLibs\bin\python.exe \
        -DBUILD_QT5=TRUE"
        export PATH=$MSBUILD_PATH:$PATH
+       choco install -y python
+       py -m pip install --quiet --upgrade pip
+       py -m pip install --quiet git+https://github.com/frerich/clcache.git@v4.2.0
        ;;
 
    *)
@@ -249,7 +257,8 @@ script:
 #        MSBuild.exe /m FreeCAD_Trunk.sln
   - |
     if [ "${TRAVIS_OS_NAME}" == "windows" ]; then 
-        MSBuild.exe FreeCAD_Trunk.sln //m //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
+        # /p:TrackFileAccess=false /p:CLToolExe=clcache.exe build_msvc/bitcoin.sln /m /v:q /nologo
+        MSBuild.exe //p:TrackFileAccess=false //p:CLToolExe=clcache.exe FreeCAD_Trunk.sln //m //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
         # ls -lahR
         cp -a ../FreeCADLibs/bin/* bin/
         cd bin  
