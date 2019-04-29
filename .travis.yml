@@ -239,6 +239,7 @@ before_install:
        choco install -y python
        py -m pip install --quiet --upgrade pip
        py -m pip install --quiet git+https://github.com/frerich/clcache.git@v4.2.0
+       ls -lahR
        ;;
 
    *)
