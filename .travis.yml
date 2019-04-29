@@ -70,8 +70,8 @@ matrix:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
           - GENERATOR="Visual Studio 15 2017 Win64"
           - PYTHON_MAJOR_VERSION=3        
-          - MSBUILD_EXE="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin\MSBuild.exe /m FreeCAD_Trunk.sln"
           - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
+          - TEST_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\build\bin"
           - VS15=true
 
       - language: python
@@ -252,7 +252,9 @@ script:
         MSBuild.exe FreeCAD_Trunk.sln //m //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
         # ls -lahR
         cp -a ../FreeCADLibs/bin/* bin/
-        cd bin
+        cd bin  
+        export PATH=$TEST_PATH:$PATH
+        FreeCADCmd.exe
         FreeCADCmd.exe --run-test 0
     else
         sudo make -j2 install
