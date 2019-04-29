@@ -254,7 +254,6 @@ script:
         cp -a ../FreeCADLibs/bin/* bin/
         cd bin  
         export PATH=$TEST_PATH:$PATH
-        FreeCADCmd.exe
         FreeCADCmd.exe --run-test 0
     else
         sudo make -j2 install
