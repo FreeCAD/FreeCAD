@@ -75,6 +75,9 @@ matrix:
           - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
           - TEST_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\build\bin"
           - VS15=true
+          - CCACHE_TEMPDIR=/tmp/.ccache-temp
+          - CCACHE_COMPRESS=1
+          - CCACHE_DIR=$HOME/.ccache
         cache:
         directories:
           - $HOME/clcache
