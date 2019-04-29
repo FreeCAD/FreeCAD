@@ -74,6 +74,7 @@ matrix:
           - PYTHON_MAJOR_VERSION=3        
           - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
           - TEST_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\build\bin"
+          - CLCACHE_PATH="C:\Users\travis\"
           - VS15=true
           - CCACHE_TEMPDIR=/tmp/.ccache-temp
           - CCACHE_COMPRESS=1
@@ -234,6 +235,7 @@ before_install:
        #py -m pip install git+https://github.com/frerich/clcache.git@v4.2.0
        curl -L https://github.com/frerich/clcache/releases/download/v4.2.0/clcache-4.2.0.zip --output clcache-4.2.0.zip
        7z x clcache-4.2.0.zip > /dev/null
+       export PATH=$CLCACHE_PATH:$PATH
 
        curl -L https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z --output FreeCADLibs.7z
        7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
