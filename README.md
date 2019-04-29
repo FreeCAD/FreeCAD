@@ -1,38 +1,19 @@
-<h1 align="center">
-    <img
-        width="150"
-        alt="FreeCAD Logo"
-        src="https://www.freecadweb.org/images/logo.png">
-    </div>
-</h1>
+![Logo](https://www.freecadweb.org/images/logo.png)
 
-<h3 align="center">Your own 3D parametric modeler</h3>
+### Your own 3D parametric modeler
 
-<p align="center">
-    <strong>
-        <a href="https://www.freecadweb.org">Website</a>
-        •
-        <a href="https://www.freecadweb.org/wiki/">Docs</a>
-        •
-        <a href="https://forum.freecadweb.org/">Forum</a>
-        •
-        <a href="http://www.freecadweb.org/tracker/">Bug tracker</a>
-    </strong>
-</p>
-
-<div align=center>
+[Website](https://www.freecadweb.org) • 
+[Docs](https://www.freecadweb.org/wiki/) •
+[Forum](https://forum.freecadweb.org/) •
+[Bug tracker](https://www.freecadweb.org/tracker/)
 
 [![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-<br>
+
+
 [![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Master][freecad-master-status]][travis-branches] [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)
 
-</div>
-
-<div align=center>
 
 ![screenshot](http://www.freecadweb.org/wiki/images/thumb/7/72/Freecad016_screenshot1.jpg/800px-Freecad016_screenshot1.jpg)
-
-</div>
 
 Overview
 --------
