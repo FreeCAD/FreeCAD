@@ -80,8 +80,8 @@ matrix:
           - CCACHE_COMPRESS=1
           - CCACHE_DIR=$HOME/.ccache
         cache:
-        directories:
-          - $HOME/clcache
+          directories:
+            - $HOME/clcache
 
       - language: python
         python: 3.7
@@ -267,7 +267,8 @@ script:
     if [ "${TRAVIS_OS_NAME}" == "windows" ]; then 
         # /p:TrackFileAccess=false /p:CLToolExe=clcache.exe build_msvc/bitcoin.sln /m /v:q /nologo
         # /p:CLToolPath=$CLCACHE_PATH
-        MSBuild.exe //p:TrackFileAccess=false //p:CLToolExe=clcache.exe //p:CLToolPath=${CLCACHE_PATH} FreeCAD_Trunk.sln //m:2 //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
+        #MSBuild.exe //p:TrackFileAccess=false //p:CLToolExe=clcache.exe //p:CLToolPath=${CLCACHE_PATH} FreeCAD_Trunk.sln //m:2 //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
+        MSBuild.exe FreeCAD_Trunk.sln //m:2 //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64         
         # ls -lahR
         cp -a ../FreeCADLibs/bin/* bin/
         cd bin  
