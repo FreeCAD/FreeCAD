@@ -71,12 +71,12 @@ import math
 
 __title__ = "Path Surface Operation"
 __author__ = "sliptonic (Brad Collette)"
-__contributors__ = "roivai[FreeCAD], russ4262 (Russell Johnson)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of Mill Facing operation."
+__contributors__ = "roivai[FreeCAD], russ4262 (Russell Johnson)"
 __scriptVersion__ = "3t Usable"
-__created__ = "2019-04-07"
-__lastModified__ = "2019-04-08 23:15 CST"
+__created__ = "2016"
+__lastModified__ = "2019-04-29 15:31 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
