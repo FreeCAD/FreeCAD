@@ -25,10 +25,9 @@
  *  Project (www.freetype.org).  All rights reserved.                      *
  ***************************************************************************/
 
+#include "PreCompiled.h"
 
 #ifdef FCUseFreeType
-
-#include "PreCompiled.h"
 
 #include <iostream>
 #include <fstream>

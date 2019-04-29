@@ -1770,7 +1770,8 @@ def export(exportList,filename):
                            "CompositionType": "ELEMENT"})
         if schema == "IFC2X3":
             kwargs = exportIFC2X3Attributes(obj, kwargs)
-        kwargs = exportIfcAttributes(obj, kwargs)
+        else:
+            kwargs = exportIfcAttributes(obj, kwargs)
 
         # creating the product
 
