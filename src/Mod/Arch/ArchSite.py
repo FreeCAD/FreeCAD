@@ -282,10 +282,10 @@ class Compass(object):
     def setZOffset(self, offsetInMillimeters):
         from pivy import coin
         self.transform.translation.setValue(0, 0, offsetInMillimeters)
-    
+
     def scale(self, area):
         from pivy import coin
-        
+
         scale = round(max(math.sqrt(area.getValueAs("m^2").Value) / 10, 1))
 
         self.transform.scaleFactor.setValue(coin.SbVec3f(scale, scale, 1))
@@ -528,7 +528,7 @@ class _Site(ArchFloor._Floor):
                 "App::Property", "The rotation of the Compass relative to the Site"))
         if not "UpdateDeclination" in pl:
             obj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP(
-                "App::Property", "Update the Declination value based on the compass roation"))
+                "App::Property", "Update the Declination value based on the compass rotation"))
         self.Type = "Site"
         obj.setEditorMode('Height',2)
 
@@ -696,7 +696,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         if not "Orientation" in pl:
             vobj.addProperty("App::PropertyEnumeration", "Orientation", "Site", QT_TRANSLATE_NOOP(
                 "App::Property", "When set to 'True North' the whole geometry will be rotated to match the true north of this site"))
-            
+
             vobj.Orientation = ["Project North", "True North"]
             vobj.Orientation = "Project North"
 
@@ -809,31 +809,31 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
                 self.addTrueNorthRotation()
             else:
                 self.removeTrueNorthRotation()
-    
+
     def addTrueNorthRotation(self):
         if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
             return
-        
+
         from pivy import coin
-        
+
         self.trueNorthRotation = coin.SoTransform()
 
         sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
         sg.insertChild(self.trueNorthRotation, 0)
 
         self.updateTrueNorthRotation()
-    
+
     def removeTrueNorthRotation(self):
         if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
             sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
 
             sg.removeChild(self.trueNorthRotation)
             self.trueNorthRotation = None
-    
+
     def updateTrueNorthRotation(self):
         if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
             from pivy import coin
-            
+
             angle = self.Object.Declination.Value
 
             self.trueNorthRotation.rotation.setValue(coin.SbVec3f(0, 0, 1), math.radians(-angle))
@@ -866,11 +866,11 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         zOffset = boundBox.ZMax = pos.z
 
         self.compass.setZOffset(zOffset + 1000)
-    
+
     def updateCompassScale(self, obj):
         if not hasattr(self, 'compass'):
             return
-        
+
         self.compass.scale(obj.ProjectedArea)
 
 
