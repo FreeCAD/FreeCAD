@@ -22,6 +22,12 @@
 # *                                                                         *
 # ***************************************************************************
 
+### SCRIPT NOTES:
+# - Need to add "UseRotation" property to task window UI, and attach appropriate onChange event handler
+# - Consult FC community about wording for "UseRotation" property
+# - FUTURE: Relocate rotational calculations to Job setup tool, creating a Machine section
+#           with axis & rotation toggles and associated min/max values
+
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
@@ -37,9 +43,9 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "mlampert [FreeCAD], russ4262 (Russell Johnson)"
-__scriptVersion__ = "1f testing"
+__scriptVersion__ = "1g testing"
 __createdDate__ = "2017"
-__lastModified__ = "2019-04-26 20:40 CST"
+__lastModified__ = "2019-04-29 10:43 CST"
 print("\n\nPathAreaOp.py")
 print(" -Script version: " + __scriptVersion__ + "  Lm: " + __lastModified__)
 
@@ -171,7 +177,7 @@ class ObjectOp(PathOp.ObjectOp):
             except:
                 shape = None
 
-            opHeights = self.opDetermineRotationRadius(obj)  #return is list with tuples [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
+            opHeights = self.opDetermineRotationRadii(obj)  #return is list with tuples [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
             (xRotRad, yRotRad, zRotRad) = opHeights[0]
             #(clrOfst, safOfset) = opHeights[1]
 
@@ -195,6 +201,7 @@ class ObjectOp(PathOp.ObjectOp):
                     print("-initOpFinalDepth" + str(self.initOpFinalDepth))
 
             '''
+            # Original code, replaced with code above for rotation integration.
             if shape:
                 bb = shape.BoundBox
                 obj.OpStartDepth      = bb.ZMax
@@ -203,7 +210,7 @@ class ObjectOp(PathOp.ObjectOp):
                 obj.OpStartDepth      =  1.0
                 obj.OpFinalDepth      =  0.0
             '''
-        obj.UseRotation = 'A & B'
+        obj.UseRotation = 'Off'
 
         self.areaOpSetDefaultValues(obj, job)
 
@@ -299,7 +306,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         if obj.UseRotation != 'Off':
             # Calculate operation heights based upon rotation radii
-            opHeights = self.opDetermineRotationRadius(obj)  #return is [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
+            opHeights = self.opDetermineRotationRadii(obj)  #return is [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
             (xRotRad, yRotRad, zRotRad) = opHeights[0]
             (clrOfst, safOfset) = opHeights[1]
             #self.leadIn = 0.0 #safOfset / 2.0
@@ -411,28 +418,35 @@ class ObjectOp(PathOp.ObjectOp):
         Can safely be overwritten by subclasses.'''
         return False
 
-    def opDetermineRotationRadius(self, obj):
-        '''opDetermineRotationRadius(self, obj) ... Determine rotational radii for 4th-axis rotations, for clearance/safe heights -- '''
+    def opDetermineRotationRadii(self, obj):
+        '''opDetermineRotationRadii(self, obj)
+            Determine rotational radii for 4th-axis rotations, for clearance/safe heights '''
 
         parentJob = PathUtils.findParentJob(obj)
         bb = parentJob.Stock.Shape.BoundBox
+        xlim = 0.0
+        ylim = 0.0
+        zlim = 0.0
+
         # Determine boundbox radius based upon xzy limits data
         if math.fabs(bb.ZMin) > math.fabs(bb.ZMax):
             zlim = bb.ZMin
         else:
             zlim = bb.ZMax                    
 
-        # Rotation is around X-axis, cutter moves along same axis
-        if math.fabs(bb.YMin) > math.fabs(bb.YMax):
-            ylim = bb.YMin
-        else:
-            ylim = bb.YMax
+        if obj.UseRotation != 'B(y)':
+            # Rotation is around X-axis, cutter moves along same axis
+            if math.fabs(bb.YMin) > math.fabs(bb.YMax):
+                ylim = bb.YMin
+            else:
+                ylim = bb.YMax
 
-        # Rotation is around Y-axis, cutter moves along same axis
-        if math.fabs(bb.XMin) > math.fabs(bb.XMax):
-            xlim = bb.XMin
-        else:
-            xlim = bb.XMax
+        if obj.UseRotation != 'A(x)':
+            # Rotation is around Y-axis, cutter moves along same axis
+            if math.fabs(bb.XMin) > math.fabs(bb.XMax):
+                xlim = bb.XMin
+            else:
+                xlim = bb.XMax
         
         xRotRad = math.sqrt(ylim**2 + zlim**2)
         yRotRad = math.sqrt(xlim**2 + zlim**2)
@@ -444,7 +458,8 @@ class ObjectOp(PathOp.ObjectOp):
         return [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
 
     def pocketRotationAnalysis(self, obj, objRef, sub, prnt):
-        '''pocketRotationAnalysis(self, obj, objRef, sub) ... Determine X and Y independent rotation necessary to make normalAt = Z=1 -- '''
+        '''pocketRotationAnalysis(self, obj, objRef, sub, prnt)
+            Determine X and Y independent rotation necessary to make normalAt = Z=1 (0,0,1) '''
         
         rtn = False
         axis = 'X'
@@ -561,5 +576,3 @@ class ObjectOp(PathOp.ObjectOp):
         if prnt == True:
             print("testId: " + testId)
         return (rtn, angle, axis)
-
-
