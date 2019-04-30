@@ -277,12 +277,12 @@ script:
         cp -a ../FreeCADLibs/bin/* bin/
         # show clcache hit stats
         cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
-        #cd bin  
+        #cd bin
         #export PATH=$TEST_PATH:$PATH
         #FreeCADCmd.exe --run-test 0
         # This to try running from the bin directory in case this is affecting some tests
         cmd.exe /C 'cd C:\Users\travis\build\FreeCAD\FreeCAD\build\bin && FreeCADCmd.exe --run-test 0'
-	cd $HOME
+        cd $HOME
     else
         sudo make -j2 install
         ${INSTALLED_APP_PATH} --console --run-test 0
