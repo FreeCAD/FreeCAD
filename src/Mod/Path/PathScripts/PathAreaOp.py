@@ -45,7 +45,7 @@ __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "mlampert [FreeCAD], russ4262 (Russell Johnson)"
 __scriptVersion__ = "1g testing"
 __createdDate__ = "2017"
-__lastModified__ = "2019-04-29 10:43 CST"
+__lastModified__ = "2019-04-30 12:57 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -303,6 +303,18 @@ class ObjectOp(PathOp.ObjectOp):
         self.modelName = None
         self.leadIn = 2.0 #safOfset / 2.0
 
+        # Initialize depthparams
+        finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
+        self.depthparams = PathUtils.depth_params(
+                clearance_height=obj.ClearanceHeight.Value,
+                safe_height=obj.SafeHeight.Value,
+                start_depth=obj.StartDepth.Value,
+                step_down=obj.StepDown.Value,
+                z_finish_step=finish_step,
+                final_depth=obj.FinalDepth.Value,
+                user_depths=None)
+        
+        # Recalculate operation heights for rotational operation
         if obj.UseRotation != 'Off':
             # Calculate operation heights based upon rotation radii
             opHeights = self.opDetermineRotationRadii(obj)  #return is [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
