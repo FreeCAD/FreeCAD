@@ -95,6 +95,14 @@ if (BUILD_QT5)
         ${Qt5Network_LIBRARIES}
         ${Qt5UiTools_LIBRARIES}
     )
+    if(MSVC)
+      include_directories(
+        ${Qt5WinExtras_INCLUDE_DIRS}
+      )
+      list(APPEND FreeCADGui_LIBS
+        ${Qt5WinExtras_LIBRARIES}
+      )
+    endif(MSVC)
 else()
     include_directories(
         ${QT_INCLUDE_DIR}

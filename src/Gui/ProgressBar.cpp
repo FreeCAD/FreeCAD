@@ -335,6 +335,8 @@ QProgressBar* Sequencer::getProgressBar(QWidget* parent)
 
 ProgressBar::ProgressBar (Sequencer* s, QWidget * parent)
     : QProgressBar(parent), sequencer(s)
+  , m_taskbarButton(nullptr)
+  , m_taskbarProgress(nullptr)
 {
     d = new Gui::ProgressBarPrivate;
     d->minimumDuration = 2000; // 2 seconds
@@ -360,6 +362,36 @@ ProgressBar::~ProgressBar ()
 int ProgressBar::minimumDuration() const
 {
     return d->minimumDuration;
+}
+
+void Gui::ProgressBar::reset()
+{
+  QProgressBar::reset();
+  if (setupTaskBarProgress()) m_taskbarProgress->reset();
+}
+
+void Gui::ProgressBar::setRange(int minimum, int maximum)
+{
+  QProgressBar::setRange(minimum, maximum);
+  if (setupTaskBarProgress()) m_taskbarProgress->setRange(minimum, maximum);
+}
+
+void Gui::ProgressBar::setMinimum(int minimum)
+{
+  QProgressBar::setMinimum(minimum);
+  if (setupTaskBarProgress()) m_taskbarProgress->setMinimum(minimum);
+}
+
+void Gui::ProgressBar::setMaximum(int maximum)
+{
+  QProgressBar::setMaximum(maximum);
+  if (setupTaskBarProgress()) m_taskbarProgress->setMaximum(maximum);
+}
+
+void Gui::ProgressBar::setValue(int value)
+{
+  QProgressBar::setValue(value);
+  if (setupTaskBarProgress()) m_taskbarProgress->setValue(value);
 }
 
 void ProgressBar::setMinimumDuration (int ms)
@@ -426,6 +458,26 @@ void ProgressBar::leaveControlEvents()
 
     // release the keyboard again
     releaseKeyboard();
+}
+
+bool Gui::ProgressBar::setupTaskBarProgress(void)
+{
+  if (!m_taskbarButton || !m_taskbarProgress)
+  {
+#if QT_VERSION >= 0x050000
+    m_taskbarButton = new QWinTaskbarButton(this);
+    m_taskbarButton->setWindow(MainWindow::getInstance()->windowHandle());
+    //m_myButton->setOverlayIcon(QIcon(""));
+
+    m_taskbarProgress = m_taskbarButton->progress();
+    m_taskbarProgress->setVisible(true);
+    return true;
+#else
+    return false;
+#endif
+  }
+  else if (m_taskbarButton && m_taskbarProgress) return true;
+  return false;
 }
 
 bool ProgressBar::eventFilter(QObject* o, QEvent* e)
