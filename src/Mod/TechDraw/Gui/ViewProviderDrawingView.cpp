@@ -133,7 +133,6 @@ void ViewProviderDrawingView::show(void)
     if (obj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         QGIView* qView = getQView();
         if (qView) {
-            qView->isVisible(true);
             qView->draw();
             qView->show();
         }
@@ -150,7 +149,6 @@ void ViewProviderDrawingView::hide(void)
     if (obj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         QGIView* qView = getQView();
         if (qView) {
-            qView->isVisible(false);
             qView->draw();
             qView->hide();
         }
@@ -170,7 +168,8 @@ QGIView* ViewProviderDrawingView::getQView(void)
             if (dvp) {
                 if (dvp->getMDIViewPage()) {
                     if (dvp->getMDIViewPage()->getQGVPage()) {
-                        qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->getQGVPage()->findQViewForDocObj(getViewObject()));
+                        qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->
+                                               getQGVPage()->findQViewForDocObj(getViewObject()));
                     }
                 }
             }
