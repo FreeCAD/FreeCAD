@@ -69,7 +69,7 @@ matrix:
       - os: windows
         language: cpp
         env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -DFREECAD_RELEASE_PDB=OFF"
           - GENERATOR="Visual Studio 15 2017 Win64"
           - PYTHON_MAJOR_VERSION=3        
           - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
