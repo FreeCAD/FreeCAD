@@ -1298,25 +1298,8 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
 
         if (std::find(std::begin(sizeList), std::end(sizeList), defSize) == std::end(sizeList))
             defSize = 9;
-        
 
         return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex(marker_arg, defSize));
-
-/*
-        if (strcmp(pstr, "square") == 0)
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("DIAMOND_FILLED", hGrp->GetInt("MarkerSize", defSize)));
-        else if (strcmp(pstr, "cross") == 0)
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS", hGrp->GetInt("MarkerSize", defSize)));
-        else if (strcmp(pstr, "plus") == 0)
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", hGrp->GetInt("MarkerSize", defSize)));
-        else if (strcmp(pstr, "empty") == 0)
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("SQUARE_LINE", hGrp->GetInt("MarkerSize", defSize)));
-        else if (strcmp(pstr, "quad") == 0)
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("SQUARE_FILLED", hGrp->GetInt("MarkerSize", defSize)));
-        else if (strcmp(pstr, "circle") == 0)
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_LINE", hGrp->GetInt("MarkerSize", defSize)));
-        else
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", hGrp->GetInt("MarkerSize", defSize)));*/
     }PY_CATCH;
 }
 
