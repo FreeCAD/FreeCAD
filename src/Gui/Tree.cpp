@@ -141,12 +141,100 @@ void TreeParams::onDocumentModeChanged() {
     App::GetApplication().setActiveDocument(App::GetApplication().getActiveDocument());
 }
 
+void TreeParams::onStatusTimeoutChanged() {}
+void TreeParams::onSelectionTimeoutChanged() {}
+void TreeParams::onPreSelectionTimeoutChanged() {}
+void TreeParams::onPreSelectionDelayChanged() {}
+
 TreeParams *TreeParams::Instance() {
     static TreeParams *instance;
     if(!instance)
         instance = new TreeParams;
     return instance;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////
+struct Stats {
+#define DEFINE_STATS \
+    DEFINE_STAT(testStatus1) \
+    DEFINE_STAT(testStatus2) \
+    DEFINE_STAT(testStatus3) \
+    DEFINE_STAT(getIcon) \
+    DEFINE_STAT(setIcon) \
+
+#define DEFINE_STAT(_name) \
+    FC_DURATION_DECLARE(_name);\
+    int _name##_count;
+
+    DEFINE_STATS
+    
+    void init() {
+#undef DEFINE_STAT
+#define DEFINE_STAT(_name) \
+        FC_DURATION_INIT(_name);\
+        _name##_count = 0;
+
+        DEFINE_STATS
+    }
+
+    void print() {
+#undef DEFINE_STAT
+#define DEFINE_STAT(_name) FC_DURATION_MSG(_name, #_name " count: " << _name##_count);
+        DEFINE_STATS
+    }
+
+#undef DEFINE_STAT
+#define DEFINE_STAT(_name) \
+    void time_##_name(FC_TIME_POINT &t) {\
+        ++_name##_count;\
+        FC_DURATION_PLUS(_name,t);\
+    }
+
+    DEFINE_STATS
+};
+
+static Stats _Stats;
+
+struct TimingInfo {
+    bool timed = false;
+    FC_TIME_POINT t;
+    FC_DURATION &d;
+    TimingInfo(FC_DURATION &d)
+        :d(d)
+    {
+        _FC_TIME_INIT(t);
+    }
+    ~TimingInfo() {
+        stop();
+    }
+    void stop() {
+        if(!timed) {
+            timed = true;
+            FC_DURATION_PLUS(d,t);
+        }
+    }
+    void reset() {
+        stop();
+        _FC_TIME_INIT(t);
+    }
+};
+
+// #define DO_TIMING
+#ifdef DO_TIMING
+#define _Timing(_idx,_name) ++_Stats._name##_count; TimingInfo _tt##_idx(_Stats._name)
+#define Timing(_name) _Timing(0,_name)
+#define _TimingStop(_idx,_name) _tt##_idx.stop();
+#define TimingStop(_name) _TimingStop(0,_name);
+#define TimingInit() _Stats.init();
+#define TimingPrint() _Stats.print();
+#else
+#define _Timing(...) do{}while(0)
+#define Timing(...) do{}while(0)
+#define TimingInit() do{}while(0)
+#define TimingPrint() do{}while(0)
+#define _TimingStop(...) do{}while(0);
+#define TimingStop(...) do{}while(0);
+#endif
 
 // ---------------------------------------------------------------------------
 
@@ -161,6 +249,7 @@ public:
     std::vector<App::DocumentObject*> children;
     std::set<App::DocumentObject*> childSet;
     bool removeChildrenFromRoot;
+    bool itemHidden;
     std::string label;
     std::string label2;
 
@@ -182,6 +271,7 @@ public:
                 boost::bind(&DocumentObjectData::slotChangeStatusTip, this, _1));
 
         removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
+        itemHidden = !viewObject->showInTree();
         label = viewObject->getObject()->Label.getValue();
         label2 = viewObject->getObject()->Label2.getValue();
     }
@@ -291,10 +381,10 @@ QWidget* TreeWidgetEditDelegate::createEditor(
 // ---------------------------------------------------------------------------
 
 TreeWidget::TreeWidget(const char *name, QWidget* parent)
-    : QTreeWidget(parent), SelectionObserver(false,0), contextItem(0)
+    : QTreeWidget(parent), SelectionObserver(true,0), contextItem(0)
     , searchObject(0), searchDoc(0), searchContextDoc(0)
     , editingItem(0), currentDocItem(0)
-    ,statusUpdateDelay(0),myName(name)
+    , myName(name)
 {
     Instances.insert(this);
 
@@ -329,6 +419,10 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->finishEditingAction = new QAction(this);
     connect(this->finishEditingAction, SIGNAL(triggered()),
             this, SLOT(onFinishEditing()));
+
+    this->closeDocAction = new QAction(this);
+    connect(this->closeDocAction, SIGNAL(triggered()),
+            this, SLOT(onCloseDoc()));
 
     this->reloadDocAction = new QAction(this);
     connect(this->reloadDocAction, SIGNAL(triggered()),
@@ -424,8 +518,6 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
         QIcon icon(*documentPixmap);
         documentPartialPixmap.reset(new QPixmap(icon.pixmap(documentPixmap->size(),QIcon::Disabled)));
     }
-
-    _updateStatus();
 }
 
 TreeWidget::~TreeWidget()
@@ -605,13 +697,15 @@ void TreeWidget::updateStatus(bool delay) {
 }
 
 void TreeWidget::_updateStatus(bool delay) {
-    if(!statusTimer->isActive())
-        statusTimer->start(150);
-    else if(delay) {
-        if(!statusUpdateDelay)
-            statusUpdateDelay=1;
-    }else
-        statusUpdateDelay=-1;
+    if(!delay) 
+        onUpdateStatus();
+    else if(!statusTimer->isActive()) {
+        int timeout = FC_TREEPARAM(StatusTimeout);
+        if (timeout<0)
+            timeout = 1;
+        FC_LOG("delay update status");
+        statusTimer->start(timeout);
+    }
 }
 
 void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
@@ -644,6 +738,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         showHiddenAction->setChecked(docitem->showHidden());
         contextMenu.addAction(this->showHiddenAction);
         contextMenu.addAction(this->searchObjectsAction);
+        contextMenu.addAction(this->closeDocAction);
         if(doc->testStatus(App::Document::PartialDoc))
             contextMenu.addAction(this->reloadDocAction);
         else {
@@ -730,17 +825,28 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 }
 
 void TreeWidget::hideEvent(QHideEvent *ev) {
+    // No longer required. Visibility is now handled inside onUpdateStatus() by
+    // UpdateDisabler.
+#if 0
     TREE_TRACE("detaching selection observer");
     this->detachSelection();
     selectTimer->stop();
+#endif
     QTreeWidget::hideEvent(ev);
 }
 
 void TreeWidget::showEvent(QShowEvent *ev) {
+    // No longer required. Visibility is now handled inside onUpdateStatus() by
+    // UpdateDisabler.
+#if 0
     TREE_TRACE("attaching selection observer");
     this->attachSelection();
-    selectTimer->start(100);
-    _updateStatus(false);
+    int timeout = FC_TREEPARAM(SelectionTimeout);
+    if(timeout<=0)
+        timeout = 1;
+    selectTimer->start(timeout);
+    _updateStatus();
+#endif
     QTreeWidget::showEvent(ev);
 }
 
@@ -1056,7 +1162,7 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
     if (!item) return;
     if (item->type() == TreeWidget::DocumentType) {
         //QTreeWidget::mouseDoubleClickEvent(event);
-        const Gui::Document* doc = static_cast<DocumentItem*>(item)->document();
+        Gui::Document* doc = static_cast<DocumentItem*>(item)->document();
         if (!doc) return;
         if(doc->getDocument()->testStatus(App::Document::PartialDoc)) {
             contextItem = item;
@@ -1736,11 +1842,14 @@ void TreeWidget::slotNewDocument(const Gui::Document& Doc)
 }
 
 void TreeWidget::slotStartOpenDocument() {
-    setVisible(false);
+    // No longer required. Visibility is now handled inside onUpdateStatus() by
+    // UpdateDisabler.
+    //
+    // setVisible(false);
 }
 
 void TreeWidget::slotFinishOpenDocument() {
-    setVisible(true);
+    // setVisible(true);
 }
 
 void TreeWidget::onReloadDoc() {
@@ -1758,6 +1867,18 @@ void TreeWidget::onReloadDoc() {
     }
 }
 
+void TreeWidget::onCloseDoc() {
+    if (!this->contextItem || this->contextItem->type() != DocumentType)
+        return;
+    DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+    App::Document* doc = docitem->document()->getDocument();
+    try {
+        Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", doc->getName());
+    } catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+}
+
 void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 {
     // do nothing here
@@ -1766,20 +1887,10 @@ void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 
 void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::Property &prop)
 {
-    if(App::GetApplication().isRestoring())
-        return;
-
-    _updateStatus(true);
-
-    if(!vp.isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
-        return;
-    const auto &vpd = static_cast<const ViewProviderDocumentObject&>(vp);
-    if(&prop == &vpd.ShowInTree) {
-        for(auto &v : DocumentMap) 
-            v.second->setItemVisibility(vpd);
-    }else{
-        for(auto &v : DocumentMap) 
-            v.second->checkRemoveChildrenFromRoot(vpd);
+    if(vp.isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))  {
+        const auto &vpd = static_cast<const ViewProviderDocumentObject&>(vp);
+        if(&prop == &vpd.ShowInTree)
+            ChangedObjects.emplace(vpd.getObject(),false);
     }
 }
 
@@ -1818,17 +1929,51 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     }
 }
 
+static bool _UpdateBlocked;
+
+struct UpdateDisabler {
+    QWidget &widget;
+    bool locked;
+    bool block;
+    bool visible;
+    UpdateDisabler(QWidget &w, bool block=true)
+        :widget(w),block(block)
+    {
+        _UpdateBlocked = true;
+        if(block)
+            locked = widget.blockSignals(true);
+        visible = widget.isVisible();
+        if(visible) {
+            // setUpdatesEnabled(false) does not seem to speed up anything.
+            // setVisible(false) on the other hand makes QTreeWidget::setData
+            // (i.e. any change to QTreeWidgetItem) faster by 10+ times.
+            //
+            // widget.setUpdatesEnabled(false);
+
+            widget.setVisible(false);
+        }
+    }
+    ~UpdateDisabler() {
+        _UpdateBlocked = false;
+        if(visible) {
+            widget.setVisible(true);
+            // widget.setUpdatesEnabled(true);
+        }
+        if(block)
+            widget.blockSignals(locked);
+    }
+};
+
 void TreeWidget::onUpdateStatus(void)
 {
-    int delay = statusUpdateDelay;
-    statusUpdateDelay = 0;
-    if (delay>0)
-        return;
-
     if(App::GetApplication().isRestoring()) {
-        _updateStatus(true);
+        _updateStatus();
         return;
     }
+
+    FC_LOG("begin update status");
+
+    UpdateDisabler disabler(*this);
 
     // Checking for new objects
 
@@ -1844,7 +1989,7 @@ void TreeWidget::onUpdateStatus(void)
             // update logic. For example, a parent object re-created before its
             // children, but the parent's link property already contains all the
             // (detached) children.
-            _updateStatus(true);
+            _updateStatus();
             return;
         }
         auto gdoc = Application::Instance->getDocument(doc);
@@ -1868,16 +2013,31 @@ void TreeWidget::onUpdateStatus(void)
         auto iter = ObjectTable.find(v.first);
         if(iter == ObjectTable.end())
             continue;
+
+        if(iter->second.size()) {
+            auto data = *iter->second.begin();
+            bool itemHidden = !data->viewObject->showInTree();
+            if(data->itemHidden != itemHidden) {
+                for(auto &data : iter->second) {
+                    data->itemHidden = itemHidden;
+                    if(data->docItem->showHidden()) 
+                        continue;
+                    for(auto item : data->items)
+                        item->setHidden(itemHidden);
+                }
+            }
+        }
+
         updateChildren(iter->first, iter->second, v.second, false);
     }
     ChangedObjects.clear();
 
-    if(isVisible()) {
-        FC_LOG("update item status");
-        for (auto pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
-            pos->second->testStatus();
-        }
+    FC_LOG("update item status");
+    TimingInit();
+    for (auto pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
+        pos->second->testStatus();
     }
+    TimingPrint();
 
     // Checking for just restored documents
     DocumentObjectItem *errItem = 0;
@@ -1929,6 +2089,7 @@ void TreeWidget::onUpdateStatus(void)
     updateGeometries();
     statusTimer->stop();
 
+    FC_LOG("done update status");
 }
 
 void TreeWidget::onItemEntered(QTreeWidgetItem * item)
@@ -1939,10 +2100,16 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
         objItem->displayStatusInfo();
 
         if(FC_TREEPARAM(PreSelection)) {
-            if(preselectTime.elapsed() < 700)
+            int timeout = FC_TREEPARAM(PreSelectionDelay);
+            if(timeout < 0)
+                timeout = 1;
+            if(preselectTime.elapsed() < timeout)
                 onPreSelectTimer();
             else{
-                preselectTimer->start(500);
+                timeout = FC_TREEPARAM(PreSelectionTimeout);
+                if(timeout < 0)
+                    timeout = 1;
+                preselectTimer->start(timeout);
                 Selection().rmvPreselect();
             }
         }
@@ -1951,7 +2118,7 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
 }
 
 void TreeWidget::leaveEvent(QEvent *) {
-    if(FC_TREEPARAM(PreSelection)) {
+    if(!_UpdateBlocked && FC_TREEPARAM(PreSelection)) {
         preselectTimer->stop();
         Selection().rmvPreselect();
     }
@@ -1992,8 +2159,8 @@ void TreeWidget::onItemExpanded(QTreeWidgetItem * item)
     // object item expanded
     if (item && item->type() == TreeWidget::ObjectType) {
         DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
-        objItem->getOwnerDocument()->populateItem(objItem);
         objItem->setExpandedStatus(true);
+        objItem->getOwnerDocument()->populateItem(objItem,false,false);
     }
 }
 
@@ -2003,6 +2170,9 @@ void TreeWidget::scrollItemToTop()
     for(auto tree : Instances) {
         if(!tree->isConnectionAttached()) 
             continue;
+
+        if(tree->statusTimer->isActive())
+            tree->_updateStatus(false);
 
         if(doc && Gui::Selection().hasSelection(doc->getDocument()->getName(),false)) {
             auto it = tree->DocumentMap.find(doc);
@@ -2027,6 +2197,10 @@ void TreeWidget::scrollItemToTop()
             }
             tree->blockConnection(false);
         }
+        tree->selectTimer->stop();
+        if(tree->statusTimer->isActive())
+            tree->_updateStatus(false);
+
     }
 }
 
@@ -2074,6 +2248,9 @@ void TreeWidget::setupText() {
     this->finishEditingAction->setText(tr("Finish editing"));
     this->finishEditingAction->setStatusTip(tr("Finish editing object"));
 
+    this->closeDocAction->setText(tr("Close document"));
+    this->closeDocAction->setStatusTip(tr("Close the document"));
+    
     this->reloadDocAction->setText(tr("Reload document"));
     this->reloadDocAction->setStatusTip(tr("Reload a partially loaded document"));
 
@@ -2168,10 +2345,9 @@ void TreeWidget::onItemSelectionChanged ()
 }
 
 void TreeWidget::onSelectTimer() {
-    if(statusTimer->isActive()) {
-        statusUpdateDelay = 0;
-        onUpdateStatus();
-    }
+    if(statusTimer->isActive())
+        _updateStatus(false);
+
     bool syncSelect = FC_TREEPARAM(SyncSelection);
     this->blockConnection(true);
     if(Selection().hasSelection()) {
@@ -2185,6 +2361,8 @@ void TreeWidget::onSelectTimer() {
             v.second->clearSelection();
     }
     this->blockConnection(false);
+    if(statusTimer->isActive())
+        _updateStatus(false);
     return;
 }
 
@@ -2195,9 +2373,13 @@ void TreeWidget::onSelectionChanged(const SelectionChanges& msg)
     case SelectionChanges::AddSelection:
     case SelectionChanges::RmvSelection:
     case SelectionChanges::SetSelection:
-    case SelectionChanges::ClrSelection:
-        selectTimer->start(100);
+    case SelectionChanges::ClrSelection: {
+        int timeout = FC_TREEPARAM(SelectionTimeout);
+        if(timeout<=0)
+            timeout = 1;
+        selectTimer->start(timeout);
         break;
+    }
     default:
         break;
     }
@@ -2458,7 +2640,7 @@ void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
 
 void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj) {
     getTree()->NewObjects[pDocument->getDocument()->getName()].push_back(obj.getObject()->getID());
-    getTree()->_updateStatus(true);
+    getTree()->_updateStatus();
 }
 
 bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
@@ -2639,7 +2821,7 @@ bool DocumentItem::populateObject(App::DocumentObject *obj) {
     return true;
 }
 
-void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
+void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool delay)
 {
     if (item->populated && !refresh)
         return;
@@ -2789,20 +2971,8 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
         delete ci;
         getTree()->blockConnection(lock);
     }
-    if(updated)
-        getTree()->_updateStatus(true);
-}
-
-void DocumentItem::checkRemoveChildrenFromRoot(const Gui::ViewProviderDocumentObject& view)
-{
-    auto it = ObjectMap.find(view.getObject());
-    if(it != ObjectMap.end() && 
-       it->second->removeChildrenFromRoot!=view.canRemoveChildrenFromRoot()) 
-    {
-        it->second->removeChildrenFromRoot = !it->second->removeChildrenFromRoot;
-        for(auto item : it->second->items)
-            populateItem(item,true);
-    }
+    if(updated) 
+        getTree()->_updateStatus(delay);
 }
 
 void TreeWidget::slotChangeObject(
@@ -2822,7 +2992,7 @@ void TreeWidget::slotChangeObject(
         return;
 
     if(!force)
-        _updateStatus(true);
+        _updateStatus();
 
     if(force || &prop == &obj->Label) {
         const char *label = obj->Label.getValue();
@@ -3496,14 +3666,6 @@ bool DocumentItem::showItem(DocumentObjectItem *item, bool select, bool force) {
     return true;
 }
 
-void DocumentItem::setItemVisibility(const ViewProviderDocumentObject &vpd) {
-    bool show = showHidden();
-    FOREACH_ITEM(item,vpd);
-        item->setHidden(!vpd.showInTree() && !show);
-        item->testStatus(false);
-    END_FOREACH_ITEM;
-}
-
 void DocumentItem::updateItemsVisibility(QTreeWidgetItem *item, bool show) {
     if(item->type() == TreeWidget::ObjectType) {
         auto objitem = static_cast<DocumentObjectItem*>(item);
@@ -3637,6 +3799,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
     int visible = -1;
     auto parentItem = getParentItem();
     if(parentItem) {
+        Timing(testStatus1);
         auto parent = parentItem->object()->getObject();
         auto ext = parent->getExtensionByType<App::GroupExtension>(true,false);
         if(!ext) 
@@ -3655,6 +3818,9 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
             }
         }
     }
+
+    Timing(testStatus2);
+
     if(visible<0)
         visible = object()->isShow()?1:0;
 
@@ -3670,8 +3836,12 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
         ((pObject->isTouched()||pObject->mustExecute()== 1 ? 1 : 0) << 1) |
         (visible         ? 1 : 0);
 
+    TimingStop(testStatus2);
+
     if (!resetStatus && previousStatus==currentStatus)
         return;
+
+    _Timing(1,testStatus3);
 
     previousStatus = currentStatus;
 
@@ -3704,9 +3874,12 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
         mode = QIcon::Disabled;
     }
 
+    _TimingStop(1,testStatus3);
+
     QIcon &icon = mode==QIcon::Normal?icon1:icon2;
 
     if(icon.isNull()) {
+        Timing(getIcon);
         QPixmap px;
         if (currentStatus & 4) {
             static QPixmap pxError;
@@ -3824,6 +3997,8 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
         icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
     }
 
+
+    _Timing(2,setIcon);
     this->setIcon(0, icon);
 }
 

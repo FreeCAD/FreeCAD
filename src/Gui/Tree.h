@@ -96,7 +96,7 @@ public:
 
     const char *getTreeName() const;
 
-    static void updateStatus(bool delay=false);
+    static void updateStatus(bool delay=true);
 
     static bool isObjectShowable(App::DocumentObject *obj);
 
@@ -136,7 +136,7 @@ protected:
     void showEvent(QShowEvent *) override;
     void hideEvent(QHideEvent *) override;
     void leaveEvent(QEvent *) override;
-    void _updateStatus(bool delay=false);
+    void _updateStatus(bool delay=true);
 
 protected Q_SLOTS:
     void onCreateGroup();
@@ -147,6 +147,7 @@ protected Q_SLOTS:
     void onSkipRecompute(bool on);
     void onAllowPartialRecompute(bool on);
     void onReloadDoc();
+    void onCloseDoc();
     void onMarkRecompute();
     void onRecomputeObject();
     void onPreSelectTimer();
@@ -196,6 +197,7 @@ private:
     QAction* showHiddenAction;
     QAction* hideInTreeAction;
     QAction* reloadDocAction;
+    QAction* closeDocAction;
     QAction* searchObjectsAction;
     QTreeWidgetItem *contextItem;
     App::DocumentObject *searchObject;
@@ -214,7 +216,6 @@ private:
     std::unordered_map<App::DocumentObject*,std::set<DocumentObjectDataPtr> > ObjectTable;
     std::unordered_map<App::DocumentObject*,bool> ChangedObjects;
     std::unordered_map<std::string,std::vector<long> > NewObjects;
-    int statusUpdateDelay;
 
     static std::set<TreeWidget*> Instances;
 
@@ -242,15 +243,13 @@ public:
     void selectItems(bool sync);
     void testStatus(void);
     void setData(int column, int role, const QVariant & value);
-    void populateItem(DocumentObjectItem *item, bool refresh = false);
+    void populateItem(DocumentObjectItem *item, bool refresh=false, bool delayUpdate=true);
     bool populateObject(App::DocumentObject *obj);
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     bool showItem(DocumentObjectItem *item, bool select, bool force=false);
     void updateItemsVisibility(QTreeWidgetItem *item, bool show);
-    void setItemVisibility(const Gui::ViewProviderDocumentObject&);
     void updateLinks(const ViewProviderDocumentObject &view);
     ViewProviderDocumentObject *getViewProvider(App::DocumentObject *);
-    void checkRemoveChildrenFromRoot(const ViewProviderDocumentObject& view);
 
     bool showHidden() const;
     void setShowHidden(bool show);
@@ -457,7 +456,11 @@ public:
     FC_TREEPARAM_DEF(PreSelection,bool,Bool,true) \
     FC_TREEPARAM_DEF(SyncPlacement,bool,Bool,false) \
     FC_TREEPARAM_DEF(RecordSelection,bool,Bool,true) \
-    FC_TREEPARAM_DEF(DocumentMode,int,Int,1)
+    FC_TREEPARAM_DEF(DocumentMode,int,Int,1) \
+    FC_TREEPARAM_DEF(StatusTimeout,int,Int,100) \
+    FC_TREEPARAM_DEF(SelectionTimeout,int,Int,100) \
+    FC_TREEPARAM_DEF(PreSelectionTimeout,int,Int,500) \
+    FC_TREEPARAM_DEF(PreSelectionDelay,int,Int,700) \
 
 #define FC_TREEPARAM_FUNCS(_name,_type,_Type,_default) \
     _type _name() const {return _##_name;} \
