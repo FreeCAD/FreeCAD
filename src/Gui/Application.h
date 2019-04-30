@@ -135,7 +135,7 @@ public:
     //@{
 protected:
     /// Observer message from the Application
-    void slotNewDocument(const App::Document&);
+    void slotNewDocument(const App::Document&,bool);
     void slotDeleteDocument(const App::Document&);
     void slotRelabelDocument(const App::Document&);
     void slotRenameDocument(const App::Document&);

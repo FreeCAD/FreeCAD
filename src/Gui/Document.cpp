@@ -1218,15 +1218,15 @@ void Document::RestoreDocFile(Base::Reader &reader)
         // read camera settings
         xmlReader.readElement("Camera");
         const char* ppReturn = xmlReader.getAttribute("settings");
-        std::string sMsg = "SetCamera ";
-        sMsg += ppReturn;
-        if (strcmp(ppReturn, "") != 0) { // non-empty attribute
+        cameraSettings.clear();
+        if(ppReturn && ppReturn[0]) {
+            saveCameraSettings(ppReturn);
             try {
                 const char** pReturnIgnore=0;
                 std::list<MDIView*> mdi = getMDIViews();
                 for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
                     if ((*it)->onHasMsg("SetCamera"))
-                        (*it)->onMsg(sMsg.c_str(), pReturnIgnore);
+                        (*it)->onMsg(cameraSettings.c_str(), pReturnIgnore);
                 }
             }
             catch (const Base::Exception& e) {
@@ -1502,18 +1502,23 @@ void Document::addRootObjectsToGroup(const std::vector<App::DocumentObject*>& ob
     }
 }
 
-void Document::createView(const Base::Type& typeId)
+MDIView *Document::createView(const Base::Type& typeId)
 {
     if (!typeId.isDerivedFrom(MDIView::getClassTypeId()))
-        return;
+        return 0;
 
     std::list<MDIView*> theViews = this->getMDIViewsOfType(typeId);
     if (typeId == View3DInventor::getClassTypeId()) {
+
         QtGLWidget* shareWidget = 0;
         // VBO rendering doesn't work correctly when we don't share the OpenGL widgets
         if (!theViews.empty()) {
             View3DInventor* firstView = static_cast<View3DInventor*>(theViews.front());
             shareWidget = qobject_cast<QtGLWidget*>(firstView->getViewer()->getGLWidget());
+
+            const char *ppReturn = 0;
+            firstView->onMsg("GetCamera",&ppReturn);
+            saveCameraSettings(ppReturn);
         }
 
         View3DInventor* view3D = new View3DInventor(this, getMainWindow(), shareWidget);
@@ -1551,8 +1556,15 @@ void Document::createView(const Base::Type& typeId)
         view3D->setWindowModified(this->isModified());
         view3D->setWindowIcon(QApplication::windowIcon());
         view3D->resize(400, 300);
+
+        if(cameraSettings.size()) {
+            const char *ppReturn = 0;
+            view3D->onMsg(cameraSettings.c_str(),&ppReturn);
+        }
         getMainWindow()->addWindow(view3D);
+        return view3D;
     }
+    return 0;
 }
 
 Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
@@ -1580,6 +1592,15 @@ Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
     }
 
     return 0;
+}
+
+const std::string &Document::getCameraSettings() const {
+    return cameraSettings;
+}
+
+void Document::saveCameraSettings(const char *settings) {
+    if(settings && settings[0])
+        cameraSettings = std::string("SetCamera ") + settings;
 }
 
 void Document::attachView(Gui::BaseView* pcView, bool bPassiv)
@@ -1611,9 +1632,12 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
                 it = d->passiveViews.begin();
             }
 
-            // is already closing the document
-            if (d->_isClosing == false)
+            // is already closing the document, and is not linked by other documents
+            if (d->_isClosing == false &&
+                App::PropertyXLink::getDocumentInList(getDocument()).empty())
+            {
                 d->_pcAppWnd->onLastWindowClosed(this);
+            }
         }
     }
 }
@@ -1806,13 +1830,13 @@ MDIView* Document::getActiveView(void) const
         // hidden page has view but not in the list. By right, the view will
         // self delete, but not the case for TechDraw, especially during
         // document restore.
-        if(windows.contains(*rit))
+        if(windows.contains(*rit) || (*rit)->isDerivedFrom(View3DInventor::getClassTypeId()))
             return *rit;
     }
     return 0;
 }
 
-MDIView *Document::setActiveView(ViewProviderDocumentObject *vp, Base::Type typeId) const {
+MDIView *Document::setActiveView(ViewProviderDocumentObject *vp, Base::Type typeId) {
     MDIView *view = 0;
     if(!vp)
         view = getActiveView();
@@ -1846,6 +1870,8 @@ MDIView *Document::setActiveView(ViewProviderDocumentObject *vp, Base::Type type
             }
         }
     }
+    if(!view && !typeId.isBad()) 
+        view = createView(typeId);
     if(view)
         getMainWindow()->setActiveWindow(view);
     return view;

@@ -871,24 +871,27 @@ void MainWindow::addWindow(MDIView* view)
 {
     // make workspace parent of view
     bool isempty = d->mdiArea->subWindowList().isEmpty();
-    QMdiSubWindow* child = new QMdiSubWindow(d->mdiArea->viewport());
-    child->setAttribute(Qt::WA_DeleteOnClose);
-    child->setWidget(view);
-    child->setWindowIcon(view->windowIcon());
-    QMenu* menu = child->systemMenu();
+    QMdiSubWindow* child = qobject_cast<QMdiSubWindow*>(view->parentWidget());
+    if(!child) {
+        child = new QMdiSubWindow(d->mdiArea->viewport());
+        child->setAttribute(Qt::WA_DeleteOnClose);
+        child->setWidget(view);
+        child->setWindowIcon(view->windowIcon());
+        QMenu* menu = child->systemMenu();
 
-    // See StdCmdCloseActiveWindow (#0002631)
-    QList<QAction*> acts = menu->actions();
-    for (QList<QAction*>::iterator it = acts.begin(); it != acts.end(); ++it) {
-        if ((*it)->shortcut() == QKeySequence(QKeySequence::Close)) {
-            (*it)->setShortcuts(QList<QKeySequence>());
-            break;
+        // See StdCmdCloseActiveWindow (#0002631)
+        QList<QAction*> acts = menu->actions();
+        for (QList<QAction*>::iterator it = acts.begin(); it != acts.end(); ++it) {
+            if ((*it)->shortcut() == QKeySequence(QKeySequence::Close)) {
+                (*it)->setShortcuts(QList<QKeySequence>());
+                break;
+            }
         }
-    }
 
-    QAction* action = menu->addAction(tr("Close All"));
-    connect(action, SIGNAL(triggered()), d->mdiArea, SLOT(closeAllSubWindows()));
-    d->mdiArea->addSubWindow(child);
+        QAction* action = menu->addAction(tr("Close All"));
+        connect(action, SIGNAL(triggered()), d->mdiArea, SLOT(closeAllSubWindows()));
+        d->mdiArea->addSubWindow(child);
+    }
 
     connect(view, SIGNAL(message(const QString&, int)),
             this, SLOT(showMessage(const QString&, int)));
@@ -913,14 +916,12 @@ void MainWindow::addWindow(MDIView* view)
  */
 void MainWindow::removeWindow(Gui::MDIView* view, bool close)
 {
-    if(close) {
-        // free all connections
-        disconnect(view, SIGNAL(message(const QString&, int)),
-                this, SLOT(showMessage(const QString&, int )));
-        disconnect(this, SIGNAL(windowStateChanged(MDIView*)),
-                view, SLOT(windowStateChanged(MDIView*)));
-        view->removeEventFilter(this);
-    }
+    // free all connections
+    disconnect(view, SIGNAL(message(const QString&, int)),
+            this, SLOT(showMessage(const QString&, int )));
+    disconnect(this, SIGNAL(windowStateChanged(MDIView*)),
+            view, SLOT(windowStateChanged(MDIView*)));
+    view->removeEventFilter(this);
 
     // check if the focus widget is a child of the view
     QWidget* foc = this->focusWidget();
@@ -992,11 +993,8 @@ void MainWindow::setActiveWindow(MDIView* view)
 {
     if(!view || d->activeView == view)
         return;
-    if(view->getGuiDocument()->getDocument()->testStatus(App::Document::PartialDoc)
-            && view->isDerivedFrom(View3DInventor::getClassTypeId()))
-    {
-        return;
-    }
+    if(!windows().contains(view->parentWidget()))
+        addWindow(view);
     onSetActiveSubWindow(view->parentWidget());
     d->activeView = view;
     Application::Instance->viewActivated(view);

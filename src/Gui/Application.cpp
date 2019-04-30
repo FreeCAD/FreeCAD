@@ -289,7 +289,7 @@ Application::Application(bool GUIenabled)
 {
     //App::GetApplication().Attach(this);
     if (GUIenabled) {
-        App::GetApplication().signalNewDocument.connect(boost::bind(&Gui::Application::slotNewDocument, this, _1));
+        App::GetApplication().signalNewDocument.connect(boost::bind(&Gui::Application::slotNewDocument, this, _1, _2));
         App::GetApplication().signalDeleteDocument.connect(boost::bind(&Gui::Application::slotDeleteDocument, this, _1));
         App::GetApplication().signalRenameDocument.connect(boost::bind(&Gui::Application::slotRenameDocument, this, _1));
         App::GetApplication().signalActiveDocument.connect(boost::bind(&Gui::Application::slotActiveDocument, this, _1));
@@ -669,7 +669,7 @@ void Application::createStandardOperations()
     Gui::CreateLinkCommands();
 }
 
-void Application::slotNewDocument(const App::Document& Doc)
+void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
 {
 #ifdef FC_DEBUG
     std::map<const App::Document*, Gui::Document*>::const_iterator it = d->documents.find(&Doc);
@@ -688,7 +688,8 @@ void Application::slotNewDocument(const App::Document& Doc)
     pDoc->signalResetEdit.connect(boost::bind(&Gui::Application::slotResetEdit, this, _1));
  
     signalNewDocument(*pDoc);
-    pDoc->createView(View3DInventor::getClassTypeId());
+    if(isMainDoc)
+        pDoc->createView(View3DInventor::getClassTypeId());
     // FIXME: Do we really need this further? Calling processEvents() mixes up order of execution in an
     // unpredicatable way. At least it seems that with Qt5 we don't need this any more.
 #if QT_VERSION < 0x050000

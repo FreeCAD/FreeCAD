@@ -179,7 +179,7 @@ public:
     Gui::MDIView* getViewOfViewProvider(Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfNode(SoNode*) const;
     /// Create a new view
-    void createView(const Base::Type& typeId);
+    MDIView *createView(const Base::Type& typeId);
     /// Create a clone of the given view
     Gui::MDIView* cloneView(Gui::MDIView*);
     /** send messages to the active view
@@ -214,7 +214,7 @@ public:
     std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
     //@}
 
-    MDIView *setActiveView(ViewProviderDocumentObject *vp=0, Base::Type typeId = Base::Type()) const;
+    MDIView *setActiveView(ViewProviderDocumentObject *vp=0, Base::Type typeId = Base::Type());
 
     /** @name View provider handling  */
     //@{
@@ -293,6 +293,9 @@ public:
 
     virtual PyObject *getPyObject(void);
 
+    const std::string &getCameraSettings() const;
+    void saveCameraSettings(const char *);
+
 protected:
     // pointer to the python class
     Gui::DocumentPy *_pcDocPy;
@@ -306,6 +309,8 @@ private:
 
     struct DocumentP* d;
     static int _iDocCount;
+
+    std::string cameraSettings;
 
     /** @name attributes for the UNDO REDO facility
      */

@@ -2377,7 +2377,7 @@ void Document::restore (const char *filename,
         }
         d->objectMap.clear();
         d->objectIdMap.clear();
-        GetApplication().signalNewDocument(*this);
+        GetApplication().signalNewDocument(*this,false);
     }
 
     Base::FlagToggler<> flag(_IsRestoring,false);

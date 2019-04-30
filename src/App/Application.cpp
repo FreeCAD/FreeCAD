@@ -378,7 +378,7 @@ void Application::renameDocument(const char *OldName, const char *NewName)
 #endif
 }
 
-Document* Application::newDocument(const char * Name, const char * UserName)
+Document* Application::newDocument(const char * Name, const char * UserName, bool isMainDoc)
 {
     // get a valid name anyway!
     if (!Name || Name[0] == '\0')
@@ -437,7 +437,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
         Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),active);
     }
 
-    signalNewDocument(*_pActiveDoc);
+    signalNewDocument(*_pActiveDoc,isMainDoc);
 
     // set the UserName after notifying all observers
     _pActiveDoc->Label.setValue(userName);
@@ -768,7 +768,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     // to only contain valid ASCII characters but the user name will be kept.
     if(!label)
         label = name.c_str();
-    Document* newDoc = newDocument(name.c_str(),label);
+    Document* newDoc = newDocument(name.c_str(),label,isMainDoc);
 
     newDoc->FileName.setValue(propFileName==FileName?File.filePath():propFileName);
 

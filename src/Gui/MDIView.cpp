@@ -285,7 +285,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
             {
                 if (this->currentMode == Child) {
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
-                        getMainWindow()->removeWindow(this);
+                        getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
                     setParent(0, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | 
                                  Qt::WindowMinMaxButtonsHint);
@@ -315,7 +315,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
             {
                 if (this->currentMode == Child) {
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
-                        getMainWindow()->removeWindow(this);
+                        getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
                     setParent(0, Qt::Window);
                     showFullScreen();

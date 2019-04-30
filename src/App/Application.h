@@ -81,7 +81,7 @@ public:
      * The second name is a UTF8 name of any kind. It's that name normally shown to
      * the user and stored in the App::Document::Name property.
      */
-    App::Document* newDocument(const char * Name=0l, const char * UserName=0l);
+    App::Document* newDocument(const char * Name=0l, const char * UserName=0l, bool isMainDoc=true);
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
     /// find a unique document name
@@ -166,7 +166,7 @@ public:
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
-    boost::signals2::signal<void (const Document&)> signalNewDocument;
+    boost::signals2::signal<void (const Document&, bool)> signalNewDocument;
     /// signal on document getting deleted
     boost::signals2::signal<void (const Document&)> signalDeleteDocument;
     /// signal on already deleted Document

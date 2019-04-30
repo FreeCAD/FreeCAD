@@ -195,6 +195,11 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
 
 View3DInventor::~View3DInventor()
 {
+    if(_pcDocument) {
+        SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
+        if (Cam) 
+            _pcDocument->saveCameraSettings(SoFCDB::writeNodesToString(Cam).c_str());
+    }
     hGrp->Detach(this);
 
     //If we destroy this viewer by calling 'delete' directly the focus proxy widget which is defined 
