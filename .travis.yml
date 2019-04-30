@@ -79,6 +79,7 @@ matrix:
           - CCACHE_TEMPDIR=/tmp/.ccache-temp
           - CCACHE_COMPRESS=1
           - CCACHE_DIR=$HOME/.ccache
+          - CLCACHE_LOG=1
         cache:
           directories:
             - $HOME/clcache
@@ -236,6 +237,8 @@ before_install:
        curl -L https://github.com/frerich/clcache/releases/download/v4.2.0/clcache-4.2.0.zip --output clcache-4.2.0.zip
        7z x clcache-4.2.0.zip > /dev/null
        export PATH=$CLCACHE_PATH:$PATH
+       #reset clcache hit stats
+       cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -z'
 
        curl -L https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z --output FreeCADLibs.7z
        7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
@@ -269,14 +272,17 @@ script:
         # /p:CLToolPath=$CLCACHE_PATH
         #MSBuild.exe //p:TrackFileAccess=false //p:CLToolExe=clcache.exe //p:CLToolPath=${CLCACHE_PATH} FreeCAD_Trunk.sln //m:2 //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
         #cmd.exe /C '"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 && C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe'
-        cmd.exe /C '"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 && MSBuild.exe FreeCAD_Trunk.sln /p:TrackFileAccess=false /p:CLToolExe=clcache.exe /p:CLToolPath=C:\Users\travis\build\FreeCAD\FreeCAD /m:2 /nologo /verbosity:minimal /p:Configuration=Release /p:Platform=x64'
+        cmd.exe /C '"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 && MSBuild.exe FreeCAD_Trunk.sln /p:CLToolExe=clcache.exe /p:TrackFileAccess=false /p:CLToolPath=C:\Users\travis\build\FreeCAD\FreeCAD /m:2 /nologo /verbosity:minimal /p:Configuration=Release /p:Platform=x64'
         # ls -lahR
         cp -a ../FreeCADLibs/bin/* bin/
-        cd bin  
+        # show clcache hit stats
+        cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
+        #cd bin  
         #export PATH=$TEST_PATH:$PATH
         #FreeCADCmd.exe --run-test 0
         # This to try running from the bin directory in case this is affecting some tests
         cmd.exe /C 'cd C:\Users\travis\build\FreeCAD\FreeCAD\build\bin && FreeCADCmd.exe --run-test 0'
+	cd $HOME
     else
         sudo make -j2 install
         ${INSTALLED_APP_PATH} --console --run-test 0
