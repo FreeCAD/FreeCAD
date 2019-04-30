@@ -708,13 +708,19 @@ void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const ch
 {
     LogDisabler d1;
     SelectionLogDisabler d2;
+    Base::PyGILStateLocker lock;
 
     printCaller(file,line);
     if (eType == Gui)
         Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd);
     else
         Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd);
-    Base::Interpreter().runString(sCmd);
+
+    try {
+        Base::Interpreter().runString(sCmd);
+    }catch(Py::Exception &) {
+        Base::PyException::ThrowException();
+    }
 }
 
 /// Run a App level Action
