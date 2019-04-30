@@ -3,9 +3,10 @@
 ### Your own 3D parametric modeler
 
 [Website](https://www.freecadweb.org) • 
-[Docs](https://www.freecadweb.org/wiki/) •
+[Documentation](https://www.freecadweb.org/wiki/) •
 [Forum](https://forum.freecadweb.org/) •
-[Bug tracker](https://www.freecadweb.org/tracker/)
+[Bug tracker](https://www.freecadweb.org/tracker/) •
+[Git repository](https://github.com/FreeCAD/FreeCAD)
 
 [![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -36,7 +37,7 @@ your model history and changing its parameters.
 * **Cross platform** FreeCAD runs on Windows, Mac and Linux
 
 * **Underlying technology**
-    * **Based on OpenCASCADE** A powerful geometry kernel
+    * **OpenCASCADE** A powerful geometry kernel, the most important component of FreeCAD
     * **Coin3D library** Open Inventor-compliant 3D scene representation model
     * **Python** FreeCAD offers a broad Python API
     * **Qt** Graphical User Interface built with Qt
