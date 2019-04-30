@@ -503,7 +503,7 @@ class ViewProviderBuildingPart:
 
     def onDocumentRestored(self,vobj):
 
-        selt.setProperties(vobj)
+        self.setProperties(vobj)
 
     def getIcon(self):
 
