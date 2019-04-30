@@ -1468,12 +1468,14 @@ void SelectionSingleton::clearSelection(const char* pDocName, bool clearPreSelec
         if(!touched)
             return;
 
-        std::ostringstream ss;
-        ss << "Gui.clearSelection('" << docName << "'";
-        if(!clearPreSelect)
-            ss << ",False";
-        ss << ')';
-        Application::Instance->macroManager()->addLine(MacroManager::Cmt,ss.str().c_str());
+        if(!logDisabled) {
+            std::ostringstream ss;
+            ss << "Gui.Selection.clearSelection('" << docName << "'";
+            if(!clearPreSelect)
+                ss << ",False";
+            ss << ')';
+            Application::Instance->macroManager()->addLine(MacroManager::Cmt,ss.str().c_str());
+        }
 
         notify(SelectionChanges(SelectionChanges::ClrSelection,docName.c_str()));
 
@@ -1494,9 +1496,10 @@ void SelectionSingleton::clearCompleteSelection(bool clearPreSelect)
     if(_SelList.empty())
         return;
 
-    Application::Instance->macroManager()->addLine(MacroManager::Cmt,
-            clearPreSelect?"Gui.clearSelection()":"Gui.clearSelection(False)");
-
+    if(!logDisabled)
+        Application::Instance->macroManager()->addLine(MacroManager::Cmt,
+                clearPreSelect?"Gui.Selection.clearSelection()"
+                              :"Gui.Selection.clearSelection(False)");
 
     _SelList.clear();
 
