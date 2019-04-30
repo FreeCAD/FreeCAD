@@ -52,7 +52,7 @@ __doc__ = "Class and implementation of shape based Pocket operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 __scriptVersion__ = "1g testing"
 __created__ = "2017"
-__lastModified__ = "2019-04-29 10:43 CST"
+__lastModified__ = "2019-04-30 06:23 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -217,9 +217,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if not hasattr(obj, 'ReverseDirection'):
             obj.addProperty('App::PropertyBool', 'ReverseDirection', 'Pocket', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Reverse direction of pocket operation.'))
             obj.ReverseDirection = False
-        #if not hasattr(obj, 'UseRotation'):
-        #    obj.addProperty("App::PropertyEnumeration", "UseRotation", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use rotation to gain access to pockets/areas."))
-        #    obj.UseRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
         obj.setEditorMode('ExtensionFeature', 2)
 
