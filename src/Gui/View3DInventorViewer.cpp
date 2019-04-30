@@ -674,6 +674,15 @@ void View3DInventorViewer::setDocument(Gui::Document* pcDocument)
     // write the document the viewer belongs to the selection node
     guiDocument = pcDocument;
     selectionRoot->pcDocument = pcDocument;
+
+    if(pcDocument) {
+        const auto &sels = Selection().getSelection(pcDocument->getDocument()->getName(),0);
+        for(auto &sel : sels) {
+            SelectionChanges Chng(SelectionChanges::ShowSelection,
+                    sel.DocName,sel.FeatName,sel.SubName);
+            onSelectionChanged(Chng);
+        }
+    }
 }
 
 Document* View3DInventorViewer::getDocument() {
