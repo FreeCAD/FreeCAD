@@ -1815,7 +1815,7 @@ CmdSketcherRectangularArray::CmdSketcherRectangularArray()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Rectangular Array");
-    sToolTipText    = QT_TR_NOOP("Creates an rectangular array pattern of the geometry taking as reference the last selected point");
+    sToolTipText    = QT_TR_NOOP("Creates a rectangular array pattern of the geometry taking as reference the last selected point");
     sWhatsThis      = "Sketcher_RectangularArray";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_RectangularArray";
