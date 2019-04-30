@@ -2283,24 +2283,25 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
         ok = False
         tp = getType(obj)
         if tp in ["Circle","Ellipse"]:
-            if rotation is None:
-                rotation = obj.Placement.Rotation
-            edge = obj.Shape.Edges[0]
-            if len(edge.Vertexes) == 1:
-                newEdge = DraftGeomUtils.orientEdge(edge)
-                nobj.addGeometry(newEdge)
-            else:
-                # make new ArcOfCircle
-                circle = DraftGeomUtils.orientEdge(edge)
-                angle  = edge.Placement.Rotation.Angle
-                axis   = edge.Placement.Rotation.Axis
-                circle.Center = DraftVecUtils.rotate(edge.Curve.Center, -angle, axis)
-                first  = math.radians(obj.FirstAngle)
-                last   = math.radians(obj.LastAngle)
-                arc    = Part.ArcOfCircle(circle, first, last)
-                nobj.addGeometry(arc)
-            addRadiusConstraint(edge)
-            ok = True
+            if obj.Shape.Edges:
+                if rotation is None:
+                    rotation = obj.Placement.Rotation
+                edge = obj.Shape.Edges[0]
+                if len(edge.Vertexes) == 1:
+                    newEdge = DraftGeomUtils.orientEdge(edge)
+                    nobj.addGeometry(newEdge)
+                else:
+                    # make new ArcOfCircle
+                    circle = DraftGeomUtils.orientEdge(edge)
+                    angle  = edge.Placement.Rotation.Angle
+                    axis   = edge.Placement.Rotation.Axis
+                    circle.Center = DraftVecUtils.rotate(edge.Curve.Center, -angle, axis)
+                    first  = math.radians(obj.FirstAngle)
+                    last   = math.radians(obj.LastAngle)
+                    arc    = Part.ArcOfCircle(circle, first, last)
+                    nobj.addGeometry(arc)
+                addRadiusConstraint(edge)
+                ok = True
         elif tp == "Rectangle":
             if rotation is None:
                 rotation = obj.Placement.Rotation
@@ -2358,15 +2359,17 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                                 constraints.append(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
                     ok = True
         elif tp == "BSpline":
-            nobj.addGeometry(obj.Shape.Edges[0].Curve)
-            nobj.exposeInternalGeometry(nobj.GeometryCount-1)
-            ok = True
+            if obj.Shape.Edges:
+                nobj.addGeometry(obj.Shape.Edges[0].Curve)
+                nobj.exposeInternalGeometry(nobj.GeometryCount-1)
+                ok = True
         elif tp == "BezCurve":
-            bez = obj.Shape.Edges[0].Curve
-            bsp = bez.toBSpline(bez.FirstParameter,bez.LastParameter)
-            nobj.addGeometry(bsp)
-            nobj.exposeInternalGeometry(nobj.GeometryCount-1)
-            ok = True
+            if obj.Shape.Edges:
+                bez = obj.Shape.Edges[0].Curve
+                bsp = bez.toBSpline(bez.FirstParameter,bez.LastParameter)
+                nobj.addGeometry(bsp)
+                nobj.exposeInternalGeometry(nobj.GeometryCount-1)
+                ok = True
         elif tp == 'Shape' or obj.isDerivedFrom("Part::Feature"):
             shape = obj if tp == 'Shape' else obj.Shape
 
@@ -5265,7 +5268,10 @@ class _Shape2DView(_DraftObject):
                                     shapes.extend(o.Shape.Solids)
                                 else:
                                     shapes.append(o.Shape.copy())
-                    cutp,cutv,iv =Arch.getCutVolume(obj.Base.Shape,shapes)
+                    clip = False
+                    if hasattr(obj.Base,"Clip"):
+                        clip = obj.Base.Clip
+                    cutp,cutv,iv = Arch.getCutVolume(obj.Base.Shape,shapes,clip)
                     cuts = []
                     opl = FreeCAD.Placement(obj.Base.Placement)
                     proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))

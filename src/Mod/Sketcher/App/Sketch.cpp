@@ -1488,9 +1488,15 @@ int Sketch::addConstraint(const Constraint *constraint)
 int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList)
 {
     int rtn = -1;
+    int cid = 0;
 
-    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it)
+    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++cid) {
         rtn = addConstraint (*it);
+
+        if(rtn == -1) {
+            Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
+        }
+    }
 
     return rtn;
 }
@@ -1504,6 +1510,10 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList,
     for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++cid) {
         if (!unenforceableConstraints[cid] && (*it)->Type != Block) {
             rtn = addConstraint (*it);
+
+            if(rtn == -1) {
+                Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
+            }
         }
         else {
             ++ConstraintsCounter; // For correct solver redundant reporting

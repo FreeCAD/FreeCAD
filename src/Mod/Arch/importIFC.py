@@ -973,17 +973,18 @@ def insert(filename,docname,skip=[],only=[],root=None):
                             if six.PY2:
                                 pname = pname.encode("utf8")
                             if e.is_a("IfcPropertySingleValue"):
-                                ptype = e.NominalValue.is_a()
-                                if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
-                                    pvalue = e.NominalValue.wrappedValue
-                                    if six.PY2:
-                                        pvalue = pvalue.encode("utf8")
-                                else:
-                                    pvalue = str(e.NominalValue.wrappedValue)
-                                if hasattr(e.NominalValue,'Unit'):
-                                    if e.NominalValue.Unit:
-                                        pvalue += e.NominalValue.Unit
-                                d[pname+";;"+psetname] = ptype+";;"+pvalue
+                                if e.NominalValue:
+                                    ptype = e.NominalValue.is_a()
+                                    if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
+                                        pvalue = e.NominalValue.wrappedValue
+                                        if six.PY2:
+                                            pvalue = pvalue.encode("utf8")
+                                    else:
+                                        pvalue = str(e.NominalValue.wrappedValue)
+                                    if hasattr(e.NominalValue,'Unit'):
+                                        if e.NominalValue.Unit:
+                                            pvalue += e.NominalValue.Unit
+                                    d[pname+";;"+psetname] = ptype+";;"+pvalue
                                 #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
                     obj.IfcProperties = d
 
@@ -1769,7 +1770,8 @@ def export(exportList,filename):
                            "CompositionType": "ELEMENT"})
         if schema == "IFC2X3":
             kwargs = exportIFC2X3Attributes(obj, kwargs)
-        kwargs = exportIfcAttributes(obj, kwargs)
+        else:
+            kwargs = exportIfcAttributes(obj, kwargs)
 
         # creating the product
 
@@ -2396,7 +2398,7 @@ def getIfcTypeFromObj(obj):
 def exportIFC2X3Attributes(obj, kwargs):
 
     ifctype = getIfcTypeFromObj(obj)
-    if ifctype in ["IfcSlab", "IfcFooting", "IfcRoof"]:
+    if ifctype in ["IfcSlab", "IfcFooting"]:
         kwargs.update({"PredefinedType": "NOTDEFINED"})
     elif ifctype == "IfcBuilding":
         kwargs.update({"CompositionType": "ELEMENT"})

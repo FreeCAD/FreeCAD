@@ -37,7 +37,7 @@
 #ifdef _GCS_DEBUG
 #define     EIGEN_DEFAULT_IO_FORMAT   Eigen::IOFormat(3,0,",",",\n","[","]","[","]")
 /* Parameters:
- * 
+ *
  * StreamPrecision,
  * int _flags = 0,
  * const std::string &     _coeffSeparator = " ",
@@ -108,183 +108,278 @@
 
 typedef Eigen::FullPivHouseholderQR<Eigen::MatrixXd>::IntDiagSizeVectorType MatrixIndexType;
 
-#ifdef _GCS_DEBUG
-void LogMatrix(std::string str, Eigen::MatrixXd matrix )
-{
-#ifdef _DEBUG_TO_FILE
-    std::ofstream stream;
-    stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
-#else
-    // Debug code starts
-    std::stringstream stream;
-#endif
-
-    stream << '\n' << " " << str << " =" << '\n';
-    stream << "[" << '\n';
-    stream << matrix << '\n' ;
-    stream << "]" << '\n';
-
-#ifdef _DEBUG_TO_FILE
-    stream.flush();
-    stream.close();
-#else
-    const std::string tmp = stream.str();
-
-    Base::Console().Log(tmp.c_str());
-#endif
-}
-
-void LogMatrix(std::string str, MatrixIndexType matrix )
-{
-    #ifdef _DEBUG_TO_FILE
-    std::ofstream stream;
-    stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
-    #else
-    // Debug code starts
-    std::stringstream stream;
-    #endif
-
-    stream << '\n' << " " << str << " =" << '\n';
-    stream << "[" << '\n';
-    stream << matrix << '\n' ;
-    stream << "]" << '\n';
-
-    #ifdef _DEBUG_TO_FILE
-    stream.flush();
-    stream.close();
-    #else
-    const std::string tmp = stream.str();
-
-    Base::Console().Log(tmp.c_str());
-    #endif
-}
-#endif
-
-void LogString(std::string str)
-{
-    #ifdef _DEBUG_TO_FILE
-    std::ofstream stream;
-    stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
-    #else
-    // Debug code starts
-    std::stringstream stream;
-    #endif
-
-    stream << str << std::endl;
-
-    #ifdef _DEBUG_TO_FILE
-    stream.flush();
-    stream.close();
-    #else
-    const std::string tmp = stream.str();
-
-    Base::Console().Log(tmp.c_str());
-    #endif
-}
-
 #ifndef EIGEN_STOCK_FULLPIVLU_COMPUTE
 namespace Eigen {
 
-typedef Matrix<double,-1,-1,0,-1,-1> MatrixdType;
+    typedef Matrix<double,-1,-1,0,-1,-1> MatrixdType;
 
-template<>
-FullPivLU<MatrixdType>& FullPivLU<MatrixdType>::compute(const MatrixdType& matrix)
-{
-  m_isInitialized = true;
-  m_lu = matrix;
-
-  const Index size = matrix.diagonalSize();
-  const Index rows = matrix.rows();
-  const Index cols = matrix.cols();
-
-  // will store the transpositions, before we accumulate them at the end.
-  // can't accumulate on-the-fly because that will be done in reverse order for the rows.
-  m_rowsTranspositions.resize(matrix.rows());
-  m_colsTranspositions.resize(matrix.cols());
-  Index number_of_transpositions = 0; // number of NONTRIVIAL transpositions, i.e. m_rowsTranspositions[i]!=i
-
-  m_nonzero_pivots = size; // the generic case is that in which all pivots are nonzero (invertible case)
-  m_maxpivot = RealScalar(0);
-  RealScalar cutoff(0);
-
-  for(Index k = 0; k < size; ++k)
-  {
-    // First, we need to find the pivot.
-
-    // biggest coefficient in the remaining bottom-right corner (starting at row k, col k)
-    Index row_of_biggest_in_corner, col_of_biggest_in_corner;
-    RealScalar biggest_in_corner;
-    biggest_in_corner = m_lu.bottomRightCorner(rows-k, cols-k)
-                        .cwiseAbs()
-                        .maxCoeff(&row_of_biggest_in_corner, &col_of_biggest_in_corner);
-    row_of_biggest_in_corner += k; // correct the values! since they were computed in the corner,
-    col_of_biggest_in_corner += k; // need to add k to them.
-
-    // when k==0, biggest_in_corner is the biggest coeff absolute value in the original matrix
-    if(k == 0) cutoff = biggest_in_corner * NumTraits<Scalar>::epsilon();
-
-    // if the pivot (hence the corner) is "zero", terminate to avoid generating nan/inf values.
-    // Notice that using an exact comparison (biggest_in_corner==0) here, as Golub-van Loan do in
-    // their pseudo-code, results in numerical instability! The cutoff here has been validated
-    // by running the unit test 'lu' with many repetitions.
-    if(biggest_in_corner < cutoff)
+    template<>
+    FullPivLU<MatrixdType>& FullPivLU<MatrixdType>::compute(const MatrixdType& matrix)
     {
-      // before exiting, make sure to initialize the still uninitialized transpositions
-      // in a sane state without destroying what we already have.
-      m_nonzero_pivots = k;
-      for(Index i = k; i < size; ++i)
-      {
-        m_rowsTranspositions.coeffRef(i) = i;
-        m_colsTranspositions.coeffRef(i) = i;
-      }
-      break;
+        m_isInitialized = true;
+        m_lu = matrix;
+
+        const Index size = matrix.diagonalSize();
+        const Index rows = matrix.rows();
+        const Index cols = matrix.cols();
+
+        // will store the transpositions, before we accumulate them at the end.
+        // can't accumulate on-the-fly because that will be done in reverse order for the rows.
+        m_rowsTranspositions.resize(matrix.rows());
+        m_colsTranspositions.resize(matrix.cols());
+        Index number_of_transpositions = 0; // number of NONTRIVIAL transpositions, i.e. m_rowsTranspositions[i]!=i
+
+        m_nonzero_pivots = size; // the generic case is that in which all pivots are nonzero (invertible case)
+        m_maxpivot = RealScalar(0);
+        RealScalar cutoff(0);
+
+        for(Index k = 0; k < size; ++k)
+        {
+            // First, we need to find the pivot.
+
+            // biggest coefficient in the remaining bottom-right corner (starting at row k, col k)
+            Index row_of_biggest_in_corner, col_of_biggest_in_corner;
+            RealScalar biggest_in_corner;
+            biggest_in_corner = m_lu.bottomRightCorner(rows-k, cols-k)
+            .cwiseAbs()
+            .maxCoeff(&row_of_biggest_in_corner, &col_of_biggest_in_corner);
+            row_of_biggest_in_corner += k; // correct the values! since they were computed in the corner,
+            col_of_biggest_in_corner += k; // need to add k to them.
+
+            // when k==0, biggest_in_corner is the biggest coeff absolute value in the original matrix
+            if(k == 0) cutoff = biggest_in_corner * NumTraits<Scalar>::epsilon();
+
+            // if the pivot (hence the corner) is "zero", terminate to avoid generating nan/inf values.
+            // Notice that using an exact comparison (biggest_in_corner==0) here, as Golub-van Loan do in
+            // their pseudo-code, results in numerical instability! The cutoff here has been validated
+            // by running the unit test 'lu' with many repetitions.
+            if(biggest_in_corner < cutoff)
+            {
+                // before exiting, make sure to initialize the still uninitialized transpositions
+                // in a sane state without destroying what we already have.
+                m_nonzero_pivots = k;
+                for(Index i = k; i < size; ++i)
+                {
+                    m_rowsTranspositions.coeffRef(i) = i;
+                    m_colsTranspositions.coeffRef(i) = i;
+                }
+                break;
+            }
+
+            if(biggest_in_corner > m_maxpivot) m_maxpivot = biggest_in_corner;
+
+            // Now that we've found the pivot, we need to apply the row/col swaps to
+            // bring it to the location (k,k).
+
+            m_rowsTranspositions.coeffRef(k) = row_of_biggest_in_corner;
+            m_colsTranspositions.coeffRef(k) = col_of_biggest_in_corner;
+            if(k != row_of_biggest_in_corner) {
+                m_lu.row(k).swap(m_lu.row(row_of_biggest_in_corner));
+                ++number_of_transpositions;
+            }
+            if(k != col_of_biggest_in_corner) {
+                m_lu.col(k).swap(m_lu.col(col_of_biggest_in_corner));
+                ++number_of_transpositions;
+            }
+
+            // Now that the pivot is at the right location, we update the remaining
+            // bottom-right corner by Gaussian elimination.
+
+            if(k<rows-1)
+                m_lu.col(k).tail(rows-k-1) /= m_lu.coeff(k,k);
+            if(k<size-1)
+                m_lu.block(k+1,k+1,rows-k-1,cols-k-1).noalias() -= m_lu.col(k).tail(rows-k-1) * m_lu.row(k).tail(cols-k-1);
+        }
+
+        // the main loop is over, we still have to accumulate the transpositions to find the
+        // permutations P and Q
+
+        m_p.setIdentity(rows);
+        for(Index k = size-1; k >= 0; --k)
+            m_p.applyTranspositionOnTheRight(k, m_rowsTranspositions.coeff(k));
+
+        m_q.setIdentity(cols);
+        for(Index k = 0; k < size; ++k)
+            m_q.applyTranspositionOnTheRight(k, m_colsTranspositions.coeff(k));
+
+        m_det_pq = (number_of_transpositions%2) ? -1 : 1;
+        return *this;
     }
-
-    if(biggest_in_corner > m_maxpivot) m_maxpivot = biggest_in_corner;
-
-    // Now that we've found the pivot, we need to apply the row/col swaps to
-    // bring it to the location (k,k).
-
-    m_rowsTranspositions.coeffRef(k) = row_of_biggest_in_corner;
-    m_colsTranspositions.coeffRef(k) = col_of_biggest_in_corner;
-    if(k != row_of_biggest_in_corner) {
-      m_lu.row(k).swap(m_lu.row(row_of_biggest_in_corner));
-      ++number_of_transpositions;
-    }
-    if(k != col_of_biggest_in_corner) {
-      m_lu.col(k).swap(m_lu.col(col_of_biggest_in_corner));
-      ++number_of_transpositions;
-    }
-
-    // Now that the pivot is at the right location, we update the remaining
-    // bottom-right corner by Gaussian elimination.
-
-    if(k<rows-1)
-      m_lu.col(k).tail(rows-k-1) /= m_lu.coeff(k,k);
-    if(k<size-1)
-      m_lu.block(k+1,k+1,rows-k-1,cols-k-1).noalias() -= m_lu.col(k).tail(rows-k-1) * m_lu.row(k).tail(cols-k-1);
-  }
-
-  // the main loop is over, we still have to accumulate the transpositions to find the
-  // permutations P and Q
-
-  m_p.setIdentity(rows);
-  for(Index k = size-1; k >= 0; --k)
-    m_p.applyTranspositionOnTheRight(k, m_rowsTranspositions.coeff(k));
-
-  m_q.setIdentity(cols);
-  for(Index k = 0; k < size; ++k)
-    m_q.applyTranspositionOnTheRight(k, m_colsTranspositions.coeff(k));
-
-  m_det_pq = (number_of_transpositions%2) ? -1 : 1;
-  return *this;
-}
 
 } // Eigen
 #endif
 
 namespace GCS
 {
+
+class SolverReportingManager
+{
+public:
+    SolverReportingManager(SolverReportingManager const&) = delete;
+    SolverReportingManager(SolverReportingManager&&) = delete;
+    SolverReportingManager& operator=(SolverReportingManager const&) = delete;
+    SolverReportingManager& operator=(SolverReportingManager &&) = delete;
+
+    static SolverReportingManager& Manager();
+
+    inline void LogString(const std::string& str);
+
+    inline void LogToConsole(const std::string& str);
+
+    inline void LogToFile(const std::string& str);
+
+    void LogQRSystemInformation(const System &system, int paramsNum = 0, int constrNum = 0, int rank = 0);
+
+    void LogMatrix(std::string str, Eigen::MatrixXd matrix);
+    void LogMatrix(std::string str, MatrixIndexType matrix );
+
+private:
+    SolverReportingManager();
+    ~SolverReportingManager();
+
+    inline void initStream();
+    inline void flushStream();
+
+private:
+    #ifdef _DEBUG_TO_FILE
+    std::ofstream stream;
+    #endif
+};
+
+SolverReportingManager::SolverReportingManager()
+{
+    initStream();
+}
+
+SolverReportingManager::~SolverReportingManager()
+{
+    #ifdef _DEBUG_TO_FILE
+    stream.flush();
+    stream.close();
+    #endif
+}
+
+void SolverReportingManager::initStream()
+{
+    #ifdef _DEBUG_TO_FILE
+    if(!stream.is_open()) {
+        stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
+    }
+    #endif
+}
+
+void SolverReportingManager::flushStream()
+{
+    // Akwardly in some systems flushing does not force the write to the file, requiring a close
+    #ifdef _DEBUG_TO_FILE
+    stream.flush();
+    stream.close();
+    #endif
+}
+
+SolverReportingManager& SolverReportingManager::Manager()
+{
+    static SolverReportingManager theInstance;
+
+    return theInstance;
+}
+
+void SolverReportingManager::LogToConsole(const std::string& str)
+{
+    if(str.size() < Base::Console().BufferSize)
+        Base::Console().Log(str.c_str());
+    else
+        Base::Console().Log("SolverReportingManager - Too long string suppressed");
+}
+
+void SolverReportingManager::LogToFile(const std::string& str)
+{
+    #ifdef _DEBUG_TO_FILE
+    initStream();
+
+    stream << str << std::endl;
+
+    flushStream();
+    #else
+    (void)(str); // silence unused parameter
+    LogToConsole("Debugging to file not enabled!");
+    #endif
+}
+
+void SolverReportingManager::LogString(const std::string& str)
+{
+    LogToConsole(str);
+
+    #ifdef _DEBUG_TO_FILE
+    LogToFile(str);
+    #endif
+}
+
+void SolverReportingManager::LogQRSystemInformation(const System &system, int paramsNum, int constrNum, int rank)
+{
+
+    std::stringstream tempstream;
+
+    tempstream  << (system.qrAlgorithm==EigenSparseQR?"EigenSparseQR":(system.qrAlgorithm==EigenDenseQR?"DenseQR":""));
+
+    if (paramsNum > 0) {
+        tempstream
+        #ifdef EIGEN_SPARSEQR_COMPATIBLE
+        << ", Threads: " << Eigen::nbThreads()
+        #endif
+        #ifdef EIGEN_VECTORIZE
+        << ", Vectorization: On"
+        #endif
+        << ", Pivot Threshold: " << system.qrpivotThreshold
+        << ", Params: " << paramsNum
+        << ", Constr: " << constrNum
+        << ", Rank: "   << rank
+        << std::endl;
+    }
+    else {
+        tempstream
+        #ifdef EIGEN_SPARSEQR_COMPATIBLE
+        << ", Threads: " << Eigen::nbThreads()
+        #endif
+        #ifdef EIGEN_VECTORIZE
+        << ", Vectorization: On"
+        #endif
+        << ", Empty Sketch, nothing to solve"
+        << std::endl;
+    }
+
+    LogString(tempstream.str());
+
+}
+
+
+#ifdef _GCS_DEBUG
+void SolverReportingManager::LogMatrix(std::string str, Eigen::MatrixXd matrix )
+{
+    std::stringstream tempstream;
+
+    tempstream << '\n' << " " << str << " =" << '\n';
+    tempstream << "[" << '\n';
+    tempstream << matrix << '\n' ;
+    tempstream << "]" << '\n';
+
+    LogString(tempstream.str());
+
+}
+
+void SolverReportingManager::LogMatrix(std::string str, MatrixIndexType matrix )
+{
+    std::stringstream tempstream;
+
+    stream << '\n' << " " << str << " =" << '\n';
+    stream << "[" << '\n';
+    stream << matrix << '\n' ;
+    stream << "]" << '\n';
+
+    LogString(tempstream.str());
+}
+#endif
+
 
 typedef boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS> Graph;
 
@@ -914,7 +1009,7 @@ int System::addConstraintEqualRadii(Ellipse &e1, Ellipse &e2, int tagId, bool dr
 int System::addConstraintEqualRadii(ArcOfHyperbola &a1, ArcOfHyperbola &a2, int tagId, bool driving)
 {
     addConstraintEqual(a1.radmin, a2.radmin, tagId, driving);
-    
+
     Constraint *constr = new ConstraintEqualMajorAxesConic(&a1,&a2);
     constr->setTag(tagId);
     constr->setDriving(driving);
@@ -967,7 +1062,7 @@ int System::addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, I
 {
     Constraint *constr = new ConstraintInternalAlignmentPoint2Ellipse(e, p1, alignmentType);
     constr->setTag(tagId);
-    constr->setDriving(driving);    
+    constr->setDriving(driving);
     return addConstraint(constr);
 }
 
@@ -1125,7 +1220,7 @@ int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola &e, P
     double X_F1=*e.focus1.x;
     double Y_F1=*e.focus1.y;
     double b=*e.radmin;
-    
+
     // Same idea as for major above, but for minor
     // DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
     double closertopositiveminor= pow(-X_1 + X_c + b*(Y_F1 - Y_c)/sqrt(pow(X_F1 - X_c, 2) +
@@ -1140,7 +1235,7 @@ int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola &e, P
         b*(X_F1 - X_c)/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)) + (Y_F1 -
         Y_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c,
         2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
-    
+
     if(closertopositiveminor<0){
         addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMinorX,tagId, driving);
         addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMinorY,tagId, driving);
@@ -3664,6 +3759,45 @@ void System::undoSolution()
     resetToReference();
 }
 
+void System::makeReducedJacobian(Eigen::MatrixXd &J,
+                                 std::map<int,int> &jacobianconstraintmap,
+                                 GCS::VEC_pD &pdiagnoselist,
+                                 std::map< int , int> &tagmultiplicity)
+{
+    // construct specific parameter list for diagonose ignoring driven constraint parameters
+    for (int j=0; j < int(plist.size()); j++) {
+        auto result1 = std::find(std::begin(pdrivenlist), std::end(pdrivenlist), plist[j]);
+
+        if (result1 == std::end(pdrivenlist)) {
+            pdiagnoselist.push_back(plist[j]);
+        }
+    }
+
+
+    J = Eigen::MatrixXd::Zero(clist.size(), pdiagnoselist.size());
+
+    int jacobianconstraintcount=0;
+    int allcount=0;
+    for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr) {
+        (*constr)->revertParams();
+        ++allcount;
+        if ((*constr)->getTag() >= 0 && (*constr)->isDriving()) {
+            jacobianconstraintcount++;
+            for (int j=0; j < int(pdiagnoselist.size()); j++) {
+                J(jacobianconstraintcount-1,j) = (*constr)->grad(pdiagnoselist[j]);
+            }
+
+            // parallel processing: create tag multiplicity map
+            if(tagmultiplicity.find((*constr)->getTag()) == tagmultiplicity.end())
+                tagmultiplicity[(*constr)->getTag()] = 0;
+            else
+                tagmultiplicity[(*constr)->getTag()]++;
+
+            jacobianconstraintmap[jacobianconstraintcount-1] = allcount-1;
+        }
+    }
+}
+
 int System::diagnose(Algorithm alg)
 {
     // Analyses the constrainess grad of the system and provides feedback
@@ -3681,15 +3815,14 @@ int System::diagnose(Algorithm alg)
         dofs = -1;
         return dofs;
     }
-#ifdef _GCS_DEBUG
+
 #ifdef _DEBUG_TO_FILE
-    std::ofstream stream;
-    stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
-    stream << "GCS::System::diagnose()" << std::endl;
-    stream.flush();
-    stream.close();
+SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 #endif
-#endif
+
+    // Input parameters' lists:
+    // plist            =>  list of all the parameters of the system, e.g. each coordinate of a point
+    // pdrivenlist      =>  list of the parameters that are driven by other parameters (e.g. value of driven constraints)
 
     // When adding an external geometry or a constraint on an external geometry the array 'plist' is empty.
     // So, we must abort here because otherwise we would create an invalid matrix and make the application
@@ -3704,44 +3837,30 @@ int System::diagnose(Algorithm alg)
     conflictingTags.clear();
     redundantTags.clear();
 
-    // construct specific parameter list for diagonose ignoring driven constraint parameters
-    GCS::VEC_pD pdiagnoselist;
-    for (int j=0; j < int(plist.size()); j++) {
-        auto result1 = std::find(std::begin(pdrivenlist), std::end(pdrivenlist), plist[j]);
+    // This QR diagnosis uses a reduced Jacobian matrix to calculate the rank of the system and identify
+    // conflicting and redundant constraints.
+    //
+    // reduced Jacobian matrix
+    // The Jacobian has been reduced to:
+    // 1. only contain driving constraints, but keep a full size (zero padded).
+    // 2. remove the parameters of the values of driven constraints.
+    Eigen::MatrixXd J;
 
-        if (result1 == std::end(pdrivenlist))
-            pdiagnoselist.push_back(plist[j]);
-    }
-    
-    // map tag to a tag multiplicity (the number of solver constraints associated with the same tag)
-    std::map< int , int> tagmultiplicity;
-    
-    Eigen::MatrixXd J = Eigen::MatrixXd::Zero(clist.size(), pdiagnoselist.size());
-    
-    // The jacobian has been reduced to only contain driving constraints. Identification
-    // of constraint indices from this reduced jacobian requires a mapping.
+    // maps the index of the rows of the reduced jacobian matrix (solver constraints) to
+    // the index those constraints would have in a full size Jacobian matrix
     std::map<int,int> jacobianconstraintmap;
-    
-    int jacobianconstraintcount=0;
-    int allcount=0;
-    for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr) {
-        (*constr)->revertParams();
-        ++allcount;        
-        if ((*constr)->getTag() >= 0 && (*constr)->isDriving()) {
-            jacobianconstraintcount++;
-            for (int j=0; j < int(pdiagnoselist.size()); j++) {
-                    J(jacobianconstraintcount-1,j) = (*constr)->grad(pdiagnoselist[j]);
-            }
-            
-            // parallel processing: create tag multiplicity map
-            if(tagmultiplicity.find((*constr)->getTag()) == tagmultiplicity.end())
-                tagmultiplicity[(*constr)->getTag()] = 0;
-            else
-                tagmultiplicity[(*constr)->getTag()]++;
-            
-            jacobianconstraintmap[jacobianconstraintcount-1] = allcount-1;
-        }
-    }
+
+    // list of parameters to be diagnosed in this routine (removes value parameters from driven constraints)
+    GCS::VEC_pD pdiagnoselist;
+
+    // tag multiplicity gives the number of solver constraints associated with the same tag
+    // A tag generally corresponds to the Sketcher constraint index - There are special tag values, like 0 and -1.
+    std::map< int , int> tagmultiplicity;
+
+
+    makeReducedJacobian(J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
+
+    // QR decomposition method selection: SparseQR vs DenseQR
 
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
     Eigen::SparseMatrix<double> SJ;
@@ -3762,8 +3881,10 @@ int System::diagnose(Algorithm alg)
     }
 #endif
 
+
+
 #ifdef _GCS_DEBUG
-    LogMatrix("J",J);
+    SolverReportingManager::Manager().LogMatrix("J",J);
 #endif
 
     Eigen::MatrixXd R;
@@ -3773,6 +3894,7 @@ int System::diagnose(Algorithm alg)
     Eigen::MatrixXd R2; // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
 #endif
 
+
     int paramsNum = 0;
     int constrNum = 0;
     int rank = 0;
@@ -3780,7 +3902,7 @@ int System::diagnose(Algorithm alg)
 
     if(qrAlgorithm==EigenDenseQR){
         if (J.rows() > 0) {
-            qrJT.compute(J.topRows(jacobianconstraintcount).transpose());
+            qrJT.compute(J.topRows(jacobianconstraintmap.size()).transpose());
             //Eigen::MatrixXd Q = qrJT.matrixQ ();
 
             paramsNum = qrJT.rows();
@@ -3803,7 +3925,7 @@ int System::diagnose(Algorithm alg)
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
     else if(qrAlgorithm==EigenSparseQR){
         if (SJ.rows() > 0) {
-            auto SJT = SJ.topRows(jacobianconstraintcount).transpose();
+            auto SJT = SJ.topRows(jacobianconstraintmap.size()).transpose();
             if (SJT.rows() > 0 && SJT.cols() > 0) {
                 SqrJT.compute(SJT);
                 // Do not ask for Q Matrix!!
@@ -3838,53 +3960,22 @@ int System::diagnose(Algorithm alg)
 #endif
 
     if(debugMode==IterationLevel) {
-        std::stringstream stream;
-
-        stream  << (qrAlgorithm==EigenSparseQR?"EigenSparseQR":(qrAlgorithm==EigenDenseQR?"DenseQR":""));
-
-        if (J.rows() > 0) {
-            stream
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
-                    << ", Threads: " << Eigen::nbThreads()
-#endif
-#ifdef EIGEN_VECTORIZE
-                    << ", Vectorization: On"
-#endif
-                    << ", Pivot Threshold: " << qrpivotThreshold
-                    << ", Params: " << paramsNum
-                    << ", Constr: " << constrNum
-                    << ", Rank: "   << rank;
-        }
-        else {
-            stream
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
-                    << ", Threads: " << Eigen::nbThreads()
-#endif
-#ifdef EIGEN_VECTORIZE
-                    << ", Vectorization: On"
-#endif
-                    << ", Empty Sketch, nothing to solve";
-        }
-
-        const std::string tmp = stream.str();
-
-        LogString(tmp);
-
+        SolverReportingManager::Manager().LogQRSystemInformation(*this, paramsNum, constrNum, rank);
     }
 
     if (J.rows() > 0) {
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-        LogMatrix("R", R);
+        SolverReportingManager::Manager().LogMatrix("R", R);
 
-        LogMatrix("R2", R2);
+        SolverReportingManager::Manager().LogMatrix("R2", R2);
 
         if(qrAlgorithm == EigenDenseQR){ // There is no rowsTranspositions in SparseQR. obtaining Q is buggy in Eigen for SparseQR
-            LogMatrix("Q", Q);
-            LogMatrix("RowTransp", qrJT.rowsTranspositions());
+            SolverReportingManager::Manager().LogMatrix("Q", Q);
+            SolverReportingManager::Manager().LogMatrix("RowTransp", qrJT.rowsTranspositions());
         }
 #ifdef SPARSE_Q_MATRIX
         else if(qrAlgorithm == EigenSparseQR) {
-            LogMatrix("Q", Q);
+            SolverReportingManager::Manager().LogMatrix("Q", Q);
         }
 #endif
 #endif
@@ -3912,7 +4003,7 @@ int System::diagnose(Algorithm alg)
                 rowPermutations.applyTranspositionOnTheRight(k, rowTranspositions.coeff(k));
         }
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
-        else if(qrAlgorithm==EigenSparseQR){ 
+        else if(qrAlgorithm==EigenSparseQR){
             // J.P = Q.R, see https://eigen.tuxfamily.org/dox/classEigen_1_1SparseQR.html
             // There is no rowsTransposition in this QR decomposition.
             // TODO: This detection method won't work for SparseQR
@@ -3944,7 +4035,7 @@ int System::diagnose(Algorithm alg)
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
         std::string tmp = stream.str();
 
-        LogString(tmp);
+        SolverReportingManager::Manager().LogString(tmp);
 #endif
 
         // If not independent, must be dependent
@@ -3992,7 +4083,7 @@ int System::diagnose(Algorithm alg)
         stream << "]" << std::endl;
 
         tmp = stream.str();
-        LogString(tmp);
+        SolverReportingManager::Manager().LogString(tmp);
 #endif
         for( auto param : depParamCols) {
             pdependentparameters.push_back(pdiagnoselist[param]);
@@ -4024,7 +4115,7 @@ int System::diagnose(Algorithm alg)
                             origCol=SqrJT.colsPermutation().indices()[row];
 #endif
                         //conflictGroups[j-rank].push_back(clist[origCol]);
-                        conflictGroups[j-rank].push_back(clist[jacobianconstraintmap[origCol]]);
+                        conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
                     }
                 }
                 int origCol = 0;
@@ -4037,9 +4128,9 @@ int System::diagnose(Algorithm alg)
                     origCol=SqrJT.colsPermutation().indices()[j];
 #endif
                 //conflictGroups[j-rank].push_back(clist[origCol]);
-                conflictGroups[j-rank].push_back(clist[jacobianconstraintmap[origCol]]);
+                conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
             }
-            
+
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 
         stream.flush();
@@ -4047,16 +4138,16 @@ int System::diagnose(Algorithm alg)
         stream << "ConflictGroups: [";
         for(auto group :conflictGroups)  {
             stream << "[";
-            
+
             for(auto c :group)
                 stream << c->getTag();
-            
+
             stream << "]";
         }
         stream << "]" << std::endl;
 
         tmp = stream.str();
-        LogString(tmp);        
+        SolverReportingManager::Manager().LogString(tmp);
 #endif
 
             // try to remove the conflicting constraints and solve the
@@ -4084,12 +4175,12 @@ int System::diagnose(Algorithm alg)
                      it != conflictingMap.end(); ++it) {
                     if (static_cast<int>(it->second.size()) > maxPopularity ||
                         (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
-                        tagmultiplicity[it->first->getTag()] < tagmultiplicity[mostPopular->getTag()]) ||
+                        tagmultiplicity.at(it->first->getTag()) < tagmultiplicity.at(mostPopular->getTag())) ||
 
                         (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
-                        tagmultiplicity[it->first->getTag()] == tagmultiplicity[mostPopular->getTag()] &&
+                        tagmultiplicity.at(it->first->getTag()) == tagmultiplicity.at(mostPopular->getTag()) &&
                          it->first->getTag() > mostPopular->getTag())
-                       
+
                     ) {
                         mostPopular = it->first;
                         maxPopularity = it->second.size();

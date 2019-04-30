@@ -576,6 +576,13 @@ bool MeshRemoveNeedles::Fixup()
             vf.erase(neighbour);
         ce._changeFacets.insert(ce._changeFacets.begin(), vf.begin(), vf.end());
 
+        // get adjacent points
+        std::set<unsigned long> vv;
+        vv = vf_it.NeighbourPoints(ce._fromPoint);
+        ce._adjacentFrom.insert(ce._adjacentFrom.begin(), vv.begin(),vv.end());
+        vv = vf_it.NeighbourPoints(ce._toPoint);
+        ce._adjacentTo.insert(ce._adjacentTo.begin(), vv.begin(),vv.end());
+
         if (topAlg.IsCollapseEdgeLegal(ce)) {
             topAlg.CollapseEdge(ce);
             for (auto it : ce._removeFacets) {

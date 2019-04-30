@@ -76,6 +76,12 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
         if FreeCAD.GuiUp:
             sketch.ViewObject.hide()
         obj.Host = baseobj
+    elif sketch and not baseobj:
+        # a rebar could be based on a wire without the existance of a Structure
+        obj.Base = sketch
+        if FreeCAD.GuiUp:
+            sketch.ViewObject.hide()
+        obj.Host = None
     if diameter:
         obj.Diameter = diameter
     else:
@@ -116,7 +122,7 @@ class _CommandRebar:
                     sk = sel[1].Object
                     if sk.isDerivedFrom("Part::Feature"):
                         if len(sk.Shape.Wires) == 1:
-                            # we have a base object and a sketch: create the rebar now
+                            # we have a structure and a wire: create the rebar now
                             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
                             FreeCADGui.addModule("Arch")
                             FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+obj.Name+",FreeCAD.ActiveDocument."+sk.Name+")")
@@ -124,7 +130,7 @@ class _CommandRebar:
                             FreeCAD.ActiveDocument.recompute()
                             return
                 else:
-                    # we have only a base object: open the sketcher
+                    # we have only a structure: open the sketcher
                     FreeCADGui.activateWorkbench("SketcherWorkbench")
                     FreeCADGui.runCommand("Sketcher_NewSketch")
                     FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(obj,FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Rebar")
@@ -132,23 +138,18 @@ class _CommandRebar:
                     return
             elif obj.isDerivedFrom("Part::Feature"):
                 if len(obj.Shape.Wires) == 1:
-                # we have only the sketch: extract the base object from it
+                    # we have only a wire: extract its support object, if available, and make the rebar
+                    support = "None"
                     if hasattr(obj,"Support"):
                         if obj.Support:
                             if len(obj.Support) != 0:
-                                sup = obj.Support[0][0]
-                            else:
-                                print("Arch: error: couldn't extract a base object")
-                                return
-                            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
-                            FreeCADGui.addModule("Arch")
-                            FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+sup.Name+",FreeCAD.ActiveDocument."+obj.Name+")")
-                            FreeCAD.ActiveDocument.commitTransaction()
-                            FreeCAD.ActiveDocument.recompute()
-                            return
-                        else:
-                            print("Arch: error: couldn't extract a base object")
-                            return
+                                support = "FreeCAD.ActiveDocument."+obj.Support[0][0].Name
+                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
+                    FreeCADGui.addModule("Arch")
+                    FreeCADGui.doCommand("Arch.makeRebar("+support+",FreeCAD.ActiveDocument."+obj.Name+")")
+                    FreeCAD.ActiveDocument.commitTransaction()
+                    FreeCAD.ActiveDocument.recompute()
+                    return
 
         FreeCAD.Console.PrintMessage(translate("Arch","Please select a base face on a structural object")+"\n")
         FreeCADGui.Control.closeDialog()

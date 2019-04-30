@@ -1372,7 +1372,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                             obj.ViewObject.update()
             self.colorize(obj)
         elif prop == "CloneOf":
-            if obj.CloneOf:
+            if hasattr(obj,"CloneOf") and obj.CloneOf:
                 mat = None
                 if hasattr(obj,"Material"):
                     if obj.Material:
@@ -1423,7 +1423,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     def colorize(self,obj,force=False):
 
         "setting different part colors"
-        if obj.CloneOf:
+        if hasattr(obj,"CloneOf") and obj.CloneOf:
             if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
                 obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
             return

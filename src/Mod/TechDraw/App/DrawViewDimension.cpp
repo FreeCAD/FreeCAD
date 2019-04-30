@@ -41,6 +41,7 @@
 #include <QLocale>
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
@@ -107,7 +108,7 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY_TYPE(UnderTolerance ,(0.0),"",App::Prop_None,"- Tolerance value");
 
     //hide the properties the user can't edit in the property editor
-    References2D.setStatus(App::Property::Hidden,true);
+//    References2D.setStatus(App::Property::Hidden,true);
     References3D.setStatus(App::Property::Hidden,true);
 
     //hide the DrawView properties that don't apply to Dimensions
@@ -152,7 +153,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
     if (!isRestoring()) {
         if (prop == &MeasureType) {
             if (MeasureType.isValue("True") && !measurement->has3DReferences()) {
-                Base::Console().Warning("Dimension %s missing Reference to 3D model. Must be Projected.\n", getNameInDocument());
+                Base::Console().Warning("%s has no 3D References but is Type: True\n", getNameInDocument());
                 MeasureType.setValue("Projected");
             }
         }
@@ -208,24 +209,38 @@ short DrawViewDimension::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 {
+//    Base::Console().Message("DVD::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
 
-    if (!has2DReferences()) {                                            //too soon
-        return App::DocumentObject::StdReturn;
-    }
-    
-    if (!getViewPart()->hasGeometry()) {                              //happens when loading saved document
-        Base::Console().Log("INFO - DVD::getDimValue ViewPart has no Geometry yet\n");
+    //any empty Reference2D??
+    if (!has2DReferences()) {                                            //too soon?
+        if (isRestoring() ||
+            getDocument()->testStatus(App::Document::Status::Restoring)) {
+            return App::DocumentObject::StdReturn;
+        } else {
+            Base::Console().Warning("%s has no 2D References\n", getNameInDocument());
+        }
         return App::DocumentObject::StdReturn;
     }
 
+    //can't do anything until Source has geometry
+    if (!getViewPart()->hasGeometry()) {                              //happens when loading saved document
+        if (isRestoring() ||
+            getDocument()->testStatus(App::Document::Status::Restoring)) {
+            return App::DocumentObject::StdReturn;
+        } else {
+            Base::Console().Warning("%s - target has no geometry\n", getNameInDocument());
+            return App::DocumentObject::StdReturn;
+        }
+    }
+
+    //now we can check if Reference2ds have valid targets.
     if (!checkReferences2D()) {
-        Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
         return App::DocumentObject::StdReturn;
     }
-    
+
     const std::vector<std::string> &subElements = References2D.getSubValues();
 
     if ( Type.isValue("Distance")  ||
@@ -433,6 +448,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 
 std::string  DrawViewDimension::getFormatedValue(bool obtuse)
 {
+//    Base::Console().Message("DVD::getFormatedValue()\n");
     std::string result;
     if (Arbitrary.getValue()) {
         return FormatSpec.getStrValue();
@@ -554,20 +570,26 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
 //!NOTE: this returns the Dimension value in internal units (ie mm)!!!!
 double DrawViewDimension::getDimValue()
 {
+//    Base::Console().Message("DVD::getDimValue()\n");
     double result = 0.0;
-    if (!has2DReferences()) {                                            //happens during Dimension creation
-        Base::Console().Log("INFO - DVD::getDimValue - Dimension has no References\n");
+    if (!has2DReferences()) {                                            //too soon?
+        if (isRestoring() ||
+            getDocument()->testStatus(App::Document::Status::Restoring)) {
+            return result;
+        } else {
+            Base::Console().Warning("%s has no 2D References\n", getNameInDocument());
+        }
         return result;
     }
 
     if (!getViewPart()->hasGeometry()) {                              //happens when loading saved document
-        Base::Console().Log("INFO - DVD::getDimValue ViewPart has no Geometry yet\n");
         return result;
     }
 
     if (MeasureType.isValue("True")) {
         // True Values
         if (!measurement->has3DReferences()) {
+            Base::Console().Warning("%s - True dimension has no 3D References\n", getNameInDocument());
             return result;
         }
         if ( Type.isValue("Distance")  ||
@@ -586,7 +608,7 @@ double DrawViewDimension::getDimValue()
     } else {
         // Projected Values
         if (!checkReferences2D()) {
-            Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+            Base::Console().Warning("DVD::getDimValue - %s - 2D references are corrupt\n",getNameInDocument());
             return result;
         }
         if ( Type.isValue("Distance")  ||
@@ -633,6 +655,7 @@ double DrawViewDimension::getDimValue()
 
 pointPair DrawViewDimension::getPointsOneEdge()
 {
+//    Base::Console().Message("DVD::getPointsOneEdge() - %s\n",getNameInDocument());
     pointPair result;
     const std::vector<std::string> &subElements      = References2D.getSubValues();
 
@@ -643,7 +666,7 @@ pointPair DrawViewDimension::getPointsOneEdge()
     if (geom && geom->geomType == TechDrawGeometry::GeomType::GENERIC) {
         gen = static_cast<TechDrawGeometry::Generic*>(geom);
     } else {
-        Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+        Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
         return result;
     }
     result.first = DrawUtil::vector23(gen->points[0]);
@@ -653,6 +676,7 @@ pointPair DrawViewDimension::getPointsOneEdge()
 
 pointPair DrawViewDimension::getPointsTwoEdges()
 {
+//    Base::Console().Message("DVD::getPointsTwoEdges() - %s\n",getNameInDocument());
     pointPair result;
     const std::vector<std::string> &subElements      = References2D.getSubValues();
 
@@ -671,6 +695,7 @@ pointPair DrawViewDimension::getPointsTwoEdges()
 
 pointPair DrawViewDimension::getPointsTwoVerts()
 {
+//    Base::Console().Message("DVD::getPointsTwoVerts() - %s\n",getNameInDocument());
     pointPair result;
     const std::vector<std::string> &subElements      = References2D.getSubValues();
 
@@ -690,6 +715,7 @@ pointPair DrawViewDimension::getPointsTwoVerts()
 
 pointPair DrawViewDimension::getPointsEdgeVert()
 {
+//    Base::Console().Message("DVD::getPointsEdgeVert() - %s\n",getNameInDocument());
     pointPair result;
     const std::vector<std::string> &subElements      = References2D.getSubValues();
 
@@ -706,7 +732,7 @@ pointPair DrawViewDimension::getPointsEdgeVert()
     }
     if ((v == nullptr) ||
         (e == nullptr) ) {
-        Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+        Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
         return result;
     }
     result = closestPoints(e->occEdge,v->occVertex);
@@ -781,28 +807,42 @@ int DrawViewDimension::getRefType3(const std::string g1,
 }
 
 
-//! validate 2D references - only checks if they exist, not if they are the right type
+//! validate 2D references - only checks if the target exists
 bool DrawViewDimension::checkReferences2D() const
 {
+//    Base::Console().Message("DVD::checkReFerences2d() - %s\n",getNameInDocument());
     bool result = true;
-    //const std::vector<App::DocumentObject*> &objects = References2D.getValues();
-    const std::vector<std::string> &subElements      = References2D.getSubValues();
-
-    for (auto& s: subElements) {
-        int idx = DrawUtil::getIndexFromName(s);
-        if (DrawUtil::getGeomTypeFromName(s) == "Edge") {
-            TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
-            if (geom == nullptr) {
-                result = false;
-                break;
+    const std::vector<App::DocumentObject*> &objects = References2D.getValues();
+    if (!objects.empty()) {
+        const std::vector<std::string> &subElements      = References2D.getSubValues();
+        if (!subElements.empty()) {
+            for (auto& s: subElements) {
+                if (!s.empty()) { 
+                    int idx = DrawUtil::getIndexFromName(s);
+                    if (DrawUtil::getGeomTypeFromName(s) == "Edge") {
+                        TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
+                        if (geom == nullptr) {
+                            result = false;
+                            break;
+                        }
+                    } else if (DrawUtil::getGeomTypeFromName(s) == "Vertex") {
+                        TechDrawGeometry::Vertex* v = getViewPart()->getProjVertexByIndex(idx);
+                        if (v == nullptr) {
+                            result = false;
+                            break;
+                        }
+                    }
+                } else {
+                    result = false;
+                }
             }
-        } else if (DrawUtil::getGeomTypeFromName(s) == "Vertex") {
-            TechDrawGeometry::Vertex* v = getViewPart()->getProjVertexByIndex(idx);
-            if (v == nullptr) {
-                result = false;
-                break;
-            }
+        } else {
+            Base::Console().Log("DVD::checkRegerences2d() - %s - subelements empty!\n",getNameInDocument());
+            result = false;
         }
+    } else {
+        Base::Console().Log("DVD::checkRegerences2d() - %s - objects empty!\n",getNameInDocument());
+        result = false;
     }
     return result;
 }
@@ -913,16 +953,25 @@ bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d poi
     return result;
 }
 
+//are there non-blank references?
 bool DrawViewDimension::has2DReferences(void) const
 {
+//    Base::Console().Message("DVD::has2DReferences() - %s\n",getNameInDocument());
     bool result = false;
+
     const std::vector<App::DocumentObject*> &objects = References2D.getValues();
     const std::vector<std::string> &SubNames         = References2D.getSubValues();
     if (!objects.empty()) {
         App::DocumentObject* testRef = objects.at(0);
         if (testRef != nullptr) {
             if (!SubNames.empty()) {
-                result = true;
+                result = true;              //not empty is good
+                for (auto& s: SubNames) {   //but check individual entries
+                    if (s.empty()) {
+                        result = false;
+                        break;
+                    }
+                }
             }
         }
     }

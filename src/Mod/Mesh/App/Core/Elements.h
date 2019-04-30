@@ -75,6 +75,8 @@ struct MeshExport EdgeCollapse
 {
   unsigned long _fromPoint;
   unsigned long _toPoint;
+  std::vector<unsigned long> _adjacentFrom; // adjacent points to _fromPoint
+  std::vector<unsigned long> _adjacentTo;   // adjacent points to _toPoint
   std::vector<unsigned long> _removeFacets;
   std::vector<unsigned long> _changeFacets;
 };
