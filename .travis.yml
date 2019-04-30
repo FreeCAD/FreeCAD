@@ -268,7 +268,8 @@ script:
         # /p:TrackFileAccess=false /p:CLToolExe=clcache.exe build_msvc/bitcoin.sln /m /v:q /nologo
         # /p:CLToolPath=$CLCACHE_PATH
         #MSBuild.exe //p:TrackFileAccess=false //p:CLToolExe=clcache.exe //p:CLToolPath=${CLCACHE_PATH} FreeCAD_Trunk.sln //m:2 //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
-        cmd.exe /C 'MSBuild.exe FreeCAD_Trunk.sln /m:1 /nologo /verbosity:minimal /p:Configuration=Release /p:Platform=x64'
+        cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe'
+        cmd.exe /C 'MSBuild.exe FreeCAD_Trunk.sln /p:TrackFileAccess=false /p:CLToolExe=clcache.exe /p:CLToolPath=C:\Users\travis\build\FreeCAD\FreeCAD /m:2 /nologo /verbosity:minimal /p:Configuration=Release /p:Platform=x64'
         # ls -lahR
         cp -a ../FreeCADLibs/bin/* bin/
         cd bin  
