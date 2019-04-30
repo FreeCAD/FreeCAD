@@ -2398,7 +2398,7 @@ def getIfcTypeFromObj(obj):
 def exportIFC2X3Attributes(obj, kwargs):
 
     ifctype = getIfcTypeFromObj(obj)
-    if ifctype in ["IfcSlab", "IfcFooting", "IfcRoof"]:
+    if ifctype in ["IfcSlab", "IfcFooting"]:
         kwargs.update({"PredefinedType": "NOTDEFINED"})
     elif ifctype == "IfcBuilding":
         kwargs.update({"CompositionType": "ELEMENT"})
