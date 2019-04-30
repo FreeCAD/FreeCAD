@@ -45,7 +45,7 @@ __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "mlampert [FreeCAD], russ4262 (Russell Johnson)"
 __scriptVersion__ = "1g testing"
 __createdDate__ = "2017"
-__lastModified__ = "2019-04-30 12:57 CST"
+__lastModified__ = "2019-04-30 13:57 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -340,7 +340,17 @@ class ObjectOp(PathOp.ObjectOp):
         else:
             start = None
 
-        shapes = self.areaOpShapes(obj)  # list of tuples (shape, isHole, sub, angle, axis, tag)
+        aOS = self.areaOpShapes(obj)  # list of tuples (shape, isHole, sub, angle, axis, tag)
+        
+        # Adjust tuples length received from other PathWB tools/operations beside PathPocketShape
+        shapes = []
+        for shp in aOS:
+            if len(shp) == 2:
+                (fc, iH) = shp
+                tup = fc, iH, 'notPocket', 0.0, 'X'
+                shapes.append(tup)
+            else:
+                shapes.append(shp)
 
         jobs = [{
             'x': s[0].BoundBox.XMax,
