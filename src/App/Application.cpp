@@ -2064,7 +2064,7 @@ void Application::ParseOptions(int ac, char ** av)
 #endif
     ;
 
-    // Ignored options, will be safely ignored. Mostly used by underlaying libs.
+    // Ignored options, will be safely ignored. Mostly used by underlying libs.
     //boost::program_options::options_description x11("X11 options");
     //x11.add_options()
     //    ("display",  boost::program_options::value< string >(), "set the X-Server")

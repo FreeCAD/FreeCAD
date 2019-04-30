@@ -77,7 +77,7 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
             sketch.ViewObject.hide()
         obj.Host = baseobj
     elif sketch and not baseobj:
-        # a rebar could be based on a wire without the existance of a Structure
+        # a rebar could be based on a wire without the existence of a Structure
         obj.Base = sketch
         if FreeCAD.GuiUp:
             sketch.ViewObject.hide()
