@@ -174,8 +174,8 @@ class ObjectSurface(PathOp.ObjectOp):
         self.initFinalDepth = obj.FinalDepth.Value
         self.initOpFinalDepth = obj.OpFinalDepth.Value
         self.docRestored = True
-        print("Imported existing OpFinalDepth of " + str(self.initOpFinalDepth) + " for recompute() purposes.")
-        print("Imported existing FinalDepth of " + str(self.initFinalDepth) + " for recompute() purposes.")
+        PathLog.debug("Imported existing OpFinalDepth of " + str(self.initOpFinalDepth) + " for recompute() purposes.")
+        PathLog.debug("Imported existing FinalDepth of " + str(self.initFinalDepth) + " for recompute() purposes.")
 
     def opExecute(self, obj):
         '''opExecute(obj) ... process surface operation'''
@@ -481,7 +481,7 @@ class ObjectSurface(PathOp.ObjectOp):
             topoMap = createTopoMap(scanCLP, obj.IgnoreWasteDepth)
             self.topoMap = listToMultiDimensional(topoMap, numLines, pntsPerLine)
             rtnA = self._bufferTopoMap(numLines, pntsPerLine)
-            rtnB = self._highlightWaterline_NEW(4, 1)
+            rtnB = self._highlightWaterline(4, 1)
             self.topoMap = debufferMultiDimenList(self.topoMap)
             ignoreMap = multiDimensionalToList(self.topoMap)
 
@@ -630,10 +630,10 @@ class ObjectSurface(PathOp.ObjectOp):
 
             pntCount += 1
             if pntCount == 1:
-                #print("--Start row: " + str(rowCount))
+                #PathLog.debug("--Start row: " + str(rowCount))
                 nn = 1
             elif pntCount == pntsPerLine:
-                #print("--End row: " + str(rowCount))
+                #PathLog.debug("--End row: " + str(rowCount))
                 pntCount = 0
                 rowCount += 1
                 # Add rise to clear height before beginning next row in CutPattern: Line
@@ -902,7 +902,7 @@ class ObjectSurface(PathOp.ObjectOp):
             numPnts = len(scanLines[0])  # Number of points per line along axis, at obj.SampleInterval spacing
             for line in scanLines:  # extract circular set(ring) of points from scan lines
                 if len(line) != numPnts:
-                    print("Error: line lengths not equal")
+                    PathLog.debug("Error: line lengths not equal")
                     return rngs
 
             for num in range(0, numPnts):
@@ -1414,7 +1414,7 @@ class ObjectSurface(PathOp.ObjectOp):
         # Add buffer lines and columns to topo map
         rtn = self._bufferTopoMap(lenSL, pntsPerLine)
         # Identify layer waterline from OCL scan
-        rtn = self._highlightWaterline(4)
+        rtn = self._highlightWaterline(4, 9)
         # Extract waterline and convert to gcode
         loopList = self._extractWaterlines(obj, scanLines, lyr, layDep)
         time.sleep(0.1)
@@ -1449,84 +1449,7 @@ class ObjectSurface(PathOp.ObjectOp):
         self.topoMap.append(post)
         return True
 
-    def _highlightWaterline(self, extraMaterial):
-        TM = self.topoMap
-        lastPnt = len(TM[1]) - 1
-        lastLn = len(TM) - 1
-        highFlag = 0
-
-        #self.reportThis("--Convert parallel data to ridges")
-        for lin in range(1, lastLn):
-            for pt in range(1, lastPnt):  # Ignore first and last points
-                if TM[lin][pt] == 0:
-                    if TM[lin][pt + 1] == 2:  # step up
-                        TM[lin][pt] = 1
-                    if TM[lin][pt - 1] == 2: #step down
-                        TM[lin][pt] = 1
-
-        #self.reportThis("--Convert perpendicular data to ridges and highlight ridges")
-        for pt in range(1, lastPnt):  # Ignore first and last points
-            for lin in range(1, lastLn):
-                if TM[lin][pt] == 0:
-                    highFlag = 0
-                    if TM[lin + 1][pt] == 2:  # step up
-                        TM[lin][pt] = 1
-                    if TM[lin - 1][pt] == 2: #step down
-                        TM[lin][pt] = 1
-                elif TM[lin][pt] == 2:
-                    highFlag += 1
-                    if highFlag == 3:
-                        if TM[lin - 1][pt - 1] < 2 or TM[lin - 1][pt + 1] < 2:
-                            highFlag = 2
-                        else:
-                            TM[lin - 1][pt] = extraMaterial
-                            highFlag = 2
-                
-        # Square corners
-        #self.reportThis("--Square corners")
-        for pt in range(1, lastPnt):
-            for lin in range(1, lastLn):
-                if TM[lin][pt] == 1:                    # point == 1
-                    cont = True
-                    if TM[lin + 1][pt] == 0:            # forward == 0
-                        if TM[lin + 1][pt - 1] == 1:    # forward left == 1
-                            if TM[lin][pt - 1] == 2:    # left == 2
-                                TM[lin + 1][pt] = 1     # square the corner
-                                cont = False
-                        
-                        if cont == True and TM[lin + 1][pt + 1] == 1:  # forward right == 1
-                            if TM[lin][pt + 1] == 2:    # right == 2
-                                TM[lin + 1][pt] = 1     # square the corner
-                        cont = True
-                    
-                    if TM[lin - 1][pt] == 0:          # back == 0
-                        if TM[lin - 1][pt - 1] == 1:    # back left == 1
-                            if TM[lin][pt - 1] == 2:    # left == 2
-                                TM[lin - 1][pt] = 1     # square the corner
-                                cont = False
-                        
-                        if cont == True and TM[lin - 1][pt + 1] == 1:  # back right == 1
-                            if TM[lin][pt + 1] == 2:    # right == 2
-                                TM[lin - 1][pt] = 1     # square the corner
-
-        # remove inside corners
-        #self.reportThis("--Remove inside corners")
-        for pt in range(1, lastPnt):
-            for lin in range(1, lastLn):
-                if TM[lin][pt] == 1:                    # point == 1
-                    if TM[lin][pt + 1] == 1:
-                        if TM[lin - 1][pt + 1] == 1 or TM[lin + 1][pt + 1] == 1:
-                            TM[lin][pt + 1] = 9
-                    elif TM[lin][pt - 1] == 1:
-                        if TM[lin - 1][pt - 1] == 1 or TM[lin + 1][pt - 1] == 1:
-                            TM[lin][pt - 1] = 9
-                        
-        #print("\n-------------")
-        #for li in TM:
-        #    print("Line: " + str(li))
-        return True
-
-    def _highlightWaterline_NEW(self, extraMaterial, insCorn):
+    def _highlightWaterline(self, extraMaterial, insCorn):
         TM = self.topoMap
         lastPnt = len(TM[1]) - 1
         lastLn = len(TM) - 1
@@ -1598,9 +1521,9 @@ class ObjectSurface(PathOp.ObjectOp):
                         if TM[lin - 1][pt - 1] == 1 or TM[lin + 1][pt - 1] == 1:
                             TM[lin][pt - 1] = insCorn
                         
-        #print("\n-------------")
+        #PathLog.debug("\n-------------")
         #for li in TM:
-        #    print("Line: " + str(li))
+        #    PathLog.debug("Line: " + str(li))
         return True
 
     def _extractWaterlines(self, obj, oclScan, lyr, layDep):
@@ -1954,25 +1877,25 @@ class ObjectSurface(PathOp.ObjectOp):
         if job:
             if job.Stock:
                 d = PathUtils.guessDepths(job.Stock.Shape, None)
-                print("job.Stock exists")
+                PathLog.debug("job.Stock exists")
             else:
-                print("job.Stock NOT exist")
+                PathLog.debug("job.Stock NOT exist")
         else:
-            print("job NOT exist")
+            PathLog.debug("job NOT exist")
         
         if self.docRestored == True:  # This op is NOT the first in the Operations list
-            print("doc restored")
+            PathLog.debug("doc restored")
             obj.FinalDepth.Value = obj.OpFinalDepth.Value
         else:
-            print("new operation")
+            PathLog.debug("new operation")
             obj.OpFinalDepth.Value = d.final_depth
             obj.OpStartDepth.Value = d.start_depth
             if self.initOpFinalDepth == None and self.initFinalDepth == None:
                  self.initFinalDepth = d.final_depth
                  self.initOpFinalDepth = d.final_depth
             else:
-                print("-initFinalDepth" + str(self.initFinalDepth))
-                print("-initOpFinalDepth" + str(self.initOpFinalDepth))
+                PathLog.debug("-initFinalDepth" + str(self.initFinalDepth))
+                PathLog.debug("-initOpFinalDepth" + str(self.initOpFinalDepth))
         obj.IgnoreWasteDepth = obj.FinalDepth.Value + 0.001
 
 
