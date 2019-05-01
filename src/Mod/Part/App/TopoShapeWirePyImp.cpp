@@ -78,7 +78,7 @@ std::string TopoShapeWirePy::representation(void) const
 
 PyObject *TopoShapeWirePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of TopoShapeWirePy and the Twin object 
+    // create a new instance of TopoShapeWirePy and the Twin object
     return new TopoShapeWirePy(new TopoShape);
 }
 
@@ -107,7 +107,7 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -150,7 +150,7 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -241,7 +241,7 @@ PyObject* TopoShapeWirePy::makeOffset(PyObject *args)
 
     BRepOffsetAPI_MakeOffset mkOffset(w);
     mkOffset.Perform(dist);
-    
+
     return new TopoShapePy(new TopoShape(mkOffset.Shape()));
 }
 
@@ -255,7 +255,7 @@ PyObject* TopoShapeWirePy::makePipe(PyObject *args)
             return new TopoShapePy(new TopoShape(shape));
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
@@ -284,14 +284,14 @@ PyObject* TopoShapeWirePy::makePipeShell(PyObject *args)
                     sections.Append(shape);
                 }
             }
-            TopoDS_Shape shape = this->getTopoShapePtr()->makePipeShell(sections, 
+            TopoDS_Shape shape = this->getTopoShapePtr()->makePipeShell(sections,
                 PyObject_IsTrue(make_solid) ? Standard_True : Standard_False,
                 PyObject_IsTrue(is_Frenet)  ? Standard_True : Standard_False,
                 transition);
             return new TopoShapePy(new TopoShape(shape));
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return NULL;
         }
@@ -645,7 +645,7 @@ PyObject *TopoShapeWirePy::getCustomAttributes(const char* /*attr*/) const
 
 int TopoShapeWirePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

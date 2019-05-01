@@ -420,7 +420,7 @@ eRefType AttachEngine::getShapeType(const TopoDS_Shape& sh)
 {
     if(sh.IsNull())
         return rtAnything;
-    
+
     switch (sh.ShapeType()){
     case TopAbs_SHAPE:
         return rtAnything; //note: there's no rtPart detection here - not enough data!
