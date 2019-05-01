@@ -71,7 +71,7 @@
 # include <GCPnts_TangentialDeflection.hxx>
 # include <GCPnts_QuasiUniformAbscissa.hxx>
 # include <GCPnts_QuasiUniformDeflection.hxx>
-#endif
+#endif // _PreComp_
 
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
@@ -138,7 +138,7 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -171,7 +171,7 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
