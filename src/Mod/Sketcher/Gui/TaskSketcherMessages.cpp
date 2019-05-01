@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/bind.hpp>
 #endif
 
 #include "ui_TaskSketcherMessages.h"
@@ -36,7 +37,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 
-#include <boost/bind.hpp>
+
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -81,7 +82,7 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView)
     QObject::connect(
         ui->manualUpdate, SIGNAL(clicked(bool)),
         this                     , SLOT  (on_manualUpdate_clicked(bool))
-       );*/   
+       );*/
 }
 
 TaskSketcherMessages::~TaskSketcherMessages()
@@ -105,13 +106,13 @@ void TaskSketcherMessages::on_labelConstrainStatus_linkActivated(const QString &
 {
     if( str == QString::fromLatin1("#conflicting"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectConflictingConstraints");
-    
+
     if( str == QString::fromLatin1("#redundant"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectRedundantConstraints");
-    
+
     if( str == QString::fromLatin1("#dofs"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectElementsWithDoFs");
-    
+
 }
 
 void TaskSketcherMessages::on_autoUpdate_stateChanged(int state)
