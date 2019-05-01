@@ -56,6 +56,7 @@
 # include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoCamera.h>
+# include <Inventor/SbTime.h>
 # include <Gui/Inventor/SmSwitchboard.h>
 
 /// Qt Include Files
@@ -70,14 +71,14 @@
 # include <QPainter>
 # include <QTextStream>
 # include <QKeyEvent>
-#endif
 
-#ifndef _PreComp_
 # include <boost/bind.hpp>
+# include <boost/scoped_ptr.hpp>
 #endif
 
-#include <Inventor/SbTime.h>
-#include <boost/scoped_ptr.hpp>
+
+
+
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Tools.h>
