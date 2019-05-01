@@ -24,6 +24,19 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoNormal.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Bnd_Box.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepMesh_IncrementalMesh.hxx>
+# include <BRep_Tool.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <Standard_Version.hxx>
 #endif
 
 #include "ViewProviderAddSub.h"
@@ -36,19 +49,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Base/Console.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoNormal.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoPickStyle.h>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <BRep_Tool.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <Standard_Version.hxx>
+
 
 
 using namespace PartDesignGui;
@@ -196,7 +197,7 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
             const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
             TColgp_Array1OfDir Normals (Nodes.Lower(), Nodes.Upper());
             getNormals(actFace, mesh, Normals);
-            
+
             for (int g=1;g<=nbTriInFace;g++) {
                 // Get the triangle
                 Standard_Integer N1,N2,N3;
@@ -213,7 +214,7 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
                 gp_Pnt V1(Nodes(N1)), V2(Nodes(N2)), V3(Nodes(N3));
 
                 // get the 3 previewNormals of this triangle
-                gp_Dir NV1(Normals(N1)), NV2(Normals(N2)), NV3(Normals(N3));                
+                gp_Dir NV1(Normals(N1)), NV2(Normals(N2)), NV3(Normals(N3));
 
                 // transform the vertices and previewNormals to the place of the face
                 if(!identity) {
@@ -243,16 +244,16 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
             }
 
             parts[ii] = nbTriInFace; // new part
-            
+
             // counting up the per Face offsets
             faceNodeOffset += nbNodesInFace;
             faceTriaOffset += nbTriInFace;
         }
 
-        // previewNormalize all previewNormals 
+        // previewNormalize all previewNormals
         for (int i = 0; i< numNorms ;i++)
             previewNorms[i].normalize();
-        
+
         // end the editing of the nodes
         previewCoords  ->point       .finishEditing();
         previewNorm    ->vector      .finishEditing();
@@ -268,7 +269,7 @@ void ViewProviderAddSub::updateData(const App::Property* p) {
 
     if(strcmp(p->getName(), "AddSubShape")==0)
         updateAddSubShapeIndicator();
-    
+
     PartDesignGui::ViewProvider::updateData(p);
 }
 
