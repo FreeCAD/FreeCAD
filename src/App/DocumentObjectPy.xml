@@ -290,5 +290,11 @@ or None if the GUI is not up</UserDocu>
             </Documentation>
 			<Parameter Name="OldLabel" Type="String"/>
         </Attribute>
+        <Attribute Name="NoTouch">
+            <Documentation>
+                <UserDocu>Enable/disable no touch on any property change</UserDocu>
+            </Documentation>
+			<Parameter Name="NoTouch" Type="Boolean"/>
+        </Attribute>
 	</PythonExport>
 </GenerateModel>

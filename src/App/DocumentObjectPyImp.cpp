@@ -846,3 +846,11 @@ PyObject *DocumentObjectPy::adjustRelativeLinks(PyObject *args) {
 Py::String DocumentObjectPy::getOldLabel() const {
     return Py::String(getDocumentObjectPtr()->getOldLabel());
 }
+
+Py::Boolean DocumentObjectPy::getNoTouch() const {
+    return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::NoTouch));
+}
+
+void DocumentObjectPy::setNoTouch(Py::Boolean value) {
+    getDocumentObjectPtr()->setStatus(ObjectStatus::NoTouch,value.isTrue());
+}

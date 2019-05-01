@@ -640,7 +640,10 @@ void DocumentObject::onChanged(const Property* prop)
         _pDoc->signalRelabelObject(*this);
 
     // set object touched if it is an input property
-    if (!(prop->getType() & Prop_Output) && !prop->testStatus(Property::Output)) {
+    if (!testStatus(ObjectStatus::NoTouch) 
+            && !(prop->getType() & Prop_Output) 
+            && !prop->testStatus(Property::Output)) 
+    {
         StatusBits.set(ObjectStatus::Touch);
         // must execute on document recompute
         if (!(prop->getType() & Prop_NoRecompute))

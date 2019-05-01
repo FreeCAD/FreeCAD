@@ -58,6 +58,7 @@ enum ObjectStatus {
     PendingRecompute = 11, // set by Document, indicating the object is in recomputation queue
     PendingRemove = 12, // set by Document, indicating the object is in pending for remove after recompute
     ObjImporting = 13, // Mark the object as importing
+    NoTouch = 14, // no touch on any property change
     Expand = 16,
 };
 
