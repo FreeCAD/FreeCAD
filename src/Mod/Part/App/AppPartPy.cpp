@@ -79,19 +79,18 @@
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <Precision.hxx>
 # include <Standard_Version.hxx>
+# include <BRepOffsetAPI_ThruSections.hxx>
+# include <BSplCLib.hxx>
+# include <GeomFill_AppSurf.hxx>
+# include <GeomFill_Line.hxx>
+# include <GeomFill_Pipe.hxx>
+# include <GeomFill_SectionGenerator.hxx>
+# include <NCollection_List.hxx>
+# include <BRepFill_Filling.hxx>
 #endif
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
-
-#include <BRepOffsetAPI_ThruSections.hxx>
-#include <BSplCLib.hxx>
-#include <GeomFill_AppSurf.hxx>
-#include <GeomFill_Line.hxx>
-#include <GeomFill_Pipe.hxx>
-#include <GeomFill_SectionGenerator.hxx>
-#include <NCollection_List.hxx>
-#include <BRepFill_Filling.hxx>
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>

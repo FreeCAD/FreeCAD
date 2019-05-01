@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include "TopoShape.h"
+#ifndef _PreComp_
 #include <BRep_Builder.hxx>
 #include <Standard_Failure.hxx>
 #include <TopoDS_Compound.hxx>
@@ -31,6 +32,7 @@
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
+#endif
 
 #include "OCCError.h"
 

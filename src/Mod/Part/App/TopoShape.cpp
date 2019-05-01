@@ -155,7 +155,6 @@
 #if OCC_VERSION_HEX < 0x070300
 # include <BRepAlgo_Fuse.hxx>
 #endif
-#endif
 # include <BinTools.hxx>
 # include <BinTools_ShapeSet.hxx>
 # include <Poly_Polygon3D.hxx>
@@ -178,6 +177,7 @@
 #if OCC_VERSION_HEX >= 0x070300
 #include <BRepAlgoAPI_Defeaturing.hxx>
 #endif
+#endif // _PreComp_
 
 #include <Base/Builder3D.h>
 #include <Base/FileInfo.h>

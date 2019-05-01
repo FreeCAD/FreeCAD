@@ -114,7 +114,10 @@
 #include <TopTools_HSequenceOfShape.hxx>
 #include <TopTools_MapOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_DataMapOfIntegerShape.hxx>
+#include <TopTools_DataMapOfIntegerListOfShape.hxx>
 
+#include <BOPAlgo_ArgumentAnalyzer.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -126,8 +129,12 @@
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepAlgoAPI_Section.hxx>
 #if OCC_VERSION_HEX < 0x070300
-# include <BRepAlgo_Fuse.hxx>
+#include <BRepAlgo_Fuse.hxx>
 #endif
+#if OCC_VERSION_HEX >= 0x070300
+#include <BRepAlgoAPI_Defeaturing.hxx>
+#endif
+#include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
 #include <BRepBuilderAPI.hxx>
@@ -140,22 +147,31 @@
 #include <BRepBuilderAPI_MakePolygon.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepBuilderAPI_Sewing.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepClass_FaceClassifier.hxx>
+#if OCC_VERSION_HEX >= 0x060600
+#include <BRepClass3d.hxx>
+#endif
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepExtrema_MapOfIntegerPackedMapOfInteger.hxx>
+#if OCC_VERSION_HEX >= 0x060801
 #include <BRepExtrema_ShapeProximity.hxx>
+#endif
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepFill.hxx>
+#include <BRepFill_Filling.hxx>
 #include <BRepGProp.hxx>
+#include <BRepGProp_Face.hxx>
 #include <BRepLProp_CLProps.hxx>
 #include <BRepLProp_SLProps.hxx>
 #include <BRepLProp_CurveTool.hxx>
 #include <BRepLib.hxx>
 #include <BRepLib_FindSurface.hxx>
+#include <BRepLib_FuseEdges.hxx>
 #include <BRepOffsetAPI_MakeOffset.hxx>
 #include <BRepOffsetAPI_MakePipe.hxx>
 #include <BRepOffsetAPI_MakePipeShell.hxx>
@@ -179,6 +195,7 @@
 #include <BRep_Tool.hxx>
 #include <BRepTools_ShapeSet.hxx>
 #include <BRepTools_WireExplorer.hxx>
+#include <BRepTopAdaptor_FClass2d.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepCheck_Result.hxx>
@@ -241,6 +258,7 @@
 #include <Geom_CartesianPoint.hxx>
 #include <Geom_Line.hxx>
 #include <Geom_OffsetCurve.hxx>
+#include <Geom_RectangularTrimmedSurface.hxx>
 #include <Geom_Surface.hxx>
 #include <Geom_TrimmedCurve.hxx>
 #include <GeomAbs_CurveType.hxx>
@@ -284,6 +302,9 @@
 #include <GeomFill_LocationLaw.hxx>
 #include <GeomFill_Pipe.hxx>
 #include <GeomFill_Sweep.hxx>
+#include <GeomFill_AppSurf.hxx>
+#include <GeomFill_Line.hxx>
+#include <GeomFill_SectionGenerator.hxx>
 #include <GeomLib.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
 #include <GeomLProp_SLProps.hxx>
@@ -323,10 +344,13 @@
 
 #include <Approx_Curve3d.hxx>
 
+#include <BSplCLib.hxx>
+
 #include <GProp_PGProps.hxx>
 #include <GProp_PrincipalProps.hxx>
 #include <LProp_NotDefined.hxx>
 
+#include <HLRAppli_ReflectLines.hxx>
 #include <IntTools_FClass2d.hxx>
 #include <Law_Constant.hxx>
 #include <MMgt_TShared.hxx>
@@ -343,18 +367,23 @@
 // Shape
 #include <ShapeAlgo_AlgoContainer.hxx>
 #include <ShapeAnalysis.hxx>
+#include <ShapeAnalysis_Curve.hxx>
 #include <ShapeAnalysis_Edge.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <ShapeAnalysis_Shell.hxx>
 #include <ShapeAnalysis_Surface.hxx>
+#include <ShapeAnalysis_FreeBoundsProperties.hxx>
+#include <ShapeAnalysis_ShapeTolerance.hxx>
 #include <ShapeConstruct_Curve.hxx>
 #include <ShapeExtend_Explorer.hxx>
 #include <ShapeFix_Shape.hxx>
+#include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeFix_Wire.hxx>
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <ShapeUpgrade_RemoveInternalWires.hxx>
 
 // Import
+#include <APIHeaderSection_MakeHeader.hxx>
 #include <STEPControl_Controller.hxx>
 #include <STEPControl_Writer.hxx>
 #include <STEPControl_Reader.hxx>
@@ -366,6 +395,11 @@
 #include <IGESControl_Reader.hxx>
 #include <StlAPI_Writer.hxx>
 #include <Interface_Static.hxx>
+#include <Transfer_TransientProcess.hxx>
+#include <XSControl_TransferWriter.hxx>
+#include <XSControl_WorkSession.hxx>
+#include <BinTools.hxx>
+#include <BinTools_ShapeSet.hxx>
 
 
 #endif // __OpenCascadeAll__
