@@ -34,8 +34,8 @@
 # include <TopoDS_Shell.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <ShapeAnalysis_Shell.hxx>
+# include <BRepPrimAPI_MakeHalfSpace.hxx>
 #endif
-
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -70,7 +70,7 @@ std::string TopoShapeShellPy::representation(void) const
 
 PyObject *TopoShapeShellPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 {
-    // create a new instance of TopoShapeSolidPy and the Twin object 
+    // create a new instance of TopoShapeSolidPy and the Twin object
     return new TopoShapeShellPy(new TopoShape);
 }
 
@@ -86,7 +86,7 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     TopoDS_Shell shell;
     //BRepOffsetAPI_Sewing mkShell;
     builder.MakeShell(shell);
-    
+
     try {
         Py::Sequence list(obj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -128,7 +128,7 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
 
     BRep_Builder builder;
     TopoDS_Shape shell = getTopoShapePtr()->getShape();
-    
+
     try {
         const TopoDS_Shape& sh = static_cast<TopoShapeFacePy*>(obj)->
             getTopoShapePtr()->getShape();
@@ -284,5 +284,5 @@ PyObject *TopoShapeShellPy::getCustomAttributes(const char* /*attr*/) const
 
 int TopoShapeShellPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
