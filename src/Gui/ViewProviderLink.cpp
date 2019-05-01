@@ -1103,7 +1103,7 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
     for(size_t i=0;i<nodeArray.size();++i) {
         auto &info = *nodeArray[i];
         nodeMap.emplace(info.pcSwitch,i);
-        if(groups.size()) {
+        if(info.isLinked() && groups.size()) {
             auto iter = groups.find(App::GroupExtension::getGroupOfObject(
                             info.linkInfo->pcLinked->getObject()));
             if(iter != groups.end()) {
