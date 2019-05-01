@@ -1936,12 +1936,14 @@ struct UpdateDisabler {
     bool locked;
     bool block;
     bool visible;
+    bool focus;
     UpdateDisabler(QWidget &w, bool block=true)
         :widget(w),block(block)
     {
         _UpdateBlocked = true;
         if(block)
             locked = widget.blockSignals(true);
+        focus = widget.hasFocus();
         visible = widget.isVisible();
         if(visible) {
             // setUpdatesEnabled(false) does not seem to speed up anything.
@@ -1958,6 +1960,8 @@ struct UpdateDisabler {
         if(visible) {
             widget.setVisible(true);
             // widget.setUpdatesEnabled(true);
+            if(focus)
+                widget.setFocus();
         }
         if(block)
             widget.blockSignals(locked);
