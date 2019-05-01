@@ -60,17 +60,16 @@
 # include <TColgp_Array1OfPnt2d.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
+# include <BRepTopAdaptor_FClass2d.hxx>
+# include <BRepPrimAPI_MakeHalfSpace.hxx>
+# include <BRepGProp.hxx>
+# include <GProp_GProps.hxx>
+# include <GProp_PrincipalProps.hxx>
+# include <BRepLProp_SurfaceTool.hxx>
+# include <BRepGProp_Face.hxx>
+# include <GeomLProp_SLProps.hxx>
+# include <BRep_Tool.hxx>
 #endif
-
-#include <BRepTopAdaptor_FClass2d.hxx>
-#include <BRepPrimAPI_MakeHalfSpace.hxx>
-#include <BRepGProp.hxx>
-#include <GProp_GProps.hxx>
-#include <GProp_PrincipalProps.hxx>
-#include <BRepLProp_SurfaceTool.hxx>
-#include <BRepGProp_Face.hxx>
-#include <GeomLProp_SLProps.hxx>
-#include <BRep_Tool.hxx>
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>

@@ -55,9 +55,9 @@
 # include <GProp_PrincipalProps.hxx>
 # include <BRepGProp.hxx>
 # include <GeomLib_IsPlanarSurface.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
 #endif
-#include <BRepLProp_SLProps.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
 
 #include "Attacher.h"
 #include "AttachExtension.h"
