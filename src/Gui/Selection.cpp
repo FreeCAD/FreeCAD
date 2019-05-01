@@ -1515,7 +1515,7 @@ bool SelectionSingleton::isSelected(const char* pDocName,
         const char* pObjectName, const char* pSubName, int resolve) const
 {
     _SelObj sel;
-    return checkSelection(pDocName,pObjectName,pSubName,resolve,sel)>0;
+    return checkSelection(pDocName,pObjectName,pSubName,resolve,sel,&_SelList)>0;
 }
 
 bool SelectionSingleton::isSelected(App::DocumentObject* pObject, const char* pSubName, int resolve) const
@@ -1524,7 +1524,7 @@ bool SelectionSingleton::isSelected(App::DocumentObject* pObject, const char* pS
         return false;
     _SelObj sel;
     return checkSelection(pObject->getDocument()->getName(),
-            pObject->getNameInDocument(),pSubName,resolve,sel)>0;
+            pObject->getNameInDocument(),pSubName,resolve,sel,&_SelList)>0;
 }
 
 int SelectionSingleton::checkSelection(const char *pDocName, const char *pObjectName, 
