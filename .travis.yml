@@ -79,7 +79,8 @@ matrix:
           - CCACHE_TEMPDIR=/tmp/.ccache-temp
           - CCACHE_COMPRESS=1
           - CCACHE_DIR=$HOME/.ccache
-          - CLCACHE_LOG=1
+          # enable this if clcache extended log is needed
+          #- CLCACHE_LOG=1
         cache:
           directories:
             - $HOME/clcache
@@ -239,6 +240,8 @@ before_install:
        export PATH=$CLCACHE_PATH:$PATH
        #reset clcache hit stats
        cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -z'
+       # clcache stats before compilation
+       cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
 
        curl -L https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z --output FreeCADLibs.7z
        7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
@@ -268,19 +271,12 @@ script:
 #        MSBuild.exe /m FreeCAD_Trunk.sln
   - |
     if [ "${TRAVIS_OS_NAME}" == "windows" ]; then 
-        # /p:TrackFileAccess=false /p:CLToolExe=clcache.exe build_msvc/bitcoin.sln /m /v:q /nologo
-        # /p:CLToolPath=$CLCACHE_PATH
-        #MSBuild.exe //p:TrackFileAccess=false //p:CLToolExe=clcache.exe //p:CLToolPath=${CLCACHE_PATH} FreeCAD_Trunk.sln //m:2 //nologo //verbosity:minimal //p:Configuration=Release //p:Platform=x64 
-        #cmd.exe /C '"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 && C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe'
         cmd.exe /C '"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 && MSBuild.exe FreeCAD_Trunk.sln /p:CLToolExe=clcache.exe /p:TrackFileAccess=false /p:CLToolPath=C:\Users\travis\build\FreeCAD\FreeCAD /m:2 /nologo /verbosity:minimal /p:Configuration=Release /p:Platform=x64'
         # ls -lahR
         cp -a ../FreeCADLibs/bin/* bin/
         # show clcache hit stats
         cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
-        #cd bin
-        #export PATH=$TEST_PATH:$PATH
-        #FreeCADCmd.exe --run-test 0
-        # This to try running from the bin directory in case this is affecting some tests
+        # run the tests
         cmd.exe /C 'cd C:\Users\travis\build\FreeCAD\FreeCAD\build\bin && FreeCADCmd.exe --run-test 0'
         cd $HOME
     else
