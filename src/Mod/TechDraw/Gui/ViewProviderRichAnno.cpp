@@ -46,53 +46,55 @@
 #include <Gui/Selection.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
-#include <Mod/TechDraw/App/LineGroup.h>
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 
 #include "MDIViewPage.h"
 #include "QGVPage.h"
 #include "QGIView.h"
-#include "TaskLeaderLine.h"
-#include "ViewProviderLeader.h"
+#include "TaskRichAnno.h"
+#include "ViewProviderRichAnno.h"
 
 using namespace TechDrawGui;
 
-PROPERTY_SOURCE(TechDrawGui::ViewProviderLeader, TechDrawGui::ViewProviderDrawingView)
+PROPERTY_SOURCE(TechDrawGui::ViewProviderRichAnno, TechDrawGui::ViewProviderDrawingView)
 
 //**************************************************************************
 // Construction/Destruction
 
-ViewProviderLeader::ViewProviderLeader()
+ViewProviderRichAnno::ViewProviderRichAnno()
 {
-    sPixmap = "actions/techdraw-mline";
+    sPixmap = "actions/techdraw-textleader";
 
-    static const char *group = "Line Format";
+    static const char *group = "Text Format";
 
-    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight())    ,group,(App::PropertyType)(App::Prop_None),"Line weight");
-    ADD_PROPERTY_TYPE(LineStyle,(1)    ,group,(App::PropertyType)(App::Prop_None),"Line style");
     ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"The color of the Markup");
+    ADD_PROPERTY_TYPE(Font ,(getDefFont().c_str()),group,App::Prop_None, "The name of the font to use");
+    ADD_PROPERTY_TYPE(Fontsize,(getDefFontSize())    ,group,(App::PropertyType)(App::Prop_None),
+              "Text size in internal units");
+    Color.setStatus(App::Property::ReadOnly,true);
+    Font.setStatus(App::Property::ReadOnly,true);
+    Fontsize.setStatus(App::Property::ReadOnly,true);
 }
 
-ViewProviderLeader::~ViewProviderLeader()
+ViewProviderRichAnno::~ViewProviderRichAnno()
 {
 }
 
-void ViewProviderLeader::attach(App::DocumentObject *pcFeat)
+void ViewProviderRichAnno::attach(App::DocumentObject *pcFeat)
 {
     ViewProviderDrawingView::attach(pcFeat);
 }
 
-bool ViewProviderLeader::setEdit(int ModNum)
+bool ViewProviderRichAnno::setEdit(int ModNum)
 {
-//    Base::Console().Message("VPL::setEdit(%d)\n",ModNum);
+//    Base::Console().Message("VPRA::setEdit(%d)\n",ModNum);
     if (ModNum == ViewProvider::Default ) {
         if (Gui::Control().activeDialog())  {         //TaskPanel already open!
             return false;
         }
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new TaskDlgLeaderLine(this));
+        Gui::Control().showDialog(new TaskDlgRichAnno(this));
         return true;
     } else {
         return ViewProviderDrawingView::setEdit(ModNum);
@@ -100,7 +102,7 @@ bool ViewProviderLeader::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderLeader::unsetEdit(int ModNum)
+void ViewProviderRichAnno::unsetEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
     if (ModNum == ViewProvider::Default) {
@@ -111,75 +113,42 @@ void ViewProviderLeader::unsetEdit(int ModNum)
     }
 }
 
-bool ViewProviderLeader::doubleClicked(void)
+bool ViewProviderRichAnno::doubleClicked(void)
 {
-//    Base::Console().Message("VPL::doubleClicked()\n");
+//    Base::Console().Message("VPRA::doubleClicked()\n");
     setEdit(ViewProvider::Default);
     return true;
 }
 
-void ViewProviderLeader::updateData(const App::Property* p)
+void ViewProviderRichAnno::updateData(const App::Property* p)
 {
     ViewProviderDrawingView::updateData(p);
 }
 
-void ViewProviderLeader::onChanged(const App::Property* p)
+void ViewProviderRichAnno::onChanged(const App::Property* p)
 {
-    if ((p == &Color) ||
-        (p == &LineWidth) ||
-        (p == &LineStyle)) {
-        QGIView* qgiv = getQView();
-        if (qgiv) {
-            qgiv->updateView(true);
-        }
-    }
+//    if ((p == &Font) ||
+//        (p == &Fontsize) ||
+//        (p == &Color)) {
+//        QGIView* qgiv = getQView();
+//        if (qgiv) {
+//            qgiv->updateView(true);
+//        }
+//    }
     ViewProviderDrawingView::onChanged(p);
 }
 
-std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren(void) const
+TechDraw::DrawRichAnno* ViewProviderRichAnno::getViewObject() const
 {
-    // Collect any child Document Objects and put them in the right place in the Feature tree
-    // valid children of a ViewLeader are:
-    //    - Rich Annotations
-    std::vector<App::DocumentObject*> temp;
-    const std::vector<App::DocumentObject *> &views = getFeature()->getInList();
-    try {
-       for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-           if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
-                temp.push_back((*it));
-            }
-        }
-        return temp;
-    } 
-    catch (...) {
-        std::vector<App::DocumentObject*> tmp;
-        return tmp;
-    }
+    return dynamic_cast<TechDraw::DrawRichAnno*>(pcObject);
 }
 
-TechDraw::DrawLeaderLine* ViewProviderLeader::getViewObject() const
+TechDraw::DrawRichAnno* ViewProviderRichAnno::getFeature() const
 {
-    return dynamic_cast<TechDraw::DrawLeaderLine*>(pcObject);
+    return dynamic_cast<TechDraw::DrawRichAnno*>(pcObject);
 }
 
-TechDraw::DrawLeaderLine* ViewProviderLeader::getFeature() const
-{
-    return dynamic_cast<TechDraw::DrawLeaderLine*>(pcObject);
-}
-
-
-double ViewProviderLeader::getDefLineWeight(void)
-{
-    double result = 0.0;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
-    result = lg->getWeight("Thin");
-    delete lg;                                   //Coverity CID 174670
-    return result;
-}
-
-App::Color ViewProviderLeader::getDefLineColor(void)
+App::Color ViewProviderRichAnno::getDefLineColor(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                  GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Markups");
@@ -188,4 +157,18 @@ App::Color ViewProviderLeader::getDefLineColor(void)
     return result;
 }
 
+std::string ViewProviderRichAnno::getDefFont(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+    return fontName;
+}
 
+double ViewProviderRichAnno::getDefFontSize()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    double fontSize = hGrp->GetFloat("FontSize", 5.0);
+    return fontSize;
+}

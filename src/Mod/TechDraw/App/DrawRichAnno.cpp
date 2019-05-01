@@ -32,31 +32,35 @@
 
 #include "DrawUtil.h"
 
-#include <Mod/TechDraw/App/DrawTextLeaderPy.h>  // generated from DrawTextLeaderPy.xml
-#include "DrawTextLeader.h"
+#include <Mod/TechDraw/App/DrawRichAnnoPy.h>  // generated from DrawRichAnnoPy.xml
+#include "DrawRichAnno.h"
 
 using namespace TechDraw;
 
 //===========================================================================
-// DrawTextLeader - DrawLeaderLine + movable text block
+// DrawRichAnno - movable rich text block
 //===========================================================================
 
-PROPERTY_SOURCE(TechDraw::DrawTextLeader, TechDraw::DrawLeaderLine)
+PROPERTY_SOURCE(TechDraw::DrawRichAnno, TechDraw::DrawView)
 
-DrawTextLeader::DrawTextLeader(void)
+DrawRichAnno::DrawRichAnno(void)
 {
-    static const char *group = "Text Leader";
+    static const char *group = "Text Block";
 
-    ADD_PROPERTY_TYPE(LeaderText, (""), group, App::Prop_None, "Leader text");
-    Base::Vector3d pos(0.0,0.0,0.0);
-    ADD_PROPERTY_TYPE(TextPosition, (pos), group, App::Prop_None, "Text position relative to parent");
+    ADD_PROPERTY_TYPE(AnnoParent,(0),group,(App::PropertyType)(App::Prop_None),
+                      "Object to which this annontation is attached");
+    ADD_PROPERTY_TYPE(AnnoText, (""), group, App::Prop_None, "Anno text");
+//    Base::Vector3d pos(0.0,0.0,0.0);
+//    ADD_PROPERTY_TYPE(TextPosition, (pos), group, App::Prop_None, "Anno position relative to parent");
+    ADD_PROPERTY_TYPE(ShowFrame, (true), group, App::Prop_None, "Outline rectangle on/off");
+    ADD_PROPERTY_TYPE(MaxWidth, (-1.0), group, App::Prop_None, "Width limit before auto wrap");
 }
 
-DrawTextLeader::~DrawTextLeader()
+DrawRichAnno::~DrawRichAnno()
 {
 }
 
-void DrawTextLeader::onChanged(const App::Property* prop)
+void DrawRichAnno::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
         //nothing in particular
@@ -65,11 +69,11 @@ void DrawTextLeader::onChanged(const App::Property* prop)
 
 }
 
-short DrawTextLeader::mustExecute() const
+short DrawRichAnno::mustExecute() const
 {
     bool result = 0;
     if (!isRestoring()) {
-        result =  (LeaderText.isTouched());
+        result =  (AnnoText.isTouched());
     }
     if (result) {
         return result;
@@ -78,20 +82,35 @@ short DrawTextLeader::mustExecute() const
     return DrawView::mustExecute();
 }
 
-App::DocumentObjectExecReturn *DrawTextLeader::execute(void)
+App::DocumentObjectExecReturn *DrawRichAnno::execute(void)
 { 
-//    Base::Console().Message("DTL::execute()\n");
+//    Base::Console().Message("DRA::execute()\n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
     return DrawView::execute();
 }
 
-PyObject *DrawTextLeader::getPyObject(void)
+DrawView* DrawRichAnno::getBaseView(void) const
+{
+//    Base::Console().Message("DRA::getBaseView() - %s\n", getNameInDocument());
+    DrawView* result = nullptr;
+    App::DocumentObject* baseObj = AnnoParent.getValue();
+    if (baseObj != nullptr) {
+        DrawView* cast = dynamic_cast<DrawView*>(baseObj);
+        if (cast != nullptr) {
+            result = cast;
+        }
+    }
+    return result;
+}
+
+
+PyObject *DrawRichAnno::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawTextLeaderPy(this),true);
+        PythonObject = Py::Object(new DrawRichAnnoPy(this),true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -100,13 +119,13 @@ PyObject *DrawTextLeader::getPyObject(void)
 
 namespace App {
 /// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawTextLeaderPython, TechDraw::DrawTextLeader)
-template<> const char* TechDraw::DrawTextLeaderPython::getViewProviderName(void) const {
-    return "TechDrawGui::ViewProviderTextLeader";
+PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawRichAnnoPython, TechDraw::DrawRichAnno)
+template<> const char* TechDraw::DrawRichAnnoPython::getViewProviderName(void) const {
+    return "TechDrawGui::ViewProviderRichAnno";
 }
 /// @endcond
 
 // explicit template instantiation
-template class TechDrawExport FeaturePythonT<TechDraw::DrawTextLeader>;
+template class TechDrawExport FeaturePythonT<TechDraw::DrawRichAnno>;
 }
 

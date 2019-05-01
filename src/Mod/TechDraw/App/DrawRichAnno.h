@@ -20,37 +20,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawTextLeader_h_
-#define _TechDraw_DrawTextLeader_h_
+#ifndef _TechDraw_DrawRichAnno_h_
+#define _TechDraw_DrawRichAnno_h_
 
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 
-#include "DrawLeaderLine.h"
+#include "DrawView.h"
 
 
 namespace TechDraw
 {
 
-class TechDrawExport DrawTextLeader : public TechDraw::DrawLeaderLine
+class TechDrawExport DrawRichAnno : public TechDraw::DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawTextLeader);
+    PROPERTY_HEADER(TechDraw::DrawRichAnno);
 
 public:
-    DrawTextLeader();
-    virtual ~DrawTextLeader();
+    DrawRichAnno();
+    virtual ~DrawRichAnno();
 
-    App::PropertyString       LeaderText;
-    App::PropertyVector       TextPosition;
+    App::PropertyLink         AnnoParent;
+    App::PropertyString       AnnoText;
+//    App::PropertyVector       TextPosition;
+    App::PropertyBool         ShowFrame;
+    App::PropertyFloat        MaxWidth;
+    App::PropertyVector       AttachPoint;
 
     virtual short mustExecute() const;
     virtual App::DocumentObjectExecReturn *execute(void);
 
     virtual const char* getViewProviderName(void) const {
-        return "TechDrawGui::ViewProviderTextLeader";
+        return "TechDrawGui::ViewProviderRichAnno";
     }
     virtual PyObject *getPyObject(void);
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}
+    DrawView* getBaseView(void) const;
 
 protected:
     virtual void onChanged(const App::Property* prop);
@@ -58,7 +63,7 @@ protected:
 private:
 };
 
-typedef App::FeaturePythonT<DrawTextLeader> DrawTextLeaderPython;
+typedef App::FeaturePythonT<DrawRichAnno> DrawRichAnnoPython;
 
 } //namespace TechDraw
 #endif

@@ -57,6 +57,7 @@ DrawLeaderLine::DrawLeaderLine(void)
     ADD_PROPERTY_TYPE(StartSymbol, (-1), group, App::Prop_None, "Symbol (arrowhead) for start of line");
     ADD_PROPERTY_TYPE(EndSymbol, (-1), group, App::Prop_None, "Symbol (arrowhead) for end of line");
     ADD_PROPERTY_TYPE(Scalable ,(false),group,App::Prop_None,"Scale line with LeaderParent");
+    ADD_PROPERTY_TYPE(AutoHorizontal ,(getDefAuto()),group,App::Prop_None,"Forces last line segment horizontal");
 
     //hide the DrawView properties that don't apply to Leader
     ScaleType.setStatus(App::Property::ReadOnly,true);
@@ -76,11 +77,9 @@ DrawLeaderLine::~DrawLeaderLine()
 
 void DrawLeaderLine::onChanged(const App::Property* prop)
 {
-    if (!isRestoring()) {
-        //nothing in particular
-    }
+//    if (!isRestoring()) {
+//    }
     DrawView::onChanged(prop);
-
 }
 
 short DrawLeaderLine::mustExecute() const
@@ -112,6 +111,15 @@ App::DocumentObjectExecReturn *DrawLeaderLine::execute(void)
     }
     return DrawView::execute();
 }
+
+//this doesn't really work because LeaderParent is not available?
+void DrawLeaderLine::onDocumentRestored(void)
+{
+//    Base::Console().Message("DLL::onDocumentRestored()\n");
+    requestPaint();
+    DrawView::onDocumentRestored();
+}
+
 
 DrawView* DrawLeaderLine::getBaseView(void) const
 {
@@ -167,6 +175,33 @@ Base::Vector3d DrawLeaderLine::getAttachPoint(void)
                           0.0);
     return result;
 }
+
+void DrawLeaderLine::adjustLastSegment(void) 
+{
+//    Base::Console().Message("DLL::adjustLastSegment()\n");
+    bool adjust = AutoHorizontal.getValue();
+    std::vector<Base::Vector3d> wp = WayPoints.getValues();
+    if (adjust) {
+        if (wp.size() > 1) {
+            int iLast = wp.size() - 1;
+            int iPen  = wp.size() - 2;
+            Base::Vector3d last = wp.at(iLast);
+            Base::Vector3d penUlt = wp.at(iPen);
+            last.y = penUlt.y;
+            wp.at(iLast) = last;
+        }
+    }
+    WayPoints.setValues(wp);
+}
+
+bool DrawLeaderLine::getDefAuto(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLines");
+    bool result = hGrp->GetBool("AutoHorizontal",true);
+    return result;
+}
+
 
 PyObject *DrawLeaderLine::getPyObject(void)
 {

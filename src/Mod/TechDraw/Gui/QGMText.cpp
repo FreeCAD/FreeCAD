@@ -35,7 +35,9 @@
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-QGMText::QGMText()
+QGMText::QGMText() :
+    m_showBox(false),
+    m_prettyState("Normal")
 {
     setCacheMode(QGCustomText::NoCache);
     setFlag(ItemSendsGeometryChanges, true);
@@ -94,11 +96,30 @@ void QGMText::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     QGCustomText::hoverLeaveEvent(event);
 }
 
+void QGMText::setPrettySel(void)
+{
+    m_prettyState = "Sel";
+    QGCustomText::setPrettySel();
+}
+
+void QGMText::setPrettyPre(void)
+{
+    m_prettyState = "Pre";
+    QGCustomText::setPrettyPre();
+}
+
+void QGMText::setPrettyNormal(void)
+{
+    m_prettyState = "Normal";
+    QGCustomText::setPrettyNormal();
+}
+
 void QGMText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
 //    painter->drawRect(boundingRect());          //good for debugging
+    //TODO: this should be changed to a rectItem in the parent
     if (showBox()) {
         painter->drawRect(boundingRect().adjusted(1,1,-1,-1));
     }

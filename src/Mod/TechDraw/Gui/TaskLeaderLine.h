@@ -28,7 +28,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskTextLeader.h>
+#include <Mod/TechDraw/Gui/ui_TaskLeaderLine.h>
 
 #include "QGTracker.h"
 
@@ -38,9 +38,7 @@
 #define TRACKERCANCEL 2
 #define TRACKERCANCELEDIT 3
 
-class MRichTextEdit;
-
-class Ui_TaskTextLeader;
+class Ui_TaskLeaderLine;
 
 namespace App {
 class DocumentObject;
@@ -50,11 +48,8 @@ namespace TechDraw
 {
 class DrawPage;
 class DrawView;
-class DrawTextLeader;
+class DrawLeaderLine;
 }
-
-#define  TEXTMODE 0
-#define  LINEMODE 1
 
 namespace TechDrawGui
 {
@@ -65,26 +60,23 @@ class MDIViewPage;
 class QGTracker;
 class QGEPath;
 class QGMText;
-class QGITextLeader;
+class QGILeaderLine;
 class ViewProviderLeader;
-class ViewProviderTextLeader;
 
-class TaskTextLeader : public QWidget
+class TaskLeaderLine : public QWidget
 {
     Q_OBJECT
 
 public:
-    TaskTextLeader(int mode,
-                   TechDraw::DrawView* baseFeat,
+    TaskLeaderLine(TechDraw::DrawView* baseFeat,
                    TechDraw::DrawPage* page);
-    TaskTextLeader(int mode,
-                   TechDrawGui::ViewProviderLeader* leadVP);
-    ~TaskTextLeader();
+    TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
+    ~TaskLeaderLine();
 
 public Q_SLOTS:
     void onTrackerClicked(bool b);
     void onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent);
-    void onEditorClicked(bool b);
+/*    void onEditorClicked(bool b);*/
 /*    void onViewPicked(QPointF pos, QGIView* qgParent);*/
 
 public:
@@ -101,8 +93,8 @@ public:
 protected Q_SLOTS:
     void convertTrackerPoints(std::vector<QPointF> pts);
     void onPointEditComplete(std::vector<QPointF> pts, QGIView* parent);
-    void onSaveAndExit(QString);
-    void onEditorExit(void);
+/*    void onSaveAndExit(QString);*/
+/*    void onEditorExit(void);*/
 
 protected:
     void changeEvent(QEvent *e);
@@ -115,7 +107,7 @@ protected:
     void commonFeatureUpdate(std::vector<Base::Vector3d> converted);
     void removeFeature(void);
 
-    QPointF calcTextStartPos(double scale);
+/*    QPointF calcTextStartPos(double scale);*/
 
     void blockButtons(bool b);
     void setUiPrimary(void);
@@ -128,7 +120,7 @@ protected:
 
 
 private:
-    Ui_TaskTextLeader * ui;
+    Ui_TaskLeaderLine * ui;
     bool blockUpdate;
 
     QGTracker* m_tracker;
@@ -137,10 +129,8 @@ private:
     QGraphicsScene* m_scene;
     QGVPage* m_view;
     ViewProviderLeader* m_lineVP;
-    ViewProviderTextLeader* m_textVP;
     TechDraw::DrawView* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
-    TechDraw::DrawTextLeader* m_textFeat;
     TechDraw::DrawLeaderLine* m_lineFeat;
     std::string m_leaderName;
     std::string m_leaderType;
@@ -152,34 +142,27 @@ private:
     
     bool m_createMode;
     QGEPath* m_leadLine;
-    QGMText* m_text;
 
     QGTracker::TrackerMode m_trackerMode;
     Qt::ContextMenuPolicy  m_saveContextPolicy;
     bool m_inProgressLock;
 
     QGILeaderLine* m_qgLine;
-    QGITextLeader* m_qgText;
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
     
-    QDialog* m_textDialog;
-    MRichTextEdit* m_rte;
-    int m_mode;
     int m_pbTrackerState;
 };
 
-class TaskDlgTextLeader : public Gui::TaskView::TaskDialog
+class TaskDlgLeaderLine : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskDlgTextLeader(int mode,
-                      TechDraw::DrawView* baseFeat,
+    TaskDlgLeaderLine(TechDraw::DrawView* baseFeat,
                       TechDraw::DrawPage* page);
-    TaskDlgTextLeader(int mode,
-                      TechDrawGui::ViewProviderLeader* leadVP);
-    ~TaskDlgTextLeader();
+    TaskDlgLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
+    ~TaskDlgLeaderLine();
 
 public:
     /// is called the TaskView when the dialog is opened
@@ -201,7 +184,7 @@ public:
 protected:
 
 private:
-    TaskTextLeader * widget;
+    TaskLeaderLine * widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 

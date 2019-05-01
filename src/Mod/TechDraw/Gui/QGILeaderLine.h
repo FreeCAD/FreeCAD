@@ -82,6 +82,8 @@ public:
 
 public Q_SLOTS:
     void onLineEditFinished(std::vector<QPointF> pts);    //QGEPath is finished editing points
+    void select(bool state);
+    void hover(bool state);
 
 Q_SIGNALS:
     void editComplete(std::vector<QPointF> pts, QGIView* parent);  //tell caller that edit session is finished
@@ -94,6 +96,8 @@ protected:
     Base::Vector3d m_attachPoint;
 
 protected:
+    QColor getNormalColor();
+
     QGraphicsItem* m_parentItem;
     QGEPath* m_line;
     QGIArrow* m_arrow1;
@@ -101,6 +105,7 @@ protected:
     double m_lineWidth;
     QColor m_lineColor;
     Qt::PenStyle m_lineStyle;
+    bool m_hasHover;
 };
 
 }

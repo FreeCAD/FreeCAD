@@ -22,35 +22,36 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERLEADER_H
-#define DRAWINGGUI_VIEWPROVIDERLEADER_H
+#ifndef TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
+#define TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
 
 #include <App/PropertyUnits.h>
 
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawRichAnno.h>
 
 #include "ViewProviderDrawingView.h"
 
 namespace TechDraw {
 class DrawRichAnno;
-class DrawLeaderLine;
 }
 
 namespace TechDrawGui {
 
-class TechDrawGuiExport ViewProviderLeader : public ViewProviderDrawingView
+class TechDrawGuiExport ViewProviderRichAnno : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderLeader);
+    PROPERTY_HEADER(TechDrawGui::ViewProviderRichAnno);
 
 public:
     /// constructor
-    ViewProviderLeader();
+    ViewProviderRichAnno();
     /// destructor
-    virtual ~ViewProviderLeader();
+    virtual ~ViewProviderRichAnno();
 
-    App::PropertyFloat    LineWidth;
-    App::PropertyInteger  LineStyle;
+    App::PropertyFont     Font;
+    App::PropertyLength   Fontsize;
     App::PropertyColor    Color;
+    App::PropertyFloat    MaxWidth;
+    App::PropertyBool     ShowFrame;
 
     virtual void attach(App::DocumentObject *);
 /*    virtual void setDisplayMode(const char* ModeName);*/
@@ -62,17 +63,16 @@ public:
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
 
-    std::vector<App::DocumentObject*> claimChildren(void) const;
-
-    virtual TechDraw::DrawLeaderLine* getViewObject() const;
-    TechDraw::DrawLeaderLine* getFeature()  const;
+    virtual TechDraw::DrawRichAnno* getViewObject() const;
+    TechDraw::DrawRichAnno* getFeature()  const;
 
 protected:
-    double getDefLineWeight(void);
     App::Color getDefLineColor(void);
+    std::string getDefFont(void);
+    double getDefFontSize(void);
+
 };
 
 } // namespace TechDrawGui
 
-
-#endif // DRAWINGGUI_VIEWPROVIDERLEADER_H
+#endif // TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
