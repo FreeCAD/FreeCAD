@@ -24,18 +24,22 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+# include <TopExp_Explorer.hxx>
+# include <TopAbs_ShapeEnum.hxx>
+# include <BRep_Tool.hxx>
+# include <TopExp.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <TopoDS_Compound.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <GCPnts_QuasiUniformDeflection.hxx>
+# include <BRep_Builder.hxx>
+#endif
+
 #include "edgecluster.h"
-#include <TopExp_Explorer.hxx>
-#include <TopAbs_ShapeEnum.hxx>
-#include <BRep_Tool.hxx>
-#include <TopExp.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Compound.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <GCPnts_QuasiUniformDeflection.hxx>
-#include <BRep_Builder.hxx>
+
 
 
 using namespace Part;
@@ -86,7 +90,7 @@ void Edgecluster::Perform()
     {
         m_edges.clear();
         //Lets start with a vertice that only has one edge (that means start or end point of the merged edges!)
-        tMapPntEdge::iterator iter; 
+        tMapPntEdge::iterator iter;
         bool closed = true;
         for(iter=m_vertices.begin();iter!=m_vertices.end();++iter)
         {
@@ -211,7 +215,6 @@ void Edgecluster::Perform(const TopoDS_Edge& edge)
     iter.first->second.push_back(edge);
 }
 
-#include <BRepAdaptor_Curve.hxx>
 
 bool Edgecluster::IsValidEdge(const TopoDS_Edge& edge)
 {
