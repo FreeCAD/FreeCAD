@@ -28,27 +28,27 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Vector3D.h>
 
-#include "DrawTextLeader.h"
+#include "DrawRichAnno.h"
 
-// inclusion of the generated files (generated out of DrawTextLeaderPy.xml)
+// inclusion of the generated files (generated out of DrawRichAnnoPy.xml)
 #include <Base/VectorPy.h>
-#include <Mod/TechDraw/App/DrawTextLeaderPy.h>
-#include <Mod/TechDraw/App/DrawTextLeaderPy.cpp>
+#include <Mod/TechDraw/App/DrawRichAnnoPy.h>
+#include <Mod/TechDraw/App/DrawRichAnnoPy.cpp>
 
 using namespace TechDraw;
 
 // returns a string which represents the object e.g. when printed in python
-std::string DrawTextLeaderPy::representation(void) const
+std::string DrawRichAnnoPy::representation(void) const
 {
-    return std::string("<DrawTextLeader object>");
+    return std::string("<DrawRichAnno object>");
 }
 
-PyObject *DrawTextLeaderPy::getCustomAttributes(const char* /*attr*/) const
+PyObject *DrawRichAnnoPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
 }
 
-int DrawTextLeaderPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+int DrawRichAnnoPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }

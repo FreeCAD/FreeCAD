@@ -47,9 +47,12 @@ public:
     App::PropertyInteger      StartSymbol;
     App::PropertyInteger      EndSymbol;
     App::PropertyBool         Scalable;
+    App::PropertyBool         AutoHorizontal;
 
     virtual short mustExecute() const;
     virtual App::DocumentObjectExecReturn *execute(void);
+    virtual void onDocumentRestored(void) override;
+
 
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderLeader";
@@ -62,6 +65,9 @@ public:
     virtual App::DocumentObject* getBaseObject(void) const;
     bool keepUpdated(void);
     double getScale(void);
+    void adjustLastSegment(void);
+    bool getDefAuto(void) const;
+
 
 protected:
     virtual void onChanged(const App::Property* prop);

@@ -102,6 +102,8 @@ private:
     TrackerMode m_trackerMode;
     QPen m_trackPen;
     QPen m_tailPen;
+    QPointF m_lastClick;
+    bool m_2clickPending;
 };
 
 } // namespace

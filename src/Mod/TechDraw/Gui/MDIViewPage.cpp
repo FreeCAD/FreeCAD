@@ -82,6 +82,7 @@
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawRichAnno.h>
 
 #include "Rez.h"
 #include "QGIDrawingTemplate.h"
@@ -96,6 +97,8 @@
 #include "ViewProviderPage.h"
 #include "QGVPage.h"
 #include "QGILeaderLine.h"
+#include "QGIRichAnno.h"
+#include "QGMText.h"
 
 
 using namespace TechDrawGui;
@@ -167,6 +170,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     //therefore we need to make sure parentage of the graphics representation is set properly. bit of a kludge.
     setDimensionGroups();
     setBalloonGroups();
+    setLeaderGroups();
 
     App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
@@ -228,6 +232,23 @@ void MDIViewPage::setBalloonGroups(void)
     }
 }
 
+void MDIViewPage::setLeaderGroups(void)
+{
+    const std::vector<QGIView *> &allItems = m_view->getViews();
+    std::vector<QGIView *>::const_iterator itInspect;
+    int leadItemType = QGraphicsItem::UserType + 232;
+
+    for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
+        if (((*itInspect)->type() == leadItemType) && (!(*itInspect)->group())) {
+            QGIView* parent = m_view->findParent((*itInspect));
+            if (parent) {
+                QGILeaderLine* lead = dynamic_cast<QGILeaderLine*>((*itInspect));
+                m_view->addLeaderToParent(lead,parent);
+            }
+        }
+    }
+}
+
 void MDIViewPage::setDocumentObject(const std::string& name)
 {
     m_objectName = name;
@@ -237,7 +258,6 @@ void MDIViewPage::setDocumentName(const std::string& name)
 {
     m_documentName = name;
 }
-
 
 void MDIViewPage::closeEvent(QCloseEvent* ev)
 {
@@ -337,6 +357,9 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId()) ) {
         qview = m_view->addViewLeader( static_cast<TechDraw::DrawLeaderLine *>(obj) );
+
+    } else if (typeId.isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId()) ) {
+        qview = m_view->addRichAnno( static_cast<TechDraw::DrawRichAnno*>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawHatch::getClassTypeId()) ) {
         //Hatch is not attached like other Views (since it isn't really a View)
@@ -1107,7 +1130,7 @@ void MDIViewPage::sceneSelectionChanged()
     setTreeToSceneSelect();
 }
 
-//Note: no guarantee of selection order???
+//Note: Qt says: "no guarantee of selection order"!!!
 void MDIViewPage::setTreeToSceneSelect(void)
 {
     bool saveBlock = blockConnection(true); // block selectionChanged signal from Tree/Observer
@@ -1118,6 +1141,8 @@ void MDIViewPage::setTreeToSceneSelect(void)
     for (QList<QGraphicsItem*>::iterator it = sceneSel.begin(); it != sceneSel.end(); ++it) {
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
         if(itemView == 0) {
+//            Base::Console().Message("MDIVP::setTreeToScene - selection not QGIView - type: %d\n",
+//                                    (*it)->type() - QGraphicsItem::UserType);
             QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
             if(edge) {
                 QGraphicsItem*parent = edge->parentItem();
@@ -1214,7 +1239,48 @@ void MDIViewPage::setTreeToSceneSelect(void)
                 //bool accepted =
                 static_cast<void> (Gui::Selection().addSelection(dimObj->getDocument()->getName(),dimObj->getNameInDocument()));
             }
+            
+            QGMText *mText = dynamic_cast<QGMText*>(*it);
+            if(mText) {
+//                Base::Console().Message("MDIVP::setTreeToScene - mTextSelected!\n");
+                QGraphicsItem* textParent = mText->QGraphicsItem::parentItem();
+                if(!textParent) {
+//                    Base::Console().Message("MDIVP::setTreeToScene - mText has no parent item\n");
+                    continue;
+                }
+
+                QGIView *parent = dynamic_cast<QGIView *>(textParent);
+
+                if(!parent) {
+//                  Base::Console().Message("MDIVP::setTreeToScene - mText parent is not QGIV\n");
+                  continue;
+                  }
+
+                TechDraw::DrawView *parentFeat = parent->getViewObject();
+                if (!parentFeat) {
+//                    Base::Console().Message("MDIVP::setTreeToScene - mText has no parent Feature\n");
+                    continue;
+                }
+//                if (!parentFeat->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
+//                    //mtext is parented to something other than Leader
+//                    //need special cases here?
+//                    Base::Console().Message("MDIVP::setTreeToScene - mText parentFeat is not LeaderLine\n");
+//                    continue;
+//                }
+                const char* name = parentFeat->getNameInDocument();
+                if (!name) {                                   //can happen during undo/redo if Dim is selected???
+//                    Base::Console().Message("INFO - MDIVP::sceneSelectionChanged - parentFeat name is null!\n");
+                    continue;
+                }
+
+                //bool accepted =
+                static_cast<void> (Gui::Selection().addSelection(parentFeat->getDocument()->getName(),parentFeat->getNameInDocument()));
+            }
+
         } else {
+//            Base::Console().Message("MDIVP::setTreeToScene - selection IS a QGIView - type: %d\n",
+//                                    itemView->type() - QGraphicsItem::UserType);
+
             TechDraw::DrawView *viewObj = itemView->getViewObject();
             if (viewObj && !viewObj->isRemoving()) {
                 std::string doc_name = viewObj->getDocument()->getName();

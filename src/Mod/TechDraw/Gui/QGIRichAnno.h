@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMTEXTLEADER_H
-#define DRAWINGGUI_QGRAPHICSITEMTEXTLEADER_H
+#ifndef TECHDRAWGUI_QGIRICHANNO_H
+#define TECHDRAWGUI_QGIRICHANNO_H
 
 #include <QObject>
 #include <QGraphicsView>
@@ -37,7 +37,7 @@
 #include "QGILeaderLine.h"
 
 namespace TechDraw {
-class DrawTextLeader;
+class DrawRichAnno;
 class DrawLeaderLine;
 }
 
@@ -51,16 +51,16 @@ class QGMText;
 
 //*******************************************************************
 
-class TechDrawGuiExport QGITextLeader : public QGILeaderLine
+class TechDrawGuiExport QGIRichAnno : public QGIView
 {
     Q_OBJECT
 
 public:
     enum {Type = QGraphicsItem::UserType + 233};
 
-    explicit QGITextLeader(QGraphicsItem* myParent = nullptr,
-                           TechDraw::DrawTextLeader* lead = nullptr);
-    ~QGITextLeader() = default;
+    explicit QGIRichAnno(QGraphicsItem* myParent = nullptr,
+                           TechDraw::DrawRichAnno* lead = nullptr);
+    ~QGIRichAnno() = default;
 
     int type() const override { return Type;}
     virtual void paint( QPainter * painter,
@@ -68,16 +68,19 @@ public:
                         QWidget * widget = 0 ) override;
     virtual QRectF boundingRect() const override;
     virtual QPainterPath shape(void) const override;
-/*    virtual void updateView(bool update = false) override;*/
+
+    virtual void drawBorder() override;
+    virtual void updateView(bool update = false) override;
 
     void setTextItem(void);
 
-    virtual TechDraw::DrawTextLeader* getFeature(void);
+    virtual TechDraw::DrawRichAnno* getFeature(void);
 
 public Q_SLOTS:
     void textDragging(void);
     void textDragFinished(void);
-    void onTextSelect(bool state);
+    void hover(bool state);
+    void select(bool state);
 
 protected:
     virtual void draw() override;
@@ -86,8 +89,10 @@ protected:
 
 protected:
     QGMText* m_text;
+    bool m_hasHover;
+
 };
 
 }
 
-#endif // DRAWINGGUI_QGRAPHICSITEMTEXTLEADER_H
+#endif // TECHDRAWGUI_QGIRICHANNO_H

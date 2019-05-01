@@ -120,9 +120,13 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void pointsUpdated(std::vector<QPointF> pts);
+    void hover(bool state);
+    void selected(bool state);
 
 protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     std::vector<QPointF> m_deltas;       //deltas between points 1:1 scale, starts at (0,0)
     std::vector<QGMarker*> m_markers;
     QPointF m_attach;

@@ -57,7 +57,8 @@
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "TaskGeomHatch.h"
-#include "TaskTextLeader.h"
+#include "TaskLeaderLine.h"
+#include "TaskRichAnno.h"
 #include "ViewProviderGeomHatch.h"
 #include "ViewProviderPage.h"
 
@@ -89,9 +90,6 @@ CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
 void CmdTechDrawLeaderLine::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Not Available"),
-            QObject::tr("Line function is not available. Use Text Leader."));
-    return;
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     if (dlg != nullptr) {
@@ -120,12 +118,8 @@ void CmdTechDrawLeaderLine::activated(int iMsg)
             return;
     }
 
-    Gui::Control().showDialog(new TaskDlgTextLeader(LINEMODE,
-                                                    baseFeat,
+    Gui::Control().showDialog(new TechDrawGui::TaskDlgLeaderLine(baseFeat,
                                                     page));
-//    Gui::Control().showDialog(new TaskDlgLeaderLine(1,
-//                                                    baseFeat,
-//                                                    page));
 }
 
 bool CmdTechDrawLeaderLine::isActive(void)
@@ -136,24 +130,24 @@ bool CmdTechDrawLeaderLine::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_TextLeader
+// TechDraw_RichAnno
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawTextLeader);
+DEF_STD_CMD_A(CmdTechDrawRichAnno);
 
-CmdTechDrawTextLeader::CmdTechDrawTextLeader()
-  : Command("TechDraw_TextLeader")
+CmdTechDrawRichAnno::CmdTechDrawRichAnno()
+  : Command("TechDraw_RichAnno")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add a text leader to a view");
-    sToolTipText    = QT_TR_NOOP("Add a text leader to a view");
-    sWhatsThis      = "TechDraw_TextLeader";
+    sMenuText       = QT_TR_NOOP("Add a rich text annotation");
+    sToolTipText    = QT_TR_NOOP("Add a rich text annotation");
+    sWhatsThis      = "TechDraw_RichAnno";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-textleader";
 }
 
-void CmdTechDrawTextLeader::activated(int iMsg)
+void CmdTechDrawRichAnno::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
@@ -172,23 +166,22 @@ void CmdTechDrawTextLeader::activated(int iMsg)
     TechDraw::DrawView* baseFeat = nullptr;
     if (!selection.empty()) {
         baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
-        if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                 QObject::tr("Can not attach leader.  No base View selected."));
-            return;
-        }
-    } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                 QObject::tr("You must select a base View for the line."));
-            return;
+//        if( baseFeat == nullptr ) {
+//            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+//                                 QObject::tr("Can not attach leader.  No base View selected."));
+//            return;
+//        }
+//    } else {
+//            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+//                                 QObject::tr("You must select a base View for the line."));
+//            return;
     }
 
-    Gui::Control().showDialog(new TaskDlgTextLeader(TEXTMODE,
-                                                    baseFeat,
-                                                    page));
+    Gui::Control().showDialog(new TaskDlgRichAnno(baseFeat,
+                                                  page));
 }
 
-bool CmdTechDrawTextLeader::isActive(void)
+bool CmdTechDrawRichAnno::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
@@ -477,7 +470,7 @@ void CreateTechDrawCommandsDecorate(void)
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
 //    rcCmdMgr.addCommand(new CmdTechDrawRedrawPage());
     rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
-    rcCmdMgr.addCommand(new CmdTechDrawTextLeader());
+    rcCmdMgr.addCommand(new CmdTechDrawRichAnno());
 }
 
 //===========================================================================

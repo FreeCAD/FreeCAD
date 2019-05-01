@@ -65,6 +65,7 @@ QGIPrimPath::QGIPrimPath():
 
 QVariant QGIPrimPath::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+//    Base::Console().Message("QGIPP::itemChange(%d) - type: %d\n", change,type() - QGraphicsItem::UserType);
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             setPrettySel();
@@ -85,15 +86,13 @@ void QGIPrimPath::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QGIPrimPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-//    QGIView *view = dynamic_cast<QGIView *> (parentItem());    //this is temp for debug??
-//    assert(view != 0);
-//    Q_UNUSED(view);
-    if(!isSelected() && !isHighlighted) {
+    if(!isSelected()) {
         setPrettyNormal();
     }
     QGraphicsPathItem::hoverLeaveEvent(event);
 }
 
+//set highlighted is obsolete
 void QGIPrimPath::setHighlighted(bool b)
 {
     isHighlighted = b;

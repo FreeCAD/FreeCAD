@@ -42,7 +42,9 @@ class DrawViewCollection;
 class DrawViewSpreadsheet;
 class DrawViewImage;
 class DrawLeaderLine;
-class DrawViewBalloon;}
+class DrawViewBalloon;
+class DrawRichAnno;
+}
 
 namespace TechDrawGui
 {
@@ -52,6 +54,7 @@ class QGITemplate;
 class ViewProviderPage;
 class QGIViewBalloon;
 class QGILeaderLine;
+class QGIRichAnno;
 
 class TechDrawGuiExport QGVPage : public QGraphicsView
 {
@@ -79,6 +82,7 @@ public:
     QGIView * addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *view);
     QGIView * addDrawViewImage(TechDraw::DrawViewImage *view);
     QGIView * addViewLeader(TechDraw::DrawLeaderLine* view);
+    QGIView * addRichAnno(TechDraw::DrawRichAnno* anno);
 
     QGIView* findQViewForDocObj(App::DocumentObject *obj) const;
     QGIView* getQGIVByName(std::string name);
@@ -86,6 +90,8 @@ public:
 
     void addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent);
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
+    void addLeaderToParent(QGILeaderLine* lead, QGIView* parent);
+
 //    const std::vector<QGIView *> & getViews() const { return views; }    //only used in MDIVP
     std::vector<QGIView *> getViews() const;   //only used in MDIVP
 

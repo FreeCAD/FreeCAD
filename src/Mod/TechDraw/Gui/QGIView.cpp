@@ -226,10 +226,6 @@ void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 //    Base::Console().Message("QGIV::mousePressEvent() - %s\n",getViewName());
     signalSelectPoint(this, event->pos());
 
-    if(m_locked) {
-        event->ignore();
-        return;
-    }
     QGraphicsItem::mousePressEvent(event);
 }
 
