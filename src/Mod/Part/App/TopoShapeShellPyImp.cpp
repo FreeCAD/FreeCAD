@@ -27,6 +27,7 @@
 # include <BRep_Builder.hxx>
 # include <BRepCheck_Analyzer.hxx>
 # include <BRepGProp.hxx>
+# include <BRepPrimAPI_MakeHalfSpace.hxx>
 # include <GProp_GProps.hxx>
 # include <GProp_PrincipalProps.hxx>
 # include <TopoDS.hxx>
@@ -35,7 +36,6 @@
 # include <ShapeAnalysis_Shell.hxx>
 #endif
 
-#include <BRepPrimAPI_MakeHalfSpace.hxx>
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>

@@ -22,7 +22,7 @@
 
 
 #include "PreCompiled.h"
-#include <Base/Tools.h>
+#ifndef _PreComp_
 #include <algorithm>
 #include <iterator>
 #include <Geom_Surface.hxx>
@@ -65,6 +65,8 @@
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
 #include <Standard_Version.hxx>
+#endif
+#include <Base/Tools.h>
 #include <Base/Console.h>
 #include "modelRefine.h"
 

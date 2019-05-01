@@ -36,16 +36,15 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Wire.hxx>
 # include <gp_Ax1.hxx>
+# include <BRepGProp.hxx>
+# include <GProp_GProps.hxx>
+# include <GProp_PrincipalProps.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <GCPnts_UniformDeflection.hxx>
+# include <GCPnts_TangentialDeflection.hxx>
+# include <GCPnts_QuasiUniformAbscissa.hxx>
+# include <GCPnts_QuasiUniformDeflection.hxx>
 #endif
-
-#include <BRepGProp.hxx>
-#include <GProp_GProps.hxx>
-#include <GProp_PrincipalProps.hxx>
-#include <GCPnts_UniformAbscissa.hxx>
-#include <GCPnts_UniformDeflection.hxx>
-#include <GCPnts_TangentialDeflection.hxx>
-#include <GCPnts_QuasiUniformAbscissa.hxx>
-#include <GCPnts_QuasiUniformDeflection.hxx>
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>

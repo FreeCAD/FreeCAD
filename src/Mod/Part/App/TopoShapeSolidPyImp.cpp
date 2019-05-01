@@ -34,7 +34,7 @@
 #include <GProp_PrincipalProps.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepLib.hxx>
-# include <Precision.hxx>
+#include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Solid.hxx>

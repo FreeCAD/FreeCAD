@@ -63,16 +63,15 @@
 # include <ShapeAnalysis_Edge.hxx>
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
+# include <BRepGProp.hxx>
+# include <GProp_GProps.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <GCPnts_UniformDeflection.hxx>
+# include <GCPnts_TangentialDeflection.hxx>
+# include <GCPnts_QuasiUniformAbscissa.hxx>
+# include <GCPnts_QuasiUniformDeflection.hxx>
 #endif
-
-#include <BRepGProp.hxx>
-#include <GProp_GProps.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <GCPnts_UniformAbscissa.hxx>
-#include <GCPnts_UniformDeflection.hxx>
-#include <GCPnts_TangentialDeflection.hxx>
-#include <GCPnts_QuasiUniformAbscissa.hxx>
-#include <GCPnts_QuasiUniformDeflection.hxx>
 
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>

@@ -58,15 +58,14 @@
 # include <TopLoc_Location.hxx>
 # include <TopExp.hxx>
 # include <Precision.hxx>
+# include <HLRAppli_ReflectLines.hxx>
+# include <BRepGProp.hxx>
+# include <GProp_GProps.hxx>
+# include <BRepAlgo_NormalProjection.hxx>
+# include <ShapeAnalysis_ShapeTolerance.hxx>
+# include <ShapeFix_ShapeTolerance.hxx>
+# include <Standard_Version.hxx>
 #endif
-
-#include <HLRAppli_ReflectLines.hxx>
-#include <BRepGProp.hxx>
-#include <GProp_GProps.hxx>
-#include <BRepAlgo_NormalProjection.hxx>
-#include <ShapeAnalysis_ShapeTolerance.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
-#include <Standard_Version.hxx>
 
 
 #include <Base/GeometryPyCXX.h>
