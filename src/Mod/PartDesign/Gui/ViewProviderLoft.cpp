@@ -25,7 +25,9 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
-#include <QMenu>
+# include <QMenu>
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 #include "ViewProviderLoft.h"
@@ -38,8 +40,7 @@
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
+
 
 using namespace PartDesignGui;
 
