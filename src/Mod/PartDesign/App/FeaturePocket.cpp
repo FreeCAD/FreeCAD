@@ -43,7 +43,6 @@
 # include <BRepAlgoAPI_Common.hxx>
 #endif
 
-#include <QCoreApplication>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
@@ -63,7 +62,7 @@ PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::ProfileBased)
 Pocket::Pocket()
 {
     addSubType = FeatureAddSub::Subtractive;
-    
+
     ADD_PROPERTY_TYPE(Type,((long)0),"Pocket",App::Prop_None,"Pocket type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
@@ -126,7 +125,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     }
 
     // get the Sketch plane
-    Base::Placement SketchPos    = obj->Placement.getValue(); 
+    Base::Placement SketchPos    = obj->Placement.getValue();
     Base::Vector3d  SketchVector = getProfileNormal();
 
     // turn around for pockets
