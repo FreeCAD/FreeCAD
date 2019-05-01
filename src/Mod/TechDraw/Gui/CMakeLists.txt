@@ -38,11 +38,12 @@ set(TechDrawGui_MOC_HDRS
     DlgTemplateField.h
     TaskSectionView.h
     TaskGeomHatch.h
-    TaskTextLeader.h
+    TaskLeaderLine.h
+    TaskRichAnno.h
     QGEPath.h
     QGTracker.h
     QGILeaderLine.h
-    QGITextLeader.h
+    QGIRichAnno.h
     QGMText.h
     mrichtextedit.h
     mtextedit.h
@@ -65,7 +66,8 @@ set(TechDrawGui_UIC_SRCS
     DlgTemplateField.ui
     TaskSectionView.ui
     TaskGeomHatch.ui
-    TaskTextLeader.ui
+    TaskLeaderLine.ui
+    TaskRichAnno.ui
     mrichtextedit.ui
     )
 
@@ -123,9 +125,12 @@ SET(TechDrawGui_SRCS
     TaskGeomHatch.ui
     TaskGeomHatch.cpp
     TaskGeomHatch.h
-    TaskTextLeader.ui
-    TaskTextLeader.cpp
-    TaskTextLeader.h
+    TaskLeaderLine.ui
+    TaskLeaderLine.cpp
+    TaskLeaderLine.h
+    TaskRichAnno.ui
+    TaskRichAnno.cpp
+    TaskRichAnno.h
     DrawGuiUtil.cpp
     DrawGuiUtil.h
     Rez.cpp
@@ -215,8 +220,8 @@ SET(TechDrawGuiView_SRCS
     QGTracker.h
     QGILeaderLine.cpp
     QGILeaderLine.h
-    QGITextLeader.cpp
-    QGITextLeader.h
+    QGIRichAnno.cpp
+    QGIRichAnno.h
     QGMText.h
     QGMText.cpp
     TemplateTextField.cpp
@@ -258,6 +263,8 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderImage.h
     ViewProviderLeader.cpp
     ViewProviderLeader.h
+    ViewProviderRichAnno.cpp
+    ViewProviderRichAnno.h
 )
 
 SOURCE_GROUP("MRTE" FILES ${MRTE_SRCS})
@@ -270,7 +277,8 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskLinkDim.ui
     TaskSectionView.ui
     TaskGeomHatch.ui
-    TaskTextLeader.ui
+    TaskLeaderLine.ui
+    TaskRichAnno.ui
     mrichtextedit.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})

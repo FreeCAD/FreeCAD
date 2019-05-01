@@ -69,7 +69,7 @@
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawTextLeader.h>
+#include <Mod/TechDraw/App/DrawRichAnno.h>
 
 #include "Rez.h"
 #include "QGIDrawingTemplate.h"
@@ -89,7 +89,7 @@
 #include "QGIViewImage.h"
 #include "QGIFace.h"
 #include "QGILeaderLine.h"
-#include "QGITextLeader.h"
+#include "QGIRichAnno.h"
 
 #include "ZVALUE.h"
 #include "ViewProviderPage.h"
@@ -469,41 +469,61 @@ void QGVPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
     dim->setZValue(ZVALUE::DIMENSION);
 }
 
-
 QGIView * QGVPage::addViewLeader(TechDraw::DrawLeaderLine *leader)
 {
+//    Base::Console().Message("QGVP::addViewLeader(%s)\n",leader->getNameInDocument());
     QGILeaderLine* leaderGroup = nullptr;
-    QGITextLeader* textGroup = nullptr;
 
     App::DocumentObject* parentObj = leader->LeaderParent.getValue();
     TechDraw::DrawView*  parentDV  = dynamic_cast<TechDraw::DrawView*>(parentObj);
-    TechDraw::DrawTextLeader* textFeat = dynamic_cast<TechDraw::DrawTextLeader*>(leader);
-    
+
+    //NOTE: if Leaders are ever allowed to not be attached to a View, this next bit will have to change
     if (parentDV != nullptr) {
         QGIView* parentQV = findQViewForDocObj(parentObj);
         if (parentQV != nullptr) {
-            if (textFeat != nullptr) {
-                textGroup = new QGITextLeader(parentQV, textFeat);
-                textGroup->updateView(true);
-                return textGroup;
-            } else {                
-                leaderGroup = new QGILeaderLine(parentQV, leader);
-                leaderGroup->updateView(true);            //this is different from everybody else,
-                                                          //but it works. 
-                return leaderGroup;
-            }
-        } else {
-            throw Base::TypeError("QGVP::addViewLeader - parent DV has no QGIV");
+            leaderGroup = new QGILeaderLine(parentQV, leader);
+            leaderGroup->updateView(true);            //this is different from everybody else,
+                                                      //but it works. 
+            return leaderGroup;
         }
-//    } else if (parentDP != nullptr) {
-//        leaderGroup = new QGILeaderLine(nullptr,leader);
-//        ourScene->addItem(leaderGroup);
     } else {
-        //TARFU
-        throw Base::TypeError("QGVP::addViewLeader - parent obj wrong type");
+        throw Base::TypeError("QGVP::addViewLeader - parent DV has no QGIV");
     }
-
     return nullptr;
+}
+
+void QGVPage::addLeaderToParent(QGILeaderLine* lead, QGIView* parent)
+{
+    assert(lead);
+    assert(parent);          //blow up if we don't have Leader or Parent
+    QPointF posRef(0.,0.);
+    QPointF mapPos = lead->mapToItem(parent, posRef);
+    lead->moveBy(-mapPos.x(), -mapPos.y());
+    parent->addToGroup(lead);              //vs lead->setParentItem(parent)??
+    lead->setZValue(ZVALUE::DIMENSION);
+}
+
+QGIView * QGVPage::addRichAnno(TechDraw::DrawRichAnno* anno)
+{
+    QGIRichAnno* annoGroup = nullptr;
+    TechDraw::DrawView*  parentDV = nullptr;
+    
+    App::DocumentObject* parentObj = anno->AnnoParent.getValue();
+    if (parentObj != nullptr) {
+        parentDV  = dynamic_cast<TechDraw::DrawView*>(parentObj);
+    }
+    if (parentDV != nullptr) {
+        QGIView* parentQV = findQViewForDocObj(parentObj);
+        annoGroup = new QGIRichAnno(parentQV, anno);
+        annoGroup->updateView(true);
+    } else {
+        annoGroup = new QGIRichAnno(nullptr, anno);
+        if (annoGroup->scene() == nullptr) {
+            scene()->addItem(annoGroup);
+        }
+        annoGroup->updateView(true);
+    }
+    return annoGroup;
 }
 
 //! find the graphic for a DocumentObject
@@ -593,8 +613,23 @@ QGIView * QGVPage::findParent(QGIView *view) const
                 }
             }
         }
-     }
+    }
 
+     //If type is LeaderLine we check LeaderParent
+    TechDraw::DrawLeaderLine *lead = 0;
+    lead = dynamic_cast<TechDraw::DrawLeaderLine *>(myFeat);
+
+    if(lead) {
+        App::DocumentObject* obj = lead->LeaderParent.getValue();
+        if(obj != nullptr) {
+            std::string parentName = obj->getNameInDocument();
+            for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
+                if(strcmp((*it)->getViewName(), parentName.c_str()) == 0) {
+                    return *it;
+                }
+            }
+        }
+    }
     // Not found a parent
     return nullptr;
 }

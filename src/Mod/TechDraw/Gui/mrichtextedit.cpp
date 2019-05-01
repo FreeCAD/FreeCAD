@@ -113,6 +113,8 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     connect(f_textedit, SIGNAL(copyAvailable(bool)), f_cut, SLOT(setEnabled(bool)));
     connect(f_textedit, SIGNAL(copyAvailable(bool)), f_copy, SLOT(setEnabled(bool)));
 
+//    f_textedit->setLineWrapMode(QTextEdit::FixedColumnWidth);
+//    f_textedit->setLineWrapColumnOrWidth(????));
 #ifndef QT_NO_CLIPBOARD
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(slotClipboardDataChanged()));
 #endif

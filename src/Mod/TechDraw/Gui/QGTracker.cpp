@@ -35,6 +35,8 @@
 #include <QTransform>
 #endif
 
+#include <limits>
+
 #include <App/Application.h>
 #include <App/Material.h>
 #include <Base/Console.h>
@@ -52,7 +54,9 @@ using namespace TechDrawGui;
 QGTracker::QGTracker(QGraphicsScene* inScene, TrackerMode m):
     m_width(0),
     m_sleep(false),
-    m_qgParent(nullptr)
+    m_qgParent(nullptr),
+    m_lastClick(QPointF(FLT_MAX,FLT_MAX)),
+    m_2clickPending(false)
 {
     setTrackerMode(m);
     if (inScene != nullptr) {
@@ -76,7 +80,6 @@ QGTracker::QGTracker(QGraphicsScene* inScene, TrackerMode m):
     double tWeight = getTrackerWeight();
     setWidth(tWeight);
     setStyle(Qt::DashLine);
-//    setStyle(Qt::SolidLine);
     setNormalColor(tailColor);
     setPrettyNormal();
 
@@ -110,32 +113,47 @@ QVariant QGTracker::itemChange(GraphicsItemChange change, const QVariant &value)
 
 void QGTracker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 { 
+    QPointF myScenePos = event->scenePos();
     if (!m_sleep) {
-        QPointF scenePos(event->scenePos());
-        if (event->button() == Qt::LeftButton)  {
-            if (event->modifiers() & Qt::ControlModifier) {
-                scenePos = snapToAngle(scenePos);
-            }
-            onMousePress(scenePos);
+        double someLimit = Rez::guiX(10.0);
+        QPointF manhat = myScenePos - m_lastClick;
+//        Base::Console().Message("QGT::mousePressEvent - scenePos: (%.3f, %.3f) lastClick:(%.3f,%.3f)\n",
+//                                myScenePos.x(), myScenePos.y(), m_lastClick.x(),m_lastClick.y());
+//        Base::Console().Message("QGT::mousePressEvent - manhat(%.3f, %.3f) mLength: %.3f\n",
+//                                manhat.x(),manhat.y(), manhat.manhattanLength());
+        if (manhat.manhattanLength() < someLimit) {
+//            Base::Console().Message("QGT::mousePressEvent - too close to last click\n");
+        } else {
+            if (event->button() == Qt::LeftButton)  {
+                if (event->modifiers() & Qt::ControlModifier) {
+                    myScenePos = snapToAngle(myScenePos);
+                }
+                onMousePress(myScenePos);
 
-        } else if (event->button() == Qt::RightButton)  {
-            terminateDrawing();
+            } else if (event->button() == Qt::RightButton)  {
+                terminateDrawing();
+            }
         }
     }
+    m_lastClick = myScenePos;
     QGIPrimPath::mousePressEvent(event);
 }
 
 void QGTracker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    m_lastClick = event->scenePos();
     QGIPrimPath::mouseReleaseEvent(event);
 }
 
+//TODO: fix this to handle click-release-doubleclick-release nonsense.
+//      can generate two add points
 void QGTracker::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGT::mouseDoubleClickEvent()\n");
     if (!m_sleep) {
         onDoubleClick(event->scenePos());
     }
+    m_lastClick = event->scenePos();
     QGIPrimPath::mouseDoubleClickEvent(event);
 }
 

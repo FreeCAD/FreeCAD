@@ -45,7 +45,7 @@ generate_from_xml(DrawProjGroupPy)
 generate_from_xml(DrawProjGroupItemPy)
 generate_from_xml(DrawViewAnnotationPy)
 generate_from_xml(DrawLeaderLinePy)
-generate_from_xml(DrawTextLeaderPy)
+generate_from_xml(DrawRichAnnoPy)
 
 
 SET(Draw_SRCS
@@ -97,8 +97,8 @@ SET(Draw_SRCS
     DrawViewDetail.h
     DrawLeaderLine.cpp
     DrawLeaderLine.h
-    DrawTextLeader.cpp
-    DrawTextLeader.h
+    DrawRichAnno.cpp
+    DrawRichAnno.h
     )
 
 SET(TechDraw_SRCS
@@ -158,8 +158,8 @@ SET(Python_SRCS
     DrawViewAnnotationPyImp.cpp
     DrawLeaderLinePy.xml
     DrawLeaderLinePyImp.cpp
-    DrawTextLeaderPy.xml
-    DrawTextLeaderPyImp.cpp
+    DrawRichAnnoPy.xml
+    DrawRichAnnoPyImp.cpp
     )
 
 SOURCE_GROUP("Mod" FILES ${TechDraw_SRCS})

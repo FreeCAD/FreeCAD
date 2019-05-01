@@ -174,8 +174,8 @@ QGEPath::QGEPath() :
     m_parentItem(nullptr)
 {
     setHandlesChildEvents(false);
-    setAcceptHoverEvents(false);
-    setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setAcceptHoverEvents(true);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, false);
 //    setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
@@ -190,10 +190,45 @@ QGEPath::QGEPath() :
 
 QVariant QGEPath::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-//    Base::Console().Message("QGEPath::itemChange(%d)\n",change);
-//    Q_EMIT dragging();
-
+//    Base::Console().Message("QGEP::itemChange(%d) - type: %d\n", change,type() - QGraphicsItem::UserType);
+    if (change == ItemSelectedHasChanged && scene()) {
+        if(isSelected()) {
+            Q_EMIT selected(true);
+            setPrettySel();
+        } else {
+            Q_EMIT selected(false);
+            setPrettyNormal();
+        }
+    }
     return QGIPrimPath::itemChange(change, value);
+}
+
+void QGEPath::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    Q_EMIT hover(true);
+    if (!isSelected()) {
+        setPrettyPre();
+    }
+    QGIPrimPath::hoverEnterEvent(event);
+}
+
+void QGEPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    QGIView *view = dynamic_cast<QGIView *> (parentItem());
+    assert(view != 0);
+    Q_UNUSED(view);
+
+    Q_EMIT hover(false);
+    QGraphicsItem* parent = parentItem();
+    bool parentSel(false);
+    if (parent != nullptr) {
+        parentSel = parent->isSelected();
+    }
+    if (!parentSel  && !isSelected()) {
+        setPrettyNormal();
+    }
+    QGraphicsPathItem::hoverLeaveEvent(event);
+//    QGIPrimPath::hoverLeaveEvent(event);  //QGIPP::hoverleave will reset pretty to normal
 }
 
 void QGEPath::startPathEdit()
@@ -325,7 +360,7 @@ void QGEPath::updatePath(void)
         }
     }
     setPath(result);
-    setPrettyNormal();
+//    setPrettyNormal();
 }
 
 void QGEPath::makeDeltasFromPoints(std::vector<QPointF> pts)

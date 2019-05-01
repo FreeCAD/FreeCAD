@@ -59,6 +59,10 @@ public:
     virtual void showBox(bool b) { m_showBox = b; }
     virtual bool showBox(void) { return m_showBox; }
 
+    virtual void setPrettyNormal() override;
+    virtual void setPrettyPre() override;
+    virtual void setPrettySel() override;
+
 Q_SIGNALS:
     void dragging();
     void hover(bool state);
@@ -74,6 +78,8 @@ protected:
 
 private:
     bool m_showBox;
+    std::string  m_prettyState;
+    QPointF m_lastClick;
 
 };
 

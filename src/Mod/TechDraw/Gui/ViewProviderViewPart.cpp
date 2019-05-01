@@ -39,6 +39,7 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
@@ -164,6 +165,7 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) cons
     //    - Leaders
     //    - Hatches
     //    - GeomHatches
+    //    - Leaders
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getViewPart()->getInList();
     try {
@@ -187,6 +189,8 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) cons
           } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawGeomHatch::getClassTypeId())) {
               temp.push_back((*it));
           } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())) {
+              temp.push_back((*it));
+          } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
               temp.push_back((*it));
           } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
               temp.push_back((*it));
