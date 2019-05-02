@@ -369,31 +369,46 @@ int ProgressBar::minimumDuration() const
 void Gui::ProgressBar::reset()
 {
   QProgressBar::reset();
-  if (setupTaskBarProgress()) m_taskbarProgress->reset();
+#ifdef QT_WINEXTRAS_LIB
+  setupTaskBarProgress();
+  m_taskbarProgress->reset();
+#endif
 }
 
 void Gui::ProgressBar::setRange(int minimum, int maximum)
 {
   QProgressBar::setRange(minimum, maximum);
-  if (setupTaskBarProgress()) m_taskbarProgress->setRange(minimum, maximum);
+#ifdef QT_WINEXTRAS_LIB
+  setupTaskBarProgress();
+  m_taskbarProgress->setRange(minimum, maximum);
+#endif
 }
 
 void Gui::ProgressBar::setMinimum(int minimum)
 {
   QProgressBar::setMinimum(minimum);
-  if (setupTaskBarProgress()) m_taskbarProgress->setMinimum(minimum);
+#ifdef QT_WINEXTRAS_LIB
+  setupTaskBarProgress();
+  m_taskbarProgress->setMinimum(minimum);
+#endif
 }
 
 void Gui::ProgressBar::setMaximum(int maximum)
 {
   QProgressBar::setMaximum(maximum);
-  if (setupTaskBarProgress()) m_taskbarProgress->setMaximum(maximum);
+#ifdef QT_WINEXTRAS_LIB
+  setupTaskBarProgress();
+  m_taskbarProgress->setMaximum(maximum);
+#endif
 }
 
 void Gui::ProgressBar::setValue(int value)
 {
   QProgressBar::setValue(value);
-  if (setupTaskBarProgress()) m_taskbarProgress->setValue(value);
+#ifdef QT_WINEXTRAS_LIB
+  setupTaskBarProgress();
+  m_taskbarProgress->setValue(value);
+#endif
 }
 
 void ProgressBar::setMinimumDuration (int ms)
@@ -462,26 +477,20 @@ void ProgressBar::leaveControlEvents()
     releaseKeyboard();
 }
 
-bool Gui::ProgressBar::setupTaskBarProgress(void)
+#ifdef QT_WINEXTRAS_LIB
+void ProgressBar::setupTaskBarProgress()
 {
   if (!m_taskbarButton || !m_taskbarProgress)
   {
-#ifdef QT_WINEXTRAS_LIB
     m_taskbarButton = new QWinTaskbarButton(this);
     m_taskbarButton->setWindow(MainWindow::getInstance()->windowHandle());
     //m_myButton->setOverlayIcon(QIcon(""));
 
     m_taskbarProgress = m_taskbarButton->progress();
     m_taskbarProgress->setVisible(true);
-    return true;
-#endif
-#ifndef QT_WINEXTRAS_LIB
-    return false;
-#endif
   }
-  else if (m_taskbarButton && m_taskbarProgress) return true;
-  return false;
 }
+#endif
 
 bool ProgressBar::eventFilter(QObject* o, QEvent* e)
 {
