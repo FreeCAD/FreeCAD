@@ -50,10 +50,14 @@ CURRENTDXFLIB = 1.40 # the minimal version of the dxfLibrary needed to run
 
 import six
 
-import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
+import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils, WorkingPlane
 from Draft import _Dimension, _ViewProviderDimension
 from FreeCAD import Vector
 
+# sets the default working plane
+plane = WorkingPlane.plane()
+FreeCAD.DraftWorkingPlane = plane
+	
 gui = FreeCAD.GuiUp
 draftui = None
 if gui:
