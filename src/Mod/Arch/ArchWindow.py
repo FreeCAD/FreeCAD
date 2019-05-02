@@ -104,14 +104,18 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
         from DraftGui import todo
-        todo.delay(recolorize,obj)
+        todo.delay(recolorize,[obj.Document.Name,obj.Name])
     return obj
 
-def recolorize(obj):
+def recolorize(names): # names is [docname,objname]
 
-    if obj.ViewObject:
-        if obj.ViewObject.Proxy:
-            obj.ViewObject.Proxy.colorize(obj,force=True)
+    if names[0] in FreeCAD.listDocuments():
+        doc = FreeCAD.getDocument(names[0])
+        obj = doc.getObject(names[1])
+        if obj:
+            if obj.ViewObject:
+                if obj.ViewObject.Proxy:
+                    obj.ViewObject.Proxy.colorize(obj,force=True)
 
 def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
 
