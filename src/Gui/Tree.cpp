@@ -1270,47 +1270,52 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
         DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetItem);
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
 
-        if (!vp->canDropObjects()) {
-            TREE_TRACE("cannot drop");
+        try {
+            if (!vp->canDropObjects()) {
+                TREE_TRACE("cannot drop");
+                event->ignore();
+                return;
+            }
+
+            for(auto ti : selectedItems()) {
+                if (ti->type() != TreeWidget::ObjectType) {
+                    TREE_TRACE("cannot drop");
+                    event->ignore();
+                    return;
+                }
+                auto item = static_cast<DocumentObjectItem*>(ti);
+
+                // To avoid a cylic dependency it must be made sure to not allow to
+                // drag'n'drop a tree item onto a child or grandchild item of it.
+                if (targetItemObj->isChildOfItem(item)) {
+                    TREE_TRACE("cannot drop");
+                    event->ignore();
+                    return;
+                }
+
+                // if the item is already a child of the target item there is nothing to do
+                if (item->parent() == targetItem) {
+                    TREE_TRACE("cannot drop");
+                    event->ignore();
+                    return;
+                }
+
+                std::ostringstream str;
+                auto owner = item->getRelativeParent(str,targetItemObj);
+                auto subname = str.str();
+
+                auto obj = item->object()->getObject();
+                // let the view provider decide to accept the object or ignore it
+                if (!vp->canDropObjectEx(obj,owner,subname.c_str(), item->mySubs)) {
+                    TREE_TRACE("cannot drop " << obj->getFullName() << ' '
+                            << (owner?owner->getFullName():"<No Owner>") << '.' << subname);
+                    event->ignore();
+                    return;
+                }
+            }
+        }catch(Base::Exception &e){
+            e.ReportException();
             event->ignore();
-            return;
-        }
-
-        for(auto ti : selectedItems()) {
-            if (ti->type() != TreeWidget::ObjectType) {
-                TREE_TRACE("cannot drop");
-                event->ignore();
-                return;
-            }
-            auto item = static_cast<DocumentObjectItem*>(ti);
-
-            // To avoid a cylic dependency it must be made sure to not allow to
-            // drag'n'drop a tree item onto a child or grandchild item of it.
-            if (targetItemObj->isChildOfItem(item)) {
-                TREE_TRACE("cannot drop");
-                event->ignore();
-                return;
-            }
-
-            // if the item is already a child of the target item there is nothing to do
-            if (item->parent() == targetItem) {
-                TREE_TRACE("cannot drop");
-                event->ignore();
-                return;
-            }
-
-            std::ostringstream str;
-            auto owner = item->getRelativeParent(str,targetItemObj);
-            auto subname = str.str();
-
-            auto obj = item->object()->getObject();
-            // let the view provider decide to accept the object or ignore it
-            if (!vp->canDropObjectEx(obj,owner,subname.c_str(), item->mySubs)) {
-                TREE_TRACE("cannot drop " << obj->getFullName() << ' '
-                        << (owner?owner->getFullName():"<No Owner>") << '.' << subname);
-                event->ignore();
-                return;
-            }
         }
     }
     else {
