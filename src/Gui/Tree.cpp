@@ -300,7 +300,22 @@ public:
                     updated = true;
                     if(child->getDocument()==obj->getDocument() && 
                        child->getDocument()==docItem->document()->getDocument())
-                        docItem->_ParentMap[child].insert(obj);
+                    {
+                        auto &parents = docItem->_ParentMap[child];
+                        if(parents.insert(obj).second && child->Visibility.getValue()) {
+                            bool showable = false;
+                            for(auto parent : parents) {  
+                                if(!parent->hasChildElement() 
+                                        && parent->getLinkedObject(false)==parent)
+                                {
+                                    showable = true;
+                                    break;
+                                }
+                            }
+                            if(!showable)
+                                child->Visibility.setValue(false);
+                        }
+                    }
                 }
             }
         }
@@ -2063,11 +2078,6 @@ void TreeWidget::onUpdateStatus(void)
             slotChangeObject(*v.second->viewObject,dummy,true);
 
         for(auto &v : docItem->ObjectMap) {
-            if(v.second->viewObject->Visibility.getValue() &&
-                    !docItem->isObjectShowable(v.second->viewObject->getObject()))
-            {
-                v.second->viewObject->hide();
-            }
             if(v.first->isError() && v.second->items.size() && !partial) {
                 auto item = v.second->rootItem;
                 if(!item) {
@@ -2643,6 +2653,10 @@ void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
 }
 
 void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj) {
+    if(!obj.getObject() || !obj.getObject()->getNameInDocument()) {
+        FC_ERR("view provider not attached");
+        return;
+    }
     getTree()->NewObjects[pDocument->getDocument()->getName()].push_back(obj.getObject()->getID());
     getTree()->_updateStatus();
 }

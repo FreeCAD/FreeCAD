@@ -2090,8 +2090,6 @@ std::string ViewProviderLink::dropObjectEx(App::DocumentObject* obj,
     if(isGroup(ext)) {
         size_t size = ext->getElementListValue().size();
         ext->setLink(size,obj);
-        if(obj->getDocument()==getObject()->getDocument() && obj->Visibility.getValue())
-            obj->Visibility.setValue(false);
         return std::to_string(size)+".";
     }
 
