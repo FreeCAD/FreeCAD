@@ -339,7 +339,7 @@ class AddonsInstaller(QtGui.QDialog):
     def add_addon_repo(self, addon_repo):
         self.repos.append(addon_repo)
         if addon_repo[2] == 1 :
-            self.listWorkbenches.addItem(QtGui.QListWidgetItem(QtGui.QIcon.fromTheme("dialog-ok"),str(addon_repo[0]) + str(" (Installed)")))
+            self.listWorkbenches.addItem(QtGui.QListWidgetItem(QtGui.QIcon.fromTheme("dialog-ok",QtGui.QIcon(":/icons/edit_OK.svg")),str(addon_repo[0]) + str(" (Installed)")))
         else:
             self.listWorkbenches.addItem("        "+str(addon_repo[0]))
 
@@ -572,6 +572,7 @@ class UpdateWorker(QtCore.QThread):
         basedir = FreeCAD.getUserAppDataDir()
         moddir = basedir + os.sep + "Mod"
         repos = []
+        # querying official addons
         for l in p:
             #name = re.findall("data-skip-pjax=\"true\">(.*?)<",l)[0]
             name = re.findall("title=\"(.*?) @",l)[0]
@@ -585,6 +586,19 @@ class UpdateWorker(QtCore.QThread):
             else:
                 state = 1
             repos.append([name,url,state])
+        # querying custom addons
+        customaddons = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons").GetString("CustomRepositories","").split("\n")
+        for url in customaddons:
+            if url:
+                name = url.split("/")[-1]
+                if name.lower().endswith(".git"):
+                    name = name[:-4]
+                addondir = moddir + os.sep + name
+                if not os.path.exists(addondir):
+                    state = 0
+                else:
+                    state = 1
+                repos.append([name,url,state])
         if not repos:
             self.info_label.emit(translate("AddonsInstaller", "Unable to download addon list."))
         else:
