@@ -43,7 +43,7 @@
 #include <App/DocumentObjectPy.h>
 #include <boost/bind.hpp>
 
-FC_LOG_LEVEL_INIT("App::Document",true,true)
+FC_LOG_LEVEL_INIT("App",true,true)
 
 using namespace App;
 
@@ -644,7 +644,10 @@ void DocumentObject::onChanged(const Property* prop)
             && !(prop->getType() & Prop_Output) 
             && !prop->testStatus(Property::Output)) 
     {
-        StatusBits.set(ObjectStatus::Touch);
+        if(!StatusBits.test(ObjectStatus::Touch)) {
+            FC_LOG("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
+            StatusBits.set(ObjectStatus::Touch);
+        }
         // must execute on document recompute
         if (!(prop->getType() & Prop_NoRecompute))
             StatusBits.set(ObjectStatus::Enforce);
