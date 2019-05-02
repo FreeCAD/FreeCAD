@@ -83,8 +83,10 @@ public:
     const double & operator [] (unsigned short usIndex) const{return quat[usIndex];}
 
     void multVec(const Vector3d & src, Vector3d & dst) const;
+    Vector3d multVec(const Vector3d & src) const;
     void scaleAngle(const double scaleFactor);
     bool isSame(const Rotation&) const;
+    bool isSame(const Rotation&, double tol) const;
     //@}
 
     /** Specialty constructors */

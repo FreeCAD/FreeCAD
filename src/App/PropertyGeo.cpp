@@ -581,6 +581,18 @@ void PropertyPlacement::setValue(const Base::Placement &pos)
     hasSetValue();
 }
 
+bool PropertyPlacement::setValueIfChanged(const Base::Placement &pos,double tol,double atol)
+{
+    if(_cPos.getPosition().IsEqual(pos.getPosition(),tol)
+            && _cPos.getRotation().isSame(pos.getRotation(),atol))
+    {
+        return false;
+    }
+    setValue(pos);
+    return true;
+}
+
+
 const Base::Placement & PropertyPlacement::getValue(void)const
 {
     return _cPos;

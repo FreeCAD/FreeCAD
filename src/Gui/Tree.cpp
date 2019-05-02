@@ -1621,7 +1621,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                             newMat *= propPlacement->getValue().inverse().toMatrix();
                             newMat.inverse();
                             Base::Placement pla(newMat*mat);
-                            propPlacement->setValue(pla);
+                            propPlacement->setValueIfChanged(pla);
                         }
                     }
                 }
@@ -1762,7 +1762,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         continue;
                     droppedObjs.push_back(obj);
                     if(propPlacement) 
-                        propPlacement->setValue(Base::Placement(mat));
+                        propPlacement->setValueIfChanged(Base::Placement(mat));
                 }else if(dropOnly) {
                     std::string name = thisDoc->getUniqueObjectName("Link");
                     FCMD_DOC_CMD(thisDoc,"addObject('App::Link','" << name << "').setLink("
@@ -1773,7 +1773,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     FCMD_OBJ_CMD(link,"Label='" << obj->getLinkedObject(true)->Label.getValue() << "'");
                     propPlacement = dynamic_cast<App::PropertyPlacement*>(link->getPropertyByName("Placement"));
                     if(propPlacement) 
-                        propPlacement->setValue(Base::Placement(mat));
+                        propPlacement->setValueIfChanged(Base::Placement(mat));
                     droppedObjs.push_back(link);
                 } else {
                     std::ostringstream ss;
@@ -1784,7 +1784,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         propPlacement = dynamic_cast<App::PropertyPlacement*>(
                                 moved->getPropertyByName("Placement"));
                         if(propPlacement) 
-                            propPlacement->setValue(Base::Placement(mat));
+                            propPlacement->setValueIfChanged(Base::Placement(mat));
                         droppedObjs.push_back(moved);
                     }
                     manager->addLine(MacroManager::App,ss.str().c_str());

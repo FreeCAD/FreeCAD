@@ -306,6 +306,14 @@ public:
      */
     void setValue(const Base::Placement &pos);
 
+    /** Sets property only if changed
+     * @param pos: input placement
+     * @param tol: position tolerance
+     * @param atol: angular tolerance
+     */
+    bool setValueIfChanged(const Base::Placement &pos, 
+            double tol=1e-7, double atol=1e-12);
+
     /** This method returns a string representation of the property
      */
     const Base::Placement &getValue(void) const;
