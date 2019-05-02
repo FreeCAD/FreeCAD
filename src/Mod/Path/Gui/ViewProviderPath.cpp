@@ -427,7 +427,7 @@ Base::Vector3d compensateRotation(const Base::Vector3d &pt, const Base::Rotation
 Base::Rotation yawPitchRoll(double a, double b, double c)
 {
     Base::Rotation rot; 
-    rot.setYawPitchRoll(-c, b, -a);
+    rot.setYawPitchRoll(-c, -b, -a);
     return rot;
 }
 
