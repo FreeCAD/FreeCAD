@@ -190,14 +190,14 @@ private:
     /** Loses the control over incoming events*/
     void leaveControlEvents();
 
-    /* Set up the task abr progress in windows */
-    bool setupTaskBarProgress(void);
 
     //@}
     ProgressBarPrivate* d;
     Sequencer* sequencer;
     
 #ifdef QT_WINEXTRAS_LIB
+    /* Set up the taskbar progress in windows */
+    void setupTaskBarProgress(void);
     QWinTaskbarProgress* m_taskbarProgress;
     QWinTaskbarButton* m_taskbarButton;
 #endif
