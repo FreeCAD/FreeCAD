@@ -29,6 +29,7 @@
 # include <QRegExp>
 # include <QShortcut>
 # include <QString>
+# include <boost/bind.hpp>
 #endif
 
 #include "TaskSketcherElements.h"
@@ -48,7 +49,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/BitmapFactory.h>
-#include <boost/bind.hpp>
+
 #include <Gui/Command.h>
 
 using namespace SketcherGui;

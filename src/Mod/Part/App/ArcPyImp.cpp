@@ -40,7 +40,6 @@
 # include <GC_MakeArcOfHyperbola.hxx>
 #endif
 
-
 #include "ArcPy.h"
 #include "ArcPy.cpp"
 #include "CirclePy.h"

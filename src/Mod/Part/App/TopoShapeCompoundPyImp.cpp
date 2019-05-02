@@ -24,14 +24,15 @@
 #include "PreCompiled.h"
 
 #include "TopoShape.h"
+
 #ifndef _PreComp_
-#include <BRep_Builder.hxx>
-#include <Standard_Failure.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
-#include <ShapeAnalysis_FreeBounds.hxx>
-#include <Precision.hxx>
-#include <TopExp_Explorer.hxx>
+# include <BRep_Builder.hxx>
+# include <Standard_Failure.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
+# include <Precision.hxx>
+# include <TopExp_Explorer.hxx>
 #endif
 
 #include "OCCError.h"
@@ -65,7 +66,7 @@ int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     BRep_Builder builder;
     TopoDS_Compound Comp;
     builder.MakeCompound(Comp);
-    
+
     try {
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -95,7 +96,7 @@ PyObject*  TopoShapeCompoundPy::add(PyObject *args)
 
     BRep_Builder builder;
     TopoDS_Shape comp = getTopoShapePtr()->getShape();
-    
+
     try {
         const TopoDS_Shape& sh = static_cast<TopoShapePy*>(obj)->
             getTopoShapePtr()->getShape();
@@ -129,7 +130,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
             hEdges->Append(xp.Current());
 
         ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, tol, PyObject_IsTrue(shared) ? Standard_True : Standard_False, hWires);
-     
+
         TopoDS_Compound comp;
         BRep_Builder builder;
         builder.MakeCompound(comp);
@@ -156,5 +157,5 @@ PyObject *TopoShapeCompoundPy::getCustomAttributes(const char* /*attr*/) const
 
 int TopoShapeCompoundPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
