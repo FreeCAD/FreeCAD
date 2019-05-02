@@ -80,7 +80,7 @@ matrix:
           - CCACHE_COMPRESS=1
           - CCACHE_DIR=$HOME/.ccache
           # enable this if clcache extended log is needed
-          #- CLCACHE_LOG=1
+          - CLCACHE_LOG=1
         cache:
           directories:
             - $HOME/clcache
