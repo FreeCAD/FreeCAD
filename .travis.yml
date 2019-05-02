@@ -73,7 +73,6 @@ matrix:
           - GENERATOR="Visual Studio 15 2017 Win64"
           - PYTHON_MAJOR_VERSION=3        
           - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
-          - CL_PATH=""
           - TEST_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\build\bin"
           - CLCACHE_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\"
           - VS15=true
@@ -274,7 +273,7 @@ script:
     if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
         # call msbuild using clcache 
         #cmd.exe /C '"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 && MSBuild.exe FreeCAD_Trunk.sln /p:CLToolExe=clcache.exe /p:TrackFileAccess=false /p:CLToolPath=C:\Users\travis\build\FreeCAD\FreeCAD /m:2 /nologo /verbosity:minimal /p:Configuration=Release /p:Platform=x64'
-        cmd.exe /C '"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 & MSBuild.exe FreeCAD_Trunk.sln /p:CLToolExe=clcache.exe /p:TrackFileAccess=false /p:CLToolPath=C:\Users\travis\build\FreeCAD\FreeCAD /m:2 /nologo /verbosity:minimal /p:Configuration=Release /p:Platform=x64'
+        call C:\Users\travis\build\FreeCAD\FreeCAD\.travis\build.bat
         # ls -lahR
         cp -a ../FreeCADLibs/bin/* bin/
         # show clcache hit stats
