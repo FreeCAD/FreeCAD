@@ -25,7 +25,7 @@
 #define GUI_PROGRESSBAR_H
 
 #include <QProgressBar>
-#if QT_VERSION >= 0x050000
+#ifdef QT_WINEXTRAS_LIB
 #include <QWinTaskbarProgress>
 #include <QWinTaskbarButton>
 #endif
@@ -197,9 +197,10 @@ private:
     ProgressBarPrivate* d;
     Sequencer* sequencer;
     
+#ifdef QT_WINEXTRAS_LIB
     QWinTaskbarProgress* m_taskbarProgress;
     QWinTaskbarButton* m_taskbarButton;
-
+#endif
     friend class Sequencer;
 };
 
