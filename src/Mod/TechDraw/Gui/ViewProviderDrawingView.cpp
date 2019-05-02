@@ -61,6 +61,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentO
 
 ViewProviderDrawingView::ViewProviderDrawingView()
 {
+//    Base::Console().Message("VPDV::VPDV\n");
     sPixmap = "TechDraw_Tree_View";
     static const char *group = "Base";
 
@@ -78,6 +79,7 @@ ViewProviderDrawingView::~ViewProviderDrawingView()
 
 void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 {
+//    Base::Console().Message("VPDV::attach(%s)\n", pcFeat->getNameInDocument());
     ViewProviderDocumentObject::attach(pcFeat);
 
     auto bnd = boost::bind(&ViewProviderDrawingView::onGuiRepaint, this, _1);
@@ -238,7 +240,6 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
 
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
 {
-//    Base::Console().Message("VPDV::onGuiRepaint(%s)\n",dv->getNameInDocument());
     if (dv == getViewObject()) {
         if (!dv->isRemoving() &&
             !dv->isRestoring()) {

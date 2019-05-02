@@ -365,7 +365,7 @@ def shapify(obj):
 
 def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False,noarchchild=False):
     '''getGroupContents(objectlist,[walls,addgroups]): if any object of the given list
-    is a group, its content is appened to the list, which is returned. If walls is True,
+    is a group, its content is appended to the list, which is returned. If walls is True,
     walls and structures are also scanned for included windows or rebars. If addgroups
     is true, the group itself is also included in the list.'''
     def getWindows(obj):
@@ -656,7 +656,7 @@ def loadTexture(filename,size=None):
                             byteList.append(chr(QtGui.qBlue( rgb )).encode('latin-1'))
                             byteList.append(chr(QtGui.qAlpha( rgb )).encode('latin-1'))
                     #line += numcomponents
-            
+
             bytes = b"".join(byteList)
             img.setValue(size, numcomponents, bytes)
         except:
@@ -725,16 +725,16 @@ def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None
             placement = FreeCAD.Placement(edge.Placement)
             delta = edge.Curve.Center.sub(placement.Base)
             placement.move(delta)
-            # Rotation of the edge 
+            # Rotation of the edge
             rotOk = FreeCAD.Rotation(edge.Curve.XAxis, edge.Curve.YAxis, edge.Curve.Axis, "ZXY")
             placement.Rotation = rotOk
             if len(edge.Vertexes) > 1:
                 v0 = edge.Curve.XAxis
                 v1 = (edge.Vertexes[0].Point).sub(edge.Curve.Center)
                 v2 = (edge.Vertexes[-1].Point).sub(edge.Curve.Center)
-                # Angle between edge.Curve.XAxis and the vector from center to start of arc 
+                # Angle between edge.Curve.XAxis and the vector from center to start of arc
                 a0 = math.degrees(FreeCAD.Vector.getAngle(v0, v1))
-                # Angle between edge.Curve.XAxis and the vector from center to end of arc 
+                # Angle between edge.Curve.XAxis and the vector from center to end of arc
                 a1 = math.degrees(FreeCAD.Vector.getAngle(v0, v2))
                 obj.FirstAngle = a0
                 obj.LastAngle = a1
@@ -882,7 +882,7 @@ def makeAngularDimension(center,angles,p3,normal=None):
         _ViewProviderAngularDimension(obj.ViewObject)
         formatObject(obj)
         select(obj)
- 
+
     return obj
 
 def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
@@ -1364,7 +1364,7 @@ def joinWires(wires, joinAttempts = 0):
     '''joinWires(objects): merges a set of wires where possible, if any of those
     wires have a coincident start and end point'''
     if joinAttempts > len(wires):
-        return 
+        return
     joinAttempts += 1
     for wire1Index, wire1 in enumerate(wires):
         for wire2Index, wire2 in enumerate(wires):
@@ -4492,7 +4492,7 @@ class _Rectangle(_DraftObject):
                 else:
                     shape = Part.Face(shape)
             obj.Shape = shape
-            if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+            if hasattr(obj,"Area") and hasattr(shape,"Area"):
                 obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
@@ -4526,7 +4526,7 @@ class _Circle(_DraftObject):
             else:
                 shape = Part.Face(shape)
         obj.Shape = shape
-        if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+        if hasattr(obj,"Area") and hasattr(shape,"Area"):
             obj.Area = shape.Area
         obj.Placement = plm
         obj.positionBySupport()
@@ -4566,7 +4566,7 @@ class _Ellipse(_DraftObject):
                 else:
                     shape = Part.Face(shape)
             obj.Shape = shape
-            if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+            if hasattr(obj,"Area") and hasattr(shape,"Area"):
                 obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
@@ -4694,7 +4694,7 @@ class _Wire(_DraftObject):
                             shape = w
             if shape:
                 obj.Shape = shape
-                if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                if hasattr(obj,"Area") and hasattr(shape,"Area"):
                     obj.Area = shape.Area
                 if hasattr(obj,"Length"):
                     obj.Length = shape.Length
@@ -4883,7 +4883,7 @@ class _Polygon(_DraftObject):
             else:
                 shape = Part.Face(shape)
             obj.Shape = shape
-            if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+            if hasattr(obj,"Area") and hasattr(shape,"Area"):
                 obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
@@ -5016,14 +5016,14 @@ class _BSpline(_DraftObject):
                 except Part.OCCError:
                     pass
                 obj.Shape = shape
-                if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                if hasattr(obj,"Area") and hasattr(shape,"Area"):
                     obj.Area = shape.Area
             else:
                 spline = Part.BSplineCurve()
                 spline.interpolate(obj.Points, PeriodicFlag = False, Parameters = self.knotSeq)
                 shape = spline.toShape()
                 obj.Shape = shape
-                if hasattr(obj,"Area") and hasattr(shape,"Area"): 
+                if hasattr(obj,"Area") and hasattr(shape,"Area"):
                     obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
@@ -5111,7 +5111,7 @@ class _BezCurve(_DraftObject):
                 except Part.OCCError:
                     pass
             fp.Shape = w
-            if hasattr(obj,"Area") and hasattr(w,"Area"): 
+            if hasattr(obj,"Area") and hasattr(w,"Area"):
                 obj.Area = w.Area
         fp.Placement = plm
 
