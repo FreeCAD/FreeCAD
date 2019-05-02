@@ -69,7 +69,7 @@
 # include <BRepGProp_Face.hxx>
 # include <GeomLProp_SLProps.hxx>
 # include <BRep_Tool.hxx>
-#endif
+#endif // _PreComp
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -110,7 +110,7 @@ std::string TopoShapeFacePy::representation(void) const
 
 PyObject *TopoShapeFacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of TopoShapeFacePy and the Twin object 
+    // create a new instance of TopoShapeFacePy and the Twin object
     return new TopoShapeFacePy(new TopoShape);
 }
 
@@ -388,7 +388,7 @@ PyObject* TopoShapeFacePy::makeOffset(PyObject *args)
 
     BRepOffsetAPI_MakeOffset mkOffset(f);
     mkOffset.Perform(dist);
-    
+
     return new TopoShapePy(new TopoShape(mkOffset.Shape()));
 }
 
@@ -1027,5 +1027,5 @@ PyObject *TopoShapeFacePy::getCustomAttributes(const char* ) const
 
 int TopoShapeFacePy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

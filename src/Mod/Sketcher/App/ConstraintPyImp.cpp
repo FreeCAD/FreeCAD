@@ -21,7 +21,11 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <sstream>
+
+#ifndef _PreComp_
+# include <sstream>
+#endif
+
 #include "Constraint.h"
 #include "ConstraintPy.h"
 #include "ConstraintPy.cpp"

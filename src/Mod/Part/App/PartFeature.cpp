@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <sstream>
+
 # include <gp_Trsf.hxx>
 # include <gp_Ax1.hxx>
 # include <BRepBuilderAPI_MakeShape.hxx>
@@ -40,10 +42,15 @@
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
+
+# include <GProp_GProps.hxx>
+# include <BRepGProp.hxx>
+# include <gce_MakeLin.hxx>
+# include <BRepIntCurveSurface_Inter.hxx>
+# include <IntCurveSurface_IntersectionPoint.hxx>
+# include <gce_MakeDir.hxx>
 #endif
 
-
-#include <sstream>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -63,7 +70,7 @@ using namespace Part;
 PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
 
 
-Feature::Feature(void) 
+Feature::Feature(void)
 {
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
 }
@@ -102,7 +109,7 @@ PyObject *Feature::getPyObject(void)
         // ref counter is set to 1
         PythonObject = Py::Object(new PartFeaturePy(this),true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
 std::vector<PyObject *> Feature::getPySubObjects(const std::vector<std::string>& NameVec) const
@@ -145,7 +152,7 @@ void Feature::onChanged(const App::Property* prop)
             }
         }
     }
-    
+
     GeoFeature::onChanged(prop);
 }
 
@@ -293,14 +300,14 @@ template class PartExport FeaturePythonT<Part::Feature>;
 }
 
 // ----------------------------------------------------------------
-
+/*
 #include <GProp_GProps.hxx>
 #include <BRepGProp.hxx>
 #include <gce_MakeLin.hxx>
 #include <BRepIntCurveSurface_Inter.hxx>
 #include <IntCurveSurface_IntersectionPoint.hxx>
 #include <gce_MakeDir.hxx>
-
+*/
 std::vector<Part::cutFaces> Part::findAllFacesCutBy(
         const TopoDS_Shape& shape, const TopoDS_Shape& face, const gp_Dir& dir)
 {
@@ -351,8 +358,8 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
     second_bb.SetGap(0);
 
     // Note: This test fails if the objects are touching one another at zero distance
-    
-    // Improving reliability: If it fails sometimes when touching and touching is intersection, 
+
+    // Improving reliability: If it fails sometimes when touching and touching is intersection,
     // then please check further unless the user asked for a quick potentially unreliable result
     if (first_bb.IsOut(second_bb) && !touch_is_intersection)
         return false; // no intersection
@@ -360,10 +367,10 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
         return true; // assumed intersection
 
     // Try harder
-    
+
     // This has been disabled because of:
     // https://www.freecadweb.org/tracker/view.php?id=3065
-    
+
     //extrema method
     /*BRepExtrema_DistShapeShape extrema(first, second);
     if (!extrema.IsDone())
@@ -372,7 +379,7 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
       return false;
     if (extrema.InnerSolution())
       return true;
-    
+
     //here we should have touching shapes.
     if (touch_is_intersection)
     {
@@ -387,9 +394,9 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
     }
     else
       return false;*/
-    
+
     //boolean method.
-    
+
     if (touch_is_intersection) {
         // If both shapes fuse to a single solid, then they intersect
         BRepAlgoAPI_Fuse mkFuse(first, second);
@@ -421,5 +428,5 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
         xp.Init(mkCommon.Shape(),TopAbs_SOLID);
         return (xp.More() == Standard_True);
     }
-    
+
 }
