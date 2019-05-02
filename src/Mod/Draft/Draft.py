@@ -6838,9 +6838,9 @@ class ViewProviderDraftText:
             if "FontSize" in vobj.PropertiesList:
                 self.font.size = vobj.FontSize.Value
         elif prop == "Justification":
-            if getattr(vobj.PropertiesList, "Justification", None) is not None:
-                from pivy import coin
-                try:
+            from pivy import coin
+            try:
+                if getattr(vobj, "Justification", None) is not None:
                     if vobj.Justification == "Left":
                         self.text2d.justification = coin.SoAsciiText.LEFT
                         self.text3d.justification = coin.SoText2.LEFT
@@ -6850,8 +6850,8 @@ class ViewProviderDraftText:
                     else:
                         self.text2d.justification = coin.SoAsciiText.CENTER
                         self.text3d.justification = coin.SoText2.CENTER
-                except AssertionError:
-                    pass # Race condition - Justification enum has not been set yet
+            except AssertionError:
+                pass # Race condition - Justification enum has not been set yet
         elif prop == "LineSpacing":
             if "LineSpacing" in vobj.PropertiesList:
                 self.text2d.spacing = vobj.LineSpacing
