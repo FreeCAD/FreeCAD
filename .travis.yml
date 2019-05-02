@@ -273,7 +273,7 @@ script:
     if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
         # call msbuild using clcache 
         #cmd.exe /C '"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 && MSBuild.exe FreeCAD_Trunk.sln /p:CLToolExe=clcache.exe /p:TrackFileAccess=false /p:CLToolPath=C:\Users\travis\build\FreeCAD\FreeCAD /m:2 /nologo /verbosity:minimal /p:Configuration=Release /p:Platform=x64'
-        call "C:\Users\travis\build\FreeCAD\FreeCAD\.travis\build.bat"
+        cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\.travis\build.bat'
         # ls -lahR
         cp -a ../FreeCADLibs/bin/* bin/
         # show clcache hit stats
