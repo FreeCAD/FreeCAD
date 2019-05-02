@@ -3002,9 +3002,9 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     i += len(sol.Faces)
             for i,shape in enumerate(shapes):
                 key = rgbt[i]
-                if hasattr(obj,"Material"):
-                    if obj.Material:
-                        key = obj.Material.Name #TODO handle multimaterials
+                #if hasattr(obj,"Material"):
+                #    if obj.Material:
+                #        key = obj.Material.Name #TODO handle multimaterials
                 if key in surfstyles:
                     psa = surfstyles[key]
                 else:
