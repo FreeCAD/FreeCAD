@@ -335,9 +335,11 @@ QProgressBar* Sequencer::getProgressBar(QWidget* parent)
 
 ProgressBar::ProgressBar (Sequencer* s, QWidget * parent)
     : QProgressBar(parent), sequencer(s)
-  , m_taskbarButton(nullptr)
-  , m_taskbarProgress(nullptr)
 {
+#ifdef QT_WINEXTRAS_LIB
+  m_taskbarButton = nullptr;
+  m_taskbarButton = nullptr;
+#endif
     d = new Gui::ProgressBarPrivate;
     d->minimumDuration = 2000; // 2 seconds
     d->delayShowTimer = new QTimer(this);
@@ -464,7 +466,7 @@ bool Gui::ProgressBar::setupTaskBarProgress(void)
 {
   if (!m_taskbarButton || !m_taskbarProgress)
   {
-#if QT_VERSION >= 0x050000
+#ifdef QT_WINEXTRAS_LIB
     m_taskbarButton = new QWinTaskbarButton(this);
     m_taskbarButton->setWindow(MainWindow::getInstance()->windowHandle());
     //m_myButton->setOverlayIcon(QIcon(""));
@@ -472,7 +474,8 @@ bool Gui::ProgressBar::setupTaskBarProgress(void)
     m_taskbarProgress = m_taskbarButton->progress();
     m_taskbarProgress->setVisible(true);
     return true;
-#else
+#endif
+#ifndef QT_WINEXTRAS_LIB
     return false;
 #endif
   }
