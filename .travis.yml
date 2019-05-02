@@ -68,6 +68,7 @@ matrix:
 
       - os: windows
         language: cpp
+        filter_secrets: false
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -DFREECAD_RELEASE_PDB=OFF"
           - GENERATOR="Visual Studio 15 2017 Win64"
