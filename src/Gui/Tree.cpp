@@ -2986,17 +2986,18 @@ void TreeWidget::slotChangeObject(
     if(!obj || !obj->getNameInDocument())
         return;
 
-    // Let's not waste time on the newly added Visibility property in
-    // DocumentObject.
-    if(&prop == &obj->Visibility)
-        return;
-
     auto itEntry = ObjectTable.find(obj);
     if(itEntry == ObjectTable.end() || itEntry->second.empty())
         return;
 
-    if(!force)
+    if(!force) {
         _updateStatus();
+
+        // Let's not waste time on the newly added Visibility property in
+        // DocumentObject.
+        if(&prop == &obj->Visibility)
+            return;
+    }
 
     if(force || &prop == &obj->Label) {
         const char *label = obj->Label.getValue();
