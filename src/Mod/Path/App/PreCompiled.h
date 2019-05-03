@@ -56,6 +56,9 @@
 #include <cinttypes>
 #include <iomanip>
 
+// Libarea
+#include "../libarea/Area.h"
+
 // Python
 #include <Python.h>
 
