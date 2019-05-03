@@ -43,10 +43,9 @@
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <boost/signals2.hpp>
+# include <boost/bind.hpp>
 #endif
-
-#include <boost/signals2.hpp>
-#include <boost/bind.hpp>
 
 #include "ui_TaskFaceColors.h"
 #include "TaskFaceColors.h"

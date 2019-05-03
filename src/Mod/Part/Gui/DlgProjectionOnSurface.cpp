@@ -21,6 +21,32 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
+#ifndef _PreComp_
+# include <TopoDS_Face.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <BRepProj_Projection.hxx>
+# include <TopoDS_Builder.hxx>
+# include <TopoDS_Edge.hxx>
+# include <ShapeAnalysis.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
+# include <ShapeFix_Wire.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <Geom_TrimmedCurve.hxx>
+# include <GeomProjLib.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include "ShapeFix_Edge.hxx"
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <ShapeFix_Face.hxx>
+# include <BRepCheck_Analyzer.hxx>
+# include <ShapeFix_Wireframe.hxx>
+# include <BRepPrimAPI_MakePrism.hxx>
+# include <gp_Ax1.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
+#endif
+
 #include "DlgProjectionOnSurface.h"
 #include "ui_DlgProjectionOnSurface.h"
 
@@ -35,28 +61,9 @@
 
 #include "ViewProviderExt.h"
 
-#include <TopoDS_Face.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <BRepProj_Projection.hxx>
-#include <TopoDS_Builder.hxx>
-#include <TopoDS_Edge.hxx>
-#include <ShapeAnalysis.hxx>
-#include <ShapeAnalysis_FreeBounds.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <GeomProjLib.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include "ShapeFix_Edge.hxx"
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <ShapeFix_Face.hxx>
-#include <BRepCheck_Analyzer.hxx>
-#include <ShapeFix_Wireframe.hxx>
-#include <BRepPrimAPI_MakePrism.hxx>
-#include <gp_Ax1.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
+
+
+
 
 using namespace PartGui;
 
