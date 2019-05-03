@@ -77,6 +77,7 @@ public:
     SoSFEnum highlightMode;
     SoSFEnum selectionMode;
     SoSFBool selectionRole;
+    SoSFBool useNewSelection;
 
     virtual void doAction(SoAction *action);
     //virtual void GLRender(SoGLRenderAction * action);

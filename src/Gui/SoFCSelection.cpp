@@ -55,6 +55,7 @@
 #include "SoFCSelectionAction.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCUnifiedSelection.h"
+#include "ViewParams.h"
 
 // For 64-bit system the method using the front buffer doesn't work at all for lines.
 // Thus, use the method which forces a redraw every time. This is a bit slower but at
@@ -119,9 +120,7 @@ SoFCSelection::SoFCSelection()
 
     selected = NOTSELECTED;
 
-    ParameterGrp::handle hGrp = 
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    useNewSelection = hGrp->GetBool("UseNewSelection",true);
+    useNewSelection = ViewParams::instance()->getUseNewSelection();
     selContext = std::make_shared<SelContext>();
     selContext2 = std::make_shared<SelContext>();
 }

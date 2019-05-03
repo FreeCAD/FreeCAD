@@ -117,6 +117,7 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0)
     SO_NODE_ADD_FIELD(highlightMode,  (AUTO));
     SO_NODE_ADD_FIELD(selectionMode,  (ON));
     SO_NODE_ADD_FIELD(selectionRole,  (true));
+    SO_NODE_ADD_FIELD(useNewSelection, (true));
 
     SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, AUTO);
     SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, ON);
@@ -128,6 +129,7 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0)
 
     setPreSelection = false;
     preSelection = -1;
+    useNewSelection = ViewParams::instance()->getUseNewSelection();
 }
 
 /*!
@@ -435,6 +437,8 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 currenthighlight = 0;
             }
         }
+        if(useNewSelection.getValue())
+            return;
     }
 
     if (selectionMode.getValue() == ON && action->getTypeId() == SoFCSelectionAction::getClassTypeId()) {
@@ -521,6 +525,8 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 delete det;
             }
         }
+        if(useNewSelection.getValue())
+            return;
     }
 
     inherited::doAction( action );
@@ -1403,13 +1409,15 @@ void SoFCSelectionRoot::resetContext() {
 
 void SoFCSelectionRoot::pick(SoPickAction * action) {
     BEGIN_ACTION;
-    inherited::pick(action);
+    if(doActionPrivate(stack,action))
+        inherited::pick(action);
     END_ACTION;
 }
 
 void SoFCSelectionRoot::rayPick(SoRayPickAction * action) {
     BEGIN_ACTION;
-    inherited::rayPick(action);
+    if(doActionPrivate(stack,action))
+        inherited::rayPick(action);
     END_ACTION;
 }
 
@@ -1434,13 +1442,15 @@ void SoFCSelectionRoot::getPrimitiveCount(SoGetPrimitiveCountAction * action) {
 void SoFCSelectionRoot::getBoundingBox(SoGetBoundingBoxAction * action)
 {
     BEGIN_ACTION;
-    inherited::getBoundingBox(action);
+    if(doActionPrivate(stack,action))
+        inherited::getBoundingBox(action);
     END_ACTION;
 }
 
 void SoFCSelectionRoot::getMatrix(SoGetMatrixAction * action) {
     BEGIN_ACTION;
-    inherited::getMatrix(action);
+    if(doActionPrivate(stack,action))
+        inherited::getMatrix(action);
     END_ACTION;
 }
 
