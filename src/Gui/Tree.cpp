@@ -1557,7 +1557,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
                     obj = doc->getObject(info.obj.c_str());
                     if(!obj || !obj->getNameInDocument()) {
-                        FC_WARN("Dropping object deleted: " << info.doc << '@' << info.obj);
+                        FC_WARN("Dropping object deleted: " << info.doc << '#' << info.obj);
                         continue;
                     }
                 }
@@ -2219,7 +2219,6 @@ void TreeWidget::scrollItemToTop()
         tree->selectTimer->stop();
         if(tree->statusTimer->isActive())
             tree->_updateStatus(false);
-
     }
 }
 
@@ -2380,8 +2379,7 @@ void TreeWidget::onSelectTimer() {
             v.second->clearSelection();
     }
     this->blockConnection(false);
-    if(statusTimer->isActive())
-        _updateStatus(false);
+    selectTimer->stop();
     return;
 }
 
@@ -3110,6 +3108,9 @@ void TreeWidget::updateChildren(App::DocumentObject *obj,
     }
 
     if(childrenChanged) {
+        if(!selectTimer->isActive())
+            onSelectionChanged(SelectionChanges());
+
         //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children 
         //of the geofeaturegroup depends on what the childs claim
         auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
