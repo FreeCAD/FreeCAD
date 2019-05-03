@@ -54,9 +54,10 @@ import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, Dra
 from Draft import _Dimension, _ViewProviderDimension
 from FreeCAD import Vector
 
-# sets the default working plane
-plane = WorkingPlane.plane()
-FreeCAD.DraftWorkingPlane = plane
+# sets the default working plane if Draft hasn't been started yet
+if not hasattr(FreeCAD,"DraftWorkingPlane"):
+    plane = WorkingPlane.plane()
+    FreeCAD.DraftWorkingPlane = plane
 	
 gui = FreeCAD.GuiUp
 draftui = None
