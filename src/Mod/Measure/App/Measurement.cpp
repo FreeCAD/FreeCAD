@@ -303,7 +303,7 @@ double Measurement::length() const
 
 double Measurement::angle(const Base::Vector3d & /*param*/) const
 {
-    double result;
+    double result = 0;
     int numRefs = References3D.getSize();
     if(numRefs == 0) {
         Base::Console().Error("Measurement::angle - No 3D references available\n");
