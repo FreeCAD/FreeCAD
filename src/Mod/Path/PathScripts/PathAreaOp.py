@@ -43,9 +43,9 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "mlampert [FreeCAD], russ4262 (Russell Johnson)"
-__scriptVersion__ = "1g testing"
 __createdDate__ = "2017"
-__lastModified__ = "2019-04-30 13:57 CST"
+__scriptVersion__ = "1h testing"
+__lastModified__ = "2019-05-02 10:34 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -94,9 +94,6 @@ class ObjectOp(PathOp.ObjectOp):
         obj.setEditorMode('PathParams', 2)  # hide
         obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
         obj.setEditorMode('removalshape', 2)  # hide
-        if not hasattr(obj, 'UseRotation'):
-            obj.addProperty("App::PropertyEnumeration", "UseRotation", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use rotation to gain access to pockets/areas."))
-            obj.UseRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
         self.initAreaOp(obj)
 
@@ -150,12 +147,7 @@ class ObjectOp(PathOp.ObjectOp):
         for prop in ['AreaParams', 'PathParams', 'removalshape']:
             if hasattr(obj, prop):
                 obj.setEditorMode(prop, 2)
-        # Import FinalDepth from existing operation for use in recompute() operations
-        self.initFinalDepth = obj.FinalDepth.Value
-        self.initOpFinalDepth = obj.OpFinalDepth.Value
         self.docRestored = True
-        PathLog.debug("Imported existing OpFinalDepth of " + str(self.initOpFinalDepth) + " for recompute() purposes.")
-        PathLog.debug("Imported existing FinalDepth of " + str(self.initFinalDepth) + " for recompute() purposes.")
 
         self.areaOpOnDocumentRestored(obj)
 
@@ -175,14 +167,22 @@ class ObjectOp(PathOp.ObjectOp):
             except:
                 shape = None
 
-            opHeights = self.opDetermineRotationRadii(obj)  #return is list with tuples [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
-            (xRotRad, yRotRad, zRotRad) = opHeights[0]
-            #(clrOfst, safOfset) = opHeights[1]
+            maxDep = 1.0
+            minDep = 0.0
 
-            maxDep = xRotRad
-            if yRotRad > xRotRad:
-                maxDep = yRotRad
-            minDep = -1 * maxDep
+            if obj.UseRotation == 'Off':
+                bb = job.Stock.Shape.BoundBox
+                maxDep = bb.ZMax
+                minDep = bb.ZMin
+            else:
+                opHeights = self.opDetermineRotationRadii(obj)  #return is list with tuples [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
+                (xRotRad, yRotRad, zRotRad) = opHeights[0]
+                #(clrOfst, safOfset) = opHeights[1]
+
+                maxDep = xRotRad
+                if yRotRad > xRotRad:
+                    maxDep = yRotRad
+                minDep = -1 * maxDep
             
             # Manage operation start and final depths
             if self.docRestored == True:
@@ -198,18 +198,6 @@ class ObjectOp(PathOp.ObjectOp):
                 else:
                     PathLog.debug("-initFinalDepth" + str(self.initFinalDepth))
                     PathLog.debug("-initOpFinalDepth" + str(self.initOpFinalDepth))
-
-            '''
-            # Original code, replaced with code above for rotation integration.
-            if shape:
-                bb = shape.BoundBox
-                obj.OpStartDepth      = bb.ZMax
-                obj.OpFinalDepth      = bb.ZMin
-            else:
-                obj.OpStartDepth      =  1.0
-                obj.OpFinalDepth      =  0.0
-            '''
-        obj.UseRotation = 'Off'
 
         self.areaOpSetDefaultValues(obj, job)
 
@@ -288,16 +276,6 @@ class ObjectOp(PathOp.ObjectOp):
         self.endVector = None
         PathLog.debug("opExecute() in PathAreaOp.py")
 
-        # Import OpFinalDepth from pre-existing operation for recompute() scenarios
-        # if obj.OpFinalDepth.Value != self.initOpFinalDepth and self.initOpFinalDepth != None:
-        if obj.OpFinalDepth.Value != self.initOpFinalDepth:
-            if obj.OpFinalDepth.Value == obj.FinalDepth.Value:
-                if self.initOpFinalDepth != None:
-                    obj.FinalDepth.Value = self.initOpFinalDepth
-                    obj.OpFinalDepth.Value = self.initOpFinalDepth
-            if self.initOpFinalDepth != None:
-                obj.OpFinalDepth.Value = self.initOpFinalDepth
-
         # Instantiate class variables for operation reference
         self.rotateFlag = False
         self.modelName = None
@@ -351,19 +329,19 @@ class ObjectOp(PathOp.ObjectOp):
                 shapes.append(tup)
             else:
                 shapes.append(shp)
+        
+        if len(shapes) > 1:
+            jobs = [{
+                'x': s[0].BoundBox.XMax,
+                'y': s[0].BoundBox.YMax,
+                'shape': s
+            } for s in shapes]
 
-        jobs = [{
-            'x': s[0].BoundBox.XMax,
-            'y': s[0].BoundBox.YMax,
-            'shape': s
-        } for s in shapes]
+            jobs = PathUtils.sort_jobs(jobs, ['x', 'y'])
 
-        jobs = PathUtils.sort_jobs(jobs, ['x', 'y'])
-
-        shapes = [j['shape'] for j in jobs]
+            shapes = [j['shape'] for j in jobs]
 
         sims = []
-
         for (shape, isHole, sub, angle, axis) in shapes:
             startDep = obj.StartDepth.Value # + safOfset
             safeDep = obj.SafeHeight.Value         
