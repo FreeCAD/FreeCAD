@@ -92,7 +92,11 @@
 #include <Mod/Part/App/FaceMakerBullseye.h>
 #include <Mod/Part/App/CrossSection.h>
 #include "Area.h"
-#include "../libarea/Area.h"
+
+#ifndef _PreComp_
+# include "../libarea/Area.h"
+#endif
+
 
 namespace bg = boost::geometry;
 namespace bgi = boost::geometry::index;
