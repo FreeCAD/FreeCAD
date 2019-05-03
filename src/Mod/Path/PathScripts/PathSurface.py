@@ -31,6 +31,7 @@
 ### - Continue implementation of cut patterns: zigzag, line (line is used to force cut modes: climb, conventional)
 ### - Continue implementation of ignore waste feature for planar scans
 ### - Planar Op: move scan result(self.CLP) to local scope(CLP)
+### - Implemented @sliptonic's meshFromShape() parameter improvements for better, faster mesh creation
 
 ### RELEASE NOTES
 # Only G0 and G1 gcode commands are used throughout.
@@ -74,9 +75,9 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of Mill Facing operation."
 __contributors__ = "roivai[FreeCAD], russ4262 (Russell Johnson)"
-__scriptVersion__ = "3t Usable"
 __created__ = "2016"
-__lastModified__ = "2019-04-30 06:19 CST"
+__scriptVersion__ = "3t Usable"
+__lastModified__ = "2019-05-02 10:44 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -275,8 +276,9 @@ class ObjectSurface(PathOp.ObjectOp):
                 except AttributeError:
                     import PathScripts.PathPreferences as PathPreferences
                     deflection = PathPreferences.defaultGeometryTolerance()
-                base.Shape.tessellate(0.05) # 0.5 original value
-                mesh = MeshPart.meshFromShape(base.Shape, Deflection=deflection)
+                #base.Shape.tessellate(0.05) # 0.5 original value
+                #mesh = MeshPart.meshFromShape(base.Shape, Deflection=deflection)
+                mesh = MeshPart.meshFromShape(Shape=base.Shape, LinearDeflection=deflection, AngularDeflection=0.5, Relative=False)
             
             # Set bound box
             if obj.BoundBox == "BaseBoundBox":
