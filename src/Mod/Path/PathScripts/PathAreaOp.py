@@ -45,7 +45,7 @@ __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "mlampert [FreeCAD], russ4262 (Russell Johnson)"
 __createdDate__ = "2017"
 __scriptVersion__ = "1h testing"
-__lastModified__ = "2019-05-02 10:34 CST"
+__lastModified__ = "2019-05-03 10:52 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -94,6 +94,9 @@ class ObjectOp(PathOp.ObjectOp):
         obj.setEditorMode('PathParams', 2)  # hide
         obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
         obj.setEditorMode('removalshape', 2)  # hide
+        if not hasattr(obj, 'UseRotation'):
+            obj.addProperty("App::PropertyEnumeration", "UseRotation", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use rotation to gain access to pockets/areas."))
+            obj.UseRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
         self.initAreaOp(obj)
 
@@ -198,6 +201,8 @@ class ObjectOp(PathOp.ObjectOp):
                 else:
                     PathLog.debug("-initFinalDepth" + str(self.initFinalDepth))
                     PathLog.debug("-initOpFinalDepth" + str(self.initOpFinalDepth))
+
+        obj.UseRotation = 'Off'
 
         self.areaOpSetDefaultValues(obj, job)
 
