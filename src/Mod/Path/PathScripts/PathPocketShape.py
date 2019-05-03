@@ -50,9 +50,9 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 __contributors__ = "russ4262 (Russell Johnson)"
-__scriptVersion__ = "1g testing"
 __created__ = "2017"
-__lastModified__ = "2019-04-30 06:23 CST"
+__scriptVersion__ = "1h testing"
+__lastModified__ = "2019-05-02 10:34 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -215,8 +215,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             obj.addProperty('App::PropertyBool', 'B_AxisErrorOverride', 'Path', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Match B rotations to model (error in FreeCAD rendering).'))
             obj.B_AxisErrorOverride = False
         if not hasattr(obj, 'ReverseDirection'):
-            obj.addProperty('App::PropertyBool', 'ReverseDirection', 'Pocket', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Reverse direction of pocket operation.'))
+            obj.addProperty('App::PropertyBool', 'ReverseDirection', 'Path', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Reverse direction of pocket operation.'))
             obj.ReverseDirection = False
+        if not hasattr(obj, 'UseRotation'):
+            obj.addProperty("App::PropertyEnumeration", "UseRotation", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use rotation to gain access to pockets/areas."))
+            obj.UseRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
         obj.setEditorMode('ExtensionFeature', 2)
 
@@ -562,15 +565,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def areaOpSetDefaultValues(self, obj, job):
         '''areaOpSetDefaultValues(obj, job) ... set default values'''
         
-        '''
-        if job and job.Stock:
-            bb = job.Stock.Shape.BoundBox
-            obj.OpFinalDepth = bb.ZMin
-            obj.OpStartDepth = bb.ZMax
-        '''
-        
         obj.StepOver = 100
         obj.ZigZagAngle = 45
+        obj.UseRotation = 'Off'
         obj.B_AxisErrorOverride = False
         obj.ReverseDirection = False
         obj.setExpression('ExtensionLengthDefault', 'OpToolDiameter / 2')
