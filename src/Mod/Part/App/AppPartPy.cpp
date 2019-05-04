@@ -819,9 +819,11 @@ private:
     {
         PyObject *obj;
         const char *op = 0;
-        if(!PyArg_ParseTuple(args.ptr(), "O|s", &obj, &op))
+        PyObject *fix = Py_False;
+        double tol = 0.0;
+        if(!PyArg_ParseTuple(args.ptr(), "O|sdO!", &obj, &op, &tol, &PyBool_Type,&fix))
             throw Py::Exception();
-        return shape2pyshape(TopoShape().makEWires(getPyShapes(obj),op));
+        return shape2pyshape(TopoShape().makEWires(getPyShapes(obj),op,PyObject_IsTrue(fix),tol));
     }
     Py::Object makeFace(const Py::Tuple& args)
     {
@@ -2100,7 +2102,8 @@ private:
     Py::Object sortEdges2(const Py::Tuple& args)
     {
         PyObject *obj;
-        if (!PyArg_ParseTuple(args.ptr(), "O", &obj)) {
+        double tol = Precision::Confusion();
+        if (!PyArg_ParseTuple(args.ptr(), "O|d", &obj,&tol)) {
             throw Py::Exception(PartExceptionOCCError, "list of edges expected");
         }
 
@@ -2123,7 +2126,7 @@ private:
 
         Py::List root_list;
         while(edges.size()) {
-            std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
+            std::list<TopoDS_Edge> sorted = sort_Edges(tol, edges);
             Py::List sorted_list;
             for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
                 sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it)),true));
