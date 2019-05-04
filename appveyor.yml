@@ -52,7 +52,7 @@ build_script:
     -G "%generator%" ..
   - mkdir bin
   - xcopy C:\projects\freecad\FreeCADLibs\bin C:\projects\freecad\build\bin /E /Q
-  - msbuild FreeCAD_Trunk.sln /p:CLToolExe=clcache.exe /p:CLToolPath=c:\Python37\Scripts\ /m
+  - msbuild FreeCAD_Trunk.sln /p:TrackFileAccess=false /p:CLToolExe=clcache.exe /p:CLToolPath=c:\Python37\Scripts\ /m
   - clcache -s
 
 #after_build:
