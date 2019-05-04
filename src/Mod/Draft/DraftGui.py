@@ -908,7 +908,7 @@ class DraftToolBar:
     
     def setFocus(self):
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        if p.GetBool("focusOnLength",False):
+        if p.GetBool("focusOnLength",False) and self.lengthValue.isVisible():
             self.lengthValue.setFocus()
             self.lengthValue.selectAll()
         else:
