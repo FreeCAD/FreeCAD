@@ -71,7 +71,8 @@ PartExport extern PyObject* PartExceptionOCCDimensionError;
 #define PY_TRY	try 
 
 /// see docu of PY_TRY 
-#  define PY_CATCH_OCC catch (Standard_Failure &e)                  \
+#  define _PY_CATCH_OCC(R)                                          \
+    catch (Standard_Failure &e)                                     \
     {                                                               \
         std::string str;                                            \
         Standard_CString msg = e.GetMessageString();                \
@@ -80,9 +81,11 @@ PartExport extern PyObject* PartExceptionOCCDimensionError;
         if (msg) {str += msg;}                                      \
         else     {str += "No OCCT Exception Message";}              \
         Base::Console().Error(str.c_str());                         \
-        Py_Error(Part::PartExceptionOCCError,str.c_str());          \
+        _Py_Error(R,Part::PartExceptionOCCError,str.c_str());       \
     }                                                               \
-    PY_CATCH
+    _PY_CATCH(R)
 } //namespace Part
+
+#define PY_CATCH_OCC _PY_CATCH_OCC(return(NULL))
 #endif  // _OCCError_h_
 

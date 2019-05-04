@@ -62,19 +62,16 @@ int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
 
 #ifndef FC_NO_ELEMENT_MAP
-    try {
+    PY_TRY {
         getTopoShapePtr()->makECompound(getPyShapes(pcObj));
-    } catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return -1;
-    }
+    } _PY_CATCH_OCC(return(-1))
     return 0;
 #else
     BRep_Builder builder;
     TopoDS_Compound Comp;
     builder.MakeCompound(Comp);
     
-    try {
+    PY_TRY {
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
@@ -84,12 +81,7 @@ int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     builder.Add(Comp, sh);
             }
         }
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return -1;
-    }
+    } _PY_CATCH_OCC(return(-1))
 
     getTopoShapePtr()->setShape(Comp);
     return 0;
@@ -106,16 +98,12 @@ PyObject*  TopoShapeCompoundPy::add(PyObject *args)
     TopoDS_Shape comp = getTopoShapePtr()->getShape();
     auto shapes = getPyShapes(obj);
     
-    try {
+    PY_TRY {
         for(auto &s : shapes) {
             if(!s.isNull())
                 builder.Add(comp,s.getShape());
         }
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
+    } PY_CATCH_OCC
 
 #ifndef FC_NO_ELEMENT_MAP
     PY_TRY {
@@ -138,7 +126,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
     if (!PyArg_ParseTuple(args, "|O!d",&PyBool_Type,&shared,&tol))
         return 0;
 
-    try {
+    PY_TRY {
         const TopoDS_Shape& s = getTopoShapePtr()->getShape();
 
         Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
@@ -159,12 +147,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
 
         getTopoShapePtr()->setShape(comp);
         return new TopoShapeCompoundPy(new TopoShape(comp));
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
+    } PY_CATCH_OCC
 }
 
 PyObject *TopoShapeCompoundPy::getCustomAttributes(const char* /*attr*/) const

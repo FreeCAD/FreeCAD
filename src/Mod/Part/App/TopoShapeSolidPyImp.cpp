@@ -82,15 +82,10 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (!PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &obj))
         return -1;
 
+    PY_TRY {
 #ifndef FC_NO_ELEMENT_MAP
-    try {
         getTopoShapePtr()->makESolid(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
-    } catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return -1;
-    }
 #else
-    try {
         const TopoDS_Shape& shape = static_cast<TopoShapePy*>(obj)
             ->getTopoShapePtr()->getShape();
         //first, if we were given a compsolid, try making a solid out of it
@@ -127,14 +122,8 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             Standard_Failure::Raise("Only one compsolid can be accepted. Provided shape has more than one compsolid.");
         }
 
-    }
-    catch (Standard_Failure& err) {
-        std::stringstream errmsg;
-        errmsg << "Creation of solid failed: " << err.GetMessageString();
-        PyErr_SetString(PartExceptionOCCError, errmsg.str().c_str());
-        return -1;
-    }
 #endif
+    } _PY_CATCH_OCC(return(-1))
 
     return 0;
 }
@@ -244,18 +233,13 @@ PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
     Base::Vector3d pnt = Py::Vector(p,false).toVector();
     Base::Vector3d dir = Py::Vector(d,false).toVector();
 
-    try {
+    PY_TRY {
         GProp_GProps props;
         BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
         double r = props.MomentOfInertia(gp_Ax1(Base::convertTo<gp_Pnt>(pnt),
                                                 Base::convertTo<gp_Dir>(dir)));
         return PyFloat_FromDouble(r);
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
+    } PY_CATCH_OCC
 }
 
 PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
@@ -267,18 +251,13 @@ PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
     Base::Vector3d pnt = Py::Vector(p,false).toVector();
     Base::Vector3d dir = Py::Vector(d,false).toVector();
 
-    try {
+    PY_TRY {
         GProp_GProps props;
         BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
         double r = props.RadiusOfGyration(gp_Ax1(Base::convertTo<gp_Pnt>(pnt),
                                                 Base::convertTo<gp_Dir>(dir)));
         return PyFloat_FromDouble(r);
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
+    } PY_CATCH_OCC
 }
 
 PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
@@ -329,7 +308,7 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
         return 0;
     }
 
-    try {
+    PY_TRY {
         builder.MakeOffsetShape();
         const TopoDS_Shape& offsetshape = builder.Shape();
 #ifndef FC_NO_ELEMENT_MAP
@@ -340,12 +319,7 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
 #else
         return new TopoShapeSolidPy(new TopoShape(offsetshape));
 #endif
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
+    } PY_CATCH_OCC
 }
 
 PyObject *TopoShapeSolidPy::getCustomAttributes(const char* /*attr*/) const

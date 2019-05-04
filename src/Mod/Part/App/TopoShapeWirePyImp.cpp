@@ -123,16 +123,11 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return -1;
         }
 
-        try {
+        PY_TRY {
             getTopoShapePtr()->setShape(mkWire.Wire());
             getTopoShapePtr()->mapSubElement(shape);
             return 0;
-        }
-        catch (Standard_Failure& e) {
-    
-            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-            return -1;
-        }
+        } _PY_CATCH_OCC(return(-1))
     }
 
     PyErr_Clear();
@@ -142,30 +137,25 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return -1;
         }
 
-        BRepBuilderAPI_MakeWire mkWire;
-        auto shapes = getPyShapes(pcObj);
-        for (auto &s : shapes) {
-            const auto &sh = s.getShape();
-            if (sh.ShapeType() == TopAbs_EDGE)
-                mkWire.Add(TopoDS::Edge(sh));
-            else if (sh.ShapeType() == TopAbs_WIRE)
-                mkWire.Add(TopoDS::Wire(sh));
-            else {
-                PyErr_SetString(PyExc_TypeError, "shape is neither edge nor wire");
-                return -1;
+        PY_TRY {
+            BRepBuilderAPI_MakeWire mkWire;
+            auto shapes = getPyShapes(pcObj);
+            for (auto &s : shapes) {
+                const auto &sh = s.getShape();
+                if (sh.ShapeType() == TopAbs_EDGE)
+                    mkWire.Add(TopoDS::Edge(sh));
+                else if (sh.ShapeType() == TopAbs_WIRE)
+                    mkWire.Add(TopoDS::Wire(sh));
+                else {
+                    PyErr_SetString(PyExc_TypeError, "shape is neither edge nor wire");
+                    return -1;
+                }
             }
-        }
 
-        try {
             getTopoShapePtr()->setShape(mkWire.Wire());
             getTopoShapePtr()->mapSubElement(shapes);
             return 0;
-        }
-        catch (Standard_Failure& e) {
-    
-            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-            return -1;
-        }
+        } _PY_CATCH_OCC(return(-1))
     }
 
     PyErr_SetString(PartExceptionOCCError, "edge or wire or list of edges and wires expected");
@@ -196,7 +186,7 @@ PyObject* TopoShapeWirePy::add(PyObject *args)
         return 0;
     }
 
-    try {
+    PY_TRY {
 #ifndef FC_NO_ELEMENT_MAP
         auto &self = *getTopoShapePtr();
         std::vector<TopoShape> shapes;
@@ -209,26 +199,25 @@ PyObject* TopoShapeWirePy::add(PyObject *args)
         getTopoShapePtr()->setShape(mkWire.Wire());
 #endif
         Py_Return;
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
+    } PY_CATCH_OCC
 }
 
 PyObject* TopoShapeWirePy::fixWire(PyObject *args)
 {
-    PyObject* face=0;
+    PyObject* face=Py_None;
     double tol = Precision::Confusion();
-    if (!PyArg_ParseTuple(args, "|O!d",&(TopoShapeFacePy::Type), &face, &tol))
+    if (!PyArg_ParseTuple(args, "|Od", &face, &tol))
         return 0;
 
-    try {
+    PY_TRY {
         ShapeFix_Wire aFix;
         const TopoDS_Wire& w = TopoDS::Wire(getTopoShapePtr()->getShape());
 
-        if (face) {
+        if (face!=Py_None) {
+            if(!PyObject_TypeCheck(face,&Part::TopoShapePy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "Expects the second argument to be a face"); 
+                return 0;
+            }
             const TopoDS_Face& f = TopoDS::Face(static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape());
             aFix.Init(w, f, tol);
         }
@@ -243,12 +232,7 @@ PyObject* TopoShapeWirePy::fixWire(PyObject *args)
         getTopoShapePtr()->setShape(aFix.Wire(),false);
 
         Py_Return;
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
+    } PY_CATCH_OCC
 }
 
 PyObject* TopoShapeWirePy::makeOffset(PyObject *args)
@@ -276,7 +260,7 @@ PyObject* TopoShapeWirePy::makePipe(PyObject *args)
 {
     PyObject *pShape;
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pShape)) {
-        try {
+        PY_TRY {
 #ifndef FC_NO_ELEMENT_MAP
             std::vector<TopoShape> shapes;
             shapes.push_back(*getTopoShapePtr());
@@ -287,12 +271,7 @@ PyObject* TopoShapeWirePy::makePipe(PyObject *args)
             TopoDS_Shape shape = this->getTopoShapePtr()->makePipe(profile);
             return new TopoShapePy(new TopoShape(shape));
 #endif
-        }
-        catch (Standard_Failure& e) {
-    
-            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-            return 0;
-        }
+        } PY_CATCH_OCC
     }
 
     return 0;
@@ -309,7 +288,7 @@ PyObject* TopoShapeWirePy::makePipeShell(PyObject *args)
                              &PyBool_Type, &make_solid,
                              &PyBool_Type, &is_Frenet,
                              &transition)) {
-        try {
+        PY_TRY {
 #ifndef FC_NO_ELEMENT_MAP
             std::vector<TopoShape> shapes;
             shapes.push_back(*getTopoShapePtr());
@@ -332,12 +311,7 @@ PyObject* TopoShapeWirePy::makePipeShell(PyObject *args)
                 transition);
             return new TopoShapePy(new TopoShape(shape));
 #endif
-        }
-        catch (Standard_Failure& e) {
-    
-            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-            return NULL;
-        }
+        }PY_CATCH_OCC
     }
 
     return 0;
@@ -348,7 +322,7 @@ PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args)
     PyObject* wire;
     if (!PyArg_ParseTuple(args, "O!",&(Part::TopoShapeWirePy::Type),&wire))
         return 0;
-    try {
+    PY_TRY {
         TopoDS_Wire o1, o2;
         const TopoDS_Wire& w1 = TopoDS::Wire(getTopoShapePtr()->getShape());
         const TopoDS_Wire& w2 = TopoDS::Wire(static_cast<TopoShapePy*>(wire)->getTopoShapePtr()->getShape());
@@ -361,12 +335,7 @@ PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args)
             Py_INCREF(wire);
             return wire;
         }
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
+    } PY_CATCH_OCC
 }
 
 PyObject* TopoShapeWirePy::approximate(PyObject *args)
@@ -376,7 +345,7 @@ PyObject* TopoShapeWirePy::approximate(PyObject *args)
     int maxseg=10, maxdeg=3;
     if (!PyArg_ParseTuple(args, "ddii",&tol2d,&tol3d,&maxseg,&maxdeg))
         return 0;
-    try {
+    PY_TRY {
         BRepAdaptor_CompCurve adapt(TopoDS::Wire(getTopoShapePtr()->getShape()));
         Handle(Adaptor3d_HCurve) hcurve = adapt.Trim(adapt.FirstParameter(),
                                                     adapt.LastParameter(),
@@ -389,16 +358,12 @@ PyObject* TopoShapeWirePy::approximate(PyObject *args)
             PyErr_SetString(PartExceptionOCCError, "failed to approximate wire");
             return 0;
         }
-    }
-    catch (Standard_Failure&) {
-        PyErr_SetString(PartExceptionOCCError, "failed to approximate wire");
-        return 0;
-    }
+    } PY_CATCH_OCC
 }
 
 PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds)
 {
-    try {
+    PY_TRY {
         BRepAdaptor_CompCurve adapt(TopoDS::Wire(getTopoShapePtr()->getShape()));
         bool uniformAbscissaPoints = false;
         bool uniformAbscissaDistance = false;
@@ -559,11 +524,7 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds)
                 return 0;
             }
         }
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PartExceptionOCCError, e.what());
-        return 0;
-    }
+    } PY_CATCH_OCC
 
     PyErr_SetString(PartExceptionOCCError,"Wrong arguments");
     return 0;

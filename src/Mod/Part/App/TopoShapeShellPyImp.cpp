@@ -84,12 +84,9 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
 
 #ifndef FC_NO_ELEMENT_MAP
-    try {
+    PY_TRY {
         getTopoShapePtr()->makEShape(TOPOP_SHELL,getPyShapes(obj));
-    } catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return -1;
-    }
+    } _PY_CATCH_OCC(return(-1))
 #else
     BRep_Builder builder;
     TopoDS_Shape shape;
@@ -97,7 +94,7 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     //BRepOffsetAPI_Sewing mkShell;
     builder.MakeShell(shell);
     
-    try {
+    PY_TRY {
         Py::Sequence list(obj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeFacePy::Type))) {
@@ -120,11 +117,7 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
         if (shape.ShapeType() != TopAbs_SHELL)
             Standard_Failure::Raise("Shape is not a shell");
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return -1;
-    }
+    } _PY_CATCH_OCC(return(-1))
 
     getTopoShapePtr()->setShape(shape);
 #endif
@@ -140,7 +133,7 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
     BRep_Builder builder;
     TopoDS_Shape shell = getTopoShapePtr()->getShape();
     
-    try {
+    PY_TRY {
         const TopoShape& shape = *static_cast<TopoShapeFacePy*>(obj)->getTopoShapePtr();
         const auto &sh = shape.getShape();
         if (!sh.IsNull()) {
@@ -157,11 +150,7 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
         else {
             Standard_Failure::Raise("cannot add empty shape");
         }
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
+    } PY_CATCH_OCC
 
     getTopoShapePtr()->setShape(shell,false);
 
@@ -218,15 +207,11 @@ PyObject* TopoShapeShellPy::makeHalfSpace(PyObject *args)
     if (!PyArg_ParseTuple(args, "O!",&(Base::VectorPy::Type),&pPnt))
         return 0;
 
-    try {
+    PY_TRY {
         Base::Vector3d pt = Py::Vector(pPnt,false).toVector();
         BRepPrimAPI_MakeHalfSpace mkHS(TopoDS::Shell(this->getTopoShapePtr()->getShape()), gp_Pnt(pt.x,pt.y,pt.z));
         return new TopoShapeSolidPy(new TopoShape(mkHS.Solid()));
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
+    } PY_CATCH_OCC
 }
 
 Py::Object TopoShapeShellPy::getMass(void) const
