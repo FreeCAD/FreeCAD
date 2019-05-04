@@ -1770,7 +1770,8 @@ def export(exportList,filename):
                            "CompositionType": "ELEMENT"})
         if schema == "IFC2X3":
             kwargs = exportIFC2X3Attributes(obj, kwargs)
-        kwargs = exportIfcAttributes(obj, kwargs)
+        else:
+            kwargs = exportIfcAttributes(obj, kwargs)
 
         # creating the product
 
@@ -2397,7 +2398,7 @@ def getIfcTypeFromObj(obj):
 def exportIFC2X3Attributes(obj, kwargs):
 
     ifctype = getIfcTypeFromObj(obj)
-    if ifctype in ["IfcSlab", "IfcFooting", "IfcRoof"]:
+    if ifctype in ["IfcSlab", "IfcFooting"]:
         kwargs.update({"PredefinedType": "NOTDEFINED"})
     elif ifctype == "IfcBuilding":
         kwargs.update({"CompositionType": "ELEMENT"})
@@ -3001,9 +3002,9 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     i += len(sol.Faces)
             for i,shape in enumerate(shapes):
                 key = rgbt[i]
-                if hasattr(obj,"Material"):
-                    if obj.Material:
-                        key = obj.Material.Name #TODO handle multimaterials
+                #if hasattr(obj,"Material"):
+                #    if obj.Material:
+                #        key = obj.Material.Name #TODO handle multimaterials
                 if key in surfstyles:
                     psa = surfstyles[key]
                 else:

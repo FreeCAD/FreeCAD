@@ -317,6 +317,10 @@ void QGIViewPart::updateView(bool update)
 }
 
 void QGIViewPart::draw() {
+    if (!isVisible()) {
+        return;
+    }
+
     drawViewPart();
     drawMatting();
     QGIView::draw();

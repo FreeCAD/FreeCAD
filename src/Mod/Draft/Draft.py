@@ -5268,7 +5268,10 @@ class _Shape2DView(_DraftObject):
                                     shapes.extend(o.Shape.Solids)
                                 else:
                                     shapes.append(o.Shape.copy())
-                    cutp,cutv,iv =Arch.getCutVolume(obj.Base.Shape,shapes)
+                    clip = False
+                    if hasattr(obj.Base,"Clip"):
+                        clip = obj.Base.Clip
+                    cutp,cutv,iv = Arch.getCutVolume(obj.Base.Shape,shapes,clip)
                     cuts = []
                     opl = FreeCAD.Placement(obj.Base.Placement)
                     proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
@@ -6835,9 +6838,9 @@ class ViewProviderDraftText:
             if "FontSize" in vobj.PropertiesList:
                 self.font.size = vobj.FontSize.Value
         elif prop == "Justification":
-            if getattr(vobj.PropertiesList, "Justification", None) is not None:
-                from pivy import coin
-                try:
+            from pivy import coin
+            try:
+                if getattr(vobj, "Justification", None) is not None:
                     if vobj.Justification == "Left":
                         self.text2d.justification = coin.SoAsciiText.LEFT
                         self.text3d.justification = coin.SoText2.LEFT
@@ -6847,8 +6850,8 @@ class ViewProviderDraftText:
                     else:
                         self.text2d.justification = coin.SoAsciiText.CENTER
                         self.text3d.justification = coin.SoText2.CENTER
-                except AssertionError:
-                    pass # Race condition - Justification enum has not been set yet
+            except AssertionError:
+                pass # Race condition - Justification enum has not been set yet
         elif prop == "LineSpacing":
             if "LineSpacing" in vobj.PropertiesList:
                 self.text2d.spacing = vobj.LineSpacing

@@ -28,6 +28,7 @@
 # include <cstdlib>
 # include <sstream>
 # include <QString>
+
 # include <BRepLib.hxx>
 # include <BSplCLib.hxx>
 # include <Bnd_Box.hxx>
@@ -152,10 +153,6 @@
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <ShapeUpgrade_RemoveInternalWires.hxx>
 # include <Standard_Version.hxx>
-#if OCC_VERSION_HEX < 0x070300
-# include <BRepAlgo_Fuse.hxx>
-#endif
-#endif
 # include <BinTools.hxx>
 # include <BinTools_ShapeSet.hxx>
 # include <Poly_Polygon3D.hxx>
@@ -170,14 +167,19 @@
 # include <ShapeAnalysis_FreeBoundsProperties.hxx>
 # include <ShapeAnalysis_FreeBoundData.hxx>
 
+#if OCC_VERSION_HEX < 0x070300
+# include <BRepAlgo_Fuse.hxx>
+#endif
+
 #if OCC_VERSION_HEX >= 0x060600
-#include <BOPAlgo_ArgumentAnalyzer.hxx>
-#include <BOPAlgo_ListOfCheckResult.hxx>
+# include <BOPAlgo_ArgumentAnalyzer.hxx>
+# include <BOPAlgo_ListOfCheckResult.hxx>
 #endif
 
 #if OCC_VERSION_HEX >= 0x070300
-#include <BRepAlgoAPI_Defeaturing.hxx>
+# include <BRepAlgoAPI_Defeaturing.hxx>
 #endif
+#endif // _PreComp_
 
 #include <Base/Builder3D.h>
 #include <Base/FileInfo.h>

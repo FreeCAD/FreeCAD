@@ -9,9 +9,14 @@ SET(Material_SRCS
     importFCMat.py
     MaterialEditor.py
     materials-editor.ui
-    MatPropDict.xml
+    Templatematerial.yml
 )
 SOURCE_GROUP("Module" FILES ${Material_SRCS})
+
+SET (MaterialTools_Files
+    materialtools/__init__.py
+    materialtools/cardutils.py
+)
 
 # collect all the material cards:
 #FILE( GLOB MaterialLib_Files ./StandardMaterial/*.FCMat ./StandardMaterial/*.txt  )
@@ -52,6 +57,19 @@ fc_target_copy_resource(Material
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${Material_SRCS})
+
+
+ADD_CUSTOM_TARGET(MaterialToolsLib ALL
+    SOURCES ${MaterialTools_Files}
+)
+
+fc_target_copy_resource(MaterialToolsLib 
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Material
+    ${MaterialTools_Files})
+
+INSTALL(FILES ${MaterialTools_Files} DESTINATION Mod/Material/materialtools)
+
 
 IF (BUILD_GUI)
     fc_target_copy_resource(Material

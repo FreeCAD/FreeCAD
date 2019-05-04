@@ -1,0 +1,272 @@
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+
+# material template for reading and writing FreeCAD material cards
+# information about FreeCAD material module and material cards can be found here:
+# http://www.freecadweb.org/wiki/index.php?title=Material
+
+
+# localized Name, Description and KindOfMaterial uses 2 letter codes
+# defined in ISO-639-1, see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+# find unit information in src/App/FreeCADInit.py
+
+
+# TODO: make multiple line strings out of the long ones, see module ccxtools.py
+# Use " for descriptions because there a ' can be inside. May be switch to " for all Strings?!
+
+# matdata
+- Meta:
+    CardName:  # first in group
+      Type: 'String'
+      URL: ''
+      Description: " "
+    AuthorAndLicense:
+      Type: 'String'
+      URL: ''
+      Description: " "
+- General:
+    Name:  # first in group
+      Type: 'String'
+      URL: ''
+      Description: "General name"  # used to be equal with card name, TODO: should all cards be changed back to this?
+    NameDE:
+      Type: 'String'
+      URL: ''
+      Description: "German localized name"
+    NamePL:
+      Type: 'String'
+      URL: ''
+      Description: "Polish localized name"
+    Description:
+      Type: 'String'
+      URL: ''
+      Description: "A more elaborate description of the material"
+    DescriptionDE:
+      Type: 'String'
+      URL: ''
+      Description: "German localized description"
+    DescriptionPL:
+      Type: 'String'
+      URL: ''
+      Description: "Polish localized description"
+    Father:
+      Type: 'String'
+      URL: ''
+      Description: "Father of the material, i.e. for PLA is Thermoplast, for Steel is Metal"
+    KindOfMaterial:
+      Type: 'String'
+      URL: ''
+      Description: " "
+    KindOfMaterialDE:
+      Type: 'String'
+      URL: ''
+      Description: "Germand localized kind of material"
+    MaterialNumber:
+      Type: 'String'
+      URL: ''
+      Description: " "
+    Norm:  # should be merged with StandardCode
+      Type: 'String'
+      URL: ''
+      Description: " "
+    ReferenceSource:
+      Type: 'String'
+      URL: ''
+      Description: " "
+    SourceURL:
+      Type:  'URL'
+      URL: ''
+      Description: " "
+    StandardCode:
+      Type: 'String'
+      URL: ''
+      Description: " "
+- Mechanical:
+    AngleOfFriction:
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Friction#Angle_of_friction'
+      Description: "Further information can be found at https://en.wikipedia.org/wiki/Mohr%E2%80%93Coulomb_theory"
+    CompressiveStrength:
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Compressive_strength'
+      Description: "Compressive strength in [FreeCAD Pressure unit]"
+    Density: 
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Density'
+      Description: "Density in [FreeCAD Density unit]"
+    FractureToughness:
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Fracture_toughness'
+      Description: " "
+    PoissonRatio:
+      Type: 'Float'
+      URL: 'https://en.wikipedia.org/wiki/Poisson%27s_ratio'
+      Description: "Poisson's ratio [unitless]"
+    ShearModulus:
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Shear_modulus'
+      Description: "Shear modulus in [FreeCAD Pressure unit]"
+    UltimateStrain:
+      Type: 'Float'
+      URL: 'https://en.wikipedia.org/wiki/Deformation_(mechanics)'
+      Description: " "
+    UltimateTensileStrength:
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Ultimate_tensile_strength'
+      Description: "Ultimate tensile strength in [FreeCAD Pressure unit]"
+    YieldStrength:
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Yield_Strength'
+      Description: "Yield strength in [FreeCAD Pressure unit]"
+    YoungsModulus:
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Young%27s_modulus'
+      Description: "Young's modulus (or E-Module) in [FreeCAD Pressure unit]"
+- Thermal:
+    SpecificHeat:
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Heat_capacity'
+      Description: " "
+    ThermalConductivity:
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Thermal_conductivity'
+      Description: "Thermal conductivity in [FreCAD ThermalConductivity unit]"
+    ThermalExpansionCoefficient:
+      Type: 'Quantity'
+      URL: 'https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient'
+      Description: "Thermal expansion coefficient (linear) in [FreeCAD ThermalExpansionCoefficient unit]"
+- Architectural:
+    Color:
+      Type:  'String'
+      URL: ''
+      Description: " "
+    EnvironmentalEfficiencyClass:
+      Type: 'String'
+      URL: ''
+      Description: " "
+    ExecutionInstructions:
+      Type: 'String'
+      URL: ''
+      Description: " "
+    Finish:
+      Type: 'String'
+      URL: ''
+      Description: " "
+    FireResistanceClass:
+      Type: 'String'
+      URL: ''
+      Description: " "
+    Model:
+      Type: 'String'
+      URL: ''
+      Description: " "
+    SoundTransmissionClass:
+      URL: ''
+      Description: " "
+      Type: 'String'
+      URL: ''
+      Description: " "
+    UnitsPerQuantity:
+      Type: 'Float'
+      URL: ''
+      Description: " "
+- Rendering:
+    AmbientColor:
+      Type: 'Color'
+      URL: ''
+      Description: " "
+    DiffuseColor:
+      Type: 'Color'
+      URL: ''
+      Description: " "
+    EmissiveColor:
+      Type: 'Color'
+      URL: ''
+      Description: " "
+    FragmentShader:
+      Type: 'String'
+      URL: ''
+      Description: " "
+    Shininess:
+      Type: 'Float'
+      URL: ''
+      Description: " "
+    SpecularColor:
+      Type: 'Color'
+      URL: ''
+      Description: " "
+    TexturePath:
+      Type: 'File'
+      URL: ''
+      Description: " "
+    TextureScaling:
+      Type: 'Float'
+      URL: ''
+      Description: " "
+    Transparency:
+      Type: 'Float'
+      URL: ''
+      Description: " "
+    VertexShader:
+      Type: 'String'
+      URL: ''
+      Description: " "
+- Vector rendering:
+    SectionFillPattern:
+      Type: 'File'
+      URL: ''
+      Description: " "
+    SectionLinewidth:
+      Type: 'Float'
+      URL: ''
+      Description: " "
+    ViewColor:
+      Type: 'Color'
+      URL: ''
+      Description: " "
+    ViewFillPattern:
+      Type: 'Boolean'
+      URL: ''
+      Description: " "
+    ViewLinewidth:
+      Type: 'Float'
+      URL: ''
+      Description: " "
+- Cost:
+    ProductURL:
+      Type:  'URL'
+      URL: 'https://de.wikipedia.org/wiki/Hyperlink'
+      Description: "Product URL, recommended are wikipedia links"
+    SpecificPrice:
+      Type: 'Float'
+      URL: ''
+      Description: "Specific price in currency / mass. A currency is not supported by FreeCAD unit system. Will be empty in all FreeCAD cards. Means the user needs to put in himself."
+    Vendor:
+      Type: 'String'
+      URL: ''
+      Description: "Vendor of the material"
+- UserDefined:
+    None:  # Python needs something to iterate over
+      Type: ''
+      URL: ''
+      Description: " "

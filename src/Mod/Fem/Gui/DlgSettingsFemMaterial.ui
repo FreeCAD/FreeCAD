@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>505</width>
+    <width>519</width>
     <height>451</height>
    </rect>
   </property>
@@ -20,7 +20,7 @@
    <item>
     <widget class="QGroupBox" name="gb_4_materials">
      <property name="title">
-      <string>Material Resources</string>
+      <string>Card resources</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
@@ -120,6 +120,51 @@
            </widget>
           </item>
          </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gb_4_materials_2">
+     <property name="title">
+      <string>Card sorting and duplicates</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="cb_delete_duplicates">
+          <property name="text">
+           <string>Delete card duplicates</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DeleteDuplicates</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Material/Cards</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="cb_sort_by_resources">
+          <property name="text">
+           <string>Sort by resources (opposite would be sort by cards)</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SortByResources</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Material/Cards</cstring>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
