@@ -906,14 +906,20 @@ class DraftToolBar:
         "utility function that is performed after each clicked point"
         self.checkLocal()
     
-    def setFocus(self):
+    def setFocus(self,f=None):
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         if p.GetBool("focusOnLength",False) and self.lengthValue.isVisible():
             self.lengthValue.setFocus()
             self.lengthValue.selectAll()
-        else:
+        elif f==None or f=="x":
             self.xValue.setFocus()
             self.xValue.selectAll()
+        elif f=="y":
+            self.yValue.setFocus()
+            self.yValue.selectAll()
+        elif f=="z":    
+            self.zValue.setFocus()
+            self.zValue.selectAll()
 
     def selectPlaneUi(self):
         self.taskUi(translate("draft", "Select Plane"))
@@ -1852,14 +1858,12 @@ class DraftToolBar:
                 self.xValue.setEnabled(False)
                 self.yValue.setEnabled(True)
                 self.zValue.setEnabled(False)
-                self.yValue.setFocus()
-                self.yValue.selectAll()
+                self.setFocus("y")
             elif (mask == "z") or (self.mask == "z"):
                 self.xValue.setEnabled(False)
                 self.yValue.setEnabled(False)
                 self.zValue.setEnabled(True)
-                self.zValue.setFocus()
-                self.zValue.selectAll()
+                self.setFocus("z")
             else:
                 self.xValue.setEnabled(True)
                 self.yValue.setEnabled(True)
