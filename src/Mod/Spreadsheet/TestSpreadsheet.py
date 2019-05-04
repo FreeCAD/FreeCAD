@@ -136,7 +136,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertTrue(sheet.H2.startswith(u'ERR: Quantity::operator <(): quantities need to have same unit to compare'))
         self.assertTrue(sheet.H3.startswith(u'ERR: Quantity::operator >(): quantities need to have same unit to compare'))
         self.assertEqual(sheet.H4, 4)
-        self.assertTrue(sheet.H5.startswith(u'ERR: Quantity::operator +(): Unit mismatch in minus operation'))
+        self.assertTrue(sheet.H5.startswith(u'ERR: Quantity::operator -(): Unit mismatch in minus operation'))
         self.assertTrue(sheet.H6.startswith(u'ERR: Quantity::operator +=(): Unit mismatch in plus operation'))
 
     def assertMostlyEqual(self, a, b):
