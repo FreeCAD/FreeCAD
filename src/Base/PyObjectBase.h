@@ -147,9 +147,11 @@ inline void Assert(int expr, char *msg)         // C++ assert
 /// return with no return value if nothing happens
 #define Py_Return return Py_INCREF(Py_None), Py_None
 /// returns an error
-#define Py_Error(E, M)   {PyErr_SetString(E, M); return NULL;}
+#define Py_Error(E, M)   _Py_Error(return(NULL),E,M)
+#define _Py_Error(R, E, M)   {PyErr_SetString(E, M); R;}
 /// returns an error
-#define Py_ErrorObj(E, O)   {PyErr_SetObject(E, O); return NULL;}
+#define Py_ErrorObj(E, O)   _Py_ErrorObj(return(NULL),E,O)
+#define _Py_ErrorObj(R, E, O)   {PyErr_SetObject(E, O); R;}
 /// checks on a condition and returns an error on failure
 #define Py_Try(F) {if (!(F)) return NULL;}
 /// assert which returns with an error on failure
@@ -445,11 +447,11 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
  */
 #define PY_TRY	try 
 
-#define _PY_CATCH                                                   \
+#define _PY_CATCH(R)                                                \
     catch(Base::AbortException &e)                                  \
     {                                                               \
         e.ReportException();                                        \
-        Py_ErrorObj(Base::BaseExceptionFreeCADAbort,e.getPyObject());\
+        _Py_ErrorObj(R,Base::BaseExceptionFreeCADAbort,e.getPyObject());\
     }                                                               \
     catch(Base::Exception &e)                                       \
     {                                                               \
@@ -463,7 +465,7 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
             str += ")";                                             \
             e.setMessage(str);                                      \
         }                                                           \
-        Py_ErrorObj(pye,e.getPyObject());                           \
+        _Py_ErrorObj(R,pye,e.getPyObject());                        \
     }                                                               \
     catch(std::exception &e)                                        \
     {                                                               \
@@ -472,29 +474,29 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
         str += e.what();                                            \
         str += ")";                                                 \
         Base::Console().Error(str.c_str());                         \
-        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
+        _Py_Error(R,Base::BaseExceptionFreeCADError,str.c_str());   \
     }                                                               \
     catch(const Py::Exception&)                                     \
     {                                                               \
-        return NULL;                                                \
+        R;                                                          \
     }                                                               \
     catch(const char *e)                                            \
     {                                                               \
-        Py_Error(Base::BaseExceptionFreeCADError,e);                \
+        _Py_Error(R,Base::BaseExceptionFreeCADError,e);             \
     }                                                               \
 
 #ifndef DONT_CATCH_CXX_EXCEPTIONS 
 /// see docu of PY_TRY 
 #  define PY_CATCH                                                  \
-    _PY_CATCH                                                       \
+    _PY_CATCH(R)                                                    \
     catch(...)                                                      \
     {                                                               \
-        Py_Error(Base::BaseExceptionFreeCADError,"Unknown C++ exception"); \
+        _Py_Error(R,Base::BaseExceptionFreeCADError,"Unknown C++ exception"); \
     }
 
 #else
 /// see docu of PY_TRY 
-#  define PY_CATCH _PY_CATCH
+#  define PY_CATCH _PY_CATCH(return(NULL))
 #endif  // DONT_CATCH_CXX_EXCEPTIONS
 
 /** Python helper class 
