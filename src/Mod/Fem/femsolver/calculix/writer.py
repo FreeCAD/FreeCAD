@@ -505,7 +505,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         # info about self.constraint_conflict_nodes:
         # is used to check if MPC and constraint fixed and constraint displacement share same nodes,
-        # because MPC's and constriants fixed and constraints displacement can't share same nodes.
+        # because MPC's and constraints fixed and constraints displacement can't share same nodes.
         # Thus call write_node_sets_constraints_planerotation has to be after constraint fixed and constraint displacement
         for femobj in self.planerotation_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             l_nodes = femobj['Nodes']
