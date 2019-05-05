@@ -48,7 +48,7 @@ std::string SketchPy::representation(void) const
 
 PyObject *SketchPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of SketchPy and the Twin object 
+    // create a new instance of SketchPy and the Twin object
     return new SketchPy(new Sketch());
 }
 
@@ -214,7 +214,7 @@ PyObject *SketchPy::getCustomAttributes(const char* /*attr*/) const
 
 int SketchPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

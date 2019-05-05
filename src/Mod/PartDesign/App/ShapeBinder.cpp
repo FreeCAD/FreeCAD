@@ -23,10 +23,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cfloat>
-#include <boost/bind.hpp>
-#include <BRep_Builder.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
+# include <cfloat>
+# include <boost/bind.hpp>
+# include <BRep_Builder.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
 #endif
 
 #include "ShapeBinder.h"

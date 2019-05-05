@@ -153,7 +153,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
     if (!isRestoring()) {
         if (prop == &MeasureType) {
             if (MeasureType.isValue("True") && !measurement->has3DReferences()) {
-                Base::Console().Warning("Dimension %s missing Reference to 3D model. Must be Projected.\n", getNameInDocument());
+                Base::Console().Warning("%s has no 3D References but is Type: True\n", getNameInDocument());
                 MeasureType.setValue("Projected");
             }
         }
@@ -216,12 +216,24 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 
     //any empty Reference2D??
     if (!has2DReferences()) {                                            //too soon?
+        if (isRestoring() ||
+            getDocument()->testStatus(App::Document::Status::Restoring)) {
+            return App::DocumentObject::StdReturn;
+        } else {
+            Base::Console().Warning("%s has no 2D References\n", getNameInDocument());
+        }
         return App::DocumentObject::StdReturn;
     }
 
     //can't do anything until Source has geometry
     if (!getViewPart()->hasGeometry()) {                              //happens when loading saved document
-        return App::DocumentObject::StdReturn;
+        if (isRestoring() ||
+            getDocument()->testStatus(App::Document::Status::Restoring)) {
+            return App::DocumentObject::StdReturn;
+        } else {
+            Base::Console().Warning("%s - target has no geometry\n", getNameInDocument());
+            return App::DocumentObject::StdReturn;
+        }
     }
 
     //now we can check if Reference2ds have valid targets.
@@ -560,7 +572,13 @@ double DrawViewDimension::getDimValue()
 {
 //    Base::Console().Message("DVD::getDimValue()\n");
     double result = 0.0;
-    if (!has2DReferences()) {                                            //happens during Dimension creation
+    if (!has2DReferences()) {                                            //too soon?
+        if (isRestoring() ||
+            getDocument()->testStatus(App::Document::Status::Restoring)) {
+            return result;
+        } else {
+            Base::Console().Warning("%s has no 2D References\n", getNameInDocument());
+        }
         return result;
     }
 
@@ -571,6 +589,7 @@ double DrawViewDimension::getDimValue()
     if (MeasureType.isValue("True")) {
         // True Values
         if (!measurement->has3DReferences()) {
+            Base::Console().Warning("%s - True dimension has no 3D References\n", getNameInDocument());
             return result;
         }
         if ( Type.isValue("Distance")  ||
@@ -589,7 +608,7 @@ double DrawViewDimension::getDimValue()
     } else {
         // Projected Values
         if (!checkReferences2D()) {
-            Base::Console().Warning("Error: DVD::getDimValue - %s - 2D references are corrupt\n",getNameInDocument());
+            Base::Console().Warning("DVD::getDimValue - %s - 2D references are corrupt\n",getNameInDocument());
             return result;
         }
         if ( Type.isValue("Distance")  ||

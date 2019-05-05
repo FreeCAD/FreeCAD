@@ -74,8 +74,8 @@ public:
     virtual void toggleCache(bool state);
     virtual void updateView(bool update = false);
     virtual void drawBorder(void);
-    virtual void isVisible(bool state) { m_visibility = state; }
-    virtual bool isVisible(void) {return m_visibility;}
+    virtual void isVisible(bool state);
+    virtual bool isVisible(void);
     virtual void draw(void);
     virtual void drawCaption(void);
     virtual void rotateView(void);

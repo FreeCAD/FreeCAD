@@ -27,6 +27,17 @@
 # include <QAction>
 # include <QMenu>
 # include <QMessageBox>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoNormal.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Bnd_Box.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepMesh_IncrementalMesh.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include "ViewProviderPrimitive.h"
@@ -39,17 +50,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Base/Console.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoNormal.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoPickStyle.h>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
+
 
 
 using namespace PartDesignGui;
@@ -81,7 +82,7 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
         setPreviewDisplayMode(true);
-        
+
         // When double-clicking on the item for this fillet the
         // object unsets and sets its edit mode without closing
         // the task panel
