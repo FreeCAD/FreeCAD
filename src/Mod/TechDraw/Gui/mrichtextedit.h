@@ -41,7 +41,12 @@ class MRichTextEdit : public QWidget, protected Ui::MRichTextEdit {
     QTextCursor    textCursor() const { return f_textedit->textCursor(); }
     void           setTextCursor(const QTextCursor& cursor) { f_textedit->setTextCursor(cursor); }
     void setMaxWidth(double w);
-
+/*    void setFontSize(double fs);*/
+    void setDefFontSize(int fs);
+    void setDefFont(QString f);
+    QString getDefFontSize(void);
+    QFont getDefFont(void);
+   
   public slots:
     void setText(const QString &text);
 
@@ -98,6 +103,8 @@ Q_SIGNALS:
                           ParagraphMonospace };
 
     QPointer<QTextList> m_lastBlockList;
+    int m_defFontSize;
+    QString m_defFont;
 };
 
 #endif

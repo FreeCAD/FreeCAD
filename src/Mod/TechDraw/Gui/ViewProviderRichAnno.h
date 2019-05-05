@@ -50,8 +50,6 @@ public:
     App::PropertyFont     Font;
     App::PropertyLength   Fontsize;
     App::PropertyColor    Color;
-    App::PropertyFloat    MaxWidth;
-    App::PropertyBool     ShowFrame;
 
     virtual void attach(App::DocumentObject *);
 /*    virtual void setDisplayMode(const char* ModeName);*/
