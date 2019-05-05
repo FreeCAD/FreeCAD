@@ -820,7 +820,6 @@ void MDIViewPage::toggleKeepUpdated(void)
 {
     bool state = m_vpPage->getDrawPage()->KeepUpdated.getValue();
     m_vpPage->getDrawPage()->KeepUpdated.setValue(!state);
-    App::GetApplication().signalChangePropertyEditor(m_vpPage->getDrawPage()->KeepUpdated);
 }
 
 void MDIViewPage::viewAll()

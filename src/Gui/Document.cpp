@@ -175,9 +175,9 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::slotFinishRestoreDocument, this, _1));
     d->connectShowHidden = App::GetApplication().signalShowHidden.connect
         (boost::bind(&Gui::Document::slotShowHidden, this, _1));
-    d->connectChangePropertyEditor = App::GetApplication().signalChangePropertyEditor.connect
-        (boost::bind(&Gui::Document::slotChangePropertyEditor, this, _1));
 
+    d->connectChangePropertyEditor = pcDocument->signalChangePropertyEditor.connect
+        (boost::bind(&Gui::Document::slotChangePropertyEditor, this, _1, _2));
     d->connectFinishRestoreObject = pcDocument->signalFinishRestoreObject.connect
         (boost::bind(&Gui::Document::slotFinishRestoreObject, this, _1));
     d->connectExportObjects = pcDocument->signalExportViewObjects.connect
@@ -1281,7 +1281,11 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
         if(it->first->isTouched()) {
             isModified = true;
+#ifdef FC_DEBUG
+            FC_WARN("'" << it->first->getFullName() << "' is touched after restore");
+#else
             FC_LOG("'" << it->first->getFullName() << "' is touched after restore");
+#endif
         }
     }
 
@@ -2164,7 +2168,8 @@ void Document::toggleInSceneGraph(ViewProvider *vp) {
     }
 }
 
-void Document::slotChangePropertyEditor(const App::Property &) {
-    setModified(true);
+void Document::slotChangePropertyEditor(const App::Document &doc, const App::Property &) {
+    if(getDocument() == &doc)
+        setModified(true);
 }
 

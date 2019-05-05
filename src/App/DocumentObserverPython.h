@@ -92,7 +92,7 @@ private:
     /** Called when an object gets a dynamic property removed*/
     void slotRemoveDynamicProperty(const App::Property& Prop);
     /** Called when an object property gets a new editor relevant status like hidden or read only*/
-    void slotChangePropertyEditor(const App::Property& Prop);
+    void slotChangePropertyEditor(const App::Document &Doc, const App::Property& Prop);
     /** Called when a document is about to be saved*/
     void slotStartSaveDocument(const App::Document&, const std::string&);
     /** Called when an document has been saved*/
@@ -127,7 +127,7 @@ private:
     FC_PY_ELEMENT(FinishSaveDocument,_1,_2) \
     FC_PY_ELEMENT(AppendDynamicProperty,_1) \
     FC_PY_ELEMENT(RemoveDynamicProperty,_1) \
-    FC_PY_ELEMENT(ChangePropertyEditor,_1)
+    FC_PY_ELEMENT(ChangePropertyEditor,_1,_2)
 
 #undef FC_PY_ELEMENT
 #define FC_PY_ELEMENT(_name,...) \

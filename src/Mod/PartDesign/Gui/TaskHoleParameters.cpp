@@ -116,7 +116,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->DrillPointAngle->bind(pcHole->DrillPointAngle);
     ui->TaperedAngle->bind(pcHole->TaperedAngle);
 
-    connectPropChanged = App::GetApplication().signalChangePropertyEditor.connect(boost::bind(&TaskHoleParameters::changedObject, this, _1));
+    connectPropChanged = App::GetApplication().signalChangePropertyEditor.connect(
+            boost::bind(&TaskHoleParameters::changedObject, this, _1, _2));
 
     this->groupLayout()->addWidget(proxy);
 }
@@ -328,7 +329,7 @@ void TaskHoleParameters::changeEvent(QEvent *e)
     }
 }
 
-void TaskHoleParameters::changedObject(const App::Property &Prop)
+void TaskHoleParameters::changedObject(const App::Document&, const App::Property &Prop)
 {
     // happens when aborting the command
     if (vp == nullptr)
@@ -766,6 +767,7 @@ void TaskHoleParameters::Observer::slotChangedObject(const App::DocumentObject &
 {
     if (&Obj == hole) {
         Base::Console().Log("Parameter %s was updated with a new value\n", Prop.getName());
-        owner->changedObject(Prop);
+        if(Obj.getDocument())
+            owner->changedObject(*Obj.getDocument(),Prop);
     }
 }

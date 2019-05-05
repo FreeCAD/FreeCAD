@@ -463,3 +463,10 @@ bool ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *
     return ret;
 }
 
+void ViewProviderDocumentObject::onPropertyStatusChanged(
+        const App::Property &prop, unsigned long oldStatus) 
+{
+    (void)oldStatus;
+    if(!App::Document::isAnyRestoring() && pcObject && pcObject->getDocument())
+        pcObject->getDocument()->signalChangePropertyEditor(*pcObject->getDocument(),prop);
+}

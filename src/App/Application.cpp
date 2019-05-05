@@ -429,6 +429,8 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     _pActiveDoc->signalAbortTransaction.connect(boost::bind(&App::Application::slotAbortTransaction, this, _1));
     _pActiveDoc->signalStartSave.connect(boost::bind(&App::Application::slotStartSaveDocument, this, _1, _2));
     _pActiveDoc->signalFinishSave.connect(boost::bind(&App::Application::slotFinishSaveDocument, this, _1, _2));
+    _pActiveDoc->signalChangePropertyEditor.connect(
+            boost::bind(&App::Application::slotChangePropertyEditor, this, _1, _2));
 
     // make sure that the active document is set in case no GUI is up
     {
@@ -1352,6 +1354,11 @@ void Application::slotStartSaveDocument(const App::Document& doc, const std::str
 void Application::slotFinishSaveDocument(const App::Document& doc, const std::string& filename)
 {
     this->signalFinishSaveDocument(doc, filename);
+}
+
+void Application::slotChangePropertyEditor(const App::Document &doc, const App::Property &prop)
+{
+    this->signalChangePropertyEditor(doc,prop);
 }
 
 //**************************************************************************

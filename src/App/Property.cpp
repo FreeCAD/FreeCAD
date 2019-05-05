@@ -164,8 +164,21 @@ void Property::setStatusValue(unsigned long status) {
     unsigned long oldStatus = StatusBits.to_ulong();
     StatusBits = decltype(StatusBits)(status);
 
-    if(father)
-        father->onPropertyStatusChanged(*this,oldStatus);
+    if(father) {
+        static unsigned long _signalMask = (1<<Immutable)
+                                        | (1<<ReadOnly)
+                                        | (1<<Hidden)
+                                        | (1<<Transient)
+                                        | (1<<NoModify)
+                                        | (1<<PartialTrigger)
+                                        | (1<<NoRecompute)
+                                        | (1<<Output)
+                                        | (1<<Single)
+                                        | (1<<Ordered)
+                                        | (1<<EvalOnRestore);
+        if((status & _signalMask) != (oldStatus & _signalMask))
+            father->onPropertyStatusChanged(*this,oldStatus);
+    }
 }
 
 void Property::setStatus(Status pos, bool on) {

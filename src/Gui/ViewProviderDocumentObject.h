@@ -156,6 +156,10 @@ protected:
     void onAboutToRemoveProperty(const char* prop);
     virtual bool isAttachedToDocument() const;
     virtual const char* detachFromDocument();
+
+    /// get called when a property status has changed
+    virtual void onPropertyStatusChanged(const App::Property &prop, unsigned long oldStatus) override;
+
     //@}
 
 protected:

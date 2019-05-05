@@ -156,23 +156,19 @@ void DrawView::handleXYLock(void)
     if (isLocked()) {
         if (!X.testStatus(App::Property::ReadOnly)) {
             X.setStatus(App::Property::ReadOnly,true);
-            App::GetApplication().signalChangePropertyEditor(X);
             X.purgeTouched();
         }
         if (!Y.testStatus(App::Property::ReadOnly)) {
             Y.setStatus(App::Property::ReadOnly,true);
-            App::GetApplication().signalChangePropertyEditor(Y);
             Y.purgeTouched();
         }
     } else {
         if (X.testStatus(App::Property::ReadOnly)) {
             X.setStatus(App::Property::ReadOnly,false);
-            App::GetApplication().signalChangePropertyEditor(X);
             X.purgeTouched();
         }
         if (Y.testStatus(App::Property::ReadOnly)) {
             Y.setStatus(App::Property::ReadOnly,false);
-            App::GetApplication().signalChangePropertyEditor(Y);
             Y.purgeTouched();
         }
     }

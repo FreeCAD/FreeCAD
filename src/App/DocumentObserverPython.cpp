@@ -406,7 +406,7 @@ void DocumentObserverPython::slotRemoveDynamicProperty(const App::Property& Prop
     }    
 }
 
-void DocumentObserverPython::slotChangePropertyEditor(const App::Property& Prop)
+void DocumentObserverPython::slotChangePropertyEditor(const App::Document &, const App::Property& Prop)
 {
     Base::PyGILStateLocker lock;
     try {

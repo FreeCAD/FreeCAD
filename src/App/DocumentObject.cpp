@@ -1143,3 +1143,9 @@ bool DocumentObject::redirectSubName(std::ostringstream &, DocumentObject *, Doc
     return false;
 }
 
+void DocumentObject::onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) {
+    (void)oldStatus;
+    if(!Document::isAnyRestoring() && getNameInDocument() && getDocument())
+        getDocument()->signalChangePropertyEditor(*getDocument(),prop);
+}
+

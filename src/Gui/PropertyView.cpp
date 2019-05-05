@@ -121,7 +121,7 @@ PropertyView::PropertyView(QWidget *parent)
         (&PropertyView::slotRemoveDynamicProperty, this, _1));
     this->connectPropChange =
     App::GetApplication().signalChangePropertyEditor.connect(boost::bind
-        (&PropertyView::slotChangePropertyEditor, this, _1));
+        (&PropertyView::slotChangePropertyEditor, this, _1, _2));
     this->connectUndoDocument =
     App::GetApplication().signalUndoDocument.connect(boost::bind
         (&PropertyView::slotRollback, this));
@@ -238,7 +238,7 @@ void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
     }
 }
 
-void PropertyView::slotChangePropertyEditor(const App::Property& prop)
+void PropertyView::slotChangePropertyEditor(const App::Document &, const App::Property& prop)
 {
     App::PropertyContainer* parent = prop.getContainer();
     if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {

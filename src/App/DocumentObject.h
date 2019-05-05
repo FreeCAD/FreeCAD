@@ -571,6 +571,9 @@ protected:
     /// get called when object is going to be removed from the document
     virtual void unsetupObject();
 
+    /// get called when a property status has changed
+    virtual void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) override;
+
      /// python object of this class and all descendent
 protected: // attributes
     Py::Object PythonObject;

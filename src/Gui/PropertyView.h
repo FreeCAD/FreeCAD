@@ -85,7 +85,7 @@ private:
     void slotChangePropertyView(const Gui::ViewProvider&, const App::Property&);
     void slotAppendDynamicProperty(const App::Property&);
     void slotRemoveDynamicProperty(const App::Property&);
-    void slotChangePropertyEditor(const App::Property&);
+    void slotChangePropertyEditor(const App::Document&, const App::Property&);
     void slotRollback();
     void slotActiveDocument(const Gui::Document&);
 

@@ -51,9 +51,6 @@ public:
           short = 0, bool = false, bool = false);
     virtual bool removeDynamicProperty(const char*);
 
-    /// get called when a property status has changed
-    virtual void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) override;
-
 protected:
     void onBeforeChangeProperty(Document *doc, const Property *prop);
 };

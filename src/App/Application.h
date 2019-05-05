@@ -248,7 +248,7 @@ public:
     /// signal on about removing a dynamic property
     boost::signals2::signal<void (const App::Property&)> signalRemoveDynamicProperty;
     /// signal on about changing the editor mode of a property
-    boost::signals2::signal<void (const App::Property&)> signalChangePropertyEditor;
+    boost::signals2::signal<void (const App::Document&, const App::Property&)> signalChangePropertyEditor;
     //@}
 
 
@@ -391,6 +391,7 @@ protected:
     void slotAbortTransaction(const App::Document&);
     void slotStartSaveDocument(const App::Document&, const std::string&);
     void slotFinishSaveDocument(const App::Document&, const std::string&);
+    void slotChangePropertyEditor(const App::Document&, const App::Property &);
     //@}
 
     /// open single document only
