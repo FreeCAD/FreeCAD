@@ -17,6 +17,7 @@
         <file>icons/Part_CreatePrimitives.svg</file>
         <file>icons/Part_Cylinder.svg</file>
         <file>icons/Part_Extrude.svg</file>
+        <file>icons/Part_ExplodeCompound.svg</file>
         <file>icons/Part_Fillet.svg</file>
         <file>icons/Part_Fuse.svg</file>
         <file>icons/Part_Import.svg</file>
@@ -33,6 +34,7 @@
         <file>icons/Part_Shapebuilder.png</file>
         <file>icons/Part_ShapeInfo.svg</file>
         <file>icons/Part_Slice.svg</file>
+        <file>icons/Part_SliceApart.svg</file>
         <file>icons/Part_Sphere.svg</file>
         <file>icons/Part_Sweep.svg</file>
         <file>icons/Part_Thickness.svg</file>
@@ -75,6 +77,7 @@
         <file>icons/Part_JoinCutout.svg</file>
         <file>icons/Part_JoinEmbed.svg</file>
         <file>icons/PartWorkbench.svg</file>
+        <file>icons/Part_ProjectionOnSurface.svg</file>
         <file>translations/Part_af.qm</file>
         <file>translations/Part_de.qm</file>
         <file>translations/Part_fi.qm</file>
@@ -110,5 +113,7 @@
         <file>translations/Part_id.qm</file>
         <file>translations/Part_lt.qm</file>
         <file>translations/Part_val-ES.qm</file>
+        <file>translations/Part_ar.qm</file>
+        <file>translations/Part_vi.qm</file>
     </qresource>
 </RCC> 

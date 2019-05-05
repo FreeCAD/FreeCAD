@@ -23,15 +23,15 @@ add_definitions(-DBOOST_${Boost_VERSION})
 
 # -----------------------------------------------------------------------------
 
-#write relevant cmake variables to a file for later access with python. Exportet are all variables 
-#starting with BUILD. As the variable only exists if the user set it to ON a dict is useless, we 
-#use a python list for export. 
+#write relevant cmake variables to a file for later access with python. Exported are all variables 
+#starting with BUILD. As the variable only exists if the user set it to ON a dict is useless, we
+#use a python list for export.
 set(_vars "const char CMakeVariables[] =\"cmake = [")
 set(_delim "")
 get_cmake_property(_variableNames VARIABLES)
 foreach (_variableName ${_variableNames})
     if (${_variableName})
-        STRING(REGEX MATCH "^[_]?[^_]*" _prefix "${_variableName}_") 
+        STRING(REGEX MATCH "^[_]?[^_]*" _prefix "${_variableName}_")
         if(${_prefix} STREQUAL "BUILD")
             STRING(REPLACE "\\" "\\\\" _name ${_variableName})
             set(_vars "${_vars}${_delim}\\n\"\n\"\\\"${_name}\\\"")
@@ -295,10 +295,10 @@ SET(FreeCADApp_SRCS
     PreCompiled.h
 )
 
-if(BUILD_USE_PCH)
+if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
     ADD_MSVC_PRECOMPILED_HEADER(FreeCADApp PreCompiled.h PreCompiled.cpp FreeCADApp_CPP_SRCS)
-endif(BUILD_USE_PCH)
+endif(FREECAD_USE_PCH)
 
 add_library(FreeCADApp SHARED ${FreeCADApp_SRCS})
 

@@ -101,7 +101,7 @@ StdCmdOpen::StdCmdOpen()
 
 void StdCmdOpen::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 
     // fill the list of registered endings
     QString formatList;
@@ -183,7 +183,7 @@ StdCmdImport::StdCmdImport()
 
 void StdCmdImport::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 
     // fill the list of registered endings
     QString formatList;
@@ -270,7 +270,7 @@ StdCmdExport::StdCmdExport()
 
 void StdCmdExport::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 
     if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) == 0) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -280,17 +280,17 @@ void StdCmdExport::activated(int iMsg)
     }
 
     // fill the list of registered endings
-    QString formatList;
+    QStringList filterList;
     std::map<std::string, std::string> FilterList = App::GetApplication().getExportFilters();
     std::map<std::string, std::string>::const_iterator jt;
     for (jt=FilterList.begin();jt != FilterList.end();++jt) {
         // ignore the project file format
         if (jt->first.find("(*.FCStd)") == std::string::npos) {
-            formatList += QLatin1String(jt->first.c_str());
-            formatList += QLatin1String(";;");
+            filterList << QString::fromLatin1(jt->first.c_str());
         }
     }
 
+    QString formatList = filterList.join(QLatin1String(";;"));
     Base::Reference<ParameterGrp> hPath = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                                ->GetGroup("Preferences")->GetGroup("General");
     QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileExportFilter"));
@@ -333,12 +333,12 @@ StdCmdMergeProjects::StdCmdMergeProjects()
 
 void StdCmdMergeProjects::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 
     QString exe = qApp->applicationName();
-    QString project = QFileDialog::getOpenFileName(Gui::getMainWindow(),
+    QString project = FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Merge project")), FileDialog::getWorkingDirectory(),
-        QString::fromUtf8(QT_TR_NOOP("%1 document (*.fcstd)")).arg(exe));
+        QString::fromUtf8(QT_TR_NOOP("%1 document (*.FCStd)")).arg(exe));
     if (!project.isEmpty()) {
         FileDialog::setWorkingDirectory(project);
         App::Document* doc = App::GetApplication().getActiveDocument();
@@ -386,7 +386,7 @@ StdCmdExportGraphviz::StdCmdExportGraphviz()
 
 void StdCmdExportGraphviz::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
     Gui::GraphvizView* view = new Gui::GraphvizView(*doc);
     view->setWindowTitle(qApp->translate("Std_ExportGraphviz","Dependency graph"));
@@ -418,11 +418,12 @@ StdCmdNew::StdCmdNew()
 
 void StdCmdNew::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     QString cmd;
     cmd = QString::fromLatin1("App.newDocument(\"%1\")")
         .arg(qApp->translate("StdCmdNew","Unnamed"));
     runCommand(Command::Doc,cmd.toUtf8());
+    doCommand(Command::Gui,"Gui.activeDocument().activeView().viewDefaultOrientation()");
 }
 
 //===========================================================================
@@ -445,7 +446,7 @@ StdCmdSave::StdCmdSave()
 
 void StdCmdSave::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 #if 0
   Gui::Document* pActiveDoc = getActiveGuiDocument();
   if ( pActiveDoc )
@@ -487,7 +488,7 @@ StdCmdSaveAs::StdCmdSaveAs()
 
 void StdCmdSaveAs::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 #if 0
   Gui::Document* pActiveDoc = getActiveGuiDocument();
   if ( pActiveDoc )
@@ -525,7 +526,7 @@ StdCmdSaveCopy::StdCmdSaveCopy()
 
 void StdCmdSaveCopy::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 #if 0
   Gui::Document* pActiveDoc = getActiveGuiDocument();
   if ( pActiveDoc )
@@ -585,7 +586,7 @@ StdCmdRevert::StdCmdRevert()
 
 void StdCmdRevert::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     QMessageBox msgBox(Gui::getMainWindow());
     msgBox.setIcon(QMessageBox::Question);
     msgBox.setWindowTitle(qApp->translate("Std_Revert","Revert document"));
@@ -625,7 +626,7 @@ StdCmdProjectInfo::StdCmdProjectInfo()
 
 void StdCmdProjectInfo::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::Dialog::DlgProjectInformationImp dlg(getActiveGuiDocument()->getDocument(), getMainWindow());
     dlg.exec();
 }
@@ -654,7 +655,7 @@ StdCmdProjectUtil::StdCmdProjectUtil()
 
 void StdCmdProjectUtil::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::Dialog::DlgProjectUtility dlg(getMainWindow());
     dlg.exec();
 }
@@ -683,7 +684,7 @@ StdCmdPrint::StdCmdPrint()
 
 void StdCmdPrint::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     if (getMainWindow()->activeWindow()) {
         getMainWindow()->showMessage(QObject::tr("Printing..."));
         getMainWindow()->activeWindow()->print();
@@ -713,7 +714,7 @@ StdCmdPrintPreview::StdCmdPrintPreview()
 
 void StdCmdPrintPreview::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     if (getMainWindow()->activeWindow()) {
         getMainWindow()->activeWindow()->printPreview();
     }
@@ -741,7 +742,7 @@ StdCmdPrintPdf::StdCmdPrintPdf()
 
 void StdCmdPrintPdf::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     if (getMainWindow()->activeWindow()) {
         getMainWindow()->showMessage(QObject::tr("Exporting PDF..."));
         getMainWindow()->activeWindow()->printPdf();
@@ -775,7 +776,7 @@ StdCmdQuit::StdCmdQuit()
 
 void StdCmdQuit::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     // close the main window and exit the event loop
     getMainWindow()->close();
 }
@@ -801,7 +802,7 @@ StdCmdUndo::StdCmdUndo()
 
 void StdCmdUndo::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 //  Application::Instance->slotUndo();
     getGuiApplication()->sendMsgToActiveView("Undo");
 }
@@ -845,7 +846,7 @@ StdCmdRedo::StdCmdRedo()
 
 void StdCmdRedo::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 //  Application::Instance->slotRedo();
     getGuiApplication()->sendMsgToActiveView("Redo");
 }
@@ -887,7 +888,7 @@ StdCmdCut::StdCmdCut()
 
 void StdCmdCut::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     getGuiApplication()->sendMsgToActiveView("Cut");
 }
 
@@ -915,7 +916,7 @@ StdCmdCopy::StdCmdCopy()
 
 void StdCmdCopy::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     bool done = getGuiApplication()->sendMsgToFocusView("Copy");
     if (!done) {
         QMimeData * mimeData = getMainWindow()->createMimeDataFromSelection();
@@ -950,7 +951,7 @@ StdCmdPaste::StdCmdPaste()
 
 void StdCmdPaste::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     bool done = getGuiApplication()->sendMsgToFocusView("Paste");
     if (!done) {
         QClipboard* cb = QApplication::clipboard();
@@ -987,7 +988,7 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
 
 void StdCmdDuplicateSelection::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> sel;
     std::set<App::DocumentObject*> objSet;
     for(auto &s : Selection().getCompleteSelection()) {
@@ -1078,7 +1079,7 @@ StdCmdSelectAll::StdCmdSelectAll()
 
 void StdCmdSelectAll::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     SelectionSingleton& rSel = Selection();
     App::Document* doc = App::GetApplication().getActiveDocument();
     std::vector<App::DocumentObject*> objs = doc->getObjectsOfType(App::DocumentObject::getClassTypeId());
@@ -1112,7 +1113,7 @@ StdCmdDelete::StdCmdDelete()
 
 void StdCmdDelete::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 
     std::set<App::Document*> docs;
     try {
@@ -1283,7 +1284,7 @@ StdCmdRefresh::StdCmdRefresh()
 
 void StdCmdRefresh::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     if (getActiveGuiDocument()) {
         App::AutoTransaction trans("Recompute");
         try {
@@ -1323,7 +1324,7 @@ StdCmdTransform::StdCmdTransform()
 
 void StdCmdTransform::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::Control().showDialog(new Gui::Dialog::TaskTransform());
 }
 
@@ -1349,7 +1350,7 @@ StdCmdPlacement::StdCmdPlacement()
 
 void StdCmdPlacement::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
     Gui::Dialog::TaskPlacement* plm = new Gui::Dialog::TaskPlacement();
     if (!sel.empty()) {
@@ -1382,7 +1383,7 @@ StdCmdTransformManip::StdCmdTransformManip()
 
 void StdCmdTransformManip::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     if (getActiveGuiDocument()->getInEdit())
         getActiveGuiDocument()->resetEdit();
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
@@ -1415,7 +1416,7 @@ StdCmdAlignment::StdCmdAlignment()
 
 void StdCmdAlignment::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
         (App::GeoFeature::getClassTypeId());
     ManualAlignment* align = ManualAlignment::instance();
@@ -1479,7 +1480,7 @@ StdCmdEdit::StdCmdEdit()
     sMenuText     = QT_TR_NOOP("Toggle &Edit mode");
     sToolTipText  = QT_TR_NOOP("Toggles the selected object's edit mode");
     sWhatsThis    = "Std_Edit";
-    sStatusTip    = QT_TR_NOOP("Enters or leaves the selected object's edit mode");
+    sStatusTip    = QT_TR_NOOP("Activates or Deactivates the selected object's edit mode");
 #if QT_VERSION >= 0x040200
     sPixmap       = "edit-edit";
 #endif
@@ -1488,7 +1489,7 @@ StdCmdEdit::StdCmdEdit()
 
 void StdCmdEdit::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
     if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
@@ -1765,4 +1766,3 @@ void CreateDocCommands(void)
 }
 
 } // namespace Gui
-

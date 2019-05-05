@@ -59,6 +59,7 @@ DrawHatch::DrawHatch(void)
 
     ADD_PROPERTY_TYPE(DirProjection ,(0,0,1.0)    ,vgroup,App::Prop_None,"Projection direction when Hatch was defined");     //sb RO?
     ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be hatched");
+    Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(HatchPattern ,(""),vgroup,App::Prop_None,"The hatch pattern file for this area");
 
     DirProjection.setStatus(App::Property::ReadOnly,true);

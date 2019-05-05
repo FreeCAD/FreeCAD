@@ -286,6 +286,7 @@ void TaskTransformedParameters::onButtonAddFeature(bool checked)
 void TaskTransformedParameters::setupListWidget(QListWidget *widget) {
     listWidget = widget;
     QAction* action = new QAction(tr("Remove"), widget);
+    action->setShortcut(QString::fromLatin1("Del"));
     listWidget->addAction(action);
     QObject::connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);

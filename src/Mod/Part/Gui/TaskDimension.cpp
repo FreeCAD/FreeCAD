@@ -25,48 +25,45 @@
 #ifndef _PreCpmp_
 # include <QButtonGroup>
 # include <QPushButton>
+# include <sstream>
+# include <Python.h>
+
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRep_Tool.hxx>
+# include <TopExp.hxx>
+# include <Geom_ElementarySurface.hxx>
+# include <Geom_CylindricalSurface.hxx>
+# include <Geom_SphericalSurface.hxx>
+# include <Geom_Line.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <GeomAPI_ExtremaCurveCurve.hxx>
+
+# include <Inventor/nodes/SoTransform.h>
+# include <Inventor/nodes/SoMatrixTransform.h>
+# include <Inventor/nodes/SoVertexProperty.h>
+# include <Inventor/nodes/SoLineSet.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoFont.h>
+# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodekits/SoShapeKit.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoCone.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoNurbsCurve.h>
+# include <Inventor/engines/SoComposeVec3f.h>
+# include <Inventor/engines/SoCalculator.h>
+# include <Inventor/nodes/SoResetTransform.h>
+# include <Inventor/engines/SoConcatenate.h>
+# include <Inventor/engines/SoComposeRotationFromTo.h>
+# include <Inventor/engines/SoComposeRotation.h>
+# include <Inventor/nodes/SoMaterial.h>
 #endif
-
-
-#include <sstream>
-#include <Python.h>
-#include <boost/bind.hpp>
-
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRep_Tool.hxx>
-#include <TopExp.hxx>
-#include <Geom_ElementarySurface.hxx>
-#include <Geom_CylindricalSurface.hxx>
-#include <Geom_SphericalSurface.hxx>
-#include <Geom_Line.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <GeomAPI_ExtremaCurveCurve.hxx>
-
-#include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodes/SoMatrixTransform.h>
-#include <Inventor/nodes/SoVertexProperty.h>
-#include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/nodes/SoText2.h>
-#include <Inventor/nodes/SoFont.h>
-#include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/nodekits/SoShapeKit.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoCone.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoNurbsCurve.h>
-#include <Inventor/engines/SoComposeVec3f.h>
-#include <Inventor/engines/SoCalculator.h>
-#include <Inventor/nodes/SoResetTransform.h>
-#include <Inventor/engines/SoConcatenate.h>
-#include <Inventor/engines/SoComposeRotationFromTo.h>
-#include <Inventor/engines/SoComposeRotation.h>
-#include <Inventor/nodes/SoMaterial.h>
 
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
@@ -141,10 +138,10 @@ bool PartGui::evaluateLinearPreSelection(TopoDS_Shape &shape1, TopoDS_Shape &sha
     sel.objectName = it->FeatName;
     sel.subObjectName = it->SubName;
   }
-  
+
   if (shapes.size() != 2)
     return false;
-  
+
   shape1 = shapes.front();
   shape2 = shapes.back();
   
@@ -157,7 +154,7 @@ bool PartGui::evaluateLinearPreSelection(TopoDS_Shape &shape1, TopoDS_Shape &sha
 void PartGui::goDimensionLinearRoot()
 {
   PartGui::ensureSomeDimensionVisible();
-  
+
   TopoDS_Shape shape1, shape2;
   if(evaluateLinearPreSelection(shape1, shape2))
   {
@@ -182,10 +179,10 @@ void PartGui::goDimensionLinearNoTask(const TopoDS_Shape &shape1, const TopoDS_S
   BRepExtrema_DistShapeShape measure(shape1, shape2);
   if (!measure.IsDone() || measure.NbSolution() < 1)
     return;
-  
+
   dumpLinearResults(measure);
   addLinearDimensions(measure);
-  
+
   //if we ever make this a class add viewer to member.
   Gui::View3DInventorViewer *viewer = getViewer();
   if (!viewer)
@@ -201,12 +198,12 @@ void PartGui::dumpLinearResults(const BRepExtrema_DistShapeShape &measure)
   typeNames[0] = "Vertex";
   typeNames[1] = "Edge";
   typeNames[2] = "Face";
-  
+
   Base::Quantity quantity(measure.Value(), Base::Unit::Length);
   out << std::endl<< std::setprecision(std::numeric_limits<double>::digits10 + 1) << "distance = " <<
     measure.Value() << "mm    unit distance = " << quantity.getUserString().toUtf8().constData() << std::endl <<
     "solution count: " << measure.NbSolution() << std::endl;
-    
+
   for (int index = 1; index < measure.NbSolution() + 1; ++index) //not zero based.
   {
     gp_Pnt point1 = measure.PointOnShape1(index);
@@ -226,8 +223,10 @@ void PartGui::dumpLinearResults(const BRepExtrema_DistShapeShape &measure)
 
 Gui::View3DInventorViewer * PartGui::getViewer()
 {
-  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->
-    activeDocument()->getActiveView());
+  Gui::Document *doc = Gui::Application::Instance->activeDocument();
+  if (!doc)
+    return 0;
+  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView());
   if (!view)
     return 0;
   Gui::View3DInventorViewer *viewer = view->getViewer();
@@ -238,24 +237,31 @@ Gui::View3DInventorViewer * PartGui::getViewer()
 
 void PartGui::addLinearDimensions(const BRepExtrema_DistShapeShape &measure)
 {
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+  App::Color c(1.0,0.0,0.0);
+  c.fromHexString(group->GetASCII("Dimensions3dColor", c.asHexString().c_str()));
+  App::Color d(0.0,1.0,0.0);
+  d.fromHexString(group->GetASCII("DimensionsDeltaColor", d.asHexString().c_str()));
+
   Gui::View3DInventorViewer *viewer = getViewer();
   if (!viewer)
     return;
   gp_Pnt point1 = measure.PointOnShape1(1);
   gp_Pnt point2 = measure.PointOnShape2(1);
-  viewer->addDimension3d(createLinearDimension(point1, point2, SbColor(1.0, 0.0, 0.0)));
-  
+  viewer->addDimension3d(createLinearDimension(point1, point2, SbColor(c.r, c.g, c.b)));
+
   //create deltas. point1 will always be the same.
   gp_Pnt temp = point1;
   gp_Pnt lastTemp = temp;
   temp.SetX(point2.X());
-  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(d.r, d.g, d.b)));
   lastTemp = temp;
   temp.SetY(point2.Y());
-  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(d.r, d.g, d.b)));
   lastTemp = temp;
   temp.SetZ(point2.Z());
-  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(d.r, d.g, d.b)));
 }
 
 SoNode* PartGui::createLinearDimension(const gp_Pnt &point1, const gp_Pnt &point2, const SbColor &color)
@@ -267,21 +273,22 @@ SoNode* PartGui::createLinearDimension(const gp_Pnt &point1, const gp_Pnt &point
   PartGui::DimensionLinear *dimension = new PartGui::DimensionLinear();
   dimension->point1.setValue(vec1);
   dimension->point2.setValue(vec2);
-  
+  dimension->setupDimension();
+
   Base::Quantity quantity(static_cast<double>((vec2-vec1).length()), Base::Unit::Length);
   dimension->text.setValue(quantity.getUserString().toUtf8().constData());
-  
+
   dimension->dColor.setValue(color);
   return dimension;
 }
 
 void PartGui::eraseAllDimensions()
 {
-  auto doc = App::GetApplication().getActiveDocument();
-  if(doc)
-      _Measures.erase(doc->getName());
-  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->
-    activeDocument()->getActiveView());
+  Gui::Document *doc = Gui::Application::Instance->activeDocument();
+  if (!doc)
+    return;
+  _Measures.erase(doc->getDocument()->getName());
+  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView());
   if (!view)
     return;
   Gui::View3DInventorViewer *viewer = view->getViewer();
@@ -339,7 +346,7 @@ void PartGui::ensureSomeDimensionVisible()
     group->SetBool("DimensionsVisible", true);
   bool visibility3d = group->GetBool("Dimensions3dVisible", true);
   bool visibilityDelta = group->GetBool("DimensionsDeltaVisible", true);
-  
+
   if (!visibility3d && !visibilityDelta) //both turned off.
     group->SetBool("Dimensions3dVisible", true); //turn on 3d, so something is visible.
 }
@@ -352,7 +359,7 @@ void PartGui::ensure3dDimensionVisible()
   if (!visibilityAll)
     group->SetBool("DimensionsVisible", true);
   bool visibility3d = group->GetBool("Dimensions3dVisible", true);
-  
+
   if (!visibility3d) //both turned off.
     group->SetBool("Dimensions3dVisible", true); //turn on 3d, so something is visible.
 }
@@ -383,11 +390,6 @@ PartGui::DimensionLinear::DimensionLinear()
     SO_NODE_ADD_FIELD(origin, (0.0, 0.0, 0.0));//static
     SO_NODE_ADD_FIELD(text, ("test"));//dimension text
     SO_NODE_ADD_FIELD(dColor, (1.0, 0.0, 0.0));//dimension color.
-    
-    point1.setValue(SbVec3f(0.0, 0.0, 0.0));
-    point2.setValue(SbVec3f(1.0, 0.0, 0.0));
-
-    setupDimension();
 }
 
 PartGui::DimensionLinear::~DimensionLinear()
@@ -413,6 +415,7 @@ void PartGui::DimensionLinear::setupDimension()
   hyp->expression.set1Value(1, "oB = normalize(oA)");
   hyp->expression.set1Value(2, "oa = length(oA)");
   length.connectFrom(&hyp->oa);
+
   //build engine for rotation.
   SoComposeRotationFromTo *rotationEngine = new SoComposeRotationFromTo();
   rotationEngine->from.setValue(SbVec3f(1.0, 0.0, 0.0));
@@ -423,18 +426,27 @@ void PartGui::DimensionLinear::setupDimension()
   SoMaterial *material = new SoMaterial;
   material->diffuseColor.connectFrom(&dColor);
 
-  //dimension arrows.
+  //dimension arrows
+  float dimLength = (point2.getValue()-point1.getValue()).length();
+  float coneHeight = dimLength * 0.05;
+  float coneRadius = coneHeight * 0.5;
+
   SoCone *cone = new SoCone();
-  cone->bottomRadius.setValue(0.25);
-  cone->height.setValue(0.5);
+  cone->bottomRadius.setValue(coneRadius);
+  cone->height.setValue(coneHeight);
+
+  char lStr[100];
+  char rStr[100];
+  snprintf(lStr, sizeof(lStr), "translation %.6f 0.0 0.0", coneHeight * 0.5);
+  snprintf(rStr, sizeof(rStr), "translation 0.0 -%.6f 0.0", coneHeight * 0.5);
 
   setPart("leftArrow.shape", cone);
   set("leftArrow.transform", "rotation 0.0 0.0 1.0 1.5707963");
-  set("leftArrow.transform", "translation 0.25 0.0 0.0"); //half cone height.
+  set("leftArrow.transform", lStr);
   setPart("rightArrow.shape", cone);
   set("rightArrow.transform", "rotation 0.0 0.0 -1.0 1.5707963"); //no constant for PI.
   //have use local here to do the offset because the main is wired up to length of dimension.
-  set("rightArrow.localTransform", "translation 0.0 -0.25 0.0"); //half cone height.
+  set("rightArrow.localTransform", rStr);
 
   SoTransform *transform = static_cast<SoTransform *>(getPart("rightArrow.transform", false));
   if (!transform)
@@ -481,7 +493,7 @@ void PartGui::DimensionLinear::setupDimension()
   SoTransform *textTransform =  new SoTransform();
   textTransform->translation.connectFrom(&textVecCalc->oA);
   textSep->addChild(textTransform);
-  
+
   SoFont *fontNode = new SoFont();
   fontNode->name.setValue("defaultFont");
   fontNode->size.setValue(30);
@@ -603,27 +615,27 @@ void PartGui::TaskMeasureLinear::clearSelectionStrings()
 void PartGui::TaskMeasureLinear::setUpGui()
 {
   QPixmap mainIcon = Gui::BitmapFactory().pixmap("Part_Measure_Linear");
-  
+
   Gui::TaskView::TaskBox* selectionTaskBox = new Gui::TaskView::TaskBox
     (mainIcon, QObject::tr("Selections"), false, 0);
   QVBoxLayout *selectionLayout = new QVBoxLayout();
   stepped = new SteppedSelection(2, selectionTaskBox);
   selectionLayout->addWidget(stepped);
   selectionTaskBox->groupLayout()->addLayout(selectionLayout);
-  
+
   Gui::TaskView::TaskBox* controlTaskBox = new Gui::TaskView::TaskBox
     (mainIcon, QObject::tr("Control"), false, 0);
   QVBoxLayout *controlLayout = new QVBoxLayout();
-  
+
   DimensionControl *control = new DimensionControl(controlTaskBox);
   controlLayout->addWidget(control);
   controlTaskBox->groupLayout()->addLayout(controlLayout);
   QObject::connect(control->resetButton, SIGNAL(clicked(bool)), this, SLOT(resetDialogSlot(bool)));
-  
+
   this->setButtonPosition(TaskDialog::South);
   Content.push_back(selectionTaskBox);
   Content.push_back(controlTaskBox);
-  
+
   stepped->getButton(0)->setChecked(true);//before wired up.
   stepped->getButton(0)->setEnabled(true);
   QObject::connect(stepped->getButton(0), SIGNAL(toggled(bool)), this, SLOT(selection1Slot(bool)));
@@ -639,7 +651,7 @@ void PartGui::TaskMeasureLinear::selection1Slot(bool checked)
     return;
   }
   buttonSelectedIndex = 0;
-  
+
   this->blockConnection(true);
   Gui::Selection().clearSelection();
   //we should only be working with 1 entity, but oh well do the loop anyway.
@@ -703,7 +715,7 @@ PartGui::VectorAdapter::VectorAdapter(const TopoDS_Face &faceIn, const gp_Vec &p
     vector.Normalize();
     if (faceIn.Orientation() == TopAbs_REVERSED)
       vector.Reverse();
-    if (surface->IsKind(STANDARD_TYPE(Geom_CylindricalSurface)) || 
+    if (surface->IsKind(STANDARD_TYPE(Geom_CylindricalSurface)) ||
       surface->IsKind(STANDARD_TYPE(Geom_SphericalSurface))
     )
     {
@@ -725,7 +737,7 @@ PartGui::VectorAdapter::VectorAdapter(const TopoDS_Edge &edgeIn, const gp_Vec &p
   if (vector.Magnitude() < Precision::Confusion())
     return;
   vector.Normalize();
-  
+
   status = true;
   projectOriginOntoVector(pickedPointIn);
 }
@@ -735,14 +747,14 @@ PartGui::VectorAdapter::VectorAdapter(const TopoDS_Vertex &vertex1In, const Topo
 {
   vector = PartGui::convert(vertex2In) - PartGui::convert(vertex1In);
   vector.Normalize();
-  
+
   //build origin half way.
   gp_Vec tempVector = (PartGui::convert(vertex2In) - PartGui::convert(vertex1In));
   double mag = tempVector.Magnitude();
   tempVector.Normalize();
   tempVector *= (mag / 2.0);
   origin = tempVector + PartGui::convert(vertex1In);
-  
+
   status = true;
 }
 
@@ -751,14 +763,14 @@ PartGui::VectorAdapter::VectorAdapter(const gp_Vec &vector1, const gp_Vec &vecto
 {
   vector = vector2- vector1;
   vector.Normalize();
-  
+
   //build origin half way.
   gp_Vec tempVector = vector2 - vector1;
   double mag = tempVector.Magnitude();
   tempVector.Normalize();
   tempVector *= (mag / 2.0);
   origin = tempVector + vector1;
-  
+
   status = true;
 }
 
@@ -789,7 +801,7 @@ gp_Vec PartGui::convert(const TopoDS_Vertex &vertex)
 void PartGui::goDimensionAngularRoot()
 {
   PartGui::ensure3dDimensionVisible();
-  
+
   VectorAdapter adapter1, adapter2;
   if(PartGui::evaluateAngularPreSelection(adapter1, adapter2))
     goDimensionAngularNoTask(adapter1, adapter2);
@@ -859,7 +871,7 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
     }
     //vertices have to be selected in succession. so if we make it here clear the last vertex.
     lastVertex = TopoDS_Vertex();
-    
+
     gp_Vec pickPoint(it->x, it->y, it->z);
     //can't use selections without a pick point.
     if (pickPoint.IsEqual(gp_Vec(0.0, 0.0, 0.0), Precision::Confusion(), Precision::Angular()))
@@ -899,7 +911,7 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
       adapters.push_back(VectorAdapter(edge, pickPoint));
       continue;
     }
-    
+
     if (shape.ShapeType() == TopAbs_FACE)
     {
       sel.shapeType = DimSelections::Face;
@@ -908,15 +920,15 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
       continue;
     }
   }
-  
+
   if (adapters.size() != 2)
     return false;
   if (!adapters.front().isValid() || !adapters.back().isValid())
     return false;
-  
+
   vector1Out = adapters.front();
   vector2Out = adapters.back();
-  
+
   //making sure pick points are not equal
   if ((vector1Out.getPickPoint() - vector2Out.getPickPoint()).Magnitude() < std::numeric_limits<float>::epsilon())
   {
@@ -935,32 +947,32 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   gp_Vec vector1 = vector1Adapter;
   gp_Vec vector2 = vector2Adapter;
   double angle = vector1.Angle(vector2);
-  
+
   std::ostringstream stream;
   stream << std::setprecision(std::numeric_limits<double>::digits10 + 1) << std::fixed << std::endl <<
     "angle in radians is: " << angle << std::endl <<
     "angle in degrees is: " << 180 * angle / M_PI << std::endl;
   if (angle < M_PI / 2.0)
-    stream << std::setprecision(std::numeric_limits<double>::digits10 + 1) << 
+    stream << std::setprecision(std::numeric_limits<double>::digits10 + 1) <<
     "complement in radians is: " << M_PI / 2.0 - angle << std::endl <<
     "complement in degrees is: " << 90 - 180 * angle / M_PI << std::endl;
   //I don't think we get anything over 180, but just in case.
   if (angle > M_PI / 2.0 && angle < M_PI)
-    stream << std::setprecision(std::numeric_limits<double>::digits10 + 1) << 
+    stream << std::setprecision(std::numeric_limits<double>::digits10 + 1) <<
     "supplement in radians is: " << M_PI - angle << std::endl <<
     "supplement in degrees is: " << 180 - 180 * angle / M_PI << std::endl;
   Base::Console().Message(stream.str().c_str());
-  
+
   SbMatrix dimSys;
   double radius;
   double displayAngle;//have to fake the angle in the 3d.
-  
+
   if (vector1.IsParallel(vector2, Precision::Angular()))
   {
     //take first point project it onto second vector.
     Handle(Geom_Curve) heapLine2 = new Geom_Line(vector2Adapter);
     gp_Pnt tempPoint(vector1Adapter.getPickPoint().XYZ());
-    
+
     GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine2);
     if (projection.NbPoints() < 1)
     {
@@ -969,21 +981,21 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
     }
     gp_Vec newPoint2;
     newPoint2.SetXYZ(projection.Point(1).XYZ());
-    
+
     //if points are colinear, projection doesn't work and returns the same point.
     //In this case we just use the original point.
     if ((newPoint2 - vector1Adapter.getPickPoint()).Magnitude() < Precision::Confusion())
       newPoint2 = vector2Adapter.getPickPoint();
-    
+
     //now get midpoint between for dim origin.
     gp_Vec point1 = vector1Adapter.getPickPoint();
     gp_Vec midPointProjection = newPoint2 - point1;
     double distance = midPointProjection.Magnitude();
     midPointProjection.Normalize();
     midPointProjection *= distance / 2.0;
-    
+
     gp_Vec origin = point1 + midPointProjection;
-    
+
     //yaxis should be the same as vector1, but doing this to eliminate any potential slop from
     //using precision::angular. If lines are colinear and we have no plane, we can't establish zAxis from crossing.
     //we just the absolute axis.
@@ -1000,7 +1012,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
       zAxis = xAxis.Crossed(vector1).Normalized();
     gp_Vec yAxis = zAxis.Crossed(xAxis).Normalized();
     zAxis = xAxis.Crossed(yAxis).Normalized();
-    
+
     dimSys = SbMatrix
     (
       xAxis.X(), yAxis.X(), zAxis.X(), origin.X(),
@@ -1009,7 +1021,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
       0.0, 0.0, 0.0, 1.0
     );
     dimSys = dimSys.transpose();
-    
+
     radius = midPointProjection.Magnitude();
     displayAngle = M_PI;
   }
@@ -1017,22 +1029,22 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   {
     Handle(Geom_Curve) heapLine1 = new Geom_Line(vector1Adapter);
     Handle(Geom_Curve) heapLine2 = new Geom_Line(vector2Adapter);
-    
+
     GeomAPI_ExtremaCurveCurve extrema(heapLine1, heapLine2);
-    
+
     if (extrema.NbExtrema() < 1)
     {
       Base::Console().Message("couldn't get extrema\n");
       return;
     }
-    
+
     gp_Pnt extremaPoint1, extremaPoint2, dimensionOriginPoint;
     extrema.Points(1, extremaPoint1, extremaPoint2);
     if (extremaPoint1.Distance(extremaPoint2) < Precision::Confusion())
       dimensionOriginPoint = extremaPoint1;
     else
     {
-      //find half way point in between extrema points for dimension origin.
+      //find halfway point in between extrema points for dimension origin.
       gp_Vec vec1(extremaPoint1.XYZ());
       gp_Vec vec2(extremaPoint2.XYZ());
       gp_Vec connection(vec2-vec1);
@@ -1041,7 +1053,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
       connection *= (distance / 2.0);
       dimensionOriginPoint.SetXYZ((vec1 + connection).XYZ());
     }
-    
+
     gp_Vec thirdPoint(vector2Adapter.getPickPoint());
     gp_Vec originVector(dimensionOriginPoint.XYZ());
     gp_Vec extrema2Vector(extremaPoint2.XYZ());
@@ -1061,12 +1073,12 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
       otherSide.Normalize();
       displayAngle = hyp.Angle(otherSide);
     }
-    
+
     gp_Vec xAxis = (vector1Adapter.getPickPoint() - originVector).Normalized();
     gp_Vec fakeYAxis = (thirdPoint - originVector).Normalized();
     gp_Vec zAxis = (xAxis.Crossed(fakeYAxis)).Normalized();
     gp_Vec yAxis = zAxis.Crossed(xAxis).Normalized();
-    
+
     dimSys = SbMatrix
     (
       xAxis.X(), yAxis.X(), zAxis.X(), dimensionOriginPoint.X(),
@@ -1074,22 +1086,28 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
       xAxis.Z(), yAxis.Z(), zAxis.Z(), dimensionOriginPoint.Z(),
       0.0, 0.0, 0.0, 1.0
     );
-    
+
     dimSys = dimSys.transpose();
   }
-  
+
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+  App::Color c(0.0,0.0,1.0);
+  c.fromHexString(group->GetASCII("DimensionsAngularColor", c.asHexString().c_str()));
+
   DimensionAngular *dimension = new DimensionAngular();
+  dimension->ref();
   dimension->matrix.setValue(dimSys);
   dimension->radius.setValue(radius);
   dimension->angle.setValue(static_cast<float>(displayAngle));
   dimension->text.setValue((Base::Quantity(180 * angle / M_PI, Base::Unit::Angle)).getUserString().toUtf8().constData());
-  dimension->dColor.setValue(SbColor(0.0, 0.0, 1.0));
-  
+  dimension->dColor.setValue(SbColor(c.r, c.g, c.b));
+  dimension->setupDimension();
+
   Gui::View3DInventorViewer *viewer = getViewer();
-  if (!viewer)
-    return;
-  
-  viewer->addDimension3d(dimension);
+  if (viewer)
+    viewer->addDimension3d(dimension);
+  dimension->unref();
 }
 
 SO_KIT_SOURCE(PartGui::DimensionAngular);
@@ -1120,8 +1138,6 @@ PartGui::DimensionAngular::DimensionAngular()
                                0.0, 1.0, 0.0, 0.0,
 			       0.0, 0.0, 1.0, 0.0,
 			       0.0, 0.0, 0.0, 1.0));
-    
-    setupDimension();
 }
 
 PartGui::DimensionAngular::~DimensionAngular()
@@ -1143,20 +1159,29 @@ void PartGui::DimensionAngular::setupDimension()
 
   //color
   SoMaterial *material = new SoMaterial;
+  material->ref();
   material->diffuseColor.connectFrom(&dColor);
 
-  //dimension arrows.
+  //dimension arrows
+  float coneHeight = radius.getValue() * 0.1;
+  float coneRadius = coneHeight * 0.5;
+
   SoCone *cone = new SoCone();
-  cone->bottomRadius.setValue(0.25);
-  cone->height.setValue(0.5);
+  cone->bottomRadius.setValue(coneRadius);
+  cone->height.setValue(coneHeight);
+
+  char str1[100];
+  char str2[100];
+  snprintf(str1, sizeof(str1), "translation 0.0 %.6f 0.0", coneHeight * 0.5);
+  snprintf(str2, sizeof(str2), "translation 0.0 -%.6f 0.0", coneHeight * 0.5);
 
   setPart("arrow1.shape", cone);
   set("arrow1.localTransform", "rotation 0.0 0.0 1.0 3.1415927");
-  set("arrow1.localTransform", "translation 0.0 0.25 0.0"); //half cone height.
+  set("arrow1.localTransform", str1);
   setPart("arrow2.shape", cone);
   set("arrow2.transform", "rotation 0.0 0.0 1.0 0.0");
-  set("arrow2.localTransform", "translation 0.0 -0.25 0.0"); //half cone height.
-  
+  set("arrow2.localTransform", str2);
+
   //I was getting errors if I didn't manually allocate for these transforms. Not sure why.
   SoTransform *arrow1Transform = new SoTransform();
   SoComposeVec3f *arrow1Compose = new SoComposeVec3f();
@@ -1165,7 +1190,7 @@ void PartGui::DimensionAngular::setupDimension()
   arrow1Compose->y.setValue(0.0);
   arrow1Transform->translation.connectFrom(&arrow1Compose->vector);
   setPart("arrow1.transform", arrow1Transform);
-  
+
   SoComposeRotation *arrow2Rotation = new SoComposeRotation();
   arrow2Rotation->angle.connectFrom(&angle);
   arrow2Rotation->axis.setValue(0.0, 0.0, 1.0);
@@ -1185,32 +1210,31 @@ void PartGui::DimensionAngular::setupDimension()
 
   setPart("arrow1.material", material);
   setPart("arrow2.material", material);
-  
+
   ArcEngine *arcEngine = new ArcEngine();
   arcEngine->angle.connectFrom(&angle);
   arcEngine->radius.connectFrom(&radius);
   arcEngine->deviation.setValue(0.1f);
-  
+
   SoCoordinate3 *coordinates = new SoCoordinate3();
   coordinates->point.connectFrom(&arcEngine->points);
-  
+
   SoLineSet *lineSet = new SoLineSet();
+  lineSet->ref();
   lineSet->vertexProperty.setValue(coordinates);
   lineSet->numVertices.connectFrom(&arcEngine->pointCount);
   lineSet->startIndex.setValue(0);
-  
+
   SoSeparator *arcSep = static_cast<SoSeparator *>(getPart("arcSep", true));
-  if (!arcSep)
-    return;
-  arcSep->addChild(material);
-  arcSep->addChild(lineSet);
+  if (arcSep) {
+    arcSep->addChild(material);
+    arcSep->addChild(lineSet);
+  }
 
   //text
   SoSeparator *textSep = static_cast<SoSeparator *>(getPart("textSep", true));
-  if (!textSep)
-      return;
-
-  textSep->addChild(material);
+  if (textSep)
+    textSep->addChild(material);
 
   SoCalculator *textVecCalc = new SoCalculator();
   textVecCalc->a.connectFrom(&angle);
@@ -1218,17 +1242,17 @@ void PartGui::DimensionAngular::setupDimension()
   textVecCalc->expression.set1Value(0, "oa = a / 2.0");
   textVecCalc->expression.set1Value(1, "ob = cos(oa) * b"); //x
   textVecCalc->expression.set1Value(2, "oc = sin(oa) * b"); //y
-  
+
   SoComposeVec3f *textLocation = new SoComposeVec3f();
   textLocation->x.connectFrom(&textVecCalc->ob);
   textLocation->y.connectFrom(&textVecCalc->oc);
   textLocation->z.setValue(0.0);
-  
+
 
   SoTransform *textTransform =  new SoTransform();
   textTransform->translation.connectFrom(&textLocation->vector);
   textSep->addChild(textTransform);
-  
+
   SoFont *fontNode = new SoFont();
   fontNode->name.setValue("defaultFont");
   fontNode->size.setValue(30);
@@ -1243,6 +1267,9 @@ void PartGui::DimensionAngular::setupDimension()
   SoResetTransform *rTrans = new SoResetTransform;
   rTrans->whatToReset = SoResetTransform::BBOX;
   textSep->addChild(rTrans);
+
+  lineSet->unref();
+  material->unref();
 }
 
 SO_ENGINE_SOURCE(PartGui::ArcEngine);
@@ -1273,7 +1300,7 @@ void PartGui::ArcEngine::evaluate()
     defaultValues();
     return;
   }
-  
+
   float deviationAngle(acos((radius.getValue() - deviation.getValue()) / radius.getValue()));
   std::vector<SbVec3f> tempPoints;
   int segmentCount;
@@ -1328,17 +1355,17 @@ PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* 
 {
   if (buttonCountIn < 1)
     return;
-  
+
   QVBoxLayout *mainLayout = new QVBoxLayout();
   this->setLayout(mainLayout);
-  
+
   QButtonGroup *buttonGroup = new QButtonGroup();
   buttonGroup->setExclusive(true);
-  
+
   for (uint index = 0; index < buttonCountIn; ++index)
   {
     ButtonIconPairType tempPair;
-    
+
     std::ostringstream stream;
     stream << "Selection " << ((index < 10) ? "0" : "") <<  index + 1;
     QString buttonText = QObject::tr(stream.str().c_str());
@@ -1347,13 +1374,13 @@ PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* 
     button->setEnabled(false);
     buttonGroup->addButton(button);
     connect(button, SIGNAL(toggled(bool)), this, SLOT(selectionSlot(bool)));
-    
+
     QLabel *label = new QLabel;
-    
+
     tempPair.first = button;
     tempPair.second = label;
     buttons.push_back(tempPair);
-    
+
     QHBoxLayout *layout = new QHBoxLayout();
     mainLayout->addLayout(layout);
     layout->addWidget(button);
@@ -1362,7 +1389,7 @@ PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* 
     layout->addStretch();
   }
   mainLayout->addStretch();
-  
+
   buildPixmaps(); //uses button size
 }
 
@@ -1399,7 +1426,7 @@ void PartGui::SteppedSelection::selectionSlot(bool checked)
     if (it->first == sender)
       break;
   assert(it != buttons.end());
-  
+
   if (checked)
     it->second->setPixmap(*stepActive);
   else
@@ -1420,21 +1447,21 @@ PartGui::DimensionControl::DimensionControl(QWidget* parent): QWidget(parent)
 {
   QVBoxLayout *commandLayout = new QVBoxLayout();
   this->setLayout(commandLayout);
-  
+
   resetButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Linear"),
 				QObject::tr("Reset Dialog"), this);
   commandLayout->addWidget(resetButton);
-  
+
   QPushButton *toggle3dButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Toggle_3d"),
 						QObject::tr("Toggle 3d"), this);
   QObject::connect(toggle3dButton, SIGNAL(clicked(bool)), this, SLOT(toggle3dSlot(bool)));
   commandLayout->addWidget(toggle3dButton);
-  
+
   QPushButton *toggleDeltaButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Toggle_Delta"),
 						QObject::tr("Toggle Delta"), this);
   QObject::connect(toggleDeltaButton, SIGNAL(clicked(bool)), this, SLOT(toggleDeltaSlot(bool)));
   commandLayout->addWidget(toggleDeltaButton);
-  
+
   QPushButton *clearAllButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Clear_All"),
 						QObject::tr("Clear All"), this);
   QObject::connect(clearAllButton, SIGNAL(clicked(bool)), this, SLOT(clearAllSlot(bool)));
@@ -1501,7 +1528,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
 	  if (selections1.selections.at(0).shapeType != DimSelections::Vertex)
 	    selections1.selections.clear();
 	}
-	
+
 	newSelection.shapeType = DimSelections::Vertex;
 	selections1.selections.push_back(newSelection);
 	if (selections1.selections.size() == 1)
@@ -1510,28 +1537,28 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
 	assert(selections1.selections.size() == 2);
 	assert(selections1.selections.at(0).shapeType == DimSelections::Vertex);
 	assert(selections1.selections.at(1).shapeType == DimSelections::Vertex);
-	
+
 	QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
 	stepped->getButton(1)->setEnabled(true);
 	stepped->getButton(1)->setChecked(true);
 	return;
       }
-      
+
       //here there should only be one in the selections container. so just clear it.
       selections1.selections.clear();
-      
+
       if (shape.ShapeType() == TopAbs_EDGE)
       {
 	newSelection.shapeType = DimSelections::Edge;
 	selections1.selections. push_back(newSelection);
       }
-      
+
       if (shape.ShapeType() == TopAbs_FACE)
       {
 	newSelection.shapeType = DimSelections::Face;
 	selections1.selections.push_back(newSelection);
       }
-      
+
       QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
       stepped->getButton(1)->setEnabled(true);
       stepped->getButton(1)->setChecked(true);
@@ -1553,7 +1580,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
 	  if (selections2.selections.at(0).shapeType != DimSelections::Vertex)
 	    selections2.selections.clear();
 	}
-	
+
 	newSelection.shapeType = DimSelections::Vertex;
 	selections2.selections.push_back(newSelection);
 	if (selections2.selections.size() == 1)
@@ -1562,7 +1589,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
 	assert(selections2.selections.size() == 2);
 	assert(selections2.selections.at(0).shapeType == DimSelections::Vertex);
 	assert(selections2.selections.at(1).shapeType == DimSelections::Vertex);
-	
+
 	buildDimension();
 	clearSelection();
 	QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
@@ -1572,19 +1599,19 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
       }
       //vertices have to be selected in succession. if we get here,clear temp selection.
       selections2.selections.clear();
-      
+
       if (shape.ShapeType() == TopAbs_EDGE)
       {
 	newSelection.shapeType = DimSelections::Edge;
 	selections2.selections. push_back(newSelection);
       }
-      
+
       if (shape.ShapeType() == TopAbs_FACE)
       {
 	newSelection.shapeType = DimSelections::Face;
 	selections2.selections.push_back(newSelection);
       }
-      
+
       buildDimension();
       clearSelection();
       QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
@@ -1645,7 +1672,7 @@ PartGui::VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::
       TopoDS_Shape faceShape;
       if (!getShapeFromStrings(faceShape, current.documentName, current.objectName, current.subObjectName,&mat))
 	return VectorAdapter();
-      
+
       TopoDS_Face face = TopoDS::Face(faceShape);
       Base::Vector3d v(current.x,current.y,current.z);
       v = mat*v;
@@ -1701,27 +1728,27 @@ void PartGui::TaskMeasureAngular::clearSelection()
 void PartGui::TaskMeasureAngular::setUpGui()
 {
   QPixmap mainIcon = Gui::BitmapFactory().pixmap("Part_Measure_Angular");
-  
+
   Gui::TaskView::TaskBox* selectionTaskBox = new Gui::TaskView::TaskBox
     (mainIcon, QObject::tr("Selections"), false, 0);
   QVBoxLayout *selectionLayout = new QVBoxLayout();
   stepped = new SteppedSelection(2, selectionTaskBox);
   selectionLayout->addWidget(stepped);
   selectionTaskBox->groupLayout()->addLayout(selectionLayout);
-  
+
   Gui::TaskView::TaskBox* controlTaskBox = new Gui::TaskView::TaskBox
     (mainIcon, QObject::tr("Control"), false, 0);
   QVBoxLayout *controlLayout = new QVBoxLayout();
-  
+
   DimensionControl *control = new DimensionControl(controlTaskBox);
   controlLayout->addWidget(control);
   controlTaskBox->groupLayout()->addLayout(controlLayout);
   QObject::connect(control->resetButton, SIGNAL(clicked(bool)), this, SLOT(resetDialogSlot(bool)));
-  
+
   this->setButtonPosition(TaskDialog::South);
   Content.push_back(selectionTaskBox);
   Content.push_back(controlTaskBox);
-  
+
   stepped->getButton(0)->setChecked(true);//before wired up.
   stepped->getButton(0)->setEnabled(true);
   QObject::connect(stepped->getButton(0), SIGNAL(toggled(bool)), this, SLOT(selection1Slot(bool)));

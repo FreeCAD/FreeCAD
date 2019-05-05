@@ -9,19 +9,33 @@ SET(Material_SRCS
     importFCMat.py
     MaterialEditor.py
     materials-editor.ui
+    Templatematerial.yml
 )
 SOURCE_GROUP("Module" FILES ${Material_SRCS})
+
+SET (MaterialTools_Files
+    materialtools/__init__.py
+    materialtools/cardutils.py
+)
 
 # collect all the material cards:
 #FILE( GLOB MaterialLib_Files ./StandardMaterial/*.FCMat ./StandardMaterial/*.txt  )
 
 SET (MaterialLib_Files
     StandardMaterial/None.FCMat
-    StandardMaterial/ABS.FCMat
+    StandardMaterial/ABS-Generic.FCMat
+    StandardMaterial/Acrylic-Glass-Generic.FCMat
     StandardMaterial/CalculiX-Steel.FCMat
     StandardMaterial/Concrete-Generic.FCMat
-    StandardMaterial/PLA.FCMat
+    StandardMaterial/Glass-Generic.FCMat
+    StandardMaterial/PA6-Generic.FCMat
+    StandardMaterial/PET-Generic.FCMat
+    StandardMaterial/PLA-Generic.FCMat
+    StandardMaterial/PP-Generic.FCMat
+    StandardMaterial/PTFE-Generic.FCMat
+    StandardMaterial/PVC-Generic.FCMat
     StandardMaterial/Steel-Generic.FCMat
+    StandardMaterial/TEMPLATE.FCMat
     StandardMaterial/Wood-Generic.FCMat
     StandardMaterial/Readme.txt
 )
@@ -43,6 +57,19 @@ fc_target_copy_resource(Material
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${Material_SRCS})
+
+
+ADD_CUSTOM_TARGET(MaterialToolsLib ALL
+    SOURCES ${MaterialTools_Files}
+)
+
+fc_target_copy_resource(MaterialToolsLib 
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Material
+    ${MaterialTools_Files})
+
+INSTALL(FILES ${MaterialTools_Files} DESTINATION Mod/Material/materialtools)
+
 
 IF (BUILD_GUI)
     fc_target_copy_resource(Material

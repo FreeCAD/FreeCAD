@@ -62,9 +62,11 @@ public:
     ///
     /// A second type of routines, complex routines, are thought for running fully automatic and they Detect, Analyse and Make.
     /// They may also apply a variaty of types of Constraints.
+    ///
+    /// A third type of routines do not relate to autoconstraining at all, and include validation methods for sketches.
     SketchAnalysis(Sketcher::SketchObject * Obj);
     ~SketchAnalysis();
-    
+
     // Simple routines (see constructor)
 
     /// Point on Point constraint simple routine Detect step (see constructor)
@@ -103,7 +105,7 @@ public:
     void makeMissingEquality(bool onebyone = true);
 
     // Complex routines (see constructor)
-    
+
     /// Fully automated multi-constraint autoconstraining
     ///
     /// It DELETES all the constraints currently present in the Sketcher. The reason is that it makes assumptions to avoid redundancies.
@@ -112,10 +114,13 @@ public:
     int autoconstraint(double precision = Precision::Confusion() * 1000, double angleprecision = M_PI/8, bool includeconstruction = true);
 
     // helper functions, which may be used by more complex methods, and/or called directly by user space (python) methods
-    
-    /// solves the sketch and retrieves the error status, and the degrees of freedom. 
+
+    /// solves the sketch and retrieves the error status, and the degrees of freedom.
     /// It enables to solve updating the geometry (so moving the geometry to match the constraints) or preserving the geometry.
     void solvesketch(int &status, int &dofs, bool updategeo);
+
+    // third type of routines
+    std::vector<Base::Vector3d> getOpenVertices(void) const;
 
 protected:
     Sketcher::SketchObject* sketch;

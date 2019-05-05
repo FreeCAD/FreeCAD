@@ -29,6 +29,7 @@
 # include <QRegExp>
 # include <QShortcut>
 # include <QString>
+# include <boost/bind.hpp>
 #endif
 
 #include "TaskSketcherElements.h"
@@ -41,13 +42,14 @@
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/BitmapFactory.h>
-#include <boost/bind.hpp>
+
 #include <Gui/Command.h>
 #include <Gui/MenuManager.h>
 
@@ -294,13 +296,13 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
            << "Separator";
 
     Gui::MenuManager::getInstance()->setupContextMenu(&mitems, menu);
-        
+
     QAction* remove = menu.addAction(tr("Delete"), this, SLOT(deleteSelectedItems()),
         QKeySequence(QKeySequence::Delete));
     remove->setEnabled(!items.isEmpty());
 
     menu.menuAction()->setIconVisibleInMenu(true);
-    
+
     menu.exec(event->globalPos());
 }
 
@@ -399,20 +401,20 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
         ui->autoSwitchBox, SIGNAL(stateChanged(int)),
         this                     , SLOT  (on_autoSwitchBox_stateChanged(int))
        );
-    
+
     connectionElementsChanged = sketchView->signalElementsChanged.connect(
         boost::bind(&SketcherGui::TaskSketcherElements::slotElementsChanged, this));
-    
+
     this->groupLayout()->addWidget(proxy);
-    
+
     ui->comboBoxElementFilter->setCurrentIndex(0);
-    
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
-    
+
     ui->autoSwitchBox->setChecked(hGrp->GetBool("Auto-switch to edge", true));
-    
+
     ui->comboBoxElementFilter->setEnabled(!isautoSwitchBoxChecked);
-    
+
     slotElementsChanged();
 }
 
@@ -502,18 +504,18 @@ void TaskSketcherElements::on_elementsWidget_itemSelectionChanged(void)
 {
     ui->elementsWidget->blockSignals(true);
 
-      
+
     // selection changed because we acted on the current entered item
     // we can not do this with ItemPressed because that signal is triggered after this one
     int element=ui->comboBoxElementFilter->currentIndex();
-    
+
     ElementItem * itf;
-    
+ 
     if(focusItemIndex>-1 && focusItemIndex<ui->elementsWidget->topLevelItemCount())
       itf=static_cast<ElementItem*>(ui->elementsWidget->topLevelItem(focusItemIndex));
     else
       itf=NULL;
-    
+
     bool multipleselection=true; // ctrl type of selection in listWidget
     bool multipleconsecutiveselection=false; // shift type of selection in listWidget
 
@@ -657,9 +659,9 @@ void TaskSketcherElements::on_elementsWidget_itemEntered(QTreeWidgetItem *item)
 {
     ElementItem *it = dynamic_cast<ElementItem*>(item);
     if (!it) return;
-    
+
     Gui::Selection().rmvPreselect();
-    
+
     ui->elementsWidget->setFocus();
     
     int tempitemindex=ui->elementsWidget->indexOfTopLevelItem(item);
@@ -673,8 +675,8 @@ void TaskSketcherElements::on_elementsWidget_itemEntered(QTreeWidgetItem *item)
      * 3 - Middle Points
      */
     std::stringstream ss;
-    
-        
+
+
     // Edge Auto-Switch functionality
     if (isautoSwitchBoxChecked && tempitemindex!=focusItemIndex){
         ui->elementsWidget->blockSignals(true);
@@ -682,7 +684,7 @@ void TaskSketcherElements::on_elementsWidget_itemEntered(QTreeWidgetItem *item)
             ui->comboBoxElementFilter->setCurrentIndex(1);
         }
         else {
-            ui->comboBoxElementFilter->setCurrentIndex(0);  
+            ui->comboBoxElementFilter->setCurrentIndex(0);
         }
         ui->elementsWidget->blockSignals(false);
     }
@@ -690,9 +692,9 @@ void TaskSketcherElements::on_elementsWidget_itemEntered(QTreeWidgetItem *item)
     int element=ui->comboBoxElementFilter->currentIndex();
 
     focusItemIndex=tempitemindex;
-    
+
     int vertex;
-    
+
     switch(element)
     {
     case 0:
@@ -724,7 +726,7 @@ void TaskSketcherElements::leaveEvent (QEvent * event)
 }
 
 void TaskSketcherElements::slotElementsChanged(void)
-{ 
+{
     assert(sketchView);
     // Build up ListView with the elements
     const std::vector< Part::Geometry * > &vals = sketchView->getSketchObject()->Geometry.getValues();
@@ -734,14 +736,14 @@ void TaskSketcherElements::slotElementsChanged(void)
     itemMap.clear();
 
     int element = ui->comboBoxElementFilter->currentIndex();
-    
+ 
     auto sketch = sketchView->getSketchObject();
     for(int i=0;i<(int)vals.size();++i) {
         auto item = new ElementItem(ui->elementsWidget,sketch, i, vals[i]);
         item->setElement(sketch,element);
         itemMap[item->ElementNbr] = item;
     }
-    
+
     const std::vector< Part::Geometry * > &ext_vals = sketchView->getSketchObject()->getExternalGeometry();
     for(int i=2;i<(int)ext_vals.size();++i) {
         auto item = new ElementItem(ui->elementsWidget,sketch, -i-1, ext_vals[i]);
@@ -758,19 +760,19 @@ void TaskSketcherElements::slotElementsChanged(void)
 void TaskSketcherElements::on_elementsWidget_filterShortcutPressed()
 {
     int element;
-    
+
     previouslySelectedItemIndex=-1; // Shift selection on list widget implementation
-    
+
     // calculate next element type on shift press according to entered/preselected element
     // This is the aka fast-forward functionality
     if(focusItemIndex>-1 && focusItemIndex<ui->elementsWidget->topLevelItemCount()){
-      
-      ElementItem * itf=static_cast<ElementItem*>(ui->elementsWidget->topLevelItem(focusItemIndex));
-      
+
+      ElementItem * itf=static_cast<ElementItem*>(ui->elementsWidget->topLevelItem(focusItemIndex)); 
+
       Base::Type type = itf->GeometryType;
-      
+
       element = ui->comboBoxElementFilter->currentIndex(); // currently selected type index
-      
+
       switch(element)
       {
 
@@ -791,25 +793,25 @@ void TaskSketcherElements::on_elementsWidget_filterShortcutPressed()
         default:
           element = 0;
       }
-           
+
       ui->comboBoxElementFilter->setCurrentIndex(element);
-      
+
       Gui::Selection().rmvPreselect();
-      
+
       on_elementsWidget_itemEntered(itf);
     }
     else{
-      element = (ui->comboBoxElementFilter->currentIndex()+1) % 
+      element = (ui->comboBoxElementFilter->currentIndex()+1) %
                 ui->comboBoxElementFilter->count();
 
       ui->comboBoxElementFilter->setCurrentIndex(element);
-      
+
       Gui::Selection().rmvPreselect();
     }
-    
+
     //update the icon
     updateIcons(element);
-    
+
     updatePreselection();
 }
 
@@ -823,14 +825,14 @@ void TaskSketcherElements::on_autoSwitchBox_stateChanged(int state)
 void TaskSketcherElements::on_elementsWidget_currentFilterChanged ( int index )
 {
     previouslySelectedItemIndex=-1; // Shift selection on list widget implementation
-    
+
     Gui::Selection().rmvPreselect();
-    
+
     updateIcons(index);
-  
+
     updatePreselection();
-  
-}    
+
+}
 
 void TaskSketcherElements::updatePreselection()
 {
@@ -844,7 +846,7 @@ void TaskSketcherElements::clearWidget()
     ui->elementsWidget->blockSignals(true);
     ui->elementsWidget->clearSelection ();
     ui->elementsWidget->blockSignals(false);
-    
+
     // update widget
     int countItems = ui->elementsWidget->topLevelItemCount();
     for (int i=0; i < countItems; i++) {

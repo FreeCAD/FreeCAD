@@ -20,8 +20,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from __future__ import print_function
-
 __title__ = "FemMesh to Mesh converter"
 __author__ = "Frantisek Loeffelmann, Ulrich Brammer, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
@@ -99,7 +97,7 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
     if myFemMesh.VolumeCount > 0:
         for ele in myFemMesh.Volumes:
             element_nodes = myFemMesh.getElementNodes(ele)
-            # print 'element_node: ', element_nodes
+            # print('element_node: ', element_nodes)
             faceDef = face_dicts[len(element_nodes)]
 
             for key in faceDef:
@@ -115,13 +113,13 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                     faceCode += (node << shifter)
                     # x << n: x shifted left by n bits = Multiplication
                     shifter += shiftBits
-                # print 'codeList: ', codeList
+                # print('codeList: ', codeList)
                 faceCodeDict[faceCode] = nodeList
                 faceCodeList.append(faceCode)
     elif myFemMesh.FaceCount > 0:
         for ele in myFemMesh.Faces:
             element_nodes = myFemMesh.getElementNodes(ele)
-            # print 'element_node: ', element_nodes
+            # print('element_node: ', element_nodes)
             faceDef = {1: [0, 1, 2]}
 
             for key in faceDef:
@@ -137,7 +135,7 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                     faceCode += (node << shifter)
                     # x << n: x shifted left by n bits = Multiplication
                     shifter += shiftBits
-                # print 'codeList: ', codeList
+                # print('codeList: ', codeList)
                 faceCodeDict[faceCode] = nodeList
                 faceCodeList.append(faceCode)
 
@@ -152,7 +150,7 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
             if faceCodeList[actFaceIdx] == faceCodeList[actFaceIdx + 1]:
                 actFaceIdx += 2
             else:
-                # print 'found a single Face: ', faceCodeList[actFaceIdx]
+                # print('found a single Face: ', faceCodeList[actFaceIdx])
                 singleFaces.append(faceCodeList[actFaceIdx])
                 actFaceIdx += 1
         else:
@@ -172,14 +170,14 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                         myFemMesh.getNodeById(face_nodes[1]) + dispVec1,
                         myFemMesh.getNodeById(face_nodes[2]) + dispVec2]
             output_mesh.extend(triangle)
-            # print 'my triangle: ', triangle
+            # print('my triangle: ', triangle)
             if len(face_nodes) == 4:
                 dispVec3 = myResults.DisplacementVectors[myResults.NodeNumbers.index(face_nodes[3])]
                 triangle = [myFemMesh.getNodeById(face_nodes[2]) + dispVec2,
                             myFemMesh.getNodeById(face_nodes[3]) + dispVec3,
                             myFemMesh.getNodeById(face_nodes[0]) + dispVec0]
                 output_mesh.extend(triangle)
-                # print 'my 2. triangle: ', triangle
+                # print('my 2. triangle: ', triangle)
 
     else:
         for myFace in singleFaces:
@@ -188,13 +186,13 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                         myFemMesh.getNodeById(face_nodes[1]),
                         myFemMesh.getNodeById(face_nodes[2])]
             output_mesh.extend(triangle)
-            # print 'my triangle: ', triangle
+            # print('my triangle: ', triangle)
             if len(face_nodes) == 4:
                 triangle = [myFemMesh.getNodeById(face_nodes[2]),
                             myFemMesh.getNodeById(face_nodes[3]),
                             myFemMesh.getNodeById(face_nodes[0])]
                 output_mesh.extend(triangle)
-                # print 'my 2. triangle: ', triangle
+                # print('my 2. triangle: ', triangle)
 
     end_time = time.clock()
     print('Mesh by surface search method: ', end_time - start_time)

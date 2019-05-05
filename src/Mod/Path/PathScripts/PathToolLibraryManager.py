@@ -299,7 +299,7 @@ class ToolLibraryManager():
                     fext = os.path.splitext(name)[1].lower()
                     if fext != ext:
                         name = "{}{}".format(name, ext)
-                    return (open(PathUtil.toUnicode(name), 'wb'), name)
+                    return (open(PathUtil.toUnicode(name), 'w'), name)
 
                 if filename[1] == self.TooltableTypeXML:
                     fp,fname = openFileWithExtension(filename[0], '.xml')
@@ -328,7 +328,7 @@ class ToolLibraryManager():
             tt = Path.Tooltable()
         if position is None:
             tt.addTools(tool)
-            newID = tt.Tools.keys()[-1]
+            newID = list(tt.Tools)[-1]
         else:
             tt.setTool(position, tool)
             newID = position

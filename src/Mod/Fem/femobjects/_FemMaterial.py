@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
+# *   Copyright (c) 2013 Juergen Riegel <FreeCAD@juergen-riegel.net>         *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,12 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FemMaterial"
+__title__ = "FreeCAD FEM material document object"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package FemMaterial
 #  \ingroup FEM
+#  \brief FEM material
 
 
 class _FemMaterial:

@@ -252,5 +252,7 @@
         <file>translations/Sketcher_val-ES.qm</file>
         <file>translations/Sketcher_zh-CN.qm</file>
         <file>translations/Sketcher_zh-TW.qm</file>
+        <file>translations/Sketcher_ar.qm</file>
+        <file>translations/Sketcher_vi.qm</file>
     </qresource>
 </RCC> 

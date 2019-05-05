@@ -39,6 +39,8 @@ This is the GUI part of the Draft module.
 Report to Draft.py for info
 '''
 
+import six
+
 import FreeCAD, FreeCADGui, os, Draft, sys, DraftVecUtils, math
 
 try:
@@ -47,7 +49,7 @@ except ImportError:
     FreeCAD.Console.PrintMessage("Error: Python-pyside package must be installed on your system to use the Draft module.")
 
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtGui.QApplication.UnicodeUTF8 if six.PY2 else None
     def translate(context, text, utf8_decode=True):
         """convenience function for Qt translator
             context: str
@@ -58,7 +60,9 @@ try:
                 if set to true utf8 encoded unicode will be returned. This option does not have influence
                 on python3 as for python3 we are returning utf-8 encoded unicode by default!
         """
-        if sys.version_info.major >= 3 or utf8_decode:
+        if six.PY3:
+            return QtGui.QApplication.translate(context, text, None)
+        elif utf8_decode:
             return QtGui.QApplication.translate(context, text, None, _encoding)
         else:
             return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
@@ -74,10 +78,18 @@ except AttributeError:
                 if set to true utf8 encoded unicode will be returned. This option does not have influence
                 on python3 as for python3 we are returning utf-8 encoded unicode by default!
         """
-        if sys.version_info.major >= 3 or utf8_decode:
+        if six.PY3:
             return QtGui.QApplication.translate(context, text, None)
+        elif QtCore.qVersion() > "4":
+            if utf8_decode:
+                return QtGui.QApplication.translate(context, text, None)
+            else:
+                return QtGui.QApplication.translate(context, text, None).encode("utf8")
         else:
-            return QtGui.QApplication.translate(context, text, None).encode("utf8")
+            if utf8_decode:
+                return QtGui.QApplication.translate(context, text, None, _encoding)
+            else:
+                return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
 
 def utf8_decode(text):
     """py2: str     -> unicode
@@ -109,7 +121,8 @@ inCommandShortcuts = {
     "AddHold":    ["Q",translate("draft","Add custom snap point"),None],
     "Length":     ["H",translate("draft","Length mode"),          "lengthValue"],
     "Wipe":       ["W",translate("draft","Wipe"),                 "wipeButton"],
-    "SetWP":      ["U",translate("draft","Set Working Plane"),    "orientWPButton"]
+    "SetWP":      ["U",translate("draft","Set Working Plane"), "orientWPButton"],
+    "CycleSnap":  ["`",translate("draft","Cycle snap object"), None]
 }
 
 
@@ -139,12 +152,12 @@ class todo:
                     wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
                     FreeCAD.Console.PrintWarning (wrn)
         except ReferenceError:
-            print ("Debug: DraftGui.todo.doTasks: queue contains a deleted object, skipping")
+            print("Debug: DraftGui.todo.doTasks: queue contains a deleted object, skipping")
         todo.itinerary = []
         if todo.commitlist:
             for name,func in todo.commitlist:
-                if sys.version_info.major < 3:
-                    if isinstance(name,unicode):
+                if six.PY2:
+                    if isinstance(name,six.text_type):
                         name = name.encode("utf8")
                 #print("debug: committing ",str(name))
                 try:
@@ -257,7 +270,17 @@ def displayExternal(internValue,decimals=None,dim='Length',showUnit=True,unit=No
 # Customized widgets
 #---------------------------------------------------------------------------
 
-class DraftDockWidget(QtGui.QWidget):
+class DraftBaseWidget(QtGui.QWidget):
+    def __init__(self,parent = None):
+        QtGui.QWidget.__init__(self,parent)
+    def eventFilter(self, widget, event):
+        if event.type() == QtCore.QEvent.KeyPress and event.text().upper()==inCommandShortcuts["CycleSnap"][0]:
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.cycleSnapObject()
+            return True
+        return QtGui.QWidget.eventFilter(self, widget, event)
+
+class DraftDockWidget(DraftBaseWidget):
     "custom Widget that emits a resized() signal when resized"
     def __init__(self,parent = None):
         QtGui.QWidget.__init__(self,parent)
@@ -343,10 +366,11 @@ class DraftToolBar:
         self.uiloader = FreeCADGui.UiLoader()
         self.autogroup = None
         self.isCenterPlane = False
+        self.lastMode = None
         
         if self.taskmode:
             # add only a dummy widget, since widgets are created on demand
-            self.baseWidget = QtGui.QWidget()
+            self.baseWidget = DraftBaseWidget()
             self.tray = QtGui.QToolBar(None)
             self.tray.setObjectName("Draft tray")
             self.tray.setWindowTitle("Draft tray")
@@ -364,12 +388,23 @@ class DraftToolBar:
             self.draftWidget = QtGui.QDockWidget()
             self.baseWidget = DraftDockWidget()
             self.draftWidget.setObjectName("draftToolbar")
-            self.draftWidget.setTitleBarWidget(self.baseWidget)
+            self.scroll = QtGui.QScrollArea()
+            self.scroll.setWidgetResizable(True)
+            self.scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+            self.scroll.setWidget(self.baseWidget)
+            self.draftWidget.setTitleBarWidget(self.scroll)
+            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
+            size = p.GetInt("ToolbarIconSize", 24)
+            if size < 24:
+                scale = 3.5
+            else:
+                scale = 2.5
+            self.scroll.setMinimumHeight(size * scale)
             self.draftWidget.setWindowTitle(translate("draft", "Draft Command Bar"))
             self.mw = FreeCADGui.getMainWindow()
             self.mw.addDockWidget(QtCore.Qt.TopDockWidgetArea,self.draftWidget)
             self.draftWidget.setVisible(False)
-            self.draftWidget.toggleViewAction().setVisible(False)                               
+            self.draftWidget.toggleViewAction().setVisible(False)
             self.baseWidget.setObjectName("draftToolbar")
             self.layout = QtGui.QHBoxLayout(self.baseWidget)
             self.layout.setObjectName("layout")
@@ -379,7 +414,7 @@ class DraftToolBar:
             self.setupTray()
             self.setupStyle()
             self.retranslateUi(self.baseWidget)
-		
+
 #---------------------------------------------------------------------------
 # General UI setup
 #---------------------------------------------------------------------------
@@ -394,7 +429,7 @@ class DraftToolBar:
         if hide:
             button.hide()
         if icon:
-            button.setIcon(QtGui.QIcon(':/icons/'+icon+'.svg'))
+            button.setIcon(QtGui.QIcon.fromTheme(icon, QtGui.QIcon(':/icons/'+icon+'.svg')))
             button.setIconSize(QtCore.QSize(isize, isize))
         if checkable:
             button.setCheckable(True)
@@ -479,6 +514,7 @@ class DraftToolBar:
         self.sharpButton = self._pushbutton("sharpButton", self.layout, icon="Draft_BezSharpNode", width=22, checkable=True)
         self.tangentButton = self._pushbutton("tangentButton", self.layout, icon="Draft_BezTanNode", width=22, checkable=True)
         self.symmetricButton = self._pushbutton("symmetricButton", self.layout, icon="Draft_BezSymNode", width=22, checkable=True)
+        self.arc3PtButton = self._pushbutton("arc3PtButton", self.layout, icon="Draft_Arc", width=22, checkable=True)
 
         # point
 
@@ -492,6 +528,7 @@ class DraftToolBar:
         self.layout.addLayout(bl)
         self.labelx = self._label("labelx", xl)
         self.xValue = self._inputfield("xValue", xl) #width=60
+        self.xValue.installEventFilter(self.baseWidget)
         self.xValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labely = self._label("labely", yl)
         self.yValue = self._inputfield("yValue", yl)
@@ -622,6 +659,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.sharpButton,QtCore.SIGNAL("toggled(bool)"),self.setSharpMode)
         QtCore.QObject.connect(self.tangentButton,QtCore.SIGNAL("toggled(bool)"),self.setTangentMode)
         QtCore.QObject.connect(self.symmetricButton,QtCore.SIGNAL("toggled(bool)"),self.setSymmetricMode)
+        QtCore.QObject.connect(self.arc3PtButton,QtCore.SIGNAL("toggled(bool)"),self.setArc3PtMode)
         QtCore.QObject.connect(self.finishButton,QtCore.SIGNAL("pressed()"),self.finish)
         QtCore.QObject.connect(self.closeButton,QtCore.SIGNAL("pressed()"),self.closeLine)
         QtCore.QObject.connect(self.wipeButton,QtCore.SIGNAL("pressed()"),self.wipeLine)
@@ -766,6 +804,7 @@ class DraftToolBar:
         self.sharpButton.setToolTip(translate("draft", "Make Bezier node sharp"))
         self.tangentButton.setToolTip(translate("draft", "Make Bezier node tangent"))
         self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
+        self.arc3PtButton.setToolTip(translate("draft", "Toggle radius and angles arc editing"))
         self.undoButton.setText(translate("draft", "&Undo (CTRL+Z)"))
         self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
         self.closeButton.setText(translate("draft", "Close")+" ("+inCommandShortcuts["Close"][0]+")")
@@ -830,7 +869,7 @@ class DraftToolBar:
         if self.taskmode:
             self.isTaskOn = True
             todo.delay(FreeCADGui.Control.closeDialog,None)
-            self.baseWidget = QtGui.QWidget()
+            self.baseWidget = DraftBaseWidget()
             self.layout = QtGui.QVBoxLayout(self.baseWidget)
             self.setupToolBar(task=True)
             self.retranslateUi(self.baseWidget)
@@ -1032,6 +1071,7 @@ class DraftToolBar:
             self.sharpButton.hide()
             self.tangentButton.hide()
             self.symmetricButton.hide()
+            self.arc3PtButton.hide()
             self.undoButton.hide()
             self.closeButton.hide()
             self.wipeButton.hide()
@@ -1162,6 +1202,7 @@ class DraftToolBar:
         self.makeDumbTask(extra,callback)
 
     def editUi(self, mode=None):
+        self.lastMode=mode
         self.taskUi(translate("draft", "Edit"))
         self.hideXYZ()
         self.numFaces.hide()
@@ -1169,18 +1210,26 @@ class DraftToolBar:
         self.hasFill.hide()
         self.addButton.show()
         self.delButton.show()
-        if mode == 'BezCurve':
+        if mode == 'Wire':
+            self.setEditButtons(True)
+            self.setBezEditButtons(False)
+        elif mode == 'Arc':
+            self.addButton.hide()
+            self.delButton.hide()
+            self.arc3PtButton.show()
+        elif mode == 'BezCurve':
             self.sharpButton.show()
             self.tangentButton.show()
             self.symmetricButton.show()
-        self.finishButton.show()
         self.closeButton.show()
+        self.finishButton.show()
         # always start Edit with buttons unchecked
         self.addButton.setChecked(False)
         self.delButton.setChecked(False)
         self.sharpButton.setChecked(False)
         self.tangentButton.setChecked(False)
         self.symmetricButton.setChecked(False)
+        self.arc3PtButton.setChecked(False)
 
     def extUi(self):
         self.hasFill.show()
@@ -1214,7 +1263,10 @@ class DraftToolBar:
                         first = False
                     else:
                         cmdstr += ", "
-                    cmdstr += v[0] + ":" + v[1]
+                    try:
+                        cmdstr += v[0] + ":" + v[1]
+                    except:
+                        pass
             FreeCAD.Console.PrintMessage(cmdstr+"\n\n")
 
     def checkLocal(self):
@@ -1940,6 +1992,10 @@ class DraftToolBar:
             self.addButton.setChecked(False)
             self.delButton.setChecked(False)
 
+    def setArc3PtMode(self,bool):
+        if self.arc3PtButton.isChecked():
+            self.arc3PtButton.setChecked(True)
+
     def setRadiusValue(self,val,unit=None):
         #print("DEBUG: setRadiusValue val: ", val, " unit: ", unit)
         if  not isinstance(val, (int, float)):       #??some code passes strings or ??? 
@@ -1959,7 +2015,8 @@ class DraftToolBar:
         if value == None:
             self.autogroup = None
             self.autoGroupButton.setText("None")
-            self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg'))
+            self.autoGroupButton.setIcon(QtGui.QIcon.fromTheme('Draft_AutoGroup_off',
+                                                               QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg')))
             self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
             self.autoGroupButton.setDown(False)
         else:
@@ -1967,13 +2024,15 @@ class DraftToolBar:
             if obj:
                 self.autogroup = value
                 self.autoGroupButton.setText(obj.Label)
-                self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_on.svg'))
+                self.autoGroupButton.setIcon(QtGui.QIcon.fromTheme('Draft_AutoGroup_on',
+                                                                   QtGui.QIcon(':/icons/Draft_AutoGroup_on.svg')))
                 self.autoGroupButton.setToolTip(translate("draft", "Autogroup: ")+obj.Label)
                 self.autoGroupButton.setDown(False)
             else:
                 self.autogroup = None
                 self.autoGroupButton.setText("None")
-                self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg'))
+                self.autoGroupButton.setIcon(QtGui.QIcon.fromTheme('Draft_AutoGroup_off',
+                                                                   QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg')))
                 self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
                 self.autoGroupButton.setDown(False)
 
@@ -2364,6 +2423,153 @@ class ScaleTaskPanel:
         if self.sourceCmd:
             self.sourceCmd.finish()
         FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+#def translateWidget(w, context=None, disAmb=None):
+#    '''translator for items where retranslateUi() is unavailable.
+#    translates widget w and children.'''
+#    #handle w itself
+#    if w.metaObject().className() == "QWidget":
+#        origText = None
+#        origText = w.windowTitle()
+#        if origText:
+#            newText = translate(context, str(origText))
+#            if newText:
+#                w.setWindowTitle(newText)
+
+#    #handle children
+#    wKids = w.findChildren(QtGui.QWidget)
+#    for i in wKids:
+#        className = i.metaObject().className()
+#        if hasattr(i,"text") and hasattr(i,"setText"):
+#            origText = i.text()
+#            newText = translate(context, str(origText))
+#            if newText:
+#                i.setText(newText)
+#        elif hasattr(i,"title") and hasattr(i,"setTitle"):
+#            origText = i.title()
+#            newText = translate(context, str(origText))
+#            if newText:
+#                i.setTitle(newText)
+#        elif hasattr(i,"itemText") and hasattr(i,"setItemText"):
+#            for item in range(i.count()):
+#                oldText = i.itemText(item)
+#                newText = translate(context, str(origText))
+#                if newText:
+#                    i.setItemText(item,newText)
+##for debugging:
+##        else:
+##            msg = "TranslateWidget: Can not translate widget: {0} type: {1}\n".format(w.objectName(),w.metaObject().className())
+##            FreeCAD.Console.PrintMessage(msg)
+
+class ShapeStringTaskPanel:
+    '''A TaskPanel for ShapeString'''
+    def __init__(self):
+        self.form = QtGui.QWidget()
+        self.form.setObjectName("ShapeStringTaskPanel")
+        self.form.setWindowTitle(translate("draft","ShapeString"))
+        layout = QtGui.QVBoxLayout(self.form)
+        uiFile = QtCore.QFile(u":/ui/TaskShapeString.ui")  #this has to change if ui not in Resource file
+        loader = FreeCADGui.UiLoader()
+        self.task = loader.load(uiFile)
+        layout.addWidget(self.task)
+        
+        qStart = FreeCAD.Units.Quantity(0.0, FreeCAD.Units.Length)
+        self.task.sbX.setProperty('rawValue',qStart.Value)
+        self.task.sbX.setProperty('unit',qStart.getUserPreferred()[2])
+        self.task.sbY.setProperty('rawValue',qStart.Value)
+        self.task.sbY.setProperty('unit',qStart.getUserPreferred()[2])
+        self.task.sbZ.setProperty('rawValue',qStart.Value)
+        self.task.sbZ.setProperty('unit',qStart.getUserPreferred()[2])
+        self.task.sbHeight.setProperty('rawValue',10.0)
+        self.task.sbHeight.setProperty('unit',qStart.getUserPreferred()[2])
+
+        self.stringText = translate("draft","Default")
+        self.task.leString.setText(self.stringText)
+        self.task.fcFontFile.setFileName(Draft.getParam("FontFile",""))
+        self.fileSpec = Draft.getParam("FontFile","")
+        self.point = FreeCAD.Vector(0.0,0.0,0.0)
+        self.pointPicked = False
+
+        QtCore.QObject.connect(self.task.fcFontFile,QtCore.SIGNAL("fileNameSelected(const QString&)"),self.fileSelect)
+        QtCore.QObject.connect(self.task.pbReset,QtCore.SIGNAL("clicked()"),self.resetPoint)
+        self.point = None
+        self.view = Draft.get3DView()
+        self.call = self.view.addEventCallback("SoEvent",self.action)
+        FreeCAD.Console.PrintMessage(translate("draft", "Pick ShapeString location point:")+"\n")
+
+
+    def fileSelect(self, fn):
+        self.fileSpec = fn
+
+    def resetPoint(self):
+        self.pointPicked = False
+        origin = FreeCAD.Vector(0.0,0.0,0.0)
+        self.setPoint(origin)
+
+    def action(self,arg):
+        "scene event handler"
+        import DraftTools
+        if arg["Type"] == "SoKeyboardEvent":
+            if arg["Key"] == "ESCAPE":
+                self.reject()
+        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+            self.point,ctrlPoint,info = DraftTools.getPoint(self.sourceCmd,arg,noTracker=True)
+            if not self.pointPicked:
+                self.setPoint(self.point)
+        elif arg["Type"] == "SoMouseButtonEvent":
+            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
+                self.setPoint(self.point)
+                self.pointPicked = True
+
+    def setPoint(self, point):
+        self.task.sbX.setProperty('rawValue',point.x)
+        self.task.sbY.setProperty('rawValue',point.y)
+        self.task.sbZ.setProperty('rawValue',point.z)
+
+    def createObject(self):
+        "creates object in the current doc"
+        dquote = '"'
+        if sys.version_info.major < 3: # Python3: no more unicode
+            String  = 'u' + dquote + str(self.task.leString.text().encode('unicode_escape')) + dquote
+        else:
+            String  = dquote + self.task.leString.text() + dquote
+        FFile = dquote + str(self.fileSpec) + dquote
+
+        Size = str(FreeCAD.Units.Quantity(self.task.sbHeight.text()).Value)
+        Tracking = str(0.0)
+        x = FreeCAD.Units.Quantity(self.task.sbX.text()).Value
+        y = FreeCAD.Units.Quantity(self.task.sbY.text()).Value
+        z = FreeCAD.Units.Quantity(self.task.sbZ.text()).Value
+        ssBase = FreeCAD.Vector(x,y,z)
+        # this try block is almost identical to the one in DraftTools
+        try: 
+            qr,sup,points,fil = self.sourceCmd.getStrings()
+            FreeCADGui.addModule("Draft")
+            self.sourceCmd.commit(translate("draft","Create ShapeString"),
+    ['ss=Draft.makeShapeString(String='+String+',FontFile='+FFile+',Size='+Size+',Tracking='+Tracking+')',
+                         'plm=FreeCAD.Placement()',
+                         'plm.Base='+DraftVecUtils.toString(ssBase),
+                         'plm.Rotation.Q='+qr,
+                         'ss.Placement=plm',
+                         'ss.Support='+sup,
+                         'Draft.autogroup(ss)'])
+        except Exception as e:
+            FreeCAD.Console.PrintError("Draft_ShapeString: error delaying commit\n")
+
+    def accept(self):
+        self.createObject();
+        if self.call: self.view.removeEventCallback("SoEvent",self.call)
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Snapper.off()
+        self.sourceCmd.creator.finish(self.sourceCmd)
+        return True
+
+    def reject(self):
+        if self.call: self.view.removeEventCallback("SoEvent",self.call)
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Snapper.off()
+        self.sourceCmd.creator.finish(self.sourceCmd)
         return True
 
 if not hasattr(FreeCADGui,"draftToolBar"):

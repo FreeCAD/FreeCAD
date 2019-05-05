@@ -52,6 +52,8 @@ generate_from_xml(ParabolaPy)
 generate_from_xml(OffsetCurvePy)
 generate_from_xml(GeometryPy)
 generate_from_xml(GeometryCurvePy)
+generate_from_xml(BoundedCurvePy)
+generate_from_xml(TrimmedCurvePy)
 generate_from_xml(GeometrySurfacePy)
 generate_from_xml(LinePy)
 generate_from_xml(LineSegmentPy)
@@ -211,6 +213,10 @@ SET(Python_SRCS
     GeometryPyImp.cpp
     GeometryCurvePy.xml
     GeometryCurvePyImp.cpp
+    BoundedCurvePy.xml
+    BoundedCurvePyImp.cpp
+    TrimmedCurvePy.xml
+    TrimmedCurvePyImp.cpp
     GeometrySurfacePy.xml
     GeometrySurfacePyImp.cpp
     LinePy.xml
@@ -329,6 +335,8 @@ SET(Part_SRCS
     Attacher.h
     AppPart.cpp
     AppPartPy.cpp
+    BRepOffsetAPI_MakeOffsetFix.cpp
+    BRepOffsetAPI_MakeOffsetFix.h
     BSplineCurveBiArcs.cpp
     CrossSection.cpp
     CrossSection.h
@@ -365,6 +373,12 @@ SET(Part_SRCS
     FaceMakerBullseye.cpp
     FaceMakerBullseye.h
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Part_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Part PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 add_library(Part SHARED ${Part_SRCS})
 target_link_libraries(Part ${Part_LIBS})

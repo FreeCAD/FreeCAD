@@ -28,6 +28,7 @@
 # include <cstdlib>
 # include <sstream>
 # include <QString>
+
 # include <BRepLib.hxx>
 # include <BSplCLib.hxx>
 # include <Bnd_Box.hxx>
@@ -152,11 +153,6 @@
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <ShapeUpgrade_RemoveInternalWires.hxx>
 # include <Standard_Version.hxx>
-# include <ShapeFix_Wire.hxx>
-#if OCC_VERSION_HEX < 0x070300
-# include <BRepAlgo_Fuse.hxx>
-#endif
-#endif
 # include <BinTools.hxx>
 # include <BinTools_ShapeSet.hxx>
 # include <Poly_Polygon3D.hxx>
@@ -170,25 +166,29 @@
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <ShapeAnalysis_FreeBoundsProperties.hxx>
 # include <ShapeAnalysis_FreeBoundData.hxx>
-# include <deque>
+
+#if OCC_VERSION_HEX < 0x070300
+# include <BRepAlgo_Fuse.hxx>
+#endif
 
 #if OCC_VERSION_HEX >= 0x060600
-#include <BOPAlgo_ArgumentAnalyzer.hxx>
-#include <BOPAlgo_ListOfCheckResult.hxx>
+# include <BOPAlgo_ArgumentAnalyzer.hxx>
+# include <BOPAlgo_ListOfCheckResult.hxx>
 #endif
-
-#include <boost/algorithm/string/predicate.hpp>
 
 #if OCC_VERSION_HEX >= 0x070300
-#include <BRepAlgoAPI_Defeaturing.hxx>
+# include <BRepAlgoAPI_Defeaturing.hxx>
 #endif
+#endif // _PreComp_
+
+#include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Builder3D.h>
 #include <Base/FileInfo.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
-
+#include <App/Material.h>
 
 #include "PartPyCXX.h"
 #include "TopoShape.h"
@@ -201,6 +201,7 @@
 #include "Tools.h"
 #include "encodeFilename.h"
 #include "FaceMakerBullseye.h"
+#include "BRepOffsetAPI_MakeOffsetFix.h"
 
 FC_LOG_LEVEL_INIT("TopoShape",true,true);
 
@@ -562,11 +563,11 @@ Base::Placement TopoShape::getPlacemet(void) const
 void TopoShape::read(const char *FileName)
 {
     Base::FileInfo File(FileName);
-  
+
     // checking on the file
     if (!File.isReadable())
         throw Base::FileException("File to load not existing or not readable", FileName);
-    
+
     if (File.hasExtension("igs") || File.hasExtension("iges")) {
         // read iges file
         importIges(File.filePath().c_str());
@@ -750,7 +751,7 @@ void TopoShape::importBinary(std::istream& str)
 void TopoShape::write(const char *FileName) const
 {
     Base::FileInfo File(FileName);
-    
+
     if (File.hasExtension("igs") || File.hasExtension("iges")) {
         // write iges file
         exportIges(File.filePath().c_str());
@@ -877,13 +878,22 @@ void TopoShape::exportStl(const char *filename, double deflection) const
     writer.Write(this->_Shape,encodeFilename(filename).c_str());
 }
 
-void TopoShape::exportFaceSet(double dev, double ca, std::ostream& str) const
+void TopoShape::exportFaceSet(double dev, double ca,
+                              const std::vector<App::Color>& colors,
+                              std::ostream& str) const
 {
     Base::InventorBuilder builder(str);
     TopExp_Explorer ex;
-
-    BRepMesh_IncrementalMesh MESH(this->_Shape,dev);
+    std::size_t numFaces = 0;
     for (ex.Init(this->_Shape, TopAbs_FACE); ex.More(); ex.Next()) {
+        numFaces++;
+    }
+
+    bool supportFaceColors = (numFaces == colors.size());
+
+    std::size_t index=0;
+    BRepMesh_IncrementalMesh MESH(this->_Shape,dev);
+    for (ex.Init(this->_Shape, TopAbs_FACE); ex.More(); ex.Next(), index++) {
         // get the shape and mesh it
         const TopoDS_Face& aFace = TopoDS::Face(ex.Current());
         Standard_Integer nbNodesInFace,nbTriInFace;
@@ -949,6 +959,11 @@ void TopoShape::exportFaceSet(double dev, double ca, std::ostream& str) const
 
         builder.beginSeparator();
         builder.addShapeHints((float)ca);
+        if (supportFaceColors) {
+            App::Color c = colors[index];
+            builder.addMaterial(c.r, c.g, c.b, c.a);
+        }
+
         builder.beginPoints();
         builder.addPoints(vertices);
         builder.endPoints();
@@ -1960,7 +1975,7 @@ TopoDS_Shape TopoShape::makeTube() const
     );
     return mkBuilder.Face();
 }
-#else 
+#else
 static Handle(Law_Function) CreateBsFunction (const Standard_Real theFirst, const Standard_Real theLast, const Standard_Real theRadius)
 {
     (void)theRadius;
@@ -2295,7 +2310,7 @@ TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
     return aTool.Shape();
 }
 
-TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles, 
+TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
                                  Standard_Boolean isSolid,
                                  Standard_Boolean isRuled,
                                  Standard_Boolean isClosed,
@@ -2328,7 +2343,7 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
         Standard_Failure::Raise("Need at least two vertices, edges or wires to create loft face");
     }
     else {
-        // close loft by duplicating initial profile as last profile.  not perfect. 
+        // close loft by duplicating initial profile as last profile.  not perfect.
         if (isClosed) {
         /* can only close loft in certain combinations of Vertex/Wire(Edge):
             - V1-W1-W2-W3-V2  ==> V1-W1-W2-W3-V2-V1  invalid closed
@@ -2353,7 +2368,7 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
                     aGenerator.AddWire(TopoDS::Wire (firstProfile));
                     countShapes++;
                 }
-            }     
+            }
         }
     }
 
@@ -2378,12 +2393,12 @@ TopoDS_Shape TopoShape::revolve(const gp_Ax1& axis, double d, Standard_Boolean i
 {
     if (this->_Shape.IsNull()) Standard_Failure::Raise("cannot revolve empty shape");
 
-    TopoDS_Face f; 
+    TopoDS_Face f;
     TopoDS_Wire w;
     TopoDS_Edge e;
     Standard_Boolean convertFailed = false;
 
-    TopoDS_Shape base = this->_Shape; 
+    TopoDS_Shape base = this->_Shape;
     if ((isSolid) && (BRep_Tool::IsClosed(base)) &&
         ((base.ShapeType() == TopAbs_EDGE) || (base.ShapeType() == TopAbs_WIRE))) {
         if (base.ShapeType() == TopAbs_EDGE) {
@@ -2395,16 +2410,16 @@ TopoDS_Shape TopoShape::revolve(const gp_Ax1& axis, double d, Standard_Boolean i
         }
         else {
              w = TopoDS::Wire(base);}
-        if (!convertFailed) {       
+        if (!convertFailed) {
             BRepBuilderAPI_MakeFace mkFace(w);
             if (mkFace.IsDone()) {
-                f = mkFace.Face(); 
+                f = mkFace.Face();
                 base = f; }
             else {
                 convertFailed = true; }
-        }  
-    }        
-    
+        }
+    }
+
     if (convertFailed) {
         Base::Console().Message("TopoShape::revolve could not make Solid from Wire/Edge.\n");}
 
@@ -2547,8 +2562,10 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 {
     if (_Shape.IsNull())
         throw Base::ValueError("makeOffset2D: input shape is null!");
-    if (allowOpenResult && OCC_VERSION_HEX < 0x060900)
+#if OCC_VERSION_HEX < 0x060900
+    if (allowOpenResult)
         throw Base::AttributeError("openResult argument is not supported on OCC < 6.9.0.");
+#endif
 
     // OUTLINE OF MAKEOFFSET2D
     // * Prepare shapes to process
@@ -2569,32 +2586,35 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
     std::vector<TopoDS_Shape> shapesToReturn;
     bool forceOutputCompound = false;
 
-    if (this->_Shape.ShapeType() == TopAbs_COMPOUND){
-        if (!intersection){
+    if (this->_Shape.ShapeType() == TopAbs_COMPOUND) {
+        if (!intersection) {
             //simply recursively process the children, independently
             TopoDS_Iterator it(_Shape);
-            for( ; it.More() ; it.Next()){
+            for( ; it.More() ; it.Next()) {
                 shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection) );
                 forceOutputCompound = true;
             }
-        } else {
+        }
+        else {
             //collect non-compounds from this compound for collective offset. Process other shapes independently.
             TopoDS_Iterator it(_Shape);
-            for( ; it.More() ; it.Next()){
-                if(it.Value().ShapeType() == TopAbs_COMPOUND){
+            for( ; it.More() ; it.Next()) {
+                if(it.Value().ShapeType() == TopAbs_COMPOUND) {
                     //recursively process subcompounds
                     shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection) );
                     forceOutputCompound = true;
-                } else {
+                }
+                else {
                     shapesToProcess.push_back(it.Value());
                 }
             }
         }
-    } else {
+    }
+    else {
         shapesToProcess.push_back(this->_Shape);
     }
 
-    if(shapesToProcess.size() > 0){
+    if(shapesToProcess.size() > 0) {
 
         //although 2d offset supports offsetting a face directly, it seems there is
         //no way to do a collective offset of multiple faces. So, we are doing it
@@ -2656,16 +2676,12 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
         //do the offset..
         TopoDS_Shape offsetShape;
-        BRepOffsetAPI_MakeOffset mkOffset(sourceWires[0], GeomAbs_JoinType(joinType)
-#if OCC_VERSION_HEX >= 0x060900
-                                                , allowOpenResult
-#endif
-                                               );
-        for(TopoDS_Wire &w : sourceWires)
-            if (&w != &(sourceWires[0])) //filter out first wire - it's already added
-                mkOffset.AddWire(w);
+        BRepOffsetAPI_MakeOffsetFix mkOffset(GeomAbs_JoinType(joinType), allowOpenResult);
+        for (TopoDS_Wire &w : sourceWires) {
+            mkOffset.AddWire(w);
+        }
 
-        if (fabs(offset) > Precision::Confusion()){
+        if (fabs(offset) > Precision::Confusion()) {
             try {
     #if defined(__GNUC__) && defined (FC_OS_LINUX)
                 Base::SignalException se;
@@ -2680,13 +2696,14 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             }
             offsetShape = mkOffset.Shape();
 
-            if(offsetShape.IsNull())
+            if (offsetShape.IsNull())
                 throw Base::CADKernelError("makeOffset2D: result of offsetting is null!");
 
             //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
             // http://www.freecadweb.org/tracker/view.php?id=2699
             offsetShape = BRepBuilderAPI_Copy(offsetShape).Shape();
-        } else {
+        }
+        else {
             offsetShape = sourceWires.size()>1 ? TopoDS_Shape(compoundSourceWires) : sourceWires[0];
         }
 
@@ -2706,11 +2723,13 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         if (!fill){
             if (haveFaces){
                 wiresForMakingFaces = offsetWires;
-            } else {
+            }
+            else {
                 for(TopoDS_Wire &w : offsetWires)
                     shapesToReturn.push_back(w);
             }
-        } else {
+        }
+        else {
             //fill offset
             if (fabs(offset) < Precision::Confusion())
                 throw Base::ValueError("makeOffset2D: offset distance is zero. Can't fill offset.");
@@ -2744,7 +2763,8 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             wiresForMakingFaces = closedWires;
             if (!allowOpenResult || openWires.size() == 0){
                 //just ignore all open wires
-            } else {
+            }
+            else {
                 //We need to connect open wires to form closed wires.
 
                 //for now, only support offsetting one open wire -> there should be exactly two open wires for connecting
@@ -2784,9 +2804,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                     std::swap(v3, v4);
                     v3.Reverse();
                     v4.Reverse();
-                } else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))){
+                }
+                else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))){
                     //orientation is as expected, nothing to do
-                } else {
+                }
+                else {
                     throw Base::CADKernelError("makeOffset2D: fill offset: failed to establish open vertex relationship.");
                 }
 
@@ -2844,7 +2866,8 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         for(TopoDS_Shape &sh : shapesToReturn)
             builder.Add(result, sh);
         return result;
-    } else {
+    }
+    else {
         return shapesToReturn[0];
     }
 }
@@ -3315,8 +3338,14 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
     }
 
     aSewingTool.Load(aComp);
-    aSewingTool.Perform();
+
+    Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
+    pi->NewScope(100, "Sewing Faces...");
+    pi->Show();
+
+    aSewingTool.Perform(pi);
     _Shape = aSewingTool.SewedShape();
+    pi->EndScope();
     if (_Shape.IsNull())
         _Shape = aComp;
     _ElementMap.reset();

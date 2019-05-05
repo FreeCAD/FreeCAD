@@ -163,7 +163,7 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget
     ui->lineRef4->blockSignals(true);
     ui->listOfModes->blockSignals(true);
 
-    // Get the feature data    
+    // Get the feature data
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     std::vector<std::string> refnames = pcAttach->Support.getSubValues();
 
@@ -738,7 +738,7 @@ void TaskAttacher::updateAttachmentOffsetUI()
     ui->attachmentOffsetPitch->setEnabled(!bRotationBound);
     ui->attachmentOffsetRoll->setEnabled(!bRotationBound);
 
-    QString tooltip = bRotationBound ? tr("Not editable because rotation part of AttachmentOffset is bound by expressions.") : QString();
+    QString tooltip = bRotationBound ? tr("Not editable because rotation of AttachmentOffset is bound by expressions.") : QString();
     ui->attachmentOffsetYaw->setToolTip(tooltip);
     ui->attachmentOffsetPitch->setToolTip(tooltip);
     ui->attachmentOffsetRoll->setToolTip(tooltip);
@@ -802,8 +802,9 @@ void TaskAttacher::updateListOfModes()
             QString tooltip = mstr[1];
 
             if (mmode != mmDeactivated) {
-                tooltip += tr("\n\nReference combinations:\n") +
-                   AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n"));
+                tooltip += QString::fromLatin1("\n\n%1\n%2")
+                        .arg(tr("Reference combinations:"),
+                             AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n")));
             }
             item->setToolTip(tooltip);
 
@@ -828,7 +829,6 @@ void TaskAttacher::updateListOfModes()
                 }
             } else if (mmode == this->lastSuggestResult.bestFitMode){
                 //suggested mode - make bold
-                assert (item);
                 QFont fnt = item->font();
                 fnt.setBold(true);
                 item->setFont(fnt);
@@ -846,13 +846,13 @@ void TaskAttacher::updateListOfModes()
 
 void TaskAttacher::selectMapMode(eMapMode mmode) {
     ui->listOfModes->blockSignals(true);
-    
+
     for (size_t i = 0;  i < modesInList.size(); ++i) {
         if (modesInList[i] == mmode) {
             ui->listOfModes->item(i)->setSelected(true);
         }
     }
-    
+
     ui->listOfModes->blockSignals(false);
 }
 

@@ -34,6 +34,7 @@ QT_END_NAMESPACE
 
 #include <Base/Parameter.h>
 #include <Base/Console.h>
+#include <Base/Vector3D.h>
 
 namespace TechDrawGui
 {
@@ -51,6 +52,8 @@ public:
     void setWidth(double w);
     void setStyle(Qt::PenStyle s);
     void setColor(QColor c);
+    void makeMark(double x, double y);
+    void makeMark(Base::Vector3d v);
 
 protected:
     QPen m_pen;

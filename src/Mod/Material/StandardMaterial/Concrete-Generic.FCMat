@@ -1,15 +1,20 @@
-; Standard Concrete Material
+; Concrete-Generic
 ; (c) 2013 Yorik van Havre (CC-BY 3.0)
-; file produced by FreeCAD 0.14 2756 (Git)
-; information about the content of this card can be found here:
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Concrete
 Description = A standard C-25 construction concrete
 Father = Aggregate
-ProductURL = http://en.wikipedia.org/wiki/Concrete
-YoungsModulus = 32000 MPa
-PoissonRatio = 0.17
+StandardCode = Masterformat 03 33 13
+
+[Mechanical]
 CompressiveStrength = 25 MPa
 Density = 2400 kg/m^3
-StandardCode = Masterformat 03 33 13
+PoissonRatio = 0.17
+YoungsModulus = 32000 MPa
+
+[Cost]
+ProductURL = https://en.wikipedia.org/wiki/Concrete

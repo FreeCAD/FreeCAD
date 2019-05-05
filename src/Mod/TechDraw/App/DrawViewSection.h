@@ -69,6 +69,7 @@ public:
     App::PropertyString NameGeomPattern;
     App::PropertyFloat  HatchScale;
     App::PropertyString SectionSymbol;
+    App::PropertyBool   FuseBeforeCut;
 
     virtual short mustExecute() const;
 

@@ -35,7 +35,7 @@ import FreeCAD
 import Fem
 
 
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -80,7 +80,7 @@ def export(objectslist, filename):
         return
 
 
-########## module specific methods ##########
+# ********* module specific methods *********
 def importVtk(filename, object_name=None, object_type=None):
     if not object_type:
         vtkinout_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk")
@@ -105,6 +105,7 @@ def importVtkVtkResult(filename, resultname):
     vtk_result_obj.read(filename)
     vtk_result_obj.touch()
     FreeCAD.ActiveDocument.recompute()
+    return vtk_result_obj
 
 
 def importVtkFemMesh(filename, meshname):
@@ -119,7 +120,6 @@ def importVtkFCResult(filename, resultname, analysis=None, result_name_prefix=No
     # See _getFreeCADMechResultProperties() in FemVTKTools.cpp for the supported names
 
     import ObjectsFem
-    from . import importToolsFem
     if result_name_prefix is None:
         result_name_prefix = ''
     if analysis:
@@ -128,12 +128,11 @@ def importVtkFCResult(filename, resultname, analysis=None, result_name_prefix=No
     results_name = result_name_prefix + 'results'
     result_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
     Fem.readResult(filename, result_obj.Name)  # readResult always creates a new femmesh named ResultMesh
-    result_obj = importToolsFem.fill_femresult_stats(result_obj)
 
-    # workaround for the DisplacementLengths (They should have been calculated by Fem.readResult)
+    # add missing DisplacementLengths (They should have been added by Fem.readResult)
     if not result_obj.DisplacementLengths:
-        result_obj.DisplacementLengths = importToolsFem.calculate_disp_abs(result_obj.DisplacementVectors)
-        FreeCAD.Console.PrintMessage('Recalculated DisplacementLengths.\n')
+        import femresult.resulttools as restools
+        result_obj = restools.add_disp_apps(result_obj)  # DisplacementLengths
 
     ''' seems unused at the moment
     filenamebase = '.'.join(filename.split('.')[:-1])  # pattern: filebase_timestamp.vtk

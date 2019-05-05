@@ -55,6 +55,10 @@ outFile "..\..\${INSTNAME}.${VERSIONBUILD}_x86_unstable_setup.exe"
 #Interface Settings
 !define MUI_ABORTWARNING
 
+# GPL is not an EULA, no need to agree to it.
+!define MUI_LICENSEPAGE_BUTTON $(^NextBtn)
+!define MUI_LICENSEPAGE_TEXT_BOTTOM "You are now aware of your rights. Click Next to continue."
+
 #Pages
 # rtf or txt file - remember if it is txt, it must be in the DOS text format (\r\n)
 !insertmacro MUI_PAGE_LICENSE "License.rtf"
@@ -138,7 +142,7 @@ sectionEnd
 
 section "Install redistributable" VCRedistSection
 	# Install the Visual Studio redistributable
-	ExecWait '"$INSTDIR\vcredist_x86.exe" /q:a /c:"VCREDI~1.EXE /q:a /c:""msiexec /i vcredist.msi /qb!"" "'
+	ExecWait '"$INSTDIR\vcredist_x86.exe" /q /norestart'
 sectionEnd
 
 # http://forums.winamp.com/showthread.php?t=255747

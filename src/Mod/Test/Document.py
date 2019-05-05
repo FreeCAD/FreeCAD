@@ -1357,6 +1357,19 @@ class DocumentPropertyCases(unittest.TestCase):
     self.Obj.recompute()
     self.Doc.abortTransaction()
 
+  def testRemovePropertyExpression(self):
+    p1 = self.Doc.addObject("App::FeaturePython", "params1")
+    p2 = self.Doc.addObject("App::FeaturePython", "params2")
+    p1.addProperty("App::PropertyFloat", "a")
+    p1.a = 42
+    p2.addProperty("App::PropertyFloat", "b")
+    p2.setExpression('b', u'params1.a')
+    self.Doc.recompute()
+    p2.removeProperty("b")
+    p1.touch()
+    self.Doc.recompute()
+    self.assertTrue(not p2 in p1.InList)
+
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument("PropertyTests")
@@ -1588,40 +1601,40 @@ class DocumentObserverCases(unittest.TestCase):
     # testing document level signals
     self.Doc1 = FreeCAD.newDocument("Observer1");  
     if FreeCAD.GuiUp:
-      self.failUnless(self.Obs.signal.pop(0) == 'DocActivated')
-      self.failUnless(self.Obs.parameter.pop(0) is self.Doc1)
-    self.failUnless(self.Obs.signal.pop(0) == 'DocCreated')
-    self.failUnless(self.Obs.parameter.pop(0) is self.Doc1)
-    self.failUnless(self.Obs.signal.pop(0) == 'DocBeforeChange')
-    self.failUnless(self.Obs.parameter.pop(0) is self.Doc1)
-    self.failUnless(self.Obs.parameter2.pop(0) == 'Label')
-    self.failUnless(self.Obs.signal.pop(0) == 'DocChanged')
-    self.failUnless(self.Obs.parameter.pop(0) is self.Doc1)
-    self.failUnless(self.Obs.parameter2.pop(0) == 'Label')
-    self.failUnless(self.Obs.signal.pop(0) == 'DocRelabled')
-    self.failUnless(self.Obs.parameter.pop(0) is self.Doc1)
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+      self.assertEqual(self.Obs.signal.pop(0), 'DocActivated')
+      self.assertTrue(self.Obs.parameter.pop(0) is self.Doc1)
+    self.assertEqual(self.Obs.signal.pop(0), 'DocCreated')
+    self.assertTrue(self.Obs.parameter.pop(0) is self.Doc1)
+    self.assertEqual(self.Obs.signal.pop(0), 'DocBeforeChange')
+    self.assertTrue(self.Obs.parameter.pop(0) is self.Doc1)
+    self.assertEqual(self.Obs.parameter2.pop(0), 'Label')
+    self.assertEqual(self.Obs.signal.pop(0), 'DocChanged')
+    self.assertTrue(self.Obs.parameter.pop(0) is self.Doc1)
+    self.assertEqual(self.Obs.parameter2.pop(0), 'Label')
+    self.assertEqual(self.Obs.signal.pop(0), 'DocRelabled')
+    self.assertTrue(self.Obs.parameter.pop(0) is self.Doc1)
+    self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
     self.Doc2 = FreeCAD.newDocument("Observer2");
     if FreeCAD.GuiUp:
-      self.failUnless(self.Obs.signal.pop(0) == 'DocActivated')
-      self.failUnless(self.Obs.parameter.pop(0) is self.Doc2)
-    self.failUnless(self.Obs.signal.pop(0) == 'DocCreated')
-    self.failUnless(self.Obs.parameter.pop(0) is self.Doc2)
-    self.failUnless(self.Obs.signal.pop(0) == 'DocBeforeChange')
-    self.failUnless(self.Obs.parameter.pop(0) is self.Doc2)
-    self.failUnless(self.Obs.parameter2.pop(0) == 'Label')
-    self.failUnless(self.Obs.signal.pop(0) == 'DocChanged')
-    self.failUnless(self.Obs.parameter.pop(0) is self.Doc2)
-    self.failUnless(self.Obs.parameter2.pop(0) == 'Label')
-    self.failUnless(self.Obs.signal.pop(0) == 'DocRelabled')
-    self.failUnless(self.Obs.parameter.pop(0) is self.Doc2)
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+      self.assertEqual(self.Obs.signal.pop(0), 'DocActivated')
+      self.assertTrue(self.Obs.parameter.pop(0) is self.Doc2)
+    self.assertEqual(self.Obs.signal.pop(0), 'DocCreated')
+    self.assertTrue(self.Obs.parameter.pop(0) is self.Doc2)
+    self.assertEqual(self.Obs.signal.pop(0), 'DocBeforeChange')
+    self.assertTrue(self.Obs.parameter.pop(0) is self.Doc2)
+    self.assertEqual(self.Obs.parameter2.pop(0), 'Label')
+    self.assertEqual(self.Obs.signal.pop(0), 'DocChanged')
+    self.assertTrue(self.Obs.parameter.pop(0) is self.Doc2)
+    self.assertEqual(self.Obs.parameter2.pop(0), 'Label')
+    self.assertEqual(self.Obs.signal.pop(0), 'DocRelabled')
+    self.assertTrue(self.Obs.parameter.pop(0) is self.Doc2)
+    self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
     FreeCAD.setActiveDocument('Observer1')
-    self.failUnless(self.Obs.signal.pop() == 'DocActivated')
-    self.failUnless(self.Obs.parameter.pop() is self.Doc1)
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    self.assertEqual(self.Obs.signal.pop(), 'DocActivated')
+    self.assertTrue(self.Obs.parameter.pop() is self.Doc1)
+    self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
     #undo/redo is not enabled in cmd line mode by default
     self.Doc2.UndoMode = 1
@@ -1630,78 +1643,78 @@ class DocumentObserverCases(unittest.TestCase):
     # then a transaction will be auto created inside the active document if a
     # new transaction is triggered from a non active document
     FreeCAD.setActiveDocument('Observer2')
-    self.failUnless(self.Obs.signal.pop() == 'DocActivated')
-    self.failUnless(self.Obs.parameter.pop() is self.Doc2)
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    self.assertEqual(self.Obs.signal.pop(), 'DocActivated')
+    self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
+    self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
     self.Doc2.openTransaction('test')
     # openTransaction() now only setup pending transaction, which will only be
     # created when there is actual change
     self.Doc2.addObject('App::FeatureTest','test')
-    self.failUnless(self.Obs.signal[0] == 'DocOpenTransaction')
-    self.failUnless(self.Obs.signal.count('DocOpenTransaction')==1)
-    self.failUnless(self.Obs.parameter[0] is self.Doc2)
-    self.failUnless(self.Obs.parameter2[0] == 'test')
+    self.assertEqual(self.Obs.signal[0], 'DocOpenTransaction')
+    self.assertEqual(self.Obs.signal.count('DocOpenTransaction'),1)
+    self.assertTrue(self.Obs.parameter[0] is self.Doc2)
+    self.assertEqual(self.Obs.parameter2[0], 'test')
     self.Obs.signal = []
     self.Obs.parameter = []
     self.Obs.parameter2 = []
     
     self.Doc2.commitTransaction()
-    self.failUnless(self.Obs.signal.pop() == 'DocCommitTransaction')
-    self.failUnless(self.Obs.parameter.pop() is self.Doc2)
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    self.assertEqual(self.Obs.signal.pop(), 'DocCommitTransaction')
+    self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
+    self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
     self.Doc2.openTransaction('test2')
     # openTransaction() now only setup pending transaction, which will only be
     # created when there is actual change
     self.Doc2.addObject('App::FeatureTest','test')
-    self.failUnless(self.Obs.signal[0] == 'DocOpenTransaction')
-    self.failUnless(self.Obs.signal.count('DocOpenTransaction')==1)
-    self.failUnless(self.Obs.parameter[0] is self.Doc2)
-    self.failUnless(self.Obs.parameter2[0] == 'test2')
+    self.assertEqual(self.Obs.signal[0], 'DocOpenTransaction')
+    self.assertEqual(self.Obs.signal.count('DocOpenTransaction'),1)
+    self.assertTrue(self.Obs.parameter[0] is self.Doc2)
+    self.assertEqual(self.Obs.parameter2[0], 'test2')
     # there will be other signals because of the addObject()
     self.Obs.signal = []
     self.Obs.parameter = []
     self.Obs.parameter2 = []
     
     self.Doc2.abortTransaction()
-    self.failUnless(self.Obs.signal.pop() == 'DocAbortTransaction')
-    self.failUnless(self.Obs.parameter.pop() is self.Doc2)
+    self.assertEqual(self.Obs.signal.pop(), 'DocAbortTransaction')
+    self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
     # there will be other signals because of aborting the above addObject()
     self.Obs.signal = []
     self.Obs.parameter = []
     self.Obs.parameter2 = []
     
     self.Doc2.undo()
-    self.failUnless(self.Obs.signal.pop() == 'DocUndo')
-    self.failUnless(self.Obs.parameter.pop() is self.Doc2)
+    self.assertEqual(self.Obs.signal.pop(), 'DocUndo')
+    self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
     # there will be other signals because undoing the above addObject()
     self.Obs.signal = []
     self.Obs.parameter = []
     self.Obs.parameter2 = []
     
     self.Doc2.redo()
-    self.failUnless(self.Obs.signal.pop() == 'DocRedo')
-    self.failUnless(self.Obs.parameter.pop() is self.Doc2)
+    self.assertEqual(self.Obs.signal.pop(), 'DocRedo')
+    self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
     # there will be other signals because redoing the above addObject()
     self.Obs.signal = []
     self.Obs.parameter = []
     self.Obs.parameter2 = []
     
     self.Doc1.Comment = 'test comment'
-    self.failUnless(self.Obs.signal.pop(0) == 'DocBeforeChange')
-    self.failUnless(self.Obs.parameter.pop(0) is self.Doc1)
-    self.failUnless(self.Obs.parameter2.pop(0) == 'Comment')
-    self.failUnless(self.Obs.signal.pop(0) == 'DocChanged')
-    self.failUnless(self.Obs.parameter.pop(0) is self.Doc1)
-    self.failUnless(self.Obs.parameter2.pop(0) == 'Comment')
+    self.assertEqual(self.Obs.signal.pop(0), 'DocBeforeChange')
+    self.assertTrue(self.Obs.parameter.pop(0) is self.Doc1)
+    self.assertEqual(self.Obs.parameter2.pop(0), 'Comment')
+    self.assertEqual(self.Obs.signal.pop(0), 'DocChanged')
+    self.assertTrue(self.Obs.parameter.pop(0) is self.Doc1)
+    self.assertEqual(self.Obs.parameter2.pop(0), 'Comment')
     
     FreeCAD.closeDocument(self.Doc2.Name)
-    self.failUnless(self.Obs.signal.pop() == 'DocDeleted')
-    self.failUnless(self.Obs.parameter.pop() is self.Doc2)
-    self.failUnless(self.Obs.signal.pop() == 'DocActivated')
-    self.failUnless(self.Obs.parameter.pop() is self.Doc1)
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    self.assertEqual(self.Obs.signal.pop(), 'DocDeleted')
+    self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
+    self.assertEqual(self.Obs.signal.pop(), 'DocActivated')
+    self.assertTrue(self.Obs.parameter.pop() is self.Doc1)
+    self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
     FreeCAD.closeDocument(self.Doc1.Name)
     self.assertEqual(self.Obs.signal.pop(), 'DocDeleted')
@@ -1750,11 +1763,7 @@ class DocumentObserverCases(unittest.TestCase):
     FreeCAD.ActiveDocument.removeObject(obj.Name)
     self.failUnless(self.Obs.signal.pop(0) == 'ObjDeleted')
     self.failUnless(self.Obs.parameter.pop(0) is obj)
-    # Each object now has a _NotifyList property of type PropertyLinkList, which
-    # will trigger beforeChange and change signal due to the document calling
-    # breakDependencies()
-    #
-    #  self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
     pyobj = self.Doc1.addObject("App::FeaturePython","pyobj")
     self.Obs.signal = []
@@ -1912,11 +1921,7 @@ class DocumentObserverCases(unittest.TestCase):
     FreeCAD.ActiveDocument.removeObject(obj.Name)
     self.failUnless(self.Obs.signal.pop(0) == 'ObjDeleted')
     self.failUnless(self.Obs.parameter.pop(0) is obj)
-    # Each object now has a _NotifyList property of type PropertyLinkList, which
-    # will trigger beforeChange and change signal due to the document calling
-    # breakDependencies()
-    #
-    #  self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     self.failUnless(self.GuiObs.signal.pop() == 'ObjDeleted')
     self.failUnless(self.GuiObs.parameter.pop() is vo)
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)

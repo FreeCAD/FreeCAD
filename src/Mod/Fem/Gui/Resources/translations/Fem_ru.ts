@@ -4,60 +4,60 @@
   <context>
     <name>BoundarySelector</name>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="122"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="129"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Выбрать Грани/Кромки/Вершины</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="123"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation type="unfinished">To add references select them in the 3D view and then click "Add".</translation>
+      <translation>Чтобы добавить ориентиры, выберите их в 3D виде и нажмите "Добавить".</translation>
     </message>
   </context>
   <context>
     <name>ControlWidget</name>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="212"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="213"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>Управление решателем</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="223"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="224"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Рабочая папка</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="302"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="303"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="242"/>
-      <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="308"/>
-      <source>Run</source>
-      <translation type="unfinished">Run</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="310"/>
-      <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Записать</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
-      <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <source>Edit</source>
+      <translation>Редактировать</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="314"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="243"/>
+      <source>Elapsed Time:</source>
+      <translation>Затраченное время:</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="309"/>
+      <source>Run</source>
+      <translation>Запустить</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>
+      <source>Re-write</source>
+      <translation>Перезаписать</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="313"/>
+      <source>Re-run</source>
+      <translation>Пересчитать</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
       <source>Abort</source>
       <translation>Прервать</translation>
     </message>
@@ -67,64 +67,85 @@
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Блок анализа</translation>
     </message>
     <message>
       <location filename="_CommandFemAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
+      <translation>Создать анализ со стандартным решателем CalculiX</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="37"/>
+      <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates an analysis container with standard solver CalculiX</translation>
+      <translation>Создать анализ со стандартным решателем CalxuliX</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ClippingPlaneAdd</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="60"/>
+      <source>Clipping plane on face</source>
+      <translation>Плоскость сечения на грань</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="62"/>
+      <source>Add a clipping plane on a selected face</source>
+      <translation>Добавление плоскости сечения на выбранной грани</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ClippingPlaneRemoveAll</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="96"/>
+      <source>Remove all clipping planes</source>
+      <translation>Удалить все плоскости сечения</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintBodyHeatSource</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="57"/>
+      <location filename="../../../femcommands/commands.py" line="115"/>
       <source>Constraint body heat source</source>
-      <translation type="unfinished">Constraint body heat source</translation>
+      <translation>Задать тело, являющееся источником тепла</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="60"/>
+      <location filename="../../../femcommands/commands.py" line="118"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation type="unfinished">Creates a FEM constraint body heat source</translation>
+      <translation>Создает граничное условие для МКЭ определяющее тело, являющееся источником тепла</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintElectrostaticPotential</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="77"/>
-      <source>Constraint Potential</source>
-      <translation type="unfinished">Constraint Potential</translation>
+      <location filename="../../../femcommands/commands.py" line="136"/>
+      <source>Constraint electrostatic potential</source>
+      <translation>Создать электростатический потенциал</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="80"/>
+      <location filename="../../../femcommands/commands.py" line="139"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation type="unfinished">Creates a FEM constraint electrostatic potential</translation>
+      <translation>Создает граничное условие МКЭ для электростатического потенциала</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="97"/>
-      <source>Constraint Flow Velocity</source>
-      <translation type="unfinished">Constraint Flow Velocity</translation>
+      <location filename="../../../femcommands/commands.py" line="159"/>
+      <source>Constraint flow velocity</source>
+      <translation>Граничное условие скорости потока</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="100"/>
+      <location filename="../../../femcommands/commands.py" line="162"/>
       <source>Creates a FEM constraint flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint flow velocity</translation>
+      <translation>Создает граничное условие скорости потока для МКЭ</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintInitialFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="117"/>
-      <source>Constraint Initial Flow Velocity</source>
-      <translation type="unfinished">Constraint Initial Flow Velocity</translation>
+      <location filename="../../../femcommands/commands.py" line="182"/>
+      <source>Constraint initial flow velocity</source>
+      <translation>Начальное условие скорости потока</translation>
     </message>
   </context>
   <context>
@@ -132,12 +153,12 @@
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weight</source>
-      <translation type="unfinished">Constraint self weight</translation>
+      <translation>Граничное условие собственного веса</translation>
     </message>
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation type="unfinished">Creates a FEM constraint self weight</translation>
+      <translation>Создает граничное условие собственного веса объекта для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -145,12 +166,12 @@
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>Секция текущего вещества для одномерного потока</translation>
     </message>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+      <translation>Создает секцию текущего вещества в однонаправленном потоке для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -158,12 +179,12 @@
     <message>
       <location filename="_CommandFemElementGeometry1D.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Поперечное сечение балки</translation>
     </message>
     <message>
       <location filename="_CommandFemElementGeometry1D.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Создает условие поперечного сечения балки для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -171,87 +192,87 @@
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Толщины листа кровельного материала</translation>
     </message>
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Создает Условие толщины пластины кровельного материала для расчета МКЭ</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="184"/>
+      <location filename="../../../femcommands/commands.py" line="259"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Толщины листа кровельного материала</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="186"/>
+      <location filename="../../../femcommands/commands.py" line="261"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Создает Условие толщины пластины кровельного материала для расчета МКЭ</translation>
     </message>
   </context>
   <context>
     <name>FEM_ElementRotation1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="200"/>
+      <location filename="../../../femcommands/commands.py" line="278"/>
       <source>Beam rotation</source>
-      <translation type="unfinished">Beam rotation</translation>
+      <translation>Вращение балки</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="202"/>
+      <location filename="../../../femcommands/commands.py" line="280"/>
       <source>Creates a FEM beam rotation</source>
-      <translation type="unfinished">Creates a FEM beam rotation</translation>
+      <translation>Создает условие поворота балки для МКЭ</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationElasticity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="232"/>
+      <location filename="../../../femcommands/commands.py" line="314"/>
       <source>Elasticity equation</source>
-      <translation type="unfinished">Elasticity equation</translation>
+      <translation>Уравнение гибкости</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="233"/>
+      <location filename="../../../femcommands/commands.py" line="315"/>
       <source>Creates a FEM equation for elasticity</source>
-      <translation type="unfinished">Creates a FEM equation for elasticity</translation>
+      <translation>Создает уравнение для расчета упругости МКЭ</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationElectrostatic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="216"/>
+      <location filename="../../../femcommands/commands.py" line="297"/>
       <source>Electrostatic equation</source>
-      <translation type="unfinished">Electrostatic equation</translation>
+      <translation>Электростатические уравнение</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="217"/>
+      <location filename="../../../femcommands/commands.py" line="298"/>
       <source>Creates a FEM equation for electrostatic</source>
-      <translation type="unfinished">Creates a FEM equation for electrostatic</translation>
+      <translation>Создает уравнение для расчета электростатики МКЭ</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationFlow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="248"/>
+      <location filename="../../../femcommands/commands.py" line="331"/>
       <source>Flow equation</source>
-      <translation type="unfinished">Flow equation</translation>
+      <translation>Уравнение потока</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="249"/>
+      <location filename="../../../femcommands/commands.py" line="332"/>
       <source>Creates a FEM equation for flow</source>
-      <translation type="unfinished">Creates a FEM equation for flow</translation>
+      <translation>Создает уравнение МКЭ для потока вещества</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationFluxsolver</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="264"/>
+      <location filename="../../../femcommands/commands.py" line="348"/>
       <source>Fluxsolver equation</source>
-      <translation type="unfinished">Fluxsolver equation</translation>
+      <translation>Уравнение полей</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="265"/>
+      <location filename="../../../femcommands/commands.py" line="349"/>
       <source>Creates a FEM equation for fluxsolver</source>
-      <translation type="unfinished">Creates a FEM equation for fluxsolver</translation>
+      <translation>Создает уравнение МКЭ для решения задач распространения полей</translation>
     </message>
   </context>
   <context>
@@ -259,22 +280,22 @@
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Сетку МКЭ в полигональную сетку</translation>
     </message>
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Преобразует поверхность сетки МКЭ в полигональную сетку</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="366"/>
+      <location filename="../../../femcommands/commands.py" line="470"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Сетку МКЭ в полигональную сетку</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="367"/>
+      <location filename="../../../femcommands/commands.py" line="471"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Преобразует поверхность сетки МКЭ в полигональную сетку</translation>
     </message>
   </context>
   <context>
@@ -282,25 +303,30 @@
     <message>
       <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="42"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Нелинейный механический материал</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="44"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Создает нелинейный механический материал</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="415"/>
+      <source>Nonlinear mechanical material</source>
+      <translation>Нелинейный механический материал</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="_CommandFemMaterialSolid.py" line="42"/>
-      <source>FEM material for solid</source>
-      <translation type="unfinished">FEM material for solid</translation>
-    </message>
-    <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Создает твердотельный материал для расчета МКЭ</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialSolid.py" line="42"/>
+      <source>FEM material for solid</source>
+      <translation>Материал твердых тел для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -308,12 +334,12 @@
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="41"/>
       <source>FEM mesh boundary layer</source>
-      <translation type="unfinished">FEM mesh boundary layer</translation>
+      <translation>Граничный слой сетки МКЭ</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="43"/>
       <source>Creates a FEM mesh boundary layer</source>
-      <translation type="unfinished">Creates a FEM mesh boundary layer</translation>
+      <translation>Создает граничный слой сетки МКЭ</translation>
     </message>
   </context>
   <context>
@@ -321,35 +347,30 @@
     <message>
       <location filename="_CommandFemMeshClear.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Очистить сетку МКЭ</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshClear.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Очистить сетку объекта сетки МКЭ</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="518"/>
+      <source>Clear FEM mesh</source>
+      <translation>Очистить сетку МКЭ</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="520"/>
+      <source>Clear the Mesh of a FEM mesh object</source>
+      <translation>Очистить сетку объекта сетки МКЭ</translation>
     </message>
   </context>
   <context>
-    <name>FEM_MeshFromShape</name>
+    <name>FEM_MeshDisplayInfo</name>
     <message>
-      <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
-      <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
-      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="472"/>
-      <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="473"/>
-      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
+      <location filename="../../../femcommands/commands.py" line="538"/>
+      <source>Display FEM mesh info</source>
+      <translation>Информация о полигональной сетке МКЭ</translation>
     </message>
   </context>
   <context>
@@ -357,20 +378,22 @@
     <message>
       <location filename="_CommandFemMeshGroup.py" line="41"/>
       <source>FEM mesh group</source>
-      <translation type="unfinished">FEM mesh group</translation>
+      <translation>Группа сетки МКЭ</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGroup.py" line="43"/>
       <source>Creates a FEM mesh group</source>
-      <translation type="unfinished">Creates a FEM mesh group</translation>
+      <translation>Создает группу сетки МКЭ</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MeshPrintInfo</name>
     <message>
-      <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
-      <source>Print FEM mesh info</source>
-      <translation type="unfinished">Print FEM mesh info</translation>
+      <location filename="../../../femcommands/commands.py" line="584"/>
+      <source>FEM mesh group</source>
+      <translation>Группа сетки МКЭ</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="586"/>
+      <source>Creates a FEM mesh group</source>
+      <translation>Создает группу сетки МКЭ</translation>
     </message>
   </context>
   <context>
@@ -378,12 +401,12 @@
     <message>
       <location filename="_CommandFemMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>Область сетки МКЭ</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>Создать область сетки МКЭ</translation>
     </message>
   </context>
   <context>
@@ -391,12 +414,12 @@
     <message>
       <location filename="_CommandFemResultShow.py" line="41"/>
       <source>Show result</source>
-      <translation type="unfinished">Show result</translation>
+      <translation>Показать результат</translation>
     </message>
     <message>
       <location filename="_CommandFemResultShow.py" line="43"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Наглядно показывает выбранные данные результата анализа</translation>
     </message>
   </context>
   <context>
@@ -410,31 +433,31 @@
     <message>
       <location filename="_CommandFemResultsPurge.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Удаляет все результаты из активного блока анализа</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="548"/>
+      <location filename="../../../femcommands/commands.py" line="664"/>
       <source>Purge results</source>
       <translation>Очистить результаты
 </translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="550"/>
+      <location filename="../../../femcommands/commands.py" line="666"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Удаляет все результаты из активного блока анализа</translation>
     </message>
   </context>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="592"/>
+      <location filename="../../../femcommands/commands.py" line="708"/>
       <source>Solver CalculiX (experimental)</source>
-      <translation type="unfinished">Solver CalculiX (experimental)</translation>
+      <translation>Решатель CalculiX (экспериментальный)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="594"/>
+      <location filename="../../../femcommands/commands.py" line="710"/>
       <source>Creates a FEM solver CalculiX (experimental)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX (experimental)</translation>
+      <translation>Создает решателя МКЭ CalculiX (экспериментальная)</translation>
     </message>
   </context>
   <context>
@@ -442,22 +465,22 @@
     <message>
       <location filename="_CommandFemSolverControl.py" line="40"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Управление решаемыми задачами решателя</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverControl.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Изменяет атрибуты решателя и выполняет алгоритмы вычисления выбранного решателя</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="610"/>
+      <location filename="../../../femcommands/commands.py" line="726"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Управление решаемыми задачами решателя</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="612"/>
+      <location filename="../../../femcommands/commands.py" line="728"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Изменяет атрибуты решателя и выполняет алгоритмы вычисления выбранного решателя</translation>
     </message>
   </context>
   <context>
@@ -465,12 +488,12 @@
     <message>
       <location filename="_CommandFemSolverRun.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Запустить алгоритм расчета решателя</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverRun.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Запускает вычисления для выбранного решателя</translation>
     </message>
   </context>
   <context>
@@ -478,12 +501,12 @@
     <message>
       <location filename="_CommandFemSolverZ88.py" line="41"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Решатель Z88</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverZ88.py" line="43"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>Создает задачу для решателя МКЭ Z88</translation>
     </message>
   </context>
   <context>
@@ -491,46 +514,87 @@
     <message>
       <location filename="FemCommands.py" line="39"/>
       <source>Default Fem Command MenuText</source>
-      <translation>По умолчанию команда Фэм MenuText</translation>
+      <translation>Команда МКЭ MenuText по умолчанию</translation>
     </message>
     <message>
       <location filename="FemCommands.py" line="41"/>
       <source>Default Fem Command ToolTip</source>
-      <translation>По умолчанию команда ФЭМ подсказка</translation>
+      <translation>Подсказка команды МКЭ по умолчанию</translation>
     </message>
     <message>
       <location filename="../../../femcommands/manager.py" line="41"/>
       <source>Default Fem Command MenuText</source>
-      <translation>По умолчанию команда Фэм MenuText</translation>
+      <translation>Команда МКЭ MenuText по умолчанию</translation>
     </message>
     <message>
       <location filename="../../../femcommands/manager.py" line="43"/>
       <source>Default Fem Command ToolTip</source>
-      <translation>По умолчанию команда ФЭМ подсказка</translation>
+      <translation>Подсказка команды МКЭ по умолчанию</translation>
+    </message>
+  </context>
+  <context>
+    <name>GeometryElementsSelection</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Выбор геометрии для </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
+      <source>Add</source>
+      <translation>Добавить</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
+      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
+      <translation>Нажмите на кнопку «Добавить» и выберите геометрические элементы, чтобы добавить их в список. Если геометрические элементы не добавлены в список, будут использованы все оставшиеся. Следующие геометрические элементы разрешены для выбора: </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
+      <source>Selection mode</source>
+      <translation>Режим выбора</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
+      <source>Solid</source>
+      <translation>Твердотельный объект</translation>
+    </message>
+  </context>
+  <context>
+    <name>Material_Editor</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="382"/>
+      <source>Material editor</source>
+      <translation>Редактор материалов</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="384"/>
+      <source>Opens the FreeCAD material editor</source>
+      <translation>Открывает редактор материалов FreeCAD</translation>
     </message>
   </context>
   <context>
     <name>SolidSelector</name>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="140"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
       <source>Select Solids</source>
-      <translation type="unfinished">Select Solids</translation>
+      <translation>Выделить объекты</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="141"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
       <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</translation>
+      <translation>Выделите простые части объекта, которые должны быть добавлены в список. Чтобы добавить объект нажмите кнопку "Добавить".</translation>
     </message>
   </context>
   <context>
     <name>_Selector</name>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="42"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
       <source>Add</source>
       <translation>Добавить</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="43"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
       <source>Remove</source>
       <translation>Удалить</translation>
     </message>
@@ -540,12 +604,25 @@
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
       <source>FEM material for Fluid</source>
-      <translation type="unfinished">FEM material for Fluid</translation>
+      <translation>Текучий материал для МКЭ</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="44"/>
       <source>Creates a FEM material for Fluid</source>
-      <translation type="unfinished">Creates a FEM material for Fluid</translation>
+      <translation>Создать текучий материал для расчета текучих веществ МКЭ</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshFromShape</name>
+    <message>
+      <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Cетка МКЭ из фигуры генерируемая построителем Netgen</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>Создает объемную сетку МКЭ из фигуры или твердого тела построителем Netgen</translation>
     </message>
   </context>
   <context>
@@ -553,12 +630,20 @@
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
       <source>FEM mesh from shape by GMSH</source>
-      <translation type="unfinished">FEM mesh from shape by GMSH</translation>
+      <translation>Cетка МКЭ из фигуры генерируемая построителем GMSH</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
       <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by GMSH mesher</translation>
+      <translation>Создать сетку МКЭ из фигуры с помощью генератора сетки GMSH</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshPrintInfo</name>
+    <message>
+      <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
+      <source>Print FEM mesh info</source>
+      <translation>Показать информацию о сетке МКЭ</translation>
     </message>
   </context>
   <context>
@@ -566,12 +651,12 @@
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="42"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>Решатель CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="44"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>Создает задачу для решателя МКЭ CalculiX</translation>
     </message>
   </context>
   <context>
@@ -579,12 +664,12 @@
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Поперечное сечение балки</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Создает условие поперечного сечения балки для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -592,12 +677,12 @@
     <message>
       <location filename="_CommandFemFluidSection.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>Секция текущего вещества для одномерного потока</translation>
     </message>
     <message>
       <location filename="_CommandFemFluidSection.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+      <translation>Создает секцию текущего вещества в однонаправленном потоке для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -605,12 +690,12 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Толщины листа кровельного материала</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Создает Условие толщины пластины кровельного материала для расчета МКЭ</translation>
     </message>
   </context>
   <context>
@@ -618,12 +703,12 @@
     <message>
       <location filename="_CommandAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Блок анализа</translation>
     </message>
     <message>
       <location filename="_CommandAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
+      <translation>Создать анализ со стандартным решателем CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
@@ -633,7 +718,7 @@
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
       <source>Create a new mechanical analysis</source>
-      <translation>Создайте новый механический анализ</translation>
+      <translation>Создать новый механический анализ</translation>
     </message>
   </context>
   <context>
@@ -641,22 +726,22 @@
     <message>
       <location filename="_CommandBeamSection.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Поперечное сечение балки</translation>
     </message>
     <message>
       <location filename="_CommandBeamSection.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Создает условие поперечного сечения балки для МКЭ</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
       <source>FEM Beam Cross Section Definition ...</source>
-      <translation>FEM брус сечением определение...</translation>
+      <translation>Условие МКЭ поперечного сечения балки...</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM Beam Cross Section</source>
-      <translation>Создает FEM луч поперечного сечения</translation>
+      <translation>Создает условие поперечного сечения балки для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -664,12 +749,12 @@
     <message>
       <location filename="_CommandClearMesh.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Очистить сетку МКЭ</translation>
     </message>
     <message>
       <location filename="_CommandClearMesh.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Очистить сетку объекта сетки МКЭ</translation>
     </message>
   </context>
   <context>
@@ -677,12 +762,12 @@
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weigt</source>
-      <translation type="unfinished">Constraint self weigt</translation>
+      <translation>Граничное условие собственного веса</translation>
     </message>
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weigt</source>
-      <translation type="unfinished">Creates a FEM constraint self weigt</translation>
+      <translation>Создает граничное условие собственного веса объекта для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -690,12 +775,12 @@
     <message>
       <location filename="_CommandControlSolver.py" line="40"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Управление решаемыми задачами решателя</translation>
     </message>
     <message>
       <location filename="_CommandControlSolver.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Изменяет атрибуты решателя и выполняет алгоритмы вычисления выбранного решателя</translation>
     </message>
   </context>
   <context>
@@ -703,12 +788,12 @@
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Сетку МКЭ в полигональную сетку</translation>
     </message>
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Преобразует поверхность сетки МКЭ в полигональную сетку</translation>
     </message>
   </context>
   <context>
@@ -716,12 +801,12 @@
     <message>
       <location filename="_CommandMaterialMechanicalNonlinear.py" line="42"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Нелинейный механический материал</translation>
     </message>
     <message>
       <location filename="_CommandMaterialMechanicalNonlinear.py" line="44"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Создает нелинейный механический материал</translation>
     </message>
   </context>
   <context>
@@ -739,12 +824,12 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates a mechanical material</source>
-      <translation type="unfinished">Creates a mechanical material</translation>
+      <translation>Создать механический материал</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation>Создание или редактирование механического определения материала.</translation>
+      <translation>Создание или редактирование свойств механического материала.</translation>
     </message>
   </context>
   <context>
@@ -752,12 +837,12 @@
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="41"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <translation>Cетка МКЭ из фигуры генерируемая построителем Netgen</translation>
     </message>
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>Создает объемную сетку МКЭ из фигуры или твердого тела построителем Netgen</translation>
     </message>
   </context>
   <context>
@@ -765,12 +850,12 @@
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="42"/>
       <source>FEM mesh from shape by GMSH</source>
-      <translation type="unfinished">FEM mesh from shape by GMSH</translation>
+      <translation>Cетка МКЭ из фигуры генерируемая построителем GMSH</translation>
     </message>
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="43"/>
       <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by GMSH mesher</translation>
+      <translation>Создать сетку МКЭ из фигуры с помощью генератора сетки GMSH</translation>
     </message>
   </context>
   <context>
@@ -778,12 +863,12 @@
     <message>
       <location filename="_CommandMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>Область сетки МКЭ</translation>
     </message>
     <message>
       <location filename="_CommandMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>Создать область сетки МКЭ</translation>
     </message>
   </context>
   <context>
@@ -791,7 +876,7 @@
     <message>
       <location filename="_CommandPrintMeshInfo.py" line="44"/>
       <source>Print FEM mesh info</source>
-      <translation type="unfinished">Print FEM mesh info</translation>
+      <translation>Показать информацию о сетке МКЭ</translation>
     </message>
   </context>
   <context>
@@ -810,7 +895,7 @@
     <message>
       <location filename="_CommandPurgeResults.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Удаляет все результаты из активного блока анализа</translation>
     </message>
   </context>
   <context>
@@ -818,12 +903,12 @@
     <message>
       <location filename="_CommandRunSolver.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Запустить алгоритм расчета решателя</translation>
     </message>
     <message>
       <location filename="_CommandRunSolver.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Запускает вычисления для выбранного решателя</translation>
     </message>
   </context>
   <context>
@@ -831,22 +916,22 @@
     <message>
       <location filename="_CommandShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Толщины листа кровельного материала</translation>
     </message>
     <message>
       <location filename="_CommandShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Создает Условие толщины пластины кровельного материала для расчета МКЭ</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
       <source>FEM Shell Plate Thickness Definition ...</source>
-      <translation>Определение толщины пластины оболочки FEM...</translation>
+      <translation>Свойства толщины листа кровельного материала для МКЭ...</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM Shell Thickness</source>
-      <translation>Создает толщина оболочки FEM</translation>
+      <translation>Создать условие толщины кровельного материала для рачсета МКЭ</translation>
     </message>
   </context>
   <context>
@@ -854,17 +939,17 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="40"/>
       <source>Show result</source>
-      <translation type="unfinished">Show result</translation>
+      <translation>Показать результат</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
       <source>Show result information of an analysis</source>
-      <translation>Показать сведения о результате анализа</translation>
+      <translation>Показать результаты анализа</translation>
     </message>
     <message>
       <location filename="_CommandShowResult.py" line="42"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Наглядно показывает выбранные данные результата анализа</translation>
     </message>
   </context>
   <context>
@@ -872,22 +957,22 @@
     <message>
       <location filename="_CommandSolverCalculix.py" line="42"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>Решатель CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandSolverCalculix.py" line="44"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>Создает задачу для решателя МКЭ CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="41"/>
       <source>Create FEM Solver CalculiX ...</source>
-      <translation>Создайте CalculiX решателя FEM...</translation>
+      <translation>Создать решатель МКЭ CalculiX...</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="43"/>
       <source>Creates FEM Solver CalculiX</source>
-      <translation>Создайте CalculiX решателя FEM</translation>
+      <translation>Создает задачу для решателя МКЭ CalculiX</translation>
     </message>
   </context>
   <context>
@@ -895,12 +980,12 @@
     <message>
       <location filename="_CommandSolverZ88.py" line="41"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Решатель Z88</translation>
     </message>
     <message>
       <location filename="_CommandSolverZ88.py" line="43"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>Создает задачу для решателя МКЭ Z88</translation>
     </message>
   </context>
   <context>
@@ -926,7 +1011,7 @@
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
       <source>Create a new mechanical analysis</source>
-      <translation>Создайте новый механический анализ</translation>
+      <translation>Создать новый механический анализ</translation>
     </message>
   </context>
   <context>
@@ -934,12 +1019,12 @@
     <message>
       <location filename="_CommandQuickAnalysis.py" line="40"/>
       <source>Run CalculiX ccx</source>
-      <translation>Запустите CalculiX ccx</translation>
+      <translation>Запустить CalculiX ccx</translation>
     </message>
     <message>
       <location filename="_CommandQuickAnalysis.py" line="42"/>
       <source>Write .inp file and run CalculiX ccx</source>
-      <translation>Напишите .inp файла и запуска CalculiX ccx</translation>
+      <translation>Записать .inp файл и запустить решатель CalculiX ccx</translation>
     </message>
   </context>
   <context>
@@ -947,12 +1032,12 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation>Начать управление заданиями поиска решения</translation>
+      <translation>Начать управление заданиями решателя</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation>Диалоговое окно, чтобы начать расчет выбранного решателя</translation>
+      <translation>Диалоговое окно начала расчета выбранного решателя</translation>
     </message>
   </context>
   <context>
@@ -960,12 +1045,12 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation>Начать управление заданиями поиска решения</translation>
+      <translation>Начать управление заданиями решателя</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation>Диалоговое окно, чтобы начать расчет выбранного решателя</translation>
+      <translation>Диалоговое окно начала расчета выбранного решателя</translation>
     </message>
   </context>
   <context>
@@ -978,7 +1063,7 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation>Создание или редактирование механического определения материала.</translation>
+      <translation>Создание или редактирование свойств механического материала.</translation>
     </message>
   </context>
   <context>
@@ -986,12 +1071,12 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="40"/>
       <source>Show result</source>
-      <translation type="unfinished">Show result</translation>
+      <translation>Показать результат</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
       <source>Show result information of an analysis</source>
-      <translation>Показать сведения о результате анализа</translation>
+      <translation>Показать результаты анализа</translation>
     </message>
   </context>
   <context>
@@ -1005,7 +1090,7 @@
       <location filename="../../Command.cpp" line="166"/>
       <location filename="../../Command.cpp" line="167"/>
       <source>Add a part to the Analysis</source>
-      <translation>Добавить новую часть в Анализ</translation>
+      <translation>Добавить новую деталь в Анализ</translation>
     </message>
   </context>
   <context>
@@ -1018,12 +1103,12 @@
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Create FEM bearing constraint</source>
-      <translation>Создать МКЭ, учитывая ограничения</translation>
+      <translation>Создать граничное условие подшипника для МКЭ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create FEM constraint for a bearing</source>
-      <translation>Создать МКЭ ограничения для подшипника</translation>
+      <translation>Создать граничное условие подшипника для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -1036,12 +1121,12 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create FEM displacement constraint</source>
-      <translation>Создание ограничения перемещения FEM</translation>
+      <translation>Создание ограничения перемещения для МКЭ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Create FEM constraint for a displacement acting on a face</source>
-      <translation>Создание FEM ограничения для перемещения, действующих на лице</translation>
+      <translation>Создание граничное условие перемещений, действующих на грань для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -1054,12 +1139,12 @@
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create FEM fixed constraint</source>
-      <translation>Создать МКЭ с фиксированными ограничениями</translation>
+      <translation>Создать фиксированное граничное условие для МКЭ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Create FEM constraint for a fixed geometric entity</source>
-      <translation>Создать МКЭ с ограничениями для фиксированной геометрии</translation>
+      <translation>Создать граничное условие фиксированной геометрии для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -1072,12 +1157,12 @@
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Create FEM force constraint</source>
-      <translation>Создать МКЭ с ограничениями силы</translation>
+      <translation>Создать граничное условие силы для МКЭ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="358"/>
       <source>Create FEM constraint for a force acting on a geometric entity</source>
-      <translation>Создать МКЭ с ограничениями для сил, действующих на геометрические тела</translation>
+      <translation>Создать граничное условие силы, действующей на геометрическое тело для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -1090,12 +1175,12 @@
     <message>
       <location filename="../../Command.cpp" line="446"/>
       <source>Create FEM gear constraint</source>
-      <translation>Создать МКЭ передач с ограничениями</translation>
+      <translation>Создать граничное условие шестиреночной передачи для МКЭ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
       <source>Create FEM constraint for a gear</source>
-      <translation>Создать МКЭ с ограничениями для передач</translation>
+      <translation>Создать граничное условие МКЭ для шестиреночной передачи</translation>
     </message>
   </context>
   <context>
@@ -1108,12 +1193,12 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create FEM pressure constraint</source>
-      <translation type="unfinished">Create FEM pressure constraint</translation>
+      <translation>Создать граничное условие давления для МКЭ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create FEM constraint for a pressure acting on a face</source>
-      <translation type="unfinished">Create FEM constraint for a pressure acting on a face</translation>
+      <translation>Создать граничное условие давления, действующего на грань для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -1126,12 +1211,12 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Create FEM pulley constraint</source>
-      <translation>Создать МКЭ с ограничениями для шкивов</translation>
+      <translation>Создать граничное условие ременной передачи для МКЭ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Create FEM constraint for a pulley</source>
-      <translation type="unfinished">Create FEM constraint for a pulley</translation>
+      <translation>Создать граничное условие ременной передачи для анализа МКЭ</translation>
     </message>
   </context>
   <context>
@@ -1145,22 +1230,7 @@
       <location filename="../../Command.cpp" line="104"/>
       <location filename="../../Command.cpp" line="105"/>
       <source>Create a FEM analysis</source>
-      <translation>Создать МКЭ анализ</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemCreateFromShape</name>
-    <message>
-      <source>Fem</source>
-      <translation>МКЭ (метод конечных элементов)</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh</source>
-      <translation>Создать МКЭ сетку</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh from shape</source>
-      <translation>Создать МКЭ сетку из формы</translation>
+      <translation>Создать анализ МКЭ</translation>
     </message>
   </context>
   <context>
@@ -1174,7 +1244,7 @@
       <location filename="../../Command.cpp" line="720"/>
       <location filename="../../Command.cpp" line="721"/>
       <source>Define/create a nodes set...</source>
-      <translation>Определить/создать набор узлов...</translation>
+      <translation>Задать/создать набор узлов...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="749"/>
@@ -1184,7 +1254,7 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation type="unfinished">Select a single FEM mesh or nodes set, please.</translation>
+      <translation>Выберите одну сетку МКЭ или набор узлов, пожалуйста.</translation>
     </message>
   </context>
   <context>
@@ -1198,7 +1268,7 @@
       <location filename="../../Command.cpp" line="229"/>
       <location filename="../../Command.cpp" line="230"/>
       <source>Add a solver to the Analysis</source>
-      <translation type="unfinished">Add a solver to the Analysis</translation>
+      <translation>Добавить решатель к блоку анализа</translation>
     </message>
   </context>
   <context>
@@ -1213,7 +1283,7 @@
       <location filename="../../Command.cpp" line="664"/>
       <location filename="../../Command.cpp" line="666"/>
       <source>Create node set by Poly</source>
-      <translation>Создать узел с установкой по полигону</translation>
+      <translation>Создать набор узлов из многоугольника</translation>
     </message>
   </context>
   <context>
@@ -1226,12 +1296,12 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="37"/>
       <source>CalculiX</source>
-      <translation type="unfinished">CalculiX</translation>
+      <translation>CalculiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="51"/>
       <source>Use internal editor for .inp files</source>
-      <translation>Использовать встроенный редактор для файлов .inp</translation>
+      <translation>Использовать встроенный редактор для .inp файлов</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="78"/>
@@ -1241,12 +1311,12 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="122"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation type="unfinished">Leave blank to use default CalculiX ccx binary file</translation>
+      <translation>Оставьте пустым для используемого обычно исполнительного файла CalculiX ccx</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="141"/>
       <source>ccx binary</source>
-      <translation type="unfinished">ccx binary</translation>
+      <translation>исполнительный файл ccx</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="157"/>
@@ -1256,12 +1326,12 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="199"/>
       <source>Default analysis settings</source>
-      <translation type="unfinished">Default analysis settings</translation>
+      <translation>Параметры анализа по умолчанию</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="213"/>
       <source>Default type on analysis</source>
-      <translation type="unfinished">Default type on analysis</translation>
+      <translation>Тип анализа по умолчанию</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="223"/>
@@ -1271,12 +1341,12 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="232"/>
       <source>Frequency</source>
-      <translation>Частота</translation>
+      <translation>Частотный</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="244"/>
       <source>Eigenmode number</source>
-      <translation type="unfinished">Eigenmode number</translation>
+      <translation>Номер Обертона</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="251"/>
@@ -1286,12 +1356,12 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="274"/>
       <source>High frequency limit</source>
-      <translation>Ограничение высокой частоты</translation>
+      <translation>Граничное условие высокой частоты</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="303"/>
       <source>Low frequency limit</source>
-      <translation>Ограничение низкой частоты</translation>
+      <translation>Граничное условие низкой частоты</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="335"/>
@@ -1317,35 +1387,12 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="394"/>
       <source>Use materials from user defined directory</source>
-      <translation type="unfinished">Use materials from user defined directory</translation>
+      <translation>Использовать материалы из каталога выбранного пользователем</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>Каталог пользователя</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::HypothesisWidget</name>
-    <message>
-      <source>Hypothesis</source>
-      <translation>Гипотеза</translation>
-    </message>
-    <message>
-      <source>Quadrangle</source>
-      <translation>Четырехугольник</translation>
-    </message>
-    <message>
-      <source>Maximum length</source>
-      <translation>Максимальная длина</translation>
-    </message>
-    <message>
-      <source>Local length</source>
-      <translation>Локальная длина</translation>
-    </message>
-    <message>
-      <source>Maximum element area</source>
-      <translation>Максимальная площадь элемента</translation>
     </message>
   </context>
   <context>
@@ -1375,7 +1422,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="195"/>
       <source>You must specify at least one reference</source>
-      <translation>Необходимо указать по крайней мере одну ссылку</translation>
+      <translation>Необходимо указать как минимум одну ссылку</translation>
     </message>
   </context>
   <context>
@@ -1443,12 +1490,12 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="75"/>
       <source>Edit FEM mesh</source>
-      <translation type="unfinished">Edit FEM mesh</translation>
+      <translation>Редактирование сетку МКЭ</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Сбой создания сетки</translation>
     </message>
   </context>
   <context>
@@ -1464,7 +1511,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="67"/>
       <source>FEM constraint parameters</source>
-      <translation>Параметры зависимостей МКЭ</translation>
+      <translation>Параметры граничных условий для МКЭ</translation>
     </message>
   </context>
   <context>
@@ -1487,7 +1534,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
       <source>Please use only a single reference for bearing constraint</source>
-      <translation>Пожалуйста, используйте только одну ссылку для подшипников с ограничениями</translation>
+      <translation>Пожалуйста, используйте только одну ссылку для граничного условия подшипника</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="178"/>
@@ -1559,7 +1606,7 @@
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="135"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation>Не возможны смешанные типы формы. Вместо этого используйте второе ограничение</translation>
+      <translation>Не возможны смешанные типы фигур. Вместо этого используйте второе граничное условие</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="140"/>
@@ -1577,17 +1624,17 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="142"/>
       <source>Point load</source>
-      <translation type="unfinished">Point load</translation>
+      <translation>Точечная нагрузка</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
       <source>Line load</source>
-      <translation type="unfinished">Line load</translation>
+      <translation>Линейная нагрузка</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="146"/>
       <source>Area load</source>
-      <translation type="unfinished">Area load</translation>
+      <translation>Нагрузка в виде произвольной области</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
@@ -1601,7 +1648,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation>Не возможны смешанные типы формы. Вместо этого используйте второе ограничение</translation>
+      <translation>Не возможны смешанные типы фигур. Вместо этого используйте второе граничное условие</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="182"/>
@@ -1622,18 +1669,6 @@
       <location filename="../../TaskFemConstraintForce.cpp" line="224"/>
       <source>Only faces and edges can be picked</source>
       <translation>Можно выбрать только грани и края</translation>
-    </message>
-    <message>
-      <source>Point load [N]</source>
-      <translation type="unfinished">Point load [N]</translation>
-    </message>
-    <message>
-      <source>Line load [N/mm]</source>
-      <translation type="unfinished">Line load [N/mm]</translation>
-    </message>
-    <message>
-      <source>Area load [N/mm²]</source>
-      <translation type="unfinished">Area load [N/mm²]</translation>
     </message>
   </context>
   <context>
@@ -1697,7 +1732,7 @@
     <message>
       <location filename="../../TaskObjectName.cpp" line="48"/>
       <source>TaskObjectName</source>
-      <translation type="unfinished">TaskObjectName</translation>
+      <translation>Название объекта</translation>
     </message>
   </context>
   <context>
@@ -1705,7 +1740,7 @@
     <message>
       <location filename="../../TaskTetParameter.cpp" line="52"/>
       <source>Tet Parameter</source>
-      <translation>Параметр тет</translation>
+      <translation>Параметры тетраэдра</translation>
     </message>
   </context>
   <context>
@@ -1713,7 +1748,7 @@
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="84"/>
       <source>Activate analysis</source>
-      <translation type="unfinished">Activate analysis</translation>
+      <translation>Активировать анализ</translation>
     </message>
   </context>
   <context>
@@ -1721,12 +1756,12 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="76"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Сбой создания сетки</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation type="unfinished">The FEM module is built without NETGEN support. Meshing will not work!!!</translation>
+      <translation>Модуль МКЭ скомпилирован без поддержки NETGEN. Построение сетки не будет работать!!!</translation>
     </message>
   </context>
   <context>
@@ -1740,18 +1775,18 @@
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="26"/>
       <source>Cross Section</source>
-      <translation type="unfinished">Cross Section</translation>
+      <translation>Поперечное сечение</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="32"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="32"/>
       <source>Use FreeCAD Property Editor</source>
-      <translation type="unfinished">Use FreeCAD Property Editor</translation>
+      <translation>Использовать редактор свойств FreeCAD</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="39"/>
       <source>to edit the cross section values</source>
-      <translation type="unfinished">to edit the cross section values</translation>
+      <translation>чтобы изменить значения поперечного сечения</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="49"/>
@@ -1763,19 +1798,19 @@
       <location filename="../../../TaskPanelFemBeamSection.ui" line="55"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="55"/>
       <source>Leave references blank </source>
-      <translation type="unfinished">Leave references blank </translation>
+      <translation>Оставить ссылки пустыми </translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="62"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="62"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>чтобы выбрать все оставшиеся фигуры</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="72"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="72"/>
       <source>Add reference</source>
-      <translation type="unfinished">Add reference</translation>
+      <translation>Добавить ссылку</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="26"/>
@@ -1785,7 +1820,7 @@
     <message>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="39"/>
       <source>to edit the thickness value</source>
-      <translation type="unfinished">to edit the thickness value</translation>
+      <translation>чтобы изменить значение толщины</translation>
     </message>
   </context>
   <context>
@@ -1808,7 +1843,7 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="55"/>
       <source>Analysis type</source>
-      <translation type="unfinished">Analysis type</translation>
+      <translation>Тип анализа</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="67"/>
@@ -1818,35 +1853,27 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="77"/>
       <source>Frequency</source>
-      <translation>Частота</translation>
+      <translation>Частотный</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="89"/>
       <source>Write .inp file</source>
-      <translation type="unfinished">Write .inp file</translation>
+      <translation>Создать .inp файл</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="99"/>
       <source>Edit .inp file</source>
-      <translation>Редактировать файл .inp</translation>
+      <translation>Редактировать .inp файл</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="109"/>
       <source>Run Calculix</source>
-      <translation>Запустить Calculix</translation>
+      <translation>Запустить CalculiX</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="130"/>
       <source>Time:</source>
       <translation>Время:</translation>
-    </message>
-    <message>
-      <source>Write Calculix Input File</source>
-      <translation type="unfinished">Write Calculix Input File</translation>
-    </message>
-    <message>
-      <source>Edit Calculix Input File</source>
-      <translation type="unfinished">Edit Calculix Input File</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
@@ -1866,7 +1893,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="41"/>
       <source>Material Description</source>
-      <translation type="unfinished">Material Description</translation>
+      <translation>Описание материала</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="54"/>
@@ -1876,17 +1903,17 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="60"/>
       <source>Leave references blank </source>
-      <translation type="unfinished">Leave references blank </translation>
+      <translation>Оставить ссылки пустыми </translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="67"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>чтобы выбрать все оставшиеся фигуры</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="77"/>
       <source>Add reference</source>
-      <translation type="unfinished">Add reference</translation>
+      <translation>Добавить ссылку</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="96"/>
@@ -1911,20 +1938,12 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="241"/>
       <source>External material resources</source>
-      <translation type="unfinished">External material resources</translation>
+      <translation>Внешние ресурсы материалов</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="247"/>
       <source>MatWeb database...</source>
-      <translation>MatWeb база данных...</translation>
-    </message>
-    <message>
-      <source>0 kg/m^3</source>
-      <translation type="unfinished">0 kg/m^3</translation>
-    </message>
-    <message>
-      <source>Pa</source>
-      <translation>ПА</translation>
+      <translation>База данных MatWeb...</translation>
     </message>
   </context>
   <context>
@@ -1932,7 +1951,7 @@
     <message>
       <location filename="../../Command.cpp" line="71"/>
       <source>No active Analysis</source>
-      <translation>Анализ не активен</translation>
+      <translation>Нет активных анализов</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="72"/>
@@ -1953,7 +1972,7 @@
       <location filename="../../Command.cpp" line="177"/>
       <location filename="../../Command.cpp" line="240"/>
       <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-      <translation>Ваш FreeCAD создан без поддержки NETGEN. Сетка не будет работать....</translation>
+      <translation>Ваш FreeCAD скомпилирован без поддержки NETGEN. Построение сетки не будет работать....</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -1986,27 +2005,7 @@
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
-      <translation>Изменить ограничение</translation>
-    </message>
-    <message>
-      <source>Combo View</source>
-      <translation>Комбо панель</translation>
-    </message>
-    <message>
-      <source>combiTab</source>
-      <translation>combiTab</translation>
-    </message>
-    <message>
-      <source>qt_tabwidget_stackedwidget</source>
-      <translation>qt_tabwidget_stackedwidget</translation>
-    </message>
-    <message>
-      <source>ShaftWizard</source>
-      <translation>ShaftWizard</translation>
-    </message>
-    <message>
-      <source>ShaftWizardLayout</source>
-      <translation type="unfinished">ShaftWizardLayout</translation>
+      <translation>Изменить граничное условие</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -2029,23 +2028,23 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="62"/>
       <source>Meshing</source>
-      <translation type="unfinished">Meshing</translation>
+      <translation>Построение сетки</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="343"/>
       <source>Constraint force</source>
-      <translation type="unfinished">Constraint force</translation>
+      <translation>Граничное условие силы</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="587"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="243"/>
       <source>Constraint normal stress</source>
-      <translation type="unfinished">Constraint normal stress</translation>
+      <translation>Граничное условие нормального напряжения</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="98"/>
       <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</source>
-      <translation type="unfinished">[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</translation>
+      <translation>[Узлов: %1, Краев: %2, Граней: %3, Полигонов: %4, Объемов: %5, Многогранников: %6]</translation>
     </message>
   </context>
   <context>
@@ -2053,27 +2052,27 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="14"/>
       <source>Show result</source>
-      <translation type="unfinished">Show result</translation>
+      <translation>Показать результат</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="22"/>
       <source>Result type</source>
-      <translation type="unfinished">Result type</translation>
+      <translation>Тип результата</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
       <source>Y displacement</source>
-      <translation type="unfinished">Y displacement</translation>
+      <translation>Смещение по Y</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="37"/>
       <source>X displacement</source>
-      <translation type="unfinished">X displacement</translation>
+      <translation>Смещение по X</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="44"/>
       <source>Z displacement</source>
-      <translation type="unfinished">Z displacement</translation>
+      <translation>Смещение по Z</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
@@ -2083,12 +2082,12 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="61"/>
       <source>Von Mises stress</source>
-      <translation type="unfinished">Von Mises stress</translation>
+      <translation>Напряжение по Мизесу</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="68"/>
       <source>Abs displacement</source>
-      <translation type="unfinished">Abs displacement</translation>
+      <translation>Абсолютное смещение</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="79"/>
@@ -2108,7 +2107,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="135"/>
       <source>Displacement</source>
-      <translation>Водоизмещение</translation>
+      <translation>Смещение</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="143"/>
@@ -2124,14 +2123,6 @@
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
       <translation>Максимум:</translation>
-    </message>
-    <message>
-      <source>Colors</source>
-      <translation>Цвета</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>мм</translation>
     </message>
   </context>
   <context>
@@ -2162,7 +2153,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="27"/>
       <source>Volume</source>
-      <translation>значение</translation>
+      <translation>Объём</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="32"/>
@@ -2177,7 +2168,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="60"/>
       <source>Poly</source>
-      <translation type="unfinished">Poly</translation>
+      <translation>Многоугольников</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
@@ -2197,7 +2188,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="96"/>
       <source>Angle-search</source>
-      <translation type="unfinished">Angle-search</translation>
+      <translation>Поиск угла</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
@@ -2228,12 +2219,12 @@
     <message>
       <location filename="../../TaskFemConstraint.ui" line="23"/>
       <source>Add reference</source>
-      <translation type="unfinished">Add reference</translation>
+      <translation>Добавить ссылку</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="35"/>
       <source>Load [N]</source>
-      <translation type="unfinished">Load [N]</translation>
+      <translation>Нагрузка [Ньютоны]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="59"/>
@@ -2281,7 +2272,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="20"/>
       <source>Add reference</source>
-      <translation type="unfinished">Add reference</translation>
+      <translation>Добавить ссылку</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="35"/>
@@ -2316,7 +2307,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="165"/>
       <source>Force location [deg]</source>
-      <translation type="unfinished">Force location [deg]</translation>
+      <translation>Место воздействия силы [градусы]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="192"/>
@@ -2331,7 +2322,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="211"/>
       <source>Axial free</source>
-      <translation type="unfinished">Axial free</translation>
+      <translation>Свободные оси</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="220"/>
@@ -2349,12 +2340,12 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation type="unfinished">Prescribed Displacement</translation>
+      <translation>Предписанное смещение</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation type="unfinished">Select multiple face(s), click Add or Remove</translation>
+      <translation>Выделите несколько граней, нажмите Добавить или Удалить</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="59"/>
@@ -2369,7 +2360,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
       <source>Displacement x</source>
-      <translation type="unfinished">Displacement x</translation>
+      <translation>Смещение по x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
@@ -2379,7 +2370,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="288"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="330"/>
       <source>Free</source>
-      <translation type="unfinished">Free</translation>
+      <translation>Свободно</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="111"/>
@@ -2389,37 +2380,37 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Закфиксировано</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation type="unfinished">Displacement y</translation>
+      <translation>Смещение по y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation type="unfinished">Displacement z</translation>
+      <translation>Смещение по z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
       <source>Rotations are only valid for Beam and Shell elements.</source>
-      <translation type="unfinished">Rotations are only valid for Beam and Shell elements.</translation>
+      <translation>Вращения применимы только к корректным элементам Балки и кровли.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>
       <source>Rotation x</source>
-      <translation>Вращение x</translation>
+      <translation>Вращение по x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="279"/>
       <source>Rotation y</source>
-      <translation>Вращение y</translation>
+      <translation>Вращение по y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
       <source>Rotation z</source>
-      <translation>Вращение z</translation>
+      <translation>Вращение по z</translation>
     </message>
   </context>
   <context>
@@ -2432,7 +2423,7 @@
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
       <source>Add reference</source>
-      <translation type="unfinished">Add reference</translation>
+      <translation>Добавить ссылку</translation>
     </message>
   </context>
   <context>
@@ -2445,12 +2436,12 @@
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="20"/>
       <source>Add reference</source>
-      <translation type="unfinished">Add reference</translation>
+      <translation>Добавить ссылку</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Load [N]</source>
-      <translation type="unfinished">Load [N]</translation>
+      <translation>Нагрузка [Ньютоны]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="56"/>
@@ -2473,7 +2464,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Add reference</source>
-      <translation type="unfinished">Add reference</translation>
+      <translation>Добавить ссылку</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="32"/>
@@ -2509,52 +2500,52 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="28"/>
       <source>Max. Size:</source>
-      <translation type="unfinished">Max. Size:</translation>
+      <translation>Макс. размер:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="44"/>
       <source>Second order</source>
-      <translation type="unfinished">Second order</translation>
+      <translation>Второй порядок</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="53"/>
       <source>Fineness:</source>
-      <translation type="unfinished">Fineness:</translation>
+      <translation>Точность:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="64"/>
       <source>VeryCoarse</source>
-      <translation type="unfinished">VeryCoarse</translation>
+      <translation>Приблизительно</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="69"/>
       <source>Coarse</source>
-      <translation type="unfinished">Coarse</translation>
+      <translation>Грубо</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="74"/>
       <source>Moderate</source>
-      <translation type="unfinished">Moderate</translation>
+      <translation>Приемлемо</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="79"/>
       <source>Fine</source>
-      <translation type="unfinished">Fine</translation>
+      <translation>Точно</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="84"/>
       <source>VeryFine</source>
-      <translation type="unfinished">VeryFine</translation>
+      <translation>Высокоточно</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="89"/>
       <source>UserDefined</source>
-      <translation type="unfinished">UserDefined</translation>
+      <translation>Заданная пользователем</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="97"/>
       <source>Growth Rate:</source>
-      <translation type="unfinished">Growth Rate:</translation>
+      <translation>Темп роста:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="111"/>
@@ -2569,12 +2560,12 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="144"/>
       <source>Optimize</source>
-      <translation type="unfinished">Optimize</translation>
+      <translation>Оптимизировать</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="166"/>
       <source>Node count: </source>
-      <translation>Счетчик узлов: </translation>
+      <translation>Количество узлов: </translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="180"/>

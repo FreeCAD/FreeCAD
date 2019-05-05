@@ -129,14 +129,14 @@ void CreateLinkCommands(void);
 
 
 /** The CommandBase class
- * This lightweigt class is the base class of all commands in FreeCAD. It represents the link between the FreeCAD
+ * This lightweight class is the base class of all commands in FreeCAD. It represents the link between the FreeCAD
  * command framework and the QAction world of Qt.
  * @author Werner Mayer
  */
-class GuiExport CommandBase 
+class GuiExport CommandBase
 {
 protected:
-    CommandBase(const char* sMenu, const char* sToolTip=0, const char* sWhat=0, 
+    CommandBase(const char* sMenu, const char* sToolTip=0, const char* sWhat=0,
                 const char* sStatus=0, const char* sPixmap=0, const char* sAccel=0);
     virtual ~CommandBase();
 

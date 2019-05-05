@@ -104,14 +104,18 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
         from DraftGui import todo
-        todo.delay(recolorize,obj)
+        todo.delay(recolorize,[obj.Document.Name,obj.Name])
     return obj
 
-def recolorize(obj):
+def recolorize(names): # names is [docname,objname]
 
-    if obj.ViewObject:
-        if obj.ViewObject.Proxy:
-            obj.ViewObject.Proxy.colorize(obj,force=True)
+    if names[0] in FreeCAD.listDocuments():
+        doc = FreeCAD.getDocument(names[0])
+        obj = doc.getObject(names[1])
+        if obj:
+            if obj.ViewObject:
+                if obj.ViewObject.Proxy:
+                    obj.ViewObject.Proxy.colorize(obj,force=True)
 
 def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
 
@@ -566,7 +570,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             obj.Offset = o1
             obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
             if "door" in windowtype:
-                obj.IfcRole = "Door"
+                obj.IfcType = "Door"
                 obj.Label = translate("Arch","Door")
             FreeCAD.ActiveDocument.recompute()
             return obj
@@ -812,14 +816,17 @@ class _CommandWindow:
             elif param == "Height":
                 wid.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
             elif param == "O1":
-                wid.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-                setattr(self,param,0)
+                n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowO1",0.0)
+                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
+                setattr(self,param,n)
             elif param == "W1":
-                wid.setText(FreeCAD.Units.Quantity(self.Thickness*2,FreeCAD.Units.Length).UserString)
-                setattr(self,param,self.Thickness*2)
+                n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowW1",self.Thickness*2)
+                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
+                setattr(self,param,n)
             else:
-                wid.setText(FreeCAD.Units.Quantity(self.Thickness,FreeCAD.Units.Length).UserString)
-                setattr(self,param,self.Thickness)
+                n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("Window"+param,self.Thickness)
+                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
+                setattr(self,param,n)
             grid.addWidget(lab,i,0,1,1)
             grid.addWidget(wid,i,1,1,1)
             i += 1
@@ -830,7 +837,7 @@ class _CommandWindow:
 
     def getValueChanged(self,p):
 
-      return lambda d : self.setParams(p, d)
+        return lambda d : self.setParams(p, d)
 
     def setSill(self,d):
 
@@ -846,6 +853,7 @@ class _CommandWindow:
         self.tracker.length(self.Width)
         self.tracker.height(self.Height)
         self.tracker.width(self.W1)
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("Window"+param,d)
 
     def setPreset(self,i):
 
@@ -913,7 +921,7 @@ class _Window(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Window"
+        obj.IfcType = "Window"
         obj.MoveWithHost = True
 
     def setProperties(self,obj):
@@ -965,24 +973,22 @@ class _Window(ArchComponent.Component):
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
 
+    def onBeforeChange(self,obj,prop):
+
+        if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts"]:
+            setattr(self,prop,getattr(obj,prop))
+
     def onChanged(self,obj,prop):
 
         self.hideSubobjects(obj,prop)
         if not "Restore" in obj.State:
             if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts"]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
-                ok = True
-                if prop == "Placement":
-                    if hasattr(self,"Placement"):
-                        if self.Placement == obj.Placement:
-                            ok = False
-                    self.Placement = FreeCAD.Placement(obj.Placement)
-                elif prop == "Hosts":
-                    if hasattr(self,"Hosts"):
-                        if self.Hosts == obj.Hosts:
-                            ok = False
-                    self.Hosts = obj.Hosts
-                if ok and hasattr(obj,"Hosts"):
+                touchhosts = False
+                if hasattr(self,prop):
+                    if getattr(self,prop) != getattr(obj,prop):
+                        touchhosts = True
+                if touchhosts and hasattr(obj,"Hosts"):
                     for host in obj.Hosts:
                         # mark host to recompute so it can detect this object
                         host.touch()
@@ -1007,12 +1013,206 @@ class _Window(ArchComponent.Component):
                 ArchComponent.Component.onChanged(self,obj,prop)
 
 
+    def buildShapes(self,obj):
+
+        import Part,DraftGeomUtils,math
+        self.sshapes = []
+        self.vshapes = []
+        shapes = []
+        rotdata = None
+        for i in range(int(len(obj.WindowParts)/5)):
+            wires = []
+            hinge = None
+            omode = None
+            ssymbols = []
+            vsymbols = []
+            wstr = obj.WindowParts[(i*5)+2].split(',')
+            for s in wstr:
+                if "Wire" in s:
+                    j = int(s[4:])
+                    if obj.Base.Shape.Wires:
+                        if len(obj.Base.Shape.Wires) >= j:
+                            wires.append(obj.Base.Shape.Wires[j])
+                elif "Edge" in s:
+                    hinge = int(s[4:])-1
+                elif "Mode" in s:
+                    omode = int(s[-1])
+            if wires:
+                max_length = 0
+                for w in wires:
+                    if w.BoundBox.DiagonalLength > max_length:
+                        max_length = w.BoundBox.DiagonalLength
+                        ext = w
+                wires.remove(ext)
+                shape = Part.Face(ext)
+                norm = shape.normalAt(0,0)
+                if hasattr(obj,"Normal"):
+                    if obj.Normal:
+                        if not DraftVecUtils.isNull(obj.Normal):
+                            norm = obj.Normal
+                if hinge and omode:
+                    opening = None
+                    if hasattr(obj,"Opening"):
+                        if obj.Opening:
+                            opening = obj.Opening/100.0
+                    e = obj.Base.Shape.Edges[hinge]
+                    ev1 = e.Vertexes[0].Point
+                    ev2 = e.Vertexes[-1].Point
+                    if (ev2.z - ev1.z) < 0.1**Draft.precision():
+                        if ev2.y < ev1.y:
+                            ev1,ev2 = ev2,ev1
+                    elif ev2.z < ev1.z:
+                        ev1,ev2 = ev2,ev1
+                    p = None
+                    d = 0
+                    for v in shape.Vertexes:
+                        dist = v.Point.distanceToLine(ev1,ev2.sub(ev1))
+                        if dist > d:
+                            d = dist
+                            p = v.Point
+                    if p:
+                        chord = p.sub(ev1)
+                        enorm = ev2.sub(ev1)
+                        proj = DraftVecUtils.project(chord,enorm)
+                        v1 = ev1
+                        if proj.Length > 0:
+                            chord = p.sub(ev1.add(proj))
+                            p = v1.add(chord)
+                        v4 = p.add(DraftVecUtils.scale(enorm,0.5))
+                        if omode == 1: # Arc 90
+                            v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/4,enorm))
+                            v3 = v1.add(DraftVecUtils.rotate(chord,math.pi/2,enorm))
+                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
+                            ssymbols.append(Part.LineSegment(v3,v1).toShape())
+                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
+                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                            if opening:
+                                rotdata = [v1,ev2.sub(ev1),90*opening]
+                        elif omode == 2: # Arc -90
+                            v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/4,enorm))
+                            v3 = v1.add(DraftVecUtils.rotate(chord,-math.pi/2,enorm))
+                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
+                            ssymbols.append(Part.LineSegment(v3,v1).toShape())
+                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
+                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                            if opening:
+                                rotdata = [v1,ev2.sub(ev1),-90*opening]
+                        elif omode == 3: # Arc 45
+                            v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/8,enorm))
+                            v3 = v1.add(DraftVecUtils.rotate(chord,math.pi/4,enorm))
+                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
+                            ssymbols.append(Part.LineSegment(v3,v1).toShape())
+                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
+                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                            if opening:
+                                rotdata = [v1,ev2.sub(ev1),45*opening]
+                        elif omode == 4: # Arc -45
+                            v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/8,enorm))
+                            v3 = v1.add(DraftVecUtils.rotate(chord,-math.pi/4,enorm))
+                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
+                            ssymbols.append(Part.LineSegment(v3,v1).toShape())
+                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
+                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                            if opening:
+                                rotdata = [v1,ev2.sub(ev1),-45*opening]
+                        elif omode == 5: # Arc 180
+                            v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/2,enorm))
+                            v3 = v1.add(DraftVecUtils.rotate(chord,math.pi,enorm))
+                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
+                            ssymbols.append(Part.LineSegment(v3,v1).toShape())
+                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
+                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                            if opening:
+                                rotdata = [v1,ev2.sub(ev1),180*opening]
+                        elif omode == 6: # Arc -180
+                            v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/2,enorm))
+                            v3 = v1.add(DraftVecUtils.rotate(chord,-math.pi,enorm))
+                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
+                            ssymbols.append(Part.LineSegment(v3,v1).toShape())
+                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
+                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                            if opening:
+                                rotdata = [ev1,ev2.sub(ev1),-180*opening]
+                        elif omode == 7: # tri
+                            v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/2,enorm))
+                            ssymbols.append(Part.LineSegment(p,v2).toShape())
+                            ssymbols.append(Part.LineSegment(v2,v1).toShape())
+                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
+                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                            if opening:
+                                rotdata = [v1,ev2.sub(ev1),90*opening]
+                        elif omode == 8: # -tri
+                            v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/2,enorm))
+                            ssymbols.append(Part.LineSegment(p,v2).toShape())
+                            ssymbols.append(Part.LineSegment(v2,v1).toShape())
+                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
+                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
+                            if opening:
+                                rotdata = [v1,ev2.sub(ev1),-90*opening]
+                        elif omode == 9: # sliding
+                            pass
+                        elif omode == 10: # -sliding
+                            pass
+                V = 0
+                thk = obj.WindowParts[(i*5)+3]
+                if "+V" in thk:
+                    thk = thk[:-2]
+                    V = obj.Frame.Value
+                thk = float(thk) + V
+                if thk:
+                    exv = DraftVecUtils.scaleTo(norm,thk)
+                    shape = shape.extrude(exv)
+                    for w in wires:
+                        f = Part.Face(w)
+                        f = f.extrude(exv)
+                        shape = shape.cut(f)
+                if obj.WindowParts[(i*5)+4]:
+                    V = 0
+                    zof = obj.WindowParts[(i*5)+4]
+                    if "+V" in zof:
+                        zof = zof[:-2]
+                        V = obj.Offset.Value
+                    zof = float(zof) + V
+                    if zof:
+                        zov = DraftVecUtils.scaleTo(norm,zof)
+                        shape.translate(zov)
+                        for symb in ssymbols:
+                            symb.translate(zov)
+                        for symb in vsymbols:
+                            symb.translate(zov)
+                        if rotdata and hinge and omode:
+                            rotdata[0] = rotdata[0].add(zov)
+                if obj.WindowParts[(i*5)+1] == "Louvre":
+                    if hasattr(obj,"LouvreWidth"):
+                        if obj.LouvreWidth and obj.LouvreSpacing:
+                            bb = shape.BoundBox
+                            bb.enlarge(10)
+                            step = obj.LouvreWidth.Value+obj.LouvreSpacing.Value
+                            if step < bb.ZLength:
+                                box = Part.makeBox(bb.XLength,bb.YLength,obj.LouvreWidth.Value)
+                                boxes = []
+                                for i in range(int(bb.ZLength/step)+1):
+                                    b = box.copy()
+                                    b.translate(FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin+i*step))
+                                    boxes.append(b)
+                                self.boxes = Part.makeCompound(boxes)
+                                #rot = obj.Base.Placement.Rotation
+                                #self.boxes.rotate(self.boxes.BoundBox.Center,rot.Axis,math.degrees(rot.Angle))
+                                self.boxes.translate(shape.BoundBox.Center.sub(self.boxes.BoundBox.Center))
+                                shape = shape.cut(self.boxes)
+                if rotdata:
+                    shape.rotate(rotdata[0],rotdata[1],rotdata[2])
+                shapes.append(shape)
+                self.sshapes.extend(ssymbols)
+                self.vshapes.extend(vsymbols)
+        return shapes
+
     def execute(self,obj):
 
         if self.clone(obj):
             clonedProxy = obj.CloneOf.Proxy
             if not (hasattr(clonedProxy, "sshapes") and hasattr(clonedProxy, "vshapes")):
-                clonedProxy.execute(obj.CloneOf)
+                clonedProxy.buildShapes(obj.CloneOf)
             self.sshapes = clonedProxy.sshapes
             self.vshapes = clonedProxy.vshapes
             if hasattr(clonedProxy, "boxes"):
@@ -1028,193 +1228,7 @@ class _Window(ArchComponent.Component):
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if hasattr(obj,"WindowParts"):
                     if obj.WindowParts and (len(obj.WindowParts)%5 == 0):
-                        shapes = []
-                        rotdata = None
-                        for i in range(int(len(obj.WindowParts)/5)):
-                            wires = []
-                            hinge = None
-                            omode = None
-                            ssymbols = []
-                            vsymbols = []
-                            wstr = obj.WindowParts[(i*5)+2].split(',')
-                            for s in wstr:
-                                if "Wire" in s:
-                                    j = int(s[4:])
-                                    if obj.Base.Shape.Wires:
-                                        if len(obj.Base.Shape.Wires) >= j:
-                                            wires.append(obj.Base.Shape.Wires[j])
-                                elif "Edge" in s:
-                                    hinge = int(s[4:])-1
-                                elif "Mode" in s:
-                                    omode = int(s[-1])
-                            if wires:
-                                max_length = 0
-                                for w in wires:
-                                    if w.BoundBox.DiagonalLength > max_length:
-                                        max_length = w.BoundBox.DiagonalLength
-                                        ext = w
-                                wires.remove(ext)
-                                shape = Part.Face(ext)
-                                norm = shape.normalAt(0,0)
-                                if hasattr(obj,"Normal"):
-                                    if obj.Normal:
-                                        if not DraftVecUtils.isNull(obj.Normal):
-                                            norm = obj.Normal
-                                if hinge and omode:
-                                    opening = None
-                                    if hasattr(obj,"Opening"):
-                                        if obj.Opening:
-                                            opening = obj.Opening/100.0
-                                    e = obj.Base.Shape.Edges[hinge]
-                                    ev1 = e.Vertexes[0].Point
-                                    ev2 = e.Vertexes[-1].Point
-                                    if (ev2.z - ev1.z) < 0.1**Draft.precision():
-                                        if ev2.y < ev1.y:
-                                            ev1,ev2 = ev2,ev1
-                                    elif ev2.z < ev1.z:
-                                        ev1,ev2 = ev2,ev1
-                                    p = None
-                                    d = 0
-                                    for v in shape.Vertexes:
-                                        dist = v.Point.distanceToLine(ev1,ev2.sub(ev1))
-                                        if dist > d:
-                                            d = dist
-                                            p = v.Point
-                                    if p:
-                                        chord = p.sub(ev1)
-                                        enorm = ev2.sub(ev1)
-                                        proj = DraftVecUtils.project(chord,enorm)
-                                        v1 = ev1
-                                        if proj.Length > 0:
-                                            chord = p.sub(ev1.add(proj))
-                                            p = v1.add(chord)
-                                        v4 = p.add(DraftVecUtils.scale(enorm,0.5))
-                                        if omode == 1: # Arc 90
-                                            v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/4,enorm))
-                                            v3 = v1.add(DraftVecUtils.rotate(chord,math.pi/2,enorm))
-                                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
-                                            ssymbols.append(Part.LineSegment(v3,v1).toShape())
-                                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
-                                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
-                                            if opening:
-                                                rotdata = [v1,ev2.sub(ev1),90*opening]
-                                        elif omode == 2: # Arc -90
-                                            v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/4,enorm))
-                                            v3 = v1.add(DraftVecUtils.rotate(chord,-math.pi/2,enorm))
-                                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
-                                            ssymbols.append(Part.LineSegment(v3,v1).toShape())
-                                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
-                                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
-                                            if opening:
-                                                rotdata = [v1,ev2.sub(ev1),-90*opening]
-                                        elif omode == 3: # Arc 45
-                                            v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/8,enorm))
-                                            v3 = v1.add(DraftVecUtils.rotate(chord,math.pi/4,enorm))
-                                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
-                                            ssymbols.append(Part.LineSegment(v3,v1).toShape())
-                                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
-                                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
-                                            if opening:
-                                                rotdata = [v1,ev2.sub(ev1),45*opening]
-                                        elif omode == 4: # Arc -45
-                                            v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/8,enorm))
-                                            v3 = v1.add(DraftVecUtils.rotate(chord,-math.pi/4,enorm))
-                                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
-                                            ssymbols.append(Part.LineSegment(v3,v1).toShape())
-                                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
-                                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
-                                            if opening:
-                                                rotdata = [v1,ev2.sub(ev1),-45*opening]
-                                        elif omode == 5: # Arc 180
-                                            v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/2,enorm))
-                                            v3 = v1.add(DraftVecUtils.rotate(chord,math.pi,enorm))
-                                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
-                                            ssymbols.append(Part.LineSegment(v3,v1).toShape())
-                                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
-                                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
-                                            if opening:
-                                                rotdata = [v1,ev2.sub(ev1),180*opening]
-                                        elif omode == 6: # Arc -180
-                                            v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/2,enorm))
-                                            v3 = v1.add(DraftVecUtils.rotate(chord,-math.pi,enorm))
-                                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
-                                            ssymbols.append(Part.LineSegment(v3,v1).toShape())
-                                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
-                                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
-                                            if opening:
-                                                rotdata = [ev1,ev2.sub(ev1),-180*opening]
-                                        elif omode == 7: # tri
-                                            v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/2,enorm))
-                                            ssymbols.append(Part.LineSegment(p,v2).toShape())
-                                            ssymbols.append(Part.LineSegment(v2,v1).toShape())
-                                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
-                                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
-                                            if opening:
-                                                rotdata = [v1,ev2.sub(ev1),90*opening]
-                                        elif omode == 8: # -tri
-                                            v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/2,enorm))
-                                            ssymbols.append(Part.LineSegment(p,v2).toShape())
-                                            ssymbols.append(Part.LineSegment(v2,v1).toShape())
-                                            vsymbols.append(Part.LineSegment(v1,v4).toShape())
-                                            vsymbols.append(Part.LineSegment(v4,ev2).toShape())
-                                            if opening:
-                                                rotdata = [v1,ev2.sub(ev1),-90*opening]
-                                        elif omode == 9: # sliding
-                                            pass
-                                        elif omode == 10: # -sliding
-                                            pass
-                                V = 0
-                                thk = obj.WindowParts[(i*5)+3]
-                                if "+V" in thk:
-                                    thk = thk[:-2]
-                                    V = obj.Frame.Value
-                                thk = float(thk) + V
-                                if thk:
-                                    exv = DraftVecUtils.scaleTo(norm,thk)
-                                    shape = shape.extrude(exv)
-                                    for w in wires:
-                                        f = Part.Face(w)
-                                        f = f.extrude(exv)
-                                        shape = shape.cut(f)
-                                if obj.WindowParts[(i*5)+4]:
-                                    V = 0
-                                    zof = obj.WindowParts[(i*5)+4]
-                                    if "+V" in zof:
-                                        zof = zof[:-2]
-                                        V = obj.Offset.Value
-                                    zof = float(zof) + V
-                                    if zof:
-                                        zov = DraftVecUtils.scaleTo(norm,zof)
-                                        shape.translate(zov)
-                                        for symb in ssymbols:
-                                            symb.translate(zov)
-                                        for symb in vsymbols:
-                                            symb.translate(zov)
-                                        if rotdata and hinge and omode:
-                                            rotdata[0] = rotdata[0].add(zov)
-                                if obj.WindowParts[(i*5)+1] == "Louvre":
-                                    if hasattr(obj,"LouvreWidth"):
-                                        if obj.LouvreWidth and obj.LouvreSpacing:
-                                            bb = shape.BoundBox
-                                            bb.enlarge(10)
-                                            step = obj.LouvreWidth.Value+obj.LouvreSpacing.Value
-                                            if step < bb.ZLength:
-                                                box = Part.makeBox(bb.XLength,bb.YLength,obj.LouvreWidth.Value)
-                                                boxes = []
-                                                for i in range(int(bb.ZLength/step)+1):
-                                                    b = box.copy()
-                                                    b.translate(FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin+i*step))
-                                                    boxes.append(b)
-                                                self.boxes = Part.makeCompound(boxes)
-                                                #rot = obj.Base.Placement.Rotation
-                                                #self.boxes.rotate(self.boxes.BoundBox.Center,rot.Axis,math.degrees(rot.Angle))
-                                                self.boxes.translate(shape.BoundBox.Center.sub(self.boxes.BoundBox.Center))
-                                                shape = shape.cut(self.boxes)
-                                if rotdata:
-                                    shape.rotate(rotdata[0],rotdata[1],rotdata[2])
-                                shapes.append(shape)
-                                self.sshapes.extend(ssymbols)
-                                self.vshapes.extend(vsymbols)
+                        shapes = self.buildShapes(obj)
                         if shapes:
                             base = Part.makeCompound(shapes)
                     elif not obj.WindowParts:
@@ -1362,7 +1376,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                             obj.ViewObject.update()
             self.colorize(obj)
         elif prop == "CloneOf":
-            if obj.CloneOf:
+            if hasattr(obj,"CloneOf") and obj.CloneOf:
                 mat = None
                 if hasattr(obj,"Material"):
                     if obj.Material:
@@ -1413,7 +1427,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     def colorize(self,obj,force=False):
 
         "setting different part colors"
-        if obj.CloneOf:
+        if hasattr(obj,"CloneOf") and obj.CloneOf:
             if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
                 obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
             return

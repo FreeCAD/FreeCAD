@@ -182,6 +182,7 @@
 #include "modelRefine.h"
 #include "Tools.h"
 #include "FaceMaker.h"
+#include "BRepOffsetAPI_MakeOffsetFix.h"
 
 #define TOPOP_VERSION 14
 
@@ -1346,14 +1347,10 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
 
         //do the offset..
         TopoShape offsetShape;
-        BRepOffsetAPI_MakeOffset mkOffset(TopoDS::Wire(sourceWires[0].getShape()), GeomAbs_JoinType(joinType)
-#if OCC_VERSION_HEX >= 0x060900
-                                                , allowOpenResult
-#endif
-                                               );
-        for(auto &w : sourceWires)
-            if (&w != &(sourceWires[0])) //filter out first wire - it's already added
-                mkOffset.AddWire(TopoDS::Wire(w.getShape()));
+        BRepOffsetAPI_MakeOffsetFix mkOffset(GeomAbs_JoinType(joinType), allowOpenResult);
+        for(auto &w : sourceWires) {
+            mkOffset.AddWire(TopoDS::Wire(w.getShape()));
+        }
 
         if (fabs(offset) > Precision::Confusion()){
             try {

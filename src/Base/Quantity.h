@@ -48,7 +48,8 @@ struct BaseExport QuantityFormat {
         Scientific = 2
     };
 
-    NumberOption option;
+    typedef int NumberOptions;
+    NumberOptions option;
     NumberFormat format;
     int precision;
     int denominator;
@@ -256,6 +257,8 @@ public:
     static Quantity Degree;
     static Quantity Radian;
     static Quantity Gon;
+    static Quantity AngMinute;
+    static Quantity AngSecond;
     //@}
 
 

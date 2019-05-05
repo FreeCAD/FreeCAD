@@ -66,7 +66,8 @@ ViewProviderDrawingView::ViewProviderDrawingView()
 
     ADD_PROPERTY_TYPE(KeepLabel ,(false),group,App::Prop_None,"Keep Label on Page even if toggled off");
 
-    // Do not show in property editor   why? wf
+    // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
+    // don't use coin.
     DisplayMode.setStatus(App::Property::ReadOnly,true);
     m_docReady = true;
 }
@@ -132,7 +133,6 @@ void ViewProviderDrawingView::show(void)
     if (obj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         QGIView* qView = getQView();
         if (qView) {
-            qView->isVisible(true);
             qView->draw();
             qView->show();
         }
@@ -149,7 +149,6 @@ void ViewProviderDrawingView::hide(void)
     if (obj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         QGIView* qView = getQView();
         if (qView) {
-            qView->isVisible(false);
             qView->draw();
             qView->hide();
         }
@@ -169,7 +168,8 @@ QGIView* ViewProviderDrawingView::getQView(void)
             if (dvp) {
                 if (dvp->getMDIViewPage()) {
                     if (dvp->getMDIViewPage()->getQGVPage()) {
-                        qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->getQGVPage()->findQViewForDocObj(getViewObject()));
+                        qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->
+                                               getQGVPage()->findQViewForDocObj(getViewObject()));
                     }
                 }
             }
@@ -242,14 +242,18 @@ Gui::MDIView *ViewProviderDrawingView::getMDIView() {
 
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
 {
+//    Base::Console().Message("VPDV::onGuiRepaint(%s)\n",dv->getNameInDocument());
     if (dv == getViewObject()) {
-        QGIView* qgiv = getQView();
-        if (qgiv) {
-            qgiv->updateView(true);
-        } else {                                //we are not part of the Gui page yet. ask page to add us.
-            auto page = dv->findParentPage();
-            if (page != nullptr) {
-                page->requestPaint();
+        if (!dv->isRemoving() &&
+            !dv->isRestoring()) {
+            QGIView* qgiv = getQView();
+            if (qgiv) {
+                qgiv->updateView(true);
+            } else {                                //we are not part of the Gui page yet. ask page to add us.
+                MDIViewPage* page = getMDIViewPage();
+                if (page != nullptr) {
+                    page->addView(dv);
+                }
             }
         }
     }

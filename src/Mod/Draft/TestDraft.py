@@ -123,12 +123,14 @@ class DraftTest(unittest.TestCase):
     def testRotate(self):
         FreeCAD.Console.PrintLog ('Checking Draft Rotate...\n')
         l = Draft.makeLine(FreeCAD.Vector(2,0,0),FreeCAD.Vector(4,0,0))
+        FreeCAD.ActiveDocument.recompute()
         Draft.rotate(l,90)
         self.assertTrue(l.Start.isEqual(FreeCAD.Vector(0,2,0), 1e-12),"Draft Rotate failed")
 
     def testOffset(self):
         FreeCAD.Console.PrintLog ('Checking Draft Offset...\n')
         r = Draft.makeRectangle(4,2)
+        FreeCAD.ActiveDocument.recompute()
         r2 = Draft.offset(r,FreeCAD.Vector(-1,-1,0),copy=True)
         self.failUnless(r2,"Draft Offset failed")
 

@@ -128,7 +128,7 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
     this->autoSolid();
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgExtrusion::~DlgExtrusion()
@@ -468,12 +468,12 @@ void DlgExtrusion::apply()
     }
     catch (Base::Exception &err){
         QMessageBox::critical(this, windowTitle(),
-            tr("Creating Extrusion failed.\n\n%1").arg(QString::fromUtf8(err.what())));
+            tr("Creating Extrusion failed.\n%1").arg(QString::fromUtf8(err.what())));
         return;
     }
     catch(...) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Creating Extrusion failed.\n\n%1").arg(QString::fromUtf8("Unknown error")));
+            tr("Creating Extrusion failed.\n%1").arg(QString::fromUtf8("Unknown error")));
         return;
     }
 }
@@ -623,7 +623,7 @@ bool DlgExtrusion::validate()
     }
     if (this->getDirMode() == Part::Extrusion::dmEdge && !hasValidAxisLink){
         if (errmsg.length() > 0)
-            QMessageBox::critical(this, windowTitle(), tr("Revolution axis link is invalid.\n\n%1").arg(errmsg));
+            QMessageBox::critical(this, windowTitle(), tr("Extrusion direction link is invalid.\n\n%1").arg(errmsg));
         else
             QMessageBox::critical(this, windowTitle(), tr("Direction mode is to use an edge, but no edge is linked."));
         ui->txtLink->setFocus();
@@ -658,7 +658,7 @@ bool DlgExtrusion::validate()
     if (this->getDirMode() == Part::Extrusion::dmCustom){
         if(this->getDir().Length() < Precision::Confusion()){
             QMessageBox::critical(this, windowTitle(),
-                tr("Extrusion direction is zero-length. It must be non-zero."));
+                tr("Extrusion direction vector is zero-length. It must be non-zero."));
             ui->dirX->setFocus();
             return false;
         }

@@ -4,6 +4,7 @@
         <file>icons/Draft_AddToGroup.svg</file>
         <file>icons/Draft_Apply.svg</file>
         <file>icons/Draft_Arc.svg</file>
+        <file>icons/Draft_Arc_3Points.svg</file>
         <file>icons/Draft_BSpline.svg</file>
         <file>icons/Draft_BezCurve.svg</file>
         <file>icons/Draft_BezSharpNode.svg</file>
@@ -17,6 +18,7 @@
         <file>icons/Draft_Drawing.svg</file>
         <file>icons/Draft_Edit.svg</file>
         <file>icons/Draft_Finish.svg</file>
+        <file>icons/Draft_Join.svg</file>
         <file>icons/Draft_Line.svg</file>
         <file>icons/Draft_Lock.svg</file>
         <file>icons/Draft_Macro.svg</file>
@@ -28,6 +30,7 @@
         <file>icons/Draft_Scale.svg</file>
         <file>icons/Draft_SelectGroup.svg</file>
         <file>icons/Draft_SelectPlane.svg</file>
+        <file>icons/Draft_Split.svg</file>
         <file>icons/Draft_SwitchMode.svg</file>
         <file>icons/Draft_Text.svg</file>
         <file>icons/Draft_Trimex.svg</file>
@@ -122,6 +125,8 @@
         <file>translations/Draft_id.qm</file>
         <file>translations/Draft_lt.qm</file>
         <file>translations/Draft_val-ES.qm</file>
+        <file>translations/Draft_ar.qm</file>
+        <file>translations/Draft_vi.qm</file>
         <file>ui/preferences-draft.ui</file>
         <file>ui/preferences-draftsnap.ui</file>
         <file>ui/preferences-drafttexts.ui</file>
@@ -130,5 +135,6 @@
         <file>ui/preferences-dwg.ui</file>
         <file>ui/preferences-svg.ui</file>
         <file>ui/preferences-oca.ui</file>
+        <file>ui/TaskShapeString.ui</file>
     </qresource>
 </RCC> 

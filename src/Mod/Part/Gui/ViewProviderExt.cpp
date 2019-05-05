@@ -538,6 +538,7 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     SoPolygonOffset* offset = new SoPolygonOffset();
 
     // wireframe node
+    wireframe->setName("Edge");
     wireframe->addChild(pcLineBind);
     wireframe->addChild(pcLineMaterial);
     wireframe->addChild(pcLineStyle);

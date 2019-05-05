@@ -102,8 +102,8 @@
       <translation>Függőlegesen középre igazítás</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>A kijelölt cellák tartalmának függőlegesen középre igazítása</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>A kijelölt cellák tartalmának függőleges középre igazítása</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Aláhúzott szöveg</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Aláhúzott szöveg beállítása a kijelölt cellákban</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Aláhúzott szöveg a kijelölt cellákban</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Egyéni</translation>
+      <source>Custom Color</source>
+      <translation>Egyéni szín</translation>
     </message>
   </context>
   <context>

@@ -21,7 +21,7 @@
     </message>
     <message>
       <source>Angle Snap</source>
-      <translation>Угловая привязка</translation>
+      <translation>Прилипание угла</translation>
     </message>
     <message utf8="true">
       <source>1 °</source>
@@ -102,37 +102,37 @@
     <name>CmdViewMeasureClearAll</name>
     <message>
       <source>Measure</source>
-      <translation>Измерение</translation>
+      <translation>Замеры</translation>
     </message>
     <message>
       <source>Clear measurement</source>
-      <translation>Стереть измерение</translation>
+      <translation>Удалить замер</translation>
     </message>
   </context>
   <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
       <source>Measure</source>
-      <translation>Измерение</translation>
+      <translation>Замеры</translation>
     </message>
     <message>
       <source>Toggle measurement</source>
-      <translation>Переключить измерение</translation>
+      <translation>Показывать замеры</translation>
     </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
-      <translation>Движение Spaceball</translation>
+      <translation>Движение пространственного манипулятора</translation>
     </message>
     <message>
       <source>Dominant Mode</source>
-      <translation>Основной режим</translation>
+      <translation>Доминантный режим</translation>
     </message>
     <message>
       <source>Flip Y/Z</source>
-      <translation>Обменять Y/Z</translation>
+      <translation>Поменять Y/Z</translation>
     </message>
     <message>
       <source>Enable Translations</source>
@@ -175,7 +175,7 @@
     </message>
     <message>
       <source>&amp;Discard</source>
-      <translation>&amp; Отменить</translation>
+      <translation>&amp;Отменить</translation>
     </message>
     <message>
       <source>Ok</source>
@@ -250,7 +250,7 @@
     </message>
     <message>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-      <translation>%1 Файлы подсказки не найдены (%2). Возможно, Вам необходимо установить пакет документации %1.</translation>
+      <translation>%1 Файлов подсказки не найдено (%2). Возможно, Вам необходимо установить пакет документации %1.</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
@@ -280,7 +280,7 @@
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Прокрутите среднюю кнопку мыши</translation>
+      <translation>Прокрутите колёсико мыши</translation>
     </message>
   </context>
   <context>
@@ -294,13 +294,13 @@
       <translation>Нажмите среднюю кнопку мыши</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Нажмите среднюю и левую или правую кнопки мыши</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation>Нажмите среднюю + левую или среднюю + правую кнопки</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Прокрутка доступна средней кнопкой мыши или удерживая среднюю кнопку мыши нажатой, нажмите левую или правую кнопку мыши, перемещая саму мышь вверх или вниз</translation>
+      <translation>Прокрутка колёсиком мыши или, удерживая среднюю кнопку мыши нажатой, нажатием левой или правой кнопки мыши и перемещением мыши вверх или вниз</translation>
     </message>
   </context>
   <context>
@@ -406,7 +406,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>Это программное обеспечение использует компоненты открытым исходным кодом, чьи авторские права и другие права собственности принадлежат их соответствующим владельцам:</translation>
+      <translation>Это программное обеспечение использует компоненты с открытым исходным кодом, чьи авторские права и другие права собственности принадлежат их соответствующим владельцам:</translation>
     </message>
     <message>
       <source>License</source>
@@ -422,6 +422,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Вне диапазона</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Настройки камеры</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Ориентация</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Текущий вид</translation>
     </message>
   </context>
   <context>
@@ -498,11 +529,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Enable timer</source>
-      <translation>Разрешить таймер</translation>
+      <translation>Таймер</translation>
     </message>
     <message>
       <source> s</source>
-      <translation> s</translation>
+      <translation> c</translation>
     </message>
     <message>
       <source>Angle</source>
@@ -518,7 +549,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Play</source>
-      <translation>Старт</translation>
+      <translation>Начать просмотр</translation>
     </message>
     <message>
       <source>Stop</source>
@@ -612,11 +643,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Setup Custom Macros</source>
-      <translation>Настройте пользовательские макрокоманды</translation>
+      <translation>Настройка пользовательских макросов</translation>
     </message>
     <message>
       <source>Macro:</source>
-      <translation>Макрокоманда:</translation>
+      <translation>Макрос:</translation>
     </message>
     <message>
       <source>...</source>
@@ -671,27 +702,27 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>No macro</source>
-      <translation>Макрокоманда отсутствует</translation>
+      <translation>Нет макроса</translation>
     </message>
     <message>
       <source>No macros found.</source>
-      <translation>Макрокоманды не обнаружены.</translation>
+      <translation>Макросы не обнаружены.</translation>
     </message>
     <message>
       <source>Macro not found</source>
-      <translation>Макрокоманда не обнаружена</translation>
+      <translation>Макрос не обнаружен</translation>
     </message>
     <message>
       <source>Sorry, couldn't find macro file '%1'.</source>
-      <translation>К сожалению, не удалось найти файл макрокоманды '%1'.</translation>
+      <translation>К сожалению не удалось найти файл макроса '%1'.</translation>
     </message>
     <message>
       <source>Empty macro</source>
-      <translation>Пустая макрокоманда</translation>
+      <translation>Пустой макрос</translation>
     </message>
     <message>
       <source>Please specify the macro first.</source>
-      <translation>Сначала укажите макрокоманду, пожалуйста.</translation>
+      <translation>Сначала укажите макрос. </translation>
     </message>
     <message>
       <source>Empty text</source>
@@ -699,7 +730,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Please specify the menu text first.</source>
-      <translation>Пожалуйста, сначала укажите текст меню.</translation>
+      <translation>Пожалуйста, укажите сначала текст в меню.</translation>
     </message>
     <message>
       <source>No item selected</source>
@@ -707,7 +738,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Please select a macro item first.</source>
-      <translation>Пожалуйста, сначала выберите макрокоманду.</translation>
+      <translation>Пожалуйста, выберите сначала макрос.</translation>
     </message>
   </context>
   <context>
@@ -772,7 +803,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Alt+A</source>
-      <translation>Alt + A</translation>
+      <translation>Alt+A</translation>
     </message>
     <message>
       <source>&amp;Reset</source>
@@ -815,23 +846,23 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Multiple defined shortcut</source>
-      <translation>Многократно определенное сочетание клавиш</translation>
-    </message>
-    <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Сочетание клавиш '%1' назначено для нескольких разных операций. Это может привести к неожиданному поведению.</translation>
+      <translation>Дублирующееся сочетание клавиш</translation>
     </message>
     <message>
       <source>Already defined shortcut</source>
-      <translation>Уже назначено</translation>
+      <translation>Уже назначенное сочетание клавиш</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Please define another shortcut.</source>
-      <translation>Сочетание '%1' уже назначено для '%2'.
-
-Пожалуйста, измените сочетание.</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>Сочетание клавиш '%1' назначено для нескольких разных операций. Это может привести к неожиданному поведению.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>Сочетание клавиш '%1' уже назначено на '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>Хотите перезаписать его?</translation>
     </message>
   </context>
   <context>
@@ -865,7 +896,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Перемещение выбранного элемента на один уровень вниз.&lt;/b&gt; &lt;p&gt; Это повлечет за собой изменение уровня родительского элемента. &lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Перемещение выбранного элемента на один уровень вверх.&lt;/b&gt; &lt;p&gt; Это повлечет за собой изменение уровня родительского элемента. &lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move down</source>
@@ -913,11 +944,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Toolbar name:</source>
-      <translation>Наименование панели инструментов:</translation>
+      <translation>Название панели инструментов:</translation>
     </message>
     <message>
       <source>Duplicated name</source>
-      <translation>Повторяющееся имя</translation>
+      <translation>Повторяющееся название</translation>
     </message>
     <message>
       <source>The toolbar name '%1' is already used</source>
@@ -925,7 +956,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Rename toolbar</source>
-      <translation>Переименовать панель</translation>
+      <translation>Переименовать панель инструментов</translation>
     </message>
     <message>
       <source/>
@@ -955,18 +986,18 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
-      <translation>Движение Spaceball</translation>
+      <translation>Движение пространственного манипулятора</translation>
     </message>
     <message>
       <source>No Spaceball Present</source>
-      <translation>Spaceball отсутствует</translation>
+      <translation>Не обнаружено пространственного манипулятора</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
-      <translation>Spaceball отсутствует</translation>
+      <translation>Не обнаружено пространственного манипулятора</translation>
     </message>
     <message>
       <source>Buttons</source>
@@ -982,7 +1013,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Spaceball Buttons</source>
-      <translation>Кнопки Spaceball</translation>
+      <translation>Кнопки пространственного манипулятора</translation>
     </message>
   </context>
   <context>
@@ -1021,7 +1052,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>Режим графопостроения:</translation>
+      <translation>Режим графика:</translation>
     </message>
     <message>
       <source/>
@@ -1120,7 +1151,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Satin</source>
-      <translation>Атлас</translation>
+      <translation>Глянцевый</translation>
     </message>
     <message>
       <source>Shiny plastic</source>
@@ -1163,11 +1194,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Insert spaces</source>
-      <translation>Вставить пробелы</translation>
+      <translation>Заменять на пробелы</translation>
     </message>
     <message>
       <source>Tab size:</source>
-      <translation>Размер табуляции:</translation>
+      <translation>Шаг табуляции:</translation>
     </message>
     <message>
       <source>Indent size:</source>
@@ -1175,15 +1206,15 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Keep tabs</source>
-      <translation>Сохранять знаки табуляции</translation>
+      <translation>Символы табуляции</translation>
     </message>
     <message>
       <source>Display Items</source>
-      <translation>Отображаемые элементы</translation>
+      <translation>Подсветка синтаксиса</translation>
     </message>
     <message>
       <source>Family:</source>
-      <translation>Семейство:</translation>
+      <translation>Шрифт:</translation>
     </message>
     <message>
       <source>Size:</source>
@@ -1226,7 +1257,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Change language:</source>
-      <translation>Изменить язык:</translation>
+      <translation>Изменить язык (Change language):</translation>
     </message>
     <message>
       <source>Main window</source>
@@ -1246,11 +1277,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Enable tiled background</source>
-      <translation>Замостить фон</translation>
+      <translation>Включить фон из повторяющегося узора</translation>
     </message>
     <message>
       <source>Style sheet:</source>
-      <translation>Таблицы стилей:</translation>
+      <translation>Стиль интерфейса:</translation>
     </message>
     <message>
       <source>Python console</source>
@@ -1265,7 +1296,7 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
       <source>No style sheet</source>
-      <translation>Без таблицы стилей</translation>
+      <translation>Без особого стиля</translation>
     </message>
     <message>
       <source>Small (%1px)</source>
@@ -1273,19 +1304,19 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Medium (%1px)</source>
-      <translation>Средний (%1px)</translation>
+      <translation>Средний (%1пикс.)</translation>
     </message>
     <message>
       <source>Large (%1px)</source>
-      <translation>Крупный (%1px)</translation>
+      <translation>Крупный (%1пикс.)</translation>
     </message>
     <message>
       <source>Extra large (%1px)</source>
-      <translation>Очень крупный (%1px)</translation>
+      <translation>Очень крупный (%1пикс.)</translation>
     </message>
     <message>
       <source>Custom (%1px)</source>
-      <translation>Пользовательский (%1px)</translation>
+      <translation>Пользовательский (%1пикс.)</translation>
     </message>
   </context>
   <context>
@@ -1310,11 +1341,11 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgMacroExecute</name>
     <message>
       <source>Execute macro</source>
-      <translation>Выполнить макрокоманду</translation>
+      <translation>Выполнить макрос</translation>
     </message>
     <message>
       <source>Macro name:</source>
-      <translation>Имя макрокоманды:</translation>
+      <translation>Имя макроса:</translation>
     </message>
     <message>
       <source>Execute</source>
@@ -1326,7 +1357,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Create</source>
-      <translation>Создать</translation>
+      <translation>Собрать</translation>
     </message>
     <message>
       <source>Delete</source>
@@ -1334,23 +1365,31 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>User macros</source>
-      <translation>Пользовательские макрокоманды</translation>
+      <translation>Пользовательские макросы</translation>
     </message>
     <message>
       <source>System macros</source>
-      <translation>Системные макрокоманды</translation>
+      <translation>Системные макросы</translation>
     </message>
     <message>
       <source>User macros location:</source>
-      <translation>Расположение пользовательских макрокоманд:</translation>
+      <translation>Расположение пользовательских макросов:</translation>
     </message>
     <message>
       <source>Rename</source>
       <translation>Переименовать</translation>
+    </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>Дублировать</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>Дополнения...</translation>
     </message>
   </context>
   <context>
@@ -1361,7 +1400,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Macro file</source>
-      <translation>Файл макрокоманды</translation>
+      <translation>Файл макроса</translation>
     </message>
     <message>
       <source>Enter a file name, please:</source>
@@ -1379,11 +1418,11 @@ This file already exists.</source>
     </message>
     <message>
       <source>Delete macro</source>
-      <translation>Удалить макрокоманду</translation>
+      <translation>Удалить макрос</translation>
     </message>
     <message>
       <source>Do you really want to delete the macro '%1'?</source>
-      <translation>Вы действительно хотите удалить макрокоманду '%1' ?</translation>
+      <translation>Вы действительно хотите удалить макрос '%1' ?</translation>
     </message>
     <message>
       <source>Cannot create file</source>
@@ -1412,24 +1451,38 @@ This file already exists.</source>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation>Переименовать не удалось</translation>
+      <translation>Не удалось переименовать</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Не удалось переименовать в '%1'.
-Возможно ошибка прав на файл?</translation>
+Возможно ошибка прав доступа к файлу?</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Дублировать макрос</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Не удалось дублировать</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>Не удалось дублировать в '%1'.
+Возможно ошибка прав доступа к файлу?</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroRecord</name>
     <message>
       <source>Macro recording</source>
-      <translation>Запись макрокоманды</translation>
+      <translation>Запись макроса</translation>
     </message>
     <message>
       <source>Macro name:</source>
-      <translation>Имя макрокоманды:</translation>
+      <translation>Имя макроса:</translation>
     </message>
     <message>
       <source>Stop</source>
@@ -1441,7 +1494,7 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Macro path:</source>
-      <translation>Путь к Макрокомандам:</translation>
+      <translation>Куда записывать макросы:</translation>
     </message>
     <message>
       <source>...</source>
@@ -1456,7 +1509,7 @@ Perhaps a file permission error?</source>
     <name>Gui::Dialog::DlgMacroRecordImp</name>
     <message>
       <source>Macro recorder</source>
-      <translation>Средство записи макрокоманд</translation>
+      <translation>Средство записи макросов</translation>
     </message>
     <message>
       <source>Specify first a place to save.</source>
@@ -1464,23 +1517,23 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Existing macro</source>
-      <translation>Существующая макрокоманда</translation>
+      <translation>Существующий макрос</translation>
     </message>
     <message>
       <source>The macro '%1' already exists. Do you want to overwrite?</source>
-      <translation>Макрокоманда '% 1' уже существует. Хотите переписать?</translation>
+      <translation>Макрос '%1' уже существует. Хотите ли вы перезаписать его?</translation>
     </message>
     <message>
       <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>Каталога макрокоманд не существует. Пожалуйста, выберите другой.</translation>
+      <translation>Указанная директория не существует. Пожалуйста, укажите другую.</translation>
     </message>
     <message>
       <source>Choose macro directory</source>
-      <translation>Выберите каталог для макрокоманд</translation>
+      <translation>Выберите директорию для макросов</translation>
     </message>
     <message>
       <source>You have no write permission for the directory. Please, choose another one.</source>
-      <translation>У вас нет разрешения на запись в этот каталог. Пожалуйста, выберите другой.</translation>
+      <translation>У вас нет разрешения на запись в эту директорию. Пожалуйста, выберите другую.</translation>
     </message>
   </context>
   <context>
@@ -1495,15 +1548,15 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Diffuse color:</source>
-      <translation>Рассеянный цвет:</translation>
+      <translation>Рассеиваемый цвет:</translation>
     </message>
     <message>
       <source>Specular color:</source>
-      <translation>Отраженный цвет:</translation>
+      <translation>Цвет блеска:</translation>
     </message>
     <message>
       <source>Shininess:</source>
-      <translation>Блеск:</translation>
+      <translation>Яркость:</translation>
     </message>
     <message>
       <source>%</source>
@@ -1526,7 +1579,7 @@ Perhaps a file permission error?</source>
     <name>Gui::Dialog::DlgOnlineHelp</name>
     <message>
       <source>On-line help</source>
-      <translation>Он-лайн справка</translation>
+      <translation>Онлайн справка</translation>
     </message>
     <message>
       <source>Help viewer</source>
@@ -1549,11 +1602,11 @@ Perhaps a file permission error?</source>
 Specify another directory, please.</source>
       <translation>Отказано в доступе к '%1'
 
-Укажите другой каталог, пожалуйста.</translation>
+Укажите другую директорию, пожалуйста.</translation>
     </message>
     <message>
       <source>HTML files</source>
-      <translation>HTML-файлы</translation>
+      <translation>HTML файлы</translation>
     </message>
   </context>
   <context>
@@ -1568,7 +1621,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Alt+C</source>
-      <translation>ALT + C</translation>
+      <translation>ALT+C</translation>
     </message>
     <message>
       <source>&amp;Close</source>
@@ -1633,11 +1686,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Do you want to clear all your user settings?</source>
-      <translation>Вы хотите очистить все пользовательские настройки?</translation>
+      <translation>Вы действительно хотите очистить все Ваши пользовательские настройки?</translation>
     </message>
     <message>
       <source>If you agree all your settings will be cleared.</source>
-      <translation>Если Вы согласны, то все Ваши пользовательские настройки будут очищены.</translation>
+      <translation>Если Вы согласны, то все Ваши пользовательские настройки будут сброшены.</translation>
     </message>
   </context>
   <context>
@@ -1652,7 +1705,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Name:</source>
-      <translation>&amp;Имя:</translation>
+      <translation>&amp;Название:</translation>
     </message>
     <message>
       <source>Commen&amp;t:</source>
@@ -1664,7 +1717,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Last modified by:</source>
-      <translation>Автор последних изменений:</translation>
+      <translation>&amp;Автор последних изменений:</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
@@ -1707,7 +1760,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgProjectUtility</name>
     <message>
       <source>Project utility</source>
-      <translation>Утилита проекта</translation>
+      <translation>Утилита распаковки файла проекта</translation>
     </message>
     <message>
       <source>Extract project</source>
@@ -1731,7 +1784,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Create</source>
-      <translation>Создать</translation>
+      <translation>Собрать</translation>
     </message>
     <message>
       <source>Load project file after creation</source>
@@ -1770,7 +1823,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>No selection</source>
-      <translation>Нет выбора</translation>
+      <translation>Ничего не выбрано</translation>
     </message>
     <message>
       <source>Please select an object from the list</source>
@@ -1891,11 +1944,11 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgSettings3DView</name>
     <message>
       <source>3D View</source>
-      <translation>3D Вид</translation>
+      <translation>Трёхмерный вид</translation>
     </message>
     <message>
       <source>3D View settings</source>
-      <translation>Настройки 3D просмотра</translation>
+      <translation>Настройки трёхмерного просмотра</translation>
     </message>
     <message>
       <source>Show coordinate system in the corner</source>
@@ -1923,7 +1976,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>3D Navigation</source>
-      <translation>3D-навигация</translation>
+      <translation>Трёхмерная навигация</translation>
     </message>
     <message>
       <source>Mouse...</source>
@@ -1994,8 +2047,52 @@ Specify another directory, please.</source>
       <translation>Прорисовка &amp;перспективной проекции</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation>Используйте объект OpenGL Vertex Buffer (экспериментальный)</translation>
+      <source>Show navigation cube</source>
+      <translation>Показывать навигационный куб</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Угол</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Верхний левый</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Верхний правый</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Нижний левый</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Нижний правый</translation>
+    </message>
+    <message>
+      <source>Use OpenGL Vertex Buffer Object</source>
+      <translation>Использовать объект вершинного буфера (vertex Buffer) OpenGL</translation>
+    </message>
+    <message>
+      <source>New Document Camera Orientation</source>
+      <translation>Ориентации камеры нового документа</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
+      <translation>Предотвращает наклонения при масштабировании щепком. Влияет только на стиль навигации жестами. Эта настройка не выключает наклонение мышью.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>Отключить жест наклона для сенсорного экрана</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Перенести к курсору</translation>
+    </message>
+    <message>
+      <source>Marker size:</source>
+      <translation>Размер метки:</translation>
     </message>
   </context>
   <context>
@@ -2006,7 +2103,71 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation>Для вступления в силу изменений в режиме сглаживания, откройте новое окно просмотра или перезапустите %1.</translation>
+      <translation>Для вступления в силу изменений режима сглаживания, откройте новое окно просмотра или перезапустите %1.</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5пикс.</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation>7пикс.</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation>9пикс.</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation>11пикс.</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation>13пикс.</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation>15пикс.</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Изометрическая</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Диметрическая</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Триметрическая</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Сверху</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Спереди</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Слева</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Справа</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Сзади</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Снизу</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Дополнительно</translation>
     </message>
   </context>
   <context>
@@ -2061,7 +2222,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Zero</source>
-      <translation>&amp; Ноль</translation>
+      <translation>&amp; Начало градиента в нулевых значениях</translation>
     </message>
     <message>
       <source>Alt+Z</source>
@@ -2069,7 +2230,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Flow</source>
-      <translation>&amp; Поток</translation>
+      <translation>&amp; Начало градиента в начале вычисленных значений</translation>
     </message>
     <message>
       <source>Alt+F</source>
@@ -2137,7 +2298,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Storage</source>
-      <translation>Хранилище</translation>
+      <translation>Сохранение</translation>
     </message>
     <message>
       <source>Saving transactions (Auto-save)</source>
@@ -2153,7 +2314,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Maximum number of backup files to keep when resaving document</source>
-      <translation>Максимальное количество файлов резервных копий, для повторного сохранения документа</translation>
+      <translation>Максимальное количество файлов резервных копий, при пересохранении документа</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2161,11 +2322,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Allow duplicate object labels in one document</source>
-      <translation>Разрешить повторяющиеся метки объектов в одном документе</translation>
+      <translation>Разрешить идентичные метки (Label) в одном документе</translation>
     </message>
     <message>
       <source>Maximum Undo/Redo steps</source>
-      <translation>Максимум отмен/повторов</translation>
+      <translation>Максимум шагов отмен/повторов</translation>
     </message>
     <message>
       <source>Using Undo/Redo on documents</source>
@@ -2257,7 +2418,8 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Save AutoRecovery information every</source>
-      <translation>Сохранять данные для автовосстановления каждые</translation>
+      <translation>Автосохранение каждые
+</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
@@ -2312,7 +2474,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Define name</source>
-      <translation>Задать имя</translation>
+      <translation>Задать название</translation>
     </message>
     <message>
       <source>Operator</source>
@@ -2347,7 +2509,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Back&amp;ground:</source>
-      <translation>Фон:</translation>
+      <translation>&amp;Фон:</translation>
     </message>
     <message>
       <source>Current</source>
@@ -2367,7 +2529,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Pixel</source>
-      <translation>Пиксель</translation>
+      <translation>пикс.</translation>
     </message>
     <message>
       <source>&amp;Width:</source>
@@ -2479,7 +2641,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Screen</source>
-      <translation>&amp;Экран</translation>
+      <translation>&amp;Экрана</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -2534,11 +2696,11 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
-      <translation>Макрокоманда</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>Macro recording settings</source>
-      <translation>Настройки записи макрокоманд</translation>
+      <translation>Настройки записи макросов</translation>
     </message>
     <message>
       <source>Logging Commands</source>
@@ -2546,11 +2708,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Show script commands in python console</source>
-      <translation>Показывать в консоли Python команды сценариев</translation>
+      <translation>Показывать команды скриптов в консоли Python</translation>
     </message>
     <message>
       <source>Log all commands issued by menus to file:</source>
-      <translation>Регистрация всех команд меню в файле:</translation>
+      <translation>Записывать все команды интерфейса в файл:</translation>
     </message>
     <message>
       <source>FullScript.FCScript</source>
@@ -2562,30 +2724,30 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Recording GUI commands</source>
-      <translation>Запись команд GUI</translation>
+      <translation>Запись команд графического интерфейса</translation>
     </message>
     <message>
       <source>Record as comment</source>
-      <translation>Регистрировать в качестве комментария</translation>
+      <translation>Записывать как комментарий</translation>
     </message>
     <message>
       <source>Macro path</source>
-      <translation>Куда записывать макрокоманды</translation>
+      <translation>Куда записывать макросы</translation>
     </message>
     <message>
       <source>General macro settings</source>
-      <translation>Общие параметры макрокоманд</translation>
+      <translation>Общие параметры макросов</translation>
     </message>
     <message>
       <source>Run macros in local environment</source>
-      <translation>Запуск макрокоманд в локальном окружении</translation>
+      <translation>Запуск макросов в локальном окружении</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
     <message>
       <source>Units</source>
-      <translation>Единицы</translation>
+      <translation>Единицы измерения</translation>
     </message>
     <message>
       <source>Units settings</source>
@@ -2625,15 +2787,55 @@ Specify another directory, please.</source>
     </message>
     <message utf8="true">
       <source>Building Euro (cm/m²/m³)</source>
-      <translation>Строительство Евро (см/м²/м³)</translation>
+      <translation>Строительные Евро (см/м²/м³)</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cuft)</source>
-      <translation>Строительство US (Футы-дюймы/кв. футы/куб. футы)</translation>
+      <translation>Строительные US (Футы-дюймы/кв. футы/куб. футы)</translation>
     </message>
     <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>Метрические мелкие детали &amp; ЧПУ (мм, мм/мин)</translation>
+    </message>
+    <message>
+      <source>Imperial Civil (ft/ft^2/ft^3)</source>
+      <translation>Американские гражданские (фут/кв. фут/куб. фут)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation>Минимальная часть дюйма:</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальная часть дюйма для отображения.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128"</translation>
     </message>
   </context>
   <context>
@@ -2672,11 +2874,23 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Pick radius (px):</source>
-      <translation>Укажите радиус (px):</translation>
+      <translation>Укажите радиус (пикс.):</translation>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
       <translation>Задает зону неясности для выбора элементов в 3D режиме. Большее значение облегчает выбор элементов, но сделает невозможным выбор некоторых мелких деталей.</translation>
+    </message>
+    <message>
+      <source>Tree View</source>
+      <translation>Дерево документа</translation>
+    </message>
+    <message>
+      <source>Object being edited</source>
+      <translation>Объект редактируется</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Активный контейнер</translation>
     </message>
   </context>
   <context>
@@ -2714,7 +2928,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Copy</source>
-      <translation>Скопировать</translation>
+      <translation>Копировать</translation>
     </message>
     <message>
       <source>Close</source>
@@ -2736,7 +2950,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Enabled workbenches</source>
-      <translation>Подключенные рабочие окружения</translation>
+      <translation>Включенные рабочие окружения</translation>
     </message>
     <message>
       <source>Disabled workbenches</source>
@@ -2756,7 +2970,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Удалить выбранное рабочее окружение из списка подключенных рабочих окружений.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Удалить выбранный верстак из списка включенных верстаков.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -2764,15 +2978,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Переместить выбранное рабочее окружение в список подключенных рабочих окружений.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Переместить выбранный верстак в список включенных верстаков.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Sort enabled workbenches</source>
-      <translation>Сортировка подключенных рабочих окружений</translation>
-    </message>
-    <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Сортировка подключенных рабочих окружений&lt;/p&gt;</translation>
+      <translation>Сортировка включенных верстаков</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -2788,7 +2998,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
-      <translation>Добавьте все в список подключенных рабочих окружений</translation>
+      <translation>Добавьте все в список включенных верстаков</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Сортировка включенных верстаков&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -2802,7 +3016,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DocumentRecovery</name>
     <message>
       <source>Document Recovery</source>
-      <translation>Восстановление документа</translation>
+      <translation>Восстановление документов</translation>
     </message>
     <message>
       <source>Status of recovered documents:</source>
@@ -2850,7 +3064,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Cleanup</source>
-      <translation>Очистка</translation>
+      <translation>Очистить</translation>
     </message>
     <message>
       <source>Are you sure you want to delete the selected transient directories?</source>
@@ -2858,15 +3072,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>When deleting the selected transient directory you won't be able to recover any files afterwards.</source>
-      <translation>При удалении выбранного временного каталога, вы не сможете потом восстановить какие-либо файлы.</translation>
+      <translation>При удалении выбранной временной директории, вы не сможете потом восстановить какие-либо файлы.</translation>
     </message>
     <message>
       <source>Are you sure you want to delete all transient directories?</source>
-      <translation>Вы уверены, что хотите удалить все временные каталоги?</translation>
-    </message>
-    <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>При удалении всех временных каталогов, вы не сможете потом восстановить какие-либо файлы.</translation>
+      <translation>Вы уверены, что хотите удалить все временные директории?</translation>
     </message>
     <message>
       <source>Finished</source>
@@ -2883,6 +3093,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Нажмите 'Начать восстановление' чтобы начать процесс восстановления документов, перечисленных ниже.
 
 Колонка 'Статус' отображает возможно ли восстановить документ.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation>При удалении всех временных директорий Вы не сможете потом восстановить какие-либо файлы.</translation>
     </message>
   </context>
   <context>
@@ -2925,7 +3139,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>%1 of %2 (%3/sec) %4</source>
-      <translation>%1 %2 (%3/сек) %4</translation>
+      <translation>%1 из %2 (%3/сек) %4</translation>
     </message>
     <message>
       <source>?</source>
@@ -2933,7 +3147,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>%1 of %2 - Stopped</source>
-      <translation>%1 %2 - остановлен</translation>
+      <translation>%1 из %2 - остановлены</translation>
     </message>
     <message>
       <source>bytes</source>
@@ -2964,7 +3178,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Download Manager</source>
-      <translation>Менеджер закачек</translation>
+      <translation>Менеджер загрузок</translation>
     </message>
     <message>
       <source>1 Download</source>
@@ -2990,7 +3204,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::IconFolders</name>
     <message>
       <source>Add or remove custom icon folders</source>
-      <translation>Добавить папку пользовательскую папку, содержащую значки</translation>
+      <translation>Добавить или удалить пользовательскую папку, содержащую значки</translation>
     </message>
     <message>
       <source>Remove folder</source>
@@ -3134,19 +3348,19 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>New float item</source>
-      <translation>Новый вещественный элемент</translation>
+      <translation>Новый нецелочисленный параметр</translation>
     </message>
     <message>
       <source>New integer item</source>
-      <translation>Новый целочисленный элемент </translation>
+      <translation>Новый целочисленный параметр</translation>
     </message>
     <message>
       <source>New unsigned item</source>
-      <translation>Новый беззнаковый элемент</translation>
+      <translation>Новый беззнаковый параметр</translation>
     </message>
     <message>
       <source>New Boolean item</source>
-      <translation>Новый логический элемент</translation>
+      <translation>Новый логический параметр</translation>
     </message>
     <message>
       <source>Existing item</source>
@@ -3216,14 +3430,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Ось вращения с углом</translation>
     </message>
     <message>
-      <source>Apply placement changes immediately</source>
-      <translation>Показывать результат</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation>Наращивать изменения в позиции объекта</translation>
-    </message>
-    <message>
       <source>Apply</source>
       <translation>Применить</translation>
     </message>
@@ -3250,6 +3456,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Use center of mass</source>
       <translation>Использовать центр масс</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation>Осевой:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation>Применить осевой</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Shift+щелчок мыши для противоположного направления</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>Выбранные точки</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation>Применить дополнительные изменения</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Пожалуйста, выберите 1, 2 или 3 точки, прежде чем нажать эту кнопку. Точка может быть на вершине, грани или кромке. Если используемая точка на грани или кромке, то она будет точкой на позиции мыши вдоль грани или кромки. Если выбрана 1 точка, то она будет использоваться в качестве центра вращения. Если выбраны 2 точки, то посредине между ними будет центр вращения, и, при необходимости, будет создана новая пользовательская ось. Если выбраны 3 точки, то первая точка становится центром вращения, и будет лежать на векторе, который перпендикулярен плоскости, проходящей через эти 3 точки. Некоторые расстояния и углы содержатся в отчёте, который может быть полезен при выравнивании объектов. Для Вашего удобства при использовании Shift + щелчок мыши соответствующее расстояние или угол копируются в буфер обмена.</translation>
     </message>
   </context>
   <context>
@@ -3282,11 +3512,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::SceneModel</name>
     <message>
       <source>Inventor Tree</source>
-      <translation>Inventor Tree</translation>
+      <translation>Иерархия Inventor</translation>
     </message>
     <message>
       <source>Nodes</source>
-      <translation>Nodes</translation>
+      <translation>Узлов</translation>
     </message>
     <message>
       <source>Name</source>
@@ -3301,7 +3531,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Проекция текстуры</translation>
+      <translation>Наложение текстур</translation>
     </message>
     <message>
       <source>Global</source>
@@ -3325,11 +3555,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>No 3d view</source>
-      <translation>Нет 3d просмотра</translation>
+      <translation>Нет 3d вида</translation>
     </message>
     <message>
       <source>No active 3d view found.</source>
-      <translation>Активный 3d вид не найден.</translation>
+      <translation>Активный трёхмерный вид не найден.</translation>
     </message>
   </context>
   <context>
@@ -3362,7 +3592,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::DockWnd::CombiView</name>
     <message>
       <source>CombiView</source>
-      <translation>КомбинированныВид</translation>
+      <translation>КомбоВид</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -3494,15 +3724,15 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation>Пометьте для повторного вычисления</translation>
+      <translation>Пометьте для пересчета</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation>Пометьте этот объект повторного вычисления</translation>
+      <translation>Пометить этот объект для повторного вычисления</translation>
     </message>
     <message>
       <source>Selection View</source>
-      <translation>Выбрать вид</translation>
+      <translation>Обзор выбранного</translation>
     </message>
     <message>
       <source>The number of selected items</source>
@@ -3544,7 +3774,7 @@ This has been modified outside of the source editor. Do you want to reload it?</
     </message>
     <message>
       <source>Unsaved document</source>
-      <translation>Документ несохранен</translation>
+      <translation>Документ не сохранён</translation>
     </message>
     <message>
       <source>The document has been modified.
@@ -3553,7 +3783,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Export PDF</source>
-      <translation>Экспортировать PDF</translation>
+      <translation>Экспортировать в PDF</translation>
     </message>
     <message>
       <source>untitled[*]</source>
@@ -3573,7 +3803,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Formatted</source>
-      <translation>Форматирование</translation>
+      <translation>Форматировано</translation>
     </message>
     <message>
       <source>FreeCAD macro</source>
@@ -3643,20 +3873,20 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Коснитесь значка. Или нажмите левую кнопку мыши.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Коснитесь ИЛИ щёлкните левой кнопкой мыши.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Перетащите экран двумя пальцами. Или нажмите правую кнопку мыши.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation>Перетаскивайте экран двумя пальцами ИЛИ нажатием правой кнопки мыши.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Перетащите окно одним пальцем. Или нажмите левую кнопку мыши. В Sketcher и других режимах редактирования, кроме того, удерживайте клавишу Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>Перетаскивайте экран одним пальцем ИЛИ нажмите левую кнопку мыши. В верстаке Эскиз и других режимах редактирования, дополнительно удерживайте клавишу Alt.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Щепок (поместите два пальца на экран и двигайте их друг от друга/друг к другу). Или вращайте колесо  мыши. Или используйте кнопки PgUp/PgDown на клавиатуре.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>Щепок (поместите два пальца на экран и двигайте их друг от друга или друг к другу) ИЛИ вращайте колесо мыши ИЛИ используйте кнопки PgUp/PgDown на клавиатуре.</translation>
     </message>
   </context>
   <context>
@@ -3703,7 +3933,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Do you want to specify its installation path if it's already installed?</source>
-      <translation>Вы хотите задать свой путь установки, если она уже установлена?</translation>
+      <translation>Вы хотите задать путь к нему, если он уже установлен?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
@@ -3715,14 +3945,14 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Graphviz failed to create an image file</source>
-      <translation>GraphViz не удалось создать файл образа</translation>
+      <translation>GraphViz не удалось создать файл изображения</translation>
     </message>
   </context>
   <context>
     <name>Gui::InputField</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>Save value</source>
@@ -3745,7 +3975,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Прокрутите среднюю кнопку мыши</translation>
+      <translation>Прокрутите колёсико мыши</translation>
     </message>
   </context>
   <context>
@@ -3857,7 +4087,7 @@ Do you want to copy them, too?</source>
     </message>
     <message>
       <source>The alignment is already in progress.</source>
-      <translation>Выравнивание уже в процессе.</translation>
+      <translation>Выравнивание уже выполняется.</translation>
     </message>
     <message>
       <source>Alignment[*]</source>
@@ -3865,7 +4095,7 @@ Do you want to copy them, too?</source>
     </message>
     <message>
       <source>Please, select at least one point in the left and the right view</source>
-      <translation>Пожалуйста, выберите хотя одну точку на левом и правом виде</translation>
+      <translation>Пожалуйста, выберите хотя бы одну точку на левом и правом виде</translation>
     </message>
     <message>
       <source>Please, select at least %1 points in the left and the right view</source>
@@ -3900,7 +4130,7 @@ on the right view %2 points are picked.</source>
     </message>
     <message>
       <source>Try to align group of views</source>
-      <translation>Попытайтесь выровнять группу видов</translation>
+      <translation>Попытаться выровнять группу видов</translation>
     </message>
     <message>
       <source>The alignment failed.
@@ -3940,29 +4170,27 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Коснитесь значка. Или нажмите левую кнопку мыши.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Коснитесь ИЛИ щёлкните левой кнопкой мыши.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Перетащите экран двумя пальцами. Или нажмите ALT + средняя кнопка мыши.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation>Перетаскивайте экран двумя пальцами ИЛИ нажатием ALT + средней кнопки мыши.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Перетащите окно одним пальцем. Или нажмите Alt + левую кнопку мыши. В Sketcher и других режимах редактирования, кроме того, удерживайте клавишу Alt.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>Перетаскивайте экран одним пальцем ИЛИ нажатием ALT + левой кнопки мыши. В верстаке Эскиз и других режимах редактирования, дополнительно удерживайте клавишу Alt.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Щепок (поместите два пальца на экран и двигайте их друг от друга/друг к другу). Или вращайте колесо  мыши. Или используйте кнопки PgUp/PgDown на клавиатуре. Или нажмите ALT + правую кнопку мыши.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>Щепок (поместите два пальца на экран и двигайте их друг от друга/друг к другу) ИЛИ вращайте колесо мыши ИЛИ используйте кнопки PgUp/PgDown на клавиатуре.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Загрузка началась...
-</translation>
+      <source>Download started...</source>
+      <translation>Загрузка началась...</translation>
     </message>
   </context>
   <context>
@@ -3988,7 +4216,7 @@ How do you want to proceed?</source>
     <name>Gui::PrefQuantitySpinBox</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>Save value</source>
@@ -4044,6 +4272,13 @@ How do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit %1</source>
+      <translation>Редактировать %1</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
       <source>Property</source>
@@ -4086,7 +4321,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Unhandled FreeCAD exception.</source>
-      <translation>Необработанное прерывание FreeCAD.</translation>
+      <translation>Необработанное исключение FreeCAD.</translation>
     </message>
     <message>
       <source>Unhandled unknown C++ exception.</source>
@@ -4191,7 +4426,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Прокрутите среднюю кнопку мыши</translation>
+      <translation>Прокрутите колёсико мыши</translation>
     </message>
   </context>
   <context>
@@ -4246,7 +4481,9 @@ Do you want to exit without saving your data?</source>
       <source>The directory '%1' does not exist.
 
 Do you want to specify an existing directory?</source>
-      <translation>Каталог '%1' не существует.  Вы хотите указать существующий каталог?</translation>
+      <translation>Директория '%1' не существует. 
+
+Хотите указать существующую директорию?</translation>
     </message>
     <message>
       <source>Missing permission</source>
@@ -4257,7 +4494,7 @@ Do you want to specify an existing directory?</source>
 
 Do you want to specify another directory?</source>
       <translation>У вас нет прав на запись в '%1'
-Вы хотите указать другой каталог?</translation>
+Хотите указать другую директорию?</translation>
     </message>
     <message>
       <source>Stop downloading</source>
@@ -4268,7 +4505,7 @@ Do you want to specify another directory?</source>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
       <source>Tools</source>
-      <translation>Панели инструментов</translation>
+      <translation>Инструменты</translation>
     </message>
     <message>
       <source>Automatic python modules documentation</source>
@@ -4276,7 +4513,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Opens a browser to show the Python modules documentation</source>
-      <translation>Показать документацию модулей Python в интрернете</translation>
+      <translation>Показать документацию модулей Python в интернете</translation>
     </message>
   </context>
   <context>
@@ -4301,18 +4538,18 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Translation Increment: </source>
-      <translation>Приращение перевода: </translation>
+      <translation>Приращение перемещения: </translation>
     </message>
     <message>
       <source>Rotation Increment: </source>
-      <translation>Шаг поворота: </translation>
+      <translation>Приращение поворота: </translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
       <source>Plot mode:</source>
-      <translation>Режим графопостроения:</translation>
+      <translation>Режим графика:</translation>
     </message>
     <message>
       <source>Point size:</source>
@@ -4346,7 +4583,7 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
   </context>
   <context>
@@ -4372,7 +4609,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
-      <translation>Текст подслойного объекта изменился. Отменить изменения и перезагрузить текст из объекта?</translation>
+      <translation>Текст базового объекта изменился. Отменить изменения и перезагрузить текста из объекта?</translation>
     </message>
     <message>
       <source>Yes, reload.</source>
@@ -4380,7 +4617,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Unsaved document</source>
-      <translation>Документ несохранен</translation>
+      <translation>Документ не сохранён</translation>
     </message>
     <message>
       <source>Do you want to save your changes before closing?</source>
@@ -4403,7 +4640,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Press ALT button</source>
-      <translation>Нажмите кнопку ALT</translation>
+      <translation>Нажмите клавишу ALT</translation>
     </message>
     <message>
       <source>Press CTRL and SHIFT buttons</source>
@@ -4414,7 +4651,14 @@ Do you want to specify another directory?</source>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Дерево документа</translation>
+      <translation>Иерархия документа</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Поиск</translation>
     </message>
   </context>
   <context>
@@ -4465,7 +4709,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Skip recomputes</source>
-      <translation>Пропуск повторных вычислений</translation>
+      <translation>Пропуск пересчета</translation>
     </message>
     <message>
       <source>Enable or disable recomputations of document</source>
@@ -4473,22 +4717,30 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation>Пометьте для повторного вычисления</translation>
+      <translation>Пометьте для пересчета</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation>Пометьте этот объект повторного вычисления</translation>
+      <translation>Пометить этот объект для повторного вычисления</translation>
     </message>
     <message>
       <source>%1, Internal name: %2</source>
-      <translation>%1, Internal name: %2</translation>
+      <translation>%1, внутреннее название: %2</translation>
+    </message>
+    <message>
+      <source>Search...</source>
+      <translation>Поиск...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>Поиск объектов</translation>
     </message>
   </context>
   <context>
     <name>Gui::View3DInventor</name>
     <message>
       <source>Export PDF</source>
-      <translation>Экспортировать PDF</translation>
+      <translation>Экспортировать в PDF</translation>
     </message>
     <message>
       <source>PDF file</source>
@@ -4500,14 +4752,14 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Can't open file '%1' for writing.</source>
-      <translation>Не удается открыть файл '%1' для записи.</translation>
+      <translation>Не удается записать в файл '%1'.</translation>
     </message>
   </context>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
       <source>Select the '%1' workbench</source>
-      <translation>Переключить рабочее окружение на '%1'</translation>
+      <translation>Переключить верстак на '%1'</translation>
     </message>
   </context>
   <context>
@@ -4518,7 +4770,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Hide %1</source>
-      <translation>Hide %1</translation>
+      <translation>Скрыть %1</translation>
     </message>
     <message>
       <source>Hide Others</source>
@@ -4646,11 +4898,11 @@ Do you want to specify another directory?</source>
     <name>QDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Дерево документа</translation>
+      <translation>Иерархия документа</translation>
     </message>
     <message>
       <source>Property view</source>
-      <translation>Просмотр свойств</translation>
+      <translation>Окно свойств</translation>
     </message>
     <message>
       <source>Selection view</source>
@@ -4701,11 +4953,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Cannot save to unknown filetype: %1</source>
-      <translation>Не удалось сохранить в неизвестном файле: %1</translation>
+      <translation>Не удалось сохранить в неизвестном формате файла: %1</translation>
     </message>
     <message>
       <source>Workbench failure</source>
-      <translation>Ошибка загрузки рабочего окружения</translation>
+      <translation>Ошибка загрузки верстака</translation>
     </message>
     <message>
       <source>%1</source>
@@ -4733,27 +4985,27 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Cannot load workbench</source>
-      <translation>Не удаётся загрузить рабочее окружение</translation>
+      <translation>Не удаётся загрузить верстак</translation>
     </message>
     <message>
       <source>A general error occurred while loading the workbench</source>
-      <translation>Общая ошибка при загрузке рабочего окружения</translation>
+      <translation>Общая ошибка при загрузке верстака</translation>
     </message>
     <message>
       <source>Save views...</source>
-      <translation>Сохранить положения в файл...</translation>
+      <translation>Сохранить виды в файл...</translation>
     </message>
     <message>
       <source>Load views...</source>
-      <translation>Загрузить положения из файла...</translation>
+      <translation>Загрузить виды из файла...</translation>
     </message>
     <message>
       <source>Freeze view</source>
-      <translation>Запомнить</translation>
+      <translation>Запомнить вид</translation>
     </message>
     <message>
       <source>Clear views</source>
-      <translation>Забыть все положения</translation>
+      <translation>Забыть все виды</translation>
     </message>
     <message>
       <source>Restore view &amp;%1</source>
@@ -4765,17 +5017,17 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Restore views</source>
-      <translation>Восстановить просмотры</translation>
+      <translation>Восстановить виды</translation>
     </message>
     <message>
       <source>Importing the restored views would clear the already stored views.
 Do you want to continue?</source>
-      <translation>Импортирование положений просмотра приведёт к сбросу текущих запомненных положений.
-Вы хотите продолжить?</translation>
+      <translation>Импортирование видов просмотра приведёт к сбросу текущих запомненных видов.
+Хотите ли вы продолжить?</translation>
     </message>
     <message>
       <source>Restore frozen views</source>
-      <translation>Восстановить замороженный вид</translation>
+      <translation>Восстановить запомненный вид</translation>
     </message>
     <message>
       <source>Cannot open file '%1'.</source>
@@ -4795,7 +5047,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Enter the name:</source>
-      <translation>Введите имя:</translation>
+      <translation>Введите название:</translation>
     </message>
     <message>
       <source>New text item</source>
@@ -4807,7 +5059,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>New integer item</source>
-      <translation>Новый целочисленный элемент </translation>
+      <translation>Новый целочисленный параметр</translation>
     </message>
     <message>
       <source>Enter your number:</source>
@@ -4815,15 +5067,15 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>New unsigned item</source>
-      <translation>Новый беззнаковый элемент</translation>
+      <translation>Новый беззнаковый параметр</translation>
     </message>
     <message>
       <source>New float item</source>
-      <translation>Новый вещественный элемент</translation>
+      <translation>Новый нецелочисленный параметр</translation>
     </message>
     <message>
       <source>New Boolean item</source>
-      <translation>Новый логический элемент</translation>
+      <translation>Новый логический параметр</translation>
     </message>
     <message>
       <source>Choose an item:</source>
@@ -4859,7 +5111,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Unsaved document</source>
-      <translation>Документ несохранен</translation>
+      <translation>Документ не сохранён</translation>
     </message>
     <message>
       <source>Save Macro</source>
@@ -4929,7 +5181,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     </message>
     <message>
       <source>Save %1 Document</source>
-      <translation>Сохранить документ %1</translation>
+      <translation>Сохранение документа %1</translation>
     </message>
     <message>
       <source>%1 document (*.FCStd)</source>
@@ -4958,7 +5210,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     <message>
       <source>Unable to load documentation.
 In order to load it Qt 4.4 or higher is required.</source>
-      <translation>Не удается загрузить документацию. Чтобы загрузить это требуется Qt 4.4 или выше.</translation>
+      <translation>Не удается загрузить документацию. Чтобы загрузить её требуется Qt 4.4 или новее.</translation>
     </message>
     <message>
       <source>Exporting PDF...</source>
@@ -4971,16 +5223,16 @@ In order to load it Qt 4.4 or higher is required.</source>
     <message>
       <source>Only one object selected. Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Только один объект выбран. Пожалуйста, выберите два объекта. Будте уверены, что точка которую вы выбираете важна.</translation>
+      <translation>Только один объект выбран. Пожалуйста, выберите два объекта. Будьте внимательны, так как точка куда вы нажмете важна.</translation>
     </message>
     <message>
       <source>Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Пожалуйста, выберите два объекта. Будте уверены, что точка которую вы выбираете важна.</translation>
+      <translation>Пожалуйста, выберите два объекта. Будьте внимательны, так как точка куда вы нажмете важна.</translation>
     </message>
     <message>
       <source>New boolean item</source>
-      <translation>Новый логический элемент</translation>
+      <translation>Новый логический параметр</translation>
     </message>
     <message>
       <source>Navigation styles</source>
@@ -5008,15 +5260,15 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Save a copy of the document under new filename...</source>
-      <translation>Сохраните копию документа под новым именем файла...</translation>
+      <translation>Сохранить копию документа под новым именем файла...</translation>
     </message>
     <message>
       <source>Frozen views</source>
-      <translation>Замороженные виды</translation>
+      <translation>Запомненные виды</translation>
     </message>
     <message>
       <source>Saving document failed</source>
-      <translation>не удалось сохраненить документ</translation>
+      <translation>Не удалось сохранить документ</translation>
     </message>
     <message>
       <source>Document</source>
@@ -5024,7 +5276,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Delete macro</source>
-      <translation>Удалить макрокоманду</translation>
+      <translation>Удалить макрос</translation>
     </message>
     <message>
       <source>Not allowed to delete system-wide macros</source>
@@ -5035,28 +5287,36 @@ Be aware the point where you click matters.</source>
       <translation>Начало координат</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Перевод: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Вращение: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Удалить содержимое группы?</translation>
     </message>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
-      <translation>%1 не является пустым, удалить его содержимое?</translation>
+      <translation>%1 не пуст, удалить его содержимое тоже?</translation>
     </message>
     <message>
       <source>Export failed</source>
       <translation>Экспорт не удался</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Разделить</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Перемещение:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Вращение:</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation>Сделать деталь активной/неактивной</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Редактировать текст</translation>
     </message>
   </context>
   <context>
@@ -5145,7 +5405,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdAlignment</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>Alignment...</source>
@@ -5190,11 +5450,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Cascade</source>
-      <translation>&amp;Каскад</translation>
+      <translation>&amp;Каскадом</translation>
     </message>
     <message>
       <source>Tile pragmatic</source>
-      <translation>Прагматичная плитка</translation>
+      <translation>Расположить окна каскадом</translation>
     </message>
   </context>
   <context>
@@ -5231,7 +5491,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdCommandLine</name>
     <message>
       <source>Tools</source>
-      <translation>Панели инструментов</translation>
+      <translation>Инструменты</translation>
     </message>
     <message>
       <source>Start command &amp;line...</source>
@@ -5239,14 +5499,14 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Opens the command line in the console</source>
-      <translation>Открывает командную строку</translation>
+      <translation>Открыть командную строку</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCopy</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>C&amp;opy</source>
@@ -5261,11 +5521,11 @@ Be aware the point where you click matters.</source>
     <name>StdCmdCut</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>&amp;Cut</source>
-      <translation>&amp;Вырезать</translation>
+      <translation>&amp; Вырезать</translation>
     </message>
     <message>
       <source>Cut out</source>
@@ -5276,7 +5536,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdDelete</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>&amp;Delete</source>
@@ -5306,7 +5566,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
-      <translation>Панели инструментов</translation>
+      <translation>Инструменты</translation>
     </message>
     <message>
       <source>Cu&amp;stomize...</source>
@@ -5325,22 +5585,22 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Opens a dialog to let you execute a recorded macro</source>
-      <translation>Открыть диалоговое окно, чтобы выполнить написанный макрос</translation>
+      <translation>Открыть диалоговое окно для выполнения записанного макроса</translation>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Макрокоманда</translation>
+      <translation>Макрос</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
     <message>
       <source>Macro</source>
-      <translation>Макрокоманда</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>Execute macro</source>
-      <translation>Выполнить макрокоманду</translation>
+      <translation>Выполнить макрос</translation>
     </message>
     <message>
       <source>Execute the macro in the editor</source>
@@ -5355,18 +5615,18 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Opens a dialog to record a macro</source>
-      <translation>Открывает диалоговое окно для записи макросов</translation>
+      <translation>Открыть диалоговое окно для записи макросов</translation>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Макрокоманда</translation>
+      <translation>Макрос</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgParameter</name>
     <message>
       <source>Tools</source>
-      <translation>Панели инструментов</translation>
+      <translation>Инструменты</translation>
     </message>
     <message>
       <source>E&amp;dit parameters ...</source>
@@ -5374,22 +5634,22 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Opens a Dialog to edit the parameters</source>
-      <translation>Открывает диалоговое окно для изменения параметров</translation>
+      <translation>Открыть диалоговое окно для изменения параметров</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
       <source>Tools</source>
-      <translation>Панели инструментов</translation>
+      <translation>Инструменты</translation>
     </message>
     <message>
       <source>&amp;Preferences ...</source>
-      <translation>&amp;Параметры...</translation>
+      <translation>&amp;Настройки ...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the preferences</source>
-      <translation>Открывает диалоговое окно для изменения настроек</translation>
+      <translation>Открыть диалоговое окно для изменения настроек</translation>
     </message>
   </context>
   <context>
@@ -5404,7 +5664,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>List of available dock panels</source>
-      <translation>Список доступных швартуемых панелей</translation>
+      <translation>Список доступных закрепляемых панелей</translation>
     </message>
   </context>
   <context>
@@ -5422,7 +5682,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdDuplicateSelection</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>Duplicate selection</source>
@@ -5430,14 +5690,14 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Вставить дубликаты выбранных объектов в активный документ</translation>
+      <translation>Вложить дубликаты выбранных объектов в активный документ</translation>
     </message>
   </context>
   <context>
     <name>StdCmdEdit</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>Toggle &amp;Edit mode</source>
@@ -5445,11 +5705,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggles the selected object's edit mode</source>
-      <translation>Редактировать выделенный объект / закончить редактирование</translation>
+      <translation>Редактировать выделенные объекты / закончить редактирование</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Открыть объект для редактирования / закончить редактирование</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation>Активирует или деактивирует режим редактирования выбранного объекта</translation>
     </message>
   </context>
   <context>
@@ -5468,7 +5728,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>No selection</source>
-      <translation>Нет выбора</translation>
+      <translation>Ничего не выбрано</translation>
     </message>
     <message>
       <source>Please select first the objects you want to export.</source>
@@ -5479,7 +5739,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdExportGraphviz</name>
     <message>
       <source>Tools</source>
-      <translation>Панели инструментов</translation>
+      <translation>Инструменты</translation>
     </message>
     <message>
       <source>Dependency graph...</source>
@@ -5502,7 +5762,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Пересчитать функцию или документ</translation>
+      <translation>Пересчитать объект или документ</translation>
     </message>
   </context>
   <context>
@@ -5513,7 +5773,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>FreeCAD FAQ</source>
-      <translation>FreeCAD ЧаВО</translation>
+      <translation>FreeCAD ЧаВо</translation>
     </message>
     <message>
       <source>Frequently Asked Questions on the FreeCAD website</source>
@@ -5555,7 +5815,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Python scripting documentation on the FreeCAD website</source>
-      <translation>Документация по созданию скриптов на Python на сайте FreeCAD</translation>
+      <translation>Документация по созданию Python скриптов на сайте FreeCAD</translation>
     </message>
     <message>
       <source>PowerUsers documentation</source>
@@ -5645,7 +5905,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Hide selection</source>
-      <translation>Скрыть выделение</translation>
+      <translation>Скрыть выделенные</translation>
     </message>
     <message>
       <source>Hide all selected objects</source>
@@ -5679,7 +5939,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdMacroStartDebug</name>
     <message>
       <source>Macro</source>
-      <translation>Макрокоманда</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>Debug macro</source>
@@ -5694,7 +5954,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdMacroStepInto</name>
     <message>
       <source>Macro</source>
-      <translation>Макрокоманда</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>Step into</source>
@@ -5705,7 +5965,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdMacroStepOver</name>
     <message>
       <source>Macro</source>
-      <translation>Макрокоманда</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>Step over</source>
@@ -5716,7 +5976,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdMacroStopDebug</name>
     <message>
       <source>Macro</source>
-      <translation>Макрокоманда</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>Stop debugging</source>
@@ -5731,7 +5991,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdMacroStopRecord</name>
     <message>
       <source>Macro</source>
-      <translation>Макрокоманда</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>S&amp;top macro recording</source>
@@ -5757,11 +6017,11 @@ Be aware the point where you click matters.</source>
     <name>StdCmdMeasurementSimple</name>
     <message>
       <source>Tools</source>
-      <translation>Панели инструментов</translation>
+      <translation>Инструменты</translation>
     </message>
     <message>
       <source>Measures distance between two selected objects</source>
-      <translation>Измерить дистанцию между двумя выбранными обьектами</translation>
+      <translation>Измерить расстояние между двумя выбранными объектами</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -5783,12 +6043,12 @@ Be aware the point where you click matters.</source>
       <translation>Объединить проект</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 документ (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Нельзя объединить проект с самим собой.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>документ %1 (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -5803,11 +6063,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create a new empty document</source>
-      <translation>Создайть новый пустой документ</translation>
+      <translation>Создать новый пустой документ</translation>
     </message>
     <message>
       <source>Unnamed</source>
-      <translation>Без имени</translation>
+      <translation>Безымянный</translation>
     </message>
   </context>
   <context>
@@ -5829,11 +6089,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Help Website</source>
-      <translation>Веб-Помощь</translation>
+      <translation>Сайт Помощи</translation>
     </message>
     <message>
       <source>The website where the help is maintained</source>
-      <translation>Веб-сайт, где поддерживается помощь</translation>
+      <translation>Сайт, где находится помощь</translation>
     </message>
   </context>
   <context>
@@ -5886,7 +6146,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdPaste</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
@@ -5901,7 +6161,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdPlacement</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>Placement...</source>
@@ -5935,7 +6195,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Export PDF...</source>
-      <translation>Э&amp;кспортировать PDF...</translation>
+      <translation>Э&amp;кспортировать в PDF...</translation>
     </message>
     <message>
       <source>Export the document as PDF</source>
@@ -5973,22 +6233,22 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Show details of the currently active project</source>
-      <translation>Показать детали в текущего активного проекта</translation>
+      <translation>Показать детали текущего активного проекта</translation>
     </message>
   </context>
   <context>
     <name>StdCmdProjectUtil</name>
     <message>
       <source>Tools</source>
-      <translation>Панели инструментов</translation>
+      <translation>Инструменты</translation>
     </message>
     <message>
       <source>Project utility...</source>
-      <translation>Утилита проекта...</translation>
+      <translation>Утилита распаковки файла проекта...</translation>
     </message>
     <message>
       <source>Utility to extract or create project files</source>
-      <translation>Утилита для распаковки и запаковки файлов .FCStd</translation>
+      <translation>Утилита для разборки и сборки файлов .FCStd</translation>
     </message>
   </context>
   <context>
@@ -6040,18 +6300,18 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Recent files</source>
-      <translation>Последние файлы</translation>
+      <translation>Недавние файлы</translation>
     </message>
     <message>
       <source>Recent file list</source>
-      <translation>Список последних файлов</translation>
+      <translation>Список недавно открытых файлов</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>&amp;Redo</source>
@@ -6066,7 +6326,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdRefresh</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>&amp;Refresh</source>
@@ -6074,7 +6334,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Recomputes the current active document</source>
-      <translation>Пересчитывает текущий документ</translation>
+      <translation>Пересчитывает активный документ</translation>
     </message>
   </context>
   <context>
@@ -6089,7 +6349,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Reverts to the saved version of this file</source>
-      <translation>Возвращает к сохраненной версии этого файла</translation>
+      <translation>Возвращает состояние к сохраненной версии этого файла</translation>
     </message>
   </context>
   <context>
@@ -6134,14 +6394,14 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Save a copy of the active document under a new file name</source>
-      <translation>Сохранить копию активного документа в файле под новым именем</translation>
+      <translation>Сохранить копию активного документа под новым именем файла</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
       <source>Tools</source>
-      <translation>Панели инструментов</translation>
+      <translation>Инструменты</translation>
     </message>
     <message>
       <source>Scene inspector...</source>
@@ -6156,7 +6416,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdSelectAll</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>Select &amp;All</source>
@@ -6164,7 +6424,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Select all</source>
-      <translation>Выделить все</translation>
+      <translation>Выделить всё</translation>
     </message>
   </context>
   <context>
@@ -6175,11 +6435,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Select visible objects</source>
-      <translation>Выберите видимые объекты</translation>
+      <translation>Выбрать видимые объекты</translation>
     </message>
     <message>
       <source>Select visible objects in the active document</source>
-      <translation>Выберите видимые объекты в активном документе</translation>
+      <translation>Выбрать видимые объекты в активном документе</translation>
     </message>
   </context>
   <context>
@@ -6220,7 +6480,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Show selection</source>
-      <translation>Показать выделенное</translation>
+      <translation>Показать выделенные</translation>
     </message>
     <message>
       <source>Show all selected objects</source>
@@ -6246,15 +6506,15 @@ Be aware the point where you click matters.</source>
     <name>StdCmdTextureMapping</name>
     <message>
       <source>Tools</source>
-      <translation>Панели инструментов</translation>
+      <translation>Инструменты</translation>
     </message>
     <message>
       <source>Texture mapping...</source>
-      <translation>Текстуры...</translation>
+      <translation>Текстурирование...</translation>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Проекция текстуры</translation>
+      <translation>Наложение текстур</translation>
     </message>
   </context>
   <context>
@@ -6265,18 +6525,18 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Tile</source>
-      <translation>&amp;Заголовок</translation>
+      <translation>&amp;Плиткой</translation>
     </message>
     <message>
       <source>Tile the windows</source>
-      <translation>Расположить рядом окна</translation>
+      <translation>Расположить окна плиткой</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
       <source>Macro</source>
-      <translation>Макрокоманда</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>Toggle breakpoint</source>
@@ -6295,7 +6555,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
-      <translation>Переключает плоскости для активного просмотра</translation>
+      <translation>Переключает плоскость сечения для активного вида</translation>
     </message>
   </context>
   <context>
@@ -6325,7 +6585,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggles visibility of all objects in the active document</source>
-      <translation>Скрыть все видимые объекты и показать все невидимые</translation>
+      <translation>Инвертировать видимость всех объектов в активном документе</translation>
     </message>
   </context>
   <context>
@@ -6340,7 +6600,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
-      <translation>Включает/выключает возможность выделить объект через окно 3D-просмотра</translation>
+      <translation>Включает/выключает возможность выделить объект через окно трёхмерного просмотра</translation>
     </message>
   </context>
   <context>
@@ -6351,11 +6611,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggle visibility</source>
-      <translation>Изменить видимость</translation>
+      <translation>Видимость</translation>
     </message>
     <message>
       <source>Toggles visibility</source>
-      <translation>Переключить видимость выделенных объектов</translation>
+      <translation>Показать / скрыть видимость выделенных объектов</translation>
     </message>
   </context>
   <context>
@@ -6366,18 +6626,18 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Tool&amp;bars</source>
-      <translation>Инстру&amp;менты</translation>
+      <translation>Панели &amp;инструментов</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Переключите это окно</translation>
+      <translation>Видимость этого окна</translation>
     </message>
   </context>
   <context>
     <name>StdCmdTransform</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>Transform...</source>
@@ -6392,7 +6652,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdTransformManip</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>Transform</source>
@@ -6400,7 +6660,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
-      <translation>Трансформация выделенного объекта в 3d режиме</translation>
+      <translation>Преобразование выделенного объекта в трёхмерном виде</translation>
     </message>
   </context>
   <context>
@@ -6415,14 +6675,14 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Scroll to first selected item</source>
-      <translation>Прокрутите до первого выбранного элемента</translation>
+      <translation>Прокрутить до первого выбранного элемента</translation>
     </message>
   </context>
   <context>
     <name>StdCmdUndo</name>
     <message>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <source>&amp;Undo</source>
@@ -6437,15 +6697,15 @@ Be aware the point where you click matters.</source>
     <name>StdCmdUnitsCalculator</name>
     <message>
       <source>Tools</source>
-      <translation>Панели инструментов</translation>
+      <translation>Инструменты</translation>
     </message>
     <message>
       <source>&amp;Units calculator...</source>
-      <translation>&amp;Калькулятор единиц...</translation>
+      <translation>&amp;Конвертор величин...</translation>
     </message>
     <message>
       <source>Start the units calculator</source>
-      <translation>Открыть калькулятор единиц измерения</translation>
+      <translation>Открыть конвертор единиц измерения</translation>
     </message>
   </context>
   <context>
@@ -6456,26 +6716,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Dock views</source>
-      <translation>Заморозить вид</translation>
+      <translation>Закрепить виды</translation>
     </message>
     <message>
       <source>Dock all top-level views</source>
-      <translation>Встроить все виды верхнего уровня</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартный вид</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Аксонометрия</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Установите аксонометрический вид</translation>
+      <translation>Закрепить все виды верхнего уровня</translation>
     </message>
   </context>
   <context>
@@ -6501,11 +6746,26 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create new view</source>
-      <translation>Cоздать новый вид</translation>
+      <translation>Создать новый вид</translation>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation>Создает новое окно представления для активного документа</translation>
+      <translation>Создает новое окно просмотра для активного документа</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартный вид</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Диметрическая</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Установить диметрический вид</translation>
     </message>
   </context>
   <context>
@@ -6516,11 +6776,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Inventor example #1</source>
-      <translation>Создать пример #1</translation>
+      <translation>Пример Inventor #1</translation>
     </message>
     <message>
       <source>Shows a 3D texture with manipulator</source>
-      <translation>Показывает 3D текстуры с манипулятором</translation>
+      <translation>Показывает трёхмерные текстуры с манипулятором</translation>
     </message>
   </context>
   <context>
@@ -6531,11 +6791,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Inventor example #2</source>
-      <translation>Создать пример #1</translation>
+      <translation>Пример Inventor #2</translation>
     </message>
     <message>
       <source>Shows spheres and drag-lights</source>
-      <translation>Показывает сферы и перетаскивающиеся огни</translation>
+      <translation>Показывает сферы и перетаскиваемые источники света</translation>
     </message>
   </context>
   <context>
@@ -6546,7 +6806,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Inventor example #3</source>
-      <translation>Создать пример #3</translation>
+      <translation>Пример Inventor #3</translation>
     </message>
     <message>
       <source>Shows a animated texture</source>
@@ -6595,7 +6855,22 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to front view</source>
-      <translation>Задать вид спереди</translation>
+      <translation>Установить вид спереди</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартный вид</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Изометрическая</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Установить изометрический вид</translation>
     </message>
   </context>
   <context>
@@ -6606,11 +6881,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Issue camera position</source>
-      <translation>Выделение позиции камеры</translation>
+      <translation>Выводить положения камеры</translation>
     </message>
     <message>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-      <translation>Выделение положения камеры на консоль и макрос для легкого воспроизведения позиции</translation>
+      <translation>Выведение положения камеры на консоль и в макрос для легкого воспроизведения позиции</translation>
     </message>
   </context>
   <context>
@@ -6625,7 +6900,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Columns</source>
-      <translation>Режим стерео - чередующиеся столбцы (Interleaved Columns)</translation>
+      <translation>Стерео режим - чередующиеся столбцы (Interleaved Columns)</translation>
     </message>
   </context>
   <context>
@@ -6640,7 +6915,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Rows</source>
-      <translation>Режим стерео - чередующиеся строки (Interleaved Rows)</translation>
+      <translation>Стерео режим - чередующиеся строки (Interleaved Rows)</translation>
     </message>
   </context>
   <context>
@@ -6655,7 +6930,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switch stereo viewing off</source>
-      <translation>Выключить стерео показ</translation>
+      <translation>Выключить режим стерео просмотра</translation>
     </message>
   </context>
   <context>
@@ -6666,11 +6941,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Stereo quad buffer</source>
-      <translation>Стерео квадро-буфер</translation>
+      <translation>Четверная буферизация стерео</translation>
     </message>
     <message>
       <source>Switch stereo viewing to quad buffer</source>
-      <translation>Режим стерео - четверной буфер (quad buffer)</translation>
+      <translation>Стерео режим четверной буферизации (quad buffer)</translation>
     </message>
   </context>
   <context>
@@ -6685,7 +6960,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switch stereo viewing to red/cyan</source>
-      <translation>Режим стерео - красный/синий</translation>
+      <translation>Стерео режим - красный/синий</translation>
     </message>
   </context>
   <context>
@@ -6779,6 +7054,21 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартный вид</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Триметрическая</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Установить триметрический вид</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewVR</name>
     <message>
       <source>Standard-View</source>
@@ -6790,7 +7080,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-      <translation>Расширить окно 3D FreeCAD в Oculus Rift</translation>
+      <translation>Расширить трёхмерное окно FreeCAD в Oculus Rift</translation>
     </message>
   </context>
   <context>
@@ -6842,11 +7132,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Workbench</source>
-      <translation>Рабочее окружение</translation>
+      <translation>Верстак</translation>
     </message>
     <message>
       <source>Switch between workbenches</source>
-      <translation>Переключение рабочего окружения</translation>
+      <translation>Переключение верстака</translation>
     </message>
   </context>
   <context>
@@ -6872,7 +7162,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Orthographic view</source>
-      <translation>Параллельная проекция</translation>
+      <translation>Ортогональная проекция</translation>
     </message>
     <message>
       <source>Switches to orthographic view mode</source>
@@ -6891,7 +7181,67 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switches to perspective view mode</source>
-      <translation>Переключение в перспективный просмотр</translation>
+      <translation>Переключение в режим просмотра перспективной проекции</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Вид</translation>
+    </message>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>Свернуть/Развернуть</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>Развернуть активный документ и свернуть все остальные</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Вид</translation>
+    </message>
+    <message>
+      <source>Multi Document</source>
+      <translation>Многокомпонентный документ</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Показать все документы в окне дерева документа</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Вид</translation>
+    </message>
+    <message>
+      <source>Single Document</source>
+      <translation>Одиночный документ</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Показывать только активный документ в окне дерева документа</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeViewDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Вид</translation>
+    </message>
+    <message>
+      <source>Document Tree</source>
+      <translation>Дерево документа</translation>
+    </message>
+    <message>
+      <source>Set visibility of inactive documents in tree view</source>
+      <translation>Установить видимость неактивных документов в окне дерева документа</translation>
     </message>
   </context>
   <context>
@@ -6913,11 +7263,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Docked</source>
-      <translation>Встроенное</translation>
+      <translation>Закрепленное</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Отображать активный вид в полноэкранном режиме, встроенном окне или в отдельном окне</translation>
+      <translation>Отображать активный вид в полноэкранном, закрепленном и откреплённом режиме</translation>
     </message>
   </context>
   <context>
@@ -6932,7 +7282,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Отображать активный вид в полноэкранном режиме, встроенном окне или в отдельном окне</translation>
+      <translation>Отображать активный вид в полноэкранном, закрепленном и откреплённом режиме</translation>
     </message>
   </context>
   <context>
@@ -6947,7 +7297,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Отображать активный вид в полноэкранном режиме, встроенном окне или в отдельном окне</translation>
+      <translation>Отображать активный вид в полноэкранном, закрепленном и откреплённом режиме</translation>
     </message>
   </context>
   <context>
@@ -6962,7 +7312,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Creates a screenshot of the active view</source>
-      <translation>Создает скриншот активного просмотра</translation>
+      <translation>Создает скриншот активного вида</translation>
     </message>
   </context>
   <context>
@@ -6973,11 +7323,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Undocked</source>
-      <translation>Отдельное</translation>
+      <translation>Откреплённое</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Отображать активный вид в полноэкранном режиме, встроенном окне или в отдельном окне</translation>
+      <translation>Отображать активный вид в полноэкранном, закрепленном и откреплённом режиме</translation>
     </message>
   </context>
   <context>
@@ -7005,20 +7355,20 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>Object dependencies</source>
-      <translation>Зависимости объектов</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation>Эти элементы связаны с элементами, выбранными для удаления, что может привести к сбою.</translation>
     </message>
     <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
-
-</source>
-      <translation>Последующие ссылки на объекты могут быть нарушены.
-
-Уверены ли Вы, что хотите продолжить?
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Эти элементы выбраны для удаления, но не находятся в активном документе.</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Вы уверены, что хотите продолжить?</translation>
+    </message>
+    <message>
+      <source>Delete Selection Issues</source>
+      <translation>Удалить выделенные проблемы</translation>
     </message>
   </context>
   <context>
@@ -7065,7 +7415,7 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>Hidden line</source>
-      <translation>Скрытая линия</translation>
+      <translation>Скрытые линии</translation>
     </message>
     <message>
       <source>Hidden line mode</source>
@@ -7089,8 +7439,8 @@ Are you sure you want to continue?
     <message>
       <source>The selected objects have a dependency to unselected objects.
 Do you want to duplicate them, too?</source>
-      <translation>Выбранные объекты зависят от других невыбранных объектов.
-Вы хотите дублировать эти объекты тоже?</translation>
+      <translation>Выделенные объекты зависят от других объектов, которые не выделены.
+Сделать ли копии этих исходных объектов?</translation>
     </message>
   </context>
   <context>
@@ -7115,11 +7465,55 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Revert document</source>
-      <translation>Возврат документа</translation>
+      <translation>Возврат состояния документа</translation>
     </message>
     <message>
       <source>Do you want to continue?</source>
-      <translation>Вы хотите продолжить?</translation>
+      <translation>Хотите ли вы продолжить?</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>Изометрическая</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>Установить навигационный куб в изометрический режим</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Ортогональный</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Установить вид в ортогональный режим</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Перспектива</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Установить вид в режим перспективной проекции</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Вписать в окно просмотра</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Показать модель во весь вид</translation>
     </message>
   </context>
   <context>
@@ -7154,11 +7548,11 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>&amp;Tools</source>
-      <translation>Панели инструментов</translation>
+      <translation>&amp;Инструменты</translation>
     </message>
     <message>
       <source>&amp;Macro</source>
-      <translation>Макро</translation>
+      <translation>Макросы</translation>
     </message>
     <message>
       <source>&amp;Windows</source>
@@ -7178,7 +7572,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Макрокоманда</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>View</source>
@@ -7209,7 +7603,7 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Создано для Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>

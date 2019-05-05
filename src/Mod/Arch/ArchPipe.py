@@ -185,7 +185,7 @@ class _ArchPipe(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Pipe Segment"
+        obj.IfcType = "Pipe Segment"
 
     def setProperties(self,obj):
 
@@ -314,7 +314,7 @@ class _ArchPipeConnector(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Pipe Fitting"
+        obj.IfcType = "Pipe Fitting"
 
     def setProperties(self,obj):
 

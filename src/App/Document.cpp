@@ -599,6 +599,10 @@ void Document::exportGraphviz(std::ostream& out) const
             //setup the origin if available
             if(cs->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
                 auto origin = cs->getExtensionByType<OriginGroupExtension>()->Origin.getValue();
+                if (!origin) {
+                    std::cerr << "Origin feature not found" << std::endl;
+                    return;
+                }
                 auto& osub = sub.create_subgraph();
                 GraphList[origin] = &osub;
                 get_property(osub, graph_name) = getClusterName(origin);

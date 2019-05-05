@@ -78,9 +78,9 @@ class _CommandSelectLoop:
             PathLog.error(exc)
             traceback.print_exc(exc)
             return False
-        
+
     def Activated(self):
-        from PathScripts.PathUtils import loopdetect
+        #from PathScripts.PathUtils import loopdetect
         from PathScripts.PathUtils import horizontalEdgeLoop
         from PathScripts.PathUtils import horizontalFaceLoop
         sel = FreeCADGui.Selection.getSelectionEx()[0]
@@ -123,6 +123,31 @@ class _CommandSelectLoop:
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_SelectLoop', _CommandSelectLoop())
 
+class _ToggleOperation:
+    "command definition to toggle Operation Active state"
+    def GetResources(self):
+        return {'Pixmap': 'Path-OpActive',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_OpActiveToggle", "Toggle the Active State of the Operation"),
+                'Accel': "P, X",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_OpActiveToggle", "Toggle the Active State of the Operation"),
+                'CmdType': "ForEdit"}
+
+    def IsActive(self):
+        if bool(FreeCADGui.Selection.getSelection()) is False:
+            return False
+        try:
+            obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+            return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
+        except:
+            return False
+
+    def Activated(self):
+        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+        obj.Active = not(obj.Active)
+        FreeCAD.ActiveDocument.recompute()
+
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Path_OpActiveToggle', _ToggleOperation())
 
 class _CopyOperation:
     "the Path Copy Operation command definition"

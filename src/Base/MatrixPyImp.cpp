@@ -395,6 +395,16 @@ PyObject* MatrixPy::multiply(PyObject * args)
     return 0;
 }
 
+PyObject* MatrixPy::multVec(PyObject * args)
+{
+    PyObject *obj;
+    if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &obj))
+        return NULL;
+    Base::Vector3d vec(static_cast<VectorPy*>(obj)->value());
+    getMatrixPtr()->multVec(vec, vec);
+    return new VectorPy(new Vector3d(vec));
+}
+
 PyObject* MatrixPy::invert(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))

@@ -80,6 +80,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView,QWid
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
+    action->setShortcut(QString::fromLatin1("Del"));
     ui->listWidgetReferences->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);

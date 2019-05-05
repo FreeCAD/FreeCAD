@@ -33,9 +33,9 @@
 # include <Geom_Surface.hxx>
 # include <Precision.hxx>
 # include <Standard_Failure.hxx>
-#endif
 
-#include <boost/uuid/uuid_io.hpp>
+# include <boost/uuid/uuid_io.hpp>
+#endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/Matrix.h>
@@ -114,7 +114,7 @@ PyObject* GeometryPy::rotate(PyObject *args)
 
     rot.getValue(dir, angle);
     pnt = plm->getPosition();
-    
+
     gp_Ax1 ax1(gp_Pnt(pnt.x,pnt.y,pnt.z), gp_Dir(dir.x,dir.y,dir.z));
     getGeometryPtr()->handle()->Rotate(ax1, angle);
     Py_Return;
@@ -131,7 +131,7 @@ PyObject* GeometryPy::scale(PyObject *args)
         getGeometryPtr()->handle()->Scale(pnt, scale);
         Py_Return;
     }
-    
+
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!d", &PyTuple_Type,&o, &scale)) {
         vec = Base::getVectorFromTuple<double>(o);
@@ -212,6 +212,33 @@ PyObject* GeometryPy::copy(PyObject *args)
     return cpy;
 }
 
+PyObject* GeometryPy::clone(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    Part::Geometry* geom = this->getGeometryPtr();
+    PyTypeObject* type = this->GetType();
+    PyObject* cpy = 0;
+    // let the type object decide
+    if (type->tp_new)
+        cpy = type->tp_new(type, this, 0);
+    if (!cpy) {
+        PyErr_SetString(PyExc_TypeError, "failed to create clone of geometry");
+        return 0;
+    }
+
+    Part::GeometryPy* geompy = static_cast<Part::GeometryPy*>(cpy);
+    // the PyMake function must have created the corresponding instance of the 'Geometry' subclass
+    // so delete it now to avoid a memory leak
+    if (geompy->_pcTwinPointer) {
+        Part::Geometry* clone = static_cast<Part::Geometry*>(geompy->_pcTwinPointer);
+        delete clone;
+    }
+    geompy->_pcTwinPointer = geom->clone();
+    return cpy;
+}
+
 Py::Boolean GeometryPy::getConstruction(void) const
 {
     return Py::Boolean(getGeometryPtr()->Construction);
@@ -279,5 +306,5 @@ PyObject *GeometryPy::getCustomAttributes(const char* /*attr*/) const
 
 int GeometryPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

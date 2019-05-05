@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>521</width>
-    <height>716</height>
+    <height>771</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>TechDraw 2</string>
+   <string>TechDraw Dimensions</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
    <item row="0" column="0">
@@ -24,6 +24,9 @@
        <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,0">
         <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="cbShowUnits">
+          <property name="toolTip">
+           <string>Append unit to Dimension text</string>
+          </property>
           <property name="text">
            <string>Show Units</string>
           </property>
@@ -35,15 +38,18 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
            <string>Color</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="2">
+        <item row="5" column="2">
          <widget class="Gui::PrefColorButton" name="colDimColor">
+          <property name="toolTip">
+           <string>Dimension text color</string>
+          </property>
           <property name="color">
            <color>
             <red>0</red>
@@ -59,14 +65,14 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
            <string>Font Size</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="4" column="1">
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -86,26 +92,29 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="label_12">
           <property name="text">
            <string>Arrow Size</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
            <string>Diameter Symbol</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="2">
+        <item row="6" column="2">
          <widget class="Gui::PrefLineEdit" name="leDiameter">
           <property name="font">
            <font>
             <pointsize>12</pointsize>
            </font>
+          </property>
+          <property name="toolTip">
+           <string>Character to use to indicate Diameter dimension</string>
           </property>
           <property name="text">
            <string>⌀</string>
@@ -123,6 +132,9 @@
         </item>
         <item row="1" column="0">
          <widget class="Gui::PrefCheckBox" name="cbGlobalDecimals">
+          <property name="toolTip">
+           <string>Use system setting for decimal places.</string>
+          </property>
           <property name="text">
            <string>Use Global Decimals</string>
           </property>
@@ -137,7 +149,7 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="2">
+        <item row="7" column="2">
          <widget class="Gui::PrefComboBox" name="pcbArrow">
           <property name="toolTip">
            <string>Preferred arrowhead style</string>
@@ -206,7 +218,7 @@
           </item>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_9">
           <property name="text">
            <string>Arrow Style</string>
@@ -215,6 +227,9 @@
         </item>
         <item row="2" column="2">
          <widget class="Gui::PrefSpinBox" name="sbAltDecimals">
+          <property name="toolTip">
+           <string>Number of decimal places if not using Global Decimals</string>
+          </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -229,7 +244,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="2">
+        <item row="4" column="2">
          <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize">
           <property name="toolTip">
            <string>Dimension font size in units</string>
@@ -245,7 +260,7 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="2">
+        <item row="8" column="2">
          <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize">
           <property name="toolTip">
            <string>Dimension arrowhead size in units</string>
@@ -258,6 +273,26 @@
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_15">
+          <property name="text">
+           <string>Default Format</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="Gui::PrefLineEdit" name="leformatSpec">
+          <property name="toolTip">
+           <string>Custom format for Dimension text</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>formatSpec</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
           </property>
          </widget>
         </item>
@@ -276,6 +311,9 @@
        <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,0,0">
         <item row="3" column="2">
          <widget class="Gui::PrefColorButton" name="colCenterLine">
+          <property name="toolTip">
+           <string>Color for centerlines</string>
+          </property>
           <property name="color">
            <color>
             <red>175</red>
@@ -316,6 +354,9 @@
         </item>
         <item row="1" column="2">
          <widget class="Gui::PrefComboBox" name="pcbMatting">
+          <property name="toolTip">
+           <string>Round or Square outline in Detail view</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>MattingStyle</cstring>
           </property>
@@ -357,6 +398,9 @@
         </item>
         <item row="2" column="2">
          <widget class="Gui::PrefComboBox" name="pcbCenterStyle">
+          <property name="toolTip">
+           <string>Line type for centerlines</string>
+          </property>
           <property name="currentIndex">
            <number>2</number>
           </property>
@@ -457,6 +501,9 @@
         </item>
         <item row="5" column="2">
          <widget class="Gui::PrefColorButton" name="colSectionLine">
+          <property name="toolTip">
+           <string>Line color for sectionlines</string>
+          </property>
           <property name="color">
            <color>
             <red>175</red>
@@ -494,6 +541,9 @@
         </item>
         <item row="0" column="2">
          <widget class="Gui::PrefLineEdit" name="leLineGroup">
+          <property name="toolTip">
+           <string>Name of entry in LineGroup CSV file</string>
+          </property>
           <property name="text">
            <string notr="true">FC 0.70mm</string>
           </property>
@@ -514,6 +564,9 @@
         </item>
         <item row="7" column="2">
          <widget class="Gui::PrefColorButton" name="pcb_VertexColor">
+          <property name="toolTip">
+           <string>Vertex display color</string>
+          </property>
           <property name="color">
            <color>
             <red>150</red>

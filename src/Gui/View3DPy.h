@@ -35,6 +35,24 @@ namespace Gui {
 
 class View3DInventor;
 
+class Camera
+{
+public:
+    enum Orientation {
+        Top,
+        Bottom,
+        Front,
+        Rear,
+        Left,
+        Right,
+        Isometric,
+        Dimetric,
+        Trimetric,
+    };
+
+    static SbRotation rotation(Orientation view);
+};
+
 class View3DInventorPy : public Py::PythonExtension<View3DInventorPy>
 {
 public:
@@ -56,7 +74,10 @@ public:
     Py::Object viewRear(const Py::Tuple&);
     Py::Object viewRight(const Py::Tuple&);
     Py::Object viewTop(const Py::Tuple&);
-    Py::Object viewAxonometric(const Py::Tuple&);
+    Py::Object viewIsometric(const Py::Tuple&);
+    Py::Object viewDimetric(const Py::Tuple&);
+    Py::Object viewTrimetric(const Py::Tuple&);
+    Py::Object viewDefaultOrientation(const Py::Tuple&);
     Py::Object viewPosition(const Py::Tuple&);
     Py::Object viewRotateLeft(const Py::Tuple&);
     Py::Object viewRotateRight(const Py::Tuple&);

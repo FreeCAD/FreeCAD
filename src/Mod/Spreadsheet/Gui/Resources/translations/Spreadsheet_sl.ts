@@ -102,8 +102,8 @@
       <translation>Poravnaj navpično sredinsko</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Poravnaj vsebino izbranih celic navpično sredinsko</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Poravnaj vsebino izbranih celic na sredino navpično</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Podčrtaj besedilo</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Nastavi podčrtano besedilo za izbrane celice</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Podčrtano besedilo v izbranih celicah</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Po meri</translation>
+      <source>Custom Color</source>
+      <translation>Barva po meri</translation>
     </message>
   </context>
   <context>
@@ -257,7 +257,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Vodoravno</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Navpično</translation>
     </message>
     <message>
       <source>Top</source>
@@ -359,11 +359,11 @@
     <name>QtColorPicker</name>
     <message>
       <source>Black</source>
-      <translation>Črna</translation>
+      <translation>Črno</translation>
     </message>
     <message>
       <source>White</source>
-      <translation>Bela</translation>
+      <translation>Belo</translation>
     </message>
     <message>
       <source>Red</source>

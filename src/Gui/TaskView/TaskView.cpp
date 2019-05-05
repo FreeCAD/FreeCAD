@@ -25,9 +25,11 @@
 
 #ifndef _PreComp_
 # include <boost/bind.hpp>
+# include <QAbstractSpinBox>
 # include <QActionEvent>
 # include <QApplication>
 # include <QCursor>
+# include <QLineEdit>
 # include <QPointer>
 # include <QPushButton>
 # include <QTimer>
@@ -414,6 +416,40 @@ TaskView::~TaskView()
     connectApplicationUndoDocument.disconnect();
     connectApplicationRedoDocument.disconnect();
     Gui::Selection().Detach(this);
+}
+
+bool TaskView::event(QEvent* event)
+{
+    // Workaround for a limitation in Qt (#0003794)
+    // Line edits and spin boxes don't handle the key combination
+    // Shift+Keypad button (if NumLock is activated)
+    if (event->type() == QEvent::ShortcutOverride) {
+        QWidget* focusWidget = qApp->focusWidget();
+        bool isLineEdit = qobject_cast<QLineEdit*>(focusWidget);
+        bool isSpinBox = qobject_cast<QAbstractSpinBox*>(focusWidget);
+
+        if (isLineEdit || isSpinBox) {
+            QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
+            Qt::KeyboardModifiers ShiftKeypadModifier = Qt::ShiftModifier | Qt::KeypadModifier;
+            if (kevent->modifiers() == Qt::NoModifier ||
+                kevent->modifiers() == Qt::ShiftModifier ||
+                kevent->modifiers() == Qt::KeypadModifier ||
+                kevent->modifiers() == ShiftKeypadModifier) {
+                switch (kevent->key()) {
+                case Qt::Key_Delete:
+                case Qt::Key_Home:
+                case Qt::Key_End:
+                case Qt::Key_Backspace:
+                case Qt::Key_Left:
+                case Qt::Key_Right:
+                    kevent->accept();
+                default:
+                    break;
+                }
+            }
+        }
+    }
+    return QScrollArea::event(event);
 }
 
 void TaskView::keyPressEvent(QKeyEvent* ke)

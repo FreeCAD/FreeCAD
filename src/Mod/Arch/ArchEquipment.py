@@ -277,7 +277,7 @@ class _Equipment(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         obj.Proxy = self
         self.setProperties(obj)
-        obj.IfcRole = "Furniture"
+        obj.IfcType = "Furniture"
 
     def setProperties(self,obj):
 

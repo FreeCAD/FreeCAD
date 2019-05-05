@@ -31,7 +31,7 @@
     <message>
       <location filename="../../Instance.py" line="69"/>
       <source>Ship draft [m]</source>
-      <translation>Projeto do navio [m]</translation>
+      <translation>Calado do navio [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="79"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../Instance.py" line="87"/>
       <source>Set of weight instances</source>
-      <translation>Conjunto de instâncias de peso</translation>
+      <translation>Conjunto de instâncias de lastro</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="95"/>
@@ -72,7 +72,7 @@
     <message>
       <location filename="../../ShipGui.py" line="60"/>
       <source>Create a new ship</source>
-      <translation>Criar um novo navio</translation>
+      <translation>Criar um novo barco</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="63"/>
@@ -103,7 +103,7 @@
     <message>
       <location filename="../../ShipGui.py" line="46"/>
       <source>Load an example ship hull geometry.</source>
-      <translation>Carrega um exemplo de casco de navio.</translation>
+      <translation>Carregar um exemplo de casco de navio.</translation>
     </message>
   </context>
   <context>
@@ -418,7 +418,7 @@
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="216"/>
       <source>Create a new ship</source>
-      <translation>Criar um novo navio</translation>
+      <translation>Criar um novo barco</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="220"/>

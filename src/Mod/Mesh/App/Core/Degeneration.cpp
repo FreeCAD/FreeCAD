@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <map>
+# include <queue>
 #endif
 
 #include "Degeneration.h"
@@ -505,15 +506,110 @@ bool MeshFixDegeneratedFacets::Fixup()
     return true;
 }
 
-unsigned long MeshFixDegeneratedFacets::RemoveEdgeTooSmall (float fMinEdgeLength, float fMinEdgeAngle)
+bool MeshRemoveNeedles::Fixup()
 {
+    typedef std::pair<unsigned long, int> FaceEdge; // (face, edge) pair
+    typedef std::pair<float, FaceEdge> FaceEdgePriority;
+
+    MeshTopoAlgorithm topAlg(_rclMesh);
+    MeshRefPointToFacets vf_it(_rclMesh);
+    const MeshFacetArray &rclFAry = _rclMesh.GetFacets();
+    const MeshPointArray &rclPAry = _rclMesh.GetPoints();
+    rclFAry.ResetInvalid();
+    rclPAry.ResetInvalid();
+    rclPAry.ResetFlag(MeshPoint::VISIT);
+    std::size_t facetCount = rclFAry.size();
+
+    std::priority_queue<FaceEdgePriority,
+                        std::vector<FaceEdgePriority>,
+                        std::greater<FaceEdgePriority> > todo;
+    for (std::size_t index = 0; index < facetCount; index++) {
+        const MeshFacet& facet = rclFAry[index];
+        MeshGeomFacet tria(_rclMesh.GetFacet(facet));
+        float perimeter = tria.Perimeter();
+        float fMinLen = perimeter * fMinEdgeLength;
+        for (int i=0; i<3; i++) {
+            const Base::Vector3f& p1 = rclPAry[facet._aulPoints[i]];
+            const Base::Vector3f& p2 = rclPAry[facet._aulPoints[(i+1)%3]];
+
+            float distance = Base::Distance(p1, p2);
+            if (distance < fMinLen) {
+                unsigned long facetIndex = static_cast<unsigned long>(index);
+                todo.push(std::make_pair(distance, std::make_pair(facetIndex, i)));
+            }
+        }
+    }
+
+    bool removedEdge = false;
+    while (!todo.empty()) {
+        FaceEdge faceedge = todo.top().second;
+        todo.pop();
+
+        // check if one of the face pairs was already processed
+        if (!rclFAry[faceedge.first].IsValid())
+            continue;
+
+        // the facet points may have changed, so check the current distance again
+        const MeshFacet& facet = rclFAry[faceedge.first];
+        MeshGeomFacet tria(_rclMesh.GetFacet(facet));
+        float perimeter = tria.Perimeter();
+        float fMinLen = perimeter * fMinEdgeLength;
+        const Base::Vector3f& p1 = rclPAry[facet._aulPoints[faceedge.second]];
+        const Base::Vector3f& p2 = rclPAry[facet._aulPoints[(faceedge.second+1)%3]];
+        float distance = Base::Distance(p1, p2);
+        if (distance >= fMinLen)
+            continue;
+
+        // collect the collapse-edge information
+        EdgeCollapse ce;
+        ce._fromPoint = rclFAry[faceedge.first]._aulPoints[faceedge.second];
+        ce._toPoint = rclFAry[faceedge.first]._aulPoints[(faceedge.second+1)%3];
+
+        ce._removeFacets.push_back(faceedge.first);
+        unsigned long neighbour = rclFAry[faceedge.first]._aulNeighbours[faceedge.second];
+        if (neighbour != ULONG_MAX)
+            ce._removeFacets.push_back(neighbour);
+
+        std::set<unsigned long> vf = vf_it[ce._fromPoint];
+        vf.erase(faceedge.first);
+        if (neighbour != ULONG_MAX)
+            vf.erase(neighbour);
+        ce._changeFacets.insert(ce._changeFacets.begin(), vf.begin(), vf.end());
+
+        // get adjacent points
+        std::set<unsigned long> vv;
+        vv = vf_it.NeighbourPoints(ce._fromPoint);
+        ce._adjacentFrom.insert(ce._adjacentFrom.begin(), vv.begin(),vv.end());
+        vv = vf_it.NeighbourPoints(ce._toPoint);
+        ce._adjacentTo.insert(ce._adjacentTo.begin(), vv.begin(),vv.end());
+
+        if (topAlg.IsCollapseEdgeLegal(ce)) {
+            topAlg.CollapseEdge(ce);
+            for (auto it : ce._removeFacets) {
+                vf_it.RemoveFacet(it);
+            }
+            for (auto it : ce._changeFacets) {
+                vf_it.RemoveNeighbour(ce._fromPoint, it);
+                vf_it.AddNeighbour(ce._toPoint, it);
+            }
+            removedEdge = true;
+        }
+    }
+
+    if (removedEdge) {
+        topAlg.Cleanup();
+        _rclMesh.RebuildNeighbours();
+    }
+
+    return true;
+#if 0
     unsigned long ulCtLastLoop, ulCtFacets = _rclMesh.CountFacets();
 
     const MeshFacetArray &rclFAry = _rclMesh.GetFacets();
     const MeshPointArray &rclPAry = _rclMesh.GetPoints();
     MeshFacetArray::_TConstIterator f_beg = rclFAry.begin();
 
-    // repeat until no facet van be removed
+    // repeat until no facet can be removed
     do {
         MeshRefPointToFacets  clPt2Facets(_rclMesh);
 
@@ -523,7 +619,7 @@ unsigned long MeshFixDegeneratedFacets::RemoveEdgeTooSmall (float fMinEdgeLength
 
         std::set<std::pair<unsigned long, unsigned long> > aclPtDelList;
 
-        MeshFacetIterator clFIter(_rclMesh), clFN0(_rclMesh), clFN1(_rclMesh), clFN2(_rclMesh);
+        MeshFacetIterator clFIter(_rclMesh);
         for (clFIter.Init(); clFIter.More(); clFIter.Next()) {
             MeshGeomFacet clSFacet = *clFIter;
             Base::Vector3f clP0  = clSFacet._aclPoints[0];
@@ -537,26 +633,26 @@ unsigned long MeshFixDegeneratedFacets::RemoveEdgeTooSmall (float fMinEdgeLength
             unsigned long    ulP1 = clFacet._aulPoints[1];
             unsigned long    ulP2 = clFacet._aulPoints[2];
 
-            if ((Base::Distance(clP0, clP1) < fMinEdgeLength) ||
-                (clE20.GetAngle(-clE12) < fMinEdgeAngle)) {
+            if (Base::Distance(clP0, clP1) < fMinEdgeLength) {
                 // delete point P1 on P0
                 aclPtDelList.insert(std::make_pair
                     (std::min<unsigned long>(ulP1, ulP0), std::max<unsigned long>(ulP1, ulP0)));
+                clFIter.SetFlag(MeshFacet::INVALID);
             }
-            else if ((Base::Distance(clP1, clP2) < fMinEdgeLength) ||
-                    (clE01.GetAngle(-clE20) < fMinEdgeAngle)) {
+            else if (Base::Distance(clP1, clP2) < fMinEdgeLength) {
                 // delete point P2 on P1
                 aclPtDelList.insert(std::make_pair
                     (std::min<unsigned long>(ulP2, ulP1), std::max<unsigned long>(ulP2, ulP1)));
+                clFIter.SetFlag(MeshFacet::INVALID);
             }
-            else if ((Base::Distance(clP2, clP0) < fMinEdgeLength) ||
-                    (clE12.GetAngle(-clE01) < fMinEdgeAngle)) {
+            else if (Base::Distance(clP2, clP0) < fMinEdgeLength) {
                 // delete point P0 on P2
                 aclPtDelList.insert(std::make_pair
                     (std::min<unsigned long>(ulP0, ulP2), std::max<unsigned long>(ulP0, ulP2)));
+                clFIter.SetFlag(MeshFacet::INVALID);
             }
         }
-
+#if 0
         // remove points, fix indices
         for (std::set<std::pair<unsigned long, unsigned long> >::iterator pI = aclPtDelList.begin();
             pI != aclPtDelList.end(); ++pI) {
@@ -588,7 +684,7 @@ unsigned long MeshFixDegeneratedFacets::RemoveEdgeTooSmall (float fMinEdgeLength
                 }
             }
         }
-
+#endif
         ulCtLastLoop = _rclMesh.CountFacets();
         _rclMesh.RemoveInvalids();
     }
@@ -596,7 +692,79 @@ unsigned long MeshFixDegeneratedFacets::RemoveEdgeTooSmall (float fMinEdgeLength
 
     _rclMesh.RebuildNeighbours();
 
-    return ulCtFacets - _rclMesh.CountFacets();
+    return ulCtFacets > _rclMesh.CountFacets();
+#endif
+}
+
+// ----------------------------------------------------------------------
+
+bool MeshFixCaps::Fixup()
+{
+    typedef std::pair<unsigned long, int> FaceVertex; // (face, vertex) pair
+    typedef std::pair<float, FaceVertex> FaceVertexPriority;
+
+    MeshTopoAlgorithm topAlg(_rclMesh);
+    const MeshFacetArray &rclFAry = _rclMesh.GetFacets();
+    const MeshPointArray &rclPAry = _rclMesh.GetPoints();
+    std::size_t facetCount = rclFAry.size();
+
+    float fCosMaxAngle = static_cast<float>(cos(fMaxAngle));
+
+    std::priority_queue<FaceVertexPriority,
+                        std::vector<FaceVertexPriority>,
+                        std::greater<FaceVertexPriority> > todo;
+    for (std::size_t index = 0; index < facetCount; index++) {
+        for (int i=0; i<3; i++) {
+            const MeshFacet& facet = rclFAry[index];
+            const Base::Vector3f& p1 = rclPAry[facet._aulPoints[i]];
+            const Base::Vector3f& p2 = rclPAry[facet._aulPoints[(i+1)%3]];
+            const Base::Vector3f& p3 = rclPAry[facet._aulPoints[(i+2)%3]];
+            Base::Vector3f dir1(p2-p1); dir1.Normalize();
+            Base::Vector3f dir2(p3-p1); dir2.Normalize();
+
+            float fCosAngle = dir1.Dot(dir2);
+            if (fCosAngle < fCosMaxAngle) {
+                unsigned long facetIndex = static_cast<unsigned long>(index);
+                todo.push(std::make_pair(fCosAngle, std::make_pair(facetIndex, i)));
+            }
+        }
+    }
+
+    while (!todo.empty()) {
+        FaceVertex facevertex = todo.top().second;
+        todo.pop();
+
+        // the facet points may have changed, so check the current distance again
+        const MeshFacet& facet = rclFAry[facevertex.first];
+        const Base::Vector3f& p1 = rclPAry[facet._aulPoints[facevertex.second]];
+        const Base::Vector3f& p2 = rclPAry[facet._aulPoints[(facevertex.second+1)%3]];
+        const Base::Vector3f& p3 = rclPAry[facet._aulPoints[(facevertex.second+2)%3]];
+        Base::Vector3f dir1(p2-p1); dir1.Normalize();
+        Base::Vector3f dir2(p3-p1); dir2.Normalize();
+
+        // check that the criterion is still OK in case
+        // an earlier edge-swap has an impact
+        float fCosAngle = dir1.Dot(dir2);
+        if (fCosAngle >= fCosMaxAngle)
+            continue;
+
+        // the triangle shouldn't be a needle, therefore the projection of the point with
+        // the maximum angle must have a clear distance to the other corner points
+        // as factor we choose a default value of 25% of the corresponding edge length
+        Base::Vector3f p4 = p1.Perpendicular(p2, p3-p2);
+        float distP2P3 = Base::Distance(p2,p3);
+        float distP2P4 = Base::Distance(p2,p4);
+        float distP3P4 = Base::Distance(p3,p4);
+        if (distP2P4/distP2P3 < fSplitFactor || distP3P4/distP2P3 < fSplitFactor)
+            continue;
+
+        unsigned long facetpos = facevertex.first;
+        unsigned long neighbour = rclFAry[facetpos]._aulNeighbours[(facevertex.second+1)%3];
+        if (neighbour != ULONG_MAX)
+            topAlg.SwapEdge(facetpos, neighbour);
+    }
+
+    return true;
 }
 
 // ----------------------------------------------------------------------
@@ -696,6 +864,34 @@ bool MeshFixDeformedFacets::Fixup()
         }
     }
 
+    return true;
+}
+
+// ----------------------------------------------------------------------
+
+bool MeshFixMergeFacets::Fixup()
+{
+    MeshCore::MeshRefPointToPoints vv_it(_rclMesh);
+    MeshCore::MeshRefPointToFacets vf_it(_rclMesh);
+    unsigned long countPoints = _rclMesh.CountPoints();
+
+    std::vector<MeshFacet> newFacets;
+    newFacets.reserve(countPoints/20); // 5% should be sufficient
+
+    MeshTopoAlgorithm topAlg(_rclMesh);
+    for (unsigned long i=0; i<countPoints; i++) {
+        if (vv_it[i].size() == 3 && vf_it[i].size() == 3) {
+            VertexCollapse vc;
+            vc._point = i;
+            const std::set<unsigned long>& adjPts = vv_it[i];
+            vc._circumPoints.insert(vc._circumPoints.begin(), adjPts.begin(), adjPts.end());
+            const std::set<unsigned long>& adjFts = vf_it[i];
+            vc._circumFacets.insert(vc._circumFacets.begin(), adjFts.begin(), adjFts.end());
+            topAlg.CollapseVertex(vc);
+        }
+    }
+
+    topAlg.Cleanup();
     return true;
 }
 

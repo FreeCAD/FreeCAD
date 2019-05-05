@@ -28,13 +28,13 @@
 # include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepAlgoAPI_Common.hxx>
-#include <BRepOffsetAPI_ThruSections.hxx>
-#include <BRepBuilderAPI_Sewing.hxx>
-#include <BRepBuilderAPI_MakeSolid.hxx>
-#include <BRepClass3d_SolidClassifier.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
-#include <TopoDS.hxx>
-#include <Precision.hxx>
+# include <BRepOffsetAPI_ThruSections.hxx>
+# include <BRepBuilderAPI_Sewing.hxx>
+# include <BRepBuilderAPI_MakeSolid.hxx>
+# include <BRepClass3d_SolidClassifier.hxx>
+# include <BRepAlgoAPI_Cut.hxx>
+# include <TopoDS.hxx>
+# include <Precision.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -68,20 +68,18 @@ short Loft::mustExecute() const
         return 1;
     if (Closed.isTouched())
         return 1;
- 
+
     return ProfileBased::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Loft::execute(void)
 {
-   
     std::vector<TopoShape> wires;
     try {
         wires = getProfileWires();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
-    
     // if the Base property has a valid shape, fuse the pipe into it
     TopoShape base;
     try {
@@ -118,7 +116,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             for(auto &wire : shape.getSubTopoShapes(TopAbs_WIRE))
                 wiresections[i++].push_back(wire);
         }
-        
+
         //build all shells
         std::vector<TopoShape> shells;
         for(auto& wires : wiresections) {
@@ -133,11 +131,11 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             mkTS.Build();
             if (!mkTS.IsDone())
                 return new App::DocumentObjectExecReturn("Loft could not be built");
-            
+
             //build the shell use simulate to get the top and bottom wires in an easy way
             shells.push_back(TopoShape(0,hasher).makEShape(mkTS,wires));
         }
-        
+
         //build the top and bottom face, sew the shell and build the final solid
         auto front = getVerifiedFace();
         if (front.isNull())
@@ -184,7 +182,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
-        
+
         if(getAddSubType() == FeatureAddSub::Additive) {
             try {
                 result = TopoShape(0,hasher).makEFuse({base,result});
@@ -215,7 +213,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
-        
+
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

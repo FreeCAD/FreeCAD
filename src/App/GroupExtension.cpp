@@ -59,7 +59,7 @@ DocumentObject* GroupExtension::addObject(const char* sType, const char* pObject
         getExtendedObject()->getDocument()->removeObject(obj->getNameInDocument());
         return nullptr;
     }
-    if (obj) addObject(obj);
+    addObject(obj);
     return obj;
 }
 
@@ -144,6 +144,15 @@ std::vector< DocumentObject* > GroupExtension::removeObjects(std::vector< Docume
 
 void GroupExtension::removeObjectsFromDocument()
 {
+#if 1
+    while (Group.getSize() > 0) {
+        // Remove the objects step by step because it can happen
+        // that an object is part of several groups and thus a
+        // double destruction could be possible
+        const std::vector<DocumentObject*> & grp = Group.getValues();
+        removeObjectFromDocument(grp.front());
+    }
+#else
     const std::vector<DocumentObject*> & grp = Group.getValues();
     // Use set so iterate on each linked object exactly one time (in case of multiple links to the same document)
     std::set<DocumentObject*> grpSet (grp.begin(), grp.end());
@@ -151,10 +160,15 @@ void GroupExtension::removeObjectsFromDocument()
     for (std::set<DocumentObject*>::iterator it = grpSet.begin(); it != grpSet.end(); ++it) {
         removeObjectFromDocument(*it);
     }
+#endif
 }
 
 void GroupExtension::removeObjectFromDocument(DocumentObject* obj)
 {
+    // check that object is not invalid
+    if (!obj || !obj->getNameInDocument())
+        return;
+
     // remove all children
     if (obj->hasExtension(GroupExtension::getExtensionClassTypeId())) {
         GroupExtension *grp = static_cast<GroupExtension*>(obj->getExtension(GroupExtension::getExtensionClassTypeId()));

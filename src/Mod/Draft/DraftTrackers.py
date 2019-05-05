@@ -379,70 +379,84 @@ class bezcurveTracker(Tracker):
     def __init__(self,dotted=False,scolor=None,swidth=None,points = []):
         self.bezcurve = None
         self.points = points
+        self.degree = None
         self.trans = coin.SoTransform()
         self.sep = coin.SoSeparator()
         self.recompute()
         Tracker.__init__(self,dotted,scolor,swidth,[self.trans,self.sep],name="bezcurveTracker")
         
-    def update(self, points):
+    def update(self, points, degree=None):
         self.points = points
+        if degree:
+            self.degree = degree
         self.recompute()
             
     def recompute(self):
+        
+        if self.bezcurve:
+            for seg in self.bezcurve:
+                self.sep.removeChild(seg)
+                seg = None
+        
+        self.bezcurve = []
+        
         if (len(self.points) >= 2):
-            if self.bezcurve: self.sep.removeChild(self.bezcurve)
-            self.bezcurve = None
-###            c =  Part.BSplineCurve()  #!!!!!!!!!!!!!!!
-            c = Part.BezierCurve()
-            # DNC: allows to close the curve by placing ends close to each other
-            if ( len(self.points) >= 3 ) and ( (self.points[0] - self.points[-1]).Length < Draft.tolerance() ):
-                # YVH: Added a try to bypass some hazardous situations
-                try:
-###                    c.interpolate(self.points[:-1], True)  #!!!!!!!!!!!!
-                       c.setPoles(self.points[:-1])
-                except Part.OCCError:
-                    pass
-            elif self.points:
-                try:
-###                   c.interpolate(self.points, False)  #!!!!!!!
-                      c.setPoles(self.points)
-                except Part.OCCError:
-                    pass
-            c = c.toShape()                              #???? c = Part.Edge(c)?, c = Part.Wire(c)??
-            buf=c.writeInventor(2,0.01)
+
+            if self.degree:
+          
+                poles=self.points[1:]
+
+                segpoleslst = [poles[x:x+self.degree] for x in range(0, len(poles), (self.degree or 1))]
+            else:
+                segpoleslst = [self.points]
+            
+            startpoint=self.points[0]
+
+                
+            for segpoles in segpoleslst:
+                c = Part.BezierCurve() #last segment may have lower degree
+                c.increase(len(segpoles))
+                c.setPoles([startpoint]+segpoles)
+                c = c.toShape()
+                startpoint = segpoles[-1]
+            
+                buf=c.writeInventor(2,0.01)
             #fp=open("spline.iv","w")
             #fp.write(buf)
             #fp.close()
-            try:
-                ivin = coin.SoInput()
-                ivin.setBuffer(buf)
-                ivob = coin.SoDB.readAll(ivin)
-            except:
-                # workaround for pivy SoInput.setBuffer() bug
-                import re
-                buf = buf.replace("\n","")
-                pts = re.findall("point \[(.*?)\]",buf)[0]
-                pts = pts.split(",")
-                pc = []
-                for p in pts:
-                    v = p.strip().split()
-                    pc.append([float(v[0]),float(v[1]),float(v[2])])
-                coords = coin.SoCoordinate3()
-                coords.point.setValues(0,len(pc),pc)
-                line = coin.SoLineSet()
-                line.numVertices.setValue(-1)
-                self.bezcurve = coin.SoSeparator()
-                self.bezcurve.addChild(coords)
-                self.bezcurve.addChild(line)
-                self.sep.addChild(self.bezcurve)
-            else:
-                if ivob and ivob.getNumChildren() > 1:
-                    self.bezcurve = ivob.getChild(1).getChild(0)
-                    self.bezcurve.removeChild(self.bezcurve.getChild(0))
-                    self.bezcurve.removeChild(self.bezcurve.getChild(0))
-                    self.sep.addChild(self.bezcurve)
+                try:
+                    ivin = coin.SoInput()
+                    ivin.setBuffer(buf)
+                    ivob = coin.SoDB.readAll(ivin)
+                except:
+                    # workaround for pivy SoInput.setBuffer() bug
+                    import re
+                    buf = buf.replace("\n","")
+                    pts = re.findall("point \[(.*?)\]",buf)[0]
+                    pts = pts.split(",")
+                    pc = []
+                    for p in pts:
+                        v = p.strip().split()
+                        pc.append([float(v[0]),float(v[1]),float(v[2])])
+                    coords = coin.SoCoordinate3()
+                    coords.point.setValues(0,len(pc),pc)
+                    line = coin.SoLineSet()
+                    line.numVertices.setValue(-1)
+                    bezcurveseg = coin.SoSeparator()
+                    bezcurveseg.addChild(coords)
+                    bezcurveseg.addChild(line)
+                    self.sep.addChild(bezcurveseg)
                 else:
-                    FreeCAD.Console.PrintWarning("bezcurveTracker.recompute() failed to read-in Inventor string\n")
+                    if ivob and ivob.getNumChildren() > 1:
+                        bezcurveseg = ivob.getChild(1).getChild(0)
+                        bezcurveseg.removeChild(bezcurveseg.getChild(0))
+                        bezcurveseg.removeChild(bezcurveseg.getChild(0))
+                        self.sep.addChild(bezcurveseg)
+                    else:
+                        FreeCAD.Console.PrintWarning("bezcurveTracker.recompute() failed to read-in Inventor string\n")
+                self.bezcurve.append(bezcurveseg)
+
+                        
 #######################################
 class arcTracker(Tracker):
     "An arc tracker"
@@ -453,6 +467,7 @@ class arcTracker(Tracker):
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])
         self.sep = coin.SoSeparator()
+        self.autoinvert = True
         if normal:
             self.normal = normal
         else:
@@ -508,7 +523,7 @@ class arcTracker(Tracker):
 
     def setEndPoint(self,pt):
         "sets the end angle from a point"
-        self.setEndAngle(self.getAngle(pt))
+        self.setEndAngle(-self.getAngle(pt))
                 
     def setApertureAngle(self,ang):
         "sets the end angle by giving the aperture angle"
@@ -521,7 +536,7 @@ class arcTracker(Tracker):
         if self.circle: 
             self.sep.removeChild(self.circle)
         self.circle = None
-        if (self.endangle < self.startangle):
+        if (self.endangle < self.startangle) or not self.autoinvert:
             c = Part.makeCircle(1,Vector(0,0,0),self.normal,self.endangle,self.startangle)
         else:
             c = Part.makeCircle(1,Vector(0,0,0),self.normal,self.startangle,self.endangle)
@@ -576,7 +591,7 @@ class ghostTracker(Tracker):
         "recreates the ghost from a new object"
         obj.ViewObject.show()
         self.finalize()
-        sep = getNode(obj)
+        sep = self.getNode(obj)
         Tracker.__init__(self,children=[self.sep])
         self.on()
         obj.ViewObject.hide()
@@ -599,6 +614,7 @@ class ghostTracker(Tracker):
 
     def getNode(self,obj):
         "returns a coin node representing the given object"
+        import Part
         if isinstance(obj,Part.Shape):
             return self.getNodeLight(obj)
         elif obj.isDerivedFrom("Part::Feature"):
@@ -611,6 +627,14 @@ class ghostTracker(Tracker):
         sep = coin.SoSeparator()
         try:
             sep.addChild(obj.ViewObject.RootNode.copy())
+            # add Part container offset
+            if hasattr(obj,"getGlobalPlacement"):
+                if obj.Placement != obj.getGlobalPlacement():
+                    if sep.getChild(0).getNumChildren() > 0:
+                        if isinstance(sep.getChild(0).getChild(0),coin.SoTransform):
+                            gpl = obj.getGlobalPlacement()
+                            sep.getChild(0).getChild(0).translation.setValue(tuple(gpl.Base))
+                            sep.getChild(0).getChild(0).rotation.setValue(gpl.Rotation.Q)
         except:
             print("ghostTracker: Error retrieving coin node (full)")
         return sep
@@ -653,7 +677,7 @@ class ghostTracker(Tracker):
 
 class editTracker(Tracker):
     "A node edit tracker"
-    def __init__(self,pos=Vector(0,0,0),name="None",idx=0,objcol=None,\
+    def __init__(self,pos=Vector(0,0,0),name=None,idx=0,objcol=None,\
             marker=FreeCADGui.getMarkerIndex("quad", 9),inactive=False):
         color = coin.SoBaseColor()
         if objcol:
@@ -668,10 +692,11 @@ class editTracker(Tracker):
             selnode = coin.SoSeparator()
         else:
             selnode = coin.SoType.fromName("SoFCSelection").createInstance()
-            selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
-            selnode.objectName.setValue(name)
-            selnode.subElementName.setValue("EditNode"+str(idx))
-            selnode.useNewSelection = False
+            if name:
+                selnode.useNewSelection = False
+                selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
+                selnode.objectName.setValue(name)
+                selnode.subElementName.setValue("EditNode"+str(idx))
         node = coin.SoAnnotation()
         selnode.addChild(self.coords)
         selnode.addChild(color)

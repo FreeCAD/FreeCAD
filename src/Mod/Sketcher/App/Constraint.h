@@ -79,24 +79,34 @@ enum PointPos { none, start, end, mid };
 
 class SketcherExport Constraint : public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     Constraint();
-    Constraint(const Constraint&);
-    virtual ~Constraint();
-    virtual Constraint *clone(void) const; // does copy the tag, it will be treated as a rename by the expression engine.
-    virtual Constraint *copy(void) const; // does not copy the tag, but generates a new one
+    // PVS V690: It is perfectly fine to use copy operator only internally
+
+    // Constraints objects explicitly not copiable with standard methods
+    // Copy constructor is private for internal use only
+    Constraint &operator =(const Constraint &a) = delete;
+
+    // Constraints objects explicitly not movable
+    Constraint(Constraint&&) = delete;
+    Constraint& operator=(Constraint&&) = delete;
+
+    virtual ~Constraint() = default;
+
+    Constraint *clone(void) const; // does copy the tag, it will be treated as a rename by the expression engine.
+    Constraint *copy(void) const; // does not copy the tag, but generates a new one
 
     static const int GeoUndef;
 
     // from base class
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
+    virtual unsigned int getMemSize(void) const override;
+    virtual void Save(Base::Writer &/*writer*/) const override;
+    virtual void Restore(Base::XMLReader &/*reader*/) override;
 
-    virtual PyObject *getPyObject(void);
-    
+    virtual PyObject *getPyObject(void) override;
+
     Base::Quantity getPresentationValue() const;
     inline void setValue(double newValue) {
         Value = newValue;
@@ -113,6 +123,9 @@ public:
     friend class PropertyConstraintList;
 
 private:
+    Constraint(const Constraint&) = default; // only for internal use
+
+private:
     double Value;
 public:
     ConstraintType Type;
@@ -127,7 +140,7 @@ public:
     float LabelDistance;
     float LabelPosition;
     bool isDriving;
-    int InternalAlignmentIndex; // Note: for InternalAlignment Type this index indexes equal internal geometry elements (e.g. index of pole in a bspline). It is not a GeoId!! 
+    int InternalAlignmentIndex; // Note: for InternalAlignment Type this index indexes equal internal geometry elements (e.g. index of pole in a bspline). It is not a GeoId!!
     bool isInVirtualSpace;
 
 protected:

@@ -61,13 +61,12 @@
 # include <Standard_Version.hxx>
 # include <GProp_GProps.hxx>
 # include <BRepGProp.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <TopExp.hxx>
+# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <BRepGProp_Face.hxx>
 #endif
-
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <TopExp.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <BRepLProp_SLProps.hxx>
-#include <BRepGProp_Face.hxx>
 
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
@@ -226,7 +225,7 @@ TopoDS_Shape ProfileBased::getVerifiedFaceOld(bool silent) const {
         err = "No profile linked";
     } else {
         if (result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-            
+
             auto wires = getProfileWiresOld();
             return Part::FaceMakerCheese::makeFace(wires);
         }
@@ -234,13 +233,13 @@ TopoDS_Shape ProfileBased::getVerifiedFaceOld(bool silent) const {
             if(Profile.getSubValues().empty())
                 err = "Linked object has no subshape specified";
             else {
-                
+
                 const Part::TopoShape& shape = Profile.getValue<Part::Feature*>()->Shape.getShape();
                 TopoDS_Shape sub = shape.getSubShape(Profile.getSubValues()[0].c_str());
-                if(sub.ShapeType() == TopAbs_FACE) 
+                if(sub.ShapeType() == TopAbs_FACE)
                     return TopoDS::Face(sub);
                 else if(sub.ShapeType() == TopAbs_WIRE) {
-                
+
                     auto wire = TopoDS::Wire(sub);
                     if(!wire.Closed())
                         err = "Linked wire is not closed";
@@ -248,13 +247,13 @@ TopoDS_Shape ProfileBased::getVerifiedFaceOld(bool silent) const {
                         BRepBuilderAPI_MakeFace mk(wire);
                         mk.Build();
                         return TopoDS::Face(mk.Shape());
-                    }                        
+                    }
                 }
-                else 
+                else
                     err = "Linked Subshape cannot be used";
             }
         }
-        else 
+        else
             err = "Linked object is neither Sketch, Part2DObject or Part::Feature";
     }
 
@@ -284,17 +283,17 @@ std::vector<TopoDS_Wire> ProfileBased::getProfileWiresOld() const {
 
     if(!Profile.getValue() || !Profile.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
         throw Base::TypeError("No valid profile linked");
-    
+
     TopoDS_Shape shape;
     if(Profile.getValue()->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         shape = Profile.getValue<Part::Part2DObject*>()->Shape.getValue();
     else {
-        if(Profile.getSubValues().empty()) 
+        if(Profile.getSubValues().empty())
             throw Base::ValueError("No valid subelement linked in Part::Feature");
 
         shape = Profile.getValue<Part::Feature*>()->Shape.getShape().getSubShape(Profile.getSubValues().front().c_str());
     }
-    
+
     if (shape.IsNull())
         throw Base::ValueError("Linked shape object is empty");
 
@@ -397,7 +396,7 @@ Part::Feature *ProfileBased::getBaseObject(bool silent) const
 
     if(!obj)
         return nullptr;
-    
+
     if (!obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         return obj;
 
@@ -1009,7 +1008,7 @@ double ProfileBased::getReversedAngle(const Base::Vector3d &b, const Base::Vecto
         return SketchNormal * cross;
     }
     catch (...) {
-        return Reversed.getValue();
+        return Reversed.getValue() ? 1 : 0;
     }
 }
 
@@ -1125,13 +1124,13 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
 
     Base::Vector3d SketchVector(0,0,1);
     auto obj = getVerifiedObject(true);
-    if(!obj) 
+    if(!obj)
         return SketchVector;
 
     // get the Sketch plane
     if(obj->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         Base::Placement SketchPos = obj->Placement.getValue();
-        Base::Rotation SketchOrientation = SketchPos.getRotation();    
+        Base::Rotation SketchOrientation = SketchPos.getRotation();
         SketchOrientation.multVec(SketchVector,SketchVector);
     }
     else {
@@ -1152,7 +1151,7 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
             }
         }
     }
-    
+
     return SketchVector;
 }
 

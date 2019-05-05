@@ -84,6 +84,8 @@ void View3DInventorViewerPy::init_type()
         "hidden. Call resetEditingRoot() to restore everything back to normal");
     add_varargs_method("resetEditingRoot", &View3DInventorViewerPy::resetEditingRoot,
         "resetEditingRoot(updateLinks=True): restore the editing ViewProvider's root node");
+    add_varargs_method("setBackgroundColor", &View3DInventorViewerPy::setBackgroundColor,
+        "setBackgroundColor(r,g,b): sets the background color of the current viewer.");
     add_varargs_method("setRedirectToSceneGraph", &View3DInventorViewerPy::setRedirectToSceneGraph,
         "setRedirectToSceneGraph(bool): enables or disables to redirect events directly to the scene graph.");
     add_varargs_method("isRedirectedToSceneGraph", &View3DInventorViewerPy::isRedirectedToSceneGraph,
@@ -417,6 +419,28 @@ Py::Object View3DInventorViewerPy::resetEditingRoot(const Py::Tuple& args)
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(Base::BaseExceptionFreeCADError,e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch(...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
+}
+
+Py::Object View3DInventorViewerPy::setBackgroundColor(const Py::Tuple& args)
+{
+    float r,g,b = 0.0;
+    if (!PyArg_ParseTuple(args.ptr(), "fff", &r, &g, &b)) {
+        throw Py::Exception();
+    }
+    try {
+        SbColor col(r,g,b);
+        _viewer->setGradientBackgroundColor(col,col);
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());

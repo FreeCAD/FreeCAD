@@ -79,19 +79,18 @@
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <Precision.hxx>
 # include <Standard_Version.hxx>
+# include <BRepOffsetAPI_ThruSections.hxx>
+# include <BSplCLib.hxx>
+# include <GeomFill_AppSurf.hxx>
+# include <GeomFill_Line.hxx>
+# include <GeomFill_Pipe.hxx>
+# include <GeomFill_SectionGenerator.hxx>
+# include <NCollection_List.hxx>
+# include <BRepFill_Filling.hxx>
 #endif
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
-
-#include <BRepOffsetAPI_ThruSections.hxx>
-#include <BSplCLib.hxx>
-#include <GeomFill_AppSurf.hxx>
-#include <GeomFill_Line.hxx>
-#include <GeomFill_Pipe.hxx>
-#include <GeomFill_SectionGenerator.hxx>
-#include <NCollection_List.hxx>
-#include <BRepFill_Filling.hxx>
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
@@ -593,7 +592,7 @@ private:
 #else
             Part::ImportStep *pcFeature = (Part::ImportStep *)pcDoc->addObject("Part::ImportStep",file.fileNamePure().c_str());
             pcFeature->FileName.setValue(Name);
-#endif 
+#endif
             pcDoc->recompute();
         }
 #if 1
@@ -646,7 +645,7 @@ private:
             // add Import feature
             Part::ImportStep *pcFeature = (Part::ImportStep *)pcDoc->addObject("Part::ImportStep",file.fileNamePure().c_str());
             pcFeature->FileName.setValue(Name);
-#endif 
+#endif
             pcDoc->recompute();
         }
 #if 1
@@ -723,7 +722,7 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(TopoShapePy::Type), &pcObj, &name))
             throw Py::Exception();
 
-        App::Document *pcDoc = App::GetApplication().getActiveDocument(); 	 
+        App::Document *pcDoc = App::GetApplication().getActiveDocument();
         if (!pcDoc)
             pcDoc = App::GetApplication().newDocument();
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObj);
@@ -752,7 +751,7 @@ private:
         BRep_Builder builder;
         TopoDS_Compound Comp;
         builder.MakeCompound(Comp);
-        
+
         try {
             Py::Sequence list(pcObj);
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -789,7 +788,7 @@ private:
         TopoDS_Shell shell;
         //BRepOffsetAPI_Sewing mkShell;
         builder.MakeShell(shell);
-        
+
         try {
             Py::Sequence list(obj);
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -1215,7 +1214,7 @@ private:
             error = "Line through identic points";
             break;
         }
-        // Error 
+        // Error
         if (error) {
             throw Py::Exception(PartExceptionOCCError, error);
         }
@@ -1870,7 +1869,7 @@ private:
         }
         else {
             PyErr_Clear();
-            if (PyArg_ParseTuple(args.ptr(), "Osd|d", &intext, 
+            if (PyArg_ParseTuple(args.ptr(), "Osd|d", &intext,
                                             &fontspec,
                                             &height,
                                             &track)) {

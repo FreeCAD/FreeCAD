@@ -57,6 +57,10 @@ m_layerName("none")
 CDxfWrite::~CDxfWrite()
 {
     delete m_ofs;
+    delete m_ssBlock;
+    delete m_ssBlkRecord;
+    delete m_ssEntity;
+    delete m_ssLayer;
 }
 
 void CDxfWrite::init(void)
@@ -1659,12 +1663,15 @@ void CDxfWrite::writeObjectsSection(void)
 CDxfRead::CDxfRead(const char* filepath)
 {
     // start the file
+    memset( m_str, '\0', sizeof(m_str) );
     memset( m_unused_line, '\0', sizeof(m_unused_line) );
     m_fail = false;
     m_aci = 0;
     m_eUnits = eMillimeters;
     m_measurement_inch = false;
     strcpy(m_layer_name, "0");  // Default layer name
+    memset( m_section_name, '\0', sizeof(m_section_name) );
+    memset( m_block_name, '\0', sizeof(m_block_name) );
     m_ignore_errors = true;
 
     m_ifs = new ifstream(filepath);
@@ -2441,7 +2448,7 @@ static bool poly_prev_found = false;
 static double poly_prev_x;
 static double poly_prev_y;
 static double poly_prev_z;
-static double poly_prev_bulge_found;
+static bool poly_prev_bulge_found = false;
 static double poly_prev_bulge;
 static bool poly_first_found = false;
 static double poly_first_x;
@@ -2814,12 +2821,9 @@ void CDxfRead::OnReadEllipse(const double* c, const double* m, double ratio, dou
 bool CDxfRead::ReadInsert()
 {
     double c[3] = {0,0,0}; // coordinate
-    double s[3] = {0,0,0}; // scale
+    double s[3] = {1,1,1}; // scale
     double rot = 0.0; // rotation
-    char name[1024];
-    s[0] = 1.0;
-    s[1] = 1.0;
-    s[2] = 1.0;
+    char name[1024] = {0};
 
     while(!((*m_ifs).eof()))
     {
@@ -3180,6 +3184,7 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
         {
             get_line();
             if (!strcmp( m_str, "SECTION" )){
+              strcpy(m_section_name, "");
               get_line();
               get_line();
               if (strcmp( m_str, "ENTITIES" ))

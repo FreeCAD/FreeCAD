@@ -68,6 +68,7 @@
 # include <QFileInfo>
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/Material.h>
 #include <Base/BoundBox.h>
 #include <Base/Exception.h>
@@ -103,6 +104,7 @@ DrawViewDetail::DrawViewDetail()
     static const char *dgroup = "Detail";
 
     ADD_PROPERTY_TYPE(BaseView ,(0),dgroup,App::Prop_None,"2D View source for this Section");
+    BaseView.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(AnchorPoint ,(0,0,0) ,dgroup,App::Prop_None,"Location of detail in BaseView");
     ADD_PROPERTY_TYPE(Radius,(10.0),dgroup, App::Prop_None, "Size of detail area");
     ADD_PROPERTY_TYPE(Reference ,("1"),dgroup,App::Prop_None,"An identifier for this detail");
@@ -157,7 +159,14 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
 
     App::DocumentObject* baseObj = BaseView.getValue();
     if (!baseObj)  {
-        Base::Console().Log("INFO - DVD::execute - No BaseView - creation?\n");
+        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
+        if (isRestoring) {
+            Base::Console().Warning("DVD::execute - No BaseView (but document is restoring) - %s\n",
+                                getNameInDocument());
+        } else {
+            Base::Console().Error("Error: DVD::execute - No BaseView(s) linked. - %s\n",
+                                  getNameInDocument());
+        }
         return DrawView::execute();
     }
 
@@ -181,11 +190,21 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     TopoDS_Shape shape;
     if (dvs != nullptr) {
         shape = dvs->getCutShape();
+    } else if (dpgi != nullptr) {
+        shape = dpgi->getSourceShapeFused();
     } else {
         shape = dvp->getSourceShapeFused();
     }
 
     if (shape.IsNull()) {
+        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
+        if (isRestoring) {
+            Base::Console().Warning("DVD::execute - source shape is invalid - (but document is restoring) - %s\n",
+                                getNameInDocument());
+        } else {
+            Base::Console().Error("Error: DVD::execute - Source shape is Null. - %s\n",
+                                  getNameInDocument());
+        }
         return new App::DocumentObjectExecReturn("DVD - Linked shape object is invalid");
     }
 
@@ -206,17 +225,6 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     gp_Ax2 vaBase;
     if (dpgi != nullptr) {
         viewAxis = dpgi->getViewAxis(shapeCenter, dirDetail);
-        vaBase = TechDrawGeometry::getViewAxis(shapeCenter,dirDetail,false);
-        if (!vaBase.Direction().IsEqual(viewAxis.Direction(), Precision::Angular())) {
-            myShape = TechDrawGeometry::rotateShape(myShape,
-                                                    viewAxis,
-                                                    180.0);
-        }
-        if (!vaBase.XDirection().IsEqual(viewAxis.XDirection(), Precision::Angular())) {
-            myShape = TechDrawGeometry::rotateShape(myShape,
-                                                    viewAxis,
-                                                    180.0);
-        }
     } else {
         viewAxis = dvp->getViewAxis(shapeCenter, dirDetail,false);
     }
@@ -280,7 +288,13 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     testBox.SetGap(0.0);
     BRepBndLib::Add(detail, testBox);
     if (testBox.IsVoid()) {
-        Base::Console().Message("DrawViewDetail - detail area contains no geometry\n");
+//        Base::Console().Warning("DrawViewDetail - detail area contains no geometry\n");
+        TechDrawGeometry::GeometryObject* go = getGeometryObject();
+        if (go != nullptr) {
+            go->clear();
+        }
+        requestPaint();
+        dvp->requestPaint();
         return new App::DocumentObjectExecReturn("DVDetail - detail area contains no geometry");
     }
 
@@ -302,9 +316,6 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),dirDetail);
 
         double shapeRotate = dvp->Rotation.getValue();                      //degrees CW?
-        if (dpgi != nullptr) {
-            shapeRotate += dpgi->getRotateAngle() * 180.0/M_PI;            // to degrees from radians
-        }
  
         if (!DrawUtil::fpCompare(shapeRotate,0.0)) {
             mirroredShape = TechDrawGeometry::rotateShape(mirroredShape,

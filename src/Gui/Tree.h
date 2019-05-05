@@ -57,9 +57,10 @@ enum HighlightMode {  Underlined,
 };
 
 /// highlight modes for the tree items
-enum TreeItemMode {  Expand,
-                     Collapse,
-                     Toggle
+enum TreeItemMode {  ExpandItem,
+                     ExpandPath,
+                     CollapseItem,
+                     ToggleItem
 };
 
 
@@ -222,6 +223,15 @@ private:
     std::string myName; // for debugging purpose
 
     friend class DocumentItem;
+
+    typedef boost::signals2::connection Connection;
+    Connection connectNewDocument;
+    Connection connectDelDocument;
+    Connection connectRenDocument;
+    Connection connectActDocument;
+    Connection connectRelDocument;
+    Connection connectShowHidden;
+    Connection connectChangedViewObj;
 };
 
 /** The link between the tree and a document.

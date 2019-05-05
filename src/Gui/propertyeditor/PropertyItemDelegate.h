@@ -47,7 +47,7 @@ public:
 
 public Q_SLOTS:
     void valueChanged();
-    void editorClosed(QWidget *);
+    void editorClosed (QWidget * editor, QAbstractItemDelegate::EndEditHint hint);
 
 private:
     mutable QWidget *expressionEditor;

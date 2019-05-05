@@ -118,9 +118,9 @@ protected:
 
 protected:
     Geometry();
-    
+
 protected:
-    boost::uuids::uuid tag;    
+    boost::uuids::uuid tag;
 
 private:
     Geometry(const Geometry&);
@@ -189,16 +189,16 @@ public:
     double curvatureAt(double u) const;
     double length(double u, double v) const;
     bool normalAt(double u, Base::Vector3d& dir) const;
-    bool intersect(GeomCurve * c, 
-                   std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points, 
+    bool intersect(GeomCurve * c,
+                   std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
                    double tol = Precision::Confusion()) const;
-    
+
     void reverse(void);
-    
+
 protected:
-    bool intersect(const Handle(Geom_Curve) c, const Handle(Geom_Curve) c2, 
-                   std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points, 
-                   double tol = Precision::Confusion()) const;    
+    static bool intersect(const Handle(Geom_Curve) c, const Handle(Geom_Curve) c2,
+                          std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
+                          double tol = Precision::Confusion());
 };
 
 class PartExport GeomBoundedCurve : public GeomCurve
@@ -245,11 +245,11 @@ class PartExport GeomBSplineCurve : public GeomBoundedCurve
 public:
     GeomBSplineCurve();
     GeomBSplineCurve(const Handle(Geom_BSplineCurve)&);
-    
+
     GeomBSplineCurve( const std::vector<Base::Vector3d>& poles, const std::vector<double>& weights,
                       const std::vector<double>& knots, const std::vector<int>& multiplicities,
                       int degree, bool periodic=false, bool checkrational = true);
-    
+
     virtual ~GeomBSplineCurve();
     virtual Geometry *copy(void) const;
 
@@ -370,10 +370,13 @@ public:
     void setHandle(const Handle(Geom_TrimmedCurve)&);
     const Handle(Geom_Geometry)& handle() const;
 
-    bool intersectBasisCurves(  const GeomTrimmedCurve * c, 
-                            std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points, 
+    bool intersectBasisCurves(  const GeomTrimmedCurve * c,
+                            std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
                             double tol = Precision::Confusion()) const;
-    
+
+    virtual void getRange(double& u, double& v) const;
+    virtual void setRange(double u, double v);
+
 protected:
     Handle(Geom_TrimmedCurve) myCurve;
 };
@@ -394,8 +397,8 @@ public:
     Base::Vector3d getStartPoint(bool emulateCCWXY) const;
     Base::Vector3d getEndPoint(bool emulateCCWXY) const;
 
-    inline virtual Base::Vector3d getStartPoint() const {return getStartPoint(false);};
-    inline virtual Base::Vector3d getEndPoint() const {return getEndPoint(false);};
+    inline virtual Base::Vector3d getStartPoint() const {return getStartPoint(false);}
+    inline virtual Base::Vector3d getEndPoint() const {return getEndPoint(false);}
     /*!
      * \deprecated use getLocation
      * \brief getCenter
@@ -411,6 +414,9 @@ public:
 
     virtual void getRange(double& u, double& v, bool emulateCCWXY) const = 0;
     virtual void setRange(double u, double v, bool emulateCCWXY) = 0;
+
+    inline virtual void getRange(double& u, double& v) const { getRange(u,v,false);}
+    inline virtual void setRange(double u, double v) { setRange(u,v,false);}
 
     bool isReversed() const;
     double getAngleXU(void) const;
@@ -446,7 +452,7 @@ public:
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
 
     const Handle(Geom_Geometry)& handle() const;
-    
+
     void setHandle(const Handle(Geom_Circle)&);
 
 private:
@@ -554,7 +560,7 @@ public:
     GeomHyperbola(const Handle(Geom_Hyperbola)&);
     virtual ~GeomHyperbola();
     virtual Geometry *copy(void) const;
-    
+
     double getMajorRadius(void) const;
     void setMajorRadius(double Radius);
     double getMinorRadius(void) const;
@@ -615,7 +621,7 @@ public:
     GeomParabola(const Handle(Geom_Parabola)&);
     virtual ~GeomParabola();
     virtual Geometry *copy(void) const;
-    
+
     double getFocal(void) const;
     void setFocal(double length);
 
@@ -645,9 +651,9 @@ public:
 
     double getFocal(void) const;
     void setFocal(double length);
-    
+
     Base::Vector3d getFocus(void) const;
-    
+
     virtual void getRange(double& u, double& v, bool emulateCCWXY) const;
     virtual void setRange(double u, double v, bool emulateCCWXY);
 
@@ -704,7 +710,7 @@ public:
     Base::Vector3d getStartPoint() const;
     Base::Vector3d getEndPoint() const;
 
-    void setPoints(const Base::Vector3d& p1, 
+    void setPoints(const Base::Vector3d& p1,
                    const Base::Vector3d& p2);
 
     // Persistence implementer ---------------------
@@ -1055,7 +1061,7 @@ private:
 
 
 // Helper functions for fillet tools
-PartExport 
+PartExport
 bool find2DLinesIntersection(const Base::Vector3d &orig1, const Base::Vector3d &dir1,
                              const Base::Vector3d &orig2, const Base::Vector3d &dir2,
                              Base::Vector3d &point);

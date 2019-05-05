@@ -28,6 +28,7 @@
 # include <QInputDialog>
 # include <Inventor/C/basic.h>
 # include <Inventor/nodes/SoCamera.h>
+# include <TopExp_Explorer.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -52,7 +53,7 @@
 #include "Utils.h"
 #include "TaskFeaturePick.h"
 #include "WorkflowManager.h"
-#include <TopExp_Explorer.hxx>
+
 
 
 //===========================================================================
@@ -364,7 +365,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
         } else {
             // Huh? nothing to migrate?
             QMessageBox::warning ( 0, QObject::tr ( "Nothing to migrate" ),
-                    QObject::tr ( "No PartDesign features which doesn't belong to a body found."
+                    QObject::tr ( "No PartDesign features found that don't belong to a body."
                         " Nothing to migrate." ) );
         }
         return;
@@ -908,6 +909,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
 
     openCommand("Move an object inside tree");
 
+    App::DocumentObject* lastObject = nullptr;
     for ( auto feat: features ) {
         if ( feat == target ) continue;
 
@@ -916,6 +918,9 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
         // TODO: warn the user if we are moving an object to some place before the object's link (2015-08-07, Fat-Zer)
         FCMD_OBJ_CMD(body,"removeObject(" << getObjectCmd(feat) << ")");
         FCMD_OBJ_CMD(body,"insertObject(" << getObjectCmd(feat) << ","<< getObjectCmd(target) << ", True)");
+
+        if (!lastObject)
+            lastObject = feat;
     }
 
     // Dependency order check.
@@ -957,6 +962,22 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
         abortCommand();
         return;
     }
+
+    // If the selected objects have been moved after the current tip then ask the
+    // user if he wants the last object to be the new tip.
+    if (lastObject && body->Tip.getValue() == target) {
+        QMessageBox msgBox(Gui::getMainWindow());
+        msgBox.setIcon(QMessageBox::Question);
+        msgBox.setWindowTitle(qApp->translate("PartDesign_MoveFeatureInTree","Move tip"));
+        msgBox.setText(qApp->translate("PartDesign_MoveFeatureInTree","The moved feature appears after the currently set tip."));
+        msgBox.setInformativeText(qApp->translate("PartDesign_MoveFeatureInTree","Do you want the last feature to be the new tip?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        int ret = msgBox.exec();
+        if (ret == QMessageBox::Yes)
+            FCMD_OBJ_CMD(body,"Tip = " << getObjectCmd(lastObject));
+    }
+
     updateActive();
 }
 

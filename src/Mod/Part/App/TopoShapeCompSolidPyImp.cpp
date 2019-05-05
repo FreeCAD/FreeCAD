@@ -22,9 +22,12 @@
 
 
 #include "PreCompiled.h"
-#include <BRep_Builder.hxx>
-#include <Standard_Failure.hxx>
-#include <TopoDS_CompSolid.hxx>
+
+#ifndef _PreComp_
+# include <BRep_Builder.hxx>
+# include <Standard_Failure.hxx>
+# include <TopoDS_CompSolid.hxx>
+#endif
 
 #include "OCCError.h"
 #include "TopoShape.h"
@@ -123,5 +126,5 @@ PyObject *TopoShapeCompSolidPy::getCustomAttributes(const char* /*attr*/) const
 
 int TopoShapeCompSolidPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

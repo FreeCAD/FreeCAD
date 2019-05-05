@@ -36,7 +36,7 @@
 
 using namespace TechDrawGui;
 
-QGCustomImage::QGCustomImage()
+QGCustomImage::QGCustomImage() 
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
@@ -72,6 +72,12 @@ bool QGCustomImage::load(QString fileSpec)
     prepareGeometryChange();
     setPixmap(m_px);
     return(success);
+}
+
+QSize QGCustomImage::imageSize(void)
+{
+    QSize result = m_px.size();
+    return result;
 }
 
 void QGCustomImage::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

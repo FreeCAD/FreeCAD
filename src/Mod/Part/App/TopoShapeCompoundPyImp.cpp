@@ -24,13 +24,16 @@
 #include "PreCompiled.h"
 
 #include "TopoShape.h"
-#include <BRep_Builder.hxx>
-#include <Standard_Failure.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
-#include <ShapeAnalysis_FreeBounds.hxx>
-#include <Precision.hxx>
-#include <TopExp_Explorer.hxx>
+#ifndef _PreComp_
+# include <BRep_Builder.hxx>
+# include <Standard_Failure.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
+# include <Precision.hxx>
+# include <TopExp_Explorer.hxx>
+#endif
+
 #include "TopoShapeOpCode.h"
 #include "PartPyCXX.h"
 #include "OCCError.h"
@@ -135,7 +138,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
             hEdges->Append(xp.Current());
 
         ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, tol, PyObject_IsTrue(shared) ? Standard_True : Standard_False, hWires);
-     
+
         TopoDS_Compound comp;
         BRep_Builder builder;
         builder.MakeCompound(comp);
@@ -157,5 +160,5 @@ PyObject *TopoShapeCompoundPy::getCustomAttributes(const char* /*attr*/) const
 
 int TopoShapeCompoundPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

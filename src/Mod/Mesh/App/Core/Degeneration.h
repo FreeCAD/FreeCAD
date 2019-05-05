@@ -324,14 +324,72 @@ public:
    * Removes degenerated facets.
    */
   bool Fixup ();
-  /**
-   * Removes all facets with an edge smaller than \a fMinEdgeLength without leaving holes or gaps
-   * in the mesh. Returns the number of removed facets.
-   */
-  unsigned long RemoveEdgeTooSmall (float fMinEdgeLength = MeshDefinitions::_fMinPointDistance,
-                                    float fMinEdgeAngle  = MeshDefinitions::_fMinEdgeAngle);
+
 private:
   float fEpsilon;
+};
+
+/**
+ * The MeshRemoveNeedles class tries to fix degenerations by removing needles.
+ * Needles are triangles where its longest edge is much longer than its shortest edge.
+ * https://graphics.uni-bielefeld.de/publications/vmv01.pdf
+ * @see MeshFixDegeneratedFacets
+ * @see MeshFixCaps
+ * @author Werner Mayer
+ */
+class MeshExport MeshRemoveNeedles : public MeshValidation
+{
+public:
+    /**
+     * Construction. The \arg fMinEdgeLen must be in the range of 0.0 and 0.25.
+     * It defines the amount of perimeter of a triangle for which the shortest
+     * edge is considered for removal.
+     */
+  MeshRemoveNeedles (MeshKernel &rclM, float fMinEdgeLen = 0.05f)
+      : MeshValidation(rclM), fMinEdgeLength(std::min(fMinEdgeLen, 0.25f)) {}
+  /**
+   * Destruction.
+   */
+  ~MeshRemoveNeedles () { }
+  /**
+   * Removes all facets with an edge smaller than \a fMinEdgeLength without leaving holes or gaps
+   * in the mesh.
+   */
+  bool Fixup ();
+
+private:
+  float fMinEdgeLength;
+};
+
+/**
+ * The MeshFixCaps class tries to fix degenerations by swapping the common edge of a cap
+ * and its neighbour.
+ * Caps are triangles with one angle close to 180 degree. The definitions of caps and needles
+ * are not mutually exclusive but here we only consider triangles that are caps but no needles.
+ * https://graphics.uni-bielefeld.de/publications/vmv01.pdf
+ * @see MeshFixDegeneratedFacets
+ * @see MeshRemoveNeedles
+ * @author Werner Mayer
+ */
+class MeshExport MeshFixCaps : public MeshValidation
+{
+public:
+  /**
+   * Construction. The \arg fFactor must be in the range of 0.0 and 0.5.
+   */
+  MeshFixCaps (MeshKernel &rclM, float fMaxAng = 2.61f, float fFactor = 0.25f) // ~150 degree
+      : MeshValidation(rclM), fMaxAngle(fMaxAng), fSplitFactor(fFactor) { }
+  /**
+   * Destruction.
+   */
+  ~MeshFixCaps () { }
+  /**
+   */
+  bool Fixup ();
+
+private:
+  float fMaxAngle;
+  float fSplitFactor;
 };
 
 /**
@@ -362,8 +420,8 @@ public:
   std::vector<unsigned long> GetIndices() const;
 
 private:
-  float fMinAngle;
-  float fMaxAngle;
+  float fMinAngle; /**< If an angle of a facet is lower than fMinAngle it's considered as deformed. */
+  float fMaxAngle; /**< If an angle of a facet is higher than fMaxAngle it's considered as deformed. */
 };
 
 /**
@@ -392,10 +450,36 @@ public:
   bool Fixup ();
 
 private:
-  float fMinAngle;
-  float fMaxAngle;
-  float fMaxSwapAngle;
+  float fMinAngle; /**< If an angle of a facet is lower than fMinAngle it's considered as deformed. */
+  float fMaxAngle; /**< If an angle of a facet is higher than fMaxAngle it's considered as deformed. */
+  float fMaxSwapAngle; /**< A swap edge is only allowed if the angle of both normals doesn't exceed fMaxSwapAngle */
   float fEpsilon;
+};
+
+/**
+ * The MeshFixMergeFacets class removes vertexes which have three adjacent vertexes and is referenced by three facets.
+ * Usually all the three facets that reference this vertex are not well-formed. If the number of adjacent vertexes
+ * is equal to the number of adjacent facets the affected vertex never lies on the boundary and thus it's safe to delete
+ * and replace the three facets with a single facet.
+ * Effectively this algorithm does the opposite of \ref MeshTopoAlgorithm::InsertVertex
+ * @author Werner Mayer
+ */
+class MeshExport MeshFixMergeFacets : public MeshValidation
+{
+public:
+  /**
+   * Construction.
+   */
+  MeshFixMergeFacets (MeshKernel &rclM)
+      : MeshValidation(rclM) { }
+  /**
+   * Destruction.
+   */
+  ~MeshFixMergeFacets () { }
+  /**
+   * Removes deformed facets.
+   */
+  bool Fixup ();
 };
 
 /**

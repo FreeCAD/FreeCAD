@@ -50,6 +50,7 @@
 #include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/FeaturePipe.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -805,9 +806,6 @@ TaskDlgPipeParameters::~TaskDlgPipeParameters()
 
 bool TaskDlgPipeParameters::accept()
 {
-    std::string name = vp->getObject()->getNameInDocument();
-
-
     //see what to do with external references
     //check the prerequisites for the selected objects
     //the user has to decide which option we should take if external references are used
@@ -816,26 +814,26 @@ bool TaskDlgPipeParameters::accept()
   //auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
     std::vector<App::DocumentObject*> copies;
 
-    bool ext = false;
+    bool extReference = false;
     if(!pcActiveBody->hasObject(pcPipe->Spine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->Spine.getValue()))
-        ext = true;
+        extReference = true;
     else if(pcPipe->AuxillerySpine.getValue() && !pcActiveBody->hasObject(pcPipe->AuxillerySpine.getValue()) && 
             !pcActiveBody->getOrigin()->hasObject(pcPipe->AuxillerySpine.getValue()))
-            ext = true;
+            extReference = true;
     else {
         for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
             if(!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
-                ext = true;
+                extReference = true;
         }
     }
 
-    if(ext) {
-        QDialog* dia = new QDialog;
-        Ui_Dialog dlg;
-        dlg.setupUi(dia);
-        dia->setModal(true);
-        int result = dia->exec();
-        if(result == QDialog::DialogCode::Rejected)
+    if (extReference) {
+        QDialog dia(Gui::getMainWindow());
+        Ui_DlgReference dlg;
+        dlg.setupUi(&dia);
+        dia.setModal(true);
+        int result = dia.exec();
+        if (result == QDialog::DialogCode::Rejected)
             return false;
         else if(!dlg.radioXRef->isChecked()) {
 

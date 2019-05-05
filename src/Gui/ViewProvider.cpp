@@ -724,6 +724,19 @@ std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentOb
     return std::string();
 }
 
+void ViewProvider::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionCanDropObject(newValue)) {
+            ext->extensionReplaceObject(oldValue, newValue);
+            return;
+        }
+    }
+
+    throw Base::RuntimeError("ViewProvider::replaceObject: no extension for replacing object available.");
+}
+
 void ViewProvider::Restore(Base::XMLReader& reader) {
     // Because some PropertyLists type properties are stored in a separate file,
     // and is thus restored outside this function. So we rely on Gui::Document

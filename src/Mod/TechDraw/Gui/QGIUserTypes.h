@@ -9,6 +9,7 @@ QGraphicsItemEdge: 103
 QGraphicsItemFace: 104
 QGraphicsItemVertex: 105
 QGraphicsItemViewDimension : 106
+QGraphicsItemViewBalloon : 140
 QGraphicsItemDatumLabel : 107
 QGraphicsItemViewSection : 108
 QGraphicsItemArrow: 109
@@ -35,6 +36,7 @@ QGICMark: 171
 QGISectionLine: 172
 QGIDecoration: 173
 QGICenterLine: 174
+QGIDimLines: 175
 QGICaption: 180
 QGIViewImage: 200
 QGCustomImage: 201

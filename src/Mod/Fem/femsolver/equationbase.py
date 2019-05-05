@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +19,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "_Base"
+__title__ = "FreeCAD FEM solver equation base object"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 if FreeCAD.GuiUp:
@@ -114,3 +114,5 @@ class FlowViewProxy(BaseViewProxy):
 
     def getIcon(self):
         return ":/icons/fem-equation-flow.svg"
+
+##  @}

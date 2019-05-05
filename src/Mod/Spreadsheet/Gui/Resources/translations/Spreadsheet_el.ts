@@ -5,7 +5,7 @@
     <name>CmdCreateSpreadsheet</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Create spreadsheet</source>
@@ -13,14 +13,14 @@
     </message>
     <message>
       <source>Create a new spreadsheet</source>
-      <translation>Δημιουργήστε ένα νέο υπολογιστικό φύλλο</translation>
+      <translation>Δημιουργία ενός νέου υπολογιστικού φύλλου</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Align bottom</source>
@@ -28,14 +28,14 @@
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Στοίχιση κάτω τα περιεχόμενα του επιλεγμένου κελιού</translation>
+      <translation>Στοίχιση των περιεχομένων των επιλεγμένων κελιών στο κάτω άκρο</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Align center</source>
@@ -43,14 +43,14 @@
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation>Κέντρο-ευθυγράμμιση των περιεχομένων του επιλεγμένου κελιού</translation>
+      <translation>Στοίχιση των περιεχομένων των επιλεγμένων κελιών στο κέντρο</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Align left</source>
@@ -58,14 +58,14 @@
     </message>
     <message>
       <source>Left-align contents of selected cells</source>
-      <translation type="unfinished">Left-align contents of selected cells</translation>
+      <translation>Στοίχιση των περιεχομένων των επιλεγμένων κελιών στα αριστερά</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Align right</source>
@@ -73,44 +73,44 @@
     </message>
     <message>
       <source>Right-align contents of selected cells</source>
-      <translation type="unfinished">Right-align contents of selected cells</translation>
+      <translation>Στοίχιση των περιεχομένων των επιλεγμένων κελιών στα δεξιά</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Align top</source>
-      <translation>Πλήρης στοίχιση επάνω</translation>
+      <translation>Στοίχιση πάνω</translation>
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation>Στοίχιση επάνω περιεχόμενα του επιλεγμένου κελιού</translation>
+      <translation>Στοίχιση των περιεχομένων των επιλεγμένων κελιών στο πάνω άκρο</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation>Κάθετα κέντρο στοίχιση</translation>
+      <translation>Κατακόρυφη στοίχιση στο κέντρο</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Περιεχόμενα κέντρο στοίχιση κατακόρυφα του επιλεγμένου κελιού</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Export spreadsheet</source>
@@ -118,29 +118,29 @@
     </message>
     <message>
       <source>Export spreadsheet to CSV file</source>
-      <translation type="unfinished">Export spreadsheet to CSV file</translation>
+      <translation>Εξαγωγή υπολογιστικού φύλλου σε αρχείο CSV</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetImport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Import spreadsheet</source>
-      <translation type="unfinished">Import spreadsheet</translation>
+      <translation>Εισαγωγή υπολογιστικού φύλλου</translation>
     </message>
     <message>
       <source>Import CSV file into spreadsheet</source>
-      <translation type="unfinished">Import CSV file into spreadsheet</translation>
+      <translation>Εισαγωγή αρχείου CSV στο υπολογιστικό φύλλο</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Merge cells</source>
@@ -148,14 +148,14 @@
     </message>
     <message>
       <source>Merge selected cells in spreadsheet</source>
-      <translation>Συγχώνευση των επιλεγμένων κελιών σε υπολογιστικό φύλλο</translation>
+      <translation>Συγχώνευση επιλεγμένων κελιών στο υπολογιστικό φύλλο</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Set alias</source>
@@ -170,22 +170,22 @@
     <name>CmdSpreadsheetSplitCell</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Split cell</source>
-      <translation>Διαίρεση κελιού</translation>
+      <translation>Διαχωρισμός κελιού</translation>
     </message>
     <message>
       <source>Split previously merged cells in spreadsheet</source>
-      <translation type="unfinished">Split previously merged cells in spreadsheet</translation>
+      <translation>Διαχωρισμός των κελιών που είχαν προηγουμένως συγχωνευτεί στο υπολογιστικό φύλλο</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Bold text</source>
@@ -193,44 +193,44 @@
     </message>
     <message>
       <source>Set bold text in selected cells</source>
-      <translation>Ορίσετε τολμηρό κείμενο των επιλεγμένων κελιών</translation>
+      <translation>Ορισμός έντονης γραφής στα επιλεγμένα κελιά</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Italic text</source>
-      <translation>πλαγιο κειμενο</translation>
+      <translation>Πλάγια γραφή</translation>
     </message>
     <message>
       <source>Set italic text in selected cells</source>
-      <translation type="unfinished">Set italic text in selected cells</translation>
+      <translation>Ορισμός πλάγιας γραφής στα επιλεγμένα κελιά</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
       <source>Underline text</source>
-      <translation type="unfinished">Underline text</translation>
+      <translation>Υπογράμμιση κειμένου</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation type="unfinished">Set underline text in selected cells</translation>
+      <source>Underline text in selected cells</source>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Επιλογή</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -241,7 +241,7 @@
     </message>
     <message>
       <source>&amp;Color</source>
-      <translation>&amp; Χρώμα</translation>
+      <translation>Χρώμα</translation>
     </message>
     <message>
       <source>Text</source>
@@ -249,11 +249,11 @@
     </message>
     <message>
       <source>Background</source>
-      <translation>Φόντο</translation>
+      <translation>Υπόβαθρο</translation>
     </message>
     <message>
       <source>&amp;Alignment</source>
-      <translation>Εναρμόνιση</translation>
+      <translation>Στοίχιση</translation>
     </message>
     <message>
       <source>Horizontal</source>
@@ -277,7 +277,7 @@
     </message>
     <message>
       <source>Top</source>
-      <translation>Κορυφή</translation>
+      <translation>Πάνω</translation>
     </message>
     <message>
       <source>Bottom</source>
@@ -285,31 +285,31 @@
     </message>
     <message>
       <source>&amp;Style</source>
-      <translation>&amp; Στυλ</translation>
+      <translation>Τύπος μορφοποίησης</translation>
     </message>
     <message>
       <source>Bold</source>
-      <translation>Έντονοι χαρακτήρες</translation>
+      <translation>Έντονη γραφή</translation>
     </message>
     <message>
       <source>Italic</source>
-      <translation>Πλάγια</translation>
+      <translation>Πλάγια γραφή</translation>
     </message>
     <message>
       <source>Underline</source>
-      <translation>Υπογραμμισμένοι χαρακτήρες</translation>
+      <translation>Υπογράμμιση</translation>
     </message>
     <message>
       <source>&amp;Display unit</source>
-      <translation>Μονάδα επίδειξης</translation>
+      <translation>Μονάδα εμφάνισης</translation>
     </message>
     <message>
       <source>Unit string</source>
-      <translation type="unfinished">Unit string</translation>
+      <translation>Συμβολοσειρά μονάδας</translation>
     </message>
     <message>
       <source>A&amp;lias</source>
-      <translation type="unfinished">A&amp;lias</translation>
+      <translation>Ψευδώνυμο</translation>
     </message>
     <message>
       <source>Alias for this cell</source>
@@ -332,27 +332,27 @@
     </message>
     <message>
       <source>Cell contents</source>
-      <translation>Περιεχόμενα του κελιού</translation>
+      <translation>Περιεχόμενα κελιού</translation>
     </message>
     <message>
       <source>Show spreadsheet</source>
-      <translation type="unfinished">Show spreadsheet</translation>
+      <translation>Εμφάνιση υπολογιστικού φύλλου</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Ορισμός χρώματος προσκηνίου κελιών</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Ορίζει το χρώμα προσκηνίου κελιών του Υπολογιστικού Φύλλου</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Ορισμός χρώματος υποβάθρου κελιών</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Ορίζει το χρώμα υποβάθρου κελιών του Υπολογιστικού Φύλλου</translation>
     </message>
   </context>
   <context>
@@ -367,7 +367,7 @@
     </message>
     <message>
       <source>Red</source>
-      <translation>Κοκκινο</translation>
+      <translation>Κόκκινο</translation>
     </message>
     <message>
       <source>Dark red</source>
@@ -391,7 +391,7 @@
     </message>
     <message>
       <source>Cyan</source>
-      <translation>Κυανές</translation>
+      <translation>Κυανό</translation>
     </message>
     <message>
       <source>Dark cyan</source>
@@ -403,7 +403,7 @@
     </message>
     <message>
       <source>Dark magenta</source>
-      <translation>Σκούρο μαζέντα</translation>
+      <translation>Σκούρο πορφυρό</translation>
     </message>
     <message>
       <source>Yellow</source>
@@ -415,7 +415,7 @@
     </message>
     <message>
       <source>Gray</source>
-      <translation>Γκρί</translation>
+      <translation>Γκρι</translation>
     </message>
     <message>
       <source>Dark gray</source>
@@ -438,7 +438,7 @@
     </message>
     <message>
       <source>&amp;Contents</source>
-      <translation>&amp;Περιεχόμενα</translation>
+      <translation>Περιεχόμενα</translation>
     </message>
   </context>
   <context>
@@ -452,11 +452,11 @@
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
       <source>Insert rows</source>
-      <translation>Εισαγωγή γραμμών</translation>
+      <translation>Εισαγωγή σειρών</translation>
     </message>
     <message>
       <source>Remove rows</source>
-      <translation>Καταργήσετε γραμμές</translation>
+      <translation>Αφαίρεση σειρών</translation>
     </message>
     <message>
       <source>Insert columns</source>
@@ -464,7 +464,7 @@
     </message>
     <message>
       <source>Remove columns</source>
-      <translation>Κατάργηση στηλών</translation>
+      <translation>Αφαίρεση στηλών</translation>
     </message>
     <message>
       <source>Properties...</source>
@@ -475,7 +475,7 @@
     <name>Workbench</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Υπολογιστικό φύλλο</translation>
+      <translation>Υπολογιστικό Φύλλο</translation>
     </message>
   </context>
 </TS>

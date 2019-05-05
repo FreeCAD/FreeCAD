@@ -87,5 +87,7 @@
         <file>translations/PartDesign_id.qm</file>
         <file>translations/PartDesign_lt.qm</file>
         <file>translations/PartDesign_val-ES.qm</file>
+        <file>translations/PartDesign_ar.qm</file>
+        <file>translations/PartDesign_vi.qm</file>
     </qresource>
 </RCC>

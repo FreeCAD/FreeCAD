@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,12 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemConstraintSelfWeight"
+__title__ = "FreeCAD FEM constraint self weight ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package ViewProviderFemConstraintSelfWeight
 #  \ingroup FEM
+#  \brief FreeCAD FEM Constraint SelfWeight ViewProvider
 
 import FreeCAD
 import FreeCADGui
@@ -62,7 +63,7 @@ class _ViewProviderFemConstraintSelfWeight:
             guidoc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
             QMessageBox.critical(None, "Error in tree view", message)
             FreeCAD.Console.PrintError(message + '\n')
         return True

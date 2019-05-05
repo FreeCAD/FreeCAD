@@ -30,14 +30,14 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 
 
-########## analysis objects ##########
+# ********* analysis objects *********
 def makeAnalysis(doc, name="Analysis"):
     '''makeAnalysis(document, [name]): makes a Fem Analysis object'''
     obj = doc.addObject("Fem::FemAnalysis", name)
     return obj
 
 
-########## constraint objects ##########
+# ********* constraint objects *********
 def makeConstraintBearing(doc, name="ConstraintBearing"):
     '''makeConstraintBearing(document, [name]): makes a Fem ConstraintBearing object'''
     obj = doc.addObject("Fem::ConstraintBearing", name)
@@ -177,7 +177,7 @@ def makeConstraintTransform(doc, name="ConstraintTransform"):
     return obj
 
 
-########## element definition objects ##########
+# ********* element definition objects *********
 def makeElementFluid1D(doc, name="ElementFluid1D"):
     '''makeElementFluid1D(document, [name]): creates an 1D fluid element object to define 1D flow'''
     obj = doc.addObject("Fem::FeaturePython", name)
@@ -234,7 +234,7 @@ def makeElementRotation1D(doc, name="ElementRotation1D"):
     return obj
 
 
-########## material objects ##########
+# ********* material objects *********
 def makeMaterialFluid(doc, name="FluidMaterial"):
     '''makeMaterialFluid(document, [name]): makes a FEM Material for fluid'''
     obj = doc.addObject("App::MaterialObjectPython", name)
@@ -271,7 +271,7 @@ def makeMaterialSolid(doc, name="MechanicalSolidMaterial"):
     return obj
 
 
-########## mesh objects ##########
+# ********* mesh objects *********
 def makeMeshBoundaryLayer(doc, base_mesh, name="MeshBoundaryLayer"):
     '''makeMeshBoundaryLayer(document, base_mesh, [name]): creates a FEM mesh BoundaryLayer object to define boundary layer properties'''
     obj = doc.addObject("Fem::FeaturePython", name)
@@ -350,7 +350,7 @@ def makeMeshResult(doc, name="FEMMeshResult"):
     return obj
 
 
-########## post processing objects ##########
+# ********* post processing objects *********
 def makeResultMechanical(doc, name="MechanicalResult"):
     '''makeResultMechanical(document, [name]): creates an mechanical result object to hold FEM results'''
     obj = doc.addObject('Fem::FemResultObjectPython', name)
@@ -362,7 +362,54 @@ def makeResultMechanical(doc, name="MechanicalResult"):
     return obj
 
 
-########## solver objects ##########
+def makePostVtkFilterClipRegion(doc, base_vtk_result, name="FEMVtkFilterClipRegion"):
+    '''makePostVtkFilterClipRegion(document, base_vtk_result, [name]): creates an FEM post processing region clip filter object (vtk based)'''
+    obj = doc.addObject("Fem::FemPostClipFilter", name)
+    tmp_filter_list = base_vtk_result.Filter
+    tmp_filter_list.append(obj)
+    base_vtk_result.Filter = tmp_filter_list
+    del tmp_filter_list
+    return obj
+
+
+def makePostVtkFilterClipScalar(doc, base_vtk_result, name="FEMVtkFilterClipScalar"):
+    '''makePostVtkFilterClipScalar(document, base_vtk_result, [name]): creates an FEM post processing scalar clip filter object (vtk based)'''
+    obj = doc.addObject("Fem::FemPostScalarClipFilter", name)
+    tmp_filter_list = base_vtk_result.Filter
+    tmp_filter_list.append(obj)
+    base_vtk_result.Filter = tmp_filter_list
+    del tmp_filter_list
+    return obj
+
+
+def makePostVtkFilterCutFunction(doc, base_vtk_result, name="FEMVtkFilterCutFunction"):
+    '''makePostVtkFilterCutFunction(document, base_vtk_result, [name]): creates an FEM post processing cut function filter object (vtk based)'''
+    obj = doc.addObject("Fem::FemPostClipFilter", name)
+    tmp_filter_list = base_vtk_result.Filter
+    tmp_filter_list.append(obj)
+    base_vtk_result.Filter = tmp_filter_list
+    del tmp_filter_list
+    return obj
+
+
+def makePostVtkFilterWarp(doc, base_vtk_result, name="FEMVtkFilterWarp"):
+    '''makePostVtkFilterWarp(document, base_vtk_result, [name]): creates an FEM post processing warp filter object (vtk based)'''
+    obj = doc.addObject("Fem::FemPostWarpVectorFilter", name)
+    tmp_filter_list = base_vtk_result.Filter
+    tmp_filter_list.append(obj)
+    base_vtk_result.Filter = tmp_filter_list
+    del tmp_filter_list
+    return obj
+
+
+def makePostVtkResult(doc, base_result, name="FEMVtkResult"):
+    '''makePostVtkResult(document, base_result [name]): creates an FEM post processing result object (vtk based) to hold FEM results'''
+    obj = doc.addObject("Fem::FemPostPipeline", name)
+    obj.load(base_result)
+    return obj
+
+
+# ********* solver objects *********
 def makeEquationElasticity(doc, base_solver):
     '''makeEquationElasticity(document, base_solver): creates a FEM elasticity equation for a solver'''
     obj = doc.SolverElmer.addObject(doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, 'Elasticity'))[0]

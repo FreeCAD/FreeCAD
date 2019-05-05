@@ -23,27 +23,29 @@
 
 #include "PreCompiled.h"
 
-#include <Standard_Version.hxx>
-#include <BRepGProp.hxx>
-#include <BRepTools.hxx>
-#include <BRepOffset_MakeOffset.hxx>
+#ifndef _PreComp_
+# include <Standard_Version.hxx>
+# include <BRepGProp.hxx>
+# include <BRepTools.hxx>
+# include <BRepOffset_MakeOffset.hxx>
 #if OCC_VERSION_HEX >= 0x060600
-#include <BRepClass3d.hxx>
+# include <BRepClass3d.hxx>
 #endif
-#include <GProp_GProps.hxx>
-#include <GProp_PrincipalProps.hxx>
-#include <BRepBuilderAPI_MakeSolid.hxx>
-#include <BRepLib.hxx>
+# include <GProp_GProps.hxx>
+# include <GProp_PrincipalProps.hxx>
+# include <BRepBuilderAPI_MakeSolid.hxx>
+# include <BRepLib.hxx>
 # include <Precision.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Solid.hxx>
-#include <TopoDS_Shell.hxx>
-#include <TopoDS_CompSolid.hxx>
-#include <gp_Ax1.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <Standard_Failure.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Shell.hxx>
+# include <TopoDS_CompSolid.hxx>
+# include <gp_Ax1.hxx>
+# include <gp_Pnt.hxx>
+# include <gp_Dir.hxx>
+# include <Standard_Failure.hxx>
+#endif
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -71,7 +73,7 @@ std::string TopoShapeSolidPy::representation(void) const
 
 PyObject *TopoShapeSolidPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 {
-    // create a new instance of TopoShapeSolidPy and the Twin object 
+    // create a new instance of TopoShapeSolidPy and the Twin object
     return new TopoShapeSolidPy(new TopoShape);
 }
 
@@ -277,7 +279,7 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
     }
 
     bool paramOK = false;
-    if (!paramOK && PyArg_ParseTuple(args, "Od", &obj,&offset)) {
+    if (PyArg_ParseTuple(args, "Od", &obj,&offset)) {
         paramOK = true;
         Py::Sequence list(obj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -329,5 +331,5 @@ PyObject *TopoShapeSolidPy::getCustomAttributes(const char* /*attr*/) const
 
 int TopoShapeSolidPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

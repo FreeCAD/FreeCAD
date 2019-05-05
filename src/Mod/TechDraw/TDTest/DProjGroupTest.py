@@ -42,9 +42,17 @@ def DProjGroupTest():
     print("making a projection group")
     group = FreeCAD.ActiveDocument.addObject('TechDraw::DrawProjGroup','ProjGroup')
     rc = page.addView(group)
+    print("Group created")
     group.Source = [fusion]
 
     print("adding views")
+    frontView = group.addProjection("Front")               ##need an Anchor
+    print("added Front")
+
+    #update group
+    group.Anchor.Direction = FreeCAD.Vector(0,0,1)
+    group.Anchor.RotationVector = FreeCAD.Vector(1,0,0)
+
     leftView = group.addProjection("Left")
     print("added Left")
     topView = group.addProjection("Top")
@@ -57,8 +65,8 @@ def DProjGroupTest():
     print("added Bottom")
 
     #remove a view from projection group
-    #iv = group.removeProjection("Left")
-    #print("removed Left")
+    iv = group.removeProjection("Left")
+    print("removed Left")
 
     ##test getItemByLabel method
     print("testing getItemByLabel")

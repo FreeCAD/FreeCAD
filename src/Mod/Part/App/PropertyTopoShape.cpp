@@ -44,11 +44,12 @@
 # include <gp_Trsf.hxx>
 # include <BRepBuilderAPI_MakeShape.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
-#endif
 
 #if OCC_VERSION_HEX >= 0x060800
-#include <OSD_OpenFile.hxx>
+# include <OSD_OpenFile.hxx>
 #endif
+
+#endif // _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Writer.h>
@@ -116,7 +117,7 @@ void PropertyPartShape::setValue(const TopoDS_Shape& sh, bool resetElementMap)
     _Ver.clear();
 }
 
-const TopoDS_Shape& PropertyPartShape::getValue(void)const 
+const TopoDS_Shape& PropertyPartShape::getValue(void)const
 {
     return _Shape.getShape();
 }
@@ -240,11 +241,11 @@ void PropertyPartShape::Save (Base::Writer &writer) const
     if(!writer.isForceXML()) {
         //See SaveDocFile(), RestoreDocFile()
         if (writer.getMode("BinaryBrep")) {
-            writer.Stream() << writer.ind() << "<Part file=\"" 
+            writer.Stream() << writer.ind() << "<Part file=\""
                             << writer.addFile("PartShape.bin", this);
         }
         else {
-            writer.Stream() << writer.ind() << "<Part file=\"" 
+            writer.Stream() << writer.ind() << "<Part file=\""
                             << writer.addFile("PartShape.brp", this);
         }
         bool saveHasher=false;
@@ -351,7 +352,7 @@ static void BRepTools_Write(const TopoDS_Shape& Sh, Standard_OStream& S) {
   SS.Write(S);
   SS.Write(Sh,S);
 }
-static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh, 
+static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh,
                                    const Standard_CString File)
 {
   ofstream os;
@@ -365,11 +366,11 @@ static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh,
   Standard_Boolean isGood = (os.good() && !os.eof());
   if(!isGood)
     return isGood;
-  
+
   BRepTools_ShapeSet SS(Standard_False);
   // SS.SetProgress(PR);
   SS.Add(Sh);
-  
+
   os << "DBRep_DrawableShape\n";  // for easy Draw read
   SS.Write(os);
   isGood = os.good();
@@ -414,7 +415,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
                 App::PropertyContainer* father = this->getContainer();
                 if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
                     App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-                    Base::Console().Error("Shape of '%s' cannot be written to BRep file '%s'\n", 
+                    Base::Console().Error("Shape of '%s' cannot be written to BRep file '%s'\n",
                         obj->Label.getValue(),fi.filePath().c_str());
                 }
                 else {
@@ -428,7 +429,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
 
             Base::ifstream file(fi, std::ios::in | std::ios::binary);
             if (file) {
-                //unsigned long ulSize = 0; 
+                //unsigned long ulSize = 0;
                 std::streambuf* buf = file.rdbuf();
                 //if (buf) {
                 //    unsigned long ulCurr;
@@ -476,7 +477,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 
             // read in the ASCII file and write back to the file stream
             Base::ofstream file(fi, std::ios::out | std::ios::binary);
-            unsigned long ulSize = 0; 
+            unsigned long ulSize = 0;
             if (reader) {
                 std::streambuf* buf = file.rdbuf();
                 reader >> buf;
@@ -496,7 +497,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
                     App::PropertyContainer* father = this->getContainer();
                     if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
                         App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-                        Base::Console().Error("BRep file '%s' with shape of '%s' seems to be empty\n", 
+                        Base::Console().Error("BRep file '%s' with shape of '%s' seems to be empty\n",
                             fi.filePath().c_str(),obj->Label.getValue());
                     }
                     else {

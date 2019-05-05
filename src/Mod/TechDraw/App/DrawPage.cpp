@@ -49,6 +49,7 @@
 #include "DrawViewCollection.h"
 #include "DrawViewPart.h"
 #include "DrawViewDimension.h"
+#include "DrawViewBalloon.h"
 
 #include <Mod/TechDraw/App/DrawPagePy.h>  // generated from DrawPagePy.xml
 
@@ -81,7 +82,9 @@ DrawPage::DrawPage(void)
 
     ADD_PROPERTY_TYPE(KeepUpdated, (autoUpdate), group, (App::PropertyType)(App::Prop_Output), "Keep page in sync with model");
     ADD_PROPERTY_TYPE(Template, (0), group, (App::PropertyType)(App::Prop_None), "Attached Template");
+    Template.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Views, (0), group, (App::PropertyType)(App::Prop_None), "Attached Views");
+    Views.setScope(App::LinkScope::Global);
 
     // Projection Properties
     ProjectionType.setEnums(ProjectionTypeEnums);
@@ -97,8 +100,10 @@ DrawPage::DrawPage(void)
         ADD_PROPERTY(ProjectionType, ((long)projType));
     }
 
-    ADD_PROPERTY_TYPE(Scale, (1.0), group, App::Prop_None, "Scale factor for this Page");
+    ADD_PROPERTY_TYPE(Scale, (1.0), group, (App::PropertyType)(App::Prop_None), "Scale factor for this Page");
     Scale.setConstraints(&scaleRange);
+    double defScale = hGrp->GetFloat("DefaultScale",1.0);
+    Scale.setValue(defScale);
 }
 
 DrawPage::~DrawPage()
@@ -253,8 +258,9 @@ int DrawPage::addView(App::DocumentObject *docObj)
         return -1;
     DrawView* view = static_cast<DrawView*>(docObj);
 
-    //position all new views in center of Page (exceptDVDimension)
-    if (!docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+      //position all new views in center of Page (exceptDVDimension)
+    if (!docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) &&
+        !docObj->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())) {
         view->X.setValue(getPageWidth()/2.0);
         view->Y.setValue(getPageHeight()/2.0);
     }
@@ -366,16 +372,29 @@ void DrawPage::unsetupObject()
     // Remove the Page's views & template from document
     App::Document* doc = getDocument();
     std::string docName = doc->getName();
+    std::string pageName = getNameInDocument();
 
-    while (Views.getValues().size() > 0 ) {
+    try {
         const std::vector<App::DocumentObject*> currViews = Views.getValues();
-        App::DocumentObject* child = currViews.front();
-        std::string viewName = child->getNameInDocument();
-        Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                          docName.c_str(), viewName.c_str());
-    }
-    std::vector<App::DocumentObject*> emptyViews;      //probably superfluous
-    Views.setValues(emptyViews);
+        for (auto& v: currViews) {
+            //NOTE: the order of objects in Page.Views does not reflect the object hierarchy
+            //      this means that a ProjGroup could be deleted before it's child ProjGroupItems.
+            //      this causes problems when removing objects from document
+            if (v->isAttachedToDocument()) {
+                std::string viewName = v->getNameInDocument();
+                Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                                  docName.c_str(), viewName.c_str());
+            } else {
+                Base::Console().Log("DP::unsetupObject - v(%s) is not in document. skipping\n", pageName.c_str());
+            }
+        }
+        std::vector<App::DocumentObject*> emptyViews;      //probably superfluous
+        Views.setValues(emptyViews);
+        
+   }
+   catch (...) {
+       Base::Console().Warning("DP::unsetupObject - %s - error while deleting children\n", getNameInDocument());
+   }
 
     App::DocumentObject* tmp = Template.getValue();
     if (tmp != nullptr) {

@@ -196,7 +196,9 @@ protected Q_SLOTS:
     void clicked (QAbstractButton * button);
 
 protected:
-    void keyPressEvent(QKeyEvent*);
+    virtual void keyPressEvent(QKeyEvent*);
+    virtual bool event(QEvent*);
+
     void addTaskWatcher(void);
     void removeTaskWatcher(void);
     /// update the visibility of the TaskWatcher accordant to the selection

@@ -1,8 +1,8 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Ofentse Kgoa <kgoaot@eskom.co.za>                *
+# *   Copyright (c) 2016 Ofentse Kgoa <kgoaot@eskom.co.za>                  *
+# *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Based on the FemElementGeometry1D by Bernd Hahnebach                  *
-# *   Copyright (c) 2018 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,12 +22,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemElementFluid1D"
+__title__ = "FreeCAD FEM element fluid 1D ViewProvider for the document object"
 __author__ = "Ofentse Kgoa, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package ViewProviderFemElementFluid1D
 #  \ingroup FEM
+#  \brief FreeCAD ViewProviderFemElementFluid1D
 
 import FreeCAD
 import FreeCADGui
@@ -91,7 +92,7 @@ class _ViewProviderFemElementFluid1D:
             guidoc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
             QMessageBox.critical(None, "Error in tree view", message)
             FreeCAD.Console.PrintError(message + '\n')
         return True

@@ -37,6 +37,7 @@
 #include <App/DocumentObject.h>
 
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
@@ -58,6 +59,7 @@ ViewProviderViewPart::ViewProviderViewPart()
 
     static const char *group = "Lines";
     static const char *dgroup = "Decoration";
+    static const char *hgroup = "Highlight";
 
     //default line weights
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
@@ -78,14 +80,22 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(ExtraWidth,(weight),group,App::Prop_None,"The thickness of LineGroup Extra lines, if enabled");
     delete lg;                            //Coverity CID 174664
 
+    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    double defScale = hGrp->GetFloat("CenterMarkScale",2.0);
+    bool   defShowCenters = hGrp->GetBool("ShowCenterMarks", true);
+
     //decorations
     ADD_PROPERTY_TYPE(HorizCenterLine ,(false),dgroup,App::Prop_None,"Show a horizontal centerline through view");
     ADD_PROPERTY_TYPE(VertCenterLine ,(false),dgroup,App::Prop_None,"Show a vertical centerline through view");
-    ADD_PROPERTY_TYPE(ArcCenterMarks ,(true),dgroup,App::Prop_None,"Center marks on/off");
-    ADD_PROPERTY_TYPE(CenterScale,(2.0),dgroup,App::Prop_None,"Center mark size adjustment, if enabled");
+    ADD_PROPERTY_TYPE(ArcCenterMarks ,(defShowCenters),dgroup,App::Prop_None,"Center marks on/off");
+    ADD_PROPERTY_TYPE(CenterScale,(defScale),dgroup,App::Prop_None,"Center mark size adjustment, if enabled");
 
     //properties that affect Section Line
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,dgroup,App::Prop_None,"Show/hide section line if applicable");
+    
+    //properties that affect Detail Highlights
+    ADD_PROPERTY_TYPE(HighlightAdjust,(0.0),hgroup,App::Prop_None,"Adjusts the rotation of the Detail highlight");
 }
 
 ViewProviderViewPart::~ViewProviderViewPart()
@@ -104,6 +114,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(HiddenWidth) ||
         prop == &(IsoWidth) ||
         prop == &(ExtraWidth) ||
+        prop == &(HighlightAdjust) ||
         prop == &(ArcCenterMarks) ||
         prop == &(CenterScale) ||
         prop == &(ShowSectionLine)  ||
@@ -132,13 +143,13 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderViewPart::setDisplayMode(const char* ModeName)
 {
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
+    ViewProviderDrawingView::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderViewPart::getDisplayModes(void) const
 {
     // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
+    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
 
     return StrList;
 }
@@ -172,6 +183,8 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) cons
           } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())) {
               temp.push_back((*it));
           } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawGeomHatch::getClassTypeId())) {
+              temp.push_back((*it));
+          } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())) {
               temp.push_back((*it));
           }
       }

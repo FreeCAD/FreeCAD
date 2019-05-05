@@ -96,8 +96,10 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
             # don't set the length if we have a base object, otherwise the length X height calc
             # gets wrong
             obj.Length = p.GetFloat("StructureLength",100)
-    if obj.Height > obj.Length:
-        obj.IfcRole = "Column"
+    if not height and not length:
+        obj.IfcType = "Undefined"
+    elif obj.Height > obj.Length:
+        obj.IfcType = "Column"
     return obj
 
 def makeStructuralSystem(objects=[],axes=[],name="StructuralSystem"):
@@ -390,16 +392,19 @@ class _CommandStructure:
 
         self.Width = d
         self.tracker.width(d)
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureWidth",d)
 
     def setHeight(self,d):
 
         self.Height = d
         self.tracker.height(d)
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureHeight",d)
 
     def setLength(self,d):
 
         self.Length = d
         self.tracker.length(d)
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureLength",d)
 
     def setContinue(self,i):
 
@@ -481,7 +486,7 @@ class _Structure(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Beam"
+        obj.IfcType = "Beam"
 
     def setProperties(self,obj):
 
@@ -526,17 +531,41 @@ class _Structure(ArchComponent.Component):
         pl = obj.Placement
         extdata = self.getExtrusionData(obj)
         if extdata:
-            base = extdata[0]
-            base.Placement = extdata[2].multiply(base.Placement)
-            extv = extdata[2].Rotation.multVec(extdata[1])
-            if obj.Tool:
-                try:
-                    base = obj.Tool.Shape.copy().makePipe(obj.Base.Shape.copy())
-                except Part.OCCError:
-                    FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object")+"\n")
-                    return
+            sh = extdata[0]
+            if not isinstance(sh,list):
+                sh = [sh]
+            ev = extdata[1]
+            if not isinstance(ev,list):
+                ev = [ev]
+            pla = extdata[2]
+            if not isinstance(pla,list):
+                pla = [pla]
+            base = []
+            for i in range(len(sh)):
+                shi = sh[i]
+                if i < len(ev):
+                    evi = ev[i]
+                else:
+                    evi = FreeCAD.Vector(ev[-1])
+                if i < len(pla):
+                    pli = pla[i]
+                else:
+                    pli = pla[-1].copy()
+                shi.Placement = pli.multiply(shi.Placement)
+                extv = pla[0].Rotation.multVec(evi)
+                if obj.Tool:
+                    try:
+                        shi = obj.Tool.Shape.copy().makePipe(obj.Base.Shape.copy())
+                    except Part.OCCError:
+                        FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object")+"\n")
+                        return
+                else:
+                    shi = shi.extrude(extv)
+                base.append(shi)
+            if len(base) == 1:
+                base = base[0]
             else:
-                base = base.extrude(extv)
+                base = Part.makeCompound(base)
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.isNull():
@@ -567,10 +596,10 @@ class _Structure(ArchComponent.Component):
 
         """returns (shape,extrusion vector,placement) or None"""
 
-        if hasattr(obj,"IfcRole"):
-            role = obj.IfcRole
+        if hasattr(obj,"IfcType"):
+            IfcType = obj.IfcType
         else:
-            role = obj.Role
+            IfcType = None
         import Part,DraftGeomUtils
         data = ArchComponent.Component.getExtrusionData(self,obj)
         if data:
@@ -594,12 +623,23 @@ class _Structure(ArchComponent.Component):
                     if obj.Base.Shape.Solids:
                         return None
                     elif obj.Base.Shape.Faces:
-                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces):
+                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces,tolerance=0.01):
                             return None
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
                             normal = obj.Base.Shape.Faces[0].normalAt(0,0)
                             normal = placement.inverse().Rotation.multVec(normal)
+                            if (len(obj.Shape.Solids) > 1) and (len(obj.Shape.Solids) == len(obj.Base.Shape.Faces)):
+                                # multiple extrusions
+                                b = []
+                                p = []
+                                hint = obj.Base.Shape.Faces[0].normalAt(0,0)
+                                for f in obj.Base.Shape.Faces:
+                                    bf,pf = self.rebase(f,hint)
+                                    b.append(bf)
+                                    p.append(pf)
+                                base = b
+                                placement = p
                     elif obj.Base.Shape.Wires:
                         baseface = None
                         if hasattr(obj,"FaceMaker"):
@@ -635,7 +675,7 @@ class _Structure(ArchComponent.Component):
                         baseface = Part.Face(w)
                         base,placement = self.rebase(baseface)
         elif length and width and height:
-            if (length > height) and (role != "Slab"):
+            if (length > height) and (IfcType != "Slab"):
                 h2 = height/2 or 0.5
                 w2 = width/2 or 0.5
                 v1 = Vector(0,-w2,-h2)
@@ -655,13 +695,16 @@ class _Structure(ArchComponent.Component):
         if base and placement:
             if obj.Normal.Length:
                 normal = Vector(obj.Normal)
-                normal = placement.inverse().Rotation.multVec(normal)
+                if isinstance(placement,list):
+                    normal = placement[0].inverse().Rotation.multVec(normal)
+                else:
+                    normal = placement.inverse().Rotation.multVec(normal)
             if not normal:
                 normal = Vector(0,0,1)
             if not normal.Length:
                 normal = Vector(0,0,1)
             extrusion = normal
-            if (length > height) and (role != "Slab"):
+            if (length > height) and (IfcType != "Slab"):
                 if length:
                     extrusion = normal.multiply(length)
             else:
@@ -672,21 +715,19 @@ class _Structure(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
 
-        if hasattr(obj,"IfcRole"):
-            role = obj.IfcRole
-        elif hasattr(obj,"Role"):
-            role = obj.Role
+        if hasattr(obj,"IfcType"):
+            IfcType = obj.IfcType
         else:
-            role = None
+            IfcType = None
         self.hideSubobjects(obj,prop)
         if prop in ["Shape","ResetNodes","NodesOffset"]:
             # ResetNodes is not a property but it allows us to use this function to force reset the nodes
             nodes = None
             extdata = self.getExtrusionData(obj)
-            if extdata:
+            if extdata and not isinstance(extdata[0],list):
                 nodes = extdata[0]
                 nodes.Placement = nodes.Placement.multiply(extdata[2])
-                if role not in ["Slab"]:
+                if IfcType not in ["Slab"]:
                     if obj.Tool:
                         nodes = obj.Tool.Shape
                     elif extdata[1].Length > 0:
@@ -789,13 +830,13 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                             self.lineset.coordIndex.setValues(0,len(p)+2,range(len(p)+1)+[-1])
                             self.faceset.coordIndex.setValues(0,len(p)+1,range(len(p))+[-1])
 
-        elif prop in ["Role","IfcRole"]:
+        elif prop in ["IfcType"]:
             if hasattr(obj.ViewObject,"NodeType"):
-                if hasattr(obj,"IfcRole"):
-                    role = obj.IfcRole
+                if hasattr(obj,"IfcType"):
+                    IfcType = obj.IfcType
                 else:
-                    role = obj.Role
-                if role == "Slab":
+                    IfcType = None
+                if IfcType == "Slab":
                     obj.ViewObject.NodeType = "Area"
                 else:
                     obj.ViewObject.NodeType = "Linear"

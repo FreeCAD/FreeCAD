@@ -40,9 +40,14 @@ DistConfusion = 1e-7
 ParaConfusion = 1e-8
 
 
-def makeCompoundFilter(name):
+def makeCompoundFilter(name, into_group = None):
     '''makeCompoundFilter(name): makes a CompoundFilter object.'''
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", name)
+    if into_group is None:
+        into_group = FreeCAD.ActiveDocument
+    if into_group.isDerivedFrom('App::Document'):
+        obj = into_group.addObject("Part::FeaturePython", name)
+    else:
+        obj = into_group.newObject("Part::FeaturePython", name)
     _CompoundFilter(obj)
     if obj.ViewObject:    
         _ViewProviderCompoundFilter(obj.ViewObject)

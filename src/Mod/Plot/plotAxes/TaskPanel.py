@@ -21,6 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
+import six
+
 import FreeCAD as App
 import FreeCADGui as Gui
 
@@ -448,14 +450,14 @@ class TaskPanel:
             # need store it in order to regenerate later
             x = axes.get_xlabel()
             y = axes.get_ylabel()
-            for loc, spine in axes.spines.iteritems():
+            for loc, spine in axes.spines.items():
                 if loc in ['bottom', 'top']:
                     spine.set_position(('outward', form.xOffset.value()))
                 if loc in ['left', 'right']:
                     spine.set_position(('outward', form.yOffset.value()))
             # Now we can restore axes labels
-            Plot.xlabel(unicode(x))
-            Plot.ylabel(unicode(y))
+            Plot.xlabel(six.text_type(x))
+            Plot.ylabel(six.text_type(y))
         plt.update()
 
     def onScales(self):

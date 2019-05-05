@@ -162,7 +162,8 @@ void GeometryObject::clear()
 void GeometryObject::projectShape(const TopoDS_Shape& input,
                                   const gp_Ax2 viewAxis)
 {
-    // Clear previous Geometry
+//    Base::Console().Message("GO::projectShape()\n");
+   // Clear previous Geometry
     clear();
 
     auto start = chrono::high_resolution_clock::now();
@@ -182,11 +183,16 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
             brep_hlr->Projector(projector);
         }
         brep_hlr->Update();
-        brep_hlr->Hide();                           //XXXX: what happens if we don't call Hide()?? and only look at VCompound?
-                                                    // WF: you get back all the edges in the shape, but very fast!!
+        brep_hlr->Hide();
+
     }
+    catch (Standard_Failure e) {
+        Base::Console().Error("GO::projectShape - OCC error - %s - while projecting shape\n",
+                              e.GetMessageString());
+        }
     catch (...) {
-        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while projecting shape");
+        throw Base::RuntimeError("GeometryObject::projectShape - unknown error occurred while projecting shape");
+//        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while projecting shape");
     }
     auto end   = chrono::high_resolution_clock::now();
     auto diff  = end - start;
@@ -221,14 +227,17 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         BRepLib::BuildCurves3d(hidOutline);
         BRepLib::BuildCurves3d(hidIso);
     }
+    catch (Standard_Failure e) {
+        Base::Console().Error("GO::projectShape - OCC error - %s - while extracting edges\n",
+                              e.GetMessageString());
+    }
     catch (...) {
-        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while extracting edges");
+        throw Base::RuntimeError("GeometryObject::projectShape - error occurred while extracting edges");
     }
     end   = chrono::high_resolution_clock::now();
     diff  = end - start;
     diffOut = chrono::duration <double, milli> (diff).count();
     Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in hlrToShape and BuildCurves\n",m_parentName.c_str(),diffOut);
-
 }
 
 //!set up a hidden line remover and project a shape with it
@@ -278,8 +287,13 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
         }
         brep_hlrPoly->Update();
     }
+    catch (Standard_Failure e) {
+        Base::Console().Error("GO::projectShapeWithPolygonAlgo - OCC error - %s - while projecting shape\n",
+                              e.GetMessageString());
+    }
     catch (...) {
-        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
+        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
+//        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
     }
 
     try {
@@ -305,8 +319,13 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
         BRepLib::BuildCurves3d(hidSeam);
         BRepLib::BuildCurves3d(hidOutline);
     }
+    catch (Standard_Failure e) {
+        Base::Console().Error("GO::projectShapeWithPolygonAlgo - OCC error - %s - while extracting edges\n",
+                              e.GetMessageString());
+    }
     catch (...) {
-        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo - error occurred while extracting edges");
+        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while extracting edges");
+//        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo - error occurred while extracting edges");
     }
     auto end = chrono::high_resolution_clock::now();
     auto diff = end - start;
@@ -369,6 +388,7 @@ void GeometryObject::extractGeometry(edgeClass category, bool visible)
 //! update edgeGeom and vertexGeom from Compound of edges
 void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool visible)
 {
+//    Base::Console().Message("GO::addGeomFromCompound()\n");
     if(edgeCompound.IsNull()) {
         Base::Console().Log("TechDraw::GeometryObject::addGeomFromCompound edgeCompound is NULL\n");
         return; // There is no OpenCascade Geometry to be calculated
@@ -376,7 +396,8 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
 
     BaseGeom* base;
     TopExp_Explorer edges(edgeCompound, TopAbs_EDGE);
-    for (int i = 1 ; edges.More(); edges.Next(),i++) {
+    int i = 1;
+    for ( ; edges.More(); edges.Next(),i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
         if (edge.IsNull()) {
             //Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is NULL\n",i);
@@ -389,7 +410,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
 
         base = BaseGeom::baseFactory(edge);
         if (base == nullptr) {
-            Base::Console().Message("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
+            Base::Console().Log("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
             throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
         }
         base->classOfEdge = category;
@@ -516,18 +537,22 @@ bool GeometryObject::isWithinArc(double theta, double first,
 
 Base::BoundBox3d GeometryObject::calcBoundingBox() const
 {
+//    Base::Console().Message("GO::calcBoundingBox() - edges: %d\n", edgeGeom.size());
     Bnd_Box testBox;
     testBox.SetGap(0.0);
-    for (std::vector<BaseGeom *>::const_iterator it( edgeGeom.begin() );
-            it != edgeGeom.end(); ++it) {
-         BRepBndLib::Add((*it)->occEdge, testBox);
+    if (!edgeGeom.empty()) {
+        for (std::vector<BaseGeom *>::const_iterator it( edgeGeom.begin() );
+                it != edgeGeom.end(); ++it) {
+             BRepBndLib::Add((*it)->occEdge, testBox);
+        }
     }
+
+    double xMin = 0,xMax = 0,yMin = 0,yMax = 0, zMin = 0, zMax = 0;
     if (testBox.IsVoid()) {
         Base::Console().Log("INFO - GO::calcBoundingBox - testBox is void\n");
+    } else {
+        testBox.Get(xMin,yMin,zMin,xMax,yMax,zMax);
     }
-    double xMin,xMax,yMin,yMax,zMin,zMax;
-    testBox.Get(xMin,yMin,zMin,xMax,yMax,zMax);
-
     Base::BoundBox3d bbox(xMin,yMin,zMin,xMax,yMax,zMax);
     return bbox;
 }

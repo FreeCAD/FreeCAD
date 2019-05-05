@@ -220,7 +220,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
         }
     }
 
-    pcSolver = NULL;  // this is an private object of type Fem::FemSolverObject* 
+    pcSolver = NULL;  // this is an private object of type Fem::FemSolverObject*
     if (pcAnalysis) {
         std::vector<App::DocumentObject*> fem = pcAnalysis->Group.getValues();
         for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
@@ -245,7 +245,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
                 updateThermalBoundaryUI();
             }
             else {
-                ui->tabThermalBoundary->setEnabled(false);
+                ui->tabThermalBoundary->setEnabled(false);  // could be hidden
                 //Base::Console().Message("retrieve solver property HeatTransfering as false\n");
             }
         }
@@ -297,7 +297,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
 
     // Fill data into dialog elements
     double f = pcConstraint->BoundaryValue.getValue();
-    ui->spinBoundaryValue->setMinimum(0);
+    ui->spinBoundaryValue->setMinimum(FLOAT_MIN);  // previous set the min to ZERO is not flexible
     ui->spinBoundaryValue->setMaximum(FLOAT_MAX);
     ui->spinBoundaryValue->setValue(f);
     ui->listReferences->clear();
@@ -306,7 +306,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
     if (Objects.size() > 0)
         ui->listReferences->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     ui->lineDirection->setText(dir.isEmpty() ? tr("") : dir);
-    ui->checkReverse->setVisible(false); // no need such UI for fluid boundary, set by cpp code only
+    ui->checkReverse->setVisible(true); // it is still useful to swap direction of an edge
 
     ui->listReferences->blockSignals(false);
     ui->buttonReference->blockSignals(false);
@@ -366,16 +366,13 @@ void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
     std::vector<std::string> subtypes = pcConstraint->Subtype.getEnumVector();
     initComboBox(ui->comboSubtype, subtypes, "default to the second subtype");
     updateSubtypeUI();
+
 }
 
 
 void TaskFemConstraintFluidBoundary::updateSubtypeUI()
 {
 
-    //Fem::ConstraintFluidBoundary* pcConstraint = static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
-    //* Subtype PropertyEnumeration is updated if BoundaryType is changed
-    //std::string boundaryType = pcConstraint->BoundaryType.getValueAsString();
-    //std::string subtype = pcConstraint->Subtype.getValueAsString();
     std::string boundaryType = Base::Tools::toStdString(ui->comboBoundaryType->currentText());
     std::string subtype = Base::Tools::toStdString(ui->comboSubtype->currentText());
 
@@ -615,23 +612,32 @@ void TaskFemConstraintFluidBoundary::onSelectionChanged(const Gui::SelectionChan
 
         Gui::Selection().clearSelection();
         updateSelectionUI();
+        // recompute (redrawing has been called by FemConstraint base class? )
+        //bool ret = pcConstraint->recomputeFeature();  // not needed
     }
 }
 
 void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged(void)
 {
     Fem::ConstraintFluidBoundary* pcConstraint = static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
-    //pcConstraint->BoundaryType.setValue(ui->comboBoundaryType->currentIndex());
+    // temporarily change BoundaryType property, but command transaction should reset it back if you 'reject' late
+    pcConstraint->BoundaryType.setValue(ui->comboBoundaryType->currentIndex());
     updateBoundaryTypeUI();
+
     ConstraintView->updateData(&pcConstraint->BoundaryType);  //force a 3D redraw
-    // bug: cube normal is not correct in redraw, redraw is correct only after close task panel
-    // see note of If ConstraintView->updateData(): the arrows are not oriented correctly initially
-    // because the NormalDirection has not been calculated yet
+
+    // update view provider once BoundaryType changed, updateData() may be just enough
+    //FreeCAD.getDocument(pcConstraint->Document.getName()).recompute();
+    bool ret = pcConstraint->recomputeFeature();
+    if (!ret) {
+        std::string boundaryType = ui->comboBoundaryType->currentText().toStdString();
+        Base::Console().Error("Fluid boundary recomputationg failed for boundaryType `%s` \n", boundaryType.c_str());
+    }
 }
 
 void TaskFemConstraintFluidBoundary::onSubtypeChanged(void)
 {
-    updateSubtypeUI();
+    updateSubtypeUI();  // todo: change color for different kind of subtype,  Fem::ConstraintFluidBoundary::onChanged() and viewProvider
 }
 
 void TaskFemConstraintFluidBoundary::onBoundaryValueChanged(double)
@@ -667,6 +673,11 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed) {
     }
     ui->buttonDirection->setChecked(pressed);
     Gui::Selection().clearSelection();
+    /* minor bug:  once Direction property(edge link) is cleared in UI, arrow direction is not updated.
+    Direction property can not be easily setup in C++, see example at the end of this file `accept()`
+    redraw will only happen once taskpanel is closed,
+    */
+    //pcConstraint->Direction.setValue(pressed);
 }
 
 void TaskFemConstraintFluidBoundary::onCheckReverse(const bool pressed)
@@ -697,7 +708,7 @@ std::string TaskFemConstraintFluidBoundary::getTurbulenceModel(void) const
         return pTurbulenceModel->getValueAsString();
     }
     else{
-        return "wall";
+        return "laminar";
     }
 }
 
@@ -816,7 +827,7 @@ TaskDlgFemConstraintFluidBoundary::TaskDlgFemConstraintFluidBoundary(ViewProvide
 
 void TaskDlgFemConstraintFluidBoundary::open()
 {
-    // a transaction is already open at creation time of the panel
+    // a transaction is already open when creating this panel
     if (!Gui::Command::hasPendingCommand()) {
         QString msg = QObject::tr("Constraint fluid boundary");
         Gui::Command::openCommand((const char*)msg.toUtf8());
@@ -828,6 +839,7 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
     std::string name = ConstraintView->getObject()->getNameInDocument();
     const TaskFemConstraintFluidBoundary* boundary = static_cast<const TaskFemConstraintFluidBoundary*>(parameter);
 
+    // no need to backup pcConstraint object content, if rejected, content can be recovered by  transaction manager
     try {
         //Gui::Command::openCommand("Fluid boundary condition changed");
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.BoundaryType = '%s'",
@@ -851,11 +863,10 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
         //Reverse control is done at BoundaryType selection, this UI is hidden from user
         //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s", name.c_str(), boundary->getReverse() ? "True" : "False");
 
-        std::string scale = "1";
-        scale = boundary->getScale();  //OvG: determine modified scale
+        std::string scale = boundary->getScale();  //OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
 
-        // solver specific setting
+        // solver specific setting, physical model selection
         const Fem::FemSolverObject* pcSolver = boundary->getFemSolver();
 
         if (pcSolver) {
@@ -870,7 +881,7 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.HeatFluxValue = %f",name.c_str(), boundary->getHeatFluxValue());
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.HTCoeffValue = %f",name.c_str(), boundary->getHTCoeffValue());
             }
-            if (pTurbulenceModel && std::string(pTurbulenceModel->getValueAsString()) != "laminar") {
+            if (pTurbulenceModel && std::string(pTurbulenceModel->getValueAsString()) != "laminar") {  // Invisic and DNS flow also does not need this
                 //update turbulence and thermal boundary settings, only if those models are activated
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.TurbulenceSpecification = '%s'",name.c_str(), boundary->getTurbulenceSpecification().c_str());
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.TurbulentIntensityValue = %f",name.c_str(), boundary->getTurbulentIntensityValue());
@@ -891,8 +902,7 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
 
 bool TaskDlgFemConstraintFluidBoundary::reject()
 {
-    // roll back the changes
-    Gui::Command::abortCommand();
+    Gui::Command::abortCommand();  // recover properties content
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     Gui::Command::updateActive();
 

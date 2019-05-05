@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QtCore>
 # include <QApplication>
+# include <QLocale>
 # include <QMessageBox>
 # include <QTextDocument>
 #endif
@@ -36,6 +37,7 @@
 #include "../App/Sheet.h"
 #include <Gui/Command.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <boost/bind.hpp>
 
 using namespace SpreadsheetGui;
@@ -363,17 +365,24 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             const Base::Unit & computedUnit = floatProp->getUnit();
             DisplayUnit displayUnit;
 
+            // Display locale specific decimal separator (#0003875,#0003876)
             if (cell->getDisplayUnit(displayUnit)) {
-                if (computedUnit.isEmpty() || computedUnit == displayUnit.unit)
-                    v = QString::number(floatProp->getValue() / displayUnit.scaler) + Base::Tools::fromStdString(" " + displayUnit.stringRep);
-                else
+                if (computedUnit.isEmpty() || computedUnit == displayUnit.unit) {
+                    QString number = QLocale::system().toString(floatProp->getValue() / displayUnit.scaler,'f',Base::UnitsApi::getDecimals());
+                    //QString number = QString::number(floatProp->getValue() / displayUnit.scaler);
+                    v = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+                }
+                else {
                     v = QString::fromUtf8("#ERR: unit");
+                }
             }
             else {
+                QString number = QLocale::system().toString(floatProp->getValue(),'f',Base::UnitsApi::getDecimals());
+                //QString number = QString::number(floatProp->getValue());
                 if (!computedUnit.isEmpty())
-                    v = QString::number(floatProp->getValue()) + Base::Tools::fromStdString(" " + getUnitString(computedUnit));
+                    v = number + Base::Tools::fromStdString(" " + getUnitString(computedUnit));
                 else
-                    v = QString::number(floatProp->getValue());
+                    v = number;
             }
 
             return QVariant(v);
@@ -420,10 +429,16 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             QString v;
             DisplayUnit displayUnit;
 
-            if (cell->getDisplayUnit(displayUnit))
-                v = QString::number(d / displayUnit.scaler) + Base::Tools::fromStdString(" " + displayUnit.stringRep);
-            else
-                v = QString::number(d);
+            // Display locale specific decimal separator (#0003875,#0003876)
+            if (cell->getDisplayUnit(displayUnit)) {
+                QString number = QLocale::system().toString(d / displayUnit.scaler,'f',Base::UnitsApi::getDecimals());
+                //QString number = QString::number(d / displayUnit.scaler);
+                v = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+            }
+            else {
+                v = QLocale::system().toString(d,'f',Base::UnitsApi::getDecimals());
+                //v = QString::number(d);
+            }
             return QVariant(v);
         }
         default:

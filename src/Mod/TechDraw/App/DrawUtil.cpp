@@ -27,13 +27,14 @@
 # include <cstring>
 # include <cstdlib>
 #include <cmath>
+#include <string>
 # include <exception>
 # include <boost/regex.hpp>
 # include <QString>
 # include <QStringList>
 # include <QRegExp>
 #include <QChar>
-
+#include <QPointF>
 
 #include <BRep_Tool.hxx>
 #include <gp_Ax3.hxx>
@@ -74,10 +75,11 @@ using namespace TechDraw;
 
 /*static*/ int DrawUtil::getIndexFromName(std::string geomName)
 {
+//   Base::Console().Message("DU::getIndexFromName(%s)\n", geomName.c_str());
    boost::regex re("\\d+$"); // one of more digits at end of string
    boost::match_results<std::string::const_iterator> what;
    boost::match_flag_type flags = boost::match_default;
-   char* endChar;
+//   char* endChar;
    std::string::const_iterator begin = geomName.begin();
    auto pos = geomName.rfind('.');
    if(pos!=std::string::npos)
@@ -87,12 +89,13 @@ using namespace TechDraw;
 
    if (!geomName.empty()) {
       if (boost::regex_search(begin, end, what, re, flags)) {
-         return int (std::strtol(what.str().c_str(), &endChar, 10));         //TODO: use std::stoi() in c++11
+           return int (std::stoi(what.str()));
       } else {
          ErrorMsg << "getIndexFromName: malformed geometry name - " << geomName;
          throw Base::ValueError(ErrorMsg.str());
       }
    } else {
+         Base::Console().Log("DU::getIndexFromName(%s) - empty geometry name\n",geomName.c_str());
          throw Base::ValueError("getIndexFromName - empty geometry name");
    }
 }
@@ -333,6 +336,15 @@ std::string DrawUtil::formatVector(const gp_Pnt& v)
     return result;
 }
 
+std::string DrawUtil::formatVector(const QPointF& v)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << std::fixed << std::setprecision(3) ;
+    builder << " (" << v.x()  << "," << v.y() << ") ";
+    result = builder.str();
+    return result;
+}
 
 //! compare 2 vectors for sorting - true if v1 < v2
 bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)  

@@ -35,6 +35,7 @@
 # include <BRep_Tool.hxx>
 # include <ShapeFix_Shape.hxx>
 # include <ShapeFix_ShapeTolerance.hxx>
+# include <Standard_Version.hxx>
 #endif
 
 #include <Base/Console.h>

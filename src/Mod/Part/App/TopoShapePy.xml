@@ -33,7 +33,7 @@ Sub-elements such as vertices, edges or faces are accessible as:
         <UserDocu>Read in an IGES, STEP or BREP file.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="writeInventor" Const="true">
+    <Methode Name="writeInventor" Const="true" Keyword="true">
       <Documentation>
         <UserDocu>Write the mesh in OpenInventor format to a string.</UserDocu>
       </Documentation>
@@ -586,6 +586,14 @@ makeParallelProjection(shape, dir)
       <Documentation>
         <UserDocu>Perspective projection of an edge or wire on this shape
 makePerspectiveProjection(shape, pnt)
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="reflectLines" Const="true" Keyword="true">
+      <Documentation>
+        <UserDocu>Build reflect lines on a shape according to the axes of view.
+Reflect lines are represented by edges in 3d.
+reflectLines(ViewDir, ViewPos, UpDir) -> Shape
         </UserDocu>
       </Documentation>
     </Methode>

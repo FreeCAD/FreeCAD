@@ -481,7 +481,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
         MenuItem* StdViews = new MenuItem;
         StdViews->setCommand( "Standard views" );
 
-        *StdViews << "Std_ViewAxo" << "Separator" << "Std_ViewFront" << "Std_ViewTop" << "Std_ViewRight"
+        *StdViews << "Std_ViewIsometric" << "Separator" << "Std_ViewFront" << "Std_ViewTop" << "Std_ViewRight"
                   << "Std_ViewRear" << "Std_ViewBottom" << "Std_ViewLeft"
                   << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight";
 
@@ -538,10 +538,16 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Separator" << "Std_Placement" /*<< "Std_TransformManip"*/ << "Std_Alignment"
           << "Std_Edit" << "Separator" << "Std_DlgPreferences";
 
+    MenuItem* axoviews = new MenuItem;
+    axoviews->setCommand("Axonometric");
+    *axoviews << "Std_ViewIsometric"
+              << "Std_ViewDimetric"
+              << "Std_ViewTrimetric";
+
     // Standard views
     MenuItem* stdviews = new MenuItem;
     stdviews->setCommand("Standard views");
-    *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewAxo"
+    *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << axoviews
               << "Separator" << "Std_ViewFront" << "Std_ViewTop"
               << "Std_ViewRight" << "Separator" << "Std_ViewRear"
               << "Std_ViewBottom" << "Std_ViewLeft"
@@ -653,7 +659,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     ToolBarItem* view = new ToolBarItem( root );
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" 
-          << "Separator" << "Std_TreeViewActions" << "Std_ViewAxo" << "Separator" << "Std_ViewFront"
+          << "Separator" << "Std_TreeViewActions" << "Std_ViewIsometric" << "Separator" << "Std_ViewFront"
           << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
           << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance" ;
     
@@ -672,7 +678,7 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
     // View
     ToolBarItem* view = new ToolBarItem( root );
     view->setCommand("Standard views");
-    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewAxo" << "Separator"
+    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewIsometric" << "Separator"
           << "Std_ViewFront" << "Std_ViewRight" << "Std_ViewTop" << "Separator"
           << "Std_ViewRear" << "Std_ViewLeft" << "Std_ViewBottom";
     // Special Ops

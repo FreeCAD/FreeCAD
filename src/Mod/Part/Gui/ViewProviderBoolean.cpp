@@ -154,6 +154,18 @@ bool ViewProviderBoolean::onDelete(const std::vector<std::string> &)
     return true;
 }
 
+void ViewProviderBoolean::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
+{
+    Part::Boolean* pBool = static_cast<Part::Boolean*>(getObject());
+    if (oldValue == pBool->Base.getValue()) {
+        pBool->Base.setValue(newValue);
+    }
+    else if (oldValue == pBool->Tool.getValue()) {
+        pBool->Tool.setValue(newValue);
+    }
+}
+
+
 PROPERTY_SOURCE(PartGui::ViewProviderMultiFuse,PartGui::ViewProviderPart)
 
 ViewProviderMultiFuse::ViewProviderMultiFuse()
@@ -281,6 +293,13 @@ void ViewProviderMultiFuse::dropObject(App::DocumentObject* obj)
     pBool->Shapes.setValues(pShapes);
 }
 
+void ViewProviderMultiFuse::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
+{
+    Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
+    std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
+    std::replace(pShapes.begin(), pShapes.end(), oldValue, newValue);
+    pBool->Shapes.setValues(pShapes);
+}
 
 PROPERTY_SOURCE(PartGui::ViewProviderMultiCommon,PartGui::ViewProviderPart)
 
@@ -406,5 +425,13 @@ void ViewProviderMultiCommon::dropObject(App::DocumentObject* obj)
     Part::MultiCommon* pBool = static_cast<Part::MultiCommon*>(getObject());
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
     pShapes.push_back(obj);
+    pBool->Shapes.setValues(pShapes);
+}
+
+void ViewProviderMultiCommon::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
+{
+    Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
+    std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
+    std::replace(pShapes.begin(), pShapes.end(), oldValue, newValue);
     pBool->Shapes.setValues(pShapes);
 }

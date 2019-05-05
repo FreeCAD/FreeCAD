@@ -97,6 +97,7 @@
 #include "DrawHatch.h"
 #include "DrawGeomHatch.h"
 #include "DrawViewDimension.h"
+#include "DrawViewBalloon.h"
 #include "DrawViewDetail.h"
 #include "DrawPage.h"
 #include "EdgeWalker.h"
@@ -158,10 +159,18 @@ DrawViewPart::~DrawViewPart()
 
 TopoDS_Shape DrawViewPart::getSourceShape(void) const
 {
+//     Base::Console().Message("DVP::getSourceShape() - %s\n", getNameInDocument());
     TopoDS_Shape result;
     const std::vector<App::DocumentObject*>& links = Source.getValues();
     if (links.empty())  {
-        Base::Console().Log("DVP::getSourceShape - No Sources - creation? - %s\n",getNameInDocument());
+        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
+        if (isRestoring) {
+            Base::Console().Warning("DVP::getSourceShape - No Sources (but document is restoring) - %s\n",
+                                getNameInDocument());
+        } else {
+            Base::Console().Error("Error: DVP::getSourceShape - No Source(s) linked. - %s\n",
+                                  getNameInDocument());
+        }
     } else {
         std::vector<TopoDS_Shape> sourceShapes;
         for (auto& l:links) {
@@ -187,8 +196,11 @@ TopoDS_Shape DrawViewPart::getSourceShape(void) const
             TopoDS_Shape shape = BuilderCopy.Shape();
             builder.Add(comp, shape);
         }
-        //it appears that an empty compound is !IsNull(), so we need to check if we added anything to the compound.
-        if (found) {
+        //it appears that an empty compound is !IsNull(), so we need to check a different way 
+        //if we added anything to the compound.
+        if (!found) {
+            Base::Console().Error("DVP::getSourceShapes - source shape is empty!\n");
+        } else {
             result = comp;
         }
     }
@@ -197,14 +209,17 @@ TopoDS_Shape DrawViewPart::getSourceShape(void) const
 
 std::vector<TopoDS_Shape> DrawViewPart::getShapesFromObject(App::DocumentObject* docObj) const
 {
+//    Base::Console().Message("DVP::getShapesFromObject() - %s\n", getNameInDocument());
     std::vector<TopoDS_Shape> result;
     App::GroupExtension* gex = dynamic_cast<App::GroupExtension*>(docObj);
+    App::Property* gProp = docObj->getPropertyByName("Group");
+    App::Property* sProp = docObj->getPropertyByName("Shape");
     if (docObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         Part::Feature* pf = static_cast<Part::Feature*>(docObj);
         Part::TopoShape ts = pf->Shape.getShape();
         ts.setPlacement(pf->globalPlacement());
         result.push_back(ts.getShape());
-    } else if (gex != nullptr) {
+    } else if (gex != nullptr) {           //is a group extension
         std::vector<App::DocumentObject*> objs = gex->Group.getValues();
         std::vector<TopoDS_Shape> shapes;
         for (auto& d: objs) {
@@ -213,12 +228,36 @@ std::vector<TopoDS_Shape> DrawViewPart::getShapesFromObject(App::DocumentObject*
                 result.insert(result.end(),shapes.begin(),shapes.end());
             }
         }
+    //the next 2 bits are mostly for Arch module objects
+    } else if (gProp != nullptr) {       //has a Group property
+        App::PropertyLinkList* list = dynamic_cast<App::PropertyLinkList*>(gProp);
+        if (list != nullptr) {
+            std::vector<App::DocumentObject*> objs = list->getValues();
+            std::vector<TopoDS_Shape> shapes;
+            for (auto& d: objs) {
+                shapes = getShapesFromObject(d);
+                if (!shapes.empty()) {
+                    result.insert(result.end(),shapes.begin(),shapes.end());
+                }
+            }
+        } else {
+                Base::Console().Log("DVP::getShapesFromObject - Group is not a PropertyLinkList!\n");
+        }
+    } else if (sProp != nullptr) {       //has a Shape property
+        Part::PropertyPartShape* shape = dynamic_cast<Part::PropertyPartShape*>(sProp);
+        if (shape != nullptr) {
+            TopoDS_Shape occShape = shape->getValue();
+            result.push_back(occShape);
+        } else {
+            Base::Console().Log("DVP::getShapesFromObject - Shape is not a PropertyPartShape!\n");
+        }
     }
     return result;
 }
 
 TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
 {
+//     Base::Console().Message("DVP::getSourceShapeFused() - %s\n", getNameInDocument());
     TopoDS_Shape baseShape = getSourceShape();
     if (!baseShape.IsNull()) {
         TopoDS_Iterator it(baseShape);
@@ -241,13 +280,34 @@ TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
+//    Base::Console().Message("DVP::execute() - %s\n",getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
+    App::Document* doc = getDocument();
+    bool isRestoring = doc->testStatus(App::Document::Status::Restoring);
+    const std::vector<App::DocumentObject*>& links = Source.getValues();
+    if (links.empty())  {
+        if (isRestoring) {
+            Base::Console().Warning("DVP::execute - No Sources (but document is restoring) - %s\n",
+                                getNameInDocument());
+        } else {
+            Base::Console().Error("Error: DVP::execute - No Source(s) linked. - %s\n",
+                                  getNameInDocument());
+        }
+        return App::DocumentObject::StdReturn;
+    }
 
-    TopoDS_Shape shape = getSourceShape();
+    TopoDS_Shape shape = getSourceShape();          //if shape is null, it is probably(?) obj creation time.
     if (shape.IsNull()) {
-        return new App::DocumentObjectExecReturn("DVP - Linked shape object is invalid");
+        if (isRestoring) {
+            Base::Console().Warning("DVP::execute - source shape is invalid - (but document is restoring) - %s\n",
+                                getNameInDocument());
+        } else {
+            Base::Console().Error("Error: DVP::execute - Source shape is Null. - %s\n",
+                                  getNameInDocument());
+        }
+        return App::DocumentObject::StdReturn;
     }
 
     gp_Pnt inputCenter;
@@ -271,6 +331,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
 
 #if MOD_TECHDRAW_HANDLE_FACES
+    auto start = std::chrono::high_resolution_clock::now();
     if (handleFaces() && !geometryObject->usePolygonHLR()) {
         try {
             extractFaces();
@@ -280,9 +341,16 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
             return new App::DocumentObjectExecReturn(e4.GetMessageString());
         }
     }
+    auto end   = std::chrono::high_resolution_clock::now();
+    auto diff  = end - start;
+    double diffOut = std::chrono::duration <double, std::milli> (diff).count();
+    Base::Console().Log("TIMING - %s DVP spent: %.3f millisecs handling Faces\n",
+                        getNameInDocument(),diffOut);
+
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
     requestPaint();
+//    Base::Console().Message("DVP::execute - %s - exits\n",getNameInDocument());
     return App::DocumentObject::StdReturn;
 }
 
@@ -324,6 +392,7 @@ void DrawViewPart::onChanged(const App::Property* prop)
 //note: slightly different than routine with same name in DrawProjectSplit
 TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis)
 {
+//    Base::Console().Message("DVP::buildGO() - %s\n", getNameInDocument());
     TechDrawGeometry::GeometryObject* go = new TechDrawGeometry::GeometryObject(getNameInDocument(), this);
     go->setIsoCount(IsoCount.getValue());
     go->isPerspective(Perspective.getValue());
@@ -383,6 +452,10 @@ TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape
     double diffOut = std::chrono::duration <double, std::milli> (diff).count();
     Base::Console().Log("TIMING - %s DVP spent: %.3f millisecs in GO::extractGeometry\n",getNameInDocument(),diffOut);
 
+    const std::vector<TechDrawGeometry::BaseGeom  *> & edges = go->getEdgeGeometry();
+    if (edges.empty()) {
+        Base::Console().Log("DVP::buildGO - NO extracted edges!\n");
+    }
     bbox = go->calcBoundingBox();
     return go;
 }
@@ -549,6 +622,20 @@ std::vector<TechDraw::DrawViewDimension*> DrawViewPart::getDimensions() const
     return result;
 }
 
+std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
+{
+    std::vector<TechDraw::DrawViewBalloon*> result;
+    std::vector<App::DocumentObject*> children = getInList();
+    std::sort(children.begin(),children.end(),std::less<App::DocumentObject*>());
+    std::vector<App::DocumentObject*>::iterator newEnd = std::unique(children.begin(),children.end());
+    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawViewBalloon::getClassTypeId())) {
+            TechDraw::DrawViewBalloon* balloon = dynamic_cast<TechDraw::DrawViewBalloon*>(*it);
+            result.push_back(balloon);
+        }
+    }
+    return result;
+}
 
 const std::vector<TechDrawGeometry::Vertex *> & DrawViewPart::getVertexGeometry() const
 {
@@ -818,6 +905,22 @@ void DrawViewPart::unsetupObject()
         std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
         std::vector<TechDraw::DrawViewDimension*>::iterator it3 = dims.begin();
         for (; it3 != dims.end(); it3++) {
+            page->removeView(*it3);
+            const char* name = (*it3)->getNameInDocument();
+            if (name) {
+                Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                                docName.c_str(), name);
+            }
+        }
+    }
+
+    // Remove Balloons which reference this DVP
+    // must use page->removeObject first
+    page = findParentPage();
+    if (page != nullptr) {
+        std::vector<TechDraw::DrawViewBalloon*> balloons = getBalloons();
+        std::vector<TechDraw::DrawViewBalloon*>::iterator it3 = balloons.begin();
+        for (; it3 != balloons.end(); it3++) {
             page->removeView(*it3);
             const char* name = (*it3)->getNameInDocument();
             if (name) {

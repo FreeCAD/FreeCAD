@@ -61,6 +61,7 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
@@ -312,17 +313,20 @@ void CmdTechDrawNewView::activated(int iMsg)
     if (subName.size()) {
         std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj,subName);
         projDir = dirs.first;
+        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,"App.activeDocument().%s.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                   FeatName.c_str(), projDir.x,projDir.y,projDir.z);
         doCommand(Doc,"App.activeDocument().%s.recompute()", FeatName.c_str());
+        getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
    } else {
         std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
         projDir = dirs.first;
+        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,"App.activeDocument().%s.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                   FeatName.c_str(), projDir.x,projDir.y,projDir.z);
+        getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
         doCommand(Doc,"App.activeDocument().%s.recompute()", FeatName.c_str());
     }
-    updateActive();
     commitCommand();
 }
 
@@ -386,7 +390,7 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Scale = %0.6f",FeatName.c_str(),baseScale);
     Gui::Control().showDialog(new TaskDlgSectionView(dvp,dsv));
 
-    updateActive();
+    updateActive();             //ok here since dialog doesn't call doc.recompute()
     commitCommand();
 }
 
@@ -448,12 +452,12 @@ void CmdTechDrawNewViewDetail::activated(int iMsg)
         throw Base::TypeError("CmdTechDrawNewViewDetail DVD not found\n");
     }
     dvd->Source.setValues(dvp->Source.getValues());
-    
+
     doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),dvp->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Direction = App.activeDocument().%s.Direction",FeatName.c_str(),dvp->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
-    updateActive();
+    updateActive();            //ok here, no preceding recompute
     commitCommand();
 }
 
@@ -537,9 +541,11 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     App::DocumentObject *docObj = getDocument()->getObject(multiViewName.c_str());
     auto multiView( static_cast<TechDraw::DrawProjGroup *>(docObj) );
     multiView->Source.setValues(shapes);
+    doCommand(Doc,"App.activeDocument().%s.addProjection('Front')",multiViewName.c_str());
 
     if (subName.size()) {
         std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj,subName);
+        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,"App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                       multiViewName.c_str(), dirs.first.x,dirs.first.y,dirs.first.z);
         doCommand(Doc,"App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.3f,%.3f,%.3f)",
@@ -556,7 +562,6 @@ void CmdTechDrawProjGroup::activated(int iMsg)
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
         doCommand(Doc,"App.activeDocument().%s.Anchor.recompute()", multiViewName.c_str());
     }
-    //updateActive();    //exec all pending actions, but there's nothing to do here.
     commitCommand();   //write the undo
 
     // create the rest of the desired views
@@ -667,6 +672,109 @@ bool CmdTechDrawAnnotation::isActive(void)
     return DrawGuiUtil::needPage(this);
 }
 
+//===========================================================================
+// TechDraw_NewBalloon
+//===========================================================================
+
+//! common checks of Selection for Dimension commands
+//non-empty selection, no more than maxObjs selected and at least 1 DrawingPage exists
+bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs) {
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    if (selection.size() == 0) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+                             QObject::tr("Select an object first"));
+        return false;
+    }
+
+    const std::vector<std::string> SubNames = selection[0].getSubNames();
+    if (SubNames.size() > maxObjs){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+            QObject::tr("Too many objects selected"));
+        return false;
+    }
+
+    std::vector<App::DocumentObject*> pages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    if (pages.empty()){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+            QObject::tr("Create a page first."));
+        return false;
+    }
+    return true;
+}
+
+bool _checkDrawViewPartBalloon(Gui::Command* cmd) {
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    if( !objFeat ) {
+        QMessageBox::warning( Gui::getMainWindow(),
+                              QObject::tr("Incorrect selection"),
+                              QObject::tr("No View of a Part in selection.") );
+        return false;
+    }
+    return true;
+}
+
+DEF_STD_CMD_A(CmdTechDrawNewBalloon);
+
+CmdTechDrawNewBalloon::CmdTechDrawNewBalloon()
+  : Command("TechDraw_NewBalloon")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert a new balloon");
+    sToolTipText    = QT_TR_NOOP("Insert a new balloon");
+    sWhatsThis      = "TechDraw_Balloon";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "TechDraw_Balloon";
+}
+
+void CmdTechDrawNewBalloon::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    bool result = _checkSelectionBalloon(this,1);
+    if (!result)
+        return;
+    result = _checkDrawViewPartBalloon(this);
+    if (!result)
+        return;
+
+    std::string FeatName = getUniqueObjectName("Balloon");
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    if( objFeat == nullptr ) {
+        return;
+    }
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    std::string PageName = page->getNameInDocument();
+    TechDraw::DrawViewBalloon *balloon = 0;
+
+    openCommand("Create Balloon");
+    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+
+    balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getDocument()->getObject(FeatName.c_str()));
+    if (!balloon) {
+        throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
+    }
+
+    balloon->sourceView.setValue(objFeat);
+
+    commitCommand();
+    balloon->recomputeFeature();
+
+    //Horrible hack to force Tree update
+    double x = objFeat->X.getValue();
+    objFeat->X.setValue(x);
+
+}
+
+bool CmdTechDrawNewBalloon::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
 
 //===========================================================================
 // TechDraw_Clip
@@ -718,7 +826,7 @@ CmdTechDrawClipPlus::CmdTechDrawClipPlus()
   : Command("TechDraw_ClipPlus")
 {
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Add View to ClipGroup");
+    sMenuText     = QT_TR_NOOP("Add View to Clip group");
     sToolTipText  = QT_TR_NOOP("Add a View to Clip group");
     sWhatsThis    = "TechDraw_ClipPlus";
     sStatusTip    = sToolTipText;
@@ -731,7 +839,7 @@ void CmdTechDrawClipPlus::activated(int iMsg)
    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
    if (selection.size() != 2) {
        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                            QObject::tr("Select 1 DrawViewClip and 1 DrawView."));
+                            QObject::tr("Select one Clip group and one View."));
        return;
    }
 
@@ -747,12 +855,12 @@ void CmdTechDrawClipPlus::activated(int iMsg)
     }
     if (!view) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one Drawing View object."));
+            QObject::tr("Select exactly one View to add to group."));
         return;
     }
     if (!clip) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one Clip object."));
+            QObject::tr("Select exactly one Clip group."));
         return;
     }
 
@@ -815,7 +923,7 @@ void CmdTechDrawClipMinus::activated(int iMsg)
     if (dObj.empty()) {
         QMessageBox::warning( Gui::getMainWindow(),
                               QObject::tr("Wrong selection"),
-                              QObject::tr("Select exactly one Drawing View object.") );
+                              QObject::tr("Select exactly one View to remove from Group.") );
         return;
     }
 
@@ -930,8 +1038,8 @@ CmdTechDrawDraftView::CmdTechDrawDraftView()
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert a DraftView");
-    sToolTipText  = QT_TR_NOOP("Inserts a Draft WB object");
+    sMenuText     = QT_TR_NOOP("Insert a DraftWB object");
+    sToolTipText  = QT_TR_NOOP("Insert a View of a Draft Workbench object");
     sWhatsThis    = "TechDraw_NewDraft";
     sStatusTip    = sToolTipText;
     sPixmap       = "actions/techdraw-draft-view";
@@ -983,8 +1091,8 @@ CmdTechDrawArchView::CmdTechDrawArchView()
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert an ArchView");
-    sToolTipText  = QT_TR_NOOP("Inserts a view of an Arch Section Plane");
+    sMenuText     = QT_TR_NOOP("Insert a Section Plane");
+    sToolTipText  = QT_TR_NOOP("Inserts a view of a Section Plane from Arch Workbench");
     sWhatsThis    = "TechDraw_NewArch";
     sStatusTip    = sToolTipText;
     sPixmap       = "actions/techdraw-arch-view";
@@ -1018,7 +1126,7 @@ void CmdTechDrawArchView::activated(int iMsg)
         archObj = objects[ifound];
     } else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("There is no Arch Section Plane in selection."));
+            QObject::tr("There is no Section Plane in selection."));
         return;
     }
 
@@ -1183,7 +1291,6 @@ void CmdTechDrawExportPageDxf::activated(int iMsg)
     openCommand("Save page to dxf");
     doCommand(Doc,"import TechDraw");
     doCommand(Doc,"TechDraw.writeDXFPage(App.activeDocument().%s,u\"%s\")",PageName.c_str(),(const char*)fileName.toUtf8());
-    updateActive();
     commitCommand();
 }
 
@@ -1216,4 +1323,5 @@ void CreateTechDrawCommands(void)
     rcCmdMgr.addCommand(new CmdTechDrawDraftView());
     rcCmdMgr.addCommand(new CmdTechDrawArchView());
     rcCmdMgr.addCommand(new CmdTechDrawSpreadsheet());
+    rcCmdMgr.addCommand(new CmdTechDrawNewBalloon());
 }

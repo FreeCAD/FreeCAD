@@ -31,12 +31,12 @@
 			</Documentation>
 			<Parameter Name="BasisCurve" Type="Object"/>
 		</Attribute>
-		<Methode Name="uIso">
+        <Methode Name="uIso" Const="true">
 			<Documentation>
 				<UserDocu>Builds the U isoparametric curve</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="vIso">
+        <Methode Name="vIso" Const="true">
 			<Documentation>
 				<UserDocu>Builds the V isoparametric curve</UserDocu>
 			</Documentation>

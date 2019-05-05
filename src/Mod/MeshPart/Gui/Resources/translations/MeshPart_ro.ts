@@ -4,35 +4,35 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="+245"/>
+      <location filename="../../Command.cpp" line="290"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="291"/>
       <source>Curve on mesh...</source>
-      <translation type="unfinished">Curve on mesh...</translation>
+      <translation>Curbe de pe plasă...</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="292"/>
       <source>Curve on mesh</source>
-      <translation type="unfinished">Curve on mesh</translation>
+      <translation>Curba pe plasă</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location line="-191"/>
+      <location filename="../../Command.cpp" line="57"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="58"/>
       <source>Create mesh from shape...</source>
       <translation>Creaza retea din forma...</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Tessellate shape</source>
       <translation>Divide forma</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location line="+106"/>
+      <location filename="../../Command.cpp" line="209"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="210"/>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Creează o secțiune plecând de la la o plasă şi un plan</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="211"/>
       <source>Section</source>
       <translation>Secţiune</translation>
     </message>
@@ -58,51 +58,51 @@
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location line="-85"/>
+      <location filename="../../Command.cpp" line="82"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="83"/>
       <source>Trim mesh with a plane</source>
-      <translation type="unfinished">Trim mesh with a plane</translation>
+      <translation>Tăiaţi plasa cu un plan</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="85"/>
       <source>Trims a mesh with a plane</source>
-      <translation type="unfinished">Trims a mesh with a plane</translation>
+      <translation>Tăie o plasă cu un plan</translation>
     </message>
   </context>
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="+353"/>
+      <location filename="../../CurveOnMesh.cpp" line="353"/>
       <source>Create</source>
       <translation>Creează</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location filename="../../CurveOnMesh.cpp" line="355"/>
       <source>Close wire</source>
-      <translation type="unfinished">Close wire</translation>
+      <translation>Fir închis</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location filename="../../CurveOnMesh.cpp" line="357"/>
       <source>Clear</source>
-      <translation>Eliberează</translation>
+      <translation>Șterge</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../CurveOnMesh.cpp" line="358"/>
       <source>Cancel</source>
       <translation>Renunţă</translation>
     </message>
     <message>
-      <location line="+208"/>
+      <location filename="../../CurveOnMesh.cpp" line="566"/>
       <source>Wrong mesh picked</source>
-      <translation type="unfinished">Wrong mesh picked</translation>
+      <translation>Ochiurilor de plasă greşit alese</translation>
     </message>
     <message>
-      <location line="+40"/>
+      <location filename="../../CurveOnMesh.cpp" line="606"/>
       <source>No point was picked</source>
       <translation>Nu a fost ales nici un punct</translation>
     </message>
@@ -110,198 +110,190 @@
   <context>
     <name>MeshPartGui::TaskCurveOnMesh</name>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="+14"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="14"/>
       <source>Curve on mesh</source>
-      <translation type="unfinished">Curve on mesh</translation>
+      <translation>Curba pe plasă</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="20"/>
       <source>Wire</source>
       <translation>Polilinie</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="26"/>
       <source>Snap tolerance to vertexes</source>
-      <translation type="unfinished">Snap tolerance to vertexes</translation>
+      <translation>Toleranță de acroșare la vârfuri</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="33"/>
       <source> px</source>
-      <translation type="unfinished"> px</translation>
+      <translation> px</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="43"/>
       <source>Split threshold</source>
-      <translation type="unfinished">Split threshold</translation>
+      <translation>Prag de separare</translation>
     </message>
     <message>
-      <location line="+26"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="69"/>
       <source>Spline Approximation</source>
-      <translation type="unfinished">Spline Approximation</translation>
+      <translation>Aproximare Spline</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="75"/>
       <source>Tolerance to mesh</source>
-      <translation type="unfinished">Tolerance to mesh</translation>
+      <translation>Toleranta la discretizarea Plasei</translation>
     </message>
     <message>
-      <location line="+26"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="101"/>
       <source>Continuity</source>
-      <translation type="unfinished">Continuity</translation>
+      <translation>Continuitate</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="108"/>
       <source>Maximum curve degree</source>
-      <translation type="unfinished">Maximum curve degree</translation>
+      <translation>Unghiul de curbură maximal</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="132"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>Start</translation>
     </message>
   </context>
   <context>
     <name>MeshPartGui::Tessellation</name>
     <message>
-      <location filename="../../Tessellation.ui" line="+14"/>
+      <location filename="../../Tessellation.ui" line="14"/>
       <source>Tessellation</source>
       <translation>Mozaicare</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location filename="../../Tessellation.ui" line="24"/>
       <source>Shapes</source>
       <translation>Forme</translation>
     </message>
     <message>
-      <location line="+8"/>
+      <location filename="../../Tessellation.ui" line="32"/>
       <source>Meshing options</source>
-      <translation type="unfinished">Meshing options</translation>
+      <translation>Opţiunile de digitalizare</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location filename="../../Tessellation.ui" line="38"/>
       <source>Standard</source>
       <translation>Standard</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location filename="../../Tessellation.ui" line="45"/>
       <source>Mefisto</source>
       <translation>Mefisto</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location filename="../../Tessellation.ui" line="52"/>
       <source>Netgen</source>
       <translation>Netgen</translation>
     </message>
     <message>
-      <location line="+81"/>
-      <source>Define segments by face colors</source>
-      <translation type="unfinished">Define segments by face colors</translation>
-    </message>
-    <message>
-      <location line="-7"/>
-      <source>Apply face colors to mesh</source>
-      <translation type="unfinished">Apply face colors to mesh</translation>
-    </message>
-    <message>
-      <location line="-35"/>
-      <source>Angular deviation:</source>
-      <translation type="unfinished">Angular deviation:</translation>
-    </message>
-    <message>
-      <location line="+28"/>
-      <source>Relative surface deviation</source>
-      <translation type="unfinished">Relative surface deviation</translation>
-    </message>
-    <message>
-      <location line="+40"/>
-      <source>Maximum edge length:</source>
-      <translation type="unfinished">Maximum edge length:</translation>
-    </message>
-    <message>
-      <location line="+44"/>
-      <source>Fineness:</source>
-      <translation>Finețe:</translation>
-    </message>
-    <message>
-      <location line="+17"/>
-      <source>Very coarse</source>
-      <translation>Foarte aspru</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Coarse</source>
-      <translation>Brut</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Moderate</source>
-      <translation>Moderat</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Fine</source>
-      <translation>Fin</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Very fine</source>
-      <translation>Foarte fin</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>User defined</source>
-      <translation>Definit de utilizator</translation>
-    </message>
-    <message>
-      <location line="+10"/>
-      <source>Mesh size grading:</source>
-      <translation type="unfinished">Mesh size grading:</translation>
-    </message>
-    <message>
-      <location line="+29"/>
-      <source>Elements per edge:</source>
-      <translation>Elemente pe margine:</translation>
-    </message>
-    <message>
-      <location line="+29"/>
-      <source>Elements per curvature radius:</source>
-      <translation type="unfinished">Elements per curvature radius:</translation>
-    </message>
-    <message>
-      <location line="+31"/>
-      <source>Optimize surface</source>
-      <translation>Optimizează suprafața</translation>
-    </message>
-    <message>
-      <location line="+10"/>
-      <source>Second order elements</source>
-      <translation>Elemente de ordinul al doilea</translation>
-    </message>
-    <message>
-      <location line="+7"/>
-      <source>Quad dominated</source>
-      <translation type="unfinished">Quad dominated</translation>
-    </message>
-    <message>
-      <source>Settings</source>
-      <translation>Setari</translation>
-    </message>
-    <message>
-      <location line="-293"/>
+      <location filename="../../Tessellation.ui" line="68"/>
       <source>Surface deviation:</source>
       <translation>Abaterea suprafetei:</translation>
     </message>
     <message>
-      <source>Max. edge length:</source>
-      <translation>Lungime maxima pentru margini:</translation>
+      <location filename="../../Tessellation.ui" line="91"/>
+      <source>Angular deviation:</source>
+      <translation>Abaterea unghiulară:</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="+225"/>
+      <location filename="../../Tessellation.ui" line="119"/>
+      <source>Relative surface deviation</source>
+      <translation>Abaterea relativă de suprafaţă</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="126"/>
+      <source>Apply face colors to mesh</source>
+      <translation>Aplica culoarea fațetei la Plasă</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="133"/>
+      <source>Define segments by face colors</source>
+      <translation>Definiți segmentele prin culoarra fațetelor</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="159"/>
+      <source>Maximum edge length:</source>
+      <translation>Lungimea maximă la margine:</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="203"/>
+      <source>Fineness:</source>
+      <translation>Finețe:</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="220"/>
+      <source>Very coarse</source>
+      <translation>Foarte aspru</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="225"/>
+      <source>Coarse</source>
+      <translation>Brut</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="230"/>
+      <source>Moderate</source>
+      <translation>Moderat</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="235"/>
+      <source>Fine</source>
+      <translation>Fin</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="240"/>
+      <source>Very fine</source>
+      <translation>Foarte fin</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="245"/>
+      <source>User defined</source>
+      <translation>Definit de utilizator</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="255"/>
+      <source>Mesh size grading:</source>
+      <translation>Calibrarea Ochiurilor de plasă:</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="284"/>
+      <source>Elements per edge:</source>
+      <translation>Elemente pe margine:</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="313"/>
+      <source>Elements per curvature radius:</source>
+      <translation>Elemente de pe raza de curbură:</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="344"/>
+      <source>Optimize surface</source>
+      <translation>Optimizează suprafața</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="354"/>
+      <source>Second order elements</source>
+      <translation>Elemente de ordinul al doilea</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="361"/>
+      <source>Quad dominated</source>
+      <translation>Dominat de quadrilatere</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="226"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Selectati mai intai o forma pentru crearea retelei.</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location filename="../../Tessellation.cpp" line="233"/>
       <source>No such document '%1'.</source>
       <translation>Nici un astfel de document '%1'.</translation>
     </message>
@@ -309,33 +301,58 @@
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="+93"/>
+      <location filename="../../Command.cpp" line="222"/>
       <source>Select plane</source>
       <translation>Selectare plan</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Please select a plane at which you section the mesh.</source>
-      <translation type="unfinished">Please select a plane at which you section the mesh.</translation>
+      <translation>Vă rugăm să selectaţi un plan de la care secţionați Plasa.</translation>
     </message>
   </context>
   <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-      <location line="-85"/>
+      <location filename="../../Command.cpp" line="94"/>
       <source>Select plane</source>
       <translation>Selectare plan</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="95"/>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+      <translation>Vă rugăm să selectaţi un plan de la care să tăiaţi ochiurile de plasă.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="101"/>
+      <source>Trim by plane</source>
+      <translation>Secționat de un plan</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="102"/>
+      <source>Select the side you want to keep.</source>
+      <translation>Selectaţi partea pe care doriţi să o păstraţi.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="103"/>
+      <source>Inner</source>
+      <translation>Interior</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="104"/>
+      <source>Outer</source>
+      <translation>Exterior</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="105"/>
+      <source>Split</source>
+      <translation>Divizare</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+36"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
       <translation>Obiect rețea 3D</translation>
     </message>

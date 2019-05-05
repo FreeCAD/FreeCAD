@@ -61,8 +61,13 @@ protected:
     Qt::PenStyle getSectionStyle();
     void makeLine();
     void makeArrows();
+    void makeArrowsTrad();
+    void makeArrowsISO();
     void makeSymbols();
+    void makeSymbolsTrad();
+    void makeSymbolsISO();
     void setTools();
+    int  getPrefSectionFormat();
 
 private:
     char* m_symbol;
@@ -80,6 +85,7 @@ private:
     double             m_arrowSize;
     //QColor             m_color;
     double             m_extLen;
+//    int                m_sectionFormat;     //0 = ASME, 1 = ISO
 };
 
 }

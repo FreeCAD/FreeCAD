@@ -41,21 +41,21 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <gp_Pln.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <BRepOffsetAPI_MakePipeShell.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <ShapeAnalysis_FreeBounds.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopExp.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
-#include <BRepBuilderAPI_Sewing.hxx>
-#include <BRepBuilderAPI_MakeSolid.hxx>
-#include <BRepClass3d_SolidClassifier.hxx>
-#include <Law_Function.hxx>
-#include <Law_Linear.hxx>
-#include <Law_S.hxx>
+# include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+# include <TopExp.hxx>
+# include <BRepAlgoAPI_Cut.hxx>
+# include <BRepBuilderAPI_Sewing.hxx>
+# include <BRepBuilderAPI_MakeSolid.hxx>
+# include <BRepClass3d_SolidClassifier.hxx>
+# include <Law_Function.hxx>
+# include <Law_Linear.hxx>
+# include <Law_S.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -82,7 +82,7 @@ const char* Pipe::TransformEnums[] = {"Constant", "Multisection", "Linear", "S-s
 PROPERTY_SOURCE(PartDesign::Pipe, PartDesign::ProfileBased)
 
 Pipe::Pipe()
-{   
+{
     ADD_PROPERTY_TYPE(Sections,(0),"Sweep",App::Prop_None,"List of sections");
     Sections.setSize(0);
     ADD_PROPERTY_TYPE(Spine,(0),"Sweep",App::Prop_None,"Path to sweep along");
@@ -125,8 +125,8 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
     if (sketchshape.isNull())
         return new App::DocumentObjectExecReturn("Pipe: No valid sketch or face as first section");
     else {
-        //TODO: currently we only allow planar faces. the reason for this is that with other faces in front, we could 
-        //not use the current simulate approach and build the start and end face from the wires. As the shell 
+        //TODO: currently we only allow planar faces. the reason for this is that with other faces in front, we could
+        //not use the current simulate approach and build the start and end face from the wires. As the shell
         //begins always at the spine and not the profile, the sketchshape cannot be used directly as front face.
         //We would need a method to translate the front shape to match the shell starting position somehow...
         TopoDS_Face face = TopoDS::Face(sketchshape.getShape());
@@ -141,7 +141,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         base = getBaseShape();
     } catch (const Base::Exception&) {
     }
- 
+
     try {
         //setup the location
         this->positionByPrevious();
@@ -171,13 +171,13 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             wiresections.emplace_back(1, wire);
         //maybe we need a sacling law
         Handle(Law_Function) scalinglaw;
-        
+
         //see if we shall use multiple sections
         if(Transformation.getValue() == 1) {
-            
+
             //TODO: we need to order the sections to prevent occ from crahsing, as makepieshell connects
-            //the sections in the order of adding            
-                
+            //the sections in the order of adding
+
             for(App::DocumentObject* obj : multisections) {
                 auto shape = getTopoShape(obj);
                 if(shape.countSubShapes(TopAbs_WIRE) != wiresections.size())
@@ -191,22 +191,22 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         else if(Transformation.getValue() == 2) {
             if(ScalingData.getValues().size()<1)
                 return new App::DocumentObjectExecReturn("No valid data given for linear scaling mode");
-            
+
             Handle(Law_Linear) lin = new Law_Linear();
             lin->Set(0,1,1,ScalingData[0].x);
-            
+
             scalinglaw = lin;
         }
         else if(Transformation.getValue() == 3) {
             if(ScalingData.getValues().size()<1)
                 return new App::DocumentObjectExecReturn("No valid data given for S-shape scaling mode");
-            
+
             Handle(Law_S) s = new Law_S();
             s->Set(0,1,ScalingData[0].y, 1, ScalingData[0].x, ScalingData[0].z);
-            
+
             scalinglaw = s;
         }*/
-        
+
         //build all shells
         std::vector<TopoShape> shells;
         std::vector<TopoShape> frontwires, backwires;
@@ -214,7 +214,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             
             BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path.getShape()));
             setupAlgorithm(mkPS, auxpath);
-            
+
             if(!scalinglaw) {
                 for(TopoShape& wire : wires) {
                     wire.move(invObjLoc);
@@ -372,7 +372,7 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoShape& a
             mkPipeShell.SetMode(gp_Dir(bVec.x,bVec.y,bVec.z));
             break;
     }
-        
+
     if(auxiliary) {
         mkPipeShell.SetMode(TopoDS::Wire(auxshape.getShape()), AuxilleryCurvelinear.getValue());
         //mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue(), BRepFill_ContactOnBorder);
@@ -391,7 +391,7 @@ void Pipe::getContiniusEdges(Part::TopoShape /*TopShape*/, std::vector< std::str
     Base::Console().Message("Initial edges:\n");
     for(int i=0; i<SubNames.size(); ++i)
         Base::Console().Message("Subname: %s\n", SubNames[i].c_str());
-    
+
     unsigned int i = 0;
     while(i < SubNames.size())
     {
@@ -423,8 +423,8 @@ void Pipe::getContiniusEdges(Part::TopoShape /*TopShape*/, std::vector< std::str
         else {
             SubNames.erase(SubNames.begin()+i);
         }
-    }   
-    
+    }
+
     Base::Console().Message("Final edges:\n");
     for(int i=0; i<SubNames.size(); ++i)
         Base::Console().Message("Subname: %s\n", SubNames[i].c_str());

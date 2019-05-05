@@ -72,7 +72,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // rectangle to appear. To avoid this the 'NoSystemBackground' parameter can be
     // set to false. Then a normal non-modal dialog will be shown instead (#0002440).
     bool noBackground = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", true);
+        ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", false);
 
     if (noBackground) {
 #if defined(Q_OS_MAC)

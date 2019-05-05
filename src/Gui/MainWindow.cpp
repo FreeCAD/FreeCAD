@@ -1415,8 +1415,7 @@ QPixmap MainWindow::splashImage() const
 {
     // search in the UserAppData dir as very first
     QPixmap splash_image;
-    QDir dir(QString::fromUtf8(App::Application::Config()["UserAppData"].c_str()));
-    QFileInfo fi(dir.filePath(QString::fromLatin1("pixmaps/splash_image.png")));
+    QFileInfo fi(QString::fromLatin1("images:splash_image.png"));
     if (fi.isFile() && fi.exists())
         splash_image.load(fi.filePath(), "PNG");
 
@@ -1443,17 +1442,30 @@ QPixmap MainWindow::splashImage() const
         QString title = qApp->applicationName();
         QString major   = QString::fromLatin1(App::Application::Config()["BuildVersionMajor"].c_str());
         QString minor   = QString::fromLatin1(App::Application::Config()["BuildVersionMinor"].c_str());
-        QString version = QString::fromLatin1("%1.%2").arg(major).arg(minor);
+        QString version = QString::fromLatin1("%1.%2").arg(major, minor);
+        QString position, fontFamily;
 
         std::map<std::string,std::string>::const_iterator te = App::Application::Config().find("SplashInfoExeName");
         std::map<std::string,std::string>::const_iterator tv = App::Application::Config().find("SplashInfoVersion");
+        std::map<std::string,std::string>::const_iterator tp = App::Application::Config().find("SplashInfoPosition");
+        std::map<std::string,std::string>::const_iterator tf = App::Application::Config().find("SplashInfoFont");
         if (te != App::Application::Config().end())
             title = QString::fromUtf8(te->second.c_str());
         if (tv != App::Application::Config().end())
             version = QString::fromUtf8(tv->second.c_str());
+        if (tp != App::Application::Config().end())
+            position = QString::fromUtf8(tp->second.c_str());
+        if (tf != App::Application::Config().end())
+            fontFamily = QString::fromUtf8(tf->second.c_str());
 
         QPainter painter;
         painter.begin(&splash_image);
+        if (!fontFamily.isEmpty()) {
+            QFont font = painter.font();
+            if (font.fromString(fontFamily))
+                painter.setFont(font);
+        }
+
         QFont fontExe = painter.font();
         fontExe.setPointSize(20);
         QFontMetrics metricExe(fontExe);
@@ -1466,14 +1478,25 @@ QPixmap MainWindow::splashImage() const
         QFontMetrics metricVer(fontVer);
         int v = metricVer.width(version);
 
+        int x = -1, y = -1;
+        QRegExp rx(QLatin1String("(\\d+).(\\d+)"));
+        if (rx.indexIn(position) != -1) {
+            x = rx.cap(1).toInt();
+            y = rx.cap(2).toInt();
+        }
+        else {
+            x = w - (l + v + 10);
+            y = h - 20;
+        }
+
         QColor color;
         color.setNamedColor(QString::fromLatin1(tc->second.c_str()));
         if (color.isValid()) {
             painter.setPen(color);
             painter.setFont(fontExe);
-            painter.drawText(w-(l+v+10),h-20, title);
+            painter.drawText(x, y, title);
             painter.setFont(fontVer);
-            painter.drawText(w-(v+5),h-20, version);
+            painter.drawText(x + (l + 5), y, version);
             painter.end();
         }
     }

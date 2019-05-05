@@ -1489,11 +1489,11 @@ void printBacktrace(size_t skip=0)
 void segmentation_fault_handler(int sig)
 {
 #if defined(FC_OS_LINUX)
+    (void)sig;
     std::cerr << "Program received signal SIGSEGV, Segmentation fault.\n";
     printBacktrace(2);
     exit(1);
-#endif
-
+#else
     switch (sig) {
         case SIGSEGV:
             std::cerr << "Illegal storage access..." << std::endl;
@@ -1511,6 +1511,7 @@ void segmentation_fault_handler(int sig)
             std::cerr << "Unknown error occurred..." << std::endl;
             break;
     }
+#endif // FC_OS_LINUX
 }
 
 void unhandled_exception_handler()
@@ -1780,7 +1781,6 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::FileSystemError>;
     new ExceptionProducer<Base::BadFormatError>;
     new ExceptionProducer<Base::MemoryException>;
-    new ExceptionProducer<Base::MemoryException>;
     new ExceptionProducer<Base::AccessViolation>;
     new ExceptionProducer<Base::AbnormalProgramTermination>;
     new ExceptionProducer<Base::UnknownProgramOption>;
@@ -1792,6 +1792,7 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::ImportError>;
     new ExceptionProducer<Base::AttributeError>;
     new ExceptionProducer<Base::RuntimeError>;
+    new ExceptionProducer<Base::BadGraphError>;
     new ExceptionProducer<Base::NotImplementedError>;
     new ExceptionProducer<Base::DivisionByZeroError>;
     new ExceptionProducer<Base::ReferencesError>;
@@ -1802,6 +1803,7 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::UnderflowError>;
     new ExceptionProducer<Base::UnitsMismatchError>;
     new ExceptionProducer<Base::CADKernelError>;
+    new ExceptionProducer<Base::RestoreError>;
 }
 
 void Application::initConfig(int argc, char ** argv)
@@ -1877,20 +1879,23 @@ void Application::initConfig(int argc, char ** argv)
         _pConsoleObserverFile = 0;
 
     // Banner ===========================================================
-    if (!(mConfig["Verbose"] == "Strict"))
-        Console().Message("%s %s, Libs: %s.%sR%s\n%s",mConfig["ExeName"].c_str(),
-                          mConfig["ExeVersion"].c_str(),
-                          mConfig["BuildVersionMajor"].c_str(),
-                          mConfig["BuildVersionMinor"].c_str(),
-                          mConfig["BuildRevision"].c_str(),
-                          mConfig["CopyrightInfo"].c_str());
-    else
-        Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
-                          mConfig["ExeVersion"].c_str(),
-                          mConfig["BuildVersionMajor"].c_str(),
-                          mConfig["BuildVersionMinor"].c_str(),
-                          mConfig["BuildRevision"].c_str());
-
+    if (!(mConfig["RunMode"] == "Cmd")) {
+        // Remove banner if FreeCAD is invoked via the -c command as regular
+        // Python interpreter
+        if (!(mConfig["Verbose"] == "Strict"))
+            Console().Message("%s %s, Libs: %s.%sR%s\n%s",mConfig["ExeName"].c_str(),
+                              mConfig["ExeVersion"].c_str(),
+                              mConfig["BuildVersionMajor"].c_str(),
+                              mConfig["BuildVersionMinor"].c_str(),
+                              mConfig["BuildRevision"].c_str(),
+                              mConfig["CopyrightInfo"].c_str());
+        else
+            Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
+                              mConfig["ExeVersion"].c_str(),
+                              mConfig["BuildVersionMajor"].c_str(),
+                              mConfig["BuildVersionMinor"].c_str(),
+                              mConfig["BuildRevision"].c_str());
+    }
     LoadParameters();
 
     auto loglevelParam = _pcUserParamMngr->GetGroup("BaseApp/LogLevels");
@@ -2387,7 +2392,7 @@ void Application::ParseOptions(int ac, char ** av)
 #endif
     ;
 
-    // Ignored options, will be safely ignored. Mostly used by underlaying libs.
+    // Ignored options, will be safely ignored. Mostly used by underlying libs.
     //boost::program_options::options_description x11("X11 options");
     //x11.add_options()
     //    ("display",  boost::program_options::value< string >(), "set the X-Server")

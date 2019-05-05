@@ -46,7 +46,7 @@ class _CommandFemAnalysis(CommandManager):
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeAnalysis(FreeCAD.ActiveDocument, 'Analysis')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.ActiveObject)")
-        # create a CalculiX ccx tools solver for any new analysis, to be on the save side fo rnew users
+        # create a CalculiX ccx tools solver for any new analysis, to be on the safe side for new users
         FreeCADGui.doCommand("ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)")
         FreeCAD.ActiveDocument.recompute()
@@ -57,9 +57,9 @@ class _CommandFemClippingPlaneAdd(CommandManager):
     def __init__(self):
         super(_CommandFemClippingPlaneAdd, self).__init__()
         self.resources = {'Pixmap': 'fem-clipping-plane-add',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Clipping Plane", "Clipping plane on face"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ClippingPlaneAdd", "Clipping plane on face"),
                           # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Clipping Plane", "Add a clipping plane on a selected face")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ClippingPlaneAdd", "Add a clipping plane on a selected face")}
         self.is_active = 'with_document'
 
     def Activated(self):
@@ -91,9 +91,9 @@ class _CommandFemClippingPlaneRemoveAll(CommandManager):
     def __init__(self):
         super(_CommandFemClippingPlaneRemoveAll, self).__init__()
         self.resources = {'Pixmap': 'fem-clipping-plane-remove-all',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Clipping Plane", "Remove all clipping planes"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ClippingPlaneRemoveAll", "Remove all clipping planes"),
                           # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Clipping Plane", "Remove all clipping planes")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ClippingPlaneRemoveAll", "Remove all clipping planes")}
         self.is_active = 'with_document'
 
     def Activated(self):
@@ -600,8 +600,8 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
     def __init__(self):
         super(_CommandFemMeshNetgenFromShape, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-netgen-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshFromShape", "FEM mesh from shape by Netgen"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshFromShape", "Create a FEM volume mesh from a solid or face shape by Netgen internal mesher")}
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshNetgenFromShape", "FEM mesh from shape by Netgen"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshNetgenFromShape", "Create a FEM volume mesh from a solid or face shape by Netgen internal mesher")}
         self.is_active = 'with_part_feature'
 
     def Activated(self):
@@ -761,55 +761,8 @@ class _CommandFemSolverRun(CommandManager):
         self.is_active = 'with_solver'
 
     def Activated(self):
-        import femsolver.run
-        from PySide import QtGui
-
-        def load_results(ret_code):
-            if ret_code == 0:
-                self.fea.load_results()
-            elif ret_code == 201:
-                if self.fea.solver.AnalysisType == 'check':
-                    print('We run into the NOANALYSIS problem!')
-                    # https://forum.freecadweb.org/viewtopic.php?f=18&t=31303&start=10#p260743
-                    self.fea.load_results()
-            else:
-                print("CalculiX failed ccx finished with error {}".format(ret_code))
-
-        self.solver = self.selobj
-        if self.solver.Proxy.Type == 'Fem::FemSolverCalculixCcxTools':
-            print('CalxuliX ccx tools solver!')
-            from femtools import ccxtools
-            self.fea = ccxtools.FemToolsCcx(None, self.solver)
-            self.fea.reset_mesh_purge_results_checked()
-            message = self.fea.check_prerequisites()
-            if message:
-                QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
-                return
-            self.fea.finished.connect(load_results)
-            QtCore.QThreadPool.globalInstance().start(self.fea)
-        else:
-            print('Frame work solver!')
-            try:
-                machine = femsolver.run.getMachine(self.solver)
-            except femsolver.run.MustSaveError:
-                QtGui.QMessageBox.critical(
-                    FreeCADGui.getMainWindow(),
-                    "Can't start Solver",
-                    "Please save the file before executing the solver. "
-                    "This must be done because the location of the working "
-                    "directory is set to \"Beside .fcstd File\".")
-                return
-            except femsolver.run.DirectoryDoesNotExist:
-                QtGui.QMessageBox.critical(
-                    FreeCADGui.getMainWindow(),
-                    "Can't start Solver",
-                    "Selected working directory doesn't exist.")
-                return
-            if not machine.running:
-                machine.reset()
-                machine.target = femsolver.run.RESULTS
-                machine.start()
-                machine.join()  # wait for the machine to finish.
+        from femsolver.run import run_fem_solver
+        run_fem_solver(self.selobj)
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 

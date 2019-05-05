@@ -66,7 +66,7 @@ void ActiveObjectList::setHighlight(const ObjectInfo &info, HighlightMode mode, 
     bool autoExpand = hGrp->GetBool("TreeActiveAutoExpand", true);
     if (autoExpand)
         vp->getDocument()->signalExpandObject(*vp, 
-                enable?Gui::Expand:Gui::Collapse, info.obj, info.subname.c_str());
+                enable?Gui::ExpandPath:Gui::CollapseItem, info.obj, info.subname.c_str());
 
     vp->getDocument()->signalHighlightObject(*vp, mode,enable,info.obj,info.subname.c_str());
 }

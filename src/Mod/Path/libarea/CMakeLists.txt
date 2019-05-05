@@ -38,6 +38,8 @@ if(NOT FREECAD_USE_PYBIND11)
     else()
         include_directories(${Boost_INCLUDE_DIRS})
     endif()
+else()
+    include_directories(${pybind11_INCLUDE_DIR})
 endif(NOT FREECAD_USE_PYBIND11)
 
 

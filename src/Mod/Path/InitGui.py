@@ -76,7 +76,7 @@ class PathWorkbench (Workbench):
 
         # build commands list
         projcmdlist = ["Path_Job", "Path_Post"]
-        toolcmdlist = ["Path_Inspect", "Path_Simulator", "Path_ToolLibraryEdit", "Path_SelectLoop"]
+        toolcmdlist = ["Path_Inspect", "Path_Simulator", "Path_ToolLibraryEdit", "Path_SelectLoop", "Path_OpActiveToggle"]
         prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop", "Path_Custom"]
         twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_MillFace", "Path_Helix", "Path_Adaptive" ]
         threedopcmdlist = ["Path_Pocket_3D"]
@@ -151,7 +151,7 @@ class PathWorkbench (Workbench):
                 if "Job" in selectedName:
                     self.appendContextMenu("", ["Path_ExportTemplate"])
             if isinstance (obj.Proxy, PathScripts.PathOp.ObjectOp):
-                self.appendContextMenu("", ["Path_OperationCopy"])
+                self.appendContextMenu("", ["Path_OperationCopy", "Path_OpActiveToggle"])
             if obj.isDerivedFrom("Path::Feature"):
                 if "Profile" in selectedName or "Contour" in selectedName or "Dressup" in selectedName:
                     self.appendContextMenu("", "Separator")
@@ -164,6 +164,6 @@ Gui.addWorkbench(PathWorkbench())
 
 FreeCAD.addImportType(
     "GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap *.gcode)", "PathGui")
-FreeCAD.addExportType(
-    "GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap *.gcode)", "PathGui")
+# FreeCAD.addExportType(
+#     "GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap *.gcode)", "PathGui")
 

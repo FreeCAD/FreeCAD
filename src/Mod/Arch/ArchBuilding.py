@@ -239,8 +239,8 @@ class _CommandBuilding:
                 else:
                     warning = True
         if warning :
-            message = translate( "Arch" , "You can put anything but Site and Building object in a Building object.\n\
-Building object is not allowed to accept Site and Building object.\n\
+            message = translate( "Arch" , "You can put anything but Site and Building objects in a Building object.\n\
+Building object is not allowed to accept Site and Building objects.\n\
 Site and Building objects will be removed from the selection.\n\
 You can change that in the preferences.") + "\n"
             ArchCommands.printMessage( message )
@@ -270,7 +270,7 @@ class _Building(ArchFloor._Floor):
 
         ArchFloor._Floor.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Building"
+        obj.IfcType = "Building"
 
     def setProperties(self,obj):
 

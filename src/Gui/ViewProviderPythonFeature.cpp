@@ -564,6 +564,18 @@ ViewProviderPythonFeatureImp::setEdit(int ModNum)
         }
     }
     catch (Py::Exception&) {
+        // If an explicit NotImplementedError is raised then
+        // handle it differently to other RuntimeError
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+        // If a runtime error occurred when calling setEdit
+        // then handle it like returning false
+        if (PyErr_ExceptionMatches(PyExc_RuntimeError)) {
+            PyErr_Clear();
+            return Rejected;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
     }
@@ -602,6 +614,18 @@ ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
         }
     }
     catch (Py::Exception&) {
+        // If an explicit NotImplementedError is raised then
+        // handle it differently to other RuntimeError
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+        // If a runtime error occurred when calling setEdit
+        // then handle it like returning false
+        if (PyErr_ExceptionMatches(PyExc_RuntimeError)) {
+            PyErr_Clear();
+            return Rejected;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
     }

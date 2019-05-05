@@ -4,359 +4,479 @@
   <context>
     <name>StartPage</name>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
-      <source>FreeCAD Start Center</source>
-      <translation>FreeCAD indító központ</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
+      <source>Start</source>
+      <translation>Kezdő időpont</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
-      <source>Start a new project</source>
-      <translation>Új projekt indítása</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
+      <source>Documents</source>
+      <translation>Dokumentumok</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
-      <source>Recent Files</source>
+      <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
+      <source>Help</source>
+      <translation>Súgó</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
+      <source>Activity</source>
+      <translation>Tevékenység</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
+      <source>Recent files</source>
       <translation>Legutóbbi fájlok</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="96"/>
-      <source>Tutorials</source>
-      <translation>Oktatóanyagok</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
+      <source>Tip</source>
+      <translation>Tipp</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
-      <source>FreeCAD Homepage</source>
-      <translation>FreeCAD Honlap</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
+      <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
+      <translation>A legutóbbi fájlok száma beállítható a Szerkesztés -&gt; Beállítások -&gt; Általános -&gt; Legutóbbi fájlok listájának mérete menüpontban</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
-      <source>Example projects</source>
-      <translation>Példa projektek</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
+      <source>Examples</source>
+      <translation>Példák</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
-      <source>Schenkel STEP file</source>
-      <translation>Schenkel STEP fájl</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
+      <source>General documentation</source>
+      <translation>Általános dokumentáció</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
-      <source>Load a PartDesign example</source>
-      <translation>Töltsön be egy alkatrésztervező példát</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
+      <source>User hub</source>
+      <translation>Felhasználói csomópont</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
-      <source>Load a Drawing extraction</source>
-      <translation>Töltsön be egy rajzfájlt</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
+      <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
+      <translation>Ez a szakasz hasznos dokumentációkat tartalmaz a FreeCAD felhasználóknak: egy listát az összes munkafelületről, részletes utasításokat a telepítésről és a FreeCAD használatáról, útmutatók és minden ami a kezdéshez szükséges lehet.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
-      <source>Load a Robot simulation example</source>
-      <translation>Robot szimulációs-példa betöltése</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
+      <source>Power users hub</source>
+      <translation>Haladó felhasználói csomópont</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
-      <source>Projects from the Web</source>
-      <translation>Projektek a weben</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
+      <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
+      <translation>Ez a szakasz a haladó felhasználóknak és a python szkriptek írásával kapcsolatban érdeklődőknek szóló dokumentációt tartalmazza. Ugyancsak itt található a makrók gyűjteménye, a hozzájuk kapcsolódó telepítési és használati útmutatók, illetve további információk a FreeCAD egyedi igényeknek megfelelő személyre szabásáról.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
-      <source>Schenkel STEP</source>
-      <translation>Schenkel STEP</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
+      <source>Developers hub</source>
+      <translation>Fejlesztői csomópont</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
-      <source>Complex Part</source>
-      <translation>Összetett alkatrész</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
+      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
+      <translation>Az a rész a fejlesztők számára tartalmaz anyagot: Hogyan kell összeállítani a FreeCAD-t, hogyan kell felépíteni a FreeCAD forráskódját + hogyan kell navigálni, új munkaállományokat fejleszteni és/vagy a FreeCAD-ot beépíteni a saját alkalmazásába.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
-      <source>Close this window after opening or creating a file</source>
-      <translation>Fájl megnyitása vagy létrehozása után zárja be ezt az ablakot</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
+      <source>Manual</source>
+      <translation>Kézikönyv</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
-      <source>Don't show me this window again next time</source>
-      <translation>Legközelebbi indításkor ne jelenjen meg ez az ablak</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
+      <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
+      <translation>A FreeCAD kézikönyv egy másik, lineárisabb módja annak, hogy bemutassa a wikiban található információkat. Úgy készül, hogy olvasható, mint egy könyv, és finoman bemutatja Önnek sok más oldalon keresztül a fenti csomópontokat. A &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt; e-könyvverziók &lt;/a&gt; is elérhetők.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
-      <source>Designing parts</source>
-      <translation>Alkatrészek tervezése</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
+      <source>Workbenches documentation</source>
+      <translation>Munkafelületek dokumentációja</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
-      <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation>Az &lt;b&gt;Alkatrész tervezés&lt;/b&gt; munkafelület célja a komplex alkatrészek tervezése a 2D hálótest vázlatok alapján. Használja a 2D alakzatok, hálótestek vagy elemeikkel és húzza ki őket 3d formává.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
-      <source>Example workflow</source>
-      <translation>Munkafolyamat példa</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
-      <source>Part Design</source>
-      <translation>Alkatrész tervezés</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
-      <source>Designing architectural elements</source>
-      <translation>Építészeti elemek tervezése</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="83"/>
-      <source>Working with Meshes</source>
-      <translation>Munka hálótestekkel</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="84"/>
-      <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation>A &lt;b&gt;Hálótest munkafelület&lt;/b&gt; a háló objektumok szerkesztésére szolgál. A hálótest egyszerúbb 3D alakzatok mint az alkatrész objektumok, de sokszor egyszerűbb importálni és exportálni különböző alkalmazások között.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="85"/>
-      <source>FreeCAD offers you several tools to convert between Mesh and Part objects.</source>
-      <translation>A FreeCAD számos olyan eszközzel rendelkezik ami képes a Háló és az Elem közötti konverzációra.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="86"/>
-      <source>Work with Meshes</source>
-      <translation>Munka hálótestekkel</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="87"/>
-      <source>The complete workbench</source>
-      <translation>A teljes munkafelület</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="88"/>
-      <source>FreeCAD Complete workbench</source>
-      <translation>FreeCAD teljes munkaterület</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="90"/>
-      <source>file size:</source>
-      <translation>fájlméret:</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="91"/>
-      <source>creation time:</source>
-      <translation>létrehozva:</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="92"/>
-      <source>last modified:</source>
-      <translation>utolsó módosítás:</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="89"/>
-      <source>populated with some of the most commonly used tools.</source>
-      <translation>összhangban néhány a leggyakrabban használt eszközökkel.</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
+      <source>These are the help pages of all the workbenches currently installed on this computer.</source>
+      <translation>A jelenleg telepített összes munkafelület súgói.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
-      <source>Latest videos</source>
-      <translation>Legfrissebb videó</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
-      <source>On the web</source>
-      <translation>A weben</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
-      <source>This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.</source>
-      <translation>Ez a FreeCAD honlap. Itt sok információt talál a FreeCAD programról, oktatóanyagokat, példákat és felhasználói dokumentációt is beleértve.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="93"/>
-      <source>location:</source>
-      <translation>helye:</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="94"/>
-      <source>User manual</source>
-      <translation>Felhasználói kézikönyv</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="97"/>
-      <source>Python resources</source>
-      <translation>Python-erőforrások</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>File not found</source>
-      <translation>A fájl nem található</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="99"/>
-      <source>from &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</source>
-      <translation>from &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="100"/>
-      <source>The FreeCAD-tutorial blog</source>
-      <translation>A  FreeCAD bemutató-blog</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="101"/>
-      <source>from &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews channel&lt;/a&gt;</source>
-      <translation>from &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews channel&lt;/a&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
-      <source>This is the official user manual of FreeCAD, built, maintained and translated by the FreeCAD community.</source>
-      <translation>Ez a FreeCAD hivatalos felhasználói kézikönyve, készítve, fenntartva a FreeCAD közösség álltal.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="103"/>
-      <source>The tutorials section on the FreeCAD website</source>
-      <translation>Az oktató rész a FreeCAD honlapon</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="105"/>
-      <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
-      <translation>A blog a FreeCAD oktatási céljára rendelt, a FreeCAD-Közösség tagjai tartják fenn</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
-      <source>Getting started</source>
-      <translation>Első lépések</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="107"/>
-      <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
-      <translation>A FreeCAD csatlakozó részekre osztott a munkafelületeken, amelyek kifejezetten a megfelelő feladathoz lehet alkalmazni. A listában lévő egyik munkafelületen kezdhet, vagy a teljes munkapadon, mely betölti a különböző munkafelületeken legtöbbet használt eszközöket. Kattintson a FreeCAD honlapján lévő munkafelületek további információiért.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="109"/>
-      <source>Ship Design</source>
-      <translation>Hajó tervezése</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="110"/>
-      <source>Designing and calculating ships</source>
-      <translation>Hajók tervezése és számítása</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="111"/>
-      <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
-      <translation>A &lt;b&gt;Hajó tervezés&lt;/b&gt; modul számos segítő eszközt kínál a tervezőknek, hogy megnézzen, modellezzen és számítson profilokat és más a hajótestre vonatkozó jellegzetes tulajdonságot.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="112"/>
-      <source>Load an Architectural example model</source>
-      <translation>Egy építészeti példa modell betöltése</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
-      <source>Architectural Design</source>
-      <translation>Építészeti tervezés</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="104"/>
-      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation>Ez a FreeCAD weboldal szakasz a python script írásnak szentelt, példákkal, magyarázatokkal és API-parancsokkal.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
-      <source>Your version of FreeCAD is up to date.</source>
-      <translation>A FreeCAD verziója naprakész.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="116"/>
-      <source>There is a new release of FreeCAD available.</source>
-      <translation>Egy új FreeCAD kiadás érhető el.</translation>
+      <source>Getting help from the community</source>
+      <translation>Segítségkérés a közösségtől</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
-      <source>Latest commits</source>
-      <translation>Legújabb követések</translation>
+      <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>A &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD fórum&lt;/a&gt; egy nagyszerű hely, ahol segítséget kérhetsz FreeCAD felhasználóktól és fejlesztőktől. A fórumnak külön szakaszai foglalkoznak különböző fajta problémákkal és témákkal. Ha kétségeid vannak, hogy melyik szakaszba írj, akkor használd az általános &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Segítség a FreeCAD használatában&lt;/a&gt; szakaszt.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="118"/>
-      <source>Obtain a development version</source>
-      <translation>Szerezzen be egy fejlesztői verziót</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
+      <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
+      <translation>Ha ez az első alkalom, hogy a fórumba írsz, akkor mindenképp olvasd el előtte az &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;Útmutatót!&lt;/a&gt;</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
-      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation>&lt;b&gt;Fejlesztői verziókat&lt;/b&gt; a közösség tagjai bocsátják rendelkezésre időről-időre, és általában a legújabb módosításokat tartalmazzák, de több valószínűséggel tartalmazhat hibákat.</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
+      <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
+      <translation>A FreeCAD fenntartja a nyilvános &lt;a href="https://www.freecadweb.org/tracker"&gt; hibakeresőt &lt;/a&gt;, ahol bárki beadhat hibákat és új szolgáltatásokat javasolhat. Annak elkerülése érdekében, hogy többlet munkát ne okozz, és a lehető legjobb eséllyel bírja a hiba megoldását, olvassa el a &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt; hibakeresési útmutatót &lt;/a&gt; kiküldetés előtt.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="120"/>
-      <source>See all commits</source>
-      <translation>Lásd az összes követőt</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
+      <source>Available addons</source>
+      <translation>Elérhető bővítmények</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="117"/>
-      <source>Load an FEM 3D example analysis</source>
-      <translation>Egy FEM 3D példa elemzés betöltése</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
+      <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
+      <translation>Alább látható az elérhető munkafelületek listája, amiket hozzáadhatsz a FreeCAD-hez. A menüben az Eszközök -&gt; Bővítmények kezelése menüpontban böngészhetsz köztük és telepítheted őket. Bármelyikről többet tudhatsz meg, ha az alábbi linkekre kattintasz.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="121"/>
-      <source>Load an FEM 2D example analysis</source>
-      <translation>Egy FEM 2D példa elemzés betöltése</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
+      <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
+      <translation>Ha a te FreeCAD verziód nem tartalmazta, akkor telepítsd a FreeCAD dokumentáció csomagot, amivel internet nélkül is elérheted a dokumentációs csomópontokat, a munkafelületek súgóit illetve az egyes parancsokhoz tartozó dokumentációt.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="95"/>
-      <source>http://www.freecadweb.org/wiki/Online_Help_Toc</source>
-      <translation>http://www.freecadweb.org/wiki/Online_Help_Toc</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
+      <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
+      <translation>Nem kérhető le információ a GitHub-ról. &lt;a href="EnableDownload.py"&gt;Engedélyezd, hogy a FreeCAD hozzáférjen az internethez,&lt;/a&gt; majd töltsd újra a Kezdőlapot.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="113"/>
-      <source>http://www.freecadweb.org/wiki/Tutorials</source>
-      <translation>http://www.freecadweb.org/wiki/Tutorials</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
+      <source>Recent commits</source>
+      <translation>Legutóbbi bejegyzések</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="114"/>
-      <source>http://www.freecadweb.org/wiki/Power_users_hub</source>
-      <translation>http://www.freecadweb.org/wiki/Power_users_hub</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
+      <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
+      <translation>Az alábbiakban láthatók a &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt; FreeCAD forráskódjának &lt;/a&gt; legfrissebb módosításai. Ezek a változások még nem tükrözik a jelenleg futó FreeCAD verziót. Ellenőrizze a &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt; elérhető opciókat &lt;/a&gt;, ha fejlesztési verziót szeretne kapni.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="122"/>
-      <source>FreeCAD Standard File</source>
-      <translation>FreeCAD alapértelmezett fájl</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
+      <source>See all commits on github</source>
+      <translation>Tekintse meg az összes github közzétételt</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
-      <source>Author</source>
-      <translation>Létrehozó</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
+      <source>See all commits on github</source>
+      <translation>Tekintse meg az összes github közzétételt</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="124"/>
-      <source>Company</source>
-      <translation>Vállalat</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
+      <source>version</source>
+      <translation>verzió</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="125"/>
-      <source>License</source>
-      <translation>Licensz</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
+      <source>build</source>
+      <translation>kiadás</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
+      <source>Create new...</source>
+      <translation>Új létrehozása...</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
+      <source>Unknown</source>
+      <translation>Ismeretlen</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
+      <source>Forum</source>
+      <translation>Fórum</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
+      <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
+      <translation>Legújabb hozzászólások a &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD fórum&lt;/a&gt;on:</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
+      <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
+      <translation>A fenti hivatkozások egyikének az asztali böngészőben megnyitásához kattintson a jobb gombbal a -&gt; Nyissa meg a külső böngészőben</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
+      <source>Creation date</source>
+      <translation>Létrehozás dátuma</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
-      <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</source>
-      <translation>Az &lt;b&gt;Építészeti tervező&lt;/b&gt; munkafelület kimondottan az építészeti elemekkel, mint az ablak vagy a fal, történő munkavégzéshez készült. Kezdjen el 2D alakzatokat rajzolni, és használja iránymutatóként az építészeti alakzatok felépítéséhez.</translation>
+      <source>Last modification</source>
+      <translation>Utolsó módosítás</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
-      <source>http://www.freecadweb.org/wiki/Getting_started</source>
-      <translation>http://www.freecadweb.org/wiki/Getting_started</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
+      <source>Notes</source>
+      <translation>Megjegyzések</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
-      <source>Load an FEM 3D new solver example analysis</source>
-      <translation>Betölt egy Végeselemes módszerű 3D-s új példa megoldó analízist</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
+      <source>Notes</source>
+      <translation>Megjegyzések</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="65"/>
+      <source>Start page</source>
+      <translation>Kezdőlap</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
-      <source>Click here</source>
-      <translation type="unfinished">Click here</translation>
+      <location filename="../../../StartPage/StartPage.py" line="545"/>
+      <source>Start page</source>
+      <translation>Kezdőlap</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdStartPage</name>
+    <message>
+      <location filename="../../Command.cpp" line="44"/>
+      <source>Start</source>
+      <translation>Kezdő időpont</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
-      <source>to allow FreeCAD to access the internet</source>
-      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
+      <location filename="../../Command.cpp" line="45"/>
+      <source>Start Page</source>
+      <translation>Kezdő oldal</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="46"/>
+      <source>Displays the start page in a browser view</source>
+      <translation>Megnyitja a kezdő oldalt egy böngészőnézetben</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgStartPreferences</name>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="14"/>
+      <source>Start page options</source>
+      <translation>Kezdő oldal lehetőségek</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="20"/>
+      <source>Start page template</source>
+      <translation>Kezdő oldal sablon</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="26"/>
+      <source>An optional HTML template that will be used instead of the default start page.</source>
+      <translation>Egy HTML sablon lehetőség, meylet az alapértelmezett kezdő oldal helyett fogja használni.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="42"/>
+      <source>Contents</source>
+      <translation>Tartalom</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="48"/>
+      <source>Show forum</source>
+      <translation>Fórum mutatása</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="55"/>
+      <source>Show examples folder contents</source>
+      <translation>Mutassa a példák mappa tartalmát</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="62"/>
+      <source>Show additional folder</source>
+      <translation>Mutassa a kiegészítő mappákat</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="69"/>
+      <source>If you want the examples to show on the first page</source>
+      <translation>Ha szeretné a példákat az első oldalon megmutatni</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="91"/>
+      <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
+      <translation>Ha bejelölt, a legutóbbi FreeCAD fórum bejegyzéseket kijelzi a Tevékenység táblázatban</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="110"/>
+      <source>An optional custom folder to be displayed at the bottom of the first page</source>
+      <translation>Egy további személyre szabható mappát lehet kijelezni az első oldal alján</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="126"/>
+      <source>Show notepad</source>
+      <translation>Jegyzettömb megjelenítése</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="133"/>
+      <source>Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</source>
+      <translation>Jegyzettömb megjelenítése a fájlok bélyegképei mellett, ahová feljegyzéseket készíthet a FreeCAD szakaszain keresztül</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="155"/>
+      <source>Fonts and colors</source>
+      <translation>Betűtípusok és színek</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="167"/>
+      <source>The background of the main start page area</source>
+      <translation>A fő kezdő oldal területének a háttere</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="187"/>
+      <source>Background color</source>
+      <translation>Háttér szín</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="199"/>
+      <source>in FreeCAD</source>
+      <translation>FreeCAD-ban</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="218"/>
+      <source>In external browser</source>
+      <translation>Külső böngészőben</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="236"/>
+      <source>Background color gradient down</source>
+      <translation>Háttér színátmenet halványítás</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="249"/>
+      <source>The color of the version text</source>
+      <translation>A verzió szövegének színe</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="269"/>
+      <source>Link color</source>
+      <translation>Kapcsolat színe</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="276"/>
+      <source>An optional image to display as background</source>
+      <translation>Egy lehetséges ábra a háttérképnek</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="289"/>
+      <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
+      <translation>Ha bejelölt, ha az általános testreszabásokban egy stílus lapot meghatározott, ennek használatával felülírja az alul található színeket</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="308"/>
+      <source>Page background color</source>
+      <translation>Oldal háttérszíne</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="321"/>
+      <source>The color of the text on the main pages</source>
+      <translation>A fő oldalak szöveg színe</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="341"/>
+      <source>Background image</source>
+      <translation>Háttérkép</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="348"/>
+      <source>Page text color</source>
+      <translation>Oldal szöveg színe</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="361"/>
+      <source>The color of the links</source>
+      <translation>A hivatkozások színe</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="387"/>
+      <source>The background color of the boxes inside the pages</source>
+      <translation>Az oldalon levő téglatestek háttér színe</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="407"/>
+      <source>Box background color</source>
+      <translation>Téglatest háttérszíne</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="420"/>
+      <source>The background color behind the panels</source>
+      <translation>Panelek mögötti háttérszín</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="449"/>
+      <source>The down gradient for the background color (currently unsupported)</source>
+      <translation>A háttérszín halványítása (jelenleg nem támogatott)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="472"/>
+      <source>Open links</source>
+      <translation>Nyitott kapcsolatok</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="479"/>
+      <source>Background text color</source>
+      <translation>Háttér szöveg színe</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="486"/>
+      <source>Use FreeCAD style sheet</source>
+      <translation>FreeCAD stíluslap használata</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="493"/>
+      <source>Font family</source>
+      <translation>Betűkészlet</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="502"/>
+      <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
+      <translation>A kezdő oldalon használni kívánt betűcsalád. Állhat egy betűtípus nevéből vagy vesszővel elválasztott visszatérő betűtípus sorozatából</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="508"/>
+      <source>Arial,Helvetica,sans</source>
+      <translation>Arial, Helvetica, sans</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="521"/>
+      <source>The base font size to use for all texts of the Start page</source>
+      <translation>Alap betűméretet a kezdő oldal összes szövegének használatához</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="524"/>
+      <source>px</source>
+      <translation>px</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="542"/>
+      <source>Use gradient for New File icon</source>
+      <translation>Színátmenet használata új fájl ikonjára</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="568"/>
+      <source>Options</source>
+      <translation>Beállítások</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="577"/>
+      <source>Should the start page be closed after loading?</source>
+      <translation>A start oldalt zárja be a betöltődés után?</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="596"/>
+      <source>Switch workbench after loading</source>
+      <translation>Munkafelületre váltás a betöltés után</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="603"/>
+      <source>Close start page after loading</source>
+      <translation>Kezdő oldal bezárása a betöltés után</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="610"/>
+      <source>Close &amp; switch on file open</source>
+      <translation>Bezárás &amp; váltás a fájl megnyitásakor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="617"/>
+      <source>If FreeCAD is started by opening a file, apply the two settings above</source>
+      <translation>Ha a FreeCAD egy fájl megnyitásával indul, alkalmazza a fenti két beállítást</translation>
     </message>
   </context>
 </TS>

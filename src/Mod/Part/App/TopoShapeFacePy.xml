@@ -19,16 +19,16 @@
 				<UserDocu>Offset the face by a given amount. Returns Compound of Wires. Deprecated - use makeOffset2D instead.</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="getUVNodes" Const="true">
-            <Documentation>
-                <UserDocu>
+		<Methode Name="getUVNodes" Const="true">
+			<Documentation>
+				<UserDocu>
 getUVNodes() --&gt; list
 Get the list of (u,v) nodes of the tessellation
 An exception is raised if the face is not triangulated.
 </UserDocu>
-            </Documentation>
-        </Methode>
-        <Methode Name="tangentAt" Const="true">
+			</Documentation>
+		</Methode>
+		<Methode Name="tangentAt" Const="true">
 			<Documentation>
 				<UserDocu>Get the tangent in u and v isoparametric at the given point if defined</UserDocu>
 			</Documentation>
@@ -73,17 +73,24 @@ An exception is raised if the face is not triangulated.
 				<UserDocu>Validate the face.</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="curveOnSurface">
-            <Documentation>
-                <UserDocu>
+		<Methode Name="curveOnSurface" Const="true">
+			<Documentation>
+				<UserDocu>
 curveonSurface(Edge) -> None or tuple
 Returns the curve  associated to the  edge in  the
 parametric  space of  the  face.  Returns None if this
 curve  does not exist. If this curve exists then a tuple
 of curve and and parameter range is returned.
-                </UserDocu>
-            </Documentation>
-        </Methode>
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="cutHoles">
+			<Documentation>
+				<UserDocu>Cut holes in the face.
+aFace.cutHoles(list_of_wires)
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Attribute Name="Tolerance">
 			<Documentation>
 				<UserDocu>Set or get the tolerance of the vertex</UserDocu>
@@ -115,24 +122,24 @@ deprecated -- please use OuterWire</UserDocu>
 			</Documentation>
 			<Parameter Name="OuterWire" Type="Object"/>
 		</Attribute>
-    <Attribute Name="Mass" ReadOnly="true">
-      <Documentation>
-        <UserDocu>Returns the mass of the current system.</UserDocu>
-      </Documentation>
-      <Parameter Name="Mass" Type="Object"/>
-    </Attribute>
-    <Attribute Name="CenterOfMass" ReadOnly="true">
-      <Documentation>
-        <UserDocu>Returns the center of mass of the current system.
+	<Attribute Name="Mass" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>Returns the mass of the current system.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Mass" Type="Object"/>
+	</Attribute>
+	<Attribute Name="CenterOfMass" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>Returns the center of mass of the current system.
 If the gravitational field is uniform, it is the center of gravity.
 The coordinates returned for the center of mass are expressed in the
 absolute Cartesian coordinate system.</UserDocu>
-      </Documentation>
-      <Parameter Name="CenterOfMass" Type="Object"/>
-    </Attribute>
-    <Attribute Name="MatrixOfInertia" ReadOnly="true">
-      <Documentation>
-        <UserDocu>Returns the matrix of inertia. It is a symmetrical matrix. 
+	  </Documentation>
+	  <Parameter Name="CenterOfMass" Type="Object"/>
+	</Attribute>
+	<Attribute Name="MatrixOfInertia" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>Returns the matrix of inertia. It is a symmetrical matrix. 
 The coefficients of the matrix are the quadratic moments of 
 inertia. 
 
@@ -148,20 +155,20 @@ system (G, Gx, Gy, Gz) where G is the centre of mass of the
 system and Gx, Gy, Gz the directions parallel to the X(1,0,0) 
 Y(0,1,0) Z(0,0,1) directions of the absolute cartesian 
 coordinate system.</UserDocu>
-      </Documentation>
-      <Parameter Name="MatrixOfInertia" Type="Object"/>
-    </Attribute>
-    <Attribute Name="StaticMoments" ReadOnly="true">
-      <Documentation>
-        <UserDocu>Returns Ix, Iy, Iz, the static moments of inertia of the 
+	  </Documentation>
+	  <Parameter Name="MatrixOfInertia" Type="Object"/>
+	</Attribute>
+	<Attribute Name="StaticMoments" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>Returns Ix, Iy, Iz, the static moments of inertia of the 
  current system; i.e. the moments of inertia about the 
  three axes of the Cartesian coordinate system.</UserDocu>
-      </Documentation>
-      <Parameter Name="StaticMoments" Type="Object"/>
-    </Attribute>
-    <Attribute Name="PrincipalProperties" ReadOnly="true">
-      <Documentation>
-        <UserDocu>Computes the principal properties of inertia of the current system. 
+	  </Documentation>
+	  <Parameter Name="StaticMoments" Type="Object"/>
+	</Attribute>
+	<Attribute Name="PrincipalProperties" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>Computes the principal properties of inertia of the current system. 
  There is always a set of axes for which the products 
  of inertia of a geometric system are equal to 0; i.e. the 
  matrix of inertia of the system is diagonal. These axes 
@@ -170,8 +177,8 @@ coordinate system.</UserDocu>
  associated moments are called the principal moments of inertia. 
  This function computes the eigen values and the 
  eigen vectors of the matrix of inertia of the system.</UserDocu>
-      </Documentation>
-      <Parameter Name="PrincipalProperties" Type="Dict"/>
-    </Attribute>
+	  </Documentation>
+	  <Parameter Name="PrincipalProperties" Type="Dict"/>
+	</Attribute>
 	</PythonExport>
 </GenerateModel>

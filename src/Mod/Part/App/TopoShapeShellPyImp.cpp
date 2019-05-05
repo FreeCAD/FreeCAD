@@ -27,15 +27,15 @@
 # include <BRep_Builder.hxx>
 # include <BRepCheck_Analyzer.hxx>
 # include <BRepGProp.hxx>
+# include <BRepPrimAPI_MakeHalfSpace.hxx>
 # include <GProp_GProps.hxx>
 # include <GProp_PrincipalProps.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Shell.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <ShapeAnalysis_Shell.hxx>
+# include <BRepPrimAPI_MakeHalfSpace.hxx>
 #endif
-
-#include <BRepPrimAPI_MakeHalfSpace.hxx>
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -72,7 +72,7 @@ std::string TopoShapeShellPy::representation(void) const
 
 PyObject *TopoShapeShellPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 {
-    // create a new instance of TopoShapeSolidPy and the Twin object 
+    // create a new instance of TopoShapeSolidPy and the Twin object
     return new TopoShapeShellPy(new TopoShape);
 }
 
@@ -297,5 +297,5 @@ PyObject *TopoShapeShellPy::getCustomAttributes(const char* /*attr*/) const
 
 int TopoShapeShellPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

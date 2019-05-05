@@ -35,7 +35,7 @@ import os
 Debug = False
 
 
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -60,7 +60,7 @@ def insert(filename, docname):
     import_z88_disp(filename)
 
 
-########## module specific methods ##########
+# ********* module specific methods *********
 def import_z88_disp(filename, analysis=None, result_name_prefix=None):
     '''insert a FreeCAD FEM mechanical result object in the ActiveDocument
     pure usage:
@@ -95,11 +95,11 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
         for result_set in disp_read['Results']:
             results_name = result_name_prefix + 'results'
 
-            results = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
-            results.Mesh = result_mesh_object
-            results = importToolsFem.fill_femresult_mechanical(results, result_set, 0)
+            res_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
+            res_obj.Mesh = result_mesh_object
+            res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
             if analysis:
-                analysis_object.addObject(results)
+                analysis_object.addObject(res_obj)
 
         if FreeCAD.GuiUp:
             if analysis:
@@ -108,7 +108,7 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
             FreeCAD.ActiveDocument.recompute()
 
     else:
-        FreeCAD.Console.PrintError('Problem on frd file import. No nodes found in frd file.\n')
+        FreeCAD.Console.PrintError('Problem on Z88 result file import. No nodes found in Z88 result file.\n')
 
 
 def read_z88_disp(z88_disp_input):

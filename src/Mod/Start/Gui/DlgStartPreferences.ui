@@ -66,7 +66,7 @@
       <item row="1" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_1">
         <property name="toolTip">
-         <string>if you want the examples to show on the first page</string>
+         <string>If you want the examples to show on the first page</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -107,7 +107,10 @@
       <item row="2" column="1">
        <widget class="Gui::PrefFileChooser" name="fileChooser_3">
         <property name="toolTip">
-         <string>an optional custom folder to be displayed at the bottom of the first page</string>
+         <string>An optional custom folder to be displayed at the bottom of the first page</string>
+        </property>
+        <property name="mode">
+         <enum>Gui::FileChooser::Directory</enum>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowCustomFolder</cstring>
@@ -161,7 +164,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>the background of the main start page area</string>
+         <string>The background of the main start page area</string>
         </property>
         <property name="color">
          <color>
@@ -212,7 +215,7 @@
            <bool>false</bool>
           </property>
           <property name="text">
-           <string>in external browser</string>
+           <string>In external browser</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>InWeb</cstring>
@@ -230,7 +233,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Background color gradient down</string>
+         <string>Background color down gradient</string>
         </property>
        </widget>
       </item>
@@ -243,7 +246,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>the color of the version text</string>
+         <string>The color of the version text</string>
         </property>
         <property name="color">
          <color>
@@ -270,7 +273,7 @@
       <item row="4" column="1">
        <widget class="Gui::PrefFileChooser" name="fileChooser_2">
         <property name="toolTip">
-         <string>an optional image to display as background</string>
+         <string>An optional image to display as background</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>BackgroundImage</cstring>
@@ -283,7 +286,7 @@
       <item row="0" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_5">
         <property name="toolTip">
-         <string>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</string>
+         <string>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -315,7 +318,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>the color of the text on he main pages</string>
+         <string>The color of the text on the main pages</string>
         </property>
         <property name="color">
          <color>
@@ -355,7 +358,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>the color of the links</string>
+         <string>The color of the links</string>
         </property>
         <property name="color">
          <color>
@@ -381,7 +384,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>the background color of the boxes inside the pages</string>
+         <string>The background color of the boxes inside the pages</string>
         </property>
         <property name="color">
          <color>
@@ -414,7 +417,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>the background color behind the panels</string>
+         <string>The background color behind the panels</string>
         </property>
         <property name="color">
          <color>
@@ -443,7 +446,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>the down gradient for the background color (currently unsupported)</string>
+         <string>The down gradient for the background color (currently unsupported)</string>
         </property>
         <property name="color">
          <color>
@@ -590,7 +593,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="autoModuleLabel">
         <property name="text">
-         <string>Switch workbench after loafing</string>
+         <string>Switch workbench after loading</string>
         </property>
        </widget>
       </item>
@@ -604,7 +607,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_13">
         <property name="text">
-         <string>Close &amp; switch on file open</string>
+         <string>Close and switch on opening file</string>
         </property>
        </widget>
       </item>

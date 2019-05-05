@@ -22,7 +22,10 @@
 
 #include "PreCompiled.h"
 
-#include <boost/algorithm/string.hpp>
+
+#ifndef _PreComp_
+# include <boost/algorithm/string.hpp>
+#endif
 
 #include <Base/Exception.h>
 #include <Base/Vector3D.h>
@@ -69,8 +72,15 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
     if ( PyArg_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &PyDict_Type, &parameters) ) {
         std::string sname(name);
         boost::to_upper(sname);
-        if (!sname.empty())
-            getCommandPtr()->setFromGCode(name);
+        try {
+            if (!sname.empty())
+                getCommandPtr()->setFromGCode(name);
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
+            return -1;
+        }
+
         PyObject *key, *value;
         Py_ssize_t pos = 0;
         while (parameters && PyDict_Next(parameters, &pos, &key, &value)) {
@@ -114,8 +124,14 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
     if ( PyArg_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &(Base::PlacementPy::Type), &parameters) ) {
         std::string sname(name);
         boost::to_upper(sname);
-        if (!sname.empty())
-            getCommandPtr()->setFromGCode(name);
+        try {
+            if (!sname.empty())
+                getCommandPtr()->setFromGCode(name);
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
+            return -1;
+        }
         Base::PlacementPy *p = static_cast<Base::PlacementPy*>(parameters);
         getCommandPtr()->setFromPlacement( *p->getPlacementPtr() );
         return 0;
@@ -210,7 +226,14 @@ PyObject* CommandPy::setFromGCode(PyObject *args)
     char *pstr=0;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         std::string gcode(pstr);
-        getCommandPtr()->setFromGCode(gcode);
+        try {
+            getCommandPtr()->setFromGCode(gcode);
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
+            return nullptr;
+        }
+
         Py_INCREF(Py_None);
         return Py_None;
     }

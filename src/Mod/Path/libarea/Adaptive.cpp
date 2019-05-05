@@ -35,7 +35,7 @@ namespace AdaptivePath
 {
 using namespace ClipperLib;
 using namespace std;
-#define SAME_POINT_TOL_SQRD_SCALED 16.0
+#define SAME_POINT_TOL_SQRD_SCALED 4.0
 #define UNUSED(expr) (void)(expr)
 
 //*****************************************
@@ -415,6 +415,13 @@ void CleanPath(const Path &inp, Path &outpt, double tolerance)
 		if (index >= size) index -= size;
 		outpt.push_back(tmp.at(index));
 	}
+
+
+	if(DistanceSqrd(outpt.front(),inp.front()) > SAME_POINT_TOL_SQRD_SCALED)
+		outpt.insert(outpt.begin(), inp.front());
+
+	if(DistanceSqrd(outpt.back(),inp.back()) > SAME_POINT_TOL_SQRD_SCALED)
+		outpt.push_back( inp.back());
 
 }
 
@@ -1127,14 +1134,14 @@ class EngagePoint
   public:
 	struct EngageState
 	{
-		size_t currentPathIndex;
-		size_t currentSegmentIndex;
+		size_t currentPathIndex = 0;
+		size_t currentSegmentIndex = 0;
 		double segmentPos = 0;
 		double totalDistance = 0;
 		double currentPathLength = 0;
 		int passes = 0;
 
-		double metric; // engage point metric
+		double metric = 0; // engage point metric
 
 		bool operator<(const EngageState &other) const
 		{

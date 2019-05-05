@@ -26,6 +26,8 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 
+class QTemporaryFile;
+
 namespace TechDraw {
 class DrawView;
 class DrawViewPart;
@@ -39,6 +41,7 @@ class DrawViewClip;
 class DrawViewCollection;
 class DrawViewSpreadsheet;
 class DrawViewImage;
+class DrawViewBalloon;
 }
 
 namespace TechDrawGui
@@ -47,6 +50,7 @@ class QGIView;
 class QGIViewDimension;
 class QGITemplate;
 class ViewProviderPage;
+class QGIViewBalloon;
 
 class TechDrawGuiExport QGVPage : public QGraphicsView
 {
@@ -59,9 +63,10 @@ public:
     virtual ~QGVPage();
 
     void setRenderer(RendererType type = Native);
-    void drawBackground(QPainter *p, const QRectF &rect);
+    void drawBackground(QPainter *p, const QRectF &rect) override;
 
     QGIView * addViewDimension(TechDraw::DrawViewDimension *dim);
+    QGIView * addViewBalloon(TechDraw::DrawViewBalloon *balloon);
     QGIView * addProjectionGroup(TechDraw::DrawProjGroup *view);
     QGIView * addViewPart(TechDraw::DrawViewPart *part);
     QGIView * addViewSection(TechDraw::DrawViewPart *part);
@@ -78,6 +83,7 @@ public:
     QGIView* getQGIVByName(std::string name);
     QGIView* findParent(QGIView *) const;
 
+    void addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent);
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
 //    const std::vector<QGIView *> & getViews() const { return views; }    //only used in MDIVP
     std::vector<QGIView *> getViews() const;   //only used in MDIVP
@@ -86,6 +92,8 @@ public:
     int removeQView(QGIView *view);
     int removeQViewByName(const char* name);
     void removeQViewFromScene(QGIView *view);
+
+    void balloonPlacing(bool val) { m_balloonPlacing = val; };
 
     //void setViews(const std::vector<QGIView *> &view) {views = view; }
     void setPageTemplate(TechDraw::DrawTemplate *pageTemplate);
@@ -100,16 +108,22 @@ public:
 
     /// Renders the page to SVG with filename.
     void saveSvg(QString filename);
+    void postProcessXml(QTemporaryFile* tempFile, QString filename, QString pagename);
+
+    int balloonIndex;
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
 
 protected:
-    void wheelEvent(QWheelEvent *event);
-    void paintEvent(QPaintEvent *event);
-    void enterEvent(QEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void wheelEvent(QWheelEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
+    void enterEvent(QEvent *event) override;
+    void leaveEvent(QEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void kbPanScroll(int xMove = 1, int yMove = 1); 
 
     static QColor SelectColor;
     static QColor PreselectColor;
@@ -129,6 +143,10 @@ private:
     
     bool m_atCursor;
     bool m_invertZoom;
+    double m_zoomIncrement;
+    int m_reversePan;
+    int m_reverseScroll;
+    bool m_balloonPlacing;
 };
 
 } // namespace MDIViewPageGui

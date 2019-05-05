@@ -52,7 +52,7 @@ namespace geoff_geometry {
 #endif
 	void	Matrix::Unit()
 	{
-		// homogenous matrix - set as unit matrix
+		// homogeneous matrix - set as unit matrix
 		memset(e, 0, sizeof(e));
 		e[0] = e[5] = e[10] = e[15] = 1;
 		m_unit = true;
@@ -109,12 +109,12 @@ namespace geoff_geometry {
 
 
 	void	Matrix::Rotate(double angle, int Axis)
-	{	// Rotation (Axis 1 = x , 2 = y , 3 = z 
+	{	// Rotation (Axis 1 = x , 2 = y , 3 = z
 		Rotate(sin(angle), cos(angle), Axis);
 	}
 
 	void	Matrix::Rotate(double sinang, double cosang, int Axis)
-	{	// Rotation (Axis 1 = x , 2 = y , 3 = z 
+	{	// Rotation (Axis 1 = x , 2 = y , 3 = z
 		Matrix rotate;
 		rotate.Unit();
 
@@ -174,7 +174,7 @@ namespace geoff_geometry {
 			l = i - (k = (i % 4));
 			ret.e[i] =  m.e[l] * e[k] + m.e[l+1] * e[k+4] + m.e[l+2] * e[k+8] + m.e[l+3] * e[k+12];
 		}
-		
+
 		*this = ret;
 		this->IsUnit();
 	}
@@ -597,19 +597,19 @@ namespace geoff_geometry {
 
 	 void Plane::Mirrored(Matrix* tmMirrored) {
 		 // calculates a mirror transformation that mirrors 2d about plane
-	 
+
 		//Point3d p1 = this->Near(Point3d(0.,0.,0.));
 		if(tmMirrored->m_unit == false) tmMirrored->Unit();
 
 		double nx = this->normal.getx();
 		double ny = this->normal.gety();
 		double nz = this->normal.getz();
-	   
+
 		// the translation
 		tmMirrored->e[ 3] = -2. * nx * this->d;
 		tmMirrored->e[ 7] = -2. * ny * this->d;
 		tmMirrored->e[11] = -2. * nz * this->d;
-	 
+
 		// the rest
 		tmMirrored->e[ 0] = 1. - 2. * nx * nx;
 		tmMirrored->e[ 5] = 1. - 2. * ny * ny;
@@ -617,7 +617,7 @@ namespace geoff_geometry {
 		tmMirrored->e[ 1] = tmMirrored->e[ 4] = -2. * nx * ny;
 		tmMirrored->e[ 2] = tmMirrored->e[ 8] = -2. * nz * nx;
 		tmMirrored->e[ 6] = tmMirrored->e[ 9] = -2. * ny * nz;
-	 
+
 		tmMirrored->m_unit = false;
 		tmMirrored->m_mirrored = true;
 	}

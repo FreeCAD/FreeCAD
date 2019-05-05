@@ -47,8 +47,8 @@ PropertyItemDelegate::PropertyItemDelegate(QObject* parent)
     : QItemDelegate(parent), expressionEditor(0)
     , pressed(false), activeTransactionID(0),changed(false)
 {
-    connect(this, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)), 
-            this, SLOT(editorClosed(QWidget*)));
+    connect(this, SIGNAL(closeEditor(QWidget*, QAbstractItemDelegate::EndEditHint)),
+            this, SLOT(editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint)));
 }
 
 PropertyItemDelegate::~PropertyItemDelegate()
@@ -123,7 +123,8 @@ bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* mode
     return QItemDelegate::editorEvent(event, model, option, index);
 }
 
-void PropertyItemDelegate::editorClosed(QWidget *editor) {
+void PropertyItemDelegate::editorClosed(QWidget *editor, QAbstractItemDelegate::EndEditHint hint)
+{
     int id = 0;
     auto &app = App::GetApplication();
     const char *name = app.getActiveTransaction(&id);
@@ -133,7 +134,9 @@ void PropertyItemDelegate::editorClosed(QWidget *editor) {
         activeTransactionID = 0;
     }else
         FC_LOG("editor close");
-    if(editor)
+    // don't close the editor when pressing Tab or Shift+Tab
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=34627#p290957
+    if (editor && hint != EditNextItem && hint != EditPreviousItem)
         editor->close();
 }
 

@@ -43,7 +43,13 @@ class PartWorkbench ( Workbench ):
         import PartGui
 
         try:
+            import BasicShapes.Shapes
+        except ImportError as err:
+            FreeCAD.Console.PrintError("Features from BasicShapes package cannot be loaded. {err}\n".format(err= str(err)))
+
+        try:
             import CompoundTools._CommandCompoundFilter
+            import CompoundTools._CommandExplodeCompound
         except ImportError as err:
             FreeCAD.Console.PrintError("Features from CompoundTools package cannot be loaded. {err}\n".format(err= str(err)))
 

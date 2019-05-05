@@ -66,29 +66,29 @@ DrawViewDraft::~DrawViewDraft()
 {
 }
 
-void DrawViewDraft::onChanged(const App::Property* prop)
+short DrawViewDraft::mustExecute() const
 {
+    short result = 0;
     if (!isRestoring()) {
-        if (prop == &Source ||
-            prop == &LineWidth ||
-            prop == &FontSize ||
-            prop == &Direction ||
-            prop == &Color ||
-            prop == &LineStyle ||
-            prop == &LineSpacing) {
-            try {
-                App::DocumentObjectExecReturn *ret = recompute();
-                delete ret;
-            }
-            catch (...) {
-            }
-        }
+        result = Source.isTouched() ||
+                    LineWidth.isTouched() ||
+                    FontSize.isTouched() ||
+                    Direction.isTouched() ||
+                    Color.isTouched() ||
+                    LineStyle.isTouched() ||
+                    LineSpacing.isTouched();
     }
-    TechDraw::DrawViewSymbol::onChanged(prop);
+    if ((bool) result) {
+        return result;
+    }
+    return DrawViewSymbol::mustExecute();
 }
+
+
 
 App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
 {
+//    Base::Console().Message("DVDr::execute() \n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -125,7 +125,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
         Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
                                           FeatName.c_str(),svgHead.c_str(),svgTail.c_str());
         }
-    requestPaint();
+//    requestPaint();
     return DrawView::execute();
 }
 

@@ -23,13 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#endif
-
-#include <boost/algorithm/string/predicate.hpp>
-
-#include "FeatureDressUp.h"
-#include <Base/Console.h>
-#include <Base/Exception.h>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopExp.hxx>
@@ -37,9 +30,16 @@
 #include <BRep_Tool.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopExp_Explorer.hxx>
+#endif
+
+
+#include <boost/algorithm/string/predicate.hpp>
+
+#include "FeatureDressUp.h"
+#include <Base/Console.h>
+#include <Base/Exception.h>
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
-
 
 using namespace PartDesign;
 

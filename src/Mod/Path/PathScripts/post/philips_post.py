@@ -531,6 +531,6 @@ def export(objectslist, filename, argstring):
     gcode += linenumberify(GCODE_FOOTER)
     if SHOW_EDITOR:
         PostUtils.editor(gcode)
-    gfile = pythonopen(filename, "wb")
+    gfile = pythonopen(filename, "w")
     gfile.write(gcode)
     gfile.close()

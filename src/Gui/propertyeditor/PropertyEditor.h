@@ -98,6 +98,7 @@ protected:
     virtual void drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const;
     virtual QStyleOptionViewItem viewOptions() const;
     virtual void contextMenuEvent(QContextMenuEvent *event);
+    virtual bool event(QEvent*);
 
 private:
     void setEditorMode(const QModelIndex & parent, int start, int end);

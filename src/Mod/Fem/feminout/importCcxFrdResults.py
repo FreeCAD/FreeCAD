@@ -34,7 +34,7 @@ import FreeCAD
 import os
 
 
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -59,13 +59,13 @@ def insert(filename, docname):
     importFrd(filename)
 
 
-########## module specific methods ##########
+# ********* module specific methods *********
 def importFrd(filename, analysis=None, result_name_prefix=None):
     from . import importToolsFem
     import ObjectsFem
     if result_name_prefix is None:
         result_name_prefix = ''
-    m = readResult(filename)
+    m = read_frd_result(filename)
     result_mesh_object = None
     if len(m['Nodes']) > 0:
         if analysis:
@@ -75,17 +75,8 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
         result_mesh_object = ObjectsFem.makeMeshResult(FreeCAD.ActiveDocument, 'Result_mesh')
         result_mesh_object.FemMesh = mesh
 
-        positions = []
-        for k, v in m['Nodes'].items():
-            positions.append(v)
-        p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
-        p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
-        x_span = abs(p_x_max - p_x_min)
-        y_span = abs(p_y_max - p_y_min)
-        z_span = abs(p_z_max - p_z_min)
-        span = max(x_span, y_span, z_span)
-
         number_of_increments = len(m['Results'])
+        FreeCAD.Console.PrintLog('Increments: ' + str(number_of_increments) + '\n')
         if len(m['Results']) > 0:
             for result_set in m['Results']:
                 if 'number' in result_set:
@@ -101,12 +92,21 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                 else:
                     results_name = result_name_prefix + 'results'
 
-                results = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
-                results.Mesh = result_mesh_object
-                results = importToolsFem.fill_femresult_mechanical(results, result_set, span)
-                results = importToolsFem.fill_femresult_stats(results)
+                res_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
+                res_obj.Mesh = result_mesh_object
+                res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
                 if analysis:
-                    analysis_object.addObject(results)
+                    analysis_object.addObject(res_obj)
+                # complementary result object calculations
+                import femresult.resulttools as restools
+                if not res_obj.MassFlowRate:
+                    # only compact result if not Flow 1D results
+                    # compact result object, workaround for bug 2873, https://www.freecadweb.org/tracker/view.php?id=2873
+                    res_obj = restools.compact_result(res_obj)
+                res_obj = restools.add_disp_apps(res_obj)  # fill DisplacementLengths
+                res_obj = restools.add_von_mises(res_obj)  # fill StressValues
+                res_obj = restools.add_principal_stress(res_obj)  # fill PrincipalMax, PrincipalMed, PrincipalMin, MaxShear
+                res_obj = restools.fill_femresult_stats(res_obj)  # fill Stats
         else:
             error_message = (
                 "We have nodes but no results in frd file, which means we only have a mesh in frd file. "
@@ -128,8 +128,8 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 
 
 # read a calculix result file and extract the nodes, displacement vectors and stress values.
-def readResult(frd_input):
-    print('Read results from: ' + frd_input)
+def read_frd_result(frd_input):
+    FreeCAD.Console.PrintMessage('Read ccx results from frd file: {}\n'.format(frd_input))
     inout_nodes = []
     inout_nodes_file = frd_input.rsplit('.', 1)[0] + '_inout_nodes.txt'
     if os.path.exists(inout_nodes_file):
@@ -157,9 +157,10 @@ def readResult(frd_input):
     elements_seg3 = {}
     results = []
     mode_results = {}
+    mode_results['number'] = float('NaN')
+    mode_results['time'] = float('NaN')
     mode_disp = {}
     mode_stress = {}
-    mode_stressv = {}
     mode_strain = {}
     mode_peeq = {}
     mode_temp = {}
@@ -397,6 +398,7 @@ def readResult(frd_input):
             mode_time_found = True
         if mode_time_found and (line[2:7] == "100CL"):
             # we found the new time step line
+            # !!! be careful here, there is timetemp and timestep! TODO: use more differ names
             timetemp = float(line[13:25])
             if timetemp > timestep:
                 timestep = timetemp
@@ -425,8 +427,10 @@ def readResult(frd_input):
             stress_4 = float(line[49:61])
             stress_5 = float(line[61:73])
             stress_6 = float(line[73:85])
-            mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_5, stress_6)
-            mode_stressv[elem] = FreeCAD.Vector(stress_1, stress_2, stress_3)
+            # CalculiX frd files: (Sxx, Syy, Szz, Sxy, Syz, Szx)
+            # FreeCAD:            (Sxx, Syy, Szz, Sxy, Sxz, Syz)
+            # thus exchange the last two entries
+            mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_6, stress_5)
 
         # Check if we found strain section
         if line[5:13] == "TOSTRAIN":
@@ -437,10 +441,13 @@ def readResult(frd_input):
             strain_1 = float(line[13:25])
             strain_2 = float(line[25:37])
             strain_3 = float(line[37:49])
-            # strain_4 = float(line[49:61])  # Not used in vector
-            # strain_5 = float(line[61:73])
-            # strain_6 = float(line[73:85])
-            mode_strain[elem] = FreeCAD.Vector(strain_1, strain_2, strain_3)
+            strain_4 = float(line[49:61])
+            strain_5 = float(line[61:73])
+            strain_6 = float(line[73:85])
+            # CalculiX frd files: (Exx, Eyy, Ezz, Exy, Eyz, Ezx)
+            # FreeCAD:            (Exx, Eyy, Ezz, Exy, Exz, Eyz)
+            # thus exchange the last two entries
+            mode_strain[elem] = (strain_1, strain_2, strain_3, strain_4, strain_6, strain_5)
 
         # Check if we found an equivalent plastic strain section
         if line[5:7] == "PE":
@@ -508,14 +515,13 @@ def readResult(frd_input):
 
             if mode_stress_found:
                 mode_results['stress'] = mode_stress
-                mode_results['stressv'] = mode_stressv
                 mode_stress = {}
-                mode_stressv = {}
                 mode_stress_found = False
                 node_element_section = False
 
             if mode_strain_found:
-                mode_results['strainv'] = mode_strain
+                mode_results['strain'] = mode_strain
+
                 mode_strain = {}
                 mode_strain_found = False
                 node_element_section = False
@@ -574,6 +580,8 @@ def readResult(frd_input):
             # append mode_results to results and reset mode_result
             results.append(mode_results)
             mode_results = {}
+            mode_results['number'] = float('NaN')  # https://forum.freecadweb.org/viewtopic.php?f=18&t=32649&start=10#p274686
+            mode_results['time'] = float('NaN')
             end_of_section_found = False
 
         # on changed --> write changed values in mode_result --> will be the first to do on an empty mode_result

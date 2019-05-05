@@ -27,14 +27,15 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
+import sys
 import FreeCAD
-import FreeCAD as App
 
 
+# analysis and its members
 def createObject(doc, name, proxy, viewProxy):
     obj = doc.addObject(proxy.BaseType, name)
     proxy(obj)
-    if App.GuiUp:
+    if FreeCAD.GuiUp:
         viewProxy(obj.ViewObject)
     return obj
 
@@ -60,49 +61,91 @@ def _searchGroups(member, objs):
     return False
 
 
-def getMember(analysis, t):
+def get_member(analysis, t):
     if analysis is None:
         raise ValueError("Analysis must not be None")
     matching = []
     for m in analysis.Group:
-        if isDerivedFrom(m, t):
+        if is_derived_from(m, t):  # since is _derived_from is used the father could be used to test too (ex. 'Fem::FemMeshObject')
             matching.append(m)
     return matching
 
 
-def getSingleMember(analysis, t):
-    objs = getMember(analysis, t)
+def get_single_member(analysis, t):
+    objs = get_member(analysis, t)
     return objs[0] if objs else None
 
 
-def typeOfObj(obj):
+# collect analysis members used in CalculiX and Z88
+def get_several_member(analysis, t):
+    # if no member is found, an empty list is returned
+    objs = get_member(analysis, t)
+    members = []
+    for m in objs:
+        obj_dict = {}
+        obj_dict['Object'] = m
+        obj_dict['RefShapeType'] = get_refshape_type(m)
+        members.append(obj_dict)
+    return members
+
+
+def get_mesh_to_solve(analysis):
+    mesh_to_solve = None
+    for m in analysis.Group:
+        if m.isDerivedFrom("Fem::FemMeshObject") and not is_of_type(m, 'Fem::FemMeshResult'):
+            if not mesh_to_solve:
+                mesh_to_solve = m
+            else:
+                return (None, 'FEM: multiple mesh in analysis not yet supported!')
+    if mesh_to_solve is not None:
+        return (mesh_to_solve, '')
+    else:
+        return (None, 'FEM: no mesh object found in analysis.')
+
+
+# typeID and object type defs
+def type_of_obj(obj):
     '''returns objects TypeId (C++ objects) or Proxy.Type (Python objects)'''
     if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
         return obj.Proxy.Type
     return obj.TypeId
 
 
-def isOfTypeNew(obj, ty):
-    '''returns if an object is of a given TypeId (C++ objects) or Proxy.Type (Python objects)'''
-    if typeOfObj(obj) == ty:
-        return True
-    else:
-        return False
+def is_of_type(obj, ty):
+    '''returns True if an object is of a given TypeId (C++ objects) or Proxy.Type (Python Features)'''
+    # only returns true if the exact TypeId is given.
+    # For FeaturPythons the Proxy.Type has to be given. Keep in mind the TypeId for them is the TypeId from the C++ father class
+    return type_of_obj(obj) == ty
 
 
-def isOfType(obj, t):
-    if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
-        return obj.Proxy.Type == t
-    return obj.TypeId == t
-
-
-def isDerivedFrom(obj, t):
-    if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and
-            obj.Proxy.Type == t):
+def is_derived_from(obj, t):
+    '''returns True if an object or its inheritance chain is of a given TypeId (C++ objects) or Proxy.Type (Python objects)'''
+    # returns true for all FEM objects if given t == 'App::DocumentObject' since this is a father of the given object
+    # see https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+    if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and obj.Proxy.Type == t):
         return True
     return obj.isDerivedFrom(t)
 
 
+# working dir
+def get_pref_working_dir(solver_obj):
+    # _dirTypes from run are not used
+    # be aware beside could get an error if the document has not been saved
+    from femsolver import settings
+    from femsolver import run
+    dir_setting = settings.get_dir_setting()
+    if dir_setting == settings.TEMPORARY:
+        setting_working_dir = run._getTempDir(solver_obj)
+    elif dir_setting == settings.BESIDE:
+        setting_working_dir = run._getBesideDir(solver_obj)
+    elif dir_setting == settings.CUSTOM:
+        setting_working_dir = run._getCustomDir(solver_obj)
+    else:
+        setting_working_dir = ''
+    return setting_working_dir
+
+
+# other
 def getBoundBoxOfAllDocumentShapes(doc):
     overalboundbox = None
     for o in doc.Objects:
@@ -136,3 +179,30 @@ def getSelectedFace(selectionex):
                 FreeCAD.Console.PrintMessage(':-)')
                 return aFace
     return aFace
+
+
+def get_refshape_type(fem_doc_object):
+    # returns the reference shape type
+    # for force object:
+    # in GUI defined frc_obj all frc_obj have at least one ref_shape and ref_shape have all the same shape type
+    # for material object:
+    # in GUI defined material_obj could have no RefShape and RefShapes could be different type
+    # we're going to need the RefShapes to be the same type inside one fem_doc_object
+    # TODO: check if all RefShapes inside the object really have the same type
+    import femmesh.meshtools as FemMeshTools
+    if hasattr(fem_doc_object, 'References') and fem_doc_object.References:
+        first_ref_obj = fem_doc_object.References[0]
+        first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
+        st = first_ref_shape.ShapeType
+        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has ' + st + ' reference shapes.\n')
+        return st
+    else:
+        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has empty References.\n')
+        return ''
+
+
+def pydecode(bytestring):
+    if sys.version_info.major < 3:
+        return bytestring
+    else:
+        return bytestring.decode("utf-8")

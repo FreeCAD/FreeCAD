@@ -23,7 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-
+# include <TopoDS.hxx>
+# include <Precision.hxx>
 #endif
 
 #include "FeatureThickness.h"
@@ -32,8 +33,6 @@
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <TopoDS.hxx>
-#include <Precision.hxx>
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 

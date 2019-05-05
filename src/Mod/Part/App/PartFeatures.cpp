@@ -190,15 +190,24 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
 
             if (!a1.IsNull() && !a2.IsNull()) {
                 // get end points of 1st curve
-                gp_Pnt p1 = a1->Value(a1->FirstParameter());
-                gp_Pnt p2 = a1->Value(a1->LastParameter());
+                Standard_Real first, last;
+                first = a1->FirstParameter();
+                last = a1->LastParameter();
+                if (S1.Closed())
+                    last = (first + last)/2;
+                gp_Pnt p1 = a1->Value(first);
+                gp_Pnt p2 = a1->Value(last);
                 if (S1.Orientation() == TopAbs_REVERSED) {
                     std::swap(p1, p2);
                 }
 
                 // get end points of 2nd curve
-                gp_Pnt p3 = a2->Value(a2->FirstParameter());
-                gp_Pnt p4 = a2->Value(a2->LastParameter());
+                first = a2->FirstParameter();
+                last = a2->LastParameter();
+                if (S2.Closed())
+                    last = (first + last)/2;
+                gp_Pnt p3 = a2->Value(first);
+                gp_Pnt p4 = a2->Value(last);
                 if (S2.Orientation() == TopAbs_REVERSED) {
                     std::swap(p3, p4);
                 }

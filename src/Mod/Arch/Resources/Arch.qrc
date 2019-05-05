@@ -39,6 +39,7 @@
         <file>icons/Arch_Fixture.svg</file>
         <file>icons/Arch_Space.svg</file>
         <file>icons/Arch_Space_Tree.svg</file>
+        <file>icons/Arch_Space_Clone.svg</file>
         <file>icons/Arch_Stairs.svg</file>
         <file>icons/Arch_Stairs_Tree.svg</file>
         <file>icons/Arch_Rebar.svg</file>
@@ -141,5 +142,7 @@
         <file>translations/Arch_id.qm</file>
         <file>translations/Arch_lt.qm</file>
         <file>translations/Arch_val-ES.qm</file>
+        <file>translations/Arch_ar.qm</file>
+        <file>translations/Arch_vi.qm</file>
     </qresource>
 </RCC> 

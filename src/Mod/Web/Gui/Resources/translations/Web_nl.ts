@@ -60,13 +60,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
+      <location filename="../../Command.cpp" line="164"/>
       <source>Stop loading</source>
       <translation>Stoppen met laden</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="164"/>
-      <source>Stop the current loading</source>
-      <translation>Het huidige laden stoppen</translation>
     </message>
   </context>
   <context>
@@ -78,13 +74,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Zoom in</source>
       <translation>Inzoomen</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="194"/>
-      <source>Zoom into the page</source>
-      <translation>Inzoomen op de pagina</translation>
     </message>
   </context>
   <context>
@@ -96,13 +88,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Zoom out</source>
       <translation>Uitzoomen</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="223"/>
-      <source>Zoom out of the page</source>
-      <translation>Uitzoomen van de pagina</translation>
     </message>
   </context>
   <context>
@@ -124,123 +112,15 @@
     </message>
   </context>
   <context>
-    <name>Form</name>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="14"/>
-      <source>Sketchfab exporter</source>
-      <translation>Sketchfab exporteur</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="39"/>
-      <source>What to upload?</source>
-      <translation>Hoe om te uploaden?</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="46"/>
-      <source>Selection</source>
-      <translation>Selectie</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="56"/>
-      <source>All visible objects</source>
-      <translation>Alle zichtbare objecten</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="81"/>
-      <source>Model name</source>
-      <translation>Modelnaam</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="88"/>
-      <source>Private</source>
-      <translation>Persoonlijk</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="100"/>
-      <source>Description</source>
-      <translation>Omschrijving</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="110"/>
-      <source>Tags (separated by commas)</source>
-      <translation>Tags (gescheiden door komma's)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
-      <source>FreeCAD,</source>
-      <translation>FreeCAD,</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
-      <source>Format</source>
-      <translation>Formaat</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
-      <source>OBJ + MTL (Arch exporter)</source>
-      <translation>OBJ + MTL (Arch exporteur)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="148"/>
-      <source>OBJ (standard Mesh exporter)</source>
-      <translation>OBJ (standaard Mesh exporteur)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="153"/>
-      <source>DAE (Collada)</source>
-      <translation>DAE (Collada)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="158"/>
-      <source>STL</source>
-      <translation>STL</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="163"/>
-      <source>IGES (shapes only)</source>
-      <translation>IGES (alleen vormen)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="168"/>
-      <source>IV</source>
-      <translation>IV</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="176"/>
-      <source>Sketchfab API token</source>
-      <translation>Sketchfab API token</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="192"/>
-      <source>Obtain</source>
-      <translation>Verkrijgen</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
-      <source>Upload</source>
-      <translation type="unfinished">Upload</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>
-      <source>uploading</source>
-      <translation>uploaden</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="218"/>
-      <source>Success! View uploaded online</source>
-      <translation>Succes! Bekijk online je upload</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="412"/>
+      <location filename="../../BrowserView.cpp" line="441"/>
       <source>Browser</source>
       <translation>Browser</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="309"/>
+      <location filename="../../BrowserView.cpp" line="338"/>
       <source>File does not exist!</source>
       <translation>Bestand bestaat niet!</translation>
     </message>
@@ -248,12 +128,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="329"/>
+      <location filename="../../BrowserView.cpp" line="334"/>
       <source>Error</source>
       <translation>Fout</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="383"/>
+      <location filename="../../BrowserView.cpp" line="334"/>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Er zijn fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn misschien gewijzigd of helemaal hersteld. Kijk in de rapportweergave voor meer specifieke informatie over de objecten die hierbij zijn betrokken.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="412"/>
       <source>Loading %1...</source>
       <translation>Laden %1...</translation>
     </message>
@@ -261,12 +147,12 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="181"/>
+      <location filename="../../BrowserView.cpp" line="185"/>
       <source>Open in External Browser</source>
       <translation>Open in externe Browser</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="185"/>
+      <location filename="../../BrowserView.cpp" line="189"/>
       <source>Open in new window</source>
       <translation>In nieuw venster openen</translation>
     </message>

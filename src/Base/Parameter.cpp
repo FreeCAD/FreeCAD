@@ -1389,10 +1389,12 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
         //
         // do the serialization through DOMWriter::writeNode();
         //
-        DOMLSOutput *theOutput = ((DOMImplementationLS*)impl)->createLSOutput();
-        theOutput->setEncoding(gOutputEncoding);
-        theOutput->setByteStream(pFormatTarget);
-        theSerializer->write(_pDocument, theOutput);
+        if (_pDocument) {
+            DOMLSOutput *theOutput = ((DOMImplementationLS*)impl)->createLSOutput();
+            theOutput->setEncoding(gOutputEncoding);
+            theOutput->setByteStream(pFormatTarget);
+            theSerializer->write(_pDocument, theOutput);
+        }
 
         delete theSerializer;
     }

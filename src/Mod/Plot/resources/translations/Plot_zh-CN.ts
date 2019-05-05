@@ -102,7 +102,7 @@
     <message>
       <location filename="../../PlotGui.py" line="84"/>
       <source>Configure series drawing style and label</source>
-      <translation>配置工程图样式和标签</translation>
+      <translation>配置图表样式及标签</translation>
     </message>
   </context>
   <context>

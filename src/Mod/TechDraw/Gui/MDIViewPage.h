@@ -71,7 +71,7 @@ public:
     void matchSceneRectToTemplate(void);
     
     bool onMsg(const char* pMsg,const char** ppReturn);
-    bool onHasMsg(const char* pMsg) const;
+      bool onHasMsg(const char* pMsg) const;
 
     void print();
     void print(QPrinter* printer);
@@ -80,6 +80,8 @@ public:
     void printPreview();
 
     void saveSVG(std::string file);
+    void saveDXF(std::string file);
+    void savePDF(std::string file);
 
     void setFrameState(bool state);
     bool getFrameState(void) {return m_frameState;};
@@ -100,10 +102,13 @@ public:
     
     void setTabText(std::string t);
 
+    bool addView(const App::DocumentObject *obj);
 
 public Q_SLOTS:
     void viewAll();
     void saveSVG(void);
+    void saveDXF(void);
+    void savePDF(void);
     void toggleFrame(void);
     void toggleKeepUpdated(void);
 //    void testAction(void);
@@ -121,6 +126,7 @@ protected:
     void closeEvent(QCloseEvent*);
     QPrinter::PaperSize getPaperSize(int w, int h) const;
     void setDimensionGroups(void);
+    void setBalloonGroups(void);
     void showStatusMsg(const char* s1, const char* s2, const char* s3) const;
     
     void onDeleteObject(const App::DocumentObject& obj);
@@ -137,6 +143,8 @@ private:
     QAction *m_toggleFrameAction;
     QAction *m_toggleKeepUpdatedAction;
     QAction *m_exportSVGAction;
+    QAction *m_exportDXFAction;
+    QAction *m_exportPDFAction;
 //    QAction* m_testAction;
 
     std::string m_objectName;

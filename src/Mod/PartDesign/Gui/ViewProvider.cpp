@@ -200,7 +200,7 @@ void ViewProvider::onChanged(const App::Property* prop) {
             for(App::DocumentObject* obj : body->Group.getValues()) {
              
                 if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && obj != getObject()) {
-                   auto vpd = dynamic_cast<Gui::ViewProviderDocumentObject*>(
+                   auto vpd = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
                            Gui::Application::Instance->getViewProvider(obj));
                    if(vpd && vpd->Visibility.getValue())
                        vpd->Visibility.setValue(false);

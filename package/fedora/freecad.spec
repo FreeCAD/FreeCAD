@@ -11,7 +11,7 @@
 
 Name:           %{name}
 Epoch:          1
-Version:    	0.18_pre
+Version:    	0.19_pre
 Release:        {{{ git_commits_no }}}
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
@@ -20,22 +20,12 @@ License:        GPLv2+
 URL:            http://sourceforge.net/apps/mediawiki/free-cad/
 Source0:        https://github.com/%{github_name}/FreeCAD/archive/%{branch}.tar.gz
 
-# Utilities
-# Development Libraries
-# Not used yet.
-#BuildRequires:  ode-devel
-BuildRequires:  git
 BuildRequires:  Coin3
 BuildRequires:  Coin3-devel
+BuildRequires:  Inventor-devel
 BuildRequires:  OCE-devel
 BuildRequires:  OCE-draw
 BuildRequires:  boost-devel
-%if 0%{?fedora} > 28
-BuildRequires:  boost-python2-devel
-BuildRequires:  boost-python3-devel
-BuildRequires:  boost-python2
-BuildRequires:  boost-python3
-%endif
 BuildRequires:  cmake
 BuildRequires:  desktop-file-utils
 BuildRequires:  dos2unix
@@ -44,22 +34,19 @@ BuildRequires:  eigen3
 BuildRequires:  eigen3-devel
 BuildRequires:  freeimage-devel
 BuildRequires:  gettext
-BuildRequires:  graphviz
+BuildRequires:  git
 BuildRequires:  graphviz
 BuildRequires:  libicu-devel
 BuildRequires:  libspnav
 BuildRequires:  libspnav-devel
-BuildRequires:  Inventor-devel
+BuildRequires:  med
+BuildRequires:  med-devel
 BuildRequires:  mesa-libGLU-devel
 BuildRequires:  netgen-mesher-devel
 BuildRequires:  netgen-mesher-devel-private
 BuildRequires:  pyside-tools
 BuildRequires:  python
-%if 0%{?fedora} > 28
-BuildRequires:  python3-matplotlib
-%else
 BuildRequires:  python-matplotlib
-%endif
 BuildRequires:  python-pivy
 BuildRequires:  python-pyside
 BuildRequires:  python-pyside-devel
@@ -73,10 +60,17 @@ BuildRequires:  smesh-devel
 BuildRequires:  swig
 BuildRequires:  tbb-devel
 BuildRequires:  vtk-devel
-BuildRequires:  med-devel
 BuildRequires:  xerces-c
 BuildRequires:  xerces-c-devel
 BuildRequires:  zlib-devel
+%if 0%{?fedora} > 28
+BuildRequires:  boost-python2
+BuildRequires:  boost-python2-devel
+BuildRequires:  boost-python3
+BuildRequires:  boost-python3-devel
+BuildRequires:  mesa-libEGL-devel
+BuildRequires:  python3-matplotlib
+%endif
 
 # For appdata
 %if 0%{?fedora}
@@ -146,13 +140,19 @@ rm -rf build && mkdir build && cd build
 # Deal with cmake projects that tend to link excessively.
 #LDFLAGS='-Wl,--as-needed'; export LDFLAGS
 
+%if 0%{?fedora} > 27
+%define MEDFILE_INCLUDE_DIRS %{_includedir}/med/
+%else
+%define MEDFILE_INCLUDE_DIRS %{_includedir}/
+%endif
+
 %cmake -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
        -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
        -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
        -DCMAKE_INSTALL_INCLUDEDIR=%{_includedir} \
        -DRESOURCEDIR=%{_datadir}/%{name} \
        -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
-       -DMEDFILE_INCLUDE_DIRS=%{_includedir}/med/ \
+       -DMEDFILE_INCLUDE_DIRS=%{MEDFILE_INCLUDE_DIRS} \
        ../
 
 sed -i 's,FCRevision      \"Unknown\",FCRevision      \"%{release} (Git)\",' src/Build/Version.h

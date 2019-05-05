@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>506</width>
-    <height>647</height>
+    <width>649</width>
+    <height>773</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,6 +46,19 @@
      </property>
      <property name="prefEntry" stdset="0">
       <cstring>dxfUseLegacyImporter</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Draft</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="checkBox_7">
+     <property name="text">
+      <string>Use legacy python exporter</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>dxfUseLegacyExporter</cstring>
      </property>
      <property name="prefPath" stdset="0">
       <cstring>Mod/Draft</cstring>
@@ -430,7 +443,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_14">
           <property name="toolTip">
-           <string>Ellipse export is badly supported. Use this to export them as polylines instead.</string>
+           <string>Ellipse export is poorly supported. Use this to export them as polylines instead.</string>
           </property>
           <property name="text">
            <string>Treat ellipses and splines as polylines</string>

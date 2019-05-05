@@ -467,21 +467,17 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
             this, SLOT(onSearchObjects()));
 
     // Setup connections
-    Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, _1));
-    Application::Instance->signalDeleteDocument.connect(boost::bind(&TreeWidget::slotDeleteDocument, this, _1));
-    Application::Instance->signalRenameDocument.connect(boost::bind(&TreeWidget::slotRenameDocument, this, _1));
-    Application::Instance->signalActiveDocument.connect(boost::bind(&TreeWidget::slotActiveDocument, this, _1));
-    Application::Instance->signalRelabelDocument.connect(boost::bind(&TreeWidget::slotRelabelDocument, this, _1));
-    Application::Instance->signalShowHidden.connect(boost::bind(&TreeWidget::slotShowHidden, this, _1));
-    App::GetApplication().signalStartOpenDocument.connect(
-            boost::bind(&TreeWidget::slotStartOpenDocument,this));
-    App::GetApplication().signalFinishOpenDocument.connect(
-            boost::bind(&TreeWidget::slotFinishOpenDocument,this));
+    connectNewDocument = Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, _1));
+    connectDelDocument = Application::Instance->signalDeleteDocument.connect(boost::bind(&TreeWidget::slotDeleteDocument, this, _1));
+    connectRenDocument = Application::Instance->signalRenameDocument.connect(boost::bind(&TreeWidget::slotRenameDocument, this, _1));
+    connectActDocument = Application::Instance->signalActiveDocument.connect(boost::bind(&TreeWidget::slotActiveDocument, this, _1));
+    connectRelDocument = Application::Instance->signalRelabelDocument.connect(boost::bind(&TreeWidget::slotRelabelDocument, this, _1));
+    connectShowHidden = Application::Instance->signalShowHidden.connect(boost::bind(&TreeWidget::slotShowHidden, this, _1));
 
     // Gui::Document::signalChangedObject informs the App::Document property
     // change, not view provider's own property, which is what the signal below
     // for
-    Application::Instance->signalChangedObject.connect(
+    connectChangedViewObj = Application::Instance->signalChangedObject.connect(
             boost::bind(&TreeWidget::slotChangedViewObject, this, _1,_2));
 
     // make sure to show a horizontal scrollbar if needed
@@ -537,6 +533,13 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
 
 TreeWidget::~TreeWidget()
 {
+    connectNewDocument.disconnect();
+    connectDelDocument.disconnect();
+    connectRenDocument.disconnect();
+    connectActDocument.disconnect();
+    connectRelDocument.disconnect();
+    connectShowHidden.disconnect();
+    connectChangedViewObj.disconnect();
     Instances.erase(this);
 }
 
@@ -873,7 +876,7 @@ void TreeWidget::onCreateGroup()
         App::Document* doc = docitem->document()->getDocument();
         QString cmd = QString::fromLatin1("App.getDocument(\"%1\").addObject"
                               "(\"App::DocumentObjectGroup\",\"%2\")")
-                              .arg(QString::fromLatin1(doc->getName())).arg(name);
+                              .arg(QString::fromLatin1(doc->getName()), name);
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
         gui->openCommand("Create group");
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
@@ -886,9 +889,9 @@ void TreeWidget::onCreateGroup()
         App::Document* doc = obj->getDocument();
         QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\")"
                               ".newObject(\"App::DocumentObjectGroup\",\"%3\")")
-                              .arg(QString::fromLatin1(doc->getName()))
-                              .arg(QString::fromLatin1(obj->getNameInDocument()))
-                              .arg(name);
+                              .arg(QString::fromLatin1(doc->getName()),
+                                   QString::fromLatin1(obj->getNameInDocument()),
+                                   name);
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
         gui->openCommand("Create group");
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
@@ -2097,7 +2100,7 @@ void TreeWidget::onUpdateStatus(void)
         for(auto o : docItem->_ExpandedObjects) {
             auto iter = docItem->ObjectMap.find(o);
             if(iter!=docItem->ObjectMap.end()) 
-                docItem->slotExpandObject(*iter->second->viewObject,Gui::Expand,0,0);
+                docItem->slotExpandObject(*iter->second->viewObject,Gui::ExpandItem,0,0);
         }
         docItem->_ExpandedObjects.clear();
     }
@@ -2229,13 +2232,22 @@ void TreeWidget::expandSelectedItems(TreeItemMode mode)
 
     for(auto item : selectedItems()) {
         switch (mode) {
-        case Gui::Expand:
+        case Gui::ExpandPath: {
+            QTreeWidgetItem* parentItem = item->parent();
+            while (parentItem) {
+                parentItem->setExpanded(true);
+                parentItem = parentItem->parent();
+            }
             item->setExpanded(true);
             break;
-        case Gui::Collapse:
+        }
+        case Gui::ExpandItem:
+            item->setExpanded(true);
+            break;
+        case Gui::CollapseItem:
             item->setExpanded(false);
             break;
-        case Gui::Toggle:
+        case Gui::ToggleItem:
             if (item->isExpanded())
                 item->setExpanded(false);
             else
@@ -3151,7 +3163,9 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
 void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
         const Gui::TreeItemMode& mode, const App::DocumentObject *parent, const char *subname)
 {
-    if(mode==Gui::Expand && obj.getDocument()->getDocument()->testStatus(App::Document::Restoring)) {
+    if((mode==Gui::ExpandItem||mode==Gui::ExpandPath) 
+            && obj.getDocument()->getDocument()->testStatus(App::Document::Restoring)) 
+    {
         _ExpandedObjects.push_back(obj.getObject());
         return;
     }
@@ -3169,27 +3183,38 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
         // else.
         assert(item->parent());
 
-        if(parent) {
-            App::DocumentObject *topParent = 0;
-            std::ostringstream ss;
-            item->getSubName(ss,topParent);
-            if(!topParent) {
-                if(parent!=obj.getObject())
-                    continue;
-            }else if(topParent!=parent)
-                continue;
-            showItem(item,false,true);
-        } else if (!item->parent()->isExpanded()) 
-            continue;
-
         switch (mode) {
-        case Gui::Expand:
-            item->setExpanded(true);
+        case Gui::ExpandPath:
+            if(!parent) {
+                QTreeWidgetItem* parentItem = item->parent();
+                while (parentItem) {
+                    parentItem->setExpanded(true);
+                    parentItem = parentItem->parent();
+                }
+                item->setExpanded(true);
+                break;
+            }
+            // fall through
+        case Gui::ExpandItem: 
+            if(!parent) {
+                if(item->parent()->isExpanded()) 
+                    item->setExpanded(true);
+            }else{
+                App::DocumentObject *topParent = 0;
+                std::ostringstream ss;
+                item->getSubName(ss,topParent);
+                if(!topParent) {
+                    if(parent!=obj.getObject())
+                        continue;
+                }else if(topParent!=parent)
+                    continue;
+                showItem(item,false,true);
+            }
             break;
-        case Gui::Collapse:
+        case Gui::CollapseItem:
             item->setExpanded(false);
             break;
-        case Gui::Toggle:
+        case Gui::ToggleItem:
             if (item->isExpanded())
                 item->setExpanded(false);
             else
@@ -3197,8 +3222,7 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
             break;
 
         default:
-            // not defined enum
-            assert(0);
+            break;
         }
         if(item->isExpanded())
             populateItem(item);
@@ -4035,8 +4059,8 @@ void DocumentObjectItem::displayStatusInfo()
     if ( Obj->mustExecute() == 1 && !Obj->isError())
         info += QString::fromLatin1(" (but must be executed)");
     QString status = TreeWidget::tr("%1, Internal name: %2")
-            .arg(info)
-            .arg(QString::fromLatin1(Obj->getNameInDocument()));
+            .arg(info,
+                 QString::fromLatin1(Obj->getNameInDocument()));
     getMainWindow()->showMessage(status);
 
     if (Obj->isError()) {

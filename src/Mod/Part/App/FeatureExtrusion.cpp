@@ -354,11 +354,15 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape,
     if (!sourceWire.isNull()) {
         std::vector<TopoShape> list_of_sections;
 
-        //first. add wire for reversed part of extrusion
-        if (bRev){
-            gp_Vec translation = vecRev;
-            double offset = distanceRev;
+        // if the wire consists of a single edge which has applied a placement
+        // then this placement must be reset because otherwise the
+        // BRepOffsetAPI_MakeOffset shows weird behaviour by applying the placement
+        // twice on the output shape
+        //
+        // count all edges of the wire
+        int numEdges = sourceWire.countSubShapes(TopAbs_EDGE);
 
+        auto makeOffset = [&numEdges,&sourceWire](const gp_Vec& translation, double offset) -> TopoShape {
             BRepOffsetAPI_MakeOffset mkOffset;
 #if OCC_VERSION_HEX >= 0x060800
             mkOffset.Init(GeomAbs_Arc);
@@ -371,12 +375,41 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape,
             TopoShape offsetShape(sourceWire.makETransform(mat,"RV"));
 
             if (fabs(offset)>Precision::Confusion()){
+                TopLoc_Location wireLocation;
+                TopLoc_Location edgeLocation;
+                if (numEdges == 1) {
+                    wireLocation = offsetShape.getShape().Location();
+
+                    BRepBuilderAPI_MakeWire mkWire;
+                    TopExp_Explorer xp(offsetShape.getShape(), TopAbs_EDGE);
+                    while (xp.More()) {
+                        TopoDS_Edge edge = TopoDS::Edge(xp.Current());
+                        edgeLocation = edge.Location();
+                        edge.Location(TopLoc_Location());
+                        mkWire.Add(edge);
+                        xp.Next();
+                    }
+                    offsetShape.setShape(mkWire.Wire(),false);
+                }
                 mkOffset.AddWire(TopoDS::Wire(offsetShape.getShape()));
                 mkOffset.Perform(offset);
 
                 offsetShape = offsetShape.makEShape(mkOffset,TOPOP_OFFSET);
+
+                if (numEdges==1) {
+                    TopoDS_Shape s = offsetShape.getShape();
+                    s.Move(edgeLocation);
+                    s.Move(wireLocation);
+                    offsetShape.setShape(s,false);
+                }
             }
 
+            return offsetShape;
+        };
+
+        //first. add wire for reversed part of extrusion
+        if (bRev){
+            auto offsetShape = makeOffset(vecRev, distanceRev);
             if (offsetShape.isNull())
                 Standard_Failure::Raise("Tapered shape is empty");
             TopAbs_ShapeEnum type = offsetShape.getShape().ShapeType();
@@ -398,27 +431,7 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape,
 
         //finally. Forward extrusion offset wire.
         if (bFwd){
-            gp_Vec translation = vecFwd;
-            double offset = distanceFwd;
-
-            BRepOffsetAPI_MakeOffset mkOffset;
-#if OCC_VERSION_HEX >= 0x060800
-            mkOffset.Init(GeomAbs_Arc);
-#endif
-#if OCC_VERSION_HEX >= 0x070000
-            mkOffset.Init(GeomAbs_Intersection);
-#endif
-            gp_Trsf mat;
-            mat.SetTranslation(translation);
-            TopoShape offsetShape(sourceWire.makETransform(mat,"FW"));
-
-            if (fabs(offset)>Precision::Confusion()){
-                mkOffset.AddWire(TopoDS::Wire(offsetShape.getShape()));
-                mkOffset.Perform(offset);
-
-                offsetShape = offsetShape.makEShape(mkOffset,TOPOP_OFFSET);
-            }
-
+            auto offsetShape = makeOffset(vecFwd, distanceFwd);
             if (offsetShape.isNull())
                 Standard_Failure::Raise("Tapered shape is empty");
             TopAbs_ShapeEnum type = offsetShape.getShape().ShapeType();

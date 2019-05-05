@@ -36,6 +36,7 @@
 #include <boost/signals2.hpp>
 #include <QCoreApplication>
 #include <Gui/Document.h>
+#include "ShortcutListener.h"
 
 
 class TopoDS_Shape;
@@ -123,7 +124,7 @@ public:
 
     /// Show/Hide nodes from information layer
     void showRestoreInformationLayer();
-    
+
     /** @name handler control */
     //@{
     /// sets an DrawSketchHandler in control
@@ -226,11 +227,13 @@ public:
     virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer);
     //@}
 
+    void deleteSelected();
+
     /// updates the visibility of the virtual space
     void updateVirtualSpace(void);
     void setIsShownVirtualSpace(bool isshownvirtualspace);
     bool getIsShownVirtualSpace(void) const;
-    
+
     friend class DrawSketchHandler;
     friend struct ::EditData;
 
@@ -270,14 +273,14 @@ protected:
     EditData *edit;
     /// build up the visual of the constraints
     void rebuildConstraintsVisual(void);
-    
+
     void slotUndoDocument(const Gui::Document&);
     void slotRedoDocument(const Gui::Document&);
-    
+
 protected:
     boost::signals2::connection connectUndoDocument;
     boost::signals2::connection connectRedoDocument;
-    
+
     /// Return display string for constraint including hiding units if
     //requested.
     QString getPresentationString(const Sketcher::Constraint *constraint);
@@ -315,7 +318,7 @@ protected:
 
         /// Pointer to SoInfo object where we store the constraint IDs that the icon refers to
         SoInfo *infoPtr;
-        
+
         /// Angle to rotate an icon
         double iconRotation;
     };
@@ -370,7 +373,7 @@ protected:
     void addSelectPoint(int SelectPoint);
     void removeSelectPoint(int SelectPoint);
     void clearSelectPoints(void);
-    
+
     // modes while sketching
     SketchMode Mode;
 
@@ -433,6 +436,8 @@ protected:
     
     // Virtual space variables
     bool isShownVirtualSpace; // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)
+
+    ShortcutListener* listener;
 };
 
 // ---------------------------------------------------------

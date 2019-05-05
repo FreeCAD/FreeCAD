@@ -382,7 +382,7 @@ protected:
  * Change a floating point number.
  * \author Werner Mayer
  */
-class GuiExport PropertyAngleItem : public PropertyFloatItem
+class GuiExport PropertyAngleItem : public PropertyUnitConstraintItem
 {
     Q_OBJECT
     PROPERTYITEM_HEADER

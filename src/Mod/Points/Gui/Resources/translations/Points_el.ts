@@ -4,18 +4,18 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="+187"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="189"/>
       <source>Convert to points...</source>
       <translation>Μετατροπή σε σημεία...</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="192"/>
       <source>Convert to points</source>
       <translation>Μετατροπή σε σημεία</translation>
     </message>
@@ -23,287 +23,279 @@
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location line="-80"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="113"/>
       <source>Export points...</source>
       <translation>Εξαγωγή σημείων...</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="116"/>
       <source>Exports a point cloud</source>
-      <translation>Εξάγει ένα σύννεφο σημείο</translation>
+      <translation>Πραγματοποιεί εξαγωγή ενός νέφους σημείων</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsImport</name>
     <message>
-      <location line="-51"/>
+      <location filename="../../Command.cpp" line="65"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="66"/>
       <source>Import points...</source>
       <translation>Εισαγωγή σημείων...</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="67"/>
+      <location filename="../../Command.cpp" line="69"/>
       <source>Imports a point cloud</source>
-      <translation>Εισάγει ένα σύννεφο σημείο</translation>
+      <translation>Πραγματοποιεί εισαγωγή ενός νέφους σημείων</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+245"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Merge point clouds</source>
-      <translation type="unfinished">Merge point clouds</translation>
+      <translation>Συγχώνευση νεφών σημείων</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="320"/>
+      <location filename="../../Command.cpp" line="322"/>
       <source>Merge several point clouds into one</source>
-      <translation type="unfinished">Merge several point clouds into one</translation>
+      <translation>Συγχώνευση διαφόρων νεφών σημείων σε ένα</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location line="-49"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="274"/>
       <source>Cut point cloud</source>
-      <translation>Κόψτε το νέφος σημείων</translation>
+      <translation>Περικοπή νέφους σημείων</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation type="unfinished">Cuts a point cloud with a picked polygon</translation>
+      <translation>Περικόπτει ένα νέφος σημείων με ένα επιλεγμένο πολύγωνο</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-122"/>
+      <location filename="../../Command.cpp" line="151"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="152"/>
       <source>Transform Points</source>
       <translation>Μετασχηματισμός Σημείων</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+2"/>
+      <location filename="../../Command.cpp" line="153"/>
+      <location filename="../../Command.cpp" line="155"/>
       <source>Test to transform a point cloud</source>
-      <translation type="unfinished">Test to transform a point cloud</translation>
+      <translation>Δοκιμή μετασχηματισμού ενός νέφους σημείων</translation>
     </message>
   </context>
   <context>
     <name>PointsGui::DlgPointsRead</name>
     <message>
-      <location filename="../../DlgPointsRead.ui" line="+14"/>
+      <location filename="../../DlgPointsRead.ui" line="14"/>
       <source>ASCII points import</source>
       <translation>Εισαγωγή σημείων ASCII</translation>
     </message>
     <message>
-      <location line="+20"/>
+      <location filename="../../DlgPointsRead.ui" line="34"/>
       <source>Template:</source>
       <translation>Πρότυπο:</translation>
     </message>
     <message>
-      <location line="+12"/>
+      <location filename="../../DlgPointsRead.ui" line="46"/>
       <source>Special lines</source>
       <translation>Ειδικές γραμμές</translation>
     </message>
     <message>
-      <location line="+42"/>
+      <location filename="../../DlgPointsRead.ui" line="72"/>
+      <source>Ignore lines starting with:</source>
+      <translation>Αγνοήστε γραμμές που αρχίζουν με:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="79"/>
+      <source>Cluster by lines starting with:</source>
+      <translation>Σύμπλεγμα από γραμμές που αρχίζουν με:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="88"/>
       <source>First line:</source>
       <translation>Πρώτη γραμμή:</translation>
     </message>
     <message>
-      <location line="+12"/>
+      <location filename="../../DlgPointsRead.ui" line="100"/>
       <source>Ignore</source>
       <translation>Παράβλεψη</translation>
     </message>
     <message>
-      <location line="-21"/>
-      <source>Cluster by lines starting with:</source>
-      <translation>Σύμπλεγμα από τις γραμμές που αρχίζουν με:</translation>
-    </message>
-    <message>
-      <location line="-7"/>
-      <source>Ignore lines starting with:</source>
-      <translation>Αγνοήστε τις γραμμές που αρχίζουν με:</translation>
-    </message>
-    <message>
-      <location line="+54"/>
-      <source>Point format</source>
-      <translation>Μορφή σημείου</translation>
-    </message>
-    <message>
-      <location line="+78"/>
-      <source>Number separator:</source>
-      <translation>Διαχωριστικό αριθμού:</translation>
-    </message>
-    <message>
-      <location line="+98"/>
-      <source>Points format:</source>
-      <translation>Μορφή σημείων:</translation>
-    </message>
-    <message>
-      <location line="-91"/>
-      <location line="+7"/>
-      <location line="+7"/>
-      <source>Next block:</source>
-      <translation>Επόμενο μπλοκ:</translation>
-    </message>
-    <message>
-      <location line="+40"/>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>\t</source>
-      <translation>\t</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>\w</source>
-      <translation>\w</translation>
-    </message>
-    <message>
-      <location line="+9"/>
-      <source>X,Y,Z</source>
-      <translation>X,Y,Z</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>X,Y</source>
-      <translation>X,Y</translation>
-    </message>
-    <message>
-      <location line="-147"/>
-      <location line="+29"/>
-      <location line="+57"/>
-      <source>none</source>
-      <translation>κανένα</translation>
-    </message>
-    <message>
-      <location line="-81"/>
-      <location line="+29"/>
-      <location line="+57"/>
-      <source>I,J,K (normal vector)</source>
-      <translation type="unfinished">I,J,K (normal vector)</translation>
-    </message>
-    <message>
-      <location line="-81"/>
-      <location line="+29"/>
-      <location line="+57"/>
-      <source>I,K (normal vector 2D)</source>
-      <translation type="unfinished">I,K (normal vector 2D)</translation>
-    </message>
-    <message>
-      <location line="-81"/>
-      <location line="+29"/>
-      <location line="+57"/>
-      <source>R,G,B (color)</source>
-      <translation>R, G, B (χρώμα)</translation>
-    </message>
-    <message>
-      <location line="-81"/>
-      <location line="+29"/>
-      <location line="+57"/>
-      <source>I (Gray value)</source>
-      <translation type="unfinished">I (Gray value)</translation>
-    </message>
-    <message>
-      <location line="+61"/>
-      <source>Preview</source>
-      <translation>Προεπισκόπηση</translation>
-    </message>
-    <message>
-      <location line="+34"/>
-      <source>100</source>
-      <translation>100</translation>
-    </message>
-    <message>
-      <location line="-238"/>
+      <location filename="../../DlgPointsRead.ui" line="110"/>
       <source>Number of points</source>
       <translation>Αριθμός σημείων</translation>
     </message>
     <message>
-      <location line="+231"/>
+      <location filename="../../DlgPointsRead.ui" line="126"/>
+      <source>Point format</source>
+      <translation>Μορφή σημείου</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="147"/>
+      <location filename="../../DlgPointsRead.ui" line="176"/>
+      <location filename="../../DlgPointsRead.ui" line="233"/>
+      <source>none</source>
+      <translation>κανένα</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="152"/>
+      <location filename="../../DlgPointsRead.ui" line="181"/>
+      <location filename="../../DlgPointsRead.ui" line="238"/>
+      <source>I,J,K (normal vector)</source>
+      <translation>I,J,K (κάθετο διάνυσμα)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="157"/>
+      <location filename="../../DlgPointsRead.ui" line="186"/>
+      <location filename="../../DlgPointsRead.ui" line="243"/>
+      <source>I,K (normal vector 2D)</source>
+      <translation>I,K (κάθετο διάνυσμα στον Δισδιάστατο Χώρο)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="162"/>
+      <location filename="../../DlgPointsRead.ui" line="191"/>
+      <location filename="../../DlgPointsRead.ui" line="248"/>
+      <source>R,G,B (color)</source>
+      <translation>R,G,B (χρώμα)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="167"/>
+      <location filename="../../DlgPointsRead.ui" line="196"/>
+      <location filename="../../DlgPointsRead.ui" line="253"/>
+      <source>I (Gray value)</source>
+      <translation>I (Τιμή του γκρι)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="204"/>
+      <source>Number separator:</source>
+      <translation>Διαχωριστικό αριθμού:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="211"/>
+      <location filename="../../DlgPointsRead.ui" line="218"/>
+      <location filename="../../DlgPointsRead.ui" line="225"/>
+      <source>Next block:</source>
+      <translation>Επόμενο μπλοκ:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="265"/>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="270"/>
+      <source>;</source>
+      <translation>·</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="275"/>
+      <source>\t</source>
+      <translation>\t</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="280"/>
+      <source>\w</source>
+      <translation>\w</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="289"/>
+      <source>X,Y,Z</source>
+      <translation>X,Y,Z</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="294"/>
+      <source>X,Y</source>
+      <translation>X,Y</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="302"/>
+      <source>Points format:</source>
+      <translation>Μορφή σημείων:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="314"/>
+      <source>Preview</source>
+      <translation>Προεπισκόπηση</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="341"/>
       <source>Number of previewed lines:</source>
-      <translation type="unfinished">Number of previewed lines:</translation>
+      <translation>Αριθμός των απεικονιζόμενων γραμμών:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="348"/>
+      <source>100</source>
+      <translation>100</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <source>Ascii Points (*.asc);;All Files (*.*)</source>
-      <translation type="unfinished">Ascii Points (*.asc);;All Files (*.*)</translation>
-    </message>
-    <message>
-      <source>Ascii Points</source>
-      <translation type="unfinished">Ascii Points</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="-76"/>
-      <location line="+50"/>
-      <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
-    </message>
-    <message>
-      <location line="-50"/>
-      <location line="+50"/>
+      <location filename="../../Command.cpp" line="79"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Point formats</source>
-      <translation type="unfinished">Point formats</translation>
+      <translation>Μορφές σημείων</translation>
     </message>
     <message>
-      <location line="+71"/>
+      <location filename="../../Command.cpp" line="79"/>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>All Files</source>
+      <translation>Όλα τα Αρχεία</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="200"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="201"/>
       <source>Enter maximum distance:</source>
-      <translation type="unfinished">Enter maximum distance:</translation>
+      <translation>Εισαγωγή μέγιστης απόστασης:</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+37"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Points tools</source>
       <translation>Εργαλεία σημείων</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>&amp;Points</source>
-      <translation type="unfinished">&amp;Points</translation>
+      <translation>Σημεία</translation>
     </message>
   </context>
 </TS>

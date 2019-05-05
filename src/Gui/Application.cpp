@@ -507,11 +507,13 @@ void Application::open(const char* FileName, const char* Module)
     }
 
     if (Module != 0) {
-        // issue module loading
-        Command::doCommand(Command::App, "import %s", Module);
         try {
+            // issue module loading
+            Command::doCommand(Command::App, "import %s", Module);
+
             // load the file with the module
             Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
+
             // ViewFit
             if (!File.hasExtension("FCStd") && sendHasMsgToActiveView("ViewFit")) {
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
@@ -519,6 +521,7 @@ void Application::open(const char* FileName, const char* Module)
                 if (hGrp->GetBool("AutoFitToView", true))
                     Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
             }
+
             // the original file name is required
             QString filename = QString::fromUtf8(File.filePath().c_str());
             getMainWindow()->appendRecentFile(filename);
@@ -547,10 +550,10 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
 
     if (Module != 0) {
-        // issue module loading
-        Command::doCommand(Command::App, "import %s", Module);
-
         try {
+            // issue module loading
+            Command::doCommand(Command::App, "import %s", Module);
+
             // load the file with the module
             if (File.hasExtension("FCStd")) {
                 Command::doCommand(Command::App, "%s.open(u\"%s\")"
@@ -686,7 +689,7 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     pDoc->signalActivatedObject.connect(boost::bind(&Gui::Application::slotActivatedObject, this, _1));
     pDoc->signalInEdit.connect(boost::bind(&Gui::Application::slotInEdit, this, _1));
     pDoc->signalResetEdit.connect(boost::bind(&Gui::Application::slotResetEdit, this, _1));
- 
+
     signalNewDocument(*pDoc);
     if(isMainDoc)
         pDoc->createView(View3DInventor::getClassTypeId());
@@ -1246,7 +1249,11 @@ bool Application::activateWorkbench(const char* name)
         }
 
         Base::Console().Error("%s\n", (const char*)msg.toLatin1());
-        Base::Console().Error("%s\n", e.getStackTrace().c_str());
+        if (!d->startingUp)
+            Base::Console().Error("%s\n", e.getStackTrace().c_str());
+        else
+            Base::Console().Log("%s\n", e.getStackTrace().c_str());
+
         if (!d->startingUp) {
             wc.restoreCursor();
             QMessageBox::critical(getMainWindow(), QObject::tr("Workbench failure"),
@@ -1716,6 +1723,9 @@ void Application::runApplication(void)
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=15540
     mainApp.setAttribute(Qt::AA_DontShowIconsInMenus, false);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
+    mainApp.setAttribute(Qt::AA_UseDesktopOpenGL);
+#endif
 
 #ifdef Q_OS_UNIX
     // Make sure that we use '.' as decimal point. See also
@@ -1753,7 +1763,7 @@ void Application::runApplication(void)
     }
 
 #if QT_VERSION >= 0x050600
-    //Enable automatic scaling based on pixel density fo display (added in Qt 5.6)
+    //Enable automatic scaling based on pixel density of display (added in Qt 5.6)
     mainApp.setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 #if QT_VERSION >= 0x050100
@@ -1782,6 +1792,13 @@ void Application::runApplication(void)
              << QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str())
              << QLatin1String(":/stylesheets");
     QDir::setSearchPaths(QString::fromLatin1("qss"), qssPaths);
+
+    // set search paths for images
+    QStringList imagePaths;
+    imagePaths << QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/images").c_str())
+               << QString::fromUtf8((App::Application::getUserAppDataDir() + "pixmaps").c_str())
+               << QLatin1String(":/icons");
+    QDir::setSearchPaths(QString::fromLatin1("images"), imagePaths);
 
     // register action style event type
     ActionStyleEvent::EventType = QEvent::registerEventType(QEvent::User + 1);
@@ -1860,7 +1877,7 @@ void Application::runApplication(void)
         std::map<std::string, std::string>& config = App::Application::Config();
         QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
         QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
-        QString title = QString::fromLatin1("%1 %2.%3").arg(mainApp.applicationName()).arg(major).arg(minor);
+        QString title = QString::fromLatin1("%1 %2.%3").arg(mainApp.applicationName(), major, minor);
         mw.setWindowTitle(title);
     } else {
         mw.setWindowTitle(mainApp.applicationName());
@@ -2005,8 +2022,11 @@ void Application::runApplication(void)
             qApp->sendEvent(&mw, &e);
         }
     }
-#if QT_VERSION == 0x050600 && defined(Q_OS_WIN32)
     else {
+        if (hGrp->GetBool("TiledBackground", false)) {
+            mdi->setBackground(QPixmap(QLatin1String("images:background.png")));
+        }
+#if QT_VERSION == 0x050600 && defined(Q_OS_WIN32)
         // Under Windows the tree indicator branch gets corrupted after a while.
         // For more details see also https://bugreports.qt.io/browse/QTBUG-52230
         // and https://codereview.qt-project.org/#/c/154357/2//ALL,unified
@@ -2020,8 +2040,8 @@ void Application::runApplication(void)
                "    image: url(:/icons/style/windows_branch_open.png);\n"
                "}\n");
         qApp->setStyleSheet(qss);
-    }
 #endif
+    }
 
     //initialize spaceball.
     mainApp.initSpaceball(&mw);

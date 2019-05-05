@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
-# *   Copyright (c) 2018 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,11 +21,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "FemSelectWidget"
+__title__ = "FreeCAD FEM select widget"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package FemSelectWidget
+#  \ingroup FEM
+#  \brief FreeCAD FEM FemSelectWidget
 
 import FreeCAD
 import FreeCADGui
@@ -220,7 +222,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         self.obj_notvisible = []
         self.initElemTypes(eltypes)
         self.allow_multiple_geom_types = multigeom
-        print(self.allow_multiple_geom_types)
+        # print(self.allow_multiple_geom_types)
         self.initUI()
         # set references and fill the list widget
         self.references = []

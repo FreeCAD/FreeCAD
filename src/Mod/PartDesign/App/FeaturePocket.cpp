@@ -53,6 +53,8 @@
 
 using namespace PartDesign;
 
+/* TRANSLATOR PartDesign::Pocket */
+
 const char* Pocket::TypeEnums[]= {"Length","ThroughAll","UpToFirst","UpToFace","TwoLengths",NULL};
 
 PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::ProfileBased)
@@ -60,7 +62,7 @@ PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::ProfileBased)
 Pocket::Pocket()
 {
     addSubType = FeatureAddSub::Subtractive;
-    
+
     ADD_PROPERTY_TYPE(Type,((long)0),"Pocket",App::Prop_None,"Pocket type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
@@ -113,12 +115,17 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     TopoShape base;
     try {
         base = getBaseShape();
-    } catch (const Base::Exception&) {
-        return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the pocket!");
+    }
+    catch (const Base::Exception&) {
+        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n\n"
+                                    "  \xe2\x80\xa2 the active Body does not contain a base shape, so there is no\n"
+                                    "  material to be removed;\n"
+                                    "  \xe2\x80\xa2 the selected sketch does not belong to the active Body."));
+        return new App::DocumentObjectExecReturn(text);
     }
 
     // get the Sketch plane
-    Base::Placement SketchPos    = obj->Placement.getValue(); 
+    Base::Placement SketchPos    = obj->Placement.getValue();
     Base::Vector3d  SketchVector = getProfileNormal();
 
     // turn around for pockets

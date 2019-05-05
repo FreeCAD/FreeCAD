@@ -31,6 +31,7 @@
 #include "Core/Degeneration.h"
 #include "Core/TopoAlgorithm.h"
 #include "Core/Triangulation.h"
+#include <Base/Tools.h>
 
 using namespace Mesh;
 
@@ -237,7 +238,7 @@ PROPERTY_SOURCE(Mesh::FixDeformations, Mesh::FixDefects)
 
 FixDeformations::FixDeformations()
 {
-  ADD_PROPERTY(MaxAngle  ,(0.1f));
+  ADD_PROPERTY(MaxAngle  ,(5.0f));
 }
 
 FixDeformations::~FixDeformations()
@@ -253,7 +254,8 @@ App::DocumentObjectExecReturn *FixDeformations::execute(void)
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
-        mesh->validateDeformations(static_cast<float>(MaxAngle.getValue()),
+        float maxAngle = Base::toRadians(MaxAngle.getValue());
+        mesh->validateDeformations(maxAngle,
                                    static_cast<float>(Epsilon.getValue()));
         this->Mesh.setValuePtr(mesh.release());
     }

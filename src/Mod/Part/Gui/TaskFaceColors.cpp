@@ -43,10 +43,9 @@
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <boost/signals2.hpp>
+# include <boost/bind.hpp>
 #endif
-
-#include <boost/signals2.hpp>
-#include <boost/bind.hpp>
 
 #include "ui_TaskFaceColors.h"
 #include "TaskFaceColors.h"
@@ -332,9 +331,10 @@ void FaceColors::on_defaultButton_clicked()
 void FaceColors::on_colorButton_changed()
 {
     if (!d->index.isEmpty()) {
+        float alpha = static_cast<float>(d->vp->Transparency.getValue())/100;
         QColor c = d->ui->colorButton->color();
         for (QSet<int>::iterator it = d->index.begin(); it != d->index.end(); ++it) {
-            d->perface[*it].set(c.redF(), c.greenF(), c.blueF());
+            d->perface[*it].set(c.redF(), c.greenF(), c.blueF(), alpha);
         }
         d->vp->DiffuseColor.setValues(d->perface);
     }

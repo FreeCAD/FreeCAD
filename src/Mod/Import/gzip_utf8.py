@@ -16,7 +16,11 @@ but random access is not allowed."""
 import struct, sys, time, os
 import zlib
 import io
-import __builtin__
+from __builtin__ import open as builtin_open
+try:
+    long
+except NameError:
+    long = int
 
 __all__ = ["GzipFile","open"]
 
@@ -99,7 +103,7 @@ class GzipFile(io.BufferedIOBase):
         if mode and 'b' not in mode:
             mode += 'b'
         if fileobj is None:
-            fileobj = self.myfileobj = __builtin__.open(filename, mode or 'rb')
+            fileobj = self.myfileobj = builtin_open(filename, mode or 'rb')
         if filename is None:
             # Issue #13781: os.fdopen() creates a fileobj with a bogus name
             # attribute. Avoid saving this in the gzip header's filename field.
@@ -504,13 +508,13 @@ def _test():
                     print("filename doesn't end in .gz:", repr(arg))
                     continue
                 f = open(arg, "rb")
-                g = __builtin__.open(arg[:-3], "wb")
+                g = builtin_open(arg[:-3], "wb")
         else:
             if arg == "-":
                 f = sys.stdin
                 g = GzipFile(filename="", mode="wb", fileobj=sys.stdout)
             else:
-                f = __builtin__.open(arg, "rb")
+                f = builtin_open(arg, "rb")
                 g = open(arg + ".gz", "wb")
         while True:
             chunk = f.read(1024)
