@@ -1697,7 +1697,7 @@ bool Document::isLastView(void)
  *  This method checks if the document can be closed. It checks on
  *  the save state of the document and is able to abort the closing.
  */
-bool Document::canClose (bool checkModify)
+bool Document::canClose (bool checkModify, bool checkLink)
 {
     if (d->_isClosing)
         return true;
@@ -1719,6 +1719,9 @@ bool Document::canClose (bool checkModify)
     //        return false;
     //    }
     //}
+
+    if (checkLink && App::PropertyXLink::getDocumentInList(getDocument()).size())
+        return true;
 
     bool ok = true;
     if (checkModify && isModified() && !getDocument()->testStatus(App::Document::PartialDoc)) {

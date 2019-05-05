@@ -168,7 +168,7 @@ bool MDIView::canClose(void)
 {
     if (!bIsPassive && getGuiDocument() && getGuiDocument()->isLastView()) {
         this->setFocus(); // raises the view to front
-        return (getGuiDocument()->canClose());
+        return (getGuiDocument()->canClose(true,true));
     }
 
     return true;
