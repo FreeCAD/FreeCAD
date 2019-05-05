@@ -650,7 +650,7 @@
   <tabstop>f_menu</tabstop>
  </tabstops>
  <resources>
-  <include location="Resources/MRichText.qrc"/>
+  <include location="Resources/TechDraw.qrc"/>
   <include location="Resources/TechDraw.qrc"/>
  </resources>
  <connections/>
