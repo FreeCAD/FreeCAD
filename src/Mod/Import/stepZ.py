@@ -21,7 +21,7 @@ import PySide
 from PySide import QtGui, QtCore
 import tempfile
 
-___stpZversion___ = "1.3.3"
+___stpZversion___ = "1.3.4"
 
 
 if six.PY3:
@@ -158,7 +158,7 @@ def export(objs,filename):
             QtGui.QApplication.restoreOverrideCursor()
             reply = QtGui.QMessageBox.information(None,"info", "File cannot be compressed because\na file with the same name exists\n'"+ namefpath+ "'")
         else:
-            with six.builtins.open(outfpath_stp, 'rb') as f_in:
+            with builtin.open(outfpath_stp, 'rb') as f_in:
                 file_content = f_in.read()
                 new_f_content = file_content
                 f_in.close()
