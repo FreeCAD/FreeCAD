@@ -3372,6 +3372,170 @@ def makeWorkingPlaneProxy(placement):
         obj.Placement = placement
         return obj
 
+def getParameterFromV0(edge, offset):
+    '''return parameter at distance offset from edge.Vertexes[0]'''
+    '''sb method in Part.TopoShapeEdge???'''
+
+    lpt = edge.valueAt(edge.getParameterByLength(0))
+    vpt = edge.Vertexes[0].Point
+
+    if not DraftVecUtils.equals(vpt, lpt):
+        # this edge is flipped
+        length = edge.Length - offset
+    else:
+        # this edge is right way around
+        length = offset
+
+    return (edge.getParameterByLength(length))
+
+
+def calculatePlacement(globalRotation, edge, offset, RefPt, xlate, align, normal=None):
+    '''Orient shape to tangent at parm offset along edge.'''
+    import functools
+    # http://en.wikipedia.org/wiki/Euler_angles
+    # start with null Placement point so translate goes to right place.
+    placement = FreeCAD.Placement()
+    # preserve global orientation
+    placement.Rotation = globalRotation
+
+    placement.move(RefPt + xlate)
+
+    if not align:
+        return placement
+
+    # unit +Z  Probably defined elsewhere?
+    z = FreeCAD.Vector(0, 0, 1)
+    # y = FreeCAD.Vector(0, 1, 0)               # unit +Y
+    x = FreeCAD.Vector(1, 0, 0)                 # unit +X
+    nullv = FreeCAD.Vector(0, 0, 0)
+
+    # get local coord system - tangent, normal, binormal, if possible
+    t = edge.tangentAt(getParameterFromV0(edge, offset))
+    t.normalize()
+
+    try:
+        if normal:
+            n = normal
+        else:
+            n = edge.normalAt(getParameterFromV0(edge, offset))
+            n.normalize()
+        b = (t.cross(n))
+        b.normalize()
+    # no normal defined here
+    except FreeCAD.Base.FreeCADError:
+        n = nullv
+        b = nullv
+        FreeCAD.Console.PrintLog(
+            "Draft PathArray.orientShape - Cannot calculate Path normal.\n")
+
+    lnodes = z.cross(b)
+
+    try:
+        # Can't normalize null vector.
+        lnodes.normalize()
+    except:
+        # pathological cases:
+        pass
+    # 1) can't determine normal, don't align.
+    if n == nullv:
+        psi = 0.0
+        theta = 0.0
+        phi = 0.0
+        FreeCAD.Console.PrintWarning(
+            "Draft PathArray.orientShape - Path normal is Null. Cannot align.\n")
+    elif abs(b.dot(z)) == 1.0:                                    # 2) binormal is || z
+        # align shape to tangent only
+        psi = math.degrees(DraftVecUtils.angle(x, t, z))
+        theta = 0.0
+        phi = 0.0
+        FreeCAD.Console.PrintWarning(
+            "Draft PathArray.orientShape - Gimbal lock. Infinite lnodes. Change Path or Base.\n")
+    else:                                                        # regular case
+        psi = math.degrees(DraftVecUtils.angle(x, lnodes, z))
+        theta = math.degrees(DraftVecUtils.angle(z, b, lnodes))
+        phi = math.degrees(DraftVecUtils.angle(lnodes, t, b))
+
+    rotations = [placement.Rotation]
+
+    if psi != 0.0:
+        rotations.insert(0, FreeCAD.Rotation(z, psi))
+    if theta != 0.0:
+        rotations.insert(0, FreeCAD.Rotation(lnodes, theta))
+    if phi != 0.0:
+        rotations.insert(0, FreeCAD.Rotation(b, phi))
+
+    if len(rotations) == 1:
+        finalRotation = rotations[0]
+    else:
+        finalRotation = functools.reduce(
+            lambda rot1, rot2: rot1.multiply(rot2), rotations)
+
+    placement.Rotation = finalRotation
+
+    return placement
+
+
+def calculatePlacementsOnPath(shapeRotation, pathwire, count, xlate, align):
+    '''Calculates the placements of a shape along a given path so that each copy will be distributed evenly'''
+    import Part
+    import DraftGeomUtils
+
+    closedpath = DraftGeomUtils.isReallyClosed(pathwire)
+    normal = DraftGeomUtils.getNormal(pathwire)
+    path = Part.__sortEdges__(pathwire.Edges)
+    ends = []
+    cdist = 0
+
+    for e in path:                                                 # find cumulative edge end distance
+        cdist += e.Length
+        ends.append(cdist)
+
+    placements = []
+
+    # place the start shape
+    pt = path[0].Vertexes[0].Point
+    placements.append(calculatePlacement(
+        shapeRotation, path[0], 0, pt, xlate, align, normal))
+
+    # closed path doesn't need shape on last vertex
+    if not(closedpath):
+        # place the end shape
+        pt = path[-1].Vertexes[-1].Point
+        placements.append(calculatePlacement(
+            shapeRotation, path[-1], path[-1].Length, pt, xlate, align, normal))
+
+    if count < 3:
+        return placements
+
+    # place the middle shapes
+    if closedpath:
+        stop = count
+    else:
+        stop = count - 1
+    step = float(cdist) / stop
+    remains = 0
+    travel = step
+    for i in range(1, stop):
+        # which edge in path should contain this shape?
+        # avoids problems with float math travel > ends[-1]
+        iend = len(ends) - 1
+
+        for j in range(0, len(ends)):
+            if travel <= ends[j]:
+                iend = j
+                break
+
+        # place shape at proper spot on proper edge
+        remains = ends[iend] - travel
+        offset = path[iend].Length - remains
+        pt = path[iend].valueAt(getParameterFromV0(path[iend], offset))
+
+        placements.append(calculatePlacement(
+            shapeRotation, path[iend], offset, pt, xlate, align, normal))
+
+        travel += step
+
+    return placements
 
 #---------------------------------------------------------------------------
 # Python Features definitions
@@ -5501,125 +5665,22 @@ class _PathArray(_DraftObject):
                 sl.append(e)
         return Part.Wire(sl)
 
-    def getParameterFromV0(self, edge, offset):
-        '''return parameter at distance offset from edge.Vertexes[0]'''
-        '''sb method in Part.TopoShapeEdge???'''
-        lpt = edge.valueAt(edge.getParameterByLength(0))
-        vpt = edge.Vertexes[0].Point
-        if not DraftVecUtils.equals(vpt,lpt):
-            # this edge is flipped
-            length = edge.Length - offset
-        else:
-            # this edge is right way around
-            length = offset
-        return(edge.getParameterByLength(length))
-
-    def orientShape(self,shape,edge,offset,RefPt,xlate,align,normal=None):
-        '''Orient shape to tangent at parm offset along edge.'''
-        # http://en.wikipedia.org/wiki/Euler_angles
-        import Part
-        import DraftGeomUtils
-        import math
-        z = FreeCAD.Vector(0,0,1)                                    # unit +Z  Probably defined elsewhere?
-        y = FreeCAD.Vector(0,1,0)                                    # unit +Y
-        x = FreeCAD.Vector(1,0,0)                                    # unit +X
-        nullv = FreeCAD.Vector(0,0,0)
-        nullPlace =FreeCAD.Placement()
-        ns = shape.copy()
-        ns.Placement.Base = nullPlace.Base                           # reset Placement point so translate goes to right place.
-        ns.Placement.Rotation = shape.Placement.Rotation             # preserve global orientation
-        ns.translate(RefPt+xlate)
-        if not align:
-            return ns
-
-        # get local coord system - tangent, normal, binormal, if possible
-        t = edge.tangentAt(self.getParameterFromV0(edge,offset))
-        t.normalize()
-        try:
-            if normal:
-                n = normal
-            else:
-                n = edge.normalAt(self.getParameterFromV0(edge,offset))
-                n.normalize()
-            b = (t.cross(n))
-            b.normalize()
-        except FreeCAD.Base.FreeCADError:                                                      # no normal defined here
-            n = nullv
-            b = nullv
-            FreeCAD.Console.PrintLog ("Draft PathArray.orientShape - Cannot calculate Path normal.\n")
-        lnodes = z.cross(b)
-        try:
-            lnodes.normalize()                                       # Can't normalize null vector.
-        except:
-            pass                                                     # pathological cases:
-        if n == nullv:                                               # 1) can't determine normal, don't align.
-            psi = 0.0
-            theta = 0.0
-            phi = 0.0
-            FreeCAD.Console.PrintWarning("Draft PathArray.orientShape - Path normal is Null. Cannot align.\n")
-        elif abs(b.dot(z)) == 1.0:                                    # 2) binormal is || z
-            psi = math.degrees(DraftVecUtils.angle(x,t,z))            #    align shape to tangent only
-            theta = 0.0
-            phi = 0.0
-            FreeCAD.Console.PrintWarning("Draft PathArray.orientShape - Gimbal lock. Infinite lnodes. Change Path or Base.\n")
-        else:                                                        # regular case
-            psi = math.degrees(DraftVecUtils.angle(x,lnodes,z))
-            theta = math.degrees(DraftVecUtils.angle(z,b,lnodes))
-            phi = math.degrees(DraftVecUtils.angle(lnodes,t,b))
-        if psi != 0.0:
-            ns.rotate(RefPt,z,psi)
-        if theta != 0.0:
-            ns.rotate(RefPt,lnodes,theta)
-        if phi != 0.0:
-            ns.rotate(RefPt,b,phi)
-        return ns
-
     def pathArray(self,shape,pathwire,count,xlate,align):
         '''Distribute shapes along a path.'''
         import Part
-        import DraftGeomUtils
-        closedpath = DraftGeomUtils.isReallyClosed(pathwire)
-        normal = DraftGeomUtils.getNormal(pathwire)
-        path = Part.__sortEdges__(pathwire.Edges)
-        ends = []
-        cdist = 0
-        for e in path:                                                 # find cumulative edge end distance
-            cdist += e.Length
-            ends.append(cdist)
-        base = []
-        pt = path[0].Vertexes[0].Point                                 # place the start shape
-        ns = self.orientShape(shape,path[0],0,pt,xlate,align,normal)
-        base.append(ns)
-        if not(closedpath):                                            # closed path doesn't need shape on last vertex
-            pt = path[-1].Vertexes[-1].Point                           # place the end shape
-            ns = self.orientShape(shape,path[-1],path[-1].Length,pt,xlate,align,normal)
-            base.append(ns)
-        if count < 3:
-            return(Part.makeCompound(base))
 
-        # place the middle shapes
-        if closedpath:
-            stop = count
-        else:
-            stop = count - 1
-        step = float(cdist)/stop
-        remain = 0
-        travel = step
-        for i in range(1,stop):
-            # which edge in path should contain this shape?
-            iend = len(ends) - 1                                       # avoids problems with float math travel > ends[-1]
-            for j in range(0,len(ends)):
-                if travel <= ends[j]:
-                    iend = j
-                    break
-            # place shape at proper spot on proper edge
-            remains = ends[iend] - travel
-            offset = path[iend].Length - remains
-            pt = path[iend].valueAt(self.getParameterFromV0(path[iend],offset))
-            ns = self.orientShape(shape,path[iend],offset,pt,xlate,align,normal)
+        placements = calculatePlacementsOnPath(
+            shape.Placement.Rotation, pathwire, count, xlate, align)
+
+        base = []
+        
+        for placement in placements:
+            ns = shape.copy()
+            ns.Placement = placement
+
             base.append(ns)
-            travel += step
-        return(Part.makeCompound(base))
+            
+        return (Part.makeCompound(base))
 
 class _PointArray(_DraftObject):
     "The Draft Point Array object"
