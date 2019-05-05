@@ -41,6 +41,7 @@ install:
   - dir
   - set PATH=c:\Python37;c:\Python37\Scripts;%PATH%
   - pip install clcache
+  - clcache -z
   - clcache -s
 
 build_script:
