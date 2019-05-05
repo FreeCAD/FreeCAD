@@ -49,6 +49,8 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     m_lastBlockList = 0;
     f_textedit->setTabStopWidth(40);
     setText(textIn);
+    m_defFontSize = 12;
+    m_defFont = QString::fromUtf8("Sans");
 
     connect(f_save, SIGNAL(clicked()),
             this,     SLOT(onSave()));
@@ -60,12 +62,13 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     connect(f_textedit, SIGNAL(cursorPositionChanged()),
             this,     SLOT(slotCursorPositionChanged()));
 
-    m_fontsize_h1 = 18;
-    m_fontsize_h2 = 16;
-    m_fontsize_h3 = 14;
-    m_fontsize_h4 = 12;
+    m_fontsize_h1 = m_defFontSize + 8;
+    m_fontsize_h2 = m_defFontSize + 6;
+    m_fontsize_h3 = m_defFontSize + 4;
+    m_fontsize_h4 = m_defFontSize + 2;
 
-    fontChanged(f_textedit->font());
+//    fontChanged(f_textedit->font());
+    fontChanged(getDefFont());
     bgColorChanged(f_textedit->textColor());
 
     // paragraph formatting
@@ -181,8 +184,9 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
 
     connect(f_fontsize, SIGNAL(activated(QString)),
             this, SLOT(textSize(QString)));
-    f_fontsize->setCurrentIndex(f_fontsize->findText(QString::number(QApplication::font()
-                                                                   .pointSize())));
+//    f_fontsize->setCurrentIndex(f_fontsize->findText(QString::number(QApplication::font()
+//                                                                   .pointSize())));
+    f_fontsize->setCurrentIndex(f_fontsize->findText(getDefFontSize()));
 
     // text foreground color
 
@@ -227,7 +231,7 @@ void MRichTextEdit::textRemoveFormat() {
     fmt.setFontUnderline  (false);
     fmt.setFontStrikeOut  (false);
     fmt.setFontItalic     (false);
-    fmt.setFontPointSize  (9);
+    fmt.setFontPointSize  (m_defFontSize);
 //  fmt.setFontFamily     ("Helvetica");
 //  fmt.setFontStyleHint  (QFont::SansSerif);
 //  fmt.setFontFixedPitch (true);
@@ -236,7 +240,7 @@ void MRichTextEdit::textRemoveFormat() {
     f_underline ->setChecked(false);
     f_italic    ->setChecked(false);
     f_strikeout ->setChecked(false);
-    f_fontsize  ->setCurrentIndex(f_fontsize->findText("9"));
+    f_fontsize  ->setCurrentIndex(f_fontsize->findText(getDefFontSize()));
 
 //  QTextBlockFormat bfmt = cursor.blockFormat();
 //  bfmt->setIndent(0);
@@ -252,7 +256,7 @@ void MRichTextEdit::textRemoveAllFormat() {
     f_underline ->setChecked(false);
     f_italic    ->setChecked(false);
     f_strikeout ->setChecked(false);
-    f_fontsize  ->setCurrentIndex(f_fontsize->findText("9"));
+    f_fontsize  ->setCurrentIndex(f_fontsize->findText(getDefFontSize()));
     QString text = f_textedit->toPlainText();
     f_textedit->setPlainText(text);
 }
@@ -615,6 +619,39 @@ void MRichTextEdit::onSave(void)
 void MRichTextEdit::onExit(void)
 {
     Q_EMIT editorFinished();
+}
+
+void MRichTextEdit::setDefFontSize(int fs)
+{
+    m_defFontSize = fs;
+    f_fontsize->findText(getDefFontSize());
+    m_fontsize_h1 = m_defFontSize + 8;
+    m_fontsize_h2 = m_defFontSize + 6;
+    m_fontsize_h3 = m_defFontSize + 4;
+    m_fontsize_h4 = m_defFontSize + 2;
+    //have to do something with f_fontSize
+    QString newSize = QString::number(fs);
+    f_fontsize->setCurrentIndex(f_fontsize->findText(newSize));
+    //void MRichTextEdit::fontChanged(const QFont &f) { ???
+    textSize(newSize);
+}
+
+QString MRichTextEdit::getDefFontSize(void)
+{
+    QString result = QString::number(m_defFontSize);
+    return result;
+}
+
+void MRichTextEdit::setDefFont(QString f)
+{
+    m_defFont = f;
+}
+
+QFont MRichTextEdit::getDefFont(void)
+{
+    QFont result;
+    result.setFamily(m_defFont);
+    return result;
 }
 
 #include <Mod/TechDraw/Gui/moc_mrichtextedit.cpp>

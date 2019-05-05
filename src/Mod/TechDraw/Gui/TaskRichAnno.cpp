@@ -250,14 +250,20 @@ void TaskRichAnno::onEditorClicked(bool b)
     m_textDialog->setWindowTitle(QObject::tr("Rich text editor"));
     m_textDialog->setMinimumWidth (400);
     m_textDialog->setMinimumHeight(400);
+    if (m_annoVP != nullptr) {
+        double mmToPts = 2.83;
+        m_rte->setDefFontSize(round(m_annoVP->Fontsize.getValue() * mmToPts ));
+        m_rte->setDefFont(Base::Tools::fromStdString(m_annoVP->Font.getValue()));
+    } else {   //no VP yet, use defs
+        m_rte->setDefFontSize(getDefFontSize());
+        m_rte->setDefFont(getDefFont());
+    }
 
     connect(m_rte, SIGNAL(saveText(QString)),
             this, SLOT(onSaveAndExit(QString)));
     connect(m_rte, SIGNAL(editorFinished(void)),
             this, SLOT(onEditorExit(void)));
 
-//    m_textDialog->setFont(m_annoVP->Font.getValue());
-//    m_textDialog->setFontSize(m_annoVP->FontSize.getValue());
     m_textDialog->show();
 }
 
@@ -442,6 +448,24 @@ void TaskRichAnno::enableTaskButtons(bool b)
     m_btnCancel->setEnabled(b);
 }
 
+QString TaskRichAnno::getDefFont(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+    QString result = Base::Tools::fromStdString(fontName);
+    return result;
+}
+
+int TaskRichAnno::getDefFontSize()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    double fontSize = hGrp->GetFloat("FontSize", 5.0);   // this is mm, not pts!
+    double mmToPts = 2.83;
+    int ptsSize = round(fontSize * mmToPts);
+    return ptsSize;
+}
 //******************************************************************************
 
 bool TaskRichAnno::accept()
@@ -469,7 +493,7 @@ bool TaskRichAnno::accept()
 
 bool TaskRichAnno::reject()
 {
-    Base::Console().Message("TRA::reject()\n");
+//    Base::Console().Message("TRA::reject()\n");
     if (m_inProgressLock) {
 //        Base::Console().Message("TRA::reject - edit in progress!!\n");
         return false;
@@ -481,7 +505,6 @@ bool TaskRichAnno::reject()
             return false;
         }
 
-        Base::Console().Message("TRA::reject() - m_mdi: %X\n", m_mdi);
         if (m_mdi != nullptr) {
             m_mdi->setContextMenuPolicy(m_saveContextPolicy);
         }
