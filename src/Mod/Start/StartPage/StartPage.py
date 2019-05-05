@@ -25,7 +25,6 @@
 # the html code of the start page. It is built only once per FreeCAD session for now...
 
 import six
-
 import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
 from . import TranslationTexts
 from PySide import QtCore,QtGui
@@ -170,7 +169,6 @@ def getInfo(filename):
                 else:
                     image = getDefaultIcon()
                 iconbank[t] = image
-
         return [image,size,author,ctime,mtime,descr,company,lic]
 
     return None
@@ -184,7 +182,7 @@ def getDefaultIcon():
     global defaulticon
 
     if not defaulticon:
-        i = QtCore.QFileInfo("Unknown")
+        i = QtCore.QFileInfo(__file__) # MUST provide an existing file in qt5
         icon = iconprovider.icon(i)
         preferred = icon.actualSize(QtCore.QSize(128,128))
         px = icon.pixmap(preferred)

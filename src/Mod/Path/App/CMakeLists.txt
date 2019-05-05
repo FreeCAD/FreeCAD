@@ -116,6 +116,13 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 add_library(Path SHARED ${Path_SRCS})
 target_link_libraries(Path ${Path_LIBS})
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Path_CPP_SRCS ${Path_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Path PreCompiled.h PreCompiled.cpp Path_CPP_SRCS)
+endif(FREECAD_USE_PCH)
+
+
 SET_BIN_DIR(Path Path /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(Path)
 

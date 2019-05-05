@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/bind.hpp>
+# include <QString>
 #endif
 
 #include "ui_TaskSketcherSolverAdvanced.h"
@@ -36,11 +38,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 
-#include <boost/bind.hpp>
-
 #include <Mod/Sketcher/App/SketchObject.h>
-
-#include <QString>
 
 #include "ViewProviderSketch.h"
 
@@ -102,12 +100,12 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
 
     int currentindex = ui->comboBoxDefaultSolver->currentIndex();
     int redundantcurrentindex = ui->comboBoxRedundantDefaultSolver->currentIndex();
-    
+
     if(redundantcurrentindex == 2 || currentindex == 2)
         ui->comboBoxDogLegGaussStep->setEnabled(true);
     else
-        ui->comboBoxDogLegGaussStep->setEnabled(false); 
-    
+        ui->comboBoxDogLegGaussStep->setEnabled(false);
+
     switch(currentindex)
     {
         case 0: // BFGS
@@ -128,11 +126,11 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
             ui->labelSolverParam3->setText(QString::fromLatin1("Tau"));
             ui->lineEditSolverParam1->setEnabled(true);
             ui->lineEditSolverParam2->setEnabled(true);
-            ui->lineEditSolverParam3->setEnabled(true);           
+            ui->lineEditSolverParam3->setEnabled(true);
             double eps = ::atof(hGrp->GetASCII("LM_eps",QString::number(LM_EPS).toUtf8()).c_str());
-            double eps1 = ::atof(hGrp->GetASCII("LM_eps1",QString::number(LM_EPS1).toUtf8()).c_str());          
+            double eps1 = ::atof(hGrp->GetASCII("LM_eps1",QString::number(LM_EPS1).toUtf8()).c_str());
             double tau = ::atof(hGrp->GetASCII("LM_tau",QString::number(LM_TAU).toUtf8()).c_str());
-            ui->lineEditSolverParam1->setText(QString::number(eps).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));            
+            ui->lineEditSolverParam1->setText(QString::number(eps).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditSolverParam2->setText(QString::number(eps1).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditSolverParam3->setText(QString::number(tau).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             sketchView->getSketchObject()->getSolvedSketch().setLM_eps(eps);
@@ -149,9 +147,9 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
             ui->lineEditSolverParam2->setEnabled(true);
             ui->lineEditSolverParam3->setEnabled(true);
             double tolg = ::atof(hGrp->GetASCII("DL_tolg",QString::number(DL_TOLG).toUtf8()).c_str());
-            double tolx = ::atof(hGrp->GetASCII("DL_tolx",QString::number(DL_TOLX).toUtf8()).c_str());          
+            double tolx = ::atof(hGrp->GetASCII("DL_tolx",QString::number(DL_TOLX).toUtf8()).c_str());
             double tolf = ::atof(hGrp->GetASCII("DL_tolf",QString::number(DL_TOLF).toUtf8()).c_str());
-            ui->lineEditSolverParam1->setText(QString::number(tolg).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));           
+            ui->lineEditSolverParam1->setText(QString::number(tolg).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditSolverParam2->setText(QString::number(tolx).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditSolverParam3->setText(QString::number(tolf).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolg(tolg);
@@ -168,12 +166,12 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
 
     int currentindex = ui->comboBoxDefaultSolver->currentIndex();
     int redundantcurrentindex = ui->comboBoxRedundantDefaultSolver->currentIndex();
-    
+
     if(redundantcurrentindex == 2 || currentindex == 2)
         ui->comboBoxDogLegGaussStep->setEnabled(true);
     else
-        ui->comboBoxDogLegGaussStep->setEnabled(false); 
-    
+        ui->comboBoxDogLegGaussStep->setEnabled(false);
+
     switch(redundantcurrentindex)
     {
         case 0: // BFGS
@@ -182,7 +180,7 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
             ui->labelRedundantSolverParam3->setText(QString::fromLatin1(""));
             ui->lineEditRedundantSolverParam1->clear();
             ui->lineEditRedundantSolverParam2->clear();
-            ui->lineEditRedundantSolverParam3->clear();            
+            ui->lineEditRedundantSolverParam3->clear();
             ui->lineEditRedundantSolverParam1->setDisabled(true);
             ui->lineEditRedundantSolverParam2->setDisabled(true);
             ui->lineEditRedundantSolverParam3->setDisabled(true);
@@ -194,11 +192,11 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
             ui->labelRedundantSolverParam3->setText(QString::fromLatin1("R.Tau"));
             ui->lineEditRedundantSolverParam1->setEnabled(true);
             ui->lineEditRedundantSolverParam2->setEnabled(true);
-            ui->lineEditRedundantSolverParam3->setEnabled(true);           
+            ui->lineEditRedundantSolverParam3->setEnabled(true);
             double eps = ::atof(hGrp->GetASCII("Redundant_LM_eps",QString::number(LM_EPS).toUtf8()).c_str());
-            double eps1 = ::atof(hGrp->GetASCII("Redundant_LM_eps1",QString::number(LM_EPS1).toUtf8()).c_str());       
+            double eps1 = ::atof(hGrp->GetASCII("Redundant_LM_eps1",QString::number(LM_EPS1).toUtf8()).c_str());
             double tau = ::atof(hGrp->GetASCII("Redundant_LM_tau",QString::number(LM_TAU).toUtf8()).c_str());
-            ui->lineEditRedundantSolverParam1->setText(QString::number(eps).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));            
+            ui->lineEditRedundantSolverParam1->setText(QString::number(eps).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditRedundantSolverParam2->setText(QString::number(eps1).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditRedundantSolverParam3->setText(QString::number(tau).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             sketchView->getSketchObject()->getSolvedSketch().setLM_epsRedundant(eps);
@@ -215,9 +213,9 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
             ui->lineEditRedundantSolverParam2->setEnabled(true);
             ui->lineEditRedundantSolverParam3->setEnabled(true);
             double tolg = ::atof(hGrp->GetASCII("Redundant_DL_tolg",QString::number(DL_TOLG).toUtf8()).c_str());
-            double tolx = ::atof(hGrp->GetASCII("Redundant_DL_tolx",QString::number(DL_TOLX).toUtf8()).c_str());         
+            double tolx = ::atof(hGrp->GetASCII("Redundant_DL_tolx",QString::number(DL_TOLX).toUtf8()).c_str());
             double tolf = ::atof(hGrp->GetASCII("Redundant_DL_tolf",QString::number(DL_TOLF).toUtf8()).c_str());
-            ui->lineEditRedundantSolverParam1->setText(QString::number(tolg).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));           
+            ui->lineEditRedundantSolverParam1->setText(QString::number(tolg).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditRedundantSolverParam2->setText(QString::number(tolx).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditRedundantSolverParam3->setText(QString::number(tolf).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolgRedundant(tolg);
@@ -517,23 +515,23 @@ void TaskSketcherSolverAdvanced::on_pushButtonDefaults_clicked(bool checked/* = 
 {
     Q_UNUSED(checked);
     // Algorithm params for default solvers
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced");         
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced");
     hGrp->SetASCII("LM_eps",QString::number(LM_EPS).toUtf8());
-    hGrp->SetASCII("LM_eps1",QString::number(LM_EPS1).toUtf8());          
+    hGrp->SetASCII("LM_eps1",QString::number(LM_EPS1).toUtf8());
     hGrp->SetASCII("LM_tau",QString::number(LM_TAU).toUtf8());
     hGrp->SetASCII("DL_tolg",QString::number(DL_TOLG).toUtf8());
-    hGrp->SetASCII("DL_tolx",QString::number(DL_TOLX).toUtf8());          
+    hGrp->SetASCII("DL_tolx",QString::number(DL_TOLX).toUtf8());
     hGrp->SetASCII("DL_tolf",QString::number(DL_TOLF).toUtf8());
     hGrp->SetASCII("Redundant_LM_eps",QString::number(LM_EPS).toUtf8());
-    hGrp->SetASCII("Redundant_LM_eps1",QString::number(LM_EPS1).toUtf8());          
-    hGrp->SetASCII("Redundant_LM_tau",QString::number(LM_TAU).toUtf8()); 
-    hGrp->SetASCII("Redundant_DL_tolg",QString::number(DL_TOLG).toUtf8()); 
-    hGrp->SetASCII("Redundant_DL_tolx",QString::number(DL_TOLX).toUtf8());          
-    hGrp->SetASCII("Redundant_DL_tolf",QString::number(DL_TOLF).toUtf8()); 
+    hGrp->SetASCII("Redundant_LM_eps1",QString::number(LM_EPS1).toUtf8());
+    hGrp->SetASCII("Redundant_LM_tau",QString::number(LM_TAU).toUtf8());
+    hGrp->SetASCII("Redundant_DL_tolg",QString::number(DL_TOLG).toUtf8());
+    hGrp->SetASCII("Redundant_DL_tolx",QString::number(DL_TOLX).toUtf8());
+    hGrp->SetASCII("Redundant_DL_tolf",QString::number(DL_TOLF).toUtf8());
     // Set other settings
     hGrp->SetInt("DefaultSolver",DEFAULT_SOLVER);
     hGrp->SetInt("DogLegGaussStep",DEFAULT_DOGLEG_GAUSS_STEP);
-    
+
     hGrp->SetInt("RedundantDefaultSolver",DEFAULT_RSOLVER);
     hGrp->SetInt("MaxIter",MAX_ITER);
     hGrp->SetInt("RedundantSolverMaxIterations",MAX_ITER);
