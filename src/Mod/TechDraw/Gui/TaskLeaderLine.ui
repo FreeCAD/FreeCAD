@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TechDrawGui::TaskLeaderLine</class>
+ <widget class="QWidget" name="TechDrawGui::TaskLeaderLine">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>409</width>
+    <height>405</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>250</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Leader Line</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="Resources/TechDraw.qrc">
+    <normaloff>:/icons/actions/techdraw-mline.svg</normaloff>:/icons/actions/techdraw-mline.svg</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="leBaseView">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="mouseTracking">
+             <bool>false</bool>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="acceptDrops">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Base View</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pbTracker">
+            <property name="text">
+             <string>Select Line Points</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QFormLayout" name="formLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Start Symbol</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="cboxStartSym">
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>No Symbol</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Filled Triangle</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowfilled.svg</normaloff>:/icons/arrowfilled.svg</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Open Triangle</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowopen.svg</normaloff>:/icons/arrowopen.svg</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Tick</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowtick.svg</normaloff>:/icons/arrowtick.svg</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Dot</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowdot.svg</normaloff>:/icons/arrowdot.svg</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Open Circle</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowopendot.svg</normaloff>:/icons/arrowopendot.svg</iconset>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>End Symbol</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="cboxEndSym">
+            <item>
+             <property name="text">
+              <string>No Symbol</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Filled Triangle</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowfilled.svg</normaloff>:/icons/arrowfilled.svg</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Open Triangle</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowopen.svg</normaloff>:/icons/arrowopen.svg</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Tick</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowtick.svg</normaloff>:/icons/arrowtick.svg</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Dot</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowdot.svg</normaloff>:/icons/arrowdot.svg</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Open Circle</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowopendot.svg</normaloff>:/icons/arrowopendot.svg</iconset>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="Gui::ColorButton" name="cpLineColor">
+            <property name="color">
+             <color>
+              <red>0</red>
+              <green>0</green>
+              <blue>0</blue>
+             </color>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Weight</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QDoubleSpinBox" name="dsbWeight">
+            <property name="singleStep">
+             <double>0.100000000000000</double>
+            </property>
+            <property name="value">
+             <double>0.500000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Style</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QComboBox" name="cboxStyle">
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>NoLine</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Solid</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Dash</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Dot</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>DashDot</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>DashDotDot</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="Resources/TechDraw.qrc"/>
+ </resources>
+ <connections/>
+</ui>

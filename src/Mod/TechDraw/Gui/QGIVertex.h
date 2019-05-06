@@ -41,17 +41,17 @@ public:
     int getProjIndex() const { return projIndex; }
 
     float getRadius() { return m_radius; }
-    void setRadius(float r);
+    virtual void setRadius(float r);
     Qt::BrushStyle getFill() { return m_fill; }
     void setFill(Qt::BrushStyle f) { m_fill = f; }
 
 protected:
     int projIndex;
-
-private:
     float m_radius;
     QBrush m_brush;
     Qt::BrushStyle m_fill;
+
+private:
 };
 
 }
