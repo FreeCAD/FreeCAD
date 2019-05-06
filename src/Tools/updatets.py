@@ -25,6 +25,14 @@
 #*                                                                         *
 #***************************************************************************
 
+# Changelog:
+# 0.3 User-friendly output
+#     Corrections
+#     Added Changelog
+# 0.2 Add Qt5 support
+#     Add "no obsolete" flags in order to fix 'ghost strings' in Crowdin
+# 0.1 Initial Release
+
 from __future__ import print_function
 
 Usage = """updatets - update all .ts files found in the source directories
@@ -32,12 +40,13 @@ Usage = """updatets - update all .ts files found in the source directories
 Usage:
    updatets
 
-Author:
+Authors:
   (c) 2010 Werner Mayer
-  Licence: GPL
+  (c) 2019 FreeCAD Volunteers
+  Licence: LGPL
 
 Version:
-  0.1
+  0.3
 """
 
 import os, re
@@ -110,6 +119,7 @@ LCONVERT = ""
 
 def find_tools(noobsolete=True):
 
+    print(Usage + "\nFirst, lets find all necessary tools on your system")
     global QMAKE, LUPDATE, PYLUPDATE, LCONVERT
     if (os.system("qmake -version") == 0):
         QMAKE = "qmake"
@@ -152,7 +162,12 @@ def find_tools(noobsolete=True):
             LCONVERT += " -no-obsolete"
     else:
         raise Exception("Cannot find lconvert")
-    print("Qt tools:", QMAKE, LUPDATE, PYLUPDATE, LCONVERT)
+    print("\nAll Qt tools have been found!\n",
+          "\t" + QMAKE     + "\n",
+          "\t" + LUPDATE   + "\n",
+          "\t" + PYLUPDATE + "\n",
+          "\t" + LCONVERT  + "\n")
+    print("==============================================\n")
 
 def filter_dirs(item):
 
@@ -213,7 +228,7 @@ def main():
         update_translation(i)
     for j in PyCommands:
         update_python_translation(j)
+    print("\nIf updatets.py was run successully, the next step is to run ./src/Tools/updatecrowdin.py")
 
 if __name__ == "__main__":
     main()
-

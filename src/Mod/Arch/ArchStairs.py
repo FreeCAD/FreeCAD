@@ -332,7 +332,7 @@ class _Stairs(ArchComponent.Component):
             obj.setEditorMode("OutlineRight",1)
 
         # Can't accept 'None' in list, need NaN
-        #if not hasattr(obj,"OutlineRailArcLeft"): 
+        #if not hasattr(obj,"OutlineRailArcLeft"):
             #obj.addProperty("App::PropertyVectorList","OutlineRailArcLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' 'arc points' of stairs railing"))
             #obj.setEditorMode("OutlineRailArcLeft",1)
         #if not hasattr(obj,"OutlineRailArcRight"):
@@ -701,7 +701,7 @@ class _Stairs(ArchComponent.Component):
                 #vBase2vec = (vBase2-vBase[i]) # - would not be correct if Align is not Left
 
             ''' (1a) calc & append vLength - Need v (vec) '''
-            vLength.append(Vector(v[i].x,v[i].y,v[i].z))	# TODO check all function below ok with curve? # TODO vLength in this f() is 3d 
+            vLength.append(Vector(v[i].x,v[i].y,v[i].z))	# TODO check all function below ok with curve? # TODO vLength in this f() is 3d
 
 
             ''' (1b, 2a) calc & append vWidth - Need vLength, netWidthI '''
@@ -1402,7 +1402,7 @@ class _Stairs(ArchComponent.Component):
             if obj.LastSegment.Proxy.OutlineRailArcLeftAll: # need if?
                 outlineRailArcLeftAll.extend(obj.LastSegment.Proxy.OutlineRailArcLeftAll)
 
-            if (outlineLeftAll[-1] - obj.OutlineLeft[0]).Length < 0.01: # To avoid 2 points overlapping fail creating LineSegment # TODO to allow tolerence Part.LineSegment / edge.toShape() allow?
+            if (outlineLeftAll[-1] - obj.OutlineLeft[0]).Length < 0.01: # To avoid 2 points overlapping fail creating LineSegment # TODO to allow tolerance Part.LineSegment / edge.toShape() allow?
                 # no need abs() after .Length right?
                 del outlineLeftAll[-1]
                 del outlineRailArcLeftAll[-1]
