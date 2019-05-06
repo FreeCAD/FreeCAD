@@ -54,7 +54,7 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2017"
-__scriptVersion__ = "1h testing"
+__scriptVersion__ = "1i testing"
 __lastModified__ = "2019-05-06 16:55 CST"
 
 if False:
