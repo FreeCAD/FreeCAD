@@ -81,6 +81,17 @@ public:
     void setShowProgress(bool enable) {showProgress=enable;}
     void setExpandCompound(bool enable) {expandCompound=enable;}
 
+    enum ImportMode {
+        SingleDoc = 0,
+        GroupPerDoc = 1,
+        GroupPerDir = 2,
+        ObjectPerDoc = 3,
+        ObjectPerDir = 4,
+        ModeMax,
+    };
+    void setMode(int m);
+    int getMode() const {return mode;}
+
 private:
     struct Info {
         std::string baseName;
@@ -93,16 +104,21 @@ private:
         int free = true;
     };
 
-    App::DocumentObject *loadShape(TDF_Label label, const TopoDS_Shape &shape, bool baseOnly=false);
-    bool createAssembly(TDF_Label label, const TopoDS_Shape &shape, Info &info);
-    bool createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info);
-    bool createGroup(Info &info, const TopoDS_Shape &shape, const std::vector<App::DocumentObject*> &children, 
+    App::DocumentObject *loadShape(App::Document *doc, TDF_Label label, 
+            const TopoDS_Shape &shape, bool baseOnly=false, bool newDoc=true);
+    App::Document *getDocument(App::Document *doc, TDF_Label label);
+    bool createAssembly(App::Document *doc, TDF_Label label, 
+            const TopoDS_Shape &shape, Info &info, bool newDoc);
+    bool createObject(App::Document *doc, TDF_Label label, 
+            const TopoDS_Shape &shape, Info &info, bool newDoc);
+    bool createGroup(App::Document *doc, Info &info, 
+            const TopoDS_Shape &shape, std::vector<App::DocumentObject*> &children, 
             const boost::dynamic_bitset<> &visibilities, bool canReduce=false);
     bool getColor(const TopoDS_Shape &shape, Info &info, bool check=false, bool noDefault=false);
     void getSHUOColors(TDF_Label label, std::map<std::string,App::Color> &colors, bool appendFirst);
     void setObjectName(Info &info, TDF_Label label);
     std::string getLabelName(TDF_Label label);
-    App::DocumentObject *expandShape(TDF_Label label, const TopoDS_Shape &shape);
+    App::DocumentObject *expandShape(App::Document *doc, TDF_Label label, const TopoDS_Shape &shape);
 
     virtual void applyEdgeColors(Part::Feature*, const std::vector<App::Color>&) {}
     virtual void applyFaceColors(Part::Feature*, const std::vector<App::Color>&) {}
@@ -113,7 +129,7 @@ private:
     class ImportLegacy : public ImportOCAF {
     public:
         ImportLegacy(ImportOCAF2 &parent)
-            :ImportOCAF(parent.pDoc, parent.doc, parent.default_name),myParent(parent)
+            :ImportOCAF(parent.pDoc, parent.pDocument, parent.default_name),myParent(parent)
         {}
             
     private:
@@ -126,7 +142,7 @@ private:
     friend class ImportLegacy;
 
     Handle(TDocStd_Document) pDoc;
-    App::Document* doc;
+    App::Document* pDocument;
     Handle(XCAFDoc_ShapeTool) aShapeTool;
     Handle(XCAFDoc_ColorTool) aColorTool;
     bool merge;
@@ -138,9 +154,12 @@ private:
     bool showProgress;
     bool expandCompound;
 
+    int mode;
+    std::string filePath;
+
     std::unordered_map<TopoDS_Shape, Info, ShapeHasher> myShapes;
     std::unordered_map<TDF_Label, std::string, LabelHasher> myNames;
-    std::map<App::DocumentObject*, App::PropertyPlacement*> myCollapsedObjects;
+    std::unordered_map<App::DocumentObject*, App::PropertyPlacement*> myCollapsedObjects;
 
     App::Color defaultFaceColor;
     App::Color defaultEdgeColor;
@@ -171,7 +190,7 @@ private:
     Handle(XCAFDoc_ShapeTool) aShapeTool;
     Handle(XCAFDoc_ColorTool) aColorTool;
 
-    std::map<App::DocumentObject *, TDF_Label> myObjects;
+    std::unordered_map<App::DocumentObject *, TDF_Label> myObjects;
 
     std::unordered_map<TDF_Label, std::vector<std::string>, LabelHasher> myNames;
 

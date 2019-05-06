@@ -7,19 +7,168 @@
     <x>0</x>
     <y>0</y>
     <width>445</width>
-    <height>494</height>
+    <height>611</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>STEP</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Export</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="3" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxExportHiddenObj">
+        <property name="toolTip">
+         <string>Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</string>
+        </property>
+        <property name="text">
+         <string>Export invisible objects</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>ExportHiddenObject</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Mod/Import</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Units for export of STEP</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="3">
+       <widget class="QCheckBox" name="checkBoxPcurves">
+        <property name="text">
+         <string>Write out curves in parametric space of surface</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="3">
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Scheme</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="radioButtonAP203">
+           <property name="text">
+            <string notr="true">AP 203</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="radioButtonAP214">
+           <property name="text">
+            <string notr="true">AP 214</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QComboBox" name="comboBoxUnits">
+        <item>
+         <property name="text">
+          <string>Millimeter</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Meter</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Inch</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>82</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="groupBoxHeader">
+     <property name="title">
+      <string>Header</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="lineEditAuthor"/>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="lineEditProduct"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Author</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Product</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Company</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="lineEditCompany"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="2" column="0">
     <widget class="QGroupBox" name="GroupBox2">
      <property name="title">
       <string>Import</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout2">
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxMergeCompound">
         <property name="toolTip">
@@ -135,157 +284,60 @@
         </property>
        </widget>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QGroupBox" name="groupBoxHeader">
-     <property name="title">
-      <string>Header</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Company</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEditCompany"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Author</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEditAuthor"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Product</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="lineEditProduct"/>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Export</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="2" column="0" colspan="3">
-       <widget class="QCheckBox" name="checkBoxPcurves">
-        <property name="text">
-         <string>Write out curves in parametric space of surface</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0" colspan="3">
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="title">
-         <string>Scheme</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QRadioButton" name="radioButtonAP203">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Mode</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBoxImportMode">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>ImportMode</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>Mod/Import</string>
+          </property>
+          <item>
            <property name="text">
-            <string notr="true">AP 203</string>
+            <string>Single document</string>
            </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="radioButtonAP214">
+          </item>
+          <item>
            <property name="text">
-            <string notr="true">AP 214</string>
+            <string>Assembly per document</string>
            </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QComboBox" name="comboBoxUnits">
-        <item>
-         <property name="text">
-          <string>Millimeter</string>
-         </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Assembly per document in sub-directory</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Object per document</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Object per document in sub-directory</string>
+           </property>
+          </item>
+         </widget>
         </item>
-        <item>
-         <property name="text">
-          <string>Meter</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Inch</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-     r  </property>
-       </spacer>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Units for export of STEP</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxExportHiddenObj">
-        <property name="toolTip">
-         <string>Select this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</string>
-        </property>
-        <property name="text">
-         <string>Export invisible objects</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <string>ExportHiddenObject</string>
-        </property>
-        <property name="prefPath" stdset="0">
-         <string>Mod/Import</string>
-        </property>
-       </widget>
+       </layout>
       </item>
      </layout>
     </widget>
-   </item>
-   <item row="4" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>82</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
@@ -295,12 +347,26 @@
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>comboBoxUnits</tabstop>
   <tabstop>checkBoxPcurves</tabstop>
+  <tabstop>checkBoxExportHiddenObj</tabstop>
   <tabstop>radioButtonAP203</tabstop>
   <tabstop>radioButtonAP214</tabstop>
+  <tabstop>checkBoxMergeCompound</tabstop>
+  <tabstop>checkBoxUseLinkGroup</tabstop>
+  <tabstop>checkBoxImportHiddenObj</tabstop>
+  <tabstop>checkBoxReduceObjects</tabstop>
+  <tabstop>checkBoxExpandCompound</tabstop>
+  <tabstop>checkBoxShowProgress</tabstop>
+  <tabstop>checkBoxUseBaseName</tabstop>
+  <tabstop>comboBoxImportMode</tabstop>
   <tabstop>lineEditCompany</tabstop>
   <tabstop>lineEditAuthor</tabstop>
   <tabstop>lineEditProduct</tabstop>

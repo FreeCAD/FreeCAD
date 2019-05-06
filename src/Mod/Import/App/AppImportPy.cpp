@@ -131,9 +131,10 @@ private:
         PyObject *importHidden = Py_None;
         PyObject *merge = Py_None;
         PyObject *useLinkGroup = Py_None;
-        static char* kwd_list[] = {"name", "docName","importHidden","merge","useLinkGroup",0};
-        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sOOO", 
-                    kwd_list,"utf-8",&Name,&DocName,&importHidden,&merge,&useLinkGroup))
+        int mode = -1;
+        static char* kwd_list[] = {"name", "docName","importHidden","merge","useLinkGroup","mode",0};
+        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sOOOi", 
+                    kwd_list,"utf-8",&Name,&DocName,&importHidden,&merge,&useLinkGroup,&mode))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
@@ -228,6 +229,8 @@ private:
                 ocaf.setImportHiddenObject(PyObject_IsTrue(importHidden));
             if(useLinkGroup!=Py_None)
                 ocaf.setUseLinkGroup(PyObject_IsTrue(useLinkGroup));
+            if(mode>=0) 
+                ocaf.setMode(mode);
             ocaf.loadShapes();
 #else
             Import::ImportXCAF xcaf(hDoc, pcDoc, file.fileNamePure());

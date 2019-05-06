@@ -82,6 +82,7 @@
 #include <App/DocumentObjectPy.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Command.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/ProgressIndicator.h>
@@ -392,15 +393,6 @@ public:
     virtual ~Module() {}
 
 private:
-    class Signaler {
-    public:
-        Signaler() {
-            App::GetApplication().signalStartOpenDocument();
-        }
-        ~Signaler() {
-            App::GetApplication().signalFinishOpenDocument();
-        }
-    };
     Py::Object insert(const Py::Tuple& args, const Py::Dict &kwds)
     {
         char* Name;
@@ -408,16 +400,15 @@ private:
         PyObject *importHidden = Py_None;
         PyObject *merge = Py_None;
         PyObject *useLinkGroup = Py_None;
-        static char* kwd_list[] = {"name","docName","importHidden","merge","useLinkGroup",0};
-        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sOOO", 
-                    kwd_list,"utf-8",&Name,&DocName,&importHidden,&merge,&useLinkGroup))
+        int mode = -1;
+        static char* kwd_list[] = {"name","docName","importHidden","merge","useLinkGroup","mode",0};
+        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sOOOi", 
+                    kwd_list,"utf-8",&Name,&DocName,&importHidden,&merge,&useLinkGroup,&mode))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
         std::string name8bit = Part::encodeFilename(Utf8Name);
-
-        Signaler signaler;
 
         try {
             //Base::Console().Log("Insert in Part with %s",Name);
@@ -442,6 +433,15 @@ private:
             FC_DURATION_DECL_INIT2(d1,d2);
 
             if (file.hasExtension("stp") || file.hasExtension("step")) {
+
+                if(mode<0)
+                    mode = ocaf.getMode();
+                if(mode && !pcDoc->isSaved()) {
+                    auto gdoc = Gui::Application::Instance->getDocument(pcDoc);
+                    if(!gdoc->save())
+                        return Py::Object();
+                }
+
                 try {
                     STEPCAFControl_Reader aReader;
                     aReader.SetColorMode(true);
@@ -512,14 +512,23 @@ private:
                 ocaf.setImportHiddenObject(PyObject_IsTrue(importHidden));
             if(useLinkGroup!=Py_None)
                 ocaf.setUseLinkGroup(PyObject_IsTrue(useLinkGroup));
-            ocaf.loadShapes();
-            pcDoc->purgeTouched();
-            pcDoc->recompute();
+            ocaf.setMode(mode);
+            auto ret = ocaf.loadShapes();
             hApp->Close(hDoc);
             FC_DURATION_PLUS(d2,t);
             FC_DURATION_MSG(d1,"file read");
             FC_DURATION_MSG(d2,"import");
             FC_DURATION_MSG((d1+d2),"total");
+
+            if(ret) {
+                App::GetApplication().setActiveDocument(pcDoc);
+                auto gdoc = Gui::Application::Instance->getDocument(pcDoc);
+                if(gdoc) {
+                    gdoc->setActiveView();
+                    Gui::Application::Instance->commandManager().runCommandByName("Std_ViewFitAll");
+                }
+                return Py::asObject(ret->getPyObject());
+            }
         }
         catch (Standard_Failure& e) {
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());

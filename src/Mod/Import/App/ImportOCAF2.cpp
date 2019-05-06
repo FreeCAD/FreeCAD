@@ -46,9 +46,11 @@
 # include <TDF_AttributeSequence.hxx>
 #endif
 
+#include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <Base/Parameter.h>
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -135,7 +137,7 @@ static void dumpLabels(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
 /////////////////////////////////////////////////////////////////////
 
 ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-    : pDoc(h), doc(d), default_name(name), sequencer(0)
+    : pDoc(h), pDocument(d), default_name(name), sequencer(0)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
@@ -152,6 +154,12 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
     showProgress = hGrp->GetBool("ShowProgress",true);
     expandCompound = hGrp->GetBool("ExpandCompound",true);
 
+    if(d->isSaved()) {
+        Base::FileInfo fi(d->FileName.getValue());
+        filePath = fi.dirPath();
+    }
+    mode = hGrp->GetInt("ImportMode",SingleDoc);
+
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     defaultFaceColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeColor",0xCCCCCC00));
     defaultFaceColor.a = 0;
@@ -167,6 +175,20 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
 
 ImportOCAF2::~ImportOCAF2()
 {
+}
+
+void ImportOCAF2::setMode(int m) {
+    if(m<0 || m>=ModeMax)
+        FC_WARN("Invalid import mode " << m);
+    else
+        mode = m;
+    if(mode!=SingleDoc) {
+        if(pDocument->isSaved()) {
+            Base::FileInfo fi(pDocument->FileName.getValue());
+            filePath = fi.dirPath();
+        }else
+            FC_WARN("Diable multi-document mode because the input document is not saved.");
+    }
 }
 
 static void setPlacement(App::PropertyPlacement *prop, const TopoDS_Shape &shape) {
@@ -244,7 +266,9 @@ bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bo
     return ret;
 }
 
-App::DocumentObject *ImportOCAF2::expandShape(TDF_Label label, const TopoDS_Shape &shape) {
+App::DocumentObject *ImportOCAF2::expandShape(
+        App::Document *doc, TDF_Label label, const TopoDS_Shape &shape) 
+{
     if(shape.IsNull() || !TopExp_Explorer(shape,TopAbs_VERTEX).More())
         return 0;
 
@@ -271,7 +295,7 @@ App::DocumentObject *ImportOCAF2::expandShape(TDF_Label label, const TopoDS_Shap
             TDF_Label childLabel;
             if(!label.IsNull())
                 aShapeTool->FindSubShape(label,it.Value(),childLabel);
-            auto child = expandShape(childLabel,it.Value());
+            auto child = expandShape(doc,childLabel,it.Value());
             if(child) {
                 objs.push_back(child);
                 Info info;
@@ -284,17 +308,18 @@ App::DocumentObject *ImportOCAF2::expandShape(TDF_Label label, const TopoDS_Shap
             return 0;
         auto compound = static_cast<Part::Compound2*>(doc->addObject("Part::Compound2","Compound"));
         compound->Links.setValues(objs);
-        compound->Visibility.setValue(false);
+        // compound->Visibility.setValue(false);
         setPlacement(&compound->Placement,shape);
         return compound;
     }
     Info info;
     info.obj = 0;
-    createObject(label,shape,info);
+    createObject(doc,label,shape,info,false);
     return info.obj;
 }
 
-bool ImportOCAF2::createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info)
+bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label, 
+        const TopoDS_Shape &shape, Info &info, bool newDoc)
 {
     if(shape.IsNull() || !TopExp_Explorer(shape,TopAbs_VERTEX).More()) {
         FC_WARN(labelName(label) << " has empty shape");
@@ -373,16 +398,19 @@ bool ImportOCAF2::createObject(TDF_Label label, const TopoDS_Shape &shape, Info 
 
     Part::Feature *feature;
 
+    if(newDoc && (mode==ObjectPerDoc || mode==ObjectPerDir))
+        doc = getDocument(doc,label);
+
     if(expandCompound && 
        (tshape.countSubShapes(TopAbs_SOLID)>1 || 
         (!tshape.countSubShapes(TopAbs_SOLID) && tshape.countSubShapes(TopAbs_SHELL)>1)))
     {
-        feature = dynamic_cast<Part::Feature*>(expandShape(label,shape));
+        feature = dynamic_cast<Part::Feature*>(expandShape(doc,label,shape));
         assert(feature);
     } else {
         feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature",tshape.shapeName().c_str()));
         feature->Shape.setValue(shape);
-        feature->Visibility.setValue(false);
+        // feature->Visibility.setValue(false);
     }
     applyFaceColors(feature,{info.faceColor});
     applyEdgeColors(feature,{info.edgeColor});
@@ -396,8 +424,55 @@ bool ImportOCAF2::createObject(TDF_Label label, const TopoDS_Shape &shape, Info 
     return true;
 }
 
-bool ImportOCAF2::createGroup(Info &info, const TopoDS_Shape &shape, 
-                             const std::vector<App::DocumentObject*> &children, 
+App::Document *ImportOCAF2::getDocument(App::Document *doc, TDF_Label label) {
+    if(filePath.empty() || mode==SingleDoc || merge)
+        return doc;
+
+    auto name = getLabelName(label);
+    if(name.empty())
+        return doc;
+
+    auto newDoc = App::GetApplication().newDocument(name.c_str(),name.c_str(),false);
+    std::ostringstream ss;
+    Base::FileInfo fi(doc->FileName.getValue());
+    std::string path = fi.dirPath();
+    if(mode == GroupPerDir || mode == ObjectPerDir) {
+        for(int i=0;i<1000;++i) {
+            ss.str("");
+            ss << path << '/' << fi.fileNamePure() << "_parts";
+            if(i>0) 
+                ss << '_' << std::setfill('0') << std::setw(3) << i;
+            Base::FileInfo fi2(ss.str());
+            if(fi2.exists()) {
+                if(!fi2.isDir())
+                    continue;
+            }else if(!fi2.createDirectory()) {
+                FC_WARN("Failed to create directory " << fi2.filePath());
+                break;
+            }
+            path = fi2.filePath();
+            break;
+        }
+    }
+    for(int i=0;i<1000;++i) {
+        ss.str("");
+        ss << path << '/' << newDoc->getName() << ".fcstd";
+        if(i>0) 
+            ss << '_' << std::setfill('0') << std::setw(3) << i;
+        Base::FileInfo fi(ss.str());
+        if(!fi.exists()) {
+            if(!newDoc->saveAs(fi.filePath().c_str()))
+                break;
+            return newDoc;
+        }
+    }
+
+    FC_WARN("Cannot save document for part '" << name << "'");
+    return doc;
+}
+
+bool ImportOCAF2::createGroup(App::Document *doc, Info &info, const TopoDS_Shape &shape, 
+                             std::vector<App::DocumentObject*> &children, 
                              const boost::dynamic_bitset<> &visibilities,
                              bool canReduce) 
 {
@@ -413,11 +488,22 @@ bool ImportOCAF2::createGroup(Info &info, const TopoDS_Shape &shape,
         return true;
     }
     auto group = static_cast<App::LinkGroup*>(doc->addObject("App::LinkGroup","LinkGroup"));
-    group->Visibility.setValue(false);
+    for(auto &child : children)  {
+        if(child->getDocument()!=doc) {
+            auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
+            link->Label.setValue(child->Label.getValue());
+            link->setLink(-1,child);
+            auto pla = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                child->getPropertyByName("Placement"));
+            if(pla)
+                link->Placement.setValue(pla->getValue());
+            child = link;
+        }
+        // child->Visibility.setValue(false);
+    }
+    // group->Visibility.setValue(false);
     group->ElementList.setValues(children);
     group->VisibilityList.setValue(visibilities);
-    for(auto child : children) 
-        child->Visibility.setValue(false);
     info.obj = group;
     info.propPlacement = &group->Placement;
     if(getColor(shape,info,false,true)) {
@@ -453,11 +539,19 @@ App::DocumentObject* ImportOCAF2::loadShapes()
     std::vector<App::DocumentObject*> objs;
     aShapeTool->GetFreeShapes (labels);
     boost::dynamic_bitset<> vis;
+    int count = 0;
     for (Standard_Integer i=1; i <= labels.Length(); i++ ) {
         auto label = labels.Value(i);
         if(!importHidden && !aColorTool->IsVisible(label))
             continue;
-        auto obj = loadShape(label, aShapeTool->GetShape(label));
+        ++count;
+    }
+    for (Standard_Integer i=1; i <= labels.Length(); i++ ) {
+        auto label = labels.Value(i);
+        if(!importHidden && !aColorTool->IsVisible(label))
+            continue;
+        auto obj = loadShape(pDocument, label, 
+                aShapeTool->GetShape(label), false, count>1);
         if(obj) {
             objs.push_back(obj);
             vis.push_back(aColorTool->IsVisible(label));
@@ -468,17 +562,17 @@ App::DocumentObject* ImportOCAF2::loadShapes()
         ret = objs.front();
     }else {
         Info info;
-        if(createGroup(info,TopoDS_Shape(),objs,vis))
+        if(createGroup(pDocument,info,TopoDS_Shape(),objs,vis))
             ret = info.obj;
     }
     if(ret) {
-        ret->Visibility.setValue(true);
+        // ret->Visibility.setValue(true);
         ret->recomputeFeature(true);
     }
     if(merge && ret && !ret->isDerivedFrom(Part::Feature::getClassTypeId())) {
         auto shape = Part::Feature::getTopoShape(ret);
         auto feature = static_cast<Part::Feature*>(
-                doc->addObject("Part::Feature", "Feature"));
+                pDocument->addObject("Part::Feature", "Feature"));
         auto name = labelName(pDoc->Main());
         feature->Label.setValue(name.empty()?default_name.c_str():name.c_str());
         feature->Shape.setValue(shape);
@@ -554,7 +648,8 @@ void ImportOCAF2::getSHUOColors(TDF_Label label,
     }
 }
 
-App::DocumentObject *ImportOCAF2::loadShape(TDF_Label label, const TopoDS_Shape &shape, bool baseOnly) 
+App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc, 
+        TDF_Label label, const TopoDS_Shape &shape, bool baseOnly, bool newDoc) 
 {
     if(shape.IsNull())
         return 0;
@@ -568,9 +663,9 @@ App::DocumentObject *ImportOCAF2::loadShape(TDF_Label label, const TopoDS_Shape 
             sequencer->next(true);
         bool res;
         if(baseLabel.IsNull() || !aShapeTool->IsAssembly(baseLabel))
-            res = createObject(baseLabel,baseShape,info);
-        else
-            res = createAssembly(baseLabel,baseShape,info);
+            res = createObject(doc,baseLabel,baseShape,info,newDoc);
+        else 
+            res = createAssembly(doc,baseLabel,baseShape,info,newDoc);
         if(!res)
             return 0;
         setObjectName(info,baseLabel);
@@ -586,7 +681,7 @@ App::DocumentObject *ImportOCAF2::loadShape(TDF_Label label, const TopoDS_Shape 
     auto info = it->second;
     getColor(shape,info,true);
 
-    if(shuoColors.empty() && info.free) {
+    if(shuoColors.empty() && info.free && doc==info.obj->getDocument()) {
         it->second.free = false;
         auto name = getLabelName(label);
         if(info.faceColor!=it->second.faceColor ||
@@ -595,7 +690,7 @@ App::DocumentObject *ImportOCAF2::loadShape(TDF_Label label, const TopoDS_Shape 
         {
             auto compound = static_cast<Part::Compound2*>(doc->addObject("Part::Compound2","Compound"));
             compound->Links.setValue(info.obj);
-            compound->Visibility.setValue(false);
+            // compound->Visibility.setValue(false);
             info.propPlacement = &compound->Placement;
             if(info.faceColor!=it->second.faceColor)
                 applyFaceColors(compound,{info.faceColor});
@@ -610,7 +705,7 @@ App::DocumentObject *ImportOCAF2::loadShape(TDF_Label label, const TopoDS_Shape 
     }
 
     auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
-    link->Visibility.setValue(false);
+    // link->Visibility.setValue(false);
     link->setLink(-1,info.obj);
     setPlacement(&link->Placement,shape);
     info.obj = link;
@@ -632,7 +727,8 @@ struct ChildInfo {
     TopoDS_Shape shape;
 };
 
-bool ImportOCAF2::createAssembly(TDF_Label label, const TopoDS_Shape &shape, Info &info)
+bool ImportOCAF2::createAssembly(App::Document *_doc, 
+        TDF_Label label, const TopoDS_Shape &shape, Info &info, bool newDoc)
 {
     (void)label;
 
@@ -641,15 +737,19 @@ bool ImportOCAF2::createAssembly(TDF_Label label, const TopoDS_Shape &shape, Inf
     boost::dynamic_bitset<> visibilities;
     std::map<std::string,App::Color> shuoColors;
 
+    auto doc = _doc;
+    if(newDoc)
+        doc = getDocument(_doc,label);
+
     for(TopoDS_Iterator it(shape,0,0);it.More();it.Next()) {
         TopoDS_Shape childShape = it.Value();
         if(childShape.IsNull())
             continue;
         TDF_Label childLabel;
         aShapeTool->Search(childShape,childLabel,Standard_True,Standard_True,Standard_False);
-        if(childLabel.IsNull() && !importHidden && !aColorTool->IsVisible(childLabel))
+        if(!childLabel.IsNull() && !importHidden && !aColorTool->IsVisible(childLabel))
             continue;
-        auto obj = loadShape(childLabel,childShape,reduceObjects);
+        auto obj = loadShape(doc,childLabel,childShape,reduceObjects);
         if(!obj)
             continue;
         bool vis = true;
@@ -681,8 +781,11 @@ bool ImportOCAF2::createAssembly(TDF_Label label, const TopoDS_Shape &shape, Inf
     }
     assert(visibilities.size() == children.size());
 
-    if(children.empty())
+    if(children.empty()) {
+        if(doc!=_doc)
+            App::GetApplication().closeDocument(doc->getName());
         return false;
+    }
 
     if(reduceObjects) {
         int i=-1;
@@ -690,7 +793,7 @@ bool ImportOCAF2::createAssembly(TDF_Label label, const TopoDS_Shape &shape, Inf
             ++i;
             auto &info = childrenMap[child];
             if(info.plas.size()==1) {
-                child = loadShape(info.labels.front(),info.shape);
+                child = loadShape(doc,info.labels.front(),info.shape);
                 getSHUOColors(info.labels.front(),shuoColors,true);
                 continue;
             }
@@ -699,7 +802,7 @@ bool ImportOCAF2::createAssembly(TDF_Label label, const TopoDS_Shape &shape, Inf
 
             // Okay, we are creating a link array
             auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
-            link->Visibility.setValue(false);
+            // link->Visibility.setValue(false);
             link->setLink(-1,child);
             link->ShowElement.setValue(false);
             link->ElementCount.setValue(info.plas.size());
@@ -734,7 +837,7 @@ bool ImportOCAF2::createAssembly(TDF_Label label, const TopoDS_Shape &shape, Inf
     if(children.empty())
         return false;
 
-    if(!createGroup(info,shape,children,visibilities,shuoColors.empty()))
+    if(!createGroup(doc,info,shape,children,visibilities,shuoColors.empty()))
         return false;
     if(shuoColors.size())
         applyElementColors(info.obj,shuoColors);
