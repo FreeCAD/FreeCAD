@@ -38,9 +38,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="document-save">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/document-save.svg</normaloff>:/icons/MRTE/document-save.svg</iconset>
         </property>
        </widget>
       </item>
@@ -53,9 +52,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="window-close">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/application-exit.svg</normaloff>:/icons/MRTE/application-exit.svg</iconset>
         </property>
        </widget>
       </item>
@@ -101,9 +99,8 @@
          <string>Undo</string>
         </property>
         <property name="icon">
-         <iconset theme="edit-undo">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/edit-undo.svg</normaloff>:/icons/MRTE/edit-undo.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -128,9 +125,8 @@
          <string>Redo</string>
         </property>
         <property name="icon">
-         <iconset theme="edit-redo">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/edit-redo.svg</normaloff>:/icons/MRTE/edit-redo.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -152,9 +148,8 @@
          <string>Cut</string>
         </property>
         <property name="icon">
-         <iconset theme="edit-cut">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/edit-cut.svg</normaloff>:/icons/MRTE/edit-cut.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -176,9 +171,8 @@
          <string>Copy</string>
         </property>
         <property name="icon">
-         <iconset theme="edit-copy">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/edit-copy.svg</normaloff>:/icons/MRTE/edit-copy.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -200,9 +194,8 @@
          <string>Paste</string>
         </property>
         <property name="icon">
-         <iconset theme="edit-paste">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/edit-paste.svg</normaloff>:/icons/MRTE/edit-paste.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -231,9 +224,8 @@
          <string>Link</string>
         </property>
         <property name="icon">
-         <iconset theme="applications-internet">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/internet-web-browser.svg</normaloff>:/icons/MRTE/internet-web-browser.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -265,9 +257,8 @@
          <string>Bold</string>
         </property>
         <property name="icon">
-         <iconset theme="format-text-bold">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/textBold.svg</normaloff>:/icons/MRTE/textBold.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -292,9 +283,8 @@
          <string>Italic</string>
         </property>
         <property name="icon">
-         <iconset theme="format-text-italic">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/textItalic.svg</normaloff>:/icons/MRTE/textItalic.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -319,9 +309,8 @@
          <string>Underline</string>
         </property>
         <property name="icon">
-         <iconset theme="format-text-underline">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/textUnderline.svg</normaloff>:/icons/MRTE/textUnderline.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -343,9 +332,8 @@
          <string>Strike Out</string>
         </property>
         <property name="icon">
-         <iconset theme="format-text-strikethrough">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/textStrike.svg</normaloff>:/icons/MRTE/textStrike.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -429,9 +417,8 @@
          <string>Decrease indentation</string>
         </property>
         <property name="icon">
-         <iconset theme="format-indent-less">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/indentLess.svg</normaloff>:/icons/MRTE/indentLess.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -453,9 +440,8 @@
          <string>Increase indentation</string>
         </property>
         <property name="icon">
-         <iconset theme="format-indent-more">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/indentMore.svg</normaloff>:/icons/MRTE/indentMore.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -556,9 +542,8 @@
          <string notr="true"/>
         </property>
         <property name="icon">
-         <iconset theme="insert-image">
-          <normaloff/>
-         </iconset>
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/insertImage.svg</normaloff>:/icons/MRTE/insertImage.svg</iconset>
         </property>
        </widget>
       </item>
