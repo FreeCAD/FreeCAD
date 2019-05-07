@@ -456,7 +456,7 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
  */
 #define PY_TRY	try 
 
-#define _PY_CATCH(R)                                                \
+#define __PY_CATCH(R)                                               \
     catch(Base::AbortException &e)                                  \
     {                                                               \
         e.ReportException();                                        \
@@ -496,8 +496,8 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
 
 #ifndef DONT_CATCH_CXX_EXCEPTIONS 
 /// see docu of PY_TRY 
-#  define PY_CATCH                                                  \
-    _PY_CATCH(R)                                                    \
+#  define _PY_CATCH(R)                                              \
+    __PY_CATCH(R)                                                   \
     catch(...)                                                      \
     {                                                               \
         _Py_Error(R,Base::BaseExceptionFreeCADError,"Unknown C++ exception"); \
@@ -505,8 +505,10 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
 
 #else
 /// see docu of PY_TRY 
-#  define PY_CATCH _PY_CATCH(return(NULL))
+#  define _PY_CATCH(R) __PY_CATCH(R)
 #endif  // DONT_CATCH_CXX_EXCEPTIONS
+
+#define PY_CATCH _PY_CATCH(return(NULL))
 
 /** Python helper class 
  *  This class encapsulate the Decoding of UTF8 to a python object.
