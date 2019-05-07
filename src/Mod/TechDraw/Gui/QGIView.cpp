@@ -125,7 +125,7 @@ QGIView::~QGIView()
     signalSelectPoint.disconnect_all_slots();
 }
 
-void QGIView::isVisible(bool state) 
+void QGIView::isVisible(bool state)
 {
     auto feat = getViewObject();
     if (feat != nullptr) {
@@ -172,7 +172,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             newPos.setY(pos().y());
             return newPos;
         }
-        
+
         // TODO  find a better data structure for this
         // this is just a pair isn't it?
         if (getViewObject()->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
@@ -187,7 +187,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
                     } else if(alignMode == QString::fromLatin1("Horizontal")) {
                         newPos.setY(item->pos().y());
                     } else if(alignMode == QString::fromLatin1("45slash")) {
-                         //this logic is wrong since the constained movement direction is not necessarily 45*
+                         //this logic is wrong since the constrained movement direction is not necessarily 45*
 //                         Base::Console().Message("QGIV::itemChange - oblique BL-TR\n");
 //                        double dist = ( (newPos.x() - item->pos().x()) +
 //                                        (item->pos().y() - newPos.y()) ) / 2.0;
@@ -195,7 +195,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 //                        newPos.setX( item->pos().x() + dist);
 //                        newPos.setY( item->pos().y() - dist );
                     } else if(alignMode == QString::fromLatin1("45backslash")) {
-                         //this logic is wrong since the constained movement direction is not necessarily 45*
+                         //this logic is wrong since the constrained movement direction is not necessarily 45*
 //                         Base::Console().Message("QGIV::itemChange - oblique TL-BR\n");
 //                        double dist = ( (newPos.x() - item->pos().x()) +
 //                                        (newPos.y() - item->pos().y()) ) / 2.0;
@@ -305,7 +305,7 @@ QGIViewClip* QGIView::getClipGroup(void)
                          "(%s) not in Clip\n", getViewName() );
         return nullptr;
     }
-    
+
     QGIViewClip* result = nullptr;
     auto parentClip( dynamic_cast<QGCustomClip*>( parentItem() ) );
     if (parentClip) {
@@ -445,7 +445,7 @@ void QGIView::drawBorder()
     if (feat == nullptr) {
         return;
     }
-    
+
     drawCaption();
     //show neither
     auto vp = static_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
@@ -494,7 +494,7 @@ void QGIView::drawBorder()
                               displayArea.top(),
                               frameWidth,
                               frameHeight);
- 
+
     double lockX = labelArea.left();
     double lockY = labelArea.bottom() - (2 * m_lockHeight);
     if (feat->isLocked()) {

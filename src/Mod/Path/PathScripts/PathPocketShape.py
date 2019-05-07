@@ -25,11 +25,13 @@
 # SCRIPT NOTES:
 # - Need test models for testing vertical faces scenarios. Currently, I think they will fail with rotation.
 # - Need to group VERTICAL faces per axis_angle tag just like horizontal faces.
-#           Then, need to run each grouping through PathGeom.combineConnectedShapes(vertical) algorithm
-# - Need to add face boundbox analysis code to vertical axis_angle grouping section
-#           to identify highest zMax for all faces included in group
-# - Need to implement judgeStartDepth() function within rotational depth calculations
-# - FUTURE: Re-iterate PathAreaOp.py need to relocate rotational settings to Job setup, under Machine settings tab
+#       Then, need to run each grouping through 
+#       PathGeom.combineConnectedShapes(vertical) algorithm grouping
+# - Need to add face boundbox analysis code to vertical axis_angle
+#       section to identify highest zMax for all faces included in group
+# - Need to implement judgeStartDepth() within rotational depth calculations
+# - FUTURE: Re-iterate PathAreaOp.py need to relocate rotational settings 
+#       to Job setup, under Machine settings tab
 
 import FreeCAD
 import Part
@@ -51,8 +53,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2017"
-__scriptVersion__ = "1h testing"
-__lastModified__ = "2019-05-03 10:52 CST"
+__scriptVersion__ = "1i testing"
+__lastModified__ = "2019-05-06 16:55 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -222,9 +224,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if not hasattr(obj, 'ReverseDirection'):
             obj.addProperty('App::PropertyBool', 'ReverseDirection', 'Path', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Reverse direction of pocket operation.'))
             obj.ReverseDirection = False
-        # if not hasattr(obj, 'UseRotation'):
-        #    obj.addProperty("App::PropertyEnumeration", "UseRotation", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use rotation to gain access to pockets/areas."))
-        #    obj.UseRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
         obj.setEditorMode('ExtensionFeature', 2)
 
@@ -316,7 +315,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             angle = 0.0
             reset = False
             resetPlacement = None
-            trans = FreeCAD.Vector(0, 0, 0)
+            trans = FreeCAD.Vector(0.0, 0.0, 0.0)
 
             for o in obj.Base:
                 PathLog.debug('Base item: {}'.format(o))
@@ -340,10 +339,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 resetPlacement = FreeCAD.Placement(startBase, startRotation)
                 for sub in o[1]:
                     if 'Face' in sub:
+                        PathLog.debug('sub: {}'.format(sub))
                         # Determine angle of rotation needed to make normal vector = (0,0,1)
                         strDep = obj.StartDepth.Value
                         finDep = obj.FinalDepth.Value
-                        trans = FreeCAD.Vector(0, 0, 0)
+                        trans = FreeCAD.Vector(0.0, 0.0, 0.0)
                         rtn = False
 
                         if obj.UseRotation != 'Off':
@@ -429,7 +429,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             obj.FinalDepth.Value = trans.z + finDep
                             tup = face, sub, angle, axis, tag, strDep, finDep, trans
                             vertTuples.append(tup)
-
                             PathLog.debug(sub + "is vertical after rotation.")
                         else:
                             PathLog.error(translate('PathPocket', 'Pocket does not support shape %s.%s') % (base.Label, sub))
@@ -450,7 +449,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
             # This section will be replaced analyzeVerticalFaces(self, obj, vertTuples) above
             self.vertical = PathGeom.combineConnectedShapes(vertical)
-            self.vWires = [TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1)) for shape in self.vertical]
+            self.vWires = [TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0.0, 0.0, 1.0)) for shape in self.vertical]
             for wire in self.vWires:
                 w = PathGeom.removeDuplicateEdges(wire)
                 face = Part.Face(w)
@@ -461,7 +460,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     # self.horiz.append(face)
                     strDep = base.Shape.BoundBox.ZMax + self.leadIn
                     finDep = judgeFinalDepth(obj, face.BoundBox.ZMin)
-                    tup = face, 'vertFace', 0.0, 'X', 'X0.0', strDep, finDep, FreeCAD.Vector(0, 0, 0)
+                    tup = face, 'vertFace', 0.0, 'X', 'X0.0', strDep, finDep, FreeCAD.Vector(0.0, 0.0, 0.0)
                     horizTuples.append(tup)
 
             # add faces for extensions
@@ -473,7 +472,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     # self.horiz.append(face)
                     strDep = base.Shape.BoundBox.ZMax + self.leadIn
                     finDep = judgeFinalDepth(obj, face.BoundBox.ZMin)
-                    tup = face, 'vertFace', 0.0, 'X', 'X0.0', strDep, finDep, FreeCAD.Vector(0, 0, 0)
+                    tup = face, 'vertFace', 0.0, 'X', 'X0.0', strDep, finDep, FreeCAD.Vector(0.0, 0.0, 0.0)
                     horizTuples.append(tup)
                     self.exts.append(face)
 
@@ -515,24 +514,31 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             self.horizontal = []
             shpList = []
             for o in range(0, len(hTags)):
+                PathLog.debug('hTag: {}'.format(hTags[o]))
                 shpList = []
-                for (face, sub, angle, axis, tag, strDep, finDep, trans) in hGrps[o]:  # face, depths, trans, rotate
+                for (face, sub, angle, axis, tag, strDep, finDep, trans) in hGrps[o]:
                     shpList.append(face)
                 # check all faces and see if they are touching/overlapping and combine those into a compound
                 # Original Code in For loop
                 for shape in PathGeom.combineConnectedShapes(shpList):
                     shape.sewShape()
-                    shape.tessellate(0.05)  # Russ4262 0.1 original
+                    # shape.tessellate(0.05) # Russ4262 0.1 original
                     if obj.UseOutline:
                         wire = TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1))
                         wire.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - wire.BoundBox.ZMin))
                         PathLog.debug(" -obj.UseOutline: obj.FinalDepth.Value" + str(obj.FinalDepth.Value))
                         PathLog.debug(" -obj.UseOutline: wire.BoundBox.ZMin" + str(wire.BoundBox.ZMin))
-                        tup = Part.Face(wire), sub, angle, axis, tag, strDep, finDep, trans
-                        self.horizontal.append(tup)
-                    else:
+                        # shape.tessellate(0.05) # Russ4262 0.1 original
+                        face = Part.Face(wire)
                         tup = face, sub, angle, axis, tag, strDep, finDep, trans
                         self.horizontal.append(tup)
+                    else:
+                        # Re-pair shape to tuple set
+                        for (face, sub, angle, axis, tag, strDep, finDep, trans) in hGrps[o]:
+                            if shape is face:
+                                tup = face, sub, angle, axis, tag, strDep, finDep, trans
+                                self.horizontal.append(tup)
+                                break
             # Eol
 
             # extrude all faces up to StartDepth and those are the removal shapes
@@ -570,7 +576,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         obj.StepOver = 100
         obj.ZigZagAngle = 45
-        # obj.UseRotation = 'Off'
         obj.B_AxisErrorOverride = False
         obj.ReverseDirection = False
         obj.setExpression('ExtensionLengthDefault', 'OpToolDiameter / 2')
