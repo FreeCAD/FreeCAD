@@ -1291,11 +1291,6 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
 
     // reset modified flag
     setModified(isModified);
-
-    if(getDocument()->testStatus(App::Document::PartialDoc)) {
-        for (auto view : getMDIViews())
-            getMainWindow()->removeWindow(view,false);
-    }
 }
 
 void Document::slotShowHidden(const App::Document& doc)

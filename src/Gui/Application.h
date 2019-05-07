@@ -96,7 +96,7 @@ public:
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
-    boost::signals2::signal<void (const Gui::Document&)> signalNewDocument;
+    boost::signals2::signal<void (const Gui::Document&, bool)> signalNewDocument;
     /// signal on deleted Document
     boost::signals2::signal<void (const Gui::Document&)> signalDeleteDocument;
     /// signal on relabeling Document

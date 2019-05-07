@@ -467,7 +467,7 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
             this, SLOT(onSearchObjects()));
 
     // Setup connections
-    connectNewDocument = Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, _1));
+    connectNewDocument = Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, _1, _2));
     connectDelDocument = Application::Instance->signalDeleteDocument.connect(boost::bind(&TreeWidget::slotDeleteDocument, this, _1));
     connectRenDocument = Application::Instance->signalRenameDocument.connect(boost::bind(&TreeWidget::slotRenameDocument, this, _1));
     connectActDocument = Application::Instance->signalActiveDocument.connect(boost::bind(&TreeWidget::slotActiveDocument, this, _1));
@@ -1855,10 +1855,11 @@ void TreeWidget::drawRow(QPainter *painter, const QStyleOptionViewItem &options,
     //}
 }
 
-void TreeWidget::slotNewDocument(const Gui::Document& Doc)
+void TreeWidget::slotNewDocument(const Gui::Document& Doc, bool isMainDoc)
 {
     DocumentItem* item = new DocumentItem(&Doc, this->rootItem);
-    this->expandItem(item);
+    if(isMainDoc)
+        this->expandItem(item);
     item->setIcon(0, *documentPixmap);
     item->setText(0, QString::fromUtf8(Doc.getDocument()->Label.getValue()));
     DocumentMap[ &Doc ] = item;
@@ -2000,17 +2001,8 @@ void TreeWidget::onUpdateStatus(void)
 
     FC_LOG("begin update status");
 
-    UpdateDisabler disabler(*this);
-
-    // Checking for new objects
-
-    for(auto it=NewObjects.begin(),itNext=it;it!=NewObjects.end();NewObjects.erase(it),it=itNext) {
-        ++itNext;
-        auto doc = App::GetApplication().getDocument(it->first.c_str());
-        if(!doc) 
-            continue;
-
-        if(doc->isPerformingTransaction()) {
+    for(auto &v : DocumentMap) {
+        if(v.first->isPerformingTransaction()) {
             // We have to delay item creation until undo/redo is done, because the
             // object re-creation while in transaction may break tree view item
             // update logic. For example, a parent object re-created before its
@@ -2019,13 +2011,22 @@ void TreeWidget::onUpdateStatus(void)
             _updateStatus();
             return;
         }
+    }
+
+    UpdateDisabler disabler(*this);
+
+    // Checking for new objects
+    for(auto &v : NewObjects) {
+        auto doc = App::GetApplication().getDocument(v.first.c_str());
+        if(!doc) 
+            continue;
         auto gdoc = Application::Instance->getDocument(doc);
         if(!gdoc) 
             continue;
         auto docItem = getDocumentItem(gdoc);
         if(!docItem) 
             continue;
-        for(auto id : it->second) {
+        for(auto id : v.second) {
             auto obj = doc->getObjectByID(id);
             if(!obj || docItem->ObjectMap.find(obj)!=docItem->ObjectMap.end())
                 continue;
@@ -2034,6 +2035,7 @@ void TreeWidget::onUpdateStatus(void)
                 docItem->createNewItem(*vpd);
         }
     }
+    NewObjects.clear();
 
     // Update children of changed objects
     for(auto &v : ChangedObjects) {
@@ -2076,10 +2078,8 @@ void TreeWidget::onUpdateStatus(void)
                 boost::bind(&TreeWidget::slotChangeObject, this, _1, _2, false));
 
         bool partial = docItem->document()->getDocument()->testStatus(App::Document::PartialDoc);
-        if(partial) {
-            this->collapseItem(docItem);
+        if(partial) 
             docItem->setIcon(0, *documentPartialPixmap);
-        }
 
         App::PropertyBool dummy;
         for(auto &v : docItem->ObjectMap)

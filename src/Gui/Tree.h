@@ -168,7 +168,7 @@ Q_SIGNALS:
     void emitSearchObjects();
 
 private:
-    void slotNewDocument(const Gui::Document&);
+    void slotNewDocument(const Gui::Document&, bool);
     void slotDeleteDocument(const Gui::Document&);
     void slotRenameDocument(const Gui::Document&);
     void slotActiveDocument(const Gui::Document&);

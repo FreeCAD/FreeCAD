@@ -690,7 +690,7 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     pDoc->signalInEdit.connect(boost::bind(&Gui::Application::slotInEdit, this, _1));
     pDoc->signalResetEdit.connect(boost::bind(&Gui::Application::slotResetEdit, this, _1));
 
-    signalNewDocument(*pDoc);
+    signalNewDocument(*pDoc, isMainDoc);
     if(isMainDoc)
         pDoc->createView(View3DInventor::getClassTypeId());
     // FIXME: Do we really need this further? Calling processEvents() mixes up order of execution in an
