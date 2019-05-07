@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-### SCRIPT NOTES:
+# SCRIPT NOTES:
 # - Need to add "UseRotation" property to task window UI, and attach appropriate onChange event handler
 # - Consult FC community about wording for "UseRotation" property
 # - FUTURE: Relocate rotational calculations to Job setup tool, creating a Machine section
@@ -34,7 +34,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
-from PathScripts.PathUtils import waiting_effects
+# from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 import math
 
@@ -53,9 +53,11 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class ObjectOp(PathOp.ObjectOp):
     '''Base class for all Path.Area based operations.
@@ -128,7 +130,7 @@ class ObjectOp(PathOp.ObjectOp):
         The base implementation takes a stab at determining Heights and Depths if the operations's Base
         changes.
         Do not overwrite, overwrite areaOpOnChanged(obj, prop) instead.'''
-        #PathLog.track(obj.Label, prop)
+        # PathLog.track(obj.Label, prop)
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
             obj.setEditorMode(prop, 2)
 
@@ -178,24 +180,24 @@ class ObjectOp(PathOp.ObjectOp):
                 maxDep = bb.ZMax
                 minDep = bb.ZMin
             else:
-                opHeights = self.opDetermineRotationRadii(obj)  #return is list with tuples [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
+                opHeights = self.opDetermineRotationRadii(obj)  # return is list with tuples [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
                 (xRotRad, yRotRad, zRotRad) = opHeights[0]
-                #(clrOfst, safOfset) = opHeights[1]
+                # (clrOfst, safOfset) = opHeights[1]
 
                 maxDep = xRotRad
                 if yRotRad > xRotRad:
                     maxDep = yRotRad
                 minDep = -1 * maxDep
-            
+
             # Manage operation start and final depths
-            if self.docRestored == True:
+            if self.docRestored is True:
                 PathLog.debug("doc restored")
                 obj.FinalDepth.Value = obj.OpFinalDepth.Value
             else:
                 PathLog.debug("new operation")
                 obj.OpFinalDepth.Value = minDep
                 obj.OpStartDepth.Value = maxDep
-                if self.initOpFinalDepth == None and self.initFinalDepth == None:
+                if self.initOpFinalDepth is None and self.initFinalDepth is None:
                     self.initFinalDepth = minDep
                     self.initOpFinalDepth = minDep
                 else:
@@ -284,32 +286,32 @@ class ObjectOp(PathOp.ObjectOp):
         # Instantiate class variables for operation reference
         self.rotateFlag = False
         self.modelName = None
-        self.leadIn = 2.0 #safOfset / 2.0
+        self.leadIn = 2.0  # safOfset / 2.0
 
         # Initialize depthparams
         finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
         self.depthparams = PathUtils.depth_params(
-                clearance_height=obj.ClearanceHeight.Value,
-                safe_height=obj.SafeHeight.Value,
-                start_depth=obj.StartDepth.Value,
-                step_down=obj.StepDown.Value,
-                z_finish_step=finish_step,
-                final_depth=obj.FinalDepth.Value,
-                user_depths=None)
-        
+            clearance_height=obj.ClearanceHeight.Value,
+            safe_height=obj.SafeHeight.Value,
+            start_depth=obj.StartDepth.Value,
+            step_down=obj.StepDown.Value,
+            z_finish_step=finish_step,
+            final_depth=obj.FinalDepth.Value,
+            user_depths=None)
+
         # Recalculate operation heights for rotational operation
         if obj.UseRotation != 'Off':
             # Calculate operation heights based upon rotation radii
-            opHeights = self.opDetermineRotationRadii(obj)  #return is [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
+            opHeights = self.opDetermineRotationRadii(obj)  # return is [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
             (xRotRad, yRotRad, zRotRad) = opHeights[0]
             (clrOfst, safOfset) = opHeights[1]
-            #self.leadIn = 0.0 #safOfset / 2.0
-            
+            # self.leadIn = 0.0 #safOfset / 2.0
+
             # Set clearnance and safe heights based upon rotation radii
             obj.ClearanceHeight.Value = xRotRad + clrOfst
             obj.SafeHeight.Value = xRotRad + safOfset
             if yRotRad > xRotRad:
-                obj.ClearanceHeight.Value = yRotRad + clrOfst        
+                obj.ClearanceHeight.Value = yRotRad + clrOfst
                 obj.SafeHeight.Value = yRotRad + safOfset
 
             # Set axial feed rates based upon horizontal feed rates
@@ -324,7 +326,7 @@ class ObjectOp(PathOp.ObjectOp):
             start = None
 
         aOS = self.areaOpShapes(obj)  # list of tuples (shape, isHole, sub, angle, axis, tag)
-        
+
         # Adjust tuples length received from other PathWB tools/operations beside PathPocketShape
         shapes = []
         for shp in aOS:
@@ -334,7 +336,7 @@ class ObjectOp(PathOp.ObjectOp):
                 shapes.append(tup)
             else:
                 shapes.append(shp)
-        
+
         if len(shapes) > 1:
             jobs = [{
                 'x': s[0].BoundBox.XMax,
@@ -348,31 +350,31 @@ class ObjectOp(PathOp.ObjectOp):
 
         sims = []
         for (shape, isHole, sub, angle, axis) in shapes:
-            startDep = obj.StartDepth.Value # + safOfset
-            safeDep = obj.SafeHeight.Value         
+            startDep = obj.StartDepth.Value  # + safOfset
+            safeDep = obj.SafeHeight.Value
             clearDep = obj.ClearanceHeight.Value
-            finalDep = obj.FinalDepth.Value #finDep
-            
+            finalDep = obj.FinalDepth.Value  # finDep
+
             finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
             self.depthparams = PathUtils.depth_params(
-                    clearance_height=clearDep,  #obj.ClearanceHeight.Value
-                    safe_height=safeDep,  #obj.SafeHeight.Value
-                    start_depth=startDep,  
-                    step_down=obj.StepDown.Value,
-                    z_finish_step=finish_step,  #obj.FinalDepth.Value
-                    final_depth=finalDep,
-                    user_depths=None)
+                clearance_height=clearDep,  # obj.ClearanceHeight.Value
+                safe_height=safeDep,  # obj.SafeHeight.Value
+                start_depth=startDep,
+                step_down=obj.StepDown.Value,
+                z_finish_step=finish_step,  # obj.FinalDepth.Value
+                final_depth=finalDep,
+                user_depths=None)
 
             try:
                 (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
                 ppCmds = pp.Commands
-                if obj.UseRotation != 'Off' and self.rotateFlag == True:
+                if obj.UseRotation != 'Off' and self.rotateFlag is True:
                     # Rotate model to index for cut
                     axisOfRot = 'A'
                     if axis == 'Y':
                         axisOfRot = 'B'
                         # Reverse angle temporarily to match model. Error in FreeCAD render of B axis rotations
-                        if obj.B_AxisErrorOverride == True:
+                        if obj.B_AxisErrorOverride is True:
                             angle = -1 * angle
                     # Rotate Model to correct angle
                     ppCmds.insert(0, Path.Command('G0', {axisOfRot: angle, 'F': self.axialFeed}))
@@ -390,7 +392,7 @@ class ObjectOp(PathOp.ObjectOp):
                 self.endVector = None
 
         # Raise cutter to safe height and rotate back to original orientation
-        if self.rotateFlag == True:
+        if self.rotateFlag is True:
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
             self.commandlist.append(Path.Command('G0', {'A': 0.0, 'F': self.axialFeed}))
             self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialFeed}))
@@ -408,15 +410,18 @@ class ObjectOp(PathOp.ObjectOp):
         Note that the resulting parameters are stored in the property AreaParams.
         Must be overwritten by subclasses.'''
         pass
+
     def areaOpPathParams(self, obj, isHole):
         '''areaOpPathParams(obj, isHole) ... return operation specific path parameters in a dictionary.
         Note that the resulting parameters are stored in the property PathParams.
         Must be overwritten by subclasses.'''
         pass
+
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return all shapes to be processed by Path.Area for this op.
         Must be overwritten by subclasses.'''
         pass
+
     def areaOpUseProjection(self, obj):
         '''areaOpUseProcjection(obj) ... return True if the operation can use procjection, defaults to False.
         Can safely be overwritten by subclasses.'''
@@ -436,7 +441,7 @@ class ObjectOp(PathOp.ObjectOp):
         if math.fabs(bb.ZMin) > math.fabs(bb.ZMax):
             zlim = bb.ZMin
         else:
-            zlim = bb.ZMax                    
+            zlim = bb.ZMax
 
         if obj.UseRotation != 'B(y)':
             # Rotation is around X-axis, cutter moves along same axis
@@ -451,20 +456,20 @@ class ObjectOp(PathOp.ObjectOp):
                 xlim = bb.XMin
             else:
                 xlim = bb.XMax
-        
+
         xRotRad = math.sqrt(ylim**2 + zlim**2)
         yRotRad = math.sqrt(xlim**2 + zlim**2)
         zRotRad = math.sqrt(xlim**2 + ylim**2)
 
         clrOfst = parentJob.SetupSheet.ClearanceHeightOffset.Value
         safOfst = parentJob.SetupSheet.ClearanceHeightOffset.Value
-    
+
         return [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
 
     def pocketRotationAnalysis(self, obj, objRef, sub, prnt):
         '''pocketRotationAnalysis(self, obj, objRef, sub, prnt)
             Determine X and Y independent rotation necessary to make normalAt = Z=1 (0,0,1) '''
-        
+
         rtn = False
         axis = 'X'
         orientation = 'X'
@@ -476,7 +481,7 @@ class ObjectOp(PathOp.ObjectOp):
         def roundRoughValues(val, zTol, rndTol):
             # Convert VALxe-15 numbers to zero
             if math.fabs(val) <= zTol:
-                return 0.0            
+                return 0.0
             # Convert VAL.99999999 to next integer
             elif math.fabs(val % 1) > rndTol:
                 return round(val)
@@ -485,12 +490,12 @@ class ObjectOp(PathOp.ObjectOp):
 
         face = objRef.Shape.getElement(sub)
 
-        norm = face.normalAt(0,0)
+        norm = face.normalAt(0, 0)
         nX = roundRoughValues(norm.x, zTol, rndTol)
         nY = roundRoughValues(norm.y, zTol, rndTol)
         nZ = roundRoughValues(norm.z, zTol, rndTol)
         testId += "\n -normalAt(0,0): " + str(nX) + ", " + str(nY) + ", " + str(nZ)
-        
+
         surf = face.Surface.Axis
         saX = roundRoughValues(surf.x, zTol, rndTol)
         saY = roundRoughValues(surf.y, zTol, rndTol)
@@ -542,7 +547,7 @@ class ObjectOp(PathOp.ObjectOp):
             if saY != 0.0:
                 angle = math.degrees(math.atan(saX / saY))
                 orientation = "Y"
-        
+
         if saX + nX == 0.0:
             angle = -1 * angle
         if saY + nY == 0.0:
@@ -556,18 +561,17 @@ class ObjectOp(PathOp.ObjectOp):
 
         if orientation == 'Y':
             axis = 'X'
-            if obj.UseRotation == 'B(y)': # Axis disabled
-                angle = 500.0  
+            if obj.UseRotation == 'B(y)':  # Axis disabled
+                angle = 500.0
         else:
             axis = 'Y'
-            if obj.UseRotation == 'A(x)': # Axis disabled
-                angle = 500.0  
-        
-        
+            if obj.UseRotation == 'A(x)':  # Axis disabled
+                angle = 500.0
+
         if angle != 500.0 and angle != 0.0:
             self.rotateFlag = True
             rtn = True
-            if obj.ReverseDirection == True:
+            if obj.ReverseDirection is True:
                 if angle < 180.0:
                     angle = angle + 180.0
                 else:
@@ -577,6 +581,6 @@ class ObjectOp(PathOp.ObjectOp):
             testId += "\n - ... NO rotation triggered"
 
         testId += "\n -Suggested rotation:  angle: " + str(angle) + ",   axis: " + str(axis)
-        if prnt == True:
+        if prnt is True:
             PathLog.debug("testId: " + testId)
         return (rtn, angle, axis)
