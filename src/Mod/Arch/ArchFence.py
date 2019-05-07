@@ -97,7 +97,8 @@ class _Fence(ArchComponent.Component):
             obj, pathwire, downRotation)
 
         postShapes = self.calculatePosts(obj, postPlacements)
-        sectionShapes = self.calculateSections(obj, postPlacements, postLength)
+        sectionShapes = self.calculateSections(
+            obj, postPlacements, postLength, sectionLength)
 
         allShapes = []
         allShapes.extend(postShapes)
@@ -140,7 +141,7 @@ class _Fence(ArchComponent.Component):
 
         return posts
 
-    def calculateSections(self, obj, postPlacements, postLength):
+    def calculateSections(self, obj, postPlacements, postLength, sectionLength):
         import Part
 
         shapes = []
@@ -148,8 +149,6 @@ class _Fence(ArchComponent.Component):
         for i in range(obj.NumberOfSections):
             startPlacement = postPlacements[i]
             endPlacement = postPlacements[i + 1]
-
-            # print("start: %s, end: %s\n" % (startPlacement, endPlacement))
 
             sectionLine = Part.LineSegment(
                 startPlacement.Base, endPlacement.Base)
@@ -167,11 +166,38 @@ class _Fence(ArchComponent.Component):
             placement.Rotation = sectionRotation
 
             sectionCopy = obj.Section.Shape.copy()
+
+            if sectionLength > sectionLine.length():
+                # Part.show(Part.Shape([sectionLine]), 'line')
+                sectionCopy = self.clipSection(
+                    sectionCopy, sectionLength, sectionLine.length() - postLength)
+
             sectionCopy.Placement = placement
 
             shapes.append(sectionCopy)
 
         return shapes
+
+    def clipSection(self, shape, length, clipLength):
+        print("length: %s, clipLength: %s" % (length, clipLength))
+        
+        boundBox = shape.BoundBox
+        lengthToCut = length - clipLength
+        halfLengthToCut = lengthToCut / 2
+
+        leftBox = Part.makeBox(halfLengthToCut, boundBox.YMax + 1, boundBox.ZMax + 1,
+                               FreeCAD.Vector(boundBox.XMin, boundBox.YMin, boundBox.ZMin))
+        rightBox = Part.makeBox(halfLengthToCut, boundBox.YMax + 1, boundBox.ZMax + 1,
+                                FreeCAD.Vector(boundBox.XMin + halfLengthToCut + clipLength, boundBox.YMin, boundBox.ZMin))
+        
+        newShape = shape.cut([leftBox, rightBox])
+        newBoundBox = newShape.BoundBox
+
+        newShape.translate(FreeCAD.Vector(-newBoundBox.XMin, 0, 0))
+
+        print(newShape.BoundBox)
+        
+        return newShape.removeSplitter()
 
     def calculatePathWire(self, obj):
         if (hasattr(obj.Path.Shape, 'Wires') and obj.Path.Shape.Wires):
