@@ -81,6 +81,7 @@ class TechDrawExport BaseGeom
         Base::Vector2d nearPoint(Base::Vector2d p);
         Base::Vector2d nearPoint(const BaseGeom* p);
         static BaseGeom* baseFactory(TopoDS_Edge edge);
+        bool closed(void);
         std::string dump();
 };
 
@@ -192,7 +193,7 @@ class TechDrawExport BSpline: public BaseGeom
 
         bool isLine(void);
         bool isCircle(void);
-        TopoDS_Edge isCircle2(bool& isArc);
+        TopoDS_Edge asCircle(bool& isArc);
         void getCircleParms(bool& isCircle, double& radius, Base::Vector3d& center, bool& isArc);
         bool intersectsArc(Base::Vector3d p1,Base::Vector3d p2);
         std::vector<BezierSegment> segments;
