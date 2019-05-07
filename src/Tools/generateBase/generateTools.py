@@ -7,20 +7,6 @@ from __future__ import print_function # this allows py2 to print(str1,str2) corr
 import os, errno
 
 
-def temporary_exec(text, globals, locals):
-    """this function is a dirty hack to allow using the copier from
-       python2 and python3. Once the support of python2 has stopped
-       feel free to remove this function and use the std exec function 
-       instead"""
-    # maybe this should be fixed by rewriting the generators.
-    if sys.version_info[0] < 3:
-        from .__exec_old import __exec_old__
-        __exec_old__(text, globals, locals)
-    else:
-        from .__exec_new import __exec_new__
-        __exec_new__(text, globals, locals)
-
-
 def ensureDir(path,mode=0o777):
 	try: 
 		os.makedirs(path,mode)
@@ -91,7 +77,7 @@ class copier:
                 stat = self.preproc(stat, 'exec')
                 stat = '%s _cb(%s,%s)' % (stat,i+1,j)
                 # for debugging, uncomment...: print("-> Executing: {"+stat+"}")
-                temporary_exec(stat, self.globals, self.locals)
+                exec(stat, self.globals, self.locals)
                 i=j+1
             else:       # normal line, just copy with substitution
                 try:

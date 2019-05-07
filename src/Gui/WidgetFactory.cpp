@@ -691,7 +691,7 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
         << "    frame = {}\n"
         << "    pyside2uic.compileUi(f, o, indent=0)\n"
         << "    pyc = compile(o.getvalue(), '<string>', 'exec')\n"
-        << "    exec pyc in frame\n"
+        << "    exec(pyc, frame)\n"
         << "    #Fetch the base_class and form class based on their type in the xml from designer\n"
         << "    form_class = frame['Ui_%s'%form_class]\n"
         << "    base_class = eval('QtWidgets.%s'%widget_class)\n";
@@ -710,7 +710,7 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
         << "    frame = {}\n"
         << "    pysideuic.compileUi(f, o, indent=0)\n"
         << "    pyc = compile(o.getvalue(), '<string>', 'exec')\n"
-        << "    exec pyc in frame\n"
+        << "    exec(pyc, _, frame)\n"
         << "    #Fetch the base_class and form class based on their type in the xml from designer\n"
         << "    form_class = frame['Ui_%s'%form_class]\n"
         << "    base_class = eval('QtGui.%s'%widget_class)\n";
