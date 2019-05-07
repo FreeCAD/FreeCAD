@@ -1754,7 +1754,10 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             auto obj = ext->getLinkedObjectValue();
             linkView->setLink(obj,subs);
 
-            updateElementList(ext);
+            if(ext->_getShowElementValue())
+                updateElementList(ext);
+            else 
+                updateDataPrivate(ext,ext->_getElementCountProperty());
 
             // applyColors();
             signalChangeIcon();
