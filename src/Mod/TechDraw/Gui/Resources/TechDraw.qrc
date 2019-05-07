@@ -80,6 +80,21 @@
         <file>icons/MRTE/fgColor.svg</file>
         <file>icons/MRTE/listBullet.svg</file>
         <file>icons/MRTE/listNumber.svg</file>
+        <file>icons/MRTE/application-exit.svg</file>
+        <file>icons/MRTE/document-save.svg</file>
+        <file>icons/MRTE/textBold.svg</file>
+        <file>icons/MRTE/textUnderline.svg</file>
+        <file>icons/MRTE/textStrike.svg</file>
+        <file>icons/MRTE/textItalic.svg</file>
+        <file>icons/MRTE/insertImage.svg</file>
+        <file>icons/MRTE/indentMore.svg</file>
+        <file>icons/MRTE/indentLess.svg</file>
+        <file>icons/MRTE/edit-cut.svg</file>
+        <file>icons/MRTE/edit-copy.svg</file>
+        <file>icons/MRTE/edit-paste.svg</file>
+        <file>icons/MRTE/edit-undo.svg</file>
+        <file>icons/MRTE/edit-redo.svg</file>
+        <file>icons/MRTE/internet-web-browser.svg</file>
         <file>translations/TechDraw_af.qm</file>
         <file>translations/TechDraw_zh-CN.qm</file>
         <file>translations/TechDraw_zh-TW.qm</file>
