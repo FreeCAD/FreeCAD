@@ -449,7 +449,6 @@ QString QGIViewDimension::getLabelText(void)
     QString second = datumLabel->getTolText()->toPlainText();
     result = first + second;
     return result;
-
 }
 
 void QGIViewDimension::datumLabelDragged(bool ctrl)
@@ -1104,7 +1103,6 @@ void QGIViewDimension::draw()
     } else if(strcmp(dimType, "Radius") == 0) {
         // preferred terminology: Dimension Text, Dimension Line(s), Extension Lines, Arrowheads
         // radius gets 1 dimension line from the dimension text to a point on the curve
-
         Base::Vector3d pointOnCurve,curveCenter;
         double radius;
         arcPoints pts = dim->getArcPoints();
@@ -1371,7 +1369,6 @@ void QGIViewDimension::draw()
         Base::Vector3d labelNorm(-labelVec.y, labelVec.x, 0.);
         double lAngle = atan2(labelNorm.y, labelNorm.x);
 
-//<<<<<<<<<<<
         if (lAngle < 0.0) {
             lAngle = 2 * M_PI + lAngle;          //map to +ve lAngle
         }
@@ -1385,7 +1382,6 @@ void QGIViewDimension::draw()
                    (lAngle <= 1.5*M_PI - angleFiddle))  {   // < 260CW -> Q3
             lAngle -= M_PI;                                 // flip CCW
         }
-//<<<<<<<<<
 
 
 //        //if label is more/less vertical, make it vertical
@@ -1424,7 +1420,6 @@ void QGIViewDimension::draw()
     } else {
         Base::Console().Log("INFO - QGIVD::draw - no parent to update\n");
     }
-
 }
 
 void QGIViewDimension::drawBorder(void)
