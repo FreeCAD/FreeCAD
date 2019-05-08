@@ -132,7 +132,7 @@ PyObject* LinkViewPy::setTransform(PyObject *args) {
 
     PY_TRY {
         auto lv = getLinkViewPtr();
-        if(PyObject_TypeCheck(&pyObj,&Base::MatrixPy::Type)) {
+        if(PyObject_TypeCheck(pyObj,&Base::MatrixPy::Type)) {
             lv->setTransform(-1,*static_cast<Base::MatrixPy*>(pyObj)->getMatrixPtr());
             Py_Return;
         }
@@ -213,21 +213,29 @@ PyObject*  LinkViewPy::setLink(PyObject *args)
         return 0;
 
     PY_TRY {
-        App::DocumentObject *obj;
-        if(pyObj==Py_None)
-            obj = 0;
-        else if(!PyObject_TypeCheck(pyObj,&App::DocumentObjectPy::Type)) {
-            PyErr_SetString(PyExc_TypeError, "exepcting a type of DocumentObject");
-            return 0;
-        }else
-            obj = static_cast<App::DocumentObjectPy*>(pyObj)->getDocumentObjectPtr();
+        ViewProviderDocumentObject *vpd = 0;
+        App::DocumentObject *obj = 0;
+        if(pyObj!=Py_None) {
+            if(PyObject_TypeCheck(pyObj,&App::DocumentObjectPy::Type))
+                obj = static_cast<App::DocumentObjectPy*>(pyObj)->getDocumentObjectPtr();
+            else if(PyObject_TypeCheck(pyObj,&ViewProviderDocumentObjectPy::Type))
+                vpd = static_cast<ViewProviderDocumentObjectPy*>(pyObj)->getViewProviderDocumentObjectPtr();
+            else {
+                PyErr_SetString(PyExc_TypeError, 
+                        "exepcting a type of DocumentObject or ViewProviderDocumentObject");
+                return 0;
+            }
+        }
 
         // Too lazy to parse the argument...
         App::PropertyStringList prop;
         if(pySubName!=Py_None)
             prop.setPyObject(pySubName);
 
-        getLinkViewPtr()->setLink(obj,prop.getValue());  
+        if(obj)
+            getLinkViewPtr()->setLink(obj,prop.getValue());  
+        else
+            getLinkViewPtr()->setLinkViewObject(vpd,prop.getValue());  
         Py_Return;
     } PY_CATCH;
 }

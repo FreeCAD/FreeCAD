@@ -92,7 +92,7 @@ setLink(object, subname): Set the link with a sub-object reference
 
 setLink(object, [subname,...]): Set the link with a list of sub object references
 
-object: The linked document object
+object: The linked document object or its view object
 
 subname: a string or tuple/list of strings sub-name references to sub object
          or sub elements (e.g. Face1, Edge2) belonging to the linked object.

@@ -926,9 +926,17 @@ void LinkView::setMaterial(int index, const App::Material *material) {
 }
 
 void LinkView::setLink(App::DocumentObject *obj, const std::vector<std::string> &subs) {
-    if(!isLinked() || linkInfo->pcLinked->getObject()!=obj) {
+    setLinkViewObject(Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+            Application::Instance->getViewProvider(obj)),subs);
+
+}
+
+void LinkView::setLinkViewObject(ViewProviderDocumentObject *vpd,
+        const std::vector<std::string> &subs)
+{
+    if(!isLinked() || linkInfo->pcLinked != vpd) {
         unlink(linkInfo);
-        linkInfo = LinkInfo::get(obj,this);
+        linkInfo = LinkInfo::get(vpd,this);
         if(!linkInfo) 
             return;
     }
