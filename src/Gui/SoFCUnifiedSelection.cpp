@@ -374,6 +374,28 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 currenthighlight->unref();
                 currenthighlight = 0;
             }
+        } else if (hilaction->SelChange.Type == SelectionChanges::SetPreselect) {
+            if (currenthighlight) {
+                SoHighlightElementAction action;
+                action.apply(currenthighlight);
+                currenthighlight->unref();
+                currenthighlight = 0;
+            }
+            App::Document* doc = App::GetApplication().getDocument(hilaction->SelChange.pDocName);
+            App::DocumentObject* obj = doc->getObject(hilaction->SelChange.pObjectName);
+            ViewProvider*vp = Application::Instance->getViewProvider(obj);
+            SoDetail* detail = vp->getDetail(hilaction->SelChange.pSubName);
+            SoHighlightElementAction action;
+            action.setHighlighted(true);
+            action.setColor(this->colorHighlight.getValue());
+            action.setElement(detail);
+            action.apply(vp->getRoot());
+            delete detail;
+            SoSearchAction sa;
+            sa.setNode(vp->getRoot());
+            sa.apply(vp->getRoot());
+            currenthighlight = static_cast<SoFullPath*>(sa.getPath()->copy());
+            currenthighlight->ref();
         }
     }
 
