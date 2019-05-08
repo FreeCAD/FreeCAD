@@ -224,9 +224,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if not hasattr(obj, 'ReverseDirection'):
             obj.addProperty('App::PropertyBool', 'ReverseDirection', 'Path', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Reverse direction of pocket operation.'))
             obj.ReverseDirection = False
-        # if not hasattr(obj, 'UseRotation'):
-        #    obj.addProperty("App::PropertyEnumeration", "UseRotation", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use rotation to gain access to pockets/areas."))
-        #    obj.UseRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
         obj.setEditorMode('ExtensionFeature', 2)
 
@@ -579,7 +576,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         obj.StepOver = 100
         obj.ZigZagAngle = 45
-        # obj.UseRotation = 'Off'
         obj.B_AxisErrorOverride = False
         obj.ReverseDirection = False
         obj.setExpression('ExtensionLengthDefault', 'OpToolDiameter / 2')
