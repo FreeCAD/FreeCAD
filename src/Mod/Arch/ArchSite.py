@@ -23,7 +23,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchCommands,ArchFloor,math,re,datetime,ArchIFC
+import FreeCAD,Draft,ArchCommands,math,re,datetime,ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -449,18 +449,18 @@ Site creation aborted.") + "\n"
 
 
 
-class _Site(ArchFloor._Floor):
+class _Site:
 
     "The Site object"
 
     def __init__(self,obj):
 
-        ArchFloor._Floor.__init__(self,obj)
         self.setProperties(obj)
         obj.IfcType = "Site"
 
     def setProperties(self,obj):
 
+        import ArchIFC
         ArchIFC.setProperties(obj)
 
         pl = obj.PropertiesList
@@ -511,25 +511,22 @@ class _Site(ArchFloor._Floor):
         if not hasattr(obj,"Group"):
             obj.addExtension("App::GroupExtensionPython", self)
         if not "Compass" in pl:
-            obj.addProperty("App::PropertyBool", "Compass", "Compass", QT_TRANSLATE_NOOP(
-                "App::Property", "Show compass or not"))
+            obj.addProperty("App::PropertyBool", "Compass", "Compass", QT_TRANSLATE_NOOP("App::Property", "Show compass or not"))
         if not "CompassRotation" in pl:
-            obj.addProperty("App::PropertyAngle", "CompassRotation", "Compass", QT_TRANSLATE_NOOP(
-                "App::Property", "The rotation of the Compass relative to the Site"))
+            obj.addProperty("App::PropertyAngle", "CompassRotation", "Compass", QT_TRANSLATE_NOOP("App::Property", "The rotation of the Compass relative to the Site"))
         if not "UpdateDeclination" in pl:
-            obj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP(
-                "App::Property", "Update the Declination value based on the compass rotation"))
+            obj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP("App::Property", "Update the Declination value based on the compass rotation"))
+        if not "IfcType" in pl:
+            obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
+            obj.IfcType = ArchIFC.IfcTypes
+            obj.IcfType = "Site"
         self.Type = "Site"
-        obj.setEditorMode('Height',2)
 
     def onDocumentRestored(self,obj):
 
-        ArchFloor._Floor.onDocumentRestored(self,obj)
         self.setProperties(obj)
 
     def execute(self,obj):
-
-        ArchFloor._Floor.execute(self,obj)
 
         if not obj.isDerivedFrom("Part::Feature"): # old-style Site
             return
@@ -571,25 +568,23 @@ class _Site(ArchFloor._Floor):
                     self.computeAreas(obj)
 
     def onChanged(self,obj,prop):
-        ArchIFC.onChanged(obj, prop)
 
-        ArchFloor._Floor.onChanged(self,obj,prop)
+        ArchIFC.onChanged(obj, prop)
         if prop == "Terrain":
             if obj.Terrain:
                 if FreeCAD.GuiUp:
                     obj.Terrain.ViewObject.hide()
                 self.execute(obj)
         if prop in ["UpdateDeclination", "CompassRotation", "Placement"]:
-            self.updateDeclination()
+            self.updateDeclination(obj)
 
-    def updateDeclination(self):
-        if not hasattr(self.Object, 'UpdateDeclination') or not self.Object.UpdateDeclination:
+    def updateDeclination(self,obj):
+
+        if not hasattr(obj, 'UpdateDeclination') or not obj.UpdateDeclination:
             return
-
-        compassRotation = self.Object.CompassRotation.Value
-        siteRotation = math.degrees(self.Object.Placement.Rotation.Angle)
-
-        self.Object.Declination = compassRotation + siteRotation
+        compassRotation = obj.CompassRotation.Value
+        siteRotation = math.degrees(obj.Placement.Rotation.Angle)
+        obj.Declination = compassRotation + siteRotation
 
     def computeAreas(self,obj):
 
@@ -660,13 +655,13 @@ class _Site(ArchFloor._Floor):
 
 
 
-class _ViewProviderSite(ArchFloor._ViewProviderFloor):
+class _ViewProviderSite:
 
     "A View Provider for the Site object"
 
     def __init__(self,vobj):
 
-        ArchFloor._ViewProviderFloor.__init__(self,vobj)
+        vobj.Proxy = self
         vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
         self.setProperties(vobj)
 
@@ -701,17 +696,19 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
 
     def claimChildren(self):
 
-        objs = self.Object.Group+[self.Object.Terrain]
-        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        if hasattr(self.Object,"Additions") and prefs.GetBool("swallowAdditions",True):
-            objs.extend(self.Object.Additions)
-        if hasattr(self.Object,"Subtractions") and prefs.GetBool("swallowSubtractions",True):
-            objs.extend(self.Object.Subtractions)
+        objs = []
+        if hasattr(self,"Object"):
+            objs = self.Object.Group+[self.Object.Terrain]
+            prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+            if hasattr(self.Object,"Additions") and prefs.GetBool("swallowAdditions",True):
+                objs.extend(self.Object.Additions)
+            if hasattr(self.Object,"Subtractions") and prefs.GetBool("swallowSubtractions",True):
+                objs.extend(self.Object.Subtractions)
         return objs
 
     def setEdit(self,vobj,mode):
 
-        if mode == 0:
+        if (mode == 0) and hasattr(self,"Object"):
             import ArchComponent
             taskd = ArchComponent.ComponentTaskPanel()
             taskd.obj = self.Object
@@ -727,7 +724,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
 
     def attach(self,vobj):
 
-        ArchFloor._ViewProviderFloor.attach(self,vobj)
+        self.Object = vobj.Object
         from pivy import coin
         self.diagramsep = coin.SoSeparator()
         self.color = coin.SoBaseColor()
@@ -801,6 +798,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
                 self.removeTrueNorthRotation()
 
     def addTrueNorthRotation(self):
+
         if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
             return
 
@@ -814,6 +812,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         self.updateTrueNorthRotation()
 
     def removeTrueNorthRotation(self):
+
         if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
             sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
 
@@ -821,6 +820,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
             self.trueNorthRotation = None
 
     def updateTrueNorthRotation(self):
+
         if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
             from pivy import coin
 
@@ -829,6 +829,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
             self.trueNorthRotation.rotation.setValue(coin.SbVec3f(0, 0, 1), math.radians(-angle))
 
     def updateCompassVisibility(self, obj):
+
         if not hasattr(self, 'compass'):
             return
 
@@ -840,6 +841,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
             self.compass.hide()
 
     def rotateCompass(self, obj):
+
         if not hasattr(self, 'compass'):
             return
 
@@ -847,6 +849,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
             self.compass.rotate(obj.CompassRotation.Value)
 
     def updateCompassLocation(self, obj):
+
         if not hasattr(self, 'compass'):
             return
 
@@ -858,10 +861,19 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         self.compass.setZOffset(zOffset + 1000)
 
     def updateCompassScale(self, obj):
+
         if not hasattr(self, 'compass'):
             return
 
         self.compass.scale(obj.ProjectedArea)
+
+    def __getstate__(self):
+
+        return None
+
+    def __setstate__(self,state):
+
+        return None
 
 
 if FreeCAD.GuiUp:
