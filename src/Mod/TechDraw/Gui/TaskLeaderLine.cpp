@@ -433,20 +433,35 @@ void TaskLeaderLine::startTracker(void)
 
 void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent)
 {
-//    Base::Console().Message("TTL::onTrackerFinished()\n");
+//    Base::Console().Message("TTL::onTrackerFinished() - parent: %X\n",qgParent);
     if (pts.empty()) {
         Base::Console().Error("TaskLeaderLine - no points available\n");
         return;
     }
-    QGIView* qgiv = dynamic_cast<QGIView*>(qgParent);
-    if (qgiv != nullptr) {
-        m_qgParent = qgiv;
+    
+    if (qgParent == nullptr) {
+        //do something;
+        m_qgParent = findParentQGIV();
+    } else {
+        QGIView* qgiv = dynamic_cast<QGIView*>(qgParent);
+        if (qgiv != nullptr) {
+            m_qgParent = qgiv;
+        } else {
+            Base::Console().Message("TTL::onTrackerFinished - can't find parent graphic!\n");
+            //blow up!?
+            throw Base::RuntimeError("TaskLeaderLine - can not find parent graphic");
+        }
     }
+
     if (m_qgParent != nullptr) {
         double scale = m_qgParent->getScale();
         QPointF mapped = m_qgParent->mapFromScene(pts.front()) / scale;
         m_attachPoint = Base::Vector3d(mapped.x(), mapped.y(), 0.0);
         convertTrackerPoints(pts);
+    } else {
+        Base::Console().Message("TTL::onTrackerFinished - can't find parent graphic!\n");
+        //blow up!?
+        throw Base::RuntimeError("TaskLeaderLine - can not find parent graphic");
     }
 
     QString msg = tr("Press OK or Cancel to continue");
@@ -470,6 +485,19 @@ void TaskLeaderLine::removeTracker(void)
         delete m_tracker;
         m_tracker = nullptr;
     }
+}
+
+QGIView* TaskLeaderLine::findParentQGIV()
+{
+    QGIView* result = nullptr;
+    if (m_baseFeat != nullptr) {
+        Gui::ViewProvider* gvp = QGIView::getViewProvider(m_baseFeat);
+        ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(gvp);
+        if (vpdv != nullptr) {
+            result = vpdv->getQView();
+        }
+    }
+    return result;
 }
 
 void TaskLeaderLine::setEditCursor(QCursor c)
