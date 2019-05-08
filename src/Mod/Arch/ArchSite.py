@@ -82,17 +82,14 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
     returns a solar diagram as a pivy node. If complete is
     True, the 12 months are drawn"""
 
-    from subprocess import call
-    py3_failed = call(["python3", "-c", "import Pysolar"])
-
-    if py3_failed:
+    try:
+        import pysolar
+    except:
         try:
-            import Pysolar
+            import Pysolar as pysolar
         except:
-            print("Pysolar is not installed. Unable to generate solar diagrams")
+            FreeCAD.Console.PrintError("The pysolar module was not found. Unable to generate solar diagrams\n")
             return None
-    else:
-        from subprocess import check_output
 
     from pivy import coin
 
@@ -146,16 +143,9 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
     for i,d in enumerate(m):
         pts = []
         for h in range(24):
-            if not py3_failed:
-                dt = "datetime.datetime(%s, %s, %s, %s)" % (year, d[0], d[1], h)
-                alt_call = "python3 -c 'import datetime,Pysolar; print (Pysolar.solar.get_altitude_fast(%s, %s, %s))'" % (latitude, longitude, dt)
-                alt = math.radians(float(check_output(alt_call, shell=True).strip()))
-                az_call = "python3 -c 'import datetime,Pysolar; print (Pysolar.solar.get_azimuth(%s, %s, %s))'" % (latitude, longitude, dt)
-                az = float(re.search('.+$', check_output(az_call, shell=True)).group(0))
-            else:
-                dt = datetime.datetime(year,d[0],d[1],h)
-                alt = math.radians(Pysolar.solar.GetAltitudeFast(latitude,longitude,dt))
-                az = Pysolar.solar.GetAzimuth(latitude,longitude,dt)
+            dt = datetime.datetime(year, d[0], d[1], h, tzinfo=datetime.timezone.utc)
+            alt = math.radians(pysolar.solar.get_altitude_fast(latitude, longitude, dt))
+            az = pysolar.solar.get_azimuth(latitude, longitude, dt)
             az = -90 + az # pysolar's zero is south
             if az < 0:
                 az = 360 + az
