@@ -24,7 +24,6 @@
 #ifndef GUI_VIEWPROVIDER_LINK_H
 #define GUI_VIEWPROVIDER_LINK_H
 
-#include <boost/intrusive_ptr.hpp>
 #include <boost/preprocessor/seq/for_each.hpp>
 #include <App/PropertyGeo.h>
 #include <App/Link.h>
@@ -38,24 +37,6 @@ class SoDragger;
 class SoMaterialBinding;
 
 namespace Gui {
-
-// Convenience smart pointer to wrap coin node. It is basically
-// boost::intrusive plus implicit pointer conversion to save the trouble of
-// typing get() all the time.
-template<class T>
-class CoinPtr: public boost::intrusive_ptr<T> {
-public:
-    // Too bad, VC2013 does not support constructor inheritance
-    //using boost::intrusive_ptr<T>::intrusive_ptr;
-    typedef boost::intrusive_ptr<T> inherited;
-    CoinPtr() {}
-    CoinPtr(T *p, bool add_ref=true):inherited(p,add_ref){}
-    template<class Y> CoinPtr(CoinPtr<Y> const &r):inherited(r){}
-
-    operator T *() const {
-        return this->get();
-    }
-};
 
 class LinkInfo;
 typedef boost::intrusive_ptr<LinkInfo> LinkInfoPtr;
@@ -112,6 +93,9 @@ public:
     void updateLink();
 
     void setLink(App::DocumentObject *obj,
+        const std::vector<std::string> &subs = std::vector<std::string>()); 
+
+    void setLinkViewObject(ViewProviderDocumentObject *vpd,
         const std::vector<std::string> &subs = std::vector<std::string>()); 
 
     std::vector<ViewProviderDocumentObject*> getChildren() const;

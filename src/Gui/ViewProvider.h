@@ -30,6 +30,7 @@
 #include <bitset>
 #include <QIcon>
 #include <boost/signals2.hpp>
+#include <boost/intrusive_ptr.hpp>
 
 #include <App/TransactionalObject.h>
 #include <App/Material.h>
@@ -80,6 +81,24 @@ enum ViewStatus {
     UpdatingView = 3,
 };
 
+
+// Convenience smart pointer to wrap coin node. It is basically
+// boost::intrusive plus implicit pointer conversion to save the trouble of
+// typing get() all the time.
+template<class T>
+class CoinPtr: public boost::intrusive_ptr<T> {
+public:
+    // Too bad, VC2013 does not support constructor inheritance
+    //using boost::intrusive_ptr<T>::intrusive_ptr;
+    typedef boost::intrusive_ptr<T> inherited;
+    CoinPtr() {}
+    CoinPtr(T *p, bool add_ref=true):inherited(p,add_ref){}
+    template<class Y> CoinPtr(CoinPtr<Y> const &r):inherited(r){}
+
+    operator T *() const {
+        return this->get();
+    }
+};
 
 
 /** General interface for all visual stuff in FreeCAD
