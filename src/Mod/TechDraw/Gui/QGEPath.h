@@ -88,6 +88,8 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 301};
     int type() const override { return Type;}
+    virtual QRectF boundingRect() const override;
+    virtual QPainterPath shape() const override;
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
     
     void inEdit(bool b) { m_inEdit = b; }
@@ -127,6 +129,8 @@ protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    double getEdgeFuzz(void) const;
+
     std::vector<QPointF> m_deltas;       //deltas between points 1:1 scale, starts at (0,0)
     std::vector<QGMarker*> m_markers;
     QPointF m_attach;
