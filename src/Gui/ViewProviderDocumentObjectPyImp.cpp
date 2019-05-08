@@ -29,7 +29,7 @@
 
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/Document.h>
-#include <App/DocumentObject.h>
+#include <App/DocumentObjectPy.h>
 
 // inclusion of the generated files (generated out of ViewProviderDocumentObjectPy.xml)
 #include "ViewProviderDocumentObjectPy.h"
@@ -60,6 +60,17 @@ Py::Object ViewProviderDocumentObjectPy::getObject(void) const
 {
     App::DocumentObject* obj = getViewProviderDocumentObjectPtr()->getObject();
     return Py::Object(obj->getPyObject(), true); // do not inc'ref twice
+}
+
+void ViewProviderDocumentObjectPy::setObject(Py::Object pyobj)
+{
+    if(!PyObject_TypeCheck(*pyobj,&App::DocumentObjectPy::Type))
+        throw Py::TypeError("Expect document object");
+    App::DocumentObject* obj = getViewProviderDocumentObjectPtr()->getObject();
+    if(obj)
+        throw Py::RuntimeError("View object already attached");
+    getViewProviderDocumentObjectPtr()->attach(
+            static_cast<App::DocumentObjectPy*>(*pyobj)->getDocumentObjectPtr());
 }
 
 Py::Boolean ViewProviderDocumentObjectPy::getForceUpdate() const 
