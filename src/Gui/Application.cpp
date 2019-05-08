@@ -120,6 +120,7 @@
 #include "ViewProviderTextDocument.h"
 #include "ViewProviderGroupExtension.h"
 #include "ViewProviderLink.h"
+#include "LinkViewPy.h"
 
 #include "Language/Translator.h"
 #include "TaskView/TaskView.h"
@@ -402,6 +403,8 @@ Application::Application(bool GUIenabled)
         Gui::TaskView::ControlPy::init_type();
         Py::Module(module).setAttr(std::string("Control"),
             Py::Object(Gui::TaskView::ControlPy::getInstance(), true));
+
+        Base::Interpreter().addType(&LinkViewPy::Type,module,"LinkView");
     }
 
     Base::PyGILStateLocker lock;
