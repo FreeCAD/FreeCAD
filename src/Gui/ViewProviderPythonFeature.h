@@ -121,6 +121,7 @@ public:
 private:
     ViewProviderDocumentObject* object;
     bool has__object__;
+    mutable bool pyCalling;
 
 #define FC_PY_VIEW_OBJECT \
     FC_PY_ELEMENT(getIcon) \
@@ -532,10 +533,12 @@ protected:
                     // needed to load the right display mode after they're known now
                     ViewProviderT::DisplayMode.touch();
                     ViewProviderT::setOverrideMode(viewerMode);
-                    if(!this->testStatus(Gui::isRestoring) && 
-                       ViewProviderT::canAddToSceneGraph() && 
-                       !imp->canAddToSceneGraph())
-                        this->getDocument()->toggleInSceneGraph(this);
+                }
+                if(!this->testStatus(Gui::isRestoring) && 
+                    ViewProviderT::canAddToSceneGraph() && 
+                    !imp->canAddToSceneGraph())
+                {
+                    this->getDocument()->toggleInSceneGraph(this);
                 }
                 ViewProviderT::updateView();
             }

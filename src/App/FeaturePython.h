@@ -81,6 +81,7 @@ public:
 private:
     App::DocumentObject* object;
     bool has__object__;
+    mutable bool pyCalling;
 
 #define FC_PY_FEATURE_PYTHON \
     FC_PY_ELEMENT(execute)\

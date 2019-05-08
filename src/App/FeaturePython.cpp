@@ -38,7 +38,8 @@
 
 using namespace App;
 
-FeaturePythonImp::FeaturePythonImp(App::DocumentObject* o) : object(o), has__object__(false)
+FeaturePythonImp::FeaturePythonImp(App::DocumentObject* o) 
+    : object(o), has__object__(false), pyCalling(false)
 {
 }
 
@@ -60,25 +61,20 @@ void FeaturePythonImp::init(PyObject *pyobj) {
  */
 bool FeaturePythonImp::execute()
 {
-    // avoid recursive calls of execute()
-    if (object->testStatus(App::PythonCall))
+    if(py_execute.isNone() || pyCalling)
         return false;
-
-    if(py_execute.isNone())
-        return false;
+    Base::FlagToggler<> flag(pyCalling);
 
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
         if (has__object__) {
-            Base::ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::PythonCall, object);
             Py::Object res = Base::pyCall(py_execute.ptr());
             if (res.isBoolean() && !res.isTrue())
                 return false;
             return true;
         }
         else {
-            Base::ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::PythonCall, object);
             Py::Tuple args(1);
             args.setItem(0, Py::Object(object->getPyObject(), true));
             Py::Object res = Base::pyCall(py_execute.ptr(),args.ptr());
@@ -100,8 +96,9 @@ bool FeaturePythonImp::execute()
 
 bool FeaturePythonImp::mustExecute() const
 {
-    if(py_mustExecute.isNone())
+    if(py_mustExecute.isNone() || pyCalling)
         return false;
+    Base::FlagToggler<> flag(pyCalling);
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
@@ -126,8 +123,9 @@ bool FeaturePythonImp::mustExecute() const
 
 void FeaturePythonImp::onBeforeChange(const Property* prop)
 {
-    if(py_onBeforeChange.isNone())
+    if(py_onBeforeChange.isNone() || pyCalling)
         return;
+    Base::FlagToggler<> flag(pyCalling);
 
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -155,8 +153,9 @@ void FeaturePythonImp::onBeforeChange(const Property* prop)
 
 bool FeaturePythonImp::onBeforeChangeLabel(std::string &newLabel)
 {
-    if(py_onBeforeChangeLabel.isNone())
+    if(py_onBeforeChangeLabel.isNone() || pyCalling)
         return false;
+    Base::FlagToggler<> flag(pyCalling);
 
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -181,8 +180,9 @@ bool FeaturePythonImp::onBeforeChangeLabel(std::string &newLabel)
 
 void FeaturePythonImp::onChanged(const Property* prop)
 {
-    if(py_onChanged.isNone())
+    if(py_onChanged.isNone() || pyCalling)
         return;
+    Base::FlagToggler<> flag(pyCalling);
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
@@ -209,8 +209,9 @@ void FeaturePythonImp::onChanged(const Property* prop)
 
 void FeaturePythonImp::onDocumentRestored()
 {
-    if(py_onDocumentRestored.isNone())
+    if(py_onDocumentRestored.isNone() || pyCalling)
         return;
+    Base::FlagToggler<> flag(pyCalling);
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
@@ -232,8 +233,9 @@ void FeaturePythonImp::onDocumentRestored()
 bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname, 
     PyObject **pyObj, Base::Matrix4D *_mat, bool transform, int depth) const
 {
-    if(py_getSubObject.isNone())
+    if(py_getSubObject.isNone() || pyCalling)
         return false;
+    Base::FlagToggler<> flag(pyCalling);
 
     Base::PyGILStateLocker lock;
     try {
@@ -288,8 +290,9 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
 }
 
 bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) const {
-    if(py_getSubObjects.isNone())
+    if(py_getSubObjects.isNone() || pyCalling)
         return false;
+    Base::FlagToggler<> flag(pyCalling);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(2);
@@ -319,8 +322,9 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) 
 bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse, 
         Base::Matrix4D *_mat, bool transform, int depth) const
 {
-    if(py_getLinkedObject.isNone())
+    if(py_getLinkedObject.isNone() || pyCalling)
         return false;
+    Base::FlagToggler<> flag(pyCalling);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(5);
@@ -370,8 +374,9 @@ PyObject *FeaturePythonImp::getPyObject(void)
 }
 
 int FeaturePythonImp::hasChildElement() const {
-    if(py_hasChildElement.isNone())
+    if(py_hasChildElement.isNone() || pyCalling)
         return -1;
+    Base::FlagToggler<> flag(pyCalling);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
@@ -388,8 +393,9 @@ int FeaturePythonImp::hasChildElement() const {
 }
 
 int FeaturePythonImp::isElementVisible(const char *element) const {
-    if(py_isElementVisible.isNone())
+    if(py_isElementVisible.isNone() || pyCalling)
         return -2;
+    Base::FlagToggler<> flag(pyCalling);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(2);
@@ -405,8 +411,9 @@ int FeaturePythonImp::isElementVisible(const char *element) const {
 }
 
 int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
-    if(py_setElementVisible.isNone())
+    if(py_setElementVisible.isNone() || pyCalling)
         return -2;
+    Base::FlagToggler<> flag(pyCalling);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(3);
@@ -425,8 +432,9 @@ int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
 
 std::string FeaturePythonImp::getViewProviderName()
 {
-    if(py_getViewProviderName.isNone())
+    if(py_getViewProviderName.isNone() || pyCalling)
         return std::string();
+    Base::FlagToggler<> flag(pyCalling);
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
@@ -443,8 +451,9 @@ std::string FeaturePythonImp::getViewProviderName()
 }
 
 int FeaturePythonImp::canLinkProperties() const {
-    if(py_canLinkProperties.isNone())
+    if(py_canLinkProperties.isNone() || pyCalling)
         return -1;
+    Base::FlagToggler<> flag(pyCalling);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
@@ -460,8 +469,9 @@ int FeaturePythonImp::canLinkProperties() const {
 }
 
 int FeaturePythonImp::allowDuplicateLabel() const {
-    if(py_allowDuplicateLabel.isNone())
+    if(py_allowDuplicateLabel.isNone() || pyCalling)
         return -1;
+    Base::FlagToggler<> flag(pyCalling);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
@@ -477,8 +487,9 @@ int FeaturePythonImp::allowDuplicateLabel() const {
 }
 
 int FeaturePythonImp::canLoadPartial() const {
-    if(py_canLoadPartial.isNone())
+    if(py_canLoadPartial.isNone() || pyCalling)
         return -1;
+    Base::FlagToggler<> flag(pyCalling);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
@@ -496,8 +507,9 @@ int FeaturePythonImp::canLoadPartial() const {
 bool FeaturePythonImp::redirectSubName(std::ostringstream &ss,
         App::DocumentObject *topParent, App::DocumentObject *child) const 
 {
-    if(py_redirectSubName.isNone())
+    if(py_redirectSubName.isNone() || pyCalling)
         return false;
+    Base::FlagToggler<> flag(pyCalling);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(4);
