@@ -623,7 +623,10 @@ ViewProviderLinkObserver::ViewProviderLinkObserver() {
 }
 
 ViewProviderLinkObserver::~ViewProviderLinkObserver() {
-    linkInfo.reset();
+    if(linkInfo) {
+        linkInfo->detach();
+        linkInfo.reset();
+    }
 }
 
 bool ViewProviderLinkObserver::isLinkVisible() const {
