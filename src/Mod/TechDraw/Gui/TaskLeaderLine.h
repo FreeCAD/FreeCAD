@@ -116,7 +116,8 @@ protected:
     void enableVPUi(bool b);
     void setEditCursor(QCursor c);
 
-    int getPrefArrowStyle();
+   QGIView* findParentQGIV();
+   int getPrefArrowStyle();
 
 
 private:

@@ -391,11 +391,34 @@ void QGEPath::updateFeature(void)
     }
 }
 
+QRectF QGEPath::boundingRect() const
+{
+    return shape().controlPointRect();
+}
+
+QPainterPath QGEPath::shape() const
+{
+    QPainterPath outline;
+    QPainterPathStroker stroker;
+    stroker.setWidth(getEdgeFuzz() * 2.0);
+    outline = stroker.createStroke(path()).simplified();
+    return outline;
+}
+
+ double QGEPath::getEdgeFuzz(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    double result = hGrp->GetFloat("EdgeFuzz",10.0);
+    return result;
+}
+
+
 void QGEPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    // painter->drawRect(boundingRect());          //good for debugging
+//     painter->drawRect(boundingRect());          //good for debugging
 
     QGIPrimPath::paint (painter, &myOption, widget);
 }
