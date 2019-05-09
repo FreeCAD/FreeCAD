@@ -269,9 +269,9 @@ class Compass(object):
         self.transform.rotation.setValue(
             coin.SbVec3f(0, 0, 1), math.radians(angleInDegrees))
 
-    def setZOffset(self, offsetInMillimeters):
+    def locate(self, x,y,z):
         from pivy import coin
-        self.transform.translation.setValue(0, 0, offsetInMillimeters)
+        self.transform.translation.setValue(x, y, z)
 
     def scale(self, area):
         from pivy import coin
@@ -510,12 +510,6 @@ class _Site:
             obj.addProperty("App::PropertyVector","OriginOffset","Site",QT_TRANSLATE_NOOP("App::Property","An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates"))
         if not hasattr(obj,"Group"):
             obj.addExtension("App::GroupExtensionPython", self)
-        if not "Compass" in pl:
-            obj.addProperty("App::PropertyBool", "Compass", "Compass", QT_TRANSLATE_NOOP("App::Property", "Show compass or not"))
-        if not "CompassRotation" in pl:
-            obj.addProperty("App::PropertyAngle", "CompassRotation", "Compass", QT_TRANSLATE_NOOP("App::Property", "The rotation of the Compass relative to the Site"))
-        if not "UpdateDeclination" in pl:
-            obj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP("App::Property", "Update the Declination value based on the compass rotation"))
         if not "IfcType" in pl:
             obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
             obj.IfcType = ArchIFC.IfcTypes
@@ -575,16 +569,6 @@ class _Site:
                 if FreeCAD.GuiUp:
                     obj.Terrain.ViewObject.hide()
                 self.execute(obj)
-        if prop in ["UpdateDeclination", "CompassRotation", "Placement"]:
-            self.updateDeclination(obj)
-
-    def updateDeclination(self,obj):
-
-        if not hasattr(obj, 'UpdateDeclination') or not obj.UpdateDeclination:
-            return
-        compassRotation = obj.CompassRotation.Value
-        siteRotation = math.degrees(obj.Placement.Rotation.Angle)
-        obj.Declination = compassRotation + siteRotation
 
     def computeAreas(self,obj):
 
@@ -681,9 +665,16 @@ class _ViewProviderSite:
         if not "Orientation" in pl:
             vobj.addProperty("App::PropertyEnumeration", "Orientation", "Site", QT_TRANSLATE_NOOP(
                 "App::Property", "When set to 'True North' the whole geometry will be rotated to match the true north of this site"))
-
             vobj.Orientation = ["Project North", "True North"]
             vobj.Orientation = "Project North"
+        if not "Compass" in pl:
+            vobj.addProperty("App::PropertyBool", "Compass", "Compass", QT_TRANSLATE_NOOP("App::Property", "Show compass or not"))
+        if not "CompassRotation" in pl:
+            vobj.addProperty("App::PropertyAngle", "CompassRotation", "Compass", QT_TRANSLATE_NOOP("App::Property", "The rotation of the Compass relative to the Site"))
+        if not "CompassPosition" in pl:
+            vobj.addProperty("App::PropertyVector", "CompassPosition", "Compass", QT_TRANSLATE_NOOP("App::Property", "The position of the Compass relative to the Site placement"))
+        if not "UpdateDeclination" in pl:
+            vobj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP("App::Property", "Update the Declination value based on the compass rotation"))
 
     def onDocumentRestored(self,vobj):
 
@@ -735,12 +726,10 @@ class _ViewProviderSite:
         self.diagramsep.addChild(self.coords)
         self.diagramsep.addChild(self.color)
         vobj.Annotation.addChild(self.diagramswitch)
-
         self.compass = Compass()
-        self.updateCompassVisibility(self.Object)
-        self.updateCompassScale(self.Object)
-        self.rotateCompass(self.Object)
-
+        self.updateCompassVisibility(vobj)
+        self.updateCompassScale(vobj)
+        self.rotateCompass(vobj)
         vobj.Annotation.addChild(self.compass.rootNode)
 
     def updateData(self,obj,prop):
@@ -751,13 +740,12 @@ class _ViewProviderSite:
             self.onChanged(obj.ViewObject,"SolarDiagramPosition")
             self.updateTrueNorthRotation()
         elif prop == "Terrain":
-            self.updateCompassLocation(obj)
-        elif prop == "Compass":
-            self.updateCompassVisibility(obj)
-        elif prop == "CompassRotation":
-            self.rotateCompass(obj)
+            self.updateCompassLocation(obj.ViewObject)
+        elif prop == "Placement":
+            self.updateCompassLocation(obj.ViewObject)
+            self.updateDeclination(obj.ViewObject)
         elif prop == "ProjectedArea":
-            self.updateCompassScale(obj)
+            self.updateCompassScale(obj.ViewObject)
 
     def onChanged(self,vobj,prop):
 
@@ -796,26 +784,38 @@ class _ViewProviderSite:
                 self.addTrueNorthRotation()
             else:
                 self.removeTrueNorthRotation()
+        elif prop == "UpdateDeclination":
+            self.updateDeclination(vobj)
+        elif prop == "Compass":
+            self.updateCompassVisibility(vobj)
+        elif prop == "CompassRotation":
+            self.updateDeclination(vobj)
+            self.rotateCompass(vobj)
+        elif prop == "CompassPosition":
+            self.updateCompassLocation(vobj)
+
+    def updateDeclination(self,vobj):
+
+        if not hasattr(vobj, 'UpdateDeclination') or not vobj.UpdateDeclination:
+            return
+        compassRotation = vobj.CompassRotation.Value
+        siteRotation = math.degrees(obj.Placement.Rotation.Angle)
+        obj.Declination = compassRotation + siteRotation
 
     def addTrueNorthRotation(self):
 
         if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
             return
-
         from pivy import coin
-
         self.trueNorthRotation = coin.SoTransform()
-
         sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
         sg.insertChild(self.trueNorthRotation, 0)
-
         self.updateTrueNorthRotation()
 
     def removeTrueNorthRotation(self):
 
         if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
             sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
-
             sg.removeChild(self.trueNorthRotation)
             self.trueNorthRotation = None
 
@@ -823,49 +823,47 @@ class _ViewProviderSite:
 
         if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
             from pivy import coin
-
             angle = self.Object.Declination.Value
-
             self.trueNorthRotation.rotation.setValue(coin.SbVec3f(0, 0, 1), math.radians(-angle))
 
-    def updateCompassVisibility(self, obj):
+    def updateCompassVisibility(self, vobj):
 
         if not hasattr(self, 'compass'):
             return
-
-        show = hasattr(obj, 'Compass') and obj.Compass
-
+        show = hasattr(vobj, 'Compass') and vobj.Compass
         if show:
             self.compass.show()
         else:
             self.compass.hide()
 
-    def rotateCompass(self, obj):
+    def rotateCompass(self, vobj):
 
         if not hasattr(self, 'compass'):
             return
+        if hasattr(vobj, 'CompassRotation'):
+            self.compass.rotate(vobj.CompassRotation.Value)
 
-        if hasattr(obj, 'CompassRotation'):
-            self.compass.rotate(obj.CompassRotation.Value)
-
-    def updateCompassLocation(self, obj):
-
-        if not hasattr(self, 'compass'):
-            return
-
-        boundBox = obj.Shape.BoundBox
-        pos = obj.Placement.Base
-
-        zOffset = boundBox.ZMax = pos.z
-
-        self.compass.setZOffset(zOffset + 1000)
-
-    def updateCompassScale(self, obj):
+    def updateCompassLocation(self, vobj):
 
         if not hasattr(self, 'compass'):
             return
+        if not vobj.Object.Shape:
+            return
+        boundBox = vobj.Object.Shape.BoundBox
+        pos = vobj.Object.Placement.Base
+        x = 0
+        y = 0
+        if hasattr(vobj, "CompassPosition"):
+            x = vobj.CompassPosition.x
+            y = vobj.CompassPosition.y
+        z = boundBox.ZMax = pos.z
+        self.compass.locate(x,y,z+1000)
 
-        self.compass.scale(obj.ProjectedArea)
+    def updateCompassScale(self, vobj):
+
+        if not hasattr(self, 'compass'):
+            return
+        self.compass.scale(vobj.Object.ProjectedArea)
 
     def __getstate__(self):
 
