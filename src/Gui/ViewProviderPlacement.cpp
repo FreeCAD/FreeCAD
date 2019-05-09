@@ -36,6 +36,7 @@
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoIndexedPointSet.h>
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 #endif
@@ -45,6 +46,7 @@
 #include <Inventor/details/SoLineDetail.h>
 #include "ViewProviderPlacement.h"
 #include "SoFCSelection.h"
+#include "SoFCUnifiedSelection.h"
 #include "Application.h"
 #include "Document.h"
 #include "View3DInventorViewer.h"
@@ -61,63 +63,23 @@ using namespace Gui;
 
 PROPERTY_SOURCE(Gui::ViewProviderPlacement, Gui::ViewProviderGeometryObject)
 
-
 ViewProviderPlacement::ViewProviderPlacement()
 {
+    // Change root node to SoFCSelectionRoot because we share the same
+    // AxisOrigin node for all instances of Placement
+    auto newRoot = new SoFCSelectionRoot(true);
+    for(int i=0;i<pcRoot->getNumChildren();++i)
+        newRoot->addChild(pcRoot->getChild(i));
+    pcRoot->unref();
+    pcRoot = newRoot;
+    pcRoot->ref();
+    sPixmap = "CoordinateSystem";
 
-    pMat = new SoMaterial();
-    pMat->ref();
-
-    const float dist = 2;
-    const float size = 6;
-    const float pSize = 4;
-
-    static const SbVec3f verts[13] =
-    {
-        SbVec3f(0,0,0), SbVec3f(size,0,0),
-        SbVec3f(0,size,0), SbVec3f(0,0,size),
-        SbVec3f(dist,dist,0), SbVec3f(dist,pSize,0), SbVec3f(pSize,dist,0),  // XY Plane
-        SbVec3f(dist,0,dist), SbVec3f(dist,0,pSize), SbVec3f(pSize,0,dist),  // XY Plane
-        SbVec3f(0,dist,dist), SbVec3f(0,pSize,dist), SbVec3f(0,dist,pSize)  // XY Plane
-    };
-
-    // indexes used to create the edges
-    static const int32_t lines[21] =
-    {
-        0,1,-1,
-        0,2,-1,
-        0,3,-1,
-        5,4,6,-1,
-        8,7,9,-1,
-        11,10,12,-1
-    };
-
-    pMat->diffuseColor.setNum(6);
-    pMat->diffuseColor.set1Value(0, SbColor(1.0f, 0.2f, 0.2f));
-    pMat->diffuseColor.set1Value(1, SbColor(0.2f, 1.0f, 0.2f));
-    pMat->diffuseColor.set1Value(2, SbColor(0.2f, 0.2f, 1.0f));
-
-    pMat->diffuseColor.set1Value(3, SbColor(1.0f, 1.0f, 0.8f));
-    pMat->diffuseColor.set1Value(4, SbColor(1.0f, 0.8f, 1.0f));
-    pMat->diffuseColor.set1Value(5, SbColor(0.8f, 1.0f, 1.0f));
-
-    pCoords = new SoCoordinate3();
-    pCoords->ref();
-    pCoords->point.setNum(13);
-    pCoords->point.setValues(0, 13, verts);
-
-    pLines  = new SoIndexedLineSet();
-    pLines->ref();
-    pLines->coordIndex.setNum(21);
-    pLines->coordIndex.setValues(0, 21, lines);
-    sPixmap = "view-measurement";
+    OnTopWhenSelected.setValue(1);
 }
 
 ViewProviderPlacement::~ViewProviderPlacement()
 {
-    pCoords->unref();
-    pLines->unref();
-    pMat->unref();
 }
 
 void ViewProviderPlacement::onChanged(const App::Property* prop)
@@ -140,29 +102,24 @@ void ViewProviderPlacement::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
+static std::unique_ptr<AxisOrigin> Axis;
+
 void ViewProviderPlacement::attach(App::DocumentObject* pcObject)
 {
     ViewProviderGeometryObject::attach(pcObject);
-
-    SoAnnotation *lineSep = new SoAnnotation();
-
-
-    SoAutoZoomTranslation *zoom = new SoAutoZoomTranslation;
-
-    SoDrawStyle* style = new SoDrawStyle();
-    style->lineWidth = 2.0f;
-
-    SoMaterialBinding* matBinding = new SoMaterialBinding;
-    matBinding->value = SoMaterialBinding::PER_FACE;
-
-    lineSep->addChild(zoom);
-    lineSep->addChild(style);
-    lineSep->addChild(matBinding);
-    lineSep->addChild(pMat);
-    lineSep->addChild(pCoords);
-    lineSep->addChild(pLines);
-
-    addDisplayMaskMode(lineSep, "Base");
+    if(!Axis) {
+        Axis.reset(new AxisOrigin);
+        std::map<std::string,std::string> labels;
+        labels["O"] = "Origin";
+        labels["X"] = "X-Axis";
+        labels["Y"] = "Y-Axis";
+        labels["Z"] = "Z-Axis";
+        labels["XY"] = "XY-Plane";
+        labels["XZ"] = "XZ-Plane";
+        labels["YZ"] = "YZ-Plane";
+        Axis->setLabels(labels);
+    }
+    addDisplayMaskMode(Axis->getNode(), "Base");
 }
 
 void ViewProviderPlacement::updateData(const App::Property* prop)
@@ -170,47 +127,27 @@ void ViewProviderPlacement::updateData(const App::Property* prop)
     ViewProviderGeometryObject::updateData(prop);
 }
 
-std::string ViewProviderPlacement::getElement(const SoDetail* detail) const
-{
-    if (detail) {
-        if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
-            const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
-            int edge = line_detail->getLineIndex();
-            switch (edge)
-            {
-            case 0: return std::string("X-Axis");
-            case 1: return std::string("Y-Axis");
-            case 2: return std::string("Z-Axis");
-            case 3: return std::string("XY-Plane");
-            case 4: return std::string("XZ-Plane");
-            case 5: return std::string("YZ-Plane");
-            }
-        }
-    }
-
-    return std::string("");
+bool ViewProviderPlacement::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
+    if(!Axis)
+        return false;
+    return Axis->getElementPicked(pp,subname);
 }
 
-SoDetail* ViewProviderPlacement::getDetail(const char* subelement) const
+bool ViewProviderPlacement::getDetailPath(
+            const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const
 {
-    SoLineDetail* detail = 0;
-    std::string subelem(subelement);
-    int edge = -1;
-
-    if(subelem == "X-Axis") edge = 0;
-    else if(subelem == "Y-Axis") edge = 1;
-    else if(subelem == "Z-Axis") edge = 2;
-    else if(subelem == "XY-Plane") edge = 3;
-    else if(subelem == "XZ-Plane") edge = 4;
-    else if(subelem == "YZ-Plane") edge = 5;
-
-    if(edge >= 0) {
-         detail = new SoLineDetail();
-         detail->setPartIndex(edge);
+    if(!Axis)
+        return false;
+    int length = pPath->getLength();
+    if(append) {
+        pPath->append(pcRoot);
+        pPath->append(pcModeSwitch);
     }
-
-
-    return detail;
+    if(!Axis->getDetailPath(subname,pPath,det)) {
+        pPath->truncate(length);
+        return false;
+    }
+    return true;
 }
 
 bool ViewProviderPlacement::isSelectable(void) const

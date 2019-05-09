@@ -24,6 +24,7 @@
 #ifndef GUI_ViewProviderPlacement_H
 #define GUI_ViewProviderPlacement_H
 
+#include "AxisOrigin.h"
 #include "ViewProviderGeometryObject.h"
 #include "ViewProviderPythonFeature.h"
 #include <QObject>
@@ -39,7 +40,6 @@ class SoMaterial;
 
 namespace Gui
 {
-
 
 class GuiExport ViewProviderPlacement : public ViewProviderGeometryObject
 {
@@ -59,17 +59,13 @@ public:
     virtual bool useNewSelectionModel(void) const {return true;}
     /// indicates if the ViewProvider can be selected
     virtual bool isSelectable(void) const ;
-    /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoDetail *) const;
-    virtual SoDetail* getDetail(const char*) const;
+
+    virtual bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const override;
+    virtual bool getDetailPath(const char *, SoFullPath *, bool, SoDetail *&) const override;
 
 protected:
     void onChanged(const App::Property* prop);
 
-private:
-    SoCoordinate3    * pCoords;
-    SoMaterial       * pMat;
-    SoIndexedLineSet * pLines;
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderPlacement> ViewProviderPlacementPython;
