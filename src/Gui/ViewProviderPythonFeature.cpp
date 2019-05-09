@@ -518,11 +518,15 @@ ViewProviderPythonFeatureImp::ValueT ViewProviderPythonFeatureImp::getDetailPath
         args.setItem(1, Py::Object(pivy, true));
         args.setItem(2, Py::Boolean(append));
         Py::Object pyDet(Base::pyCall(py_getDetailPath.ptr(),args.ptr()));
+        if(!pyDet.isTrue())
+            return Rejected;
+        if(pyDet.isBoolean())
+            return Accepted;
         void* ptr = 0;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pyDet.ptr(), &ptr, 0);
         SoDetail* detail = reinterpret_cast<SoDetail*>(ptr);
         det = detail ? detail->copy() : 0;
-        if(det || pyDet.isTrue())
+        if(det)
             return Accepted;
         delete det;
     }
