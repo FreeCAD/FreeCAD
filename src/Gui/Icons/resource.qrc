@@ -138,6 +138,7 @@
         <file>DrawStyleWireFrame.svg</file>
         <file>user.svg</file>
         <file>CoordinateSystem.svg</file>
+        <file>Std_CoordinateSystem.svg</file>
         <file>MacroEditor.svg</file>
         <file>Param_Bool.svg</file>
         <file>Param_Float.svg</file>

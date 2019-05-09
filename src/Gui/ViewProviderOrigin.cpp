@@ -68,7 +68,7 @@ ViewProviderOrigin::ViewProviderOrigin()
         QT_TRANSLATE_NOOP("App::Property", "The displayed size of the origin"));
     Size.setStatus(App::Property::ReadOnly, true);
 
-    sPixmap = "CoordinateSystem";
+    sPixmap = "Std_CoordinateSystem";
     Visibility.setValue(false);
 
     pcGroupChildren = new SoGroup();
