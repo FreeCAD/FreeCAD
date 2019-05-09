@@ -1748,11 +1748,6 @@ TopoShape &TopoShape::makEShape(const char *maker,
         return *this;
     }
 
-    if(shapes.size() == 1) {
-        *this = shapes[0];
-        return *this;
-    }
-
     if(strcmp(maker,TOPOP_PIPE)==0) {
         if(shapes.size()!=2)
             FC_THROWM(Base::CADKernelError,"Not enough input shapes");
@@ -1784,8 +1779,11 @@ TopoShape &TopoShape::makEShape(const char *maker,
     std::vector<TopoShape> _shapes;
     if(shapes.size()==1) {
         expandCompound(shapes.front(),_shapes);
-        if(_shapes.size()==1)
-            FC_THROWM(Base::CADKernelError,"Boolean operation with only one shape");
+        if(_shapes.size()==1) {
+            FC_WARN("Boolean operation with only one shape");
+            *this = _shapes[0];
+            return *this;
+        }
     }
 
     auto &inputs = _shapes.size()?_shapes:shapes;
