@@ -163,7 +163,7 @@ SoFCSelection::turnOffCurrentHighlight(SoGLRenderAction * action)
 
 void SoFCSelection::doAction(SoAction *action)
 {
-    if(useNewSelection.getValue()) {
+    if(useNewSelection.getValue() && action->getCurPathCode()!=SoAction::OFF_PATH) {
         if (action->getTypeId() == Gui::SoHighlightElementAction::getClassTypeId()) {
             Gui::SoHighlightElementAction* hlaction = static_cast<Gui::SoHighlightElementAction*>(action);
             if(!hlaction->isHighlighted()) {
@@ -956,18 +956,21 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
     if (!preselected && mymode!=ON && (!ctx || !ctx->isSelected()))
         return;
 
-    // uniqueId is returned by SoNode::getNodeId(). It is used to node change
+    // uniqueId is returned by SoNode::getNodeId(). It is used to notify change
     // and for render cache update. In order to update cache on selection state
     // change, We manually change the id here by using a combined hash of the
     // original id and context pointer.
     auto oldId = this->uniqueId;
     this->uniqueId ^= std::hash<void*>()(ctx.get()) + 0x9e3779b9 + (oldId << 6) + (oldId >> 2);
-    
+
     //Base::Console().Log("SoFCSelection::setOverride() (%p)\n",this);
     SoState * state = action->getState();
+
+    SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
+    
     if(!preselected)
         SoLazyElement::setEmissive(state, &ctx->selectionColor);
-    else
+    else 
         SoLazyElement::setEmissive(state, &ctx->highlightColor);
     SoOverrideElement::setEmissiveColorOverride(state, this, true);
 
