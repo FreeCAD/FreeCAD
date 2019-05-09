@@ -6610,7 +6610,7 @@ class DraftLabel:
         if obj.LabelType == "Custom":
             if obj.CustomText:
                 obj.Text = obj.CustomText
-        elif obj.Target:
+        elif obj.Target and obj.Target[0]:
             if obj.LabelType == "Name":
                 obj.Text = [obj.Target[0].Name]
             elif obj.LabelType == "Label":
@@ -6632,13 +6632,13 @@ class DraftLabel:
                 if obj.Target[0].isDerivedFrom("Part::Feature"):
                     if hasattr(obj.Target[0].Shape,"Length"):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Length,FreeCAD.Units.Length).UserString]
-                    if "Edge" in obj.Target[1][0]:
+                    if obj.Target[1] and ("Edge" in obj.Target[1][0]):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Edges[int(obj.Target[1][0][4:])-1].Length,FreeCAD.Units.Length).UserString]
             elif obj.LabelType == "Area":
                 if obj.Target[0].isDerivedFrom("Part::Feature"):
                     if hasattr(obj.Target[0].Shape,"Area"):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Area,FreeCAD.Units.Area).UserString]
-                    if "Face" in obj.Target[1][0]:
+                    if obj.Target[1] and ("Face" in obj.Target[1][0]):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Faces[int(obj.Target[1][0][4:])-1].Area,FreeCAD.Units.Area).UserString]
             elif obj.LabelType == "Volume":
                 if obj.Target[0].isDerivedFrom("Part::Feature"):
@@ -6778,8 +6778,12 @@ class ViewProviderDraftLabel:
                 self.text3d.justification = coin.SoAsciiText.LEFT
         elif prop == "Text":
             if obj.Text:
-                self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
-                self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+                if sys.version_info.major >= 3:
+                    self.text2d.string.setValues([l for l in obj.Text if l])
+                    self.text3d.string.setValues([l for l in obj.Text if l])
+                else:
+                    self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+                    self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
                 self.onChanged(obj.ViewObject,"TextAlignment")
 
     def getTextSize(self,vobj):
