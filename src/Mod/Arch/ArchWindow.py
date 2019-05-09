@@ -1460,7 +1460,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                                         if "(" in mat.Material['DiffuseColor']:
                                             ccol = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
                                     if ccol and ('Transparency' in mat.Material):
-                                        ccol = (ccol[0],ccol[1],ccol[2],float(mat.Material['Transparency']))
+                                        t = float(mat.Material['Transparency'])/100.0
+                                        ccol = (ccol[0],ccol[1],ccol[2],t)
             if not ccol:
                 typeidx = (i*5)+1
                 if typeidx < len(obj.WindowParts):
