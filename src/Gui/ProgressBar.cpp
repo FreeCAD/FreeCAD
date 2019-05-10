@@ -453,6 +453,10 @@ void ProgressBar::hideEvent(QHideEvent* e)
 {
     QProgressBar::hideEvent(e);
     d->delayShowTimer->stop();
+#ifdef QT_WINEXTRAS_LIB
+    setupTaskBarProgress();
+    m_taskbarProgress->hide();
+#endif
 }
 
 void ProgressBar::resetObserveEventFilter()
