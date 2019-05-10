@@ -914,7 +914,7 @@ endif()
                 endif()
             endif()
             if(MSVC AND ${Qt5Core_VERSION} VERSION_GREATER "5.2.0")
-              find_package(Qt5WinExtras REQUIRED)
+              find_package(Qt5WinExtras QUIET)
             endif()
         endif(BUILD_GUI)
 
