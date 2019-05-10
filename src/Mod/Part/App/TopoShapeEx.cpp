@@ -1778,15 +1778,18 @@ TopoShape &TopoShape::makEShape(const char *maker,
 
     std::vector<TopoShape> _shapes;
     if(shapes.size()==1) {
+#ifdef EXPAND_COMPOUND
         expandCompound(shapes.front(),_shapes);
-        if(_shapes.size()==1) {
-            FC_WARN("Boolean operation with only one shape");
-            *this = _shapes[0];
+        if(_shapes.size()==1)
+#endif
+        {
+
+            *this = shapes[0];
+            FC_WARN("Boolean operation with only one shape input");
             return *this;
         }
     }
-
-    auto &inputs = _shapes.size()?_shapes:shapes;
+    const auto &inputs = _shapes.size()?_shapes:shapes;
 
 #if OCC_VERSION_HEX <= 0x060800
     if (tol > 0.0)
