@@ -2488,7 +2488,7 @@ Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translat
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="210"/>
       <source>Yaw:</source>
-      <translation>Keinadatzea:</translation>
+      <translation>Keinada:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="223"/>
@@ -2498,7 +2498,7 @@ Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translat
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="236"/>
       <source>Roll:</source>
-      <translation>Kulunkatzea:</translation>
+      <translation>Kulunka:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="328"/>
@@ -4373,7 +4373,7 @@ Markatu ertz-entitate bat edo gehiago.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="210"/>
       <source>Yaw:</source>
-      <translation>Keinadatzea:</translation>
+      <translation>Keinada:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="223"/>
@@ -4383,7 +4383,7 @@ Markatu ertz-entitate bat edo gehiago.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="236"/>
       <source>Roll:</source>
-      <translation>Kulunkatzea:</translation>
+      <translation>Kulunka:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="328"/>

@@ -1245,10 +1245,6 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation type="unfinished">Enable splash screen at start up</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation type="unfinished">Switch to tab of report window:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation type="unfinished">Auto load module after start up:</translation>
     </message>
@@ -1267,10 +1263,6 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>Size of recent file list</source>
       <translation>حجم لائحة الملفات الأخيرة</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation type="unfinished">Window style:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1628,6 +1620,53 @@ Specify another directory, please.</source>
     <message>
       <source>&amp;Close</source>
       <translation>&amp;إغلاق</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation type="unfinished">Find...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation type="unfinished">Find</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation type="unfinished">Find what:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation type="unfinished">Look at</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation type="unfinished">Groups</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation type="unfinished">Names</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation type="unfinished">Values</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation type="unfinished">Match whole string only</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation type="unfinished">Find Next</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation type="unfinished">Not found</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation type="unfinished">Can't find the text: %1</translation>
     </message>
   </context>
   <context>
@@ -2725,10 +2764,6 @@ Specify another directory, please.</source>
       <translation type="unfinished">Gui commands</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation type="unfinished">Recording GUI commands</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>تسجيله كتعليق</translation>
     </message>
@@ -2743,6 +2778,10 @@ Specify another directory, please.</source>
     <message>
       <source>Run macros in local environment</source>
       <translation type="unfinished">Run macros in local environment</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation type="unfinished">Record GUI commands</translation>
     </message>
   </context>
   <context>
@@ -2770,10 +2809,6 @@ Specify another directory, please.</source>
     <message>
       <source>Unit</source>
       <translation>وحدة</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>نظام المستخدم:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2838,6 +2873,10 @@ Specify another directory, please.</source>
     <message>
       <source>1/128"</source>
       <translation type="unfinished">1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation type="unfinished">Unit system:</translation>
     </message>
   </context>
   <context>
@@ -4543,12 +4582,12 @@ Do you want to specify another directory?</translation>
       <translation type="unfinished">Increments</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation type="unfinished">Translation Increment: </translation>
+      <source>Translation Increment:</source>
+      <translation type="unfinished">Translation Increment:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation type="unfinished">Rotation Increment: </translation>
+      <source>Rotation Increment:</source>
+      <translation type="unfinished">Rotation Increment:</translation>
     </message>
   </context>
   <context>

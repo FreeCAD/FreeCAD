@@ -225,7 +225,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="203"/>
       <source>Fineness:</source>
-      <translation type="unfinished">Fineness:</translation>
+      <translation>Finoća:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="220"/>
@@ -235,17 +235,17 @@
     <message>
       <location filename="../../Tessellation.ui" line="225"/>
       <source>Coarse</source>
-      <translation type="unfinished">Coarse</translation>
+      <translation>Grubo</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="230"/>
       <source>Moderate</source>
-      <translation type="unfinished">Moderate</translation>
+      <translation>Srednje grubo</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="235"/>
       <source>Fine</source>
-      <translation type="unfinished">Fine</translation>
+      <translation>Fino</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="240"/>

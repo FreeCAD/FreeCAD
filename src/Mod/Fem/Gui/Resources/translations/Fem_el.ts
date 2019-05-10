@@ -70,11 +70,6 @@
       <translation>Δοχείο ανάλυσης</translation>
     </message>
     <message>
-      <location filename="_CommandFemAnalysis.py" line="43"/>
-      <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation>Δημιουργεί ένα δοχείο ανάλυσης με τυπικό επιλυτή CalculiX</translation>
-    </message>
-    <message>
       <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
       <translation>Δημιουργεί ένα δοχείο ανάλυσης με τυπικό επιλυτή CalculiX</translation>
@@ -147,6 +142,11 @@
       <source>Constraint initial flow velocity</source>
       <translation type="unfinished">Constraint initial flow velocity</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="185"/>
+      <source>Creates a FEM constraint initial flow velocity</source>
+      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+    </message>
   </context>
   <context>
     <name>FEM_ConstraintSelfWeight</name>
@@ -196,16 +196,6 @@
     </message>
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
-      <source>Creates a FEM shell plate thickness</source>
-      <translation>Δημιουργεί ένα πάχος πλάκας κελύφους FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="259"/>
-      <source>Shell plate thickness</source>
-      <translation>Πάχος πλάκας κελύφους</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="261"/>
       <source>Creates a FEM shell plate thickness</source>
       <translation>Δημιουργεί ένα πάχος πλάκας κελύφους FEM</translation>
     </message>
@@ -274,6 +264,19 @@
       <source>Creates a FEM equation for fluxsolver</source>
       <translation>Δημιουργεί μια εξίσωση FEM για τον επιλυτή ροής</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="349"/>
+      <source>Creates a FEM equation for fluxsolver</source>
+      <translation>Δημιουργεί μια εξίσωση FEM για τον επιλυτή ροής</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationHeat</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="365"/>
+      <source>Fluxsolver heat</source>
+      <translation type="unfinished">Fluxsolver heat</translation>
+    </message>
   </context>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
@@ -288,14 +291,27 @@
       <translation>Μετατρέψτε την επιφάνεια ενός πλέγματος FEM σε πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="470"/>
-      <source>FEM mesh to mesh</source>
-      <translation>Από πλέγμα FEM σε πλέγμα</translation>
-    </message>
-    <message>
       <location filename="../../../femcommands/commands.py" line="471"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
       <translation>Μετατρέψτε την επιφάνεια ενός πλέγματος FEM σε πλέγμα</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialFluid</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="397"/>
+      <source>Material for fluid</source>
+      <translation type="unfinished">Material for fluid</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="42"/>
+      <source>FEM material for Fluid</source>
+      <translation>Υλικό FEM για Ρευστά</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="44"/>
+      <source>Creates a FEM material for Fluid</source>
+      <translation>Δημιουργεί ένα υλικό FEM για Ρευστά</translation>
     </message>
   </context>
   <context>
@@ -311,17 +327,17 @@
       <translation>Δημιουργεί ένα μη γραμμικό μηχανικό υλικό</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="415"/>
-      <source>Nonlinear mechanical material</source>
-      <translation>Μη γραμμικό μηχανικό υλικό</translation>
+      <location filename="../../../femcommands/commands.py" line="417"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation>Δημιουργεί ένα μη γραμμικό μηχανικό υλικό</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="_CommandFemMaterialSolid.py" line="44"/>
-      <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <location filename="../../../femcommands/commands.py" line="452"/>
+      <source>Material for solid</source>
+      <translation type="unfinished">Material for solid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -354,16 +370,6 @@
       <source>Clear the Mesh of a FEM mesh object</source>
       <translation>Καθαρίστε το Πλέγμα ενός πλέγματος FEM</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="518"/>
-      <source>Clear FEM mesh</source>
-      <translation>Καθαρίστε το πλέγμα FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="520"/>
-      <source>Clear the Mesh of a FEM mesh object</source>
-      <translation>Καθαρίστε το Πλέγμα ενός πλέγματος FEM</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MeshDisplayInfo</name>
@@ -371,6 +377,34 @@
       <location filename="../../../femcommands/commands.py" line="538"/>
       <source>Display FEM mesh info</source>
       <translation type="unfinished">Display FEM mesh info</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="538"/>
+      <source>Display FEM mesh info</source>
+      <translation type="unfinished">Display FEM mesh info</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGmshFromShape</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="556"/>
+      <source>FEM mesh from shape by Gmsh</source>
+      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="557"/>
+      <source>Create a FEM mesh from a shape by Gmsh mesher</source>
+      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
+      <source>FEM mesh from shape by GMSH</source>
+      <translation>Πλέγμα FEM από σχήμα με τη χρήση GMSH</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
+      <source>Create a FEM mesh from a shape by GMSH mesher</source>
+      <translation>Δημιουργήστε ένα πλέγμα FEM από ένα σχήμα με τη χρήση του πλεγματοποιητή GMSH</translation>
     </message>
   </context>
   <context>
@@ -384,11 +418,6 @@
       <location filename="_CommandFemMeshGroup.py" line="43"/>
       <source>Creates a FEM mesh group</source>
       <translation>Δημιουργεί μια ομάδα πλεγμάτων FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="584"/>
-      <source>FEM mesh group</source>
-      <translation>Ομάδα πλεγμάτων FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="586"/>
@@ -434,19 +463,19 @@
       <source>Purges all results from active analysis</source>
       <translation>Διαγράφει όλα τα αποτελέσματα από την ενεργή ανάλυση</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="664"/>
-      <source>Purge results</source>
-      <translation>Διαγράψτε τα αποτελέσματα</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="666"/>
-      <source>Purges all results from active analysis</source>
-      <translation>Διαγράφει όλα τα αποτελέσματα από την ενεργή ανάλυση</translation>
-    </message>
   </context>
   <context>
     <name>FEM_SolverCalculiX</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="708"/>
+      <source>Solver CalculiX (experimental)</source>
+      <translation>Επιλυτής CalculiX (πειραματικός)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="710"/>
+      <source>Creates a FEM solver CalculiX (experimental)</source>
+      <translation>Δημιουργεί έναν επιλυτή CalculiX FEM (πειραματικός)</translation>
+    </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="708"/>
       <source>Solver CalculiX (experimental)</source>
@@ -519,16 +548,6 @@
       <source>Default Fem Command ToolTip</source>
       <translation>Προεπιλεγμένη Εντολή Fem ToolTip</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/manager.py" line="41"/>
-      <source>Default Fem Command MenuText</source>
-      <translation>Προεπιλεγμένη Εντολή Fem MenuText</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/manager.py" line="43"/>
-      <source>Default Fem Command ToolTip</source>
-      <translation>Προεπιλεγμένη Εντολή Fem ToolTip</translation>
-    </message>
   </context>
   <context>
     <name>GeometryElementsSelection</name>
@@ -596,18 +615,33 @@
       <source>Remove</source>
       <translation>Αφαίρεση</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MaterialFluid</name>
     <message>
-      <location filename="_CommandFemMaterialFluid.py" line="42"/>
-      <source>FEM material for Fluid</source>
-      <translation>Υλικό FEM για Ρευστά</translation>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
+      <source>Add</source>
+      <translation>Προσθήκη</translation>
     </message>
     <message>
-      <location filename="_CommandFemMaterialFluid.py" line="44"/>
-      <source>Creates a FEM material for Fluid</source>
-      <translation>Δημιουργεί ένα υλικό FEM για Ρευστά</translation>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>Αφαίρεση</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculix</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="681"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation>Επιλυτής Calculix</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation>Δημιουργεί έναν επιλυτή CalculiX FEM</translation>
     </message>
   </context>
   <context>
@@ -624,37 +658,11 @@
     </message>
   </context>
   <context>
-    <name>FEM_MeshGmshFromShape</name>
-    <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
-      <source>FEM mesh from shape by GMSH</source>
-      <translation>Πλέγμα FEM από σχήμα με τη χρήση GMSH</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
-      <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation>Δημιουργήστε ένα πλέγμα FEM από ένα σχήμα με τη χρήση του πλεγματοποιητή GMSH</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_MeshPrintInfo</name>
     <message>
       <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
       <source>Print FEM mesh info</source>
       <translation>Εκτυπώστε τις πληροφορίες πλέγματος FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCalculix</name>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="42"/>
-      <source>Solver CalculiX</source>
-      <translation>Επιλυτής Calculix</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="44"/>
-      <source>Creates a FEM solver CalculiX</source>
-      <translation>Δημιουργεί έναν επιλυτή CalculiX FEM</translation>
     </message>
   </context>
   <context>

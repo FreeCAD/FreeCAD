@@ -147,8 +147,8 @@
       <translation>合并单元格</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>在电子表格中所选单元格合并</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>拆分单元格</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>将电子表格中的以前合并单元格拆分</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>粗体文本</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>在选定的单元格设置粗体文本</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>斜体文本</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>在选定的单元格设置斜体文本</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>浅灰色</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>自定义</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

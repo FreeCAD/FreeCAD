@@ -70,11 +70,6 @@
       <translation>Contenedor de análisis</translation>
     </message>
     <message>
-      <location filename="_CommandFemAnalysis.py" line="43"/>
-      <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation>Crea un contenedor de análisis con el solver estándar CalculiX</translation>
-    </message>
-    <message>
       <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
       <translation>Crea un contenedor de análisis con Solver estándar CalculiX</translation>
@@ -147,6 +142,11 @@
       <source>Constraint initial flow velocity</source>
       <translation>Restricción de velocidad inicial de flujo</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="185"/>
+      <source>Creates a FEM constraint initial flow velocity</source>
+      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+    </message>
   </context>
   <context>
     <name>FEM_ConstraintSelfWeight</name>
@@ -196,16 +196,6 @@
     </message>
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
-      <source>Creates a FEM shell plate thickness</source>
-      <translation>Crea un espesor de placa de caparazón FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="259"/>
-      <source>Shell plate thickness</source>
-      <translation>Espesor de placa de caparazón</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="261"/>
       <source>Creates a FEM shell plate thickness</source>
       <translation>Crea un espesor de placa de caparazón FEM</translation>
     </message>
@@ -274,6 +264,19 @@
       <source>Creates a FEM equation for fluxsolver</source>
       <translation>Crea una ecuación FEM para fluxsolver</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="349"/>
+      <source>Creates a FEM equation for fluxsolver</source>
+      <translation>Crea una ecuación FEM para fluxsolver</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationHeat</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="365"/>
+      <source>Fluxsolver heat</source>
+      <translation type="unfinished">Fluxsolver heat</translation>
+    </message>
   </context>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
@@ -288,14 +291,27 @@
       <translation>Convertir la superficie de una malla FEM en una malla</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="470"/>
-      <source>FEM mesh to mesh</source>
-      <translation>FEM de malla a malla</translation>
-    </message>
-    <message>
       <location filename="../../../femcommands/commands.py" line="471"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
       <translation>Convertir la superficie de una malla FEM en una malla</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialFluid</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="397"/>
+      <source>Material for fluid</source>
+      <translation type="unfinished">Material for fluid</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="42"/>
+      <source>FEM material for Fluid</source>
+      <translation>Material FEM para Fluido</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="44"/>
+      <source>Creates a FEM material for Fluid</source>
+      <translation>Crea un material FEM para Fluido</translation>
     </message>
   </context>
   <context>
@@ -311,17 +327,17 @@
       <translation>Crea un material mecánico no lineal</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="415"/>
-      <source>Nonlinear mechanical material</source>
-      <translation>Material mecánico no lineal</translation>
+      <location filename="../../../femcommands/commands.py" line="417"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation>Crea un material mecánico no lineal</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="_CommandFemMaterialSolid.py" line="44"/>
-      <source>Creates a FEM material for solid</source>
-      <translation>Crea un material FEM para sólido</translation>
+      <location filename="../../../femcommands/commands.py" line="452"/>
+      <source>Material for solid</source>
+      <translation type="unfinished">Material for solid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -354,16 +370,6 @@
       <source>Clear the Mesh of a FEM mesh object</source>
       <translation>Borrar la Malla de un objeto de malla FEM</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="518"/>
-      <source>Clear FEM mesh</source>
-      <translation>Limpiar malla FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="520"/>
-      <source>Clear the Mesh of a FEM mesh object</source>
-      <translation>Borrar la Malla de un objeto de malla FEM</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MeshDisplayInfo</name>
@@ -371,6 +377,34 @@
       <location filename="../../../femcommands/commands.py" line="538"/>
       <source>Display FEM mesh info</source>
       <translation>Mostrar la información de la malla FEM</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="538"/>
+      <source>Display FEM mesh info</source>
+      <translation>Mostrar la información de la malla FEM</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGmshFromShape</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="556"/>
+      <source>FEM mesh from shape by Gmsh</source>
+      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="557"/>
+      <source>Create a FEM mesh from a shape by Gmsh mesher</source>
+      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
+      <source>FEM mesh from shape by GMSH</source>
+      <translation>Mallado FEM de la figura por GMSH</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
+      <source>Create a FEM mesh from a shape by GMSH mesher</source>
+      <translation>Crear una malla FEM de una forma mediante el mallador GMSH</translation>
     </message>
   </context>
   <context>
@@ -384,11 +418,6 @@
       <location filename="_CommandFemMeshGroup.py" line="43"/>
       <source>Creates a FEM mesh group</source>
       <translation>Crear un grupo de malla FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="584"/>
-      <source>FEM mesh group</source>
-      <translation>Grupo de malla FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="586"/>
@@ -434,19 +463,19 @@
       <source>Purges all results from active analysis</source>
       <translation>Purga todos los resultados de análisis activos</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="664"/>
-      <source>Purge results</source>
-      <translation>Resultados de la depuración</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="666"/>
-      <source>Purges all results from active analysis</source>
-      <translation>Purga todos los resultados de análisis activos</translation>
-    </message>
   </context>
   <context>
     <name>FEM_SolverCalculiX</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="708"/>
+      <source>Solver CalculiX (experimental)</source>
+      <translation>Calculix Solver (experimental)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="710"/>
+      <source>Creates a FEM solver CalculiX (experimental)</source>
+      <translation>Crea un Solver FEM de Calculix (experimental)</translation>
+    </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="708"/>
       <source>Solver CalculiX (experimental)</source>
@@ -519,16 +548,6 @@
       <source>Default Fem Command ToolTip</source>
       <translation>Descripción emergente por defecto de comando Fem</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/manager.py" line="41"/>
-      <source>Default Fem Command MenuText</source>
-      <translation>Texto de menú por defecto de comando Fem</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/manager.py" line="43"/>
-      <source>Default Fem Command ToolTip</source>
-      <translation>Descripción emergente por defecto de comando Fem</translation>
-    </message>
   </context>
   <context>
     <name>GeometryElementsSelection</name>
@@ -596,18 +615,33 @@
       <source>Remove</source>
       <translation>Quitar</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MaterialFluid</name>
     <message>
-      <location filename="_CommandFemMaterialFluid.py" line="42"/>
-      <source>FEM material for Fluid</source>
-      <translation>Material FEM para Fluido</translation>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
+      <source>Add</source>
+      <translation>Añadir</translation>
     </message>
     <message>
-      <location filename="_CommandFemMaterialFluid.py" line="44"/>
-      <source>Creates a FEM material for Fluid</source>
-      <translation>Crea un material FEM para Fluido</translation>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>Quitar</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculix</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="681"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation>CalculiX Solver</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation>Crea un solver FEM CalculiX</translation>
     </message>
   </context>
   <context>
@@ -624,37 +658,11 @@
     </message>
   </context>
   <context>
-    <name>FEM_MeshGmshFromShape</name>
-    <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
-      <source>FEM mesh from shape by GMSH</source>
-      <translation>Mallado FEM de la figura por GMSH</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
-      <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation>Crear una malla FEM de una forma mediante el mallador GMSH</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_MeshPrintInfo</name>
     <message>
       <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
       <source>Print FEM mesh info</source>
       <translation>Mostrar información de mallado FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCalculix</name>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="42"/>
-      <source>Solver CalculiX</source>
-      <translation>CalculiX Solver</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="44"/>
-      <source>Creates a FEM solver CalculiX</source>
-      <translation>Crea un solver FEM CalculiX</translation>
     </message>
   </context>
   <context>

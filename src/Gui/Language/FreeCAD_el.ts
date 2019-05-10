@@ -1245,10 +1245,6 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Ενεργοποίηση οθόνης υποδοχής κατά την εκκίνηση</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Μετάβαση στην καρτέλα παραθύρου αναφοράς:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Αυτόματη φόρτωση λειτουργικής μονάδας μετά την εκκίνηση:</translation>
     </message>
@@ -1267,10 +1263,6 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>Size of recent file list</source>
       <translation>Μέγεθος λίστας προσφάτων αρχείων</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Τύπος μορφοποίησης παραθύρου:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1628,6 +1620,53 @@ Specify another directory, please.</source>
     <message>
       <source>&amp;Close</source>
       <translation>Κλείσιμο</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation type="unfinished">Find...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Εύρεση</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation type="unfinished">Find what:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation type="unfinished">Look at</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation type="unfinished">Groups</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation type="unfinished">Names</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation type="unfinished">Values</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation type="unfinished">Match whole string only</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation type="unfinished">Find Next</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation type="unfinished">Not found</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation type="unfinished">Can't find the text: %1</translation>
     </message>
   </context>
   <context>
@@ -2725,10 +2764,6 @@ Specify another directory, please.</source>
       <translation>Εντολές Γραφικού Περιβάλλοντος Χρήστη</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Πραγματοποιείται καταγραφή εντολών Γραφικού Περιβάλλοντος Χρήστη</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Καταγραφή ως σχόλιο</translation>
     </message>
@@ -2743,6 +2778,10 @@ Specify another directory, please.</source>
     <message>
       <source>Run macros in local environment</source>
       <translation>Εκτέλεση μακροεντολών σε τοπικό περιβάλλον</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation type="unfinished">Record GUI commands</translation>
     </message>
   </context>
   <context>
@@ -2770,10 +2809,6 @@ Specify another directory, please.</source>
     <message>
       <source>Unit</source>
       <translation>Μονάδα</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Σύστημα χρήστη:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2838,6 +2873,10 @@ Specify another directory, please.</source>
     <message>
       <source>1/128"</source>
       <translation type="unfinished">1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation type="unfinished">Unit system:</translation>
     </message>
   </context>
   <context>
@@ -4542,12 +4581,12 @@ Do you want to specify another directory?</source>
       <translation>Προσαυξήσεις</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Προσαύξηση Μετάφρασης: </translation>
+      <source>Translation Increment:</source>
+      <translation type="unfinished">Translation Increment:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Προσαύξηση Περιστροφής: </translation>
+      <source>Rotation Increment:</source>
+      <translation type="unfinished">Rotation Increment:</translation>
     </message>
   </context>
   <context>

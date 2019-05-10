@@ -162,7 +162,7 @@
       <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation>輸入錯誤</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation type="unfinished">Samples per node</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation>輸入錯誤</translation>
     </message>

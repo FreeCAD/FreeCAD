@@ -162,7 +162,7 @@
       <translation>Por favor, selecione um objeto de posicionamento único para obter orientação local.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation>Erro de entrada</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Amostras por nó</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation>Erro de entrada</translation>
     </message>
