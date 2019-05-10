@@ -9,7 +9,6 @@ endif(BUILD_GUI)
 set(Path_Scripts
     Init.py
     PathCommands.py
-    TestPathApp.py
 )
 
 if(BUILD_GUI)
@@ -131,27 +130,6 @@ SET(PathScripts_post_SRCS
 
 
 SET(PathTests_SRCS
-    PathTests/__init__.py
-    PathTests/PathTestUtils.py
-    PathTests/TestPathCore.py
-    PathTests/TestPathDeburr.py
-    PathTests/TestPathDepthParams.py
-    PathTests/TestPathDressupDogbone.py
-    PathTests/TestPathDressupHoldingTags.py
-    PathTests/TestPathGeom.py
-    PathTests/TestPathLog.py
-    PathTests/TestPathOpTools.py
-    PathTests/TestPathPost.py
-    PathTests/TestPathSetupSheet.py
-    PathTests/TestPathStock.py
-    PathTests/TestPathTool.py
-    PathTests/TestPathToolController.py
-    PathTests/TestPathTooltable.py
-    PathTests/TestPathUtil.py
-    PathTests/boxtest.fcstd
-    PathTests/test_centroid_00.ngc
-    PathTests/test_geomop.fcstd
-    PathTests/test_linuxcnc_00.ngc
 )
 
 SET(PathImages_Ops

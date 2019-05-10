@@ -23,7 +23,6 @@ SET(FemScripts_SRCS
     Init.py
     InitGui.py
     ObjectsFem.py
-    TestFem.py
 )
 
 SET(FemCommands_SRCS
@@ -125,70 +124,21 @@ SET(FemSolverZ88_SRCS
 )
 
 SET(FemTests_SRCS
-    femtest/__init__.py
-    femtest/testccxtools.py
-    femtest/testcommon.py
-    femtest/testmesh.py
-    femtest/testobject.py
-    femtest/testresult.py
-    femtest/testsolverframework.py
-    femtest/utilstest.py
 )
 
 SET(FemTestsFiles_SRCS
-    femtest/testfiles/__init__.py
 )
 
 SET(FemTestsCcx_SRCS
-    femtest/testfiles/ccx/__init__.py
-    femtest/testfiles/ccx/cube_mesh.py
-    femtest/testfiles/ccx/cube_frequency.inp
-    femtest/testfiles/ccx/cube_frequency.dat
-    femtest/testfiles/ccx/cube_frequency.frd
-    femtest/testfiles/ccx/cube_frequency_expected_values
-    femtest/testfiles/ccx/cube_frequency.FCStd
-    femtest/testfiles/ccx/cube_static.inp
-    femtest/testfiles/ccx/cube_static.dat
-    femtest/testfiles/ccx/cube_static.frd
-    femtest/testfiles/ccx/cube_static_expected_values
-    femtest/testfiles/ccx/cube_static.FCStd
-    femtest/testfiles/ccx/cube.FCStd
-    femtest/testfiles/ccx/multimat.inp
-    femtest/testfiles/ccx/multimat_mesh.py
-    femtest/testfiles/ccx/spine_mesh.py
-    femtest/testfiles/ccx/spine_thermomech.inp
-    femtest/testfiles/ccx/spine_thermomech.dat
-    femtest/testfiles/ccx/spine_thermomech.frd
-    femtest/testfiles/ccx/spine_thermomech_expected_values
-    femtest/testfiles/ccx/spine_thermomech.FCStd
-    femtest/testfiles/ccx/Flow1D_mesh.py
-    femtest/testfiles/ccx/Flow1D_thermomech.inp
-    femtest/testfiles/ccx/Flow1D_thermomech.dat
-    femtest/testfiles/ccx/Flow1D_thermomech.frd
-    femtest/testfiles/ccx/Flow1D_thermomech_expected_values
-    femtest/testfiles/ccx/Flow1D_thermomech_inout_nodes.txt
-    femtest/testfiles/ccx/Flow1D_thermomech.FCStd
 )
 
 SET(FemTestsElmer_SRCS
-    femtest/testfiles/elmer/__init__.py
-    femtest/testfiles/elmer/case.sif
-    femtest/testfiles/elmer/group_mesh.geo
-    femtest/testfiles/elmer/ELMERSOLVER_STARTINFO
 )
 
 SET(FemTestsMesh_SRCS
-    femtest/testfiles/mesh/__init__.py
-    femtest/testfiles/mesh/tetra10_mesh.inp
-    femtest/testfiles/mesh/tetra10_mesh.unv
-    femtest/testfiles/mesh/tetra10_mesh.vtk
-    femtest/testfiles/mesh/tetra10_mesh.z88
 )
 
 SET(FemTools_SRCS
-    femtools/__init__.py
-    femtools/ccxtools.py
-    femtools/femutils.py
 )
 
 SET(FemObjectsScripts_SRCS
