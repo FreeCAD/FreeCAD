@@ -300,8 +300,7 @@
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
-while doing a left or right click and move the mouse up or down</translation>
+      <translation>Прокрутіть середню кнопку мишки або клікніть і рухайте мишку вверх або вниз утримуючи нажатою середню кнопку</translation>
     </message>
   </context>
   <context>
@@ -1245,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Увімкнути заставку при запуску</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Перейти на вкладку вікна звіту:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Автоматичне завантаження модуля після запуску:</translation>
     </message>
@@ -1267,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>Size of recent file list</source>
       <translation>Розмір списку останніх файлів</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Стиль вікна:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1471,8 +1462,8 @@ Perhaps a file permission error?</source>
     <message>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to duplicate to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Не вдалося здублювати в '%1'.
+Можливо помилка доступу до файлу?</translation>
     </message>
   </context>
   <context>
@@ -1626,6 +1617,53 @@ Specify another directory, please.</source>
     <message>
       <source>&amp;Close</source>
       <translation>&amp;Закрити</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation type="unfinished">Find...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Знайти</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation type="unfinished">Find what:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation type="unfinished">Look at</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation type="unfinished">Groups</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation type="unfinished">Names</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation type="unfinished">Values</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation type="unfinished">Match whole string only</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation type="unfinished">Find Next</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation type="unfinished">Not found</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation type="unfinished">Can't find the text: %1</translation>
     </message>
   </context>
   <context>
@@ -2072,7 +2110,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
+      <translation>Використовувати OpenGL Vertex Buffer Object</translation>
     </message>
     <message>
       <source>New Document Camera Orientation</source>
@@ -2722,10 +2760,6 @@ Specify another directory, please.</source>
       <translation>Команди GUI</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Запис команд GUI</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Записати як коментар</translation>
     </message>
@@ -2740,6 +2774,10 @@ Specify another directory, please.</source>
     <message>
       <source>Run macros in local environment</source>
       <translation>Запуск макросів у локальному середовищі</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation type="unfinished">Record GUI commands</translation>
     </message>
   </context>
   <context>
@@ -2767,10 +2805,6 @@ Specify another directory, please.</source>
     <message>
       <source>Unit</source>
       <translation>Одиниця</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Користувач системи:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2835,6 +2869,10 @@ Specify another directory, please.</source>
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation type="unfinished">Unit system:</translation>
     </message>
   </context>
   <context>
@@ -4536,12 +4574,12 @@ Do you want to specify another directory?</source>
       <translation>Прирощення</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Приріст переміщення: </translation>
+      <source>Translation Increment:</source>
+      <translation type="unfinished">Translation Increment:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Приріст обертання: </translation>
+      <source>Rotation Increment:</source>
+      <translation type="unfinished">Rotation Increment:</translation>
     </message>
   </context>
   <context>
@@ -5298,7 +5336,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Export failed</source>
-      <translation type="unfinished">Export failed</translation>
+      <translation>Експорт не вдався</translation>
     </message>
     <message>
       <source>Split</source>

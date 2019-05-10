@@ -283,7 +283,7 @@
     <message>
       <location filename="../../Command.cpp" line="434"/>
       <source>Import mesh...</source>
-      <translation>Kafes içeri aktar...</translation>
+      <translation>Kafesi içeri aktar...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="435"/>
@@ -1152,12 +1152,19 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="53"/>
       <source>Maximum mesh deviation</source>
-      <translation>Maksimum örgü sapması</translation>
+      <translation>Maksimum kafes sapması</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="60"/>
       <source>Export AMF files using compression</source>
       <translation>Sıkıştırmayı kullanarak AMF dosyalarını dışa aktarma</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="36"/>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation type="unfinished">This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</translation>
     </message>
   </context>
   <context>
@@ -1195,7 +1202,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="192"/>
       <source>Two-side rendering</source>
-      <translation>İki taraflı kaplama</translation>
+      <translation>İki taraflı işle (render)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="208"/>
@@ -1756,7 +1763,7 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     <message>
       <location filename="../../Command.cpp" line="458"/>
       <source>Import mesh</source>
-      <translation>Örgü içe aktar</translation>
+      <translation>Kafesi içe aktar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="510"/>

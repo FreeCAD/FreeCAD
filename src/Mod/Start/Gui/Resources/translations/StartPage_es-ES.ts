@@ -154,9 +154,9 @@
       <translation>Ver todos cambios acometidos en github</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
-      <source>See all commits on github</source>
-      <translation>Ver todos cambios acometidos en github</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
+      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
+      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -208,22 +208,12 @@
       <source>Notes</source>
       <translation>Notas</translation>
     </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
-      <source>Notes</source>
-      <translation>Notas</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <location filename="../../Workbench.cpp" line="65"/>
-      <source>Start page</source>
-      <translation>Página de inicio</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>Página de inicio</translation>
     </message>
@@ -316,7 +306,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="167"/>
       <source>The background of the main start page area</source>
-      <translation>El fondo del area de la página de inicio principal</translation>
+      <translation>El fondo del área principal de la página de inicio</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="187"/>
@@ -336,7 +326,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="236"/>
       <source>Background color gradient down</source>
-      <translation>Color de fondo degradado</translation>
+      <translation>Deegradado del color de fondo</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="249"/>
@@ -346,17 +336,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="269"/>
       <source>Link color</source>
-      <translation>Color del enlace</translation>
+      <translation>Color de enlace</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="276"/>
       <source>An optional image to display as background</source>
-      <translation>Una imagen opcional para que aparezca como fondo</translation>
+      <translation>Una imagen opcional a mostrar como fondo</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
       <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Si se selecciona, y se especifica una hoja de estilo en las preferencias generales, se utilizará y anulará los colores a continuación</translation>
+      <translation>Si esto se marca, y esta especificada una hoja de estilo en las preferencias generales, se utilizará y anulará los colores siguientes</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="308"/>
@@ -401,7 +391,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="449"/>
       <source>The down gradient for the background color (currently unsupported)</source>
-      <translation>El gradiente hacia abajo para color de fondo (actualmente no soportado)</translation>
+      <translation>El degradado para el color de fondo (actualmente no soportado)</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="472"/>
@@ -456,7 +446,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="577"/>
       <source>Should the start page be closed after loading?</source>
-      <translation>¿Se debe cerrar la página de inicio después de la carga?</translation>
+      <translation>¿Debe cerrar la página de inicio después de cargar?</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="596"/>
@@ -466,17 +456,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="603"/>
       <source>Close start page after loading</source>
-      <translation>Cerca de inicio después de la carga</translation>
+      <translation>Cerrar página de inicio después de cargar</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="610"/>
       <source>Close &amp; switch on file open</source>
-      <translation>Cerrar y cambiar en el archivo abierto</translation>
+      <translation>Cerrar y cambiar al archivo abierto</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="617"/>
       <source>If FreeCAD is started by opening a file, apply the two settings above</source>
-      <translation>Si FreeCAD se inicia con la apertura de un archivo, aplique los dos ajustes anteriores</translation>
+      <translation>Si FreeCAD se inicia abriendo un archivo, se aplican los dos ajustes anteriores</translation>
     </message>
   </context>
 </TS>

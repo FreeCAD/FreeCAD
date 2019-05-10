@@ -1244,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Gaitu abioko ongietorri-pantaila</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Txosten-leiho fitxara aldatu:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Modulua automatikoki kargatu abiarazi ondoren:</translation>
     </message>
@@ -1266,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Size of recent file list</source>
       <translation>Azken fitxategien zerrendaren luzera</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Leiho-estiloa:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1626,6 +1618,53 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>&amp;Itxi</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation type="unfinished">Find...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Aurkitu</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation type="unfinished">Find what:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation type="unfinished">Look at</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation type="unfinished">Groups</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation type="unfinished">Names</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation type="unfinished">Values</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation type="unfinished">Match whole string only</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation type="unfinished">Find Next</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation type="unfinished">Not found</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation type="unfinished">Can't find the text: %1</translation>
     </message>
   </context>
   <context>
@@ -2273,7 +2312,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>The maximum value must be higher than the minimum value.</source>
-      <translation>Balio maximoa balio minimoa baino handiagoa izan behar du.</translation>
+      <translation>Balio maximoak balio minimoak baino handiagoa izan behar du.</translation>
     </message>
   </context>
   <context>
@@ -2722,10 +2761,6 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>GUI komandoak</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>GUI komandoen grabazioa</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Grabatu iruzkin gisa</translation>
     </message>
@@ -2740,6 +2775,10 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Exekutatu makroak ingurune lokalean</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation type="unfinished">Record GUI commands</translation>
     </message>
   </context>
   <context>
@@ -2767,10 +2806,6 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <source>Unit</source>
       <translation>Unitatea</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Erabiltzaile-sistema:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2835,6 +2870,10 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation type="unfinished">Unit system:</translation>
     </message>
   </context>
   <context>
@@ -3272,7 +3311,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Add sub-group</source>
-      <translation>Gehitu azpi-taldea</translation>
+      <translation>Gehitu azpitaldea</translation>
     </message>
     <message>
       <source>Remove group</source>
@@ -3284,11 +3323,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Export parameter</source>
-      <translation>Esportazio-parametroa</translation>
+      <translation>Esportatu parametroa</translation>
     </message>
     <message>
       <source>Import parameter</source>
-      <translation>Inportazio-parametroa</translation>
+      <translation>Inportatu parametroa</translation>
     </message>
     <message>
       <source>Collapse</source>
@@ -3300,7 +3339,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Existing sub-group</source>
-      <translation>Badago azpi-taldea</translation>
+      <translation>Lehendik dagoen azpitaldea</translation>
     </message>
     <message>
       <source>The sub-group '%1' already exists.</source>
@@ -3320,7 +3359,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Reading from '%1' failed.</source>
-      <translation>Huts egin du '%1' irakurtzen.</translation>
+      <translation>'%1' irakurtzeak huts egin du.</translation>
     </message>
   </context>
   <context>
@@ -3418,11 +3457,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Roll:</source>
-      <translation>Kulunkatzea:</translation>
+      <translation>Kulunka:</translation>
     </message>
     <message>
       <source>Yaw:</source>
-      <translation>Keinadatzea:</translation>
+      <translation>Keinada:</translation>
     </message>
     <message>
       <source>Rotation axis with angle</source>
@@ -4540,12 +4579,12 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
       <translation>Gehikuntzak</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Translazioaren gehikuntza: </translation>
+      <source>Translation Increment:</source>
+      <translation type="unfinished">Translation Increment:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Biraketaren gehikuntza: </translation>
+      <source>Rotation Increment:</source>
+      <translation type="unfinished">Rotation Increment:</translation>
     </message>
   </context>
   <context>

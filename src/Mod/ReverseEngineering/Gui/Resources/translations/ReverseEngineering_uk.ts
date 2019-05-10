@@ -162,7 +162,7 @@
       <translation>Будь ласка, виберіть один об'єкт розміщення для отримання локальної орієнтації.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation>Помилка вводу</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Зразків на вузол</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation>Помилка вводу</translation>
     </message>

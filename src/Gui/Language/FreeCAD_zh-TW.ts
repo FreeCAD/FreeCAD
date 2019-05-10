@@ -1245,10 +1245,6 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>在開啟時使用啟動畫面</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>切換到報告視窗標籤：</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>啟動後自動載入模組：</translation>
     </message>
@@ -1267,10 +1263,6 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>Size of recent file list</source>
       <translation>最近檔案清單尺寸</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>視窗樣式：</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1624,6 +1616,53 @@ Specify another directory, please.</source>
     <message>
       <source>&amp;Close</source>
       <translation>關閉(&amp;C)</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation type="unfinished">Find...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>發現</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation type="unfinished">Find what:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation type="unfinished">Look at</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation type="unfinished">Groups</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation type="unfinished">Names</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation type="unfinished">Values</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation type="unfinished">Match whole string only</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation type="unfinished">Find Next</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation type="unfinished">Not found</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation type="unfinished">Can't find the text: %1</translation>
     </message>
   </context>
   <context>
@@ -2719,10 +2758,6 @@ Specify another directory, please.</source>
       <translation>Gui 指令</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>錄製 GUI 指令</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>記錄為評論</translation>
     </message>
@@ -2737,6 +2772,10 @@ Specify another directory, please.</source>
     <message>
       <source>Run macros in local environment</source>
       <translation>於此環境執行巨集</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation type="unfinished">Record GUI commands</translation>
     </message>
   </context>
   <context>
@@ -2764,10 +2803,6 @@ Specify another directory, please.</source>
     <message>
       <source>Unit</source>
       <translation>單位</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>使用者系統：</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2832,6 +2867,10 @@ Specify another directory, please.</source>
     <message>
       <source>1/128"</source>
       <translation type="unfinished">1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation type="unfinished">Unit system:</translation>
     </message>
   </context>
   <context>
@@ -4528,12 +4567,12 @@ Do you want to specify another directory?</source>
       <translation>增加量</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>平移變化量：</translation>
+      <source>Translation Increment:</source>
+      <translation type="unfinished">Translation Increment:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>旋轉變化量：</translation>
+      <source>Rotation Increment:</source>
+      <translation type="unfinished">Rotation Increment:</translation>
     </message>
   </context>
   <context>

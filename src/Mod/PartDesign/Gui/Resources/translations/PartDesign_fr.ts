@@ -3145,7 +3145,7 @@ Il vous sera néanmoins possible de migrer à tout moment, plus tard, via « Pa
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="280"/>
       <source>Bolt/Washer</source>
-      <translation>Vis/Rondelle</translation>
+      <translation>Boulon/Rondelle</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="329"/>

@@ -162,7 +162,7 @@
       <translation>Molimo odaberite jedan jedini položaj objekt da dobijete lokalnu orijentaciju.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Uzoraka po čvoru</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>

@@ -147,8 +147,8 @@
       <translation>Объединить ячейки</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Объединение выделенных ячеек в электронной таблице</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Разделить ячейку</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Разделить ранее объединенные ячейки в электронной таблице</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Полужирный текст</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Задать полужирный текст в выбранных ячейках</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Курсивный текст</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Установить курсивный текст в выбранных ячейках</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Светло-серый</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Дополнительно</translation>
+      <source>Custom Color</source>
+      <translation>﻿Пользовательский цвет</translation>
     </message>
   </context>
   <context>

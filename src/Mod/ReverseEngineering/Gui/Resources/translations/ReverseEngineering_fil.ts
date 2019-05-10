@@ -162,7 +162,7 @@
       <translation>Mangyaring pumili ng isang pagkakalagay ng bagay upang makakuha ng lokal na oryentasyon.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Mga Halimbawa kada noda</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>

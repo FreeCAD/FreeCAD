@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="211"/>
       <source>Section</source>
-      <translation>Sezione</translation>
+      <translation>Seziona</translation>
     </message>
   </context>
   <context>

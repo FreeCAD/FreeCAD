@@ -147,8 +147,8 @@
       <translation>Zellen verbinden</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Verbindet ausgewählte Zellen in der Tabelle</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Zelle teilen</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Trennt vorher zusammengefügte Zellen in der Tabelle</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Text in Fettschrift</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Setzt Text in den gewählten Zellen in Fettschrift</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Text in Kursivschrift</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Setzt Text in den gewählten Zellen in Kursivschrift</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Hellgrau</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Benutzerdefiniert</translation>
+      <source>Custom Color</source>
+      <translation>Benutzerdefinierte Farbe</translation>
     </message>
   </context>
   <context>

@@ -162,7 +162,7 @@
       <translation>ローカル方向を取得するには単一の配置オブジェクトを選択してください</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation>入力エラー</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>ノードあたりのサンプル数</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation>入力エラー</translation>
     </message>

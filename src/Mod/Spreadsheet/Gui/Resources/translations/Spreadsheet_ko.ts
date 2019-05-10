@@ -147,8 +147,8 @@
       <translation>셀 병합</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>스프레드시트에 선택한 셀들을 병합합니다</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>셀 나누기</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>스프레드시트에 병합된 셀을 나눕니다</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>굵은 글자</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>셀에 굵은 글자를 적용합니다</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>기울임 글자</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>선택한 셀에 기울임 글자를 적용합니다</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>밝은회색</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>색상 편집</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
