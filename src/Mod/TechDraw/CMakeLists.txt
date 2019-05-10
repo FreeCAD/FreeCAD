@@ -8,7 +8,6 @@ endif(BUILD_GUI)
 
 set(TechDraw_Scripts
     Init.py
-    TestTechDrawApp.py
 )
 
 if(BUILD_GUI)
@@ -89,21 +88,9 @@ INSTALL(
 
 #unit test files
 SET(TDTest_SRCS
-    TDTest/__init__.py
-    TDTest/DHatchTest.py
-    TDTest/DProjGroupTest.py
-    TDTest/DVAnnoSymImageTest.py
-    TDTest/DVDimensionTest.py
-    TDTest/DVPartTest.py
-    TDTest/DVSectionTest.py
-    TDTest/DVBalloonTest.py
 )
 
 SET(TDTestFile_SRCS
-    TDTest/TestHatch.svg
-    TDTest/TestImage.png
-    TDTest/TestSymbol.svg
-    TDTest/TestTemplate.svg
 )
 
 SET(TDAllTest
