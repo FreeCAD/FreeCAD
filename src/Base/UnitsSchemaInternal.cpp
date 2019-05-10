@@ -163,6 +163,10 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             factor = 0.001;
         }
     }
+    else if (unit == Unit::FractureToughness) {
+        unitString = QString::fromLatin1("MPa*m^0.5");
+        factor = 1000.0 * pow(1000.0, 0.5);  // MPa = * 1000 and m^0.5 = * 1000^0.5
+    }
     else if (unit == Unit::Power) {
         unitString = QString::fromLatin1("W");
         factor = 1000000;

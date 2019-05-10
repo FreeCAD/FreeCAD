@@ -134,6 +134,9 @@ public:
     static Unit DynamicViscosity;
     static Unit KinematicViscosity;
 
+    // FractureToughness
+    static Unit FractureToughness;
+
     //@}
 protected:
     UnitSignature Sig;

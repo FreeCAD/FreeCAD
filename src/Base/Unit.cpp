@@ -441,6 +441,7 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::AmountOfSubstance           )       return QString::fromLatin1("AmountOfSubstance");
     if(*this == Unit::LuminousIntensity           )       return QString::fromLatin1("LuminousIntensity");
     if(*this == Unit::Pressure                    )       return QString::fromLatin1("Pressure");
+    if(*this == Unit::FractureToughness           )       return QString::fromLatin1("FractureToughness");
     if(*this == Unit::Force                       )       return QString::fromLatin1("Force");
     if(*this == Unit::Work                        )       return QString::fromLatin1("Work");
     if(*this == Unit::Power                       )       return QString::fromLatin1("Power");
@@ -486,6 +487,9 @@ Unit Unit::Stress                  (-1,1,-2);
 Unit Unit::UltimateTensileStrength (-1,1,-2);
 Unit Unit::YieldStrength           (-1,1,-2);
 Unit Unit::YoungsModulus           (-1,1,-2);
+
+// FractureToughness MPa * m^0.5 = kg/m*s^2 * m^0.5 = kg / (m^0.5 * s^2)
+Unit Unit:: FractureToughness      (-0.5,1,-2);
 
 Unit Unit::Force   (1,1,-2);
 Unit Unit::Work    (2,1,-2);

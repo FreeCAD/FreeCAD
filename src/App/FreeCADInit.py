@@ -364,6 +364,9 @@ App.Units.UltimateTensileStrength = App.Units.Unit(-1,1,-2)
 App.Units.YieldStrength           = App.Units.Unit(-1,1,-2)
 App.Units.YoungsModulus           = App.Units.Unit(-1,1,-2)
 
+# FractureToughness
+App.Units.FractureToughness       = App.Units.Unit(-0.5,1,-2)
+
 App.Units.Force         = App.Units.Unit(1,1,-2) 
 App.Units.Work          = App.Units.Unit(2,1,-2) 
 App.Units.Power         = App.Units.Unit(2,1,-3) 
