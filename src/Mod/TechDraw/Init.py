@@ -25,4 +25,4 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
-FreeCAD.__unit_test__ += [ "TestTechDrawApp" ]
+#FreeCAD.__unit_test__ += [ "TestTechDrawApp" ]
