@@ -8,7 +8,7 @@ set(Part_Scripts
     Init.py
     JoinFeatures.py
     MakeBottle.py
-#    TestPartApp.py
+    TestPartApp.py
 )
 
 if(BUILD_GUI)
