@@ -180,31 +180,8 @@ MESSAGE(STATUS "libdir: ${CMAKE_INSTALL_LIBDIR}")
 MESSAGE(STATUS "cmake: ${CMAKE_VERSION}")
 
 # ==============================================================================
-# == Win32 is default behaviour use the LibPack copied in Source tree ==========
-if(MSVC)
-    OPTION(FREECAD_RELEASE_PDB "Create PDB files for Release version." ON)
-    OPTION(FREECAD_RELEASE_SEH "Enable Structured Exception Handling for Release version." ON)
-    OPTION(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." ON)
-    OPTION(FREECAD_LIBPACK_USEPYSIDE "Use PySide in LibPack rather to PyQt and Swig." ON)
-    IF(DEFINED ENV{FREECAD_LIBPACK_DIR})
-      set(FREECAD_LIBPACK_DIR $ENV{FREECAD_LIBPACK_DIR} CACHE PATH  "Directory of the FreeCAD LibPack")
-      MESSAGE(STATUS "Found libpack env variable: ${FREECAD_LIBPACK_DIR}")
-      IF(EXISTS ${FREECAD_LIBPACK_DIR}/lib/Qt5Core.lib)
-        OPTION(BUILD_QT5 "Build with Qt5." ON)
-      ELSE()
-        OPTION(BUILD_QT5 "Build with Qt5." OFF)
-      ENDIF()
-    ELSE()
-        set(FREECAD_LIBPACK_DIR ${CMAKE_SOURCE_DIR} CACHE PATH  "Directory of the FreeCAD LibPack")
-    ENDIF()
-    OPTION(FREECAD_USE_PCH "Activate precompiled headers where it's used." ON)
-else(MSVC)
-    OPTION(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." OFF)
-    set(FREECAD_LIBPACK_DIR ""  CACHE PATH  "Directory of the FreeCAD LibPack")
-endif(MSVC)
-
+# =================   All the options for the build process    =================
 # ==============================================================================
-# == All the options for the build process    ============
 
 # Switch to build FreeCAD with Qt5
 OPTION(BUILD_QT5 "Build with Qt5." OFF)
@@ -222,6 +199,55 @@ if (WIN32 OR APPLE)
 else()
     OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." ON)
 endif()
+
+# == Win32 is default behaviour use the LibPack copied in Source tree ==========
+if(MSVC)
+    OPTION(FREECAD_RELEASE_PDB "Create PDB files for Release version." ON)
+    OPTION(FREECAD_RELEASE_SEH "Enable Structured Exception Handling for Release version." ON)
+    OPTION(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." ON)
+    OPTION(FREECAD_LIBPACK_USEPYSIDE "Use PySide in LibPack rather to PyQt and Swig." ON)
+    OPTION(FREECAD_USE_PCH "Activate precompiled headers where it's used." ON)
+
+    IF(DEFINED ENV{FREECAD_LIBPACK_DIR})
+        set(FREECAD_LIBPACK_DIR $ENV{FREECAD_LIBPACK_DIR} CACHE PATH  "Directory of the FreeCAD LibPack")
+        MESSAGE(STATUS "Found libpack env variable: ${FREECAD_LIBPACK_DIR}")
+        IF(EXISTS ${FREECAD_LIBPACK_DIR}/lib/Qt5Core.lib)
+            OPTION(BUILD_QT5 "Build with Qt5." ON)
+        ELSE()
+            OPTION(BUILD_QT5 "Build with Qt5." OFF)
+        ENDIF()
+    ELSE()
+        set(FREECAD_LIBPACK_DIR ${CMAKE_SOURCE_DIR} CACHE PATH  "Directory of the FreeCAD LibPack")
+    ENDIF()
+
+    SET(LIBPACK_FOUND OFF)
+    IF(EXISTS ${FREECAD_LIBPACK_DIR}/plugins/imageformats/qsvg.dll)
+        SET(LIBPACK_FOUND ON)
+        SET(COPY_LIBPACK_BIN_TO_BUILD OFF)
+        # Create install commands for dependencies for INSTALL project in FreeCAD solution
+        OPTION(FREECAD_INSTALL_DEPEND_DIRS "Create install dependency commands for the INSTALL project found
+            in the FreeCAD solution." ON)
+        # Copy libpack smaller dependency folders to build folder per user request - if non-existant at destination
+        IF(NOT EXISTS ${CMAKE_BINARY_DIR}/bin/imageformats/qsvg.dll)
+            OPTION(FREECAD_COPY_DEPEND_DIRS_TO_BUILD "Copy smaller libpack dependency directories to build directory." OFF)
+        ENDIF()
+        # Copy libpack 'bin' directory contents to build 'bin' per user request - only IF NOT EXISTS already
+        IF(NOT EXISTS ${CMAKE_BINARY_DIR}/bin/DLLs)
+            SET(COPY_LIBPACK_BIN_TO_BUILD ON)
+            OPTION(FREECAD_COPY_LIBPACK_BIN_TO_BUILD "Copy larger libpack dependency 'bin' folder to the build direcctory." OFF)
+        ENDIF()
+        # Default Qt5 ON if present in libpack
+        IF(EXISTS ${CMAKE_BINARY_DIR}/bin/Qt5Core.dll)
+            OPTION(BUILD_QT5 "Build with Qt5." OFF)
+        ENDIF()
+    ELSE()
+        MESSAGE("Libpack NOT found.\nIf you intend to use a Windows libpack, set the FREECAD_LIBPACK_DIR to the libpack directory.")
+        MESSAGE(STATUS "Visit: https://github.com/apeltauer/FreeCAD/releases/ for Windows libpack downloads.")
+    ENDIF()
+ELSE(MSVC)
+    OPTION(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." OFF)
+    SET(FREECAD_LIBPACK_DIR ""  CACHE PATH  "Directory of the FreeCAD LibPack")
+ENDIF(MSVC)
 
 # https://blog.kitware.com/constraining-values-with-comboboxes-in-cmake-cmake-gui/
 set(FREECAD_USE_OCC_VARIANT "Community Edition"  CACHE STRING  "Official OpenCASCADE version or community edition")
@@ -1191,14 +1217,14 @@ IF(MSVC)
 		SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
     ENDIF(FREECAD_RELEASE_SEH)
   
-  OPTION(FREECAD_USE_MP_COMPILE_FLAG "Add /MP flag to the compiler definitions. Speeds up the compile on multi processor machines" OFF)
-  if(FREECAD_USE_MP_COMPILE_FLAG)
-    # set "Build with Multiple Processes"
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP")
-  endif()
-  
-	# Mark 32 bit executables large address aware so they can use > 2GB address space
+    OPTION(FREECAD_USE_MP_COMPILE_FLAG "Add /MP flag to the compiler definitions. Speeds up the compile on multi processor machines" OFF)
+    if(FREECAD_USE_MP_COMPILE_FLAG)
+        # set "Build with Multiple Processes"
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+        SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP")
+    endif()
+
+    # Mark 32 bit executables large address aware so they can use > 2GB address space
 	# NOTE: This setting only has an effect on machines with at least 3GB of RAM, although it sets the linker option it doesn't set the linker switch 'Enable Large Addresses'
 	IF(CMAKE_SIZEOF_VOID_P EQUAL 4)
 		set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /LARGEADDRESSAWARE")
@@ -1209,6 +1235,7 @@ ELSE(MSVC)
         #MESSAGE(STATUS "DEBUG: ${CMAKE_CXX_FLAGS_DEBUG}")
         MESSAGE(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 ENDIF(MSVC)
+
 IF(MINGW)
 	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=12477
 	# Actually '-Wno-inline-dllimport' should work to suppress warnings of the form:
@@ -1454,7 +1481,45 @@ ELSE(DOXYGEN_FOUND)
   MESSAGE(STATUS "Doxygen:             not found")
 ENDIF(DOXYGEN_FOUND)
 
+IF(MSVC)
+    # Copy libpack dependency directories to build folder for user as part of overall build process
+    IF(FREECAD_LIBPACK_USE AND LIBPACK_FOUND)
+        IF(FREECAD_COPY_DEPEND_DIRS_TO_BUILD)
+            MESSAGE(STATUS "=======================================\n"
+                "Copying libpack dependency directories to build directory for Windows MSVC build.\n")
+            FILE(COPY ${FREECAD_LIBPACK_DIR}/plugins/platforms DESTINATION ${CMAKE_BINARY_DIR}/bin)
+            FILE(COPY ${FREECAD_LIBPACK_DIR}/plugins/imageformats DESTINATION ${CMAKE_BINARY_DIR}/bin)
+            FILE(COPY ${FREECAD_LIBPACK_DIR}/plugins/iconengines DESTINATION ${CMAKE_BINARY_DIR}/bin)
+            FILE(COPY ${FREECAD_LIBPACK_DIR}/plugins/sqldrivers DESTINATION ${CMAKE_BINARY_DIR}/bin)
+            FILE(COPY ${FREECAD_LIBPACK_DIR}/resources DESTINATION ${CMAKE_BINARY_DIR})
+            FILE(COPY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/PySide2/translations/qtwebengine_locales
+                DESTINATION ${CMAKE_BINARY_DIR}/bin)
+            MESSAGE(STATUS "... end copying.\n=======================================\n")
+        ENDIF(FREECAD_COPY_DEPEND_DIRS_TO_BUILD)
 
+        IF(COPY_LIBPACK_BIN_TO_BUILD)
+            IF(FREECAD_COPY_LIBPACK_BIN_TO_BUILD)
+                MESSAGE("=======================================\n"
+                        "Copying libpack 'bin' directory to build directory.\n")
+                FILE(COPY ${FREECAD_LIBPACK_DIR}/bin DESTINATION ${CMAKE_BINARY_DIR})
+                MESSAGE("... done copying libpack 'bin' directory.\n=======================================\n")
+            ENDIF()
+        ENDIF()
+
+        IF(FREECAD_INSTALL_DEPEND_DIRS)
+            # Test install command for installing/copying directories
+            MESSAGE(STATUS "=======================================")
+            INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/platforms DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+            INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/imageformats DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+            INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/iconengines DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+            INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/sqldrivers DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+            INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/PySide2/translations/qtwebengine_locales DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+            INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/resources DESTINATION ${CMAKE_INSTALL_PREFIX})
+            INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin DESTINATION ${CMAKE_INSTALL_PREFIX})
+            MESSAGE(STATUS "Created install commands for INSTALL project.\n")
+        ENDIF(FREECAD_INSTALL_DEPEND_DIRS)
+    ENDIF(FREECAD_LIBPACK_USE AND LIBPACK_FOUND)
+ENDIF()
 
 # Print message to start build process
 if (${CMAKE_BUILD_TOOL} MATCHES "make")
