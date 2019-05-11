@@ -67,4 +67,4 @@ class PartWorkbench ( Workbench ):
 
 Gui.addWorkbench(PartWorkbench())
 
-FreeCAD.__unit_test__ += [ "TestPartGui" ]
+#FreeCAD.__unit_test__ += [ "TestPartGui" ]
