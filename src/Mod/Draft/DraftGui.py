@@ -945,6 +945,9 @@ class DraftToolBar:
         if p.GetBool("focusOnLength",False) and self.lengthValue.isVisible():
             self.lengthValue.setFocus()
             self.lengthValue.selectAll()
+        elif self.angleLock.isVisible() and self.angleLock.isChecked():
+            self.lengthValue.setFocus()
+            self.lengthValue.selectAll()
         elif f==None or f=="x":
             self.xValue.setFocus()
             self.xValue.selectAll()
@@ -998,11 +1001,11 @@ class DraftToolBar:
         self.angleValue.hide()
         self.angleLock.hide()
 
-    def lineUi(self,title=None):
+    def lineUi(self,title=None,cancel=None,extra=None,getcoords=None,rel=False):
         if title:
-            self.pointUi(title,icon="Draft_Line")
+            self.pointUi(title,cancel,extra,getcoords,rel,icon="Draft_Line")
         else:
-            self.pointUi(translate("draft", "Line"),icon="Draft_Line")
+            self.pointUi(translate("draft", "Line"),cancel,extra,getcoords,rel,icon="Draft_Line")
         self.extraLineUi()
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
@@ -1010,11 +1013,11 @@ class DraftToolBar:
         self.undoButton.show()
         self.continueCmd.show()
 
-    def wireUi(self,title=None):
+    def wireUi(self,title=None,cancel=None,extra=None,getcoords=None,rel=False):
         if title:
-            self.pointUi(title)
+            self.pointUi(title,cancel,extra,getcoords,rel)
         else:
-            self.pointUi(translate("draft", "DWire"),icon="Draft_Wire")
+            self.pointUi(translate("draft", "DWire"),cancel,extra,getcoords,rel,icon="Draft_Wire")
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
         self.isRelative.show()
