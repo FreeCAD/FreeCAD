@@ -64,7 +64,7 @@ public:
     DrawView* getBaseView(void) const;
     virtual App::DocumentObject* getBaseObject(void) const;
     bool keepUpdated(void);
-    double getScale(void);
+    double getScale(void) const;
     void adjustLastSegment(void);
     bool getDefAuto(void) const;
 

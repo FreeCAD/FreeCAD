@@ -155,7 +155,7 @@ bool DrawLeaderLine::keepUpdated(void)
     return result;
 }
 
-double DrawLeaderLine::getScale(void)
+double DrawLeaderLine::getScale(void) const
 {
     double result = 1.0;
     DrawView* parent = getBaseView();
