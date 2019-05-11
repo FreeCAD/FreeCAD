@@ -77,7 +77,7 @@ __doc__ = "Class and implementation of Mill Facing operation."
 __contributors__ = "roivai[FreeCAD], russ4262 (Russell Johnson)"
 __created__ = "2016"
 __scriptVersion__ = "3t Usable"
-__lastModified__ = "2019-05-02 10:44 CST"
+__lastModified__ = "2019-05-10 10:37 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -190,7 +190,7 @@ class ObjectSurface(PathOp.ObjectOp):
         self.startTime = time.time()
 
         # Set cutter for OCL based on tool controller properties
-        # rtn = self.setOclCutter(obj)
+        rtn = self.setOclCutter(obj)
 
         self.reportThis("\n-----\n-----\nBegin 3D surface operation")
         self.reportThis("Script version: " + __scriptVersion__ + "  Lm: " + __lastModified__)
@@ -1824,6 +1824,10 @@ class ObjectSurface(PathOp.ObjectOp):
             # Reference: https://www.fine-tools.com/halbstabfraeser.html
             # OCL -> ConeCutter::ConeCutter(diameter, angle, lengthOffset)
             self.cutter = ocl.ConeCutter(diam_1, (obj.ToolController.Tool.CuttingEdgeAngle / 2), lenOfst)
+        else:
+            # Default to standard end mill
+            self.cutter = ocl.CylCutter(diam_1, (CEH + lenOfst))
+            PathLog.info("Defaulting cutter to standard end mill.")
 
         # http://www.carbidecutter.net/products/carbide-burr-cone-shape-sm.html
         '''
