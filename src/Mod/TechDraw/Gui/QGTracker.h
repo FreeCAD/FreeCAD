@@ -49,8 +49,8 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 210};
 
-    int type() const { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    int type() const override { return Type;}
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
     virtual QPainterPath shape() const override;
     virtual QRectF boundingRect() const override;
 
