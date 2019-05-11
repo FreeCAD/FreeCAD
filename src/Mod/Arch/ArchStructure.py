@@ -264,7 +264,10 @@ class _CommandStructure:
         else:
             FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
         if self.bmode and self.bpoint:
-            rot = FreeCAD.Rotation(Vector(1,0,0),(point.sub(self.bpoint)).normalize())
+            if (self.Profile != None) and (not "Precast" in self.Profile):
+                rot = FreeCAD.Rotation(Vector(0,0,1),(point.sub(self.bpoint)).normalize())
+            else:
+                rot = FreeCAD.Rotation(Vector(1,0,0),(point.sub(self.bpoint)).normalize())
             FreeCADGui.doCommand('s.Placement.Rotation=FreeCAD.Rotation'+str(rot.Q))
         else:
             FreeCADGui.doCommand('s.Placement.Rotation=s.Placement.Rotation.multiply(FreeCAD.DraftWorkingPlane.getRotation().Rotation)')
@@ -406,13 +409,19 @@ class _CommandStructure:
 
         self.Height = d
         self.tracker.height(d)
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureHeight",d)
+        if self.modeb.isChecked():
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureLength",d)
+        else:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureHeight",d)
 
     def setLength(self,d):
 
         self.Length = d
         self.tracker.length(d)
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureLength",d)
+        if self.modeb.isChecked():
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureHeight",d)
+        else:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureLength",d)
 
     def setContinue(self,i):
 
