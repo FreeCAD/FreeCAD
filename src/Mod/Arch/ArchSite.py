@@ -82,6 +82,7 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
     returns a solar diagram as a pivy node. If complete is
     True, the 12 months are drawn"""
 
+    oldversion = False
     try:
         import pysolar
     except:
@@ -90,6 +91,8 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
         except:
             FreeCAD.Console.PrintError("The pysolar module was not found. Unable to generate solar diagrams\n")
             return None
+        else:
+            oldversion = True
 
     from pivy import coin
 
@@ -143,7 +146,10 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
     for i,d in enumerate(m):
         pts = []
         for h in range(24):
-            dt = datetime.datetime(year, d[0], d[1], h, tzinfo=datetime.timezone.utc)
+            if oldversion:
+                dt = datetime.datetime(year, d[0], d[1], h)
+            else:
+                dt = datetime.datetime(year, d[0], d[1], h, tzinfo=datetime.timezone.utc)
             alt = math.radians(pysolar.solar.get_altitude_fast(latitude, longitude, dt))
             az = pysolar.solar.get_azimuth(latitude, longitude, dt)
             az = -90 + az # pysolar's zero is south
