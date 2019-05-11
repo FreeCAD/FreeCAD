@@ -50,7 +50,7 @@ public:
     ~QGMText() {}
 
     enum {Type = QGraphicsItem::UserType + 300};
-    int type() const { return Type;}
+    int type() const override { return Type;}
     virtual void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = 0 ) override;
