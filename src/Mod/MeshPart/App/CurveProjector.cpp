@@ -730,7 +730,7 @@ void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist
     const std::vector<MeshFacet>& rclFAry = _rcMesh.GetFacets();
 
     // search the facets in the local area of the curve
-    std::vector<Vector3f> acPolyLine;
+    std::vector<Base::Vector3f> acPolyLine;
 
     BRepAdaptor_Curve clCurve( aEdge );
 
@@ -742,7 +742,7 @@ void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist
         Standard_Integer nNbPoints = clDefl.NbPoints();
         for (Standard_Integer i = 1; i <= nNbPoints; i++) {
             gp_Pnt gpPt = clCurve.Value(clDefl.Parameter(i));
-            acPolyLine.push_back( Vector3f( (float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z() ) );
+            acPolyLine.push_back( Base::Vector3f( (float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z() ) );
         }
     }
 
@@ -782,10 +782,10 @@ void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist
         // edge points
         unsigned long uE0 = it->first.first;
         cPI.Set( uE0 );
-        Vector3f cE0 = *cPI;
+        Base::Vector3f cE0 = *cPI;
         unsigned long uE1 = it->first.second;
         cPI.Set( uE1 );
-        Vector3f cE1 = *cPI;
+        Base::Vector3f cE1 = *cPI;
 
         const std::list<unsigned long>& auFaces = it->second;
         if ( auFaces.size() > 2 )
@@ -793,14 +793,14 @@ void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist
 //      if ( clBB.IsOut( gp_Pnt(cE0.x, cE0.y, cE0.z) ) && clBB.IsOut( gp_Pnt(cE1.x, cE1.y, cE1.z) ) )
 //          continue;
 
-        Vector3f cEdgeNormal;
+        Base::Vector3f cEdgeNormal;
         for ( std::list<unsigned long>::const_iterator itF = auFaces.begin(); itF != auFaces.end(); ++itF ) {
             cFI.Set( *itF );
             cEdgeNormal += cFI->GetNormal();
         }
 
         // create a plane from the edge normal and point
-        Vector3f cPlaneNormal = cEdgeNormal % (cE1 - cE0);
+        Base::Vector3f cPlaneNormal = cEdgeNormal % (cE1 - cE0);
         Handle(Geom_Plane) hPlane = new Geom_Plane(gp_Pln(gp_Pnt(cE0.x,cE0.y,cE0.z),
                                     gp_Dir(cPlaneNormal.x,cPlaneNormal.y,cPlaneNormal.z)));
 
@@ -813,13 +813,13 @@ void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist
                 Alg.Parameters( 1, fU, fV, fW);
 
                 gp_Pnt P = Alg.Point(1);
-                Vector3f cP0((float)P.X(), (float)P.Y(), (float)P.Z());
+                Base::Vector3f cP0((float)P.X(), (float)P.Y(), (float)P.Z());
 
                 float l = ( (cP0 - cE0) * (cE1 - cE0) ) / ( (cE1 - cE0) * ( cE1 - cE0) );
 
                 // lies the point inside the edge?
                 if ( l>=0.0f && l<=1.0f ) {
-                    Vector3f cSplitPoint = (1-l) * cE0 + l * cE1;
+                    Base::Vector3f cSplitPoint = (1-l) * cE0 + l * cE1;
                     float fDist = Base::Distance( cP0, cSplitPoint );
 
                     if ( fDist <= fMaxDist ) {
@@ -834,9 +834,9 @@ void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist
             // search for the right solution
             else if ( nNbPoints > 1 ) {
                 int nCntSol=0;
-                Vector3f cSplitPoint;
+                Base::Vector3f cSplitPoint;
                 Standard_Real fSol;
-                Vector3f cP0;
+                Base::Vector3f cP0;
                 for ( int j=1; j<=nNbPoints; j++ ) {
                     Standard_Real fU, fV, fW;
                     Alg.Parameters( j, fU, fV, fW);
