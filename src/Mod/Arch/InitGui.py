@@ -139,6 +139,6 @@ import Arch_rc
 FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui","Import-Export")
 FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui","Import-Export")
 
-#FreeCAD.__unit_test__ += [ "TestArch" ]
+FreeCAD.__unit_test__ += [ "TestArch" ]
 
 
