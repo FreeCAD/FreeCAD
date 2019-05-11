@@ -17,4 +17,4 @@ FreeCAD.addExportType("Stanford Triangle Mesh (*.ply)","Mesh")
 FreeCAD.addExportType("Additive Manufacturing Format (*.amf)","Mesh")
 FreeCAD.addExportType("Simple Model Format (*.smf)","Mesh")
 
-FreeCAD.__unit_test__ += [ "MeshTestsApp" ]
+#FreeCAD.__unit_test__ += [ "MeshTestsApp" ]
