@@ -2547,6 +2547,7 @@ class Modifier(DraftTool):
 
     def __init__(self):
         DraftTool.__init__(self)
+        self.copymode = False
 
 class Move(Modifier):
     "The Draft_Move FreeCAD command definition"
@@ -2581,8 +2582,10 @@ class Move(Modifier):
         self.selected_objects = FreeCADGui.Selection.getSelection()
         self.selected_objects = Draft.getGroupContents(self.selected_objects, addgroups=True, spaces=True, noarchchild=True)
         self.selected_subelements = FreeCADGui.Selection.getSelectionEx()
-        self.ui.pointUi(self.name)
+        self.ui.lineUi(self.name)
         self.ui.modUi()
+        if self.copymode:
+            self.ui.isCopy.setChecked(True)
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
         self.call = self.view.addEventCallback("SoEvent", self.action)
