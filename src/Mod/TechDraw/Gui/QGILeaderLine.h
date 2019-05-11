@@ -96,7 +96,7 @@ protected:
     Base::Vector3d m_attachPoint;
 
 protected:
-    QColor getNormalColor();
+    QColor getNormalColor() override;
 
     QGraphicsItem* m_parentItem;
     QGEPath* m_line;
