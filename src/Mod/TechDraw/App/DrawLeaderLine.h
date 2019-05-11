@@ -36,7 +36,7 @@ namespace TechDraw
 
 class TechDrawExport DrawLeaderLine : public TechDraw::DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawLeaderLine);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawLeaderLine);
 
 public:
     DrawLeaderLine();
@@ -49,16 +49,16 @@ public:
     App::PropertyBool         Scalable;
     App::PropertyBool         AutoHorizontal;
 
-    virtual short mustExecute() const;
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual short mustExecute() const override;
+    virtual App::DocumentObjectExecReturn *execute(void) override;
     virtual void onDocumentRestored(void) override;
 
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderLeader";
     }
-    virtual PyObject *getPyObject(void);
-    virtual QRectF getRect() const { return QRectF(0,0,1,1);}
+    virtual PyObject *getPyObject(void) override;
+    virtual QRectF getRect() const override { return QRectF(0,0,1,1);}
 
     Base::Vector3d getAttachPoint(void);
     DrawView* getBaseView(void) const;
@@ -70,7 +70,7 @@ public:
 
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop) override;
 
 private:
 };
