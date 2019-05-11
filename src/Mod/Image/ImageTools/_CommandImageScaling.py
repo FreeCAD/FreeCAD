@@ -138,8 +138,15 @@ def cmdCreateImageScaling(name):
         def accept(self):
             sel = FreeCADGui.Selection.getSelection()
             try:
-                locale=QtCore.QLocale.system()
-                d, ok = locale.toFloat(str(eval(self.lineEdit.text())))
+                try:
+                    q = FreeCAD.Units.parseQuantity(self.lineEdit.text())
+                    d = q.Value
+                    if q.Unit == FreeCAD.Units.Unit(): # plain number
+                        ok = True
+                    elif q.Unit == FreeCAD.Units.Length:
+                        ok = True
+                except:
+                    ok = False
                 if not ok:
                     raise ValueError
                 s=d/self.distance
