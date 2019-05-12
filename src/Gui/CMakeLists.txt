@@ -901,6 +901,7 @@ SET(View3D_SRCS
     GLPainter.h
     MouseSelection.h
     NavigationStyle.h
+    GestureNavigationStyle.h
     SplitView3DInventor.h
     View.h
     View3DInventor.h
