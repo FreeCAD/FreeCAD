@@ -7,7 +7,7 @@ endif(BUILD_GUI)
 set(PartDesign_Scripts
     __init__.py
     Init.py
-#    TestPartDesignApp.py
+    TestPartDesignApp.py
 )
 
 if(BUILD_GUI)
@@ -31,6 +31,25 @@ set(PartDesign_OtherScripts
 )
 
 set(PartDesign_TestScripts
+    PartDesignTests/__init__.py
+    PartDesignTests/TestDatum.py
+    PartDesignTests/TestShapeBinder.py
+    PartDesignTests/TestPad.py
+    PartDesignTests/TestPocket.py
+    PartDesignTests/TestHole.py
+    PartDesignTests/TestRevolve.py
+    PartDesignTests/TestLoft.py
+    PartDesignTests/TestPipe.py
+    PartDesignTests/TestPrimitive.py
+    PartDesignTests/TestMirrored.py
+    PartDesignTests/TestLinearPattern.py
+    PartDesignTests/TestPolarPattern.py
+    PartDesignTests/TestMultiTransform.py
+    PartDesignTests/TestBoolean.py
+    PartDesignTests/TestFillet.py
+    PartDesignTests/TestChamfer.py
+    PartDesignTests/TestDraft.py
+    PartDesignTests/TestThickness.py
 )
 
 set(PartDesign_GearScripts
@@ -84,9 +103,17 @@ INSTALL(
 
 INSTALL(
     FILES
+        ${PartDesign_TestScripts}
+    DESTINATION
+        Mod/PartDesign/PartDesignTests
+       )
+        
+INSTALL(
+    FILES
         ${PartDesign_GearScripts}
     DESTINATION
         Mod/PartDesign/fcgear
+        
 )
 
 if(BUILD_FEM)
