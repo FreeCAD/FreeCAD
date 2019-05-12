@@ -26,4 +26,4 @@
 #***************************************************************************/
 
 
-#FreeCAD.__unit_test__ += [ "TestSketcherApp" ]
+FreeCAD.__unit_test__ += [ "TestSketcherApp" ]
