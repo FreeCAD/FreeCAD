@@ -244,7 +244,6 @@ public:
         , curve(new ViewProviderCurveOnMesh)
         , mesh(0)
         , grid(0)
-        , kernel(0)
         , viewer(0)
         , editcursor(QPixmap(cursor_curveonmesh), 7, 7)
     {
@@ -268,17 +267,19 @@ public:
     {
         Mesh::Feature* mf = static_cast<Mesh::Feature*>(mesh->getObject());
         const Mesh::MeshObject& meshObject = mf->Mesh.getValue();
-        MeshCore::MeshAlgorithm alg(meshObject.getKernel());
+        kernel = meshObject.getKernel();
+        kernel.Transform(meshObject.getTransform());
+
+        MeshCore::MeshAlgorithm alg(kernel);
         float fAvgLen = alg.GetAverageEdgeLength();
-        grid = new MeshCore::MeshFacetGrid(meshObject.getKernel(), 5.0f * fAvgLen);
-        kernel = &meshObject;
+        grid = new MeshCore::MeshFacetGrid(kernel, 5.0f * fAvgLen);
     }
     bool projectLineOnMesh(const PickedPoint& pick)
     {
         PickedPoint last = pickedPoints.back();
         std::vector<Base::Vector3f> polyline;
 
-        MeshCore::MeshProjection meshProjection(kernel->getKernel());
+        MeshCore::MeshProjection meshProjection(kernel);
         Base::Vector3f v1 = Base::convertTo<Base::Vector3f>(last.point);
         Base::Vector3f v2 = Base::convertTo<Base::Vector3f>(pick.point);
         Base::Vector3f vd = Base::convertTo<Base::Vector3f>(viewer->getViewer()->getViewDirection());
@@ -323,7 +324,7 @@ public:
     ViewProviderCurveOnMesh* curve;
     Gui::ViewProviderDocumentObject* mesh;
     MeshCore::MeshFacetGrid* grid;
-    Base::Reference<const Mesh::MeshObject> kernel;
+    MeshCore::MeshKernel kernel;
     QPointer<Gui::View3DInventor> viewer;
     QCursor editcursor;
     ApproxPar par;
