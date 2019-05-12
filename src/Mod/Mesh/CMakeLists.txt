@@ -7,7 +7,7 @@ endif(BUILD_GUI)
 set(Mesh_Scripts
     Init.py
     BuildRegularGeoms.py
-#    App/MeshTestsApp.py
+    App/MeshTestsApp.py
 )
 
 if(BUILD_GUI)
