@@ -87,24 +87,24 @@ INSTALL(
 
 
 #unit test files
-#SET(TDTest_SRCS
-#)
+SET(TDTest_SRCS
+)
 
-#SET(TDTestFile_SRCS
-#)
+SET(TDTestFile_SRCS
+)
 
-#SET(TDAllTest
-#    ${TDTest_SRCS}
-#    ${TDTestFile_SRCS}
-#)
+SET(TDAllTest
+    ${TDTest_SRCS}
+    ${TDTestFile_SRCS}
+)
 
-#ADD_CUSTOM_TARGET(TDTestTarget ALL
-#    SOURCES ${TDAllTest}
-#)
+ADD_CUSTOM_TARGET(TDTestTarget ALL
+    SOURCES ${TDAllTest}
+)
 
-#fc_copy_sources(TDTestTarget "${CMAKE_BINARY_DIR}/Mod/TechDraw" ${TDAllTest})
+fc_copy_sources(TDTestTarget "${CMAKE_BINARY_DIR}/Mod/TechDraw" ${TDAllTest})
 
 # install Python packages (for make install)
-#INSTALL(FILES ${TDTest_SRCS} DESTINATION Mod/TechDraw/TDTest)
-#INSTALL(FILES ${TDTestFile_SRCS} DESTINATION Mod/TechDraw/TDTest)
+INSTALL(FILES ${TDTest_SRCS} DESTINATION Mod/TechDraw/TDTest)
+INSTALL(FILES ${TDTestFile_SRCS} DESTINATION Mod/TechDraw/TDTest)
 
