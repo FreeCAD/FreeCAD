@@ -23,13 +23,17 @@
 # define the test cases to test the FreeCAD PartDesign module
 #---------------------------------------------------------------------------
 
-print("Entering the intriging world of PartDesign App tests...")
+import FreeCAD, os, unittest, tempfile, math
+
+class RandomPartDesignTest(unittest.TestCase):
+    def setUp(self):
+        self.count = 0
+
+    def testPrint(self):
+        FreeCAD.Console.PrintMessage("   Oh great spirit of FreeCAD, let PartDesign flow\n")
 
 # datum tools
 from PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane
-
-print("I just imported TestDatum...")
-
 
 from PartDesignTests.TestShapeBinder import TestShapeBinder
 
