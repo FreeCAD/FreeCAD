@@ -23,8 +23,14 @@
 # define the test cases to test the FreeCAD PartDesign module
 #---------------------------------------------------------------------------
 
+print("Entering the intriging world of PartDesign App tests...")
+
 # datum tools
 from PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane
+
+print("I just imported TestDatum...")
+
+
 from PartDesignTests.TestShapeBinder import TestShapeBinder
 
 # additive/subtractive features & primitives
