@@ -147,6 +147,8 @@ extern const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError fe);
 namespace Part {
 
 PartExport void getPyShapes(PyObject *obj, std::vector<TopoShape> &shapes) {
+    if(!obj)
+        return;
     if(PyObject_TypeCheck(obj,&Part::TopoShapePy::Type))
         shapes.push_back(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
     else if (PyObject_TypeCheck(obj, &GeometryPy::Type)) 

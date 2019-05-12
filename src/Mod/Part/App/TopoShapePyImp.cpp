@@ -130,7 +130,7 @@ int TopoShapePy::PyInit(PyObject* args, PyObject *keywds)
     static char *kwlist[] = {"shape", "op", "tag", "hasher", NULL};
     long tag = 0;
     PyObject *pyHasher = 0;
-    const char *op = TOPOP_FUSE;
+    const char *op = 0;
     PyObject *pcObj=0;
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "|OsiO!", 
                 kwlist,&pcObj,&op,&tag,&App::StringHasherPy::Type,&pyHasher))
@@ -139,11 +139,28 @@ int TopoShapePy::PyInit(PyObject* args, PyObject *keywds)
     self.Tag = tag;
     if(pyHasher)
         self.Hasher = static_cast<App::StringHasherPy*>(pyHasher)->getStringHasherPtr();
-    if(pcObj) {
-        PY_TRY {
-            self.makEShape(op,getPyShapes(pcObj));
-        }_PY_CATCH_OCC(return(-1))
-    }
+    auto shapes = getPyShapes(pcObj);
+    PY_TRY {
+        if(shapes.size()==1 && !op) {
+            auto s = shapes.front();
+            if(self.Tag) {
+                if((s.Tag && self.Tag!=s.Tag)
+                        || (self.Hasher 
+                            && s.getElementMapSize() 
+                            && self.Hasher!=s.Hasher))
+                {
+                    s.reTagElementMap(self.Tag,self.Hasher);
+                }else{
+                    s.Tag = self.Tag;
+                    s.Hasher = self.Hasher;
+                }
+            }
+            self = s;
+        }else if(shapes.size()) {
+            if(!op) op = TOPOP_FUSE;
+            self.makEShape(op,shapes);
+        }
+    }_PY_CATCH_OCC(return(-1))
 #else
     PyObject *pcObj=0;
     if (!PyArg_ParseTuple(args, "|O", &pcObj))
