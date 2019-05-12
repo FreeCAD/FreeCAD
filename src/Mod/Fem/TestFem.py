@@ -201,7 +201,7 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.t
 
 
 # open files from FEM test suite source code
-# be careful on updating these files, they consist the original results!
+# be careful on updating these files, they contain the original results!
 # TODO update files, because some of them have non-existing FEM object classes
 doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/ccx/cube.FCStd')
 doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/ccx/cube_frequency.FCStd')
