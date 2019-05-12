@@ -7,14 +7,14 @@ endif(BUILD_GUI)
 set(Sketcher_Scripts
     Init.py
     SketcherExample.py
-#    TestSketcherApp.py
+    TestSketcherApp.py
     Profiles.py
 )
 
 if(BUILD_GUI)
     list (APPEND Sketcher_Scripts
           InitGui.py
-#          TestSketcherGui.py
+          TestSketcherGui.py
     )
 endif(BUILD_GUI)
 
