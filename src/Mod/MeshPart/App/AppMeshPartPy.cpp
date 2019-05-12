@@ -32,7 +32,10 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
+#include <Base/GeometryPyCXX.h>
 #include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
@@ -57,6 +60,10 @@ public:
             "    poly (list of (x, y z) or (x, y) tuples of floats):\n"
             "    upVector ((x, y, z) tuple):\n"
             "    MaxSize (float):\n"
+        );
+        add_varargs_method("projectShapeOnMesh",&Module::projectShapeOnMesh,
+            "Projects a shape onto a mesh with a given maximum distance\n"
+            "projectShapeOnMesh(shape, mesh, float) -> polygon"
         );
         add_varargs_method("wireFromSegment",&Module::wireFromSegment,
             "Create wire(s) from boundary of segment\n"
@@ -193,6 +200,31 @@ private:
         // use the MeshAlgos 
         MeshPart::MeshAlgos::LoftOnCurve(M,aShape,poly,Base::Vector3f(x,y,z),size);
         return Py::asObject(new Mesh::MeshPy(new Mesh::MeshObject(M)));
+    }
+    Py::Object projectShapeOnMesh(const Py::Tuple& args)
+    {
+        PyObject *s, *m;
+        double maxDist;
+        if (!PyArg_ParseTuple(args.ptr(), "O!O!d", &Part::TopoShapePy::Type, &s,
+                                                   &Mesh::MeshPy::Type, &m,
+                                                   &maxDist))
+            throw Py::Exception();
+        TopoDS_Shape shape = static_cast<Part::TopoShapePy*>(s)->getTopoShapePtr()->getShape();
+        const Mesh::MeshObject* mesh = static_cast<Mesh::MeshPy*>(m)->getMeshObjectPtr();
+        MeshCore::MeshKernel kernel(mesh->getKernel());
+        kernel.Transform(mesh->getTransform());
+
+        MeshProjection proj(kernel);
+        std::vector<MeshProjection::SplitEdge> rSplitEdges;
+        proj.projectToMesh(shape, maxDist, rSplitEdges);
+
+        Py::List list;
+        for (auto it : rSplitEdges) {
+            Py::Vector v(it.cPt);
+            list.append(v);
+        }
+
+        return list;
     }
     Py::Object wireFromSegment(const Py::Tuple& args)
     {
