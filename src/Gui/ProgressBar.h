@@ -180,6 +180,7 @@ protected Q_SLOTS:
     */
     void delayedShow();
     void aboutToShow();
+    void aboutToHide();
 
 private:
     /** @name for internal use only */
