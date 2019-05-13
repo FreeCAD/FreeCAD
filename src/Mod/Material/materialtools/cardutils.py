@@ -117,7 +117,7 @@ def output_resources(resources):
 # ***** card handling ****************************************************************************
 # used in material editor and FEM material task panels
 
-def import_materials(category='Solid'):
+def import_materials(category='Solid', template=False):
 
     resources = get_material_resources(category)
 
@@ -136,7 +136,7 @@ def import_materials(category='Solid'):
     return (materials, cards, icons)
 
 
-def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon):
+def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon, template=False):
     # fill materials and icons
     import glob
     from importFCMat import read
@@ -148,6 +148,8 @@ def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon):
     for a_path in dir_path_list:
         mat_dict = read(a_path)
         card_name = os.path.splitext(os.path.basename(a_path))[0]
+        if (card_name == 'TEMPLATE') and (template is False):
+            continue
         if delete_duplicates is False:
             materials[a_path] = mat_dict
             cards[a_path] = card_name
