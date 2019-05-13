@@ -4263,12 +4263,16 @@ bool DocumentItem::isObjectShowable(App::DocumentObject *obj) {
     auto itParents = _ParentMap.find(obj);
     if(itParents == _ParentMap.end() || itParents->second.empty())
         return true;
+    bool showable = true;
     for(auto parent : itParents->second) {  
-        if(!parent->hasChildElement() &&
-            parent->getLinkedObject(false)==parent)
+        if(parent->getDocument() != obj->getDocument())
+            continue;
+        if(!parent->hasChildElement() 
+                && parent->getLinkedObject(false)==parent)
             return true;
+        showable = false;
     }
-    return false;
+    return showable;
 }
 
 int DocumentObjectItem::isParentGroup() const {
