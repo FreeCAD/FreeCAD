@@ -38,7 +38,7 @@
 #include "PropertyItem.h"
 #include "PropertyEditor.h"
 
-FC_LOG_LEVEL_INIT("PropertyItem",true,true);
+FC_LOG_LEVEL_INIT("PropertyView",true,true);
 
 using namespace Gui::PropertyEditor;
 
@@ -132,8 +132,9 @@ void PropertyItemDelegate::editorClosed(QWidget *editor, QAbstractItemDelegate::
         FC_LOG("editor close transaction " << name);
         app.closeActiveTransaction(false,id);
         activeTransactionID = 0;
-    }else
-        FC_LOG("editor close");
+    }
+    FC_LOG("editor close " << editor);
+
     // don't close the editor when pressing Tab or Shift+Tab
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=34627#p290957
     if (editor && hint != EditNextItem && hint != EditPreviousItem)
@@ -149,6 +150,8 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     PropertyItem *childItem = static_cast<PropertyItem*>(index.internalPointer());
     if (!childItem)
         return 0;
+
+    FC_LOG("create editor " << index.row() << "," << index.column());
 
     PropertyEditor *parentEditor = qobject_cast<PropertyEditor*>(this->parent());
     QWidget* editor;
@@ -172,15 +175,15 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
 
     auto &app = App::GetApplication();
     if(!app.autoTransaction()) 
-        FC_LOG("create editor");
+        return editor;
     else if(app.getActiveTransaction())
-        FC_LOG("create editor, already transacting " << app.getActiveTransaction());
+        FC_LOG("editor already transacting " << app.getActiveTransaction());
     else {
         auto items = childItem->getPropertyData();
         for(auto propItem=childItem->parent();items.empty() && propItem;propItem=propItem->parent())
             items = propItem->getPropertyData();
         if(items.empty()) 
-            FC_LOG("create editor, no item");
+            FC_LOG("editor no item");
         else {
             auto prop = items[0];
             auto parent = prop->getContainer();
@@ -206,7 +209,7 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
                 if(items.size()>1)
                     str << "...";
                 activeTransactionID = app.setActiveTransaction(str.str().c_str());
-                FC_LOG("create editor transaction " << app.getActiveTransaction());
+                FC_LOG("editor transaction " << app.getActiveTransaction());
             }
         }
     }

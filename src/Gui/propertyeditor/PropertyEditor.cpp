@@ -39,6 +39,8 @@
 #include "PropertyModel.h"
 #include "PropertyView.h"
 
+FC_LOG_LEVEL_INIT("PropertyView",true,true);
+
 using namespace Gui::PropertyEditor;
 
 PropertyEditor::PropertyEditor(QWidget *parent)
@@ -152,9 +154,13 @@ void PropertyEditor::editorDestroyed (QObject * editor)
 
 void PropertyEditor::currentChanged ( const QModelIndex & current, const QModelIndex & previous )
 {
+    FC_LOG("current changed " << current.row()<<","<<current.column()
+            << "  " << previous.row()<<","<<previous.column());
+
     QTreeView::currentChanged(current, previous);
-    if (previous.isValid())
-        closePersistentEditor(model()->buddy(previous));
+
+    // if (previous.isValid())
+    //     closePersistentEditor(model()->buddy(previous));
 
     // DO NOT activate editor here, use onItemActivate() which response to
     // signals of activated and clicked.
@@ -187,22 +193,27 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
         }
     }
 
+    QModelIndex indexSaved = currentIndex();
+    FC_LOG("index saved " << indexSaved.row() << ", " << indexSaved.column());
+
     QTreeView::closeEditor(editor, hint);
 
-    // If after closing the editor this widget is still in editing state
-    // then a new editor must have been created. So, a transaction must be
-    // opened, too.
-    if (autoupdate && this->state() == EditingState) {
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc) {
-            QString edit;
-            QModelIndex index = currentIndex();
-            if (index.isValid()) {
-                PropertyItem* property = static_cast<PropertyItem*>(index.internalPointer());
-                edit = tr("Edit %1").arg(property->propertyName());
-            }
-            doc->openTransaction(edit.toUtf8());
+    QModelIndex lastIndex;
+    while(this->state()!=EditingState) {
+        QModelIndex index;
+        if (hint == QAbstractItemDelegate::EditNextItem) {
+            index = moveCursor(MoveDown,Qt::NoModifier);
+        } else if(hint == QAbstractItemDelegate::EditPreviousItem) {
+            index = moveCursor(MoveUp,Qt::NoModifier);
+        } else
+            break;
+        if(!index.isValid() || index==lastIndex) {
+            setCurrentIndex(indexSaved);
+            break;
         }
+        lastIndex = index;
+        setCurrentIndex(index);
+        edit(index,AllEditTriggers,0);
     }
 }
 
