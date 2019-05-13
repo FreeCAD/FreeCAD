@@ -304,7 +304,6 @@ fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Te
 INSTALL(FILES ${TechDrawGuiFonts} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/fonts")
 
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/src/Mod/TechDraw/Gui" ${MRTE_HDRS})
-INSTALL(FILES ${MRTE_HDRS} DESTINATION "${CMAKE_BINARY_DIR}/src/Mod/TechDraw/Gui")
 
 SET_BIN_DIR(TechDrawGui TechDrawGui /Mod/TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDrawGui)
