@@ -23,6 +23,7 @@
 # define the test cases to test the FreeCAD PartDesign module
 #---------------------------------------------------------------------------
 
+
 # datum tools
 from PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane
 from PartDesignTests.TestShapeBinder import TestShapeBinder
@@ -33,7 +34,7 @@ from PartDesignTests.TestPocket import TestPocket
 from PartDesignTests.TestHole import TestHole
 from PartDesignTests.TestRevolve import TestRevolve
 from PartDesignTests.TestPipe import TestPipe
-from PartDesignTests.TestLoft import TestLoft
+#from PartDesignTests.TestLoft import TestLoft
 from PartDesignTests.TestPrimitive import TestPrimitive
 
 # transformations and boolean
