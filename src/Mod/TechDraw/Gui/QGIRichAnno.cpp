@@ -152,8 +152,8 @@ void QGIRichAnno::textDragFinished(void)
         return;
     }
 
-    double x = Rez::appX(m_text->x()),
-           y = - Rez::appX(m_text->y());
+    double x = Rez::appX(m_text->x()) / getScale();
+    double y = - Rez::appX(m_text->y()) / getScale();
     anno->X.setValue(x);
     anno->Y.setValue(y);
 }
