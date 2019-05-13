@@ -88,6 +88,9 @@ private:
     void slotChangePropertyEditor(const App::Document&, const App::Property&);
     void slotRollback();
     void slotActiveDocument(const Gui::Document&);
+    void slotDeleteDocument(const Gui::Document&);
+
+    void checkEnable(const char *doc = 0);
 
 private:
     struct PropInfo;
@@ -101,6 +104,7 @@ private:
     Connection connectUndoDocument;
     Connection connectRedoDocument;
     Connection connectActiveDoc;
+    Connection connectDelDocument;
     QTabWidget* tabs;
     QTimer* timer;
 };

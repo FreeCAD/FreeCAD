@@ -61,6 +61,8 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     this->background = opt.palette.dark();
     this->groupColor = opt.palette.color(QPalette::BrightText);
 
+    this->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
     connect(this, SIGNAL(activated(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
     connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
 }
@@ -163,7 +165,8 @@ void PropertyEditor::currentChanged ( const QModelIndex & current, const QModelI
 
 void PropertyEditor::onItemActivated ( const QModelIndex & index )
 {
-    openPersistentEditor(model()->buddy(index));
+    if(index.column() == 1)
+        edit(model()->buddy(index),AllEditTriggers,0);
 }
 
 void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
@@ -256,7 +259,12 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList &&props)
         this->setCurrentIndex(index);
     }
 
-    propList = props;
+    propList = std::move(props);
+    propOwners.clear();
+    for(auto &v : propList) {
+        for(auto prop : v.second)
+            propOwners.insert(prop->getContainer());
+    }
 }
 
 void PropertyEditor::updateProperty(const App::Property& prop)
@@ -325,34 +333,8 @@ void PropertyEditor::updateItemEditor(bool enable, int column, const QModelIndex
     }
 }
 
-void PropertyEditor::appendProperty(const App::Property& prop)
-{
-    // check if the parent object is selected
-    std::string editor = prop.getEditorName();
-    if (!PropertyView::showAll() && editor.empty())
-        return;
-    App::PropertyContainer* parent = prop.getContainer();
-    std::string context = prop.getName();
-
-    bool canAddProperty = (!propList.empty());
-    for (PropertyModel::PropertyList::iterator it = propList.begin(); it != propList.end(); ++it) {
-        if (it->second.empty() || it->second.size() > 1) {
-            canAddProperty = false;
-            break;
-        }
-        else if (it->second.front()->getContainer() != parent) {
-            canAddProperty = false;
-            break;
-        }
-    }
-
-    if (canAddProperty) {
-        std::vector<App::Property*> list;
-        list.push_back(const_cast<App::Property*>(&prop));
-        std::pair< std::string, std::vector<App::Property*> > pair = std::make_pair(context, list);
-        propList.push_back(pair);
-        propertyModel->appendProperty(prop);
-    }
+bool PropertyEditor::appendProperty(const App::Property& prop) {
+    return !!propOwners.count(prop.getContainer());
 }
 
 void PropertyEditor::removeProperty(const App::Property& prop)

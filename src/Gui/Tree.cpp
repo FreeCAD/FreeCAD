@@ -709,6 +709,17 @@ void TreeWidget::itemSearch(const QString &text, bool select) {
     }
 }
 
+Gui::Document *TreeWidget::selectedDocument() {
+    for(auto tree : Instances) {
+        if(!tree->isVisible())
+            continue;
+        auto sels = tree->selectedItems();
+        if(sels.size()==1 && sels[0]->type()==DocumentType)
+            return static_cast<DocumentItem*>(sels[0])->document();
+    }
+    return 0;
+}
+
 void TreeWidget::updateStatus(bool delay) {
     for(auto tree : Instances)
         tree->_updateStatus(delay);
@@ -2343,6 +2354,33 @@ void TreeWidget::onItemSelectionChanged ()
     bool lock = this->blockConnection(true);
 
     auto selItems = selectedItems();
+
+    // do not allow document item multi-selection
+    auto itDoc = selItems.end();
+    auto itObj = selItems.end();
+    for(auto it=selItems.begin();it!=selItems.end();) {
+        auto item = *it;
+        if(item->type() == ObjectType) {
+            itObj = it;
+            if(itDoc!=selItems.end()) {
+                (*itDoc)->setSelected(false);
+                selItems.erase(itDoc);
+                itDoc = selItems.end();
+            }
+        }else if(item->type() == DocumentType) {
+            if(itObj!=selItems.end()) {
+                item->setSelected(false);
+                it = selItems.erase(it);
+                continue;
+            }else if(itDoc!=selItems.end()) {
+                (*itDoc)->setSelected(false);
+                selItems.erase(itDoc);
+            }
+            itDoc = it;
+        }
+        ++it;
+    }
+
     if(selItems.size()<=1) {
         if(FC_TREEPARAM(RecordSelection))
             Gui::Selection().selStackPush();
@@ -2352,8 +2390,19 @@ void TreeWidget::onItemSelectionChanged ()
         // DocumentObject::redirectSubName()
         Selection().clearCompleteSelection();
         DocumentObjectItem *item=0;
-        if(selItems.size())
-            item = dynamic_cast<DocumentObjectItem*>(selItems.front());
+        if(selItems.size()) {
+            if(selItems.front()->type() == ObjectType)
+                item = static_cast<DocumentObjectItem*>(selItems.front());
+            else if(selItems.front()->type() == DocumentType) {
+                auto ditem = static_cast<DocumentItem*>(selItems.front());
+                if(FC_TREEPARAM(SyncView)) {
+                    ditem->document()->setActiveView();
+                    setFocus();
+                }
+                // For triggering property editor refresh
+                Gui::Selection().signalSelectionChanged(SelectionChanges());
+            }
+        }
         for(auto &v : DocumentMap) {
             currentDocItem = v.second;
             v.second->clearSelection(item);
@@ -2382,6 +2431,7 @@ void TreeWidget::onSelectTimer() {
     this->blockConnection(true);
     if(Selection().hasSelection()) {
         for(auto &v : DocumentMap) {
+            v.second->setSelected(false);
             currentDocItem = v.second;
             v.second->selectItems(syncSelect);
             currentDocItem = 0;
@@ -2581,7 +2631,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     connectRecomputedObj = adoc->signalRecomputedObject.connect(
             boost::bind(&DocumentItem::slotRecomputedObject, this, _1));
 
-    setFlags(Qt::ItemIsEnabled/*|Qt::ItemIsEditable*/);
+    setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable/*|Qt::ItemIsEditable*/);
 
     treeName = getTree()->getTreeName();
 }
@@ -2754,6 +2804,7 @@ ViewProviderDocumentObject *DocumentItem::getViewProvider(App::DocumentObject *o
 
 void TreeWidget::slotDeleteDocument(const Gui::Document& Doc)
 {
+    NewObjects.erase(Doc.getDocument()->getName());
     auto it = DocumentMap.find(&Doc);
     if (it != DocumentMap.end()) {
         auto docItem = it->second;

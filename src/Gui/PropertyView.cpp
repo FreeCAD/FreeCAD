@@ -48,6 +48,8 @@
 #include "BitmapFactory.h"
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
+#include "Tree.h"
+#include "ViewParams.h"
 
 #include "propertyeditor/PropertyEditor.h"
 
@@ -131,6 +133,9 @@ PropertyView::PropertyView(QWidget *parent)
     this->connectActiveDoc =
     Application::Instance->signalActiveDocument.connect(boost::bind
         (&PropertyView::slotActiveDocument, this, _1));
+    this->connectDelDocument = 
+        Application::Instance->signalDeleteDocument.connect(
+                boost::bind(&PropertyView::slotDeleteDocument, this, _1));
 }
 
 PropertyView::~PropertyView()
@@ -143,6 +148,7 @@ PropertyView::~PropertyView()
     this->connectUndoDocument.disconnect();
     this->connectRedoDocument.disconnect();
     this->connectActiveDoc.disconnect();
+    this->connectDelDocument.disconnect();
 }
 
 static bool _ShowAll;
@@ -215,27 +221,23 @@ bool PropertyView::isPropertyHidden(const App::Property *prop) {
 
 void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
 {
-    App::PropertyContainer* parent = prop.getContainer();
     if (isPropertyHidden(&prop)) 
         return;
 
-    if (parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        propertyEditorData->appendProperty(prop);
-    }
-    else if (parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
-        propertyEditorView->appendProperty(prop);
+    if (propertyEditorData->appendProperty(prop)
+            || propertyEditorView->appendProperty(prop))
+    {
+        timer->start(100);
     }
 }
 
 void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
 {
     App::PropertyContainer* parent = prop.getContainer();
-    if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if(propertyEditorData->propOwners.count(parent))
         propertyEditorData->removeProperty(prop);
-    }
-    else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
+    else if(propertyEditorView->propOwners.count(parent))
         propertyEditorView->removeProperty(prop);
-    }
 }
 
 void PropertyView::slotChangePropertyEditor(const App::Document &, const App::Property& prop)
@@ -246,6 +248,14 @@ void PropertyView::slotChangePropertyEditor(const App::Document &, const App::Pr
     }
     else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
         propertyEditorView->updateEditorMode(prop);
+    }
+}
+
+void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
+    if(propertyEditorData->propOwners.count(doc.getDocument())) {
+        propertyEditorView->buildUp();
+        propertyEditorData->buildUp();
+        clearPropertyItemSelection();
     }
 }
 
@@ -303,7 +313,30 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
 }
 
 void PropertyView::onTimer() {
+
+    propertyEditorData->buildUp();
+    propertyEditorView->buildUp();
+    clearPropertyItemSelection();
     timer->stop();
+
+    if(!Gui::Selection().hasSelection()) {
+        auto gdoc = TreeWidget::selectedDocument();
+        if(!gdoc || !gdoc->getDocument())
+            return;
+
+        PropertyModel::PropertyList docProps;
+
+        auto doc = gdoc->getDocument();
+        std::vector<App::Property*> props;
+        doc->getPropertyList(props);
+        for(auto prop : props) 
+            docProps.emplace_back(prop->getName(),
+                    std::vector<App::Property*>(1,prop));
+        propertyEditorData->buildUp(std::move(docProps));
+        tabs->setCurrentIndex(1);
+        return;
+    }
+
     std::set<App::DocumentObject *> objSet;
     // allow to disable the auto-deactivation
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");

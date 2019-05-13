@@ -106,6 +106,8 @@ public:
 
     DocumentItem *getDocumentItem(const Gui::Document *) const;
 
+    static Gui::Document *selectedDocument();
+
     void startDragging();
 
     void resetItemSearch();

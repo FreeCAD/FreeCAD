@@ -27,6 +27,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <unordered_set>
 
 #include <QTreeView>
 
@@ -39,6 +40,9 @@ class Property;
 }
 
 namespace Gui {
+
+class PropertyView;
+
 namespace PropertyEditor {
 
 class PropertyItemDelegate;
@@ -71,7 +75,7 @@ public:
     void buildUp(PropertyModel::PropertyList &&props = PropertyModel::PropertyList());
     void updateProperty(const App::Property&);
     void updateEditorMode(const App::Property&);
-    void appendProperty(const App::Property&);
+    bool appendProperty(const App::Property&);
     void removeProperty(const App::Property&);
     void setAutomaticDocumentUpdate(bool);
     bool isAutomaticDocumentUpdate(bool) const;
@@ -109,6 +113,7 @@ private:
     PropertyModel* propertyModel;
     QStringList selectedProperty;
     PropertyModel::PropertyList propList;
+    std::unordered_set<App::PropertyContainer*> propOwners;
     bool autoupdate;
     bool committing;
     bool delaybuild;
@@ -118,6 +123,8 @@ private:
     App::DocumentObjectT context;
     QModelIndex contextIndex;
     bool binding;
+
+    friend class Gui::PropertyView;
 };
 
 } //namespace PropertyEditor
