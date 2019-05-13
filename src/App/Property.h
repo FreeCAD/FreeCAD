@@ -89,13 +89,15 @@ public:
         // changed in runtime. It is mirrored here to save the linear search
         // required in PropertyContainer::getPropertyType()
         //
-        PropStaticBegin = 23,
+        PropStaticBegin = 21,
+        PropDynamic = 21, // indicating the property is dynamically added
+        PropNoPersist = 22, // corresponding to Prop_NoPersist
         PropNoRecompute = 23, // corresponding to Prop_NoRecompute
         PropReadOnly = 24, // corresponding to Prop_ReadOnly
         PropTransient= 25, // corresponding to Prop_Transient
         PropHidden   = 26, // corresponding to Prop_Hidden
         PropOutput   = 27, // corresponding to Prop_Output
-        PropStaticEnd = 27,
+        PropStaticEnd = 28,
 
         User1 = 28, // user-defined status
         User2 = 29, // user-defined status
@@ -238,6 +240,9 @@ private:
     // forbidden
     Property(const Property&);
     Property& operator = (const Property&);
+
+    // Sync status with Property_Type
+    void syncType(unsigned type);
 
 private:
     PropertyContainer *father;

@@ -181,12 +181,10 @@ public:
     ViewProviderPythonFeatureT() : _attached(false) {
         ADD_PROPERTY(Proxy,(Py::Object()));
         imp = new ViewProviderPythonFeatureImp(this);
-        props = new App::DynamicProperty(this);
     }
     /// destructor.
     virtual ~ViewProviderPythonFeatureT() {
         delete imp;
-        delete props;
     }
 
     // Returns the icon
@@ -434,85 +432,6 @@ public:
         }
     }
 
-    /** @name Access properties */
-    //@{
-    App::Property* addDynamicProperty(
-        const char* type, const char* name=0,
-        const char* group=0, const char* doc=0,
-        short attr=0, bool ro=false, bool hidden=false) {
-        return props->addDynamicProperty(type, name, group, doc, attr, ro, hidden);
-    }
-    virtual bool removeDynamicProperty(const char* name) {
-        ViewProviderT::onAboutToRemoveProperty(name);
-        return props->removeDynamicProperty(name);
-    }
-    std::vector<std::string> getDynamicPropertyNames() const {
-        return props->getDynamicPropertyNames();
-    }
-    App::Property *getDynamicPropertyByName(const char* name) const {
-        return props->getDynamicPropertyByName(name);
-    }
-    virtual void addDynamicProperties(const App::PropertyContainer* cont) {
-        return props->addDynamicProperties(cont);
-    }
-    /// get all properties of the class (including properties of the parent)
-    virtual void getPropertyList(std::vector<App::Property*> &List) const {
-        ViewProviderT::getPropertyList(List);
-        props->getPropertyList(List,false);
-    }
-    /// get all properties of the class (including parent)
-    virtual void getPropertyMap(std::map<std::string,App::Property*> &Map) const {
-        ViewProviderT::getPropertyMap(Map);
-        return props->getPropertyMap(Map,false);
-    }
-    /// find a property by its name
-    virtual App::Property *getPropertyByName(const char* name) const {
-        return props->getPropertyByName(name);
-    }
-    /// get the name of a property
-    virtual const char* getPropertyName(const App::Property* prop) const {
-        return props->getPropertyName(prop);
-    }
-    //@}
-
-    /** @name Property attributes */
-    //@{
-    /// get the Type of a Property
-    short getPropertyType(const App::Property* prop) const {
-        return props->getPropertyType(prop);
-    }
-    /// get the Type of a named Property
-    short getPropertyType(const char *name) const {
-        return props->getPropertyType(name);
-    }
-    /// get the Group of a Property
-    const char* getPropertyGroup(const App::Property* prop) const {
-        return props->getPropertyGroup(prop);
-    }
-    /// get the Group of a named Property
-    const char* getPropertyGroup(const char *name) const {
-        return props->getPropertyGroup(name);
-    }
-    /// get the Group of a Property
-    const char* getPropertyDocumentation(const App::Property* prop) const {
-        return props->getPropertyDocumentation(prop);
-    }
-    /// get the Group of a named Property
-    const char* getPropertyDocumentation(const char *name) const {
-        return props->getPropertyDocumentation(name);
-    }
-    //@}
-
-    /** @name Property serialization */
-    //@{
-    void Save (Base::Writer &writer) const {
-        props->Save(writer);
-    }
-    void Restore(Base::XMLReader &reader) {
-        props->Restore(reader);
-    }
-    //@}
-
     PyObject* getPyObject() {
         return ViewProviderT::getPyObject();
     }
@@ -614,7 +533,6 @@ protected:
 
 private:
     ViewProviderPythonFeatureImp* imp;
-    App::DynamicProperty *props;
     App::PropertyPythonObject Proxy;
     std::string viewerMode;
     bool _attached;

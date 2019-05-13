@@ -28,7 +28,6 @@
 
 #include <Base/Writer.h>
 #include <App/DocumentObject.h>
-#include <App/DynamicProperty.h>
 
 namespace App
 {
@@ -50,10 +49,9 @@ class FeatureCustomT : public FeatureT
 
 public:
     FeatureCustomT() {
-        props = new DynamicProperty(this);
     }
+
     virtual ~FeatureCustomT() {
-        delete props;
     }
 
     /** @name methods override DocumentObject */
@@ -69,84 +67,6 @@ public:
     virtual const char* getViewProviderName(void) const {
         return FeatureT::getViewProviderName();
     }
-
-    /** @name Access properties */
-    //@{
-    Property* addDynamicProperty(
-        const char* type, const char* name=0,
-        const char* group=0, const char* doc=0,
-        short attr=0, bool ro=false, bool hidden=false) {
-        return props->addDynamicProperty(type, name, group, doc, attr, ro, hidden);
-    }
-    virtual bool removeDynamicProperty(const char* name) {
-        FeatureT::onAboutToRemoveProperty(name);
-        return props->removeDynamicProperty(name);
-    }
-    std::vector<std::string> getDynamicPropertyNames() const {
-        return props->getDynamicPropertyNames();
-    }
-    Property *getDynamicPropertyByName(const char* name) const {
-        return props->getDynamicPropertyByName(name);
-    }
-    virtual void addDynamicProperties(const PropertyContainer* cont) {
-        return props->addDynamicProperties(cont);
-    }
-    /// get all properties of the class (including properties of the parent)
-    virtual void getPropertyList(std::vector<Property*> &List) const {
-        props->getPropertyList(List);
-    }
-    /// get all properties of the class (including parent)
-    void getPropertyMap(std::map<std::string,Property*> &Map) const {
-        props->getPropertyMap(Map);
-    }
-    /// find a property by its name
-    virtual Property *getPropertyByName(const char* name) const {
-        return props->getPropertyByName(name);
-    }
-    /// get the name of a property
-    virtual const char* getPropertyName(const Property* prop) const {
-        return props->getPropertyName(prop);
-    }
-    //@}
-
-    /** @name Property attributes */
-    //@{
-    /// get the Type of a Property
-    short getPropertyType(const Property* prop) const {
-        return props->getPropertyType(prop);
-    }
-    /// get the Type of a named Property
-    short getPropertyType(const char *name) const {
-        return props->getPropertyType(name);
-    }
-    /// get the Group of a Property
-    const char* getPropertyGroup(const Property* prop) const {
-        return props->getPropertyGroup(prop);
-    }
-    /// get the Group of a named Property
-    const char* getPropertyGroup(const char *name) const {
-        return props->getPropertyGroup(name);
-    }
-    /// get the Documentation of a Property
-    const char* getPropertyDocumentation(const Property* prop) const {
-        return props->getPropertyDocumentation(prop);
-    }
-    /// get the Group of a named Property
-    const char* getPropertyDocumentation(const char *name) const {
-        return props->getPropertyDocumentation(name);
-    }
-    //@}
-
-    /** @name Property serialization */
-    //@{
-    void Save (Base::Writer &writer) const {
-        writer.ObjectName = this->getNameInDocument();
-        props->Save(writer);
-    }
-    void Restore(Base::XMLReader &reader) {
-        props->Restore(reader);
-    }
-    //@}
 
     PyObject *getPyObject(void) {
         return FeatureT::getPyObject();
@@ -168,9 +88,6 @@ protected:
     virtual void onSettingDocument() {
         FeatureT::onSettingDocument();
     }
-
-private:
-    DynamicProperty* props;
 };
 
 } //namespace App

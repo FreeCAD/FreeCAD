@@ -165,8 +165,6 @@ public:
 
     App::Property *getPropertyByName(const char *name) const;
 
-    const char* getPropertyName(const App::Property* prop) const;
-
     virtual short mustExecute(void) const;
 
     App::DocumentObjectExecReturn *execute(void);
@@ -192,56 +190,6 @@ public:
     boost::signals2::signal<void (int, int)> columnWidthChanged;
 
     boost::signals2::signal<void (int, int)> rowHeightChanged;
-
-    /** @name Access properties */
-    //@{
-    App::Property* addDynamicProperty(
-        const char* type, const char* name=0,
-        const char* group=0, const char* doc=0,
-        short attr=0, bool ro=false, bool hidden=false) {
-        return props.addDynamicProperty(type, name, group, doc, attr, ro, hidden);
-    }
-    virtual bool removeDynamicProperty(const char* name) {
-        App::DocumentObject::onAboutToRemoveProperty(name);
-        return props.removeDynamicProperty(name);
-    }
-    std::vector<std::string> getDynamicPropertyNames() const {
-        return props.getDynamicPropertyNames();
-    }
-    App::Property *getDynamicPropertyByName(const char* name) const {
-        return props.getDynamicPropertyByName(name);
-    }
-    virtual void addDynamicProperties(const App::PropertyContainer* cont) {
-        return props.addDynamicProperties(cont);
-    }
-    /// get all properties of the class (including properties of the parent)
-    virtual void getPropertyList(std::vector<App::Property*> &List) const {
-        props.getPropertyList(List);
-    }
-    /// get all properties of the class (including parent)
-    void getPropertyMap(std::map<std::string,App::Property*> &Map) const {
-        props.getPropertyMap(Map);
-    }
-
-    short getPropertyType(const App::Property *prop) const {
-        return props.getPropertyType(prop);
-    }
-
-    /// get the group of a property
-    const char* getPropertyGroup(const App::Property* prop) const {
-        return props.getPropertyGroup(prop);
-    }
-
-    /// get the documentation of a property
-    const char* getPropertyDocumentation(const App::Property* prop) const {
-        return props.getPropertyDocumentation(prop);
-    }
-
-    /// get the name of a property
-    virtual const char* getName(const App::Property* prop) const {
-        return props.getPropertyName(prop);
-    }
-    //@}
 
     void observeDocument(App::Document *document);
 
@@ -284,7 +232,7 @@ protected:
     virtual void onSettingDocument();
 
     /* Properties for used cells */
-    App::DynamicProperty props;
+    App::DynamicProperty &props;
 
     /* Mapping of properties to cell position */
     std::map<const App::Property*, App::CellAddress > propAddress;

@@ -76,7 +76,20 @@ short Property::getType(void) const
     GET_PTYPE(Output);
     GET_PTYPE(Transient);
     GET_PTYPE(NoRecompute);
+    GET_PTYPE(NoPersist);
     return type;
+}
+
+void Property::syncType(unsigned type) {
+#define SYNC_PTYPE(_name) do{\
+        if(type & Prop_##_name) StatusBits.set((size_t)Prop##_name);\
+    }while(0)
+    SYNC_PTYPE(ReadOnly);
+    SYNC_PTYPE(Transient);
+    SYNC_PTYPE(Hidden);
+    SYNC_PTYPE(Output);
+    SYNC_PTYPE(NoRecompute);
+    SYNC_PTYPE(NoPersist);
 }
 
 const char* Property::getGroup(void) const
@@ -159,7 +172,14 @@ void Property::Paste(const Property& /*from*/)
 
 void Property::setStatusValue(unsigned long status) {
     static const unsigned long mask = 
-        (1<<PropNoRecompute)|(1<<PropReadOnly)|(1<<PropTransient)|(1<<PropOutput)|(1<<PropHidden);
+        (1<<PropDynamic)
+        |(1<<PropNoRecompute)
+        |(1<<PropReadOnly)
+        |(1<<PropTransient)
+        |(1<<PropOutput)
+        |(1<<PropHidden);
+
+    status &= ~mask;
     status |= StatusBits.to_ulong() & mask;
     unsigned long oldStatus = StatusBits.to_ulong();
     StatusBits = decltype(StatusBits)(status);
