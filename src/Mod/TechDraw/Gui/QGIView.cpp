@@ -63,10 +63,12 @@
 #include "QGIVertex.h"
 #include "QGIViewClip.h"
 #include "ViewProviderDrawingView.h"
+#include "ViewProviderPage.h"
 #include "MDIViewPage.h"
 #include "QGICMark.h"
 #include "QGTracker.h"
 
+#include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
@@ -82,7 +84,6 @@ QGIView::QGIView()
     :QGraphicsItemGroup(),
      viewObj(nullptr),
      m_locked(false),
-     borderVisible(true),
      m_innerView(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
@@ -92,7 +93,6 @@ QGIView::QGIView()
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
-
 
     m_colCurrent = getNormalColor();
     m_pen.setColor(m_colCurrent);
@@ -400,11 +400,13 @@ void QGIView::toggleCache(bool state)
     setCacheMode(NoCache);
 }
 
-void QGIView::toggleBorder(bool state)
-{
-    borderVisible = state;
-    QGIView::draw();
-}
+////this is obs? 
+//void QGIView::toggleBorder(bool state)
+//{
+//    Base::Console().Message("QGIV::toggleBorder(%d)\n",state);
+////    m_borderVisible = state;
+////    QGIView::draw();
+//}
 
 void QGIView::draw()
 {
@@ -418,6 +420,7 @@ void QGIView::draw()
 
 void QGIView::drawCaption()
 {
+//    Base::Console().Message("QGIV::drawCaption()\n");
     prepareGeometryChange();
     QRectF displayArea = customChildrenBoundingRect();
     m_caption->setDefaultTextColor(m_colCurrent);
@@ -431,7 +434,7 @@ void QGIView::drawCaption()
     m_caption->setX(displayCenter.x() - captionArea.width()/2.);
     double labelHeight = (1 - labelCaptionFudge) * m_label->boundingRect().height();
     auto vp = static_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
-    if (borderVisible || vp->KeepLabel.getValue()) {            //place below label if label visible
+    if (getFrameState() || vp->KeepLabel.getValue()) {            //place below label if label visible
         m_caption->setY(displayArea.bottom() + labelHeight);
     } else {
         m_caption->setY(displayArea.bottom() + labelCaptionFudge * getPrefFontSize());
@@ -441,20 +444,21 @@ void QGIView::drawCaption()
 
 void QGIView::drawBorder()
 {
+//    Base::Console().Message("QGIV::drawBorder() - %s\n",getViewName());
     auto feat = getViewObject();
     if (feat == nullptr) {
         return;
     }
 
-    drawCaption();
     //show neither
     auto vp = static_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
-    if (!borderVisible && !vp->KeepLabel.getValue()) {
+    if (!getFrameState() && !vp->KeepLabel.getValue()) {
          m_label->hide();
          m_border->hide();
          m_lock->hide();
         return;
     }
+    drawCaption();
 
     //show both or show label
     //double margin = 2.0;
@@ -510,7 +514,7 @@ void QGIView::drawBorder()
     m_border->setPos(0.,0.);
 
     m_label->show();
-    if (borderVisible) {
+    if (getFrameState()) {
         m_border->show();
     }
 }
@@ -611,6 +615,25 @@ MDIViewPage* QGIView::getMDIViewPage(void) const
         MDIViewPage* mdi = dynamic_cast<MDIViewPage*>(parent);
         if (mdi != nullptr) {
             result = mdi;
+        }
+    }
+    return result;
+}
+
+bool QGIView::getFrameState(void)
+{
+//    Base::Console().Message("QGIV::getFrameState() - %s\n",getViewName());
+    bool result = true;
+    TechDraw::DrawView* dv = getViewObject();
+    if (dv != nullptr) {
+        TechDraw::DrawPage* page = dv->findParentPage();
+        if (page != nullptr) {
+            Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
+            Gui::ViewProvider* vp = activeGui->getViewProvider(page);
+            ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
+            if (vpp != nullptr) {
+                result = vpp->getFrameState();
+            }
         }
     }
     return result;

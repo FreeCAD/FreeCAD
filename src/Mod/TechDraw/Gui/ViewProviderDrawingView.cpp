@@ -69,7 +69,7 @@ ViewProviderDrawingView::ViewProviderDrawingView()
 
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
     // don't use coin.
-    DisplayMode.setStatus(App::Property::ReadOnly,true);
+    DisplayMode.setStatus(App::Property::Hidden,true);
     m_docReady = true;
 }
 

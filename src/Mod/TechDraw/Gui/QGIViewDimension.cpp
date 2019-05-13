@@ -344,7 +344,7 @@ QGIViewDimension::QGIViewDimension() :
 
     dimLines->setStyle(Qt::SolidLine);
 
-    toggleBorder(false);
+//    toggleBorder(false);
     setZValue(ZVALUE::DIMENSION);                    //note: this won't paint dimensions over another View if it stacks
                                                      //above this Dimension's parent view.   need Layers?
 

@@ -130,7 +130,7 @@ QGIViewBalloon::QGIViewBalloon() :
         balloonLabel, SIGNAL(hover(bool)),
         this  , SLOT  (hover(bool)));
 
-    toggleBorder(false);
+//    toggleBorder(false);
     setZValue(ZVALUE::DIMENSION);                    //note: this won't paint dimensions over another View if it stacks
                                                      //above this Dimension's parent view.   need Layers?
 

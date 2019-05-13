@@ -93,7 +93,7 @@ public:
     void addLeaderToParent(QGILeaderLine* lead, QGIView* parent);
 
 //    const std::vector<QGIView *> & getViews() const { return views; }    //only used in MDIVP
-    std::vector<QGIView *> getViews() const;   //only used in MDIVP
+    std::vector<QGIView *> getViews() const;
 
     int addQView(QGIView * view);
     int removeQView(QGIView *view);
@@ -110,8 +110,9 @@ public:
 
     TechDraw::DrawPage * getDrawPage();
 
-    void toggleMarkers(bool enable);
     void toggleHatch(bool enable);
+    virtual void refreshViews(void);
+
 
     /// Renders the page to SVG with filename.
     void saveSvg(QString filename);
@@ -155,6 +156,8 @@ private:
     int m_reversePan;
     int m_reverseScroll;
     bool m_balloonPlacing;
+
+    bool m_borderState;
 };
 
 } // namespace MDIViewPageGui

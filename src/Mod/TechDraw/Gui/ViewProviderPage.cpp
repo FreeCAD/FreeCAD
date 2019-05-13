@@ -50,8 +50,6 @@
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
-#include "MDIViewPage.h"
-#include "ViewProviderPage.h"
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
@@ -61,6 +59,13 @@
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+
+#include "MDIViewPage.h"
+#include "QGVPage.h"
+#include "QGITemplate.h"
+#include "ViewProviderTemplate.h"
+#include "ViewProviderPage.h"
+
 
 using namespace TechDrawGui;
 
@@ -79,7 +84,11 @@ ViewProviderPage::ViewProviderPage()
     m_pageName("")
 {
     sPixmap = "TechDraw_Tree_Page";
+    static const char *group = "Frames";
 
+    ADD_PROPERTY_TYPE(ShowFrames ,(true),group,App::Prop_None,"Show or hide View frames and Labels on this Page");
+
+    ShowFrames.setStatus(App::Property::ReadOnly,true);
     Visibility.setStatus(App::Property::Hidden,true);
     DisplayMode.setStatus(App::Property::Hidden,true);
 }
@@ -354,6 +363,47 @@ void ViewProviderPage::finishRestoring()
 bool ViewProviderPage::isShow(void) const
 {
     return Visibility.getValue();
+}
+
+bool ViewProviderPage::getFrameState(void)
+{
+    bool result = ShowFrames.getValue();
+    return result;
+}
+
+void ViewProviderPage::setFrameState(bool state)
+{
+    ShowFrames.setValue(state);
+}
+
+void ViewProviderPage::toggleFrameState(void)
+{
+//    Base::Console().Message("VPP::toggleFrameState()\n");
+    if (m_graphicsView != nullptr) {
+        setFrameState(!getFrameState());
+        m_graphicsView->refreshViews();
+        setTemplateMarkers(getFrameState());
+    }
+}
+
+void ViewProviderPage::setTemplateMarkers(bool state)
+{
+//    Base::Console().Message("VPP::setTemplateMarkers(%d)\n",state);
+    App::DocumentObject *templateFeat = nullptr;
+    templateFeat = getDrawPage()->Template.getValue();
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(templateFeat->getDocument());
+    Gui::ViewProvider* vp = guiDoc->getViewProvider(templateFeat);
+    ViewProviderTemplate* vpt = dynamic_cast<ViewProviderTemplate*>(vp);
+    vpt->setMarkers(state);
+    QGITemplate* t = vpt->getQTemplate();
+    if (t != nullptr) {
+        t->updateView(true);
+    }
+}
+
+void ViewProviderPage::setGraphicsView(QGVPage* gv)
+{
+    m_graphicsView = gv;
 }
 
 //! Redo the whole visual page
