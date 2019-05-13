@@ -96,7 +96,6 @@ QGIRichAnno::QGIRichAnno(QGraphicsItem* myParent,
 
     setZValue(ZVALUE::DIMENSION);
 
-// we should be able to just drag QGIRA instead of m_text item??
     QObject::connect(
         m_text, SIGNAL(dragging()),
         this  , SLOT  (textDragging())
@@ -126,7 +125,7 @@ QVariant QGIRichAnno::itemChange(GraphicsItemChange change, const QVariant &valu
 
 void QGIRichAnno::textDragging(void)
 {
-//    Base::Console().Message("QGIL::textDragging()\n");
+//    Base::Console().Message("QGIRA::textDragging()\n");
     //this is the long way around.  can we do it without crossing the App/Gui boundary?
     //just update graphics until drag finished.
 //    auto lead( dynamic_cast<TechDraw::DrawRichAnno*>(getFeature()) );
@@ -146,7 +145,7 @@ void QGIRichAnno::textDragging(void)
 
 void QGIRichAnno::textDragFinished(void)
 {
-//    Base::Console().Message("QGIL::textDragFinished()\n");
+//    Base::Console().Message("QGIRA::textDragFinished()\n");
     auto anno( dynamic_cast<TechDraw::DrawRichAnno*>(getFeature()) );
 
     if( anno == nullptr ) {

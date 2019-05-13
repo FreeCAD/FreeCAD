@@ -50,8 +50,6 @@ DrawRichAnno::DrawRichAnno(void)
     ADD_PROPERTY_TYPE(AnnoParent,(0),group,(App::PropertyType)(App::Prop_None),
                       "Object to which this annontation is attached");
     ADD_PROPERTY_TYPE(AnnoText, (""), group, App::Prop_None, "Anno text");
-//    Base::Vector3d pos(0.0,0.0,0.0);
-//    ADD_PROPERTY_TYPE(TextPosition, (pos), group, App::Prop_None, "Anno position relative to parent");
     ADD_PROPERTY_TYPE(ShowFrame, (true), group, App::Prop_None, "Outline rectangle on/off");
     ADD_PROPERTY_TYPE(MaxWidth, (-1.0), group, App::Prop_None, "Width limit before auto wrap");
 }
