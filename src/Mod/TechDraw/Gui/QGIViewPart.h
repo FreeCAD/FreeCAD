@@ -54,7 +54,6 @@ public:
 
     void toggleCache(bool state) override;
     void toggleCosmeticLines(bool state);
-    void toggleVertices(bool state);
     void setViewPartFeature(TechDraw::DrawViewPart *obj);
     virtual void updateView(bool update = false) override;
     void tidy();

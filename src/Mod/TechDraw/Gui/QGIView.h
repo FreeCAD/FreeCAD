@@ -77,7 +77,7 @@ public:
     TechDraw::DrawView * getViewObject() const;
     double getScale(void);
 
-    virtual void toggleBorder(bool state = true);
+    virtual bool getFrameState(void);
     virtual void toggleCache(bool state);
     virtual void updateView(bool update = false);
     virtual void drawBorder(void);
@@ -139,8 +139,6 @@ protected:
     //std::string alignMode;
     //QGIView* alignAnchor;
     bool m_locked;
-    bool borderVisible;
-    bool m_visibility;
     bool m_innerView;                                                  //View is inside another View
 
     QPen m_pen;
