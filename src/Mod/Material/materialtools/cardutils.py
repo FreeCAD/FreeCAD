@@ -318,6 +318,20 @@ def get_source_path():
     return source_dir
 
 
+def get_known_material_quantity_parameter():
+    # get the material quantity parameter from material card template
+    template_data = get_material_template()
+    known_quantities = []
+    for group in template_data:
+        gname = list(group.keys())[0]  # group dict has only one key
+        for prop_name in group[gname]:
+            prop_type = group[gname][prop_name]['Type']
+            if prop_type == 'Quantity':
+                # print('{} --> {}'.format(prop_name, prop_type))
+                known_quantities.append(prop_name)
+    return known_quantities
+
+
 # ***** debug known and not known material parameter *********************************************
 def get_and_output_all_carddata(cards):
     print('\n\n\nSTART--get_and_output_all_carddata\n--------------------')
@@ -410,6 +424,195 @@ def write_cards_to_path(cards_path, cards_data, write_group_section=True, write_
                 write(card_path, card_data, True)
             else:
                 write(card_path, card_data, False)
+
+
+# ***** material parameter units *********************************************
+def check_parm_unit(param):
+    # check if this parameter is known to FreeCAD unit system
+    from FreeCAD import Units
+    # FreeCAD.Console.PrintMessage('{}\n'.format(param))
+    if hasattr(Units, param):
+        return True
+    else:
+        return False
+
+
+def check_value_unit(param, value):
+    # check unit
+    from FreeCAD import Units
+    # FreeCAD.Console.PrintMessage('{} --> {}\n'.format(param, value))
+    if hasattr(Units, param):
+        # get unit and other information known by FreeCAD for this parameter
+        unit = getattr(Units, param)
+        quantity = Units.Quantity(1, unit)
+        user_prefered_unit = quantity.getUserPreferred()[2]
+        # test unit from mat dict value
+        some_text = "Parameter: {} --> value: {} -->".format(param, value)
+        try:
+            param_value = Units.Quantity(value)
+            try:
+                user_unit = param_value.getValueAs(user_prefered_unit)
+                if user_unit:
+                    return True
+                elif user_unit == 0:
+                    FreeCAD.Console.PrintMessage(
+                        '{} Value {} = 0 for {}\n'
+                        .format(some_text, value, param)
+                    )
+                    return True
+                else:
+                    FreeCAD.Console.PrintError(
+                        '{} Not known problem in unit conversion.\n'
+                        .format(some_text)
+                    )
+            except ValueError:
+                unitproblem = value.split()[-1]
+                FreeCAD.Console.PrintError(
+                    '{} Unit {} is known by FreeCAD, but wrong for parameter {}.\n'
+                    .format(some_text, unitproblem, param)
+                )
+            except:
+                FreeCAD.Console.PrintError(
+                    '{} Not known problem.\n'
+                    .format(some_text)
+                )
+        except ValueError:
+            unitproblem = value.split()[-1]
+            FreeCAD.Console.PrintError(
+                '{} Unit {} is not known by FreeCAD.\n'
+                .format(some_text, unitproblem)
+            )
+        except:
+            FreeCAD.Console.PrintError(
+                '{} Not known problem.\n'
+                .format(some_text)
+            )
+    else:
+        FreeCAD.Console.PrintError(
+            'Parameter {} is not known to FreeCAD unit system.\n'
+            .format(param)
+        )
+    return False
+
+
+def output_parm_unit_info(param):
+    # check unit
+    from FreeCAD import Units
+    FreeCAD.Console.PrintMessage('{}\n'.format(param))
+    if hasattr(Units, param):
+        FreeCAD.Console.PrintMessage(
+            '\nParameter {} is known to FreeCAD unit system.'
+            .format(param)
+        )
+
+        # get unit and other information known by FreeCAD for this parameter
+        unit = getattr(Units, param)
+        FreeCAD.Console.PrintMessage(
+            '{}\n'
+            .format(unit)
+        )
+
+        quantity = Units.Quantity(1, unit)
+        FreeCAD.Console.PrintMessage(
+            '{}\n'
+            .format(quantity)
+        )
+
+        user_prefered_unit = quantity.getUserPreferred()[2]
+        FreeCAD.Console.PrintMessage(
+            '{}\n'
+            .format(user_prefered_unit)
+        )
+
+    else:
+        FreeCAD.Console.PrintMessage(
+            'Parameter {} is NOT known to FreeCAD unit system.'
+            .format(param)
+        )
+
+
+def output_value_unit_info(param, value):
+    # check unit
+    from FreeCAD import Units
+    some_text = "Parameter: {} --> value: {} -->".format(param, value)
+    FreeCAD.Console.PrintMessage('{} unit information:'.format(some_text))
+    if hasattr(Units, param):
+
+        # get unit and other information known by FreeCAD for this parameter
+        unit = getattr(Units, param)
+        FreeCAD.Console.PrintMessage(
+            '{}\n'
+            .format(unit)
+        )
+
+        quantity = Units.Quantity(1, unit)
+        FreeCAD.Console.PrintMessage(
+            '{}\n'
+            .format(quantity)
+        )
+
+        user_prefered_unit = quantity.getUserPreferred()[2]
+        FreeCAD.Console.PrintMessage(
+            '{}\n'
+            .format(user_prefered_unit)
+        )
+
+        # test unit from mat dict value
+        try:
+            param_value = Units.Quantity(value)
+            try:
+                user_unit = param_value.getValueAs(user_prefered_unit)
+                FreeCAD.Console.PrintMessage(
+                    '{} Value in preferred unit: {}\n'
+                    .format(some_text, user_unit)
+                )
+            except ValueError:
+                unitproblem = value.split()[-1]
+                FreeCAD.Console.PrintError(
+                    '{} Unit {} is known by FreeCAD, but wrong for parameter {}.\n'
+                    .format(some_text, unitproblem, param)
+                )
+            except:
+                FreeCAD.Console.PrintError(
+                    '{} Not known problem.\n'
+                    .format(some_text)
+                )
+
+        except ValueError:
+            unitproblem = value.split()[-1]
+            FreeCAD.Console.PrintError(
+                '{} Unit {} is not known by FreeCAD.\n'
+                .format(some_text, unitproblem)
+            )
+
+        except:
+            FreeCAD.Console.PrintError(
+                '{} Not known problem.\n'
+                .format(some_text)
+            )
+
+    else:
+        FreeCAD.Console.PrintMessage(
+            'Parameter {} is not known to FreeCAD unit system.'
+            .format(param)
+        )
+
+
+def check_mat_units(mat):
+    known_quantities = get_known_material_quantity_parameter()
+    # check if the param is a Quantity according card template, than chaeck unit
+    # print(known_quantities)
+    units_ok = True
+    for param, value in mat.items():
+        if param in known_quantities:
+            if check_value_unit(param, value) is False:
+                if units_ok is True:
+                    units_ok = False
+        else:
+            pass
+            # print('{} is not a known FreeCAD quantity.'.format(param))
+    # print('')
+    return units_ok
 
 
 # ***** some code examples ***********************************************************************
