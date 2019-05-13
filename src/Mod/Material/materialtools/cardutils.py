@@ -426,13 +426,18 @@ outmats(getmats()[0])
 
 outtrio(getmats())
 
-a,b,c=getmats()
+a,b,c = getmats()
+materials, cards, icons = getmats()
 
 
 # param template, header, template card **********
 from materialtools.cardutils import get_material_template as gettemplate
 gettemplate()
 
+gettemplate()[1]['General']['Description']
+￼	gettemplate()[2]['Mechanical']['FractureToughness']
+￼
+￼
 from materialtools.cardutils import get_material_template as gettemplate
 template_data=gettemplate()
 for group in template_data:
