@@ -499,7 +499,21 @@ class ViewProviderBuildingPart:
             vobj.addProperty("App::PropertyColorList","DiffuseColor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The individual face colors"))
         if not "AutoWorkingPlane" in pl:
             vobj.addProperty("App::PropertyBool","AutoWorkingPlane","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If set to True, the working plane will be kept on Auto mode"))
-
+        if not "ChildrenOverride" in pl:
+            vobj.addProperty("App::PropertyBool","ChildrenOverride","Children",QT_TRANSLATE_NOOP("App::Property","If true, show the objects contained in this Building Part will adopt these line, color and transparency settings"))
+        if not "ChildrenLineWidth" in pl:
+            vobj.addProperty("App::PropertyFloat","ChildrenLineWidth","Children",QT_TRANSLATE_NOOP("App::Property","The line width of child objects"))
+            vobj.LineWidth = 1
+        if not "ChildrenLineColor" in pl:
+            vobj.addProperty("App::PropertyColor","ChildrenLineColor","Children",QT_TRANSLATE_NOOP("App::Property","The line color of child objects"))
+            c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeLineColor",255)
+            vobj.ChildrenLineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
+        if not "ChildrenShapeolor" in pl:
+            vobj.addProperty("App::PropertyColor","ChildrenShapeColor","Children",QT_TRANSLATE_NOOP("App::Property","The shape color of child objects"))
+            c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)
+            vobj.ChildrenLineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
+        if not "ChildrenTransparency" in pl:
+            vobj.addProperty("App::PropertyPercent","ChildrenTransparency","Children",QT_TRANSLATE_NOOP("App::Property","The transparency of child objects"))
 
     def onDocumentRestored(self,vobj):
 
@@ -568,6 +582,8 @@ class ViewProviderBuildingPart:
                 if len(colors) == len(obj.Shape.Faces):
                     if colors != obj.ViewObject.DiffuseColor:
                         obj.ViewObject.DiffuseColor = colors
+        elif prop == "Group":
+            self.onChanged(obj.ViewObject,"ChildrenOverride")
         elif prop == "Label":
             self.onChanged(obj.ViewObject,"ShowLabel")
 
@@ -598,7 +614,7 @@ class ViewProviderBuildingPart:
     def onChanged(self,vobj,prop):
 
         #print(vobj.Object.Label," - ",prop)
-
+        
         if prop == "ShapeColor":
             if hasattr(vobj,"ShapeColor"):
                 l = vobj.ShapeColor
@@ -656,6 +672,14 @@ class ViewProviderBuildingPart:
                 if isinstance(txt,unicode):
                     txt = txt.encode("utf8")
                 self.txt.string.setValue(txt)
+        elif prop in ["ChildrenOverride","ChildenLineWidth","ChildrenLineColor","ChildrenShapeColor","ChildrenTransparency"]:
+            if hasattr(vobj,"ChildrenOverride") and vobj.ChildrenOverride:
+                props = ["ChildenLineWidth","ChildrenLineColor","ChildrenShapeColor","ChildrenTransparency"]
+                for child in vobj.Object.Group:
+                    for prop in props:
+                        if hasattr(vobj,prop) and hasattr(child.ViewObject,prop[8:]) and not hasattr(child,"ChildrenOverride"):
+                            setattr(child.ViewObject,prop[8:],getattr(vobj,prop))
+                    
 
     def doubleClicked(self,vobj):
 
