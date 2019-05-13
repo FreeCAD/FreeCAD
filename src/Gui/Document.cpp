@@ -867,6 +867,7 @@ void Document::slotTouchedObject(const App::DocumentObject &)
 {
     getMainWindow()->updateActions(true);
     TreeWidget::updateStatus(true);
+    setModified(true);
 }
 
 void Document::addViewProvider(Gui::ViewProviderDocumentObject* vp)
@@ -1274,23 +1275,8 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
         }
     }
 
-    bool isModified = false;
-
-    // some post-processing of view providers
-    std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::iterator it;
-    for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
-        if(it->first->isTouched()) {
-            isModified = true;
-#ifdef FC_DEBUG
-            FC_WARN("'" << it->first->getFullName() << "' is touched after restore");
-#else
-            FC_LOG("'" << it->first->getFullName() << "' is touched after restore");
-#endif
-        }
-    }
-
     // reset modified flag
-    setModified(isModified);
+    setModified(false);
 }
 
 void Document::slotShowHidden(const App::Document& doc)
