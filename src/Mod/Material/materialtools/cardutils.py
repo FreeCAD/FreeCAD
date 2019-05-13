@@ -640,9 +640,9 @@ from materialtools.cardutils import get_material_template as gettemplate
 gettemplate()
 
 gettemplate()[1]['General']['Description']
-￼	gettemplate()[2]['Mechanical']['FractureToughness']
-￼
-￼
+gettemplate()[2]['Mechanical']['FractureToughness']
+
+
 from materialtools.cardutils import get_material_template as gettemplate
 template_data=gettemplate()
 for group in template_data:
@@ -692,5 +692,100 @@ writecards(getsrc() + '/src/Mod/Material/StandardMaterial/', cards_data, False)
 
 # last True writes the TEMPLATE card which has no mat params because they have no values
 writecards(getsrc() + '/src/Mod/Material/StandardMaterial/', cards_data, True, True)
+
+
+# material quantity parameter unit checks **********
+from materialtools.cardutils import output_parm_unit_info as unitinfo
+unitinfo('YoungsModulus')
+unitinfo('FractureToughness')
+unitinfo('PoissonRatio')
+
+from materialtools.cardutils import check_parm_unit as checkparamunit
+checkparamunit('YoungsModulus')
+checkparamunit('FractureToughness')
+
+from materialtools.cardutils import output_value_unit_info as valueunitinfo
+valueunitinfo('YoungsModulus', '1 MPa')
+valueunitinfo('FractureToughness', '25')
+valueunitinfo('Density', '1 kg/m^3')
+valueunitinfo('Density', '0 kg/m^3')
+
+from materialtools.cardutils import check_value_unit as checkvalueunit
+checkvalueunit('YoungsModulus', '1 MPa')
+checkvalueunit('FractureToughness', '25')
+checkvalueunit('Density', '1 kg/m^3')
+checkvalueunit('Density', '0 kg/m^3')
+
+# test mat unit properties
+mat = {
+    'Name': 'Concrete',
+    'AngleOfFriction' : '1 deg',
+    'CompressiveStrength': '1 MPa',
+    'Density': '1 kg/m^3',
+    'ShearModulus' : '1 MPa',
+    'UltimateTensileStrength' : '1 MPa',
+    'YieldStrength' : '1 MPa',
+    'YoungsModulus': '1 MPa',
+    'SpecificHeat' : '1 J/kg/K',
+    'ThermalConductivity' : '1 W/m/K',
+    'ThermalExpansionCoefficient' : '1 mm/mm/K'
+}
+from materialtools.cardutils import check_mat_units as checkunits
+checkunits(mat)
+
+# not known quantities, returns True too
+mat = {
+    'Name': 'Concrete',
+    'FractureToughness' : '1',
+    'PoissonRatio': '0.17'  # no unit but important too, proof somehow too
+}
+from materialtools.cardutils import check_mat_units as checkunits
+checkunits(mat)
+
+# wrong units
+mat = {
+    'Name': 'Concrete',
+    'CompressiveStrength': '12356 MBa',  # type on unit, means unit not knwn
+    'YoungsModulus': '654321 m',  # unit known, but wrong unit for this property
+}
+from materialtools.cardutils import check_mat_units as checkunits
+checkunits(mat)
+
+# missing unit, returns False
+mat = {
+    'Name': 'Concrete',
+    'YoungsModulus' : '1'
+}
+from materialtools.cardutils import check_mat_units as checkunits
+checkunits(mat)
+
+# empty dict, returns True
+from materialtools.cardutils import check_mat_units as checkunits
+checkunits({})
+
+
+# some unit code **********
+from FreeCAD import Units
+getattr(Units, 'Pressure')
+Units.Pressure
+Units.Quantity('25 MPa')
+Units.Quantity('25 MPa').getValueAs('Pa')
+Units.Quantity('25 MPa').getUserPreferred()[2]
+Units.Quantity(25000, Units.Pressure)
+Units.Quantity(25000, Units.Pressure).getValueAs('MPa')
+Units.Unit('25 MPa')
+Units.Unit(-1,1,-2,0,0,0,0,0)
+
+# base units 
+from FreeCAD import Units
+Units.Length
+Units.Mass
+Units.TimeSpan
+Units.ElectricCurrent
+Units.Temperature
+Units.AmountOfSubstance
+Units.LuminousIntensity
+Units.Angle
+
 
 '''
