@@ -342,7 +342,7 @@ QVariant PropertyItem::toString(const QVariant& prop) const
         Py::Mapping map(pyobj);
         bool first = true;
         auto it = map.begin();
-        for(;it!=map.end(); ++it) {
+        for(int i=0;i<2 && it!=map.end(); ++it) {
             if(first)
                 first = false;
             else
