@@ -663,7 +663,7 @@ void DocumentObject::onChanged(const Property* prop)
             && !prop->testStatus(Property::Output)) 
     {
         if(!StatusBits.test(ObjectStatus::Touch)) {
-            FC_LOG("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
+            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
             StatusBits.set(ObjectStatus::Touch);
         }
         // must execute on document recompute

@@ -162,10 +162,10 @@ struct DocumentP
 {
     // Array to preserve the creation order of created objects
     std::vector<DocumentObject*> objectArray;
-    std::set<App::DocumentObject*> touchedObjs;
-    std::map<std::string,DocumentObject*> objectMap;
-    std::map<long,DocumentObject*> objectIdMap;
-    std::map<std::string, bool> partialLoadObjects;
+    std::unordered_set<App::DocumentObject*> touchedObjs;
+    std::unordered_map<std::string,DocumentObject*> objectMap;
+    std::unordered_map<long,DocumentObject*> objectIdMap;
+    std::unordered_map<std::string, bool> partialLoadObjects;
     long lastObjectId;
     DocumentObject* activeObject;
     Transaction *activeUndoTransaction;
@@ -271,7 +271,7 @@ void Document::writeDependencyGraphViz(std::ostream &out)
     out << "\tordering=out;" << endl;
     out << "\tnode [shape = box];" << endl;
 
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+    for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
         out << "\t" << It->first << ";" <<endl;
         std::vector<DocumentObject*> OutList = It->second->getOutList();
         for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2)
@@ -626,11 +626,11 @@ void Document::exportGraphviz(std::ostream& out) const
             }
 
             // Internal document objects
-            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
+            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It)
                 addExpressionSubgraphIfNeeded(It->second, CSSubgraphs);
 
             // Add external document objects
-            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
                 std::vector<DocumentObject*> OutList = It->second->getOutList();
                 for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
                     if (*It2) {
@@ -651,11 +651,11 @@ void Document::exportGraphviz(std::ostream& out) const
             bool CSSubgraphs = depGrp->GetBool("GeoFeatureSubgraphs", true);
 
             // Add internal document objects
-            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
+            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It)
                 add(It->second, It->second->getNameInDocument(), It->second->Label.getValue(), CSSubgraphs);
 
             // Add external document objects
-            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
                 std::vector<DocumentObject*> OutList = It->second->getOutList();
                 for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
                     if (*It2) {
@@ -717,7 +717,7 @@ void Document::exportGraphviz(std::ostream& out) const
             bool omitGeoFeatureGroups = depGrp->GetBool("GeoFeatureSubgraphs", true);
 
             // Add edges between document objects
-            for (std::map<std::string, DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
 
                 if(omitGeoFeatureGroups) {
                     //coordinate systems are represented by subgraphs
@@ -1542,14 +1542,12 @@ Document::~Document()
     catch (const boost::exception&) {
     }
 
-    std::map<std::string,DocumentObject*>::iterator it;
-
 #ifdef FC_LOGUPDATECHAIN
     Console().Log("-Delete Features of %s \n",getName());
 #endif
 
     d->objectArray.clear();
-    for (it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
+    for (auto it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
         it->second->setStatus(ObjectStatus::Destroy, true);
         delete(it->second);
     }
@@ -1887,13 +1885,13 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 }
 
 struct DepInfo {
-    std::set<std::string> deps;
+    std::unordered_set<std::string> deps;
     int canLoadPartial = 0;
 };
 
 static void _loadDeps(const std::string &name, 
-        std::map<std::string,bool> &objs, 
-        const std::map<std::string,DepInfo> &deps) 
+        std::unordered_map<std::string,bool> &objs, 
+        const std::unordered_map<std::string,DepInfo> &deps) 
 {
     auto it = deps.find(name);
     if(it == deps.end()) {
@@ -1938,7 +1936,7 @@ Document::readObjects(Base::XMLReader& reader)
     if(!reader.hasAttribute(FC_ATTR_DEPENDENCIES))
         d->partialLoadObjects.clear();
     else if(d->partialLoadObjects.size()) {
-        std::map<std::string,DepInfo> deps;
+        std::unordered_map<std::string,DepInfo> deps;
         for (int i=0 ;i<Cnt ;i++) {
             reader.readElement(FC_ELEMENT_OBJECT_DEPS);
             int dcount = reader.getAttributeAsInteger(FC_ATTR_DEP_COUNT);
@@ -2059,6 +2057,7 @@ Document::readObjects(Base::XMLReader& reader)
         if (pObj && !pObj->testStatus(App::PartialObject)) { // check if this feature has been registered
             pObj->setStatus(ObjectStatus::Restore, true);
             try {
+                FC_TRACE("restoring " << pObj->getFullName());
                 pObj->Restore(reader);
             }
             // Try to continue only for certain exception types if not handled
@@ -2478,8 +2477,10 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray,
         }
     }
 
-    if(checkPartial && d->touchedObjs.size())
+    if(checkPartial && d->touchedObjs.size()) {
+        // partial document touched, signal full reload
         return false;
+    }
 
     std::set<DocumentObject*> objSet(objArray.begin(),objArray.end());
     auto objs = getDependencyList(objArray.empty()?d->objectArray:objArray,DepSort);
@@ -2537,9 +2538,10 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray,
             }
         }
 
-        if(checkPartial && d->touchedObjs.size())
+        if(checkPartial && d->touchedObjs.size()) {
+            // partial document touched, signal full reload
             return false;
-        else if(!d->touchedObjs.count(obj)) 
+        } else if(!d->touchedObjs.count(obj)) 
             obj->purgeTouched();
 
         signalFinishRestoreObject(*obj);
@@ -2674,7 +2676,7 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
     // result list
     std::vector<App::DocumentObject*> result;
     // go through all objects
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+    for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
         // get the outList and search if me is in that list
         std::vector<DocumentObject*> OutList = It->second->getOutList();
         for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2)
@@ -3703,7 +3705,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 /// Remove an object out of the document
 void Document::removeObject(const char* sName)
 {
-    std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(sName);
+    auto pos = d->objectMap.find(sName);
 
     // name not found?
     if (pos == d->objectMap.end())
@@ -3818,7 +3820,7 @@ void Document::_removeObject(DocumentObject* pcObject)
     // TODO Refactoring: share code with Document::removeObject() (2015-09-01, Fat-Zer)
     _checkTransaction(pcObject,0,__LINE__);
 
-    std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(pcObject->getNameInDocument());
+    auto pos = d->objectMap.find(pcObject->getNameInDocument());
 
     if(!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
         // Preserve link group children global visibility. See comments in
@@ -4069,9 +4071,7 @@ DocumentObject * Document::getActiveObject(void) const
 
 DocumentObject * Document::getObject(const char *Name) const
 {
-    std::map<std::string,DocumentObject*>::const_iterator pos;
-
-    pos = d->objectMap.find(Name);
+    auto pos = d->objectMap.find(Name);
 
     if (pos != d->objectMap.end())
         return pos->second;
@@ -4091,7 +4091,7 @@ DocumentObject * Document::getObjectByID(long id) const
 // Note: This method is only used in Tree.cpp slotChangeObject(), see explanation there
 bool Document::isIn(const DocumentObject *pFeat) const
 {
-    for (std::map<std::string,DocumentObject*>::const_iterator o = d->objectMap.begin(); o != d->objectMap.end(); ++o) {
+    for (auto o = d->objectMap.begin(); o != d->objectMap.end(); ++o) {
         if (o->second == pFeat)
             return true;
     }
@@ -4101,9 +4101,7 @@ bool Document::isIn(const DocumentObject *pFeat) const
 
 const char * Document::getObjectName(DocumentObject *pFeat) const
 {
-    std::map<std::string,DocumentObject*>::const_iterator pos;
-
-    for (pos = d->objectMap.begin();pos != d->objectMap.end();++pos) {
+    for (auto pos = d->objectMap.begin();pos != d->objectMap.end();++pos) {
         if (pos->second == pFeat)
             return pos->first.c_str();
     }
@@ -4118,8 +4116,7 @@ std::string Document::getUniqueObjectName(const char *Name) const
     std::string CleanName = Base::Tools::getIdentifier(Name);
 
     // name in use?
-    std::map<std::string,DocumentObject*>::const_iterator pos;
-    pos = d->objectMap.find(CleanName);
+    auto pos = d->objectMap.find(CleanName);
 
     if (pos == d->objectMap.end()) {
         // if not, name is OK
@@ -4206,7 +4203,7 @@ std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, con
 int Document::countObjectsOfType(const Base::Type& typeId) const
 {
     int ct=0;
-    for (std::map<std::string,DocumentObject*>::const_iterator it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
+    for (auto it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
         if (it->second->getTypeId().isDerivedFrom(typeId))
             ct++;
     }
