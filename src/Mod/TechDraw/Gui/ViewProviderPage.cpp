@@ -273,6 +273,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     //                                               DrawViewDimension
     //                                               DrawViewBalloon
     //                                               DrawLeader
+    //                                               DrawRichAnno (if not a child of View)
     //                                               any FeatuerView in a DrawViewClip
     //                                               DrawHatch
 
@@ -285,8 +286,10 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
           //DrawRichAnno with no parent is child of Page
           TechDraw::DrawRichAnno* dra = dynamic_cast<TechDraw::DrawRichAnno*> (*it);
           if (dra != nullptr) {
-              if (dra->AnnoParent.getValue() == nullptr) {
-                  temp.push_back(*it);
+              if (dra->AnnoParent.getValue() != nullptr) {
+                  continue;                   //has a parent somewhere else
+              } else {
+                  temp.push_back(*it);        //no parent, belongs to page
                   continue;
               }
           }
