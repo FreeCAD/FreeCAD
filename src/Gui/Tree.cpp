@@ -3379,7 +3379,10 @@ void DocumentItem::clearSelection(DocumentObjectItem *exclude)
     bool ok = treeWidget()->blockSignals(true);
     FOREACH_ITEM_ALL(item);
         if(item==exclude) {
-            item->selected = 0;
+            if(item->selected>0)
+                item->selected = -1;
+            else
+                item->selected = 0;
             updateItemSelection(item);
         }else{
             item->selected = 0;
@@ -3414,9 +3417,10 @@ void DocumentItem::updateSelection(QTreeWidgetItem *ti, bool unselect) {
 
 void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
     bool selected = item->isSelected();
-    if((selected && item->selected) || (!selected && !item->selected)) 
+    if((selected && item->selected>0) || (!selected && !item->selected)) 
         return;
-    item->mySubs.clear();
+    if(item->selected != -1)
+        item->mySubs.clear();
     item->selected = selected;
 
     auto obj = item->object()->getObject();
@@ -3471,14 +3475,26 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
         // updateSelection(item,true);
     }
 
-    if(!selected)
+    if(!selected) {
         Gui::Selection().rmvSelection(docname,objname,subname.c_str());
-    else if(!Gui::Selection().addSelection(docname,objname,subname.c_str())) {
-        item->selected = 0;
-        item->setSelected(false);
+        return;
+    }
+    selected = false;
+    if(item->mySubs.size()) {
+        for(auto &sub : item->mySubs) {
+            if(Gui::Selection().addSelection(docname,objname,(subname+sub).c_str()))
+                selected = true;
+        }
+    }
+    if(!selected) {
         item->mySubs.clear();
-    }else 
-        getTree()->syncView(item->object());
+        if(!Gui::Selection().addSelection(docname,objname,subname.c_str())) {
+            item->selected = 0;
+            item->setSelected(false);
+            return;
+        }
+    }
+    getTree()->syncView(item->object());
 }
 
 App::DocumentObject *DocumentItem::getTopParent(App::DocumentObject *obj, std::string &subname) {
