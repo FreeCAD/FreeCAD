@@ -120,7 +120,6 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=Fals
     '''
 
     ui = FreeCADGui.draftToolBar
-    view = Draft.get3DView()
 
     # get point
     if target.node:
