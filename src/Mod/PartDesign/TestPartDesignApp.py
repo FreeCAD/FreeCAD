@@ -31,7 +31,6 @@ class RandomPartDesignTest(unittest.TestCase):
     def setUp(self):
         self.count = 0
 
-print("I just imported TestDatum...")
     def testPrint(self):
         FreeCAD.Console.PrintMessage("   Oh great spirit of FreeCAD, let PartDesign flow\n")
 
