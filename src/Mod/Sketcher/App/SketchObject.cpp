@@ -2807,7 +2807,7 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
         } else {
             if (rsn)
                 *rsn = rlOtherBody;
-            return false;
+            return allowOtherBody;
         }
     }
     else {
