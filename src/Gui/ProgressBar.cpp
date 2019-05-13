@@ -264,7 +264,7 @@ void Sequencer::resetData()
     QThread *thr = d->bar->thread(); // this is the main thread
     if (thr != currentThread) {
         QMetaObject::invokeMethod(d->bar, "reset", Qt::QueuedConnection);
-        QMetaObject::invokeMethod(d->bar, "hide", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(d->bar, "aboutToHide", Qt::QueuedConnection);
         QMetaObject::invokeMethod(getMainWindow()->statusBar(), "showMessage",
             Qt::/*Blocking*/QueuedConnection,
             QGenericReturnArgument(),
@@ -280,7 +280,7 @@ void Sequencer::resetData()
         // Note: Under Qt 4.1.4 this forces to run QWindowsStyle::eventFilter() twice
         // handling the same event thus a warning is printed. Possibly, this is a bug
         // in Qt. The message is QEventDispatcherUNIX::unregisterTimer: invalid argument.
-        d->bar->hide();
+        d->bar->aboutToHide();
         delete d->waitCursor;
         d->waitCursor = 0;
         d->bar->leaveControlEvents();
@@ -426,12 +426,26 @@ void ProgressBar::aboutToShow()
 {
     // delay showing the bar
     d->delayShowTimer->start(d->minimumDuration);
+#ifdef QT_WINEXTRAS_LIB
+    setupTaskBarProgress();
+    m_taskbarProgress->show();
+#endif
 }
 
 void ProgressBar::delayedShow()
 {
-    if (!isVisible() && !sequencer->wasCanceled() && sequencer->isRunning())
+    if (!isVisible() && !sequencer->wasCanceled() && sequencer->isRunning()) {
         show();
+    }
+}
+
+void ProgressBar::aboutToHide()
+{
+    hide();
+#ifdef QT_WINEXTRAS_LIB
+    setupTaskBarProgress();
+    m_taskbarProgress->hide();
+#endif
 }
 
 bool ProgressBar::canAbort() const
@@ -453,10 +467,6 @@ void ProgressBar::hideEvent(QHideEvent* e)
 {
     QProgressBar::hideEvent(e);
     d->delayShowTimer->stop();
-#ifdef QT_WINEXTRAS_LIB
-    setupTaskBarProgress();
-    m_taskbarProgress->hide();
-#endif
 }
 
 void ProgressBar::resetObserveEventFilter()
@@ -491,7 +501,6 @@ void ProgressBar::setupTaskBarProgress()
     //m_myButton->setOverlayIcon(QIcon(""));
 
     m_taskbarProgress = m_taskbarButton->progress();
-    m_taskbarProgress->setVisible(true);
   }
 }
 #endif

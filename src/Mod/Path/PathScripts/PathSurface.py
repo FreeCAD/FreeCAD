@@ -526,7 +526,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         cOut = (self.cutter.getDiameter() / 2)
                     y = ymax - cOut
                 else:
-                    y = ymin - (self.cutter.getDiameter() / 2) + ((n + 1) * cOut)  # all lines are offest by 1/2 cutter diameter
+                    y = ymin - (self.cutter.getDiameter() / 2) + ((n + 1) * cOut)  # all lines are offset by 1/2 cutter diameter
                 p1 = ocl.Point(xmin, y, 0)   # start-point of line
                 p2 = ocl.Point(xmax, y, 0)   # end-point of line
 
@@ -540,7 +540,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         cOut = (self.cutter.getDiameter() / 2)
                     x = xmax - cOut
                 else:
-                    x = xmin - (self.cutter.getDiameter() / 2) + ((n + 1) * cOut)  # all lines are offest by 1/2 cutter diameter
+                    x = xmin - (self.cutter.getDiameter() / 2) + ((n + 1) * cOut)  # all lines are offset by 1/2 cutter diameter
                 p1 = ocl.Point(x, ymin, 0)   # start-point of line
                 p2 = ocl.Point(x, ymax, 0)   # end-point of line
 
@@ -817,7 +817,7 @@ class ObjectSurface(PathOp.ObjectOp):
         lenHP = len(self.holdStartPnts)
         commands = [Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid})]
         self.reportThis("--Processing " + str(lenHP) + " HOLD optimizations---")
-        # cycle throug hold points
+        # cycle through hold points
         if lenHP > 0:
             hdCnt = 0
             lenGC = len(self.gcodeCmds)
@@ -1148,7 +1148,7 @@ class ObjectSurface(PathOp.ObjectOp):
         nxt = ocl.Point(float("inf"), float("inf"), float("inf"))
         pnt = ocl.Point(float("inf"), float("inf"), float("inf"))
 
-        # Create frist point
+        # Create first point
         pnt.x = CLP[0].x
         pnt.y = CLP[0].y
         pnt.z = CLP[0].z + float(obj.DepthOffset.Value)
@@ -1256,7 +1256,7 @@ class ObjectSurface(PathOp.ObjectOp):
         if obj.RotationAxis == 'Y':
             axisOfRot = 'B'
 
-        # Create frist point
+        # Create first point
         ang = 0.0 + obj.CutterTilt
         pnt.x = RNG[0].x
         pnt.y = RNG[0].y
@@ -1623,7 +1623,7 @@ class ObjectSurface(PathOp.ObjectOp):
         nxt = ocl.Point(float("inf"), float("inf"), float("inf"))
         pnt = ocl.Point(float("inf"), float("inf"), float("inf"))
 
-        # Create frist point
+        # Create first point
         pnt.x = loop[0].x
         pnt.y = loop[0].y
         pnt.z = layDep

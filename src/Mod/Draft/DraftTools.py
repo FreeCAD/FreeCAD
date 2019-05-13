@@ -1544,6 +1544,7 @@ class Arc(Creator):
         rot,sup,pts,fil = self.getStrings()
         if self.closedCircle:
             try:
+                FreeCADGui.addModule("Draft")
                 if Draft.getParam("UsePartPrimitives",False):
                     # use primitive
                     self.commit(translate("draft","Create Circle"),
@@ -1579,6 +1580,7 @@ class Arc(Creator):
                 else:
                     break
             try:
+                FreeCADGui.addModule("Draft")
                 if Draft.getParam("UsePartPrimitives",False):
                     # use primitive
                     self.commit(translate("draft","Create Arc"),
@@ -1594,7 +1596,6 @@ class Arc(Creator):
                                  'FreeCAD.ActiveDocument.recompute()'])
                 else:
                     # building command string
-                    FreeCADGui.addModule("Draft")
                     self.commit(translate("draft","Create Arc"),
                                 ['pl=FreeCAD.Placement()',
                                  'pl.Rotation.Q='+rot,

@@ -228,7 +228,7 @@ def main():
         update_translation(i)
     for j in PyCommands:
         update_python_translation(j)
-    print("\nIf updatets.py was run successully, the next step is to run ./src/Tools/updatecrowdin.py")
+    print("\nIf updatets.py was run successfully, the next step is to run ./src/Tools/updatecrowdin.py")
 
 if __name__ == "__main__":
     main()
