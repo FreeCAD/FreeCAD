@@ -469,29 +469,31 @@ void QGIViewPart::drawViewPart()
     fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x00000000));
     QColor vertexColor = fcColor.asValue<QColor>();
 
-    bool usePolygonHLR = viewPart->CoarseView.getValue();
-    const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
-    std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
-    bool showCenters = vp->ArcCenterMarks.getValue();
-    double cAdjust = vp->CenterScale.getValue();
-    for(int i = 0 ; vert != verts.end(); ++vert, i++) {
-        if ((*vert)->isCenter) {
-            if (showCenters) {
-                QGICMark* cmItem = new QGICMark(i);
-                addToGroup(cmItem);
-                cmItem->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
-                cmItem->setThick(0.5 * lineWidth);             //need minimum?
-                cmItem->setSize( cAdjust * lineWidth * vertexScaleFactor);
-                cmItem->setZValue(ZVALUE::VERTEX);
+    if (getFrameState()) {
+        bool usePolygonHLR = viewPart->CoarseView.getValue();
+        const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
+        std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
+        bool showCenters = vp->ArcCenterMarks.getValue();
+        double cAdjust = vp->CenterScale.getValue();
+        for(int i = 0 ; vert != verts.end(); ++vert, i++) {
+            if ((*vert)->isCenter) {
+                if (showCenters) {
+                    QGICMark* cmItem = new QGICMark(i);
+                    addToGroup(cmItem);
+                    cmItem->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
+                    cmItem->setThick(0.5 * lineWidth);             //need minimum?
+                    cmItem->setSize( cAdjust * lineWidth * vertexScaleFactor);
+                    cmItem->setZValue(ZVALUE::VERTEX);
+                }
+            } else if(!usePolygonHLR){ //Disable dots WHEN usePolygonHLR
+                QGIVertex *item = new QGIVertex(i);
+                item->setNormalColor(vertexColor);
+                item->setPrettyNormal();
+                addToGroup(item);
+                item->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
+                item->setRadius(lineWidth * vertexScaleFactor);
+                item->setZValue(ZVALUE::VERTEX);
             }
-        } else if(!usePolygonHLR){ //Disable dots WHEN usePolygonHLR
-            QGIVertex *item = new QGIVertex(i);
-            item->setNormalColor(vertexColor);
-            item->setPrettyNormal();
-            addToGroup(item);
-            item->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
-            item->setRadius(lineWidth * vertexScaleFactor);
-            item->setZValue(ZVALUE::VERTEX);
         }
     }
 
@@ -951,23 +953,25 @@ void QGIViewPart::toggleCosmeticLines(bool state)
     }
 }
 
-void QGIViewPart::toggleVertices(bool state)
-{
-    QList<QGraphicsItem*> items = childItems();
-    for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
-        QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
-        QGICMark *mark = dynamic_cast<QGICMark *>(*it);
+//// is there any circumstance where vertices need to be in a different state from frames?
+//void QGIViewPart::toggleVertices(bool state)
+//{
+//    Base::Console().Message("QGIVP::toggleVertices(%d) - %s\n",state,getViewName());
+////    QList<QGraphicsItem*> items = childItems();
+////    for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
+////        QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
+////        QGICMark *mark = dynamic_cast<QGICMark *>(*it);
 
-        if(vert) {
-            if (!mark) {             //leave center marks showing
-                if(state)
-                    vert->show();
-                else
-                    vert->hide();
-            }
-        }
-    }
-}
+////        if(vert) {
+////            if (!mark) {             //leave center marks showing
+////                if(state)
+////                    vert->show();
+////                else
+////                    vert->hide();
+////            }
+////        }
+////    }
+//}
 
 TechDraw::DrawHatch* QGIViewPart::faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const
 {
