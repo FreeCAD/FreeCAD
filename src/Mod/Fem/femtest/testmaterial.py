@@ -42,10 +42,17 @@ class TestMaterialUnits(unittest.TestCase):
             FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
 
-    def test_material(self):
-        fcc_print('mattest')
-        self.assertEqual(6, 6, "wrong")
-        # self.assertEqual(5, 6, "really wrong")
+    def test_known_quantity_units(self):
+        from materialtools.cardutils import get_known_material_quantity_parameter as knownquant
+        known_quantity_parameter = knownquant()
+        from materialtools.cardutils import check_parm_unit as checkparamunit
+        for param in known_quantity_parameter:
+            fcc_print('{}'.format(param))
+            self.assertTrue(
+                checkparamunit(param),
+                'Unit of quantity material parameter {} is not known by FreeCAD unit system.'
+                .format(param)
+            )
 
     def tearDown(self):
         # clearance, is executed after every test
