@@ -90,6 +90,11 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         ui->horizontalSpacer_3->changeSize(0, 2);
         ui->verticalLayout->setContentsMargins(9, 9, 9, 9);
         this->adjustSize();
+        // It is strange that (at least on Linux) DlgExpressionInput will shrink
+        // to be narrower than ui->expression after calling adjustSize() above.
+        // Why?
+        if(this->width() < ui->expression->width() + 18)
+            this->resize(ui->expression->width()+18,this->height());
     }
     ui->expression->setFocus();
 }
