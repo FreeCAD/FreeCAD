@@ -98,7 +98,7 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.testccxtools.TestCcxTools.test_5_Flow1D_thermomech_analysis"
 ./bin/FreeCADCmd --run-test "femtest.testcommon.TestFemCommon.test_adding_refshaps"
 ./bin/FreeCADCmd --run-test "femtest.testcommon.TestFemCommon.test_pyimport_all_FEM_modules"
-./bin/FreeCADCmd --run-test "femtest.testmaterial.TestMaterialUnits.test_material"
+./bin/FreeCADCmd --run-test "femtest.testmaterial.TestMaterialUnits.test_known_quantity_units"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshCommon.test_mesh_seg2_python"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshCommon.test_mesh_seg3_python"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshCommon.test_unv_save_load"
@@ -146,7 +146,7 @@ import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testcommon.TestFemCommon.test_pyimport_all_FEM_modules"))
 
 import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmaterial.TestMaterialUnits.test_material"))
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmaterial.TestMaterialUnits.test_known_quantity_units"))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshCommon.test_mesh_seg2_python"))
