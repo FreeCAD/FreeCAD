@@ -594,6 +594,7 @@ class Line(Creator):
                 FreeCADGui.Snapper.restack()
         self.oldWP = None
         if (len(self.node) > 1):
+            FreeCADGui.addModule("Draft")
             if (len(self.node) == 2) and Draft.getParam("UsePartPrimitives",False):
                 # use Part primitive
                 p1 = self.node[0]
@@ -611,7 +612,6 @@ class Line(Creator):
             else:
                 # building command string
                 rot,sup,pts,fil = self.getStrings()
-                FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create Wire"),
                             ['pl = FreeCAD.Placement()',
                              'pl.Rotation.Q = '+rot,
@@ -1241,6 +1241,9 @@ class Rectangle(Creator):
             self.refpoint = None
             self.ui.pointUi(name)
             self.ui.extUi()
+            if Draft.getParam("UsePartPrimitives",False):
+                self.fillstate = self.ui.hasFill.isChecked()
+                self.ui.hasFill.setChecked(True)
             self.call = self.view.addEventCallback("SoEvent",self.action)
             self.rect = rectangleTracker()
             msg(translate("draft", "Pick first point:")+"\n")
@@ -1249,9 +1252,11 @@ class Rectangle(Creator):
         "terminates the operation and closes the poly if asked"
         Creator.finish(self)
         if self.ui:
+            if hasattr(self,"fillstate"):
+                self.ui.hasFill.setChecked(self.fillstate)
+                del self.fillstate
             self.rect.off()
             self.rect.finalize()
-        if self.ui:
             if self.ui.continueMode:
                 self.Activated()
 
@@ -1276,6 +1281,7 @@ class Rectangle(Creator):
             if height < 0:
                 height = -height
                 base = base.add((p1.sub(p2)).negative())
+            FreeCADGui.addModule("Draft")
             if Draft.getParam("UsePartPrimitives",False):
                 # Use Part Primitive
                 self.commit(translate("draft","Create Plane"),
@@ -1289,7 +1295,6 @@ class Rectangle(Creator):
                              'Draft.autogroup(plane)',
                              'FreeCAD.ActiveDocument.recompute()'])
             else:
-                FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create Rectangle"),
                             ['pl = FreeCAD.Placement()',
                              'pl.Rotation.Q = '+rot,
@@ -1809,21 +1814,21 @@ class Polygon(Creator):
     def drawPolygon(self):
         "actually draws the FreeCAD object"
         rot,sup,pts,fil = self.getStrings()
+        FreeCADGui.addModule("Draft")
         if Draft.getParam("UsePartPrimitives",False):
+            FreeCADGui.addModule("Part")
             self.commit(translate("draft","Create Polygon"),
-                        ['import Part',
-                         'pl=FreeCAD.Placement()',
+                        ['pl=FreeCAD.Placement()',
                          'pl.Rotation.Q=' + rot,
                          'pl.Base=' + DraftVecUtils.toString(self.center),
                          'pol = FreeCAD.ActiveDocument.addObject("Part::RegularPolygon","RegularPolygon")',
                          'pol.Polygon = ' + str(self.ui.numFaces.value()),
                          'pol.Circumradius = ' + str(self.rad),
                          'pol.Placement = pl',
-                         'Draft.autogroup(pol)'
+                         'Draft.autogroup(pol)',
                          'FreeCAD.ActiveDocument.recompute()'])
         else:
             # building command string
-            FreeCADGui.addModule("Draft")
             self.commit(translate("draft","Create Polygon"),
                         ['pl=FreeCAD.Placement()',
                          'pl.Rotation.Q = ' + rot,
@@ -1831,7 +1836,6 @@ class Polygon(Creator):
                          'pol = Draft.makePolygon(' + str(self.ui.numFaces.value()) + ',radius=' + str(self.rad) + ',inscribed=True,placement=pl,face=' + fil + ',support=' + sup + ')',
                          'Draft.autogroup(pol)',
                          'FreeCAD.ActiveDocument.recompute()'])
-        FreeCAD.ActiveDocument.recompute()
         self.finish(cont=True)
 
     def numericInput(self,numx,numy,numz):
@@ -1916,6 +1920,7 @@ class Ellipse(Creator):
                 rot2 = FreeCAD.Placement(m)
                 rot2 = rot2.Rotation
                 rot = str((rot1.multiply(rot2)).Q)
+            FreeCADGui.addModule("Draft")
             if Draft.getParam("UsePartPrimitives",False):
                 # Use Part Primitive
                 self.commit(translate("draft","Create Ellipse"),
@@ -1930,7 +1935,6 @@ class Ellipse(Creator):
                              'Draft.autogroup(ellipse)',
                              'FreeCAD.ActiveDocument.recompute()'])
             else:
-                FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create Ellipse"),
                             ['pl = FreeCAD.Placement()',
                              'pl.Rotation.Q = '+rot,

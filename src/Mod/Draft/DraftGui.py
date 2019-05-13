@@ -812,7 +812,7 @@ class DraftToolBar:
         self.isRelative.setText(translate("draft", "Relative")+" ("+inCommandShortcuts["Relative"][0]+")")
         self.isRelative.setToolTip(translate("draft", "Coordinates relative to last point or absolute"))
         self.hasFill.setText(translate("draft", "Filled")+" ("+inCommandShortcuts["Fill"][0]+")")
-        self.hasFill.setToolTip(translate("draft", "Check this if the object should appear as filled, otherwise it will appear as wireframe"))
+        self.hasFill.setToolTip(translate("draft", "Check this if the object should appear as filled, otherwise it will appear as wireframe. Not available if Draft preference option 'Use Part Primitives' is enabled"))
         self.finishButton.setText(translate("draft", "Finish")+" ("+inCommandShortcuts["Exit"][0]+")")
         self.finishButton.setToolTip(translate("draft", "Finishes the current drawing or editing operation"))
         self.continueCmd.setToolTip(translate("draft", "If checked, command will not finish until you press the command button again"))
@@ -1021,6 +1021,10 @@ class DraftToolBar:
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
         self.isRelative.show()
+        if Draft.getParam("UsePartPrimitives",False):
+            self.hasFill.setEnabled(False)
+        else:
+            self.hasFill.setEnabled(True)
         self.hasFill.show()
         self.finishButton.show()
         self.closeButton.show()
@@ -1033,6 +1037,10 @@ class DraftToolBar:
         self.pointUi(translate("draft", "Circle"),icon="Draft_Circle")
         self.continueCmd.show()
         self.labelx.setText(translate("draft", "Center X"))
+        if Draft.getParam("UsePartPrimitives",False):
+            self.hasFill.setEnabled(False)
+        else:
+            self.hasFill.setEnabled(True)
         self.hasFill.show()
 
     def arcUi(self):
@@ -1275,6 +1283,10 @@ class DraftToolBar:
         self.arc3PtButton.setChecked(False)
 
     def extUi(self):
+        if Draft.getParam("UsePartPrimitives",False):
+            self.hasFill.setEnabled(False)
+        else:
+            self.hasFill.setEnabled(True)
         self.hasFill.show()
         self.continueCmd.show()
 
