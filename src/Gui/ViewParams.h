@@ -54,6 +54,7 @@ public:
     FC_VIEW_PARAM(DefaultShapeColor,unsigned long,Unsigned,0xCCCCCC00) \
     FC_VIEW_PARAM(DefaultShapeLineWidth,int,Int,2) \
     FC_VIEW_PARAM(CoinCycleCheck,bool,Bool,true) \
+    FC_VIEW_PARAM(EnablePropertyViewForInactiveDocument,bool,Bool,true) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \

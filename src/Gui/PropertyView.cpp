@@ -261,23 +261,17 @@ void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
 
 void PropertyView::slotActiveDocument(const Gui::Document &doc)
 {
-    // allow to disable the auto-deactivation
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    bool enableEditor = hGrp->GetBool("EnablePropertyViewForInactiveDocument", true);
-    if (enableEditor) {
+    checkEnable(doc.getDocument()->getName());
+}
+
+void PropertyView::checkEnable(const char *doc) {
+    if(ViewParams::instance()->getEnablePropertyViewForInactiveDocument()) {
         setEnabled(true);
         return;
     }
-
     // check if at least one selected object is part of the active document
-    std::vector<SelectionSingleton::SelObj> array = Gui::Selection().getCompleteSelection();
-    for (std::vector<SelectionSingleton::SelObj>::const_iterator it = array.begin(); it != array.end(); ++it) {
-        if (Gui::Application::Instance->getDocument(it->pDoc) == &doc) {
-            enableEditor = true;
-            break;
-        }
-    }
-    setEnabled(enableEditor || array.empty());
+    setEnabled(!Selection().hasSelection()
+            || Selection().hasSelection(doc,false));
 }
 
 struct PropertyView::PropInfo
@@ -338,10 +332,6 @@ void PropertyView::onTimer() {
     }
 
     std::set<App::DocumentObject *> objSet;
-    // allow to disable the auto-deactivation
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    bool enableEditor = hGrp->GetBool("EnablePropertyViewForInactiveDocument", true);
-    Gui::Document *activeDoc = Application::Instance->activeDocument();
 
     // group the properties by <name,id>
     std::vector<PropInfo> propDataMap;
@@ -381,9 +371,6 @@ void PropertyView::onTimer() {
         // Do not process an object more than once
         if(!objSet.insert(ob).second)
             continue;
-
-        if(ob->getDocument() == activeDoc->getDocument())
-            enableEditor = true;
 
         std::vector<App::Property*> dataList;
         std::map<std::string, App::Property*> viewList;
@@ -513,7 +500,7 @@ void PropertyView::onTimer() {
     propertyEditorView->buildUp(std::move(viewProps));
 
     // make sure the editors are enabled/disabled properly
-    setEnabled(enableEditor || array.empty());
+    checkEnable();
 }
 
 void PropertyView::tabChanged(int index)
