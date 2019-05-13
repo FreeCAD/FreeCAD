@@ -24,19 +24,19 @@
 #---------------------------------------------------------------------------
 
 
-import FreeCAD, os, unittest, tempfile, math
+#import FreeCAD, os, unittest, tempfile, math
 
 # dummy text
-class RandomPartDesignTest(unittest.TestCase):
-    def setUp(self):
-        self.count = 0
-
-    def testPrint(self):
-        FreeCAD.Console.PrintMessage("   Oh great spirit of FreeCAD, let PartDesign flow\n")
+#class RandomPartDesignTest(unittest.TestCase):
+#    def setUp(self):
+#        self.count = 0
+#
+#    def testPrint(self):
+#        FreeCAD.Console.PrintMessage("   Oh great spirit of FreeCAD, let PartDesign flow\n")
 
 
 # datum tools
-#from PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane
+from PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane
 #from PartDesignTests.TestShapeBinder import TestShapeBinder
 
 # additive/subtractive features & primitives
