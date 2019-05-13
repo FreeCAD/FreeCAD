@@ -27,6 +27,8 @@ import FreeCAD
 import unittest
 from .utilstest import fcc_print
 
+from os.path import join
+
 
 class TestMaterialUnits(unittest.TestCase):
     fcc_print('import TestMaterialUnits')
@@ -53,6 +55,34 @@ class TestMaterialUnits(unittest.TestCase):
                 'Unit of quantity material parameter {} is not known by FreeCAD unit system.'
                 .format(param)
             )
+
+    def test_material_card_quantities(self):
+        # test the value and unit of known quantity parameter from solid build in material cards
+        # keep in mind only if FreeCAD is installed all materials are copied
+        # TODO Fluid materials (are they installed?)
+
+        # get build in materials
+        builtin_solid_mat_dir = join(FreeCAD.getResourceDir(), "Mod", "Material", "StandardMaterial")
+        fcc_print('{}'.format(builtin_solid_mat_dir))
+        from materialtools.cardutils import add_cards_from_a_dir as addmats
+        materials, cards, icons = addmats({}, {}, {}, builtin_solid_mat_dir, '')
+
+        # get known material quantity parameter
+        from materialtools.cardutils import get_known_material_quantity_parameter as knownquant
+        known_quantities = knownquant()
+
+        # check param, value pairs
+        from materialtools.cardutils import check_value_unit as checkvalueunit
+        for mat in materials:
+            fcc_print('{}'.format(mat))
+            for param, value in materials[mat].items():
+                if param in known_quantities:
+                    # fcc_print('    {} --> {}'.format(param, value))
+                    self.assertTrue(
+                        checkvalueunit(param, value),
+                        'Unit of quantity {} from material parameter {} is wrong.'
+                        .format(value, param)
+                    )
 
     def tearDown(self):
         # clearance, is executed after every test

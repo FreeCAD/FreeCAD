@@ -99,6 +99,7 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.testcommon.TestFemCommon.test_adding_refshaps"
 ./bin/FreeCADCmd --run-test "femtest.testcommon.TestFemCommon.test_pyimport_all_FEM_modules"
 ./bin/FreeCADCmd --run-test "femtest.testmaterial.TestMaterialUnits.test_known_quantity_units"
+./bin/FreeCADCmd --run-test "femtest.testmaterial.TestMaterialUnits.test_material_card_quantities"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshCommon.test_mesh_seg2_python"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshCommon.test_mesh_seg3_python"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshCommon.test_unv_save_load"
@@ -147,6 +148,9 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.t
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmaterial.TestMaterialUnits.test_known_quantity_units"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmaterial.TestMaterialUnits.test_material_card_quantities"))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshCommon.test_mesh_seg2_python"))
