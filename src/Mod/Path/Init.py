@@ -29,4 +29,4 @@ ParGrp.SetString("HelpIndex",        "Path/Help/index.html")
 ParGrp.SetString("WorkBenchName",    "Path")
 ParGrp.SetString("WorkBenchModule",  "PathWorkbench.py")
 
-FreeCAD.__unit_test__ += [ "TestPathApp" ]
+#FreeCAD.__unit_test__ += [ "TestPathApp" ]
