@@ -2845,6 +2845,8 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
 
     TREE_LOG("delete object " << obj->getFullName());
 
+    bool needUpdate = false;
+
     for(auto data : itEntry->second) {
         DocumentItem *docItem = data->docItem;
         if(docItem == deletingDoc)
@@ -2872,11 +2874,14 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
             if(cit==docItem->ObjectMap.end() || cit->second->items.empty()) {
                 auto vpd = docItem->getViewProvider(child);
                 if(!vpd) continue;
-                docItem->createNewItem(*vpd);
+                if(docItem->createNewItem(*vpd))
+                    needUpdate = true;
             }else {
                 auto childItem = *cit->second->items.begin();
-                if(childItem->requiredAtRoot(false))
-                    docItem->createNewItem(*childItem->object(),docItem,-1,childItem->myData);
+                if(childItem->requiredAtRoot(false)) {
+                    if(docItem->createNewItem(*childItem->object(),docItem,-1,childItem->myData))
+                        needUpdate = true;
+                }
             }
             if(child->Visibility.getValue() && !docItem->isObjectShowable(child))
                 child->Visibility.setValue(false);
@@ -2884,6 +2889,9 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         docItem->ObjectMap.erase(obj);
     }
     ObjectTable.erase(itEntry);
+
+    if(needUpdate)
+        _updateStatus();
 }
 
 bool DocumentItem::populateObject(App::DocumentObject *obj) {
