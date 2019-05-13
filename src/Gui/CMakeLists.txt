@@ -356,6 +356,7 @@ set(Gui_MOC_HDRS
     DAGView/DAGModel.h
     TaskElementColors.h
     DlgObjectSelection.h
+    DlgAddProperty.h
     ${FreeCADGui_SDK_MOC_HDRS}
 )
 
@@ -430,6 +431,7 @@ SET(Gui_UIC_SRCS
     TaskView/TaskSelectLinkProperty.ui
     TaskElementColors.ui
     DlgObjectSelection.ui
+    DlgAddProperty.ui
 )
 
 SET(Gui_RES_SRCS
@@ -505,6 +507,7 @@ SET(Dialog_CPP_SRCS
     DocumentRecovery.cpp
     TaskElementColors.cpp
     DlgObjectSelection.cpp
+    DlgAddProperty.cpp
 )
 
 SET(Dialog_HPP_SRCS
@@ -540,6 +543,7 @@ SET(Dialog_HPP_SRCS
     DocumentRecovery.h
     TaskElementColors.h
     DlgObjectSelection.h
+    DlgAddProperty.h
 )
 
 SET(Dialog_SRCS
@@ -553,6 +557,7 @@ SET(Dialog_SRCS
     DlgAuthorization.ui
     DlgDisplayProperties.ui
     DlgInputDialog.ui
+    DlgAddProperty.ui
     DlgLocationAngle.ui
     DlgLocationPos.ui
     DlgMacroExecute.ui

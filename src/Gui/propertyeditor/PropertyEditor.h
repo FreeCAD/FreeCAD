@@ -91,7 +91,6 @@ public:
 
 protected Q_SLOTS:
     void onItemActivated(const QModelIndex &index);
-    void onMenuAction(QAction *);
 
 protected:
     virtual void closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint);
@@ -120,8 +119,6 @@ private:
     QColor groupColor;
     QBrush background;
 
-    App::DocumentObjectT context;
-    QModelIndex contextIndex;
     bool binding;
 
     friend class Gui::PropertyView;

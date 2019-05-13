@@ -59,6 +59,7 @@
 #include <Gui/QuantitySpinBox.h>
 
 #include "PropertyItem.h"
+#include "PropertyView.h"
 #include <Gui/SpinBox.h>
 
 using namespace Gui::PropertyEditor;
@@ -500,6 +501,16 @@ QVariant PropertyItem::data(int column, int role) const
 {
     // property name
     if (column == 0) {
+        if (role == Qt::BackgroundRole) {
+            if(PropertyView::showAll()
+                && propertyItems.size() == 1
+                && propertyItems.front()->testStatus(App::Property::PropDynamic)
+                && !propertyItems.front()->testStatus(App::Property::LockDynamic))
+            {
+                return QBrush(QColor(0xFF,0xFF,0x99));
+            }
+            return QVariant();
+        }
         if (role == Qt::DisplayRole)
             return displayName();
         // no properties set
@@ -508,7 +519,7 @@ QVariant PropertyItem::data(int column, int role) const
         else if (role == Qt::ToolTipRole)
             return toolTip(propertyItems[0]);
         else if (role == Qt::TextColorRole && linked)
-            return QVariant::fromValue(QColor(0,0xb3,0));
+            return QVariant::fromValue(QColor(0,0x80,0));
         else
             return QVariant();
     }

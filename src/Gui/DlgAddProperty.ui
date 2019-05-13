@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgAddProperty</class>
+ <widget class="QDialog" name="Gui::Dialog::DlgAddProperty">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>354</width>
+    <height>258</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Add property</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Type</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="comboType"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Group</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="edtGroup"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="edtName"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Document</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QPlainTextEdit" name="edtDoc"/>
+   </item>
+   <item row="4" column="1">
+    <widget class="QCheckBox" name="chkAppend">
+     <property name="toolTip">
+      <string>Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</string>
+     </property>
+     <property name="text">
+      <string>Append group name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>comboType</tabstop>
+  <tabstop>edtGroup</tabstop>
+  <tabstop>edtName</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Gui::Dialog::DlgAddProperty</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>99</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>58</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Gui::Dialog::DlgAddProperty</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>99</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>58</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

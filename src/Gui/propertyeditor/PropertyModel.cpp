@@ -218,6 +218,15 @@ struct PropItemInfo {
     {}
 };
 
+static void setPropertyItemName(PropertyItem *item, const char *propName, QString groupName) {
+    QString name = QString::fromLatin1(propName);
+    if(name.size()>groupName.size()+1 
+            && name.startsWith(groupName + QLatin1Char('_')))
+        name = name.right(name.size()-groupName.size()-1);
+
+    item->setPropertyName(name);
+}
+
 void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
 {
     beginResetModel();
@@ -241,7 +250,8 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
         PropertyItem* group = static_cast<PropertyItem*>(PropertySeparatorItem::create());
         group->setParent(rootItem);
         rootItem->appendChild(group);
-        group->setPropertyName(QString::fromLatin1(kt->first.c_str()));
+        QString groupName = QString::fromLatin1(kt->first.c_str());
+        group->setPropertyName(groupName);
 
         // setup the items for the properties
         for (auto it = kt->second.begin(); it != kt->second.end(); ++it) {
@@ -262,7 +272,9 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
                     PropertyItem* child = (PropertyItem*)item;
                     child->setParent(rootItem);
                     rootItem->appendChild(child);
-                    child->setPropertyName(QString::fromLatin1(prop->getName()));
+
+                    setPropertyItemName(child,prop->getName(),groupName);
+
                     child->setPropertyData(info.props);
                 }
             }
@@ -370,7 +382,8 @@ void PropertyModel::appendProperty(const App::Property& prop)
 
         std::vector<App::Property*> data;
         data.push_back(const_cast<App::Property*>(&prop));
-        item->setPropertyName(QString::fromLatin1(prop.getName()));
+
+        setPropertyItemName(item,prop.getName(),groupName);
         item->setPropertyData(data);
 
         endInsertRows();
