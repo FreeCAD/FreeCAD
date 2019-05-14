@@ -20,6 +20,11 @@
 **
 ** $QT_END_LICENSE$
 */
+/********************************
+ * includes changes by wandererfan@gmail.com
+ * for FreeCAD project https://www.freecadweb.org/
+ ********************************/
+
 
 #ifndef _MRICHTEXTEDIT_H_
 #define _MRICHTEXTEDIT_H_
