@@ -179,7 +179,7 @@ class _Fence(ArchComponent.Component):
         return shapes
 
     def clipSection(self, shape, length, clipLength):
-        print("length: %s, clipLength: %s" % (length, clipLength))
+        import Part
         
         boundBox = shape.BoundBox
         lengthToCut = length - clipLength
