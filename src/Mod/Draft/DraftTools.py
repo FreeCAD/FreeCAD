@@ -381,7 +381,15 @@ class SelectPlane(DraftTool):
                                                 FreeCADGui.doCommand("FreeCADGui.ActiveDocument.getObject(\""+k+"\").Visibility = "+v)
                     self.display(plane.axis)
                     self.ui.wplabel.setText(sel.Object.Label)
-                    self.ui.wplabel.setToolTip(translate("draft", "Current working plane:",utf8_decode=True)+self.ui.wplabel.text())
+                    self.ui.wplabel.setToolTip(translate("draft", "Current working plane")+": "+self.ui.wplabel.text())
+                    self.finish()
+                    return
+                elif Draft.getType(sel.Object) == "SectionPlane":
+                    plane.setFromPlacement(sel.Object.Placement,rebase=True)
+                    plane.weak = False
+                    self.display(plane.axis)
+                    self.ui.wplabel.setText(sel.Object.Label)
+                    self.ui.wplabel.setToolTip(translate("draft", "Current working plane")+": "+self.ui.wplabel.text())
                     self.finish()
                     return
                 elif sel.HasSubObjects:
