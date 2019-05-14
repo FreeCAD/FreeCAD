@@ -272,7 +272,7 @@ public:
                 }
             } break; //end of animation modes
             case BOXZOOM:
-                return sc::result::no_reaction;
+                return forward_event();
         }
 
         //testing for draggers
@@ -337,7 +337,7 @@ public:
             }
         }
 
-        return sc::result::no_reaction;
+        return forward_event();
     }
 };
 
@@ -476,7 +476,7 @@ public:
             ev.flags->processed = true;
             return transit<NS::GestureState>();
         }
-        return sc::result::no_reaction;
+        return forward_event();
     }
 };
 
@@ -515,7 +515,7 @@ public:
                         ns.normalizePixelPos(pos), ns.normalizePixelPos(this->base_pos));
             this->base_pos = pos;
         }
-        return sc::result::no_reaction;
+        return forward_event();
     }
 };
 
@@ -560,7 +560,7 @@ public:
                          ns.normalizePixelPos(this->base_pos));
             this->base_pos = pos;
         }
-        return sc::result::no_reaction;
+        return forward_event();
     }
 };
 
@@ -605,7 +605,7 @@ public:
                          ns.normalizePixelPos(this->base_pos));
             this->base_pos = pos;
         }
-        return sc::result::no_reaction;
+        return forward_event();
     }
 };
 
@@ -650,7 +650,7 @@ public:
                         SbVec2f(0.5,0.5));
             this->base_pos = pos;
         }
-        return sc::result::no_reaction;
+        return forward_event();
     }
 };
 
@@ -735,7 +735,7 @@ public:
                 ev.flags->processed = false;
             }
         }
-        return sc::result::no_reaction;
+        return forward_event();
     }
 };
 
@@ -782,7 +782,7 @@ public:
             //another gesture can start...
             return transit<NS::GestureState>();
         }
-        return sc::result::no_reaction;
+        return forward_event();
     }
 };
 
@@ -806,7 +806,7 @@ public:
                 return transit<NS::IdleState>();
             }
         }
-        return sc::result::no_reaction;
+        return forward_event();
     }
 };
 
