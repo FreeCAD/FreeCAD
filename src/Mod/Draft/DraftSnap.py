@@ -230,8 +230,8 @@ class Snapper:
                 self.trackLine.p1(lastpoint)
 
         # checking if parallel to one of the edges of the last objects or to a polar direction
+        eline = None
         if active:
-            eline = None
             point,eline = self.snapToPolar(point,lastpoint)
             point,eline = self.snapToExtensions(point,lastpoint,constrain,eline)
 
