@@ -557,7 +557,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
         # checking for full FreeCAD parametric definition, overriding everything else
 
-        if pid in properties.keys():
+        if pid in properties.keys() and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("IfcImportFreeCADProperties",False):
             if "FreeCADPropertySet" in [ifcfile[pset].Name for pset in properties[pid].keys()]:
                 if DEBUG: print(" restoring from parametric definition...",end="")
                 obj = createFromProperties(properties[pid],ifcfile)
@@ -2014,7 +2014,9 @@ def export(exportList,filename):
                 ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],eltq)
 
         if FULL_PARAMETRIC:
+
             # exporting all the object properties
+
             FreeCADProps = []
             FreeCADGuiProps = []
             FreeCADProps.append(ifcbin.createIfcPropertySingleValue("FreeCADType","IfcText",obj.TypeId))
@@ -2502,6 +2504,10 @@ def createFromProperties(propsets,ifcfile):
                 obj = FreeCAD.ActiveDocument.addObject(appset["FreeCADType"],appset["FreeCADName"])
                 if "FreeCADAppObject" in appset:
                     mod,cla = appset["FreeCADAppObject"].split(".")
+                    if "'" in mod:
+                        mod = mod.split("'")[-1]
+                    if "'" in cla:
+                        cla = cla.split("'")[0]
                     import importlib
                     mod = importlib.import_module(mod)
                     getattr(mod,cla)(obj)
@@ -2510,6 +2516,10 @@ def createFromProperties(propsets,ifcfile):
                     if guiset:
                         if "FreeCADGuiObject" in guiset:
                             mod,cla = guiset["FreeCADGuiObject"].split(".")
+                            if "'" in mod:
+                                mod = mod.split("'")[-1]
+                            if "'" in cla:
+                                cla = cla.split("'")[0]
                             import importlib
                             mod = importlib.import_module(mod)
                             getattr(mod,cla)(obj.ViewObject)
