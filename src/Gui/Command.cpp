@@ -1453,6 +1453,7 @@ void PythonGroupCommand::activated(int iMsg)
         // Since the default icon is reset when enabing/disabling the command we have
         // to explicitly set the icon of the used command.
         pcAction->setIcon(a[iMsg]->icon());
+        pcAction->setToolTip(a[iMsg]->toolTip());
     }
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;
