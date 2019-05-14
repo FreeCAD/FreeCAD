@@ -787,9 +787,8 @@ void ViewProviderPythonFeatureImp::attach(App::DocumentObject *pcObject)
 
 void ViewProviderPythonFeatureImp::updateData(const App::Property* prop)
 {
-    if(py_updateData.isNone() || pyCalling)
+    if(py_updateData.isNone())
         return;
-    Base::FlagToggler<> flag(pyCalling);
 
     // Run the updateData method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -820,9 +819,8 @@ void ViewProviderPythonFeatureImp::updateData(const App::Property* prop)
 
 void ViewProviderPythonFeatureImp::onChanged(const App::Property* prop)
 {
-    if(py_onChanged.isNone() || pyCalling)
+    if(py_onChanged.isNone())
         return;
-    Base::FlagToggler<> flag(pyCalling);
 
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;

@@ -123,9 +123,8 @@ bool FeaturePythonImp::mustExecute() const
 
 void FeaturePythonImp::onBeforeChange(const Property* prop)
 {
-    if(py_onBeforeChange.isNone() || pyCalling)
+    if(py_onBeforeChange.isNone())
         return;
-    Base::FlagToggler<> flag(pyCalling);
 
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -153,9 +152,8 @@ void FeaturePythonImp::onBeforeChange(const Property* prop)
 
 bool FeaturePythonImp::onBeforeChangeLabel(std::string &newLabel)
 {
-    if(py_onBeforeChangeLabel.isNone() || pyCalling)
+    if(py_onBeforeChangeLabel.isNone())
         return false;
-    Base::FlagToggler<> flag(pyCalling);
 
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -180,9 +178,8 @@ bool FeaturePythonImp::onBeforeChangeLabel(std::string &newLabel)
 
 void FeaturePythonImp::onChanged(const Property* prop)
 {
-    if(py_onChanged.isNone() || pyCalling)
+    if(py_onChanged.isNone())
         return;
-    Base::FlagToggler<> flag(pyCalling);
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
@@ -209,9 +206,8 @@ void FeaturePythonImp::onChanged(const Property* prop)
 
 void FeaturePythonImp::onDocumentRestored()
 {
-    if(py_onDocumentRestored.isNone() || pyCalling)
+    if(py_onDocumentRestored.isNone())
         return;
-    Base::FlagToggler<> flag(pyCalling);
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
