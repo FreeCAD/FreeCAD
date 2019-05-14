@@ -5355,8 +5355,8 @@ class _BezCurve(_DraftObject):
                 except Part.OCCError:
                     pass
             fp.Shape = w
-            if hasattr(obj,"Area") and hasattr(w,"Area"):
-                obj.Area = w.Area
+            if hasattr(fp,"Area") and hasattr(w,"Area"):
+                fp.Area = w.Area
         fp.Placement = plm
 
     @classmethod
