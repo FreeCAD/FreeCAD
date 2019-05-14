@@ -1015,7 +1015,7 @@ class CubicBezCurve(Line):
         self.degree = 3
 
     def GetResources(self):
-        return {'Pixmap'  : 'Draft_BezCurve',
+        return {'Pixmap'  : 'Draft_CubicBezCurve',
                 #'Accel' : "B, Z",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "CubicBezCurve"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Cubic Bezier curve \nClick and drag to define control points. CTRL to snap, SHIFT to constrain")}
