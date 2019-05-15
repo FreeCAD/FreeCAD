@@ -448,7 +448,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
             action = menu.addAction(text);\
             action->setData(QVariant(MA_##_name));\
             action->setCheckable(true);\
-            if(propStatus & App::Property::_name)\
+            if(propStatus & (1<<App::Property::_name))\
                 action->setChecked(true);\
         }while(0)
 #define ACTION_SETUP(_name) do {\
