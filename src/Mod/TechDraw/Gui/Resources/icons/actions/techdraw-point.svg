@@ -30,8 +30,8 @@
      id="namedview983"
      showgrid="true"
      inkscape:zoom="8.03125"
-     inkscape:cx="39.769112"
-     inkscape:cy="41.31852"
+     inkscape:cx="17.107633"
+     inkscape:cy="40.322411"
      inkscape:window-x="0"
      inkscape:window-y="26"
      inkscape:window-maximized="1"
@@ -139,7 +139,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -154,7 +154,7 @@
        id="tspan3132" /></text>
   <g
      id="g963"
-     transform="translate(-5.8015795,-19.678038)">
+     transform="matrix(2,0,0,2,-43.603159,-71.356076)">
     <path
        d="M 30.970374,45.82823 A 8.993818,8.9934077 0.02042283 1 1 44.632785,57.527845 8.993818,8.9934077 0.02042283 1 1 30.970374,45.82823 Z"
        id="path4250-71-6"
