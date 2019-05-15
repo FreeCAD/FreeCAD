@@ -868,7 +868,7 @@ class _PrecastTaskPanel:
         self.valueTread = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelTread,18,0,1,1)
         self.grid.addWidget(self.valueTread,18,1,1,1)
-
+        
         # signals/slots
         QtCore.QObject.connect(self.valueChamfer,QtCore.SIGNAL("valueChanged(double)"),self.setChamfer)
         QtCore.QObject.connect(self.valueDentLength,QtCore.SIGNAL("valueChanged(double)"),self.setDentLength)
@@ -884,6 +884,24 @@ class _PrecastTaskPanel:
         QtCore.QObject.connect(self.valueDownLength,QtCore.SIGNAL("valueChanged(double)"),self.setDownLength)
         QtCore.QObject.connect(self.valueRiser,QtCore.SIGNAL("valueChanged(double)"),self.setRiser)
         QtCore.QObject.connect(self.valueTread,QtCore.SIGNAL("valueChanged(double)"),self.setTread)
+
+        # restore presets
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        self.valueChamfer.setText(str(param.GetFloat("PrecastChamfer",0.0)))
+        self.valueDentLength.setText(str(param.GetFloat("PrecastDentLength",0.0)))
+        self.valueDentWidth.setText(str(param.GetFloat("PrecastDentWidth",0.0)))
+        self.valueDentHeight.setText(str(param.GetFloat("PrecastDentHeight",0.0)))
+        self.valueBase.setText(str(param.GetFloat("PrecastBase",0.0)))
+        self.valueHoleMajor.setText(str(param.GetFloat("PrecastHoleMajor",0.0)))
+        self.valueHoleMinor.setText(str(param.GetFloat("PrecastHoleMinor",0.0)))
+        self.valueHoleSpacing.setText(str(param.GetFloat("PrecastHoleSpacing",0.0)))
+        self.valueGrooveDepth.setText(str(param.GetFloat("PrecastGrooveDepth",0.0)))
+        self.valueGrooveHeight.setText(str(param.GetFloat("PrecastGrooveHeight",0.0)))
+        self.valueGrooveSpacing.setText(str(param.GetFloat("PrecastGrooveSpacing",0.0)))
+        self.valueDownLength.setText(str(param.GetFloat("PrecastDownLength",0.0)))
+        self.valueRiser.setText(str(param.GetFloat("PrecastRiser",0.0)))
+        self.valueTread.setText(str(param.GetFloat("PrecastTread",0.0)))
+
         self.retranslateUi(self.form)
         self.form.hide()
 
@@ -913,67 +931,81 @@ class _PrecastTaskPanel:
 
     def setChamfer(self,value):
         self.Chamfer = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastChamfer",value)
 
     def setDentLength(self,value):
         self.DentLength = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastDentLength",value)
 
     def setDentWidth(self,value):
         self.DentWidth = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastDentWidth",value)
 
     def setDentHeight(self,value):
         self.DentHeight = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastDentHeight",value)
 
     def setBase(self,value):
         self.Base = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastBase",value)
 
     def setHoleMajor(self,value):
         self.HoleMajor = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastHoleMajor",value)
 
     def setHoleMinor(self,value):
         self.HoleMinor = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastHoleMinor",value)
 
     def setHoleSpacing(self,value):
         self.HoleSpacing = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastHoleSpacing",value)
 
     def setGrooveDepth(self,value):
         self.GrooveDepth = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastGrooveDepth",value)
 
     def setGrooveHeight(self,value):
         self.GrooveHeight = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastGrooveHeight",value)
 
     def setGrooveSpacing(self,value):
         self.GrooveSpacing = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastGrooveSpacing",value)
 
     def setDownLength(self,value):
         self.DownLength = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastDownLength",value)
 
     def setRiser(self,value):
         self.Riser = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastRiser",value)
 
     def setTread(self,value):
         self.Tread = value
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastTread",value)
 
     def retranslateUi(self, dialog):
         from PySide import QtGui
-        self.form.setWindowTitle(QtGui.QApplication.translate("Arch", "Precast elements", None))
-        self.labelSlabType.setText(QtGui.QApplication.translate("Arch", "Slab type", None))
-        self.labelChamfer.setText(QtGui.QApplication.translate("Arch", "Chamfer", None))
-        self.labelDentLength.setText(QtGui.QApplication.translate("Arch", "Dent length", None))
-        self.labelDentWidth.setText(QtGui.QApplication.translate("Arch", "Dent width", None))
-        self.labelDentHeight.setText(QtGui.QApplication.translate("Arch", "Dent height", None))
-        self.labelBase.setText(QtGui.QApplication.translate("Arch", "Slab base", None))
-        self.labelHoleNumber.setText(QtGui.QApplication.translate("Arch", "Number of holes", None))
-        self.labelHoleMajor.setText(QtGui.QApplication.translate("Arch", "Major diameter of holes", None))
-        self.labelHoleMinor.setText(QtGui.QApplication.translate("Arch", "Minor diameter of holes", None))
-        self.labelHoleSpacing.setText(QtGui.QApplication.translate("Arch", "Spacing between holes", None))
-        self.labelGrooveNumber.setText(QtGui.QApplication.translate("Arch", "Number of grooves", None))
-        self.labelGrooveDepth.setText(QtGui.QApplication.translate("Arch", "Depth of grooves", None))
-        self.labelGrooveHeight.setText(QtGui.QApplication.translate("Arch", "Height of grooves", None))
-        self.labelGrooveSpacing.setText(QtGui.QApplication.translate("Arch", "Spacing between grooves", None))
-        self.labelRiserNumber.setText(QtGui.QApplication.translate("Arch", "Number of risers", None))
-        self.labelDownLength.setText(QtGui.QApplication.translate("Arch", "Length of down floor", None))
-        self.labelRiser.setText(QtGui.QApplication.translate("Arch", "Height of risers", None))
-        self.labelTread.setText(QtGui.QApplication.translate("Arch", "Depth of treads", None))
+        self.form.setWindowTitle(translate("Arch", "Precast elements"))
+        self.labelSlabType.setText(translate("Arch", "Slab type"))
+        self.labelChamfer.setText(translate("Arch", "Chamfer"))
+        self.labelDentLength.setText(translate("Arch", "Dent length"))
+        self.labelDentWidth.setText(translate("Arch", "Dent width"))
+        self.labelDentHeight.setText(translate("Arch", "Dent height"))
+        self.labelBase.setText(translate("Arch", "Slab base"))
+        self.labelHoleNumber.setText(translate("Arch", "Number of holes"))
+        self.labelHoleMajor.setText(translate("Arch", "Major diameter of holes"))
+        self.labelHoleMinor.setText(translate("Arch", "Minor diameter of holes"))
+        self.labelHoleSpacing.setText(translate("Arch", "Spacing between holes"))
+        self.labelGrooveNumber.setText(translate("Arch", "Number of grooves"))
+        self.labelGrooveDepth.setText(translate("Arch", "Depth of grooves"))
+        self.labelGrooveHeight.setText(translate("Arch", "Height of grooves"))
+        self.labelGrooveSpacing.setText(translate("Arch", "Spacing between grooves"))
+        self.labelRiserNumber.setText(translate("Arch", "Number of risers"))
+        self.labelDownLength.setText(translate("Arch", "Length of down floor"))
+        self.labelRiser.setText(translate("Arch", "Height of risers"))
+        self.labelTread.setText(translate("Arch", "Depth of treads"))
 
     def setPreset(self,preset):
         self.preview.hide()
@@ -1358,17 +1390,17 @@ class _DentsTaskPanel:
 
     def retranslateUi(self, dialog):
         from PySide import QtGui
-        self.form.setWindowTitle(QtGui.QApplication.translate("Arch", "Precast options", None))
-        self.labelDents.setText(QtGui.QApplication.translate("Arch", "Dents list", None))
-        self.buttonAdd.setText(QtGui.QApplication.translate("Arch", "Add dent", None))
-        self.buttonRemove.setText(QtGui.QApplication.translate("Arch", "Remove dent", None))
-        self.labelLength.setText(QtGui.QApplication.translate("Arch", "Length", None))
-        self.labelWidth.setText(QtGui.QApplication.translate("Arch", "Width", None))
-        self.labelHeight.setText(QtGui.QApplication.translate("Arch", "Height", None))
-        self.labelSlant.setText(QtGui.QApplication.translate("Arch", "Slant", None))
-        self.labelLevel.setText(QtGui.QApplication.translate("Arch", "Level", None))
-        self.labelRotation.setText(QtGui.QApplication.translate("Arch", "Rotation", None))
-        self.labelOffset.setText(QtGui.QApplication.translate("Arch", "Offset", None))
+        self.form.setWindowTitle(translate("Arch", "Precast options"))
+        self.labelDents.setText(translate("Arch", "Dents list"))
+        self.buttonAdd.setText(translate("Arch", "Add dent"))
+        self.buttonRemove.setText(translate("Arch", "Remove dent"))
+        self.labelLength.setText(translate("Arch", "Length"))
+        self.labelWidth.setText(translate("Arch", "Width"))
+        self.labelHeight.setText(translate("Arch", "Height"))
+        self.labelSlant.setText(translate("Arch", "Slant"))
+        self.labelLevel.setText(translate("Arch", "Level"))
+        self.labelRotation.setText(translate("Arch", "Rotation"))
+        self.labelOffset.setText(translate("Arch", "Offset"))
 
     def getValues(self):
         l = []

@@ -271,14 +271,14 @@ class _CommandStructure:
         "this function is called by the snapper when it has a 3D point"
 
         self.bmode = self.modeb.isChecked()
-
+        if point == None:
+            self.tracker.finalize()
+            return
         if self.bmode and (self.bpoint == None):
             self.bpoint = point
             FreeCADGui.Snapper.getPoint(last=point,callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=translate("Arch","Next point")+":",mode="line")
             return
         self.tracker.finalize()
-        if point == None:
-            return
         horiz = True # determines the type of rotation to apply to the final object
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structure"))
         FreeCADGui.addModule("Arch")
@@ -295,8 +295,16 @@ class _CommandStructure:
                 self.precastvalues["Height"] = self.Height
                 argstring = ""
                 # fix for precast placement, since their (0,0) point is the lower left corner
-                if not self.bmode:
-                    point = FreeCAD.Vector(point.x-self.Length/2,point.y-self.Width/2,point.z)
+                if self.bmode:
+                    delta = FreeCAD.Vector(0,0-self.Width/2,0)
+                else:
+                    delta = FreeCAD.Vector(-self.Length/2,-self.Width/2,0)
+                if hasattr(FreeCAD,"DraftWorkingPlane"):
+                    delta = FreeCAD.DraftWorkingPlane.getRotation().multVec(delta)
+                point = point.add(delta)
+                if self.bpoint:
+                    self.bpoint = self.bpoint.add(delta)
+                # build the string definition
                 for pair in self.precastvalues.items():
                     argstring += pair[0].lower() + "="
                     if isinstance(pair[1],str):
@@ -336,6 +344,8 @@ class _CommandStructure:
             self.Activated()
 
     def _createItemlist(self, baselist):
+        
+        "create nice labels for presets in the task panel"
 
         ilist=[]
         for p in baselist:
