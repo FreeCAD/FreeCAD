@@ -63,7 +63,6 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
-#include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawViewDraft.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
@@ -640,46 +639,6 @@ bool CmdTechDrawProjGroup::isActive(void)
 //{
 //    return DrawGuiUtil::needPage(this);
 //}
-
-//===========================================================================
-// TechDraw_Annotation
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawAnnotation);
-
-CmdTechDrawAnnotation::CmdTechDrawAnnotation()
-  : Command("TechDraw_Annotation")
-{
-    // setting the Gui eye-candy
-    sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert Annotation");
-    sToolTipText  = QT_TR_NOOP("Insert Annotation");
-    sWhatsThis    = "TechDraw_NewAnnotation";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-annotation";
-}
-
-void CmdTechDrawAnnotation::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
-
-    std::string FeatName = getUniqueObjectName("Annotation");
-    openCommand("Create Annotation");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewAnnotation','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-    updateActive();
-    commitCommand();
-}
-
-bool CmdTechDrawAnnotation::isActive(void)
-{
-    return DrawGuiUtil::needPage(this);
-}
 
 //===========================================================================
 // TechDraw_NewBalloon
@@ -1292,8 +1251,6 @@ bool CmdTechDrawExportPageDxf::isActive(void)
     return DrawGuiUtil::needPage(this);
 }
 
-
-
 void CreateTechDrawCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1305,7 +1262,7 @@ void CreateTechDrawCommands(void)
     rcCmdMgr.addCommand(new CmdTechDrawNewViewDetail());
 //    rcCmdMgr.addCommand(new CmdTechDrawNewMulti());          //deprecated
     rcCmdMgr.addCommand(new CmdTechDrawProjGroup());
-    rcCmdMgr.addCommand(new CmdTechDrawAnnotation());
+//    rcCmdMgr.addCommand(new CmdTechDrawAnnotation());
     rcCmdMgr.addCommand(new CmdTechDrawClip());
     rcCmdMgr.addCommand(new CmdTechDrawClipPlus());
     rcCmdMgr.addCommand(new CmdTechDrawClipMinus());

@@ -38,6 +38,7 @@ namespace TechDraw
 class DrawPage;
 class DrawViewClip;
 class DrawLeaderLine;
+class CosmeticVertex;
 
 /** Base class of all View Features in the drawing module
  */
@@ -90,8 +91,8 @@ public:
     void requestPaint(void);
     virtual void handleXYLock(void);
     virtual bool isLocked(void) const;
-    virtual void addRandomVertex(Base::Vector3d pos);
-    std::vector<TechDraw::DrawLeaderLine*> getLeaders() const;
+
+    std::vector<TechDraw::DrawLeaderLine*> getLeaders(void) const;
 
 protected:
     virtual void onChanged(const App::Property* prop) override;

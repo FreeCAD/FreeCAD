@@ -69,103 +69,44 @@ using namespace std;
 //internal functions
 bool _checkSelectionHatch(Gui::Command* cmd);
 
-//===========================================================================
-// TechDraw_Leader
-//===========================================================================
+////===========================================================================
+//// TechDraw_Leader
+////===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawLeaderLine);
+//DEF_STD_CMD_A(CmdTechDrawLeaderLine);
 
-CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
-  : Command("TechDraw_LeaderLine")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add a line to a view");
-    sToolTipText    = QT_TR_NOOP("Add a line to a view");
-    sWhatsThis      = "TechDraw_LeaderLine";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-mline";
-}
+//CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
+//  : Command("TechDraw_LeaderLine")
+//{
+//    sAppModule      = "TechDraw";
+//    sGroup          = QT_TR_NOOP("TechDraw");
+//    sMenuText       = QT_TR_NOOP("Add a line to a view");
+//    sToolTipText    = QT_TR_NOOP("Add a line to a view");
+//    sWhatsThis      = "TechDraw_LeaderLine";
+//    sStatusTip      = sToolTipText;
+//    sPixmap         = "actions/techdraw-mline";
+//}
 
-void CmdTechDrawLeaderLine::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
+//void CmdTechDrawLeaderLine::activated(int iMsg)
+//{
+//    Q_UNUSED(iMsg);
 
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
-            QObject::tr("Close active task dialog and try again."));
-        return;
-    }
+//    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+//    if (dlg != nullptr) {
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+//            QObject::tr("Close active task dialog and try again."));
+//        return;
+//    }
 
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
+//    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+//    if (!page) {
+//        return;
+//    }
 
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawView* baseFeat = nullptr;
-    if (!selection.empty()) {
-        baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
-        if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                 QObject::tr("Can not attach leader.  No base View selected."));
-            return;
-        }
-    } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                 QObject::tr("You must select a base View for the line."));
-            return;
-    }
-
-    Gui::Control().showDialog(new TechDrawGui::TaskDlgLeaderLine(baseFeat,
-                                                    page));
-}
-
-bool CmdTechDrawLeaderLine::isActive(void)
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
-}
-
-//===========================================================================
-// TechDraw_RichAnno
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawRichAnno);
-
-CmdTechDrawRichAnno::CmdTechDrawRichAnno()
-  : Command("TechDraw_RichAnno")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add a rich text annotation");
-    sToolTipText    = QT_TR_NOOP("Add a rich text annotation");
-    sWhatsThis      = "TechDraw_RichAnno";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-textleader";
-}
-
-void CmdTechDrawRichAnno::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
-            QObject::tr("Close active task dialog and try again."));
-        return;
-    }
-
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawView* baseFeat = nullptr;
-    if (!selection.empty()) {
-        baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
+//    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+//    TechDraw::DrawView* baseFeat = nullptr;
+//    if (!selection.empty()) {
+//        baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
 //        if( baseFeat == nullptr ) {
 //            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
 //                                 QObject::tr("Can not attach leader.  No base View selected."));
@@ -175,18 +116,77 @@ void CmdTechDrawRichAnno::activated(int iMsg)
 //            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
 //                                 QObject::tr("You must select a base View for the line."));
 //            return;
-    }
+//    }
 
-    Gui::Control().showDialog(new TaskDlgRichAnno(baseFeat,
-                                                  page));
-}
+//    Gui::Control().showDialog(new TechDrawGui::TaskDlgLeaderLine(baseFeat,
+//                                                    page));
+//}
 
-bool CmdTechDrawRichAnno::isActive(void)
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
-}
+//bool CmdTechDrawLeaderLine::isActive(void)
+//{
+//    bool havePage = DrawGuiUtil::needPage(this);
+//    bool haveView = DrawGuiUtil::needView(this, false);
+//    return (havePage && haveView);
+//}
+
+////===========================================================================
+//// TechDraw_RichAnno
+////===========================================================================
+
+//DEF_STD_CMD_A(CmdTechDrawRichAnno);
+
+//CmdTechDrawRichAnno::CmdTechDrawRichAnno()
+//  : Command("TechDraw_RichAnno")
+//{
+//    sAppModule      = "TechDraw";
+//    sGroup          = QT_TR_NOOP("TechDraw");
+//    sMenuText       = QT_TR_NOOP("Add a rich text annotation");
+//    sToolTipText    = QT_TR_NOOP("Add a rich text annotation");
+//    sWhatsThis      = "TechDraw_RichAnno";
+//    sStatusTip      = sToolTipText;
+//    sPixmap         = "actions/techdraw-textleader";
+//}
+
+//void CmdTechDrawRichAnno::activated(int iMsg)
+//{
+//    Q_UNUSED(iMsg);
+//    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+//    if (dlg != nullptr) {
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+//            QObject::tr("Close active task dialog and try again."));
+//        return;
+//    }
+
+//    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+//    if (!page) {
+//        return;
+//    }
+
+//    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+//    TechDraw::DrawView* baseFeat = nullptr;
+//    if (!selection.empty()) {
+//        baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
+////        if( baseFeat == nullptr ) {
+////            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+////                                 QObject::tr("Can not attach leader.  No base View selected."));
+////            return;
+////        }
+////    } else {
+////            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+////                                 QObject::tr("You must select a base View for the line."));
+////            return;
+//    }
+
+//    Gui::Control().showDialog(new TaskDlgRichAnno(baseFeat,
+//                                                  page));
+//}
+
+//bool CmdTechDrawRichAnno::isActive(void)
+//{
+//    bool havePage = DrawGuiUtil::needPage(this);
+//    bool haveView = DrawGuiUtil::needView(this, false);
+//    return (havePage && haveView);
+//}
 
 //===========================================================================
 // TechDraw_NewHatch
@@ -469,8 +469,8 @@ void CreateTechDrawCommandsDecorate(void)
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
 //    rcCmdMgr.addCommand(new CmdTechDrawRedrawPage());
-    rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
-    rcCmdMgr.addCommand(new CmdTechDrawRichAnno());
+//    rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
+//    rcCmdMgr.addCommand(new CmdTechDrawRichAnno());
 }
 
 //===========================================================================

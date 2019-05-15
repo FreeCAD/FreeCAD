@@ -123,6 +123,8 @@ SET(Geometry_SRCS
     Geometry.h
     GeometryObject.cpp
     GeometryObject.h
+    Cosmetic.cpp
+    Cosmetic.h
 )
 
 SET(Python_SRCS

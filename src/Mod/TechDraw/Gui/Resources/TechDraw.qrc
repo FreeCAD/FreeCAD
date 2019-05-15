@@ -63,6 +63,8 @@
         <file>icons/actions/techdraw-mline.svg</file>
         <file>icons/actions/techdraw-textleader.svg</file>
         <file>icons/actions/techdraw-point.svg</file>
+        <file>icons/actions/techdraw-midpoint.svg</file>
+        <file>icons/actions/techdraw-quadrant.svg</file>
         <file>icons/actions/section-up.svg</file>  
         <file>icons/actions/section-down.svg</file>
         <file>icons/actions/section-left.svg</file>

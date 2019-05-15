@@ -181,7 +181,7 @@ void QGTracker::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
 
 void QGTracker::keyPressEvent(QKeyEvent * event)
 {
-//    Base::Console().Message("QGT::keyPressEvent()\n");
+    Base::Console().Message("QGT::keyPressEvent()\n");
     if (event->key() == Qt::Key_Escape) {
         terminateDrawing();
     }
@@ -237,6 +237,7 @@ QPointF QGTracker::snapToAngle(QPointF dumbPt)
 //mouse event reactions
 void QGTracker::onMousePress(QPointF pos) 
 {
+    Base::Console().Message("QGT::onMousePress(%s)\n", TechDraw::DrawUtil::formatVector(pos).c_str());
     m_points.push_back(pos);
     TrackerMode mode = getTrackerMode();
     if (m_points.size() > 1) {
@@ -254,18 +255,21 @@ void QGTracker::onMousePress(QPointF pos)
                 break;
             case TrackerMode::Point:
                 //do nothing
+//                setPoint(m_points);
                 break;
         }
-    } else if (m_points.size() == 1) {   //first point selected   
+    } else if (m_points.size() == 1) {   //first point selected  
+        Base::Console().Message("QGT::onMousePress - m_points.size == 1\n");
         getPickedQGIV(pos);
         setCursor(Qt::CrossCursor);
-        Q_EMIT qViewPicked(pos, m_qgParent);
+//        Q_EMIT qViewPicked(pos, m_qgParent);   //not in use yet.
         if (mode == TrackerMode::Point) {
+            Base::Console().Message("QGT::onMousePress - mode = Point\n");
             setPoint(m_points);
             terminateDrawing();
         }
     }
-    
+
     if ( (m_points.size() == 2) &&
         ( (getTrackerMode() == TrackerMode::Circle) ||
           (getTrackerMode() == TrackerMode::Rectangle) ) ) {          //only 2 points for square/circle
@@ -297,8 +301,12 @@ void QGTracker::onMouseMove(QPointF pos)
 
 void QGTracker::onDoubleClick(QPointF pos) 
 {
-//    Base::Console().Message("QGTracker::onDoubleClick()\n");
+    Base::Console().Message("QGTracker::onDoubleClick()\n");
     Q_UNUSED(pos);
+    TrackerMode mode = getTrackerMode();
+    if (mode == TrackerMode::Point) {
+        setPoint(m_points);
+    }
     terminateDrawing();
 }
 
@@ -448,7 +456,7 @@ void QGTracker::setPoint(std::vector<QPointF> pts)
     prepareGeometryChange();
     QPainterPath newPath;
     QPointF center = pts.front();
-    double radius = 5.0;
+    double radius = 50.0;
     newPath.addEllipse(center, radius, radius);
     setPath(newPath);
     setPrettyNormal();
@@ -466,7 +474,7 @@ std::vector<Base::Vector3d> QGTracker::convertPoints(void)
 
 void QGTracker::terminateDrawing(void)
 {
-//    Base::Console().Message("QGTracker::terminateDrawing()\n");
+    Base::Console().Message("QGTracker::terminateDrawing()\n");
     m_track->hide();
     setCursor(Qt::ArrowCursor);
     Q_EMIT drawingFinished(m_points, m_qgParent);

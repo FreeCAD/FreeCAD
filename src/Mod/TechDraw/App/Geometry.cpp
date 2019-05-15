@@ -67,11 +67,14 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools2D.h>
+#include <Base/Parameter.h>
 
-#include <Mod/Part/App/Geometry.h>
+#include <App/Application.h>
+#include <App/Material.h>
+
+#include "DrawUtil.h"
 
 #include "Geometry.h"
-#include "DrawUtil.h"
 
 using namespace TechDrawGeometry;
 using namespace TechDraw;
@@ -955,3 +958,5 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
     }
     return result;
 }
+
+
