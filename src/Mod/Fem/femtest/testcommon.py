@@ -77,10 +77,10 @@ class TestFemCommon(unittest.TestCase):
         pymodules += testtools.collect_python_modules('femtools')
         pymodules += testtools.collect_python_modules('femsolver')
         # TODO test with join on windows, the use of os.path.join in following code seams to make problems on windws os
-        pymodules += testtools.collect_python_modules('femsolver/elmer')
-        pymodules += testtools.collect_python_modules('femsolver/elmer/equations')
-        pymodules += testtools.collect_python_modules('femsolver/z88')
-        pymodules += testtools.collect_python_modules('femsolver/calculix')
+        #pymodules += testtools.collect_python_modules('femsolver/elmer')
+        #pymodules += testtools.collect_python_modules('femsolver/elmer/equations')
+        #pymodules += testtools.collect_python_modules('femsolver/z88')
+        #pymodules += testtools.collect_python_modules('femsolver/calculix')
         if FreeCAD.GuiUp:
             pymodules += testtools.collect_python_modules('femcommands')
             pymodules += testtools.collect_python_modules('femguiobjects')
