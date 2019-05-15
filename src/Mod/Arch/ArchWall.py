@@ -732,11 +732,17 @@ class _Wall(ArchComponent.Component):
                             l = obj.Base.Shape.Length
                             if obj.Length.Value != l:
                                 obj.Length = l
+                                self.oldLength = None # delete the stored value to prevent triggering base change below
+
+    def onBeforeChange(self,obj,prop):
+
+        if prop == "Length":
+            self.oldLength = obj.Length.Value
 
     def onChanged(self,obj,prop):
 
         if prop == "Length":
-            if obj.Base and obj.Length.Value:
+            if obj.Base and obj.Length.Value and hasattr(self,"oldLength") and (self.oldLength != None) and (self.oldLength != obj.Length.Value):
                 if obj.Base.isDerivedFrom("Part::Feature"):
                     if len(obj.Base.Shape.Edges) == 1:
                         import DraftGeomUtils
