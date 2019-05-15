@@ -79,6 +79,8 @@
 #include <Standard_Failure.hxx>
 #include <Standard_Version.hxx>
 
+#include <Precision.hxx>
+
 #include <BRepMesh.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <Poly_Polygon3D.hxx>
@@ -106,6 +108,9 @@
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopLoc_Location.hxx>
+
+#include <ShapeExtend_Explorer.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
 
 #include <BRep_Tool.hxx>
 #include <BRepTools.hxx>
@@ -144,6 +149,9 @@
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepTools_ShapeSet.hxx>
 
+#include <BRepLProp_SLProps.hxx>
+#include <BRepGProp_Face.hxx>
+
 #if OCC_VERSION_HEX >= 0x060600
 # include <BOPAlgo_ArgumentAnalyzer.hxx>
 # include <BOPAlgo_ListOfCheckResult.hxx>
@@ -173,6 +181,8 @@
 # include <Gui/Qt4All.h>
 #endif
 
+#include <QKeyEvent>
+
 // GL
 // Include glext before InventorAll
 # ifdef FC_OS_WIN32
@@ -197,6 +207,9 @@
 #include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/engines/SoComposeRotationFromTo.h>
 #include <Inventor/engines/SoComposeRotation.h>
+
+#include <Inventor/system/inttypes.h>
+
 
 // Inventor includes OpenGL
 #ifndef __InventorAll__
