@@ -567,23 +567,34 @@ def insert(filename,docname,skip=[],only=[],root=None):
                             if it1.MappingSource.MappedRepresentation.is_a("IfcShapeRepresentation"):
                                 for it2 in it1.MappingSource.MappedRepresentation.Items:
                                     prodrepr.setdefault(p.id(),[]).append(it2.id())
+    # colors
+    style_color_rgb = {}  # { style_entity_id: (r,g,b) }
     for r in ifcfile.by_type("IfcStyledItem"):
         if r.Styles:
             if r.Styles[0].is_a("IfcPresentationStyleAssignment"):
-                if r.Styles[0].Styles[0].is_a("IfcSurfaceStyle"):
-                    if r.Styles[0].Styles[0].Styles[0].is_a("IfcSurfaceStyleRendering"):
-                        if r.Styles[0].Styles[0].Styles[0].SurfaceColour:
-                            c = r.Styles[0].Styles[0].Styles[0].SurfaceColour
-                            if r.Item:
-                                for p in prodrepr.keys():
-                                    if r.Item.id() in prodrepr[p]:
-                                        colors[p] = (c.Red,c.Green,c.Blue)
-                        else:
-                            for m in ifcfile.by_type("IfcMaterialDefinitionRepresentation"):
-                                for it in m.Representations:
-                                    if it.Items:
-                                        if it.Items[0].id() == r.id():
-                                            colors[m.RepresentedMaterial.id()] = (c.Red,c.Green,c.Blue)
+                for style1 in r.Styles[0].Styles:
+                    if style1.is_a("IfcSurfaceStyle"):
+                        for style2 in style1.Styles:
+                            if style2.is_a("IfcSurfaceStyleRendering"):
+                                if style2.SurfaceColour:
+                                    c = style2.SurfaceColour
+                                    style_color_rgb[r.id()] = (c.Red,c.Green,c.Blue)
+    style_material_id = {}  # { style_entity_id: material_id) }
+    # Allplan, ArchiCAD
+    for m in ifcfile.by_type("IfcMaterialDefinitionRepresentation"):
+        for it in m.Representations:
+            if it.Items:
+                style_material_id[it.Items[0].id()] = m.RepresentedMaterial.id()
+    # Nova
+    for r in ifcfile.by_type("IfcStyledItem"):
+        if r.Item:
+            for p in prodrepr.keys():
+                if r.Item.id() in prodrepr[p]:
+                    style_material_id[r.id()] = p
+    # create colors out of style_color_rgb and style_material_id
+    for k in style_material_id:
+        if k in style_color_rgb:
+            colors[style_material_id[k]] = style_color_rgb[k]
 
     # remove any leftover annotations from products
     tp = []
