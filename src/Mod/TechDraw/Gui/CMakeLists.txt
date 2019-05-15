@@ -41,6 +41,7 @@ set(TechDrawGui_MOC_HDRS
     TaskGeomHatch.h
     TaskLeaderLine.h
     TaskRichAnno.h
+    TaskCosVertex.h
     QGEPath.h
     QGTracker.h
     QGILeaderLine.h
@@ -72,7 +73,8 @@ set(TechDrawGui_UIC_SRCS
     TaskRichAnno.ui
     mrichtextedit.ui
     TaskBalloon.ui
-    )
+    TaskCosVertex.ui
+)
 
 if(BUILD_QT5)
     qt5_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
@@ -102,6 +104,7 @@ SET(TechDrawGui_SRCS
     Command.cpp
     CommandCreateDims.cpp
     CommandDecorate.cpp
+    CommandAnnotate.cpp
     Resources/TechDraw.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -137,6 +140,9 @@ SET(TechDrawGui_SRCS
     TaskRichAnno.ui
     TaskRichAnno.cpp
     TaskRichAnno.h
+    TaskCosVertex.ui
+    TaskCosVertex.cpp
+    TaskCosVertex.h
     DrawGuiUtil.cpp
     DrawGuiUtil.h
     Rez.cpp
@@ -285,6 +291,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskGeomHatch.ui
     TaskLeaderLine.ui
     TaskRichAnno.ui
+    TaskCosVertex.ui
     mrichtextedit.ui
     TaskBalloon.ui
 )

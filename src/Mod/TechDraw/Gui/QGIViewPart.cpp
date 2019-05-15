@@ -50,6 +50,7 @@
 #include <Base/Vector3D.h>
 #include <Gui/ViewProvider.h>
 
+#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
@@ -57,6 +58,8 @@
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/Cosmetic.h>
 
 #include "Rez.h"
 #include "ZVALUE.h"
@@ -77,6 +80,7 @@
 #include "ViewProviderViewPart.h"
 #include "MDIViewPage.h"
 
+using namespace TechDraw;
 using namespace TechDrawGui;
 using namespace TechDrawGeometry;
 
@@ -458,6 +462,23 @@ void QGIViewPart::drawViewPart()
 //            dumpPath(edgeId.str().c_str(),edgePath);
          }
     }
+    // Draw Cosmetic Edges
+//    int cosmoEdgeStart = 1000;
+//    const std::vector<TechDrawGreometry::CosmeticEdge *> &cEdges = viewPart->getEdgeCosmetic();
+//    std::vector<TechDrawGreometry::CosmeticEdge *>::const_iterator itcEdge = cEdges.begin();
+//    QGIEdge* item;
+//    for(int i = 0 ; itcEdge != cEdges.end(); itcEdge++, i++) {
+//            item = new QGIEdge(cosmoEdgeStart + i);
+//            addToGroup(item);
+//            item->setPos(0.0,0.0);
+////            item->setPath(drawPainterPath(*itcEdge));  //this won't work
+//            item->setWidth((*itcEdge)->width);
+//            item->setColor((*itcEdge)->color.asValue<QColor>();
+//            item->setZValue(ZVALUE::EDGE);
+//            item->setPrettyNormal();
+//    
+//    }
+
 
     // Draw Vertexs:
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
@@ -487,14 +508,42 @@ void QGIViewPart::drawViewPart()
                 }
             } else if(!usePolygonHLR){ //Disable dots WHEN usePolygonHLR
                 QGIVertex *item = new QGIVertex(i);
-                item->setNormalColor(vertexColor);
+                TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexByLink(i);
+                if (cv != nullptr) {
+                    Base::Console().Message("QGIVP::draw - found a cv!\n");
+                    cv->dump("QGIVP::draw");
+//                    item->setNormalColor(vertexColor);
+                    item->setNormalColor(cv->color.asValue<QColor>());
+                    item->setRadius(cv->size);
+//                    item->setRadius(lineWidth * vertexScaleFactor);
+//                    item->setStyle(cv->style);
+                } else {
+                    item->setNormalColor(vertexColor);
+                    item->setRadius(lineWidth * vertexScaleFactor);
+                }
                 item->setPrettyNormal();
                 addToGroup(item);
                 item->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
-                item->setRadius(lineWidth * vertexScaleFactor);
                 item->setZValue(ZVALUE::VERTEX);
             }
         }
+//        //draw cosmetic vertices
+//        int cosmoVertStart = 1000;
+//        std::vector<CosmeticVertex*> cVerts = viewPart->getCosmeticVertex();
+//        Base::Console().Message("QGIVP::draw - %s - cVerts: %d\n",getViewName(),cVerts.size());
+//        std::vector<CosmeticVertex*>::const_iterator itcVert = cVerts.begin();
+//        for(int i = 0 ; itcVert != cVerts.end(); ++itcVert, i++) {
+//            QGIVertex *item = new QGIVertex(cosmoVertStart + i);
+//            item->setNormalColor((*itcVert)->color.asValue<QColor>());
+//            item->setPrettyNormal();
+//            addToGroup(item);
+//            //TODO: need to apply scale to position unless position is already scaled
+//            item->setPos(Rez::guiX((*itcVert)->pageLocation.x), - Rez::guiX((*itcVert)->pageLocation.y));
+//            item->setRadius((*itcVert)->size);
+//            item->setStyle((Qt::PenStyle)(*itcVert)->style);
+//            item->setZValue(ZVALUE::VERTEX);
+//            Base::Console().Message("QGIVP::draw - cVert.toCSV: %s \n",(*itcVert)->toCSV().c_str());
+//        }
     }
 
     //draw detail highlights
