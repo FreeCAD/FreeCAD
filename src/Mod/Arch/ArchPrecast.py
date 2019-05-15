@@ -74,7 +74,7 @@ class _Precast(ArchComponent.Component):
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
-        _Precast.onDocumentRestored(self,obj)
+        _Precast.setProperties(self,obj)
 
     def execute(self,obj):
 
