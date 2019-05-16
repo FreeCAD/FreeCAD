@@ -103,8 +103,8 @@ protected:
     void abandonEditSession(void);
 
     void createLeaderFeature(std::vector<Base::Vector3d> converted);
-    void updateLeaderFeature(std::vector<Base::Vector3d> converted);
-    void commonFeatureUpdate(std::vector<Base::Vector3d> converted);
+    void updateLeaderFeature();
+    void commonFeatureUpdate(void);
     void removeFeature(void);
 
 /*    QPointF calcTextStartPos(double scale);*/

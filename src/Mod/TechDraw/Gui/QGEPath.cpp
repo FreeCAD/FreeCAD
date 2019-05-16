@@ -43,7 +43,8 @@
 
 using namespace TechDrawGui;
 
-QGMarker::QGMarker(int idx) : QGIVertex(idx)
+QGMarker::QGMarker(int idx) : QGIVertex(idx),
+    m_dragging(false)
 {
 //    Base::Console().Message("QGMarker::QGMarker(%d)\n", idx);
     setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -77,6 +78,8 @@ void QGMarker::mousePressEvent(QGraphicsSceneMouseEvent * event)
         event->accept();
         return;
     } else if(scene() && this == scene()->mouseGrabberItem()) {
+        //start dragging
+        m_dragging = true;
         QPointF mapped = mapToParent(event->pos());
         Q_EMIT dragging(mapped, getProjIndex());
     }
@@ -94,16 +97,20 @@ void QGMarker::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 //    Base::Console().Message("QGMarker::mouseReleaseEvent(%d) - focus: %d\n", getProjIndex(), hasFocus());
     if (event->button() == Qt::RightButton) {    //we're done
         Q_EMIT endEdit();
-        event->accept();      //this is mine!
+        m_dragging = false;
         return;
     }
 
     if(this->scene() && this == this->scene()->mouseGrabberItem()) {
-        QPointF mapped = mapToParent(event->pos());
-        Q_EMIT dragFinished(mapped, getProjIndex());
-        event->accept();
+        if (m_dragging) {
+            m_dragging = false;
+            setSelected(false);
+            QPointF mapped = mapToParent(event->pos());
+            Q_EMIT dragFinished(mapped, getProjIndex());
+        }
+    } else {
+        Base::Console().Message("QGMarker::mouseReleaseEvent - not mouse grabber\n");
     }
-
     QGIVertex::mouseReleaseEvent(event);
 }
 
@@ -112,7 +119,6 @@ void QGMarker::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 //    Base::Console().Message("QGMarker::mouseDoubleClickEvent(%d)\n",getProjIndex());
     if (event->button() == Qt::RightButton) {    //we're done
         Q_EMIT endEdit();
-        event->accept();      //this is mine!
         return;
     }
     QGIVertex::mouseDoubleClickEvent(event);
@@ -382,7 +388,7 @@ void QGEPath::makeDeltasFromPoints(std::vector<QPointF> pts)
     m_deltas = deltas;
 }
 
-//tell parent points editing is finished
+//announce points editing is finished
 void QGEPath::updateFeature(void)
 {
 //    Base::Console().Message("QGEPath::updateFeature()\n");
