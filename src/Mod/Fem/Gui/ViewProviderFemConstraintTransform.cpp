@@ -29,6 +29,8 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
@@ -41,8 +43,10 @@
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoScale.h>
-# include <Precision.hxx>
+
+# include <math.h>
 #endif
+
 #include <Gui/Command.h>
 
 #include "Mod/Fem/App/FemConstraintTransform.h"
@@ -51,7 +55,7 @@
 #include <Base/Console.h>
 #include <Gui/Control.h>
 
-#include <math.h>
+
 #define PI (3.141592653589793238462643383279502884L)
 
 using namespace FemGui;

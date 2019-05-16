@@ -24,6 +24,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoBaseColor.h>
+# include <Inventor/nodes/SoFontStyle.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoTranslation.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoMarkerSet.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+
+# include <sstream>
+
+# include <QApplication>
 #endif
 
 #include "ui_TaskPostDisplay.h"
@@ -37,6 +53,7 @@
 #include "ViewProviderFemPostObject.h"
 #include "ViewProviderFemPostFunction.h"
 #include "ViewProviderFemPostFilter.h"
+
 #include <Mod/Fem/App/FemPostObject.h>
 #include <Mod/Fem/App/FemPostFilter.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
@@ -46,25 +63,9 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Action.h>
-#include <QMessageBox>
-#include <QPushButton>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
 
-# include <sstream>
-# include <QApplication>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoFontStyle.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoDrawStyle.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Base/Console.h>
