@@ -72,6 +72,7 @@ protected:
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
 private:
+    bool m_dragging;
 
 };
 
