@@ -59,6 +59,7 @@
 
 #include "propertyeditor/PropertyItem.h"
 #include "NavigationStyle.h"
+#include "GestureNavigationStyle.h"
 #include "Flag.h"
 #include "SelectionObject.h"
 

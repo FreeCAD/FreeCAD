@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
+ *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,76 +24,812 @@
  *A few notes on this style. (by DeepSOIC)
  *
  * In this style, LMB serves dual purpose. It is selecting objects, as well as
- * spinning the view. The trick that enables it is as follows: The mousedown
- * event is consumed an saved, but otherwise remains unprocessed. If a drag is
- * detected while the button is down, the event is finally consumed (the saved
- * one is discarded), and spinning starts. If there is no drag detected before
- * the button is released, the saved mousedown is propagated to inherited,
- * followed by the mouseup. The same trick is used for RMB, so up to two
- * mousedown can be postponed.
+ * spinning the view. The trick that enables it is to consume mouse events
+ * before move threshold is detected, and refire the events if the mouse was
+ * released but not moved.
  *
  * This navigation style does not exactly follow the structure of other
  * navigation styles, it does not fill many of the global variables defined in
  * NavigationStyle.
  *
- * This mode does not support locking cursor position on screen when
- * navigating, since with absolute pointing devices like pen and touch it makes
- * no sense (this style was specifically crafted for such devices).
+ * It uses a statemachine based on boost::statechart to simplify differences in
+ * event handling depending on mode.
  *
- * In this style, setViewing is not used (because I could not figure out how to
- * use it properly, and it seems to just work without it).
+ * Dealing with touchscreen gestures with Qt5 on Windows is a pain in the arse.
  *
- * This style wasn't tested with space during development (I don't have one).
+ * For pinch gesture, Qt5 starts generating mouse input as soon as the first
+ * finger lands on the screen. As the second finger touches, gesture events
+ * begin to arrive. But in the process, more synthetic mouse input keeps
+ * coming, sometimes including RMB press. This mouse input is usually properly
+ * terminated by LMB and RMB release events, but they don't always come;
+ * proofing the logic against this inconsistency was quite a challenge.
+ *
+ * Tap-and-hold was yet another terrible beast. Again, as soon as the finger
+ * touches the screen, LMB press comes in. Then, after the finger is released,
+ * RMB press comes. This one is usually complemented by all release events.
+ * However, with tap-hold-move-release sequence, RMB release event does not
+ * arrive.
+ *
+ * So, to avoid entering Tilt mode, the style implements its own tap-and-hold
+ * detection, and a special Pan state for the state machine - StickyPanState.
+ *
+ * This style wasn't tested with space mouse during development (I don't have one).
+ *
+ * See also GestureNavigationStyle-state-machine-diagram.docx for a crude
+ * diagram of the state machine.
+ *
  */
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cfloat>
-# include <QAction>
-# include <QActionGroup>
-# include <QApplication>
-# include <QByteArray>
-# include <QCursor>
-# include <QList>
-# include <QMenu>
-# include <QMetaObject>
-# include <QRegExp>
 # include <Inventor/actions/SoRayPickAction.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/SoFullPath.h>
 # include <Inventor/draggers/SoDragger.h>
+# include <QApplication>
 #endif
 
-#include <Inventor/sensors/SoTimerSensor.h>
+#include "GestureNavigationStyle.h"
 
 #include <App/Application.h>
 #include <Base/Console.h>
-#include "NavigationStyle.h"
 #include "View3DInventorViewer.h"
 #include "Application.h"
-#include "MenuManager.h"
-#include "MouseSelection.h"
 #include "SoTouchEvents.h"
 
-using namespace Gui;
+#include <QTapAndHoldGesture>
 
-// ----------------------------------------------------------------------------------
+#include <boost/statechart/state_machine.hpp>
+#include <boost/statechart/simple_state.hpp>
+#include <boost/statechart/state.hpp>
+#include <boost/statechart/custom_reaction.hpp>
+#include <boost/mpl/list.hpp>
+
+namespace sc = boost::statechart;
+#define NS Gui::GestureNavigationStyle
+
+namespace Gui {
+
+class NS::Event : public sc::event<NS::Event>
+{
+public:
+    Event():flags(new Flags){}
+    virtual ~Event(){}
+
+    void log() const {
+        if (isPress(1))
+            Base::Console().Log("button1 press ");
+        if (isPress(2))
+            Base::Console().Log("button2 press ");
+        if (isPress(3))
+            Base::Console().Log("button3 press ");
+        if (isRelease(1))
+            Base::Console().Log("button1 release ");
+        if (isRelease(2))
+            Base::Console().Log("button2 release ");
+        if (isRelease(3))
+            Base::Console().Log("button3 release ");
+        if (isMouseButtonEvent())
+            Base::Console().Log("%x", modifiers);
+        if (isGestureEvent()){
+            Base::Console().Log("Gesture ");
+            switch(asGestureEvent()->state){
+            case SoGestureEvent::SbGSStart:
+                Base::Console().Log("start ");
+            break;
+            case SoGestureEvent::SbGSEnd:
+                Base::Console().Log("end ");
+            break;
+            case SoGestureEvent::SbGSUpdate:
+                Base::Console().Log("data ");
+            break;
+            default:
+                Base::Console().Log("??? ");
+            }
+
+            Base::Console().Log(inventor_event->getTypeId().getName().getString());
+        }
+        if (isMouseButtonEvent() || isGestureEvent()){
+            Base::Console().Log("(%i,%i)\n", inventor_event->getPosition()[0],inventor_event->getPosition()[1]);
+        }
+    }
+
+    //cast shortcuts
+    bool isMouseButtonEvent() const {
+        return this->inventor_event->isOfType(SoMouseButtonEvent::getClassTypeId());
+    }
+    const SoMouseButtonEvent* asMouseButtonEvent() const {
+        return static_cast<const SoMouseButtonEvent*>(this->inventor_event);
+    }
+    bool isPress(int button_index) const {
+        if (! isMouseButtonEvent())
+            return false;
+        int sobtn = SoMouseButtonEvent::BUTTON1 + button_index - 1;
+        return asMouseButtonEvent()->getButton() == sobtn && asMouseButtonEvent()->getState() == SoMouseButtonEvent::DOWN;
+    }
+    bool isRelease(int button_index) const {
+        if (! isMouseButtonEvent())
+            return false;
+        int sobtn = SoMouseButtonEvent::BUTTON1 + button_index - 1;
+        return asMouseButtonEvent()->getButton() == sobtn && asMouseButtonEvent()->getState() == SoMouseButtonEvent::UP;
+    }
+    bool isKeyboardEvent() const {
+        return this->inventor_event->isOfType(SoKeyboardEvent::getClassTypeId());
+    }
+    const SoKeyboardEvent* asKeyboardEvent() const {
+        return static_cast<const SoKeyboardEvent*>(this->inventor_event);
+    }
+    bool isLocation2Event() const {
+        return this->inventor_event->isOfType(SoLocation2Event::getClassTypeId());
+    }
+    const SoLocation2Event* asLocation2Event() const {
+        return static_cast<const SoLocation2Event*>(this->inventor_event);
+    }
+    bool isMotion3Event() const {
+        return this->inventor_event->isOfType(SoMotion3Event::getClassTypeId());
+    }
+    bool isGestureEvent() const {
+        return this->inventor_event->isOfType(SoGestureEvent::getClassTypeId());
+    }
+    const SoGestureEvent* asGestureEvent() const {
+        return static_cast<const SoGestureEvent*>(this->inventor_event);
+    }
+    bool isGestureActive() const {
+        if (!isGestureEvent())
+            return false;
+        if (asGestureEvent()->state == SoGestureEvent::SbGSStart
+            || asGestureEvent()->state == SoGestureEvent::SbGSUpdate )
+            return true;
+        else
+            return false;
+    }
+public:
+    enum {
+        // bits: 0-shift-ctrl-alt-0-lmb-mmb-rmb
+        BUTTON1DOWN = 0x00000100,
+        BUTTON2DOWN = 0x00000001,
+        BUTTON3DOWN = 0x00000010,
+        CTRLDOWN =    0x00100000,
+        SHIFTDOWN =   0x01000000,
+        ALTDOWN =     0x00010000,
+        MASKBUTTONS = BUTTON1DOWN | BUTTON2DOWN | BUTTON3DOWN,
+        MASKMODIFIERS = CTRLDOWN | SHIFTDOWN | ALTDOWN
+    };
+
+public:
+    const SoEvent* inventor_event;
+    unsigned int modifiers;
+    unsigned int mbstate() const {return modifiers & MASKBUTTONS;}
+    unsigned int kbdstate() const {return modifiers & MASKMODIFIERS;}
+
+    struct Flags{
+        bool processed = false; //the value to be returned by processSoEvent.
+        bool propagated = false; //flag that the event had been passed to superclass
+    };
+    std::shared_ptr<Flags> flags;
+    //storing these values as a separate unit allows to effectively write to
+    //const object. Statechart passes all events as const, unfortunately, so
+    //this is a workaround. I've considered casting away const instead, but
+    //the internet seems to have mixed opinion if it's undefined behavior or
+    //not. Also, it seems, statechart can copy the event internally. --DeepSOIC
+
+};
+
+//------------------------------state machine ---------------------------
+
+class NS::NaviMachine : public sc::state_machine<NS::NaviMachine, NS::IdleState>
+{
+public:
+    typedef sc::state_machine<NS::NaviMachine, NS::IdleState> superclass;
+
+    NaviMachine(NS& ns) : ns(ns) {}
+    NS& ns;
+
+public:
+    virtual void processEvent(NS::Event& ev) {
+        this->process_event(ev);
+    }
+};
+
+class NS::IdleState : public sc::state<NS::IdleState, NS::NaviMachine>
+{
+public:
+    typedef sc::custom_reaction<NS::Event> reactions;
+
+    IdleState(my_context ctx):my_base(ctx)
+    {
+        this->outermost_context().ns.setViewingMode(NavigationStyle::IDLE);
+    }
+    virtual ~IdleState(){}
+
+    sc::result react(const NS::Event& ev){
+        auto &ns = this->outermost_context().ns;
+
+        auto posn = ns.normalizePixelPos(ev.inventor_event->getPosition());
+
+        //special handling for some special states of viewer
+        switch (ns.getViewingMode()) {
+            case NavigationStyle::SEEK_WAIT_MODE:{
+                if (ev.isPress(1)) {
+                    ns.seekToPoint(ev.inventor_event->getPosition()); // implicitly calls interactiveCountInc()
+                    ns.setViewingMode(NavigationStyle::SEEK_MODE);
+                    ev.flags->processed = true;
+                    return transit<NS::AwaitingReleaseState>();
+                }
+            } ; //not end of SEEK_WAIT_MODE. Fall through by design!!!
+                /* FALLTHRU */
+            case NavigationStyle::SPINNING:
+            case NavigationStyle::SEEK_MODE: {
+                //animation modes
+                if (!ev.flags->processed) {
+                    if (ev.isMouseButtonEvent()){
+                        ev.flags->processed = true;
+                        return transit<NS::AwaitingReleaseState>();
+                    } else if (ev.isGestureEvent()
+                                || ev.isKeyboardEvent()
+                                || ev.isMotion3Event())
+                        ns.setViewingMode(NavigationStyle::IDLE);
+                }
+            } break; //end of animation modes
+            case BOXZOOM:
+                return forward_event();
+        }
+
+        //testing for draggers
+        if(ev.isPress(1) && ev.mbstate() == 0x100){
+            if (ns.isDraggerUnderCursor(ev.inventor_event->getPosition()))
+                return transit<NS::InteractState>();
+        }
+
+        //left and right clicks - special handling, postpone the events
+        if (   (ev.isPress(1) && ev.mbstate() == 0x100)
+            || (ev.isPress(2) && ev.mbstate() == 0x001)){
+            ns.postponedEvents.post(ev);
+            ev.flags->processed = true;
+            return transit<NS::AwaitingMoveState>();
+        }
+
+        //MMB click
+        if(ev.isPress(3) && ev.mbstate() == 0x010){
+            ev.flags->processed = true;
+            ns.onSetRotationCenter(ev.inventor_event->getPosition());
+            return transit<NS::AwaitingReleaseState>();
+        }
+
+        //wheel events
+        if(ev.isMouseButtonEvent() && ev.asMouseButtonEvent()->getButton() == SoMouseButtonEvent::BUTTON4){
+            ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), true, posn);
+            ev.flags->processed = true;
+        }
+        if(ev.isMouseButtonEvent() && ev.asMouseButtonEvent()->getButton() == SoMouseButtonEvent::BUTTON5){
+            ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), false, posn);
+            ev.flags->processed = true;
+        }
+
+        //touchscreen gestures
+        if(ev.isGestureActive()){
+            ev.flags->processed = true;
+            return transit<NS::GestureState>();
+        }
+
+        //keyboard
+        if(ev.isKeyboardEvent()){
+            auto const &kbev = ev.asKeyboardEvent();
+            ev.flags->processed = true;
+            bool press = (kbev->getState() == SoKeyboardEvent::DOWN);
+            switch (kbev->getKey()) {
+                case SoKeyboardEvent::H:
+                    if (press)
+                        ns.onSetRotationCenter(kbev->getPosition());
+                break;
+                case SoKeyboardEvent::PAGE_UP:
+                    if(press){
+                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), true, posn);
+                    }
+                break;
+                case SoKeyboardEvent::PAGE_DOWN:
+                    if(press){
+                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), false, posn);
+                    }
+                break;
+                default:
+                    ev.flags->processed = false;
+            }
+        }
+
+        return forward_event();
+    }
+};
+
+class NS::AwaitingMoveState : public sc::state<NS::AwaitingMoveState, NS::NaviMachine>
+{
+public:
+    typedef sc::custom_reaction<NS::Event> reactions;
+
+private:
+    SbVec2s base_pos;
+    SbTime since; //the time of mouse-down event
+    int hold_timeout; //in milliseconds
+
+public:
+    AwaitingMoveState(my_context ctx):my_base(ctx)
+    {
+        auto &ns = this->outermost_context().ns;
+        ns.setViewingMode(NavigationStyle::IDLE);
+        this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        this->since = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getTime();
+
+        ns.mouseMoveThreshold = App::GetApplication().GetParameterGroupByPath
+                    ("User parameter:BaseApp/Preferences/View")->GetInt("GestureMoveThreshold", ns.mouseMoveThreshold);
+
+        this->hold_timeout = int(double(QTapAndHoldGesture::timeout()) *0.9);
+        this->hold_timeout = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View")->GetInt("GestureTapHoldTimeout", this->hold_timeout);
+        if (this->hold_timeout == 0)
+            this->hold_timeout = 650; //a fail-safe
+        QTapAndHoldGesture::setTimeout(int(double(this->hold_timeout)/0.9));
+        // Why *0.9? We need tap-and-hold detection to be slightly faster than
+        // Qt's one, to filter out spurious events. It'd be better to disable
+        // Tap-and-hold altogether, but my attempts to use ungrabGesture and
+        // unregisterRecognizer routines failed to affect anything.
+
+    }
+    virtual ~AwaitingMoveState(){
+        //always clear posponed events when leaving this state.
+        this->outermost_context().ns.postponedEvents.discardAll();
+    }
+
+    sc::result react(const NS::Event& ev){
+        auto &ns = this->outermost_context().ns;
+
+        ///refire(): forwards all posponed events + this event
+        auto refire = [&]{
+            ns.postponedEvents.forwardAll();
+            ev.flags->processed = ns.processSoEvent_bypass(ev.inventor_event);
+            ev.flags->propagated = true;
+        };
+
+        bool long_click = (ev.inventor_event->getTime() - this->since).getValue()*1000.0 >= this->hold_timeout;
+
+        //this state consumes all mouse events.
+        ev.flags->processed = ev.isMouseButtonEvent() || ev.isLocation2Event();
+
+        //right-click
+        if (ev.isRelease(2)
+           && ev.mbstate() == 0
+           && !ns.viewer->isEditing()
+           && ns.isPopupMenuEnabled()){
+            ns.openPopupMenu(ev.inventor_event->getPosition());
+            return transit<NS::IdleState>();
+        }
+
+        //roll gestures
+        //direction is determined at the moment the second button is pressed.
+        if (ev.mbstate() == 0x101){
+            if (ev.isPress(1))
+                ns.rollDir = -1;
+            if (ev.isPress(2))
+                ns.rollDir = +1;
+        }
+        //The roll gesture is fired when one of the two buttons in then released.
+        if (   (ev.isRelease(1) && ev.mbstate() == 0x001)
+            || (ev.isRelease(2) && ev.mbstate() == 0x100) ){
+            ns.onRollGesture(ns.rollDir);
+            return transit<NS::AwaitingReleaseState>();
+        }
+
+        if(ev.isMouseButtonEvent() && ev.mbstate() == 0){
+            //all buttons released
+            if (long_click){
+                //emulate RMB-click
+                ns.openPopupMenu(ev.inventor_event->getPosition());
+                return transit<NS::IdleState>();
+            } else {
+                //refire all events && return to idle state
+                ns.setViewingMode(NavigationStyle::SELECTION);
+                refire();
+                return transit<NS::IdleState>();
+            }
+        }
+        if (ev.isPress(3)){
+            //mmb pressed, exit navigation
+            refire();
+            return transit<NS::IdleState>();
+        }
+        if (ev.isMouseButtonEvent() /* and still not processed*/){
+            ns.postponedEvents.post(ev);
+        }
+        if(ev.isLocation2Event()){
+            auto mv = ev.inventor_event->getPosition() - this->base_pos;
+            if(SbVec2f(mv).length() > ns.mouseMoveThreshold)
+            {
+                //mouse moved while buttons are held. decide how to navigate...
+                switch(ev.mbstate()){
+                    case 0x100:{
+                        if (!long_click) {
+                            bool alt = ev.modifiers & NS::Event::ALTDOWN;
+                            bool allowSpin = alt == ns.is2DViewing();
+                            if(allowSpin)
+                                return transit<NS::RotateState>();
+                            else {
+                                refire();
+                                return transit<NS::IdleState>();
+                            }
+                        } else {
+                            return transit<NS::StickyPanState>();
+                        }
+                    }break;
+                    case 0x001:
+                        return transit<NS::PanState>();
+                    break;
+                    case (0x101):
+                        return transit<NS::TiltState>();
+                    break;
+                    default:
+                        //MMB was held? refire all events.
+                        refire();
+                        return transit<NS::IdleState>();
+                }
+            }
+        }
+        if(ev.isGestureActive()){
+            ev.flags->processed = true;
+            return transit<NS::GestureState>();
+        }
+        return forward_event();
+    }
+};
+
+class NS::RotateState : public sc::state<NS::RotateState, NS::NaviMachine>
+{
+public:
+    typedef sc::custom_reaction<NS::Event> reactions;
+
+private:
+    SbVec2s base_pos;
+
+public:
+    RotateState(my_context ctx):my_base(ctx)
+    {
+        this->outermost_context().ns.setViewingMode(NavigationStyle::DRAGGING);
+        this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+    }
+    virtual ~RotateState(){}
+
+    sc::result react(const NS::Event& ev){
+        if(ev.isMouseButtonEvent()){
+            ev.flags->processed = true;
+            if (ev.mbstate() == 0x101){
+                return transit<NS::TiltState>();
+            }
+            if (ev.mbstate() == 0){
+                return transit<NS::IdleState>();
+            }
+        }
+        if(ev.isLocation2Event()){
+            ev.flags->processed = true;
+            SbVec2s pos = ev.inventor_event->getPosition();
+            auto &ns = this->outermost_context().ns;
+            ns.spin_simplified(
+                        ns.viewer->getSoRenderManager()->getCamera(),
+                        ns.normalizePixelPos(pos), ns.normalizePixelPos(this->base_pos));
+            this->base_pos = pos;
+        }
+        return forward_event();
+    }
+};
+
+class NS::PanState : public sc::state<NS::PanState, NS::NaviMachine>
+{
+public:
+    typedef sc::custom_reaction<NS::Event> reactions;
+
+private:
+    SbVec2s base_pos;
+    float ratio;
+
+public:
+    PanState(my_context ctx):my_base(ctx)
+    {
+        auto &ns = this->outermost_context().ns;
+        ns.setViewingMode(NavigationStyle::PANNING);
+        this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
+        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+    }
+    virtual ~PanState(){}
+
+    sc::result react(const NS::Event& ev){
+        if(ev.isMouseButtonEvent()){
+            ev.flags->processed = true;
+            if (ev.mbstate() == 0x101){
+                return transit<NS::TiltState>();
+            }
+            if (ev.mbstate() == 0){
+                return transit<NS::IdleState>();
+            }
+        }
+        if(ev.isLocation2Event()){
+            ev.flags->processed = true;
+            SbVec2s pos = ev.inventor_event->getPosition();
+            auto &ns = this->outermost_context().ns;
+            ns.panCamera(ns.viewer->getSoRenderManager()->getCamera(),
+                         this->ratio,
+                         ns.panningplane,
+                         ns.normalizePixelPos(pos),
+                         ns.normalizePixelPos(this->base_pos));
+            this->base_pos = pos;
+        }
+        return forward_event();
+    }
+};
+
+class NS::StickyPanState : public sc::state<NS::StickyPanState, NS::NaviMachine>
+{
+public:
+    typedef sc::custom_reaction<NS::Event> reactions;
+
+private:
+    SbVec2s base_pos;
+    float ratio;
+
+public:
+    StickyPanState(my_context ctx):my_base(ctx)
+    {
+        auto &ns = this->outermost_context().ns;
+        ns.setViewingMode(NavigationStyle::PANNING);
+        this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
+        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+    }
+    virtual ~StickyPanState(){
+        auto &ns = this->outermost_context().ns;
+        ns.button2down = false; //a workaround for dealing with Qt not sending UP event after a tap-hold-drag sequence.
+    }
+
+    sc::result react(const NS::Event& ev){
+        if(ev.isMouseButtonEvent()){
+            ev.flags->processed = true;
+            if (ev.isRelease(1)){
+                return transit<NS::IdleState>();
+            }
+        }
+        if(ev.isLocation2Event()){
+            ev.flags->processed = true;
+            SbVec2s pos = ev.inventor_event->getPosition();
+            auto &ns = this->outermost_context().ns;
+            ns.panCamera(ns.viewer->getSoRenderManager()->getCamera(),
+                         this->ratio,
+                         ns.panningplane,
+                         ns.normalizePixelPos(pos),
+                         ns.normalizePixelPos(this->base_pos));
+            this->base_pos = pos;
+        }
+        return forward_event();
+    }
+};
+
+class NS::TiltState : public sc::state<NS::TiltState, NS::NaviMachine>
+{
+public:
+    typedef sc::custom_reaction<NS::Event> reactions;
+
+private:
+    SbVec2s base_pos;
+
+public:
+    TiltState(my_context ctx):my_base(ctx)
+    {
+        auto &ns = this->outermost_context().ns;
+        ns.setViewingMode(NavigationStyle::DRAGGING);
+        this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+    }
+    virtual ~TiltState(){}
+
+    sc::result react(const NS::Event& ev){
+        if(ev.isMouseButtonEvent()){
+            ev.flags->processed = true;
+            if (ev.mbstate() == 0x001){
+                return transit<NS::PanState>();
+            }
+            if (ev.mbstate() == 0x100){
+                return transit<NS::RotateState>();
+            }
+            if (ev.mbstate() == 0){
+                return transit<NS::IdleState>();
+            }
+        }
+        if(ev.isLocation2Event()){
+            ev.flags->processed = true;
+            auto &ns = this->outermost_context().ns;
+            SbVec2s pos = ev.inventor_event->getPosition();
+            float dx = (ns.normalizePixelPos(pos)-ns.normalizePixelPos(base_pos))[0];
+            ns.doRotate(ns.viewer->getSoRenderManager()->getCamera(),
+                        dx*(-2),
+                        SbVec2f(0.5,0.5));
+            this->base_pos = pos;
+        }
+        return forward_event();
+    }
+};
+
+
+class NS::GestureState : public sc::state<NS::GestureState, NS::NaviMachine>
+{
+public:
+    typedef sc::custom_reaction<NS::Event> reactions;
+
+private:
+    SbVec2s base_pos;
+    float ratio;
+    bool enableTilt = false;
+
+public:
+    GestureState(my_context ctx):my_base(ctx)
+    {
+        auto &ns = this->outermost_context().ns;
+        ns.setViewingMode(NavigationStyle::PANNING);
+        this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+        this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
+        enableTilt = !(App::GetApplication().GetParameterGroupByPath
+                ("User parameter:BaseApp/Preferences/View")->GetBool("DisableTouchTilt",true));
+    }
+    virtual ~GestureState(){
+        auto &ns = this->outermost_context().ns;
+        //a workaround for Qt not always sending release evends during touchecreen gestures on Windows
+        ns.button1down = false;
+        ns.button2down = false;
+    }
+
+    sc::result react(const NS::Event& ev){
+        auto &ns = this->outermost_context().ns;
+        if(ev.isMouseButtonEvent()){
+            ev.flags->processed = true;
+            if (ev.mbstate() == 0){
+                //a fail-safe: if gesture end event doesn't arrive, a mouse click should be able to stop this mode.
+                Base::Console().Warning("leaving gesture state by mouse-click (fail-safe)\n");
+                return transit<NS::IdleState>();
+            }
+        }
+        if(ev.isLocation2Event()){
+            //consume all mouse events that Qt fires during the gesture (stupid Qt, so far it only causes trouble)
+            ev.flags->processed = true;
+        }
+        if(ev.isGestureEvent()){
+            ev.flags->processed = true;
+            if(ev.asGestureEvent()->state == SoGestureEvent::SbGSEnd){
+                return transit<NS::IdleState>();
+            } else if (ev.asGestureEvent()->state == SoGestureEvent::SbGsCanceled){
+                //should maybe undo the camera change caused by gesture events received so far...
+                return transit<NS::IdleState>();
+            //} else if (ev.asGestureEvent()->state == SoGestureEvent::SbGSStart){
+            //    //ignore?
+            } else if (ev.inventor_event->isOfType(SoGesturePanEvent::getClassTypeId())){
+                auto const &pangesture = static_cast<const SoGesturePanEvent*>(ev.inventor_event);
+                SbVec2f panDist = ns.normalizePixelPos(pangesture->deltaOffset);
+                ns.panCamera(ns.viewer->getSoRenderManager()->getCamera(),
+                             ratio,
+                             ns.panningplane,
+                             panDist,
+                             SbVec2f(0,0));
+            } else if (ev.inventor_event->isOfType(SoGesturePinchEvent::getClassTypeId())){
+                const SoGesturePinchEvent* const pinch = static_cast<const SoGesturePinchEvent*>(ev.inventor_event);
+                SbVec2f panDist = ns.normalizePixelPos(pinch->deltaCenter.getValue());
+                ns.panCamera(ns.viewer->getSoRenderManager()->getCamera(),
+                             ratio,
+                             ns.panningplane,
+                             panDist,
+                             SbVec2f(0,0));
+                ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(),
+                          -logf(float(pinch->deltaZoom)),
+                          ns.normalizePixelPos(pinch->curCenter));
+                if (pinch->deltaAngle != 0.0 && enableTilt){
+                    ns.doRotate(ns.viewer->getSoRenderManager()->getCamera(),
+                                float(pinch->deltaAngle),
+                                ns.normalizePixelPos(pinch->curCenter));
+                }
+            } else {
+                //unknown gesture
+                ev.flags->processed = false;
+            }
+        }
+        return forward_event();
+    }
+};
+
+class NS::AwaitingReleaseState : public sc::state<NS::AwaitingReleaseState, NS::NaviMachine>
+{
+public:
+    typedef sc::custom_reaction<NS::Event> reactions;
+
+public:
+    AwaitingReleaseState(my_context ctx):my_base(ctx)
+    {
+    }
+    virtual ~AwaitingReleaseState(){}
+
+    sc::result react(const NS::Event& ev){
+        auto &ns = this->outermost_context().ns;
+
+        if(ev.isMouseButtonEvent()){
+            ev.flags->processed = true;
+            if (ev.mbstate() == 0){
+                return transit<NS::IdleState>();
+            }
+        }
+
+        //roll gestures (same as in AwaitingMoveState, but how to merge them - I don't know  --DeepSOIC)
+        //direction is determined at the moment the second button is pressed.
+        if (ev.mbstate() == 0x101){
+            if (ev.isPress(1))
+                ns.rollDir = -1;
+            if (ev.isPress(2))
+                ns.rollDir = +1;
+        }
+        //The roll gesture is fired when one of the two buttons in then released.
+        if (   (ev.isRelease(1) && ev.mbstate() == 0x001)
+            || (ev.isRelease(2) && ev.mbstate() == 0x100) ){
+            ns.onRollGesture(ns.rollDir);
+        }
+
+        if(ev.isLocation2Event()){
+            ev.flags->processed = true;
+        }
+        if(ev.isGestureActive()){
+            ev.flags->processed = true;
+            //another gesture can start...
+            return transit<NS::GestureState>();
+        }
+        return forward_event();
+    }
+};
+
+class NS::InteractState : public sc::state<NS::InteractState, NS::NaviMachine>
+{
+public:
+    typedef sc::custom_reaction<NS::Event> reactions;
+
+public:
+    InteractState(my_context ctx):my_base(ctx)
+    {
+        auto &ns = this->outermost_context().ns;
+        ns.setViewingMode(NavigationStyle::INTERACT);
+    }
+    virtual ~InteractState(){}
+
+    sc::result react(const NS::Event& ev){
+        if(ev.isMouseButtonEvent()){
+            ev.flags->processed = false; //feed all events to the dragger/whatever
+            if (ev.mbstate() == 0){ //all buttons released?
+                return transit<NS::IdleState>();
+            }
+        }
+        return forward_event();
+    }
+};
+
+//------------------------------/state machine ---------------------------
+
 
 /* TRANSLATOR Gui::GestureNavigationStyle */
 
 TYPESYSTEM_SOURCE(Gui::GestureNavigationStyle, Gui::UserNavigationStyle);
 
+
 GestureNavigationStyle::GestureNavigationStyle()
+    : naviMachine(new NS::NaviMachine(*this)),
+      postponedEvents(*this)
 {
     mouseMoveThreshold = QApplication::startDragDistance();
-    mouseMoveThresholdBroken = false;
-    mousedownConsumedCount = 0;
-    thisClickIsComplex = false;
-    inGesture = false;
+    naviMachine->initiate();
+
 }
 
 GestureNavigationStyle::~GestureNavigationStyle()
 {
+
 }
 
 const char* GestureNavigationStyle::mouseButtons(ViewerMode mode)
@@ -104,98 +840,56 @@ const char* GestureNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::PANNING:
         return QT_TR_NOOP("Drag screen with two fingers OR press right mouse button.");
     case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
+        return QT_TR_NOOP("Drag screen with one finger OR press left mouse button. In Sketcher && other edit modes, hold Alt in addition.");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.");
+        return QT_TR_NOOP("Pinch (place two fingers on the screen && drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.");
     default:
         return "No description";
     }
 }
 
-/*!
- * \brief GestureNavigationStyle::testMoveThreshold tests if the mouse has moved far enough to constder it a drag.
- * \param currentPos current position of mouse cursor, in local pixel coordinates.
- * \return true if the mouse was moved far enough. False if it's within the boundary. Ignores GestureNavigationStyle::mouseMoveThresholdBroken flag.
- */
-bool GestureNavigationStyle::testMoveThreshold(const SbVec2s currentPos) const {
-    SbVec2s movedBy = currentPos - this->mousedownPos;
-    return SbVec2f(movedBy).length() >= this->mouseMoveThreshold;
-}
 
-SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
+SbBool GestureNavigationStyle::processSoEvent(const SoEvent* const ev)
 {
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
     // up the inheritance hierarchy.
-    if (this->isSeekMode()) { return inherited::processSoEvent(ev); }
+    if (this->isSeekMode()) { return superclass::processSoEvent(ev); }
     // Switch off viewing mode (Bug #0000911)
     if (!this->isSeekMode()&& !this->isAnimating() && this->isViewing() )
         this->setViewing(false); // by default disable viewing mode to render the scene
-    //setViewing() is never used in this style, so the previous if is very unlikely to be hit.
 
-    const SoType type(ev->getTypeId());
-    //define some shortcuts...
-    bool evIsButton = type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId());
-    bool evIsKeyboard = type.isDerivedFrom(SoKeyboardEvent::getClassTypeId());
-    bool evIsLoc2 = type.isDerivedFrom(SoLocation2Event::getClassTypeId());//mouse movement
-    bool evIsLoc3 = type.isDerivedFrom(SoMotion3Event::getClassTypeId());//spaceball/joystick movement
-    bool evIsGesture = type.isDerivedFrom(SoGestureEvent::getClassTypeId());//touchscreen gesture
+    NS::Event smev;
+    smev.inventor_event = ev;
 
-    const SbVec2f prevnormalized = this->lastmouseposition;
-    const SbVec2s pos(ev->getPosition());//not valid for gestures
-    const SbVec2f posn = this->normalizePixelPos(pos);
-    //pos: local coordinates of event, in pixels
-    //posn: normalized local coordinates of event ((0,0) = lower left corner, (1,1) = upper right corner)
-    float ratio = viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
-
-    if (evIsButton || evIsLoc2){
-        this->lastmouseposition = posn;
+    //mode-independent spaceball/joystick handling
+    if (ev->isOfType(SoMotion3Event::getClassTypeId())){
+        smev.flags->processed = true;
+        this->processMotionEvent(static_cast<const SoMotion3Event*>(ev));
+        return true;
     }
 
-    const ViewerMode curmode = this->currentmode;
-    //ViewerMode newmode = curmode;
-
-    //make a unified mouse+modifiers state value (combo)
-    enum {
-        BUTTON1DOWN = 1 << 0,
-        BUTTON2DOWN = 1 << 1,
-        BUTTON3DOWN = 1 << 2,
-        CTRLDOWN =    1 << 3,
-        SHIFTDOWN =   1 << 4,
-        ALTDOWN =     1 << 5,
-        MASKBUTTONS = BUTTON1DOWN | BUTTON2DOWN | BUTTON3DOWN,
-        MASKMODIFIERS = CTRLDOWN | SHIFTDOWN | ALTDOWN
-    };
-    unsigned int comboBefore = //before = state before this event
-        (this->button1down ? BUTTON1DOWN : 0) |
-        (this->button2down ? BUTTON2DOWN : 0) |
-        (this->button3down ? BUTTON3DOWN : 0) |
-        (this->ctrldown ? CTRLDOWN : 0) |
-        (this->shiftdown ? SHIFTDOWN : 0) |
-        (this->altdown ? ALTDOWN : 0);
-
-    //test for complex clicks
-    int cntMBBefore = (comboBefore & BUTTON1DOWN ? 1 : 0 ) //cntMBBefore = how many buttons were down when this event arrived?
-                  +(comboBefore & BUTTON2DOWN ? 1 : 0 )
-                  +(comboBefore & BUTTON3DOWN ? 1 : 0 );
-    if (cntMBBefore>=2) this->thisClickIsComplex = true;
-    if (cntMBBefore==0) {//a good chance to reset some click-related stuff
-        this->thisClickIsComplex = false;
-        this->mousedownConsumedCount = 0;//shouldn't be necessary, just a fail-safe.
+    // give the nodes in the foreground root the chance to handle events (e.g color bar)
+    if (!viewer->isEditing()) {
+        bool processed = handleEventInForeground(ev);
+        if (processed) return true;
     }
 
-    // Mismatches in state of the modifier keys happens if the user
-    // presses or releases them outside the viewer window.
-    this->ctrldown = ev->wasCtrlDown();
-    this->shiftdown = ev->wasShiftDown();
-    this->altdown = ev->wasAltDown();
-    //before this block, mouse button states in NavigationStyle::buttonXdown reflected those before current event arrived.
-    //track mouse button states
-    if (evIsButton) {
-        const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
-        const int button = event->getButton();
+    if (   (smev.isRelease(1) && this->button1down == false)
+        || (smev.isRelease(2) && this->button2down == false)
+        || (smev.isRelease(3) && this->button3down == false)) {
+        //a button release event cane, but we didn't see the corresponding down
+        //event. Discard it. This discarding is relied upon in some hacks to
+        //overcome buggy synthetic mouse input coming from Qt when doing
+        //touchecteen gestures.
+        return true;
+    }
+
+
+    if (smev.isMouseButtonEvent()) {
+        const int button = smev.asMouseButtonEvent()->getButton();
         const SbBool press //the button was pressed (if false -> released)
-                = event->getState() == SoButtonEvent::DOWN ? true : false;
+                = smev.asMouseButtonEvent()->getState() == SoButtonEvent::DOWN ? true : false;
         switch (button) {
         case SoMouseButtonEvent::BUTTON1:
             this->button1down = press;
@@ -209,426 +903,30 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         //whatever else, we don't track
         }
     }
-    //after this block, the new states of the buttons are already in.
+    this->ctrldown = ev->wasCtrlDown();
+    this->shiftdown = ev->wasShiftDown();
+    this->altdown = ev->wasAltDown();
 
-    unsigned int comboAfter = //after = state after this event (current, essentially)
-        (this->button1down ? BUTTON1DOWN : 0) |
-        (this->button2down ? BUTTON2DOWN : 0) |
-        (this->button3down ? BUTTON3DOWN : 0) |
-        (this->ctrldown ? CTRLDOWN : 0) |
-        (this->shiftdown ? SHIFTDOWN : 0) |
-        (this->altdown ? ALTDOWN : 0);
+    smev.modifiers =
+        (this->button1down ? NS::Event::BUTTON1DOWN : 0) |
+        (this->button2down ? NS::Event::BUTTON2DOWN : 0) |
+        (this->button3down ? NS::Event::BUTTON3DOWN : 0) |
+        (this->ctrldown    ? NS::Event::CTRLDOWN : 0) |
+        (this->shiftdown   ? NS::Event::SHIFTDOWN : 0) |
+        (this->altdown     ? NS::Event::ALTDOWN : 0);
 
-    //test for complex clicks (again)
-    int cntMBAfter = (comboAfter & BUTTON1DOWN ? 1 : 0 ) //cntMBAfter = how many buttons were down when this event arrived?
-                  +(comboAfter & BUTTON2DOWN ? 1 : 0 )
-                  +(comboAfter & BUTTON3DOWN ? 1 : 0 );
-    if (cntMBAfter>=2) this->thisClickIsComplex = true;
-    //if (cntMBAfter==0) this->thisClickIsComplex = false;//don't reset the flag now, we need to know that this mouseUp was an end of a click that was complex. The flag will reset by the before-check in the next event.
-
-    //test for move detection
-    if (evIsLoc2 || evIsButton){
-        this->mouseMoveThresholdBroken |= this->testMoveThreshold(pos);
-    }
-
-    //track gestures
-    if (evIsGesture) {
-        const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
-        switch(gesture->state) {
-        case SoGestureEvent::SbGSStart:{
-            //assert(!inGesture);//start of another gesture before the first finished? Happens all the time for Pan gesture... No idea why!  --DeepSOIC
-            inGesture = true;
-
-            enableGestureTilt = !(App::GetApplication().GetParameterGroupByPath
-                    ("User parameter:BaseApp/Preferences/View")->GetBool("DisableTouchTilt",true));
-        }break;
-        case SoGestureEvent::SbGSUpdate:
-            assert(inGesture);//gesture update without start?
-            inGesture = true;
-        break;
-        case SoGestureEvent::SbGSEnd:
-            assert(inGesture);//gesture ended without starting?
-            inGesture = false;
-        break;
-        case SoGestureEvent::SbGsCanceled:
-            assert(inGesture);//gesture canceled without starting?
-            inGesture=false;
-        break;
-        default:
-            assert(0);//shouldn't happen
-            inGesture = false;
-        }
-    }
-    if (evIsButton) {
-        if(inGesture){
-            inGesture = false;//reset the flag when mouse clicks are received, to ensure enabling mouse navigation back.
-            setViewingMode(NavigationStyle::SELECTION);//exit navigation asap, to proceed with regular processing of the click
-        }
-    }
-
-    bool suppressLMBDrag = false;
-    if(viewer->isEditing()){
-        //in edit mode, disable lmb dragging (spinning). Holding Alt enables it.
-        suppressLMBDrag = !(comboAfter & ALTDOWN);
-    }
-
-    //----------all this were preparations. Now comes the event handling! ----------
-
-    SbBool processed = false;//a return value for the BlahblahblahNavigationStyle::processSoEvent
-    bool propagated = false;//an internal flag indicating that the event has been already passed to inherited, to suppress the automatic doing of this at the end.
-    //goto finalize = return processed. Might be important to do something before done (none now).
-
-    // give the nodes in the foreground root the chance to handle events (e.g color bar)
-    if (!viewer->isEditing()) {
-        processed = handleEventInForeground(ev);
-    }
-    if (processed)
-        goto finalize;
-
-    // Mode-independent keyboard handling
-    if (evIsKeyboard) {
-        const SoKeyboardEvent * const event = (const SoKeyboardEvent *) ev;
-        const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
-        switch (event->getKey()) {
-        case SoKeyboardEvent::H:
-            processed = true;
-            if(!press){
-                SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
-                if(!ret){
-                    this->interactiveCountDec();
-                    Base::Console().Warning(
-                        "No object under cursor! Can't set new center of rotation.\n");
-                }
-            }
-            break;
-        default:
-            break;
-        }
-    }
-    if (processed)
-        goto finalize;
-
-    //mode-independent spaceball/joystick handling
-    if (evIsLoc3) {
-        const SoMotion3Event * const event = static_cast<const SoMotion3Event *>(ev);
-        if (event)
-            this->processMotionEvent(event);
-        processed = true;
-    }
-    if (processed)
-        goto finalize;
-
-    //all mode-dependent stuff is within this switch.
-    switch(curmode){
-    case NavigationStyle::IDLE:
-    case NavigationStyle::SELECTION: {
-        //idle and interaction
-
-        //keyboard
-        if (evIsKeyboard) {
-            const SoKeyboardEvent * const event = (const SoKeyboardEvent *) ev;
-            const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
-
-            switch(event->getKey()){
-            case SoKeyboardEvent::S:
-            case SoKeyboardEvent::HOME:
-            case SoKeyboardEvent::LEFT_ARROW:
-            case SoKeyboardEvent::UP_ARROW:
-            case SoKeyboardEvent::RIGHT_ARROW:
-            case SoKeyboardEvent::DOWN_ARROW:
-                processed = inherited::processSoEvent(ev);
-                propagated = true;
-                break;
-            case SoKeyboardEvent::PAGE_UP:
-                if(press){
-                    doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
-                }
-                processed = true;
-                break;
-            case SoKeyboardEvent::PAGE_DOWN:
-                if(press){
-                    doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
-                }
-                processed = true;
-                break;
-            default:
-                break;
-            }//switch key
-        }
-        if (processed)
-            goto finalize;
-
-
-        // Mouse Button / Spaceball Button handling
-        if (evIsButton) {
-            const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
-            const int button = event->getButton();
-            const SbBool press //the button was pressed (if false -> released)
-                    = event->getState() == SoButtonEvent::DOWN ? true : false;
-            switch(button){
-            case SoMouseButtonEvent::BUTTON1:
-            case SoMouseButtonEvent::BUTTON2:
-                if(press){
-                    if (this->isDraggerUnderCursor(ev->getPosition())){
-                        setViewingMode(NavigationStyle::INTERACT);
-                    } else if(this->thisClickIsComplex && this->mouseMoveThresholdBroken){
-                        //this should prevent re-attempts to enter navigation when doing more clicks after a move.
-                    } else {
-                        //on LMB-down or RMB-down, we don't know yet if we should propagate it or process it. Save the event to be refired later, when it becomes clear.
-                        //reset/start move detection machine
-                        this->mousedownPos = pos;
-                        this->mouseMoveThresholdBroken = false;
-                        pan(viewer->getSoRenderManager()->getCamera());//set up panningplane
-                        int &cnt = this->mousedownConsumedCount;
-                        this->mousedownConsumedEvent[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will lose a subclass, though.
-                        cnt++;
-                        assert(cnt<=2);
-                        if(cnt>static_cast<int>(sizeof(mousedownConsumedEvent))){
-                            cnt=sizeof(mousedownConsumedEvent);//we are in trouble
-                        }
-                        processed = true;//just consume this event, and wait for the move threshold to be broken to start dragging/panning
-                    }
-                } else {//release
-                    if (button == SoMouseButtonEvent::BUTTON2 && !this->thisClickIsComplex) {
-                        if (!viewer->isEditing() && this->isPopupMenuEnabled()) {
-                            processed=true;
-                            this->openPopupMenu(event->getPosition());
-                        }
-                    }
-                    if(! processed) {
-                        //re-synthesize all previously-consumed mouseDowns, if any. They might have been re-synthesized already when threshold was broken.
-                        if (button == SoMouseButtonEvent::BUTTON1)
-                            setViewingMode(NavigationStyle::SELECTION);
-                        for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
-                            inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
-                        }
-                        this->mousedownConsumedCount = 0;
-                        processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
-                        propagated = true;
-                        if (!(this->button1down || this->button2down || this->button3down))
-                            setViewingMode(NavigationStyle::IDLE);
-                    }
-                }
-            break;
-            case SoMouseButtonEvent::BUTTON3://press the wheel
-                processed = true;
-                if(press){
-                    SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
-                    if(!ret){
-                        this->interactiveCountDec();
-                        Base::Console().Warning(
-                            "No object under cursor! Can't set new center of rotation.\n");
-                    }
-                }
-                break;
-            case SoMouseButtonEvent::BUTTON4: //(wheel?)
-                doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
-                processed = true;
-                break;
-            case SoMouseButtonEvent::BUTTON5: //(wheel?)
-                doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
-                processed = true;
-                break;
-            }
-        }
-
-        //mouse moves - test for move threshold breaking
-        if (evIsLoc2) {
-            if (this->mouseMoveThresholdBroken && (this->button1down || this->button2down) && mousedownConsumedCount > 0) {
-                //mousemovethreshold has JUST been broken
-
-                //test if we should enter navigation
-                if ((this->button1down && !suppressLMBDrag) || this->button2down) {
-                    //yes, we are entering navigation.
-                    //throw away consumed mousedowns.
-                    this->mousedownConsumedCount = 0;
-
-                    setViewingMode(this->button1down ? NavigationStyle::DRAGGING : NavigationStyle::PANNING);
-                    processed = true;
-                } else {
-                    //no, we are not entering navigation.
-                    //re-synthesize all previously-consumed mouseDowns, if any, and propagate this mousemove.
-                    for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
-                        inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
-                    }
-                    this->mousedownConsumedCount = 0;
-                    processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
-                    propagated = true;
-                }
-            }
-            if (mousedownConsumedCount  > 0)
-                processed = true;//if we are still deciding if it's a drag or not, consume mouseMoves.
-        }
-
-        //gesture start
-        if (evIsGesture && /*!this->button1down &&*/ !this->button2down){//ignore gestures when mouse buttons are down. Button1down check was disabled because of wrong state after doubleclick on sketcher constraint to edit datum
-            const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
-            if (gesture->state == SoGestureEvent::SbGSStart
-                    || gesture->state == SoGestureEvent::SbGSUpdate) {//even if we didn't get a start, assume the first update is a start (sort-of fail-safe).
-                if (type.isDerivedFrom(SoGesturePanEvent::getClassTypeId())) {
-                    pan(viewer->getSoRenderManager()->getCamera());//set up panning plane
-                    setViewingMode(NavigationStyle::PANNING);
-                    processed = true;
-                } else if (type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())) {
-                    pan(viewer->getSoRenderManager()->getCamera());//set up panning plane
-                    setViewingMode(NavigationStyle::DRAGGING);
-                    processed = true;
-                } //all other gestures - ignore!
-            }
-        }
-
-        //loc2 (mousemove) - ignore.
-
-    } break;//end of idle and interaction
-    case NavigationStyle::DRAGGING:
-    case NavigationStyle::ZOOMING:
-    case NavigationStyle::PANNING:{
-        //actual navigation
-
-        //no keyboard.
-
-        // Mouse Button / Spaceball Button handling
-        if (evIsButton) {
-            const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
-            const int button = event->getButton();
-            //const SbBool press //the button was pressed (if false -> released)
-            //        = event->getState() == SoButtonEvent::DOWN ? true : false;
-            switch(button){
-            case SoMouseButtonEvent::BUTTON1:
-            case SoMouseButtonEvent::BUTTON2:
-                if(comboAfter & BUTTON1DOWN || comboAfter & BUTTON2DOWN) {
-                    //don't leave navigation till all buttons have been released
-                    setViewingMode((comboAfter & BUTTON1DOWN) ? NavigationStyle::DRAGGING : NavigationStyle::PANNING);
-                    processed = true;
-                } else { //all buttons are released
-                    //end of dragging/panning/whatever
-                    setViewingMode(NavigationStyle::IDLE);
-                    processed = true;
-                } //else of if (some bottons down)
-            break;
-            } //switch(button)
-        } //if(evIsButton)
-
-        //the essence part 1!
-        //mouse movement into camera motion. Suppress if in gesture. Ignore until threshold is surpassed.
-        if (evIsLoc2 && ! this->inGesture && this->mouseMoveThresholdBroken) {
-            //const SoLocation2Event * const event = (const SoLocation2Event *) ev;
-            if (curmode == NavigationStyle::ZOOMING) {//doesn't happen
-                this->zoomByCursor(posn, prevnormalized);
-                processed = true;
-            } else if (curmode == NavigationStyle::PANNING) {
-                panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, posn, prevnormalized);
-                processed = true;
-            } else if (curmode == NavigationStyle::DRAGGING) {
-                if (comboAfter & BUTTON1DOWN && comboAfter & BUTTON2DOWN) {
-                    //two mouse buttons down - tilting!
-                    NavigationStyle::doRotate(viewer->getSoRenderManager()->getCamera(),
-                                              (posn - prevnormalized)[0]*(-2),
-                                              SbVec2f(0.5,0.5));
-                    processed = true;
-                } else {//one mouse button - normal spinning
-                    //this will also handle the single-finger drag (there's no gesture used, pseudomouse is enough)
-                    //this->addToLog(event->getPosition(), event->getTime());
-                    this->spin_simplified(viewer->getSoRenderManager()->getCamera(),
-                                          posn, prevnormalized);
-                    processed = true;
-                }
-            }
-        }
-
-        //the essence part 2!
-        //gesture into camera motion
-        if (evIsGesture){
-            const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
-            assert(gesture);
-            if (gesture->state == SoGestureEvent::SbGSEnd) {
-                setViewingMode(NavigationStyle::IDLE);
-                processed=true;
-            } else if (gesture->state == SoGestureEvent::SbGSUpdate){
-                if(type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())){
-                    const SoGesturePinchEvent* const event = static_cast<const SoGesturePinchEvent*>(ev);
-                    if (this->zoomAtCursor){
-                        //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
-                        SbVec2f panDist = this->normalizePixelPos(event->deltaCenter.getValue());
-                        NavigationStyle::panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, panDist, SbVec2f(0,0));
-                    }
-                    NavigationStyle::doZoom(viewer->getSoRenderManager()->getCamera(),-logf(event->deltaZoom),this->normalizePixelPos(event->curCenter));
-                    if (event->deltaAngle != 0 && enableGestureTilt)
-                        NavigationStyle::doRotate(viewer->getSoRenderManager()->getCamera(),event->deltaAngle,this->normalizePixelPos(event->curCenter));
-                    processed = true;
-                }
-                if(type.isDerivedFrom(SoGesturePanEvent::getClassTypeId())){
-                    const SoGesturePanEvent* const event = static_cast<const SoGesturePanEvent*>(ev);
-                        //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
-                    SbVec2f panDist = this->normalizePixelPos(event->deltaOffset);
-                    NavigationStyle::panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, panDist, SbVec2f(0,0));
-                    processed = true;
-                }
-            } else {
-                //shouldn't happen. Gestures are not expected to start in the middle of navigation.
-                //we'll consume it, without reacting.
-                processed=true;
-                //This does, unfortunately, happen on regular basis for pan gesture on Windows8.1+Qt4.8
-            }
-        }
-
-    } break;//end of actual navigation
-    case NavigationStyle::SEEK_WAIT_MODE:{
-        if (evIsButton) {
-            const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
-            const int button = event->getButton();
-            const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
-            if (button == SoMouseButtonEvent::BUTTON1 && press) {
-                this->seekToPoint(pos); // implicitly calls interactiveCountInc()
-                this->setViewingMode(NavigationStyle::SEEK_MODE);
-                processed = true;
-            }
-        }
-    } ; //not end of SEEK_WAIT_MODE. Fall through by design!!!
-        /* FALLTHRU */
-    case NavigationStyle::SPINNING:
-    case NavigationStyle::SEEK_MODE: {
-        //animation modes
-        if (!processed) {
-            if (evIsButton || evIsGesture || evIsKeyboard || evIsLoc3)
-                setViewingMode(NavigationStyle::IDLE);
-        }
-    } break; //end of animation modes
-    case NavigationStyle::INTERACT:{
-        // Mouse Button / Spaceball Button handling
-        if (evIsButton) {
-            const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
-            const int button = event->getButton();
-            //const SbBool press //the button was pressed (if false -> released)
-            //        = event->getState() == SoButtonEvent::DOWN ? true : false;
-            switch(button){
-            case SoMouseButtonEvent::BUTTON1:
-            case SoMouseButtonEvent::BUTTON2:
-                if(!(comboAfter & BUTTON1DOWN || comboAfter & BUTTON2DOWN)) {
-                    //all buttons are released - leave interact mode
-                    setViewingMode(NavigationStyle::IDLE);
-                }
-            break;
-            } //switch(button)
-        } //if(evIsButton)
-
-    } break;
-    case NavigationStyle::BOXZOOM:
-    default:
-        //all the rest - will be pass on to inherited, later.
-        break;
-    }
-
-    if (! processed && ! propagated) {
-        processed = inherited::processSoEvent(ev);
-        propagated = true;
-    }
-
-    //-----------------------end of event handling---------------------
-finalize:
-    return processed;
+    if (! smev.flags->processed)
+        this->naviMachine->processEvent(smev);
+    if(! smev.flags->propagated && ! smev.flags->processed)
+        return superclass::processSoEvent(ev);
+    else
+        return smev.flags->processed;
 }
 
+SbBool GestureNavigationStyle::processSoEvent_bypass(const SoEvent* const ev)
+{
+    return superclass::processSoEvent(ev);
+}
 
 bool GestureNavigationStyle::isDraggerUnderCursor(SbVec2s pos)
 {
@@ -648,3 +946,67 @@ bool GestureNavigationStyle::isDraggerUnderCursor(SbVec2s pos)
         return false;
     }
 }
+
+bool GestureNavigationStyle::is2DViewing() const
+{
+    // #FIXME: detect sketch editing, ! any editing
+    return this->viewer->isEditing();
+}
+
+void GestureNavigationStyle::onRollGesture(int direction)
+{
+    std::string cmd;
+    if (direction == +1){
+        cmd = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View")->GetASCII("GestureRollFwdCommand");
+    } else if (direction == -1) {
+        cmd = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View")->GetASCII("GestureRollBackCommand");
+    }
+    if (cmd.size() == 0)
+        return;
+    std::stringstream code;
+    code << "Gui.runCommand(\"" << cmd << "\")";
+    try {
+        Base::Interpreter().runString(code.str().c_str());
+    } catch (Base::PyException exc) {
+        exc.ReportException();
+    } catch (...) {
+        Base::Console().Error("GestureNavigationStyle::onRollGesture: unknown C++ exception when invoking command %s\n", cmd.c_str());
+   }
+
+}
+
+void GestureNavigationStyle::onSetRotationCenter(SbVec2s cursor){
+    SbBool ret = NavigationStyle::lookAtPoint(cursor);
+    if(!ret){
+        this->interactiveCountDec(); //this was in original gesture nav. Not sure what is it needed for --DeepSOIC
+        Base::Console().Warning(
+            "No object under cursor! Can't set new center of rotation.\n");
+    }
+
+}
+
+void GestureNavigationStyle::EventQueue::post(const NS::Event& ev)
+{
+    ev.flags->processed = true;
+    this->push(*ev.asMouseButtonEvent());
+}
+
+void GestureNavigationStyle::EventQueue::discardAll()
+{
+    while(! this->empty()){
+        this->pop();
+    }
+}
+
+void GestureNavigationStyle::EventQueue::forwardAll()
+{
+    while(! this->empty()){
+        auto v = this->front();
+        this->ns.processSoEvent_bypass(&v);
+        this->pop();
+    }
+}
+
+}//namespace Gui

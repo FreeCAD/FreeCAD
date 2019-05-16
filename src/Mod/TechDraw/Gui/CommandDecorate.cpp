@@ -401,10 +401,10 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+    ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
 
-    if (dvp  && dvp->getMDIViewPage()) {
-        dvp->getMDIViewPage()->setFrameState(!dvp->getMDIViewPage()->getFrameState());
+    if (vpp != nullptr) {
+        vpp->toggleFrameState();
     } else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw Page"),
             QObject::tr("Need a TechDraw Page for this command"));

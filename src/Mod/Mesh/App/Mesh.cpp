@@ -986,8 +986,11 @@ std::vector<Base::Vector3d> MeshObject::getPointNormals() const
 void MeshObject::crossSections(const std::vector<MeshObject::TPlane>& planes, std::vector<MeshObject::TPolylines> &sections,
                                float fMinEps, bool bConnectPolygons) const
 {
-    MeshCore::MeshFacetGrid grid(_kernel);
-    MeshCore::MeshAlgorithm algo(_kernel);
+    MeshCore::MeshKernel kernel(this->_kernel);
+    kernel.Transform(this->_Mtrx);
+
+    MeshCore::MeshFacetGrid grid(kernel);
+    MeshCore::MeshAlgorithm algo(kernel);
     for (std::vector<MeshObject::TPlane>::const_iterator it = planes.begin(); it != planes.end(); ++it) {
         MeshObject::TPolylines polylines;
         algo.CutWithPlane(it->first, it->second, grid, polylines, fMinEps, bConnectPolygons);

@@ -148,10 +148,12 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
         for h in range(24):
             if oldversion:
                 dt = datetime.datetime(year, d[0], d[1], h)
+                alt = math.radians(pysolar.solar.GetAltitudeFast(latitude, longitude, dt))
+                az = pysolar.solar.GetAzimuth(latitude, longitude, dt)
             else:
                 dt = datetime.datetime(year, d[0], d[1], h, tzinfo=datetime.timezone.utc)
-            alt = math.radians(pysolar.solar.get_altitude_fast(latitude, longitude, dt))
-            az = pysolar.solar.get_azimuth(latitude, longitude, dt)
+                alt = math.radians(pysolar.solar.get_altitude_fast(latitude, longitude, dt))
+                az = pysolar.solar.get_azimuth(latitude, longitude, dt)
             az = -90 + az # pysolar's zero is south
             if az < 0:
                 az = 360 + az

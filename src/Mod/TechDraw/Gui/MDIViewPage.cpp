@@ -109,8 +109,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
   : Gui::MDIView(doc, parent),
     m_orientation(QPrinter::Landscape),
     m_paperSize(QPrinter::A4),
-    m_vpPage(pageVp),
-    m_frameState(true)
+    m_vpPage(pageVp)
 {
 
     setMouseTracking(true);
@@ -733,8 +732,10 @@ void MDIViewPage::print(QPrinter* printer)
     static_cast<void> (blockConnection(true)); // avoid to be notified by itself
     Gui::Selection().clearSelection();
 
-    m_view->toggleMarkers(false);
-    m_view->scene()->update();
+    bool saveState = m_vpPage->getFrameState();
+    m_vpPage->setFrameState(false);
+    m_vpPage->setTemplateMarkers(false);
+    m_view->refreshViews();
 
     Gui::Selection().clearSelection();
 
@@ -751,7 +752,9 @@ void MDIViewPage::print(QPrinter* printer)
     m_view->scene()->render(&p, targetRect,sourceRect);
 
     // Reset
-    m_view->toggleMarkers(true);
+    m_vpPage->setFrameState(saveState);
+    m_vpPage->setTemplateMarkers(saveState);
+    m_view->refreshViews();
     //bool block =
     static_cast<void> (blockConnection(false));
 }
@@ -815,15 +818,6 @@ QPrinter::PaperSize MDIViewPage::getPaperSize(int w, int h) const
     return ps;
 }
 
-
-void MDIViewPage::setFrameState(bool state)
-{
-    m_frameState = state;
-    m_view->toggleMarkers(state);
-    m_view->scene()->update();
-}
-
-
 PyObject* MDIViewPage::getPyObject()
 {
     Py_Return;
@@ -842,7 +836,7 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
 
 void MDIViewPage::toggleFrame(void)
 {
-    setFrameState(!getFrameState());
+    m_vpPage->toggleFrameState();
 }
 
 void MDIViewPage::toggleKeepUpdated(void)
@@ -885,7 +879,6 @@ void MDIViewPage::saveSVG(std::string file)
 
 void MDIViewPage::saveDXF()
 {
-//    TechDraw::DrawPage* page = m_vpPage->getDrawPage();
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
                                                    QString::fromUtf8(QT_TR_NOOP("Save Dxf File ")),

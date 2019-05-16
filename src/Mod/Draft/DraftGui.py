@@ -441,9 +441,11 @@ class DraftToolBar:
         layout.addWidget(button)
         return button
 
-    def _label (self,name, layout, hide=True):
+    def _label (self,name, layout, hide=True,wrap=False):
         label = QtGui.QLabel(self.baseWidget)
         label.setObjectName(name)
+        if wrap:
+            label.setWordWrap(True)
         if hide: label.hide()
         layout.addWidget(label)
         return label
@@ -580,6 +582,7 @@ class DraftToolBar:
 
         # options
 
+        self.WPLabel = self._label("WPLabel", self.layout,wrap=True)
         fl = QtGui.QHBoxLayout()
         self.layout.addLayout(fl)
         self.numFacesLabel = self._label("numfaceslabel", fl)
@@ -642,7 +645,15 @@ class DraftToolBar:
         self.layout.addLayout(ml)
         self.mainlineLabel = self._label("mainlineLabel", ml)
         self.mainlineValue = self._spinbox("mainlineValue", ml)
-        self.centerPlane = self._checkbox("centerPlane",self.layout,checked = self.isCenterPlane)
+        gl = QtGui.QHBoxLayout()
+        self.layout.addLayout(gl)
+        self.centerLabel = self._label("centerLabel", gl)
+        self.centerPlane = self._checkbox("centerPlane",gl,checked = self.isCenterPlane)
+        gl = QtGui.QHBoxLayout()
+        self.layout.addLayout(gl)
+        self.snapLabel = self._label("snapLabel", gl)
+        self.snapValue = self._spinbox("snapValue", gl)
+        self.snapValue.setValue(Draft.getParam("snapRange",5))
 
         # spacer
         if not self.taskmode:
@@ -714,6 +725,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.gridValue,QtCore.SIGNAL("textEdited(QString)"),self.setGridSize)
         QtCore.QObject.connect(self.mainlineValue,QtCore.SIGNAL("valueChanged(int)"),self.setMainline)
         QtCore.QObject.connect(self.centerPlane,QtCore.SIGNAL("stateChanged(int)"),self.setCenterPlane)
+        QtCore.QObject.connect(self.snapValue,QtCore.SIGNAL("valueChanged(int)"),self.setSnapValue)
 
         # following lines can cause a crash and are not needed anymore when using the task panel
         # http://forum.freecadweb.org/viewtopic.php?f=3&t=6952
@@ -812,11 +824,12 @@ class DraftToolBar:
         self.isRelative.setText(translate("draft", "Relative")+" ("+inCommandShortcuts["Relative"][0]+")")
         self.isRelative.setToolTip(translate("draft", "Coordinates relative to last point or absolute"))
         self.hasFill.setText(translate("draft", "Filled")+" ("+inCommandShortcuts["Fill"][0]+")")
-        self.hasFill.setToolTip(translate("draft", "Check this if the object should appear as filled, otherwise it will appear as wireframe"))
+        self.hasFill.setToolTip(translate("draft", "Check this if the object should appear as filled, otherwise it will appear as wireframe. Not available if Draft preference option 'Use Part Primitives' is enabled"))
         self.finishButton.setText(translate("draft", "Finish")+" ("+inCommandShortcuts["Exit"][0]+")")
         self.finishButton.setToolTip(translate("draft", "Finishes the current drawing or editing operation"))
         self.continueCmd.setToolTip(translate("draft", "If checked, command will not finish until you press the command button again"))
         self.continueCmd.setText(translate("draft", "Continue")+" ("+inCommandShortcuts["Continue"][0]+")")
+        self.WPLabel.setText(translate("draft", "Select a face or working plane proxy or 3 vertices, or choose one of the options below"))
         self.occOffset.setToolTip(translate("draft", "If checked, an OCC-style offset will be performed instead of the classic offset"))
         self.occOffset.setText(translate("draft", "&OCC-style offset"))
         self.addButton.setToolTip(translate("draft", "Add points to the current object"))
@@ -839,15 +852,15 @@ class DraftToolBar:
         self.numFaces.setToolTip(translate("draft", "Number of sides"))
         self.offsetLabel.setText(translate("draft", "Offset"))
         self.xyButton.setText(translate("draft", "XY (top)"))
-        self.xyButton.setToolTip(translate("draft", "Select XY plane"))
+        self.xyButton.setToolTip(translate("draft", "Sets the working plane on the ground XY plane"))
         self.xzButton.setText(translate("draft", "XZ (front)"))
-        self.xzButton.setToolTip(translate("draft", "Select XZ plane"))
+        self.xzButton.setToolTip(translate("draft", "Sets the working plane on the front XZ plane"))
         self.yzButton.setText(translate("draft", "YZ (side)"))
-        self.yzButton.setToolTip(translate("draft", "Select YZ plane"))
+        self.yzButton.setToolTip(translate("draft", "Setsthe working plane on the side YZ plane"))
         self.currentViewButton.setText(translate("draft", "View"))
-        self.currentViewButton.setToolTip(translate("draft", "Select plane perpendicular to the current view"))
-        self.resetPlaneButton.setText(translate("draft", "Auto"))
-        self.resetPlaneButton.setToolTip(translate("draft", "Do not project points to a drawing plane"))
+        self.currentViewButton.setToolTip(translate("draft", "Sets the working plane perpendicular to the current view"))
+        self.resetPlaneButton.setText(translate("draft", "Automatic"))
+        self.resetPlaneButton.setToolTip(translate("draft", "The working plane adapts to the current view when a command is started"))
         self.isCopy.setText(translate("draft", "Copy")+" ("+inCommandShortcuts["Copy"][0]+")")
         self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved. Preferences -> Draft -> Global copy mode to keep this mode in next commands"))
         self.isSubelementMode.setText(translate("draft", "Modify subelements")+" ("+inCommandShortcuts["SubelementMode"][0]+")")
@@ -864,7 +877,10 @@ class DraftToolBar:
         self.gridValue.setToolTip(translate("draft", "The spacing between the grid lines"))
         self.mainlineLabel.setText(translate("draft", "Main line every"))
         self.mainlineValue.setToolTip(translate("draft", "The number of lines between main lines"))
-        self.centerPlane.setText(translate("draft", "Center plane on view"))
+        self.centerLabel.setText(translate("draft", "Center plane on view"))
+        self.centerPlane.setToolTip(translate("draft", "Centers the working plane on the current view"))
+        self.snapLabel.setText(translate("draft", "Snapping radius"))
+        self.snapValue.setToolTip(translate("draft", "This is the distance in screen pixels under which a point will be snapped. You can also change the radius while drawing, using keys")+" "+inCommandShortcuts["Increase"][0]+" , "+inCommandShortcuts["Decrease"][0])
         self.retranslateTray(widget)
 
         # Update the maximum width of the push buttons
@@ -934,7 +950,7 @@ class DraftToolBar:
             if FreeCADGui.Control.activeDialog():
                 FreeCADGui.Control.closeDialog()
             todo.delay(FreeCADGui.Control.showDialog,dummy(extra))
-        self.setTitle(title)
+        self.setTitle(title,icon)
 
     def redraw(self):
         "utility function that is performed after each clicked point"
@@ -959,7 +975,8 @@ class DraftToolBar:
             self.zValue.selectAll()
 
     def selectPlaneUi(self):
-        self.taskUi(translate("draft", "Select Plane"))
+        self.taskUi(title=translate("draft", "Working plane setup"),icon="Draft_SelectPlane")
+        self.WPLabel.show()
         self.xyButton.show()
         self.xzButton.show()
         self.yzButton.show()
@@ -975,7 +992,12 @@ class DraftToolBar:
         self.mainlineValue.show()
         p = Draft.getParam("gridEvery",10)
         self.mainlineValue.setValue(p)
+        self.centerLabel.show()
         self.centerPlane.show()
+        self.snapLabel.show()
+        self.snapValue.show()
+        p = Draft.getParam("snapRange",5)
+        self.snapValue.setValue(p)
 
     def extraLineUi(self):
         '''shows length and angle controls'''
@@ -1021,6 +1043,10 @@ class DraftToolBar:
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
         self.isRelative.show()
+        if Draft.getParam("UsePartPrimitives",False):
+            self.hasFill.setEnabled(False)
+        else:
+            self.hasFill.setEnabled(True)
         self.hasFill.show()
         self.finishButton.show()
         self.closeButton.show()
@@ -1033,6 +1059,10 @@ class DraftToolBar:
         self.pointUi(translate("draft", "Circle"),icon="Draft_Circle")
         self.continueCmd.show()
         self.labelx.setText(translate("draft", "Center X"))
+        if Draft.getParam("UsePartPrimitives",False):
+            self.hasFill.setEnabled(False)
+        else:
+            self.hasFill.setEnabled(True)
         self.hasFill.show()
 
     def arcUi(self):
@@ -1146,7 +1176,11 @@ class DraftToolBar:
             self.gridValue.hide()
             self.mainlineLabel.hide()
             self.mainlineValue.hide()
+            self.centerLabel.hide()
             self.centerPlane.hide()
+            self.snapLabel.hide()
+            self.snapValue.hide()
+            self.WPLabel.hide()
 
     def trimUi(self,title=translate("draft","Trim")):
         self.taskUi(title)
@@ -1275,6 +1309,10 @@ class DraftToolBar:
         self.arc3PtButton.setChecked(False)
 
     def extUi(self):
+        if Draft.getParam("UsePartPrimitives",False):
+            self.hasFill.setEnabled(False)
+        else:
+            self.hasFill.setEnabled(True)
         self.hasFill.show()
         self.continueCmd.show()
 
@@ -2108,6 +2146,11 @@ class DraftToolBar:
         if hasattr(FreeCADGui,"Snapper"):
             par = Draft.getParam("snapRange",10)
             Draft.setParam("snapRange",par+val)
+            FreeCADGui.Snapper.showradius()
+
+    def setSnapValue(self,val):
+        Draft.setParam("snapRange",val)
+        if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.showradius()
 
     def constrain(self,val):

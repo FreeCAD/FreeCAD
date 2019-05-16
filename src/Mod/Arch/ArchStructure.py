@@ -73,7 +73,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Structure")
-    obj.Label = translate("Arch",name)
+    obj.Label = translate("Arch","Structure")
     _Structure(obj)
     if FreeCAD.GuiUp:
         _ViewProviderStructure(obj.ViewObject)
@@ -88,7 +88,8 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
     if height:
         obj.Height = height
     else:
-        obj.Height = p.GetFloat("StructureHeight",1000)
+        if not length:
+            obj.Height = p.GetFloat("StructureHeight",1000)
     if length:
         obj.Length = length
     else:
@@ -96,10 +97,34 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
             # don't set the length if we have a base object, otherwise the length X height calc
             # gets wrong
             obj.Length = p.GetFloat("StructureLength",100)
+    if baseobj:
+        w = 0
+        h = 0
+        if hasattr(baseobj,"Width") and hasattr(baseobj,"Height"):
+            w = baseobj.Width.Value
+            h = baseobj.Height.Value
+        elif hasattr(baseobj,"Length") and hasattr(baseobj,"Width"):
+            w = baseobj.Length.Value
+            h = baseobj.Width.Value
+        elif hasattr(baseobj,"Length") and hasattr(baseobj,"Height"):
+            w = baseobj.Length.Value
+            h = baseobj.Height.Value
+        if w and h:
+            if length and not height:
+                obj.Width = w
+                obj.Height = h
+            elif height and not length:
+                obj.Width = w
+                obj.Length = h
+            
     if not height and not length:
         obj.IfcType = "Undefined"
+    elif obj.Length > obj.Height:
+        obj.IfcType = "Beam"
+        obj.Label = translate("Arch","Beam")
     elif obj.Height > obj.Length:
         obj.IfcType = "Column"
+        obj.Label = translate("Arch","Column")
     return obj
 
 def makeStructuralSystem(objects=[],axes=[],name="StructuralSystem"):
@@ -138,6 +163,28 @@ def makeStructuralSystem(objects=[],axes=[],name="StructuralSystem"):
     else:
         return result
 
+def placeAlongEdge(p1,p2,horizontal=False):
+
+    """placeAlongEdge(p1,p2,[horizontal]): returns a Placement positioned at p1, with Z axis oriented towards p2.
+    If horizontal is True, then the X axis is oriented towards p2, not the Z axis"""
+
+    pl = FreeCAD.Placement()
+    pl.Base = p1
+    up = FreeCAD.Vector(0,0,1)
+    if hasattr(FreeCAD,"DraftWorkingPlane"):
+        up = FreeCAD.DraftWorkingPlane.axis
+    zaxis = p2.sub(p1)
+    yaxis = up.cross(zaxis)
+    if yaxis.Length > 0:
+        xaxis = zaxis.cross(yaxis)
+        if horizontal:
+            pl.Rotation = FreeCAD.Rotation(zaxis,yaxis,xaxis,"ZXY")
+        else:
+            pl.Rotation = FreeCAD.Rotation(xaxis,yaxis,zaxis,"ZXY")
+            pl.Rotation = FreeCAD.Rotation(pl.Rotation.multVec(FreeCAD.Vector(0,0,1)),90).multiply(pl.Rotation)
+    return pl
+
+
 class _CommandStructure:
 
     "the Arch Structure command definition"
@@ -160,13 +207,18 @@ class _CommandStructure:
     def Activated(self):
 
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        self.Length = p.GetFloat("StructureLength",100)
         self.Width = p.GetFloat("StructureWidth",100)
-        self.Height = p.GetFloat("StructureHeight",1000)
+        if self.beammode:
+            self.Height = p.GetFloat("StructureLength",100)
+            self.Length = p.GetFloat("StructureHeight",1000)
+        else:
+            self.Length = p.GetFloat("StructureLength",100)
+            self.Height = p.GetFloat("StructureHeight",1000)
         self.Profile = None
         self.continueCmd = False
         self.bpoint = None
         self.bmode = False
+        self.precastvalues = None
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             st = Draft.getObjectsOfType(sel,"Structure")
@@ -203,6 +255,7 @@ class _CommandStructure:
         self.tracker.width(self.Width)
         self.tracker.height(self.Height)
         self.tracker.length(self.Length)
+        self.tracker.setRotation(FreeCAD.DraftWorkingPlane.getRotation().Rotation)
         self.tracker.on()
         self.precast = ArchPrecast._PrecastTaskPanel()
         self.dents = ArchPrecast._DentsTaskPanel()
@@ -217,27 +270,42 @@ class _CommandStructure:
 
         "this function is called by the snapper when it has a 3D point"
 
-        if self.modeb.isChecked() and (self.bpoint == None):
+        self.bmode = self.modeb.isChecked()
+        if point == None:
+            self.tracker.finalize()
+            return
+        if self.bmode and (self.bpoint == None):
             self.bpoint = point
-            FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=translate("Arch","Next point")+":",mode="line")
+            FreeCADGui.Snapper.getPoint(last=point,callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=translate("Arch","Next point")+":",mode="line")
             return
         self.tracker.finalize()
-        if point == None:
-            return
+        horiz = True # determines the type of rotation to apply to the final object
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structure"))
         FreeCADGui.addModule("Arch")
         if self.Profile is not None:
-            if "Precast" in self.Profile:
+            try: # try to update latest precast values - fails if dialog has been destroyed already
+                self.precastvalues = self.precast.getValues()
+            except:
+                pass
+            if ("Precast" in self.Profile) and self.precastvalues:
                 # precast concrete
-                args = self.precast.getValues()
-                args["PrecastType"] = self.Profile.split("_")[1]
-                args["Length"] = self.Length
-                args["Width"] = self.Width
-                args["Height"] = self.Height
+                self.precastvalues["PrecastType"] = self.Profile.split("_")[1]
+                self.precastvalues["Length"] = self.Length
+                self.precastvalues["Width"] = self.Width
+                self.precastvalues["Height"] = self.Height
                 argstring = ""
                 # fix for precast placement, since their (0,0) point is the lower left corner
-                point = FreeCAD.Vector(point.x-self.Length/2,point.y-self.Width/2,point.z)
-                for pair in args.items():
+                if self.bmode:
+                    delta = FreeCAD.Vector(0,0-self.Width/2,0)
+                else:
+                    delta = FreeCAD.Vector(-self.Length/2,-self.Width/2,0)
+                if hasattr(FreeCAD,"DraftWorkingPlane"):
+                    delta = FreeCAD.DraftWorkingPlane.getRotation().multVec(delta)
+                point = point.add(delta)
+                if self.bpoint:
+                    self.bpoint = self.bpoint.add(delta)
+                # build the string definition
+                for pair in self.precastvalues.items():
                     argstring += pair[0].lower() + "="
                     if isinstance(pair[1],str):
                         argstring += '"' + pair[1] + '",'
@@ -248,29 +316,26 @@ class _CommandStructure:
             else:
                 # metal profile
                 FreeCADGui.doCommand('p = Arch.makeProfile('+str(self.Profile)+')')
-                if abs(self.Length - self.Profile[4]) < 0.1: # forgive rounding errors
+                if (abs(self.Length - self.Profile[4]) >= 0.1) or self.bmode: # forgive rounding errors
+                    # horizontal
+                    FreeCADGui.doCommand('s = Arch.makeStructure(p,length='+str(self.Length)+')')
+                    horiz = False
+                else:
                     # vertical
                     FreeCADGui.doCommand('s = Arch.makeStructure(p,height='+str(self.Height)+')')
-                else:
-                    # horizontal
-                    FreeCADGui.doCommand('s = Arch.makeStructure(p,height='+str(self.Length)+')')
-                    if not self.bmode:
-                        FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(-0.5,0.5,-0.5,0.5)')
+                    #if not self.bmode:
+                    #    FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(-0.5,0.5,-0.5,0.5)')
                 FreeCADGui.doCommand('s.Profile = "'+self.Profile[2]+'"')
         else :
             FreeCADGui.doCommand('s = Arch.makeStructure(length='+str(self.Length)+',width='+str(self.Width)+',height='+str(self.Height)+')')
+
+        # calculate rotation
         if self.bmode and self.bpoint:
-            FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(self.bpoint))
+            FreeCADGui.doCommand('s.Placement = Arch.placeAlongEdge('+DraftVecUtils.toString(self.bpoint)+","+DraftVecUtils.toString(point)+","+str(horiz)+")")
         else:
             FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
-        if self.bmode and self.bpoint:
-            if (self.Profile != None) and (not "Precast" in self.Profile):
-                rot = FreeCAD.Rotation(Vector(0,0,1),(point.sub(self.bpoint)).normalize())
-            else:
-                rot = FreeCAD.Rotation(Vector(1,0,0),(point.sub(self.bpoint)).normalize())
-            FreeCADGui.doCommand('s.Placement.Rotation=FreeCAD.Rotation'+str(rot.Q))
-        else:
-            FreeCADGui.doCommand('s.Placement.Rotation=s.Placement.Rotation.multiply(FreeCAD.DraftWorkingPlane.getRotation().Rotation)')
+            FreeCADGui.doCommand('s.Placement.Rotation = s.Placement.Rotation.multiply(FreeCAD.DraftWorkingPlane.getRotation().Rotation)')
+
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("Draft.autogroup(s)")
         FreeCAD.ActiveDocument.commitTransaction()
@@ -279,6 +344,8 @@ class _CommandStructure:
             self.Activated()
 
     def _createItemlist(self, baselist):
+        
+        "create nice labels for presets in the task panel"
 
         ilist=[]
         for p in baselist:
@@ -313,10 +380,10 @@ class _CommandStructure:
 
         # categories box
         labelc = QtGui.QLabel(translate("Arch","Category"))
-        valuec = QtGui.QComboBox()
-        valuec.addItems([" ","Precast concrete"]+Categories)
+        self.valuec = QtGui.QComboBox()
+        self.valuec.addItems([" ","Precast concrete"]+Categories)
         grid.addWidget(labelc,2,0,1,1)
-        grid.addWidget(valuec,2,1,1,1)
+        grid.addWidget(self.valuec,2,1,1,1)
 
         # presets box
         labelp = QtGui.QLabel(translate("Arch","Preset"))
@@ -330,7 +397,10 @@ class _CommandStructure:
         # length
         label1 = QtGui.QLabel(translate("Arch","Length"))
         self.vLength = ui.createWidget("Gui::InputField")
-        self.vLength.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
+        if self.modeb.isChecked():
+            self.vLength.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
+        else:
+            self.vLength.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
         grid.addWidget(label1,4,0,1,1)
         grid.addWidget(self.vLength,4,1,1,1)
 
@@ -344,7 +414,10 @@ class _CommandStructure:
         # height
         label3 = QtGui.QLabel(translate("Arch","Height"))
         self.vHeight = ui.createWidget("Gui::InputField")
-        self.vHeight.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
+        if self.modeb.isChecked():
+            self.vHeight.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
+        else:
+            self.vHeight.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
         grid.addWidget(label3,6,0,1,1)
         grid.addWidget(self.vHeight,6,1,1,1)
 
@@ -366,7 +439,8 @@ class _CommandStructure:
         grid.addWidget(label4,8,0,1,1)
         grid.addWidget(value4,8,1,1,1)
 
-        QtCore.QObject.connect(valuec,QtCore.SIGNAL("currentIndexChanged(int)"),self.setCategory)
+        # connect slots
+        QtCore.QObject.connect(self.valuec,QtCore.SIGNAL("currentIndexChanged(int)"),self.setCategory)
         QtCore.QObject.connect(self.vPresets,QtCore.SIGNAL("currentIndexChanged(int)"),self.setPreset)
         QtCore.QObject.connect(self.vLength,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
         QtCore.QObject.connect(self.vWidth,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
@@ -375,6 +449,23 @@ class _CommandStructure:
         QtCore.QObject.connect(value5,QtCore.SIGNAL("pressed()"),self.rotateLH)
         QtCore.QObject.connect(value6,QtCore.SIGNAL("pressed()"),self.rotateLW)
         QtCore.QObject.connect(self.modeb,QtCore.SIGNAL("toggled(bool)"),self.switchLH)
+
+        # restore preset
+        stored = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("StructurePreset","")
+        if stored:
+            if stored.lower().startswith("precast_"):
+                self.valuec.setCurrentIndex(1)
+                tp = stored.split("_")[1]
+                if tp and (tp in self.precast.PrecastTypes):
+                    self.vPresets.setCurrentIndex(self.precast.PrecastTypes.index(tp))
+            elif ";" in stored:
+                stored = stored.split(";")
+                if len(stored) >= 3:
+                    if stored[1] in Categories:
+                        self.valuec.setCurrentIndex(2+Categories.index(stored[1]))
+                        ps = [p[2] for p in self.pSelect]
+                        if stored[2] in ps:
+                            self.vPresets.setCurrentIndex(ps.index(stored[2]))
         return w
 
     def update(self,point,info):
@@ -382,16 +473,24 @@ class _CommandStructure:
         "this function is called by the Snapper when the mouse is moved"
 
         if FreeCADGui.Control.activeDialog():
+            try: # try to update latest precast values - fails if dialog has been destroyed already
+                self.precastvalues = self.precast.getValues()
+            except:
+                pass
             if self.Height >= self.Length:
                 delta = Vector(0,0,self.Height/2)
             else:
                 delta = Vector(self.Length/2,0,0)
+            if hasattr(FreeCAD,"DraftWorkingPlane"):
+                delta = FreeCAD.DraftWorkingPlane.getRotation().multVec(delta)
             if self.modec.isChecked():
                 self.tracker.pos(point.add(delta))
                 self.tracker.on()
             else:
                 if self.bpoint:
                     delta = Vector(0,0,-self.Height/2)
+                    if hasattr(FreeCAD,"DraftWorkingPlane"):
+                        delta = FreeCAD.DraftWorkingPlane.getRotation().multVec(delta)
                     self.tracker.update([self.bpoint.add(delta),point.add(delta)])
                     self.tracker.on()
                     l = (point.sub(self.bpoint)).Length
@@ -449,6 +548,7 @@ class _CommandStructure:
             self.pSelect = [None]
             fpresets = [" "]
             self.vPresets.addItems(fpresets)
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetString("StructurePreset","")
 
     def setPreset(self,i):
 
@@ -462,11 +562,13 @@ class _CommandStructure:
                     self.dents.form.show()
                 else:
                     self.dents.form.hide()
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetString("StructurePreset",self.Profile)
             else:
                 p=elt[0]-1 # Presets indexes are 1-based
                 self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[p][4]),FreeCAD.Units.Length).UserString)
                 self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[p][5]),FreeCAD.Units.Length).UserString)
                 self.Profile = Presets[p]
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetString("StructurePreset",";".join([str(i) for i in self.Profile]))
 
     def switchLH(self,bmode):
 

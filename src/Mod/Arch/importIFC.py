@@ -28,10 +28,20 @@ __author__ = "Yorik van Havre","Jonathan Wiedemann"
 __url__ =    "http://www.freecadweb.org"
 
 import six
+import os
+import time
+import tempfile
+import uuid
+import math
+import sys
 
-import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils,sys
-from DraftGeomUtils import vec
+import FreeCAD
+import Part
+import Draft
+import Arch
+import DraftVecUtils
 import ArchIFCSchema
+from DraftGeomUtils import vec
 
 ## @package importIFC
 #  \ingroup ARCH
@@ -46,31 +56,88 @@ ZOOMOUT = True # Set to False to not zoom extents after import
 if open.__module__ in ['__builtin__','io']:
     pyopen = open # because we'll redefine open below
 
+
+# ************************************************************************************************
+# ********** templates and other definitions ****
 # which IFC type must create which FreeCAD type
 typesmap = {
-    "Site":         ["IfcSite"],
-    "Building":     ["IfcBuilding"],
-    "Floor":        ["IfcBuildingStorey"],
-    "Structure":    ["IfcBeam", "IfcBeamStandardCase", "IfcColumn", "IfcColumnStandardCase", "IfcSlab", "IfcFooting", "IfcPile", "IfcTendon"],
-    "Wall":         ["IfcWall", "IfcWallStandardCase", "IfcCurtainWall"],
-    "Window":       ["IfcWindow", "IfcWindowStandardCase", "IfcDoor", "IfcDoorStandardCase"],
-    "Roof":         ["IfcRoof"],
-    "Stairs":       ["IfcStair", "IfcStairFlight", "IfcRamp", "IfcRampFlight"],
-    "Space":        ["IfcSpace"],
-    "Rebar":        ["IfcReinforcingBar"],
-    "Panel":        ["IfcPlate"],
-    "Equipment":    ["IfcFurnishingElement","IfcSanitaryTerminal","IfcFlowTerminal","IfcElectricAppliance"],
-    "Pipe":         ["IfcPipeSegment"],
-    "PipeConnector":["IfcPipeFitting"],
-    "BuildingPart": ["IfcElementAssembly"]
+    "Site": [
+        "IfcSite"
+    ],
+    "Building": [
+        "IfcBuilding"
+    ],
+    "Floor": [
+        "IfcBuildingStorey"
+    ],
+    "Structure": [
+        "IfcBeam",
+        "IfcBeamStandardCase",
+        "IfcColumn",
+        "IfcColumnStandardCase",
+        "IfcSlab",
+        "IfcFooting",
+        "IfcPile",
+        "IfcTendon"
+    ],
+    "Wall": [
+        "IfcWall",
+        "IfcWallStandardCase",
+        "IfcCurtainWall"
+    ],
+    "Window": [
+        "IfcWindow",
+        "IfcWindowStandardCase",
+        "IfcDoor",
+        "IfcDoorStandardCase"
+    ],
+    "Roof": [
+        "IfcRoof"
+    ],
+    "Stairs": [
+        "IfcStair",
+        "IfcStairFlight",
+        "IfcRamp",
+        "IfcRampFlight"
+    ],
+    "Space": [
+        "IfcSpace"
+    ],
+    "Rebar": [
+        "IfcReinforcingBar"
+    ],
+    "Panel": [
+        "IfcPlate"
+    ],
+    "Equipment": [
+        "IfcFurnishingElement",
+        "IfcSanitaryTerminal",
+        "IfcFlowTerminal",
+        "IfcElectricAppliance"
+    ],
+    "Pipe": [
+        "IfcPipeSegment"
+    ],
+    "PipeConnector": [
+        "IfcPipeFitting"
+    ],
+    "BuildingPart":[
+        "IfcElementAssembly"
+    ]
 }
 
 # which IFC entity (product) is a structural object
 structuralifcobjects = (
-    "IfcStructuralCurveMember", "IfcStructuralSurfaceMember",
-    "IfcStructuralPointConnection", "IfcStructuralCurveConnection", "IfcStructuralSurfaceConnection",
-    "IfcStructuralAction", "IfcStructuralPointAction",
-    "IfcStructuralLinearAction", "IfcStructuralLinearActionVarying", "IfcStructuralPlanarAction"
+    "IfcStructuralCurveMember",
+    "IfcStructuralSurfaceMember",
+    "IfcStructuralPointConnection",
+    "IfcStructuralCurveConnection",
+    "IfcStructuralSurfaceConnection",
+    "IfcStructuralAction",
+    "IfcStructuralPointAction",
+    "IfcStructuralLinearAction",
+    "IfcStructuralLinearActionVarying",
+    "IfcStructuralPlanarAction"
 )
 
 # specific FreeCAD <-> IFC slang translations
@@ -120,6 +187,8 @@ END-ISO-10303-21;
 """
 
 
+# ************************************************************************************************
+# ********** some helper, used in import and export and exploerer
 def decode(filename,utf=False):
 
     "turns unicodes into strings"
@@ -202,6 +271,8 @@ def getPreferences():
     FITVIEW_ONIMPORT = p.GetBool("ifcFitViewOnImport",False)
 
 
+# ************************************************************************************************
+# ********** IFC explorer ***********************
 def explore(filename=None):
 
     """explore([filename]): opens a dialog showing
@@ -296,7 +367,7 @@ def explore(filename=None):
             elif entity.is_a() in ["IfcReinforcingBar"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Arch_Rebar.svg"))
             item.setText(2,str(entity.is_a()))
-            item.setFont(2,bold);
+            item.setFont(2,bold)
 
             i = 0
             while True:
@@ -362,6 +433,8 @@ def explore(filename=None):
     return
 
 
+# ************************************************************************************************
+# ********** open and import IFC ****************
 def open(filename,skip=[],only=[],root=None):
 
     "opens an IFC file in a new document"
@@ -494,23 +567,34 @@ def insert(filename,docname,skip=[],only=[],root=None):
                             if it1.MappingSource.MappedRepresentation.is_a("IfcShapeRepresentation"):
                                 for it2 in it1.MappingSource.MappedRepresentation.Items:
                                     prodrepr.setdefault(p.id(),[]).append(it2.id())
+    # colors
+    style_color_rgb = {}  # { style_entity_id: (r,g,b) }
     for r in ifcfile.by_type("IfcStyledItem"):
         if r.Styles:
             if r.Styles[0].is_a("IfcPresentationStyleAssignment"):
-                if r.Styles[0].Styles[0].is_a("IfcSurfaceStyle"):
-                    if r.Styles[0].Styles[0].Styles[0].is_a("IfcSurfaceStyleRendering"):
-                        if r.Styles[0].Styles[0].Styles[0].SurfaceColour:
-                            c = r.Styles[0].Styles[0].Styles[0].SurfaceColour
-                            if r.Item:
-                                for p in prodrepr.keys():
-                                    if r.Item.id() in prodrepr[p]:
-                                        colors[p] = (c.Red,c.Green,c.Blue)
-                        else:
-                            for m in ifcfile.by_type("IfcMaterialDefinitionRepresentation"):
-                                for it in m.Representations:
-                                    if it.Items:
-                                        if it.Items[0].id() == r.id():
-                                            colors[m.RepresentedMaterial.id()] = (c.Red,c.Green,c.Blue)
+                for style1 in r.Styles[0].Styles:
+                    if style1.is_a("IfcSurfaceStyle"):
+                        for style2 in style1.Styles:
+                            if style2.is_a("IfcSurfaceStyleRendering"):
+                                if style2.SurfaceColour:
+                                    c = style2.SurfaceColour
+                                    style_color_rgb[r.id()] = (c.Red,c.Green,c.Blue)
+    style_material_id = {}  # { style_entity_id: material_id) }
+    # Allplan, ArchiCAD
+    for m in ifcfile.by_type("IfcMaterialDefinitionRepresentation"):
+        for it in m.Representations:
+            if it.Items:
+                style_material_id[it.Items[0].id()] = m.RepresentedMaterial.id()
+    # Nova
+    for r in ifcfile.by_type("IfcStyledItem"):
+        if r.Item:
+            for p in prodrepr.keys():
+                if r.Item.id() in prodrepr[p]:
+                    style_material_id[r.id()] = p
+    # create colors out of style_color_rgb and style_material_id
+    for k in style_material_id:
+        if k in style_color_rgb:
+            colors[style_material_id[k]] = style_color_rgb[k]
 
     # remove any leftover annotations from products
     tp = []
@@ -557,7 +641,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
         # checking for full FreeCAD parametric definition, overriding everything else
 
-        if pid in properties.keys():
+        if pid in properties.keys() and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("IfcImportFreeCADProperties",False):
             if "FreeCADPropertySet" in [ifcfile[pset].Name for pset in properties[pid].keys()]:
                 if DEBUG: print(" restoring from parametric definition...",end="")
                 obj = createFromProperties(properties[pid],ifcfile)
@@ -838,7 +922,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 a = obj.IfcData
                 a["IfcUID"] = str(guid)
                 obj.IfcData = a
-                
+
             # setting IFC attributes
 
                 for attribute in ArchIFCSchema.IfcProducts[product.is_a()]["attributes"]:
@@ -846,7 +930,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     if hasattr(product, attribute["name"]) and getattr(product, attribute["name"]) and hasattr(obj,attribute["name"]):
                         #print("Setting attribute",attribute["name"],"to",getattr(product, attribute["name"]))
                         setattr(obj, attribute["name"], getattr(product, attribute["name"]))
-                        # TODO: ArchIFCSchema.IfcProducts uses the IFC version from the FreeCAD prefs. 
+                        # TODO: ArchIFCSchema.IfcProducts uses the IFC version from the FreeCAD prefs.
                         # This might not coincide with the file being opened, hence some attributes are not properly read.
 
             if obj:
@@ -1357,6 +1441,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
     return doc
 
 
+# ************************************************************************************************
+# ********** helper for import IFC **************
 class recycler:
 
     "the compression engine - a mechanism to reuse ifc entities if needed"
@@ -1546,6 +1632,9 @@ class recycler:
                 self.psas[key] = c
             return c
 
+
+# ************************************************************************************************
+# ********** export IFC ****************
 def export(exportList,filename):
 
     "exports FreeCAD contents to an IFC file"
@@ -1764,14 +1853,22 @@ def export(exportList,filename):
 
         # setting the arguments
 
-        kwargs = {"GlobalId": uid, "OwnerHistory": history, "Name": name,
-            "Description": description, "ObjectPlacement": placement, "Representation": representation}
+        kwargs = {
+            "GlobalId": uid,
+            "OwnerHistory": history,
+            "Name": name,
+            "Description": description,
+            "ObjectPlacement": placement,
+            "Representation": representation
+        }
         if ifctype == "IfcSite":
-            kwargs.update({"RefLatitude":dd2dms(obj.Latitude),
-                           "RefLongitude":dd2dms(obj.Longitude),
-                           "RefElevation":obj.Elevation.Value/1000.0,
-                           "SiteAddress":buildAddress(obj,ifcfile),
-                           "CompositionType": "ELEMENT"})
+            kwargs.update({
+                "RefLatitude":dd2dms(obj.Latitude),
+                "RefLongitude":dd2dms(obj.Longitude),
+                "RefElevation":obj.Elevation.Value/1000.0,
+                "SiteAddress":buildAddress(obj,ifcfile),
+                "CompositionType": "ELEMENT"
+            })
         if schema == "IFC2X3":
             kwargs = exportIFC2X3Attributes(obj, kwargs)
         else:
@@ -1794,9 +1891,26 @@ def export(exportList,filename):
                 l = o.Label
                 if six.PY2:
                     l = l.encode("utf8")
-                prod2 = ifcfile.createIfcBuildingElementProxy(ifcopenshell.guid.compress(uuid.uuid1().hex),history,l,None,None,p2,r2,None,"ELEMENT")
+                prod2 = ifcfile.createIfcBuildingElementProxy(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    l,
+                    None,
+                    None,
+                    p2,
+                    r2,
+                    None,
+                    "ELEMENT"
+                )
                 subproducts[o.Name] = prod2
-                ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Addition','',product,[prod2])
+                ifcfile.createIfcRelAggregates(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    'Addition',
+                    '',
+                    product,
+                    [prod2]
+                )
 
         # subtractions
 
@@ -1814,9 +1928,25 @@ def export(exportList,filename):
                 l = o.Label
                 if six.PY2:
                     l = l.encode("utf8")
-                prod2 = ifcfile.createIfcOpeningElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,l,None,None,p2,r2,None)
+                prod2 = ifcfile.createIfcOpeningElement(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    l,
+                    None,
+                    None,
+                    p2,
+                    r2,
+                    None
+                )
                 subproducts[o.Name] = prod2
-                ifcfile.createIfcRelVoidsElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Subtraction','',product,prod2)
+                ifcfile.createIfcRelVoidsElement(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    'Subtraction',
+                    '',
+                    product,
+                    prod2
+                )
 
         # properties
 
@@ -1885,8 +2015,21 @@ def export(exportList,filename):
                             p = ifcbin.createIfcPropertySingleValue(str(pname),str(ptype),pvalue)
                             psets.setdefault(pset,[]).append(p)
                     for pname,props in psets.items():
-                        pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,pname,None,props)
-                        ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
+                        pset = ifcfile.createIfcPropertySet(
+                            ifcopenshell.guid.compress(uuid.uuid1().hex),
+                            history,
+                            pname,
+                            None,
+                            props
+                        )
+                        ifcfile.createIfcRelDefinesByProperties(
+                            ifcopenshell.guid.compress(uuid.uuid1().hex),
+                            history,
+                            None,
+                            None,
+                            [product],
+                            pset
+                        )
 
                 elif obj.IfcProperties.TypeId == 'Spreadsheet::Sheet':
 
@@ -1948,8 +2091,20 @@ def export(exportList,filename):
                             else:
                                 print("Unable to create a property of type:",tp)
                         if props:
-                            pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,cat,None,props)
-                            ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
+                            pset = ifcfile.createIfcPropertySet(
+                                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                                history,cat,
+                                None,
+                                props
+                            )
+                            ifcfile.createIfcRelDefinesByProperties(
+                                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                                history,
+                                None,
+                                None,
+                                [product],
+                                pset
+                            )
 
         if hasattr(obj,"IfcData"):
 
@@ -1986,8 +2141,21 @@ def export(exportList,filename):
                                 val = float(val)
                         props.append(ifcbin.createIfcPropertySingleValue(str(key),str(tp),val))
                 if props:
-                    pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'PropertySet',None,props)
-                    ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
+                    pset = ifcfile.createIfcPropertySet(
+                        ifcopenshell.guid.compress(uuid.uuid1().hex),
+                        history,
+                        'PropertySet',
+                        None,
+                        props
+                    )
+                    ifcfile.createIfcRelDefinesByProperties(
+                        ifcopenshell.guid.compress(uuid.uuid1().hex),
+                        history,
+                        None,
+                        None,
+                        [product],
+                        pset
+                    )
 
         if not ifcprop:
             #if DEBUG : print("no ifc properties to export")
@@ -2010,11 +2178,25 @@ def export(exportList,filename):
             if ("ExportVolume" in obj.IfcData) and obj.IfcData["ExportVolume"] and obj.isDerivedFrom("Part::Feature"):
                 quantities.append(ifcfile.createIfcQuantityVolume('Volume',None,None,obj.Shape.Volume/1000000000.0))
             if quantities:
-                eltq = ifcfile.createIfcElementQuantity(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"ElementQuantities",None,"FreeCAD",quantities)
-                ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],eltq)
+                eltq = ifcfile.createIfcElementQuantity(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    "ElementQuantities",
+                    None,
+                    "FreeCAD",quantities
+                )
+                ifcfile.createIfcRelDefinesByProperties(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    None,
+                    None,
+                    [product],eltq
+                )
 
         if FULL_PARAMETRIC:
+
             # exporting all the object properties
+
             FreeCADProps = []
             FreeCADGuiProps = []
             FreeCADProps.append(ifcbin.createIfcPropertySingleValue("FreeCADType","IfcText",obj.TypeId))
@@ -2028,7 +2210,13 @@ def export(exportList,filename):
                     sets.append(("Gui",obj.ViewObject))
                     if hasattr(obj.ViewObject,"Proxy"):
                         if obj.ViewObject.Proxy:
-                            FreeCADGuiProps.append(ifcbin.createIfcPropertySingleValue("FreeCADGuiObject","IfcText",str(obj.ViewObject.Proxy.__class__)))
+                            FreeCADGuiProps.append(
+                                ifcbin.createIfcPropertySingleValue(
+                                    "FreeCADGuiObject",
+                                    "IfcText",
+                                    str(obj.ViewObject.Proxy.__class__)
+                                )
+                            )
             for realm,ctx in sets:
                 if ctx:
                     for prop in ctx.PropertiesList:
@@ -2074,11 +2262,36 @@ def export(exportList,filename):
                                 else:
                                     FreeCADProps.append(ifcbin.createIfcPropertySingleValue("FreeCAD_"+prop,itype,ivalue))
             if FreeCADProps:
-                pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'FreeCADPropertySet',None,FreeCADProps)
-                ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
+                pset = ifcfile.createIfcPropertySet(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,'FreeCADPropertySet',
+                    None,
+                    FreeCADProps
+                )
+                ifcfile.createIfcRelDefinesByProperties(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    None,
+                    None,
+                    [product],
+                    pset
+                )
             if FreeCADGuiProps:
-                pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'FreeCADGuiPropertySet',None,FreeCADGuiProps)
-                ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
+                pset = ifcfile.createIfcPropertySet(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    'FreeCADGuiPropertySet',
+                    None,
+                    FreeCADGuiProps
+                )
+                ifcfile.createIfcRelDefinesByProperties(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    None,
+                    None,
+                    [product],
+                    pset
+                )
 
         count += 1
 
@@ -2101,7 +2314,14 @@ def export(exportList,filename):
                         subs.append(products[c.Name])
                         treated.append(c.Name)
                 if subs:
-                    ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Assembly','',products[bp.Name],subs)
+                    ifcfile.createIfcRelAggregates(
+                        ifcopenshell.guid.compress(uuid.uuid1().hex),
+                        history,
+                        'Assembly',
+                        '',
+                        products[bp.Name],
+                        subs
+                    )
 
     # floors/buildingparts
 
@@ -2118,7 +2338,14 @@ def export(exportList,filename):
                             treated.append(c.Name)
             f = products[floor.Name]
             if children:
-                ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'StoreyLink','',children,f)
+                ifcfile.createIfcRelContainedInSpatialStructure(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    'StoreyLink',
+                    '',
+                    children,
+                    f
+                )
             floors.append(f)
             defaulthost = f
 
@@ -2142,9 +2369,23 @@ def export(exportList,filename):
                                 treated.append(c.Name)
             b = products[building.Name]
             if children:
-                ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',children,b)
+                ifcfile.createIfcRelContainedInSpatialStructure(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    'BuildingLink',
+                    '',
+                    children,
+                    b
+                )
             if childfloors:
-                ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',b,childfloors)
+                ifcfile.createIfcRelAggregates(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    'BuildingLink',
+                    '',
+                    b,
+                    childfloors
+                )
             buildings.append(b)
             if not defaulthost and not ADDDEFAULTSTOREY:
                 defaulthost = b
@@ -2167,14 +2408,60 @@ def export(exportList,filename):
 
     if not sites:
         if DEBUG: print("No site found. Adding default site")
-        sites = [ifcfile.createIfcSite(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Site",'',None,None,None,None,"ELEMENT",None,None,None,None,None)]
-    ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'ProjectLink','',project,sites)
+        sites = [ifcfile.createIfcSite(
+            ifcopenshell.guid.compress(uuid.uuid1().hex),
+            history,"Default Site",
+            '',
+            None,
+            None,
+            None,
+            None,
+            "ELEMENT",
+            None,
+            None,
+            None,
+            None,
+            None
+        )]
+    ifcfile.createIfcRelAggregates(
+        ifcopenshell.guid.compress(uuid.uuid1().hex),
+        history,
+        'ProjectLink',
+        '',
+        project,sites
+    )
     if not buildings:
         if DEBUG: print("No building found. Adding default building")
-        buildings = [ifcfile.createIfcBuilding(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Building",'',None,None,None,None,"ELEMENT",None,None,None)]
+        buildings = [ifcfile.createIfcBuilding(
+            ifcopenshell.guid.compress(uuid.uuid1().hex),
+            history,
+            "Default Building",
+            '',
+            None,
+            None,
+            None,
+            None,
+            "ELEMENT",
+            None,
+            None,
+            None
+        )]
         if floors:
-            ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',buildings[0],floors)
-    ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'SiteLink','',sites[0],buildings)
+            ifcfile.createIfcRelAggregates(
+                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                history,
+                'BuildingLink',
+                '',
+                buildings[0],floors
+            )
+    ifcfile.createIfcRelAggregates(
+        ifcopenshell.guid.compress(uuid.uuid1().hex),
+        history,
+        'SiteLink',
+        '',
+        sites[0],
+        buildings
+    )
     untreated = []
     for k,v in products.items():
         if not(k in treated):
@@ -2186,9 +2473,34 @@ def export(exportList,filename):
                         untreated.append(v)
     if untreated:
         if not defaulthost:
-            defaulthost = ifcfile.createIfcBuildingStorey(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Storey",'',None,None,None,None,"ELEMENT",None)
-            ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'DefaultStoreyLink','',buildings[0],[defaulthost])
-        ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'UnassignedObjectsLink','',untreated,defaulthost)
+            defaulthost = ifcfile.createIfcBuildingStorey(
+                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                history,
+                "Default Storey",
+                '',
+                None,
+                None,
+                None,
+                None,
+                "ELEMENT",
+                None
+            )
+            ifcfile.createIfcRelAggregates(
+                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                history,
+                'DefaultStoreyLink',
+                '',
+                buildings[0],
+                [defaulthost]
+            )
+        ifcfile.createIfcRelContainedInSpatialStructure(
+            ifcopenshell.guid.compress(uuid.uuid1().hex),
+            history,
+            'UnassignedObjectsLink',
+            '',
+            untreated,
+            defaulthost
+        )
 
     # materials
 
@@ -2226,7 +2538,14 @@ def export(exportList,filename):
                 isi = ifcfile.createIfcStyledItem(None,[psa],None)
                 isr = ifcfile.createIfcStyledRepresentation(context,"Style","Material",[isi])
                 imd = ifcfile.createIfcMaterialDefinitionRepresentation(None,None,[isr],mat)
-            ifcfile.createIfcRelAssociatesMaterial(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'MaterialLink','',relobjs,mat)
+            ifcfile.createIfcRelAssociatesMaterial(
+                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                history,
+                'MaterialLink',
+                '',
+                relobjs,
+                mat
+            )
 
     # 2D objects
 
@@ -2299,7 +2618,14 @@ def export(exportList,filename):
             l = anno.Label
             if six.PY2:
                 l = l.encode("utf8")
-            ann = ifcfile.createIfcAnnotation(ifcopenshell.guid.compress(uuid.uuid1().hex),history,l,'',None,gpl,rep)
+            ann = ifcfile.createIfcAnnotation(
+                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                history,l,
+                '',
+                None,
+                gpl,
+                rep
+            )
             annos[anno.Name] = ann
 
     # groups
@@ -2335,10 +2661,24 @@ def export(exportList,filename):
                 name = FreeCAD.ActiveDocument.getObject(g[0]).Label
                 if six.PY2:
                     name = name.encode("utf8")
-                grp = ifcfile.createIfcGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,name,'',None)
+                grp = ifcfile.createIfcGroup(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    name,
+                    '',
+                    None
+                )
                 products[g[0]] = grp
                 spatialelements[g[0]] = grp
-                ass = ifcfile.createIfcRelAssignsToGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'GroupLink','',children,None,grp)
+                ass = ifcfile.createIfcRelAssignsToGroup(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    'GroupLink',
+                    '',
+                    children,
+                    None,
+                    grp
+                )
 
     # stack groups inside containers
 
@@ -2350,7 +2690,14 @@ def export(exportList,filename):
                 if (parent.Name in spatialelements) and (g[0] in spatialelements):
                     stack.setdefault(parent.Name,[]).append(spatialelements[g[0]])
     for k,v in stack.items():
-        ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'GroupStackLink','',spatialelements[k],v)
+        ifcfile.createIfcRelAggregates(
+            ifcopenshell.guid.compress(uuid.uuid1().hex),
+            history,
+            'GroupStackLink',
+            '',
+            spatialelements[k],
+            v
+        )
 
     # add remaining 2D objects to default host
 
@@ -2358,9 +2705,34 @@ def export(exportList,filename):
         remaining = [anno for anno in annos.values() if anno not in swallowed]
         if remaining:
             if not defaulthost:
-                defaulthost = ifcfile.createIfcBuildingStorey(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Storey",'',None,None,None,None,"ELEMENT",None)
-                ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'DefaultStoreyLink','',buildings[0],[defaulthost])
-            ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'AnnotationsLink','',remaining,defaulthost)
+                defaulthost = ifcfile.createIfcBuildingStorey(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    "Default Storey",
+                    '',
+                    None,
+                    None,
+                    None,
+                    None,
+                    "ELEMENT",
+                    None
+                )
+                ifcfile.createIfcRelAggregates(
+                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    history,
+                    'DefaultStoreyLink',
+                    '',
+                    buildings[0],
+                    [defaulthost]
+                )
+            ifcfile.createIfcRelContainedInSpatialStructure(
+                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                history,
+                'AnnotationsLink',
+                '',
+                remaining,
+                defaulthost
+            )
 
     if DEBUG: print("writing ",filename,"...")
 
@@ -2382,13 +2754,16 @@ def export(exportList,filename):
     del ifcbin
 
 
+# ************************************************************************************************
+# ********** helper for export IFC **************
 def isStandardCase(obj,ifctype):
-    
+
     if ifctype.endswith("StandardCase"):
         return False # type is already standard case, return False so "StandardCase" is not added twice
     if hasattr(obj,"Proxy") and hasattr(obj.Proxy,"isStandardCase"):
         return obj.Proxy.isStandardCase(obj)
     return False
+
 
 def getIfcTypeFromObj(obj):
 
@@ -2425,12 +2800,16 @@ def exportIFC2X3Attributes(obj, kwargs):
                 internal = "INTERNAL"
             else:
                 internal = "EXTERNAL"
-        kwargs.update({"CompositionType": "ELEMENT",
+        kwargs.update({
+            "CompositionType": "ELEMENT",
             "InteriorOrExteriorSpace": internal,
-            "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
+            "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0
+        })
     elif ifctype == "IfcReinforcingBar":
-        kwargs.update({"NominalDiameter": obj.Diameter.Value,
-            "BarLength": obj.Length.Value})
+        kwargs.update({
+            "NominalDiameter": obj.Diameter.Value,
+            "BarLength": obj.Length.Value
+        })
     elif ifctype == "IfcBuildingStorey":
         kwargs.update({"Elevation": obj.Placement.Base.z/1000.0})
     return kwargs
@@ -2445,7 +2824,7 @@ def exportIfcAttributes(obj, kwargs):
                 value = float(value)
                 if property in ["ElevationWithFlooring","Elevation"]:
                     value = value/1000 # some properties must be changed to meters
-            kwargs.update({ property: value })
+            kwargs.update({property: value})
     return kwargs
 
 
@@ -2502,6 +2881,10 @@ def createFromProperties(propsets,ifcfile):
                 obj = FreeCAD.ActiveDocument.addObject(appset["FreeCADType"],appset["FreeCADName"])
                 if "FreeCADAppObject" in appset:
                     mod,cla = appset["FreeCADAppObject"].split(".")
+                    if "'" in mod:
+                        mod = mod.split("'")[-1]
+                    if "'" in cla:
+                        cla = cla.split("'")[0]
                     import importlib
                     mod = importlib.import_module(mod)
                     getattr(mod,cla)(obj)
@@ -2510,6 +2893,10 @@ def createFromProperties(propsets,ifcfile):
                     if guiset:
                         if "FreeCADGuiObject" in guiset:
                             mod,cla = guiset["FreeCADGuiObject"].split(".")
+                            if "'" in mod:
+                                mod = mod.split("'")[-1]
+                            if "'" in cla:
+                                cla = cla.split("'")[0]
                             import importlib
                             mod = importlib.import_module(mod)
                             getattr(mod,cla)(obj.ViewObject)
@@ -2597,7 +2984,13 @@ def createCurve(ifcfile,wire):
             xvc =       ifcbin.createIfcDirection(tuple(xaxis))
             plc =       ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
             cir =       ifcfile.createIfcCircle(plc,e.Curve.Radius)
-            curve =     ifcfile.createIfcTrimmedCurve(cir,[ifcfile.createIfcParameterValue(p1)],[ifcfile.createIfcParameterValue(p2)],follow,"PARAMETER")
+            curve =     ifcfile.createIfcTrimmedCurve(
+                cir,
+                [ifcfile.createIfcParameterValue(p1)],
+                [ifcfile.createIfcParameterValue(p2)],
+                follow,
+                "PARAMETER"
+            )
         else:
             verts = [vertex.Point for vertex in e.Vertexes]
             if last:
@@ -2639,8 +3032,11 @@ def checkRectangle(edges):
         return False
     if len(edges) != 4:
         return False
-    angles = [round(getEdgesAngle(edges[0], edges[1])), round(getEdgesAngle(edges[0], edges[2])),
-            round(getEdgesAngle(edges[0], edges[3]))]
+    angles = [
+        round(getEdgesAngle(edges[0], edges[1])),
+        round(getEdgesAngle(edges[0], edges[2])),
+        round(getEdgesAngle(edges[0], edges[3]))
+    ]
     if angles.count(90) == 2 and (angles.count(180) == 1 or angles.count(0) == 1):
         return True
     return False
@@ -2650,7 +3046,8 @@ def getProfile(ifcfile,p):
 
     """returns an IFC profile definition from a shape"""
 
-    import Part,DraftGeomUtils
+    import Part
+    import DraftGeomUtils
     profile = None
     if len(p.Edges) == 1:
         pxvc = ifcbin.createIfcDirection((1.0,0.0))
@@ -2712,7 +3109,9 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
     """returns an IfcShapeRepresentation object or None"""
 
-    import Part,math,DraftGeomUtils,DraftVecUtils
+    import Part
+    import DraftGeomUtils
+    import DraftVecUtils
     shapes = []
     placement = None
     productdef = None
@@ -2820,7 +3219,11 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
         # check if we keep a null shape (additions-only object)
 
-        if (hasattr(obj,"Base") and hasattr(obj,"Width") and hasattr(obj,"Height")) and (not obj.Base) and obj.Additions and (not obj.Width.Value) and (not obj.Height.Value):
+        if (hasattr(obj,"Base") and hasattr(obj,"Width") and hasattr(obj,"Height")) \
+                and (not obj.Base) \
+                and obj.Additions \
+                and (not obj.Width.Value) \
+                and (not obj.Height.Value):
             shapes = None
 
         else:
@@ -2835,8 +3238,8 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                         fcshape = obj.Proxy.getSubVolume(obj)
             if not fcshape:
                 if obj.isDerivedFrom("Part::Feature"):
-                    if False: # below is buggy. No way to duplicate shapes that way?
                     #if hasattr(obj,"Base") and hasattr(obj,"Additions")and hasattr(obj,"Subtractions"):
+                    if False: # above is buggy. No way to duplicate shapes that way?
                         if obj.Base and (not obj.Additions) and not(obj.Subtractions):
                             if obj.Base.isDerivedFrom("Part::Feature"):
                                 if obj.Base.Shape:
@@ -3004,9 +3407,9 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             key = None
             rgbt = [obj.ViewObject.ShapeColor[:3]+(obj.ViewObject.Transparency/100.0,) for shape in shapes]
             if hasattr(obj.ViewObject,"DiffuseColor") \
-            and obj.ViewObject.DiffuseColor \
-            and (len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)) \
-            and (len(obj.Shape.Solids) == len(shapes)):
+                    and obj.ViewObject.DiffuseColor \
+                    and (len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)) \
+                    and (len(obj.Shape.Solids) == len(shapes)):
                 i = 0
                 rgbt = []
                 for sol in obj.Shape.Solids:
