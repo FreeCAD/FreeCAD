@@ -81,9 +81,9 @@ class TestFemCommon(unittest.TestCase):
         #pymodules += testtools.collect_python_modules('femsolver/elmer/equations')
         #pymodules += testtools.collect_python_modules('femsolver/z88')
         #pymodules += testtools.collect_python_modules('femsolver/calculix')
-        if FreeCAD.GuiUp:
-            pymodules += testtools.collect_python_modules('femcommands')
-            pymodules += testtools.collect_python_modules('femguiobjects')
+        #if FreeCAD.GuiUp:
+        #    pymodules += testtools.collect_python_modules('femcommands')
+        #    pymodules += testtools.collect_python_modules('femguiobjects')
 
         # import all collected modules
         # fcc_print(pymodules)
