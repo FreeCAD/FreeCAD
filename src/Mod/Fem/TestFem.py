@@ -28,8 +28,8 @@
 # the order should be as follows:
 # common-, object-, mesh-, inout-, ccxtools-, solverframworktests
 from femtest.testcommon import TestFemCommon
-from femtest.testobject import TestObjectCreate
-from femtest.testobject import TestObjectType
+#from femtest.testobject import TestObjectCreate
+#from femtest.testobject import TestObjectType
 #from femtest.testmaterial import TestMaterialUnits
 #from femtest.testmesh import TestMeshCommon
 #from femtest.testmesh import TestMeshEleTetra10
