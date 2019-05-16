@@ -40,6 +40,7 @@
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <BRepBuilderAPI_MakePolygon.hxx>
 #endif
 
 #include "CurveOnMesh.h"
@@ -77,6 +78,7 @@
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <Poly_Polygon3D.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Wire.hxx>
 
 /* XPM */
 static const char *cursor_curveonmesh[]={
@@ -241,6 +243,7 @@ public:
         : wireClosed(false)
         , distance(1.0)
         , cosAngle(0.7071) // 45 degree
+        , approximate(true)
         , curve(new ViewProviderCurveOnMesh)
         , mesh(0)
         , grid(0)
@@ -321,6 +324,7 @@ public:
     bool wireClosed;
     double distance;
     double cosAngle;
+    bool approximate;
     ViewProviderCurveOnMesh* curve;
     Gui::ViewProviderDocumentObject* mesh;
     MeshCore::MeshFacetGrid* grid;
@@ -338,6 +342,11 @@ CurveOnMeshHandler::CurveOnMeshHandler(QObject* parent)
 CurveOnMeshHandler::~CurveOnMeshHandler()
 {
     disableCallback();
+}
+
+void CurveOnMeshHandler::enableApproximation(bool on)
+{
+    d_ptr->approximate = on;
 }
 
 void CurveOnMeshHandler::setParameters(int maxDegree, GeomAbs_Shape cont, double tol3d, double angle)
@@ -364,9 +373,16 @@ void CurveOnMeshHandler::onCreate()
 {
     for (auto it = d_ptr->cutLines.begin(); it != d_ptr->cutLines.end(); ++it) {
         std::vector<SbVec3f> segm = d_ptr->convert(*it);
-        Handle(Geom_BSplineCurve) spline = approximateSpline(segm);
-        if (!spline.IsNull())
-            displaySpline(spline);
+        if (d_ptr->approximate) {
+            Handle(Geom_BSplineCurve) spline = approximateSpline(segm);
+            if (!spline.IsNull())
+                displaySpline(spline);
+        }
+        else {
+            TopoDS_Wire wire;
+            if (makePolyline(segm, wire))
+                displayPolyline(wire);
+        }
     }
 
     d_ptr->curve->clearVertex();
@@ -509,8 +525,39 @@ void CurveOnMeshHandler::displaySpline(const Handle(Geom_BSplineCurve)& spline)
 
         Gui::View3DInventorViewer* view3d = d_ptr->viewer->getViewer();
         App::Document* doc = view3d->getDocument()->getDocument();
+        doc->openTransaction("Add spline");
         Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Spline", "Spline"));
         part->Shape.setValue(edge);
+        doc->commitTransaction();
+    }
+}
+
+bool CurveOnMeshHandler::makePolyline(const std::vector<SbVec3f>& points, TopoDS_Wire& wire)
+{
+    BRepBuilderAPI_MakePolygon mkPoly;
+    for (std::vector<SbVec3f>::const_iterator it = points.begin(); it != points.end(); ++it) {
+        float x,y,z;
+        it->getValue(x,y,z);
+        mkPoly.Add(gp_Pnt(x,y,z));
+    }
+
+    if (mkPoly.IsDone()) {
+        wire = mkPoly.Wire();
+        return true;
+    }
+
+    return false;
+}
+
+void CurveOnMeshHandler::displayPolyline(const TopoDS_Wire& wire)
+{
+    if (d_ptr->viewer) {
+        Gui::View3DInventorViewer* view3d = d_ptr->viewer->getViewer();
+        App::Document* doc = view3d->getDocument()->getDocument();
+        doc->openTransaction("Add polyline");
+        Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature", "Polyline"));
+        part->Shape.setValue(wire);
+        doc->commitTransaction();
     }
 }
 
@@ -611,6 +658,15 @@ void CurveOnMeshHandler::Private::vertexCallback(void * ud, SoEventCallback * n)
             CurveOnMeshHandler* self = static_cast<CurveOnMeshHandler*>(ud);
             QTimer::singleShot(100, self, SLOT(onContextMenu()));
         }
+    }
+}
+
+void CurveOnMeshHandler::recomputeDocument()
+{
+    if (d_ptr->viewer) {
+        Gui::View3DInventorViewer* view3d = d_ptr->viewer->getViewer();
+        App::Document* doc = view3d->getDocument()->getDocument();
+        doc->recompute();
     }
 }
 
