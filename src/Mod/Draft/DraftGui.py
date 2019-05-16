@@ -364,6 +364,8 @@ class DraftToolBar:
         self.x = 0
         self.y = 0
         self.z = 0
+        self.radius = 0
+        self.offset = 0
         self.uiloader = FreeCADGui.UiLoader()
         self.autogroup = None
         self.isCenterPlane = False
@@ -916,6 +918,12 @@ class DraftToolBar:
 #---------------------------------------------------------------------------
 
     def taskUi(self,title="Draft",extra=None,icon="Draft_Draft"):
+        # reset InputField values
+        self.x = 0
+        self.y = 0
+        self.z = 0
+        self.radius = 0
+        self.offset = 0
         if self.taskmode:
             self.isTaskOn = True
             todo.delay(FreeCADGui.Control.closeDialog,None)
@@ -973,6 +981,9 @@ class DraftToolBar:
         elif f=="z":
             self.zValue.setFocus()
             self.zValue.selectAll()
+        elif f=="radius":
+            self.radiusValue.setFocus()
+            self.radiusValue.selectAll()
 
     def selectPlaneUi(self):
         self.taskUi(title=translate("draft", "Working plane setup"),icon="Draft_SelectPlane")
@@ -1196,6 +1207,8 @@ class DraftToolBar:
         self.labelRadius.show()
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.radiusValue.show()
+        todo.delay(self.radiusValue.setFocus,None)
+        self.radiusValue.selectAll()
 
     def textUi(self):
         self.hideXYZ()
@@ -1542,16 +1555,16 @@ class DraftToolBar:
                 try:
                     #rad=float(self.radiusValue.text())
                     rad = self.radius
-                except ValueError:
-                    pass
+                except (ValueError, AttributeError):
+                    print("debug: DraftGui.validatePoint: AttributeError")
                 else:
                     self.sourceCmd.numericRadius(rad)
             elif (self.offsetLabel.isVisible()):
                 try:
                     #offset=float(self.offsetValue.text())
                     offset = self.offset
-                except ValueError:
-                    pass
+                except (ValueError, AttributeError):
+                    print("debug: DraftGui.validatePoint: AttributeError")
                 else:
                     self.sourceCmd.offsetHandler(offset)
             elif (self.labelx.isVisible()):
@@ -1562,8 +1575,8 @@ class DraftToolBar:
                     numy = self.y
                     #numz=float(self.zValue.text())
                     numz = self.z
-                except:
-                    pass
+                except (ValueError, AttributeError):
+                    print("debug: DraftGui.validatePoint: AttributeError")
                 else:
                     if self.pointcallback:
                         self.pointcallback(FreeCAD.Vector(numx,numy,numz),self.relativeMode)
