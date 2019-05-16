@@ -37,7 +37,6 @@ Gui = FreeCADGui  # shortcut
 
 
 def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
-    """Export mesh to TetGen *.poly file format"""
     ## Part 1 - write node list to output file
     if beVerbose == 1:
             FreeCAD.Console.PrintMessage("\nExport of mesh to TetGen file ...")
@@ -167,7 +166,6 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
 
 
 def export(objectslist, filename):
-    """Called when freecad exports a mesh to poly format"""
     for obj in objectslist:
         if isinstance(obj, Mesh.Feature):
             exportMeshToTetGenPoly(obj.Mesh, filename, False)
