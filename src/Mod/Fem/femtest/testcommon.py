@@ -69,7 +69,7 @@ class TestFemCommon(unittest.TestCase):
         # collect all Python modules in Fem
         pymodules += testtools.collect_python_modules('')  # Fem main dir
         pymodules += testtools.collect_python_modules('femexamples')
-        pymodules += testtools.collect_python_modules('feminout')
+        #pymodules += testtools.collect_python_modules('feminout')
         #pymodules += testtools.collect_python_modules('femmesh')
         #pymodules += testtools.collect_python_modules('femobjects')
         #pymodules += testtools.collect_python_modules('femresult')
