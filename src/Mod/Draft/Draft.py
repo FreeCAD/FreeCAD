@@ -6117,8 +6117,12 @@ class _ShapeString(_DraftObject):
             sep_wirelist = []
             face = Part.Face(wire2Face)
             face.validate()
-            if face.Surface.Axis.z < 0.0:
-                face.reverse()
+            try:
+                # some fonts fail here
+                if face.Surface.Axis.z < 0.0:
+                    face.reverse()
+            except:
+                pass
             compFaces.append(face)
         ret = Part.Compound(compFaces)
         return ret

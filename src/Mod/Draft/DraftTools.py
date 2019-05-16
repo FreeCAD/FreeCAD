@@ -557,6 +557,7 @@ class Line(Creator):
                 self.ui.wireUi(name)
             else:
                 self.ui.lineUi(name)
+            self.ui.setTitle(translate("draft", "Line"))
             if sys.version_info.major < 3:
                 if isinstance(self.featureName,unicode):
                     self.featureName = self.featureName.encode("utf8")
@@ -2806,7 +2807,7 @@ class Rotate(Modifier):
         self.center = None
         self.ui.arcUi()
         self.ui.modUi()
-        self.ui.setTitle("Rotate")
+        self.ui.setTitle(translate("draft","Rotate"))
         self.arctrack = arcTracker()
         self.call = self.view.addEventCallback("SoEvent",self.action)
         msg(translate("draft", "Pick rotation center:")+"\n")
@@ -2882,7 +2883,7 @@ class Rotate(Modifier):
         self.ui.radiusUi()
         self.ui.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Angle).UserString)
         self.ui.hasFill.hide()
-        self.ui.labelRadius.setText("Base angle")
+        self.ui.labelRadius.setText(translate("draft","Base angle"))
         self.arctrack.setCenter(self.center)
         for ghost in self.ghosts:
             ghost.center(self.center)
@@ -2892,7 +2893,7 @@ class Rotate(Modifier):
             self.planetrack.set(self.point)
 
     def set_start_point(self):
-        self.ui.labelRadius.setText("Rotation")
+        self.ui.labelRadius.setText(translate("draft","Rotation"))
         self.rad = DraftVecUtils.dist(self.point,self.center)
         self.arctrack.on()
         self.arctrack.setStartPoint(self.point)
@@ -3007,34 +3008,36 @@ class Rotate(Modifier):
                 DraftVecUtils.toString(self.center),
                 DraftVecUtils.toString(plane.axis),
                 is_copy
-            )])
+            ),
+            'FreeCAD.ActiveDocument.recompute()'])
 
     def numericInput(self,numx,numy,numz):
         "this function gets called by the toolbar when valid x, y, and z have been entered there"
         self.center = Vector(numx,numy,numz)
         self.node = [self.center]
         self.arctrack.setCenter(self.center)
-        if self.ghost:
-            self.ghost.center(self.center)
+        for ghost in self.ghosts:
+            ghost.center(self.center)
         self.ui.radiusUi()
         self.ui.hasFill.hide()
-        self.ui.labelRadius.setText("Base angle")
+        self.ui.labelRadius.setText(translate("draft","Base angle"))
         self.step = 1
         msg(translate("draft", "Pick base angle:")+"\n")
 
     def numericRadius(self,rad):
         "this function gets called by the toolbar when valid radius have been entered there"
         if (self.step == 1):
-            self.ui.labelRadius.setText("Rotation")
+            self.ui.labelRadius.setText(translate("draft","Rotation"))
             self.firstangle = math.radians(rad)
             self.arctrack.setStartAngle(self.firstangle)
             self.arctrack.on()
-            if self.ghost:
-                self.ghost.on()
+            for ghost in self.ghosts:
+                ghost.on()
             self.step = 2
             msg(translate("draft", "Pick rotation angle:")+"\n")
         else:
-            self.rotate(math.radians(rad),self.ui.isCopy.isChecked())
+            self.angle = math.radians(rad)
+            self.rotate(self.ui.isCopy.isChecked())
             self.finish(cont=True)
 
 
