@@ -82,7 +82,7 @@ void CurveOnMeshWidget::on_startButton_clicked()
 {
     int cont = ui->continuity->itemData(ui->continuity->currentIndex()).toInt();
     myCurveHandler->enableApproximation(ui->groupBox_2->isChecked());
-    myCurveHandler->setParameters(ui->maxDegree->currentIndex(),
+    myCurveHandler->setParameters(ui->maxDegree->currentIndex() + 1,
                                   static_cast<GeomAbs_Shape>(cont),
                                   ui->meshTolerance->value(),
                                   ui->splitAngle->value().getValue());
