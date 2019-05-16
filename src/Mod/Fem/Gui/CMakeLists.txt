@@ -370,6 +370,11 @@ SET(FemGui_SRCS
     ${FemGui_SRCS_Post}
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${FemGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(FemGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET(FemGuiIcon_SVG
     Resources/icons/FemWorkbench.svg
