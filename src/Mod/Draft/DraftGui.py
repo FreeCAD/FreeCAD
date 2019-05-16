@@ -1105,7 +1105,6 @@ class DraftToolBar:
         if rel: self.isRelative.show()
         todo.delay(self.setFocus,None)
         self.xValue.selectAll()
-        self.showCommandOptions(title)
 
     def labelUi(self,title=translate("draft","Label"),callback=None):
         w = QtGui.QWidget()
@@ -1340,29 +1339,6 @@ class DraftToolBar:
     def vertUi(self,addmode=True):
         self.addButton.setChecked(addmode)
         self.delButton.setChecked(not(addmode))
-
-    def showCommandOptions(self,name):
-        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("Verbose",True):
-            cmdstr = "\n"+name+" "+translate("draft","options")+" : "
-            first = True
-            for k,v in inCommandShortcuts.items():
-                if v[2]:
-                    if getattr(self,v[2]).isVisible():
-                        if first:
-                            first = False
-                        else:
-                            cmdstr += ", "
-                        cmdstr += v[0] + ":" + v[1]
-                else:
-                    if first:
-                        first = False
-                    else:
-                        cmdstr += ", "
-                    try:
-                        cmdstr += v[0] + ":" + v[1]
-                    except:
-                        pass
-            FreeCAD.Console.PrintMessage(cmdstr+"\n\n")
 
     def checkLocal(self):
         "checks if x,y,z coords must be displayed as local or global"
