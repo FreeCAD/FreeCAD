@@ -247,7 +247,13 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
     }
     if (obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
         m_lineFeat = static_cast<TechDraw::DrawLeaderLine*>(obj);
-        commonFeatureUpdate(converted);
+        if (!converted.empty()) {
+            m_lineFeat->WayPoints.setValues(converted);
+            if (m_lineFeat->AutoHorizontal.getValue()) {
+                m_lineFeat->adjustLastSegment();
+            }
+        }
+        commonFeatureUpdate();
     }
     
     Gui::Command::updateActive();
@@ -255,11 +261,12 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
     m_lineFeat->requestPaint();
 }
 
-void TaskLeaderLine::updateLeaderFeature(std::vector<Base::Vector3d> converted)
+void TaskLeaderLine::updateLeaderFeature(void)
 {
 //    Base::Console().Message("TTL::updateLeaderFeature(%d)\n",converted.size());
     Gui::Command::openCommand("Edit Leader");
-    commonFeatureUpdate(converted);
+    //waypoints & x,y are updated by QGILeaderLine
+    commonFeatureUpdate();
     App::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     m_lineVP->Color.setValue(ac);
@@ -270,16 +277,16 @@ void TaskLeaderLine::updateLeaderFeature(std::vector<Base::Vector3d> converted)
     m_lineFeat->requestPaint();
 }
 
-void TaskLeaderLine::commonFeatureUpdate(std::vector<Base::Vector3d> converted)
+void TaskLeaderLine::commonFeatureUpdate(void)
 {
 //    Base::Console().Message("TTL::commonFeatureUpdate()\n");
-    m_lineFeat->setPosition(Rez::appX(m_attachPoint.x),Rez::appX(- m_attachPoint.y), true);
-    if (!converted.empty()) {
-        m_lineFeat->WayPoints.setValues(converted);
-        if (m_lineFeat->AutoHorizontal.getValue()) {
-            m_lineFeat->adjustLastSegment();
-        }
-    }
+//    m_lineFeat->setPosition(Rez::appX(m_attachPoint.x),Rez::appX(- m_attachPoint.y), true);
+//    if (!converted.empty()) {
+//        m_lineFeat->WayPoints.setValues(converted);
+//        if (m_lineFeat->AutoHorizontal.getValue()) {
+//            m_lineFeat->adjustLastSegment();
+//        }
+//    }
     int start = ui->cboxStartSym->currentIndex() - 1;
     int end   = ui->cboxEndSym->currentIndex() - 1;
     m_lineFeat->StartSymbol.setValue(start);
@@ -524,13 +531,14 @@ void TaskLeaderLine::convertTrackerPoints(std::vector<QPointF> pts)
 void TaskLeaderLine::onPointEditComplete(std::vector<QPointF> pts, QGIView* parent)
 {
 //    Base::Console().Message("TTL::onPointEditComplete(%d)\n", pts.size());
+
     if (pts.empty()) {
         return;
     }
     QPointF p0 = pts.front();
 
     if (parent == nullptr) {
-//        Base::Console().Message("TTL::onPointEditComplete - passed parent is NULL!\n");
+        Base::Console().Message("TTL::onPointEditComplete - passed parent is NULL!\n");
     } else {
         m_qgParent = parent;
 //        double scale = m_qgParent->getScale();
@@ -608,7 +616,7 @@ bool TaskLeaderLine::accept()
     if (!doc) return false;
 
     if (!getCreateMode())  {
-        updateLeaderFeature(m_trackerPoints);
+        updateLeaderFeature();
     } else {
         removeTracker();
         createLeaderFeature(m_trackerPoints);
