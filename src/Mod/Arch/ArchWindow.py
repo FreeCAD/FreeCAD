@@ -74,8 +74,8 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
             return obj
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Window")
-    obj.Label = translate("Arch",name)
     _Window(obj)
+    obj.Label = translate("Arch","Window")
     if FreeCAD.GuiUp:
         _ViewProviderWindow(obj.ViewObject)
         #obj.ViewObject.Transparency=p.GetInt("WindowTransparency",85)
@@ -583,6 +583,10 @@ class _CommandWindow:
 
     "the Arch Window command definition"
 
+    def __init__(self):
+        
+        self.doormode = False
+
     def GetResources(self):
 
         return {'Pixmap'  : 'Arch_Window',
@@ -600,7 +604,10 @@ class _CommandWindow:
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Thickness = p.GetFloat("WindowThickness",50)
         self.Width = p.GetFloat("WindowWidth",1000)
-        self.Height = p.GetFloat("WindowHeight",1000)
+        if self.doormode:
+            self.Height = p.GetFloat("DoorHeight",2100)
+        else:
+            self.Height = p.GetFloat("WindowHeight",1000)
         self.RemoveExternal =  p.GetBool("archRemoveExternal",False)
         self.Preset = 0
         self.LibraryPreset = 0
@@ -745,17 +752,17 @@ class _CommandWindow:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Window options", utf8_decode=True))
+        w.setWindowTitle(translate("Arch","Window options"))
         grid = QtGui.QGridLayout(w)
 
         # include box
-        include = QtGui.QCheckBox(translate("Arch","Auto include in host object", utf8_decode=True))
+        include = QtGui.QCheckBox(translate("Arch","Auto include in host object"))
         include.setChecked(True)
         grid.addWidget(include,0,0,1,2)
         QtCore.QObject.connect(include,QtCore.SIGNAL("stateChanged(int)"),self.setInclude)
 
         # sill height
-        labels = QtGui.QLabel(translate("Arch","Sill height", utf8_decode=True))
+        labels = QtGui.QLabel(translate("Arch","Sill height"))
         values = ui.createWidget("Gui::InputField")
         grid.addWidget(labels,1,0,1,1)
         grid.addWidget(values,1,1,1,1)
@@ -780,7 +787,7 @@ class _CommandWindow:
                 librarypath = None
 
         # presets box
-        labelp = QtGui.QLabel(translate("Arch","Preset", utf8_decode=True))
+        labelp = QtGui.QLabel(translate("Arch","Preset"))
         valuep = QtGui.QComboBox()
         valuep.setMinimumContentsLength(6)
         valuep.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToContents)
@@ -808,7 +815,7 @@ class _CommandWindow:
         # parameters
         i = 5
         for param in self.wparams:
-            lab = QtGui.QLabel(translate("Arch",param, utf8_decode=True))
+            lab = QtGui.QLabel(translate("Arch",param))
             setattr(self,"val"+param,ui.createWidget("Gui::InputField"))
             wid = getattr(self,"val"+param)
             if param == "Width":
@@ -833,6 +840,18 @@ class _CommandWindow:
             valueChanged = self.getValueChanged(param)
             FreeCAD.wid = wid
             QtCore.QObject.connect(getattr(self,"val"+param),QtCore.SIGNAL("valueChanged(double)"), valueChanged)
+
+        # restore saved states
+        if self.doormode:
+            i = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("DoorPreset",0)
+            d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("DoorSill",0)
+        else:
+            i = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("WindowPreset",0)
+            d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowSill",0)
+        if i < valuep.count():
+            valuep.setCurrentIndex(i)
+        values.setText(FreeCAD.Units.Quantity(d,FreeCAD.Units.Length).UserString)
+
         return w
 
     def getValueChanged(self,p):
@@ -842,6 +861,10 @@ class _CommandWindow:
     def setSill(self,d):
 
         self.Sill = d
+        if self.doormode:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("DoorSill",d)
+        else:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("WindowSill",d)
 
     def setInclude(self,i):
 
@@ -858,6 +881,10 @@ class _CommandWindow:
     def setPreset(self,i):
 
         self.Preset = i
+        if self.doormode:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetInt("DoorPreset",i)
+        else:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetInt("WindowPreset",i)
         if i >= 0:
             FreeCADGui.Snapper.setSelectMode(False)
             self.tracker.length(self.Width)
