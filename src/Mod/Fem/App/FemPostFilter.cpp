@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <vtkFieldData.h>
+# include <vtkPointData.h>
 #endif
 
 #include "FemPostFilter.h"
@@ -31,8 +33,7 @@
 #include <Base/Console.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
-#include <vtkFieldData.h>
-#include <vtkPointData.h>
+
 
 using namespace Fem;
 using namespace App;

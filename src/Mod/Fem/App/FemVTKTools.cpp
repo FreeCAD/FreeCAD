@@ -37,6 +37,43 @@
 # include <TopoDS_Vertex.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <gp_Pnt.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Shape.hxx>
+
+# include <SMESH_Gen.hxx>
+# include <SMESH_Mesh.hxx>
+# include <SMDS_PolyhedralVolumeOfNodes.hxx>
+# include <SMDS_VolumeTool.hxx>
+# include <SMESHDS_Mesh.hxx>
+
+# include <vtkDataSetReader.h>
+# include <vtkDataSetWriter.h>
+# include <vtkStructuredGrid.h>
+# include <vtkImageData.h>
+# include <vtkRectilinearGrid.h>
+# include <vtkUnstructuredGrid.h>
+# include <vtkXMLUnstructuredGridReader.h>
+# include <vtkXMLUnstructuredGridWriter.h>
+# include <vtkPointData.h>
+# include <vtkCellData.h>
+# include <vtkCellArray.h>
+# include <vtkDataArray.h>
+# include <vtkDoubleArray.h>
+# include <vtkIdList.h>
+# include <vtkCellTypes.h>
+# include <vtkTriangle.h>
+# include <vtkQuad.h>
+# include <vtkQuadraticTriangle.h>
+# include <vtkQuadraticQuad.h>
+# include <vtkTetra.h>
+# include <vtkPyramid.h>
+# include <vtkWedge.h>
+# include <vtkHexahedron.h>
+# include <vtkQuadraticTetra.h>
+# include <vtkQuadraticPyramid.h>
+# include <vtkQuadraticWedge.h>
+# include <vtkQuadraticHexahedron.h>
 #endif
 
 #include <Base/FileInfo.h>
@@ -48,46 +85,6 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <SMESH_Gen.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMDS_PolyhedralVolumeOfNodes.hxx>
-#include <SMDS_VolumeTool.hxx>
-#include <SMESHDS_Mesh.hxx>
-
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Shape.hxx>
-
-#include <vtkDataSetReader.h>
-#include <vtkDataSetWriter.h>
-#include <vtkStructuredGrid.h>
-#include <vtkImageData.h>
-#include <vtkRectilinearGrid.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkXMLUnstructuredGridReader.h>
-#include <vtkXMLUnstructuredGridWriter.h>
-
-#include <vtkPointData.h>
-#include <vtkCellData.h>
-#include <vtkCellArray.h>
-#include <vtkDataArray.h>
-#include <vtkDoubleArray.h>
-#include <vtkIdList.h>
-#include <vtkCellTypes.h>
-
-#include <vtkTriangle.h>
-#include <vtkQuad.h>
-#include <vtkQuadraticTriangle.h>
-#include <vtkQuadraticQuad.h>
-#include <vtkTetra.h>
-#include <vtkPyramid.h>
-#include <vtkWedge.h>
-#include <vtkHexahedron.h>
-#include <vtkQuadraticTetra.h>
-#include <vtkQuadraticPyramid.h>
-#include <vtkQuadraticWedge.h>
-#include <vtkQuadraticHexahedron.h>
 
 #include "FemVTKTools.h"
 #include "FemMeshProperty.h"
