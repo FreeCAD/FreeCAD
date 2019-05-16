@@ -70,12 +70,12 @@ class TestFemCommon(unittest.TestCase):
         pymodules += testtools.collect_python_modules('')  # Fem main dir
         pymodules += testtools.collect_python_modules('femexamples')
         pymodules += testtools.collect_python_modules('feminout')
-        pymodules += testtools.collect_python_modules('femmesh')
-        pymodules += testtools.collect_python_modules('femobjects')
-        pymodules += testtools.collect_python_modules('femresult')
-        pymodules += testtools.collect_python_modules('femtest')
-        pymodules += testtools.collect_python_modules('femtools')
-        pymodules += testtools.collect_python_modules('femsolver')
+        #pymodules += testtools.collect_python_modules('femmesh')
+        #pymodules += testtools.collect_python_modules('femobjects')
+        #pymodules += testtools.collect_python_modules('femresult')
+        #pymodules += testtools.collect_python_modules('femtest')
+        #pymodules += testtools.collect_python_modules('femtools')
+        #pymodules += testtools.collect_python_modules('femsolver')
         # TODO test with join on windows, the use of os.path.join in following code seams to make problems on windws os
         #pymodules += testtools.collect_python_modules('femsolver/elmer')
         #pymodules += testtools.collect_python_modules('femsolver/elmer/equations')
