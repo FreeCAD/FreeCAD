@@ -28,6 +28,8 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
@@ -39,7 +41,6 @@
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoScale.h>
-# include <Precision.hxx>
 #endif
 
 #include "Mod/Fem/App/FemConstraintTemperature.h"

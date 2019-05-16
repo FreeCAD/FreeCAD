@@ -25,11 +25,13 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+
 # include <QAction>
 # include <QApplication>
 # include <QDockWidget>
 # include <QMenu>
 # include <QStackedWidget>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoFontStyle.h>
