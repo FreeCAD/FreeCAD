@@ -35,7 +35,7 @@ class GestureNavigationStyle: public UserNavigationStyle
 {
     typedef UserNavigationStyle superclass;
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     GestureNavigationStyle();
