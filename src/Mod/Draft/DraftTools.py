@@ -2698,15 +2698,15 @@ class Move(Modifier):
             self.node.append(self.point)
             self.ui.isRelative.show()
             self.ui.isCopy.show()
-            self.ghost.on()
+            for ghost in self.ghosts:
+                ghost.on()
             FreeCAD.Console.PrintMessage(translate("draft", "Pick end point")+"\n")
         else:
             last = self.node[-1]
-            if self.ui.isCopy.isChecked():
-                self.move(self.point.sub(last),True)
-            else:
-                self.move(self.point.sub(last))
+            self.vector = self.point.sub(last)
+            self.move()
             self.finish()
+
 
 class ApplyStyle(Modifier):
     "The Draft_ApplyStyle FreeCA command definition"
