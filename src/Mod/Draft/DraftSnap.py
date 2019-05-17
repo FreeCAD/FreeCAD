@@ -195,7 +195,7 @@ class Snapper:
         self.setTrackers()
 
         # getting current snap Radius
-        self.radius =  self.getScreenDist(Draft.getParam("snapRange",5),screenpos)
+        self.radius =  self.getScreenDist(Draft.getParam("snapRange", 8),screenpos)
         if self.radiusTracker:
             self.radiusTracker.update(self.radius)
             self.radiusTracker.off()
@@ -1360,7 +1360,7 @@ class Snapper:
 
     def showradius(self):
         "shows the snap radius indicator"
-        self.radius =  self.getScreenDist(Draft.getParam("snapRange",10),(400,300))
+        self.radius =  self.getScreenDist(Draft.getParam("snapRange", 8),(400,300))
         if self.radiusTracker:
             self.radiusTracker.update(self.radius)
             self.radiusTracker.on()
