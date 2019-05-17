@@ -47,14 +47,9 @@ public:
     /// destructor
     virtual ~ViewProviderRichAnno();
 
-    App::PropertyFont     Font;
-    App::PropertyLength   Fontsize;
-    App::PropertyColor    Color;
 
     virtual void attach(App::DocumentObject *);
-/*    virtual void setDisplayMode(const char* ModeName);*/
     virtual bool useNewSelectionModel(void) const {return false;}
-/*    virtual std::vector<std::string> getDisplayModes(void) const;*/
     virtual void updateData(const App::Property*);
     virtual void onChanged(const App::Property* p);
     virtual bool setEdit(int ModNum);

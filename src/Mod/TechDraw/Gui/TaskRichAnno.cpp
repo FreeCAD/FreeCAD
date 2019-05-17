@@ -229,12 +229,6 @@ void TaskRichAnno::setUiEdit()
         ui->dsbMaxWidth->setValue(m_annoFeat->MaxWidth.getValue());
         ui->cbShowFrame->setChecked(m_annoFeat->ShowFrame.getValue());
     }
-    
-    if (m_annoVP != nullptr) {
-//        ui->cpLineColor->setColor(m_annoVP->Color.getValue().asValue<QColor>());
-//        ui->dsbWeight->setValue(m_annoVP->LineWidth.getValue());
-//        ui->cboxStyle->setCurrentIndex(m_annoVP->LineStyle.getValue());
-    }
 }
 
 void TaskRichAnno::onEditorClicked(bool b)
@@ -250,14 +244,6 @@ void TaskRichAnno::onEditorClicked(bool b)
     m_textDialog->setWindowTitle(QObject::tr("Rich text editor"));
     m_textDialog->setMinimumWidth (400);
     m_textDialog->setMinimumHeight(400);
-    if (m_annoVP != nullptr) {
-        double mmToPts = 2.83;
-        m_rte->setDefFontSize(round(m_annoVP->Fontsize.getValue() * mmToPts ));
-        m_rte->setDefFont(Base::Tools::fromStdString(m_annoVP->Font.getValue()));
-    } else {   //no VP yet, use defs
-        m_rte->setDefFontSize(getDefFontSize());
-        m_rte->setDefFont(getDefFont());
-    }
 
     connect(m_rte, SIGNAL(saveText(QString)),
             this, SLOT(onSaveAndExit(QString)));
@@ -311,7 +297,6 @@ void TaskRichAnno::createAnnoFeature()
         commonFeatureUpdate();
         QPointF qTemp = calcTextStartPos(m_annoFeat->getScale());
         Base::Vector3d vTemp(qTemp.x(), qTemp.y());
-//        m_annoFeat->TextPosition.setValue(Rez::appX(vTemp));
         m_annoFeat->X.setValue(Rez::appX(vTemp.x));
         m_annoFeat->Y.setValue(Rez::appX(vTemp.y));
     }
@@ -326,9 +311,6 @@ void TaskRichAnno::updateAnnoFeature()
 //    Base::Console().Message("TRA::updateAnnoFeature()\n");
     Gui::Command::openCommand("Edit Leader");
     commonFeatureUpdate();
-//    App::Color ac;
-//    ac.setValue<QColor>(ui->cpLineColor->color());
-//    m_annoVP->Color.setValue(ac);
 
     Gui::Command::commitCommand();
     m_annoFeat->requestPaint();
@@ -382,19 +364,9 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
     double tPosX(0.0);
     double tPosY(0.0);
 
-    Gui::ViewProvider* vp = QGIView::getViewProvider(m_annoFeat);
-    
-    if (vp != nullptr) {
-        ViewProviderRichAnno* vpra = dynamic_cast<ViewProviderRichAnno*>(vp);
-        if (vpra != nullptr) {
-            double adjust = 2.0;
-            double fsize = vpra->Fontsize.getValue();
-            textHeight = fsize * adjust;
-            double width = m_annoFeat->MaxWidth.getValue();
-            if (width > 0 ) {
-                textWidth = width;
-            }
-        }
+    double width = m_annoFeat->MaxWidth.getValue();
+    if (width > 0 ) {
+        textWidth = width;
     }
 
     std::vector<Base::Vector3d> points;
