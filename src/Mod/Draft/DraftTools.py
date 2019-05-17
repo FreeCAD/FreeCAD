@@ -327,7 +327,7 @@ class SelectPlane(DraftTool):
             self.finish()
         if arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                # coin detection happens before the selection got a chance of being updated, sowe must delay
+                # coin detection happens before the selection got a chance of being updated, so we must delay
                 DraftGui.todo.delay(self.checkSelection,None)
 
     def checkSelection(self):
@@ -1030,7 +1030,7 @@ class CubicBezCurve(Line):
                             if ((self.point-self.node[0]).Length < Draft.tolerance()) and len(self.node) >= 4:
                                 #self.undolast()
                                 self.node=self.node[0:-2]
-                                self.node.append(2 * self.node[0] - self.node[1]) #close the curve with a smooth simmetric knot
+                                self.node.append(2 * self.node[0] - self.node[1]) #close the curve with a smooth symmetric knot
                                 self.finish(True,cont=True)
                                 FreeCAD.Console.PrintMessage(translate("draft", "Bezier curve has been closed")+"\n")
             if (arg["State"] == "UP") and (arg["Button"] == "BUTTON1"):       #left click
