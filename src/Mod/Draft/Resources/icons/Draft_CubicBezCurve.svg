@@ -499,7 +499,7 @@
             <rdf:li>square</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>A curved line in the shape of an upside down U with a poitn at each end that has a square shaped control point</dc:description>
+        <dc:description>A curved line in the shape of an upside down U with a point at each end that has a square shaped control point</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>

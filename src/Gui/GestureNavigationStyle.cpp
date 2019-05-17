@@ -375,14 +375,14 @@ public:
 
     }
     virtual ~AwaitingMoveState(){
-        //always clear posponed events when leaving this state.
+        //always clear postponed events when leaving this state.
         this->outermost_context().ns.postponedEvents.discardAll();
     }
 
     sc::result react(const NS::Event& ev){
         auto &ns = this->outermost_context().ns;
 
-        ///refire(): forwards all posponed events + this event
+        ///refire(): forwards all postponed events + this event
         auto refire = [&]{
             ns.postponedEvents.forwardAll();
             ev.flags->processed = ns.processSoEvent_bypass(ev.inventor_event);
