@@ -40,6 +40,7 @@
 # include <sstream>
 
 # include <QApplication>
+# include <QMessageBox>
 #endif
 
 #include "ui_TaskPostDisplay.h"
