@@ -53,8 +53,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     setupUi(this);
     m_lastBlockList = 0;
     f_textedit->setTabStopWidth(40);
-    setText(textIn);
-    m_defFontSize = 12;
+    setDefFontSize(12);
     m_defFont = QString::fromUtf8("Sans");
 
     connect(f_save, SIGNAL(clicked()),
@@ -72,6 +71,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     m_fontsize_h3 = m_defFontSize + 4;
     m_fontsize_h4 = m_defFontSize + 2;
 
+//TODO: should check for existing text and set font to match
 //    fontChanged(f_textedit->font());
     fontChanged(getDefFont());
     bgColorChanged(f_textedit->textColor());
@@ -187,15 +187,15 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     foreach(int size, db.standardSizes())
         f_fontsize->addItem(QString::number(size));
 
-    connect(f_fontsize, SIGNAL(activated(QString)),
+//    connect(f_fontsize, SIGNAL(activated(QString)),
+//            this, SLOT(textSize(QString)));
+    connect(f_fontsize, SIGNAL(currentIndexChanged(QString)),
             this, SLOT(textSize(QString)));
 //    f_fontsize->setCurrentIndex(f_fontsize->findText(QString::number(QApplication::font()
 //                                                                   .pointSize())));
-    f_fontsize->setCurrentIndex(f_fontsize->findText(getDefFontSize()));
-
     // text foreground color
 
-    QPixmap pix(16, 16);
+//    QPixmap pix(16, 16);
 //    pix.fill(QApplication::palette().foreground().color());
 //    f_fgcolor->setIcon(pix);
 
@@ -210,6 +210,24 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
 
     // images
     connect(f_image, SIGNAL(clicked()), this, SLOT(insertImage()));
+    
+    //set initial font size when editing existing text
+    if (!textIn.isEmpty()) {
+        //insert existing text with cursor at beginning
+        QTextCursor cursor = f_textedit->textCursor();
+        cursor.movePosition(QTextCursor::Start);
+        cursor.insertHtml(textIn);
+        cursor.movePosition(QTextCursor::Start);
+        f_textedit->setTextCursor(cursor);
+
+        //set current font size to match inserted text at cursor pos
+        QTextCharFormat fmt = cursor.charFormat();
+        double currSize = fmt.fontPointSize();
+        int fSize = f_fontsize->findText(QString::number(currSize));
+        f_fontsize  ->setCurrentIndex(fSize);
+    } else {
+        f_fontsize->setCurrentIndex(f_fontsize->findText(getDefFontSize()));
+    }
 }
 
 
@@ -630,14 +648,12 @@ void MRichTextEdit::setDefFontSize(int fs)
 {
     m_defFontSize = fs;
     f_fontsize->findText(getDefFontSize());
-    m_fontsize_h1 = m_defFontSize + 8;
-    m_fontsize_h2 = m_defFontSize + 6;
-    m_fontsize_h3 = m_defFontSize + 4;
-    m_fontsize_h4 = m_defFontSize + 2;
-    //have to do something with f_fontSize
+    m_fontsize_h1 = fs + 8;
+    m_fontsize_h2 = fs + 6;
+    m_fontsize_h3 = fs + 4;
+    m_fontsize_h4 = fs + 2;
     QString newSize = QString::number(fs);
     f_fontsize->setCurrentIndex(f_fontsize->findText(newSize));
-    //void MRichTextEdit::fontChanged(const QFont &f) { ???
     textSize(newSize);
 }
 
