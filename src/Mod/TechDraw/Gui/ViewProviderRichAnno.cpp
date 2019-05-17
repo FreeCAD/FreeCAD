@@ -65,15 +65,6 @@ ViewProviderRichAnno::ViewProviderRichAnno()
 {
     sPixmap = "actions/techdraw-textleader";
 
-    static const char *group = "Text Format";
-
-    ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"The color of the Markup");
-    ADD_PROPERTY_TYPE(Font ,(getDefFont().c_str()),group,App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(Fontsize,(getDefFontSize())    ,group,(App::PropertyType)(App::Prop_None),
-              "Text size in internal units");
-    Color.setStatus(App::Property::ReadOnly,true);
-    Font.setStatus(App::Property::ReadOnly,true);
-    Fontsize.setStatus(App::Property::ReadOnly,true);
 }
 
 ViewProviderRichAnno::~ViewProviderRichAnno()
@@ -127,14 +118,6 @@ void ViewProviderRichAnno::updateData(const App::Property* p)
 
 void ViewProviderRichAnno::onChanged(const App::Property* p)
 {
-//    if ((p == &Font) ||
-//        (p == &Fontsize) ||
-//        (p == &Color)) {
-//        QGIView* qgiv = getQView();
-//        if (qgiv) {
-//            qgiv->updateView(true);
-//        }
-//    }
     ViewProviderDrawingView::onChanged(p);
 }
 

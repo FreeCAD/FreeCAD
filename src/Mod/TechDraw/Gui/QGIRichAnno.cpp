@@ -224,15 +224,6 @@ void QGIRichAnno::setTextItem()
 {
 //    Base::Console().Message("QGIRA::setTextItem() - %s\n",getViewName());
     TechDraw::DrawRichAnno* annoFeat = getFeature();
-    auto vp = static_cast<ViewProviderRichAnno*>(getViewProvider(annoFeat));
-    if ( vp == nullptr ) {
-        Base::Console().Log("QGIRA::setTextItem - no ViewProvider\n");
-        return;
-    }
-    QFont font = m_text->font();
-    font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
-    font.setFamily(QString::fromLatin1(vp->Font.getValue()));
-    m_text->setFont(font);
 
     //convert point font sizes to (Rez,mm) font sizes
     QRegExp rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
