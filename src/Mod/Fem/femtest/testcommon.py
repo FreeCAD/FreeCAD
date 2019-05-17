@@ -86,7 +86,7 @@ class TestFemCommon(unittest.TestCase):
             pymodules += testtools.collect_python_modules('femguiobjects')
 
         # import all collected modules
-         fcc_print(pymodules)
+        fcc_print(pymodules)
         for mod in pymodules:
             fcc_print('Try importing {0} ...'.format(mod))
             try:
