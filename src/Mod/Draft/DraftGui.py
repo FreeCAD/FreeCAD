@@ -655,7 +655,7 @@ class DraftToolBar:
         self.layout.addLayout(gl)
         self.snapLabel = self._label("snapLabel", gl)
         self.snapValue = self._spinbox("snapValue", gl)
-        self.snapValue.setValue(Draft.getParam("snapRange",5))
+        self.snapValue.setValue(Draft.getParam("snapRange", 8))
 
         # spacer
         if not self.taskmode:
@@ -1007,7 +1007,7 @@ class DraftToolBar:
         self.centerPlane.show()
         self.snapLabel.show()
         self.snapValue.show()
-        p = Draft.getParam("snapRange",5)
+        p = Draft.getParam("snapRange", 8)
         self.snapValue.setValue(p)
 
     def extraLineUi(self):
@@ -2133,7 +2133,7 @@ class DraftToolBar:
 
     def toggleradius(self,val):
         if hasattr(FreeCADGui,"Snapper"):
-            par = Draft.getParam("snapRange",10)
+            par = Draft.getParam("snapRange", 8)
             Draft.setParam("snapRange",par+val)
             FreeCADGui.Snapper.showradius()
 
