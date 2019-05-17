@@ -858,7 +858,7 @@ class DraftToolBar:
         self.xzButton.setText(translate("draft", "XZ (front)"))
         self.xzButton.setToolTip(translate("draft", "Sets the working plane on the front XZ plane"))
         self.yzButton.setText(translate("draft", "YZ (side)"))
-        self.yzButton.setToolTip(translate("draft", "Setsthe working plane on the side YZ plane"))
+        self.yzButton.setToolTip(translate("draft", "Sets the working plane on the side YZ plane"))
         self.currentViewButton.setText(translate("draft", "View"))
         self.currentViewButton.setToolTip(translate("draft", "Sets the working plane perpendicular to the current view"))
         self.resetPlaneButton.setText(translate("draft", "Automatic"))
