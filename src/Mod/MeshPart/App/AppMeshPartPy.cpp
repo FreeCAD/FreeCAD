@@ -32,7 +32,10 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
+#include <Base/GeometryPyCXX.h>
 #include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
@@ -57,6 +60,12 @@ public:
             "    poly (list of (x, y z) or (x, y) tuples of floats):\n"
             "    upVector ((x, y, z) tuple):\n"
             "    MaxSize (float):\n"
+        );
+        add_varargs_method("projectShapeOnMesh",&Module::projectShapeOnMesh,
+            "Projects a shape onto a mesh with a given maximum distance\n"
+            "projectShapeOnMesh(Shape, Mesh, float) -> polygon\n"
+            "or projects the shape in a given direction\n"
+            "projectShapeOnMesh(Shape, Mesh, Vector) -> list of polygons"
         );
         add_varargs_method("wireFromSegment",&Module::wireFromSegment,
             "Create wire(s) from boundary of segment\n"
@@ -193,6 +202,66 @@ private:
         // use the MeshAlgos 
         MeshPart::MeshAlgos::LoftOnCurve(M,aShape,poly,Base::Vector3f(x,y,z),size);
         return Py::asObject(new Mesh::MeshPy(new Mesh::MeshObject(M)));
+    }
+    Py::Object projectShapeOnMesh(const Py::Tuple& args)
+    {
+        PyObject *s, *m;
+        double maxDist;
+        if (PyArg_ParseTuple(args.ptr(), "O!O!d", &Part::TopoShapePy::Type, &s,
+                                                  &Mesh::MeshPy::Type, &m,
+                                                  &maxDist)) {
+            TopoDS_Shape shape = static_cast<Part::TopoShapePy*>(s)->getTopoShapePtr()->getShape();
+            const Mesh::MeshObject* mesh = static_cast<Mesh::MeshPy*>(m)->getMeshObjectPtr();
+            MeshCore::MeshKernel kernel(mesh->getKernel());
+            kernel.Transform(mesh->getTransform());
+
+            MeshProjection proj(kernel);
+            std::vector<MeshProjection::PolyLine> polylines;
+            proj.projectToMesh(shape, maxDist, polylines);
+
+            Py::List list;
+            for (auto it : polylines) {
+                Py::List poly;
+                for (auto jt : it.points) {
+                    Py::Vector v(jt);
+                    poly.append(v);
+                }
+                list.append(poly);
+            }
+
+            return list;
+        }
+
+        PyErr_Clear();
+        PyObject *v;
+        if (PyArg_ParseTuple(args.ptr(), "O!O!O!", &Part::TopoShapePy::Type, &s,
+                                                   &Mesh::MeshPy::Type, &m,
+                                                   &Base::VectorPy::Type, &v)) {
+            TopoDS_Shape shape = static_cast<Part::TopoShapePy*>(s)->getTopoShapePtr()->getShape();
+            const Mesh::MeshObject* mesh = static_cast<Mesh::MeshPy*>(m)->getMeshObjectPtr();
+            Base::Vector3d* vec = static_cast<Base::VectorPy*>(v)->getVectorPtr();
+            Base::Vector3f dir = Base::convertTo<Base::Vector3f>(*vec);
+
+            MeshCore::MeshKernel kernel(mesh->getKernel());
+            kernel.Transform(mesh->getTransform());
+
+            MeshProjection proj(kernel);
+            std::vector<MeshProjection::PolyLine> polylines;
+            proj.projectParallelToMesh(shape, dir, polylines);
+            Py::List list;
+            for (auto it : polylines) {
+                Py::List poly;
+                for (auto jt : it.points) {
+                    Py::Vector v(jt);
+                    poly.append(v);
+                }
+                list.append(poly);
+            }
+
+            return list;
+        }
+
+        throw Py::TypeError("Expected arguments are: Shape, Mesh, float or Vector");
     }
     Py::Object wireFromSegment(const Py::Tuple& args)
     {

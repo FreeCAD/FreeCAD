@@ -179,8 +179,8 @@ class _Fence(ArchComponent.Component):
         return shapes
 
     def clipSection(self, shape, length, clipLength):
-        print("length: %s, clipLength: %s" % (length, clipLength))
-        
+        import Part
+
         boundBox = shape.BoundBox
         lengthToCut = length - clipLength
         halfLengthToCut = lengthToCut / 2
@@ -259,10 +259,10 @@ class _CommandFence:
         post = sel[1]
         path = sel[2]
 
-        buildFence(section, post, path)
+        makeFence(section, post, path)
 
 
-def buildFence(section, post, path):
+def makeFence(section, post, path):
     obj = FreeCAD.ActiveDocument.addObject(
         'Part::FeaturePython', 'Fence')
 
@@ -279,6 +279,8 @@ def buildFence(section, post, path):
         hide(path)
 
     FreeCAD.ActiveDocument.recompute()
+
+    return obj
 
 
 def hide(obj):
@@ -336,4 +338,4 @@ if __name__ == '__main__':
     path = buildPath()
     post = buildPost()
 
-    buildFence(section, post, path)
+    print(makeFence(section, post, path))

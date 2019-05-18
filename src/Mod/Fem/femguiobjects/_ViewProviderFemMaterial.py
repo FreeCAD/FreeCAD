@@ -255,10 +255,19 @@ class _TaskPanelFemMaterial:
         # print(self.material)
         if self.selectionWidget.has_equal_references_shape_types():
             self.do_not_set_thermal_zeros()
-            self.obj.Material = self.material
-            self.obj.References = self.selectionWidget.references
-            self.recompute_and_set_back_all()
-            return True
+            from materialtools.cardutils import check_mat_units as checkunits
+            if checkunits(self.material) is True:
+                self.obj.Material = self.material
+                self.obj.References = self.selectionWidget.references
+            else:
+                error_message = (
+                    'Due to some wrong material quantity units in the changed '
+                    'material data, the task panel changes where not accepted.\n'
+                )
+                FreeCAD.Console.PrintError(error_message)
+                QtGui.QMessageBox.critical(None, "Material data not changed", error_message)
+        self.recompute_and_set_back_all()
+        return True
 
     def reject(self):
         self.recompute_and_set_back_all()
@@ -356,33 +365,43 @@ class _TaskPanelFemMaterial:
         # do not change the self.material
         # check if dict is not empty (do not use 'is True')
         if new_material_params:
-            self.material = new_material_params
-            self.card_path = self.get_material_card(self.material)
-            # print('card_path: ' + self.card_path)
-            self.check_material_keys()
-            self.set_mat_params_in_input_fields(self.material)
-            if not self.card_path:
-                FreeCAD.Console.PrintMessage(
-                    "Material card chosen by the material editor "
-                    "was not found in material directories.\n"
-                    "Either the card does not exist or some material "
-                    "parameter where changed in material editor.\n"
-                )
-                if self.has_transient_mat is False:
-                    self.add_transient_material()
+            # check material quantity units
+            from materialtools.cardutils import check_mat_units as checkunits
+            if checkunits(new_material_params) is True:
+                self.material = new_material_params
+                self.card_path = self.get_material_card(self.material)
+                # print('card_path: ' + self.card_path)
+                self.check_material_keys()
+                self.set_mat_params_in_input_fields(self.material)
+                if not self.card_path:
+                    FreeCAD.Console.PrintMessage(
+                        "Material card chosen by the material editor "
+                        "was not found in material directories.\n"
+                        "Either the card does not exist or some material "
+                        "parameter where changed in material editor.\n"
+                    )
+                    if self.has_transient_mat is False:
+                        self.add_transient_material()
+                    else:
+                        self.set_transient_material()
                 else:
-                    self.set_transient_material()
+                    # we found our exact material in self.materials dict :-)
+                    FreeCAD.Console.PrintLog(
+                        "Material card chosen by the material editor "
+                        "was found in material directories. "
+                        "The found material card will be used.\n"
+                    )
+                    index = self.parameterWidget.cb_materials.findData(self.card_path)
+                    # print(index)
+                    # set the current material in the cb widget
+                    self.choose_material(index)
             else:
-                # we found our exact material in self.materials dict :-)
-                FreeCAD.Console.PrintLog(
-                    "Material card chosen by the material editor "
-                    "was found in material directories. "
-                    "The found material card will be used.\n"
+                error_message = (
+                    'Due to some wrong material quantity units in data passed '
+                    'by the material editor, the material data was not changed.\n'
                 )
-                index = self.parameterWidget.cb_materials.findData(self.card_path)
-                # print(index)
-                # set the current material in the cb widget
-                self.choose_material(index)
+                FreeCAD.Console.PrintError(error_message)
+                QtGui.QMessageBox.critical(None, "Material data not changed", error_message)
         else:
             FreeCAD.Console.PrintLog(
                 'No changes where made by the material editor.\n'

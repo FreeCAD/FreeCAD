@@ -98,16 +98,19 @@
 using namespace TechDrawGui;
 
 QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
-    : QGraphicsView(parent)
-    , pageTemplate(0)
-    , m_renderer(Native)
-    , drawBkg(true)
-    , m_vpPage(0)
+    : QGraphicsView(parent),
+      pageTemplate(0),
+      m_renderer(Native),
+      drawBkg(true),
+      m_vpPage(0)
+//      ,
+//      m_borderState(true)
 {
     assert(vp);
     m_vpPage = vp;
     const char* name = vp->getDrawPage()->getNameInDocument();
     setObjectName(QString::fromLocal8Bit(name));
+    m_vpPage->setGraphicsView(this);
 
     setScene(s);
     setMouseTracking(true);
@@ -682,29 +685,14 @@ void QGVPage::setHighQualityAntialiasing(bool highQualityAntialiasing)
 #endif
 }
 
-void QGVPage::toggleMarkers(bool enable)
+void QGVPage::refreshViews(void)
 {
+//    Base::Console().Message("QGVP::refreshViews()\n");
     QList<QGraphicsItem*> list = scene()->items();
     for (QList<QGraphicsItem*>::iterator it = list.begin(); it != list.end(); ++it) {
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
         if(itemView) {
-            itemView->setSelected(false);
-            itemView->toggleBorder(enable);
-            QGIViewPart *viewPart = dynamic_cast<QGIViewPart *>(*it);
-            if(viewPart) {
-                viewPart->toggleVertices(enable);
-            }
-        }
-        QGISVGTemplate* itemTemplate = dynamic_cast<QGISVGTemplate*> (*it);
-        if (itemTemplate) {
-            std::vector<TemplateTextField *> textFields = itemTemplate->getTextFields();
-            for (auto& t:textFields) {
-                if (enable) {
-                    t->show();
-                } else {
-                    t->hide();
-                }
-            }
+            itemView->updateView(true);
         }
     }
 }
@@ -754,9 +742,11 @@ void QGVPage::saveSvg(QString filename)
 
     Gui::Selection().clearSelection();
 
-    toggleMarkers(false);             //fiddle cache, vertices, frames, etc
+    bool saveState = m_vpPage->getFrameState();
+    m_vpPage->setFrameState(false);
+    m_vpPage->setTemplateMarkers(false);
     toggleHatch(false);
-    scene()->update();
+    refreshViews();
     viewport()->repaint();
 
     double width  =  Rez::guiX(page->getPageWidth());
@@ -771,9 +761,10 @@ void QGVPage::saveSvg(QString filename)
     scene()->render(&p, targetRect,sourceRect);
     p.end();
 
-    toggleMarkers(true);
+    m_vpPage->setFrameState(saveState);
+    m_vpPage->setTemplateMarkers(saveState);
     toggleHatch(true);
-    scene()->update();
+    refreshViews();
     viewport()->repaint();
 
     tempFile->close();

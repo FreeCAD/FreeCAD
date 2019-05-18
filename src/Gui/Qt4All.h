@@ -93,6 +93,7 @@
 #include <QItemDelegate>
 #include <QStyledItemDelegate>
 #include <QItemEditorFactory>
+#include <QKeyEvent>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>

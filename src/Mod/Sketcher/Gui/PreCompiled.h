@@ -120,6 +120,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoInfo.h>
 #include <Inventor/SbTime.h>
 
 // Python

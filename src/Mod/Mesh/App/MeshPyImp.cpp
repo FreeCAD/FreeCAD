@@ -143,8 +143,7 @@ PyObject* MeshPy::copy(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
 
-    const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
-    return new MeshPy(new MeshObject(kernel));
+    return new MeshPy(new MeshObject(*getMeshObjectPtr()));
 }
 
 PyObject*  MeshPy::read(PyObject *args, PyObject *kwds)

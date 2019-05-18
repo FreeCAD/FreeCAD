@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+
 # include <Inventor/SoDB.h>
 # include <Inventor/SoInput.h>
 # include <Inventor/SbVec3f.h>
@@ -47,7 +48,14 @@
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/details/SoPointDetail.h>
+
 # include <QFile>
+
+# include <sstream>
+
+# include <SMESH_Mesh.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMDSAbs_ElementType.hxx>
 #endif
 
 #include "ViewProviderFemMesh.h"
@@ -61,11 +69,8 @@
 #include <Base/Console.h>
 #include <Base/TimeInfo.h>
 #include <Base/BoundBox.h>
-#include <sstream>
 
-#include <SMESH_Mesh.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMDSAbs_ElementType.hxx>
+
 
 using namespace FemGui;
 
