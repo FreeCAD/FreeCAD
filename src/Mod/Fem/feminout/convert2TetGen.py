@@ -282,7 +282,7 @@ def createMesh():
         # Hide all boxes
         for box in BoxList:
             Gui.hideObject(box)
- 
+
     # Remove all boxes
     # for box in BoxList:
     #     App.ActiveDocument.removeObject(box.Name)
@@ -290,7 +290,7 @@ def createMesh():
     # Update document
     AppPyDoc.recompute()
 
-    # export to TenGen *.poly (use File|Export instead) *****
+    # export to TenGen *.poly (use File|Export instead)
     # filePath = "/home/tig/tmp/tetgen/pnJunction.poly"
     # exportMeshToTetGenPoly(pnMesh.Mesh,filePath,beVerbose)
 
