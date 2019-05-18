@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include "HypothesisPy.h"
 
 #ifndef _PreComp_
 # include <sstream>
@@ -62,7 +63,6 @@
 # endif
 #endif
 
-#include "HypothesisPy.h"
 #include "FemMeshPy.h"
 #include <Base/Interpreter.h>
 #include <Mod/Part/App/TopoShapePy.h>

@@ -74,6 +74,7 @@
 #include <boost/tokenizer.hpp>
 
 // Salomesh
+#include <SMESH_Version.h>
 #include <SMESH_Gen.hxx>
 #include <SMESH_Group.hxx>
 #include <SMESHDS_Mesh.hxx>
