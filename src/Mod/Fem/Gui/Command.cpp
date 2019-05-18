@@ -27,11 +27,15 @@
 # include <QApplication>
 # include <QMessageBox>
 # include <QAction>
-#endif
 
-#include <Inventor/nodes/SoEventCallback.h>
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoEventCallback.h>
+# include <Inventor/nodes/SoCamera.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
+
+# include <SMESH_Mesh.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMDSAbs_ElementType.hxx>
+#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -50,10 +54,6 @@
 #include <Gui/Utilities.h>
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
-
-#include <SMESH_Mesh.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMDSAbs_ElementType.hxx>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Fem/App/FemMeshObject.h>

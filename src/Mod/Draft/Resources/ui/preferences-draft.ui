@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>487</width>
-    <height>491</height>
+    <width>486</width>
+    <height>476</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -78,25 +78,6 @@
          </widget>
         </item>
        </layout>
-      </item>
-      <item>
-       <widget class="Gui::PrefCheckBox" name="checkBox_2">
-        <property name="toolTip">
-         <string>If this is checked, step-by-step instructions will be displayed in the Output Window when running Draft commands</string>
-        </property>
-        <property name="text">
-         <string>Verbose command line mode</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>Verbose</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">

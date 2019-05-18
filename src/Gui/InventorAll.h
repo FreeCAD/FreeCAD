@@ -77,6 +77,8 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/engines/SoComposeVec3f.h>
+#include <Inventor/engines/SoComposeRotationFromTo.h>
+#include <Inventor/engines/SoComposeRotation.h>
 #include <Inventor/errors/SoDebugError.h> 
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/events/SoEvent.h>
@@ -120,6 +122,7 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoMatrixTransform.h>
+#include <Inventor/nodes/SoMultipleCopy.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoNurbsSurface.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
@@ -152,6 +155,7 @@
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
 #include <Inventor/projectors/SbSphereSheetProjector.h>
 #include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/system/inttypes.h>
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 
 #endif

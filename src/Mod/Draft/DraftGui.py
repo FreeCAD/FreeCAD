@@ -364,6 +364,8 @@ class DraftToolBar:
         self.x = 0
         self.y = 0
         self.z = 0
+        self.radius = 0
+        self.offset = 0
         self.uiloader = FreeCADGui.UiLoader()
         self.autogroup = None
         self.isCenterPlane = False
@@ -856,7 +858,7 @@ class DraftToolBar:
         self.xzButton.setText(translate("draft", "XZ (front)"))
         self.xzButton.setToolTip(translate("draft", "Sets the working plane on the front XZ plane"))
         self.yzButton.setText(translate("draft", "YZ (side)"))
-        self.yzButton.setToolTip(translate("draft", "Setsthe working plane on the side YZ plane"))
+        self.yzButton.setToolTip(translate("draft", "Sets the working plane on the side YZ plane"))
         self.currentViewButton.setText(translate("draft", "View"))
         self.currentViewButton.setToolTip(translate("draft", "Sets the working plane perpendicular to the current view"))
         self.resetPlaneButton.setText(translate("draft", "Automatic"))
@@ -916,6 +918,12 @@ class DraftToolBar:
 #---------------------------------------------------------------------------
 
     def taskUi(self,title="Draft",extra=None,icon="Draft_Draft"):
+        # reset InputField values
+        self.x = 0
+        self.y = 0
+        self.z = 0
+        self.radius = 0
+        self.offset = 0
         if self.taskmode:
             self.isTaskOn = True
             todo.delay(FreeCADGui.Control.closeDialog,None)
@@ -973,6 +981,9 @@ class DraftToolBar:
         elif f=="z":
             self.zValue.setFocus()
             self.zValue.selectAll()
+        elif f=="radius":
+            self.radiusValue.setFocus()
+            self.radiusValue.selectAll()
 
     def selectPlaneUi(self):
         self.taskUi(title=translate("draft", "Working plane setup"),icon="Draft_SelectPlane")
@@ -1094,7 +1105,6 @@ class DraftToolBar:
         if rel: self.isRelative.show()
         todo.delay(self.setFocus,None)
         self.xValue.selectAll()
-        self.showCommandOptions(title)
 
     def labelUi(self,title=translate("draft","Label"),callback=None):
         w = QtGui.QWidget()
@@ -1196,6 +1206,8 @@ class DraftToolBar:
         self.labelRadius.show()
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.radiusValue.show()
+        todo.delay(self.radiusValue.setFocus,None)
+        self.radiusValue.selectAll()
 
     def textUi(self):
         self.hideXYZ()
@@ -1327,29 +1339,6 @@ class DraftToolBar:
     def vertUi(self,addmode=True):
         self.addButton.setChecked(addmode)
         self.delButton.setChecked(not(addmode))
-
-    def showCommandOptions(self,name):
-        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("Verbose",True):
-            cmdstr = "\n"+name+" "+translate("draft","options")+" : "
-            first = True
-            for k,v in inCommandShortcuts.items():
-                if v[2]:
-                    if getattr(self,v[2]).isVisible():
-                        if first:
-                            first = False
-                        else:
-                            cmdstr += ", "
-                        cmdstr += v[0] + ":" + v[1]
-                else:
-                    if first:
-                        first = False
-                    else:
-                        cmdstr += ", "
-                    try:
-                        cmdstr += v[0] + ":" + v[1]
-                    except:
-                        pass
-            FreeCAD.Console.PrintMessage(cmdstr+"\n\n")
 
     def checkLocal(self):
         "checks if x,y,z coords must be displayed as local or global"
@@ -1542,16 +1531,16 @@ class DraftToolBar:
                 try:
                     #rad=float(self.radiusValue.text())
                     rad = self.radius
-                except ValueError:
-                    pass
+                except (ValueError, AttributeError):
+                    print("debug: DraftGui.validatePoint: AttributeError")
                 else:
                     self.sourceCmd.numericRadius(rad)
             elif (self.offsetLabel.isVisible()):
                 try:
                     #offset=float(self.offsetValue.text())
                     offset = self.offset
-                except ValueError:
-                    pass
+                except (ValueError, AttributeError):
+                    print("debug: DraftGui.validatePoint: AttributeError")
                 else:
                     self.sourceCmd.offsetHandler(offset)
             elif (self.labelx.isVisible()):
@@ -1562,8 +1551,8 @@ class DraftToolBar:
                     numy = self.y
                     #numz=float(self.zValue.text())
                     numz = self.z
-                except:
-                    pass
+                except (ValueError, AttributeError):
+                    print("debug: DraftGui.validatePoint: AttributeError")
                 else:
                     if self.pointcallback:
                         self.pointcallback(FreeCAD.Vector(numx,numy,numz),self.relativeMode)
