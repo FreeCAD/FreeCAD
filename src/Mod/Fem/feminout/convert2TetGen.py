@@ -26,11 +26,10 @@
 
 # Make mesh of pn junction in TetGen format
 import FreeCAD
-import FreeCADGui
+
 # import Part
 import Mesh
 App = FreeCAD  # shortcut
-Gui = FreeCADGui  # shortcut
 
 ## \addtogroup FEM
 #  @{
@@ -275,9 +274,14 @@ def createMesh():
     nmesh.removeDuplicatedFacets()
     pnMesh.Mesh = nmesh
 
-    # Hide all boxes
-    for box in BoxList:
-        Gui.hideObject(box)
+    if FreeCAD.GuiUp:
+        import FreeCADGui
+        Gui = FreeCADGui  # shortcut
+
+        # Hide all boxes
+        for box in BoxList:
+            Gui.hideObject(box)
+
     # # Remove all boxes
     # for box in BoxList:
     #     App.ActiveDocument.removeObject(box.Name)
@@ -289,8 +293,10 @@ def createMesh():
     # filePath = "/home/tig/tmp/tetgen/pnJunction.poly"
     # exportMeshToTetGenPoly(pnMesh.Mesh,filePath,beVerbose)
 
-    Gui.activeDocument().activeView().viewAxometric()
-    Gui.SendMsgToActiveView("ViewFit")
+    if FreeCAD.GuiUp:
+        Gui.activeDocument().activeView().viewAxometric()
+        Gui.SendMsgToActiveView("ViewFit")
+
     if beVerbose == 1:
         FreeCAD.Console.PrintMessage("\nScript finished without errors.")
 
