@@ -27,10 +27,10 @@ import TestApp
 from PathTests.TestPathLog   import TestPathLog
 from PathTests.TestPathCore  import TestPathCore
 from PathTests.TestPathPost  import PathPostTestCases
-from PathTests.TestPathGeom  import TestPathGeom
-from PathTests.TestPathOpTools  import TestPathOpTools
-from PathTests.TestPathUtil  import TestPathUtil
-from PathTests.TestPathDepthParams        import depthTestCases
+#from PathTests.TestPathGeom  import TestPathGeom
+#from PathTests.TestPathOpTools  import TestPathOpTools
+#from PathTests.TestPathUtil  import TestPathUtil
+#from PathTests.TestPathDepthParams        import depthTestCases
 #from PathTests.TestPathDressupHoldingTags import TestHoldingTags
 #from PathTests.TestPathDressupDogbone import TestDressupDogbone
 #from PathTests.TestPathStock import TestPathStock
