@@ -28,11 +28,12 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD Fenics Mesh reader and writer for FEM workbench
 
+import FreeCAD
+
 if FreeCAD.GuiUp:
 
     from PySide import QtGui, QtCore
 
-    import FreeCAD
     import FreeCADGui
     import os
 
