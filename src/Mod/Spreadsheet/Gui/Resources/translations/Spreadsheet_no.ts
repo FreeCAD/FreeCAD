@@ -147,8 +147,8 @@
       <translation>Slå sammen celler</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Slå sammen merkede celler i regnearket</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Splitt celler</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Del tidligere sammenslåtte celler i regnearket</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Fet tekst</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Angi fet tekst i merkede celler</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Kursiv tekst</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Angi kursiv tekst i merkede celler</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Lys grå</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Egendefinert</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

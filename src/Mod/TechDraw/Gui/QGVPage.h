@@ -41,7 +41,9 @@ class DrawViewClip;
 class DrawViewCollection;
 class DrawViewSpreadsheet;
 class DrawViewImage;
+class DrawLeaderLine;
 class DrawViewBalloon;
+class DrawRichAnno;
 }
 
 namespace TechDrawGui
@@ -51,6 +53,8 @@ class QGIViewDimension;
 class QGITemplate;
 class ViewProviderPage;
 class QGIViewBalloon;
+class QGILeaderLine;
+class QGIRichAnno;
 
 class TechDrawGuiExport QGVPage : public QGraphicsView
 {
@@ -77,7 +81,8 @@ public:
     QGIView * addDrawViewClip(TechDraw::DrawViewClip *view);
     QGIView * addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *view);
     QGIView * addDrawViewImage(TechDraw::DrawViewImage *view);
-
+    QGIView * addViewLeader(TechDraw::DrawLeaderLine* view);
+    QGIView * addRichAnno(TechDraw::DrawRichAnno* anno);
 
     QGIView* findQViewForDocObj(App::DocumentObject *obj) const;
     QGIView* getQGIVByName(std::string name);
@@ -85,6 +90,8 @@ public:
 
     void addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent);
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
+    void addLeaderToParent(QGILeaderLine* lead, QGIView* parent);
+
 //    const std::vector<QGIView *> & getViews() const { return views; }    //only used in MDIVP
     std::vector<QGIView *> getViews() const;   //only used in MDIVP
 
@@ -121,6 +128,7 @@ protected:
     void enterEvent(QEvent *event) override;
     void leaveEvent(QEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void kbPanScroll(int xMove = 1, int yMove = 1); 

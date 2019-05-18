@@ -162,7 +162,7 @@
       <translation>Kérjük, válasszon egy önállóan elhelyezett tárgyat a hely meghatározásához.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Csomópontonkénti minta</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>

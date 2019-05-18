@@ -26,9 +26,8 @@
 # include <QButtonGroup>
 # include <QRegExp>
 # include <QRegExpValidator>
+# include <Interface_Static.hxx>
 #endif
-
-#include <Interface_Static.hxx>
 
 #include <Base/Parameter.h>
 #include <App/Application.h>
@@ -47,7 +46,7 @@ DlgSettingsGeneral::DlgSettingsGeneral(QWidget* parent)
     ui->setupUi(this);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsGeneral::~DlgSettingsGeneral()
@@ -108,7 +107,7 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
     ui->lineEditAuthor->setValidator(authorValidator);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgImportExportIges::~DlgImportExportIges()
@@ -217,7 +216,7 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
     ui->lineEditAuthor->setValidator(authorValidator);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgImportExportStep::~DlgImportExportStep()

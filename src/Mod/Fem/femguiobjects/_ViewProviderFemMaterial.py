@@ -104,11 +104,13 @@ class _TaskPanelFemMaterial:
 
     def __init__(self, obj):
 
+        FreeCAD.Console.PrintMessage('\n')  # empty line on start task panel
         self.obj = obj
         self.material = self.obj.Material  # FreeCAD material dictionary of current material
         self.card_path = ''
-        self.materials = {}  # { card_path : FreeCAD material dict }
-        self.icons = {}  # { card_path : icon_path }
+        self.materials = {}  # { card_path : FreeCAD material dict, ... }
+        self.cards = {}  # { card_path : card_names, ... }
+        self.icons = {}  # { card_path : icon_path, ... }
         # mat_card is the FCMat file
         # card_name is the file name of the mat_card
         # card_path is the whole file path of the mat_card
@@ -197,19 +199,20 @@ class _TaskPanelFemMaterial:
             self.parameterWidget.label_vol_expansion_coefficient.setVisible(0)
             self.parameterWidget.input_fd_vol_expansion_coefficient.setVisible(0)
 
-        # get all available materials (fill self.materials and self.icons)
-        self.import_materials()
+        # get all available materials (fill self.materials, self.cards and self.icons)
+        from materialtools.cardutils import import_materials as getmats
+        self.materials, self.cards, self.icons = getmats()
         # fill the material comboboxes with material cards
         self.add_cards_to_combo_box()
 
         # search for exact this mat_card in all known cards, choose the current material
         self.card_path = self.get_material_card(self.material)
-        print('card_path: ' + self.card_path)
+        FreeCAD.Console.PrintLog('card_path: {}'.format(self.card_path))
         if not self.card_path:
             # we have not found our material in self.materials dict :-(
             # we're going to add a user-defined temporary material: a document material
             FreeCAD.Console.PrintMessage(
-                "Previously used material card cannot be found in material directories. "
+                "Previously used material card can not be found in material directories. "
                 "Add document material.\n"
             )
             self.card_path = '_document_material'
@@ -225,7 +228,7 @@ class _TaskPanelFemMaterial:
             self.choose_material(index)
         else:
             # we found our exact material in self.materials dict :-)
-            FreeCAD.Console.PrintMessage(
+            FreeCAD.Console.PrintLog(
                 "Previously used material card was found in material directories. "
                 "We will use this material.\n"
             )
@@ -278,17 +281,20 @@ class _TaskPanelFemMaterial:
         if Units.Quantity(self.material['ThermalConductivity']) == 0.0:
             self.material.pop('ThermalConductivity', None)
             FreeCAD.Console.PrintMessage(
-                'Zero ThermalConductivity value. It is not saved in the card data.\n'
+                'Zero ThermalConductivity value. '
+                'This parameter is not saved in the material data.\n'
             )
         if Units.Quantity(self.material['ThermalExpansionCoefficient']) == 0.0:
             self.material.pop('ThermalExpansionCoefficient', None)
             FreeCAD.Console.PrintMessage(
-                'Zero ThermalExpansionCoefficient value. It is not saved in the card data.\n'
+                'Zero ThermalExpansionCoefficient value. '
+                'This parameter is not saved in the material data.\n'
             )
         if Units.Quantity(self.material['SpecificHeat']) == 0.0:
             self.material.pop('SpecificHeat', None)
             FreeCAD.Console.PrintMessage(
-                'Zero SpecificHeat value. It is not saved in the card data.\n'
+                'Zero SpecificHeat value. '
+                'This parameter is not saved in the material data.\n'
             )
 
     # choose material ****************************************************************************
@@ -306,7 +312,10 @@ class _TaskPanelFemMaterial:
         if index < 0:
             return
         self.card_path = self.parameterWidget.cb_materials.itemData(index)  # returns whole path
-        # print('choose_material: ' + self.card_path)
+        FreeCAD.Console.PrintMessage(
+            'choose_material in FEM material task panel:\n'
+            '    {}\n'.format(self.card_path)
+        )
         self.material = self.materials[self.card_path]
         self.check_material_keys()
         self.set_mat_params_in_input_fields(self.material)
@@ -340,14 +349,12 @@ class _TaskPanelFemMaterial:
     # how to edit a material *********************************************************************
     def edit_material(self):
         # opens the material editor to choose a material or edit material params
-        # self.print_material_params()
         import MaterialEditor
-        new_material_params = self.material.copy()
-        new_material_params = MaterialEditor.editMaterial(new_material_params)
-        # if the material editor was canceled a empty params dict will be returned
+        new_material_params = MaterialEditor.editMaterial(card_path=self.card_path)
+        # material editor returns the mat_dict only, not a card_path
+        # if the material editor was canceled a empty dict will be returned
         # do not change the self.material
-        # self.print_material_params(new_material_params)
-        # check if dict is not empty (do not use 'is True'
+        # check if dict is not empty (do not use 'is True')
         if new_material_params:
             self.material = new_material_params
             self.card_path = self.get_material_card(self.material)
@@ -355,27 +362,31 @@ class _TaskPanelFemMaterial:
             self.check_material_keys()
             self.set_mat_params_in_input_fields(self.material)
             if not self.card_path:
+                FreeCAD.Console.PrintMessage(
+                    "Material card chosen by the material editor "
+                    "was not found in material directories.\n"
+                    "Either the card does not exist or some material "
+                    "parameter where changed in material editor.\n"
+                )
                 if self.has_transient_mat is False:
                     self.add_transient_material()
                 else:
                     self.set_transient_material()
             else:
                 # we found our exact material in self.materials dict :-)
-                FreeCAD.Console.PrintMessage(
-                    "Material card was found in material directories. "
-                    "We will use this material.\n"
+                FreeCAD.Console.PrintLog(
+                    "Material card chosen by the material editor "
+                    "was found in material directories. "
+                    "The found material card will be used.\n"
                 )
                 index = self.parameterWidget.cb_materials.findData(self.card_path)
                 # print(index)
                 # set the current material in the cb widget
                 self.choose_material(index)
         else:
-            FreeCAD.Console.PrintMessage(
+            FreeCAD.Console.PrintLog(
                 'No changes where made by the material editor.\n'
             )
-        # self.print_material_params()
-        # material editor returns the mat_dict only not a card_path
-        # if a standard FreeCAD mat_card was used
 
     def toggleInputFieldsReadOnly(self):
         if self.parameterWidget.chbu_allow_edit.isChecked():
@@ -398,20 +409,6 @@ class _TaskPanelFemMaterial:
             self.parameterWidget.input_fd_vol_expansion_coefficient.setReadOnly(True)
 
     # material parameter input fields ************************************************************
-    def print_material_params(self, material=None):
-        # in rare cases we gone pass a empty dict
-        # in such a case a empty dict should be printed and not self.material
-        # thus we check for None
-        if material is None:
-            material = self.material
-        if not material:
-            # empty dict
-            print('   ' + str(material))
-        else:
-            for p in material:
-                print('   ' + p + ' --> ' + material[p])
-        print('\n')
-
     def check_material_keys(self):
         # FreeCAD units definition is at file end of src/Base/Unit.cpp
         if not self.material:
@@ -541,6 +538,7 @@ class _TaskPanelFemMaterial:
                 .format(self.material['Name'])
             )
             self.material['SpecificHeat'] = '0 J/kg/K'
+        FreeCAD.Console.PrintMessage('\n')
 
     # mechanical input fields
     def ym_changed(self):
@@ -743,76 +741,26 @@ class _TaskPanelFemMaterial:
     # fill the combo box with cards **************************************************************
     def add_cards_to_combo_box(self):
         # fill combobox, in combo box the card name is used not the material name
-        from os.path import basename
         self.parameterWidget.cb_materials.clear()
-        card_name_list = []
-        for a_path in self.materials:
-            card_name = basename(a_path[:-(len(".FCMat"))])
-            card_name_list.append([card_name, a_path, self.icons[a_path]])
-        card_name_list.sort()
+
+        mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Cards")
+        sort_by_resources = mat_prefs.GetBool("SortByResources", False)
+
+        card_name_list = []  # [ [card_name, card_path, icon_path], ... ]
+
+        if sort_by_resources is True:
+            for a_path in sorted(self.materials.keys()):
+                card_name_list.append([self.cards[a_path], a_path, self.icons[a_path]])
+        else:
+            card_names_tmp = {}
+            for path, name in self.cards.items():
+                card_names_tmp[name] = path
+            for a_name in sorted(card_names_tmp.keys()):
+                a_path = card_names_tmp[a_name]
+                card_name_list.append([a_name, a_path, self.icons[a_path]])
+
         for mat in card_name_list:
             self.parameterWidget.cb_materials.addItem(QtGui.QIcon(mat[2]), mat[0], mat[1])
-
-    # material card handling *********************************************************************
-    def print_materialsdict(self):
-        print('\n\n')
-        for mat_card in self.materials:
-            print(mat_card)
-            self.print_material_params(self.materials[mat_card])
-        print('\n\n')
-
-    def import_materials(self):
-        self.fem_prefs = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Material/Resources"
-        )
-        if self.obj.Category == 'Fluid':
-            self.import_fluid_materials()
-        else:
-            self.import_solid_materials()
-        # self.print_materialsdict()
-
-    def import_solid_materials(self):
-        use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
-        if use_built_in_materials:
-            system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/StandardMaterial"
-            self.add_cards_from_a_dir(system_mat_dir, ":/icons/freecad.svg")
-
-        use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
-        if use_mat_from_config_dir:
-            user_mat_dirname = FreeCAD.getUserAppDataDir() + "Material"
-            self.add_cards_from_a_dir(user_mat_dirname, ":/icons/preferences-general.svg")
-
-        use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
-        if use_mat_from_custom_dir:
-            custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
-            self.add_cards_from_a_dir(custom_mat_dir, ":/icons/user.svg")
-
-    def import_fluid_materials(self):
-        # use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
-        # if use_built_in_materials:
-        system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/FluidMaterial"
-        self.add_cards_from_a_dir(system_mat_dir, ":/icons/freecad.svg")
-
-        use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
-        if use_mat_from_config_dir:
-            user_mat_dirname = FreeCAD.getUserAppDataDir() + "FluidMaterial"
-            self.add_cards_from_a_dir(user_mat_dirname, ":/icons/preferences-general.svg")
-
-        use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
-        if use_mat_from_custom_dir:
-            custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
-            self.add_cards_from_a_dir(custom_mat_dir, ":/icons/user.svg")
-
-    def add_cards_from_a_dir(self, mat_dir, icon):
-        # fill self.materials and self.icons
-        import glob
-        from importFCMat import read
-        dir_path_list = glob.glob(mat_dir + '/*' + ".FCMat")
-
-        for a_path in dir_path_list:
-            mat_dict = read(a_path)
-            # check if the dict exists in materials
-            # TODO if the unit is different two cards would be different too
-            if mat_dict not in self.materials.values():
-                self.materials[a_path] = mat_dict
-                self.icons[a_path] = icon
+            # the whole card path is added to the combo box to make it unique
+            # see def choose_material:
+            # for assignment of self.card_path the path form the parameterWidget ist used

@@ -23,9 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <TopExp_Explorer.hxx>
 #endif
-
-#include <TopExp_Explorer.hxx>
 
 #include <Base/Console.h>
 #include <App/Application.h>
@@ -92,9 +91,9 @@ void CmdPathArea::activated(int iMsg)
             std::string sub_fname = getUniqueObjectName(subname.str().c_str());
 
             std::ostringstream cmd;
-            cmd << "FreeCAD.activeDocument().addObject('Part::Feature','" << sub_fname << 
-                "').Shape = PathCommands.findShape(FreeCAD.activeDocument()." << 
-                pcObj->getNameInDocument() << ".Shape,'" << name << "'"; 
+            cmd << "FreeCAD.activeDocument().addObject('Part::Feature','" << sub_fname <<
+                "').Shape = PathCommands.findShape(FreeCAD.activeDocument()." <<
+                pcObj->getNameInDocument() << ".Shape,'" << name << "'";
             if(!name.compare(0,4,"Edge"))
                 cmd << ",'Wires'";
             cmd << ')';
@@ -150,7 +149,7 @@ void CmdPathAreaWorkplane::activated(int iMsg)
     std::string areaName;
     std::string planeSubname;
     std::string planeName;
-    
+
     for(Gui::SelectionObject &selObj :
         getSelection().getSelectionEx(NULL, Part::Feature::getClassTypeId()))
     {
@@ -311,8 +310,8 @@ void CmdPathShape::activated(int iMsg)
             std::string sub_fname = getUniqueObjectName(subname.str().c_str());
 
             std::ostringstream cmd;
-            cmd << "FreeCAD.activeDocument().addObject('Part::Feature','" << sub_fname << 
-                "').Shape = PathCommands.findShape(FreeCAD.activeDocument()." << 
+            cmd << "FreeCAD.activeDocument().addObject('Part::Feature','" << sub_fname <<
+                "').Shape = PathCommands.findShape(FreeCAD.activeDocument()." <<
                 pcObj->getNameInDocument() << ".Shape,'" << name << "'";
             if(!name.compare(0,4,"Edge"))
                 cmd << ",'Wires'";

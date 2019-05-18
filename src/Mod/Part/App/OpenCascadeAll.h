@@ -79,6 +79,11 @@
 #include <Standard_UUID.hxx>
 #include <Standard_Version.hxx>
 
+#include <gce_MakeLin.hxx>
+#include <BRepIntCurveSurface_Inter.hxx>
+#include <IntCurveSurface_IntersectionPoint.hxx>
+#include <gce_MakeDir.hxx>
+
 #include <TCollection_ExtendedString.hxx>
 #include <TCollection_AsciiString.hxx>
 #include <TColStd_Array1OfReal.hxx>
@@ -96,15 +101,19 @@
 #include <TColgp_Array1OfVec.hxx>
 #include <TColgp_SequenceOfXYZ.hxx>
 
+#include <TopAbs_ShapeEnum.hxx>
+
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopoDS_Compound.hxx>
+#include <TopoDS_CompSolid.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Solid.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Iterator.hxx>
+#include <TopoDS_Shell.hxx>
 
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
@@ -114,8 +123,72 @@
 #include <TopTools_HSequenceOfShape.hxx>
 #include <TopTools_MapOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_DataMapOfIntegerShape.hxx>
+#include <TopTools_DataMapOfIntegerListOfShape.hxx>
 
+#include <BSplCLib.hxx>
+
+#include <BRepLib_MakeWire.hxx>
+#include <BRepLib_FuseEdges.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakeSolid.hxx>
+#include <BRepBuilderAPI_Sewing.hxx>
+#include <Geom_Conic.hxx>
+#include <ShapeBuild_ReShape.hxx>
+#include <ShapeFix_Face.hxx>
+#include <TopTools_ListOfShape.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
+#include <TopTools_DataMapIteratorOfDataMapOfIntegerListOfShape.hxx>
 #include <BRep_Builder.hxx>
+#include <Bnd_Box.hxx>
+#include <BRepBndLib.hxx>
+#include <ShapeAnalysis_Edge.hxx>
+#include <ShapeAnalysis_Curve.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <TColgp_SequenceOfPnt.hxx>
+#include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <BRepGProp.hxx>
+#include <GProp_GProps.hxx>
+#include <Standard_Version.hxx>
+
+#include <STEPConstruct_Styles.hxx>
+#include <TColStd_HSequenceOfTransient.hxx>
+#include <STEPConstruct.hxx>
+#include <StepVisual_StyledItem.hxx>
+#include <StepShape_ShapeRepresentation.hxx>
+#include <StepVisual_PresentationStyleByContext.hxx>
+#include <StepVisual_StyleContextSelect.hxx>
+#include <StepVisual_PresentationStyleByContext.hxx>
+#include <Interface_EntityIterator.hxx>
+#include <StepRepr_RepresentedDefinition.hxx>
+#include <StepShape_ShapeDefinitionRepresentation.hxx>
+#include <StepRepr_CharacterizedDefinition.hxx>
+#include <StepRepr_ProductDefinitionShape.hxx>
+#include <StepRepr_AssemblyComponentUsage.hxx>
+#include <StepRepr_AssemblyComponentUsage.hxx>
+#include <StepRepr_SpecifiedHigherUsageOccurrence.hxx>
+#include <Quantity_Color.hxx>
+#include <TCollection_ExtendedString.hxx>
+#include <StepBasic_Product.hxx>
+#include <StepBasic_Product.hxx>
+#include <StepBasic_ProductDefinition.hxx>
+#include <StepBasic_ProductDefinition.hxx>
+#include <StepBasic_ProductDefinitionFormation.hxx>
+
+#include <NCollection_List.hxx>
+
+#include <HLRAppli_ReflectLines.hxx>
+#include <BRepAlgo_NormalProjection.hxx>
+#include <ShapeAnalysis_ShapeTolerance.hxx>
+#include <ShapeFix_ShapeTolerance.hxx>
+
+#include <BRepOffset_MakeOffset.hxx>
+
+#if OCC_VERSION_HEX >= 0x060600
+#include <BRepClass3d.hxx>
+#endif
+
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
@@ -125,8 +198,16 @@
 #include <BRepAlgoAPI_Cut.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepAlgoAPI_Section.hxx>
+#if OCC_VERSION_HEX < 0x070300
+#include <BRepAlgo_Fuse.hxx>
+#endif
+#if OCC_VERSION_HEX >= 0x070300
+#include <BRepAlgoAPI_Defeaturing.hxx>
+#endif
+#include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
+#include <BRep_Builder.hxx>
 #include <BRepBuilderAPI.hxx>
 #include <BRepBuilderAPI_FindPlane.hxx>
 #include <BRepBuilderAPI_GTransform.hxx>
@@ -137,22 +218,34 @@
 #include <BRepBuilderAPI_MakePolygon.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepBuilderAPI_Sewing.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRepTopAdaptor_FClass2d.hxx>
+#include <BRepLProp_SurfaceTool.hxx>
+#include <BRepGProp_Face.hxx>
 #include <BRepClass_FaceClassifier.hxx>
+#if OCC_VERSION_HEX >= 0x060600
+#include <BRepClass3d.hxx>
+#endif
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepExtrema_MapOfIntegerPackedMapOfInteger.hxx>
+#if OCC_VERSION_HEX >= 0x060801
 #include <BRepExtrema_ShapeProximity.hxx>
+#endif
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepFill.hxx>
+#include <BRepFill_Filling.hxx>
 #include <BRepGProp.hxx>
+#include <BRepGProp_Face.hxx>
 #include <BRepLProp_CLProps.hxx>
 #include <BRepLProp_SLProps.hxx>
 #include <BRepLProp_CurveTool.hxx>
 #include <BRepLib.hxx>
 #include <BRepLib_FindSurface.hxx>
+#include <BRepLib_FuseEdges.hxx>
 #include <BRepOffsetAPI_MakeOffset.hxx>
 #include <BRepOffsetAPI_MakePipe.hxx>
 #include <BRepOffsetAPI_MakePipeShell.hxx>
@@ -176,6 +269,7 @@
 #include <BRep_Tool.hxx>
 #include <BRepTools_ShapeSet.hxx>
 #include <BRepTools_WireExplorer.hxx>
+#include <BRepTopAdaptor_FClass2d.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepCheck_Result.hxx>
@@ -238,6 +332,7 @@
 #include <Geom_CartesianPoint.hxx>
 #include <Geom_Line.hxx>
 #include <Geom_OffsetCurve.hxx>
+#include <Geom_RectangularTrimmedSurface.hxx>
 #include <Geom_Surface.hxx>
 #include <Geom_TrimmedCurve.hxx>
 #include <GeomAbs_CurveType.hxx>
@@ -259,6 +354,7 @@
 #include <Geom_Plane.hxx>
 #include <Geom_ToroidalSurface.hxx>
 #include <GeomAdaptor_HCurve.hxx>
+#include <GeomAdaptor_Surface.hxx>
 #include <GeomAPI.hxx>
 #include <GeomAPI_ExtremaCurveCurve.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
@@ -274,6 +370,9 @@
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
 #include <GeomConvert_CompCurveToBSplineCurve.hxx>
 #include <GeomFill.hxx>
+#include <GeomFill_AppSurf.hxx>
+#include <GeomFill_Line.hxx>
+#include <GeomFill_SectionGenerator.hxx>
 #include <GeomFill_ApproxStyle.hxx>
 #include <GeomFill_CorrectedFrenet.hxx>
 #include <GeomFill_CurveAndTrihedron.hxx>
@@ -281,6 +380,9 @@
 #include <GeomFill_LocationLaw.hxx>
 #include <GeomFill_Pipe.hxx>
 #include <GeomFill_Sweep.hxx>
+#include <GeomFill_AppSurf.hxx>
+#include <GeomFill_Line.hxx>
+#include <GeomFill_SectionGenerator.hxx>
 #include <GeomLib.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
 #include <GeomLProp_SLProps.hxx>
@@ -291,9 +393,13 @@
 #include <GeomPlate_PlateG0Criterion.hxx>
 #include <GeomPlate_PointConstraint.hxx>
 #include <GeomPlate_Surface.hxx>
+#include <Geom_RectangularTrimmedSurface.hxx>
 #include <GeomTools_Curve2dSet.hxx>
 
+#include <gp_Ax1.hxx>
+#include <gp_Dir.hxx>
 #include <gp_Ax2d.hxx>
+#include <gp_Ax3.hxx>
 #include <gp_Circ.hxx>
 #include <gp_Circ2d.hxx>
 #include <gp_Cone.hxx>
@@ -320,10 +426,13 @@
 
 #include <Approx_Curve3d.hxx>
 
+#include <BSplCLib.hxx>
+
 #include <GProp_PGProps.hxx>
 #include <GProp_PrincipalProps.hxx>
 #include <LProp_NotDefined.hxx>
 
+#include <HLRAppli_ReflectLines.hxx>
 #include <IntTools_FClass2d.hxx>
 #include <Law_Constant.hxx>
 #include <MMgt_TShared.hxx>
@@ -340,18 +449,23 @@
 // Shape
 #include <ShapeAlgo_AlgoContainer.hxx>
 #include <ShapeAnalysis.hxx>
+#include <ShapeAnalysis_Curve.hxx>
 #include <ShapeAnalysis_Edge.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <ShapeAnalysis_Shell.hxx>
 #include <ShapeAnalysis_Surface.hxx>
+#include <ShapeAnalysis_FreeBoundsProperties.hxx>
+#include <ShapeAnalysis_ShapeTolerance.hxx>
 #include <ShapeConstruct_Curve.hxx>
 #include <ShapeExtend_Explorer.hxx>
 #include <ShapeFix_Shape.hxx>
+#include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeFix_Wire.hxx>
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <ShapeUpgrade_RemoveInternalWires.hxx>
 
 // Import
+#include <APIHeaderSection_MakeHeader.hxx>
 #include <STEPControl_Controller.hxx>
 #include <STEPControl_Writer.hxx>
 #include <STEPControl_Reader.hxx>
@@ -363,7 +477,39 @@
 #include <IGESControl_Reader.hxx>
 #include <StlAPI_Writer.hxx>
 #include <Interface_Static.hxx>
+#include <Transfer_TransientProcess.hxx>
+#include <XSControl_TransferWriter.hxx>
+#include <XSControl_WorkSession.hxx>
+#include <BinTools.hxx>
+#include <BinTools_ShapeSet.hxx>
 
+#include <XSControl_WorkSession.hxx>
+#include <XSControl_TransferReader.hxx>
+#include <XSControl_TransferWriter.hxx>
+#include <Transfer_TransientProcess.hxx>
+#include <Transfer_FinderProcess.hxx>
+#include <Interface_EntityIterator.hxx>
+#include <Quantity_Color.hxx>
+#include <TCollection_ExtendedString.hxx>
+
+#include <BinTools.hxx>
+#include <BinTools_ShapeSet.hxx>
+#include <APIHeaderSection_MakeHeader.hxx>
+#include <ShapeAnalysis_FreeBoundsProperties.hxx>
+#include <ShapeAnalysis_FreeBoundData.hxx>
+
+#if OCC_VERSION_HEX >= 0x060600
+# include <BOPAlgo_ArgumentAnalyzer.hxx>
+# include <BOPAlgo_ListOfCheckResult.hxx>
+#endif
+
+#if OCC_VERSION_HEX >= 0x070300
+# include <BRepAlgoAPI_Defeaturing.hxx>
+#endif
+
+#if OCC_VERSION_HEX >= 0x060800
+#include <OSD_OpenFile.hxx>
+#endif
 
 #endif // __OpenCascadeAll__
 

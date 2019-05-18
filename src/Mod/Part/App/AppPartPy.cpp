@@ -79,19 +79,18 @@
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <Precision.hxx>
 # include <Standard_Version.hxx>
+# include <BRepOffsetAPI_ThruSections.hxx>
+# include <BSplCLib.hxx>
+# include <GeomFill_AppSurf.hxx>
+# include <GeomFill_Line.hxx>
+# include <GeomFill_Pipe.hxx>
+# include <GeomFill_SectionGenerator.hxx>
+# include <NCollection_List.hxx>
+# include <BRepFill_Filling.hxx>
 #endif
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
-
-#include <BRepOffsetAPI_ThruSections.hxx>
-#include <BSplCLib.hxx>
-#include <GeomFill_AppSurf.hxx>
-#include <GeomFill_Line.hxx>
-#include <GeomFill_Pipe.hxx>
-#include <GeomFill_SectionGenerator.hxx>
-#include <NCollection_List.hxx>
-#include <BRepFill_Filling.hxx>
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
@@ -352,9 +351,9 @@ public:
             "makeThread(pitch,depth,height,radius) -- Make a thread with a given pitch, depth, height and radius"
         );
         add_varargs_method("makeRevolution",&Module::makeRevolution,
-            "makeRevolution(Curve,[vmin,vmax,angle,pnt,dir,shapetype]) -- Make a revolved shape\n"
+            "makeRevolution(Curve or Edge,[vmin,vmax,angle,pnt,dir,shapetype]) -- Make a revolved shape\n"
             "by rotating the curve or a portion of it around an axis given by (pnt,dir).\n"
-            "By default vmin/vmax=bounds of the curve,angle=360,pnt=Vector(0,0,0) and\n"
+            "By default vmin/vmax=bounds of the curve, angle=360, pnt=Vector(0,0,0),\n"
             "dir=Vector(0,0,1) and shapetype=Part.Solid"
         );
         add_varargs_method("makeRuledSurface",&Module::makeRuledSurface,
@@ -482,7 +481,7 @@ private:
 #else
             Part::ImportStep *pcFeature = (Part::ImportStep *)pcDoc->addObject("Part::ImportStep",file.fileNamePure().c_str());
             pcFeature->FileName.setValue(Name);
-#endif 
+#endif
             pcDoc->recompute();
         }
 #if 1
@@ -535,7 +534,7 @@ private:
             // add Import feature
             Part::ImportStep *pcFeature = (Part::ImportStep *)pcDoc->addObject("Part::ImportStep",file.fileNamePure().c_str());
             pcFeature->FileName.setValue(Name);
-#endif 
+#endif
             pcDoc->recompute();
         }
 #if 1
@@ -612,7 +611,7 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(TopoShapePy::Type), &pcObj, &name))
             throw Py::Exception();
 
-        App::Document *pcDoc = App::GetApplication().getActiveDocument(); 	 
+        App::Document *pcDoc = App::GetApplication().getActiveDocument();
         if (!pcDoc)
             pcDoc = App::GetApplication().newDocument();
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObj);
@@ -632,7 +631,7 @@ private:
         BRep_Builder builder;
         TopoDS_Compound Comp;
         builder.MakeCompound(Comp);
-        
+
         try {
             Py::Sequence list(pcObj);
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -661,7 +660,7 @@ private:
         TopoDS_Shell shell;
         //BRepOffsetAPI_Sewing mkShell;
         builder.MakeShell(shell);
-        
+
         try {
             Py::Sequence list(obj);
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -1047,7 +1046,7 @@ private:
             error = "Line through identic points";
             break;
         }
-        // Error 
+        // Error
         if (error) {
             throw Py::Exception(PartExceptionOCCError, error);
         }
@@ -1313,55 +1312,65 @@ private:
         Handle(Geom_Curve) curve;
         union PyType_Object defaultType = {&Part::TopoShapeSolidPy::Type};
         PyObject* type = defaultType.o;
-        if (PyArg_ParseTuple(args.ptr(), "O!|dddO!O!O!", &(GeometryPy::Type), &pCrv,
-                                                   &vmin, &vmax, &angle,
-                                                   &(Base::VectorPy::Type), &pPnt,
-                                                   &(Base::VectorPy::Type), &pDir,
-                                                   &(PyType_Type), &type)) {
-            GeometryPy* pcGeo = static_cast<GeometryPy*>(pCrv);
-            curve = Handle(Geom_Curve)::DownCast
-                (pcGeo->getGeometryPtr()->handle());
-            if (curve.IsNull()) {
-                throw Py::Exception(PyExc_TypeError, "geometry is not a curve");
-            }
-            if (vmin == DBL_MAX)
-                vmin = curve->FirstParameter();
 
-            if (vmax == -DBL_MAX)
-                vmax = curve->LastParameter();
-        }
-        else {
+        do {
+            if (PyArg_ParseTuple(args.ptr(), "O!|dddO!O!O!", &(GeometryPy::Type), &pCrv,
+                                                       &vmin, &vmax, &angle,
+                                                       &(Base::VectorPy::Type), &pPnt,
+                                                       &(Base::VectorPy::Type), &pDir,
+                                                       &(PyType_Type), &type)) {
+                GeometryPy* pcGeo = static_cast<GeometryPy*>(pCrv);
+                curve = Handle(Geom_Curve)::DownCast
+                    (pcGeo->getGeometryPtr()->handle());
+                if (curve.IsNull()) {
+                    throw Py::Exception(PyExc_TypeError, "geometry is not a curve");
+                }
+                if (vmin == DBL_MAX)
+                    vmin = curve->FirstParameter();
+
+                if (vmax == -DBL_MAX)
+                    vmax = curve->LastParameter();
+                break;
+            }
+
             PyErr_Clear();
-            if (!PyArg_ParseTuple(args.ptr(), "O!|dddO!O!", &(TopoShapePy::Type), &pCrv,
-                &vmin, &vmax, &angle, &(Base::VectorPy::Type), &pPnt,
-                &(Base::VectorPy::Type), &pDir)) {
-                throw Py::Exception();
-            }
-            const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pCrv)->getTopoShapePtr()->getShape();
-            if (shape.IsNull()) {
-                throw Py::Exception(PartExceptionOCCError, "shape is empty");
+            if (PyArg_ParseTuple(args.ptr(), "O!|dddO!O!O!", &(TopoShapePy::Type), &pCrv,
+                                                       &vmin, &vmax, &angle,
+                                                       &(Base::VectorPy::Type), &pPnt,
+                                                       &(Base::VectorPy::Type), &pDir,
+                                                       &(PyType_Type), &type)) {
+                const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pCrv)->getTopoShapePtr()->getShape();
+                if (shape.IsNull()) {
+                    throw Py::Exception(PartExceptionOCCError, "shape is empty");
+                }
+
+                if (shape.ShapeType() != TopAbs_EDGE) {
+                    throw Py::Exception(PartExceptionOCCError, "shape is not an edge");
+                }
+
+                const TopoDS_Edge& edge = TopoDS::Edge(shape);
+                BRepAdaptor_Curve adapt(edge);
+
+                const Handle(Geom_Curve)& hCurve = adapt.Curve().Curve();
+                // Apply placement of the shape to the curve
+                TopLoc_Location loc = edge.Location();
+                curve = Handle(Geom_Curve)::DownCast(hCurve->Transformed(loc.Transformation()));
+                if (curve.IsNull()) {
+                    throw Py::Exception(PartExceptionOCCError, "invalid curve in edge");
+                }
+
+                if (vmin == DBL_MAX)
+                    vmin = adapt.FirstParameter();
+                if (vmax == -DBL_MAX)
+                    vmax = adapt.LastParameter();
+                break;
             }
 
-            if (shape.ShapeType() != TopAbs_EDGE) {
-                throw Py::Exception(PartExceptionOCCError, "shape is not an edge");
-            }
-
-            const TopoDS_Edge& edge = TopoDS::Edge(shape);
-            BRepAdaptor_Curve adapt(edge);
-
-            const Handle(Geom_Curve)& hCurve = adapt.Curve().Curve();
-            // Apply placement of the shape to the curve
-            TopLoc_Location loc = edge.Location();
-            curve = Handle(Geom_Curve)::DownCast(hCurve->Transformed(loc.Transformation()));
-            if (curve.IsNull()) {
-                throw Py::Exception(PartExceptionOCCError, "invalid curve in edge");
-            }
-
-            if (vmin == DBL_MAX)
-                vmin = adapt.FirstParameter();
-            if (vmax == -DBL_MAX)
-                vmax = adapt.LastParameter();
+            // invalid arguments
+            throw Py::TypeError("Expected arguments are:\n"
+                                "Curve or Edge, [float, float, float, Vector, Vector, ShapeType]");
         }
+        while(false);
 
         try {
             gp_Pnt p(0,0,0);
@@ -1671,7 +1680,7 @@ private:
         }
         else {
             PyErr_Clear();
-            if (PyArg_ParseTuple(args.ptr(), "Osd|d", &intext, 
+            if (PyArg_ParseTuple(args.ptr(), "Osd|d", &intext,
                                             &fontspec,
                                             &height,
                                             &track)) {

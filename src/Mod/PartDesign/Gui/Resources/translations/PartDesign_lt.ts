@@ -569,7 +569,7 @@
     <message>
       <location filename="../../Command.cpp" line="1722"/>
       <source>Thickness</source>
-      <translation type="unfinished">Thickness</translation>
+      <translation>Storis</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1723"/>
@@ -2051,7 +2051,7 @@
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="49"/>
       <source>Axis</source>
-      <translation type="unfinished">Axis</translation>
+      <translation>Ašis</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="61"/>
@@ -2105,19 +2105,19 @@
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="181"/>
       <source>Base X axis</source>
-      <translation type="unfinished">Base X axis</translation>
+      <translation>Pagrindo X ašis</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="35"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="182"/>
       <source>Base Y axis</source>
-      <translation type="unfinished">Base Y axis</translation>
+      <translation>Pagrindo Y ašis</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="40"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="183"/>
       <source>Base Z axis</source>
-      <translation type="unfinished">Base Z axis</translation>
+      <translation>Pagrindo Z ašis</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="45"/>
@@ -2260,7 +2260,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="49"/>
       <source>Thickness</source>
-      <translation type="unfinished">Thickness</translation>
+      <translation>Storis</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="75"/>
@@ -2342,17 +2342,17 @@
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="212"/>
       <source>Base X axis</source>
-      <translation type="unfinished">Base X axis</translation>
+      <translation>Pagrindo X ašis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="213"/>
       <source>Base Y axis</source>
-      <translation type="unfinished">Base Y axis</translation>
+      <translation>Pagrindo Y ašis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="214"/>
       <source>Base Z axis</source>
-      <translation type="unfinished">Base Z axis</translation>
+      <translation>Pagrindo Z ašis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="221"/>

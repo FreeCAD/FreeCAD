@@ -58,10 +58,9 @@
 # include <Standard_Version.hxx>
 # include <cmath>
 # include <vector>
+# include <boost/bind.hpp>
 //# include <QtGlobal>
 #endif
-
-#include <boost/bind.hpp>
 
 #include <App/Document.h>
 #include <App/FeaturePythonPyImp.h>

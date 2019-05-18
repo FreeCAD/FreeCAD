@@ -104,14 +104,18 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
         from DraftGui import todo
-        todo.delay(recolorize,obj)
+        todo.delay(recolorize,[obj.Document.Name,obj.Name])
     return obj
 
-def recolorize(obj):
+def recolorize(names): # names is [docname,objname]
 
-    if obj.ViewObject:
-        if obj.ViewObject.Proxy:
-            obj.ViewObject.Proxy.colorize(obj,force=True)
+    if names[0] in FreeCAD.listDocuments():
+        doc = FreeCAD.getDocument(names[0])
+        obj = doc.getObject(names[1])
+        if obj:
+            if obj.ViewObject:
+                if obj.ViewObject.Proxy:
+                    obj.ViewObject.Proxy.colorize(obj,force=True)
 
 def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
 
@@ -1372,7 +1376,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                             obj.ViewObject.update()
             self.colorize(obj)
         elif prop == "CloneOf":
-            if obj.CloneOf:
+            if hasattr(obj,"CloneOf") and obj.CloneOf:
                 mat = None
                 if hasattr(obj,"Material"):
                     if obj.Material:
@@ -1423,7 +1427,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     def colorize(self,obj,force=False):
 
         "setting different part colors"
-        if obj.CloneOf:
+        if hasattr(obj,"CloneOf") and obj.CloneOf:
             if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
                 obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
             return
@@ -1456,7 +1460,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                                         if "(" in mat.Material['DiffuseColor']:
                                             ccol = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
                                     if ccol and ('Transparency' in mat.Material):
-                                        ccol = (ccol[0],ccol[1],ccol[2],float(mat.Material['Transparency']))
+                                        t = float(mat.Material['Transparency'])/100.0
+                                        ccol = (ccol[0],ccol[1],ccol[2],t)
             if not ccol:
                 typeidx = (i*5)+1
                 if typeidx < len(obj.WindowParts):

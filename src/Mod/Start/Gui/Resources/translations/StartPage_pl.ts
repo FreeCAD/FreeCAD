@@ -154,9 +154,9 @@
       <translation>Przejrzyj wszystkie zmiany na github</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
-      <source>See all commits on github</source>
-      <translation>Przejrzyj wszystkie zmiany na github</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
+      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
+      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -208,22 +208,12 @@
       <source>Notes</source>
       <translation>Uwagi</translation>
     </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
-      <source>Notes</source>
-      <translation>Uwagi</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <location filename="../../Workbench.cpp" line="65"/>
-      <source>Start page</source>
-      <translation>Strona startowa</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>Strona startowa</translation>
     </message>
@@ -341,7 +331,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="249"/>
       <source>The color of the version text</source>
-      <translation type="unfinished">The color of the version text</translation>
+      <translation>Kolor tekstu wersji</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="269"/>
@@ -351,7 +341,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="276"/>
       <source>An optional image to display as background</source>
-      <translation type="unfinished">An optional image to display as background</translation>
+      <translation>Opcjonalny obraz do wyświetlania w tle</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
@@ -381,7 +371,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="361"/>
       <source>The color of the links</source>
-      <translation type="unfinished">The color of the links</translation>
+      <translation>Kolor linków</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="387"/>
@@ -396,7 +386,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="420"/>
       <source>The background color behind the panels</source>
-      <translation type="unfinished">The background color behind the panels</translation>
+      <translation>Kolor tła za panelami</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="449"/>
@@ -406,12 +396,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="472"/>
       <source>Open links</source>
-      <translation type="unfinished">Open links</translation>
+      <translation>Otwórz odnośniki</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="479"/>
       <source>Background text color</source>
-      <translation type="unfinished">Background text color</translation>
+      <translation>Kolor tekstu tła</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="486"/>
@@ -431,7 +421,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="508"/>
       <source>Arial,Helvetica,sans</source>
-      <translation type="unfinished">Arial,Helvetica,sans</translation>
+      <translation>Arial,Helvetica,bezszeryfowa</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="521"/>
@@ -446,7 +436,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="542"/>
       <source>Use gradient for New File icon</source>
-      <translation type="unfinished">Use gradient for New File icon</translation>
+      <translation>Użyj gradientu dla ikony Nowy Plik</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="568"/>

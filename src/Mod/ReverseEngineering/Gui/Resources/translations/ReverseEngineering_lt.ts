@@ -106,7 +106,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Nuostatos</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="160"/>
@@ -162,9 +162,9 @@
       <translation>Prašome pasirinkti vieną dėstymo objektą gauti vietos orientacijai.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -195,9 +195,9 @@
       <translation>Atskaitų kiekis mazgui</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>

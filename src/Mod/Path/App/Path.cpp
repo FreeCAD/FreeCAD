@@ -24,9 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/regex.hpp>
 #endif
-
-#include <boost/regex.hpp>
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -79,7 +78,7 @@ Toolpath &Toolpath::operator=(const Toolpath& otherPath)
     return *this;
 }
 
-void Toolpath::clear(void) 
+void Toolpath::clear(void)
 {
     for(std::vector<Command*>::iterator it = vpcCommands.begin();it!=vpcCommands.end();++it)
         delete ( *it );
@@ -167,12 +166,12 @@ static void bulkAddCommand(const std::string &gcodestr, std::vector<Command*> &c
 void Toolpath::setFromGCode(const std::string instr)
 {
     clear();
-    
+
     // remove comments
     //boost::regex e("\\(.*?\\)");
     //std::string str = boost::regex_replace(instr, e, "");
     std::string str(instr);
-    
+
     // split input string by () or G or M commands
     std::string mode = "command";
     std::size_t found = str.find_first_of("(gGmM");
@@ -225,23 +224,23 @@ std::string Toolpath::toGCode(void) const
         result += "\n";
     }
     return result;
-}    
+}
 
 void Toolpath::recalculate(void) // recalculates the path cache
 {
-    
+
     if(vpcCommands.size()==0)
         return;
-        
+
     // TODO recalculate the KDL stuff. At the moment, this is unused.
 
 #if 0
     // delete the old and create a new one
-    if(pcPath) 
+    if(pcPath)
         delete (pcPath);
-        
+
     pcPath = new KDL::Path_Composite();
-    
+
     KDL::Path *tempPath;
     KDL::Frame Last;
 
@@ -350,7 +349,7 @@ void Toolpath::RestoreDocFile(Base::Reader &reader)
 {
     std::string gcode;
     std::string line;
-    while (reader >> line) { 
+    while (reader >> line) {
         gcode += line;
         gcode += " ";
     }
@@ -361,4 +360,4 @@ void Toolpath::RestoreDocFile(Base::Reader &reader)
 
 
 
- 
+

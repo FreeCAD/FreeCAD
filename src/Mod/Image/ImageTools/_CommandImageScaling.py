@@ -23,8 +23,8 @@
 __title__ = "ImageTools._CommandImageScaling"
 __author__  = "JAndersM"
 __url__     = "http://www.freecadweb.org/index-fr.html"
-__version__ = "00.01"
-__date__    = "19/01/2016" 
+__version__ = "00.02"
+__date__    = "03/05/2019" 
  
  
 import FreeCAD
@@ -113,10 +113,10 @@ def cmdCreateImageScaling(name):
             self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
             self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
             self.label = QtGui.QLabel(Dialog)
-            self.label.setGeometry(QtCore.QRect(30, 10, 66, 17))
+            self.label.setGeometry(QtCore.QRect(30, 10, 86, 17))
             self.label.setObjectName(_fromUtf8("label"))
             self.lineEdit = QtGui.QLineEdit(Dialog)
-            self.lineEdit.setGeometry(QtCore.QRect(100, 10, 113, 29))
+            self.lineEdit.setGeometry(QtCore.QRect(140, 10, 153, 29))
             self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
             self.label1 = QtGui.QLabel(Dialog)
             self.label1.setGeometry(QtCore.QRect(20, 45, 260, 17))
@@ -132,14 +132,21 @@ def cmdCreateImageScaling(name):
     
         def retranslateUi(self, Dialog):
             Dialog.setWindowTitle(_translate("Dialog", "Scale image plane", None))
-            self.label.setText(_translate("Dialog", "Distance", None))
+            self.label.setText(_translate("Dialog", "Distance [mm]", None))
             self.label1.setText(_translate("Dialog", "Select first point", None))
             
         def accept(self):
             sel = FreeCADGui.Selection.getSelection()
             try:
-                locale=QtCore.QLocale.system()
-                d, ok = locale.toFloat(str(eval(self.lineEdit.text())))
+                try:
+                    q = FreeCAD.Units.parseQuantity(self.lineEdit.text())
+                    d = q.Value
+                    if q.Unit == FreeCAD.Units.Unit(): # plain number
+                        ok = True
+                    elif q.Unit == FreeCAD.Units.Length:
+                        ok = True
+                except:
+                    ok = False
                 if not ok:
                     raise ValueError
                 s=d/self.distance

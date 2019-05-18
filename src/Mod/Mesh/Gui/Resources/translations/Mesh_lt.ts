@@ -972,7 +972,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Nuostatos</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
@@ -1157,6 +1157,13 @@ Please run the command to repair folds first</source>
       <location filename="../../DlgSettingsImportExport.ui" line="60"/>
       <source>Export AMF files using compression</source>
       <translation>Eksportuoti glaudintus AMF failus</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="36"/>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation type="unfinished">This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</translation>
     </message>
   </context>
   <context>
@@ -1578,7 +1585,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="329"/>
       <source>Axis</source>
-      <translation type="unfinished">Axis</translation>
+      <translation>Ašis</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="330"/>

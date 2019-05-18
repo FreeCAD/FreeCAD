@@ -4,17 +4,17 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="519"/>
+      <location filename="../../Command.cpp" line="521"/>
       <source>File</source>
       <translation>Plik</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="520"/>
+      <location filename="../../Command.cpp" line="522"/>
       <source>&amp;Export project...</source>
       <translation>&amp;Eksportuj projekt...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="521"/>
+      <location filename="../../Command.cpp" line="523"/>
       <source>Export a Raytracing project to a file</source>
       <translation>Eksport projektu Raytracing do pliku</translation>
     </message>
@@ -22,27 +22,27 @@
   <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-      <location filename="../../Command.cpp" line="752"/>
+      <location filename="../../Command.cpp" line="754"/>
       <source>Raytracing</source>
       <translation>Raytracing</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="753"/>
+      <location filename="../../Command.cpp" line="755"/>
       <source>New Luxrender project</source>
       <translation>Nowy projekt Luxrendera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="754"/>
+      <location filename="../../Command.cpp" line="756"/>
       <source>Insert new Luxrender project into the document</source>
       <translation>Wstaw nowy projekt Luxrendera do projektu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="806"/>
+      <location filename="../../Command.cpp" line="808"/>
       <source>No template</source>
       <translation>Brak szablonu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="807"/>
+      <location filename="../../Command.cpp" line="809"/>
       <source>No template available</source>
       <translation>Szablon niedostępny</translation>
     </message>
@@ -50,17 +50,17 @@
   <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Raytracing</source>
       <translation>Raytracing</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="438"/>
       <source>Insert part</source>
       <translation>Wstaw część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="437"/>
+      <location filename="../../Command.cpp" line="439"/>
       <source>Insert a new part object into a Raytracing project</source>
       <translation>Wstaw nową część do projektu Raytracing</translation>
     </message>
@@ -68,27 +68,27 @@
   <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="320"/>
       <source>Raytracing</source>
       <translation>Raytracing</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="321"/>
       <source>New POV-Ray project</source>
       <translation>Nowy projekt POV-Ray</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="320"/>
+      <location filename="../../Command.cpp" line="322"/>
       <source>Insert new POV-Ray project into the document</source>
       <translation>Wstaw nowy projekt POV-Ray do dokumentu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="374"/>
       <source>No template</source>
       <translation>Brak szablonu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="375"/>
       <source>No template available</source>
       <translation>Szablon niedostępny</translation>
     </message>
@@ -96,17 +96,17 @@
   <context>
     <name>CmdRaytracingRender</name>
     <message>
-      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="587"/>
       <source>Raytracing</source>
       <translation>Raytracing</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="586"/>
+      <location filename="../../Command.cpp" line="588"/>
       <source>&amp;Render</source>
       <translation>&amp; Renderuj</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="587"/>
+      <location filename="../../Command.cpp" line="589"/>
       <source>Renders the current raytracing project with an external renderer</source>
       <translation>Renderuje obecny projekt raytracing za pomocą zewnętrznego renderera</translation>
     </message>
@@ -114,17 +114,17 @@
   <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-      <location filename="../../Command.cpp" line="865"/>
+      <location filename="../../Command.cpp" line="867"/>
       <source>Raytracing</source>
       <translation>Raytracing</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="866"/>
+      <location filename="../../Command.cpp" line="868"/>
       <source>&amp;Reset Camera</source>
       <translation>&amp;Zresetuj kamerę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="867"/>
+      <location filename="../../Command.cpp" line="869"/>
       <source>Sets the camera of the selected Raytracing project to match the current view</source>
       <translation>Ustawia widok kamery z wybranego projektu Raytracing i dopasowuje go do bieżącego widoku</translation>
     </message>
@@ -170,18 +170,19 @@
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <location filename="../../Command.cpp" line="237"/>
-      <location filename="../../Command.cpp" line="334"/>
-      <location filename="../../Command.cpp" line="768"/>
+      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="770"/>
       <source>No perspective camera</source>
       <translation>Brak podglądu perspektywy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="99"/>
       <location filename="../../Command.cpp" line="238"/>
-      <location filename="../../Command.cpp" line="335"/>
-      <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
+      <location filename="../../Command.cpp" line="337"/>
+      <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>Bieżącym widokiem kamery nie jest perspektywa i tym samym wynik obrazu POV-Ray może później wyglądać inaczej od oczekiwań. Czy chcesz kontynuować?</translation>
+      <translation type="unfinished">The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
+Do you want to continue?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
@@ -199,22 +200,23 @@ Do you want to continue?</source>
       <translation>Zapisz aktywny widok 3D z kamery i całą jego zawartość do pliku POV-Ray</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="349"/>
-      <location filename="../../Command.cpp" line="783"/>
+      <location filename="../../Command.cpp" line="351"/>
+      <location filename="../../Command.cpp" line="785"/>
       <source>No template</source>
       <translation>Brak szablonu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="350"/>
-      <location filename="../../Command.cpp" line="784"/>
+      <location filename="../../Command.cpp" line="352"/>
+      <location filename="../../Command.cpp" line="786"/>
       <source>Cannot create a project because there is no template installed.</source>
       <translation>Nie można utworzyć projektu, ponieważ nie zainstalowano żadnego szablonu.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="769"/>
-      <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
+      <location filename="../../Command.cpp" line="771"/>
+      <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>Bieżący widok kamery nie jest perspektywą i dla tego wynik obrazu luxrender, może później wyglądać inaczej do tego, czego oczekiwałeś. Czy chcesz kontynuować?</translation>
+      <translation type="unfinished">The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
+Do you want to continue?</translation>
     </message>
   </context>
   <context>
@@ -223,7 +225,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="135"/>
       <location filename="../../Command.cpp" line="186"/>
       <location filename="../../Command.cpp" line="248"/>
-      <location filename="../../Command.cpp" line="543"/>
+      <location filename="../../Command.cpp" line="545"/>
       <source>POV-Ray</source>
       <translation>POV-Ray</translation>
     </message>
@@ -231,8 +233,8 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="136"/>
       <location filename="../../Command.cpp" line="187"/>
       <location filename="../../Command.cpp" line="249"/>
-      <location filename="../../Command.cpp" line="548"/>
-      <location filename="../../Command.cpp" line="661"/>
+      <location filename="../../Command.cpp" line="550"/>
+      <location filename="../../Command.cpp" line="663"/>
       <source>All Files</source>
       <translation>Wszystkie pliki</translation>
     </message>
@@ -240,107 +242,107 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="137"/>
       <location filename="../../Command.cpp" line="188"/>
       <location filename="../../Command.cpp" line="251"/>
-      <location filename="../../Command.cpp" line="550"/>
+      <location filename="../../Command.cpp" line="552"/>
       <source>Export page</source>
       <translation>Eksportuj stronę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
-      <location filename="../../Command.cpp" line="534"/>
-      <location filename="../../Command.cpp" line="601"/>
-      <location filename="../../Command.cpp" line="879"/>
+      <location filename="../../Command.cpp" line="449"/>
+      <location filename="../../Command.cpp" line="536"/>
+      <location filename="../../Command.cpp" line="603"/>
+      <location filename="../../Command.cpp" line="881"/>
       <source>Wrong selection</source>
       <translation>Niewłaściwy wybór</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="448"/>
+      <location filename="../../Command.cpp" line="450"/>
       <source>Select a Part object.</source>
       <translation>Wybierz obiekt Części.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
-      <location filename="../../Command.cpp" line="470"/>
+      <location filename="../../Command.cpp" line="460"/>
+      <location filename="../../Command.cpp" line="472"/>
       <source>No Raytracing project to insert</source>
       <translation>Brak projektu Raytracing do wstawienia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="459"/>
+      <location filename="../../Command.cpp" line="461"/>
       <source>Create a Raytracing project to insert a view.</source>
       <translation>Tworzy nowy projekt Raytracing aby wstawić widok.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="471"/>
+      <location filename="../../Command.cpp" line="473"/>
       <source>Select a Raytracing project to insert the view.</source>
       <translation>Wybierz projekt Raytracing żeby wstawić widok.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="535"/>
-      <location filename="../../Command.cpp" line="602"/>
-      <location filename="../../Command.cpp" line="880"/>
+      <location filename="../../Command.cpp" line="537"/>
+      <location filename="../../Command.cpp" line="604"/>
+      <location filename="../../Command.cpp" line="882"/>
       <source>Select one Raytracing project object.</source>
       <translation>Wybierz jeden obiekt projektu Raytracing.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="539"/>
+      <location filename="../../Command.cpp" line="541"/>
       <source>Luxrender</source>
       <translation>Luxrender</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="617"/>
-      <location filename="../../Command.cpp" line="623"/>
+      <location filename="../../Command.cpp" line="619"/>
+      <location filename="../../Command.cpp" line="625"/>
       <source>POV-Ray not found</source>
       <translation>Nie znaleziono POV-Ray</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="618"/>
+      <location filename="../../Command.cpp" line="620"/>
       <source>Please set the path to the POV-Ray executable in the preferences.</source>
       <translation>Proszę ustawić ścieżkę do pliku wykonywalnego POV-Ray w preferencjach.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="624"/>
+      <location filename="../../Command.cpp" line="626"/>
       <source>Please correct the path to the POV-Ray executable in the preferences.</source>
       <translation>Proszę poprawić ścieżkę do pliku wykonywalnego POV-Ray w preferencjach.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="631"/>
-      <location filename="../../Command.cpp" line="637"/>
+      <location filename="../../Command.cpp" line="633"/>
+      <location filename="../../Command.cpp" line="639"/>
       <source>Luxrender not found</source>
       <translation>Nie znaleziono Luxrender</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="632"/>
+      <location filename="../../Command.cpp" line="634"/>
       <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
       <translation>Ustaw ścieżkę do pliku wykonywalnego luxrendera albo luxkonsoli w ustawieniach preferencji.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="638"/>
+      <location filename="../../Command.cpp" line="640"/>
       <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
       <translation>Popraw ścieżkę do pliku wykonywalnego luxrendera albo luxkonsoli w ustawieniach preferencji.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>POV-Ray file missing</source>
       <translation>Brakuje pliku POV-Ray</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="651"/>
+      <location filename="../../Command.cpp" line="653"/>
       <source>The POV-Ray project file doesn't exist.</source>
       <translation>Brak pliku projektu POV-Ray.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="657"/>
       <location filename="../../Command.cpp" line="659"/>
-      <location filename="../../Command.cpp" line="662"/>
+      <location filename="../../Command.cpp" line="661"/>
+      <location filename="../../Command.cpp" line="664"/>
       <source>Rendered image</source>
       <translation>Renderowanie obrazu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="719"/>
+      <location filename="../../Command.cpp" line="721"/>
       <source>Lux project file missing</source>
       <translation>Brakuje pliku projektu Lux</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="720"/>
+      <location filename="../../Command.cpp" line="722"/>
       <source>The Lux project file doesn't exist.</source>
       <translation>Plik projektu Lux nie istnieje.</translation>
     </message>

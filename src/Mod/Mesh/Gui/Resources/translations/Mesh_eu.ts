@@ -1159,6 +1159,13 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
       <source>Export AMF files using compression</source>
       <translation>Esportatu AMF fitxategiak konpresioa erabiliz</translation>
     </message>
+    <message>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="36"/>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation type="unfinished">This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>

@@ -60,7 +60,7 @@
     <name>App::Property</name>
     <message>
       <source>The displayed size of the origin</source>
-      <translation>Görüntülenen orijinin boyutu</translation>
+      <translation>Görüntülenen nesne boyutu</translation>
     </message>
     <message>
       <source>Visual size of the feature</source>
@@ -102,7 +102,7 @@
     <name>CmdViewMeasureClearAll</name>
     <message>
       <source>Measure</source>
-      <translation>Ölçüm</translation>
+      <translation>Ölçümü</translation>
     </message>
     <message>
       <source>Clear measurement</source>
@@ -113,7 +113,7 @@
     <name>CmdViewMeasureToggleAll</name>
     <message>
       <source>Measure</source>
-      <translation>Ölçüm</translation>
+      <translation>Ölçümü</translation>
     </message>
     <message>
       <source>Toggle measurement</source>
@@ -124,11 +124,11 @@
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
-      <translation>Uzaybol Hareketi</translation>
+      <translation>Uzaytopu Hareketi</translation>
     </message>
     <message>
       <source>Dominant Mode</source>
-      <translation>Baskın Mod</translation>
+      <translation>Baskın Modu</translation>
     </message>
     <message>
       <source>Flip Y/Z</source>
@@ -140,11 +140,11 @@
     </message>
     <message>
       <source>Enable Rotations</source>
-      <translation>Döndürmeleri etkinleştir</translation>
+      <translation>Döndürmeyi etkinleştir</translation>
     </message>
     <message>
       <source>Calibrate</source>
-      <translation>Ayarlamak</translation>
+      <translation>Kalibre et</translation>
     </message>
     <message>
       <source>Default</source>
@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation>Küresel hassasiyet:</translation>
+      <translation>Genel hassasiyet:</translation>
     </message>
   </context>
   <context>
@@ -261,7 +261,7 @@
     <name>Gui::AutoSaver</name>
     <message>
       <source>Please wait until the AutoRecovery file has been saved...</source>
-      <translation>Otomatik Kurtarma dosyası kaydedilene kadar bekleyin...</translation>
+      <translation>Otomatik Kurtarma dosyası kaydedilinceye kadar lütfen bekleyin...</translation>
     </message>
   </context>
   <context>
@@ -387,7 +387,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Credits</source>
-      <translation>Ekip</translation>
+      <translation>Katkıda Bulunanlar</translation>
     </message>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
@@ -986,7 +986,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
-      <translation>Uzaybol Hareketi</translation>
+      <translation>Uzaytopu Hareketi</translation>
     </message>
     <message>
       <source>No Spaceball Present</source>
@@ -1244,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Giriş ekranını başlangıçta etkinleştir</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Rapor sekmesine geçin:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Başlayınca kitaplığı otomatik çalıştır:</translation>
     </message>
@@ -1266,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Size of recent file list</source>
       <translation>Son kullanılan dosya listesi boyutu</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Pencere stili:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1627,6 +1619,53 @@ Lütfen başka bir dizin belirtin.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>Kapat</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation type="unfinished">Find...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Bul</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation type="unfinished">Find what:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation type="unfinished">Look at</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation type="unfinished">Groups</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation type="unfinished">Names</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation type="unfinished">Values</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation type="unfinished">Match whole string only</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation type="unfinished">Find Next</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation type="unfinished">Not found</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation type="unfinished">Can't find the text: %1</translation>
     </message>
   </context>
   <context>
@@ -2041,7 +2080,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
-      <translation>Ortografik işleme</translation>
+      <translation>Or&amp;tografik işle (renderla)</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
@@ -2149,7 +2188,7 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
     </message>
     <message>
       <source>Front</source>
-      <translation>ön</translation>
+      <translation>Ön</translation>
     </message>
     <message>
       <source>Left</source>
@@ -2724,10 +2763,6 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
       <translation>Arayüz komutları</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Arayüz komutları kaydediliyor</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Yorum olarak kaydet</translation>
     </message>
@@ -2742,6 +2777,10 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
     <message>
       <source>Run macros in local environment</source>
       <translation>Makroları yerel ortamda çalıştır</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation type="unfinished">Record GUI commands</translation>
     </message>
   </context>
   <context>
@@ -2769,10 +2808,6 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
     <message>
       <source>Unit</source>
       <translation>Birim</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Kullanıcı sistemi:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2837,6 +2872,10 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation type="unfinished">Unit system:</translation>
     </message>
   </context>
   <context>
@@ -3310,7 +3349,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Export parameter to file</source>
-      <translation>Parametre dosyaya (dışarı) aktar</translation>
+      <translation>Parametreyi dosyaya (dışarı) aktar</translation>
     </message>
     <message>
       <source>Import parameter from file</source>
@@ -3416,15 +3455,15 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Pitch:</source>
-      <translation>Saha:</translation>
+      <translation>Hatve (Aralık):</translation>
     </message>
     <message>
       <source>Roll:</source>
-      <translation>yuvarla(sar)</translation>
+      <translation>Yuvarla (X ekseninde):</translation>
     </message>
     <message>
       <source>Yaw:</source>
-      <translation>rotadan çıkma: </translation>
+      <translation>Sapma Açısı (Z ekseninde):</translation>
     </message>
     <message>
       <source>Rotation axis with angle</source>
@@ -4540,12 +4579,12 @@ Başka bir dizin belirlemek ister misiniz?</translation>
       <translation>Artım</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Çeviri artışı: </translation>
+      <source>Translation Increment:</source>
+      <translation type="unfinished">Translation Increment:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Çeviri artışı: </translation>
+      <source>Rotation Increment:</source>
+      <translation type="unfinished">Rotation Increment:</translation>
     </message>
   </context>
   <context>
@@ -5723,7 +5762,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Export...</source>
-      <translation>&amp;Dışa çıkart...</translation>
+      <translation>&amp;Dışa Aktar...</translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
@@ -6854,11 +6893,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Front</source>
-      <translation>ön</translation>
+      <translation>Ön</translation>
     </message>
     <message>
       <source>Set to front view</source>
-      <translation>Ön görünüme ayarla</translation>
+      <translation>Ön görünüme geç</translation>
     </message>
   </context>
   <context>
@@ -6978,7 +7017,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to left view</source>
-      <translation>Soldan görünüme ayarla</translation>
+      <translation>Sol yan görünüme geç</translation>
     </message>
   </context>
   <context>
@@ -6993,7 +7032,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to rear view</source>
-      <translation>Arka görünüm için ayarla</translation>
+      <translation>Arka görünüme geç</translation>
     </message>
   </context>
   <context>
@@ -7008,7 +7047,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to right view</source>
-      <translation>sağdan görünüm için ayarla</translation>
+      <translation>Sağ yan görünüme geç</translation>
     </message>
   </context>
   <context>
@@ -7053,7 +7092,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to top view</source>
-      <translation>üstten görünüm için ayarla</translation>
+      <translation>Üst görünüme geç</translation>
     </message>
   </context>
   <context>
@@ -7527,7 +7566,7 @@ Onları çoğaltmak mı istiyorsun?</translation>
     </message>
     <message>
       <source>&amp;Edit</source>
-      <translation>&amp; Düzenle</translation>
+      <translation>Düz&amp;enle</translation>
     </message>
     <message>
       <source>Standard views</source>
@@ -7547,11 +7586,11 @@ Onları çoğaltmak mı istiyorsun?</translation>
     </message>
     <message>
       <source>&amp;View</source>
-      <translation>&amp; Görünüm</translation>
+      <translation>&amp;Görünüm</translation>
     </message>
     <message>
       <source>&amp;Tools</source>
-      <translation>&amp; Araçlar</translation>
+      <translation>&amp;Eszközök</translation>
     </message>
     <message>
       <source>&amp;Macro</source>
@@ -7559,7 +7598,7 @@ Onları çoğaltmak mı istiyorsun?</translation>
     </message>
     <message>
       <source>&amp;Windows</source>
-      <translation>&amp; Pencere</translation>
+      <translation>&amp;Pencere</translation>
     </message>
     <message>
       <source>&amp;On-line help</source>

@@ -143,7 +143,7 @@ class _Floor:
             # obj can be a Part Feature and already has a placement
             obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
         if not "IfcType" in pl:
-            obj.addProperty("App::PropertyEnumeration","IfcType","Component",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
+            obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
             import ArchIFC
             obj.IfcType = ArchIFC.IfcTypes
         self.Type = "Floor"

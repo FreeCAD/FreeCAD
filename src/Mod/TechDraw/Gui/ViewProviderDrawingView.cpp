@@ -61,6 +61,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentO
 
 ViewProviderDrawingView::ViewProviderDrawingView()
 {
+//    Base::Console().Message("VPDV::VPDV\n");
     sPixmap = "TechDraw_Tree_View";
     static const char *group = "Base";
 
@@ -78,6 +79,7 @@ ViewProviderDrawingView::~ViewProviderDrawingView()
 
 void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 {
+//    Base::Console().Message("VPDV::attach(%s)\n", pcFeat->getNameInDocument());
     ViewProviderDocumentObject::attach(pcFeat);
 
     auto bnd = boost::bind(&ViewProviderDrawingView::onGuiRepaint, this, _1);
@@ -133,7 +135,6 @@ void ViewProviderDrawingView::show(void)
     if (obj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         QGIView* qView = getQView();
         if (qView) {
-            qView->isVisible(true);
             qView->draw();
             qView->show();
         }
@@ -150,7 +151,6 @@ void ViewProviderDrawingView::hide(void)
     if (obj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         QGIView* qView = getQView();
         if (qView) {
-            qView->isVisible(false);
             qView->draw();
             qView->hide();
         }
@@ -170,7 +170,8 @@ QGIView* ViewProviderDrawingView::getQView(void)
             if (dvp) {
                 if (dvp->getMDIViewPage()) {
                     if (dvp->getMDIViewPage()->getQGVPage()) {
-                        qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->getQGVPage()->findQViewForDocObj(getViewObject()));
+                        qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->
+                                               getQGVPage()->findQViewForDocObj(getViewObject()));
                     }
                 }
             }
@@ -239,7 +240,6 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
 
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
 {
-//    Base::Console().Message("VPDV::onGuiRepaint(%s)\n",dv->getNameInDocument());
     if (dv == getViewObject()) {
         if (!dv->isRemoving() &&
             !dv->isRestoring()) {

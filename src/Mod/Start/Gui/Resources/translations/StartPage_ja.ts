@@ -21,7 +21,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
       <source>Activity</source>
-      <translation type="unfinished">Activity</translation>
+      <translation>アクティビティ</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
@@ -151,12 +151,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>See all commits on github</source>
-      <translation type="unfinished">See all commits on github</translation>
+      <translation>GitHubのコメントを全て参照</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
-      <source>See all commits on github</source>
-      <translation type="unfinished">See all commits on github</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
+      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
+      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
       <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation type="unfinished">The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</translation>
+      <translation>&lt;a href="https://forum.freecadweb.org"&gt;FreeCAD フォーラム&lt;/a&gt;の最新の投稿:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
@@ -208,22 +208,12 @@
       <source>Notes</source>
       <translation>ノート</translation>
     </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
-      <source>Notes</source>
-      <translation>ノート</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <location filename="../../Workbench.cpp" line="65"/>
-      <source>Start page</source>
-      <translation>スタートページ</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>スタートページ</translation>
     </message>
@@ -266,22 +256,22 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
       <source>Contents</source>
-      <translation type="unfinished">Contents</translation>
+      <translation>コンテンツ</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="48"/>
       <source>Show forum</source>
-      <translation type="unfinished">Show forum</translation>
+      <translation>フォーラムを表示</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
       <source>Show examples folder contents</source>
-      <translation type="unfinished">Show examples folder contents</translation>
+      <translation>サンプルフォルダの内容を表示</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="62"/>
       <source>Show additional folder</source>
-      <translation type="unfinished">Show additional folder</translation>
+      <translation>追加フォルダを表示</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
@@ -341,17 +331,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="249"/>
       <source>The color of the version text</source>
-      <translation type="unfinished">The color of the version text</translation>
+      <translation>バージョンの文字色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="269"/>
       <source>Link color</source>
-      <translation type="unfinished">Link color</translation>
+      <translation>リンクの色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="276"/>
       <source>An optional image to display as background</source>
-      <translation type="unfinished">An optional image to display as background</translation>
+      <translation>背景として表示するオプション画像</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
@@ -361,27 +351,27 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="308"/>
       <source>Page background color</source>
-      <translation type="unfinished">Page background color</translation>
+      <translation>ページ背景色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="321"/>
       <source>The color of the text on the main pages</source>
-      <translation type="unfinished">The color of the text on the main pages</translation>
+      <translation>メインページの文字色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="341"/>
       <source>Background image</source>
-      <translation type="unfinished">Background image</translation>
+      <translation>背景画像</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="348"/>
       <source>Page text color</source>
-      <translation type="unfinished">Page text color</translation>
+      <translation>ページ文字色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="361"/>
       <source>The color of the links</source>
-      <translation type="unfinished">The color of the links</translation>
+      <translation>リンクの色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="387"/>
@@ -406,17 +396,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="472"/>
       <source>Open links</source>
-      <translation type="unfinished">Open links</translation>
+      <translation>リンクを開く</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="479"/>
       <source>Background text color</source>
-      <translation type="unfinished">Background text color</translation>
+      <translation>テキスト背景色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="486"/>
       <source>Use FreeCAD style sheet</source>
-      <translation type="unfinished">Use FreeCAD style sheet</translation>
+      <translation>FreeCAD スタイルシートを使用</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="493"/>
@@ -461,12 +451,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="596"/>
       <source>Switch workbench after loading</source>
-      <translation type="unfinished">Switch workbench after loading</translation>
+      <translation>読み込みの後でワークベンチを切り替え</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="603"/>
       <source>Close start page after loading</source>
-      <translation type="unfinished">Close start page after loading</translation>
+      <translation>読み込みの後でスタートページを閉じる</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="610"/>
@@ -476,7 +466,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="617"/>
       <source>If FreeCAD is started by opening a file, apply the two settings above</source>
-      <translation type="unfinished">If FreeCAD is started by opening a file, apply the two settings above</translation>
+      <translation>ファイルオープンで FreeCAD を開始する場合、上の2つの設定を適用</translation>
     </message>
   </context>
 </TS>
