@@ -910,6 +910,7 @@ class SectionPlaneTaskPanel:
         self.delButton = QtGui.QPushButton(self.form)
         self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
         self.grid.addWidget(self.delButton, 3, 1, 1, 1)
+        self.delButton.setEnabled(False)
 
         # rotate / resize buttons
         self.rlabel = QtGui.QLabel(self.form)
@@ -932,6 +933,7 @@ class SectionPlaneTaskPanel:
         QtCore.QObject.connect(self.rotateZButton, QtCore.SIGNAL("clicked()"), self.rotateZ)
         QtCore.QObject.connect(self.resizeButton, QtCore.SIGNAL("clicked()"), self.resize)
         QtCore.QObject.connect(self.recenterButton, QtCore.SIGNAL("clicked()"), self.recenter)
+        QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemSelectionChanged()"), self.onTreeClick)
         self.update()
 
     def isAllowedAlterSelection(self):
@@ -966,9 +968,15 @@ class SectionPlaneTaskPanel:
 
     def addElement(self):
         if self.obj:
+            added = False
             for o in FreeCADGui.Selection.getSelection():
-                ArchComponent.addToComponent(self.obj,o,"Objects")
-            self.update()
+                if o != self.obj:
+                    ArchComponent.addToComponent(self.obj,o,"Objects")
+                    added = True
+            if added:
+                self.update()
+            else:
+                FreeCAD.Console.PrintWarning("Please select objects in the 3D view or in the model tree before pressing the button\n")
 
     def removeElement(self):
         if self.obj:
@@ -1023,6 +1031,12 @@ class SectionPlaneTaskPanel:
         if self.obj:
             self.obj.Placement.Base = self.getBB().Center
 
+    def onTreeClick(self):
+        if self.tree.selectedItems():
+            self.delButton.setEnabled(True)
+        else:
+            self.delButton.setEnabled(False)
+
     def accept(self):
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
@@ -1031,14 +1045,21 @@ class SectionPlaneTaskPanel:
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Section plane settings", None))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
-        self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None))
+        self.delButton.setToolTip(QtGui.QApplication.translate("Arch", "Remove highlighted objects from the list above", None))
+        self.addButton.setText(QtGui.QApplication.translate("Arch", "Add selected", None))
+        self.addButton.setToolTip(QtGui.QApplication.translate("Arch", "Add selected object(s) to the scope of this section plane", None))
         self.title.setText(QtGui.QApplication.translate("Arch", "Objects seen by this section plane:", None))
         self.rlabel.setText(QtGui.QApplication.translate("Arch", "Section plane placement:", None))
         self.rotateXButton.setText(QtGui.QApplication.translate("Arch", "Rotate X", None))
+        self.rotateXButton.setToolTip(QtGui.QApplication.translate("Arch", "Rotates the plane along the X axis", None))
         self.rotateYButton.setText(QtGui.QApplication.translate("Arch", "Rotate Y", None))
+        self.rotateYButton.setToolTip(QtGui.QApplication.translate("Arch", "Rotates the plane along the Y axis", None))
         self.rotateZButton.setText(QtGui.QApplication.translate("Arch", "Rotate Z", None))
+        self.rotateZButton.setToolTip(QtGui.QApplication.translate("Arch", "Rotates the plane along the Z axis", None))
         self.resizeButton.setText(QtGui.QApplication.translate("Arch", "Resize", None))
+        self.resizeButton.setToolTip(QtGui.QApplication.translate("Arch", "Resizes the plane to fit the objects in the list above", None))
         self.recenterButton.setText(QtGui.QApplication.translate("Arch", "Center", None))
+        self.recenterButton.setToolTip(QtGui.QApplication.translate("Arch", "Centers the plane on the objects in the list above", None))
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())

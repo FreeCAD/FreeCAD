@@ -40,6 +40,8 @@
 #include "DrawViewImage.h"
 #include "DrawViewDetail.h"
 #include "DrawViewBalloon.h"
+#include "DrawLeaderLine.h"
+#include "DrawRichAnno.h"
 
 namespace TechDraw {
     extern PyObject* initModule();
@@ -80,7 +82,8 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawProjGroupItem   ::init();
     TechDraw::DrawViewDetail      ::init();
     TechDraw::DrawViewBalloon     ::init();
-
+    TechDraw::DrawLeaderLine      ::init();
+    TechDraw::DrawRichAnno      ::init();
 
     TechDraw::DrawTemplate        ::init();
     TechDraw::DrawParametricTemplate::init();
@@ -99,5 +102,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawViewMultiPython  ::init();
     TechDraw::DrawTemplatePython  ::init();
     TechDraw::DrawViewSymbolPython::init();
+    TechDraw::DrawLeaderLinePython::init();
+    TechDraw::DrawRichAnnoPython::init();
     PyMOD_Return(mod);
 }

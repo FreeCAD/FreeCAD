@@ -207,13 +207,13 @@
     <message>
       <location filename="../../Command.cpp" line="755"/>
       <source>&amp;Spreadsheet View</source>
-      <translation>&amp;Tablo Görünümü</translation>
+      <translation>He&amp;sapTablosu Görünümü</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="756"/>
       <location filename="../../Command.cpp" line="758"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-      <translation>Seçili tabloların bir görünümünü etkin çizime ekler</translation>
+      <translation>Seçili hesap tablolarının bir görünümünü etkin çizime ekler</translation>
     </message>
   </context>
   <context>
@@ -280,7 +280,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="364"/>
       <source>&amp;Renderer</source>
-      <translation>&amp;Oluşturucu</translation>
+      <translation>İşleyici (Renderer)</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="469"/>
@@ -738,23 +738,23 @@ Devam etmek istiyor musun?</translation>
     <message>
       <location filename="../../Command.cpp" line="768"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>Tek bir bölüm nesnesi seçin.</translation>
+      <translation>Tam olarak bir Hesap Tablosu nesnesi seçin.</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="51"/>
-      <location filename="../../TaskOrthoViews.cpp" line="981"/>
+      <location filename="../../TaskOrthoViews.cpp" line="979"/>
       <source>Make axonometric...</source>
       <translation>Aksonometrik yap...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="52"/>
-      <location filename="../../TaskOrthoViews.cpp" line="982"/>
+      <location filename="../../TaskOrthoViews.cpp" line="980"/>
       <source>Edit axonometric settings...</source>
       <translation>Aksonometrik ayarlarını düzenle...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="53"/>
-      <location filename="../../TaskOrthoViews.cpp" line="983"/>
+      <location filename="../../TaskOrthoViews.cpp" line="981"/>
       <source>Make orthographic</source>
       <translation>Ortografik yap</translation>
     </message>

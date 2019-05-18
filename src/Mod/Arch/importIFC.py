@@ -1568,6 +1568,7 @@ def export(exportList,filename):
         email = s[1].strip(">")
     global template
     template = ifctemplate.replace("$version",version[0]+"."+version[1]+" build "+version[2])
+    getstd = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("getStandardType",False)
     if hasattr(ifcopenshell,"schema_identifier"):
         schema = ifcopenshell.schema_identifier
     elif hasattr(ifcopenshell,"version") and (float(ifcopenshell.version[:3]) >= 0.6):
@@ -1755,6 +1756,9 @@ def export(exportList,filename):
         # getting the representation
 
         representation,placement,shapetype = getRepresentation(ifcfile,context,obj,forcebrep=(brepflag or FORCE_BREP))
+        if getstd:
+            if isStandardCase(obj,ifctype):
+                ifctype += "StandardCase"
 
         if DEBUG: print(str(count).ljust(3)," : ", ifctype, " (",shapetype,") : ",name)
 
@@ -2377,6 +2381,14 @@ def export(exportList,filename):
         print("Compression ratio:",int((float(ifcbin.spared)/(s+ifcbin.spared))*100),"%")
     del ifcbin
 
+
+def isStandardCase(obj,ifctype):
+    
+    if ifctype.endswith("StandardCase"):
+        return False # type is already standard case, return False so "StandardCase" is not added twice
+    if hasattr(obj,"Proxy") and hasattr(obj.Proxy,"isStandardCase"):
+        return obj.Proxy.isStandardCase(obj)
+    return False
 
 def getIfcTypeFromObj(obj):
 

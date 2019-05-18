@@ -223,7 +223,7 @@ def fill_femresult_mechanical(res_obj, result_set):
 
         # fill res_obj.NodeStressXX etc if they exist in result_set
         # list values are just added
-        # Should we gone check if the key in stress and strain dict is the same as the number in NodeNumbers?
+        # Should we check if the key in stress and strain dict is the same as the number in NodeNumbers?
         if 'stress' in result_set:
             stress = result_set['stress']
             Sxx = []

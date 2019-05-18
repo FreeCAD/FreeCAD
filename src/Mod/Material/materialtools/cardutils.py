@@ -109,7 +109,7 @@ def get_material_resources(category='Solid'):
 
 
 def output_resources(resources):
-    FreeCAD.Console.PrintMessage('Directories we gone look for material cards:\n')
+    FreeCAD.Console.PrintMessage('Directories in which we will look for material cards:\n')
     for path in resources.keys():
         FreeCAD.Console.PrintMessage('  {}\n'.format(path))
 
@@ -459,8 +459,8 @@ getsrc()
 
 # generate all cards **********
 # run tools in source dir
-./make_ods.sh 
-./make_FCMats.sh 
+./make_ods.sh
+./make_FCMats.sh
 
 # read cards
 from materialtools.cardutils import read_cards_from_path as readcards

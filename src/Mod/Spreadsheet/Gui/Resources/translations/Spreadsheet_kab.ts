@@ -147,8 +147,8 @@
       <translation>Fusionner des cellules</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Fusionner les cellules sélectionnées dans la feuille de calcul</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Diviser la cellule</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Diviser les cellules précédemment fusionnées dans la feuille de calcul</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Texte en gras</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Mettre le texte en gras dans les cellules sélectionnées</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Texte en italique</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Mettre le texte en italique dans les cellules sélectionnées</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Gris clair</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Personnalisé</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

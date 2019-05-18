@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="210"/>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Genereer doorsnede van maaswerk en vlak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="211"/>
@@ -65,13 +65,13 @@
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Trim mesh with a plane</source>
-      <translation type="unfinished">Trim mesh with a plane</translation>
+      <translation>Maaswerk bijsnijden met een vlak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <location filename="../../Command.cpp" line="85"/>
       <source>Trims a mesh with a plane</source>
-      <translation type="unfinished">Trims a mesh with a plane</translation>
+      <translation>Snijdt een maaswerk bij met een vlak</translation>
     </message>
   </context>
   <context>
@@ -175,7 +175,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="32"/>
       <source>Meshing options</source>
-      <translation>Meshing opties</translation>
+      <translation>Meshingopties</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="38"/>

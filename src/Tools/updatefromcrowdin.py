@@ -234,12 +234,12 @@ if __name__ == "__main__":
     elif inputzip:
         tempfolder = tempfile.mkdtemp()
         print("creating temp folder " + tempfolder)
-        os.chdir(tempfolder)
         inputzip=os.path.realpath(inputzip)
         if not os.path.exists(inputzip):
             print("ERROR: " + inputzip + " not found")
             sys.exit()
         shutil.copy(inputzip,tempfolder)
+        os.chdir(tempfolder)
         zfile=zipfile.ZipFile("freecad.zip")
         print("extracting freecad.zip...")
         zfile.extractall()

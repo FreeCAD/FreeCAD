@@ -142,6 +142,10 @@ class _CommandStructure:
 
     "the Arch Structure command definition"
 
+    def __init__(self):
+
+        self.beammode = False
+
     def GetResources(self):
 
         return {'Pixmap'  : 'Arch_Structure',
@@ -203,7 +207,11 @@ class _CommandStructure:
         self.precast = ArchPrecast._PrecastTaskPanel()
         self.dents = ArchPrecast._DentsTaskPanel()
         self.precast.Dents = self.dents
-        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form])
+        if self.beammode:
+            title=translate("Arch","First point of the beam")+":"
+        else:
+            title=translate("Arch","Base point of column")+":"
+        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=title)
 
     def getPoint(self,point=None,obj=None):
 
@@ -211,7 +219,7 @@ class _CommandStructure:
 
         if self.modeb.isChecked() and (self.bpoint == None):
             self.bpoint = point
-            FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form])
+            FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=translate("Arch","Next point")+":",mode="line")
             return
         self.tracker.finalize()
         if point == None:
@@ -256,7 +264,10 @@ class _CommandStructure:
         else:
             FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
         if self.bmode and self.bpoint:
-            rot = FreeCAD.Rotation(Vector(1,0,0),(point.sub(self.bpoint)).normalize())
+            if (self.Profile != None) and (not "Precast" in self.Profile):
+                rot = FreeCAD.Rotation(Vector(0,0,1),(point.sub(self.bpoint)).normalize())
+            else:
+                rot = FreeCAD.Rotation(Vector(1,0,0),(point.sub(self.bpoint)).normalize())
             FreeCADGui.doCommand('s.Placement.Rotation=FreeCAD.Rotation'+str(rot.Q))
         else:
             FreeCADGui.doCommand('s.Placement.Rotation=s.Placement.Rotation.multiply(FreeCAD.DraftWorkingPlane.getRotation().Rotation)')
@@ -285,14 +296,14 @@ class _CommandStructure:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Structure options", utf8_decode=True))
+        w.setWindowTitle(translate("Arch","Structure options"))
         grid = QtGui.QGridLayout(w)
 
         # mode box
-        labelmode = QtGui.QLabel(translate("Arch","Drawing mode:", utf8_decode=True))
-        self.modeb = QtGui.QRadioButton(translate("Arch","Beam", utf8_decode=True))
-        self.modec = QtGui.QRadioButton(translate("Arch","Column", utf8_decode=True))
-        if self.bpoint:
+        labelmode = QtGui.QLabel(translate("Arch","Drawing mode")+":")
+        self.modeb = QtGui.QRadioButton(translate("Arch","Beam"))
+        self.modec = QtGui.QRadioButton(translate("Arch","Column"))
+        if self.bpoint or self.beammode:
             self.modeb.setChecked(True)
         else:
             self.modec.setChecked(True)
@@ -301,14 +312,14 @@ class _CommandStructure:
         grid.addWidget(self.modec,1,1,1,1)
 
         # categories box
-        labelc = QtGui.QLabel(translate("Arch","Category", utf8_decode=True))
+        labelc = QtGui.QLabel(translate("Arch","Category"))
         valuec = QtGui.QComboBox()
         valuec.addItems([" ","Precast concrete"]+Categories)
         grid.addWidget(labelc,2,0,1,1)
         grid.addWidget(valuec,2,1,1,1)
 
         # presets box
-        labelp = QtGui.QLabel(translate("Arch","Preset", utf8_decode=True))
+        labelp = QtGui.QLabel(translate("Arch","Preset"))
         self.vPresets = QtGui.QComboBox()
         self.pSelect = [None]
         fpresets = [" "]
@@ -317,34 +328,34 @@ class _CommandStructure:
         grid.addWidget(self.vPresets,3,1,1,1)
 
         # length
-        label1 = QtGui.QLabel(translate("Arch","Length", utf8_decode=True))
+        label1 = QtGui.QLabel(translate("Arch","Length"))
         self.vLength = ui.createWidget("Gui::InputField")
         self.vLength.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
         grid.addWidget(label1,4,0,1,1)
         grid.addWidget(self.vLength,4,1,1,1)
 
         # width
-        label2 = QtGui.QLabel(translate("Arch","Width", utf8_decode=True))
+        label2 = QtGui.QLabel(translate("Arch","Width"))
         self.vWidth = ui.createWidget("Gui::InputField")
         self.vWidth.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
         grid.addWidget(label2,5,0,1,1)
         grid.addWidget(self.vWidth,5,1,1,1)
 
         # height
-        label3 = QtGui.QLabel(translate("Arch","Height", utf8_decode=True))
+        label3 = QtGui.QLabel(translate("Arch","Height"))
         self.vHeight = ui.createWidget("Gui::InputField")
         self.vHeight.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
         grid.addWidget(label3,6,0,1,1)
         grid.addWidget(self.vHeight,6,1,1,1)
 
         # horizontal button
-        value5 = QtGui.QPushButton(translate("Arch","Switch L/H", utf8_decode=True))
+        value5 = QtGui.QPushButton(translate("Arch","Switch L/H"))
         grid.addWidget(value5,7,0,1,1)
-        value6 = QtGui.QPushButton(translate("Arch","Switch L/W", utf8_decode=True))
+        value6 = QtGui.QPushButton(translate("Arch","Switch L/W"))
         grid.addWidget(value6,7,1,1,1)
 
         # continue button
-        label4 = QtGui.QLabel(translate("Arch","Con&tinue", utf8_decode=True))
+        label4 = QtGui.QLabel(translate("Arch","Con&tinue"))
         value4 = QtGui.QCheckBox()
         value4.setObjectName("ContinueCmd")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)
@@ -398,13 +409,19 @@ class _CommandStructure:
 
         self.Height = d
         self.tracker.height(d)
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureHeight",d)
+        if self.modeb.isChecked():
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureLength",d)
+        else:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureHeight",d)
 
     def setLength(self,d):
 
         self.Length = d
         self.tracker.length(d)
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureLength",d)
+        if self.modeb.isChecked():
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureHeight",d)
+        else:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureLength",d)
 
     def setContinue(self,i):
 

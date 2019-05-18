@@ -3745,7 +3745,7 @@ Please check one or more edge entities first.</translation>
       <location filename="../../DlgRevolution.ui" line="201"/>
       <location filename="../../DlgRevolution.ui" line="242"/>
       <source>Click to set this as axis</source>
-      <translation type="unfinished">Click to set this as axis</translation>
+      <translation>Paspauskite, jei norite tai nustatyti kaip ašį</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="204"/>
@@ -3795,14 +3795,14 @@ Please check one or more edge entities first.</translation>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation type="unfinished">Revolution axis link is invalid.
+      <translation>Blogas sukimosi ašies saitas.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="289"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Revolution axis direction is zero-length. It must be non-zero.</translation>
+      <translation>Sukimo ašis neturi ilgio. Ašis turi turėti ilgį.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
@@ -4711,7 +4711,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../TaskThickness.cpp" line="268"/>
       <location filename="../../TaskThickness.cpp" line="278"/>
       <source>Thickness</source>
-      <translation type="unfinished">Thickness</translation>
+      <translation>Storis</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="159"/>

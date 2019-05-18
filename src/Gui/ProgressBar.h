@@ -25,6 +25,11 @@
 #define GUI_PROGRESSBAR_H
 
 #include <QProgressBar>
+#ifdef QT_WINEXTRAS_LIB
+#include <QWinTaskbarProgress>
+#include <QWinTaskbarButton>
+#endif
+
 
 #include <Base/Sequencer.h>
 
@@ -151,6 +156,13 @@ public:
     */
     int minimumDuration() const;
 
+    void reset();
+    void setRange(int minimum, int maximum);
+    void setMinimum(int minimum);
+    void setMaximum(int maximum);
+    void setValue(int value);
+
+
 public Q_SLOTS:
     /** Sets the time that must pass before the progress bar appears to \a ms.
     */
@@ -168,6 +180,7 @@ protected Q_SLOTS:
     */
     void delayedShow();
     void aboutToShow();
+    void aboutToHide();
 
 private:
     /** @name for internal use only */
@@ -177,10 +190,18 @@ private:
     void enterControlEvents();
     /** Loses the control over incoming events*/
     void leaveControlEvents();
+
+
     //@}
     ProgressBarPrivate* d;
     Sequencer* sequencer;
-
+    
+#ifdef QT_WINEXTRAS_LIB
+    /* Set up the taskbar progress in windows */
+    void setupTaskBarProgress(void);
+    QWinTaskbarProgress* m_taskbarProgress;
+    QWinTaskbarButton* m_taskbarButton;
+#endif
     friend class Sequencer;
 };
 

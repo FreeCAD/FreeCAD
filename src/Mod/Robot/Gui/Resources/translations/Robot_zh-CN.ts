@@ -58,17 +58,17 @@
   <context>
     <name>CmdRobotEdge2Trac</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="321"/>
+      <location filename="../../CommandTrajectory.cpp" line="320"/>
       <source>Robot</source>
       <translation>机器人</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="322"/>
+      <location filename="../../CommandTrajectory.cpp" line="321"/>
       <source>Edge to Trajectory...</source>
       <translation>边缘到轨迹...</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="323"/>
+      <location filename="../../CommandTrajectory.cpp" line="322"/>
       <source>Generate a Trajectory from a set of edges</source>
       <translation>由一组边生成轨迹</translation>
     </message>
@@ -252,17 +252,17 @@
   <context>
     <name>CmdRobotSetDefaultValues</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="255"/>
+      <location filename="../../CommandTrajectory.cpp" line="254"/>
       <source>Robot</source>
       <translation>机器人</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="256"/>
+      <location filename="../../CommandTrajectory.cpp" line="255"/>
       <source>Set default values</source>
       <translation>设置默认值</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="257"/>
+      <location filename="../../CommandTrajectory.cpp" line="256"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
     </message>
@@ -302,17 +302,17 @@
   <context>
     <name>CmdRobotTrajectoryCompound</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="432"/>
+      <location filename="../../CommandTrajectory.cpp" line="431"/>
       <source>Robot</source>
       <translation>机器人</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="433"/>
+      <location filename="../../CommandTrajectory.cpp" line="432"/>
       <source>Trajectory compound...</source>
       <translation>复合轨迹...</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="434"/>
+      <location filename="../../CommandTrajectory.cpp" line="433"/>
       <source>Group and connect some trajectories to one</source>
       <translation>将轨迹组合并连接成一个</translation>
     </message>
@@ -320,17 +320,17 @@
   <context>
     <name>CmdRobotTrajectoryDressUp</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="385"/>
+      <location filename="../../CommandTrajectory.cpp" line="384"/>
       <source>Robot</source>
       <translation>机器人</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="386"/>
+      <location filename="../../CommandTrajectory.cpp" line="385"/>
       <source>Dress-up trajectory...</source>
       <translation>修改轨迹</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="387"/>
+      <location filename="../../CommandTrajectory.cpp" line="386"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
       <translation>创建覆盖轨迹部分设定的修饰对象</translation>
     </message>
@@ -366,7 +366,7 @@
       <location filename="../../CommandTrajectory.cpp" line="111"/>
       <location filename="../../CommandTrajectory.cpp" line="167"/>
       <location filename="../../CommandTrajectory.cpp" line="184"/>
-      <location filename="../../CommandTrajectory.cpp" line="413"/>
+      <location filename="../../CommandTrajectory.cpp" line="412"/>
       <source>Wrong selection</source>
       <translation>选择错误</translation>
     </message>
@@ -439,37 +439,37 @@
       <translation>您必须悬停鼠标于(预选)几何体以使用该命令.详情请参考文档.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="269"/>
+      <location filename="../../CommandTrajectory.cpp" line="268"/>
       <source>Set default speed</source>
       <translation type="unfinished">Set default speed</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="270"/>
+      <location filename="../../CommandTrajectory.cpp" line="269"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>速度: (如 1 m/s 或 3 cm/s)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="279"/>
+      <location filename="../../CommandTrajectory.cpp" line="278"/>
       <source>Set default continuity</source>
       <translation type="unfinished">Set default continuity</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="280"/>
+      <location filename="../../CommandTrajectory.cpp" line="279"/>
       <source>continuous ?</source>
       <translation>连续?</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="286"/>
+      <location filename="../../CommandTrajectory.cpp" line="285"/>
       <source>Set default acceleration</source>
       <translation type="unfinished">Set default acceleration</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="287"/>
+      <location filename="../../CommandTrajectory.cpp" line="286"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>加速度: (如 1 m/s^2 或 3 cm/s^2)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="414"/>
+      <location filename="../../CommandTrajectory.cpp" line="413"/>
       <source>Select the Trajectory which you want to dress up.</source>
       <translation>选择您要遵循的轨迹.</translation>
     </message>

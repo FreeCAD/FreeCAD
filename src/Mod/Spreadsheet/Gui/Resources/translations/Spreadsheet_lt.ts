@@ -147,8 +147,8 @@
       <translation>Sulieti langelius</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Sulieti pažymėtus langelius skaičiuoklėje</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Skelti langelį</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Perskirti anksčiau sulietus langelius skaičiuoklėje</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Paryškintasis tekstas</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Nustatyti paryškintąjį tekstą pažymėtuose langeliuose</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Pasvirasis tekstas</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Nustatyti pasvirąjį tekstą pažymėtuose langeliuose</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Šviesiai pilka</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Pasirinktinė</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
