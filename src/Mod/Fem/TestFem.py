@@ -28,14 +28,14 @@
 # the order should be as follows:
 # common-, object-, mesh-, inout-, ccxtools-, solverframworktests
 from femtest.testcommon import TestFemCommon
-#from femtest.testobject import TestObjectCreate
-#from femtest.testobject import TestObjectType
-#from femtest.testmaterial import TestMaterialUnits
-#from femtest.testmesh import TestMeshCommon
-#from femtest.testmesh import TestMeshEleTetra10
-#from femtest.testresult import TestResult
-#from femtest.testccxtools import TestCcxTools
-#from femtest.testsolverframework import TestSolverFrameWork
+from femtest.testobject import TestObjectCreate
+from femtest.testobject import TestObjectType
+from femtest.testmaterial import TestMaterialUnits
+from femtest.testmesh import TestMeshCommon
+from femtest.testmesh import TestMeshEleTetra10
+from femtest.testresult import TestResult
+from femtest.testccxtools import TestCcxTools
+from femtest.testsolverframework import TestSolverFrameWork
 
 
 # For more information on how to run a specific test class or a test method see
