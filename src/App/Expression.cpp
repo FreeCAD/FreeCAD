@@ -1489,7 +1489,7 @@ public:
     DocumentObject *newObj;
     ObjectIdentifier dummy;
     std::map<ObjectIdentifier, ObjectIdentifier> pathes;
-    bool collect = false;
+    bool collect = true;
 };
 
 ExpressionPtr Expression::replaceObject(const DocumentObject *parent, 
@@ -3448,7 +3448,7 @@ void VariableExpression::_collectReplacement(
 {
     ObjectIdentifier path;
     if(var.replaceObject(path,parent,oldObj,newObj))
-        pathes[var] = std::move(path);
+        pathes[var.canonicalPath()] = std::move(path);
 }
 
 void VariableExpression::_moveCells(const CellAddress &address, 

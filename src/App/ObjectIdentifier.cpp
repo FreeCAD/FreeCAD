@@ -441,8 +441,10 @@ bool ObjectIdentifier::replaceObject(ObjectIdentifier &res, const App::DocumentO
         else
             res.documentObjectName = String(r.first->getNameInDocument(),false,true);
     }
-    res.subObjectName = String(r.second);
+    res.subObjectName = String(r.second,true);
     res._cache.clear();
+    res.shadowSub.first.clear();
+    res.shadowSub.second.clear();
     return true;
 }
 
