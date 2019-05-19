@@ -4493,7 +4493,6 @@ class Edit(Modifier):
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Edit',
-                'Accel' : "D, E",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edit"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edits the active object")}
 
