@@ -43,6 +43,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObserver.h>
 #include <App/Link.h>
 
 FC_LOG_LEVEL_INIT("CommandLink",true,true);
@@ -130,7 +131,7 @@ void StdCmdLinkMakeGroup::activated(int option) {
             objs.push_back(sel.pObject);
     }
 
-    App::GetApplication().setActiveTransaction("Make link group");
+    Command::openCommand("Make link group");
     try {
         std::string groupName = doc->getUniqueObjectName("LinkGroup");
         Command::doCommand(Command::Doc,
@@ -172,11 +173,11 @@ void StdCmdLinkMakeGroup::activated(int option) {
                     "App.getDocument('%s').getObject('%s').LinkMode = 'Auto Delete'",
                     doc->getName(),groupName.c_str());
         }
-        App::GetApplication().closeActiveTransaction();
+        Command::commitCommand();
     } catch (const Base::Exception& e) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Create link group failed"),
             QString::fromLatin1(e.what()));
-        App::GetApplication().closeActiveTransaction(true);
+        Command::abortCommand();
         e.ReportException();
     }
 }
@@ -210,7 +211,7 @@ void StdCmdLinkMake::activated(int) {
            objs.insert(sel.pObject);
     }
 
-    App::GetApplication().setActiveTransaction("Make link");
+    Command::openCommand("Make link");
     try {
         if(objs.empty()) {
             std::string name = doc->getUniqueObjectName("Link");
@@ -225,11 +226,11 @@ void StdCmdLinkMake::activated(int) {
                 setLinkLabel(obj,doc->getName(),name.c_str());
             }
         }
-        App::GetApplication().closeActiveTransaction();
+        Command::commitCommand();
     } catch (const Base::Exception& e) {
+        Command::abortCommand();
         QMessageBox::critical(getMainWindow(), QObject::tr("Create link failed"),
             QString::fromLatin1(e.what()));
-        App::GetApplication().closeActiveTransaction(true);
         e.ReportException();
     }
 }
@@ -305,7 +306,7 @@ void StdCmdLinkMakeRelative::activated(int) {
     }
 
     std::string name = doc->getUniqueObjectName("Link");
-    App::GetApplication().setActiveTransaction("Make link sub");
+    Command::openCommand("Make link sub");
     try {
         Command::doCommand(Command::Doc, 
             "App.getDocument('%s').addObject('App::Link','%s').setLink(App.getDocument('%s').%s,'%s')", 
@@ -314,11 +315,11 @@ void StdCmdLinkMakeRelative::activated(int) {
         auto link = owner->getDocument()->getObject(name.c_str());
         FCMD_OBJ_CMD(link,"LinkTransform = True");
         setLinkLabel(obj,doc->getName(),name.c_str());
-        App::GetApplication().closeActiveTransaction();
+        Command::commitCommand();
     } catch (const Base::Exception& e) {
+        Command::abortCommand();
         QMessageBox::critical(getMainWindow(), QObject::tr("Create link sub failed"),
             QString::fromLatin1(e.what()));
-        App::GetApplication().closeActiveTransaction(true);
         e.ReportException();
     }
     return;
@@ -326,231 +327,139 @@ void StdCmdLinkMakeRelative::activated(int) {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
+struct Info {
+    bool inited = false;
+    App::DocumentObjectT topParent;
+    std::string subname;
+    App::DocumentObjectT parent;
+    App::DocumentObjectT obj;
+};
+
 static void linkConvert(bool unlink) {
     // We are trying to replace an object with a link (App::Link), or replace a
     // link back to its linked object (i.e. unlink). This is a very complex
     // operation. It works by reassign the link property of the parent of the
     // selected object(s) to a newly created link to the original object.
-    // Everything should remain the same. To simplify the operation a bit, we
-    // restrict ourself to replace selected objects of the active document only.
-    //
-    // But still, the complication arises because there may have relative links
-    // that are affected by this operation. Currently, the only supported
-    // relative link are any objects containing a PropertyXLink with a non-empty
-    // 'Subname'. The ProeprtyXLink is pointed to the parent object, while the
-    // subname references some child object inside. The subname may contain
-    // multiple levels of indirection. So, if the subname refers to an object
-    // being replace through the exact same parent object, the relative link
-    // will be broken. We shall take care of this situation, and make the
-    // appropriate adjustment.
+    // Everything should remain the same. This complexity is now largely handled
+    // by ViewProviderDocumentObject::replaceObject(), which in turn relies on
+    // PropertyLinkBase::CopyOnLinkReplace().
 
-    App::Document *doc = App::GetApplication().getActiveDocument();
-    if(!doc) return;
-
-    // first, generate partial (link name not known yet) command for
-    // objects that are replacable. The commands are keyed by a
-    // pair(parent, object)
-    std::map<std::pair<App::DocumentObject*,App::DocumentObject*>, std::vector<std::string> > replaceCmds;
-    for(auto sel : TreeWidget::getSelection(doc)) {
-        auto obj = sel.second->getObject();
-        auto parent = sel.first;
+    std::map<std::pair<App::DocumentObject*,App::DocumentObject*>, Info> infos;
+    for(auto sel : TreeWidget::getSelection()) {
+        auto obj = sel.vp->getObject();
+        auto parent = sel.parentVp;
         if(!parent) {
             FC_WARN("skip '" << obj->getFullName() << "' with no parent");
             continue;
         }
         auto parentObj = parent->getObject();
+        auto &info = infos[std::make_pair(parentObj,obj)];
+        if(info.inited)
+            continue;
+        info.inited = true;
         if(unlink) {
             auto linked = obj->getLinkedObject(false);
-            if(!linked || linked == obj) {
+            if(!linked || !linked->getNameInDocument() || linked == obj) {
                 FC_WARN("skip non link");
                 continue;
             }
         }
-        if(parentObj->getDocument()!=obj->getDocument()) {
-            FC_WARN("cannot convert link for external object '" << obj->getFullName() << "'");
-            continue;
-        }
-
-        std::map<std::string, App::Property*> props;
-        parentObj->getPropertyMap(props);
-
-        std::vector<std::string> cmds;
-        for(auto &v : props) {
-            auto &propName = v.first;
-            auto prop = v.second;
-            auto linkProp = dynamic_cast<App::PropertyLink*>(prop);
-            if(linkProp) {
-                if(prop->testStatus(App::Property::Immutable) || parentObj->isReadOnly(prop))
-                    continue;
-                if(linkProp->getValue()==obj) {
-                    std::ostringstream str;
-                    str << Gui::Command::getObjectCmd(parentObj) << '.'
-                        << propName << '=' << "App.ActiveDocument.getObject('%s')";
-                    cmds.push_back(str.str());
-                }
-                continue;
-            }
-            auto linksProp = dynamic_cast<App::PropertyLinkList*>(prop);
-            if(linksProp) {
-                if(prop->testStatus(App::Property::Immutable) || parentObj->isReadOnly(prop))
-                    continue;
-                int i;
-                if(linksProp->find(obj->getNameInDocument(),&i)) {
-                    std::ostringstream str;
-                    str << Gui::Command::getObjectCmd(parentObj) <<'.'
-                        << propName << "={"<<i<<":App.ActiveDocument.getObject('%s')}";
-                    cmds.push_back(str.str());
-                }
-                continue;
-            }
-        }
-        if(cmds.size()) {
-            int vis = parentObj->isElementVisible(obj->getNameInDocument());
-            if(vis>=0) {
-                if(vis == 0)
-                    cmds.push_back(Gui::Command::getObjectCmd(parentObj)+".setElementVisible('%s',False)");
-                cmds.push_back("App.ActiveDocument.getObject('%s').Visibility = False");
-            }
-            replaceCmds[std::make_pair(parentObj,obj)].swap(cmds);
-        }else 
-            FC_WARN("skip '" << obj->getFullName() << "': no link property found");
+        info.topParent = sel.topParent;
+        info.parent = parentObj;
+        info.obj = obj;
     }
 
-    // Collect all realtive links in all documents, so that we can make
-    // corrections for those that are affected by this operation.
-    std::map<App::Document*, std::vector<std::pair<std::string,App::PropertyXLink*> > > links;
-    for(auto pDoc : App::GetApplication().getDocuments()) {
-        for(auto pObj : pDoc->getObjects()) {
-            if(!pObj->getNameInDocument())
-                continue;
-            std::map<std::string, App::Property*> props;
-            pObj->getPropertyMap(props);
-            for(auto &v : props) {
-                auto &propName = v.first;
-                auto prop = v.second;
-                auto link = dynamic_cast<App::PropertyXLink*>(prop);
-                if(!link || link->testStatus(App::Property::Immutable) || pObj->isReadOnly(link))
-                    continue;
-                auto linked = link->getValue();
-                if(!linked || !linked->getNameInDocument())
-                    continue;
-                auto sub = link->getSubName();
-                if(!sub || !sub[0])
-                    continue;
-                links[pDoc].push_back(std::make_pair(propName,link));
-            }
-        }
-    }
+    if(infos.empty())
+        return;
 
-    std::map<App::DocumentObject*,std::string> replacedObjs;
-    std::vector<std::string> changeCmds;
+    Selection().selStackPush();
+    Selection().clearCompleteSelection();
 
     // now, do actual operation
     const char *transactionName = unlink?"Unlink":"Replace with link";
-    App::GetApplication().setActiveTransaction(transactionName);
+    Command::openCommand(transactionName);
     try {
-        for(auto &v : replaceCmds) {
-            auto parent = v.first.first;
-            auto obj =  v.first.second;
-            auto &rcmds = v.second;
-            auto it  = replacedObjs.find(obj);
-            std::string name;
-            // create the link if not done yet
-            if(it!=replacedObjs.end())
-                name = it->second;
-            else if(unlink) {
-                auto linked = obj->getLinkedObject(false);
-                if(!linked || linked == obj || !linked->getNameInDocument())
+        std::unordered_map<App::DocumentObject*,App::DocumentObjectT> recomputeSet;
+        for(auto &v : infos) {
+            auto &info = v.second;
+            auto parent = info.parent.getObject();
+            auto parentVp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                    Application::Instance->getViewProvider(parent));
+            auto obj = info.obj.getObject();
+            if(!parent || !obj || !parentVp)
+                continue;
+            if(!recomputeSet.count(parent))
+                recomputeSet.emplace(parent,parent);
+            auto doc = parent->getDocument();
+            App::DocumentObject *replaceObj;
+            if(unlink) {
+                replaceObj = obj->getLinkedObject(false);
+                if(!replaceObj || !replaceObj->getNameInDocument() || replaceObj == obj)
                     continue;
-                name = linked->getNameInDocument();
-                it = replacedObjs.insert(std::make_pair(obj,name)).first;
             }else{
-                name = doc->getUniqueObjectName("Link");
-                Command::doCommand(Command::Doc,
-                    "App.ActiveDocument.addObject('App::Link','%s')."
-                    "setLink(App.ActiveDocument.getObject('%s'))",
-                    name.c_str(),obj->getNameInDocument());
-                setLinkLabel(obj,doc->getName(),name.c_str());
-                if(obj->getPropertyByName("Placement"))
-                    Command::doCommand(Command::Doc,
-                        "App.ActiveDocument.getObject('%s').Placement = "
-                        "App.ActiveDocument.getObject('%s').Placement",
-                        name.c_str(),obj->getNameInDocument());
+                auto name = doc->getUniqueObjectName("Link");
+                auto link = static_cast<App::Link*>(doc->addObject("App::Link",name.c_str()));
+                if(!link)
+                    FC_THROWM(Base::RuntimeError,"Failed to create link");
+                link->setLink(-1,obj);
+                link->Label.setValue(obj->Label.getValue());
+                auto pla = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                        obj->getPropertyByName("Placement"));
+                if(pla)
+                    link->Placement.setValue(pla->getValue());
                 else
-                    Command::doCommand(Command::Doc,
-                        "App.ActiveDocument.getObject('%s').LinkTransform = True", name.c_str());
-                it = replacedObjs.insert(std::make_pair(obj,name)).first;
+                    link->LinkTransform.setValue(true);
+                replaceObj = link;
+            }
+
+            // adjust subname for the the new object
+            auto pos = info.subname.rfind('.');
+            if(pos==std::string::npos && pos)
+                info.subname.clear();
+            else {
+                pos = info.subname.rfind('.',pos-1);
+                if(pos==std::string::npos)
+                    info.subname.clear();
+                else {
+                    info.subname.resize(pos+1);
+                    info.subname += replaceObj->getNameInDocument();
+                    info.subname += ".";
+                }
             }
 
             // do the replacement operation
-            for(auto &cmd : rcmds)
-                Command::doCommand(Command::Doc,cmd.c_str(),name.c_str());
-
-            // generate command for relative link correction
-
-            std::string objName(obj->getNameInDocument());
-            objName += '.';
-            std::string subName(parent->getNameInDocument());
-            subName += '.';
-            auto offset = subName.size();
-            subName += objName;
-            for(auto &v : links) {
-                auto pDoc = v.first;
-                for(auto &vv : v.second) {
-                    auto &propName = vv.first;
-                    auto link = vv.second;
-                    auto pObj = static_cast<App::DocumentObject*>(link->getContainer());
-                    auto linked = link->getValue();
-                    if(!linked || !linked->getNameInDocument())
-                        continue;
-                    auto sub = link->getSubName();
-                    if(linked == parent) {
-                        if(boost::algorithm::starts_with(sub,objName.c_str())) {
-                            std::ostringstream str;
-                            str << "App.getDocument('"<<pDoc->getName()<<"').getObject('"
-                                << pObj->getNameInDocument() << "')." << propName
-                                << "=(App.ActiveDocument.getObject('"
-                                << parent->getNameInDocument() << "'),'" 
-                                << name << '.' << (sub+objName.size()) << "')";
-                            changeCmds.push_back(str.str());
-                        }
-                        continue;
-                    }
-                    auto pos = strstr(sub,subName.c_str());
-                    if(!pos) continue;
-                    if(pos!=sub && pos[-1]!='.') {
-                        FC_LOG("subname mismatch " << linked->getFullName() << '.' << sub);
-                        continue;
-                    }
-                    std::string tmpSub(sub,pos-sub+offset);
-                    auto subObj = linked->getSubObject(tmpSub.c_str());
-                    if(subObj != parent) {
-                        FC_LOG("sub object mismatch " << linked->getFullName() << '.' << sub);
-                        continue;
-                    }
-                    std::ostringstream str;
-                    str << "App.getDocument('" << pDoc->getName() << "').getObject('"
-                        << pObj->getNameInDocument() << "')." << propName
-                        << "=(App.ActiveDocument.getObject('"<< linked->getNameInDocument() 
-                        << "'),'" << tmpSub << '.' << name << '.' << (pos+offset) << "')";
-                    changeCmds.push_back(str.str());
-                }
-            }
+            if(parentVp->replaceObject(obj,replaceObj)<=0)
+                FC_THROWM(Base::RuntimeError,
+                        "Failed to change link for " << parent->getFullName());
         }
 
-        // run the command for realtive link correction
-        for(auto &cmd : changeCmds)
-            Command::runCommand(Gui::Command::Doc, cmd.c_str());
+        std::vector<App::DocumentObject *> recomputes;
+        for(auto &v : recomputeSet) {
+            auto obj = v.second.getObject();
+            if(obj)
+                recomputes.push_back(obj);
+        }
+        if(recomputes.size())
+            recomputes.front()->getDocument()->recompute(recomputes);
 
-        App::GetApplication().closeActiveTransaction();
+        Command::commitCommand();
 
     } catch (const Base::Exception& e) {
+        Command::abortCommand();
         auto title = unlink?QObject::tr("Unlink failed"):QObject::tr("Replace link failed");
         QMessageBox::critical(getMainWindow(), title, QString::fromLatin1(e.what()));
-        App::GetApplication().closeActiveTransaction(true);
         e.ReportException();
         return;
     }
+
+    for(auto &v : infos) {
+        auto &info = v.second;
+        auto top = info.topParent.getObject();
+        if(!top || info.subname.empty())
+            continue;
+        Selection().addSelection(top,info.subname.c_str());
+    }
+    Selection().selStackPush();
 }
 
 static bool linkConvertible(bool unlink) {
@@ -558,44 +467,15 @@ static bool linkConvertible(bool unlink) {
     if(!doc) return false;
 
     int count = 0;
-    for(auto sel : TreeWidget::getSelection(doc)) {
-        auto parent = sel.first;
+    for(auto &sel : TreeWidget::getSelection(doc)) {
+        auto parent = sel.parentVp;
         if(!parent) return false;
-        App::DocumentObject *parentObj = parent->getObject();
-        auto obj = sel.second->getObject();
-        if(obj->getDocument()!=parentObj->getDocument()) 
-            return false;
+        auto obj = sel.vp->getObject();
         if(unlink) {
             auto linked = obj->getLinkedObject(false);
             if(!linked || linked == obj)
                 return false;
         }
-        std::map<std::string, App::Property*> props;
-        parentObj->getPropertyMap(props);
-        bool found = false;
-        for(auto &v : props) {
-            auto linkProp = dynamic_cast<App::PropertyLink*>(v.second);
-            if(linkProp) {
-                if(v.second->testStatus(App::Property::Immutable) || parentObj->isReadOnly(v.second))
-                    continue;
-                if(linkProp->getValue()==obj) {
-                    found = true;
-                    break;
-                }
-                continue;
-            }
-            auto linksProp = dynamic_cast<App::PropertyLinkList*>(v.second);
-            if(linksProp) {
-                if(v.second->testStatus(App::Property::Immutable) || parentObj->isReadOnly(v.second))
-                    continue;
-                if(linksProp->find(obj->getNameInDocument())) {
-                    found = true;
-                    break;
-                }
-                continue;
-            }
-        }
-        if(!found) return false;
         ++count;
     }
     return count!=0;
@@ -687,7 +567,7 @@ bool StdCmdLinkImport::isActive() {
 }
 
 void StdCmdLinkImport::activated(int) {
-    App::GetApplication().setActiveTransaction("Import links");
+    Command::openCommand("Import links");
     try {
         for(auto &v : getLinkImportSelections()) {
             auto doc = v.first;
@@ -695,11 +575,11 @@ void StdCmdLinkImport::activated(int) {
             for(auto obj : doc->importLinks(v.second))
                 obj->Visibility.setValue(false);
         }
-        App::GetApplication().closeActiveTransaction();
+        Command::commitCommand();
     }catch (const Base::Exception& e) {
+        Command::abortCommand();
         QMessageBox::critical(getMainWindow(), QObject::tr("Failed to import links"),
             QString::fromLatin1(e.what()));
-        App::GetApplication().closeActiveTransaction(true);
         e.ReportException();
     }
 }
@@ -726,18 +606,18 @@ bool StdCmdLinkImportAll::isActive() {
 }
 
 void StdCmdLinkImportAll::activated(int) {
-    App::GetApplication().setActiveTransaction("Import all links");
+    Command::openCommand("Import all links");
     try {
         std::ostringstream str;
         str << "for _o in App.ActiveDocument.importLinks():" << std::endl
                 << "  _o.ViewObject.Visibility=False" << std::endl
             << "_o = None";
         Command::runCommand(Command::Doc,str.str().c_str());
-        App::GetApplication().closeActiveTransaction();
+        Command::commitCommand();
     } catch (const Base::Exception& e) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Failed to import all links"),
             QString::fromLatin1(e.what()));
-        App::GetApplication().closeActiveTransaction(true);
+        Command::abortCommand();
         e.ReportException();
     }
 }
