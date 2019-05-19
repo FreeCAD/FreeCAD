@@ -4550,12 +4550,10 @@ class Edit(Modifier):
                     self.finish()
                     return
 
-                '''  TRIED TO REMOVE self.obj selectability off. Dont's seems to work so bad.
-                        Just a bit untidy  
                 # store selectable state of the object
                 if hasattr(self.obj.ViewObject,"Selectable"):
                     self.selectstate = self.obj.ViewObject.Selectable
-                    self.obj.ViewObject.Selectable = False'''
+                    self.obj.ViewObject.Selectable = False
                     
                 FreeCADGui.Selection.clearSelection()
                 self.editing = None
@@ -4739,13 +4737,13 @@ class Edit(Modifier):
                                     self.previewObj.finalize()
                                     self.previewObj = None
                                 self.previewObj = self.initPreviewObj(self.obj)
-                                if hasattr(self.obj.ViewObject,"Selectable"):
-                                    self.obj.ViewObject.Selectable = False
+                                '''if hasattr(self.obj.ViewObject,"Selectable"):
+                                    self.obj.ViewObject.Selectable = False'''
                                 self.node.append(self.trackers[self.editing].get())
                                 FreeCADGui.Snapper.setSelectMode(False)
                             done = True
                 else:
-                    self.previewObj.finalize()
+                    if self.previewObj: self.previewObj.finalize()
                     self.trackers[self.editing].on()
                     #if hasattr(self.obj.ViewObject,"Selectable"):
                     #    self.obj.ViewObject.Selectable = True
@@ -4826,26 +4824,20 @@ class Edit(Modifier):
     
     def initPreviewObj(self,obj):
         if Draft.getType(obj) == "Wire": 
-            return wireTracker(obj)
+            return None
         elif Draft.getType(obj) == "BezCurve":
             return bezcurveTracker()
 
-
     def updatePreview(self,obj,idx,pt):
         if Draft.getType(obj) in ["Wire"]:
-            plist = obj.Points
-            plist[idx] = pt
-            print(plist)
+            return
             #incomplete
         elif Draft.getType(obj) == "BezCurve":
             self.previewObj.on()
-            plist = obj.Points
-            plist[idx] = pt
+            plist = self.recomputePointsBezier(obj.Points,idx,pt,obj.Degree,moveTrackers=True)
             self.previewObj.update(plist,obj.Degree)
-            FreeCAD.Console.PrintMessage(str(self.previewObj)+str(plist)+"\n")
             redraw3DView()
   
-
     #---------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Add/Delete Vertexes
     #---------------------------------------------------------------------------
@@ -4929,7 +4921,6 @@ class Edit(Modifier):
             self.doc.recompute()
             self.resetTrackers()
 
-
     #---------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Line/Wire/Bspline/Bezcurve
     #---------------------------------------------------------------------------
@@ -4947,49 +4938,9 @@ class Edit(Modifier):
         if ( ( self.editing == 0 ) and ( (editPnt - pts[-1]).Length < tol) ) or ( self.editing == len(pts) - 1 ) and ( (editPnt - pts[0]).Length < tol):
             self.obj.Closed = True
         # DNC: fix error message if edited point coincides with one of the existing points
-        if ( editPnt in pts ) == False:
+        if ( editPnt in pts ) == False: # checks if point enter is equal to other, this could cause a OCC problem
             if Draft.getType(self.obj) in ["BezCurve"]:
-                knot = None
-                ispole = self.editing % self.obj.Degree #
-                if ispole == 0: #knot
-                    if self.obj.Degree >=3:
-                        if self.editing >= 1: #move left pole
-                            knotidx = self.editing if self.editing < len(pts) else 0
-                            pts[self.editing-1] = pts[self.editing-1] + \
-                                editPnt - pts[knotidx]
-                            self.trackers[self.editing-1].set(\
-                                pts[self.editing-1])
-                        if self.editing < len(pts)-1: #move right pole
-                            pts[self.editing+1] = pts[self.editing+1] + \
-                                editPnt - pts[self.editing]
-                            self.trackers[self.editing+1].set(\
-                                pts[self.editing+1])
-                        if self.editing == 0 and self.obj.Closed: # move last pole
-                            pts[-1] = pts [-1] + editPnt -pts[self.editing]
-                            self.trackers[-1].set(pts[-1])
-                elif ispole == 1 and (self.editing >=2 or self.obj.Closed): #right pole
-                    knot = self.editing -1
-                    changep = self.editing -2 # -1 in case of closed curve
-                elif ispole == self.obj.Degree-1 and \
-                        self.editing <= len(pts)-3: #left pole
-                    knot = self.editing +1
-                    changep = self.editing +2
-                elif ispole == self.obj.Degree-1 and self.obj.Closed and \
-                        self.editing == len(pts)-1: #last pole
-                    knot = 0
-                    changep = 1
-                if knot is not None: # we need to modify the opposite pole
-                    segment = int(knot / self.obj.Degree) -1
-                    cont=self.obj.Continuity[segment] if \
-                        len(self.obj.Continuity) > segment else 0
-                    if cont == 1: #tangent
-                        pts[changep] = self.obj.Proxy.modifytangentpole(\
-                                pts[knot],editPnt,pts[changep])
-                        self.trackers[changep].set(pts[changep])
-                    elif cont ==2: #symmetric
-                        pts[changep] = self.obj.Proxy.modifysymmetricpole(\
-                                pts[knot],editPnt)
-                        self.trackers[changep].set(pts[changep])
+                pts = self.recomputePointsBezier(pts,self.editing,v,self.obj.Degree,moveTrackers=True)
             # check that the new point lies on the plane of the wire
             import DraftGeomUtils
             if self.obj.Closed:
@@ -5001,6 +4952,65 @@ class Edit(Modifier):
             pts[self.editing] = editPnt
             self.obj.Points = pts
             self.trackers[self.editing].set(v)
+
+
+    def recomputePointsBezier(self,pts,idx,v,degree,moveTrackers=True):
+        "Point list, index of changed point, vector of new point, move trackers; return the new point list"
+
+        editPnt = self.invpl.multVec(v)
+        # DNC: allows to close the curve by placing ends close to each other
+        tol = 0.001
+        if ( ( idx == 0 ) and ( (editPnt - pts[-1]).Length < tol) ) or ( idx == len(pts) - 1 ) and ( (editPnt - pts[0]).Length < tol):
+            self.obj.Closed = True
+        # DNC: fix error message if edited point coincides with one of the existing points
+        if ( editPnt in pts ) == False:
+            if Draft.getType(self.obj) in ["BezCurve"]:
+                knot = None
+                ispole = idx % degree
+
+                if ispole == 0: #knot
+                    if degree >=3:
+                        if idx >= 1: #move left pole
+                            knotidx = idx if idx < len(pts) else 0
+                            pts[idx-1] = pts[idx-1] + editPnt - pts[knotidx]
+                            if moveTrackers: self.trackers[idx-1].set(pts[idx-1])
+                        if idx < len(pts)-1: #move right pole
+                            pts[idx+1] = pts[idx+1] + editPnt - pts[idx]
+                            if moveTrackers: self.trackers[idx+1].set(pts[idx+1])
+                        if idx == 0 and self.obj.Closed: # move last pole
+                            pts[-1] = pts [-1] + editPnt -pts[idx]
+                            if moveTrackers: self.trackers[-1].set(pts[-1])
+
+                elif ispole == 1 and (idx >=2 or self.obj.Closed): #right pole
+                    knot = idx -1
+                    changep = idx -2 # -1 in case of closed curve
+
+                elif ispole == degree-1 and idx <= len(pts)-3: #left pole
+                    knot = idx +1
+                    changep = idx +2
+
+                elif ispole == degree-1 and self.obj.Closed and idx == len(pts)-1: #last pole
+                    knot = 0
+                    changep = 1
+
+                if knot is not None: # we need to modify the opposite pole
+                    segment = int(knot / degree) -1
+                    cont=self.obj.Continuity[segment] if \
+                        len(self.obj.Continuity) > segment else 0
+                    if cont == 1: #tangent
+                        pts[changep] = self.obj.Proxy.modifytangentpole(\
+                                pts[knot],editPnt,pts[changep])
+                        if moveTrackers: self.trackers[changep].set(pts[changep])
+                    elif cont ==2: #symmetric
+                        pts[changep] = self.obj.Proxy.modifysymmetricpole(\
+                                pts[knot],editPnt)
+                        if moveTrackers: self.trackers[changep].set(pts[changep])
+                pts[idx]=v
+
+            return pts #returns the list of new points, taking into account knot continuity
+
+        else:
+            self.finish()
 
     def resetTrackersBezier(self):
         knotmarkers = (coin.SoMarkerSet.DIAMOND_FILLED_9_9,#sharp
@@ -5027,6 +5037,7 @@ class Edit(Modifier):
                 marker=marker))
 
     def smoothBezPoint(self,point, info=None, style='Symmetric'):
+        "called when changing the continuity of a knot"
         style2cont = {'Sharp':0,'Tangent':1,'Symmetric':2}
         if not (Draft.getType(self.obj) == "BezCurve"):return
         if  info['Component'].startswith('Edge'):
@@ -5440,7 +5451,6 @@ class Edit(Modifier):
             self.obj.TagPosition = self.invpl.multVec(v)
         else:
             self.obj.Group[self.editing-1].Placement.Base = self.invpl.multVec(v)
-
 
 class AddToGroup():
     "The AddToGroup FreeCAD command definition"
