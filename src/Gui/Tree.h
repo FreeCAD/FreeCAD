@@ -81,13 +81,18 @@ public:
     void selectAllLinks(App::DocumentObject *obj); 
     void expandSelectedItems(TreeItemMode mode);
 
+    struct SelInfo {
+        App::DocumentObject *topParent;
+        std::string subname;
+        ViewProviderDocumentObject *parentVp;
+        ViewProviderDocumentObject *vp;
+    };
     /* Return a list of selected object of a give document and their parent
      *
      * This function can return the non-group parent of the selected object,
      * which Gui::Selection() cannot provide.
      */
-    static std::vector<std::pair<ViewProviderDocumentObject*,ViewProviderDocumentObject*> > 
-        getSelection(App::Document *doc);
+    static std::vector<SelInfo> getSelection(App::Document *doc=0);
 
     static const int DocumentType;
     static const int ObjectType;

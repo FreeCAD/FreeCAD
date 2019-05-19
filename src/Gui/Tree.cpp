@@ -1050,10 +1050,9 @@ void TreeWidget::selectAllInstances(const ViewProviderDocumentObject &vpd) {
 
 static TreeWidget *_LastSelectedTreeWidget;
 
-std::vector<std::pair<ViewProviderDocumentObject*,ViewProviderDocumentObject*> > 
-TreeWidget::getSelection(App::Document *doc)
+std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document *doc)
 {
-    std::vector<std::pair<ViewProviderDocumentObject*,ViewProviderDocumentObject*> > ret;
+    std::vector<SelInfo> ret;
 
     TreeWidget *tree = _LastSelectedTreeWidget;
     if(!tree || !tree->isConnectionAttached()) {
@@ -1064,6 +1063,9 @@ TreeWidget::getSelection(App::Document *doc)
             }
     }
     if(!tree) return ret;
+
+    if(tree->selectTimer->isActive())
+        tree->onSelectTimer();
 
     for(auto ti : tree->selectedItems()) {
         if(ti->type() != ObjectType) continue;
@@ -1087,7 +1089,18 @@ TreeWidget::getSelection(App::Document *doc)
                 continue;
             }
         }
-        ret.push_back(std::make_pair(parentVp,vp));
+        ret.emplace_back();
+        auto &sel = ret.back();
+        sel.topParent = 0;
+        std::ostringstream ss;
+        item->getSubName(ss,sel.topParent);
+        if(!sel.topParent)
+            sel.topParent = obj;
+        else
+            ss << obj->getNameInDocument() << '.';
+        sel.subname = ss.str();
+        sel.parentVp = parentVp;
+        sel.vp = vp;
     }
     return ret;
 }
