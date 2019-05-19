@@ -463,11 +463,8 @@ static void linkConvert(bool unlink) {
 }
 
 static bool linkConvertible(bool unlink) {
-    App::Document *doc = App::GetApplication().getActiveDocument();
-    if(!doc) return false;
-
     int count = 0;
-    for(auto &sel : TreeWidget::getSelection(doc)) {
+    for(auto &sel : TreeWidget::getSelection()) {
         auto parent = sel.parentVp;
         if(!parent) return false;
         auto obj = sel.vp->getObject();
