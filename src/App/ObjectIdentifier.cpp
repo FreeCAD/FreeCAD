@@ -1256,16 +1256,12 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
 
     auto linked = obj->getLinkedObject(true);
     if(!linked || linked==obj) {
-#if 0
         auto ext = obj->getExtensionByType<App::LinkBaseExtension>(true);
         if(!ext)
             return prop;
         linked = ext->getTrueLinkedObject(true);
         if(!linked || linked==obj)
             return prop;
-#else
-        return prop;
-#endif
     }
 
     auto linkedProp = linked->getPropertyByName(propertyName);
@@ -1575,13 +1571,19 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
             pyobj = Py::Matrix(mat);
             break;
         case PseudoLinkPlacement:
-        case PseudoLinkMatrix:
-            obj->getLinkedObject(true,&mat,false);
+        case PseudoLinkMatrix: {
+            auto linked = obj->getLinkedObject(true,&mat,false);
+            if(!linked || linked==obj) {
+                auto ext = obj->getExtensionByType<App::LinkBaseExtension>(true);
+                if(ext) 
+                    ext->getTrueLinkedObject(true,&mat);
+            }
             if(ptype == PseudoLinkPlacement)
                 pyobj = Py::Placement(Base::Placement(mat));
             else
                 pyobj = Py::Matrix(mat);
             break;
+        }
         case PseudoSelf:
             pyobj = Py::Object(obj->getPyObject(),true);
             break;
@@ -1609,9 +1611,14 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
             // The tracking logic is implemented in PyObjectBase::__getattro/__setattro
 
             auto container = result.resolvedProperty->getContainer();
-            if(container!=result.resolvedDocumentObject && container!=result.resolvedSubObject) {
-                obj = obj->getLinkedObject(true);
-                assert(obj);
+            if(container 
+                    && container!=result.resolvedDocumentObject 
+                    && container!=result.resolvedSubObject) 
+            {
+                if(!container->isDerivedFrom(DocumentObject::getClassTypeId()))
+                    FC_WARN("Invalid property container");
+                else
+                    obj = static_cast<DocumentObject*>(container);
             }
             pyobj = Py::Object(obj->getPyObject(),true);
             idx = result.propertyIndex;
