@@ -4490,7 +4490,8 @@ class Edit(Modifier):
         self.originalDisplayMode = None
         self.originalPoints = None
         self.originalNodes = None
-        self.previewObj = None
+        self.ghost = None
+
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Edit',
@@ -4522,7 +4523,6 @@ class Edit(Modifier):
                 self.finish()
                 return
         else:    
-            self.ghost = None
             self.ui.selectUi()
             msg(translate("draft", "Select a Draft object to edit")+"\n")
             if self.call:
@@ -4654,7 +4654,7 @@ class Edit(Modifier):
                 # commented out the following line to disable updating
                 # the object during edit, otherwise it confuses the snapper
                 #self.update(self.trackers[self.editing].get())
-                self.updatePreview(obj=self.obj,idx=self.editing,pt=self.point)
+                self.updateGhost(obj=self.obj,idx=self.editing,pt=self.point)
 
             if hasattr(self.obj.ViewObject,"Selectable"):
                 if self.ui.addButton.isChecked():
@@ -4733,17 +4733,17 @@ class Edit(Modifier):
                                 self.ui.isRelative.show()
                                 self.editing = ep
                                 self.trackers[self.editing].off()
-                                if self.previewObj:
-                                    self.previewObj.finalize()
-                                    self.previewObj = None
-                                self.previewObj = self.initPreviewObj(self.obj)
+                                if self.ghost:
+                                    self.ghost.finalize()
+                                    self.ghost = None
+                                self.ghost = self.initGhost(self.obj)
                                 '''if hasattr(self.obj.ViewObject,"Selectable"):
                                     self.obj.ViewObject.Selectable = False'''
                                 self.node.append(self.trackers[self.editing].get())
                                 FreeCADGui.Snapper.setSelectMode(False)
                             done = True
                 else:
-                    if self.previewObj: self.previewObj.finalize()
+                    if self.ghost: self.ghost.finalize()
                     self.trackers[self.editing].on()
                     #if hasattr(self.obj.ViewObject,"Selectable"):
                     #    self.obj.ViewObject.Selectable = True
@@ -4822,20 +4822,20 @@ class Edit(Modifier):
     # PREVIEW
     #---------------------------------------------------------------------------
     
-    def initPreviewObj(self,obj):
+    def initGhost(self,obj):
         if Draft.getType(obj) == "Wire": 
             return None
         elif Draft.getType(obj) == "BezCurve":
             return bezcurveTracker()
 
-    def updatePreview(self,obj,idx,pt):
+    def updateGhost(self,obj,idx,pt):
         if Draft.getType(obj) in ["Wire"]:
             return
             #incomplete
         elif Draft.getType(obj) == "BezCurve":
-            self.previewObj.on()
+            self.ghost.on()
             plist = self.recomputePointsBezier(obj.Points,idx,pt,obj.Degree,moveTrackers=True)
-            self.previewObj.update(plist,obj.Degree)
+            self.ghost.update(plist,obj.Degree)
             redraw3DView()
   
     #---------------------------------------------------------------------------
@@ -5451,6 +5451,7 @@ class Edit(Modifier):
             self.obj.TagPosition = self.invpl.multVec(v)
         else:
             self.obj.Group[self.editing-1].Placement.Base = self.invpl.multVec(v)
+
 
 class AddToGroup():
     "The AddToGroup FreeCAD command definition"
