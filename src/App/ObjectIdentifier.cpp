@@ -51,17 +51,6 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 using namespace App;
 using namespace Base;
 
-/**
- * @brief Compute a hash value for the object identifier given by \a path.
- * @param path Inputn path
- * @return Hash value
- */
-
-std::size_t App::hash_value(const App::ObjectIdentifier & path)
-{
-    return path.hash();
-}
-
 // Path class
 
 /**
@@ -357,7 +346,7 @@ const std::string &ObjectIdentifier::toString() const
 
     s << components[result.propertyIndex].getName();
     getSubPathStr(s,result);
-    _cache = s.str();
+    const_cast<ObjectIdentifier*>(this)->_cache = s.str();
     return _cache;
 }
 

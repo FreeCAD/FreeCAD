@@ -412,11 +412,13 @@ protected:
     bool localProperty;
 
 private:
-    mutable std::string _cache; // Cached string represstation of this identifier
-    mutable std::size_t _hash; // Cached hash of this string
+    std::string _cache; // Cached string represstation of this identifier
+    std::size_t _hash; // Cached hash of this string
 };
 
-std::size_t AppExport hash_value(const App::ObjectIdentifier & path);
+inline std::size_t hash_value(const App::ObjectIdentifier & path) {
+    return path.hash();
+}
 
 /** Helper function to convert Python object to/from App::any
 *
@@ -428,6 +430,18 @@ App::any AppExport pyObjectToAny(Py::Object pyobj, bool check=true);
 Py::Object AppExport pyObjectFromAny(const App::any &value);
 //@}
 
+}
+
+namespace std {
+
+template<> 
+struct hash<App::ObjectIdentifier> {
+    typedef App::ObjectIdentifier argument_type;
+    typedef std::size_t result_type;
+    inline result_type operator()(argument_type const& s) const {
+        return s.hash();
+    }
+};
 }
 
 #endif
