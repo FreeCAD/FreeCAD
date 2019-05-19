@@ -851,6 +851,31 @@ Property *PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject *obj,
     return engine.release();
 }
 
+Property *PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject *parent, 
+        App::DocumentObject *oldObj, App::DocumentObject *newObj) const
+{
+    std::unique_ptr<PropertyExpressionEngine>  engine;
+    for(auto it=expressions.begin();it!=expressions.end();++it) {
+        boost::shared_ptr<Expression> expr(
+                it->second.expression->replaceObject(parent,oldObj,newObj));
+        if(!expr && !engine) 
+            continue;
+        if(!engine) {
+            engine.reset(new PropertyExpressionEngine);
+            for(auto it2=expressions.begin();it2!=it;++it2) {
+                engine->expressions[it2->first] = ExpressionInfo(
+                        boost::shared_ptr<Expression>(it2->second.expression->copy()));
+            }
+        }else if(!expr)
+            expr = it->second.expression;
+        engine->expressions[it->first] = ExpressionInfo(expr);
+    }
+    if(!engine)
+        return 0;
+    engine->validator = validator;
+    return engine.release();
+}
+
 std::map<App::ObjectIdentifier, const App::Expression*> 
 PropertyExpressionEngine::getExpressions() const 
 {

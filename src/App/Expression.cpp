@@ -324,6 +324,13 @@ bool ExpressionVisitor::renameObjectIdentifier(Expression &e,
     return e._renameObjectIdentifier(paths,path,*this);
 }
 
+void ExpressionVisitor::collectReplacement(Expression &e, 
+        std::map<ObjectIdentifier,ObjectIdentifier> &pathes,
+        const App::DocumentObject *parent, App::DocumentObject *oldObj, App::DocumentObject *newObj) const
+{
+    return e._collectReplacement(pathes,parent,oldObj,newObj);
+}
+
 void ExpressionVisitor::moveCells(Expression &e, const CellAddress &address, int rowCount, int colCount) {
     e._moveCells(address,rowCount,colCount,*this);
 }
@@ -1462,6 +1469,48 @@ ExpressionPtr Expression::updateLabelReference(
     return 0;
 }
 
+class ReplaceObjectExpressionVisitor : public ExpressionVisitor {
+public:
+    ReplaceObjectExpressionVisitor(const DocumentObject *parent,
+            DocumentObject *oldObj, DocumentObject *newObj)
+        : parent(parent),oldObj(oldObj),newObj(newObj)
+    {
+    }
+
+    void visit(Expression &e) {
+        if(collect) 
+            this->collectReplacement(e,pathes,parent,oldObj,newObj);
+        else 
+            this->renameObjectIdentifier(e,pathes,dummy);
+    }
+
+    const DocumentObject *parent;
+    DocumentObject *oldObj;
+    DocumentObject *newObj;
+    ObjectIdentifier dummy;
+    std::map<ObjectIdentifier, ObjectIdentifier> pathes;
+    bool collect = false;
+};
+
+ExpressionPtr Expression::replaceObject(const DocumentObject *parent, 
+        DocumentObject *oldObj, DocumentObject *newObj) const 
+{
+    ReplaceObjectExpressionVisitor v(parent,oldObj,newObj);
+
+    // First pass, collect any changes. We have to const_cast it, as visit() is
+    // not const. This is ugly...
+    const_cast<Expression*>(this)->visit(v);
+
+    if(v.pathes.empty())
+        return 0;
+
+    // Now make a copy and do the actual replacement
+    ExpressionPtr expr(copy());
+    v.collect = false;
+    expr->visit(v);
+    return expr;
+}
+
 App::any Expression::getValueAsAny(int options) const {
     Base::PyGILStateLocker lock;
     return pyObjectToAny(getPyValue(options));
@@ -2375,6 +2424,7 @@ public:
     virtual ~Collector() {}
 
     virtual void collect(Quantity value) {
+    ObjectIdentifier dummy;
         if (first)
             q.setUnit(value.getUnit());
     }
@@ -3373,17 +3423,32 @@ bool VariableExpression::_updateElementReference(
     return var.updateElementReference(v,feature,reverse);
 }
 
-bool VariableExpression::_renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &paths, 
+bool VariableExpression::_renameObjectIdentifier(
+        const std::map<ObjectIdentifier,ObjectIdentifier> &paths, 
         const ObjectIdentifier &path, ExpressionVisitor &v)
 {
     const auto &oldPath = var.canonicalPath();
     auto it = paths.find(oldPath);
     if (it != paths.end()) {
         v.aboutToChange();
-        var = it->second.relativeTo(path);
+        if(path.getOwner())
+            var = it->second.relativeTo(path);
+        else
+            var = it->second;
         return true;
     }
     return false;
+}
+
+void VariableExpression::_collectReplacement(
+        std::map<ObjectIdentifier,ObjectIdentifier> &pathes,
+        const App::DocumentObject *parent, 
+        App::DocumentObject *oldObj, 
+        App::DocumentObject *newObj) const
+{
+    ObjectIdentifier path;
+    if(var.replaceObject(path,parent,oldObj,newObj))
+        pathes[var] = std::move(path);
 }
 
 void VariableExpression::_moveCells(const CellAddress &address, 
@@ -4469,20 +4534,22 @@ Range RangeExpression::getRange() const
     return Range(c1,c2);
 }
 
-bool RangeExpression::_renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &paths, 
+bool RangeExpression::_renameObjectIdentifier(
+        const std::map<ObjectIdentifier,ObjectIdentifier> &paths, 
         const ObjectIdentifier &path, ExpressionVisitor &v)
 {
+    (void)path;
     bool touched =false;
     auto it = paths.find(ObjectIdentifier(owner,begin));
     if (it != paths.end()) {
         v.aboutToChange();
-        begin = it->second.relativeTo(path).getPropertyName();
+        begin = it->second.getPropertyName();
         touched = true;
     }
     it = paths.find(ObjectIdentifier(owner,end));
     if (it != paths.end()) {
         v.aboutToChange();
-        end = it->second.relativeTo(path).getPropertyName();
+        end = it->second.getPropertyName();
         touched = true;
     }
     return touched;

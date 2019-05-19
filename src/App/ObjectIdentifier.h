@@ -249,6 +249,8 @@ public:
 
     virtual ~ObjectIdentifier() {}
 
+    App::DocumentObject *getOwner() const { return owner; }
+
     // Components
     void addComponent(const Component &c) { 
         components.push_back(c);
@@ -325,6 +327,9 @@ public:
     std::vector<std::string> getStringList() const;
 
     App::ObjectIdentifier relativeTo(const App::ObjectIdentifier & other) const;
+
+    bool replaceObject(ObjectIdentifier &res, const App::DocumentObject *parent,
+            App::DocumentObject *oldObj, App::DocumentObject *newObj) const;
 
     // Operators
 

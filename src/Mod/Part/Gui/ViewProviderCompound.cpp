@@ -156,10 +156,3 @@ void ViewProviderCompound::dropObject(App::DocumentObject* obj)
     pComp->Links.setValues(pShapes);
 }
 
-void ViewProviderCompound::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
-{
-    Part::Compound* pBool = static_cast<Part::Compound*>(getObject());
-    std::vector<App::DocumentObject*> pShapes = pBool->Links.getValues();
-    std::replace(pShapes.begin(), pShapes.end(), oldValue, newValue);
-    pBool->Links.setValues(pShapes);
-}

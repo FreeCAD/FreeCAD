@@ -198,6 +198,21 @@ public:
      */
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) = 0;
 
+    /** Return a copy of the property if the link replacement affects this property 
+     * 
+     * @param owner: the parent object whose link property is to be replace.
+     *               Not that The parent may not be the container of this
+     *               property. Link sub property can use this opportunity to
+     *               adjust its relative links.
+     * @param oldObj: object to be replaced
+     * @param newObj: object to replace with
+     *
+     * @return Return a copy of the property that is adjusted for the link
+     * replacement operation.
+     */
+    virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
+            App::DocumentObject *oldObj, App::DocumentObject *newObj) const = 0;
+
     /** Return a copy of the property if any changes caused by importing external linked object 
      *
      * @param nameMap: a map from the original external object name to the
@@ -280,6 +295,51 @@ public:
 
     /// Helper functions
     //@{
+
+    /** Helper function to check and replace a link
+     *
+     * @param owner: the owner of the current property
+     * @param obj: the current linked object
+     * @param parent: the parent of the changing link property, may or may not
+     * be equal to \c owner
+     * @param oldObj: the object to be replaced
+     * @param newObj: the object to replace with
+     * @param sub: optional the current subname reference
+     *
+     * @return Returns a pair(obj,subname). If no replacement is found,
+     * pair.first will be NULL
+     *
+     * Say a group has one of its child object replaced with another. Any
+     * existing link sub reference that refer to the original child object
+     * through the group will be broken. This helper function is used to check
+     * and correct any link sub reference.
+     */
+    static std::pair<App::DocumentObject*,std::string> tryReplaceLink(
+            const App::PropertyContainer *owner, App::DocumentObject *obj, 
+            const App::DocumentObject *parent, App::DocumentObject *oldObj, 
+            App::DocumentObject *newObj, const char *sub=0);
+
+    /** Helper function to check and replace a link with multiple subname refereces
+     *
+     * @param owner: the owner of the current property
+     * @param obj: the current linked object
+     * @param parent: the parent of the changing link property, may or may not
+     * be equal to \c owner
+     * @param oldObj: the object to be replaced
+     * @param newObj: the object to replace with
+     * @param subs: the current subname references
+     *
+     * @return Returns the a pair(obj,subs). If no replacement is found,
+     * pair.first will be NULL
+     * @sa tryReplaceLink()
+     */
+    static std::pair<App::DocumentObject*, std::vector<std::string> >
+        tryReplaceLinkSubs( const App::PropertyContainer *owner,
+                            App::DocumentObject *obj, 
+                            const App::DocumentObject *parent, 
+                            App::DocumentObject *oldObj, 
+                            App::DocumentObject *newObj,
+                            const std::vector<std::string> &subs);
 
     /// Update all element references in all link properties of \a feature
     static void updateElementReferences(DocumentObject *feature, bool reverse=false);
@@ -559,6 +619,8 @@ public:
 
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
+    virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
+            App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 protected:
     App::DocumentObject *_pcLink;
 };
@@ -646,6 +708,9 @@ public:
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
 
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
+
+    virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
+            App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
     DocumentObject *find(const std::string &, int *pindex=0) const;
     DocumentObject *find(const char *sub, int *pindex=0) const {
@@ -764,6 +829,9 @@ public:
 
     virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
             const std::string &ref, const char *newLabel) const override;
+
+    virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
+            App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
     virtual unsigned int getMemSize (void) const{
         return sizeof(App::DocumentObject *);
@@ -904,6 +972,9 @@ public:
     virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
             const std::string &ref, const char *newLabel) const override;
 
+    virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
+            App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
+
     virtual unsigned int getMemSize (void) const;
 
     virtual void updateElementReference(
@@ -997,6 +1068,9 @@ public:
 
     virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
             const std::string &ref, const char *newLabel) const override;
+
+    virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
+            App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
@@ -1173,6 +1247,9 @@ public:
 
     virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
             const std::string &ref, const char *newLabel) const override;
+
+    virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
+            App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
     virtual unsigned int getMemSize (void) const;
 

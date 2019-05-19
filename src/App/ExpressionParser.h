@@ -241,6 +241,9 @@ protected:
     virtual bool _relabeledDocument(const std::string &, const std::string &, ExpressionVisitor &);
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
                                          const ObjectIdentifier &, ExpressionVisitor &);
+    virtual void _collectReplacement(std::map<ObjectIdentifier,ObjectIdentifier> &, 
+                    const App::DocumentObject *parent, App::DocumentObject *oldObj, 
+                    App::DocumentObject *newObj) const;
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &);
     virtual void _offsetCells(int, int, ExpressionVisitor &);
     virtual Py::Object _getPyValue(int *jumpCode=0) const;

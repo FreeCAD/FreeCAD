@@ -410,10 +410,41 @@ std::size_t ObjectIdentifier::hash() const
 {
     if(_hash && _cache.size())
         return _hash;
-    _hash = boost::hash_value(toString());
+    const_cast<ObjectIdentifier*>(this)->_hash = boost::hash_value(toString());
     return _hash;
 }
 
+bool ObjectIdentifier::replaceObject(ObjectIdentifier &res, const App::DocumentObject *parent,
+            App::DocumentObject *oldObj, App::DocumentObject *newObj) const
+{
+    ResolveResults result(*this);
+
+    if(!result.resolvedDocumentObject)
+        return false;
+
+    auto r = PropertyLinkBase::tryReplaceLink(owner, result.resolvedDocumentObject,
+            parent, oldObj, newObj, subObjectName.getString().c_str());
+
+    if(!r.first)
+        return false;
+
+    res = *this;
+    if(r.first != result.resolvedDocumentObject) {
+        if(r.first->getDocument()!=owner->getDocument()) {
+            auto doc = r.first->getDocument();
+            bool useLabel = res.documentName.isRealString();
+            const char *name = useLabel?doc->Label.getValue():doc->getName();
+            res.setDocumentName(String(name, useLabel), true);
+        }
+        if(documentObjectName.isRealString())
+            res.documentObjectName = String(r.first->Label.getValue(),true);
+        else
+            res.documentObjectName = String(r.first->getNameInDocument(),false,true);
+    }
+    res.subObjectName = String(r.second);
+    res._cache.clear();
+    return true;
+}
 
 /**
  * @brief Escape toString representation so it is suitable for being embedded in a python command.

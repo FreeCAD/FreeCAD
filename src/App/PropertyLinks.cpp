@@ -402,6 +402,100 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
     return true;
 }
 
+std::pair<DocumentObject*, std::string> 
+PropertyLinkBase::tryReplaceLink(const PropertyContainer *owner, DocumentObject *obj, 
+    const DocumentObject *parent, DocumentObject *oldObj, DocumentObject *newObj, const char *subname)
+{
+    std::pair<DocumentObject*, std::string> res;
+    res.first = 0;
+
+    if(oldObj == obj) {
+        if(owner == parent) {
+            // Do not throw on sub object error yet. It's better to let
+            // recompute find out the error and point out the affected objects
+            // to user.
+#if 0 
+            if(subname && subname[0] && !newObj->getSubObject(subname)) {
+                FC_THROWM(Base::RuntimeError,
+                        "Sub-object '" << newObj->getFullName()
+                        << '.' << subname << "' not found when replacing link in "
+                        << owner->getFullName() << '.' << getName());
+            }
+#endif
+            res.first = newObj;
+            if(subname) res.second = subname;
+            return res;
+        }
+        return res;
+    }
+    if(!subname || !subname[0])
+        return res;
+
+    App::DocumentObject *prev = obj;
+    std::size_t prevPos = 0;
+    std::string sub = subname;
+    for(auto pos=sub.find('.');pos!=std::string::npos;pos=sub.find('.',pos)) {
+        ++pos;
+        char c = sub[pos];
+        sub[pos] = 0;
+        auto sobj = obj->getSubObject(sub.c_str());
+        sub[pos] = c;
+        if(!sobj) 
+            break;
+        if(sobj == oldObj) {
+            if(prev == parent) {
+#if 0
+                if(sub[pos] && !newObj->getSubObject(sub.c_str()+pos)) {
+                    FC_THROWM(Base::RuntimeError,
+                            "Sub-object '" << newObj->getFullName()
+                            << '.' << (sub.c_str()+pos) << "' not found when replacing link in "
+                            << owner->getFullName() << '.' << getName());
+                }
+#endif
+                if(sub[prevPos] == '$')
+                    sub.replace(prevPos+1,pos-1-prevPos,newObj->Label.getValue());
+                else
+                    sub.replace(prevPos,pos-1-prevPos,newObj->getNameInDocument());
+                res.first = obj;
+                res.second = std::move(sub);
+                return res;
+            }
+            break;
+        }else if(prev == parent)
+            break;
+        prev = sobj;
+        prevPos = pos;
+    }
+    return res;
+}
+
+std::pair<DocumentObject*,std::vector<std::string> >
+PropertyLinkBase::tryReplaceLinkSubs(const PropertyContainer *owner, 
+        DocumentObject *obj, const DocumentObject *parent, DocumentObject *oldObj, 
+        DocumentObject *newObj, const std::vector<std::string> &subs)
+{
+    std::pair<DocumentObject*,std::vector<std::string> > res;
+    res.first = 0;
+
+    auto r = tryReplaceLink(owner,obj,parent,oldObj,newObj);
+    if(r.first) {
+        res.first = r.first;
+        res.second = subs;
+        return res;
+    }
+    for(auto it=subs.begin();it!=subs.end();++it) {
+        auto r = tryReplaceLink(owner,obj,parent,oldObj,newObj,it->c_str());
+        if(r.first) {
+            if(!res.first) {
+                res.first = r.first;
+                res.second.insert(res.second.end(),subs.begin(),it);
+            }
+            res.second.push_back(std::move(r.second));
+        }else if(res.first)
+            res.second.push_back(*it);
+    }
+    return res;
+}
 
 //**************************************************************************
 //**************************************************************************
@@ -606,6 +700,18 @@ bool PropertyLink::adjustLink(const std::set<App::DocumentObject*> &inList) {
     if(_pcLink && _pcLink->getNameInDocument() && inList.count(_pcLink))
         adjustLinkError(false,this,_pcLink);
     return false;
+}
+
+Property *PropertyLink::CopyOnLinkReplace(const App::DocumentObject *parent,
+        App::DocumentObject *oldObj, App::DocumentObject *newObj) const
+{
+    auto res = tryReplaceLink(getContainer(),_pcLink,parent,oldObj,newObj);
+    if(res.first) {
+        auto p = new PropertyLink();
+        p->_pcLink = res.first;
+        return p;
+    }
+    return 0;
 }
 
 //**************************************************************************
@@ -814,6 +920,26 @@ void PropertyLinkList::Restore(Base::XMLReader &reader)
 
     // assignment
     setValues(values);
+}
+
+Property *PropertyLinkList::CopyOnLinkReplace(const App::DocumentObject *parent,
+        App::DocumentObject *oldObj, App::DocumentObject *newObj) const
+{
+    std::vector<DocumentObject*> links;
+    for(auto it=_lValueList.begin();it!=_lValueList.end();++it) {
+        auto res = tryReplaceLink(getContainer(),*it,parent,oldObj,newObj);
+        if(res.first) {
+            if(links.empty())
+                links.insert(links.end(),_lValueList.begin(),it);
+            links.push_back(res.first);
+        }else if(links.size())
+            links.push_back(*it);
+    }
+    if(links.empty())
+        return 0;
+    auto p= new PropertyLinkList();
+    p->_lValueList = std::move(links);
+    return p;
 }
 
 Property *PropertyLinkList::Copy(void) const
@@ -1422,6 +1548,19 @@ Property *PropertyLinkSub::CopyOnLabelChange(App::DocumentObject *obj,
     p->_pcLinkSub = _pcLinkSub;
     p->_cSubList = std::move(subs);
     return p;
+}
+
+Property *PropertyLinkSub::CopyOnLinkReplace(const App::DocumentObject *parent,
+        App::DocumentObject *oldObj, App::DocumentObject *newObj) const
+{
+    auto res = tryReplaceLinkSubs(getContainer(),_pcLinkSub,parent,oldObj,newObj,_cSubList);
+    if(res.first) {
+        PropertyLinkSub *p= new PropertyLinkSub();
+        p->_pcLinkSub = res.first;
+        p->_cSubList = std::move(res.second);
+        return p;
+    }
+    return 0;
 }
 
 Property *PropertyLinkSub::Copy(void) const
@@ -2119,8 +2258,8 @@ Property *PropertyLinkSubList::CopyOnImportExternal(
         const auto &sub = *itSub;
         if(!value || !value->getNameInDocument()) {
             if(values.size()) {
-                values.push_back(0);
-                subs.emplace_back();
+                values.push_back(value);
+                subs.push_back(sub);
             }
             continue;
         }
@@ -2162,8 +2301,8 @@ Property *PropertyLinkSubList::CopyOnLabelChange(App::DocumentObject *obj,
         const auto &sub = *itSub;
         if(!value || !value->getNameInDocument()) {
             if(values.size()) {
-                values.push_back(0);
-                subs.emplace_back();
+                values.push_back(value);
+                subs.push_back(sub);
             }
             continue;
         }
@@ -2189,6 +2328,46 @@ Property *PropertyLinkSubList::CopyOnLabelChange(App::DocumentObject *obj,
     p->_lSubList = std::move(subs);
     return p.release();
 }
+
+Property *PropertyLinkSubList::CopyOnLinkReplace(const App::DocumentObject *parent,
+        App::DocumentObject *oldObj, App::DocumentObject *newObj) const
+{
+    std::vector<App::DocumentObject *> values;
+    std::vector<std::string> subs;
+    auto itSub = _lSubList.begin();
+    for(auto itValue=_lValueList.begin();itValue!=_lValueList.end();++itValue,++itSub) {
+        auto value = *itValue;
+        const auto &sub = *itSub;
+        if(!value || !value->getNameInDocument()) {
+            if(values.size()) {
+                values.push_back(value);
+                subs.push_back(sub);
+            }
+            continue;
+        }
+        auto res = tryReplaceLink(getContainer(),value,parent,oldObj,newObj,sub.c_str());
+        if(res.first) {
+            if(values.empty()) {
+                values.reserve(_lValueList.size());
+                values.insert(values.end(),_lValueList.begin(),itValue);
+                subs.reserve(_lSubList.size());
+                subs.insert(subs.end(),_lSubList.begin(),itSub);
+            }
+            values.push_back(res.first);
+            subs.push_back(std::move(res.second));
+        }else if(values.size()) {
+            values.push_back(value);
+            subs.push_back(sub);
+        }
+    }
+    if(values.empty()) 
+        return 0;
+    std::unique_ptr<PropertyLinkSubList> p(new PropertyLinkSubList);
+    p->_lValueList = std::move(values);
+    p->_lSubList = std::move(subs);
+    return p.release();
+}
+
 
 Property *PropertyLinkSubList::Copy(void) const
 {
@@ -3124,6 +3303,17 @@ Property *PropertyXLink::CopyOnImportExternal(
     return p;
 }
 
+Property *PropertyXLink::CopyOnLinkReplace(const App::DocumentObject *parent,
+        App::DocumentObject *oldObj, App::DocumentObject *newObj) const
+{
+    auto res = tryReplaceLinkSubs(getContainer(),_pcLink,parent,oldObj,newObj,_SubList);
+    if(!res.first) 
+        return 0;
+    PropertyXLink *p= createInstance();
+    copyTo(*p,res.first,&res.second);
+    return p;
+}
+
 PropertyXLink *PropertyXLink::createInstance() const {
     return new PropertyXLink();
 }
@@ -3829,6 +4019,35 @@ Property *PropertyXLinkSubList::CopyOnLabelChange(App::DocumentObject *obj,
     for(++it;it!=_Links.end();++it) {
         p->_Links.emplace_back();
         copy.reset(it->CopyOnLabelChange(obj,ref,newLabel));
+        if(copy)
+            static_cast<PropertyXLinkSub&>(*copy).copyTo(p->_Links.back());
+        else
+            it->copyTo(p->_Links.back());
+    }
+    return p.release();
+}
+
+Property *PropertyXLinkSubList::CopyOnLinkReplace(const App::DocumentObject *parent,
+        App::DocumentObject *oldObj, App::DocumentObject *newObj) const
+{
+    std::unique_ptr<Property> copy;
+    auto it = _Links.begin();
+    for(;it!=_Links.end();++it) {
+        copy.reset(it->CopyOnLinkReplace(parent,oldObj,newObj));
+        if(copy) break;
+    }
+    if(!copy)
+        return 0;
+    std::unique_ptr<PropertyXLinkSubList> p(new PropertyXLinkSubList);
+    for(auto iter=_Links.begin();iter!=it;++iter) {
+        p->_Links.emplace_back();
+        iter->copyTo(p->_Links.back());
+    }
+    p->_Links.emplace_back();
+    static_cast<PropertyXLinkSub&>(*copy).copyTo(p->_Links.back());
+    for(++it;it!=_Links.end();++it) {
+        p->_Links.emplace_back();
+        copy.reset(it->CopyOnLinkReplace(parent,oldObj,newObj));
         if(copy)
             static_cast<PropertyXLinkSub&>(*copy).copyTo(p->_Links.back());
         else

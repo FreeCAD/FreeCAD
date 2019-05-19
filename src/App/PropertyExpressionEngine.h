@@ -74,6 +74,8 @@ public:
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
     virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
                         const std::string &ref, const char *newLabel) const override;
+    virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
+                        App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
     typedef boost::function<std::string (const App::ObjectIdentifier & path, boost::shared_ptr<const App::Expression> expr)> ValidatorFunc;
 

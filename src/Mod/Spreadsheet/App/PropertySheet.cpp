@@ -1434,6 +1434,26 @@ Property *PropertySheet::CopyOnLabelChange(App::DocumentObject *obj,
     return copy.release();
 }
 
+Property *PropertySheet::CopyOnLinkReplace(const App::DocumentObject *parent, 
+        App::DocumentObject *oldObj, App::DocumentObject *newObj) const
+{
+    std::map<CellAddress,std::unique_ptr<Expression> > changed;
+    for(auto &d : data) {
+        auto e = d.second->expression.get();
+        if(!e) continue;
+        auto expr = e->replaceObject(parent,oldObj,newObj);
+        if(!expr)
+            continue;
+        changed[d.first] = std::move(expr);
+    }
+    if(changed.empty())
+        return 0;
+    std::unique_ptr<PropertySheet> copy(new PropertySheet(*this));
+    for(auto &change : changed) 
+        copy->data[change.first]->setExpression(std::move(change.second));
+    return copy.release();
+}
+
 std::map<App::ObjectIdentifier, const App::Expression*> PropertySheet::getExpressions() const {
     std::map<App::ObjectIdentifier, const Expression*> res;
     for(auto &d : data) {
