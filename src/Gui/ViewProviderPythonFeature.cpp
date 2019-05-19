@@ -1314,6 +1314,32 @@ bool ViewProviderPythonFeatureImp::getDropPrefix(std::string &prefix) const {
     return false;
 }
 
+ViewProviderPythonFeatureImp::ValueT 
+ViewProviderPythonFeatureImp::replaceObject(
+        App::DocumentObject *oldObj, App::DocumentObject *newObj)
+{
+    if(py_replaceObject.isNone() || pyCalling
+            || !oldObj || !oldObj->getNameInDocument()
+            || !newObj || !newObj->getNameInDocument())
+        return NotImplemented;
+
+    Base::FlagToggler<> flag(pyCalling);
+
+    Base::PyGILStateLocker lock;
+    try {
+        Py::TupleN args(Py::asObject(oldObj->getPyObject()),
+                Py::asObject(newObj->getPyObject()));
+        Py::Boolean ok(Base::pyCall(py_replaceObject.ptr(),args.ptr()));
+        return ok ? Accepted : Rejected;
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return Rejected;
+}
+
+
 // ---------------------------------------------------------
 
 namespace Gui {

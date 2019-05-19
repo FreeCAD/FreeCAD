@@ -110,29 +110,6 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
 }
 
-void ViewProviderGroupExtension::extensionReplaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue) {
-
-    App::DocumentObject* grp = static_cast<App::DocumentObject*>(getExtendedViewProvider()->getObject());
-    App::Document* doc = grp->getDocument();
-
-    // build Python command for execution
-    QString cmd;
-    cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
-                        "App.getDocument(\"%1\").getObject(\"%3\"))")
-                        .arg(QString::fromLatin1(doc->getName()),
-                             QString::fromLatin1(grp->getNameInDocument()),
-                             QString::fromLatin1(oldValue->getNameInDocument()));
-
-    Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
-    cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
-                        "App.getDocument(\"%1\").getObject(\"%3\"))")
-                        .arg(QString::fromLatin1(doc->getName()),
-                             QString::fromLatin1(grp->getNameInDocument()),
-                             QString::fromLatin1(newValue->getNameInDocument()));
-
-    Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
-}
-
 std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimChildren(void) const {
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();    

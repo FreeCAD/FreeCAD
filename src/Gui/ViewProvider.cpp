@@ -724,17 +724,17 @@ std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentOb
     return std::string();
 }
 
-void ViewProvider::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
+int ViewProvider::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
         if (ext->extensionCanDropObject(newValue)) {
-            ext->extensionReplaceObject(oldValue, newValue);
-            return;
+            int ret = ext->extensionReplaceObject(oldValue, newValue);
+            if(ret>=0)
+                return !!ret;
         }
     }
-
-    throw Base::RuntimeError("ViewProvider::replaceObject: no extension for replacing object available.");
+    return -1;
 }
 
 void ViewProvider::Restore(Base::XMLReader& reader) {

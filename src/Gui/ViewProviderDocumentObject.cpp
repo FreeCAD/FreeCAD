@@ -45,6 +45,7 @@
 #include <Base/BoundBox.h>
 #include <App/Material.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/DocumentObserver.h>
 #include <App/Origin.h>
 #include "Application.h"
 #include "Document.h"
@@ -380,6 +381,66 @@ bool ViewProviderDocumentObject::canDropObjectEx(App::DocumentObject* obj, App::
     if(obj && obj->getDocument()!=getObject()->getDocument())
         return false;
     return canDropObject(obj);
+}
+
+int ViewProviderDocumentObject::replaceObject(
+        App::DocumentObject *oldObj, App::DocumentObject *newObj)
+{
+    if(!oldObj || !oldObj->getNameInDocument()
+            || !newObj || !newObj->getNameInDocument())
+    {
+        FC_THROWM(Base::RuntimeError,"Invalid object");
+    }
+    
+    auto obj = getObject();
+    if(!obj || !obj->getNameInDocument())
+        FC_THROWM(Base::RuntimeError,"View provider not attached");
+
+    int res = ViewProvider::replaceObject(oldObj,newObj);
+    if(res>=0)
+        return res;
+
+    std::vector<std::pair<App::DocumentObjectT, std::unique_ptr<App::Property> > > propChanges;
+    std::vector<App::Property*> props;
+    obj->getPropertyList(props);
+    for(auto prop : props) {
+        auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+        if(!linkProp)
+            continue;
+        std::unique_ptr<App::Property> copy(linkProp->CopyOnLinkReplace(obj, oldObj,newObj));
+        if(!copy)
+            continue;
+        propChanges.emplace_back(prop,std::move(copy));
+    }
+
+    if(propChanges.empty())
+        return 0;
+
+    // Global search for affected links
+    for(auto doc : App::GetApplication().getDocuments()) {
+        for(auto o : doc->getObjects()) {
+            if(o == obj)
+                continue;
+            std::vector<App::Property*> props;
+            o->getPropertyList(props);
+            for(auto prop : props) {
+                auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+                if(!linkProp)
+                    continue;
+                std::unique_ptr<App::Property> copy(linkProp->CopyOnLinkReplace(obj,oldObj,newObj));
+                if(!copy)
+                    continue;
+                propChanges.emplace_back(App::DocumentObjectT(prop),std::move(copy));
+            }
+        }
+    }
+
+    for(auto &v : propChanges) {
+        auto prop = v.first.getProperty();
+        if(prop)
+            prop->Paste(*v.second.get());
+    }
+    return 1;
 }
 
 bool ViewProviderDocumentObject::showInTree() const {

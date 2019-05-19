@@ -270,6 +270,22 @@ PyObject*  ViewProviderPy::dragObject(PyObject *args)
     } PY_CATCH;
 }
 
+PyObject* ViewProviderPy::replaceObject(PyObject *args)
+{
+    PyObject *oldObj;
+    PyObject *newObj;
+    if (!PyArg_ParseTuple(args, "O!O!", 
+                &App::DocumentObjectPy::Type,&oldObj,
+                &App::DocumentObjectPy::Type,&newObj))
+        return NULL;
+    PY_TRY {
+        int ret = getViewProviderPtr()->replaceObject(
+                static_cast<App::DocumentObjectPy*>(oldObj)->getDocumentObjectPtr(),
+                static_cast<App::DocumentObjectPy*>(newObj)->getDocumentObjectPtr());
+        return Py::new_reference_to(Py::Int(ret));
+    } PY_CATCH;
+}
+
 PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
 {
     char* mode;

@@ -76,8 +76,18 @@
 		<Methode Name="canDragAndDropObject">
 			<Documentation>
                 <UserDocu>
-                    canDragAndDropObject(obj)
-                    Check whether the child object can be removed from other parent and added here by drag and drop</UserDocu>
+canDragAndDropObject(obj)
+Check whether the child object can be removed from other parent and added here by drag and drop
+                </UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="replaceObject">
+			<Documentation>
+                <UserDocu>
+replaceObject(oldObj, newObj) -> Int: replace a child object
+
+Returns 1 if succeed, 0 if not found, -1 if not supported
+                </UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="doubleClicked">

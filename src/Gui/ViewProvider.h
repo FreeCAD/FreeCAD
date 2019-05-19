@@ -315,8 +315,14 @@ public:
      */
     virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
             const char *subname, const std::vector<std::string> &elements);
-    /** Replace an object to the view provider by drag and drop */
-    virtual void replaceObject(App::DocumentObject*, App::DocumentObject*);
+    /** Replace an object to the view provider by drag and drop
+     *
+     * @param oldObj: object to be replaced
+     * @param newObj: object to replace with
+     *
+     * @return Returns 0 if not found, 1 if succeed, -1 if not supported
+     */
+    virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj);
     //@}
 
     /** Tell the tree view if this object should apear there */

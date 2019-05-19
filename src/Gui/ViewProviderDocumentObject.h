@@ -76,6 +76,8 @@ public:
     virtual bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *, 
             const char *, const std::vector<std::string> &) const override;
 
+    virtual int replaceObject(App::DocumentObject*, App::DocumentObject*) override;
+
     virtual bool showInTree() const;
 
     /// Get a list of TaskBoxes associated with this object

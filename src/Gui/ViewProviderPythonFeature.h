@@ -24,6 +24,7 @@
 #ifndef GUI_VIEWPROVIDERPYTHONFEATURE_H
 #define GUI_VIEWPROVIDERPYTHONFEATURE_H
 
+#include <App/Application.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/Document.h>
 #include <App/PropertyPythonObject.h>
@@ -112,6 +113,7 @@ public:
     /** Add an object with full quanlified name to the view provider by drag and drop */
     ValueT dropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
             const char *, const std::vector<std::string> &elements, std::string &ret);
+    ValueT replaceObject(App::DocumentObject *, App::DocumentObject *);
     //@}
 
     bool canAddToSceneGraph() const;
@@ -160,7 +162,8 @@ private:
     FC_PY_ELEMENT(canDropObjectEx) \
     FC_PY_ELEMENT(dropObjectEx) \
     FC_PY_ELEMENT(canAddToSceneGraph) \
-    FC_PY_ELEMENT(getDropPrefix) 
+    FC_PY_ELEMENT(getDropPrefix) \
+    FC_PY_ELEMENT(replaceObject) \
 
 #undef FC_PY_ELEMENT
 #define FC_PY_ELEMENT(_name) Py::Object py_##_name;
@@ -316,6 +319,7 @@ public:
     }
     /// Starts to drag the object
     virtual void dragObject(App::DocumentObject* obj) {
+        App::AutoTransaction committer;
         switch (imp->dragObject(obj)) {
         case ViewProviderPythonFeatureImp::Accepted:
         case ViewProviderPythonFeatureImp::Rejected:
@@ -348,6 +352,7 @@ public:
     }
     /// If the dropped object type is accepted the object will be added as child
     virtual void dropObject(App::DocumentObject* obj) {
+        App::AutoTransaction committer;
         switch (imp->dropObject(obj)) {
         case ViewProviderPythonFeatureImp::Accepted:
         case ViewProviderPythonFeatureImp::Rejected:
@@ -381,7 +386,9 @@ public:
     }
     /** Add an object with full quanlified name to the view provider by drag and drop */
     virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
-            const char *subname, const std::vector<std::string> &elements) {
+            const char *subname, const std::vector<std::string> &elements) 
+    {
+        App::AutoTransaction committer;
         std::string ret;
         switch (imp->dropObjectEx(obj,owner,subname,elements,ret)) {
         case ViewProviderPythonFeatureImp::NotImplemented:
@@ -506,6 +513,18 @@ protected:
         return prefix;
     }
 
+    virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj) {
+        App::AutoTransaction committer;
+        switch (imp->replaceObject(oldObj,newObj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return 1;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return 0;
+        default:
+            return ViewProviderT::replaceObject(oldObj,newObj);
+        }
+    }
+
 public:
     virtual void setupContextMenu(QMenu* menu, QObject* recipient, const char* member)
     {
@@ -516,6 +535,7 @@ public:
 protected:
     virtual bool doubleClicked(void)
     {
+        App::AutoTransaction committer;
         switch (imp->doubleClicked()) {
         case ViewProviderPythonFeatureImp::Accepted:
             return true;

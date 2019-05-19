@@ -71,7 +71,9 @@ public:
     virtual std::string extensionDropObjectEx(App::DocumentObject *obj, App::DocumentObject *, 
             const char *, const std::vector<std::string> &) 
         { extensionDropObject(obj); return std::string(); }
-    virtual void extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) { }
+
+    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) 
+        { return -1; }
 
     /// Hides the view provider
     virtual void extensionHide(void) { }
