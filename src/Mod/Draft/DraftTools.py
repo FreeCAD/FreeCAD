@@ -4490,6 +4490,7 @@ class Edit(Modifier):
         self.originalDisplayMode = None
         self.originalPoints = None
         self.originalNodes = None
+        self.previewObj = None
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Edit',
@@ -4578,35 +4579,25 @@ class Edit(Modifier):
                 if Draft.getType(self.obj) in ["Wire","BSpline"]:
                     self.ui.editUi("Wire")
                     self.setPts()
-                        
                 elif Draft.getType(self.obj) == "BezCurve":
                     self.ui.editUi("BezCurve")
                     self.setPts()
-                        
                 elif Draft.getType(self.obj) == "Circle":
                     self.setCirclePts()
-
                 elif Draft.getType(self.obj) == "Rectangle":
                     self.setRectanglePts()
-                        
                 elif Draft.getType(self.obj) == "Polygon":
                     self.setPolygonPts()
-                    
                 elif Draft.getType(self.obj) == "Dimension":
                     self.setDimensionPts()
-                    
                 elif Draft.getType(self.obj) == "Window":
                     self.setWindowPts()
-                
                 elif Draft.getType(self.obj) == "Space":
                     self.setSpacePts()
-                    
                 elif Draft.getType(self.obj) == "Structure":
                     self.setStructurePts()
-                            
                 elif Draft.getType(self.obj) == "PanelCut":
                     self.setPanelCutPts()
-                    
                 elif Draft.getType(self.obj) == "PanelSheet":
                     self.setPanelSheetPts()
 
@@ -4665,6 +4656,8 @@ class Edit(Modifier):
                 # commented out the following line to disable updating
                 # the object during edit, otherwise it confuses the snapper
                 #self.update(self.trackers[self.editing].get())
+                self.updatePreview(obj=self.obj,idx=self.editing,pt=self.point)
+
             if hasattr(self.obj.ViewObject,"Selectable"):
                 if self.ui.addButton.isChecked():
                     self.obj.ViewObject.Selectable = True
@@ -4742,12 +4735,17 @@ class Edit(Modifier):
                                 self.ui.isRelative.show()
                                 self.editing = ep
                                 self.trackers[self.editing].off()
+                                if self.previewObj:
+                                    self.previewObj.finalize()
+                                    self.previewObj = None
+                                self.previewObj = self.initPreviewObj(self.obj)
                                 if hasattr(self.obj.ViewObject,"Selectable"):
                                     self.obj.ViewObject.Selectable = False
                                 self.node.append(self.trackers[self.editing].get())
                                 FreeCADGui.Snapper.setSelectMode(False)
                             done = True
                 else:
+                    self.previewObj.finalize()
                     self.trackers[self.editing].on()
                     #if hasattr(self.obj.ViewObject,"Selectable"):
                     #    self.obj.ViewObject.Selectable = True
@@ -4823,6 +4821,32 @@ class Edit(Modifier):
         # FreeCADGui.ActiveDocument.resetEdit()
 
     #---------------------------------------------------------------------------
+    # PREVIEW
+    #---------------------------------------------------------------------------
+    
+    def initPreviewObj(self,obj):
+        if Draft.getType(obj) == "Wire": 
+            return wireTracker(obj)
+        elif Draft.getType(obj) == "BezCurve":
+            return bezcurveTracker()
+
+
+    def updatePreview(self,obj,idx,pt):
+        if Draft.getType(obj) in ["Wire"]:
+            plist = obj.Points
+            plist[idx] = pt
+            print(plist)
+            #incomplete
+        elif Draft.getType(obj) == "BezCurve":
+            self.previewObj.on()
+            plist = obj.Points
+            plist[idx] = pt
+            self.previewObj.update(plist,obj.Degree)
+            FreeCAD.Console.PrintMessage(str(self.previewObj)+str(plist)+"\n")
+            redraw3DView()
+  
+
+    #---------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Add/Delete Vertexes
     #---------------------------------------------------------------------------
 
@@ -4872,7 +4896,7 @@ class Edit(Modifier):
             cont = 1 if (self.obj.Degree >= 2) else 0
             self.obj.Continuity = c[0:edgeindex]+[cont]+c[edgeindex:]
         else:
-            if ( Draft.getType(self.obj) in ["BSpline"]):
+            if (Draft.getType(self.obj) in ["BSpline"]):
                 if (self.obj.Closed == True):
                     curve = self.obj.Shape.Edges[0].Curve
                 else:
