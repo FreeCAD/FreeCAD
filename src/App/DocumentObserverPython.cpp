@@ -169,6 +169,58 @@ void DocumentObserverPython::slotRedoDocument(const App::Document& Doc)
     }
 }
 
+void DocumentObserverPython::slotUndo()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Base::pyCall(pyUndo.ptr());
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotRedo()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Base::pyCall(pyRedo.ptr());
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotBeforeCloseTransaction(bool abort)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args.setItem(0, Py::Boolean(abort));
+        Base::pyCall(pyBeforeCloseTransaction.ptr(),args.ptr());
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotCloseTransaction(bool abort)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args.setItem(0, Py::Boolean(abort));
+        Base::pyCall(pyCloseTransaction.ptr(),args.ptr());
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
 void DocumentObserverPython::slotBeforeChangeDocument(const App::Document& Doc, const App::Property& Prop) 
 {   
     Base::PyGILStateLocker lock;

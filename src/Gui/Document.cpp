@@ -2003,8 +2003,14 @@ bool Document::checkTransactionID(bool undo, int iSteps) {
     }
     if(prompts.size()) {
         std::ostringstream str;
-        for(auto doc : prompts)
+        int i=0;
+        for(auto doc : prompts) {
+            if(i++==5) {
+                str << "...\n";
+                break;
+            }
             str << "    " << doc->getName() << "\n";
+        }
         int ret = QMessageBox::warning(getMainWindow(), 
                     undo?QObject::tr("Undo"):QObject::tr("Redo"),
                     QString::fromLatin1("%1,\n%2%3")
@@ -2029,6 +2035,10 @@ bool Document::checkTransactionID(bool undo, int iSteps) {
                 v.first->redo();
         }
     }
+    if(undo)
+        App::GetApplication().signalUndo();
+    else
+        App::GetApplication().signalRedo();
     return true;
 }
 

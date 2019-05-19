@@ -916,6 +916,8 @@ void Application::closeActiveTransaction(bool abort, int id) {
     if(!id) return;
 
     _activeTransactionID = 0;
+
+    TransactionSignaller siganller(abort,false);
     for(auto &v : DocMap) {
         if(v.second->getTransactionID(true) != id)
             continue;
@@ -923,6 +925,25 @@ void Application::closeActiveTransaction(bool abort, int id) {
             v.second->abortTransaction();
         else
             v.second->commitTransaction();
+    }
+}
+
+static int _TransSignalCount;
+static bool _TransSignalled;
+Application::TransactionSignaller::TransactionSignaller(bool abort, bool signal)
+    :abort(abort)
+{
+    ++_TransSignalCount;
+    if(signal && !_TransSignalled) {
+        _TransSignalled = true;
+        GetApplication().signalBeforeCloseTransaction(abort);
+    }
+}
+
+Application::TransactionSignaller::~TransactionSignaller() {
+    if(--_TransSignalCount == 0 && _TransSignalled) {
+        _TransSignalled = false;
+        GetApplication().signalCloseTransaction(abort);
     }
 }
 

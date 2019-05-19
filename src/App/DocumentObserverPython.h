@@ -87,6 +87,14 @@ private:
     void slotCommitTransaction(const App::Document& Doc);
     /** Called when an observed document aborts a transaction */
     void slotAbortTransaction(const App::Document& Doc);
+    /** Called after application wide undo */
+    void slotUndo();
+    /** Called after application wide redo */
+    void slotRedo();
+    /** Called before closing/aborting application active transaction */
+    void slotBeforeCloseTransaction(bool abort);
+    /** Called after closing/aborting application active transaction */
+    void slotCloseTransaction(bool abort);
     /** Called when an object gets a new dynamic property added*/
     void slotAppendDynamicProperty(const App::Property& Prop);
     /** Called when an object gets a dynamic property removed*/
@@ -123,6 +131,10 @@ private:
     FC_PY_ELEMENT(OpenTransaction,_1,_2) \
     FC_PY_ELEMENT(CommitTransaction,_1) \
     FC_PY_ELEMENT(AbortTransaction,_1) \
+    FC_PY_ELEMENT(Undo) \
+    FC_PY_ELEMENT(Redo) \
+    FC_PY_ELEMENT(BeforeCloseTransaction,_1) \
+    FC_PY_ELEMENT(CloseTransaction,_1) \
     FC_PY_ELEMENT(StartSaveDocument,_1,_2) \
     FC_PY_ELEMENT(FinishSaveDocument,_1,_2) \
     FC_PY_ELEMENT(AppendDynamicProperty,_1) \

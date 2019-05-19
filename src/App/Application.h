@@ -190,10 +190,16 @@ public:
     boost::signals2::signal<void (const Document&, const std::string&)> signalFinishSaveDocument;
     /// signal on undo in document
     boost::signals2::signal<void (const Document&)> signalUndoDocument;
+    /// signal on application wide undo
+    boost::signals2::signal<void ()> signalUndo;
     /// signal on redo in document
     boost::signals2::signal<void (const Document&)> signalRedoDocument;
-    /// signal on transaction abort in document
-    boost::signals2::signal<void (const Document&)> signalTransactionAbort;
+    /// signal on application wide redo
+    boost::signals2::signal<void ()> signalRedo;
+    /// signal before close/abort active transaction
+    boost::signals2::signal<void (bool)> signalBeforeCloseTransaction;
+    /// signal after close/abort active transaction
+    boost::signals2::signal<void (bool)> signalCloseTransaction;
     /// signal on show hidden items
     boost::signals2::signal<void (const Document&)> signalShowHidden;
     /// signal on start opening document(s)
@@ -398,6 +404,15 @@ protected:
     /// open single document only
     App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
             const char *label, bool isMainDoc, const std::set<std::string> &objNames);
+
+    /// Helper class for App::Document to signal on close/abort transaction
+    class AppExport TransactionSignaller {
+    public:
+        TransactionSignaller(bool abort,bool signal);
+        ~TransactionSignaller();
+    private:
+        bool abort;
+    };
 
 private:
     /// Constructor

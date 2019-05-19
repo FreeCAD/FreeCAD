@@ -1173,6 +1173,7 @@ void Document::commitTransaction()
     }
 
     if (d->activeUndoTransaction) {
+        Application::TransactionSignaller signaller(false,true);
         int id = d->activeUndoTransaction->getID();
         mUndoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = 0;
@@ -1196,6 +1197,7 @@ void Document::abortTransaction()
     }
 
     if (d->activeUndoTransaction) {
+        Application::TransactionSignaller signaller(true,true);
         {
             Base::FlagToggler<bool> flag(d->rollback);
             // applying the so far made changes
