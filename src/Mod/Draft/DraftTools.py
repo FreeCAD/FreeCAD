@@ -311,16 +311,16 @@ class SelectPlane(DraftTool):
     def Activated(self):
         DraftTool.Activated(self)
         self.offset = 0
-        if self.doc:
-
-            self.ui.selectPlaneUi()
-            FreeCAD.Console.PrintMessage(translate("draft", "Pick a face to define the drawing plane")+"\n")
-            if plane.alignToSelection(self.offset):
-                FreeCADGui.Selection.clearSelection()
-                self.display(plane.axis)
-                self.finish()
-            else:
-                self.call = self.view.addEventCallback("SoEvent", self.action)
+        if not self.doc:
+            return
+        self.ui.selectPlaneUi()
+        FreeCAD.Console.PrintMessage(translate("draft", "Pick a face to define the drawing plane")+"\n")
+        if plane.alignToSelection(self.offset):
+            FreeCADGui.Selection.clearSelection()
+            self.display(plane.axis)
+            self.finish()
+        else:
+            self.call = self.view.addEventCallback("SoEvent", self.action)
 
     def action(self, arg):
         if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
