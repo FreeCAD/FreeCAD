@@ -25,6 +25,7 @@
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
+#include <QLabel>
 
 class QTemporaryFile;
 
@@ -100,8 +101,6 @@ public:
     int removeQViewByName(const char* name);
     void removeQViewFromScene(QGIView *view);
 
-    void balloonPlacing(bool val) { m_balloonPlacing = val; };
-
     //void setViews(const std::vector<QGIView *> &view) {views = view; }
     void setPageTemplate(TechDraw::DrawTemplate *pageTemplate);
 
@@ -131,6 +130,7 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void kbPanScroll(int xMove = 1, int yMove = 1); 
 
@@ -155,9 +155,10 @@ private:
     double m_zoomIncrement;
     int m_reversePan;
     int m_reverseScroll;
-    bool m_balloonPlacing;
-
     bool m_borderState;
+    QLabel *balloonCursor;
+    QPoint balloonCursorPos;
+    void cancelBalloonPlacing(void);
 };
 
 } // namespace MDIViewPageGui

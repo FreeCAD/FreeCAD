@@ -74,9 +74,8 @@ public:
                         QWidget * widget = 0 ) override;
     virtual QColor getNormalColor(void) override;
     QString getLabelText(void);
-    void connect(QGIView *parent);
-    void disconnect(void);
     void draw_modifier(bool modifier);
+    void placeBalloon(QPointF pos);
 
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
@@ -89,7 +88,6 @@ protected:
     void draw() override;
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
-    void onAttachPointPicked(QGIView *view, QPointF pos);
     virtual void setSvgPens(void);
     virtual void setPens(void);
     QString getPrecision(void);

@@ -104,6 +104,7 @@ DrawPage::DrawPage(void)
     Scale.setConstraints(&scaleRange);
     double defScale = hGrp->GetFloat("DefaultScale",1.0);
     Scale.setValue(defScale);
+    balloonPlacing = false;
 }
 
 DrawPage::~DrawPage()

@@ -61,6 +61,7 @@ public:
     short mustExecute() const;
 
     DrawViewPart* getViewPart() const;
+    QPointF origin;
 
     //virtual PyObject *getPyObject(void);
 
