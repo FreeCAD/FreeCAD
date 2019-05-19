@@ -797,7 +797,7 @@ StdCmdUndo::StdCmdUndo()
   sStatusTip    = QT_TR_NOOP("Undo exactly one action");
   sPixmap       = "edit-undo";
   sAccel        = keySequenceToAccel(QKeySequence::Undo);
-  eType         = ForEdit;
+  eType         = ForEdit|NoTransaction;
 }
 
 void StdCmdUndo::activated(int iMsg)
@@ -841,7 +841,7 @@ StdCmdRedo::StdCmdRedo()
   sStatusTip    = QT_TR_NOOP("Redoes a previously undone action");
   sPixmap       = "edit-redo";
   sAccel        = keySequenceToAccel(QKeySequence::Redo);
-  eType         = ForEdit;
+  eType         = ForEdit|NoTransaction;
 }
 
 void StdCmdRedo::activated(int iMsg)
@@ -1117,9 +1117,9 @@ void StdCmdDelete::activated(int iMsg)
 
     std::set<App::Document*> docs;
     try {
-        App::GetApplication().setActiveTransaction("Delete");
+        openCommand("Delete");
         if (getGuiApplication()->sendHasMsgToFocusView(getName())) {
-            App::GetApplication().closeActiveTransaction();
+            commitCommand();
             return;
         }
         Gui::getMainWindow()->setUpdatesEnabled(false);
@@ -1253,7 +1253,7 @@ void StdCmdDelete::activated(int iMsg)
         QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
                 QString::fromLatin1("Unknown error"));
     }
-    App::GetApplication().closeActiveTransaction();
+    commitCommand();
     Gui::getMainWindow()->setUpdatesEnabled(true);
     Gui::getMainWindow()->update();
 }
@@ -1676,7 +1676,7 @@ protected:
             return;
         }
 
-        App::GetApplication().setActiveTransaction("Paste expressions");
+        openCommand("Paste expressions");
         try {
             for(auto &v : exprs) {
                 for(auto &v2 : v.second) {
@@ -1692,11 +1692,11 @@ protected:
                         v2.first->setExpressions(std::move(expressions));
                 }
             }
-            App::GetApplication().closeActiveTransaction(false);
+            commitCommand();
         } catch (const Base::Exception& e) {
+            abortCommand();
             QMessageBox::critical(getMainWindow(), QObject::tr("Failed to paste expressions"),
                 QString::fromLatin1(e.what()));
-            App::GetApplication().closeActiveTransaction(true);
             e.ReportException();
         }
     }

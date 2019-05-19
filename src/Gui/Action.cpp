@@ -93,7 +93,7 @@ void Action::addTo(QWidget *w)
  */
 void Action::onActivated () 
 {
-    _pcCmd->invoke(0,true,Command::TriggerAction);
+    _pcCmd->invoke(0,Command::TriggerAction);
 }
 
 /**
@@ -101,7 +101,7 @@ void Action::onActivated ()
  */
 void Action::onToggled(bool b)
 {
-    _pcCmd->invoke( b ? 1 : 0 , true, Command::TriggerAction);
+    _pcCmd->invoke( b ? 1 : 0 , Command::TriggerAction);
 } 
 
 void Action::setCheckable(bool b)
@@ -332,7 +332,7 @@ void ActionGroup::setCheckedAction(int i)
  */
 void ActionGroup::onActivated () 
 {
-    _pcCmd->invoke(this->property("defaultAction").toInt(), true, Command::TriggerAction);
+    _pcCmd->invoke(this->property("defaultAction").toInt(), Command::TriggerAction);
 }
 
 void ActionGroup::onToggled(bool)
@@ -359,7 +359,7 @@ void ActionGroup::onActivated (QAction* a)
         }
     }
 
-    _pcCmd->invoke(index, true, Command::TriggerChildAction);
+    _pcCmd->invoke(index, Command::TriggerChildAction);
 }
 
 void ActionGroup::onHovered (QAction *a) 

@@ -48,6 +48,7 @@ class Document;
 class DocumentObject;
 class ApplicationObserver;
 class Property;
+class AutoTransaction;
 
 enum GetLinkOption {
     /// Get all links (both directly and in directly) linked to the given object
@@ -523,8 +524,12 @@ private:
     // for estimate max link depth
     int _objCount;
 
+    friend class AutoTransaction;
+
     std::string _activeTransactionName;
     int _activeTransactionID;
+    int _activeTransactionGuard;
+    bool _activeTransactionTmpName;
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;
@@ -535,23 +540,47 @@ inline App::Application &GetApplication(void){
     return *App::Application::_pcSingleton;
 }
 
+/// Helper class to manager transaction (i.e. undo/redo)
 class AppExport AutoTransaction {
+private:
+    /// Private new operator to prevent heap allocation
+    void* operator new(size_t size);
+
 public:
-    AutoTransaction(const char *name) :tid(0) {
-        if(!GetApplication().getActiveTransaction())
-            tid = GetApplication().setActiveTransaction(name);
-    }
-    ~AutoTransaction() {
-        close(false);
-    }
+    /** Construtor
+     *
+     * @param name: optional new transaction name on construction
+     * @param tmpName: if true and a new transaction is setup, the name given is
+     * considered as temperary, and subsequent construction of this class (or
+     * calling Application::setActiveTransaction()) can override the transaction
+     * name.
+     *
+     * The constructor increments an internal counter
+     * (Application::_activeTransactionGuard). The counter prevents any new
+     * active transaction being setup. It also prevents close (i.e. commits) the
+     * current active transaction until it reaches zero. It does not have any
+     * effect on aborting transaction, though.
+     */
+    AutoTransaction(const char *name=0, bool tmpName=false);
 
-    void close(bool abort=false) {
-        int id = 0;
-        if(tid && GetApplication().getActiveTransaction(&id) && tid==id)
-            GetApplication().closeActiveTransaction(abort);
-    }
+    /** Destructor
+     *
+     * This destructor decrease an internal counter
+     * (Application::_activeTransactionGuard), and will commit any current
+     * active transaction when the counter reaches zero.
+     */
+    ~AutoTransaction();
 
-    int tid;
+    /** Close or abort the transaction
+     *
+     * This function can be used to explicitly close (i.e. commit) the
+     * transaction, if the current transaction ID matches the one created inside
+     * the constructor. For aborting, it will abort any current transaction
+     */
+    void close(bool abort=false);
+
+private:
+    int tid = 0;
 };
 
 } // namespace App

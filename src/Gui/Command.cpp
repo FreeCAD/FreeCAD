@@ -34,6 +34,8 @@
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 #endif
 
+#include <boost/algorithm/string/replace.hpp>
+
 #include <Python.h>
 #include <frameobject.h>
 
@@ -369,10 +371,16 @@ void Command::setupCheckable(int iMsg) {
 
 }
 
-void Command::invoke(int i, bool autoCommit, TriggerSource trigger)
+void Command::invoke(int i, TriggerSource trigger)
 {
     CommandTrigger cmdTrigger(_trigger,trigger);
-    AutoCommit committer(autoCommit && (eType&(AlterDoc|ForEdit)));
+    if(displayText.empty()) {
+        displayText = getMenuText();
+        boost::replace_all(displayText,"&","");
+        if(displayText.empty())
+            displayText = getName();
+    }
+    App::AutoTransaction committer((eType&NoTransaction)?0:displayText.c_str(),true);
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
     Base::Console().Log("CmdG: %s\n",sName);
@@ -523,7 +531,7 @@ std::string Command::getUniqueObjectName(const char *BaseName, const App::Docume
 }
 
 std::string Command::getObjectCmd(const char *Name, const App::Document *doc, 
-        const char *prefix, const char *postfix) 
+        const char *prefix, const char *postfix, bool gui) 
 {
     if(!doc) doc = App::GetApplication().getActiveDocument();
     if(!doc || !Name)
@@ -531,7 +539,7 @@ std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
     std::ostringstream str;
     if(prefix)
         str << prefix;
-    str << "App.getDocument('" << doc->getName() 
+    str << (gui?"Gui":"App") << ".getDocument('" << doc->getName() 
         << "').getObject('" << Name << "')";
     if(postfix)
         str << postfix;
@@ -539,11 +547,11 @@ std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
 }
 
 std::string Command::getObjectCmd(const App::DocumentObject *obj,
-        const char *prefix, const char *postfix) 
+        const char *prefix, const char *postfix, bool gui) 
 {
     if(!obj || !obj->getNameInDocument())
         return std::string("None");
-    return getObjectCmd(obj->getNameInDocument(), obj->getDocument(), prefix, postfix);
+    return getObjectCmd(obj->getNameInDocument(), obj->getDocument(), prefix, postfix,gui);
 }
 
 void Command::setAppModuleName(const char* s)
@@ -564,8 +572,6 @@ void Command::setGroupName(const char* s)
 #endif
 }
 
-static int _CommitCount;
-
 //--------------------------------------------------------------------------
 // UNDO REDO transaction handling
 //--------------------------------------------------------------------------
@@ -577,76 +583,26 @@ static int _CommitCount;
  *  operation default is the Command name.
  *  @see CommitCommand(),AbortCommand()
  */
-void Command::openCommand(const char* sCmdName, bool exclusive)
+void Command::openCommand(const char* sCmdName)
 {
-    // Using OpenCommand with no active document !
-    if(!Gui::Application::Instance->activeDocument())
-        FC_THROWM(Base::RuntimeError,"No active document");
-
-    static int _ExclusiveTransaction;
-    if(_ExclusiveTransaction) {
-        int tid = 0;
-        App::GetApplication().getActiveTransaction(&tid);
-        if(tid == _ExclusiveTransaction)
-            return;
-    }
-
     if (!sCmdName)
         sCmdName = "Command";
-
-    if(exclusive && _CommitCount>0)
-        _ExclusiveTransaction = App::GetApplication().setActiveTransaction(sCmdName);
-    else
-        Gui::Application::Instance->activeDocument()->openCommand(sCmdName);
-}
-
-Command::AutoCommit::AutoCommit(bool enable)
-    :enabled(enable?1:0)
-{
-    if(App::GetApplication().getActiveTransaction()
-            || Command::hasPendingCommand())
-        enabled = -1;
-    else if(enabled) {
-        // When enabled, it is only effective if there is no existing disabled
-        // AutoCommit decleared in the stack above
-        if(_CommitCount>=0)
-            ++_CommitCount;
-    }else if(_CommitCount<=0) {
-        // When disabled, it disables any lower stack AutoCommit as well.
-        --_CommitCount;
-    }
-};
-
-Command::AutoCommit::~AutoCommit() 
-{
-    if(enabled>0) { 
-        if(_CommitCount>0) {
-            --_CommitCount;
-            Command::commitCommand();
-        }
-    }else if(enabled==0 && _CommitCount<0)
-        ++_CommitCount;
+    App::GetApplication().setActiveTransaction(sCmdName);
 }
 
 void Command::commitCommand(void)
 {
-    if(_CommitCount)
-        return;
-    // if(Gui::Application::Instance->activeDocument())
-    if(hasPendingCommand())
-        Gui::Application::Instance->activeDocument()->commitCommand();
+    App::GetApplication().closeActiveTransaction();
 }
 
 void Command::abortCommand(void)
 {
-    if(Gui::Application::Instance->activeDocument())
-        Gui::Application::Instance->activeDocument()->abortCommand();
+    App::GetApplication().closeActiveTransaction(true);
 }
 
 bool Command::hasPendingCommand(void)
 {
-    auto gdoc = Gui::Application::Instance->activeDocument();
-    return gdoc && gdoc->hasPendingCommand();
+    return !!App::GetApplication().getActiveTransaction();
 }
 
 bool Command::_blockCmd = false;
@@ -840,7 +796,6 @@ const std::string Command::strToPython(const char* Str)
 void Command::updateActive(void)
 {
     WaitCursor wc;
-    // App::AutoTransaction trans("Recompute");
     doCommand(App,"App.ActiveDocument.recompute()");
 }
 
@@ -1446,7 +1401,7 @@ void PythonGroupCommand::activated(int iMsg)
             auto cmd = rcCmdMgr.getCommandByName(act->property("CommandName").toByteArray());
             if(cmd) {
                 bool checked = act->isCheckable() && act->isChecked();
-                cmd->invoke(checked?1:0,true,TriggerAction);
+                cmd->invoke(checked?1:0,TriggerAction);
             }
         }
 
@@ -1790,7 +1745,7 @@ void CommandManager::runCommandByName (const char* sName) const
     Command* pCmd = getCommandByName(sName);
 
     if (pCmd)
-        pCmd->invoke(0, false);
+        pCmd->invoke(0);
 }
 
 void CommandManager::testActive(void)

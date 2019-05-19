@@ -841,14 +841,62 @@ void Application::setActiveDocument(const char *Name)
     }
 }
 
+AutoTransaction::AutoTransaction(const char *name, bool tmpName) {
+    auto &app = GetApplication();
+    if(name) {
+        if(!app.getActiveTransaction()
+                || (!tmpName && app._activeTransactionTmpName))
+        {
+            app._activeTransactionTmpName = tmpName;
+            tid = app.setActiveTransaction(name);
+        }
+    }
+    ++app._activeTransactionGuard;
+}
+
+AutoTransaction::~AutoTransaction() {
+    auto &app = GetApplication();
+    if(--app._activeTransactionGuard == 0) {
+        try {
+            // We don't call close() here, because close() only closes
+            // transaction that we opened during construction time. However,
+            // when _activeTransactionGuard reaches zero here, we are supposed
+            // to close any transaction opened.
+            app.closeActiveTransaction();
+        } catch(Base::Exception &e) {
+            e.ReportException();
+        } catch(...)
+        {}
+    }
+}
+
+void AutoTransaction::close(bool abort) {
+    if(tid || abort) {
+        GetApplication().closeActiveTransaction(abort,abort?0:tid);
+        tid = 0;
+    }
+}
+
 int Application::setActiveTransaction(const char *name) {
     if(!name || !name[0])
-        throw Base::ValueError("Invalid transaction name");
-    _activeTransactionID = 0;
-    for(auto &v : DocMap)
-        v.second->commitTransaction();
-    _activeTransactionID = Transaction::getNewID();
-    _activeTransactionName = name;
+        name = "Command";
+
+    if(_activeTransactionGuard && getActiveTransaction()) {
+        if(_activeTransactionTmpName) {
+            _activeTransactionTmpName = false;
+            _activeTransactionName = name;
+            for(auto &v : DocMap)
+                v.second->renameTransaction(name,_activeTransactionID);
+        }else
+            return 0;
+    }else{
+        _activeTransactionTmpName = false;
+        _activeTransactionID = 0;
+        for(auto &v : DocMap)
+            v.second->commitTransaction();
+        _activeTransactionID = Transaction::getNewID();
+        _activeTransactionName = name;
+    }
     return _activeTransactionID;
 }
 
@@ -861,8 +909,12 @@ const char *Application::getActiveTransaction(int *id) const {
 }
 
 void Application::closeActiveTransaction(bool abort, int id) {
+    if(_activeTransactionGuard && !abort)
+        return;
+
     if(!id) id = _activeTransactionID;
     if(!id) return;
+
     _activeTransactionID = 0;
     for(auto &v : DocMap) {
         if(v.second->getTransactionID(true) != id)

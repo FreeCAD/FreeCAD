@@ -387,7 +387,9 @@ public:
      * AutoTransaction setting.
      */
     int _openTransaction(const char* name=0, int id=0);
-    // Commit the Command transaction. Do nothing If there is no Command transaction open.
+    /// Rename the current transaction if the id matches
+    void renameTransaction(const char *name, int id);
+    /// Commit the Command transaction. Do nothing If there is no Command transaction open.
     void commitTransaction();
     /// Abort the actually running transaction.
     void abortTransaction();

@@ -2297,7 +2297,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         if (prevFeature != NULL)
             Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument());
 
-        openCommand("Convert to MultiTransform feature", true);
+        openCommand("Convert to MultiTransform feature");
 
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
         rcCmdMgr.runCommandByName("PartDesign_MoveTip");

@@ -684,7 +684,7 @@ void SheetTableView::pasteClipboard()
 
     QModelIndex current = currentIndex();
 
-    GetApplication().setActiveTransaction("Paste cell");
+    App::AutoTransaction committer("Paste cell");
     try {
         if (!mimeData->hasFormat(_SheetMime)) {
             QStringList cells;
@@ -716,7 +716,6 @@ void SheetTableView::pasteClipboard()
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Copy & Paste failed"),
                 QString::fromLatin1(e.what()));
     }
-    GetApplication().closeActiveTransaction();
 }
 
 void SheetTableView::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)

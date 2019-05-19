@@ -596,7 +596,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                             const Gui::View3DInventorViewer *viewer)
 {
     assert(edit);
-    Gui::Command::AutoCommit comitter;
+    App::AutoTransaction comitter;
 
     // Calculate 3d point to the mouse position
     SbLine line;
@@ -1487,7 +1487,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         bool handled=false;
         if (Mode == STATUS_SKETCH_UseHandler) {
-            Gui::Command::AutoCommit committer;
+            App::AutoTransaction committer;
             handled = edit->sketchHandler->onSelectionChanged(msg);
         }
         if (handled)

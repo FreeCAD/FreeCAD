@@ -1091,6 +1091,16 @@ int Document::_openTransaction(const char* name, int id)
     return 0;
 }
 
+void Document::renameTransaction(const char *name, int id) {
+    if(name && d->activeUndoTransaction && d->activeUndoTransaction->getID()==id) {
+        if(boost::starts_with(d->activeUndoTransaction->Name, "-> "))
+            d->activeUndoTransaction->Name.resize(3);
+        else
+            d->activeUndoTransaction->Name.clear();
+        d->activeUndoTransaction->Name += name;
+    }
+}
+
 void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What, int line)
 {
     // if the undo is active but no transaction open, open one!

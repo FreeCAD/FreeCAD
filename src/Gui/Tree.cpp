@@ -882,16 +882,14 @@ void TreeWidget::showEvent(QShowEvent *ev) {
 void TreeWidget::onCreateGroup()
 {
     QString name = tr("Group");
+    App::AutoTransaction trans("Create group");
     if (this->contextItem->type() == DocumentType) {
         DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
         QString cmd = QString::fromLatin1("App.getDocument(\"%1\").addObject"
                               "(\"App::DocumentObjectGroup\",\"%2\")")
                               .arg(QString::fromLatin1(doc->getName()), name);
-        Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
-        gui->openCommand("Create group");
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
-        gui->commitCommand();
     }
     else if (this->contextItem->type() == ObjectType) {
         DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
@@ -903,10 +901,7 @@ void TreeWidget::onCreateGroup()
                               .arg(QString::fromLatin1(doc->getName()),
                                    QString::fromLatin1(obj->getNameInDocument()),
                                    name);
-        Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
-        gui->openCommand("Create group");
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
-        gui->commitCommand();
     }
 }
 
@@ -1021,7 +1016,7 @@ void TreeWidget::onRecomputeObject() {
     }
     if(objs.empty())
         return;
-    App::GetApplication().setActiveTransaction("Recompute object");
+    App::AutoTransaction committer("Recompute object");
     std::string msg;
     try {
         objs.front()->getDocument()->recompute(objs,true);
@@ -1031,7 +1026,6 @@ void TreeWidget::onRecomputeObject() {
     }catch (std::exception &e) {
         msg = e.what();
     }
-    App::GetApplication().closeActiveTransaction();
     if(msg.size()) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Recompute failed"),
                 QString::fromUtf8(msg.c_str()));
@@ -1205,6 +1199,7 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
         objitem->getOwnerDocument()->document()->setActiveView(objitem->object());
         auto manager = Application::Instance->macroManager();
         auto lines = manager->getLines();
+        App::AutoTransaction committer("Double click", true);
         std::ostringstream ss;
         ss << Command::getObjectCmd(objitem->object()->getObject())
             << ".ViewObject.doubleClicked()";
@@ -1479,8 +1474,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         }
 
         // Open command
-        Gui::Document* gui = vp->getDocument();
-        gui->openCommand("Drop object");
+        App::AutoTransaction committer("Drop object");
         try {
             auto targetObj = targetItemObj->object()->getObject();
             std::string target = targetObj->getNameInDocument();
@@ -1641,13 +1635,12 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 }
             }
         } catch (const Base::Exception& e) {
+            committer.close(true);
             QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
                     QString::fromLatin1(e.what()));
-            gui->abortCommand();
             e.ReportException();
             return;
         }
-        gui->commitCommand();
     }
     else if (targetItem->type() == TreeWidget::DocumentType) {
         std::vector<ItemInfo2> infos;
@@ -1702,8 +1695,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
         // Open command
         auto manager = Application::Instance->macroManager();
-        Gui::Document* gui = Gui::Application::Instance->getDocument(thisDoc);
-        gui->openCommand("Move object");
+        App::AutoTransaction committer("Move object");
         try {
             std::vector<App::DocumentObject*> droppedObjs;
             for (auto &info : infos) {
@@ -1838,13 +1830,12 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 scrollToItem(scrollItem);
 
         } catch (const Base::Exception& e) {
+            committer.close(true);
             QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
                     QString::fromLatin1(e.what()));
-            gui->abortCommand();
             e.ReportException();
             return;
         }
-        gui->commitCommand();
     }
 }
 
@@ -4155,17 +4146,12 @@ void DocumentObjectItem::setData (int column, int role, const QVariant & value)
 {
     QVariant myValue(value);
     if (role == Qt::EditRole && column<=1) {
-        auto transacting = App::GetApplication().getActiveTransaction();
         auto obj = object()->getObject();
         auto &label = column?obj->Label2:obj->Label;
-        if(!transacting) {
-            std::ostringstream ss;
-            ss << "Change " << getName() << '.' << label.getName();
-            App::GetApplication().setActiveTransaction(ss.str().c_str());
-        }
+        std::ostringstream ss;
+        ss << "Change " << getName() << '.' << label.getName();
+        App::AutoTransaction committer(ss.str().c_str());
         label.setValue((const char *)value.toString().toUtf8());
-        if(!transacting)
-            App::GetApplication().closeActiveTransaction();
         myValue = QString::fromUtf8(label.getValue());
     }
     QTreeWidgetItem::setData(column, role, myValue);

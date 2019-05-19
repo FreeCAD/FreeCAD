@@ -198,6 +198,7 @@ protected:
     //@}
 protected:
     Action *_pcAction; /**< The Action item. */
+    std::string displayText;
 };
 
 /** The Command class.
@@ -215,35 +216,6 @@ protected:
  */
 class GuiExport Command : public CommandBase
 {
-public:
-    /** Helper class to force commit after invoking the command
-    *
-    * The implementation uses a static count to keep track of potential
-    * recursive invoking of command. This class is expected to be declared on
-    * stack only. And if an instance is constructed by passing enable=true, it
-    * will increase the counter if there is no disabled AutoCommit instance
-    * declared in stack above. If an instance is constructed as disabled, it
-    * will make sure any future AutoCommit instance below the current stack has
-    * no effect. The counter is decreased in the destructor if it has been
-    * increased by the constructor. When the counter reaches zero, it will call
-    * Command::commitCommand(). 
-    *
-    * Note that Command::commitCommand() will check this static counter, and
-    * will only actually commit the command if the counter is zero. This is
-    * because the purpose of this class is to fix premature command committing
-    * in many of the existing command implementation, which cause many
-    * non-undoable changes to the document.
-    */
-    class GuiExport AutoCommit {
-    public:
-        /** Constructor
-         * @param enable: whether to enable the AutoCommit function or not
-         */
-        AutoCommit(bool enable=true);
-        ~AutoCommit();
-    private:
-        int enabled;
-    };
 protected:
     Command(const char* name);
     virtual ~Command();
@@ -284,7 +256,7 @@ public:
     /// Return the current command trigger source
     TriggerSource triggerSource() const {return _trigger;}
     /// get called by the QAction
-    void invoke (int, bool autoCommit=true, TriggerSource trigger=TriggerNone); 
+    void invoke (int, TriggerSource trigger=TriggerNone); 
     /// adds this command to arbitrary widgets
     void addTo(QWidget *);
     void addToGroup(ActionGroup *, bool checkable);
@@ -311,9 +283,11 @@ public:
     /// returns the named feature or the active one from the active document or NULL
     App::DocumentObject*  getObject(const char* Name) const;
     /// returns a python command string to retrieve an object from a document
-    static std::string getObjectCmd(const char *Name, const App::Document *doc=0, const char *prefix=0, const char *postfix=0);
+    static std::string getObjectCmd(const char *Name, const App::Document *doc=0, 
+            const char *prefix=0, const char *postfix=0, bool gui=false);
     /// returns a python command string to retrieve the given object
-    static std::string getObjectCmd(const App::DocumentObject *obj, const char *prefix=0, const char *postfix=0);
+    static std::string getObjectCmd(const App::DocumentObject *obj, 
+            const char *prefix=0, const char *postfix=0, bool gui=false);
     /** Get unique Feature name from the active document 
      *
      *  @param BaseName: the base name
@@ -330,7 +304,7 @@ public:
      * @param sName: transaction name
      * @param exclusive: set true to disable any new transaction in any recusive invoking commands
      */
-    static void openCommand(const char* sName=0, bool exclusive=false);
+    static void openCommand(const char* sName=0);
     /// Commit the Undo transaction on the active document
     static void commitCommand(void);
     /// Abort the Undo transaction on the active document
@@ -445,7 +419,8 @@ protected:
         AlterDoc       = 1,  /**< Command change the Document */
         Alter3DView    = 2,  /**< Command change the Gui */
         AlterSelection = 4,  /**< Command change the Selection */
-        ForEdit        = 8   /**< Command is in a special edit mode active */
+        ForEdit        = 8,  /**< Command is in a special edit mode active */
+        NoTransaction  = 16, /**< Do not setup auto transaction */
     };
 
     /** @name Attributes 
