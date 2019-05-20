@@ -85,6 +85,7 @@ using namespace Gui;
 std::unique_ptr<QPixmap>  TreeWidget::documentPixmap;
 std::unique_ptr<QPixmap>  TreeWidget::documentPartialPixmap;
 std::set<TreeWidget *> TreeWidget::Instances;
+static TreeWidget *_LastSelectedTreeWidget;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
 
@@ -365,6 +366,27 @@ public:
 
 // ---------------------------------------------------------------------------
 
+class DocumentItem::ExpandInfo: 
+    public std::unordered_map<std::string, DocumentItem::ExpandInfoPtr>
+{
+public:
+    void restore(Base::XMLReader &reader) {
+        int level = reader.level();
+        int count = reader.getAttributeAsInteger("count");
+        for(int i=0;i<count;++i) {
+            reader.readElement("Expand");
+            auto &entry = (*this)[reader.getAttribute("name")];
+            if(!reader.hasAttribute("count"))
+                continue;
+            entry.reset(new ExpandInfo);
+            entry->restore(reader);
+        }
+        reader.readEndElement("Expand",level-1);
+    }
+};
+
+// ---------------------------------------------------------------------------
+
 TreeWidgetEditDelegate::TreeWidgetEditDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
@@ -402,6 +424,8 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     , myName(name)
 {
     Instances.insert(this);
+    if(!_LastSelectedTreeWidget)
+        _LastSelectedTreeWidget = this;
 
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
@@ -541,6 +565,8 @@ TreeWidget::~TreeWidget()
     connectShowHidden.disconnect();
     connectChangedViewObj.disconnect();
     Instances.erase(this);
+    if(_LastSelectedTreeWidget == this)
+        _LastSelectedTreeWidget = 0;
 }
 
 const char *TreeWidget::getTreeName() const {
@@ -1048,13 +1074,23 @@ void TreeWidget::selectAllInstances(const ViewProviderDocumentObject &vpd) {
         v.second->selectAllInstances(vpd);
 }
 
-static TreeWidget *_LastSelectedTreeWidget;
+TreeWidget *TreeWidget::instance() {
+    auto res = _LastSelectedTreeWidget;
+    if(res && res->isVisible())
+        return res;
+    for(auto inst : Instances) {
+        if(!res) res = inst;
+        if(inst->isVisible())
+            return inst;
+    }
+    return res;
+}
 
 std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document *doc)
 {
     std::vector<SelInfo> ret;
 
-    TreeWidget *tree = _LastSelectedTreeWidget;
+    TreeWidget *tree = instance();
     if(!tree || !tree->isConnectionAttached()) {
         for(auto pTree : Instances)
             if(pTree->isConnectionAttached()) {
@@ -2112,12 +2148,30 @@ void TreeWidget::onUpdateStatus(void)
             }
         }
 
-        for(auto o : docItem->_ExpandedObjects) {
-            auto iter = docItem->ObjectMap.find(o);
-            if(iter!=docItem->ObjectMap.end()) 
-                docItem->slotExpandObject(*iter->second->viewObject,Gui::ExpandItem,0,0);
+        if(docItem->_ExpandInfo) {
+            auto doc = v.first->getDocument();
+            if(!doc->testStatus(App::Document::PartialDoc)) {
+                for(auto &entry : *docItem->_ExpandInfo) {
+                    const char *name = entry.first.c_str();
+                    bool legacy = name[0] == '*';
+                    if(legacy)
+                        ++name;
+                    auto obj = doc->getObject(name);
+                    if(!obj)
+                        continue;
+                    auto iter = docItem->ObjectMap.find(obj);
+                    if(iter==docItem->ObjectMap.end())
+                        continue;
+                    if(iter->second->rootItem)
+                        docItem->restoreItemExpansion(entry.second,iter->second->rootItem);
+                    else if(legacy && iter->second->items.size()) {
+                        auto item = *iter->second->items.begin();
+                        item->setExpanded(true);
+                    }
+                }
+            }
+            docItem->_ExpandInfo.reset();
         }
-        docItem->_ExpandedObjects.clear();
     }
 
     if(errItem)
@@ -3223,16 +3277,104 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
     END_FOREACH_ITEM
 }
 
+static unsigned int countExpandedItem(const QTreeWidgetItem *item) {
+    unsigned int size = 0;
+    for(int i=0,count=item->childCount();i<count;++i) {
+        auto citem = item->child(i);
+        if(citem->type()!=TreeWidget::ObjectType || !citem->isExpanded())
+            continue;
+        auto obj = static_cast<const DocumentObjectItem*>(citem)->object()->getObject();
+        if(obj->getNameInDocument())
+            size += strlen(obj->getNameInDocument()) + countExpandedItem(citem);
+    }
+    return size;
+}
+
+unsigned int DocumentItem::getMemSize(void) const {
+    return countExpandedItem(this);
+}
+
+static void saveExpandedItem(Base::Writer &writer, const QTreeWidgetItem *item) {
+    int itemCount = 0;
+    for(int i=0,count=item->childCount();i<count;++i) {
+        auto citem = item->child(i);
+        if(citem->type()!=TreeWidget::ObjectType || !citem->isExpanded())
+            continue;
+        auto obj = static_cast<const DocumentObjectItem*>(citem)->object()->getObject();
+        if(obj->getNameInDocument())
+            ++itemCount;
+    }
+
+    if(!itemCount) {
+        writer.Stream() << "/>" << std::endl;
+        return;
+    }
+
+    writer.Stream() << " count=\"" << itemCount << "\">" <<std::endl;
+    writer.incInd();
+    for(int i=0,count=item->childCount();i<count;++i) {
+        auto citem = item->child(i);
+        if(citem->type()!=TreeWidget::ObjectType || !citem->isExpanded())
+            continue;
+        auto obj = static_cast<const DocumentObjectItem*>(citem)->object()->getObject();
+        if(obj->getNameInDocument()) {
+            writer.Stream() << writer.ind() << "<Expand name=\"" 
+                << obj->getNameInDocument() << "\"";
+            saveExpandedItem(writer,static_cast<const DocumentObjectItem*>(citem));
+        }
+    }
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</Expand>" << std::endl;
+}
+
+void DocumentItem::Save (Base::Writer &writer) const {
+    writer.Stream() << writer.ind() << "<Expand ";
+    saveExpandedItem(writer,this);
+}
+
+void DocumentItem::Restore(Base::XMLReader &reader) {
+    reader.readElement("Expand");
+    if(!reader.hasAttribute("count"))
+        return;
+    _ExpandInfo.reset(new ExpandInfo);
+    _ExpandInfo->restore(reader);
+    for(auto inst : TreeWidget::Instances) {
+        if(inst!=getTree()) {
+            auto docItem = inst->getDocumentItem(document());
+            if(docItem)
+                docItem->_ExpandInfo = _ExpandInfo;
+        }
+    }
+}
+
+void DocumentItem::restoreItemExpansion(const ExpandInfoPtr &info, DocumentObjectItem *item) {
+    item->setExpanded(true);
+    if(!info)
+        return;
+    for(int i=0,count=item->childCount();i<count;++i) {
+        auto citem = item->child(i);
+        if(citem->type() != TreeWidget::ObjectType)
+            continue;
+        auto obj = static_cast<DocumentObjectItem*>(citem)->object()->getObject();
+        if(!obj->getNameInDocument())
+            continue;
+        auto it = info->find(obj->getNameInDocument());
+        if(it != info->end())
+            restoreItemExpansion(it->second,static_cast<DocumentObjectItem*>(citem));
+    }
+}
+
 void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
         const Gui::TreeItemMode& mode, const App::DocumentObject *parent, const char *subname)
 {
     if((mode==Gui::ExpandItem||mode==Gui::ExpandPath) 
             && obj.getDocument()->getDocument()->testStatus(App::Document::Restoring)) 
     {
-        _ExpandedObjects.push_back(obj.getObject());
+        if(!_ExpandInfo)
+            _ExpandInfo.reset(new ExpandInfo);
+        _ExpandInfo->emplace(std::string("*")+obj.getObject()->getNameInDocument(),ExpandInfoPtr());
         return;
     }
-
     if(parent && parent->getDocument()!=document()->getDocument()) {
         auto it = getTree()->DocumentMap.find(Application::Instance->getDocument(parent->getDocument()));
         if(it!=getTree()->DocumentMap.end())

@@ -29,6 +29,7 @@
 #include <QStyledItemDelegate>
 
 #include <Base/Parameter.h>
+#include <Base/Persistence.h>
 #include <App/Document.h>
 #include <App/Application.h>
 
@@ -93,6 +94,8 @@ public:
      * which Gui::Selection() cannot provide.
      */
     static std::vector<SelInfo> getSelection(App::Document *doc=0);
+
+    static TreeWidget *instance();
 
     static const int DocumentType;
     static const int ObjectType;
@@ -246,7 +249,7 @@ private:
  * the visibility and the functions of the document.
  * \author Jürgen Riegel
  */
-class DocumentItem : public QTreeWidgetItem
+class DocumentItem : public QTreeWidgetItem, public Base::Persistence
 {
 public:
     DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent);
@@ -275,6 +278,13 @@ public:
     const char *getTreeName() const;
 
     bool isObjectShowable(App::DocumentObject *obj);
+
+    virtual unsigned int getMemSize (void) const override;
+    virtual void Save (Base::Writer &) const override;
+    virtual void Restore(Base::XMLReader &) override;
+
+    class ExpandInfo;
+    typedef std::shared_ptr<ExpandInfo> ExpandInfoPtr;
 
 protected:
     /** Adds a view provider to the document item.
@@ -315,7 +325,9 @@ private:
     Gui::Document* pDocument;
     std::unordered_map<App::DocumentObject*,DocumentObjectDataPtr> ObjectMap;
     std::unordered_map<App::DocumentObject*, std::set<App::DocumentObject*> > _ParentMap;
-    std::vector<App::DocumentObject*> _ExpandedObjects;
+
+    ExpandInfoPtr _ExpandInfo;
+    void restoreItemExpansion(const ExpandInfoPtr &, DocumentObjectItem *);
 
     typedef boost::signals2::connection Connection;
     Connection connectNewObject;

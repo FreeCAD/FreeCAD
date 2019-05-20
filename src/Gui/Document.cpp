@@ -1185,6 +1185,16 @@ void Document::RestoreDocFile(Base::Reader &reader)
     long scheme = xmlReader.getAttributeAsInteger("SchemaVersion");
     xmlReader.DocumentSchema = scheme;
 
+    bool hasExpansion = xmlReader.hasAttribute("HasExpansion");
+    if(hasExpansion) {
+        auto tree = TreeWidget::instance();
+        if(tree) {
+            auto docItem = tree->getDocumentItem(this);
+            if(docItem)
+                docItem->Restore(xmlReader);
+        }
+    }
+
     // At this stage all the document objects and their associated view providers exist.
     // Now we must restore the properties of the view providers only.
     //
@@ -1197,7 +1207,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
             xmlReader.readElement("ViewProvider");
             std::string name = xmlReader.getAttribute("name");
             bool expanded = false;
-            if (xmlReader.hasAttribute("expanded")) {
+            if (!hasExpansion && xmlReader.hasAttribute("expanded")) {
                 const char* attr = xmlReader.getAttribute("expanded");
                 if (strcmp(attr,"1") == 0) {
                     expanded = true;
@@ -1297,12 +1307,26 @@ void Document::SaveDocFile (Base::Writer &writer) const
                     << " FreeCAD Document, see http://www.freecadweb.org for more information..."
                     << std::endl << "-->" << std::endl;
 
-    writer.Stream() << "<Document SchemaVersion=\"1\">" << std::endl;
+    writer.Stream() << "<Document SchemaVersion=\"1\"";
+
+    writer.incInd(); 
+
+    auto tree = TreeWidget::instance();
+    bool hasExpansion = false;
+    if(tree) {
+        auto docItem = tree->getDocumentItem(this);
+        if(docItem) {
+            hasExpansion = true;
+            writer.Stream() << " HasExpansion=\"1\">" << std::endl;
+            docItem->Save(writer);
+        }
+    }
+    if(!hasExpansion)
+        writer.Stream() << ">" << std::endl;
 
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it;
 
     // writing the view provider names itself
-    writer.incInd(); // indentation for 'ViewProviderData Count'
     writer.Stream() << writer.ind() << "<ViewProviderData Count=\"" 
                     << d->_ViewProviderMap.size() <<"\">" << std::endl;
 
