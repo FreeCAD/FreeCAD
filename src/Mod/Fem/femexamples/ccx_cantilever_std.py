@@ -54,14 +54,18 @@ def setup_cantileverbase(doc=None, solver='ccxtools'):
     if solver is None:
         pass  # no solver is added
     elif solver is 'calculix':
-        solver_object = analysis.addObject(ObjectsFem.makeSolverCalculix(doc, 'SolverCalculiX'))[0]
+        solver_object = analysis.addObject(
+            ObjectsFem.makeSolverCalculix(doc, 'SolverCalculiX')
+        )[0]
         solver_object.AnalysisType = 'static'
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = False
         solver_object.MatrixSolverType = 'default'
         solver_object.IterationsControlParameterTimeUse = False
     elif solver is 'ccxtools':
-        solver_object = analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc, 'CalculiXccxTools'))[0]
+        solver_object = analysis.addObject(
+            ObjectsFem.makeSolverCalculixCcxTools(doc, 'CalculiXccxTools')
+        )[0]
         solver_object.AnalysisType = 'static'
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = False
@@ -74,7 +78,9 @@ def setup_cantileverbase(doc=None, solver='ccxtools'):
         analysis.addObject(ObjectsFem.makeSolverZ88(doc, 'SolverZ88'))
 
     # material
-    material_object = analysis.addObject(ObjectsFem.makeMaterialSolid(doc, 'FemMaterial'))[0]
+    material_object = analysis.addObject(
+        ObjectsFem.makeMaterialSolid(doc, 'FemMaterial')
+    )[0]
     mat = material_object.Material
     mat['Name'] = "CalculiX-Steel"
     mat['YoungsModulus'] = "210000 MPa"
@@ -84,7 +90,9 @@ def setup_cantileverbase(doc=None, solver='ccxtools'):
     material_object.Material = mat
 
     # fixed_constraint
-    fixed_constraint = analysis.addObject(ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed"))[0]
+    fixed_constraint = analysis.addObject(
+        ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
+    )[0]
     fixed_constraint.References = [(doc.Box, "Face1")]
 
     # mesh
@@ -96,7 +104,9 @@ def setup_cantileverbase(doc=None, solver='ccxtools'):
     control = create_elements(fem_mesh)
     if not control:
         print('ERROR on creating elements')
-    femmesh_obj = analysis.addObject(doc.addObject('Fem::FemMeshObject', mesh_name))[0]
+    femmesh_obj = analysis.addObject(
+        doc.addObject('Fem::FemMeshObject', mesh_name)
+    )[0]
     femmesh_obj.FemMesh = fem_mesh
 
     doc.recompute()
@@ -109,7 +119,9 @@ def setup_cantileverfaceload(doc=None, solver='ccxtools'):
     doc = setup_cantileverbase(doc, solver)
 
     # force_constraint
-    force_constraint = doc.Analysis.addObject(ObjectsFem.makeConstraintForce(doc, name="ConstraintForce"))[0]
+    force_constraint = doc.Analysis.addObject(
+        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
+    )[0]
     force_constraint.References = [(doc.Box, "Face2")]
     force_constraint.Force = 9000000.0
     force_constraint.Direction = (doc.Box, ["Edge5"])
@@ -125,8 +137,16 @@ def setup_cantilevernodeload(doc=None, solver='ccxtools'):
     doc = setup_cantileverbase(doc, solver)
 
     # force_constraint
-    force_constraint = doc.Analysis.addObject(ObjectsFem.makeConstraintForce(doc, name="ConstraintForce"))[0]
-    force_constraint.References = [(doc.Box, "Vertex5"), (doc.Box, "Vertex6"), (doc.Box, "Vertex7"), (doc.Box, "Vertex8")]  # should be possible in one tuple too
+    force_constraint = doc.Analysis.addObject(
+        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
+    )[0]
+    # should be possible in one tuple too
+    force_constraint.References = [
+        (doc.Box, "Vertex5"),
+        (doc.Box, "Vertex6"),
+        (doc.Box, "Vertex7"),
+        (doc.Box, "Vertex8")
+    ]
     force_constraint.Force = 9000000.0
     force_constraint.Direction = (doc.Box, ["Edge5"])
     force_constraint.Reversed = True
@@ -136,12 +156,15 @@ def setup_cantilevernodeload(doc=None, solver='ccxtools'):
 
 
 def setup_cantileverprescribeddisplacement(doc=None, solver='ccxtools'):
-    # setup CalculiX cantilever, apply a prescribed displacement of 250 mm in -z on the front end face
+    # setup CalculiX cantilever
+    # apply a prescribed displacement of 250 mm in -z on the front end face
 
     doc = setup_cantileverbase(doc, solver)
 
     # displacement_constraint
-    displacement_constraint = doc.Analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed"))[0]
+    displacement_constraint = doc.Analysis.addObject(
+        ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
+    )[0]
     displacement_constraint.References = [(doc.Box, "Face2")]
     displacement_constraint.zFix = False
     displacement_constraint.zFree = False
