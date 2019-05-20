@@ -34,6 +34,8 @@
 # include <Precision.hxx>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -518,13 +520,64 @@ void SubShapeBinder::setLinks(std::map<App::DocumentObject *, std::vector<std::s
             FC_THROWM(Base::ValueError,"Invalid document object");
         if(inSet.find(v.first)!=inSet.end())
             FC_THROWM(Base::ValueError, "Cyclic referece to " << v.first->getFullName());
+
+        if(v.second.empty()) {
+            v.second.push_back("");
+            continue;
+        }
+
+        std::vector<std::string> wholeSubs;
+        for(auto &sub : v.second) {
+            if(sub.empty()) {
+                wholeSubs.clear();
+                v.second.resize(1);
+                v.second[0].clear();
+                break;
+            }else if(sub[sub.size()-1] == '.')
+                wholeSubs.push_back(sub);
+        }
+        for(auto &whole : wholeSubs) {
+            for(auto it=v.second.begin();it!=v.second.end();) {
+                auto &sub = *it;
+                if(!boost::starts_with(sub,whole) || sub.size()==whole.size())
+                    ++it;
+                else {
+                    FC_LOG("Remove subname " << sub <<" because of whole selection " << whole);
+                    it = v.second.erase(it);
+                }
+            }
+        }
     }
 
     if(!reset) {
         for(auto &link : Support.getSubListValues()) {
-            const auto &subs = link.getSubValues();
+            auto subs = link.getSubValues();
             auto &s = values[link.getValue()];
-            s.insert(s.end(),subs.begin(),subs.end());
+            if(s.empty()) {
+                s = std::move(subs);
+                continue;
+            }else if(subs.empty() || s[0].empty())
+                continue;
+
+            for(auto &sub : s) {
+                for(auto it=subs.begin();it!=subs.end();) {
+                    if(sub[sub.size()-1] == '.') {
+                        if(boost::starts_with(*it,sub)) {
+                            FC_LOG("Remove subname " << *it <<" because of whole selection " << sub);
+                            it = subs.erase(it);
+                        } else
+                            ++it;
+                    }else if(it->empty() 
+                            || (it->back()=='.' && boost::starts_with(sub,*it)))
+                    {
+                        FC_LOG("Remove whole subname " << *it <<" because of " << sub);
+                        it = subs.erase(it);
+                    } else
+                        ++it;
+                }
+            }
+            subs.insert(subs.end(),s.begin(),s.end());
+            s = std::move(subs);
         }
     }
     Support.setValues(std::move(values));
