@@ -510,13 +510,8 @@ void QGIViewPart::drawViewPart()
                 QGIVertex *item = new QGIVertex(i);
                 TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexByLink(i);
                 if (cv != nullptr) {
-                    Base::Console().Message("QGIVP::draw - found a cv!\n");
-                    cv->dump("QGIVP::draw");
-//                    item->setNormalColor(vertexColor);
                     item->setNormalColor(cv->color.asValue<QColor>());
                     item->setRadius(cv->size);
-//                    item->setRadius(lineWidth * vertexScaleFactor);
-//                    item->setStyle(cv->style);
                 } else {
                     item->setNormalColor(vertexColor);
                     item->setRadius(lineWidth * vertexScaleFactor);
@@ -527,23 +522,6 @@ void QGIViewPart::drawViewPart()
                 item->setZValue(ZVALUE::VERTEX);
             }
         }
-//        //draw cosmetic vertices
-//        int cosmoVertStart = 1000;
-//        std::vector<CosmeticVertex*> cVerts = viewPart->getCosmeticVertex();
-//        Base::Console().Message("QGIVP::draw - %s - cVerts: %d\n",getViewName(),cVerts.size());
-//        std::vector<CosmeticVertex*>::const_iterator itcVert = cVerts.begin();
-//        for(int i = 0 ; itcVert != cVerts.end(); ++itcVert, i++) {
-//            QGIVertex *item = new QGIVertex(cosmoVertStart + i);
-//            item->setNormalColor((*itcVert)->color.asValue<QColor>());
-//            item->setPrettyNormal();
-//            addToGroup(item);
-//            //TODO: need to apply scale to position unless position is already scaled
-//            item->setPos(Rez::guiX((*itcVert)->pageLocation.x), - Rez::guiX((*itcVert)->pageLocation.y));
-//            item->setRadius((*itcVert)->size);
-//            item->setStyle((Qt::PenStyle)(*itcVert)->style);
-//            item->setZValue(ZVALUE::VERTEX);
-//            Base::Console().Message("QGIVP::draw - cVert.toCSV: %s \n",(*itcVert)->toCSV().c_str());
-//        }
     }
 
     //draw detail highlights
