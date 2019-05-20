@@ -26,6 +26,12 @@
 #include <Base/Vector3D.h>
 #include <App/Material.h>
 
+class TopoDS_Edge;
+
+namespace TechDrawGeometry {
+class BaseGeom;
+}
+
 namespace TechDraw {
 
 class TechDrawExport CosmeticVertex
@@ -49,6 +55,34 @@ public:
 
 protected:
     std::vector<std::string> split(std::string csvLine);
+
+};
+
+class TechDrawExport CosmeticEdge
+{
+public:
+    CosmeticEdge();
+    CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2);
+    CosmeticEdge(TopoDS_Edge e);
+    virtual ~CosmeticEdge() = default;
+
+    std::string toCSV(void) const;
+    bool fromCSV(std::string& lineSpec);
+    void dump(char* title);
+
+    TechDrawGeometry::BaseGeom* geometry; 
+
+    int            linkGeom;             //connection to corresponding "real" Edge
+    App::Color     color;
+    double         width;
+    int            style;
+    bool           visible;
+
+protected:
+    std::vector<std::string> split(std::string csvLine);
+    double getDefEdgeWidth();
+    App::Color getDefEdgeColor();
+    int getDefEdgeStyle();
 
 };
 
