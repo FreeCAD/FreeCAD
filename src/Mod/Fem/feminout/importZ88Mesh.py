@@ -216,7 +216,12 @@ def read_z88_mesh(z88_mesh_input):
                     return {}
 
                 # supported elements
-                elif z88_element_type == 2 or z88_element_type == 4 or z88_element_type == 5 or z88_element_type == 9 or z88_element_type == 13 or z88_element_type == 25:
+                elif z88_element_type == 2 \
+                        or z88_element_type == 4 \
+                        or z88_element_type == 5 \
+                        or z88_element_type == 9 \
+                        or z88_element_type == 13 \
+                        or z88_element_type == 25:
                     # stab4 or stab5 or welle5 or beam13 or beam25 Z88 --> seg2 FreeCAD
                     # N1, N2
                     nd1 = int(linecolumns[0])
@@ -368,16 +373,27 @@ def write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
     written_by = "written by FreeCAD"
 
     # first line, some z88 specific stuff
-    f.write("{0} {1} {2} {3} {4} {5}\n".format(node_dimension, node_count, element_count, dofs, unknown_flag, written_by))
+    f.write("{0} {1} {2} {3} {4} {5}\n".format(
+        node_dimension, node_count, element_count, dofs, unknown_flag, written_by)
+    )
     # nodes
     for node in femnodes_mesh:
         vec = femnodes_mesh[node]
-        f.write("{0} {1} {2:.6f} {3:.6f} {4:.6f}\n".format(node, node_dof, vec.x, vec.y, vec.z, node))
+        f.write(
+            "{0} {1} {2:.6f} {3:.6f} {4:.6f}\n"
+            .format(node, node_dof, vec.x, vec.y, vec.z, node)
+        )
     # elements
     for element in femelement_table:
-        # z88_element_type is checked for every element, but mixed elements are not supported up to date
+        # z88_element_type is checked for every element
+        # but mixed elements are not supported up to date
         n = femelement_table[element]
-        if z88_element_type == 2 or z88_element_type == 4 or z88_element_type == 5 or z88_element_type == 9 or z88_element_type == 13 or z88_element_type == 25:
+        if z88_element_type == 2 \
+                or z88_element_type == 4 \
+                or z88_element_type == 5 \
+                or z88_element_type == 9 \
+                or z88_element_type == 13 \
+                or z88_element_type == 25:
             # seg2 FreeCAD --> stab4 Z88
             # N1, N2
             f.write("{0} {1}\n".format(element, z88_element_type, element))
@@ -419,8 +435,12 @@ def write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
             # or turn by 90 degree and they match !
             # N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19, N20
             f.write("{0} {1}\n".format(element, z88_element_type, element))
-            f.write("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15} {16} {17} {18} {19}\n".format(
-                    n[0], n[1], n[2], n[3], n[4], n[5], n[6], n[7], n[8], n[9], n[10], n[11], n[12], n[13], n[14], n[15], n[16], n[17], n[18], n[19]))
+            f.write(
+                "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15} {16} {17} {18} {19}\n"
+                .format(
+                    n[0], n[1], n[2], n[3], n[4], n[5], n[6], n[7], n[8], n[9], n[10], n[11], n[12], n[13], n[14], n[15], n[16], n[17], n[18], n[19]
+                )
+            )
         else:
             FreeCAD.Console.PrintError("Writing of Z88 elementtype {0} not supported.\n".format(z88_element_type))
             # TODO support schale12 (made from prism15) and schale16 (made from hexa20)
