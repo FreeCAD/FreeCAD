@@ -274,7 +274,7 @@ class DraftTool:
         qr = '('+str(qr[0])+','+str(qr[1])+','+str(qr[2])+','+str(qr[3])+')'
 
         # support object
-        if self.support:
+        if self.support and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("useSupport",False):
             sup = 'FreeCAD.ActiveDocument.getObject("' + self.support.Name + '")'
         else:
             sup = 'None'
