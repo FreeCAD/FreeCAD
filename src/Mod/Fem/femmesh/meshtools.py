@@ -36,9 +36,15 @@ def get_femnodes_by_femobj_with_references(femmesh, femobj):
         node_set = get_femmesh_groupdata_sets_by_name(femmesh, femobj, 'Node')
         # FreeCAD.Console.PrintMessage('node_set_group: {}\n'.format(node_set))
         if node_set:
-            FreeCAD.Console.PrintMessage("  Finite element mesh nodes where retrieved from existent finite element mesh group data.\n")
+            FreeCAD.Console.PrintMessage(
+                "  Finite element mesh nodes where retrieved "
+                "from existent finite element mesh group data.\n"
+            )
     if not node_set:
-        FreeCAD.Console.PrintMessage("  Finite element mesh nodes will be retrieved by searching the appropriate nodes in the finite element mesh.\n")
+        FreeCAD.Console.PrintMessage(
+            "  Finite element mesh nodes will be retrieved "
+            "by searching the appropriate nodes in the finite element mesh.\n"
+        )
         node_set = get_femnodes_by_references(femmesh, femobj['Object'].References)
         # FreeCAD.Console.PrintMessage('node_set_nogroup: {}\n'.format(node_set))
 
@@ -50,13 +56,23 @@ def get_femelements_by_references(femmesh, femelement_table, references, femnode
     '''
     references_femelements = []
     for ref in references:
-        ref_femnodes = get_femnodes_by_refshape(femmesh, ref)  # femnodes for the current ref
+        # femnodes for the current ref
+        ref_femnodes = get_femnodes_by_refshape(femmesh, ref)
         if femnodes_ele_table:
             # blind fast binary search, works for volumes only
-            references_femelements += get_femelements_by_femnodes_bin(femelement_table, femnodes_ele_table, ref_femnodes)  # femelements for all references
+            # femelements for all references
+            references_femelements += get_femelements_by_femnodes_bin(
+                femelement_table,
+                femnodes_ele_table,
+                ref_femnodes
+            )
         else:
             # standard search
-            references_femelements += get_femelements_by_femnodes_std(femelement_table, ref_femnodes)  # femelements for all references
+            # femelements for all references
+            references_femelements += get_femelements_by_femnodes_std(
+                femelement_table,
+                ref_femnodes
+            )
     return references_femelements
 
 
@@ -189,7 +205,8 @@ def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
     http://forum.freecadweb.org/viewtopic.php?f=18&p=141133&sid=013c93f496a63872951d2ce521702ffa#p141108
     The bit_pattern_dict holds later an integer (bit array) for each element, which gives us
     the information we are searching for:
-    Is this element part of the node list (searching for elements) or has this element a face we are searching for?
+    Is this element part of the node list (searching for elements)
+    or has this element a face we are searching for?
     The number in the ele_dict is organized as a bit array.
     The corresponding bit is set, if the node of the node_set is contained in the element.
     '''
@@ -363,23 +380,32 @@ def get_femvolumeelements_by_femfacenodes(femelement_table, node_list):
             if nodecount == 6 or nodecount == 8:
                 e.append(elementID)
         else:
-            FreeCAD.Console.PrintError('Error in get_femvolumeelements_by_femfacenodes(): unknown volume element: ' + el_nd_ct + '\n')
+            FreeCAD.Console.PrintError(
+                'Error in get_femvolumeelements_by_femfacenodes(): unknown volume element: ' + el_nd_ct + '\n'
+            )
     # FreeCAD.Console.PrintMessage('{}\n'.format(sorted(e)))
     return e
 
 
-def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_table=None):  # fem_objects = FreeCAD FEM document objects
+def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_table=None):
+    # fem_objects = FreeCAD FEM document objects
     # get femelements for reference shapes of each obj.References
     count_femelements = 0
     referenced_femelements = []
     has_remaining_femelements = None
     for fem_object_i, fem_object in enumerate(fem_objects):
         obj = fem_object['Object']
-        FreeCAD.Console.PrintMessage("Constraint: " + obj.Name + " --> " + "We're going to search in the mesh for the element ID's.\n")
+        FreeCAD.Console.PrintMessage(
+            "Constraint: " + obj.Name + " --> " + "We're going to search in the mesh for the element ID's.\n"
+        )
         fem_object['ShortName'] = get_elset_short_name(obj, fem_object_i)  # unique short identifier
         if obj.References:
             ref_shape_femelements = []
-            ref_shape_femelements = get_femelements_by_references(femmesh, femelement_table, obj.References, femnodes_ele_table)
+            ref_shape_femelements = get_femelements_by_references(
+                femmesh, femelement_table,
+                obj.References,
+                femnodes_ele_table
+            )
             referenced_femelements += ref_shape_femelements
             count_femelements += len(ref_shape_femelements)
             fem_object['FEMElements'] = ref_shape_femelements
@@ -406,7 +432,8 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_tab
 
 def get_femelement_direction1D_set(femmesh, femelement_table, beamrotation_objects, theshape=None):
     '''
-    get for each geometry edge direction, the normal and the element ids and write all into the beamrotation_objects
+    get for each geometry edge direction, the normal and the element ids and
+    # write all into the beamrotation_objects
     means no return value, we're going to write into the beamrotation_objects dictionary
     FEMRotations1D is a list of dictionaries for every beamdirection of all edges
     beamrot_obj['FEMRotations1D'] = [ {'ids' : [theids],
@@ -416,16 +443,19 @@ def get_femelement_direction1D_set(femmesh, femelement_table, beamrotation_objec
                                     ]
     '''
     if len(beamrotation_objects) == 0:
-        # no beamrotation document object, all beams use standard rotation of 0 degree (angle), we need theshape (the shape which was meshed)
+        # no beamrotation document object, all beams use standard rotation of 0 degree (angle)
+        # we need theshape (the shape which was meshed)
         # since ccx needs to split them in sets anyway we need to take care of this too
         rotations_ids = get_femelement_directions_theshape(femmesh, femelement_table, theshape)
         # add normals for each direction
         rotation_angle = 0
         for rot in rotations_ids:
             rot['normal'] = get_beam_normal(rot['direction'], rotation_angle)
-        beamrotation_objects.append({'FEMRotations1D': rotations_ids, 'ShortName': 'Rstd'})  # key 'Object' will be empty
+        # key 'Object' will be empty
+        beamrotation_objects.append({'FEMRotations1D': rotations_ids, 'ShortName': 'Rstd'})
     elif len(beamrotation_objects) == 1:
-        # one beamrotation document object with no references, all beams use rotation from this object, we need theshape (the shape which was meshed)
+        # one beamrotation document object with no references, all beams use rotation from this object
+        # we need theshape (the shape which was meshed)
         # since ccx needs to split them in sets anyway we need to take care of this too
         rotations_ids = get_femelement_directions_theshape(femmesh, femelement_table, theshape)
         # add normals for each direction
@@ -457,9 +487,12 @@ def get_femelement_directions_theshape(femmesh, femelement_table, theshape):
         the_edge = {}
         the_edge['direction'] = e.Vertexes[1].Point - e.Vertexes[0].Point
         edge_femnodes = femmesh.getNodesByEdge(e)  # femnodes for the current edge
-        the_edge['ids'] = get_femelements_by_femnodes_std(femelement_table, edge_femnodes)  # femelements for this edge
+        # femelements for this edge
+        the_edge['ids'] = get_femelements_by_femnodes_std(femelement_table, edge_femnodes)
         for rot in rotations_ids:
-            if rot['direction'] == the_edge['direction']:  # tolerance will be managed by FreeCAD see https://forum.freecadweb.org/viewtopic.php?f=22&t=14179
+            # tolerance will be managed by FreeCAD
+            # see https://forum.freecadweb.org/viewtopic.php?f=22&t=14179
+            if rot['direction'] == the_edge['direction']:
                 rot['ids'] += the_edge['ids']
                 break
         else:
@@ -536,7 +569,9 @@ def get_femmesh_groupdata_sets_by_name(femmesh, fem_object, group_data_type):
             grp_name = femmesh.getGroupName(g)
             if grp_name.startswith(obj.Name + "_"):
                 if femmesh.getGroupElementType(g) == group_data_type:
-                    FreeCAD.Console.PrintMessage("  found mesh group for the IDs: " + grp_name + ', Type: ' + group_data_type + '\n')
+                    FreeCAD.Console.PrintMessage(
+                        "  found mesh group for the IDs: " + grp_name + ', Type: ' + group_data_type + '\n'
+                    )
                     return femmesh.getGroupElements(g)  # == ref_shape_femelements
     return ()  # an empty tuple is returned if no group data IDs where found
 
@@ -547,15 +582,20 @@ def get_femelement_sets_from_group_data(femmesh, fem_objects):
     sum_group_elements = []
     for fem_object_i, fem_object in enumerate(fem_objects):
         obj = fem_object['Object']
-        FreeCAD.Console.PrintMessage("Constraint: " + obj.Name + " --> " + "We have mesh groups. We will search for appropriate group data.\n")
+        FreeCAD.Console.PrintMessage(
+            "Constraint: " + obj.Name + " --> " + "We have mesh groups. We will search for appropriate group data.\n"
+        )
         fem_object['ShortName'] = get_elset_short_name(obj, fem_object_i)  # unique short identifier
-        group_elements = get_femmesh_groupdata_sets_by_name(femmesh, fem_object, 'Volume')  # see comments over there !
+        # see comments over there !
+        group_elements = get_femmesh_groupdata_sets_by_name(femmesh, fem_object, 'Volume')
         sum_group_elements += group_elements
         count_femelements += len(group_elements)
         fem_object['FEMElements'] = group_elements
     # check if all worked out well
     if not femelements_count_ok(femmesh.VolumeCount, count_femelements):
-        FreeCAD.Console.PrintError('Error in get_femelement_sets_from_group_data -- > femelements_count_ok() failed!\n')
+        FreeCAD.Console.PrintError(
+            'Error in get_femelement_sets_from_group_data -- > femelements_count_ok() failed!\n'
+        )
         return False
     else:
         return True
@@ -573,7 +613,9 @@ def get_elset_short_name(obj, i):
     elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::FemElementGeometry2D':
         return 'S' + str(i)
     else:
-        FreeCAD.Console.PrintError('Error in creating short elset name for obj: ' + obj.Name + ' --> Proxy.Type: ' + str(obj.Proxy.Type) + '\n')
+        FreeCAD.Console.PrintError(
+            'Error in creating short elset name for obj: ' + obj.Name + ' --> Proxy.Type: ' + str(obj.Proxy.Type) + '\n'
+        )
 
 
 # ************************************************************************************************
@@ -736,8 +778,10 @@ def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
             for node in femelement_table[elem]:
                 if node in refedge_nodes:
                     fe_refedge_nodes.append(node)
-                edge_table[elem] = fe_refedge_nodes  # { volumeID : ( edgenodeID, ... , edgenodeID  )} # only the refedge nodes
-        # FIXME: duplicate_mesh_elements: as soon as contact and springs are supported the user should decide on which edge the load is applied
+                # { volumeID : ( edgenodeID, ... , edgenodeID  )} # only the refedge nodes
+                edge_table[elem] = fe_refedge_nodes
+        # FIXME: duplicate_mesh_elements: as soon as contact and springs are supported
+        # the user should decide on which edge the load is applied
         edge_table = delete_duplicate_mesh_elements(edge_table)
     elif is_face_femmesh(femmesh):
         refedge_fem_faceelements = []
@@ -755,13 +799,16 @@ def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
             for node in femelement_table[elem]:
                 if node in refedge_nodes:
                     fe_refedge_nodes.append(node)
-                edge_table[elem] = fe_refedge_nodes  # { faceID : ( edgenodeID, ... , edgenodeID  )} # only the refedge nodes
-        # FIXME: duplicate_mesh_elements: as soon as contact and springs are supported the user should decide on which edge the load is applied
+                # { faceID : ( edgenodeID, ... , edgenodeID  )} # only the refedge nodes
+                edge_table[elem] = fe_refedge_nodes
+        # FIXME: duplicate_mesh_elements: as soon as contact and springs are supported
+        # the user should decide on which edge the load is applied
         edge_table = delete_duplicate_mesh_elements(edge_table)
     elif is_edge_femmesh(femmesh):
         refedge_fem_edgeelements = get_femelements_by_femnodes_std(femelement_table, refedge_nodes)
         for elem in refedge_fem_edgeelements:
-            edge_table[elem] = femelement_table[elem]  # { edgeID : ( nodeID, ... , nodeID  )} # all nodes off this femedgeelement
+            # { edgeID : ( nodeID, ... , nodeID  )} # all nodes off this femedgeelement
+            edge_table[elem] = femelement_table[elem]
     return edge_table
 
 
@@ -891,32 +938,47 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
     face_table = {}  # { meshfaceID : ( nodeID, ... , nodeID ) }
     if is_solid_femmesh(femmesh):
         if has_no_face_data(femmesh):
-            FreeCAD.Console.PrintMessage('  No face data in finite volume element mesh. FreeCAD uses getccxVolumesByFace() to retrieve the volume elements of the ref_face.\n')
+            FreeCAD.Console.PrintMessage(
+                '  No face data in finite volume element mesh. '
+                'FreeCAD uses getccxVolumesByFace() '
+                'to retrieve the volume elements of the ref_face.\n'
+            )
             # there is no face data
             # the problem if we retrieve the nodes ourself is they are not sorted we just have the nodes.
             # We need to sort them according the shell mesh notation of tria3, tria6, quad4, quad8
             ref_face_nodes = femmesh.getNodesByFace(ref_face)
-            # try to use getccxVolumesByFace() to get the volume ids of element with elementfaces on the ref_face --> should work for tetra4 and tetra10
+            # try to use getccxVolumesByFace() to get the volume ids
+            # of element with elementfaces on the ref_face --> should work for tetra4 and tetra10
             ref_face_volume_elements = femmesh.getccxVolumesByFace(ref_face)  # list of tupels (mv, ccx_face_nr)
             if ref_face_volume_elements:  # mesh with tetras
-                FreeCAD.Console.PrintLog('  Use of getccxVolumesByFace() has returned volume elements of the ref_face.\n')
+                FreeCAD.Console.PrintLog(
+                    '  Use of getccxVolumesByFace() has returned volume elements of the ref_face.\n'
+                )
                 for ve in ref_face_volume_elements:
                     veID = ve[0]
                     ve_ref_face_nodes = []
                     for nodeID in femelement_table[veID]:
                         if nodeID in ref_face_nodes:
                             ve_ref_face_nodes.append(nodeID)
-                    face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
+                    # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
+                    face_table[veID] = ve_ref_face_nodes
             else:  # mesh with hexa or penta
-                FreeCAD.Console.PrintLog('  The use of getccxVolumesByFace() has NOT returned volume elements of the ref_face. FreeCAD tries to use get_femvolumeelements_by_femfacenodes().\n')
-                ref_face_volume_elements = get_femvolumeelements_by_femfacenodes(femelement_table, ref_face_nodes)  # list of integer [mv]
+                FreeCAD.Console.PrintLog(
+                    '  The use of getccxVolumesByFace() has NOT returned '
+                    'volume elements of the ref_face. '
+                    'FreeCAD tries to use get_femvolumeelements_by_femfacenodes().\n'
+                )
+                # list of integer [mv]
+                ref_face_volume_elements = get_femvolumeelements_by_femfacenodes(femelement_table, ref_face_nodes)
                 for veID in ref_face_volume_elements:
                     ve_ref_face_nodes = []
                     for nodeID in femelement_table[veID]:
                         if nodeID in ref_face_nodes:
                             ve_ref_face_nodes.append(nodeID)
-                    face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
-                face_table = build_mesh_faces_of_volume_elements(face_table, femelement_table)  # we need to resort the nodes to make them build an element face
+                    # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
+                    face_table[veID] = ve_ref_face_nodes
+                # we need to resort the nodes to make them build an element face
+                face_table = build_mesh_faces_of_volume_elements(face_table, femelement_table)
         else:  # the femmesh has face_data
             faces = femmesh.getFacesByFace(ref_face)   # (mv, mf)
             for mf in faces:
@@ -1094,7 +1156,9 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             elif face_node_indexs == [2, 3, 4, 6, 9, 10]:
                 node_numbers = (2, 4, 3, 9, 10, 6)
             else:
-                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
+                FreeCAD.Console.PrintError(
+                    "Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n"
+                )
         elif vol_node_ct == 4:  # tetra4 --> tria3 face
             if face_node_indexs == [1, 2, 3]:  # node order of face in tetra4 volume element
                 node_numbers = (1, 2, 3)       # node order of a tria3 face of tetra4
@@ -1105,7 +1169,9 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             elif face_node_indexs == [2, 3, 4]:
                 node_numbers = (2, 4, 3)
             else:
-                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
+                FreeCAD.Console.PrintError(
+                    "Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n"
+                )
         elif vol_node_ct == 20:  # hexa20 --> quad8 face
             if face_node_indexs == [1, 2, 3, 4, 9, 10, 11, 12]:  # node order of face in hexa20 volume element
                 node_numbers = (1, 2, 3, 4, 9, 10, 11, 12)       # node order of a quad8 face of hexa20
@@ -1120,7 +1186,9 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             elif face_node_indexs == [2, 3, 6, 7, 10, 14, 18, 19]:
                 node_numbers = (2, 6, 7, 3, 18, 14, 19, 10)
             else:
-                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
+                FreeCAD.Console.PrintError(
+                    "Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n"
+                )
         elif vol_node_ct == 8:  # hexa8 --> quad4 face
             face_node_indexs = sorted(face_nodenumber_table[veID])
             if face_node_indexs == [1, 2, 3, 4]:  # node order of face in hexa8 volume element
@@ -1136,7 +1204,9 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             elif face_node_indexs == [2, 3, 6, 7]:
                 node_numbers = (2, 6, 7, 3)
             else:
-                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
+                FreeCAD.Console.PrintError(
+                    "Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n"
+                )
         elif vol_node_ct == 15:  # penta15 --> tria6 and quad8 faces
             if face_node_indexs == [1, 2, 3, 7, 8, 9]:  # node order of face in penta15 volume element
                 node_numbers = (1, 2, 3, 7, 8, 9)       # node order of a tria6 face of penta15
@@ -1149,7 +1219,9 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             elif face_node_indexs == [2, 3, 5, 6, 8, 11, 14, 15]:
                 node_numbers = (2, 5, 6, 3, 14, 11, 15, 8)  # quad8
             else:
-                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): penta15: face not found!" + str(face_node_indexs) + "\n")
+                FreeCAD.Console.PrintError(
+                    "Error in build_mesh_faces_of_volume_elements(): penta15: face not found!" + str(face_node_indexs) + "\n"
+                )
         elif vol_node_ct == 6:  # penta6 --> tria3 and quad4 faces
             if face_node_indexs == [1, 2, 3]:  # node order of face in penta6 volume element
                 node_numbers = (1, 2, 3)       # node order of a tria3 face of penta6
@@ -1162,9 +1234,13 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             elif face_node_indexs == [2, 3, 5, 6]:
                 node_numbers = (2, 5, 6, 3)  # quad4
             else:
-                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): pent6: face not found!" + str(face_node_indexs) + "\n")
+                FreeCAD.Console.PrintError(
+                    "Error in build_mesh_faces_of_volume_elements(): pent6: face not found!" + str(face_node_indexs) + "\n"
+                )
         else:
-            FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): Volume not implemented: volume node count" + str(vol_node_ct) + "\n")
+            FreeCAD.Console.PrintError(
+                "Error in build_mesh_faces_of_volume_elements(): Volume not implemented: volume node count" + str(vol_node_ct) + "\n"
+            )
         face_nodes = []
         for i in node_numbers:
             i -= 1  # node_number starts with 1, index starts with 0 --> index = node number - 1
@@ -1214,7 +1290,9 @@ def get_pressure_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj
                     # -1 if femmeshface normal opposite reference face normal direction
                     # easy on plane faces, but on a half sphere ... ?!?
         else:
-            FreeCAD.Console.PrintError("Pressure on shell mesh at the moment only supported for meshes with appropriate group data.\n")
+            FreeCAD.Console.PrintError(
+                "Pressure on shell mesh at the moment only supported for meshes with appropriate group data.\n"
+            )
     return pressure_faces
 
 
@@ -1246,7 +1324,9 @@ def get_mesh_group_elements(mesh_group_obj, aPart):
         grp_ele = get_reference_group_elements(mesh_group_obj, aPart)
         group_elements[grp_ele[0]] = grp_ele[1]
     else:
-        FreeCAD.Console.PrintError('  Empty reference in mesh group object: ' + mesh_group_obj.Name + ' ' + mesh_group_obj.Label + '\n')
+        FreeCAD.Console.PrintError(
+            '  Empty reference in mesh group object: ' + mesh_group_obj.Name + ' ' + mesh_group_obj.Label + '\n'
+        )
     return group_elements
 
 
@@ -1282,7 +1362,9 @@ def get_analysis_group_elements(aAnalysis, aPart):
     for g in group_elements:
         # FreeCAD.Console.PrintMessage('{}\n'.format(group_elements[g]))
         if len(group_elements[g]) == 0:
-            FreeCAD.Console.PrintError('Error: The shapes for the mesh group for the reference shapes of analysis member: ' + g + ' could not be found!\n')
+            FreeCAD.Console.PrintError(
+                'Error: The shapes for the mesh group for the reference shapes of analysis member: ' + g + ' could not be found!\n'
+            )
     return group_elements
 
 
@@ -1320,14 +1402,22 @@ def get_reference_group_elements(obj, aPart):
             if found_element is not None:
                 elements.append(found_element)
             else:
-                FreeCAD.Console.PrintError('Problem: For the geometry of the following shape was no Shape found: ' + str(ref_shape) + '\n')
+                FreeCAD.Console.PrintError(
+                    'Problem: For the geometry of the following shape was no Shape found: ' + str(ref_shape) + '\n'
+                )
                 FreeCAD.Console.PrintMessage('    ' + obj.Name + '\n')
                 FreeCAD.Console.PrintMessage('    ' + str(obj.References) + '\n')
                 FreeCAD.Console.PrintMessage('    ' + r[0].Name + '\n')
                 if parent.Name != aPart.Name:
-                    FreeCAD.Console.PrintError('The reference Shape is not a child nor it is the shape the mesh is made of. : ' + str(ref_shape) + '\n')
+                    FreeCAD.Console.PrintError(
+                        'The reference Shape is not a child nor it is the shape the mesh is made of. : ' + str(ref_shape) + '\n'
+                    )
                     FreeCAD.Console.PrintMessage(aPart.Name + '--> Name of the Feature we where searching in.\n')
-                    FreeCAD.Console.PrintMessage(parent.Name + '--> Name of the parent Feature of reference Shape (Use the same as in the line before and you will have less trouble :-) !!!!!!).\n')
+                    FreeCAD.Console.PrintMessage(
+                        '{} --> Name of the parent Feature of reference Shape '
+                        '(Use the same as in the line before and you will have less trouble :-) !!!!!!).\n'
+                        .format(parent.Name)
+                    )
                     # import Part
                     # Part.show(aShape)
                     # Part.show(ref_shape)
@@ -1356,7 +1446,10 @@ def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShap
                 if not empty_reference_material:
                     empty_reference_material = m.Name
                 else:
-                    FreeCAD.Console.PrintError('Problem in get_anlysis_empty_references_group_elements, we seem to have two or more materials with empty references\n')
+                    FreeCAD.Console.PrintError(
+                        'Problem in get_anlysis_empty_references_group_elements, '
+                        'we seem to have two or more materials with empty references\n'
+                    )
                     return {}
             elif hasattr(m, "References") and m.References:
                 # ShapeType of the group elements, strip the number of the first group element
@@ -1365,7 +1458,9 @@ def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShap
                 if not material_shape_type:
                     material_shape_type = group_shape_type
                 elif material_shape_type != group_shape_type:
-                    FreeCAD.Console.PrintError('Problem, material shape type does not match get_anlysis_empty_references_group_elements\n')
+                    FreeCAD.Console.PrintError(
+                        'Problem, material shape type does not match get_anlysis_empty_references_group_elements\n'
+                    )
                 for ele in group_elements[m.Name]:
                     material_ref_shapes.append(ele)
     if material_shape_type == 'Solid':
@@ -1387,7 +1482,9 @@ def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShap
             if ele not in material_ref_shapes:
                 missed_material_refshapes.append(ele)
     else:
-        FreeCAD.Console.PrintMessage('  One material with no reference shapes. No need to make a group for materials.\n')
+        FreeCAD.Console.PrintMessage(
+            '  One material with no reference shapes. No need to make a group for materials.\n'
+        )
         # make no changes group_elements
         return group_elements
     # FreeCAD.Console.PrintMessage('{}\n'.format(sorted(material_ref_shapes)))
@@ -1409,11 +1506,14 @@ def find_element_in_shape(aShape, anElement):
                 # Part.show(aShape.Solids[index])
                 ele = ele_st + str(index + 1)
                 return ele
-        FreeCAD.Console.PrintError('Solid ' + str(anElement) + ' not found in: ' + str(aShape) + '\n')
+        FreeCAD.Console.PrintError(
+            'Solid ' + str(anElement) + ' not found in: ' + str(aShape) + '\n'
+        )
         if ele_st == 'Solid' and aShape.ShapeType == 'Solid':
             message_part = (
                 'We have been searching for a Solid in a Solid and we have not found it. '
-                'In most cases this should be searching for a Solid inside a CompSolid. Check the ShapeType of your Part to mesh.'
+                'In most cases this should be searching for a Solid inside a CompSolid. '
+                'Check the ShapeType of your Part to mesh.'
             )
             FreeCAD.Console.PrintMessage(message_part + '\n')
         # Part.show(anElement)
@@ -1460,7 +1560,9 @@ def get_vertexes_by_element(aShape, anElement):
                             ele_vertexes.append(i)
                 # FreeCAD.Console.PrintMessage('  ' + str(sorted(ele_vertexes)), '\n')
                 return ele_vertexes
-        FreeCAD.Console.PrintError('Error, Solid ' + str(anElement) + ' not found in: ' + str(aShape) + '\n')
+        FreeCAD.Console.PrintError(
+            'Error, Solid ' + str(anElement) + ' not found in: ' + str(aShape) + '\n'
+        )
     elif ele_st == 'Face' or ele_st == 'Shell':
         for index, face in enumerate(aShape.Faces):
             if is_same_geometry(face, anElement):
@@ -1528,7 +1630,9 @@ def get_element(part, element):
     if element.startswith('Solid'):
         index = int(element.lstrip('Solid')) - 1
         if index >= len(part.Shape.Solids):
-            FreeCAD.Console.PrintError('Index out of range. This Solid does not exist in the Shape!\n')
+            FreeCAD.Console.PrintError(
+                'Index out of range. This Solid does not exist in the Shape!\n'
+            )
             return None
         else:
             return part.Shape.Solids[index]  # Solid
@@ -1537,12 +1641,20 @@ def get_element(part, element):
 
 
 def femelements_count_ok(len_femelement_table, count_femelements):
-    FreeCAD.Console.PrintMessage('Count finite elements as sum of constraints:   {}\n'.format(count_femelements))
-    FreeCAD.Console.PrintMessage('Count finite elements of the finite element mesh: {}\n'.format(len_femelement_table))
+    FreeCAD.Console.PrintMessage(
+        'Count finite elements as sum of constraints:   {}\n'
+        .format(count_femelements)
+    )
+    FreeCAD.Console.PrintMessage(
+        'Count finite elements of the finite element mesh: {}\n'
+        .format(len_femelement_table)
+    )
     if count_femelements == len_femelement_table:
         return True
     else:
-        FreeCAD.Console.PrintMessage('ERROR: femelement_table != count_femelements\n')
+        FreeCAD.Console.PrintMessage(
+            'ERROR: femelement_table != count_femelements\n'
+        )
         return False
 
 
@@ -1572,22 +1684,26 @@ def sortlistoflistvalues(listoflists):
 
 
 def is_solid_femmesh(femmesh):
-    if femmesh.VolumeCount > 0:  # solid femmesh
+    # solid femmesh
+    if femmesh.VolumeCount > 0:
         return True
 
 
 def has_no_face_data(femmesh):
-    if femmesh.FaceCount == 0:   # femmesh has no face data, could be a edge femmesh or a solid femmesh without face data
+    # femmesh has no face data, could be a edge femmesh or a solid femmesh without face data
+    if femmesh.FaceCount == 0:
         return True
 
 
 def is_face_femmesh(femmesh):
-    if femmesh.VolumeCount == 0 and femmesh.FaceCount > 0:  # face femmesh
+    # face femmesh
+    if femmesh.VolumeCount == 0 and femmesh.FaceCount > 0:
         return True
 
 
 def is_edge_femmesh(femmesh):
-    if femmesh.VolumeCount == 0 and femmesh.FaceCount == 0 and femmesh.EdgeCount > 0:  # edge femmesh
+    # edge femmesh
+    if femmesh.VolumeCount == 0 and femmesh.FaceCount == 0 and femmesh.EdgeCount > 0:
         return True
 
 
@@ -1771,7 +1887,9 @@ def use_correct_fluidinout_ele_def(FluidInletoutlet_ele, fileName, fluid_inout_n
                             node1 = int(a[j + 2])
                             node2 = int(a[j + 1])
                             node3 = int(a[j])
-                            inout_nodes_file.write(str(node1) + ',' + str(node2) + ',' + str(node3) + ',' + FluidInletoutlet_ele[i][1] + '\n')
+                            inout_nodes_file.write(
+                                str(node1) + ',' + str(node2) + ',' + str(node3) + ',' + FluidInletoutlet_ele[i][1] + '\n'
+                            )
                         elif j == 3:
                             new_line = new_line + a[j]
                         else:
@@ -1782,7 +1900,9 @@ def use_correct_fluidinout_ele_def(FluidInletoutlet_ele, fileName, fluid_inout_n
                             node1 = int(a[j - 2])
                             node2 = int(a[j - 1])
                             node3 = int(a[j])
-                            inout_nodes_file.write(str(node1) + ',' + str(node2) + ',' + str(node3) + ',' + FluidInletoutlet_ele[i][1] + '\n')
+                            inout_nodes_file.write(
+                                str(node1) + ',' + str(node2) + ',' + str(node3) + ',' + FluidInletoutlet_ele[i][1] + '\n'
+                            )
                         else:
                             new_line = new_line + a[j] + ','
         if new_line == '':
