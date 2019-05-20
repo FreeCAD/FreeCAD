@@ -27,7 +27,7 @@ __url__ = "http://www.freecadweb.org"
 #  @{
 
 import FreeCAD
-import femmesh.meshtools as FemMeshTools
+from femmesh import meshtools
 import os
 
 
@@ -118,7 +118,7 @@ class FemInputWriter():
         # get nodes
         for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             FreeCAD.Console.PrintMessage("Constraint fixed:" + ' ' + femobj['Object'].Name + '\n')
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
+            femobj['Nodes'] = meshtools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
             # add nodes to constraint_conflict_nodes, needed by constraint plane rotation
             for node in femobj['Nodes']:
                 self.constraint_conflict_nodes.append(node)
@@ -126,7 +126,7 @@ class FemInputWriter():
         if self.femmesh.Volumes and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
             print('We need to find the solid nodes.')
             if not self.femelement_volumes_table:
-                self.femelement_volumes_table = FemMeshTools.get_femelement_volumes_table(self.femmesh)
+                self.femelement_volumes_table = meshtools.get_femelement_volumes_table(self.femmesh)
             for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
                 nds_solid = []
                 nds_faceedge = []
@@ -146,7 +146,7 @@ class FemInputWriter():
         # get nodes
         for femobj in self.displacement_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             FreeCAD.Console.PrintMessage("Constraint displacement:" + ' ' + femobj['Object'].Name + '\n')
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
+            femobj['Nodes'] = meshtools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
             # add nodes to constraint_conflict_nodes, needed by constraint plane rotation
             for node in femobj['Nodes']:
                 self.constraint_conflict_nodes.append(node)
@@ -155,25 +155,25 @@ class FemInputWriter():
         # get nodes
         for femobj in self.planerotation_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             FreeCAD.Console.PrintMessage("Constraint plane rotation:" + ' ' + femobj['Object'].Name + '\n')
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
+            femobj['Nodes'] = meshtools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
 
     def get_constraints_transform_nodes(self):
         # get nodes
         for femobj in self.transform_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             FreeCAD.Console.PrintMessage("Constraint transform nodes:" + ' ' + femobj['Object'].Name + '\n')
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
+            femobj['Nodes'] = meshtools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
 
     def get_constraints_temperature_nodes(self):
         # get nodes
         for femobj in self.temperature_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             FreeCAD.Console.PrintMessage("Constraint temperature:" + ' ' + femobj['Object'].Name + '\n')
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
+            femobj['Nodes'] = meshtools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
 
     def get_constraints_fluidsection_nodes(self):
         # get nodes
         for femobj in self.fluidsection_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             FreeCAD.Console.PrintMessage("Constraint fluid section:" + ' ' + femobj['Object'].Name + '\n')
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
+            femobj['Nodes'] = meshtools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
 
     def get_constraints_force_nodeloads(self):
         # check shape type of reference shape
@@ -183,7 +183,7 @@ class FemInputWriter():
             if femobj['RefShapeType'] == 'Vertex':
                 # print("load on vertices --> we do not need the femelement_table and femnodes_mesh for node load calculation")
                 pass
-            elif femobj['RefShapeType'] == 'Face' and FemMeshTools.is_solid_femmesh(self.femmesh) and not FemMeshTools.has_no_face_data(self.femmesh):
+            elif femobj['RefShapeType'] == 'Face' and meshtools.is_solid_femmesh(self.femmesh) and not meshtools.has_no_face_data(self.femmesh):
                 # print("solid_mesh with face data --> we do not need the femelement_table but we need the femnodes_mesh for node load calculation")
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
@@ -192,7 +192,7 @@ class FemInputWriter():
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
                 if not self.femelement_table:
-                    self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+                    self.femelement_table = meshtools.get_femelement_table(self.femmesh)
         # get node loads
         FreeCAD.Console.PrintMessage("  Finite element mesh nodes will be retrieved by searching the appropriate nodes in the finite element mesh.\n")
         FreeCAD.Console.PrintMessage("  The appropriate finite element mesh node load values will be calculated according to the finite element definition.\n")
@@ -201,11 +201,11 @@ class FemInputWriter():
             if frc_obj.Force == 0:
                 FreeCAD.Console.PrintMessage('  Warning --> Force = 0\n')
             if femobj['RefShapeType'] == 'Vertex':  # point load on vertices
-                femobj['NodeLoadTable'] = FemMeshTools.get_force_obj_vertex_nodeload_table(self.femmesh, frc_obj)
+                femobj['NodeLoadTable'] = meshtools.get_force_obj_vertex_nodeload_table(self.femmesh, frc_obj)
             elif femobj['RefShapeType'] == 'Edge':  # line load on edges
-                femobj['NodeLoadTable'] = FemMeshTools.get_force_obj_edge_nodeload_table(self.femmesh, self.femelement_table, self.femnodes_mesh, frc_obj)
+                femobj['NodeLoadTable'] = meshtools.get_force_obj_edge_nodeload_table(self.femmesh, self.femelement_table, self.femnodes_mesh, frc_obj)
             elif femobj['RefShapeType'] == 'Face':  # area load on faces
-                femobj['NodeLoadTable'] = FemMeshTools.get_force_obj_face_nodeload_table(self.femmesh, self.femelement_table, self.femnodes_mesh, frc_obj)
+                femobj['NodeLoadTable'] = meshtools.get_force_obj_face_nodeload_table(self.femmesh, self.femelement_table, self.femnodes_mesh, frc_obj)
 
     def get_constraints_pressure_faces(self):
         # TODO see comments in get_constraints_force_nodeloads(), it applies here too. Mhh it applies to all constraints ...
@@ -214,20 +214,20 @@ class FemInputWriter():
         # depreciated version
         # get the faces and face numbers
         for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            femobj['PressureFaces'] = FemMeshTools.get_pressure_obj_faces_depreciated(self.femmesh, femobj)
+            femobj['PressureFaces'] = meshtools.get_pressure_obj_faces_depreciated(self.femmesh, femobj)
             # print(femobj['PressureFaces'])
         '''
 
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
         if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
         if not self.femnodes_ele_table:
-            self.femnodes_ele_table = FemMeshTools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
+            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
 
         for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             FreeCAD.Console.PrintMessage("Constraint pressure: " + femobj['Object'].Name + '\n')
-            pressure_faces = FemMeshTools.get_pressure_obj_faces(self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj)
+            pressure_faces = meshtools.get_pressure_obj_faces(self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj)
             femobj['PressureFaces'] = [(femobj['Object'].Name + ': face load', pressure_faces)]
             FreeCAD.Console.PrintLog('{}\n'.format(femobj['PressureFaces']))
 
@@ -235,29 +235,29 @@ class FemInputWriter():
         # get element ids and write them into the objects
         FreeCAD.Console.PrintMessage('Shell thicknesses\n')
         if not self.femelement_faces_table:
-            self.femelement_faces_table = FemMeshTools.get_femelement_faces_table(self.femmesh)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_faces_table, self.shellthickness_objects)
+            self.femelement_faces_table = meshtools.get_femelement_faces_table(self.femmesh)
+        meshtools.get_femelement_sets(self.femmesh, self.femelement_faces_table, self.shellthickness_objects)
 
     def get_element_geometry1D_elements(self):
         # get element ids and write them into the objects
         FreeCAD.Console.PrintMessage('Beam sections\n')
         if not self.femelement_edges_table:
-            self.femelement_edges_table = FemMeshTools.get_femelement_edges_table(self.femmesh)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_edges_table, self.beamsection_objects)
+            self.femelement_edges_table = meshtools.get_femelement_edges_table(self.femmesh)
+        meshtools.get_femelement_sets(self.femmesh, self.femelement_edges_table, self.beamsection_objects)
 
     def get_element_rotation1D_elements(self):
         # get for each geometry edge direction the element ids and rotation norma
         FreeCAD.Console.PrintMessage('Beam rotations\n')
         if not self.femelement_edges_table:
-            self.femelement_edges_table = FemMeshTools.get_femelement_edges_table(self.femmesh)
-        FemMeshTools.get_femelement_direction1D_set(self.femmesh, self.femelement_edges_table, self.beamrotation_objects, self.theshape)
+            self.femelement_edges_table = meshtools.get_femelement_edges_table(self.femmesh)
+        meshtools.get_femelement_direction1D_set(self.femmesh, self.femelement_edges_table, self.beamrotation_objects, self.theshape)
 
     def get_element_fluid1D_elements(self):
         # get element ids and write them into the objects
         FreeCAD.Console.PrintMessage('Fluid sections\n')
         if not self.femelement_edges_table:
-            self.femelement_edges_table = FemMeshTools.get_femelement_edges_table(self.femmesh)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_edges_table, self.fluidsection_objects)
+            self.femelement_edges_table = meshtools.get_femelement_edges_table(self.femmesh)
+        meshtools.get_femelement_sets(self.femmesh, self.femelement_edges_table, self.fluidsection_objects)
 
     def get_material_elements(self):
         # it only works if either Volumes or Shellthicknesses or Beamsections are in the material objects
@@ -270,28 +270,28 @@ class FemInputWriter():
             # there we have to check of some geometric objects
             all_found = False
             if self.femmesh.GroupCount:
-                all_found = FemMeshTools.get_femelement_sets_from_group_data(self.femmesh, self.material_objects)
+                all_found = meshtools.get_femelement_sets_from_group_data(self.femmesh, self.material_objects)
                 FreeCAD.Console.PrintMessage(all_found)
                 FreeCAD.Console.PrintMessage('\n')
             if all_found is False:
                 if not self.femelement_table:
-                    self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+                    self.femelement_table = meshtools.get_femelement_table(self.femmesh)
                 # we're going to use the binary search for get_femelements_by_femnodes()
                 # thus we need the parameter values self.femnodes_ele_table
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
                 if not self.femnodes_ele_table:
-                    self.femnodes_ele_table = FemMeshTools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
-                control = FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects, self.femnodes_ele_table)
+                    self.femnodes_ele_table = meshtools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
+                control = meshtools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects, self.femnodes_ele_table)
                 if (self.femelement_count_test is True) and (control is False):  # we only need to set it, if it is still True
                     self.femelement_count_test = False
         if self.shellthickness_objects:
             if not self.femelement_faces_table:
-                self.femelement_faces_table = FemMeshTools.get_femelement_faces_table(self.femmesh)
-            FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_faces_table, self.material_objects)
+                self.femelement_faces_table = meshtools.get_femelement_faces_table(self.femmesh)
+            meshtools.get_femelement_sets(self.femmesh, self.femelement_faces_table, self.material_objects)
         if self.beamsection_objects or self.fluidsection_objects:
             if not self.femelement_edges_table:
-                self.femelement_edges_table = FemMeshTools.get_femelement_edges_table(self.femmesh)
-            FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_edges_table, self.material_objects)
+                self.femelement_edges_table = meshtools.get_femelement_edges_table(self.femmesh)
+            meshtools.get_femelement_sets(self.femmesh, self.femelement_edges_table, self.material_objects)
 
 ##  @}
