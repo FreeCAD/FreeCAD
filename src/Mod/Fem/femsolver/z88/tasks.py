@@ -91,7 +91,8 @@ class Solve(run.Solve):
     def run(self):
         # AFAIK: z88r needs to be run twice, once in test mode and once in real solve mode
         # the subprocess was just copied, it seems to work :-)
-        # TODO: search out for "Vektor GS" and "Vektor KOI" and print values, may be compared with the used ones
+        # TODO: search out for "Vektor GS" and "Vektor KOI" and print values
+        # may be compared with the used ones
         self.pushStatus("Executing test solver...\n")
         binary = settings.get_binary("Z88")
         self._process = subprocess.Popen(
@@ -159,22 +160,39 @@ class _Container(object):
             self.mesh = mesh
         else:
             if FreeCAD.GuiUp:
-                QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+                QtGui.QMessageBox.critical(
+                    None,
+                    "Missing prerequisite",
+                    message
+                )
             raise Exception(message + '\n')
 
         # get member, empty lists are not supported by z88
-        self.materials_linear = self.get_several_member('Fem::Material')
+        # materials
+        self.materials_linear = self.get_several_member(
+            'Fem::Material'
+        )
         self.materials_nonlinear = []
 
-        self.beam_sections = self.get_several_member('Fem::FemElementGeometry1D')
+        # geometries
+        self.beam_sections = self.get_several_member(
+            'Fem::FemElementGeometry1D'
+        )
         self.beam_rotations = []
         self.fluid_sections = []
-        self.shell_thicknesses = self.get_several_member('Fem::FemElementGeometry2D')
+        self.shell_thicknesses = self.get_several_member(
+            'Fem::FemElementGeometry2D'
+        )
 
+        # constraints
         self.constraints_contact = []
         self.constraints_displacement = []
-        self.constraints_fixed = self.get_several_member('Fem::ConstraintFixed')
-        self.constraints_force = self.get_several_member('Fem::ConstraintForce')
+        self.constraints_fixed = self.get_several_member(
+            'Fem::ConstraintFixed'
+        )
+        self.constraints_force = self.get_several_member(
+            'Fem::ConstraintForce'
+        )
         self.constraints_heatflux = []
         self.constraints_initialtemperature = []
         self.constraints_pressure = []
