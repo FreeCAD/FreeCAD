@@ -38,10 +38,12 @@ if FreeCAD.GuiUp:
 
 class CommandManager(object):
         def __init__(self):
-            self.resources = {'Pixmap': 'FemWorkbench',
-                              'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command MenuText"),
-                              'Accel': "",
-                              'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command ToolTip")}
+            self.resources = {
+                'Pixmap': 'FemWorkbench',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command MenuText"),
+                'Accel': "",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command ToolTip")
+            }
             # FIXME add option description
             self.is_active = None
             self.selobj = None
@@ -59,29 +61,49 @@ class CommandManager(object):
             elif self.is_active == 'with_document':
                 active = FreeCADGui.ActiveDocument is not None
             elif self.is_active == 'with_analysis':
-                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc()
+                active = FemGui.getActiveAnalysis() is not None \
+                    and self.active_analysis_in_active_doc()
             elif self.is_active == 'with_results':
-                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and (self.results_present() or self.result_mesh_present())
+                active = FemGui.getActiveAnalysis() is not None \
+                    and self.active_analysis_in_active_doc() \
+                    and (self.results_present() or self.result_mesh_present())
             elif self.is_active == 'with_selresult':
-                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.result_selected()
+                active = FemGui.getActiveAnalysis() is not None \
+                    and self.active_analysis_in_active_doc() \
+                    and self.result_selected()
             elif self.is_active == 'with_part_feature':
-                active = FreeCADGui.ActiveDocument is not None and self.part_feature_selected()
+                active = FreeCADGui.ActiveDocument is not None \
+                    and self.part_feature_selected()
             elif self.is_active == 'with_femmesh':
-                active = FreeCADGui.ActiveDocument is not None and self.femmesh_selected()
+                active = FreeCADGui.ActiveDocument is not None \
+                    and self.femmesh_selected()
             elif self.is_active == 'with_gmsh_femmesh':
-                active = FreeCADGui.ActiveDocument is not None and self.gmsh_femmesh_selected()
+                active = FreeCADGui.ActiveDocument is not None \
+                    and self.gmsh_femmesh_selected()
             elif self.is_active == 'with_femmesh_andor_res':
-                active = FreeCADGui.ActiveDocument is not None and self.with_femmesh_andor_res_selected()
+                active = FreeCADGui.ActiveDocument is not None \
+                    and self.with_femmesh_andor_res_selected()
             elif self.is_active == 'with_material':
-                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.material_selected()
+                active = FemGui.getActiveAnalysis() is not None \
+                    and self.active_analysis_in_active_doc() \
+                    and self.material_selected()
             elif self.is_active == 'with_material_solid_which_has_no_nonlinear_material':
-                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.material_solid_selected() and self.has_no_nonlinear_material()
+                active = FemGui.getActiveAnalysis() is not None \
+                    and self.active_analysis_in_active_doc() \
+                    and self.material_solid_selected() \
+                    and self.has_no_nonlinear_material()
             elif self.is_active == 'with_solver':
-                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.solver_selected()
+                active = FemGui.getActiveAnalysis() is not None \
+                    and self.active_analysis_in_active_doc() \
+                    and self.solver_selected()
             elif self.is_active == 'with_solver_elmer':
-                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.solver_elmer_selected()
+                active = FemGui.getActiveAnalysis() is not None \
+                    and self.active_analysis_in_active_doc() \
+                    and self.solver_elmer_selected()
             elif self.is_active == 'with_analysis_without_solver':
-                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and not self.analysis_has_solver()
+                active = FemGui.getActiveAnalysis() is not None \
+                    and self.active_analysis_in_active_doc() \
+                    and not self.analysis_has_solver()
             return active
 
         def results_present(self):
@@ -127,7 +149,9 @@ class CommandManager(object):
 
         def gmsh_femmesh_selected(self):
             sel = FreeCADGui.Selection.getSelection()
-            if len(sel) == 1 and hasattr(sel[0], "Proxy") and sel[0].Proxy.Type == "Fem::FemMeshGmsh":
+            if len(sel) == 1 \
+                    and hasattr(sel[0], "Proxy") \
+                    and sel[0].Proxy.Type == "Fem::FemMeshGmsh":
                 self.selobj = sel[0]
                 return True
             else:
@@ -142,7 +166,10 @@ class CommandManager(object):
 
         def material_solid_selected(self):
             sel = FreeCADGui.Selection.getSelection()
-            if len(sel) == 1 and sel[0].isDerivedFrom("App::MaterialObjectPython") and hasattr(sel[0], "Category") and sel[0].Category == "Solid":
+            if len(sel) == 1 \
+                    and sel[0].isDerivedFrom("App::MaterialObjectPython") \
+                    and hasattr(sel[0], "Category") \
+                    and sel[0].Category == "Solid":
                 self.selobj = sel[0]
                 return True
             else:
@@ -151,8 +178,15 @@ class CommandManager(object):
         def has_no_nonlinear_material(self):
             "check if an nonlinear material exists which is already based on the selected material"
             for o in FreeCAD.ActiveDocument.Objects:
-                if hasattr(o, "Proxy") and o.Proxy is not None and o.Proxy.Type == "Fem::MaterialMechanicalNonlinear" and o.LinearBaseMaterial == self.selobj:
-                    # FreeCAD.Console.PrintError(o.Name + ' is based on the selected material: ' + self.selobj + '. Only one nonlinear object for each material allowed.\n')
+                if hasattr(o, "Proxy") \
+                        and o.Proxy is not None \
+                        and o.Proxy.Type == "Fem::MaterialMechanicalNonlinear" \
+                        and o.LinearBaseMaterial == self.selobj:
+                    FreeCAD.Console.PrintError(
+                        '{} is based on the selected material: {}. '
+                        'Only one nonlinear object for each material allowed.\n'
+                        .format(o.Name, self.selobj)
+                    )
                     return False
             return True
 
@@ -199,7 +233,9 @@ class CommandManager(object):
 
         def solver_elmer_selected(self):
             sel = FreeCADGui.Selection.getSelection()
-            if len(sel) == 1 and hasattr(sel[0], "Proxy") and sel[0].Proxy.Type == "Fem::FemSolverObjectElmer":
+            if len(sel) == 1 \
+                    and hasattr(sel[0], "Proxy") \
+                    and sel[0].Proxy.Type == "Fem::FemSolverObjectElmer":
                 self.selobj = sel[0]
                 return True
             else:
@@ -222,6 +258,8 @@ class CommandManager(object):
                     if "Constraint" in acnstrmesh.TypeId:
                         acnstrmesh.ViewObject.Visibility = True
                     if "Mesh" in acnstrmesh.TypeId:
-                        acnstrmesh.ViewObject.Visibility = False  # OvG: Hide meshes and show constraints and meshed part e.g. on purging results
+                        # OvG: Hide meshes and show constraints and meshed part
+                        # e.g. on purging results
+                        acnstrmesh.ViewObject.Visibility = False
 
 ##  @}

@@ -180,7 +180,7 @@ public:
     /// Destruction
     ~MeshProjection();
 
-    void discretize(const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& polyline) const;
+    void discretize(const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& polyline, std::size_t minPoints=2) const;
     /**
      * Searches all edges that intersect with the projected curve \a aShape. Therefore \a aShape must
      * contain shapes of type TopoDS_Edge, other shape types are ignored. A possible solution is
