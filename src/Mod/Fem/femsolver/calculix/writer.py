@@ -27,17 +27,18 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import FreeCAD
 import os
 import sys
 import time
 import codecs
-import femmesh.meshtools as FemMeshTools
-from .. import writerbase as FemInputWriter
 import six
 
+import FreeCAD
+from femmesh import meshtools
+from .. import writerbase
 
-class FemInputWriterCcx(FemInputWriter.FemInputWriter):
+
+class FemInputWriterCcx(writerbase.FemInputWriter):
     def __init__(
         self,
         analysis_obj,
@@ -62,7 +63,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         fluidsection_obj,
         dir_name=None
     ):
-        FemInputWriter.FemInputWriter.__init__(
+        writerbase.FemInputWriter.__init__(
             self,
             analysis_obj,
             solver_obj,
@@ -91,9 +92,9 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.file_name = join(self.dir_name, self.main_file_name)
         self.FluidInletoutlet_ele = []
         self.fluid_inout_nodes_file = join(self.dir_name, (self.mesh_object.Name + '_inout_nodes.txt'))
-        FreeCAD.Console.PrintLog('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name + '\n')
-        FreeCAD.Console.PrintLog('FemInputWriterCcx --> self.main_file_name  -->  ' + self.main_file_name + '\n')
-        FreeCAD.Console.PrintMessage('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name + '\n')
+        FreeCAD.Console.PrintLog('writerbaseCcx --> self.dir_name  -->  ' + self.dir_name + '\n')
+        FreeCAD.Console.PrintLog('writerbaseCcx --> self.main_file_name  -->  ' + self.main_file_name + '\n')
+        FreeCAD.Console.PrintMessage('writerbaseCcx --> self.file_name  -->  ' + self.file_name + '\n')
 
     def write_calculix_input_file(self):
         timestart = time.clock()
@@ -101,7 +102,10 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_calculix_splitted_input_file()
         else:
             self.write_calculix_one_input_file()
-        writing_time_string = "Writing time input file: " + str(round((time.clock() - timestart), 2)) + " seconds"
+        writing_time_string = (
+            "Writing time input file: {} seconds"
+            .format(round((time.clock() - timestart), 2))
+        )
         if self.femelement_count_test is True:
             FreeCAD.Console.PrintMessage(writing_time_string + ' \n\n')
             return self.file_name
@@ -120,7 +124,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # Check to see if fluid sections are in analysis and use D network element type
         if self.fluidsection_objects:
             inpfile.close()
-            FemMeshTools.write_D_network_element_to_inputfile(self.file_name)
+            meshtools.write_D_network_element_to_inputfile(self.file_name)
             inpfile = open(self.file_name, 'a')
         # node and element sets
         self.write_element_sets_material_and_femelement_type(inpfile)
@@ -146,7 +150,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         if self.fluidsection_objects:
             if is_fluid_section_inlet_outlet(self.ccx_elsets) is True:
                 inpfile.close()
-                FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, self.file_name, self.fluid_inout_nodes_file)
+                meshtools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, self.file_name, self.fluid_inout_nodes_file)
                 inpfile = open(self.file_name, 'a')
 
         # constraints independent from steps
@@ -218,7 +222,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
 
         # Check to see if fluid sections are in analysis and use D network element type
         if self.fluidsection_objects:
-            FemMeshTools.write_D_network_element_to_inputfile(name + "_Node_Elem_sets.inp")
+            meshtools.write_D_network_element_to_inputfile(name + "_Node_Elem_sets.inp")
 
         inpfileMain.write('\n***********************************************************\n')
         inpfileMain.write('**Nodes and Elements\n')
@@ -294,7 +298,14 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # Fluid section: Inlet and Outlet requires special element definition
         if self.fluidsection_objects:
             if is_fluid_section_inlet_outlet(self.ccx_elsets) is True:
+<<<<<<< HEAD
                 FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, name + "_Node_Elem_sets.inp", self.fluid_inout_nodes_file)
+=======
+                meshtools.use_correct_fluidinout_ele_def(
+                    self.FluidInletoutlet_ele, name + "_Node_Elem_sets.inp",
+                    self.fluid_inout_nodes_file
+                )
+>>>>>>> 5e4bf5b587... FEM: solver calculix writer and solver writer base, use small character for import identifier
 
         # constraints independent from steps
         if self.planerotation_objects:
@@ -516,7 +527,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             nodes_coords = []
             for node in l_nodes:
                 nodes_coords.append((node, self.femnodes_mesh[node].x, self.femnodes_mesh[node].y, self.femnodes_mesh[node].z))
-            node_planerotation = FemMeshTools.get_three_non_colinear_nodes(nodes_coords)
+            node_planerotation = meshtools.get_three_non_colinear_nodes(nodes_coords)
             for i in range(len(l_nodes)):
                 if l_nodes[i] not in node_planerotation:
                     node_planerotation.append(l_nodes[i])
@@ -921,11 +932,11 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             f.write('** ' + trans_obj.Label + '\n')
             if trans_obj.TransformType == "Rectangular":
                 f.write('*TRANSFORM, NSET=Rect' + trans_obj.Name + ', TYPE=R\n')
-                coords = FemMeshTools.get_rectangular_coords(trans_obj)
+                coords = meshtools.get_rectangular_coords(trans_obj)
                 f.write(coords + '\n')
             elif trans_obj.TransformType == "Cylindrical":
                 f.write('*TRANSFORM, NSET=Cylin' + trans_obj.Name + ', TYPE=C\n')
-                coords = FemMeshTools.get_cylindrical_coords(trans_obj)
+                coords = meshtools.get_cylindrical_coords(trans_obj)
                 f.write(coords + '\n')
 
     def write_constraints_selfweight(self, f):
