@@ -3,7 +3,7 @@
 # (c) 2004 Juergen Riegel
 
 
-import os,sys,string
+import os,sys
 
 help1 = """
 FreeCAD Build Tool
@@ -27,11 +27,12 @@ For help on the modules type:
 if(len(sys.argv) < 2):
 	sys.stdout.write(help1)
 	sys.stdout.write("Insert command: ")
+	sys.stdout.flush()
 	CmdRaw = sys.stdin.readline()[:-1]
 else:
 	CmdRaw = sys.argv[1]
 	
-Cmd = string.lower(CmdRaw)
+Cmd = CmdRaw.lower()
 
 
 if Cmd == "distsrc" or Cmd == "ds" :
@@ -58,7 +59,3 @@ else:
 	print(CmdRaw + " is an unknown command!\n")
 	sys.exit(1)
 
-	
-	
-
-	
