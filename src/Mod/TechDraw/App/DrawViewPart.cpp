@@ -342,9 +342,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
      }
     geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
     //add back the cosmetic vertices
-    Base::Console().Message("DVP::execute - cosmoVertex: %d \n",cosmoVertex.size());
     for (auto& v: cosmoVertex) {
-        Base::Console().Message("DVP::execute - adding random vertex\n");
         int idx = geometryObject->addRandomVertex(v->pageLocation * getScale());
         v->linkGeom = idx;
     }
@@ -893,24 +891,20 @@ bool DrawViewPart::showSectionEdges(void)
 //build cosmoVertex from CosmeticVertexList
 void DrawViewPart::rebuildCosmoVertex(void)
 {
-    Base::Console().Message("DVP::rebuildCosmoVertx()\n");
+//    Base::Console().Message("DVP::rebuildCosmoVertx()\n");
     cosmoVertex.clear();
     std::vector<std::string> restoreVerts = CosmeticVertexList.getValues();
-    Base::Console().Message("DVP::rebuildCosmoVertex - verts in: %d \n",restoreVerts.size());
     for (auto& rv: restoreVerts) {
        if (!rv.empty()) {
            CosmeticVertex* cv = new CosmeticVertex();
            bool rc = cv->fromCSV(rv);
            if (rc) {
-//               int idx = geometryObject->addRandomVertex(cv->pageLocation * getScale());
-//               cv->linkGeom = idx;
                cosmoVertex.push_back(cv);
            } else {
                delete cv;
            }
        }
     }
-    Base::Console().Message("DVP::rebuildCosmoVertex - cosmoVertexs: %d \n",cosmoVertex.size());
 }
 
 //! remove features that are useless without this DVP
@@ -1005,8 +999,6 @@ int DrawViewPart::addRandomVertex(Base::Vector3d pos)
         saveVerts.push_back(csv);
     }
     CosmeticVertexList.setValues(saveVerts);
-    Base::Console().Message("DVP::addRandomVertex - saveVerts: %d \n",saveVerts.size());
-
     return newIdx;
 }
 
@@ -1040,7 +1032,7 @@ TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByLink(int idx) const
 
 void DrawViewPart::clearCV(void) 
 {
-    Base::Console().Message("DVP::clearCV()\n");
+//    Base::Console().Message("DVP::clearCV()\n");
     cosmoVertex.clear();
     std::vector<std::string> noVerts;
     CosmeticVertexList.setValues(noVerts);

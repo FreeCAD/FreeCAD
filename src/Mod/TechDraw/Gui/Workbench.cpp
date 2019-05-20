@@ -155,9 +155,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *anno << "TechDraw_Annotation";
     *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_RichAnno";
-    *anno << "TechDraw_CosmeticVertex";
-    *anno << "TechDraw_Midpoints";
-    *anno << "TechDraw_Quadrant";
+    *anno << "TechDraw_CosmeticVertexGrp";
+//    *anno << "TechDraw_CosmeticVertex";
+//    *anno << "TechDraw_Midpoints";
+//    *anno << "TechDraw_Quadrant";
 
     return root;
 }
@@ -221,9 +222,10 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *anno << "TechDraw_Annotation";
     *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_RichAnno";
-    *anno << "TechDraw_CosmeticVertex";
-    *anno << "TechDraw_Midpoints";
-    *anno << "TechDraw_Quadrant";
+    *anno << "TechDraw_CosmeticVertexGrp";
+//    *anno << "TechDraw_CosmeticVertex";
+//    *anno << "TechDraw_Midpoints";
+//    *anno << "TechDraw_Quadrant";
 
     return root;
 }

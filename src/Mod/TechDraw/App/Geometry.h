@@ -77,6 +77,8 @@ class TechDrawExport BaseGeom
         std::vector<Base::Vector2d> findEndPoints();
         Base::Vector2d getStartPoint();
         Base::Vector2d getEndPoint();
+        Base::Vector2d getMidPoint();
+        std::vector<Base::Vector2d> getQuads();
         double minDist(Base::Vector2d p);
         Base::Vector2d nearPoint(Base::Vector2d p);
         Base::Vector2d nearPoint(const BaseGeom* p);

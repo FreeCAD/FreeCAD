@@ -166,8 +166,8 @@ void TaskCosVertex::addCosVertex(QPointF qPos)
 void TaskCosVertex::onTrackerClicked(bool b)
 {
     Q_UNUSED(b);
-    Base::Console().Message("TCV::onTrackerClicked() m_pbTrackerState: %d\n",
-                            m_pbTrackerState);
+//    Base::Console().Message("TCV::onTrackerClicked() m_pbTrackerState: %d\n",
+//                            m_pbTrackerState);
     if (m_pbTrackerState == TRACKERCANCEL) {
         removeTracker();
 
@@ -222,7 +222,7 @@ void TaskCosVertex::startTracker(void)
 
 void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent)
 {
-    Base::Console().Message("TCV::onTrackerFinished()\n");
+//    Base::Console().Message("TCV::onTrackerFinished()\n");
     if (pts.empty()) {
         Base::Console().Error("TaskCosVertex - no points available\n");
         return;
