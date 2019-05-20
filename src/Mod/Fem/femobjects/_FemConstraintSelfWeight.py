@@ -32,9 +32,24 @@ __url__ = "http://www.freecadweb.org"
 class _FemConstraintSelfWeight:
     "The FemConstraintSelfWeight object"
     def __init__(self, obj):
-        obj.addProperty("App::PropertyFloat", "Gravity_x", "Gravity", "set the gravity component in the x direction")
-        obj.addProperty("App::PropertyFloat", "Gravity_y", "Gravity", "set the gravity component in the y direction")
-        obj.addProperty("App::PropertyFloat", "Gravity_z", "Gravity", "set the gravity component in the z direction")
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Gravity_x",
+            "Gravity",
+            "set the gravity component in the x direction"
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Gravity_y",
+            "Gravity",
+            "set the gravity component in the y direction"
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Gravity_z",
+            "Gravity",
+            "set the gravity component in the z direction"
+        )
         obj.Gravity_x = 0.0
         obj.Gravity_y = 0.0
         obj.Gravity_z = -1.0

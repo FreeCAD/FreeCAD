@@ -32,8 +32,18 @@ __url__ = "https://www.freecadweb.org"
 class _FemElementGeometry2D:
     "The FemElementGeometry2D object"
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLength", "Thickness", "ShellThickness", "set thickness of the shell elements")
-        obj.addProperty("App::PropertyLinkSubList", "References", "ShellThickness", "List of shell thickness shapes")
+        obj.addProperty(
+            "App::PropertyLength",
+            "Thickness",
+            "ShellThickness",
+            "set thickness of the shell elements"
+        )
+        obj.addProperty(
+            "App::PropertyLinkSubList",
+            "References",
+            "ShellThickness",
+            "List of shell thickness shapes"
+        )
         obj.Proxy = self
         self.Type = "Fem::FemElementGeometry2D"
 
