@@ -266,7 +266,8 @@ class Writer(object):
         if obj is not None:
             for name in bodies:
                 heatSource = getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
-                # according Elmer forum W/kg is correct, http://www.elmerfem.org/forum/viewtopic.php?f=7&t=1765
+                # according Elmer forum W/kg is correct
+                # http://www.elmerfem.org/forum/viewtopic.php?f=7&t=1765
                 # 1 watt = kg * m2 / s3 ... W/kg = m2 / s3
                 self._bodyForce(name, "Heat Source", heatSource)
             self._handled(obj)
@@ -479,7 +480,9 @@ class Writer(object):
                 densityQuantity = Units.Quantity(m["Density"])
                 dimension = "M/L^3"
                 if name.startswith("Edge"):
-                    density = None  # not tested, but it seems needed because denisty does not exist (IMHO, bernd)
+                    # not tested, but it seems needed
+                    # because denisty does not exist (IMHO, bernd)
+                    density = None
                     if density:
                         density.Unit = Units.Unit(-2, 1)
                     dimension = "M/L^2"
