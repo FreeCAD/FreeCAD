@@ -2,11 +2,14 @@
 Name=FreeCAD
 Name[de]=FreeCAD
 Name[pl]=FreeCAD
+Name[ru]=FreeCAD
 Comment=Feature based Parametric Modeler
 Comment[de]=Feature-basierter parametrischer Modellierer
+Comment[ru]=Система автоматизированного проектирования
 GenericName=CAD Application
 GenericName[de]=CAD-Anwendung
 GenericName[pl]=Aplikacja CAD
+GenericName[ru]=Система автоматизированного проектирования
 Exec=FreeCAD %F
 Terminal=false
 Type=Application
