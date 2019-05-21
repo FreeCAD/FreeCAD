@@ -4515,16 +4515,16 @@ class Edit(Modifier):
                             self.proceed()
                             return
                 #ELSE:
-                msg(translate("draft", "This object type is not editable")+"\n",'warning')
+                FreeCAD.Console.PrintWarning(translate("draft", "This object type is not editable")+"\n")
                 self.finish()
                 return
             else:
-                msg(translate("draft", "Please select only one object")+"\n",'warning')
+                FreeCAD.Console.PrintWarning(translate("draft", "Please select only one object")+"\n")
                 self.finish()
                 return
         else:    
             self.ui.selectUi()
-            msg(translate("draft", "Select a Draft object to edit")+"\n")
+            FreeCAD.Console.PrintMessage(translate("draft", "Select a Draft object to edit")+"\n")
             if self.call:
                 self.view.removeEventCallback("SoEvent",self.call)
             self.call = self.view.addEventCallback("SoEvent",selectObject)
@@ -4546,7 +4546,7 @@ class Edit(Modifier):
                 if not Draft.getType(self.obj) in ["BezCurve","Wire","BSpline","Circle","Rectangle",
                                                    "Polygon","Dimension","Space","Structure","PanelCut",
                                                    "PanelSheet","Wall"]:
-                    msg(translate("draft", "This object type is not editable")+"\n",'warning')
+                    FreeCAD.Console.PrintWarning(translate("draft", "This object type is not editable")+"\n")
                     self.finish()
                     return
 
@@ -4611,7 +4611,7 @@ class Edit(Modifier):
                     if self.planetrack:
                         self.planetrack.set(self.editpoints[0])
                 else:
-                    msg(translate("draft", "No edit points founded for selected object")+"\n",'warning')
+                    FreeCAD.Console.PrintWarning(translate("draft", "No edit point found for selected object")+"\n")
                     self.finish()
            
             else:
@@ -4911,7 +4911,7 @@ class Edit(Modifier):
     def delPoint(self,point):
         if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
         if len(self.obj.Points) <= 2:
-            msg(translate("draft", "Active object must have more than two points/nodes")+"\n",'warning')
+            FreeCAD.Console.PrintWarning(translate("draft", "Active object must have more than two points/nodes")+"\n")
         else:
             pts = self.obj.Points
             pts.pop(point)
@@ -5062,7 +5062,7 @@ class Edit(Modifier):
                     keepp = point
                     changep = 1
                 else:
-                    msg(translate("draft", "Can't change Knot belonging to pole %d"%point)+"\n",'warning')
+                    FreeCAD.Console.PrintWarning(translate("draft", "Can't change Knot belonging to pole %d"%point)+"\n")
                     return
                 if knot:
                     if style == 'Tangent':
@@ -5074,7 +5074,7 @@ class Edit(Modifier):
                     else: #sharp
                         pass #
             else:
-                msg(translate("draft", "Selection is not a Knot\n"),'warning')
+                FreeCAD.Console.PrintWarning(translate("draft", "Selection is not a Knot\n"))
                 return
         else: #point is a knot
             if style == 'Sharp':
@@ -5099,7 +5099,7 @@ class Edit(Modifier):
                     pts[1],pts[-1] = self.obj.Proxy.symmetricpoles(pts[0],pts[1],pts[-1])
                 knot = 0
             else:
-                msg(translate("draft", "Endpoint of BezCurve can't be smoothed")+"\n",'warning')
+                FreeCAD.Console.PrintWarning(translate("draft", "Endpoint of BezCurve can't be smoothed")+"\n")
                 return
         segment = knot // deg #segment index
         newcont=self.obj.Continuity[:] #don't edit a property inplace !!!
@@ -5280,9 +5280,9 @@ class Edit(Modifier):
             return(midPoint)
         elif Draft.getType(self.obj) == "Wall":
             if self.obj.Base.GeometryCount == 1:
-                msg("wall edit mode: get midpoint")
+                print("wall edit mode: get midpoint")
         else:
-            msg("Failed to get object midpoint during Editing")
+            print("Failed to get object midpoint during Editing")
             
     def arcInvert(self):
         FA=self.obj.FirstAngle
@@ -5355,7 +5355,7 @@ class Edit(Modifier):
                 self.editpoints.append(self.obj.Base.getPoint(0,1))
                 self.editpoints.append(self.obj.Base.getPoint(0,2))
         else:
-            msg(translate("draft","Wall base sketch is too complex to edit: it's suggested to edit directly the sketch")+"\n")
+            FreeCAD.Console.PrintWarning(translate("draft","Wall base sketch is too complex to edit: it's suggested to edit directly the sketch")+"\n")
 
     def updateWall(self,v):
         # try to add here an editpoint based on wall height (maybe should be good to associate it with a circular tracker)
@@ -5451,7 +5451,6 @@ class Edit(Modifier):
             self.obj.TagPosition = self.invpl.multVec(v)
         else:
             self.obj.Group[self.editing-1].Placement.Base = self.invpl.multVec(v)
-
 
 class AddToGroup():
     "The AddToGroup FreeCAD command definition"
