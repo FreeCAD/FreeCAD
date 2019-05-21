@@ -26,6 +26,7 @@
 
 #include <Base/Factory.h>
 #include <Base/Persistence.h>
+#include <App/PropertyContainer.h>
 
 namespace App
 {
@@ -78,7 +79,7 @@ public:
     bool isEmpty() const;
     /// check if this object is used in a transaction
     bool hasObject(const TransactionalObject *Obj) const;
-    void removeProperty(TransactionalObject *Obj, const Property* pcProp);
+    void addOrRemoveProperty(TransactionalObject *Obj, const Property* pcProp, bool add);
 
     void addObjectNew(TransactionalObject *Obj);
     void addObjectDel(const TransactionalObject *Obj);
@@ -86,8 +87,16 @@ public:
 
 private:
     int transID;
-    typedef std::list <std::pair<const TransactionalObject*, TransactionObject*> > TransactionList;
-    TransactionList _Objects;
+    typedef std::pair<const TransactionalObject*, TransactionObject*> Info;
+    bmi::multi_index_container<
+        Info,
+        bmi::indexed_by<
+            bmi::sequenced<>,
+            bmi::hashed_unique<
+                bmi::member<Info, const TransactionalObject*, &Info::first>
+            >
+        >
+    > _Objects;
 };
 
 /** Represents an entry for an object in a Transaction
@@ -107,7 +116,7 @@ public:
     virtual void applyChn(Document &Doc, TransactionalObject *pcObj, bool Forward);
 
     void setProperty(const Property* pcProp);
-    void removeProperty(const Property* pcProp);
+    void addOrRemoveProperty(const Property* pcProp, bool add);
 
     virtual unsigned int getMemSize (void) const;
     virtual void Save (Base::Writer &writer) const;
@@ -118,7 +127,7 @@ public:
 
 protected:
     enum Status {New,Del,Chn} status;
-    std::map<const Property*,Property*> _PropChangeMap;
+    std::unordered_map<const Property*, DynamicProperty::PropData> _PropChangeMap;
     std::string _NameInDocument;
 };
 

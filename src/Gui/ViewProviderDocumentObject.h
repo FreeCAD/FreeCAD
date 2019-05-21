@@ -116,6 +116,13 @@ public:
     virtual void finishRestoring();
     //@}
 
+    virtual bool removeDynamicProperty(const char* prop) override;
+
+    virtual App::Property* addDynamicProperty(
+            const char* type, const char* name=0,
+            const char* group=0, const char* doc=0,
+            short attr=0, bool ro=false, bool hidden=false) override;
+
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.
@@ -154,8 +161,6 @@ protected:
     /** @name Transaction handling
      */
     //@{
-    /// \internal get called when removing a property of name \a prop
-    void onAboutToRemoveProperty(const char* prop);
     virtual bool isAttachedToDocument() const;
     virtual const char* detachFromDocument();
 

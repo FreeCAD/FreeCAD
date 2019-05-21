@@ -141,10 +141,6 @@ public:
     Property *restore(PropertyContainer &pc, 
         const char *PropName, const char *TypeName, Base::XMLReader &reader);
 
-private:
-    std::string getUniquePropertyName(PropertyContainer &pc, const char *Name) const;
-
-private:
     struct PropData {
         Property* property;
         std::string name;
@@ -155,8 +151,8 @@ private:
         bool readonly;
         bool hidden;
 
-        PropData(Property *prop, std::string &&n, const char *pn,
-                const char *g, const char *d, short a, bool ro, bool h)
+        PropData(Property *prop=0, std::string &&n=std::string(), const char *pn=0,
+                const char *g=0, const char *d=0, short a=0, bool ro=false, bool h=false)
             :property(prop),name(std::move(n)),pName(pn)
             ,group(g?g:""),doc(d?d:""),attr(a),readonly(ro),hidden(h)
         {}
@@ -166,6 +162,12 @@ private:
         }
     };
 
+    PropData getDynamicPropertyData(const Property* prop) const;
+
+private:
+    std::string getUniquePropertyName(PropertyContainer &pc, const char *Name) const;
+
+private:
     bmi::multi_index_container<
         PropData,
         bmi::indexed_by<

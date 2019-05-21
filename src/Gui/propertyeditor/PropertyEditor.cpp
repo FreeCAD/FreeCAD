@@ -396,7 +396,6 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     std::unordered_set<App::Property*> props;
 
     if(PropertyView::showAll()) {
-        menu.addAction(tr("Add property"))->setData(QVariant(MA_AddProp));
         for(auto index : selectedIndexes()) {
             auto item = static_cast<PropertyItem*>(index.internalPointer());
             if(item->isSeparator())
@@ -409,6 +408,10 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
                 }
             }
         }
+
+        if(props.size())
+            menu.addAction(tr("Add property"))->setData(QVariant(MA_AddProp));
+
         bool canRemove = !props.empty();
         unsigned long propType = 0;
         unsigned long propStatus = 0xffffffff;
@@ -439,33 +442,35 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
             }
         }
 
-        menu.addSeparator();
+        if(props.size()) {
+            menu.addSeparator();
 
-        QAction *action;
-        QString text;
+            QAction *action;
+            QString text;
 #define _ACTION_SETUP(_name) do {\
-            text = tr(#_name);\
-            action = menu.addAction(text);\
-            action->setData(QVariant(MA_##_name));\
-            action->setCheckable(true);\
-            if(propStatus & (1<<App::Property::_name))\
-                action->setChecked(true);\
-        }while(0)
+                text = tr(#_name);\
+                action = menu.addAction(text);\
+                action->setData(QVariant(MA_##_name));\
+                action->setCheckable(true);\
+                if(propStatus & (1<<App::Property::_name))\
+                    action->setChecked(true);\
+            }while(0)
 #define ACTION_SETUP(_name) do {\
-            _ACTION_SETUP(_name);\
-            if(propType & App::Prop_##_name) {\
-                action->setText(text + QString::fromLatin1(" *"));\
-                action->setChecked(true);\
-            }\
-        }while(0)
+                _ACTION_SETUP(_name);\
+                if(propType & App::Prop_##_name) {\
+                    action->setText(text + QString::fromLatin1(" *"));\
+                    action->setChecked(true);\
+                }\
+            }while(0)
 
-        ACTION_SETUP(Hidden);
-        ACTION_SETUP(Output);
-        ACTION_SETUP(NoRecompute);
-        ACTION_SETUP(ReadOnly);
-        ACTION_SETUP(Transient);
-        _ACTION_SETUP(Touched);
-        _ACTION_SETUP(EvalOnRestore);
+            ACTION_SETUP(Hidden);
+            ACTION_SETUP(Output);
+            ACTION_SETUP(NoRecompute);
+            ACTION_SETUP(ReadOnly);
+            ACTION_SETUP(Transient);
+            _ACTION_SETUP(Touched);
+            _ACTION_SETUP(EvalOnRestore);
+        }
     }
 
     auto action = menu.exec(QCursor::pos());
@@ -502,6 +507,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
         }
         break;
     case MA_AddProp: {
+        App::AutoTransaction committer("Add property");
         std::unordered_set<App::PropertyContainer*> containers;
         for(auto prop : props)
             containers.insert(prop->getContainer());
@@ -511,23 +517,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
         return;
     }
     case MA_RemoveProp: {
-        static bool _noWarn;
-        if(!_noWarn) {
-            QMessageBox box(Gui::getMainWindow());
-            box.setWindowTitle(QObject::tr("Remove property"));
-            box.setText(QObject::tr("Property removeal cannot be undone.\n"
-                        "Are you sure you want to continue?"));
-            box.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
-            box.setDefaultButton(QMessageBox::No);
-            box.setEscapeButton(QMessageBox::No);
-            QCheckBox checkBox(QObject::tr("Ignore warning during this run"));
-            checkBox.blockSignals(true);
-            box.addButton(&checkBox, QMessageBox::ResetRole); 
-            box.setIcon(QMessageBox::Warning);
-            if(box.exec() != QMessageBox::Yes)
-                return;
-            _noWarn = checkBox.isChecked();
-        }
+        App::AutoTransaction committer("Remove property");
         for(auto prop : props) {
             try {
                 prop->getContainer()->removeDynamicProperty(prop->getName());

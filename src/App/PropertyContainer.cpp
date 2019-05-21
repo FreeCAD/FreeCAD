@@ -169,14 +169,11 @@ bool PropertyContainer::isHidden(const char *name) const
 
 const char* PropertyContainer::getPropertyName(const Property* prop)const
 {
-    // return getPropertyData().getName(this,prop);
-
-    if(prop && prop->getContainer()==this)
-        return prop->myName;
-    return 0;
-
+    auto res = dynamicProps.getPropertyName(prop);
+    if(!res)
+        res = getPropertyData().getName(this,prop);
+    return res;
 }
-
 
 const PropertyData * PropertyContainer::getPropertyDataPtr(void){return &propertyData;}
 const PropertyData & PropertyContainer::getPropertyData(void) const{return propertyData;}

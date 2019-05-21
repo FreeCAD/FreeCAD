@@ -595,29 +595,44 @@ void DocumentObject::setDocument(App::Document* doc)
     onSettingDocument();
 }
 
-void DocumentObject::onAboutToRemoveProperty(const char* name)
+bool DocumentObject::removeDynamicProperty(const char* name)
 {
-    if (_pDoc) {
+    if (!_pDoc) 
+        return false;
+
+    Property* prop = getDynamicPropertyByName(name);
+    if(!prop || prop->testStatus(App::Property::LockDynamic))
+        return false;
+
+    if(prop->isDerivedFrom(PropertyLinkBase::getClassTypeId()))
         clearOutListCache();
 
-        _pDoc->removePropertyOfObject(this, name);
+    _pDoc->addOrRemovePropertyOfObject(this, prop, false);
 
-        Property* prop = getDynamicPropertyByName(name);
-        if (prop) {
-            auto expressions = ExpressionEngine.getExpressions();
-            std::vector<App::ObjectIdentifier> removeExpr;
+    auto expressions = ExpressionEngine.getExpressions();
+    std::vector<App::ObjectIdentifier> removeExpr;
 
-            for (auto it : expressions) {
-                if (it.first.getProperty() == prop) {
-                    removeExpr.push_back(it.first);
-                }
-            }
-
-            for (auto it : removeExpr) {
-                ExpressionEngine.setValue(it, boost::shared_ptr<Expression>());
-            }
+    for (auto it : expressions) {
+        if (it.first.getProperty() == prop) {
+            removeExpr.push_back(it.first);
         }
     }
+
+    for (auto it : removeExpr) {
+        ExpressionEngine.setValue(it, boost::shared_ptr<Expression>());
+    }
+
+    return TransactionalObject::removeDynamicProperty(name);
+}
+
+App::Property* DocumentObject::addDynamicProperty(
+    const char* type, const char* name, const char* group, const char* doc,
+    short attr, bool ro, bool hidden)
+{
+    auto prop = TransactionalObject::addDynamicProperty(type,name,group,doc,attr,ro,hidden);
+    if(prop && _pDoc)
+        _pDoc->addOrRemovePropertyOfObject(this, prop, true);
+    return prop;
 }
 
 void DocumentObject::onBeforeChange(const Property* prop)

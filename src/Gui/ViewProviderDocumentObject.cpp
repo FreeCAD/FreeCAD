@@ -123,13 +123,34 @@ const char* ViewProviderDocumentObject::detachFromDocument()
     return "";
 }
 
-void ViewProviderDocumentObject::onAboutToRemoveProperty(const char* prop)
+bool ViewProviderDocumentObject::removeDynamicProperty(const char* name)
 {
+    App::Property* prop = getDynamicPropertyByName(name);
+    if(!prop || prop->testStatus(App::Property::LockDynamic))
+        return false;
+
     // transactions of view providers are also managed in App::Document.
     App::DocumentObject* docobject = getObject();
     App::Document* document = docobject ? docobject->getDocument() : nullptr;
     if (document)
-        document->removePropertyOfObject(this, prop);
+        document->addOrRemovePropertyOfObject(this, prop, false);
+
+    return ViewProvider::removeDynamicProperty(name);
+}
+
+App::Property* ViewProviderDocumentObject::addDynamicProperty(
+    const char* type, const char* name, const char* group, const char* doc,
+    short attr, bool ro, bool hidden)
+{
+    auto prop = ViewProvider::addDynamicProperty(type,name,group,doc,attr,ro,hidden);
+    if(prop) {
+        // transactions of view providers are also managed in App::Document.
+        App::DocumentObject* docobject = getObject();
+        App::Document* document = docobject ? docobject->getDocument() : nullptr;
+        if (document)
+            document->addOrRemovePropertyOfObject(this, prop, true);
+    }
+    return prop;
 }
 
 void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)

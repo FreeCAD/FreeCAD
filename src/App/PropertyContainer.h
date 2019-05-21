@@ -168,7 +168,6 @@ public:
   virtual void getPropertyList(std::vector<Property*> &List) const;
   /// set the Status bit of all properties at once
   void setPropertyStatus(unsigned char bit,bool value);
-
   /// get the Type of a Property
   virtual short getPropertyType(const Property* prop) const;
   /// get the Type of a named Property
@@ -193,6 +192,10 @@ public:
         const char* type, const char* name=0,
         const char* group=0, const char* doc=0,
         short attr=0, bool ro=false, bool hidden=false);
+
+  DynamicProperty::PropData getDynamicPropertyData(const Property* prop) const {
+      return dynamicProps.getDynamicPropertyData(prop);
+  }
 
   virtual bool removeDynamicProperty(const char* name) {
       return dynamicProps.removeDynamicProperty(name);

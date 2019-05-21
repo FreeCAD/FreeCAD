@@ -285,3 +285,21 @@ Property *DynamicProperty::restore(PropertyContainer &pc,
     }
     return addDynamicProperty(pc,TypeName, PropName, group, doc, attribute, readonly, hidden);
 }
+
+DynamicProperty::PropData DynamicProperty::getDynamicPropertyData(const Property *prop) const
+{
+    auto &index = props.get<1>();
+    auto it = index.find(const_cast<Property*>(prop));
+    if(it != index.end())
+        return *it;
+    return PropData();
+}
+
+const char *DynamicProperty::getPropertyName(const Property *prop) const
+{
+    auto &index = props.get<1>();
+    auto it = index.find(const_cast<Property*>(prop));
+    if(it != index.end())
+        return it->getName();
+    return 0;
+}

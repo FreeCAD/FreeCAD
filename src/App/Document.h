@@ -424,8 +424,8 @@ public:
     bool redo(int id=0) ;
     /// returns true if the document is in an Transaction phase, e.g. currently performing a redo/undo or rollback
     bool isPerformingTransaction() const;
-    /// \internal remove property from a transactional object with name \a name
-    void removePropertyOfObject(TransactionalObject*, const char*);
+    /// \internal add or remove property from a transactional object
+    void addOrRemovePropertyOfObject(TransactionalObject*, Property *prop, bool add);
     //@}
 
     /** @name dependency stuff */

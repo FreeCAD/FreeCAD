@@ -1002,17 +1002,20 @@ bool Document::redo(int id)
     return false;
 }
 
-void Document::removePropertyOfObject(TransactionalObject* obj, const char* name)
+void Document::addOrRemovePropertyOfObject(TransactionalObject* obj, Property *prop, bool add)
 {
-    Property* prop = obj->getDynamicPropertyByName(name);
-    if (prop) {
-        if (d->activeUndoTransaction)
-            d->activeUndoTransaction->removeProperty(obj, prop);
-        for (auto it : mUndoTransactions)
-            it->removeProperty(obj, prop);
-        for (auto it : mRedoTransactions)
-            it->removeProperty(obj, prop);
+    if (!prop || !obj) 
+        return;
+    if(d->iUndoMode && !isPerformingTransaction() && !d->activeUndoTransaction) {
+        if(!testStatus(Restoring) || testStatus(Importing)) {
+            int tid=0;
+            const char *name = GetApplication().getActiveTransaction(&tid);
+            if(name && tid>0)
+                _openTransaction(name,tid);
+        }
     }
+    if (d->activeUndoTransaction)
+        d->activeUndoTransaction->addOrRemoveProperty(obj, prop, add);
 }
 
 bool Document::isPerformingTransaction() const
@@ -2484,7 +2487,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray,
                 prop->afterRestore();
             } catch (const Base::Exception& e) {
                 FC_ERR("Failed to restore " << obj->getFullName() 
-                        << '.' << getPropertyName(prop) << ": " << e.what());
+                        << '.' << prop->getName() << ": " << e.what());
             }
         }
     }
@@ -3732,6 +3735,7 @@ void Document::removeObject(const char* sName)
 
     _checkTransaction(pos->second,0,__LINE__);
 
+#if 0
     if(!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
         // Preserve link group sub object global visibilities. Normally those
         // claimed object should be hidden in global coordinate space. However,
@@ -3750,6 +3754,7 @@ void Document::removeObject(const char* sName)
                 d->activeUndoTransaction->addObjectChange(sobj,&sobj->Visibility);
         }
     }
+#endif
 
     if (d->activeObject == pos->second)
         d->activeObject = 0;

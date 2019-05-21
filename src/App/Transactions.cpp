@@ -62,8 +62,8 @@ Transaction::Transaction(int id)
  */
 Transaction::~Transaction()
 {
-    TransactionList::iterator It;
-    for (It= _Objects.begin();It!=_Objects.end();++It) {
+    auto &index = _Objects.get<0>();
+    for (auto It= index.begin();It!=index.end();++It) {
         if (It->second->status == TransactionObject::New) {
             // If an object has been removed from the document the transaction
             // status is 'New'. The 'pcNameInDocument' member serves as criterion
@@ -136,22 +136,27 @@ bool Transaction::isEmpty() const
 
 bool Transaction::hasObject(const TransactionalObject *Obj) const
 {
-    TransactionList::const_iterator it;
-    for (it = _Objects.begin(); it != _Objects.end(); ++it) {
-        if (it->first == Obj)
-            return true;
-    }
-
-    return false;
+    return !!_Objects.get<1>().count(Obj);
 }
 
-void Transaction::removeProperty(TransactionalObject *Obj,
-                                 const Property* pcProp)
+void Transaction::addOrRemoveProperty(TransactionalObject *Obj,
+                                    const Property* pcProp, bool add)
 {
-    for (auto it : _Objects) {
-        if (it.first == Obj)
-            it.second->removeProperty(pcProp);
+    auto &index = _Objects.get<1>();
+    auto pos = index.find(Obj);
+
+    TransactionObject *To;
+
+    if (pos != index.end()) {
+        To = pos->second;
     }
+    else {
+        To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
+        To->status = TransactionObject::Chn;
+        index.emplace(Obj,To);
+    }
+
+    To->addOrRemoveProperty(pcProp,add);
 }
 
 //**************************************************************************
@@ -160,15 +165,15 @@ void Transaction::removeProperty(TransactionalObject *Obj,
 
 void Transaction::apply(Document &Doc, bool forward)
 {
-    TransactionList::iterator It;
     std::string errMsg;
     try {
-        for (It= _Objects.begin();It!=_Objects.end();++It)
-            It->second->applyDel(Doc, const_cast<TransactionalObject*>(It->first));
-        for (It= _Objects.begin();It!=_Objects.end();++It)
-            It->second->applyNew(Doc, const_cast<TransactionalObject*>(It->first));
-        for (It= _Objects.begin();It!=_Objects.end();++It)
-            It->second->applyChn(Doc, const_cast<TransactionalObject*>(It->first), forward);
+        auto &index = _Objects.get<0>();
+        for(auto &info : index) 
+            info.second->applyDel(Doc, const_cast<TransactionalObject*>(info.first));
+        for(auto &info : index) 
+            info.second->applyNew(Doc, const_cast<TransactionalObject*>(info.first));
+        for(auto &info : index) 
+            info.second->applyChn(Doc, const_cast<TransactionalObject*>(info.first), forward);
     }catch(Base::Exception &e) {
         e.ReportException();
         errMsg = e.what();
@@ -185,80 +190,65 @@ void Transaction::apply(Document &Doc, bool forward)
 
 void Transaction::addObjectNew(TransactionalObject *Obj)
 {
-    TransactionList::iterator pos = _Objects.end();
-    for (TransactionList::iterator it = _Objects.begin(); it != _Objects.end(); ++it) {
-        if (it->first == Obj) {
-            pos = it;
-            break;
-        }
-    }
-
-    if (pos != _Objects.end()) {
+    auto &index = _Objects.get<1>();
+    auto pos = index.find(Obj);
+    if (pos != index.end()) {
         if (pos->second->status == TransactionObject::Del) {
             delete pos->second;
             delete pos->first;
-            _Objects.erase(pos);
+            index.erase(pos);
         }
         else {
             pos->second->status = TransactionObject::New;
             pos->second->_NameInDocument = Obj->detachFromDocument();
             // move item at the end to make sure the order of removal is kept
-            _Objects.splice(_Objects.end(), _Objects, pos);
+            auto &seq = _Objects.get<0>();
+            seq.relocate(seq.end(),_Objects.project<0>(pos));
         }
     }
     else {
         TransactionObject *To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
         To->status = TransactionObject::New;
         To->_NameInDocument = Obj->detachFromDocument();
-        _Objects.push_back(std::make_pair(Obj, To));
+        index.emplace(Obj,To);
     }
 }
 
 void Transaction::addObjectDel(const TransactionalObject *Obj)
 {
-    TransactionList::iterator pos = _Objects.end();
-    for (TransactionList::iterator it = _Objects.begin(); it != _Objects.end(); ++it) {
-        if (it->first == Obj) {
-            pos = it;
-            break;
-        }
-    }
+    auto &index = _Objects.get<1>();
+    auto pos = index.find(Obj);
 
     // is it created in this transaction ?
-    if (pos != _Objects.end() && pos->second->status == TransactionObject::New) {
+    if (pos != index.end() && pos->second->status == TransactionObject::New) {
         // remove completely from transaction
         delete pos->second;
-        _Objects.erase(pos);
+        index.erase(pos);
     }
-    else if (pos != _Objects.end() && pos->second->status == TransactionObject::Chn) {
+    else if (pos != index.end() && pos->second->status == TransactionObject::Chn) {
         pos->second->status = TransactionObject::Del;
     }
     else {
         TransactionObject *To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
-        _Objects.push_back(std::make_pair(Obj, To));
         To->status = TransactionObject::Del;
+        index.emplace(Obj,To);
     }
 }
 
 void Transaction::addObjectChange(const TransactionalObject *Obj, const Property *Prop)
 {
-    TransactionList::iterator pos = _Objects.end();
-    for (TransactionList::iterator it = _Objects.begin(); it != _Objects.end(); ++it) {
-        if (it->first == Obj) {
-            pos = it;
-            break;
-        }
-    }
+    auto &index = _Objects.get<1>();
+    auto pos = index.find(Obj);
 
     TransactionObject *To;
 
-    if (pos != _Objects.end()) {
+    if (pos != index.end()) {
         To = pos->second;
     }
     else {
         To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
-        _Objects.push_back(std::make_pair(Obj, To));
         To->status = TransactionObject::Chn;
+        index.emplace(Obj,To);
     }
 
     To->setProperty(Prop);
@@ -290,9 +280,8 @@ TransactionObject::TransactionObject()
  */
 TransactionObject::~TransactionObject()
 {
-    std::map<const Property*,Property*>::const_iterator It;
-    for (It=_PropChangeMap.begin();It!=_PropChangeMap.end();++It)
-        delete It->second;
+    for(auto &v : _PropChangeMap)
+        delete v.second.property;
 }
 
 void TransactionObject::applyDel(Document & /*Doc*/, TransactionalObject * /*pcObj*/)
@@ -303,39 +292,60 @@ void TransactionObject::applyNew(Document & /*Doc*/, TransactionalObject * /*pcO
 {
 }
 
-void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject * /*pcObj*/, bool Forward)
+void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj, bool Forward)
 {
     if (status == New || status == Chn) {
-        // apply changes if any
-        if (!Forward) {
-            std::map<const Property*,Property*>::const_reverse_iterator It;
-            std::map<const Property*,Property*>::const_reverse_iterator rendIt = _PropChangeMap.rend();
-            for (It = _PropChangeMap.rbegin(); It != rendIt; ++It)
-                const_cast<Property*>(It->first)->Paste(*(It->second));
-        }
-        else {
-            std::map<const Property*,Property*>::const_iterator It;
-            std::map<const Property*,Property*>::const_iterator endIt = _PropChangeMap.end();
-            for (It = _PropChangeMap.begin(); It != endIt; ++It)
-                const_cast<Property*>(It->first)->Paste(*(It->second));
+        // Property change order is not preserved, as it is recursive in nature
+        for(auto &v : _PropChangeMap) {
+            auto &data = v.second;
+            auto prop = const_cast<Property*>(v.first);
+            if(!pcObj->getPropertyName(prop)) {
+                if(!Forward || v.second.name.empty())
+                    continue;
+                prop = pcObj->addDynamicProperty(
+                        data.property->getTypeId().getName(),
+                        v.second.name.c_str(), data.group.c_str(), data.doc.c_str(),
+                        data.attr, data.readonly, data.hidden);
+                if(!prop)
+                    continue;
+                prop->setStatusValue(data.property->getStatus());
+            }else if(!Forward && v.second.name.size()) {
+                pcObj->removeDynamicProperty(v.second.name.c_str());
+                continue;
+            }
+            prop->Paste(*data.property);
         }
     }
 }
 
 void TransactionObject::setProperty(const Property* pcProp)
 {
-    std::map<const Property*, Property*>::iterator pos = _PropChangeMap.find(pcProp);
+    auto pos = _PropChangeMap.find(pcProp);
     if (pos == _PropChangeMap.end())
-        _PropChangeMap[pcProp] = pcProp->Copy();
+        _PropChangeMap.emplace(pcProp,pcProp->Copy());
 }
 
-void TransactionObject::removeProperty(const Property* pcProp)
+void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
 {
-    std::map<const Property*, Property*>::iterator pos = _PropChangeMap.find(pcProp);
-    if (pos != _PropChangeMap.end()) {
-        delete pos->second;
-        _PropChangeMap.erase(pos);
+    (void)add;
+    if(!pcProp || !pcProp->getContainer())
+        return;
+
+    auto &data = _PropChangeMap[pcProp];
+    if(data.name.size()) {
+        if(!add) {
+            delete data.property;
+            _PropChangeMap.erase(pcProp);
+        }
+        return;
     }
+    if(data.property) {
+        delete data.property;
+        data.property = 0;
+    }
+    data = pcProp->getContainer()->getDynamicPropertyData(pcProp);
+    data.property = pcProp->Copy();
+    data.property->setStatusValue(pcProp->getStatus());
 }
 
 unsigned int TransactionObject::getMemSize (void) const
