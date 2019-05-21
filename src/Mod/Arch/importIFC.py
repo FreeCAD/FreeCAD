@@ -189,6 +189,7 @@ END-ISO-10303-21;
 
 # ************************************************************************************************
 # ********** some helper, used in import and export and exploerer
+
 def decode(filename,utf=False):
 
     "turns unicodes into strings"
@@ -198,20 +199,6 @@ def decode(filename,utf=False):
         encoding = "utf8" if utf else sys.getfilesystemencoding()
         filename = filename.encode(encoding)
     return filename
-
-
-def doubleClickTree(item,column):
-
-    "a double-click callback function for the IFC explorer tool"
-
-    txt = item.text(column)
-    if "Entity #" in txt:
-        eid = txt.split("#")[1].split(":")[0]
-        addr = tree.findItems(eid,0,0)
-        if addr:
-            tree.scrollToItem(addr[0])
-            addr[0].setSelected(True)
-
 
 def dd2dms(dd):
 
@@ -269,169 +256,6 @@ def getPreferences():
     EXPORT_2D = p.GetBool("ifcExport2D",True)
     FULL_PARAMETRIC = p.GetBool("IfcExportFreeCADProperties",False)
     FITVIEW_ONIMPORT = p.GetBool("ifcFitViewOnImport",False)
-
-
-# ************************************************************************************************
-# ********** IFC explorer ***********************
-def explore(filename=None):
-
-    """explore([filename]): opens a dialog showing
-    the contents of an IFC file. If no filename is given, a dialog will
-    pop up to choose a file."""
-
-    getPreferences()
-
-    try:
-        import ifcopenshell
-    except:
-        FreeCAD.Console.PrintError("IfcOpenShell was not found on this system. IFC support is disabled\n")
-        return
-
-    if not filename:
-        from PySide import QtGui
-        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),'IFC files','*.ifc')
-        if filename:
-            filename = filename[0]
-
-    from PySide import QtCore,QtGui
-
-    filename = decode(filename,utf=True)
-
-    if not os.path.exists(filename):
-        print("File not found")
-        return
-
-    # draw the widget contents
-    ifc = ifcopenshell.open(filename)
-    global tree
-    tree = QtGui.QTreeWidget()
-    tree.setColumnCount(3)
-    tree.setWordWrap(True)
-    tree.header().setDefaultSectionSize(60)
-    tree.header().resizeSection(0,60)
-    tree.header().resizeSection(1,30)
-    tree.header().setStretchLastSection(True)
-    tree.headerItem().setText(0, "ID")
-    tree.headerItem().setText(1, "")
-    tree.headerItem().setText(2, "Item and Properties")
-    bold = QtGui.QFont()
-    bold.setWeight(75)
-    bold.setBold(True)
-
-    entities =  ifc.by_type("IfcRoot")
-    entities += ifc.by_type("IfcRepresentation")
-    entities += ifc.by_type("IfcRepresentationItem")
-    entities += ifc.by_type("IfcRepresentationMap")
-    entities += ifc.by_type("IfcPlacement")
-    entities += ifc.by_type("IfcProperty")
-    entities += ifc.by_type("IfcPhysicalSimpleQuantity")
-    entities += ifc.by_type("IfcMaterial")
-    entities += ifc.by_type("IfcProductRepresentation")
-    entities = sorted(entities, key=lambda eid: eid.id())
-
-    done = []
-
-    for entity in entities:
-        if hasattr(entity,"id"):
-            if entity.id() in done:
-                continue
-            done.append(entity.id())
-            item = QtGui.QTreeWidgetItem(tree)
-            item.setText(0,str(entity.id()))
-            if entity.is_a() in ["IfcWall","IfcWallStandardCase"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Arch_Wall_Tree.svg"))
-            elif entity.is_a() in ["IfcBuildingElementProxy"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Arch_Component.svg"))
-            elif entity.is_a() in ["IfcColumn","IfcColumnStandardCase","IfcBeam","IfcBeamStandardCase","IfcSlab","IfcFooting","IfcPile","IfcTendon"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Arch_Structure_Tree.svg"))
-            elif entity.is_a() in ["IfcSite"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Arch_Site_Tree.svg"))
-            elif entity.is_a() in ["IfcBuilding"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Arch_Building_Tree.svg"))
-            elif entity.is_a() in ["IfcBuildingStorey"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Arch_Floor_Tree.svg"))
-            elif entity.is_a() in ["IfcWindow","IfcWindowStandardCase","IfcDoor","IfcDoorStandardCase"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Arch_Window_Tree.svg"))
-            elif entity.is_a() in ["IfcRoof"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Arch_Roof_Tree.svg"))
-            elif entity.is_a() in ["IfcExtrudedAreaSolid","IfcClosedShell"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Tree_Part.svg"))
-            elif entity.is_a() in ["IfcFace"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Draft_SwitchMode.svg"))
-            elif entity.is_a() in ["IfcArbitraryClosedProfileDef","IfcPolyloop"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Draft_Draft.svg"))
-            elif entity.is_a() in ["IfcPropertySingleValue","IfcQuantityArea","IfcQuantityVolume"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Tree_Annotation.svg"))
-            elif entity.is_a() in ["IfcMaterial"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Arch_Material.svg"))
-            elif entity.is_a() in ["IfcReinforcingBar"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Arch_Rebar.svg"))
-            item.setText(2,str(entity.is_a()))
-            item.setFont(2,bold)
-
-            i = 0
-            while True:
-                try:
-                    argname = entity.attribute_name(i)
-                except:
-                    break
-                else:
-                    try:
-                        argvalue = getattr(entity,argname)
-                    except:
-                        print("Error in entity ", entity)
-                        break
-                    else:
-                        if argname not in ["Id", "GlobalId"]:
-                            colored = False
-                            if isinstance(argvalue,ifcopenshell.entity_instance):
-                                if argvalue.id() == 0:
-                                    t = str(argvalue)
-                                else:
-                                    colored = True
-                                    t = "Entity #" + str(argvalue.id()) + ": " + str(argvalue.is_a())
-                            elif isinstance(argvalue,list):
-                                t = ""
-                            elif six.PY2 and isinstance(argvalue,six.string_types):
-                                t = argvalue.encode("latin1")
-                            else:
-                                t = str(argvalue)
-                            t = "    " + str(argname.encode("utf8")) + " : " + str(t)
-                            item = QtGui.QTreeWidgetItem(tree)
-                            item.setText(2,str(t))
-                            if colored:
-                                item.setForeground(2,QtGui.QBrush(QtGui.QColor("#005AFF")))
-                            if isinstance(argvalue,list):
-                                for argitem in argvalue:
-                                    colored = False
-                                    if isinstance(argitem,ifcopenshell.entity_instance):
-                                        if argitem.id() == 0:
-                                            t = str(argitem)
-                                        else:
-                                            colored = True
-                                            t = "Entity #" + str(argitem.id()) + ": " + str(argitem.is_a())
-                                    else:
-                                        t = argitem
-                                    t = "        " + str(t)
-                                    item = QtGui.QTreeWidgetItem(tree)
-                                    item.setText(2,str(t))
-                                    if colored:
-                                        item.setForeground(2,QtGui.QBrush(QtGui.QColor("#005AFF")))
-                    i += 1
-
-    d = QtGui.QDialog()
-    d.setObjectName("IfcExplorer")
-    d.setWindowTitle("Ifc Explorer")
-    d.resize(640, 480)
-    layout = QtGui.QVBoxLayout(d)
-    layout.addWidget(tree)
-
-    tree.itemDoubleClicked.connect(doubleClickTree)
-
-    d.exec_()
-    del tree
-    return
-
 
 # ************************************************************************************************
 # ********** open and import IFC ****************
