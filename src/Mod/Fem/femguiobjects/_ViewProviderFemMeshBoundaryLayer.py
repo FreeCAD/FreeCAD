@@ -83,7 +83,8 @@ class _ViewProviderFemMeshBoundaryLayer:
 
     def doubleClicked(self, vobj):
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        # check if another VP is in edit mode
+        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
         if not guidoc.getInEdit():
             guidoc.setEdit(vobj.Object.Name)
         else:
@@ -108,14 +109,33 @@ class _TaskPanelFemMeshBoundaryLayer:
         self.obj = obj
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshBoundaryLayer.ui")
-        QtCore.QObject.connect(self.parameterWidget.bl_number_of_layers, QtCore.SIGNAL("valueChanged(int)"), self.bl_number_of_layers_changed)
-        QtCore.QObject.connect(self.parameterWidget.bl_min_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.bl_min_thickness_changed)
-        QtCore.QObject.connect(self.parameterWidget.bl_growth_rate, QtCore.SIGNAL("valueChanged(double)"), self.bl_growth_rate_changed)  # becareful of signal signature for QDoubleSpinbox
+        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshBoundaryLayer.ui"
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.bl_number_of_layers,
+            QtCore.SIGNAL("valueChanged(int)"),
+            self.bl_number_of_layers_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.bl_min_thickness,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.bl_min_thickness_changed
+        )
+        # be careful of signal signature for QDoubleSpinbox
+        QtCore.QObject.connect(
+            self.parameterWidget.bl_growth_rate,
+            QtCore.SIGNAL("valueChanged(double)"),
+            self.bl_growth_rate_changed
+        )
         self.init_parameter_widget()
 
         # geometry selection widget
-        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Solid', 'Face', 'Edge', 'Vertex'])  # start with Solid in list!
+        # start with Solid in list!
+        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
+            obj.References,
+            ['Solid', 'Face', 'Edge', 'Vertex']
+        )
 
         # form made from param and selection widget
         self.form = [self.parameterWidget, self.selectionWidget]

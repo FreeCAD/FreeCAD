@@ -39,6 +39,7 @@
 #include <QDomDocument>
 #include <QTextStream>
 #include <QFile>
+#include <QLabel>
 #include <cmath>
 #endif
 
@@ -51,6 +52,7 @@
 #include <Gui/FileDialog.h>
 #include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
+#include <Gui/Command.h>
 
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -95,19 +97,24 @@
 #include "ViewProviderPage.h"
 #include "QGVPage.h"
 
+using namespace Gui;
+using namespace TechDraw;
 using namespace TechDrawGui;
 
 QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
-    : QGraphicsView(parent)
-    , pageTemplate(0)
-    , m_renderer(Native)
-    , drawBkg(true)
-    , m_vpPage(0)
+    : QGraphicsView(parent),
+      pageTemplate(0),
+      m_renderer(Native),
+      drawBkg(true),
+      m_vpPage(0)
+//      ,
+//      m_borderState(true)
 {
     assert(vp);
     m_vpPage = vp;
     const char* name = vp->getDrawPage()->getNameInDocument();
     setObjectName(QString::fromLocal8Bit(name));
+    m_vpPage->setGraphicsView(this);
 
     setScene(s);
     setMouseTracking(true);
@@ -143,7 +150,10 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     bkgBrush = new QBrush(getBackgroundColor());
 
     balloonIndex = 1;
-    balloonPlacing(false);
+
+    balloonCursor = new QLabel(this);
+    balloonCursor->setPixmap(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png")));
+    balloonCursor->hide();
 
     resetCachedContent();
 }
@@ -152,6 +162,13 @@ QGVPage::~QGVPage()
 {
     delete bkgBrush;
 
+}
+
+void QGVPage::cancelBalloonPlacing(void)
+{
+        getDrawPage()->balloonPlacing = false;
+        balloonCursor->hide();
+        QApplication::setOverrideCursor(Qt::ArrowCursor);
 }
 
 void QGVPage::drawBackground(QPainter *p, const QRectF &)
@@ -402,28 +419,26 @@ QGIView * QGVPage::addDrawViewImage(TechDraw::DrawViewImage *view)
 
 QGIView * QGVPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
 {
-    auto balloonGroup( new QGIViewBalloon );
+    auto vBalloon( new QGIViewBalloon );
 
     auto ourScene( scene() );
     assert(ourScene);
-    ourScene->addItem(balloonGroup);
+    ourScene->addItem(vBalloon);
 
-    balloonGroup->setViewPartFeature(balloon);
+    vBalloon->setViewPartFeature(balloon);
 
-    // Find if it belongs to a parent
     QGIView *parent = 0;
-    parent = findParent(balloonGroup);
+    parent = findParent(vBalloon);
 
-    if(balloon->OriginIsSet.getValue() == false) {
-        if(parent) {
-            balloonPlacing(true);
-            QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png")),0,32));
-            balloonGroup->connect(parent);
-            addBalloonToParent(balloonGroup,parent);
-        }
+    if(parent)
+        addBalloonToParent(vBalloon,parent);
+
+    if (getDrawPage()->balloonPlacing) {
+            vBalloon->placeBalloon(balloon->origin);
+            cancelBalloonPlacing();
     }
 
-    return balloonGroup;
+    return vBalloon;
 }
 
 void QGVPage::addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent)
@@ -682,29 +697,14 @@ void QGVPage::setHighQualityAntialiasing(bool highQualityAntialiasing)
 #endif
 }
 
-void QGVPage::toggleMarkers(bool enable)
+void QGVPage::refreshViews(void)
 {
+//    Base::Console().Message("QGVP::refreshViews()\n");
     QList<QGraphicsItem*> list = scene()->items();
     for (QList<QGraphicsItem*>::iterator it = list.begin(); it != list.end(); ++it) {
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
         if(itemView) {
-            itemView->setSelected(false);
-            itemView->toggleBorder(enable);
-            QGIViewPart *viewPart = dynamic_cast<QGIViewPart *>(*it);
-            if(viewPart) {
-                viewPart->toggleVertices(enable);
-            }
-        }
-        QGISVGTemplate* itemTemplate = dynamic_cast<QGISVGTemplate*> (*it);
-        if (itemTemplate) {
-            std::vector<TemplateTextField *> textFields = itemTemplate->getTextFields();
-            for (auto& t:textFields) {
-                if (enable) {
-                    t->show();
-                } else {
-                    t->hide();
-                }
-            }
+            itemView->updateView(true);
         }
     }
 }
@@ -754,9 +754,11 @@ void QGVPage::saveSvg(QString filename)
 
     Gui::Selection().clearSelection();
 
-    toggleMarkers(false);             //fiddle cache, vertices, frames, etc
+    bool saveState = m_vpPage->getFrameState();
+    m_vpPage->setFrameState(false);
+    m_vpPage->setTemplateMarkers(false);
     toggleHatch(false);
-    scene()->update();
+    refreshViews();
     viewport()->repaint();
 
     double width  =  Rez::guiX(page->getPageWidth());
@@ -771,9 +773,10 @@ void QGVPage::saveSvg(QString filename)
     scene()->render(&p, targetRect,sourceRect);
     p.end();
 
-    toggleMarkers(true);
+    m_vpPage->setFrameState(saveState);
+    m_vpPage->setTemplateMarkers(saveState);
     toggleHatch(true);
-    scene()->update();
+    refreshViews();
     viewport()->repaint();
 
     tempFile->close();
@@ -905,12 +908,21 @@ void QGVPage::keyPressEvent(QKeyEvent *event)
                 kbPanScroll(0, -1);
                 break;
             }
+            case Qt::Key_Escape: {
+                cancelBalloonPlacing();
+                break;
+            }
             default: {
                 break;
             }
         }
     }
     QGraphicsView::keyPressEvent(event);
+}
+
+void QGVPage::focusOutEvent(QFocusEvent *event) {
+        Q_UNUSED(event);
+        cancelBalloonPlacing();
 }
 
 void QGVPage::kbPanScroll(int xMove, int yMove) 
@@ -934,31 +946,43 @@ void QGVPage::kbPanScroll(int xMove, int yMove)
 void QGVPage::enterEvent(QEvent *event)
 {
     QGraphicsView::enterEvent(event);
-    setCursor(Qt::ArrowCursor);
-    viewport()->setCursor(Qt::ArrowCursor);
+    if(getDrawPage()->balloonPlacing) {
+        balloonCursor->hide();
+        QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png")),0,32));
+      } else {
+            setCursor(Qt::ArrowCursor);
+        QApplication::restoreOverrideCursor();
+        viewport()->setCursor(Qt::ArrowCursor);
+    }
 }
 
 void QGVPage::leaveEvent(QEvent * event)
 {
-    if(m_balloonPlacing) {
+    QApplication::setOverrideCursor(Qt::ArrowCursor);
+    if(getDrawPage()->balloonPlacing) {
 
-        // Get the window geometry & cursor position
-        const QRect &rect = geometry();
-        QPoint position = this->mapFromGlobal(QCursor::pos());
 
-        // Check the bounds
-        qint32 x = qBound(rect.left(), position.x(), rect.right());
-        qint32 y = qBound(rect.top(), position.y(), rect.bottom());
+        int left_x;
+        if (balloonCursorPos.x() < 32)
+            left_x = 0;
+        else if (balloonCursorPos.x() > (this->contentsRect().right() - 32))
+            left_x = this->contentsRect().right() - 32;
+        else
+            left_x = balloonCursorPos.x();
 
-        QPoint newPoint(x, y);
+        int left_y;
+        if (balloonCursorPos.y() < 32)
+            left_y = 0;
+        else if (balloonCursorPos.y() > (this->contentsRect().bottom() - 32))
+            left_y = this->contentsRect().bottom() - 32;
+        else
+            left_y = balloonCursorPos.y();
 
-        // Adjust the cursor
-        if (x != position.x() || y != position.y())
-            QCursor::setPos(this->mapToGlobal(newPoint));
-
-        event->accept();
+        /* When cursor leave the page, display balloonCursor where it left */
+        balloonCursor->setGeometry(left_x ,left_y, 32, 32);
+        balloonCursor->show();
     }
-
+    
     QGraphicsView::leaveEvent(event);
 }
 
@@ -970,14 +994,42 @@ void QGVPage::mousePressEvent(QMouseEvent *event)
 
 void QGVPage::mouseMoveEvent(QMouseEvent *event)
 {
+    balloonCursorPos = event->pos();
     QGraphicsView::mouseMoveEvent(event);
 }
 
 void QGVPage::mouseReleaseEvent(QMouseEvent *event)
 {
+    if(getDrawPage()->balloonPlacing) {
+        QApplication::setOverrideCursor(Qt::ArrowCursor);
+        balloonCursor->hide();
+
+        std::string FeatName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
+        std::string PageName = getDrawPage()->getNameInDocument();
+        Gui::Command::openCommand("Create Balloon");
+        TechDraw::DrawViewBalloon *balloon = 0;
+
+        Gui::Command::openCommand("Create Balloon");
+        Command::doCommand(Command::Doc,"App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",FeatName.c_str());
+        Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+
+        balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getDrawPage()->getDocument()->getObject(FeatName.c_str()));
+        if (!balloon) {
+            throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
+        }
+
+        balloon->sourceView.setValue(getDrawPage()->balloonParent);
+        balloon->origin = mapToScene(event->pos());
+
+        Gui::Command::commitCommand();
+        balloon->recomputeFeature();
+
+        //Horrible hack to force Tree update
+        double x = getDrawPage()->balloonParent->X.getValue();
+        getDrawPage()->balloonParent->X.setValue(x);
+    }
+
     QGraphicsView::mouseReleaseEvent(event);
-//    setCursor(Qt::ArrowCursor);
-//    viewport()->setCursor(Qt::ArrowCursor);
 }
 
 TechDraw::DrawPage* QGVPage::getDrawPage()

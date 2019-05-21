@@ -30,6 +30,7 @@
 # include <BndLib_Add3dCurve.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <GCPnts_UniformDeflection.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
 # include <gp_Pln.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
@@ -48,6 +49,7 @@
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/App/Core/Iterator.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
+#include <Mod/Mesh/App/Core/Projection.h>
 #include <Mod/Mesh/App/Core/Grid.h>
 #include <Mod/Mesh/App/Mesh.h>
 
@@ -57,10 +59,12 @@
 
 
 using namespace MeshPart;
-using namespace MeshCore;
-
-
-
+using MeshCore::MeshKernel;
+using MeshCore::MeshFacetIterator;
+using MeshCore::MeshPointIterator;
+using MeshCore::MeshAlgorithm;
+using MeshCore::MeshFacetGrid;
+using MeshCore::MeshFacet;
 
 CurveProjector::CurveProjector(const TopoDS_Shape &aShape, const MeshKernel &pMesh)
 : _Shape(aShape), _Mesh(pMesh)
@@ -685,21 +689,51 @@ MeshProjection::~MeshProjection()
 {
 }
 
+void MeshProjection::discretize(const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& polyline, std::size_t minPoints) const
+{
+    BRepAdaptor_Curve clCurve(aEdge);
+
+    Standard_Real fFirst = clCurve.FirstParameter();
+    Standard_Real fLast  = clCurve.LastParameter();
+
+    GCPnts_UniformDeflection clDefl(clCurve, 0.01f, fFirst, fLast);
+    if (clDefl.IsDone() == Standard_True) {
+        Standard_Integer nNbPoints = clDefl.NbPoints();
+        for (Standard_Integer i = 1; i <= nNbPoints; i++) {
+            gp_Pnt gpPt = clCurve.Value(clDefl.Parameter(i));
+            polyline.push_back( Base::Vector3f( (float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z() ) );
+        }
+    }
+
+    if (polyline.size() < minPoints) {
+        GCPnts_UniformAbscissa clAbsc(clCurve, static_cast<Standard_Integer>(minPoints), fFirst, fLast);
+        if (clAbsc.IsDone() == Standard_True) {
+            polyline.clear();
+            Standard_Integer nNbPoints = clAbsc.NbPoints();
+            for (Standard_Integer i = 1; i <= nNbPoints; i++) {
+                gp_Pnt gpPt = clCurve.Value(clAbsc.Parameter(i));
+                polyline.push_back( Base::Vector3f( (float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z() ) );
+            }
+        }
+    }
+}
+
 void MeshProjection::splitMeshByShape ( const TopoDS_Shape &aShape, float fMaxDist ) const
 {
-    std::vector<SplitEdge> cSplitEdges;
-    projectToMesh( aShape, fMaxDist, cSplitEdges );
+    std::vector<PolyLine> rPolyLines;
+    projectToMesh( aShape, fMaxDist, rPolyLines );
 
     std::ofstream str("output.asc", std::ios::out | std::ios::binary);
     str.precision(4);
     str.setf(std::ios::fixed | std::ios::showpoint);
-    for (std::vector<SplitEdge>::const_iterator it = cSplitEdges.begin();it!=cSplitEdges.end();++it) {
-        str << it->cPt.x << " " << it->cPt.y << " " << it->cPt.z << std::endl;
+    for (std::vector<PolyLine>::const_iterator it = rPolyLines.begin();it!=rPolyLines.end();++it) {
+        for (std::vector<Base::Vector3f>::const_iterator jt = it->points.begin();jt != it->points.end();++jt)
+            str << jt->x << " " << jt->y << " " << jt->z << std::endl;
     }
     str.close();
 }
 
-void MeshProjection::projectToMesh ( const TopoDS_Shape &aShape, float fMaxDist, std::vector<SplitEdge>& rSplitEdges ) const
+void MeshProjection::projectToMesh (const TopoDS_Shape &aShape, float fMaxDist, std::vector<PolyLine>& rPolyLines) const
 {
     // calculate the average edge length and create a grid
     MeshAlgorithm clAlg( _rcMesh );
@@ -707,7 +741,6 @@ void MeshProjection::projectToMesh ( const TopoDS_Shape &aShape, float fMaxDist,
     MeshFacetGrid cGrid( _rcMesh, 5.0f*fAvgLen );
 
     TopExp_Explorer Ex;
-    TopoDS_Shape Edge;
 
     int iCnt=0;
     for (Ex.Init(aShape, TopAbs_EDGE); Ex.More(); Ex.Next())
@@ -717,7 +750,65 @@ void MeshProjection::projectToMesh ( const TopoDS_Shape &aShape, float fMaxDist,
 
     for (Ex.Init(aShape, TopAbs_EDGE); Ex.More(); Ex.Next()) {
         const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
-        projectEdgeToEdge( aEdge, fMaxDist, cGrid, rSplitEdges );
+        std::vector<SplitEdge> rSplitEdges;
+        projectEdgeToEdge(aEdge, fMaxDist, cGrid, rSplitEdges);
+        PolyLine polyline;
+        polyline.points.reserve(rSplitEdges.size());
+        for (auto it : rSplitEdges)
+            polyline.points.push_back(it.cPt);
+        rPolyLines.push_back(polyline);
+        seq.next();
+    }
+}
+
+void MeshProjection::projectParallelToMesh (const TopoDS_Shape &aShape, const Base::Vector3f& dir, std::vector<PolyLine>& rPolyLines) const
+{
+    // calculate the average edge length and create a grid
+    MeshAlgorithm clAlg(_rcMesh);
+    float fAvgLen = clAlg.GetAverageEdgeLength();
+    MeshFacetGrid cGrid(_rcMesh, 5.0f*fAvgLen);
+    TopExp_Explorer Ex;
+
+    int iCnt=0;
+    for (Ex.Init(aShape, TopAbs_EDGE); Ex.More(); Ex.Next())
+        iCnt++;
+
+    Base::SequencerLauncher seq( "Project curve on mesh", iCnt );
+
+    for (Ex.Init(aShape, TopAbs_EDGE); Ex.More(); Ex.Next()) {
+        const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
+        std::vector<Base::Vector3f> points;
+        discretize(aEdge, points, 5);
+
+        typedef std::pair<Base::Vector3f, unsigned long> HitPoint;
+        std::vector<HitPoint> hitPoints;
+        typedef std::pair<HitPoint, HitPoint> HitPoints;
+        std::vector<HitPoints> hitPointPairs;
+        for (auto it : points) {
+            Base::Vector3f result;
+            unsigned long index;
+            if (clAlg.NearestFacetOnRay(it, dir, cGrid, result, index)) {
+                hitPoints.push_back(std::make_pair(result, index));
+
+                if (hitPoints.size() > 1) {
+                    HitPoint p1 = hitPoints[hitPoints.size()-2];
+                    HitPoint p2 = hitPoints[hitPoints.size()-1];
+                    hitPointPairs.push_back(std::make_pair(p1, p2));
+                }
+            }
+        }
+
+        MeshCore::MeshProjection meshProjection(_rcMesh);
+        PolyLine polyline;
+        for (auto it : hitPointPairs) {
+            points.clear();
+            if (meshProjection.projectLineOnMesh(cGrid, it.first.first, it.first.second,
+                                                 it.second.first, it.second.second, dir, points)) {
+                polyline.points.insert(polyline.points.end(), points.begin(), points.end());
+            }
+        }
+        rPolyLines.push_back(polyline);
+
         seq.next();
     }
 }
@@ -731,20 +822,7 @@ void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist
 
     // search the facets in the local area of the curve
     std::vector<Base::Vector3f> acPolyLine;
-
-    BRepAdaptor_Curve clCurve( aEdge );
-
-    Standard_Real fFirst = clCurve.FirstParameter();
-    Standard_Real fLast  = clCurve.LastParameter();
-
-    GCPnts_UniformDeflection clDefl(clCurve, 0.01f, fFirst, fLast);
-    if (clDefl.IsDone() == Standard_True) {
-        Standard_Integer nNbPoints = clDefl.NbPoints();
-        for (Standard_Integer i = 1; i <= nNbPoints; i++) {
-            gp_Pnt gpPt = clCurve.Value(clDefl.Parameter(i));
-            acPolyLine.push_back( Base::Vector3f( (float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z() ) );
-        }
-    }
+    discretize(aEdge, acPolyLine);
 
     MeshAlgorithm(_rcMesh).SearchFacetsFromPolyline( acPolyLine, fMaxDist, rGrid, auFInds);
     // remove duplicated elements
@@ -764,7 +842,9 @@ void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist
     // sort intersection points by parameter
     std::map<Standard_Real, SplitEdge> rParamSplitEdges;
 
-//  Standard_Real fFirst, fLast;
+    BRepAdaptor_Curve clCurve(aEdge);
+    Standard_Real fFirst = clCurve.FirstParameter();
+    Standard_Real fLast  = clCurve.LastParameter();
     Handle(Geom_Curve) hCurve = BRep_Tool::Curve( aEdge,fFirst,fLast );
 
     // bounds of curve

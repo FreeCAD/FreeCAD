@@ -84,7 +84,8 @@ class _ViewProviderFemElementGeometry1D:
 
     def doubleClicked(self, vobj):
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        # check if another VP is in edit mode
+        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
         if not guidoc.getInEdit():
             guidoc.setEdit(vobj.Object.Name)
         else:
@@ -109,19 +110,52 @@ class _TaskPanelFemElementGeometry1D:
         self.obj = obj
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementGeometry1D.ui")
-        QtCore.QObject.connect(self.parameterWidget.cb_crosssectiontype, QtCore.SIGNAL("activated(int)"), self.sectiontype_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_rec_height, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.rec_height_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_rec_width, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.rec_width_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_circ_diameter, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.circ_diameter_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_pipe_diameter, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.pipe_diameter_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_pipe_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.pipe_thickness_changed)
-        self.parameterWidget.cb_crosssectiontype.addItems(_FemElementGeometry1D._FemElementGeometry1D.known_beam_types)  # it is inside the class thus double _FemElementGeometry1D
+        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementGeometry1D.ui"
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.cb_crosssectiontype,
+            QtCore.SIGNAL("activated(int)"),
+            self.sectiontype_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_rec_height,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.rec_height_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_rec_width,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.rec_width_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_circ_diameter,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.circ_diameter_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_pipe_diameter,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.pipe_diameter_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_pipe_thickness,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.pipe_thickness_changed
+        )
+
+        # it is inside the class thus double _FemElementGeometry1D
+        self.parameterWidget.cb_crosssectiontype.addItems(
+            _FemElementGeometry1D._FemElementGeometry1D.known_beam_types
+        )
         self.get_beamsection_props()
         self.updateParameterWidget()
 
         # geometry selection widget
-        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Edge'])
+        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
+            obj.References,
+            ['Edge']
+        )
 
         # form made from param and selection widget
         self.form = [self.parameterWidget, self.selectionWidget]
@@ -162,7 +196,9 @@ class _TaskPanelFemElementGeometry1D:
 
     def updateParameterWidget(self):
         'fills the widgets'
-        index_crosssectiontype = self.parameterWidget.cb_crosssectiontype.findText(self.SectionType)
+        index_crosssectiontype = self.parameterWidget.cb_crosssectiontype.findText(
+            self.SectionType
+        )
         self.parameterWidget.cb_crosssectiontype.setCurrentIndex(index_crosssectiontype)
         self.parameterWidget.if_rec_height.setText(self.RectHeight.UserString)
         self.parameterWidget.if_rec_width.setText(self.RectWidth.UserString)
@@ -174,7 +210,8 @@ class _TaskPanelFemElementGeometry1D:
         if index < 0:
             return
         self.parameterWidget.cb_crosssectiontype.setCurrentIndex(index)
-        self.SectionType = str(self.parameterWidget.cb_crosssectiontype.itemText(index))  # parameterWidget returns unicode
+        # parameterWidget returns unicode
+        self.SectionType = str(self.parameterWidget.cb_crosssectiontype.itemText(index))
 
     def rec_height_changed(self, base_quantity_value):
         self.RectHeight = base_quantity_value

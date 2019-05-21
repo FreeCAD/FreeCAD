@@ -61,7 +61,7 @@ QGIProjGroup::QGIProjGroup()
     setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
     setFiltersChildEvents(true);
-    borderVisible = false;
+//    setFrameState(false);
 }
 
 TechDraw::DrawProjGroup * QGIProjGroup::getDrawView(void) const

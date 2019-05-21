@@ -58,6 +58,7 @@ public:
     TechDraw::DrawTemplate* getTemplate() const;
     MDIViewPage* getMDIViewPage(void);
 
+    void setMarkers(bool state);
 };
 
 } // namespace TechDrawGui

@@ -37,6 +37,7 @@ namespace TechDraw{
 namespace TechDrawGui {
 
 class MDIViewPage;
+class QGVPage;
 
 class TechDrawGuiExport ViewProviderPage : public Gui::ViewProviderDocumentObject
 {
@@ -47,6 +48,8 @@ public:
     ViewProviderPage();
     /// destructor
     virtual ~ViewProviderPage();
+
+    App::PropertyBool  ShowFrames;
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
@@ -82,6 +85,12 @@ public:
     bool showMDIViewPage();
     void removeMDIView(void);
 
+    bool getFrameState(void);
+    void setFrameState(bool state);
+    void toggleFrameState(void);
+    void setTemplateMarkers(bool state);
+    void setGraphicsView(QGVPage* gv);
+
 protected:
     bool setEdit(int ModNum);
 
@@ -89,6 +98,8 @@ private:
     QPointer<MDIViewPage> m_mdiView;
     bool m_docReady;
     std::string m_pageName;
+    bool m_frameState;
+    QGVPage* m_graphicsView;
 };
 
 } // namespace TechDrawGui

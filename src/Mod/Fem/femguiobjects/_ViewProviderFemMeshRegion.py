@@ -83,7 +83,8 @@ class _ViewProviderFemMeshRegion:
 
     def doubleClicked(self, vobj):
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        # check if another VP is in edit mode
+        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
         if not guidoc.getInEdit():
             guidoc.setEdit(vobj.Object.Name)
         else:
@@ -108,12 +109,22 @@ class _TaskPanelFemMeshRegion:
         self.obj = obj
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshRegion.ui")
-        QtCore.QObject.connect(self.parameterWidget.if_elelen, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.elelen_changed)
+        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshRegion.ui"
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_elelen,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.elelen_changed
+        )
         self.init_parameter_widget()
 
         # geometry selection widget
-        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Solid', 'Face', 'Edge', 'Vertex'])  # start with Solid in list!
+        # start with Solid in list!
+        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
+            obj.References,
+            ['Solid', 'Face', 'Edge', 'Vertex']
+        )
 
         # form made from param and selection widget
         self.form = [self.parameterWidget, self.selectionWidget]

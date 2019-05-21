@@ -94,7 +94,7 @@ void QGIViewClip::draw()
     }
 
     drawClip();
-    if (borderVisible) {
+    if (getFrameState()) {
         drawBorder();
     }
 }
@@ -140,11 +140,11 @@ void QGIViewClip::drawClip()
                 double x = Rez::guiX(qgiv->getViewObject()->X.getValue());
                 double y = Rez::guiX(qgiv->getViewObject()->Y.getValue());
                 qgiv->setPosition(clipOrigin.x() + x, clipOrigin.y() + y);
-                if (viewClip->ShowLabels.getValue()) {
-                    qgiv->toggleBorder(true);
-                } else {
-                    qgiv->toggleBorder(false);
-                }
+//                if (viewClip->ShowLabels.getValue()) {
+//                    qgiv->toggleBorder(true);
+//                } else {
+//                    qgiv->toggleBorder(false);
+//                }
                 qgiv->show();
             }
         } else {
@@ -163,7 +163,7 @@ void QGIViewClip::drawClip()
                 m_cliparea->removeFromGroup(qv);
                 removeFromGroup(qv);
                 qv->isInnerView(false);
-                qv->toggleBorder(true);
+//                qv->toggleBorder(true);
             }
         }
     }

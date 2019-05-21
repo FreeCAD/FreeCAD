@@ -5355,8 +5355,8 @@ class _BezCurve(_DraftObject):
                 except Part.OCCError:
                     pass
             fp.Shape = w
-            if hasattr(obj,"Area") and hasattr(w,"Area"):
-                obj.Area = w.Area
+            if hasattr(fp,"Area") and hasattr(w,"Area"):
+                fp.Area = w.Area
         fp.Placement = plm
 
     @classmethod
@@ -6117,8 +6117,12 @@ class _ShapeString(_DraftObject):
             sep_wirelist = []
             face = Part.Face(wire2Face)
             face.validate()
-            if face.Surface.Axis.z < 0.0:
-                face.reverse()
+            try:
+                # some fonts fail here
+                if face.Surface.Axis.z < 0.0:
+                    face.reverse()
+            except:
+                pass
             compFaces.append(face)
         ret = Part.Compound(compFaces)
         return ret

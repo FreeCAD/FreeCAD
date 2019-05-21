@@ -83,9 +83,6 @@ public:
     void saveDXF(std::string file);
     void savePDF(std::string file);
 
-    void setFrameState(bool state);
-    bool getFrameState(void) {return m_frameState;};
-
     void setDocumentObject(const std::string&);
     void setDocumentName(const std::string&);
     PyObject* getPyObject();
@@ -157,8 +154,6 @@ private:
     QPrinter::Orientation m_orientation;
     QPrinter::PaperSize m_paperSize;
     ViewProviderPage *m_vpPage;
-
-    bool m_frameState;
 
     QList<QGraphicsItem*> m_sceneSelected;
     QList<QGIView *> deleteItems;

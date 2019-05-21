@@ -69,7 +69,7 @@ ViewProviderDrawingView::ViewProviderDrawingView()
 
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
     // don't use coin.
-    DisplayMode.setStatus(App::Property::ReadOnly,true);
+    DisplayMode.setStatus(App::Property::Hidden,true);
     m_docReady = true;
 }
 
@@ -86,8 +86,10 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
     auto feature = getViewObject();
     if (feature != nullptr) {
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
+        //TODO: would be good to start the QGIV creation process here, but no guarantee we actually have
+        //      MDIVP or QGVP yet.
     } else {
-        Base::Console().Log("VPDV::attach has no Feature!\n");
+        Base::Console().Warning("VPDV::attach has no Feature!\n");
     }
 }
 
@@ -240,6 +242,7 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
 
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
 {
+//   Base::Console().Message("VPDV::onGuiRepaint(%s)\n", dv->getNameInDocument());
     if (dv == getViewObject()) {
         if (!dv->isRemoving() &&
             !dv->isRestoring()) {
@@ -247,6 +250,8 @@ void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
             if (qgiv) {
                 qgiv->updateView(true);
             } else {                                //we are not part of the Gui page yet. ask page to add us.
+                //TODO: this bit causes trouble.  Should move QGIV creation to attach?
+                //      is MDIVP/QGVP available at attach time?
                 MDIViewPage* page = getMDIViewPage();
                 if (page != nullptr) {
                     page->addView(dv);

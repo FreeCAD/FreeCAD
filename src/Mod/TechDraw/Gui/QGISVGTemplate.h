@@ -27,6 +27,8 @@ QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 class QGraphicsSvgItem;
 class QSvgRenderer;
+class QFile;
+class QString;
 QT_END_NAMESPACE
 
 namespace TechDraw {

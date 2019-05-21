@@ -197,6 +197,22 @@ std::string BaseGeom::dump()
     return ss.str();
 }
 
+bool BaseGeom::closed(void)
+{
+    //return occEdge.Closed();        //based on a flag in occ. may not be correct!
+    bool result = false;
+    Base::Vector3d start(getStartPoint().x,
+                         getStartPoint().y,
+                         0.0);
+    Base::Vector3d end(getEndPoint().x,
+                       getEndPoint().y,
+                       0.0);
+    if (start.IsEqual(end, 0.00001)) {
+        result = true;
+    }
+    return result;
+}
+
 
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
 BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
@@ -252,7 +268,7 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
                 delete bspline;
                 bspline = nullptr;
             } else {
-                TopoDS_Edge circEdge = bspline->isCircle2(isArc);
+                TopoDS_Edge circEdge = bspline->asCircle(isArc);
                 if (!circEdge.IsNull()) {
                     if (isArc) {
                         aoc = new AOC(circEdge);
@@ -699,8 +715,8 @@ void BSpline::getCircleParms(bool& isCircle, double& radius, Base::Vector3d& cen
     }
 }
 
-// can this BSpline be a circle?
-TopoDS_Edge BSpline::isCircle2(bool& arc)
+// make a circular edge from BSpline
+TopoDS_Edge BSpline::asCircle(bool& arc)
 {
     TopoDS_Edge result;
     BRepAdaptor_Curve c(occEdge);
@@ -743,7 +759,7 @@ TopoDS_Edge BSpline::isCircle2(bool& arc)
         projm.Perform(pm);
     }
     catch(const StdFail_NotDone &e) {
-        Base::Console().Log("Geometry::isCircle2 - init: %s\n",e.GetMessageString());
+        Base::Console().Log("Geometry::asCircle - init: %s\n",e.GetMessageString());
         return result;
     }
     if ( (proj1.NbPoints() == 0) ||
@@ -760,7 +776,7 @@ TopoDS_Edge BSpline::isCircle2(bool& arc)
         pcm = projm.NearestPoint();
     }
     catch(const StdFail_NotDone &e) {
-        Base::Console().Log("Geometry::isCircle2 - nearPoint: %s\n",e.GetMessageString());
+        Base::Console().Log("Geometry::asCircle - nearPoint: %s\n",e.GetMessageString());
         return result;
     }
 

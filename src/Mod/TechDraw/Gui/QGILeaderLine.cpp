@@ -160,11 +160,29 @@ void QGILeaderLine::hover(bool state)
 
 void QGILeaderLine::onLineEditFinished(std::vector<QPointF> pts)
 {
-//    Base::Console().Message("QGIVL::onLineEditFinished(%d)\n",pts.size());
+//    Base::Console().Message("QGILL::onLineEditFinished(%d)\n",pts.size());
+    QPointF p0 = pts.front();
+    if ( !(TechDraw::DrawUtil::fpCompare(p0.x(),0.0) &&
+           TechDraw::DrawUtil::fpCompare(p0.y(),0.0))  )  {
+        //p0 was moved. need to change AttachPoint and intervals from p0
+        QPointF mapped = m_parentItem->mapFromItem(this,p0);
+        Base::Vector3d attachPoint = Base::Vector3d(mapped.x(),mapped.y(),0.0);
+        for (auto& p : pts) {
+            p -= p0;
+        }
+        pts.at(0) = QPointF(0.0,0.0);
+        getFeature()->setPosition(Rez::appX(attachPoint.x),Rez::appX(- attachPoint.y), true);
+    }
+
     std::vector<Base::Vector3d> waypoints;
     for (auto& p: pts) {
         Base::Vector3d v(p.x(),p.y(),0.0);
         waypoints.push_back(v);
+    }
+
+    getFeature()->WayPoints.setValues(waypoints);
+    if (getFeature()->AutoHorizontal.getValue()) {
+        getFeature()->adjustLastSegment();
     }
 
     if (m_parentItem == nullptr) {
@@ -172,7 +190,7 @@ void QGILeaderLine::onLineEditFinished(std::vector<QPointF> pts)
     } else {
         QGIView* qgiv = dynamic_cast<QGIView*>(m_parentItem);
         if (qgiv != nullptr) {
-            Q_EMIT editComplete(pts, qgiv);  //leader's parent if QGIView
+            Q_EMIT editComplete(pts, qgiv);
         }
     }
 }
@@ -230,6 +248,11 @@ void QGILeaderLine::draw()
         return;
     }
 
+    if (m_line->inEdit()) {
+        Base::Console().Log("QGIL::draw - m_line is in edit\n");
+        return;
+    }
+
     if (leadFeat->isLocked()) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
     } else {
@@ -264,7 +287,7 @@ void QGILeaderLine::draw()
     m_line->setNormalColor(m_lineColor);
     scale = getScale();
     m_line->setScale(scale);
-    m_line->makeDeltasFromPoints(qPoints);
+    m_line->makeDeltasFromPoints(qPoints);  //this is what messes up edit!??
     m_line->setPos(0,0); 
     m_line->updatePath();
     m_line->show();

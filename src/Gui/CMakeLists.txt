@@ -114,8 +114,8 @@ else()
 endif()
 
 IF(SPNAV_FOUND)
-	if(SPNAV_USE_X11)
-	  add_definitions(-DSPNAV_USE_X11)
+    if(SPNAV_USE_X11)
+      add_definitions(-DSPNAV_USE_X11)
       if (BUILD_QT5 AND UNIX AND NOT APPLE)
         find_package(Qt5X11Extras REQUIRED)
         include_directories(${Qt5X11Extras_INCLUDE_DIRS})
@@ -144,9 +144,9 @@ IF(SPNAV_FOUND)
         3Dconnexion/GuiAbstractNativeEvent.h
         3Dconnexion/GuiNativeEventLinux.h
       )
-	endif(SPNAV_USE_X11)
+    endif(SPNAV_USE_X11)
     SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
-	
+
     add_definitions(-DSPNAV_FOUND)
     include_directories(
         ${SPNAV_INCLUDE_DIR}
@@ -901,6 +901,7 @@ SET(View3D_SRCS
     GLPainter.h
     MouseSelection.h
     NavigationStyle.h
+    GestureNavigationStyle.h
     SplitView3DInventor.h
     View.h
     View3DInventor.h

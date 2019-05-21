@@ -99,14 +99,12 @@ def looksLikeDraft(o):
     # If there is no shape at all ignore it
     if not hasattr(o, 'Shape') or o.Shape.isNull():
         return False
-
     # If there are solids in the object, it will be handled later
     # by getCutShapes
     if len(o.Shape.Solids) > 0:
         return False
-
     # If we have a shape, but no volume, it looks like a flat 2D object
-    return o.Shape.Volume == 0
+    return o.Shape.Volume < 0.0000001 # add a little tolerance...
 
 def getCutShapes(objs,section,showHidden,groupSshapesByObject=False):
 

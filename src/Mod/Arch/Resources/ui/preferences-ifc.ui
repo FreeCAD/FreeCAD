@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>463</width>
-    <height>775</height>
+    <height>802</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -336,6 +336,19 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ifcFitViewOnImport</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_18">
+        <property name="text">
+         <string>Import full FreeCAD parametric definitions if available</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>IfcImportFreeCADProperties</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Arch</cstring>
