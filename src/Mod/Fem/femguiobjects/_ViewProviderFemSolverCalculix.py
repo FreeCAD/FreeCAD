@@ -120,7 +120,7 @@ class _TaskPanelFemSolverCalculix:
         QtCore.QObject.connect(
             self.form.pb_write_inp,
             QtCore.SIGNAL("clicked()"),
-            self.write_input_file_handle
+            self.write_input_file_handler
         )
         QtCore.QObject.connect(
             self.form.pb_edit_inp,
