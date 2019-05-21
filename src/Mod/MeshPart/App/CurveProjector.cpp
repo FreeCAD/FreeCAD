@@ -30,6 +30,7 @@
 # include <BndLib_Add3dCurve.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <GCPnts_UniformDeflection.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
 # include <gp_Pln.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
@@ -688,7 +689,7 @@ MeshProjection::~MeshProjection()
 {
 }
 
-void MeshProjection::discretize(const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& polyline) const
+void MeshProjection::discretize(const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& polyline, std::size_t minPoints) const
 {
     BRepAdaptor_Curve clCurve(aEdge);
 
@@ -701,6 +702,18 @@ void MeshProjection::discretize(const TopoDS_Edge& aEdge, std::vector<Base::Vect
         for (Standard_Integer i = 1; i <= nNbPoints; i++) {
             gp_Pnt gpPt = clCurve.Value(clDefl.Parameter(i));
             polyline.push_back( Base::Vector3f( (float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z() ) );
+        }
+    }
+
+    if (polyline.size() < minPoints) {
+        GCPnts_UniformAbscissa clAbsc(clCurve, static_cast<Standard_Integer>(minPoints), fFirst, fLast);
+        if (clAbsc.IsDone() == Standard_True) {
+            polyline.clear();
+            Standard_Integer nNbPoints = clAbsc.NbPoints();
+            for (Standard_Integer i = 1; i <= nNbPoints; i++) {
+                gp_Pnt gpPt = clCurve.Value(clAbsc.Parameter(i));
+                polyline.push_back( Base::Vector3f( (float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z() ) );
+            }
         }
     }
 }
@@ -765,7 +778,7 @@ void MeshProjection::projectParallelToMesh (const TopoDS_Shape &aShape, const Ba
     for (Ex.Init(aShape, TopAbs_EDGE); Ex.More(); Ex.Next()) {
         const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
         std::vector<Base::Vector3f> points;
-        discretize(aEdge, points);
+        discretize(aEdge, points, 5);
 
         typedef std::pair<Base::Vector3f, unsigned long> HitPoint;
         std::vector<HitPoint> hitPoints;

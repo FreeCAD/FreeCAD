@@ -247,6 +247,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
     }
     if (obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
         m_lineFeat = static_cast<TechDraw::DrawLeaderLine*>(obj);
+        m_lineFeat->setPosition(Rez::appX(m_attachPoint.x),Rez::appX(- m_attachPoint.y), true);
         if (!converted.empty()) {
             m_lineFeat->WayPoints.setValues(converted);
             if (m_lineFeat->AutoHorizontal.getValue()) {
@@ -265,7 +266,7 @@ void TaskLeaderLine::updateLeaderFeature(void)
 {
 //    Base::Console().Message("TTL::updateLeaderFeature(%d)\n",converted.size());
     Gui::Command::openCommand("Edit Leader");
-    //waypoints & x,y are updated by QGILeaderLine
+    //waypoints & x,y are updated by QGILeaderLine (for edits only!)
     commonFeatureUpdate();
     App::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
