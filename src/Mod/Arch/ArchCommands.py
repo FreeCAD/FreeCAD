@@ -1514,20 +1514,6 @@ class _CommandCheck:
                 FreeCADGui.Selection.addSelection(i[0])
 
 
-class _CommandIfcExplorer:
-    "the Arch Ifc Explorer command definition"
-    def GetResources(self):
-        return {'Pixmap'  : 'IFC',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_IfcExplorer","Ifc Explorer"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Check","Explore the contents of an IFC file")}
-
-    def Activated(self):
-        if hasattr(self,"dialog"):
-            del self.dialog
-        import importIFC
-        self.dialog = importIFC.explore()
-
-
 class _CommandSurvey:
     "the Arch Survey command definition"
     def GetResources(self):
@@ -1693,7 +1679,6 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())
     FreeCADGui.addCommand('Arch_CloseHoles',_CommandCloseHoles())
     FreeCADGui.addCommand('Arch_Check',_CommandCheck())
-    FreeCADGui.addCommand('Arch_IfcExplorer',_CommandIfcExplorer())
     FreeCADGui.addCommand('Arch_Survey',_CommandSurvey())
     FreeCADGui.addCommand('Arch_ToggleIfcBrepFlag',_ToggleIfcBrepFlag())
     FreeCADGui.addCommand('Arch_Component',_CommandComponent())
