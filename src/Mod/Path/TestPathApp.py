@@ -32,7 +32,7 @@ from PathTests.TestPathOpTools  import TestPathOpTools
 from PathTests.TestPathUtil  import TestPathUtil
 from PathTests.TestPathDepthParams        import depthTestCases
 
-from PathTests.TestPathDressupHoldingTags import TestHoldingTags
+#from PathTests.TestPathDressupHoldingTags import TestHoldingTags
 
 #from PathTests.TestPathDressupDogbone import TestDressupDogbone
 #from PathTests.TestPathStock import TestPathStock
