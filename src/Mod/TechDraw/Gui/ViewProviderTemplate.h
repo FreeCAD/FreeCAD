@@ -59,6 +59,7 @@ public:
     MDIViewPage* getMDIViewPage(void);
     virtual Gui::MDIView *getMDIView() override;
 
+    void setMarkers(bool state);
 };
 
 } // namespace TechDrawGui

@@ -2493,7 +2493,7 @@ clique em "Continuar" para criar o objeto de qualquer maneira, ou "Abortar" para
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="223"/>
       <source>Pitch:</source>
-      <translation>Altura:</translation>
+      <translation>Passo de:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="236"/>
@@ -3583,7 +3583,7 @@ Selecione uma ou mais arestas primeiro.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1314"/>
       <source>Pitch:</source>
-      <translation>Altura:</translation>
+      <translation>Passo de:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1335"/>
@@ -4371,7 +4371,7 @@ Selecione uma ou mais arestas primeiro.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="223"/>
       <source>Pitch:</source>
-      <translation>Altura:</translation>
+      <translation>Passo de:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="236"/>

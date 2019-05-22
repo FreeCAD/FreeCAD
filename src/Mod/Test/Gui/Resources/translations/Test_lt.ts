@@ -66,7 +66,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="168"/>
       <source>Progress</source>
-      <translation>Atlikta</translation>
+      <translation>Atliekama</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="197"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="231"/>
       <source>Failures:</source>
-      <translation>Triktys:</translation>
+      <translation>Gedimai:</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="248"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="258"/>
       <source>Test</source>
-      <translation>Patikrinti</translation>
+      <translation>Tikrinti</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="270"/>

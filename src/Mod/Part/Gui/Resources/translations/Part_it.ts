@@ -119,12 +119,12 @@
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="58"/>
       <source>Compound Filter</source>
-      <translation>Filtro composto</translation>
+      <translation>Filtra composto</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
-      <translation>Filtro composto: rimuovi alcuni figli da un composto</translation>
+      <translation>Filtra composto: rimuove alcuni figli da un composto</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="68"/>
@@ -2269,7 +2269,7 @@ fare clic su 'Continua' per creare comunque la funzione, o 'Annulla' per annulla
     <message>
       <location filename="../../Command.cpp" line="941"/>
       <source>Section</source>
-      <translation>Sezione</translation>
+      <translation>Seziona</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="942"/>
@@ -2574,7 +2574,7 @@ fare clic su 'Continua' per creare comunque la funzione, o 'Annulla' per annulla
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="32"/>
       <source>Section</source>
-      <translation>Sezione</translation>
+      <translation>Seziona</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="39"/>
@@ -5262,7 +5262,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Join</source>
-      <translation>Unisci</translation>
+      <translation>Congiungi</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>

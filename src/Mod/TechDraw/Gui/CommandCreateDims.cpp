@@ -283,12 +283,33 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     if (edgeType == isCircle) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
+    } else if (edgeType == isEllipse) {
+        QMessageBox::StandardButton result =
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Ellipse Curve Warning"),
+                             QObject::tr("Selected edge is an Ellipse.  Radius will be approximate. Continue?"),
+                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
+        if (result == QMessageBox::Ok) {
+            objs.push_back(objFeat);
+            subs.push_back(SubNames[0]);
+        } else {
+            return;
+        }
     } else if (edgeType == isBSplineCircle) {
         QMessageBox::StandardButton result =
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Warning"),
-                                                   QObject::tr("Selected edge is a BSpline.  Radius will be approximate."),
-                                                   QMessageBox::Ok | QMessageBox::Cancel,
-                                                   QMessageBox::Cancel);
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("BSpline Curve Warning"),
+                             QObject::tr("Selected edge is a BSpline.  Radius will be approximate. Continue?"),
+                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
+        if (result == QMessageBox::Ok) {
+            objs.push_back(objFeat);
+            subs.push_back(SubNames[0]);
+        } else {
+            return;
+        }
+    } else if (edgeType == isBSpline) {
+        QMessageBox::StandardButton result =
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("BSpline Curve Warning"),
+                             QObject::tr("Selected edge is a BSpline.  Radius will be approximate. Continue?"),
+                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
         if (result == QMessageBox::Ok) {
             objs.push_back(objFeat);
             subs.push_back(SubNames[0]);
@@ -317,6 +338,7 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+
     dim->recomputeFeature();
 
     //Horrible hack to force Tree update
@@ -383,12 +405,33 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     if (edgeType == isCircle) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
+    } else if (edgeType == isEllipse) {
+        QMessageBox::StandardButton result =
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Ellipse Curve Warning"),
+                             QObject::tr("Selected edge is an Ellipse.  Diameter will be approximate. Continue?"),
+                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
+        if (result == QMessageBox::Ok) {
+            objs.push_back(objFeat);
+            subs.push_back(SubNames[0]);
+        } else {
+            return;
+        }
     } else if (edgeType == isBSplineCircle) {
         QMessageBox::StandardButton result =
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Warning"),
-                                                   QObject::tr("Selected edge is a BSpline.  Diameter will be approximate."),
-                                                   QMessageBox::Ok | QMessageBox::Cancel,
-                                                   QMessageBox::Cancel);
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("BSpline Curve Warning"),
+                             QObject::tr("Selected edge is a BSpline.  Diameter will be approximate. Continue?"),
+                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
+        if (result == QMessageBox::Ok) {
+            objs.push_back(objFeat);
+            subs.push_back(SubNames[0]);
+        } else {
+            return;
+        }
+    } else if (edgeType == isBSpline) {
+        QMessageBox::StandardButton result =
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("BSpline Curve Warning"),
+                             QObject::tr("Selected edge is a BSpline.  Diameter will be approximate. Continue?"),
+                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
         if (result == QMessageBox::Ok) {
             objs.push_back(objFeat);
             subs.push_back(SubNames[0]);

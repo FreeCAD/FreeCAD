@@ -87,7 +87,8 @@ class _ViewProviderFemElementFluid1D:
 
     def doubleClicked(self, vobj):
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        # check if another VP is in edit mode
+        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
         if not guidoc.getInEdit():
             guidoc.setEdit(vobj.Object.Name)
         else:
@@ -112,48 +113,188 @@ class _TaskPanelFemElementFluid1D:
         self.obj = obj
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementFluid1D.ui")
-        QtCore.QObject.connect(self.parameterWidget.cb_section_type, QtCore.SIGNAL("activated(int)"), self.sectiontype_changed)
-        QtCore.QObject.connect(self.parameterWidget.cb_liquid_section_type, QtCore.SIGNAL("activated(int)"), self.liquidsectiontype_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_manning_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.manning_area_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_manning_radius, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.manning_radius_changed)
-        QtCore.QObject.connect(self.parameterWidget.sb_manning_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.manning_coefficient_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_enlarge_area1, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.enlarge_area1_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_enlarge_area2, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.enlarge_area2_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_contract_area1, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.contract_area1_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_contract_area2, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.contract_area2_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_inletpressure, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.inlet_pressure_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_outletpressure, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.outlet_pressure_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_inletflowrate, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.inlet_flowrate_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_outletflowrate, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.outlet_flowrate_changed)
-        QtCore.QObject.connect(self.parameterWidget.gb_inletpressure, QtCore.SIGNAL("clicked(bool)"), self.inlet_pressure_active)
-        QtCore.QObject.connect(self.parameterWidget.gb_outletpressure, QtCore.SIGNAL("clicked(bool)"), self.outlet_pressure_active)
-        QtCore.QObject.connect(self.parameterWidget.gb_inletflowrate, QtCore.SIGNAL("clicked(bool)"), self.inlet_flowrate_active)
-        QtCore.QObject.connect(self.parameterWidget.gb_outletflowrate, QtCore.SIGNAL("clicked(bool)"), self.outlet_flowrate_active)
-        QtCore.QObject.connect(self.parameterWidget.if_entrance_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.entrance_pipe_area_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_entrance_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.entrance_area_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_diaphragm_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.diaphragm_pipe_area_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_diaphragm_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.diaphragm_area_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_bend_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.bend_pipe_area_changed)
-        QtCore.QObject.connect(self.parameterWidget.sb_bradius_pdiameter, QtCore.SIGNAL("valueChanged(double)"), self.bradius_pdiameter_changed)
-        QtCore.QObject.connect(self.parameterWidget.sb_bend_angle, QtCore.SIGNAL("valueChanged(double)"), self.bend_angle_changed)
-        QtCore.QObject.connect(self.parameterWidget.sb_bend_loss_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.bend_loss_coefficient_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_gatevalve_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.gatevalve_pipe_area_changed)
-        QtCore.QObject.connect(self.parameterWidget.sb_gatevalve_closing_coeff, QtCore.SIGNAL("valueChanged(double)"), self.gatevalve_closing_coeff_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_colebrooke_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.colebrooke_pipe_area_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_colebrooke_radius, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.colebrooke_radius_changed)
-        QtCore.QObject.connect(self.parameterWidget.if_colebrooke_grain_diameter, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.colebrooke_grain_diameter_changed)
-        QtCore.QObject.connect(self.parameterWidget.sb_colebrooke_form_factor, QtCore.SIGNAL("valueChanged(double)"), self.colebrooke_form_factor_changed)
-        QtCore.QObject.connect(self.parameterWidget.tw_pump_characteristics, QtCore.SIGNAL("cellChanged(int, int)"), self.pump_characteristics_changed)
-        self.parameterWidget.cb_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_fluid_types)
-        self.parameterWidget.cb_liquid_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_liquid_types)
-        self.parameterWidget.cb_gas_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_gas_types)
-        self.parameterWidget.cb_channel_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_channel_types)
+        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementFluid1D.ui"
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.cb_section_type,
+            QtCore.SIGNAL("activated(int)"),
+            self.sectiontype_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.cb_liquid_section_type,
+            QtCore.SIGNAL("activated(int)"),
+            self.liquidsectiontype_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_manning_area,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.manning_area_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_manning_radius,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.manning_radius_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.sb_manning_coefficient,
+            QtCore.SIGNAL("valueChanged(double)"),
+            self.manning_coefficient_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_enlarge_area1,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.enlarge_area1_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_enlarge_area2,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.enlarge_area2_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_contract_area1,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.contract_area1_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_contract_area2,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.contract_area2_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_inletpressure,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.inlet_pressure_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_outletpressure,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.outlet_pressure_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_inletflowrate,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.inlet_flowrate_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_outletflowrate,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.outlet_flowrate_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.gb_inletpressure,
+            QtCore.SIGNAL("clicked(bool)"),
+            self.inlet_pressure_active
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.gb_outletpressure,
+            QtCore.SIGNAL("clicked(bool)"),
+            self.outlet_pressure_active
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.gb_inletflowrate,
+            QtCore.SIGNAL("clicked(bool)"),
+            self.inlet_flowrate_active
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.gb_outletflowrate,
+            QtCore.SIGNAL("clicked(bool)"),
+            self.outlet_flowrate_active
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_entrance_pipe_area,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.entrance_pipe_area_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_entrance_area,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.entrance_area_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_diaphragm_pipe_area,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.diaphragm_pipe_area_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_diaphragm_area,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.diaphragm_area_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_bend_pipe_area,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.bend_pipe_area_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.sb_bradius_pdiameter,
+            QtCore.SIGNAL("valueChanged(double)"),
+            self.bradius_pdiameter_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.sb_bend_angle,
+            QtCore.SIGNAL("valueChanged(double)"),
+            self.bend_angle_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.sb_bend_loss_coefficient,
+            QtCore.SIGNAL("valueChanged(double)"),
+            self.bend_loss_coefficient_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_gatevalve_pipe_area,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.gatevalve_pipe_area_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.sb_gatevalve_closing_coeff,
+            QtCore.SIGNAL("valueChanged(double)"),
+            self.gatevalve_closing_coeff_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_colebrooke_pipe_area,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.colebrooke_pipe_area_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_colebrooke_radius,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.colebrooke_radius_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_colebrooke_grain_diameter,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.colebrooke_grain_diameter_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.sb_colebrooke_form_factor,
+            QtCore.SIGNAL("valueChanged(double)"),
+            self.colebrooke_form_factor_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.tw_pump_characteristics,
+            QtCore.SIGNAL("cellChanged(int, int)"),
+            self.pump_characteristics_changed
+        )
+        self.parameterWidget.cb_section_type.addItems(
+            _FemElementFluid1D._FemElementFluid1D.known_fluid_types
+        )
+        self.parameterWidget.cb_liquid_section_type.addItems(
+            _FemElementFluid1D._FemElementFluid1D.known_liquid_types
+        )
+        self.parameterWidget.cb_gas_section_type.addItems(
+            _FemElementFluid1D._FemElementFluid1D.known_gas_types
+        )
+        self.parameterWidget.cb_channel_section_type.addItems(
+            _FemElementFluid1D._FemElementFluid1D.known_channel_types
+        )
         self.get_fluidsection_props()
         self.updateParameterWidget()
 
         # geometry selection widget
-        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Edge'])
+        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
+            obj.References, ['Edge']
+        )
 
         # form made from param and selection widget
         self.form = [self.parameterWidget, self.selectionWidget]
@@ -251,7 +392,9 @@ class _TaskPanelFemElementFluid1D:
         index_sectiontype = self.parameterWidget.cb_section_type.findText(self.SectionType)
         self.parameterWidget.cb_section_type.setCurrentIndex(index_sectiontype)
         self.parameterWidget.sw_section_type.setCurrentIndex(index_sectiontype)
-        index_liquidsectiontype = self.parameterWidget.cb_liquid_section_type.findText(self.LiquidSectionType)
+        index_liquidsectiontype = self.parameterWidget.cb_liquid_section_type.findText(
+            self.LiquidSectionType
+        )
         self.parameterWidget.cb_liquid_section_type.setCurrentIndex(index_liquidsectiontype)
         self.parameterWidget.sw_liquid_section_type.setCurrentIndex(index_liquidsectiontype)
         self.parameterWidget.if_manning_area.setText(self.ManningArea.UserString)
@@ -261,8 +404,12 @@ class _TaskPanelFemElementFluid1D:
         self.parameterWidget.if_enlarge_area2.setText(self.EnlargeArea2.UserString)
         self.parameterWidget.if_contract_area1.setText(self.ContractArea1.UserString)
         self.parameterWidget.if_contract_area2.setText(self.ContractArea2.UserString)
-        self.parameterWidget.if_inletpressure.setText(FreeCAD.Units.Quantity(1000 * self.InletPressure, FreeCAD.Units.Pressure).UserString)
-        self.parameterWidget.if_outletpressure.setText(FreeCAD.Units.Quantity(1000 * self.OutletPressure, FreeCAD.Units.Pressure).UserString)
+        self.parameterWidget.if_inletpressure.setText(FreeCAD.Units.Quantity(
+            1000 * self.InletPressure, FreeCAD.Units.Pressure).UserString
+        )
+        self.parameterWidget.if_outletpressure.setText(FreeCAD.Units.Quantity(
+            1000 * self.OutletPressure, FreeCAD.Units.Pressure).UserString
+        )
         self.parameterWidget.if_inletflowrate.setText(str(self.InletFlowRate))
         self.parameterWidget.if_outletflowrate.setText(str(self.OutletFlowRate))
         self.parameterWidget.gb_inletpressure.setChecked(self.InletPressureActive)
@@ -281,25 +428,35 @@ class _TaskPanelFemElementFluid1D:
         self.parameterWidget.sb_gatevalve_closing_coeff.setValue(self.GateValveClosingCoeff)
         self.parameterWidget.if_colebrooke_pipe_area.setText(self.ColebrookeArea.UserString)
         self.parameterWidget.if_colebrooke_radius.setText(self.ColebrookeRadius.UserString)
-        self.parameterWidget.if_colebrooke_grain_diameter.setText(self.ColebrookeGrainDiameter.UserString)
+        self.parameterWidget.if_colebrooke_grain_diameter.setText(
+            self.ColebrookeGrainDiameter.UserString
+        )
         self.parameterWidget.sb_colebrooke_form_factor.setValue(self.ColebrookeFormFactor)
         for i in range(len(self.PumpFlowRate)):
-            self.parameterWidget.tw_pump_characteristics.setItem(i, 0, QtGui.QTableWidgetItem(str(self.PumpFlowRate[i])))
-            self.parameterWidget.tw_pump_characteristics.setItem(i, 1, QtGui.QTableWidgetItem(str(self.PumpHeadLoss[i])))
+            self.parameterWidget.tw_pump_characteristics.setItem(
+                i, 0, QtGui.QTableWidgetItem(str(self.PumpFlowRate[i]))
+            )
+            self.parameterWidget.tw_pump_characteristics.setItem(
+                i, 1, QtGui.QTableWidgetItem(str(self.PumpHeadLoss[i]))
+            )
 
     def sectiontype_changed(self, index):
         if index < 0:
             return
         self.parameterWidget.cb_section_type.setCurrentIndex(index)
         self.parameterWidget.sw_section_type.setCurrentIndex(index)
-        self.SectionType = str(self.parameterWidget.cb_section_type.itemText(index))  # parameterWidget returns unicode
+        # parameterWidget returns unicode
+        self.SectionType = str(self.parameterWidget.cb_section_type.itemText(index))
 
     def liquidsectiontype_changed(self, index):
         if index < 0:
             return
         self.parameterWidget.cb_liquid_section_type.setCurrentIndex(index)
         self.parameterWidget.sw_liquid_section_type.setCurrentIndex(index)
-        self.LiquidSectionType = str(self.parameterWidget.cb_liquid_section_type.itemText(index))  # parameterWidget returns unicode
+        # parameterWidget returns unicode
+        self.LiquidSectionType = str(
+            self.parameterWidget.cb_liquid_section_type.itemText(index)
+        )
 
     def manning_area_changed(self, base_quantity_value):
         self.ManningArea = base_quantity_value
@@ -323,16 +480,24 @@ class _TaskPanelFemElementFluid1D:
         self.ContractArea2 = base_quantity_value
 
     def inlet_pressure_changed(self, base_quantity_value):
-        self.InletPressure = float(FreeCAD.Units.Quantity(base_quantity_value).getValueAs("MPa"))
+        self.InletPressure = float(
+            FreeCAD.Units.Quantity(base_quantity_value).getValueAs("MPa")
+        )
 
     def outlet_pressure_changed(self, base_quantity_value):
-        self.OutletPressure = float(FreeCAD.Units.Quantity(base_quantity_value).getValueAs("MPa"))
+        self.OutletPressure = float(
+            FreeCAD.Units.Quantity(base_quantity_value).getValueAs("MPa")
+        )
 
     def inlet_flowrate_changed(self, base_quantity_value):
-        self.InletFlowRate = float(FreeCAD.Units.Quantity(base_quantity_value).getValueAs("kg/s"))
+        self.InletFlowRate = float(
+            FreeCAD.Units.Quantity(base_quantity_value).getValueAs("kg/s")
+        )
 
     def outlet_flowrate_changed(self, base_quantity_value):
-        self.OutletFlowRate = float(FreeCAD.Units.Quantity(base_quantity_value).getValueAs("kg/s"))
+        self.OutletFlowRate = float(
+            FreeCAD.Units.Quantity(base_quantity_value).getValueAs("kg/s")
+        )
 
     def inlet_pressure_active(self, active):
         self.InletPressureActive = active
@@ -390,6 +555,10 @@ class _TaskPanelFemElementFluid1D:
 
     def pump_characteristics_changed(self, row, column):
         if column == 0:
-            self.PumpFlowRate[row] = float(self.parameterWidget.tw_pump_characteristics.item(row, column).text())
+            self.PumpFlowRate[row] = float(
+                self.parameterWidget.tw_pump_characteristics.item(row, column).text()
+            )
         else:
-            self.PumpHeadLoss[row] = float(self.parameterWidget.tw_pump_characteristics.item(row, column).text())
+            self.PumpHeadLoss[row] = float(
+                self.parameterWidget.tw_pump_characteristics.item(row, column).text()
+            )

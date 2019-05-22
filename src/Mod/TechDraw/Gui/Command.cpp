@@ -738,34 +738,17 @@ void CmdTechDrawNewBalloon::activated(int iMsg)
     if (!result)
         return;
 
-    std::string FeatName = getUniqueObjectName("Balloon");
-
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
     if( objFeat == nullptr ) {
         return;
     }
+
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
-    TechDraw::DrawViewBalloon *balloon = 0;
-
-    openCommand("Create Balloon");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-
-    balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getDocument()->getObject(FeatName.c_str()));
-    if (!balloon) {
-        throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
-    }
-
-    balloon->sourceView.setValue(objFeat);
-
-    commitCommand();
-    balloon->recomputeFeature();
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
+    
+    page->balloonParent = objFeat;
+    page->balloonPlacing = true;
 
 }
 

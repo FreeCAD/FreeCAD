@@ -539,6 +539,7 @@ protected:
     static PyObject *sIsSelected          (PyObject *self,PyObject *args);
     static PyObject *sCountObjectsOfType  (PyObject *self,PyObject *args);
     static PyObject *sGetSelection        (PyObject *self,PyObject *args);
+    static PyObject *sSetPreselection     (PyObject *self,PyObject *args);
     static PyObject *sGetPreselection     (PyObject *self,PyObject *args);
     static PyObject *sRemPreselection     (PyObject *self,PyObject *args);
     static PyObject *sGetCompleteSelection(PyObject *self,PyObject *args);

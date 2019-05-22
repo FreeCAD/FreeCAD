@@ -1723,6 +1723,9 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "given the complete selection is cleared."},
     {"isSelected",           (PyCFunction) SelectionSingleton::sIsSelected, METH_VARARGS,
      "isSelected(object,resolve=True) -- Check if a given object is selected"},
+     "isSelected(object) -- Check if a given object is selected"},
+    {"setPreselection",      (PyCFunction) SelectionSingleton::sSetPreselection, METH_VARARGS,
+     "setPreselection() -- Set preselected object"},
     {"getPreselection",      (PyCFunction) SelectionSingleton::sGetPreselection, METH_VARARGS,
      "getPreselection() -- Get preselected object"},
     {"clearPreselection",   (PyCFunction) SelectionSingleton::sRemPreselection, METH_VARARGS,
@@ -1738,9 +1741,6 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "\nresolve - whether to resolve the subname references."
      "\n          0: do not resolve, 1: resolve, 2: resolve with element map"
      "\nsingle - only return if there is only one selection"},
-    {"preselect",            (PyCFunction) SelectionSingleton::sPreselect, METH_VARARGS, 
-     "preselect(object,[string,float,float,float]) -- Preselect an object\n"
-     "where string is the sub-element name and the three floats represent a 3d point"},
     {"getPickedList",         (PyCFunction) SelectionSingleton::sGetPickedList, 1,
      "getPickedList(docName=None) -- Return a list of objets under the last mouse click\n"
      "\ndocName - document name. None means the active document, and '*' means all document"},
@@ -1889,24 +1889,6 @@ PyObject *SelectionSingleton::sUpdateSelection(PyObject * /*self*/, PyObject *ar
 }
 
 
-PyObject *SelectionSingleton::sPreselect(PyObject * /*self*/, PyObject *args)
-{
-    PyObject *object;
-    char* subname=0;
-    float x=0,y=0,z=0;
-    if (!PyArg_ParseTuple(args, "O!|sfff", &(App::DocumentObjectPy::Type),&object,&subname,&x,&y,&z))
-        return NULL;
-    App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
-    App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
-    if (!docObj || !docObj->getNameInDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
-        return NULL;
-    }
-    Selection().setPreselect(docObj->getDocument()->getName(), 
-            docObj->getNameInDocument(), subname,x,y,z,true);
-    Py_Return;
-}
-
 PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *args)
 {
     SelectionLogDisabler disabler(true);
@@ -2018,6 +2000,29 @@ PyObject *SelectionSingleton::sEnablePickedList(PyObject * /*self*/, PyObject *a
 
     Selection().enablePickedList(PyObject_IsTrue(enable));
     Py_Return;
+}
+
+PyObject *SelectionSingleton::sSetPreselection(PyObject * /*self*/, PyObject *args)
+{
+    PyObject *object;
+    char* subname=0;
+    float x=0,y=0,z=0;
+    if (PyArg_ParseTuple(args, "O!|sfff", &(App::DocumentObjectPy::Type),&object,&subname,&x,&y,&z)) {
+        App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
+        App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
+        if (!docObj || !docObj->getNameInDocument()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
+            return NULL;
+        }
+
+        Selection().setPreselect(docObj->getDocument()->getName(),
+                                 docObj->getNameInDocument(),
+                                 subname,x,y,z,true);
+        Py_Return;
+    }
+
+    PyErr_SetString(PyExc_ValueError, "type must be 'DocumentObject[,subname[,x,y,z]]'");
+    return 0;
 }
 
 PyObject *SelectionSingleton::sGetPreselection(PyObject * /*self*/, PyObject *args)

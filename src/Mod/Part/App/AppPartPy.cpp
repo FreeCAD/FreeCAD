@@ -392,9 +392,9 @@ public:
             "makeThread(pitch,depth,height,radius) -- Make a thread with a given pitch, depth, height and radius"
         );
         add_varargs_method("makeRevolution",&Module::makeRevolution,
-            "makeRevolution(Curve,[vmin,vmax,angle,pnt,dir,shapetype]) -- Make a revolved shape\n"
+            "makeRevolution(Curve or Edge,[vmin,vmax,angle,pnt,dir,shapetype]) -- Make a revolved shape\n"
             "by rotating the curve or a portion of it around an axis given by (pnt,dir).\n"
-            "By default vmin/vmax=bounds of the curve,angle=360,pnt=Vector(0,0,0) and\n"
+            "By default vmin/vmax=bounds of the curve, angle=360, pnt=Vector(0,0,0),\n"
             "dir=Vector(0,0,1) and shapetype=Part.Solid"
         );
         add_varargs_method("makeRuledSurface",&Module::makeRuledSurface,
@@ -1482,55 +1482,65 @@ private:
         Handle(Geom_Curve) curve;
         union PyType_Object defaultType = {&Part::TopoShapeSolidPy::Type};
         PyObject* type = defaultType.o;
-        if (PyArg_ParseTuple(args.ptr(), "O!|dddO!O!O!", &(GeometryPy::Type), &pCrv,
-                                                   &vmin, &vmax, &angle,
-                                                   &(Base::VectorPy::Type), &pPnt,
-                                                   &(Base::VectorPy::Type), &pDir,
-                                                   &(PyType_Type), &type)) {
-            GeometryPy* pcGeo = static_cast<GeometryPy*>(pCrv);
-            curve = Handle(Geom_Curve)::DownCast
-                (pcGeo->getGeometryPtr()->handle());
-            if (curve.IsNull()) {
-                throw Py::Exception(PyExc_TypeError, "geometry is not a curve");
-            }
-            if (vmin == DBL_MAX)
-                vmin = curve->FirstParameter();
 
-            if (vmax == -DBL_MAX)
-                vmax = curve->LastParameter();
-        }
-        else {
+        do {
+            if (PyArg_ParseTuple(args.ptr(), "O!|dddO!O!O!", &(GeometryPy::Type), &pCrv,
+                                                       &vmin, &vmax, &angle,
+                                                       &(Base::VectorPy::Type), &pPnt,
+                                                       &(Base::VectorPy::Type), &pDir,
+                                                       &(PyType_Type), &type)) {
+                GeometryPy* pcGeo = static_cast<GeometryPy*>(pCrv);
+                curve = Handle(Geom_Curve)::DownCast
+                    (pcGeo->getGeometryPtr()->handle());
+                if (curve.IsNull()) {
+                    throw Py::Exception(PyExc_TypeError, "geometry is not a curve");
+                }
+                if (vmin == DBL_MAX)
+                    vmin = curve->FirstParameter();
+
+                if (vmax == -DBL_MAX)
+                    vmax = curve->LastParameter();
+                break;
+            }
+
             PyErr_Clear();
-            if (!PyArg_ParseTuple(args.ptr(), "O!|dddO!O!", &(TopoShapePy::Type), &pCrv,
-                &vmin, &vmax, &angle, &(Base::VectorPy::Type), &pPnt,
-                &(Base::VectorPy::Type), &pDir)) {
-                throw Py::Exception();
-            }
-            const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pCrv)->getTopoShapePtr()->getShape();
-            if (shape.IsNull()) {
-                throw Py::Exception(PartExceptionOCCError, "shape is empty");
+            if (PyArg_ParseTuple(args.ptr(), "O!|dddO!O!O!", &(TopoShapePy::Type), &pCrv,
+                                                       &vmin, &vmax, &angle,
+                                                       &(Base::VectorPy::Type), &pPnt,
+                                                       &(Base::VectorPy::Type), &pDir,
+                                                       &(PyType_Type), &type)) {
+                const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pCrv)->getTopoShapePtr()->getShape();
+                if (shape.IsNull()) {
+                    throw Py::Exception(PartExceptionOCCError, "shape is empty");
+                }
+
+                if (shape.ShapeType() != TopAbs_EDGE) {
+                    throw Py::Exception(PartExceptionOCCError, "shape is not an edge");
+                }
+
+                const TopoDS_Edge& edge = TopoDS::Edge(shape);
+                BRepAdaptor_Curve adapt(edge);
+
+                const Handle(Geom_Curve)& hCurve = adapt.Curve().Curve();
+                // Apply placement of the shape to the curve
+                TopLoc_Location loc = edge.Location();
+                curve = Handle(Geom_Curve)::DownCast(hCurve->Transformed(loc.Transformation()));
+                if (curve.IsNull()) {
+                    throw Py::Exception(PartExceptionOCCError, "invalid curve in edge");
+                }
+
+                if (vmin == DBL_MAX)
+                    vmin = adapt.FirstParameter();
+                if (vmax == -DBL_MAX)
+                    vmax = adapt.LastParameter();
+                break;
             }
 
-            if (shape.ShapeType() != TopAbs_EDGE) {
-                throw Py::Exception(PartExceptionOCCError, "shape is not an edge");
-            }
-
-            const TopoDS_Edge& edge = TopoDS::Edge(shape);
-            BRepAdaptor_Curve adapt(edge);
-
-            const Handle(Geom_Curve)& hCurve = adapt.Curve().Curve();
-            // Apply placement of the shape to the curve
-            TopLoc_Location loc = edge.Location();
-            curve = Handle(Geom_Curve)::DownCast(hCurve->Transformed(loc.Transformation()));
-            if (curve.IsNull()) {
-                throw Py::Exception(PartExceptionOCCError, "invalid curve in edge");
-            }
-
-            if (vmin == DBL_MAX)
-                vmin = adapt.FirstParameter();
-            if (vmax == -DBL_MAX)
-                vmax = adapt.LastParameter();
+            // invalid arguments
+            throw Py::TypeError("Expected arguments are:\n"
+                                "Curve or Edge, [float, float, float, Vector, Vector, ShapeType]");
         }
+        while(false);
 
         try {
             gp_Pnt p(0,0,0);

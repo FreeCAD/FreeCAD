@@ -1256,7 +1256,7 @@ bool Application::activateWorkbench(const char* name)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        QString msg = QString::fromLatin1(e.what());
+        QString msg = QString::fromUtf8(e.what());
         QRegExp rx;
         // ignore '<type 'exceptions.ImportError'>' prefixes
         rx.setPattern(QLatin1String("^\\s*<type 'exceptions.ImportError'>:\\s*"));
@@ -1266,7 +1266,7 @@ bool Application::activateWorkbench(const char* name)
             pos = rx.indexIn(msg);
         }
 
-        Base::Console().Error("%s\n", (const char*)msg.toLatin1());
+        Base::Console().Error("%s\n", (const char*)msg.toUtf8());
         if (!d->startingUp)
             Base::Console().Error("%s\n", e.getStackTrace().c_str());
         else

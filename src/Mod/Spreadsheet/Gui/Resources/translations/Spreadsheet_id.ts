@@ -147,8 +147,8 @@
       <translation>Gabungkan sel</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Gabungkan sel yang dipilih di spreadsheet</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Sel split</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Split sel gabungan sebelumnya di spreadsheet</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Teks tebal</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Tetapkan teks tebal di sel yang dipilih</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Teks miring</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Set italic text pada sel yang dipilih</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Abu-abu muda</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Adat</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

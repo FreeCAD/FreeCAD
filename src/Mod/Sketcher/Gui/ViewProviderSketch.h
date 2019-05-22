@@ -50,6 +50,7 @@ class SoPointSet;
 class SoTransform;
 class SoLineSet;
 class SoMarkerSet;
+class SoPickedPoint;
 
 class SoImage;
 class QImage;

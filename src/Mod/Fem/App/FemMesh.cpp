@@ -33,6 +33,35 @@
 # include <TopoDS_Vertex.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <gp_Pnt.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Shape.hxx>
+# include <ShapeAnalysis_ShapeTolerance.hxx>
+
+# include <boost/assign/list_of.hpp>
+# include <boost/tokenizer.hpp> //to simplify parsing input files we use the boost lib
+
+# include <SMESH_Gen.hxx>
+# include <SMESH_Mesh.hxx>
+# include <SMESH_MeshEditor.hxx>
+# include <SMESH_Group.hxx>
+# include <SMDS_MeshGroup.hxx>
+# include <SMESHDS_GroupBase.hxx>
+# include <SMESHDS_Group.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMDS_PolyhedralVolumeOfNodes.hxx>
+# include <SMDS_VolumeTool.hxx>
+# include <StdMeshers_MaxLength.hxx>
+# include <StdMeshers_LocalLength.hxx>
+# include <StdMeshers_MaxElementArea.hxx>
+# include <StdMeshers_NumberOfSegments.hxx>
+# include <StdMeshers_Deflection1D.hxx>
+# include <StdMeshers_Regular_1D.hxx>
+# include <StdMeshers_StartEndLength.hxx>
+# include <StdMeshers_QuadranglePreference.hxx>
+# include <StdMeshers_Quadrangle_2D.hxx>
+# include <StdMeshers_QuadraticMesh.hxx>
+
 #endif
 
 #include <Base/Writer.h>
@@ -54,37 +83,9 @@
 #include "FemVTKTools.h"
 #endif
 
-#include <boost/assign/list_of.hpp>
-#include <SMESH_Gen.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMESH_MeshEditor.hxx>
-#include <SMESH_Group.hxx>
-#include <SMDS_MeshGroup.hxx>
-#include <SMESHDS_GroupBase.hxx>
-#include <SMESHDS_Group.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMDS_PolyhedralVolumeOfNodes.hxx>
-#include <SMDS_VolumeTool.hxx>
-#include <StdMeshers_MaxLength.hxx>
-#include <StdMeshers_LocalLength.hxx>
-#include <StdMeshers_MaxElementArea.hxx>
-#include <StdMeshers_NumberOfSegments.hxx>
-#include <StdMeshers_Deflection1D.hxx>
-#include <StdMeshers_Regular_1D.hxx>
-#include <StdMeshers_StartEndLength.hxx>
-#include <StdMeshers_QuadranglePreference.hxx>
-#include <StdMeshers_Quadrangle_2D.hxx>
-#include <StdMeshers_QuadraticMesh.hxx>
-
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Shape.hxx>
-
-# include <ShapeAnalysis_ShapeTolerance.hxx>
 # include <FemMeshPy.h>
 
-//to simplify parsing input files we use the boost lib
-#include <boost/tokenizer.hpp>
+
 
 
 using namespace Fem;

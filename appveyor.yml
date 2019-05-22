@@ -10,6 +10,7 @@ environment:
       Compiler: "MSVC2013"
 
 #cache: #
+cache: c:\users\appveyor\clcache
 
 configuration:
   #- Debug
@@ -38,6 +39,10 @@ install:
       powershell -Command 7z x FreeCADLibs_11.5.1_x86_VC12.7z > nul &&
       ren FreeCADLibs_11.5_x86_VC12 FreeCADLibs)
   - dir
+  - set PATH=c:\Python37;c:\Python37\Scripts;%PATH%
+  - pip install clcache
+  - clcache -z
+  - clcache -s
 
 build_script:
   - cd C:\projects\freecad
@@ -45,10 +50,14 @@ build_script:
   - cd build
   - cmake -DFREECAD_LIBPACK_DIR=C:\projects\freecad\FreeCADLibs
     -DBUILD_FEM_NETGEN=OFF
+    -DFREECAD_RELEASE_PDB=OFF
     -G "%generator%" ..
   - mkdir bin
   - xcopy C:\projects\freecad\FreeCADLibs\bin C:\projects\freecad\build\bin /E /Q
-  - msbuild /m FreeCAD_Trunk.sln
+  - ps: fsutil behavior set disablelastaccess 0 # Enable Access time feature on Windows (for clcache)
+  - msbuild FreeCAD_Trunk.sln /p:TrackFileAccess=false /p:CLToolExe=clcache.exe /p:CLToolPath=c:\Python37\Scripts\ /m
+  - ps: fsutil behavior set disablelastaccess 1
+  - clcache -s
 
 #after_build:
   - cd C:\projects\freecad\build\bin\

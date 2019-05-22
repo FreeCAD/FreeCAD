@@ -57,7 +57,6 @@
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/SbTime.h>
-# include <Gui/Inventor/SmSwitchboard.h>
 
 /// Qt Include Files
 # include <QAction>
@@ -101,6 +100,7 @@
 #include <Gui/SoFCBoundingBox.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
+#include <Gui/Inventor/SmSwitchboard.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/BodyBase.h>
@@ -309,7 +309,7 @@ ViewProviderSketch::ViewProviderSketch()
         this->RestoreCamera.setValue(hGrp->GetBool("RestoreCamera", true));
 
         // well it is not visibility automation but a good place nevertheless
-        this->Autoconstraints.setValue(hGrp->GetBool("AutoConstraints",false));
+        this->Autoconstraints.setValue(hGrp->GetBool("AutoConstraints", true));
     }
 
     sPixmap = "Sketcher_Sketch";

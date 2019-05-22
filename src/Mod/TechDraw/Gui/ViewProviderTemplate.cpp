@@ -46,11 +46,14 @@
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawPage.h>
+
 #include "QGITemplate.h"
+#include "QGISVGTemplate.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
-#include "ViewProviderTemplate.h"
+#include "TemplateTextField.h"
 #include "ViewProviderPage.h"
+#include "ViewProviderTemplate.h"
 
 using namespace TechDrawGui;
 
@@ -62,7 +65,8 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderTemplate, Gui::ViewProviderDocumentObje
 ViewProviderTemplate::ViewProviderTemplate()
 {
     sPixmap = "TechDraw_Tree_PageTemplate";
-    DisplayMode.setStatus(App::Property::ReadOnly,true);
+
+    DisplayMode.setStatus(App::Property::Hidden,true);
 }
 
 ViewProviderTemplate::~ViewProviderTemplate()
@@ -158,6 +162,24 @@ QGITemplate* ViewProviderTemplate::getQTemplate(void)
         }
     }
     return result;
+}
+
+void ViewProviderTemplate::setMarkers(bool state)
+{
+//    Base::Console().Message("VPT::setMarkers(%d)\n",state);
+    QGITemplate* qTemplate = getQTemplate();
+    QGISVGTemplate* qSvgTemplate = dynamic_cast<QGISVGTemplate*> (qTemplate);
+    if (qSvgTemplate != nullptr) {
+        std::vector<TemplateTextField *> textFields = qSvgTemplate->getTextFields();
+        for (auto& t:textFields) {
+            if (state) {
+                t->show();
+            } else {
+                t->hide();
+            }
+        }
+        qSvgTemplate->updateView(true);
+    }
 }
 
 MDIViewPage* ViewProviderTemplate::getMDIViewPage(void)

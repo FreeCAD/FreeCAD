@@ -102,10 +102,10 @@ public:
 
 
 /** General interface for all visual stuff in FreeCAD
-  * This class is used to generate and handle all around 
-  * visualizing and presenting objects from the FreeCAD 
-  * App layer to the user. This class and its descendents 
-  * have to be implemented for any object type in order to 
+  * This class is used to generate and handle all around
+  * visualizing and presenting objects from the FreeCAD
+  * App layer to the user. This class and its descendents
+  * have to be implemented for any object type in order to
   * show them in the 3DView and TreeView.
   */
 class GuiExport ViewProvider : public App::TransactionalObject
@@ -124,7 +124,7 @@ public:
     // return the mode switch node of the Provider (3D)
     SoSwitch *getModeSwitch(void){return pcModeSwitch;}
     SoTransform *getTransformNode(){return pcTransform;}
-    // returns the root for the Annotations. 
+    // returns the root for the Annotations.
     SoSeparator* getAnnotation(void);
     // returns the root node of the Provider (3D)
     virtual SoSeparator* getFrontRoot(void) const;
@@ -136,17 +136,17 @@ public:
     virtual bool canAddToSceneGraph() const {return true;}
 
     /** deliver the children belonging to this object
-      * this method is used to deliver the objects to 
-      * the 3DView which should be grouped under its 
-      * scene graph. This affects the visibility and the 3D 
-      * position of the object. 
+      * this method is used to deliver the objects to
+      * the 3DView which should be grouped under its
+      * scene graph. This affects the visibility and the 3D
+      * position of the object.
       */
     virtual std::vector<App::DocumentObject*> claimChildren3D(void) const;
 
     /** @name Selection handling
       * This group of methods do the selection handling.
       * Here you can define how the selection for your ViewProfider
-      * works. 
+      * works.
      */
     //@{
 
@@ -227,7 +227,7 @@ public:
 
 
     /** @name Methods used by the Tree
-      * If you want to take control over the 
+      * If you want to take control over the
       * appearance of your object in the tree you
       * can reimplemnt these methods.
      */
@@ -235,10 +235,10 @@ public:
     /// deliver the icon shown in the tree view
     virtual QIcon getIcon(void) const;
     /** deliver the children belonging to this object
-      * this method is used to deliver the objects to 
-      * the tree framework which should be grouped under its 
+      * this method is used to deliver the objects to
+      * the tree framework which should be grouped under its
       * label. Obvious is the usage in the group but it can
-      * be used for any kind of grouping needed for a special 
+      * be used for any kind of grouping needed for a special
       * purpose.
       */
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;
@@ -342,7 +342,7 @@ public:
 
     /** update the content of the ViewProvider
      * this method have to implement the recalculation
-     * of the ViewProvider. There are different reasons to 
+     * of the ViewProvider. There are different reasons to
      * update. E.g. only the view attribute has changed, or
      * the data has manipulated.
      */
@@ -359,7 +359,7 @@ public:
     std::string toString() const;
     PyObject* getPyObject();
 
-    /** @name Display mode methods 
+    /** @name Display mode methods
      */
     //@{
     std::string getActiveDisplayMode(void) const;
@@ -426,8 +426,8 @@ public:
     virtual void unsetEditViewer(View3DInventorViewer*);
     //@}
 
-    /** @name Task panel 
-     * With this interface the ViewProvider can steer the 
+    /** @name Task panel
+     * With this interface the ViewProvider can steer the
      * appearance of widgets in the task view
      */
     //@{
@@ -441,14 +441,14 @@ public:
     virtual bool doubleClicked(void) { return false; }
     /// is called when the provider is in edit and the mouse is moved
     virtual bool mouseMove(const SbVec2s &cursorPos, View3DInventorViewer* viewer);
-    /// is called when the Provider is in edit and the mouse is clicked 
+    /// is called when the Provider is in edit and the mouse is clicked
     virtual bool mouseButtonPressed(int button, bool pressed, const SbVec2s &cursorPos,
                                     const View3DInventorViewer* viewer);
     /// set up the context-menu with the supported edit modes
     virtual void setupContextMenu(QMenu*, QObject*, const char*) {}
 
     /** @name direct handling methods
-     *  This group of methods is to direct influence the 
+     *  This group of methods is to direct influence the
      *  appearance of the viewed content. It's only for fast
      *  interactions! If you want to set the visual parameters
      *  you have to do it on the object viewed by this provider!
@@ -466,8 +466,9 @@ public:
 public:
     // this method is called by the viewer when the ViewProvider is in edit
     static void eventCallback(void * ud, SoEventCallback * node);
-    
-    //restoring the object from document: this may itnerest extensions, hence call them
+
+    //restoring the object from document:
+    //this may be of interest to extensions, hence call them
     virtual void Restore(Base::XMLReader& reader);
     bool isRestoring() {return testStatus(Gui::isRestoring);}
 
@@ -480,7 +481,7 @@ public:
      * values are displayed by one display mask mode that handles color values.
      */
     //@{
-    /// Adds a new display mask mode 
+    /// Adds a new display mask mode
     void addDisplayMaskMode( SoNode *node, const char* type );
     /// Activates the display mask mode \a type
     void setDisplayMaskMode( const char* type );
@@ -538,4 +539,3 @@ private:
 } // namespace Gui
 
 #endif // GUI_VIEWPROVIDER_H
-

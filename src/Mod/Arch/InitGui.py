@@ -38,12 +38,12 @@ class ArchWorkbench(Workbench):
                      "Arch_Window","Arch_Roof","Arch_AxisTools",
                      "Arch_SectionPlane","Arch_Space","Arch_Stairs",
                      "Arch_PanelTools","Arch_Equipment",
-                     "Arch_Frame","Arch_MaterialTools","Arch_Schedule","Arch_PipeTools",
+                     "Arch_Frame", "Arch_Fence", "Arch_MaterialTools","Arch_Schedule","Arch_PipeTools",
                      "Arch_CutPlane","Arch_Add","Arch_Remove","Arch_Survey"]
         self.utilities = ["Arch_Component","Arch_CloneComponent","Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
                      "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
-                     "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag","Arch_3Views",
+                     "Arch_ToggleIfcBrepFlag","Arch_3Views",
                      "Arch_IfcSpreadsheet","Arch_ToggleSubs"]
                      
         # try to locate the Rebar addon

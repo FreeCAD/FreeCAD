@@ -395,7 +395,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>License</source>
-      <translation>License</translation>
+      <translation>Licence</translation>
     </message>
   </context>
   <context>
@@ -410,7 +410,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>License</source>
-      <translation>License</translation>
+      <translation>Licence</translation>
     </message>
   </context>
   <context>
@@ -1244,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Activer la page de garde au démarrage</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Basculer vers l'onglet de la fenêtre de rapport :</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Charger automatiquement le module après le démarrage :</translation>
     </message>
@@ -1266,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Size of recent file list</source>
       <translation>Taille de la liste des fichiers récents</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Style de fenêtre :</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1624,6 +1616,53 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>&amp;Fermer</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation type="unfinished">Find...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Rechercher</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation type="unfinished">Find what:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation type="unfinished">Look at</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation type="unfinished">Groups</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation type="unfinished">Names</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation type="unfinished">Values</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation type="unfinished">Match whole string only</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation type="unfinished">Find Next</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation type="unfinished">Not found</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation type="unfinished">Can't find the text: %1</translation>
     </message>
   </context>
   <context>
@@ -2720,10 +2759,6 @@ Veuillez spécifier un autre répertoire.</translation>
       <translation>Commandes d'interface graphique Gui</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Enregistrement des commandes de l'interface graphique</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Enregistrer comme un commentaire</translation>
     </message>
@@ -2738,6 +2773,10 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Exécuter les macros dans l'environnement local</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation type="unfinished">Record GUI commands</translation>
     </message>
   </context>
   <context>
@@ -2765,10 +2804,6 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <source>Unit</source>
       <translation>Unité</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Système de l'utilisateur :</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2800,7 +2835,7 @@ Veuillez spécifier un autre répertoire.</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
-      <translation>Fraction minimale en pouce:</translation>
+      <translation>Fraction minimale de pouce :</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2833,6 +2868,10 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation type="unfinished">Unit system:</translation>
     </message>
   </context>
   <context>
@@ -3472,7 +3511,7 @@ La colonne « État » indique si le document peut être récupéré.</translati
     </message>
     <message>
       <source>Apply incremental changes</source>
-      <translation>Appliquer les modifications incrémentales</translation>
+      <translation>Appliquer les modifications incrémentielles</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
@@ -4532,12 +4571,12 @@ Do you want to specify another directory?</source>
       <translation>Incréments</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Incrément de translation:</translation>
+      <source>Translation Increment:</source>
+      <translation type="unfinished">Translation Increment:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Incrément de rotation:</translation>
+      <source>Rotation Increment:</source>
+      <translation type="unfinished">Rotation Increment:</translation>
     </message>
   </context>
   <context>

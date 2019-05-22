@@ -1159,6 +1159,13 @@ Please run the command to repair folds first</source>
       <source>Export AMF files using compression</source>
       <translation>Εξαγωγή αρχείων AMF με τη χρήση συμπίεσης</translation>
     </message>
+    <message>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="36"/>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation type="unfinished">This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>

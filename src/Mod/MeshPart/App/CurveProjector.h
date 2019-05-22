@@ -43,6 +43,7 @@ namespace MeshCore
 {
 class MeshKernel;
 class MeshGeomFacet;
+class MeshFacetGrid;
 };
 
 using MeshCore::MeshKernel;
@@ -154,6 +155,54 @@ public:
 
 protected:
   virtual void Do();
+};
+
+/**
+ * The MeshProjection class projects a shape onto a mesh.
+ * @author Werner Mayer
+ */
+class MeshPartExport MeshProjection
+{
+public:
+    /// Helper class
+    struct SplitEdge
+    {
+        unsigned long uE0, uE1; /**< start and endpoint of an edge */
+        Base::Vector3f cPt; /**< Point on edge (\a uE0, \a uE1) */
+    };
+    struct PolyLine
+    {
+        std::vector<Base::Vector3f> points;
+    };
+
+    /// Construction
+    MeshProjection(const MeshKernel& rMesh);
+    /// Destruction
+    ~MeshProjection();
+
+    void discretize(const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& polyline, std::size_t minPoints=2) const;
+    /**
+     * Searches all edges that intersect with the projected curve \a aShape. Therefore \a aShape must
+     * contain shapes of type TopoDS_Edge, other shape types are ignored. A possible solution is
+     * taken if the distance between the curve point and the projected point is <= \a fMaxDist.
+     */
+    void projectToMesh (const TopoDS_Shape &aShape, float fMaxDist, std::vector<PolyLine>& rPolyLines) const;
+    /**
+     * Project all edges of the shape onto the mesh using parallel projection.
+     */
+    void projectParallelToMesh (const TopoDS_Shape &aShape, const Base::Vector3f& dir, std::vector<PolyLine>& rPolyLines) const;
+    /**
+     * Cuts the mesh at the curve defined by \a aShape. This method call @ref projectToMesh() to get the
+     * split the facet at the found points. @see projectToMesh() for more details.
+     */
+    void splitMeshByShape (const TopoDS_Shape &aShape, float fMaxDist) const;
+
+protected:
+    void projectEdgeToEdge(const TopoDS_Edge &aCurve, float fMaxDist, const MeshCore::MeshFacetGrid& rGrid,
+                           std::vector<SplitEdge>& rSplitEdges) const;
+
+private:
+    const MeshKernel& _rcMesh;
 };
 
 } // namespace MeshPart

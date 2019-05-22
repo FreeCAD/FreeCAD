@@ -130,36 +130,15 @@ QGIViewBalloon::QGIViewBalloon() :
         balloonLabel, SIGNAL(hover(bool)),
         this  , SLOT  (hover(bool)));
 
-    toggleBorder(false);
+//    toggleBorder(false);
     setZValue(ZVALUE::DIMENSION);                    //note: this won't paint dimensions over another View if it stacks
                                                      //above this Dimension's parent view.   need Layers?
 
 }
 
-void QGIViewBalloon::disconnect(void)
+void QGIViewBalloon::placeBalloon(QPointF pos)
 {
-    auto bnd = boost::bind(&QGIViewBalloon::parentViewMousePressed, this, _1, _2);
-    if (m_parent) {
-        m_parent->signalSelectPoint.disconnect(bnd);
-    }
-}
 
-void QGIViewBalloon::connect(QGIView *parent)
-{
-    auto bnd = boost::bind(&QGIViewBalloon::parentViewMousePressed, this, _1, _2);
-    parent->signalSelectPoint.connect(bnd);
-    m_parent = parent;
-}
-
-void QGIViewBalloon::parentViewMousePressed(QGIView *view, QPointF pos)
-{
-    //Base::Console().Message("%s::parentViewMousePressed from %s\n", this->getViewName(), view->getViewName());
-    onAttachPointPicked(view, pos);
-}
-
-void QGIViewBalloon::onAttachPointPicked(QGIView *view, QPointF pos)
-{
-    Q_UNUSED(view);
     auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
     if( balloon == nullptr )
         return;
@@ -169,38 +148,26 @@ void QGIViewBalloon::onAttachPointPicked(QGIView *view, QPointF pos)
         return;
     }
 
-    auto bnd = boost::bind(&QGIViewBalloon::parentViewMousePressed, this, _1, _2);
+    MDIViewPage* mdi = getMDIViewPage();
+    QGVPage* page;
+    if (mdi != nullptr) {
+        page = mdi->getQGVPage();
 
-    if (balloon->OriginIsSet.getValue() == false) {
-   
-        balloon->OriginX.setValue(pos.x());
-        balloon->OriginY.setValue(pos.y());
-        balloon->OriginIsSet.setValue(true);
+        balloon->OriginX.setValue(mapFromScene(pos).x());
+        balloon->OriginY.setValue(mapFromScene(pos).y());
 
-        m_parent->signalSelectPoint.disconnect(bnd);
+        QString labelText = QString::fromUtf8(std::to_string(page->balloonIndex).c_str());
+        balloon->Text.setValue(std::to_string(page->balloonIndex++).c_str());
 
-        MDIViewPage* mdi = getMDIViewPage();
-        QGVPage* page;
-        if (mdi != nullptr) {
-            page = mdi->getQGVPage();
+        QFont font = balloonLabel->getFont();
+        font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
+        font.setFamily(QString::fromUtf8(vp->Font.getValue()));
+        balloonLabel->setFont(font);
+        prepareGeometryChange();
 
-            page->balloonPlacing(false);
-
-            QString labelText = QString::fromUtf8(std::to_string(page->balloonIndex).c_str());
-            balloon->Text.setValue(std::to_string(page->balloonIndex++).c_str());
-
-            QFont font = balloonLabel->getFont();
-            font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
-            font.setFamily(QString::fromUtf8(vp->Font.getValue()));
-            balloonLabel->setFont(font);
-            prepareGeometryChange();
-
-            // Default label position
-            balloonLabel->setPosFromCenter(pos.x() + 200, pos.y() -200);
-            balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
-
-            QApplication::setOverrideCursor(Qt::ArrowCursor);
-        }
+        // Default label position
+        balloonLabel->setPosFromCenter(mapFromScene(pos).x() + 200, mapFromScene(pos).y() -200);
+        balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
     }
 
     draw();
@@ -274,9 +241,6 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
         return;
     }
 
-    if (balloon->OriginIsSet.getValue() == false)
-        return;
-
     QFont font = balloonLabel->getFont();
     font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
@@ -335,10 +299,6 @@ void QGIViewBalloon::draw_modifier(bool modifier)
        (!balloon->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()))) {
         balloonLabel->hide();
         hide();
-        return;
-    }
-
-    if (balloon->OriginIsSet.getValue() == false) {
         return;
     }
 

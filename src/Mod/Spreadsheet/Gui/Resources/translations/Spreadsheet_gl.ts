@@ -147,8 +147,8 @@
       <translation>Combinar celas</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Combina as celas escolmadas nunha, na folla de cálculo</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Dividir cela</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Divide celas combinadas anteriormente na folla de cálculo</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Texto en grosa</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Establece o texto das celas escolmadas en grosa</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Texto en cursiva</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Establece o texto das celas escolmadas en cursiva</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Gris claro</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Personalizar</translation>
+      <source>Custom Color</source>
+      <translation>Personalizar cor</translation>
     </message>
   </context>
   <context>

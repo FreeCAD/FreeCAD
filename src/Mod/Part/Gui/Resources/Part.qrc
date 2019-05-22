@@ -22,6 +22,7 @@
         <file>icons/Part_Fuse.svg</file>
         <file>icons/Part_Import.svg</file>
         <file>icons/Part_Export.svg</file>
+        <file>icons/Part_BoxSelection.svg</file>        
         <file>icons/Part_Loft.svg</file>
         <file>icons/Part_Mirror.svg</file>
         <file>icons/Part_MirrorPNG.png</file>

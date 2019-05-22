@@ -45,6 +45,7 @@
 #include "DrawViewClip.h"
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
+#include "DrawLeaderLine.h"
 #include "DrawUtil.h"
 
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
@@ -91,7 +92,7 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
-//    Base::Console().Message("DV::execute() - %s\n",getNameInDocument());
+//    Base::Console().Message("DV::execute() - %s\n", getNameInDocument());
     handleXYLock();
     requestPaint();
     return App::DocumentObject::execute();
@@ -280,10 +281,11 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
     return result;
 }
 
-void DrawView::setPosition(double x, double y)
+void DrawView::setPosition(double x, double y, bool force)
 {
 //    Base::Console().Message("DV::setPosition(%.3f,%.3f) - \n",x,y,getNameInDocument());
-    if (!isLocked()) {
+    if ( (!isLocked()) ||
+         (force) ) {
         X.setValue(x);
         Y.setValue(y);
     }
@@ -298,6 +300,26 @@ double DrawView::getScale(void) const
         Base::Console().Log("DrawView - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),Scale.getValue());
     }
     return result;
+}
+
+//return list of Leaders which reference this DV
+std::vector<TechDraw::DrawLeaderLine*> DrawView::getLeaders() const
+{
+    std::vector<TechDraw::DrawLeaderLine*> result;
+    std::vector<App::DocumentObject*> children = getInList();
+    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawLeaderLine::getClassTypeId())) {
+            TechDraw::DrawLeaderLine* lead = dynamic_cast<TechDraw::DrawLeaderLine*>(*it);
+            result.push_back(lead);
+        }
+    }
+    return result;
+}
+
+void DrawView::addRandomVertex(Base::Vector3d pos)
+{
+    (void) pos;
+    Base::Console().Message("DV::addRandomVertex()\n");
 }
 
 void DrawView::handleChangedPropertyType(
@@ -354,6 +376,7 @@ bool DrawView::keepUpdated(void)
 
 void DrawView::requestPaint(void)
 {
+//    Base::Console().Message("DV::requestPaint() - %s\n", getNameInDocument());
     signalGuiPaint(this);
 }
 
