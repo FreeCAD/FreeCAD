@@ -116,6 +116,9 @@ public:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     boost::signals2::signal<void (QGIView*, QPointF)> signalSelectPoint;
 
+public Q_SLOTS:
+    virtual void onSourceChange(TechDraw::DrawView* newParent);
+
 protected:
     QGIView* getQGIVByName(std::string name);
 

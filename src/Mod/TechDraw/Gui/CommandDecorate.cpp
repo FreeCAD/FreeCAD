@@ -57,8 +57,8 @@
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "TaskGeomHatch.h"
-#include "TaskLeaderLine.h"
-#include "TaskRichAnno.h"
+//#include "TaskLeaderLine.h"
+//#include "TaskRichAnno.h"
 #include "ViewProviderGeomHatch.h"
 #include "ViewProviderPage.h"
 
