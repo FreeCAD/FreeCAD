@@ -1723,7 +1723,6 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "given the complete selection is cleared."},
     {"isSelected",           (PyCFunction) SelectionSingleton::sIsSelected, METH_VARARGS,
      "isSelected(object,resolve=True) -- Check if a given object is selected"},
-     "isSelected(object) -- Check if a given object is selected"},
     {"setPreselection",      (PyCFunction) SelectionSingleton::sSetPreselection, METH_VARARGS,
      "setPreselection() -- Set preselected object"},
     {"getPreselection",      (PyCFunction) SelectionSingleton::sGetPreselection, METH_VARARGS,
