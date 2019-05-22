@@ -67,9 +67,11 @@ unittest.TextTestRunner().run(mytest)
 # examples from shell in build dir:
 # all FreeCAD tests
 ./bin/FreeCAD --run-test 0
+./bin/FreeCADCmd --run-test 0
 
 # all FEM tests
 ./bin/FreeCAD --run-test "TestFem"
+./bin/FreeCADCmd --run-test "TestFem"
 
 # module
 ./bin/FreeCAD --run-test "femtest.testccxtools"
@@ -79,6 +81,13 @@ unittest.TextTestRunner().run(mytest)
 ./bin/FreeCAD --run-test "femtest.testobject"
 ./bin/FreeCAD --run-test "femtest.testresult"
 ./bin/FreeCAD --run-test "femtest.testsolverframework"
+./bin/FreeCADCmd --run-test "femtest.testccxtools"
+./bin/FreeCADCmd --run-test "femtest.testcommon"
+./bin/FreeCADCmd --run-test "femtest.testmaterial"
+./bin/FreeCADCmd --run-test "femtest.testmesh"
+./bin/FreeCADCmd --run-test "femtest.testobject"
+./bin/FreeCADCmd --run-test "femtest.testresult"
+./bin/FreeCADCmd --run-test "femtest.testsolverframework"
 
 # class
 ./bin/FreeCAD --run-test "femtest.testcommon.TestFemCommon"
