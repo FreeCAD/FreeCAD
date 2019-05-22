@@ -99,7 +99,12 @@ def write_fenics_mesh_points_xdmf(fem_mesh_obj, geometrynode, encoding=ENCODING_
     recalc_nodes_ind_dict = {}
 
     if encoding == ENCODING_ASCII:
-        dataitem = ET.SubElement(geometrynode, "DataItem", Dimensions="%d %d" % (numnodes, effective_dim), Format="XML")
+        dataitem = ET.SubElement(
+            geometrynode,
+            "DataItem",
+            Dimensions="%d %d" % (numnodes, effective_dim),
+            Format="XML"
+        )
         nodes = []
         for (ind, (key, node)) in enumerate(list(fem_mesh_obj.FemMesh.Nodes.items())):
             nodes.append(node)
@@ -122,7 +127,9 @@ def write_fenics_mesh_codim_xdmf(fem_mesh_obj,
     element_types = get_FemMeshObjectElementTypes(fem_mesh_obj, remove_zero_element_entries=True)
     element_order = get_FemMeshObjectOrder(fem_mesh_obj)
     # we get all elements from mesh to decide which one to write by selection of codim
-    # nodeindices = [(nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_volume_ind)) for (fen_ind, fc_volume_ind) in enumerate(fc_cells)]
+    # nodeindices = [
+    #     (nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_volume_ind)) for (fen_ind, fc_volume_ind) in enumerate(fc_cells)
+    # ]
     writeout_element_dimension = mesh_dimension - codim
 
     (num_topo, name_topo, dim_topo) = (0, "", 0)
@@ -148,10 +155,17 @@ def write_fenics_mesh_codim_xdmf(fem_mesh_obj,
         fc_topo = []
         print("Dimension of mesh incompatible with export XDMF function: %d" % (dim_topo,))
 
-    nodeindices = [(nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_topo_ind)) for (fen_ind, fc_topo_ind) in enumerate(fc_topo)]
+    nodeindices = [
+        (nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_topo_ind)) for (fen_ind, fc_topo_ind) in enumerate(fc_topo)
+    ]
 
     if encoding == ENCODING_ASCII:
-        dataitem = ET.SubElement(topologynode, "DataItem", NumberType="UInt", Dimensions="%d %d" % (num_topo, nodes_per_element), Format="XML")
+        dataitem = ET.SubElement(
+            topologynode, "DataItem",
+            NumberType="UInt",
+            Dimensions="%d %d" % (num_topo, nodes_per_element),
+            Format="XML"
+        )
         dataitem.text = numpy_array_to_str(tuples_to_numpy(nodeindices, nodes_per_element))
     elif encoding == ENCODING_HDF5:
         pass
@@ -167,7 +181,11 @@ def write_fenics_mesh_scalar_cellfunctions(name, cell_array, attributenode, enco
     (num_cells, num_dims) = np.shape(cell_array)
 
     if encoding == ENCODING_ASCII:
-        dataitem = ET.SubElement(attributenode, "DataItem", Dimensions="%d %d" % (num_cells, num_dims), Format="XML")
+        dataitem = ET.SubElement(
+            attributenode, "DataItem",
+            Dimensions="%d %d" % (num_cells, num_dims),
+            Format="XML"
+        )
         dataitem.text = numpy_array_to_str(cell_array)
     elif encoding == ENCODING_HDF5:
         pass
@@ -269,13 +287,19 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, group_values_dict={}, encod
         print('group id: %d (label: %s) with element type %s and codim %d'
               % (g, mesh_function_name, mesh_function_type, mesh_function_codim))
 
-        mesh_function_grid = ET.SubElement(domain, "Grid", Name=mesh_function_name + "_mesh", GridType="Uniform")
+        mesh_function_grid = ET.SubElement(
+            domain, "Grid",
+            Name=mesh_function_name + "_mesh",
+            GridType="Uniform"
+        )
         mesh_function_topology = ET.SubElement(mesh_function_grid, "Topology")
 
-        mesh_function_topology_description = write_fenics_mesh_codim_xdmf(fem_mesh_obj,
-                                                                          mesh_function_topology,
-                                                                          nodes_dict,
-                                                                          codim=mesh_function_codim, encoding=encoding)
+        mesh_function_topology_description = write_fenics_mesh_codim_xdmf(
+            fem_mesh_obj,
+            mesh_function_topology,
+            nodes_dict,
+            codim=mesh_function_codim, encoding=encoding
+        )
 
         mesh_function_geometry = ET.SubElement(mesh_function_grid, "Geometry", Reference="XML")
         mesh_function_geometry.text = "/Xdmf/Domain/Grid/Geometry"

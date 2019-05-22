@@ -233,14 +233,21 @@ class GeometryElementsSelection(QtGui.QWidget):
 
     def initElemTypes(self, eltypes):
         self.sel_elem_types = eltypes
-        # FreeCAD.Console.PrintMessage('Selection of: {} is allowed.\n'.format(self.sel_elem_types))
+        # FreeCAD.Console.PrintMessage(
+        #     'Selection of: {} is allowed.\n'.format(self.sel_elem_types)
+        # )
         self.sel_elem_text = ''
         for e in self.sel_elem_types:
             self.sel_elem_text += (e + ', ')
         self.sel_elem_text = self.sel_elem_text.rstrip(', ')
         # FreeCAD.Console.PrintMessage('Selection of: ' + self.sel_elem_text + ' is allowed.\n')
-        self.selection_mode_std_print_message = "Single click on a " + self.sel_elem_text + " will add it to the list"
-        self.selection_mode_solid_print_message = "Single click on a Face or Edge which belongs to one Solid will add the Solid to the list"
+        self.selection_mode_std_print_message = (
+            "Single click on a " + self.sel_elem_text + " will add it to the list"
+        )
+        self.selection_mode_solid_print_message = (
+            "Single click on a Face or Edge which belongs "
+            "to one Solid will add the Solid to the list"
+        )
 
     def initUI(self):
         # auch ArchPanel ist coded ohne ui-file
@@ -280,10 +287,26 @@ class GeometryElementsSelection(QtGui.QWidget):
         # signals and slots
         self.list_References.itemSelectionChanged.connect(self.select_clicked_reference_shape)
         self.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.list_References.connect(self.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
-        QtCore.QObject.connect(self.pushButton_Add, QtCore.SIGNAL("clicked()"), self.add_references)
-        QtCore.QObject.connect(self.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard)
-        QtCore.QObject.connect(self.rb_solid, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_solid)
+        self.list_References.connect(
+            self.list_References,
+            QtCore.SIGNAL("customContextMenuRequested(QPoint)"),
+            self.references_list_right_clicked
+        )
+        QtCore.QObject.connect(
+            self.pushButton_Add,
+            QtCore.SIGNAL("clicked()"),
+            self.add_references
+        )
+        QtCore.QObject.connect(
+            self.rb_standard,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.choose_selection_mode_standard
+        )
+        QtCore.QObject.connect(
+            self.rb_solid,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.choose_selection_mode_solid
+        )
 
     def get_references(self):
         for ref in self.tuplereferences:
@@ -324,10 +347,15 @@ class GeometryElementsSelection(QtGui.QWidget):
                         self.obj_notvisible.append(ref[0])
                         ref[0].ViewObject.Visibility = True
                     FreeCADGui.Selection.clearSelection()
-                    if ref[1].startswith('Solid') and (ref[0].Shape.ShapeType == 'Compound' or ref[0].Shape.ShapeType == 'CompSolid'):
-                        # selection of Solids of Compounds or CompSolids is not possible, because a Solid is no Subelement
-                        # since only Subelements can be selected, we're going to select all Faces of said Solids
-                        solid = FemMeshTools.get_element(ref[0], ref[1])  # the method getElement(element) doesn't return Solid elements
+                    ref_sh_type = ref[0].Shape.ShapeType
+                    if ref[1].startswith('Solid') \
+                            and (ref_sh_type == 'Compound' or ref_sh_type == 'CompSolid'):
+                        # selection of Solids of Compounds or CompSolids is not possible
+                        # because a Solid is no Subelement
+                        # since only Subelements can be selected
+                        # we're going to select all Faces of said Solids
+                        # the method getElement(element)doesn't return Solid elements
+                        solid = FemMeshTools.get_element(ref[0], ref[1])
                         if not solid:
                             return
                         faces = []
@@ -359,8 +387,16 @@ class GeometryElementsSelection(QtGui.QWidget):
         if not self.references:
             menu_item_remove_selected.setDisabled(True)
             menu_item_remove_all.setDisabled(True)
-        self.connect(menu_item_remove_selected, QtCore.SIGNAL("triggered()"), self.remove_selected_reference)
-        self.connect(menu_item_remove_all, QtCore.SIGNAL("triggered()"), self.remove_all_references)
+        self.connect(
+            menu_item_remove_selected,
+            QtCore.SIGNAL("triggered()"),
+            self.remove_selected_reference
+        )
+        self.connect(
+            menu_item_remove_all,
+            QtCore.SIGNAL("triggered()"),
+            self.remove_all_references
+        )
         parentPosition = self.list_References.mapToGlobal(QtCore.QPoint(0, 0))
         self.contextMenu.move(parentPosition + QPos)
         self.contextMenu.show()
@@ -401,12 +437,17 @@ class GeometryElementsSelection(QtGui.QWidget):
         else:
             print_message = self.selection_mode_std_print_message
         if not self.sel_server:
-            # if we do not check, we would start a new SelectionObserver on every click on addReference button
+            # if we do not check, we would start a new SelectionObserver
+            # on every click on addReference button
             # but close only one SelectionObserver on leaving the task panel
             self.sel_server = FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
-        print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
+        print('selection: {}  {}  {}'.format(
+            selection[0].Shape.ShapeType,
+            selection[0].Name,
+            selection[1]
+        ))
         if hasattr(selection[0], "Shape") and selection[1]:
             elt = selection[0].Shape.getElement(selection[1])
             ele_ShapeType = elt.ShapeType
@@ -422,7 +463,9 @@ class GeometryElementsSelection(QtGui.QWidget):
                                 if not found_edge:
                                     solid_to_add = str(i + 1)
                                 else:
-                                    FreeCAD.Console.PrintMessage('Edge belongs to more than one solid\n')
+                                    FreeCAD.Console.PrintMessage(
+                                        'Edge belongs to more than one solid\n'
+                                    )
                                     solid_to_add = None
                                 found_edge = True
                 elif ele_ShapeType == 'Face':
@@ -433,45 +476,68 @@ class GeometryElementsSelection(QtGui.QWidget):
                                 if not found_face:
                                     solid_to_add = str(i + 1)
                                 else:
-                                    FreeCAD.Console.PrintMessage('Face belongs to more than one solid\n')
+                                    FreeCAD.Console.PrintMessage(
+                                        'Face belongs to more than one solid\n'
+                                    )
                                     solid_to_add = None
                                 found_face = True
                 if solid_to_add:
                     selection = (selection[0], 'Solid' + solid_to_add)
                     ele_ShapeType = 'Solid'
-                    FreeCAD.Console.PrintMessage('selection variable adapted to hold the Solid: ' + selection[0].Shape.ShapeType + '  ' + selection[0].Name + '  ' + selection[1] + ' \n')
+                    FreeCAD.Console.PrintMessage(
+                        'selection variable adapted to hold the Solid: {}  {}  {}\n'
+                        .format(selection[0].Shape.ShapeType, selection[0].Name, selection[1])
+                    )
                 else:
                     return
             if ele_ShapeType in self.sel_elem_types:
-                if (self.selection_mode_solid and ele_ShapeType == 'Solid') or self.selection_mode_solid is False:
+                if (self.selection_mode_solid and ele_ShapeType == 'Solid') \
+                        or self.selection_mode_solid is False:
                     if selection not in self.references:
-                        if self.allow_multiple_geom_types is False:  # only equal shape types are allowed to add
+                        # only equal shape types are allowed to add
+                        if self.allow_multiple_geom_types is False:
                             if self.has_equal_references_shape_types(ele_ShapeType):
                                 self.references.append(selection)
-                                self.rebuild_list_References(self.get_allitems_text().index(self.get_item_text(selection)))
+                                self.rebuild_list_References(
+                                    self.get_allitems_text().index(self.get_item_text(selection))
+                                )
                             else:
-                                FreeCADGui.Selection.clearSelection()  # selected shape will not added to the list
+                                # selected shape will not added to the list
+                                FreeCADGui.Selection.clearSelection()
                         else:  # multiple shape types are allowed to add
                             self.references.append(selection)
-                            self.rebuild_list_References(self.get_allitems_text().index(self.get_item_text(selection)))
+                            self.rebuild_list_References(
+                                self.get_allitems_text().index(self.get_item_text(selection))
+                            )
                     else:
-                        FreeCADGui.Selection.clearSelection()  # selected shape will not added to the list
-                        message = self.get_item_text(selection) + ' is in reference list already!\n'
+                        # selected shape will not added to the list
+                        FreeCADGui.Selection.clearSelection()
+                        message = (
+                            '{} is in reference list already!\n'
+                            .format(self.get_item_text(selection))
+                        )
                         FreeCAD.Console.PrintMessage(message)
                         QtGui.QMessageBox.critical(None, "Geometry already in list", message)
             else:
-                FreeCADGui.Selection.clearSelection()  # selected shape will not added to the list
+                # selected shape will not added to the list
+                FreeCADGui.Selection.clearSelection()
                 message = ele_ShapeType + ' is not allowed to add to the list!\n'
                 FreeCAD.Console.PrintMessage(message)
                 QtGui.QMessageBox.critical(None, "Wrong shape type", message)
 
     def has_equal_references_shape_types(self, ref_shty=''):
         for ref in self.references:
-            r = FemMeshTools.get_element(ref[0], ref[1])  # the method getElement(element) does not return Solid elements
+            # the method getElement(element) does not return Solid elements
+            r = FemMeshTools.get_element(ref[0], ref[1])
             if not r:
-                FreeCAD.Console.PrintError('Problem in retrieving element: {} \n'.format(ref[1]))
+                FreeCAD.Console.PrintError(
+                    'Problem in retrieving element: {} \n'.format(ref[1])
+                )
                 continue
-            # print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
+            FreeCAD.Console.PrintLog(
+                '  ReferenceShape : {}, {}, {} --> {}'
+                .format(r.ShapeType, ref[0].Name, ref[0].Label, ref[1])
+            )
             if not ref_shty:
                 ref_shty = r.ShapeType
             if r.ShapeType != ref_shty:

@@ -61,6 +61,7 @@ public:
     short mustExecute() const;
 
     DrawViewPart* getViewPart() const;
+    QPointF origin;
 
     //virtual PyObject *getPyObject(void);
 
@@ -72,13 +73,14 @@ public:
         return "TechDrawGui::ViewProviderBalloon";
     }
 
+    static const char* balloonTypeEnums[];
+    static const char* endTypeEnums[];
+
 protected:
     void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
 
 private:
-    static const char* endTypeEnums[];
-    static const char* balloonTypeEnums[];
 };
 
 } //namespace TechDraw

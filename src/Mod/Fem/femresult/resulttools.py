@@ -37,12 +37,16 @@ import numpy as np
 def purge_results(analysis):
     for m in analysis.Group:
         if (m.isDerivedFrom('Fem::FemResultObject')):
-            if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "Fem::FemMeshResult":
+            if m.Mesh \
+                    and hasattr(m.Mesh, "Proxy") \
+                    and m.Mesh.Proxy.Type == "Fem::FemMeshResult":
                 analysis.Document.removeObject(m.Mesh.Name)
             analysis.Document.removeObject(m.Name)
     FreeCAD.ActiveDocument.recompute()
-    # if analysis typ check is used result mesh without result obj is created in the analysis
-    # we could run into trouble in one loop because we will delete objects and try to access them later
+    # if analysis typ check is used result mesh
+    # without result obj is created in the analysis
+    # we could run into trouble in one loop because
+    # we will delete objects and try to access them later
     for m in analysis.Group:
         if femutils.is_of_type(m, 'Fem::FemMeshResult'):
             analysis.Document.removeObject(m.Name)
@@ -73,7 +77,9 @@ def show_displacement(resultobj, displacement_factor=0.0):
     if FreeCAD.GuiUp:
         if resultobj.Mesh.ViewObject.Visibility is False:
             resultobj.Mesh.ViewObject.Visibility = True
-        resultobj.Mesh.ViewObject.setNodeDisplacementByVectors(resultobj.NodeNumbers, resultobj.DisplacementVectors)
+        resultobj.Mesh.ViewObject.setNodeDisplacementByVectors(
+            resultobj.NodeNumbers, resultobj.DisplacementVectors
+        )
         resultobj.Mesh.ViewObject.applyDisplacement(displacement_factor)
 
 
@@ -83,7 +89,8 @@ def show_displacement(resultobj, displacement_factor=0.0):
 #  - U1, U2, U3 - deformation
 #  - Uabs - absolute deformation
 #  - Sabs - Von Mises stress
-#  @param limit cutoff value. All values over the limit are treated as equal to the limit. Useful for filtering out hotspots.
+#  @param limit cutoff value. All values over the limit are treated
+#  as equal to the limit. Useful for filtering out hotspots.
 def show_result(resultobj, result_type="Sabs", limit=None):
     if result_type == "None":
         reset_mesh_color(resultobj.Mesh)
@@ -106,7 +113,8 @@ def show_result(resultobj, result_type="Sabs", limit=None):
 ## Sets mesh color using list of values. Internally used by show_result function.
 #  @param self The python object self
 #  @param values list of values
-#  @param limit cutoff value. All values over the limit are treated as equal to the limit. Useful for filtering out hotspots.
+#  @param limit cutoff value. All values over the limit are treated
+#  as equal to the limit. Useful for filtering out hotspots.
 def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
     if limit:
         filtered_values = []
@@ -120,7 +128,9 @@ def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
     if FreeCAD.GuiUp:
         if resultobj.Mesh.ViewObject.Visibility is False:
             resultobj.Mesh.ViewObject.Visibility = True
-        resultobj.Mesh.ViewObject.setNodeColorByScalars(resultobj.NodeNumbers, filtered_values)
+        resultobj.Mesh.ViewObject.setNodeColorByScalars(
+            resultobj.NodeNumbers, filtered_values
+        )
 
 
 ## Returns minimum, average and maximum value for provided result type
@@ -174,14 +184,17 @@ def fill_femresult_stats(res_obj):
     fills a FreeCAD FEM mechanical result object with stats data
     res_obj: FreeCAD FEM result object
     '''
-    FreeCAD.Console.PrintLog('Calculate stats list for result obj: ' + res_obj.Name + '\n')
+    FreeCAD.Console.PrintLog(
+        'Calculate stats list for result obj: ' + res_obj.Name + '\n'
+    )
     no_of_values = 1  # to avoid division by zero
     # set stats values to 0, they may not exist in res_obj
     x_min = y_min = z_min = x_max = y_max = z_max = x_avg = y_avg = z_avg = 0
     a_max = a_min = a_avg = s_max = s_min = s_avg = 0
     p1_min = p1_avg = p1_max = p2_min = p2_avg = p2_max = p3_min = p3_avg = p3_max = 0
     ms_min = ms_avg = ms_max = peeq_min = peeq_avg = peeq_max = 0
-    temp_min = temp_avg = temp_max = mflow_min = mflow_avg = mflow_max = npress_min = npress_avg = npress_max = 0
+    temp_min = temp_avg = temp_max = 0
+    mflow_min = mflow_avg = mflow_max = npress_min = npress_avg = npress_max = 0
 
     if res_obj.DisplacementVectors:
         no_of_values = len(res_obj.DisplacementVectors)
@@ -221,7 +234,8 @@ def fill_femresult_stats(res_obj):
         temp_avg = sum(res_obj.Temperature) / no_of_values
         temp_max = max(res_obj.Temperature)
     if res_obj.MassFlowRate:
-        no_of_values = len(res_obj.MassFlowRate)  # DisplacementVectors is empty, no_of_values needs to be set
+        # DisplacementVectors is empty, no_of_values needs to be set
+        no_of_values = len(res_obj.MassFlowRate)
         mflow_min = min(res_obj.MassFlowRate)
         mflow_avg = sum(res_obj.MassFlowRate) / no_of_values
         mflow_max = max(res_obj.MassFlowRate)
@@ -243,14 +257,31 @@ def fill_femresult_stats(res_obj):
                      temp_min, temp_avg, temp_max,
                      mflow_min, mflow_avg, mflow_max,
                      npress_min, npress_avg, npress_max]
-    # stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
+    '''
+    stat_types = [
+        "U1",
+        "U2",
+        "U3",
+        "Uabs",
+        "Sabs",
+        "MaxPrin",
+        "MidPrin",
+        "MinPrin",
+        "MaxShear",
+        "Peeq",
+        "Temp",
+        "MFlow",
+        "NPress"
+    ]
+    '''
     # len(stat_types) == 13*3 == 39
     # do not forget to adapt initialization of all Stats items in modules:
     # - module femobjects/_FemResultMechanical.py
     # do not forget to adapt the def get_stats in:
     # - get_stats in module femresult/resulttools.py
     # - module femtest/testccxtools.py
-    # TODO: all stats stuff should be reimplemented, maybe a dictionary would be far more robust than a list
+    # TODO: all stats stuff should be reimplemented
+    # maybe a dictionary would be far more robust than a list
 
     FreeCAD.Console.PrintLog('Stats list for result obj: ' + res_obj.Name + ' calculated\n')
     return res_obj
@@ -317,7 +348,8 @@ def compact_result(res_obj):
     compact_femmesh_data = cm(res_obj.Mesh.FemMesh)
     compact_femmesh = compact_femmesh_data[0]
     node_map = compact_femmesh_data[1]
-    # elem_map = compact_femmesh_data[2]  # FreeCAD result obj does not support elem results ATM
+    # FreeCAD result obj does not support elem results ATM
+    # elem_map = compact_femmesh_data[2]
 
     # set result mesh
     res_obj.Mesh.FemMesh = compact_femmesh
@@ -363,7 +395,8 @@ def calculate_principal_stress(stress_tensor):
         return (eigvals[0], eigvals[1], eigvals[2], maxshear)
     except:
         return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
-    # TODO might be possible without a try except for NaN, https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
+    # TODO might be possible without a try except for NaN
+    # https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
 
 
 def calculate_disp_abs(displacements):

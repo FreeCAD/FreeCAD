@@ -139,7 +139,10 @@ class GmshTools():
 
     def create_mesh(self):
         print("\nWe are going to start Gmsh FEM mesh run!")
-        print('  Part to mesh: Name --> ' + self.part_obj.Name + ',  Label --> ' + self.part_obj.Label + ', ShapeType --> ' + self.part_obj.Shape.ShapeType)
+        print(
+            '  Part to mesh: Name --> {},  Label --> {}, ShapeType --> {}'
+            .format(self.part_obj.Name, self.part_obj.Label, self.part_obj.Shape.ShapeType)
+        )
         print('  CharacteristicLengthMax: ' + str(self.clmax))
         print('  CharacteristicLengthMin: ' + str(self.clmin))
         print('  ElementOrder: ' + self.order)
@@ -226,12 +229,18 @@ class GmshTools():
                         output = output.decode('utf-8')
                     gmsh_path = output.split('\n')[0]
                 elif p1.wait() == 1:
-                    error_message = "Gmsh binary gmsh not found in standard system binary path. Please install Gmsh or set path to binary in FEM preferences tab Gmsh.\n"
+                    error_message = (
+                        "Gmsh binary gmsh not found in standard system binary path. "
+                        "Please install Gmsh or set path to binary in FEM preferences tab Gmsh.\n"
+                    )
                     FreeCAD.Console.PrintError(error_message)
                     raise Exception(error_message)
                 self.gmsh_bin = gmsh_path
             else:
-                error_message = "No standard location implemented for your operating system. Set GMHS binary path in FEM preferences.\n"
+                error_message = (
+                    "No standard location implemented for your operating system. "
+                    "Set GMHS binary path in FEM preferences.\n"
+                )
                 FreeCAD.Console.PrintError(error_message)
                 raise Exception(error_message)
         else:
@@ -288,17 +297,21 @@ class GmshTools():
             pass
         else:
             print('  Mesh regions, we need to get the elements.')
-            # by the use of MeshRegion object and a BooleanSplitCompound there could be problems with node numbers see
+            # by the use of MeshRegion object and a BooleanSplitCompound
+            # there could be problems with node numbers see
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
             part = self.part_obj
             if self.mesh_obj.MeshRegionList:
-                if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):  # other part obj might not have a Proxy, thus an exception would be raised
+                # other part obj might not have a Proxy, thus an exception would be raised
+                if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):
                     if (part.Proxy.Type == "FeatureBooleanFragments" or part.Proxy.Type == "FeatureSlice" or part.Proxy.Type == "FeatureXOR"):
                         error_message = (
-                            '  The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. '
+                            '  The mesh to shape is a boolean split tools Compound '
+                            'and the mesh has mesh region list. '
                             'Gmsh could return unexpected meshes in such circumstances. '
-                            'It is strongly recommended to extract the shape to mesh from the Compound and use this one.'
+                            'It is strongly recommended to extract the shape to mesh '
+                            'from the Compound and use this one.'
                         )
                         FreeCAD.Console.PrintError(error_message + "\n")
                         # TODO: no gui popup because FreeCAD will be in a endless output loop
@@ -312,7 +325,8 @@ class GmshTools():
                     if mr_obj.References:
                         for sub in mr_obj.References:
                             # print(sub[0])  # Part the elements belongs to
-                            # check if the shape of the mesh region is an element of the Part to mesh, if not try to find the element in the shape to mesh
+                            # check if the shape of the mesh region is an element of the Part to mesh,
+                            # if not try to find the element in the shape to mesh
                             search_ele_in_shape_to_mesh = False
                             if not self.part_obj.Shape.isSame(sub[0].Shape):
                                 # print("  One element of the meshregion " + mr_obj.Name + " is not an element of the Part to mesh.")
@@ -322,21 +336,32 @@ class GmshTools():
                                 # print(elems)  # elems --> element
                                 if search_ele_in_shape_to_mesh:
                                     # we're going to try to find the element in the Shape to mesh and use the found element as elems
-                                    ele_shape = FemMeshTools.get_element(sub[0], elems)  # the method getElement(element) does not return Solid elements
+                                    # the method getElement(element) does not return Solid elements
+                                    ele_shape = FemMeshTools.get_element(sub[0], elems)
                                     found_element = FemMeshTools.find_element_in_shape(self.part_obj.Shape, ele_shape)
                                     if found_element:
                                         elems = found_element
                                     else:
-                                        FreeCAD.Console.PrintError("One element of the meshregion " + mr_obj.Name + " could not be found in the Part to mesh. It will be ignored.\n")
+                                        FreeCAD.Console.PrintError(
+                                            "One element of the meshregion {} could not be found "
+                                            "in the Part to mesh. It will be ignored.\n"
+                                            .format(mr_obj.Name)
+                                        )
                                 # print(elems)  # element
                                 if elems not in self.ele_length_map:
                                     self.ele_length_map[elems] = Units.Quantity(mr_obj.CharacteristicLength).Value
                                 else:
-                                    FreeCAD.Console.PrintError("The element " + elems + " of the meshregion " + mr_obj.Name + " has been added to another mesh region.\n")
+                                    FreeCAD.Console.PrintError(
+                                        "The element " + elems + " of the meshregion " + mr_obj.Name + " has been added to another mesh region.\n"
+                                    )
                     else:
-                        FreeCAD.Console.PrintError("The meshregion: " + mr_obj.Name + " is not used to create the mesh because the reference list is empty.\n")
+                        FreeCAD.Console.PrintError(
+                            "The meshregion: " + mr_obj.Name + " is not used to create the mesh because the reference list is empty.\n"
+                        )
                 else:
-                    FreeCAD.Console.PrintError("The meshregion: " + mr_obj.Name + " is not used to create the mesh because the CharacteristicLength is 0.0 mm.\n")
+                    FreeCAD.Console.PrintError(
+                        "The meshregion: " + mr_obj.Name + " is not used to create the mesh because the CharacteristicLength is 0.0 mm.\n"
+                    )
             for eleml in self.ele_length_map:
                 ele_shape = FemMeshTools.get_element(self.part_obj, eleml)  # the method getElement(element) does not return Solid elements
                 ele_vertexes = FemMeshTools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
@@ -354,8 +379,13 @@ class GmshTools():
         else:
             print('  Mesh boundary layers, we need to get the elements.')
             if self.part_obj.Shape.ShapeType == 'Compound':
-                # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
-                err = "Gmsh could return unexpected meshes for a boolean split tools Compound. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
+                # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
+                # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+                err = (
+                    "Gmsh could return unexpected meshes for a boolean split tools Compound. "
+                    "It is strongly recommended to extract the shape to mesh "
+                    "from the Compound and use this one."
+                )
                 FreeCAD.Console.PrintError(err + "\n")
             for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
@@ -363,7 +393,9 @@ class GmshTools():
                         belem_list = []
                         for sub in mr_obj.References:
                             # print(sub[0])  # Part the elements belongs to
-                            # check if the shape of the mesh boundary_layer is an element of the Part to mesh, if not try to find the element in the shape to mesh
+                            # check if the shape of the mesh boundary_layer is an
+                            # element of the Part to mesh
+                            # if not try to find the element in the shape to mesh
                             search_ele_in_shape_to_mesh = False
                             if not self.part_obj.Shape.isSame(sub[0].Shape):
                                 # print("  One element of the mesh boundary layer " + mr_obj.Name + " is not an element of the Part to mesh.")
@@ -373,19 +405,28 @@ class GmshTools():
                                 # print(elems)  # elems --> element
                                 if search_ele_in_shape_to_mesh:
                                     # we try to find the element it in the Shape to mesh and use the found element as elems
-                                    ele_shape = FemMeshTools.get_element(sub[0], elems)  # the method getElement(element) does not return Solid elements
+                                    # the method getElement(element) does not return Solid elements
+                                    ele_shape = FemMeshTools.get_element(sub[0], elems)
                                     found_element = FemMeshTools.find_element_in_shape(self.part_obj.Shape, ele_shape)
                                     if found_element:  # also
                                         elems = found_element
                                     else:
-                                        FreeCAD.Console.PrintError("One element of the mesh boundary layer " + mr_obj.Name + " could not be found in the Part to mesh. It will be ignored.\n")
+                                        FreeCAD.Console.PrintError(
+                                            "One element of the mesh boundary layer {} could not be found "
+                                            "in the Part to mesh. It will be ignored.\n"
+                                            .format(mr_obj.Name)
+                                        )
                                 # print(elems)  # element
                                 if elems not in self.bl_boundary_list:
                                     # fetch settings in DocumentObject, fan setting is not implemented
                                     belem_list.append(elems)
                                     self.bl_boundary_list.append(elems)
                                 else:
-                                    FreeCAD.Console.PrintError("The element " + elems + " of the mesh boundary layer " + mr_obj.Name + " has been added to another mesh boundary layer.\n")
+                                    FreeCAD.Console.PrintError(
+                                        "The element {} of the mesh boundary layer {} has been added "
+                                        "to another mesh boundary layer.\n"
+                                        .format(elems, mr_obj.Name)
+                                    )
                         setting = {}
                         setting['hwall_n'] = Units.Quantity(mr_obj.MinimumThickness).Value
                         setting['ratio'] = mr_obj.GrowthRate
@@ -407,9 +448,13 @@ class GmshTools():
                             FreeCAD.Console.PrintError("boundary layer is only supported for 2D and 3D mesh")
                         self.bl_setting_list.append(setting)
                     else:
-                        FreeCAD.Console.PrintError("The mesh boundary layer: " + mr_obj.Name + " is not used to create the mesh because the reference list is empty.\n")
+                        FreeCAD.Console.PrintError(
+                            "The mesh boundary layer: " + mr_obj.Name + " is not used to create the mesh because the reference list is empty.\n"
+                        )
                 else:
-                    FreeCAD.Console.PrintError("The mesh boundary layer: " + mr_obj.Name + " is not used to create the mesh because the min thickness is 0.0 mm.\n")
+                    FreeCAD.Console.PrintError(
+                        "The mesh boundary layer: " + mr_obj.Name + " is not used to create the mesh because the min thickness is 0.0 mm.\n"
+                    )
             print('  {}'.format(self.bl_setting_list))
 
     def write_boundary_layer(self, geo):
@@ -553,7 +598,8 @@ class GmshTools():
         if self.group_elements and self.group_nodes_export:
             geo.write("// For each group save not only the elements but the nodes too.;\n")
             geo.write("Mesh.SaveGroupsOfNodes = 1;\n")
-            geo.write("// Needed for Group meshing too, because for one material there is no group defined;\n")  # belongs to Mesh.SaveAll but only needed if there are groups
+            # belongs to Mesh.SaveAll but only needed if there are groups
+            geo.write("// Needed for Group meshing too, because for one material there is no group defined;\n")
         geo.write("// Ignore Physical definitions and save all elements;\n")
         geo.write("Mesh.SaveAll = 1;\n")
         geo.write('Save "' + self.temp_file_mesh + '";\n')

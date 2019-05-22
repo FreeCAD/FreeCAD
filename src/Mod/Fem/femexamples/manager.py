@@ -47,13 +47,16 @@ def run_analysis(doc, base_name, filepath=''):
     # ATM we only support one solver, search for a frame work solver and run it
     for m in doc.Analysis.Group:
         from femtools.femutils import is_derived_from
-        if is_derived_from(m, "Fem::FemSolverObjectPython") and m.Proxy.Type is not 'Fem::FemSolverCalculixCcxTools':
+        if is_derived_from(m, "Fem::FemSolverObjectPython") \
+                and m.Proxy.Type is not 'Fem::FemSolverCalculixCcxTools':
             solver = m
             break
 
     # we need a file name for the besides dir to work
     save_fc_file = join(filepath, (base_name + '.FCStd'))
-    FreeCAD.Console.PrintMessage('Save FreeCAD file for {} analysis to {}\n.'.format(base_name, save_fc_file))
+    FreeCAD.Console.PrintMessage(
+        'Save FreeCAD file for {} analysis to {}\n.'.format(base_name, save_fc_file)
+    )
     doc.saveAs(save_fc_file)
 
     # get analysis workig dir

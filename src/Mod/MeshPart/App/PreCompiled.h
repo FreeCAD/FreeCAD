@@ -147,6 +147,7 @@
 #include <GCE2d_MakeSegment.hxx>
 #include <GCPnts_TangentialDeflection.hxx>
 #include <GCPnts_UniformDeflection.hxx>
+#include <GCPnts_UniformAbscissa.hxx>
 #include <Geom_Axis2Placement.hxx>
 #include <Geom_CartesianPoint.hxx>
 #include <Geom_Line.hxx>

@@ -58,7 +58,7 @@ from addonmanager_utilities import urlopen
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
 MACROS_BLACKLIST = ["BOLTS","WorkFeatures","how to install","PartsLibrary","FCGear"]
-OBSOLETE = ["assembly2"]
+OBSOLETE = ["assembly2","drawing_dimensioning","cura_engine"] # These addons will print an additional message informing the user
 
 if sys.version_info.major < 3:
     import StringIO as io
@@ -69,8 +69,9 @@ else:
 
 
 def symlink(source, link_name):
-    if os.path.exists(link_name):
-        print("macro already exists")
+    if os.path.exists(link_name) or os.path.lexists(link_name):
+        #print("macro already exists")
+        pass
     else:
         os_symlink = getattr(os, "symlink", None)
         if callable(os_symlink):
@@ -84,7 +85,6 @@ def symlink(source, link_name):
             # set the SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE flag
             # (see https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10/#joC5tFKhdXs2gGml.97)
             flags += 2
-
             if csl(link_name, source, flags) == 0:
                 raise ctypes.WinError()
 
@@ -193,6 +193,15 @@ def remove_directory_if_empty(dir):
         os.rmdir(dir)
 
 
+def restartFreeCAD():
+    
+    "Shuts down and rstarts FreeCAD"
+    
+    args = QtGui.QApplication.arguments()[1:]
+    if FreeCADGui.getMainWindow().close():
+        QtCore.QProcess.startDetached(QtGui.QApplication.applicationFilePath(),args)
+
+
 class AddonsInstaller(QtGui.QDialog):
 
     def __init__(self):
@@ -296,9 +305,22 @@ class AddonsInstaller(QtGui.QDialog):
                     if not thread.isFinished():
                         oktoclose = False
         if oktoclose:
-            if hasattr(self,"install_worker"):
-                QtGui.QMessageBox.information(self, translate("AddonsInstaller","Addon manager"), translate("AddonsInstaller","Please restart FreeCAD for changes to take effect."))
-            shutil.rmtree(self.macro_repo_dir,onerror=self.remove_readonly)
+            if hasattr(self,"install_worker") or hasattr(self,"addon_removed"):
+                m = QtGui.QMessageBox()
+                m.setWindowTitle(translate("AddonsInstaller","Addon manager"))
+                m.setText(translate("AddonsInstaller","You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later."))
+                m.setIcon(m.Warning)
+                m.setStandardButtons(m.Ok | m.Cancel)
+                m.setDefaultButton(m.Cancel)
+                ret = m.exec_()
+                if ret == m.Ok:
+                    shutil.rmtree(self.macro_repo_dir,onerror=self.remove_readonly)
+                    # restart FreeCAD after a delay to give time to close this dialog
+                    QtCore.QTimer.singleShot(1000,restartFreeCAD)
+            try:
+                shutil.rmtree(self.macro_repo_dir,onerror=self.remove_readonly)
+            except:
+                pass
             QtGui.QDialog.reject(self)
 
     def retranslateUi(self):
@@ -306,6 +328,7 @@ class AddonsInstaller(QtGui.QDialog):
         self.labelDescription.setText(translate("AddonsInstaller", "Downloading addon list..."))
         self.buttonExecute.setText(translate("AddonsInstaller", "Execute"))
         self.buttonExecute.setToolTip(translate("AddonsInstaller", "This button runs the selected macro (which must be installed first)"))
+        self.buttonCheck.setText(translate("AddonsInstaller", "Check"))
         self.buttonCheck.setToolTip(translate("AddonsInstaller", "Check for available updates"))
         self.buttonCancel.setText(translate("AddonsInstaller", "Close"))
         self.buttonInstall.setText(translate("AddonsInstaller", "Install / update"))
@@ -332,6 +355,7 @@ class AddonsInstaller(QtGui.QDialog):
                 self.check_worker.mark.connect(self.mark)
                 self.check_worker.info_label.connect(self.set_information_label)
                 self.check_worker.progressbar_show.connect(self.show_progress_bar)
+                self.check_worker.change_button.connect(self.change_update_button)
                 self.check_worker.start()
             else:
                 self.install(self.doUpdate)
@@ -339,7 +363,7 @@ class AddonsInstaller(QtGui.QDialog):
     def add_addon_repo(self, addon_repo):
         self.repos.append(addon_repo)
         if addon_repo[2] == 1 :
-            self.listWorkbenches.addItem(QtGui.QListWidgetItem(QtGui.QIcon.fromTheme("dialog-ok",QtGui.QIcon(":/icons/edit_OK.svg")),str(addon_repo[0]) + str(" (Installed)")))
+            self.listWorkbenches.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/button_valid.svg"),str(addon_repo[0]) + str(" (Installed)")))
         else:
             self.listWorkbenches.addItem("        "+str(addon_repo[0]))
 
@@ -390,7 +414,7 @@ class AddonsInstaller(QtGui.QDialog):
         else:
             self.macros.append(macro)
             if macro.is_installed():
-                self.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon.fromTheme('dialog-ok'), macro.name + str(' (Installed)')))
+                self.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/button_valid.svg"), macro.name + str(' (Installed)')))
             else:
                 self.listMacros.addItem("        "+macro.name)
 
@@ -418,6 +442,7 @@ class AddonsInstaller(QtGui.QDialog):
                 self.install_worker = InstallWorker(self.repos, idx)
                 self.install_worker.info_label.connect(self.set_information_label)
                 self.install_worker.progressbar_show.connect(self.show_progress_bar)
+                self.install_worker.mark_recompute.connect(self.mark_recompute)
                 self.install_worker.start()
         elif self.tabWidget.currentIndex() == 1:
             # Tab "Macros".
@@ -426,7 +451,6 @@ class AddonsInstaller(QtGui.QDialog):
                 self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully installed. The macro is now available from the Macros dialog."))
             else:
                 self.labelDescription.setText(translate("AddonsInstaller", "Unable to install"))
-        self.update_status(soft=True)
 
     def show_progress_bar(self, state):
         if state == True:
@@ -494,6 +518,21 @@ class AddonsInstaller(QtGui.QDialog):
             else:
                 self.labelDescription.setText(translate('AddonsInstaller', 'Macro could not be removed.'))
         self.update_status(soft=True)
+        self.addon_removed = True # A value to trigger the restart message
+        
+    def mark_recompute(self,addon):
+        
+        "marks an addon in the list as installed but needs recompute"
+        
+        for i in range(self.listWorkbenches.count()):
+            txt = self.listWorkbenches.item(i).text().strip()
+            if txt.endswith(" (Installed)"):
+                txt = txt[:-12]
+            elif txt.endswith(" (Update available)"):
+                txt = txt[:-19]
+            if txt == addon:
+                self.listWorkbenches.item(i).setText(txt+" (Restart required)")
+                self.listWorkbenches.item(i).setIcon(QtGui.QIcon(":/icons/edit-undo.svg"))
 
     def update_status(self,soft=False):
 
@@ -503,13 +542,18 @@ class AddonsInstaller(QtGui.QDialog):
         if soft:
             for i in range(self.listWorkbenches.count()):
                 txt = self.listWorkbenches.item(i).text().strip()
+                ext = ""
                 if txt.endswith(" (Installed)"):
                     txt = txt[:-12]
+                    ext = " (Installed)"
                 elif txt.endswith(" (Update available)"):
                     txt = txt[:-19]
+                    ext = " (Update available)"
+                elif txt.endswith(" (Restart required)"):
+                    txt = txt[:-19]
+                    ext = " (Restart required)"
                 if os.path.exists(os.path.join(moddir,txt)):
-                    self.listWorkbenches.item(i).setText(txt+" (Installed)")
-                    self.listWorkbenches.item(i).setIcon(QtGui.QIcon.fromTheme("dialog-ok"))
+                    self.listWorkbenches.item(i).setText(txt+ext)
                 else:
                     self.listWorkbenches.item(i).setText("        "+txt)
                     self.listWorkbenches.item(i).setIcon(QtGui.QIcon())
@@ -520,8 +564,7 @@ class AddonsInstaller(QtGui.QDialog):
                 elif txt.endswith(" (Update available)"):
                     txt = txt[:-19]
                 if os.path.exists(os.path.join(moddir,txt)):
-                    self.listMacros.item(i).setText(txt+" (Installed)")
-                    self.listMacros.item(i).setIcon(QtGui.QIcon.fromTheme("dialog-ok"))
+                    self.listMacros.item(i).setText(txt+ext)
                 else:
                     self.listMacros.item(i).setText("        "+txt)
                     self.listMacros.item(i).setIcon(QtGui.QIcon())
@@ -530,14 +573,14 @@ class AddonsInstaller(QtGui.QDialog):
             self.listMacros.clear()
             for wb in self.repos:
                 if os.path.exists(os.path.join(moddir,wb[0])):
-                    self.listWorkbenches.addItem(QtGui.QListWidgetItem(QtGui.QIcon.fromTheme("dialog-ok"),str(wb[0]) + str(" (Installed)")))
+                    self.listWorkbenches.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/button_valid.svg"),str(wb[0]) + str(" (Installed)")))
                     wb[2] = 1
                 else:
                     self.listWorkbenches.addItem("        "+str(wb[0]))
                     wb[2] = 0
             for macro in self.macros:
                 if macro.is_installed():
-                    self.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon.fromTheme('dialog-ok'), macro.name + str(' (Installed)')))
+                    self.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/button_valid.svg"), macro.name + str(' (Installed)')))
                 else:
                     self.listMacros.addItem("        "+macro.name)
 
@@ -546,9 +589,17 @@ class AddonsInstaller(QtGui.QDialog):
             w = self.listWorkbenches.item(i)
             if w.text().startswith(str(repo)):
                 w.setText(str(repo) + str(" (Update available)"))
-                w.setIcon(QtGui.QIcon.fromTheme("reload"))
+                w.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
                 if not repo in self.doUpdate:
                     self.doUpdate.append(repo)
+
+    def change_update_button(self):
+        self.buttonCheck.setText(translate("AddonsInstaller", "Update all"))
+        self.buttonCheck.setToolTip(translate("AddonsInstaller", "Apply all available updates"))
+
+
+
+
 
 class UpdateWorker(QtCore.QThread):
 
@@ -640,6 +691,7 @@ class CheckWBWorker(QtCore.QThread):
     info_label = QtCore.Signal(str)
     mark = QtCore.Signal(str)
     progressbar_show = QtCore.Signal(bool)
+    change_button = QtCore.Signal()
 
     def __init__(self,repos):
         QtCore.QThread.__init__(self)
@@ -688,6 +740,7 @@ class CheckWBWorker(QtCore.QThread):
         self.progressbar_show.emit(False)
         if upds:
             self.info_label.emit(str(len(upds))+" "+translate("AddonsInstaller", "update(s) available")+": "+",".join(upds)+". "+translate("AddonsInstaller","Press the update button again to update them all at once."))
+            self.change_button.emit()
         else:
             self.info_label.emit(translate("AddonsInstaller","Everything is up to date"))
         self.stop = True
@@ -882,6 +935,7 @@ class InstallWorker(QtCore.QThread):
 
     info_label = QtCore.Signal(str)
     progressbar_show = QtCore.Signal(bool)
+    mark_recompute = QtCore.Signal(str)
 
     def __init__(self, repos, idx):
         QtCore.QThread.__init__(self)
@@ -976,6 +1030,7 @@ class InstallWorker(QtCore.QThread):
                         answer += f + "</b>"
             self.progressbar_show.emit(False)
             self.info_label.emit(answer)
+            self.mark_recompute.emit(self.repos[idx][0])
         self.stop = True
 
     def checkDependencies(self,baseurl):
