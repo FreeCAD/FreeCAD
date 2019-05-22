@@ -38,6 +38,7 @@
 
 namespace TechDraw {
 class DrawLeaderLine;
+class DrawView;
 }
 
 namespace TechDrawGui
@@ -73,20 +74,25 @@ public:
 
     virtual TechDraw::DrawLeaderLine* getFeature(void);
     QGEPath* getLeaderLine(void) { return m_line; }
-    std::vector<QPointF> convertWaypoints(void);
+    std::vector<QPointF> waypointsToQPoints(void);
+    std::vector<QPointF> waypointsToQPoints(std::vector<Base::Vector3d> pts);
+
     void startPathEdit(void);
     void setArrows(std::vector<QPointF> pathPoints);
 
     void abandonEdit(void);
+    void closeEdit(void);
     double getScale(void);
 
 public Q_SLOTS:
-    void onLineEditFinished(std::vector<QPointF> pts);    //QGEPath is finished editing points
+    void onLineEditFinished(QPointF attach, std::vector<QPointF> deltas);    //QGEPath is finished editing points
+    void onAttachMoved(QPointF attach);
     void select(bool state);
     void hover(bool state);
+    virtual void onSourceChange(TechDraw::DrawView* newParent) override;
 
 Q_SIGNALS:
-    void editComplete(std::vector<QPointF> pts, QGIView* parent);  //tell caller that edit session is finished
+    void editComplete(void);  //tell caller that edit session is finished
 
 protected:
     virtual void draw() override;
@@ -94,11 +100,14 @@ protected:
                                  const QVariant &value ) override;
     std::vector<QPointF> m_pathPoints;
     Base::Vector3d m_attachPoint;
+    
+    void saveState(void);
+    void restoreState(void);
 
 protected:
     QColor getNormalColor() override;
 
-    QGraphicsItem* m_parentItem;
+    QGraphicsItem* m_parentItem;       //<<< this never changes!
     QGEPath* m_line;
     QGIArrow* m_arrow1;
     QGIArrow* m_arrow2;
@@ -106,6 +115,12 @@ protected:
     QColor m_lineColor;
     Qt::PenStyle m_lineStyle;
     bool m_hasHover;
+
+    double m_saveX;
+    double m_saveY;
+    std::vector<Base::Vector3d> m_savePoints;
+
+    bool m_blockDraw;    //prevent redraws while updating.
 };
 
 }

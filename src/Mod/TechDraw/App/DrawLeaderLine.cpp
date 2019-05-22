@@ -77,8 +77,6 @@ DrawLeaderLine::~DrawLeaderLine()
 
 void DrawLeaderLine::onChanged(const App::Property* prop)
 {
-//    if (!isRestoring()) {
-//    }
     DrawView::onChanged(prop);
 }
 
@@ -112,15 +110,6 @@ App::DocumentObjectExecReturn *DrawLeaderLine::execute(void)
     return DrawView::execute();
 }
 
-//this doesn't really work because LeaderParent is not available?
-void DrawLeaderLine::onDocumentRestored(void)
-{
-//    Base::Console().Message("DLL::onDocumentRestored()\n");
-    requestPaint();
-    DrawView::onDocumentRestored();
-}
-
-
 DrawView* DrawLeaderLine::getBaseView(void) const
 {
     DrawView* result = nullptr;
@@ -133,7 +122,6 @@ DrawView* DrawLeaderLine::getBaseView(void) const
     }
     return result;
 }
-
 
 App::DocumentObject* DrawLeaderLine::getBaseObject(void) const
 {

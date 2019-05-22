@@ -125,6 +125,11 @@ QGIView::~QGIView()
     signalSelectPoint.disconnect_all_slots();
 }
 
+void QGIView::onSourceChange(TechDraw::DrawView* newParent)
+{
+    Q_UNUSED(newParent);
+}
+
 void QGIView::isVisible(bool state)
 {
     auto feat = getViewObject();
