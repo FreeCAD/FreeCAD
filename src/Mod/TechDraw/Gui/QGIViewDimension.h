@@ -88,6 +88,8 @@ public:
     QGCustomText* getTolText(void) { return m_tolText; }
     void setTolText(QGCustomText* newTol) { m_tolText = newTol; }
 
+    double getTolAdjust(void);
+
 Q_SIGNALS:
     void dragging(bool);
     void hover(bool state);
@@ -105,7 +107,6 @@ protected:
     QGCustomText* m_dimText;
     QGCustomText* m_tolText;
     int getPrecision(void);
-    double getTolAdjust(void);
     QColor m_colNormal;
     bool m_ctrl;
 
@@ -164,6 +165,12 @@ protected:
     //QGICMark* centerMark
     double m_lineWidth;
     bool m_obtuse;
+
+private:
+    static const double TextOffsetFudge;
+
+    double getDefaultTextHorizontalOffset(bool toLeft) const;
+    double getDefaultTextVerticalOffset() const;
 };
 
 } // namespace MDIViewPageGui
