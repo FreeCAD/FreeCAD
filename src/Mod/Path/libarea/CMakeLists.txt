@@ -1,8 +1,8 @@
 # Turn compiler warnings on for gcc 
-if (CMAKE_BUILD_TOOL MATCHES "make")
+if (CMAKE_BUILD_TOOL MATCHES "make" AND BUILD_DYNAMIC_LINK_PYTHON)
     MESSAGE(STATUS "setting gcc options: -Wall -Werror -Wno-deprecated -pedantic-errors")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-endif (CMAKE_BUILD_TOOL MATCHES "make")
+endif (CMAKE_BUILD_TOOL MATCHES "make" AND BUILD_DYNAMIC_LINK_PYTHON)
 
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244)
@@ -123,25 +123,31 @@ if(MSVC)
 
     set(area_LIBS
         ${Boost_LIBRARIES}
-        ${PYTHON_LIBRARIES}
         ${area_native_LIBS}
     )
+    if(BUILD_DYNAMIC_LINK_PYTHON)
+        list(APPEND area_LIBS ${PYTHON_LIBRARIES})
+    endif(BUILD_DYNAMIC_LINK_PYTHON)
 elseif(MINGW)
     set(area_native_LIBS
         Rpcrt4.lib
     )
     set(area_LIBS
         ${Boost_LIBRARIES}
-        ${PYTHON_LIBRARIES}
         ${area_native_LIBS}
     )
+    if(BUILD_DYNAMIC_LINK_PYTHON)
+        list(APPEND area_LIBS ${PYTHON_LIBRARIES})
+    endif(BUILD_DYNAMIC_LINK_PYTHON)
 else(MSVC)
     set(area_native_LIBS
         )
     set(area_LIBS
         ${Boost_LIBRARIES}
-        ${PYTHON_LIBRARIES}
     )
+    if(BUILD_DYNAMIC_LINK_PYTHON)
+        list(APPEND area_LIBS ${PYTHON_LIBRARIES})
+    endif(BUILD_DYNAMIC_LINK_PYTHON)
 endif(MSVC)
 
 target_link_libraries(area-native ${area_native_LIBS})
