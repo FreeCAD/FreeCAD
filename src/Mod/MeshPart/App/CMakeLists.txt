@@ -128,7 +128,12 @@ if (BUILD_FLAT_MESH)
 
                 add_library(flatmesh SHARED ${FLATMESH_SRCS})
                 SET_PYTHON_PREFIX_SUFFIX(flatmesh)
-                target_link_libraries(flatmesh ${PYTHON_LIBRARIES} ${MeshPart_LIBS} ${Boost_LIBRARIES})
+
+                if (BUILD_DYNAMIC_LINK_PYTHON)
+                    target_link_libraries(flatmesh ${PYTHON_LIBRARIES})
+                endif(BUILD_DYNAMIC_LINK_PYTHON)
+
+                target_link_libraries(flatmesh ${MeshPart_LIBS} ${Boost_LIBRARIES})
 
                 SET_BIN_DIR(flatmesh flatmesh /Mod/MeshPart)
                 install(TARGETS flatmesh DESTINATION ${CMAKE_INSTALL_LIBDIR})
