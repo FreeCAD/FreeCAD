@@ -1,8 +1,8 @@
 # Turn compiler warnings on for gcc 
-if (CMAKE_BUILD_TOOL MATCHES "make" AND BUILD_DYNAMIC_LINK_PYTHON)
+if (CMAKE_BUILD_TOOL MATCHES "make")
     MESSAGE(STATUS "setting gcc options: -Wall -Werror -Wno-deprecated -pedantic-errors")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-endif (CMAKE_BUILD_TOOL MATCHES "make" AND BUILD_DYNAMIC_LINK_PYTHON)
+endif (CMAKE_BUILD_TOOL MATCHES "make")
 
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244)
@@ -154,6 +154,13 @@ target_link_libraries(area-native ${area_native_LIBS})
 SET_BIN_DIR(area-native area-native)
 
 target_link_libraries(area area-native ${area_LIBS} ${area_native_LIBS})
+
+# TODO why CMAKE_SHARED_LINKER_FLAGS is not used here?
+# This is a dirty workaround!
+if(NOT BUILD_DYNAMIC_LINK_PYTHON AND CMAKE_COMPILER_IS_CLANGXX)
+    target_link_libraries(area "-Wl,-undefined,dynamic_lookup")
+endif()
+
 SET_BIN_DIR(area area)
 SET_PYTHON_PREFIX_SUFFIX(area)
 
