@@ -190,6 +190,9 @@ if (WIN32 OR APPLE)
 else()
     OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." ON)
 endif()
+if (WIN32)
+    OPTION(BUILD_QT5_BY_DEFAULT "Build with Qt5 for libpack users, IF available in libpack. Turn OFF to use Qt4." ON)
+endif()
 
 # ==============================================================================
 # == Win32 is default behaviour use the LibPack copied in Source tree ==========
@@ -200,41 +203,52 @@ if(MSVC)
     OPTION(FREECAD_LIBPACK_USEPYSIDE "Use PySide in LibPack rather to PyQt and Swig." ON)
     OPTION(FREECAD_USE_PCH "Activate precompiled headers where it's used." ON)
     
+    # Check for environmental variable for FREECAD_LIBPACK_DIR
     IF(DEFINED ENV{FREECAD_LIBPACK_DIR})
+        MESSAGE("DEFINED ENV{FREECAD_LIBPACK_DIR}")
         set(FREECAD_LIBPACK_DIR $ENV{FREECAD_LIBPACK_DIR} CACHE PATH  "Directory of the FreeCAD LibPack")
         MESSAGE(STATUS "Found libpack env variable: ${FREECAD_LIBPACK_DIR}")
-        IF(EXISTS ${FREECAD_LIBPACK_DIR}/lib/Qt5Core.lib)
-            OPTION(BUILD_QT5 "Build with Qt5." ON)
-        ENDIF()
     ELSE()
+        # If FREECAD_LIBPACK_DIR not set as env. variable, use CMAKE_SOURCE_DIR as default
         set(FREECAD_LIBPACK_DIR ${CMAKE_SOURCE_DIR} CACHE PATH  "Directory of the FreeCAD LibPack")
     ENDIF()
     
-    SET(LIBPACK_FOUND OFF)
-    IF(EXISTS ${FREECAD_LIBPACK_DIR}/plugins/imageformats/qsvg.dll)
-        SET(LIBPACK_FOUND ON)
+    # Deterimine if libpack is indeed at set locaiton in FREECAD_LIBPACK_DIR based upon EXISTS directories
+    SET(LIBPACK_FOUND ON)
+    IF(NOT EXISTS ${FREECAD_LIBPACK_DIR}/bin)
+        SET(LIBPACK_FOUND OFF)
+    ENDIF()
+    IF(NOT EXISTS ${FREECAD_LIBPACK_DIR}/cmake)
+        SET(LIBPACK_FOUND OFF)
+    ENDIF()
+    IF(NOT EXISTS ${FREECAD_LIBPACK_DIR}/lib)
+        SET(LIBPACK_FOUND OFF)
+    ENDIF()
+
+    IF(LIBPACK_FOUND)
+        MESSAGE(STATUS "Found libpack at: ${FREECAD_LIBPACK_DIR}")
+        IF(EXISTS ${FREECAD_LIBPACK_DIR}/lib/Qt5Core.lib)
+            OPTION(BUILD_QT5 "Build with Qt5." ON)
+            IF(BUILD_QT5_BY_DEFAULT)
+                SET(BUILD_QT5 ON)
+            ENDIF()
+        ENDIF()
         SET(COPY_LIBPACK_BIN_TO_BUILD OFF)
         # Create install commands for dependencies for INSTALL project in FreeCAD solution
-        OPTION(FREECAD_INSTALL_DEPEND_DIRS_TEST "Create install dependency commands for the INSTALL project found
+        OPTION(FREECAD_INSTALL_DEPEND_DIRS "Create install dependency commands for the INSTALL project found
             in the FreeCAD solution." ON)
         # Copy libpack smaller dependency folders to build folder per user request - if non-existant at destination
         IF(NOT EXISTS ${CMAKE_BINARY_DIR}/bin/imageformats/qsvg.dll)
             OPTION(FREECAD_COPY_DEPEND_DIRS_TO_BUILD "Copy smaller libpack dependency directories to build directory." OFF)
         ENDIF()
-        # Copy libpack 'bin' to build 'bin' per user request - if non-existant at destination
-        IF(NOT EXISTS ${CMAKE_BINARY_DIR}/bin/Scripts/shiboken2.exe)
+        # Copy libpack 'bin' directory contents to build 'bin' per user request - only IF NOT EXISTS already
+        IF((NOT EXISTS ${CMAKE_BINARY_DIR}/bin/DLLs) AND (NOT EXISTS ${CMAKE_BINARY_DIR}/bin/Lib))
             SET(COPY_LIBPACK_BIN_TO_BUILD ON)
             OPTION(FREECAD_COPY_LIBPACK_BIN_TO_BUILD "Copy larger libpack dependency 'bin' folder to the build direcctory." OFF)
         ENDIF()
-        # Default Qt5 ON if present in libpack
-        IF(EXISTS ${CMAKE_BINARY_DIR}/bin/Qt5Core.dll)
-            OPTION(BUILD_QT5 "Build with Qt5." OFF)
-        ENDIF()
     ELSE()
-        MESSAGE("If you intend to use the Windows libpack, set the FREECAD_LIBPACK_DIR to the libpack directory.")
-        MESSAGE(STATUS "As of 23 March 2019, APeltauer released three configurations of libpack for Windows: 
-            Debug, Release, and Combined (Debug and Release).\n"
-            "Visit: https://github.com/apeltauer/FreeCAD/releases/ for downloads.")
+        MESSAGE("Libpack NOT found.\nIf you intend to use a Windows libpack, set the FREECAD_LIBPACK_DIR to the libpack directory.")
+        MESSAGE(STATUS "Visit: https://github.com/apeltauer/FreeCAD/releases/ for Windows libpack downloads.")
     ENDIF()
 ELSE(MSVC)
     OPTION(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." OFF)
@@ -388,7 +402,7 @@ REQUIRES_MODS(BUILD_MESH_PART          BUILD_PART BUILD_MESH BUILD_SMESH)
 REQUIRES_MODS(BUILD_FLAT_MESH          BUILD_MESH_PART)
 REQUIRES_MODS(BUILD_OPENSCAD           BUILD_MESH_PART BUILD_DRAFT)
 REQUIRES_MODS(BUILD_PART_DESIGN        BUILD_SKETCHER)
-REQUIRES_MODS(BUILD_PATH               BUILD_PART BUILD_ROBOT)
+REQUIRES_MODS(BUILD_PATH               BUILD_PART BUILD_ROBOT BUILD_TECHDRAW)
 REQUIRES_MODS(BUILD_RAYTRACING         BUILD_PART)
 REQUIRES_MODS(BUILD_REVERSEENGINEERING BUILD_PART BUILD_MESH)
 REQUIRES_MODS(BUILD_ROBOT              BUILD_PART)
@@ -1483,32 +1497,25 @@ IF(MSVC OR WIN32)
 
         IF(COPY_LIBPACK_BIN_TO_BUILD)
             IF(FREECAD_COPY_LIBPACK_BIN_TO_BUILD)
-                MESSAGE("=======================================\n"
-                    "Copying libpack bin directory to build directory for Windows MSVC build.\n"
-                    "This will take a while... (5-10 minutes or longer)\n"
-                    "Time depends upon whether libpack is Release(1 GB), Debug(1 GB+), or BOTH(2 GB+).\n")
+                MESSAGE(STATUS "=======================================\n"
+                    "Copying libpack 'bin' directory to build directory. Estimated time is 3-15 minutes.\n")
                 FILE(COPY ${FREECAD_LIBPACK_DIR}/bin DESTINATION ${CMAKE_BINARY_DIR})
-                MESSAGE("... done copying bin directory.\n=======================================\n")
-            ELSE()
-                MESSAGE("To auto-copy the 'bin' directory from the libpack to the build directory,\n"
-                    "toggle the FREECAD_COPY_LIBPACK_BIN_TO_BUILD parameter to ON and configure again.\n"
-                    "NOTE: The copy process can take from 5-15 minutes depending on your libpack installed.\n")
+                MESSAGE(STATUS "... done copying libpack 'bin' directory.\n=======================================\n")
             ENDIF()
         ENDIF()
 
-        IF(FREECAD_INSTALL_DEPEND_DIRS_TEST)
+        IF(FREECAD_INSTALL_DEPEND_DIRS)
             # Test install command for installing/copying directories
-            MESSAGE(STATUS "=======================================\n"
-                "Creating up install commands for INSTALL project.\n")
             INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/platforms DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
             INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/imageformats DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
             INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/iconengines DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
             INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/sqldrivers DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-            INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/PySide2/translations/qtwebengine_locales DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+            INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/PySide2/translations/qtwebengine_locales 
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
             INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/resources DESTINATION ${CMAKE_INSTALL_PREFIX})
             INSTALL(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin DESTINATION ${CMAKE_INSTALL_PREFIX})
-            MESSAGE(STATUS "... end install commands creation.\n=======================================\n")
-        ENDIF(FREECAD_INSTALL_DEPEND_DIRS_TEST)
+            MESSAGE(STATUS "Created install commands for INSTALL project.\n")
+        ENDIF(FREECAD_INSTALL_DEPEND_DIRS)
     ENDIF(FREECAD_LIBPACK_USE AND LIBPACK_FOUND)
 ENDIF()
 
