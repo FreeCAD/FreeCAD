@@ -34,6 +34,8 @@
 #include "View3DInventorViewer.h"
 #include "SoFCSelectionContext.h"
 #include <list>
+#include <unordered_set>
+#include <unordered_map>
 
 class SoFullPath;
 class SoPickedPoint;
