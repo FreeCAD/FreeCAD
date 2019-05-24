@@ -57,10 +57,22 @@ def InitApplications():
 	ExtDir = os.path.realpath(ExtDir)
 	BinDir = FreeCAD.getHomePath()+'bin'
 	BinDir = os.path.realpath(BinDir)
+	libpaths = []
 	LibDir = FreeCAD.getHomePath()+'lib'
 	LibDir = os.path.realpath(LibDir)
+	if os.path.exists(LibDir):
+		libpaths.append(LibDir)
 	Lib64Dir = FreeCAD.getHomePath()+'lib64'
 	Lib64Dir = os.path.realpath(Lib64Dir)
+	if os.path.exists(Lib64Dir):
+		libpaths.append(Lib64Dir)
+	if sys.version_info[0] == 3:
+		LibPyDir = FreeCAD.getHomePath()+'lib-py3'
+	else:
+		LibPyDir = FreeCAD.getHomePath()+'lib-py2'
+	LibPyDir = os.path.realpath(LibPyDir)
+	if (os.path.exists(LibPyDir)):
+		libpaths.append(LibPyDir)
 	AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";")
 	HomeMod = FreeCAD.getUserAppDataDir()+"Mod"
 	HomeMod = os.path.realpath(HomeMod)
@@ -112,12 +124,12 @@ def InitApplications():
 
 	# this allows importing with:
 	# from FreeCAD.Module import package
-	FreeCAD.__path__ = [ModDir, Lib64Dir, LibDir, HomeMod]
+	FreeCAD.__path__ = [ModDir] + libpaths + [HomeMod]
 
 	# also add these directories to the sys.path to 
 	# not change the old behaviour. once we have moved to 
 	# proper python modules this can eventuelly be removed.
-	sys.path = [ModDir, Lib64Dir, LibDir, ExtDir] + sys.path
+	sys.path = [ModDir] + libpaths + [ExtDir] + sys.path
 
 	for Dir in ModDict.values():
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
