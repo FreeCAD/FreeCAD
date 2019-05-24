@@ -776,7 +776,7 @@ Units.Quantity(25000, Units.Pressure).getValueAs('MPa')
 Units.Unit('25 MPa')
 Units.Unit(-1,1,-2,0,0,0,0,0)
 
-# base units 
+# base units
 from FreeCAD import Units
 Units.Length
 Units.Mass
