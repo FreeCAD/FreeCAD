@@ -113,6 +113,7 @@ def importVtkFemMesh(filename, meshname):
     meshobj.FemMesh = Fem.read(filename)
     meshobj.touch()
     FreeCAD.ActiveDocument.recompute()
+    return meshobj
 
 
 def importVtkFCResult(filename, resultname, analysis=None, result_name_prefix=None):
@@ -147,3 +148,4 @@ def importVtkFCResult(filename, resultname, analysis=None, result_name_prefix=No
         analysis_object.addObject(result_obj)
     result_obj.touch()
     FreeCAD.ActiveDocument.recompute()
+    return result_obj
