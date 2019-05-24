@@ -33,7 +33,7 @@ from PartDesignTests.TestPocket import TestPocket
 from PartDesignTests.TestHole import TestHole
 from PartDesignTests.TestRevolve import TestRevolve
 from PartDesignTests.TestPipe import TestPipe
-from PartDesignTests.TestLoft import TestLoft
+#from PartDesignTests.TestLoft import TestLoft
 from PartDesignTests.TestPrimitive import TestPrimitive
 
 # transformations and boolean
