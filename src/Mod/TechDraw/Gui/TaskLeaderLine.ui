@@ -205,6 +205,15 @@
                <normaloff>:/icons/arrowopendot.svg</normaloff>:/icons/arrowopendot.svg</iconset>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>Fork</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowfork.svg</normaloff>:/icons/arrowfork.svg</iconset>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="2" column="0">
@@ -264,6 +273,15 @@
              <property name="icon">
               <iconset resource="Resources/TechDraw.qrc">
                <normaloff>:/icons/arrowopendot.svg</normaloff>:/icons/arrowopendot.svg</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Fork</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowfork.svg</normaloff>:/icons/arrowfork.svg</iconset>
              </property>
             </item>
            </widget>
