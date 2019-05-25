@@ -225,9 +225,8 @@ class Snapper:
         point = self.getApparentPoint(screenpos[0],screenpos[1])
 
         # setup a track line if we got a last point
-        if lastpoint:
-            if self.trackLine:
-                self.trackLine.p1(lastpoint)
+        if lastpoint and self.trackLine:
+            self.trackLine.p1(lastpoint)
 
         # checking if parallel to one of the edges of the last objects or to a polar direction
         if active:
@@ -286,12 +285,10 @@ class Snapper:
                 return self.spoint
 
         if not active:
-
             # passive snapping
             snaps = [self.snapToVertex(self.snapInfo)]
 
         else:
-
             # first stick to the snapped object
             s = self.snapToVertex(self.snapInfo)
             if s:
@@ -383,6 +380,9 @@ class Snapper:
         if not snaps:
             self.spoint = self.cstr(lastpoint, constrain, point)
             self.running = False
+            if self.trackLine and lastpoint:
+                self.trackLine.p2(self.spoint)
+                self.trackLine.on()
             return self.spoint
 
         # calculating the nearest snap point
