@@ -42,6 +42,12 @@ if(BUILD_GUI)
     add_executable(FreeCADMain WIN32 ${FreeCAD_SRCS})
     target_link_libraries(FreeCADMain ${FreeCAD_LIBS})
 
+    if(NOT BUILD_DYNAMIC_LINK_PYTHON)
+        # executeables have to be linked against python libraries,
+        # because extension modules are not.
+        target_link_libraries(FreeCADMain ${PYTHON_LIBRARIES})
+    endif(NOT BUILD_DYNAMIC_LINK_PYTHON)
+
     SET_BIN_DIR(FreeCADMain FreeCAD)
 
     if(WIN32)
@@ -86,6 +92,12 @@ endif()
 target_link_libraries(FreeCADMainCmd 
     ${FreeCADMainCmd_LIBS}
 )
+
+if(NOT BUILD_DYNAMIC_LINK_PYTHON)
+    # executeables have to be linked against python libraries,
+    # because extension modules are not.
+    target_link_libraries(FreeCADMainCmd ${PYTHON_LIBRARIES})
+endif(NOT BUILD_DYNAMIC_LINK_PYTHON)
 
 SET_BIN_DIR(FreeCADMainCmd FreeCADCmd)
 

@@ -606,13 +606,7 @@ void QGIViewDimension::draw()
         float distStartDelta = vecDist.Dot(normDim);        // component of distance vector in dim line direction
         Base::Vector3d startDistAdj = startDist + normDim * distStartDelta;
 
-        //offset of dimLine from getDimText()
-        double offsetFudge = 2.0;
-        double textMult  = 1.0;
-        if (dim->hasTolerance()) {
-            textMult = 1.5;
-        }
-        double textOffset = textMult * Rez::guiX(vp->Fontsize.getValue()) + offsetFudge;
+        double textOffset = getDefaultTextVerticalOffset();
 
         QPointF qFigure = boundingRect().center();
         Base::Vector3d figureCenter(qFigure.x(),qFigure.y(),0.0);               
@@ -815,25 +809,15 @@ void QGIViewDimension::draw()
         arrow1Tail = curveCenter;
         arrow2Tail = curveCenter;
 
-        double textWidth = datumLabel->getDimText()->boundingRect().width();
-        if (dim->hasTolerance()) {
-            textWidth += datumLabel->getTolText()->boundingRect().width();
-        }
-
         double gapMargin = Rez::guiX(4.f);
         margin = Rez::guiX(2.f);
         float scaler = 1.;
         double tip = (margin * scaler);
         double gap = (gapMargin * scaler);            //sb % of radius?
+
         //offset of dimLine from getDimText()
-        double offsetFudge = 2.0;
-        
-        double textMult  = 1.0;
-        if (dim->hasTolerance()) {
-            textMult = 1.5;
-        }
-        double vertOffset  = textMult * Rez::guiX(vp->Fontsize.getValue()) + offsetFudge;
-        double horizOffset = (textWidth/2.0) + offsetFudge;         //a bit tight w/o more fudge
+        double horizOffset = getDefaultTextHorizontalOffset(lblCenter.x > curveCenter.x);
+        double vertOffset  = getDefaultTextVerticalOffset();
 
         bool outerPlacement = false;
         if ((lblCenter-curveCenter).Length() > radius) {                     //label is outside circle
@@ -961,11 +945,9 @@ void QGIViewDimension::draw()
                 QRectF  mappedRect = mapRectFromItem(datumLabel, datumLabel->boundingRect());
                 lblCenter = Base::Vector3d(mappedRect.center().x(), mappedRect.center().y(), 0.0); 
                 isLeader = true;
-                float spacer = (margin + textWidth / 2);
-                spacer = (lblCenter.x < curveCenter.x) ? spacer : -spacer;
 
                 arrow1Tail = lblCenter;
-                arrow1Tail.x += spacer;
+                arrow1Tail.x += horizOffset;
 
                 Base::Vector3d kinkPoint = arrow1Tail;
                 kinkPoint.x += (lblCenter.x < curveCenter.x) ? margin : - margin;
@@ -980,13 +962,33 @@ void QGIViewDimension::draw()
                 datumLabel->setRotation(0.);
             }
         } else {                                                       //NOT outerplacement ie dimLines are inside circle
-            //text always rightside up inside circle
-            datumLabel->setRotation(0);
-            dirDim = (lblCenter - curveCenter).Normalize();
-            if (fabs(dirDim.Length()) < (Precision::Confusion())) {
-                dirDim = Base::Vector3d(-1.0,0.0,0.0);
+            double vertOffset = getDefaultTextVerticalOffset();
+
+            Base::Vector3d dirLabel = lblCenter - curveCenter;
+            if (dirLabel.Length() < Precision::Confusion()) {
+                dirLabel = Base::Vector3d(-1.0, 0.0, 0.0);
             }
-            
+
+            double labelAngle = 0.0;
+            if (vertOffset < dirLabel.Length()) {
+                double lineShiftAngle = asin(vertOffset/dirLabel.Length());
+                labelAngle = atan2(dirLabel.y, dirLabel.x);
+
+                if (labelAngle > 0.25*M_PI) {
+                    labelAngle -= M_PI + lineShiftAngle;
+                }
+                else if (labelAngle < -0.75*M_PI) {
+                    labelAngle += M_PI - lineShiftAngle;
+                }
+                else {
+                    labelAngle += lineShiftAngle;
+                }
+            }
+
+            // Set the angle of the dimension text
+            datumLabel->setRotation(labelAngle*180/M_PI);
+            dirDim = Base::Vector3d(cos(labelAngle), sin(labelAngle), 0.0);
+
             arrow1Tip  = curveCenter - dirDim * radius;
             arrow1Tail = curveCenter;
             arrow1Dir  = (arrow1Tip - arrow1Tail).Normalize();
@@ -1131,18 +1133,12 @@ void QGIViewDimension::draw()
             dirDimLine = Base::Vector3d(-1.0,0.0,0.0);
         }
 
-        double textWidth = datumLabel->getDimText()->boundingRect().width();
-        if (dim->hasTolerance()) {
-            textWidth += datumLabel->getTolText()->boundingRect().width();
-        }
-
         Base::Vector3d dLineStart;
         Base::Vector3d kinkPoint;
         margin = Rez::guiX(5.f);                                                //space around label
         double kinkLength = Rez::guiX(5.0);                                //sb % of horizontal dist(lblCenter,curveCenter)???
         if (outerPlacement) {
-            double offset = (margin + textWidth / 2.0);
-            offset = (lblCenter.x < curveCenter.x) ? offset : -offset;           //if label on left then tip is +ve (ie to right)
+            double offset = getDefaultTextHorizontalOffset(lblCenter.x > curveCenter.x);
             dLineStart.y = lblCenter.y;
             dLineStart.x = lblCenter.x + offset;                                     //start at right or left of label
             kinkLength = (lblCenter.x < curveCenter.x) ? kinkLength : -kinkLength;
@@ -1252,12 +1248,7 @@ void QGIViewDimension::draw()
 
         Base::Vector3d labelVec = (lblCenter - vertex);   //dir from label to vertex
 
-        double textHeight = datumLabel->getDimText()->boundingRect().height();
-        if (dim->hasTolerance()) {
-            textHeight = datumLabel->getTolText()->boundingRect().height();
-        }
-        double offsetFudge = 2.0;
-        double textOffset = textHeight/2.0 + offsetFudge;
+        double textOffset = getDefaultTextVerticalOffset();
         double radius = labelVec.Length() - textOffset;
 
         QRectF arcRect(vertex.x - radius, vertex.y - radius, 2. * radius, 2. * radius);
@@ -1276,7 +1267,7 @@ void QGIViewDimension::draw()
         Base::Vector3d startExt0 = legEnd0;
         Base::Vector3d startExt1 = legEnd1;
         // add an offset from the ends
-        offsetFudge = 5.0;
+        double offsetFudge = 5.0;
         startExt0 += d0 * offsetFudge;
         startExt1 += d1 * offsetFudge;
 
@@ -1545,6 +1536,28 @@ Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir)
     }
 
     return dirExt;
+}
+
+const double QGIViewDimension::TextOffsetFudge = 2.0;
+
+double QGIViewDimension::getDefaultTextHorizontalOffset(bool toLeft) const
+{
+    double offset = datumLabel->boundingRect().width()*0.5 + TextOffsetFudge*2.0;
+
+    return toLeft ? -offset - TextOffsetFudge*5.0: offset;
+}
+
+double QGIViewDimension::getDefaultTextVerticalOffset() const
+{
+    TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject());
+    ViewProviderDimension *vp = static_cast<ViewProviderDimension *>(getViewProvider(getViewObject()));
+
+    double textMult = 1.0;
+    if (dim->hasTolerance()) {
+        textMult += datumLabel->getTolAdjust();
+    }
+
+    return textMult*Rez::guiX(vp->Fontsize.getValue()) + TextOffsetFudge;
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>

@@ -168,7 +168,7 @@ void QGVPage::cancelBalloonPlacing(void)
 {
         getDrawPage()->balloonPlacing = false;
         balloonCursor->hide();
-        QApplication::setOverrideCursor(Qt::ArrowCursor);
+        QApplication::restoreOverrideCursor();
 }
 
 void QGVPage::drawBackground(QPainter *p, const QRectF &)
@@ -426,6 +426,7 @@ QGIView * QGVPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
     ourScene->addItem(vBalloon);
 
     vBalloon->setViewPartFeature(balloon);
+    vBalloon->dvBalloon = balloon;
 
     QGIView *parent = 0;
     parent = findParent(vBalloon);
@@ -950,7 +951,6 @@ void QGVPage::enterEvent(QEvent *event)
         balloonCursor->hide();
         QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png")),0,32));
       } else {
-            setCursor(Qt::ArrowCursor);
         QApplication::restoreOverrideCursor();
         viewport()->setCursor(Qt::ArrowCursor);
     }
@@ -958,7 +958,7 @@ void QGVPage::enterEvent(QEvent *event)
 
 void QGVPage::leaveEvent(QEvent * event)
 {
-    QApplication::setOverrideCursor(Qt::ArrowCursor);
+    QApplication::restoreOverrideCursor();
     if(getDrawPage()->balloonPlacing) {
 
 
@@ -989,7 +989,6 @@ void QGVPage::leaveEvent(QEvent * event)
 void QGVPage::mousePressEvent(QMouseEvent *event)
 {
     QGraphicsView::mousePressEvent(event);
-//    setCursor(Qt::ArrowCursor);
 }
 
 void QGVPage::mouseMoveEvent(QMouseEvent *event)
@@ -1001,7 +1000,7 @@ void QGVPage::mouseMoveEvent(QMouseEvent *event)
 void QGVPage::mouseReleaseEvent(QMouseEvent *event)
 {
     if(getDrawPage()->balloonPlacing) {
-        QApplication::setOverrideCursor(Qt::ArrowCursor);
+        QApplication::restoreOverrideCursor();
         balloonCursor->hide();
 
         std::string FeatName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
@@ -1030,6 +1029,7 @@ void QGVPage::mouseReleaseEvent(QMouseEvent *event)
     }
 
     QGraphicsView::mouseReleaseEvent(event);
+    viewport()->setCursor(Qt::ArrowCursor);
 }
 
 TechDraw::DrawPage* QGVPage::getDrawPage()

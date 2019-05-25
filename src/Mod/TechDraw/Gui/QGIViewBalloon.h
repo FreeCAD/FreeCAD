@@ -52,6 +52,20 @@ class QGIArrow;
 class QGIDimLines;
 class QGIViewBalloon;
 
+class QGIBalloonLabel : public QGIDatumLabel
+{
+Q_OBJECT
+
+public:
+    enum {Type = QGraphicsItem::UserType + 141};
+    int type() const override { return Type;}
+
+    QGIViewBalloon *parent;
+
+protected:
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+};
+
 //*******************************************************************
 
 class TechDrawGuiExport QGIViewBalloon : public QGIView
@@ -76,6 +90,7 @@ public:
     QString getLabelText(void);
     void draw_modifier(bool modifier);
     void placeBalloon(QPointF pos);
+    TechDraw::DrawViewBalloon *dvBalloon;
 
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
@@ -94,7 +109,7 @@ protected:
 
 protected:
     bool hasHover;
-    QGIDatumLabel* balloonLabel;
+    QGIBalloonLabel* balloonLabel;
     QGIDimLines* balloonLines;
     QGIDimLines* balloonShape;
     QGIArrow* arrow;
@@ -102,7 +117,7 @@ protected:
     bool m_obtuse;
     void parentViewMousePressed(QGIView *view, QPointF pos);
     QPointF *oldLabelCenter;
-    QGIView *m_parent;
+    QGIView *parent;
 
 };
 
