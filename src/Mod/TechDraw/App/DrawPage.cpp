@@ -101,6 +101,9 @@ DrawPage::DrawPage(void)
     }
 
     ADD_PROPERTY_TYPE(Scale, (1.0), group, (App::PropertyType)(App::Prop_None), "Scale factor for this Page");
+    ADD_PROPERTY_TYPE(NextBalloonIndex, (1), group, (App::PropertyType)(App::Prop_None),
+                     "Auto-numbering for Balloons");
+
     Scale.setConstraints(&scaleRange);
     double defScale = hGrp->GetFloat("DefaultScale",1.0);
     Scale.setValue(defScale);
@@ -404,6 +407,14 @@ void DrawPage::unsetupObject()
                                               docName.c_str(), templateName.c_str());
     }
     Template.setValue(nullptr);
+}
+
+int DrawPage::getNextBalloonIndex(void)
+{
+    int result = NextBalloonIndex.getValue();
+    int newValue = result + 1;
+    NextBalloonIndex.setValue(newValue);
+    return result;
 }
 
 void DrawPage::Restore(Base::XMLReader &reader)
