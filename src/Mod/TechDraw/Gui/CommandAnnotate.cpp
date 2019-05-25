@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QGraphicsView>
 # include <QMessageBox>
 # include <iostream>
 # include <string>
@@ -30,21 +31,19 @@
 # include <exception>
 #endif  //#ifndef _PreComp_
 
-#include <QGraphicsView>
+#include <App/DocumentObject.h>
+#include <Gui/Action.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/Selection.h>
+#include <Gui/MainWindow.h>
+#include <Gui/FileDialog.h>
+#include <Gui/ViewProvider.h>
 
-# include <App/DocumentObject.h>
-# include <Gui/Action.h>
-# include <Gui/Application.h>
-# include <Gui/BitmapFactory.h>
-# include <Gui/Command.h>
-# include <Gui/Control.h>
-# include <Gui/Document.h>
-# include <Gui/Selection.h>
-# include <Gui/MainWindow.h>
-# include <Gui/FileDialog.h>
-# include <Gui/ViewProvider.h>
-
-# include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
