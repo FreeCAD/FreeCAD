@@ -441,10 +441,20 @@ void QGIViewPart::drawViewPart()
         }
         if (showEdge) {
             item = new QGIEdge(i);
-            addToGroup(item);                         //item is at scene(0,0), not group(0,0)
-            item->setPos(0.0,0.0);                    //now at group(0,0)
-            item->setPath(drawPainterPath(*itEdge));
             item->setWidth(lineWidth);
+            if ((*itEdge)->cosmetic == true) {
+                TechDraw::CosmeticEdge* ce = viewPart->getCosmeticEdgeByLink(i);
+                if (ce != nullptr) {
+                    item->setNormalColor(ce->color.asValue<QColor>());
+                    item->setWidth(ce->width * lineScaleFactor);
+    //                item->setStyle((Qt::PenStyle)ce->style);
+                    item->setStyle(ce->style);
+                } 
+            }
+            addToGroup(item);                                                   //item is at scene(0,0), not group(0,0)
+            item->setPos(0.0,0.0);                                              //now at group(0,0)
+            item->setPath(drawPainterPath(*itEdge));
+//            item->setWidth(lineWidth);
             item->setZValue(ZVALUE::EDGE);
             if(!(*itEdge)->visible) {
                 item->setWidth(lineWidthHid);
@@ -1057,7 +1067,6 @@ QRectF QGIViewPart::boundingRect() const
 //    return customChildrenBoundingRect();
     return QGIView::boundingRect();
 }
-
 void QGIViewPart::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
@@ -1066,7 +1075,6 @@ void QGIViewPart::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
 
     QGIView::paint (painter, &myOption, widget);
 }
-
 
 //QGIViewPart derived classes do not need a rotate view method as rotation is handled on App side.
 void QGIViewPart::rotateView(void)

@@ -73,6 +73,7 @@ class TechDrawExport BaseGeom
         bool reversed;
         int ref3D;                      //obs?
         TopoDS_Edge occEdge;            //projected Edge
+        bool cosmetic;
 
         std::vector<Base::Vector2d> findEndPoints();
         Base::Vector2d getStartPoint();

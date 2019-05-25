@@ -72,6 +72,8 @@ public:
 
     TechDrawGeometry::BaseGeom* geometry; 
 
+    Base::Vector3d start;
+    Base::Vector3d end;
     int            linkGeom;             //connection to corresponding "real" Edge
     App::Color     color;
     double         width;

@@ -42,6 +42,7 @@
 #include "Cosmetic.h"
 
 using namespace TechDraw;
+using namespace TechDrawGeometry;
 
 CosmeticVertex::CosmeticVertex()
 {
@@ -147,9 +148,15 @@ void CosmeticVertex::dump(char* title)
 
 //******************************************
 
+//note this ctor has no occEdge or first/last point for geometry!
 CosmeticEdge::CosmeticEdge()
 {
     geometry = new TechDrawGeometry::BaseGeom();
+    geometry->geomType = GENERIC;
+    geometry->classOfEdge = ecHARD;
+    geometry->visible = true;
+    geometry->cosmetic = true;
+
     linkGeom = -1;
     color = getDefEdgeColor();
     width  = getDefEdgeWidth();
@@ -163,6 +170,11 @@ CosmeticEdge::CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2)
     gp_Pnt gp2(p2.x,p2.y,p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
     geometry = TechDrawGeometry::BaseGeom::baseFactory(e);
+    geometry->geomType = GENERIC;
+    geometry->classOfEdge = ecHARD;
+    geometry->visible = true;
+    geometry->cosmetic = true;
+
     linkGeom = -1;
     color = getDefEdgeColor();
     width  = getDefEdgeWidth();
@@ -173,6 +185,11 @@ CosmeticEdge::CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2)
 CosmeticEdge::CosmeticEdge(TopoDS_Edge e)
 {
     geometry = TechDrawGeometry::BaseGeom::baseFactory(e);
+    geometry->geomType = GENERIC;
+    geometry->classOfEdge = ecHARD;
+    geometry->visible = true;
+    geometry->cosmetic = true;
+
     linkGeom = -1;
     color = getDefEdgeColor();
     width  = getDefEdgeWidth();
@@ -259,6 +276,17 @@ bool CosmeticEdge::fromCSV(std::string& lineSpec)
     width = atof(values[8].c_str());
     style = atoi(values[9].c_str());
     visible = atoi(values[10].c_str());
+
+    //dupl of ctor(p1,p2)
+    gp_Pnt gp1(start.x,start.y,start.z);
+    gp_Pnt gp2(end.x,end.y,end.z);
+    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
+    geometry = TechDrawGeometry::BaseGeom::baseFactory(e);
+    geometry->geomType = GENERIC;
+    geometry->classOfEdge = ecHARD;
+    geometry->visible = true;
+    geometry->cosmetic = true;
+
     return true;
 }
 
