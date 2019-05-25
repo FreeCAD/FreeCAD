@@ -41,6 +41,8 @@ namespace TechDraw
 class DrawViewPart;
 class DrawViewDetail;
 class DrawView;
+class CosmeticVertex;
+class CosmeticEdge;
 }
 
 namespace TechDrawGeometry
@@ -126,7 +128,7 @@ public:
     TopoDS_Shape getHidIso(void)     { return hidIso; }
 
     int addRandomVertex(Base::Vector3d pos);
-
+    int addRandomEdge(TechDrawGeometry::BaseGeom* bg);
 
 protected:
     //HLR output

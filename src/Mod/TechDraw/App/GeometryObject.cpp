@@ -481,6 +481,15 @@ int GeometryObject::addRandomVertex(Base::Vector3d pos)
     return idx;
 }
 
+int GeometryObject::addRandomEdge(TechDrawGeometry::BaseGeom* base)
+{
+//    Base::Console().Message("GO::addRandomEdge() - cosmetic: %d\n", base->cosmetic);
+    edgeGeom.push_back(base);
+    
+    int idx = edgeGeom.size() - 1;
+    return idx;
+}
+
 //! empty Face geometry
 void GeometryObject::clearFaceGeom()
 {
