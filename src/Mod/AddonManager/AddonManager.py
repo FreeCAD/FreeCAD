@@ -114,7 +114,7 @@ def install_macro(macro, macro_repo_dir):
 
     Parameters
     ----------
-    - macro: a addonmanager_macro.Macro instance
+    - macro: an addonmanager_macro.Macro instance
     """
     if not macro.code:
         return False
@@ -161,7 +161,7 @@ def remove_macro(macro):
 
     Parameters
     ----------
-    - macro: a addonmanager_macro.Macro instance
+    - macro: an addonmanager_macro.Macro instance
     """
     if not macro.is_installed():
         # Macro not installed, nothing to do.
@@ -194,9 +194,9 @@ def remove_directory_if_empty(dir):
 
 
 def restartFreeCAD():
-    
-    "Shuts down and rstarts FreeCAD"
-    
+
+    "Shuts down and restarts FreeCAD"
+
     args = QtGui.QApplication.arguments()[1:]
     if FreeCADGui.getMainWindow().close():
         QtCore.QProcess.startDetached(QtGui.QApplication.applicationFilePath(),args)
@@ -519,11 +519,11 @@ class AddonsInstaller(QtGui.QDialog):
                 self.labelDescription.setText(translate('AddonsInstaller', 'Macro could not be removed.'))
         self.update_status(soft=True)
         self.addon_removed = True # A value to trigger the restart message
-        
+
     def mark_recompute(self,addon):
-        
+
         "marks an addon in the list as installed but needs recompute"
-        
+
         for i in range(self.listWorkbenches.count()):
             txt = self.listWorkbenches.item(i).text().strip()
             if txt.endswith(" (Installed)"):
@@ -536,8 +536,9 @@ class AddonsInstaller(QtGui.QDialog):
 
     def update_status(self,soft=False):
 
-        "Updates the list of wbs/macros. If soft is true, items are not recreated (and therefore display text no triggered)"
-
+        """Updates the list of workbenches/macros.
+           If soft is true, items are not recreated (and therefore display text isn't triggered)"
+        """
         moddir = FreeCAD.getUserAppDataDir() + os.sep + "Mod"
         if soft:
             for i in range(self.listWorkbenches.count()):
