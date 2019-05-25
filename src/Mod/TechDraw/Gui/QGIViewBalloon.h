@@ -21,8 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWBALLOON_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWBALLOON_H
+#ifndef TECHDRAWGUI_QGIVBALLOON_H
+#define TECHDRAWGUI_QGIVBALLOON_H
 
 #include <QObject>
 #include <QGraphicsView>
@@ -121,6 +121,6 @@ protected:
 
 };
 
-} // namespace MDIViewPageGui
+} // namespace
 
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWBALLOON_H
+#endif // TECHDRAWGUI_QGIVBALLOON_H
