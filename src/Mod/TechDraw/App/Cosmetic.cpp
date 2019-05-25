@@ -211,9 +211,6 @@ std::string CosmeticEdge::toCSV(void) const
     std::stringstream ss;
     Base::Vector3d start, end;
     if (geometry != nullptr) {
-        Base::Vector2d getStartPoint();
-        Base::Vector2d getEndPoint();
-
         Base::Vector2d p2d = geometry->getStartPoint();
         start = Base::Vector3d(p2d.x, p2d.y, 0.0);
         p2d = geometry->getEndPoint();
