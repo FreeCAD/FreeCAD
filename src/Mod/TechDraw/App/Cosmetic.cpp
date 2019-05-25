@@ -22,11 +22,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <TopoDS_Edge.hxx>
+# include <gp_Pnt.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
 #endif  // #ifndef _PreComp_
-
-#include <TopoDS_Edge.hxx>
-#include <gp_Pnt.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
