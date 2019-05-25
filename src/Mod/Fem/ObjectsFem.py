@@ -341,7 +341,8 @@ def makeMaterialFluid(
     doc,
     name="FluidMaterial"
 ):
-    '''makeMaterialFluid(document, [name]): makes a FEM Material for fluid'''
+    '''makeMaterialFluid(document, [name]):
+    makes a FEM Material for fluid'''
     obj = doc.addObject("App::MaterialObjectPython", name)
     from femobjects import _FemMaterial
     _FemMaterial._FemMaterial(obj)
@@ -375,7 +376,8 @@ def makeMaterialSolid(
     doc,
     name="MechanicalSolidMaterial"
 ):
-    '''makeMaterialSolid(document, [name]): makes a FEM Material for solid'''
+    '''makeMaterialSolid(document, [name]):
+    makes a FEM Material for solid'''
     obj = doc.addObject("App::MaterialObjectPython", name)
     from femobjects import _FemMaterial
     _FemMaterial._FemMaterial(obj)
@@ -413,7 +415,8 @@ def makeMeshGmsh(
     doc,
     name="FEMMeshGmsh"
 ):
-    '''makeMeshGmsh(document, [name]): makes a Gmsh FEM mesh object'''
+    '''makeMeshGmsh(document, [name]):
+    makes a Gmsh FEM mesh object'''
     obj = doc.addObject("Fem::FemMeshObjectPython", name)
     from femobjects import _FemMeshGmsh
     _FemMeshGmsh._FemMeshGmsh(obj)
@@ -451,7 +454,8 @@ def makeMeshNetgen(
     doc,
     name="FEMMeshNetgen"
 ):
-    '''makeMeshNetgen(document, [name]): makes a Fem MeshShapeNetgenObject object'''
+    '''makeMeshNetgen(document, [name]):
+    makes a Fem MeshShapeNetgenObject object'''
     obj = doc.addObject("Fem::FemMeshShapeNetgenObject", name)
     return obj
 
