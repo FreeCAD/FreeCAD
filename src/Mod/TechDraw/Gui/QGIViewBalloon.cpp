@@ -53,6 +53,7 @@
 
 #include <Mod/Part/App/PartFeature.h>
 
+#include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -150,25 +151,35 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
 {
 
     auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
-    if( balloon == nullptr )
+    if( balloon == nullptr ) {
         return;
+    }
 
+    DrawView* balloonParent = nullptr;
+    App::DocumentObject* docObj = balloon->sourceView.getValue();
+    if (docObj == nullptr) {
+        return;
+    } else {
+        balloonParent = dynamic_cast<DrawView*>(docObj);
+    }
+    
+    auto featPage = balloonParent->findParentPage();
+    if (featPage == nullptr) {
+        return;
+    }
+    
     auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
     if ( vp == nullptr ) {
         return;
     }
 
-    MDIViewPage* mdi = getMDIViewPage();
-    QGVPage* page;
-    if (mdi != nullptr) {
-        page = mdi->getQGVPage();
-
         balloon->OriginX.setValue(mapFromScene(pos).x());
         balloon->OriginY.setValue(mapFromScene(pos).y());
 
-        QString labelText = QString::fromUtf8(std::to_string(page->balloonIndex).c_str());
-        balloon->Text.setValue(std::to_string(page->balloonIndex++).c_str());
-
+        int idx = featPage->getNextBalloonIndex();
+        QString labelText = QString::number(idx);
+        balloon->Text.setValue(std::to_string(idx).c_str());
+     
         QFont font = balloonLabel->getFont();
         font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
         font.setFamily(QString::fromUtf8(vp->Font.getValue()));
@@ -178,7 +189,7 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
         // Default label position
         balloonLabel->setPosFromCenter(mapFromScene(pos).x() + 200, mapFromScene(pos).y() -200);
         balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
-    }
+//    }
 
     draw();
 }

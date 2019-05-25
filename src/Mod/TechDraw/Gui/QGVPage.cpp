@@ -149,8 +149,6 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
 
     bkgBrush = new QBrush(getBackgroundColor());
 
-    balloonIndex = 1;
-
     balloonCursor = new QLabel(this);
     balloonCursor->setPixmap(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png")));
     balloonCursor->hide();
