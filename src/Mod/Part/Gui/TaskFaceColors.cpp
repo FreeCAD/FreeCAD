@@ -99,11 +99,12 @@ public:
     ViewProviderPartExt* vp;
     App::DocumentObject* obj;
     Gui::Document* doc;
-    std::vector<App::Color> current,perface;
+    std::vector<App::Color> perface;
     QSet<int> index;
     bool boxSelection;
     Connection connectDelDoc;
     Connection connectDelObj;
+    Connection connectUndoDoc;
 
     Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceColors()), view(0), vp(vp)
     {
@@ -118,7 +119,7 @@ public:
             xp.Next();
         }
 
-        current = vp->DiffuseColor.getValues();
+        std::vector<App::Color> current = vp->DiffuseColor.getValues();
         if (current.empty())
             current.push_back(vp->ShapeColor.getValue());
         perface = current;
@@ -276,6 +277,8 @@ FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
         (&FaceColors::slotDeleteDocument, this, _1));
     d->connectDelObj = Gui::Application::Instance->signalDeletedObject.connect(boost::bind
         (&FaceColors::slotDeleteObject, this, _1));
+    d->connectUndoDoc = d->doc->signalUndoDocument.connect(boost::bind
+        (&FaceColors::slotUndoDocument, this, _1));
 }
 
 FaceColors::~FaceColors()
@@ -291,6 +294,14 @@ FaceColors::~FaceColors()
     d->connectDelDoc.disconnect();
     d->connectDelObj.disconnect();
     delete d;
+}
+
+void FaceColors::slotUndoDocument(const Gui::Document& Doc)
+{
+    if (d->doc == &Doc) {
+        d->doc->resetEdit();
+        Gui::Control().closeDialog();
+    }
 }
 
 void FaceColors::slotDeleteDocument(const Gui::Document& Doc)
@@ -403,9 +414,16 @@ void FaceColors::updatePanel()
     d->ui->colorButton->setDisabled(d->index.isEmpty());
 }
 
+void FaceColors::open()
+{
+    Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
+    doc->openCommand("Change face colors");
+}
+
 bool FaceColors::accept()
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
+    doc->commitCommand();
     doc->resetEdit();
     return true;
 }
@@ -416,8 +434,8 @@ bool FaceColors::reject()
         QMessageBox::Yes, QMessageBox::No|QMessageBox::Default|QMessageBox::Escape);
     if (ret == QMessageBox::Yes) {
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
+        doc->abortCommand();
         doc->resetEdit();
-        d->vp->DiffuseColor.setValues(d->current);
         return true;
     }
     else {
@@ -451,6 +469,7 @@ TaskFaceColors::~TaskFaceColors()
 
 void TaskFaceColors::open()
 {
+    widget->open();
 }
 
 void TaskFaceColors::clicked(int)
