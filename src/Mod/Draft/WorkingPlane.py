@@ -40,6 +40,12 @@ __url__ = "http://www.freecadweb.org"
 This module provides a class called plane to assist in selecting and maintaining a working plane.
 '''
 
+class WorkingPlaneDocumentObserver():
+    def slotCreatedDocument(self, doc):
+        if FreeCAD.GuiUp:
+            import FreeCADGui
+            FreeCADGui.runCommand('Draft_ToggleGrid')
+
 class plane:
     '''A WorkPlane object'''
 
@@ -55,6 +61,10 @@ class plane:
         self.position = pos
         # a placeholder for a stored state
         self.stored = None
+
+        if not hasattr(FreeCAD, "WorkingPlaneDocumentObserver"):
+            self.WorkingPlaneDocumentObserver = WorkingPlaneDocumentObserver()
+            FreeCAD.addDocumentObserver(self.WorkingPlaneDocumentObserver)
 
     def __repr__(self):
         return "Workplane x="+str(DraftVecUtils.rounded(self.u))+" y="+str(DraftVecUtils.rounded(self.v))+" z="+str(DraftVecUtils.rounded(self.axis))
