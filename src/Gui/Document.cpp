@@ -471,6 +471,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
 
         // adding to the tree
         signalNewObject(*pcProvider);
+        pcProvider->pcDocument = this;
 
         // it is possible that a new viewprovider already claims children
         handleChildren3D(pcProvider);
