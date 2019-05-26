@@ -174,7 +174,7 @@ message(STATUS "cmake: ${CMAKE_VERSION}")
 # =================   All the options for the build process    =================
 # ==============================================================================
 
-# Switch to build FreeCAD with Qt5
+option(BUILD_FORCE_DIRECTORY "The build directory must be different to the source directory." OFF)
 option(BUILD_GUI "Build FreeCAD Gui. Otherwise you have only the command line and the Python import module." ON)
 option(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
 option(FREECAD_USE_EXTERNAL_SMESH "Use system installed smesh instead of the bundled." OFF)
@@ -358,6 +358,14 @@ endif()
 if(WIN32 AND CMAKE_VERSION VERSION_LESS 3.4.3)
     message(WARNING "Disable Path, requires cmake >= 3.4.3 in order to build this module")
     set(BUILD_PATH OFF)
+endif()
+
+# force build directory to be different to source directory
+if (BUILD_FORCE_DIRECTORY)
+    if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+        message(FATAL_ERROR "The build directory (${CMAKE_BINARY_DIR}) must be different to the source directory (${CMAKE_SOURCE_DIR}).\n"
+                            "Please choose another build directory! Or disable the option BUILD_FORCE_DIRECTORY.")
+    endif()
 endif()
 
 # ==============================================================================
@@ -1238,14 +1246,8 @@ if(MINGW)
     link_libraries(-lgdi32)
 endif(MINGW)
 
-# force build directory to be different to source directory
-#if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-#message(SEND_ERROR "The build directory (${CMAKE_BINARY_DIR}) must be different to the source directory "
-#                   "(${CMAKE_SOURCE_DIR}). Please choose another build directory!")
-#elseif()
 add_subdirectory(src)
 add_subdirectory(data)
-#endif()
 
 # ================================================================================
 # == Packaging ===================================================================
