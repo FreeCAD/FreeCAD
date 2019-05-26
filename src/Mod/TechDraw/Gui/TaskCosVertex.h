@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKTEXTLEADER_H
-#define TECHDRAWGUI_TASKTEXTLEADER_H
+#ifndef TECHDRAWGUI_TASKCOSVERTEX_H
+#define TECHDRAWGUI_TASKCOSVERTEX_H
 
 #include <App/DocumentObject.h>
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskLeaderLine.h>
+#include <Mod/TechDraw/Gui/ui_TaskCosVertex.h>
 
 #include "QGTracker.h"
 
@@ -37,10 +37,8 @@
 #define TRACKEREDIT 1
 #define TRACKERCANCEL 2
 #define TRACKERCANCELEDIT 3
-#define TRACKERFINISHED 4
-#define TRACKERSAVE 5
 
-class Ui_TaskLeaderLine;
+class Ui_TaskCosVertex;
 
 namespace App {
 class DocumentObject;
@@ -50,7 +48,7 @@ namespace TechDraw
 {
 class DrawPage;
 class DrawView;
-class DrawLeaderLine;
+class DrawCosVertex;
 }
 
 namespace TechDrawGui
@@ -62,22 +60,21 @@ class MDIViewPage;
 class QGTracker;
 class QGEPath;
 class QGMText;
-class QGILeaderLine;
+class QGICosVertex;
 class ViewProviderLeader;
 
-class TaskLeaderLine : public QWidget
+class TaskCosVertex : public QWidget
 {
     Q_OBJECT
 
 public:
-    TaskLeaderLine(TechDraw::DrawView* baseFeat,
-                   TechDraw::DrawPage* page);
-    TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
-    ~TaskLeaderLine();
+    TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
+                  TechDraw::DrawPage* page);
+/*    TaskCosVertex(TechDrawGui::ViewProviderLeader* leadVP);*/
+    ~TaskCosVertex();
 
 public Q_SLOTS:
     void onTrackerClicked(bool b);
-    void onCancelEditClicked(bool b);
     void onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent);
 
 public:
@@ -90,37 +87,26 @@ public:
                      QPushButton* btnCancel);
     void enableTaskButtons(bool b);
 
-
-protected Q_SLOTS:
-    void onPointEditComplete(void);
+/*protected Q_SLOTS:*/
+/*    void onPointPicked(QPointF pt);*/
 
 protected:
-    void trackerPointsFromQPoints(std::vector<QPointF> pts);
     void changeEvent(QEvent *e);
     void startTracker(void);
     void removeTracker(void);
     void abandonEditSession(void);
 
-    void createLeaderFeature(std::vector<Base::Vector3d> converted);
-    void updateLeaderFeature();
-    void commonFeatureUpdate(void);
-    void removeFeature(void);
+    void addCosVertex(QPointF qPos);
 
     void blockButtons(bool b);
     void setUiPrimary(void);
-    void setUiEdit(void);
-    void enableTextUi(bool b);
-    void enableVPUi(bool b);
+    void updateUi(void);
     void setEditCursor(QCursor c);
 
    QGIView* findParentQGIV();
-   int getPrefArrowStyle();
-
-   void saveState(void);
-   void restoreState(void);
 
 private:
-    Ui_TaskLeaderLine * ui;
+    Ui_TaskCosVertex * ui;
     bool blockUpdate;
 
     QGTracker* m_tracker;
@@ -128,45 +114,37 @@ private:
     MDIViewPage* m_mdi;
     QGraphicsScene* m_scene;
     QGVPage* m_view;
-    ViewProviderLeader* m_lineVP;
-    TechDraw::DrawView* m_baseFeat;
+/*    ViewProviderLeader* m_lineVP;*/
+    TechDraw::DrawViewPart* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
-    TechDraw::DrawLeaderLine* m_lineFeat;
-    std::string m_leaderName;
-    std::string m_leaderType;
+/*    TechDraw::DrawCosVertex* m_lineFeat;*/
+/*    std::string m_leaderName;*/
+/*    std::string m_leaderType;*/
     QGIView* m_qgParent;
     std::string m_qgParentName;
 
-    std::vector<Base::Vector3d> m_trackerPoints;
-    Base::Vector3d m_attachPoint;
-    
     bool m_createMode;
-    QGEPath* m_leadLine;
 
     QGTracker::TrackerMode m_trackerMode;
     Qt::ContextMenuPolicy  m_saveContextPolicy;
     bool m_inProgressLock;
 
-    QGILeaderLine* m_qgLine;
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
     
     int m_pbTrackerState;
-    
-    std::vector<Base::Vector3d> m_savePoints;
-    double m_saveX;
-    double m_saveY;
+    QPointF m_savePoint;
+    bool pointFromTracker;
 };
 
-class TaskDlgLeaderLine : public Gui::TaskView::TaskDialog
+class TaskDlgCosVertex : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskDlgLeaderLine(TechDraw::DrawView* baseFeat,
+    TaskDlgCosVertex(TechDraw::DrawViewPart* baseFeat,
                       TechDraw::DrawPage* page);
-    TaskDlgLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
-    ~TaskDlgLeaderLine();
+    ~TaskDlgCosVertex();
 
 public:
     /// is called the TaskView when the dialog is opened
@@ -188,10 +166,10 @@ public:
 protected:
 
 private:
-    TaskLeaderLine * widget;
+    TaskCosVertex * widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 
 } //namespace TechDrawGui
 
-#endif // #ifndef TECHDRAWGUI_TASKTEXTLEADER_H
+#endif // #ifndef TECHDRAWGUI_TASKCOSVERTEX_H

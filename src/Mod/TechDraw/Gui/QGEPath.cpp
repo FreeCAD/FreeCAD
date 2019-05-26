@@ -94,7 +94,6 @@ void QGMarker::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void QGMarker::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGMarker::mouseReleaseEvent(%d) - focus: %d\n", getProjIndex(), hasFocus());
     if (event->button() == Qt::RightButton) {    //we're done
         Q_EMIT endEdit();
         m_dragging = false;
@@ -108,8 +107,6 @@ void QGMarker::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
             QPointF mapped = mapToParent(event->pos());
             Q_EMIT dragFinished(mapped, getProjIndex());
         }
-    } else {
-        Base::Console().Message("QGMarker::mouseReleaseEvent - not mouse grabber\n");
     }
     QGIVertex::mouseReleaseEvent(event);
 }
@@ -124,15 +121,14 @@ void QGMarker::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
     QGIVertex::mouseDoubleClickEvent(event);
 }
 
-//why can markers get the keyPress, but QGTracker can not??
 void QGMarker::keyPressEvent(QKeyEvent * event)
 {
+//    Base::Console().Message("QGMarker::keyPressEvent(%d)\n",getProjIndex());
     if (event->key() == Qt::Key_Escape) {
         Q_EMIT endEdit();
     }
     QGIVertex::keyPressEvent(event);
 }
-
 
 void QGMarker::setRadius(float r)
 {
@@ -192,6 +188,13 @@ QGEPath::QGEPath() :
     if (pView != nullptr) {
         m_parentItem = pView;
     }
+    m_ghost = new QGIPrimPath();
+    m_ghost->setParentItem(this);
+    m_ghost->setNormalColor(Qt::red);
+    m_ghost->setStyle(Qt::DashLine);
+    m_ghost->setPrettyNormal();
+    m_ghost->hide();
+
 }
 
 QVariant QGEPath::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -241,8 +244,18 @@ void QGEPath::startPathEdit()
 {
 //    Base::Console().Message("QGEPath::startPathEdit()\n");
     inEdit(true);
+    m_saveDeltas = m_deltas;
     showMarkers(m_deltas);
 }    
+
+void QGEPath::restoreState()
+{
+//    Base::Console().Message("QGEPath::restoreState()\n");
+    inEdit(false);
+    m_deltas = m_saveDeltas;
+    updatePath();
+}    
+
 
 void QGEPath::showMarkers(std::vector<QPointF> deltas)
 {
@@ -300,6 +313,7 @@ void QGEPath::clearMarkers()
         return;
     }
     for (auto& m: m_markers) {
+        m->hide();
         if (m != nullptr) {
             QGraphicsScene* s = m->scene();
             if (s != nullptr) {
@@ -315,8 +329,14 @@ void QGEPath::clearMarkers()
 void QGEPath::onDragFinished(QPointF pos, int markerIndex)
 {
 //    Base::Console().Message("QGEPath::onDragFinished()\n");
-    m_deltas.at(markerIndex) = pos / m_scale;
-    updatePath();
+    if ((int) m_points.size() > markerIndex) {
+        m_points.at(markerIndex) = pos / m_scale;
+    }
+    makeDeltasFromPoints(m_points);
+    if (markerIndex == 0) {
+        Q_EMIT attachMoved(m_points.front());
+    }
+    drawGhost();
 }
 
 void QGEPath::onDragging(QPointF pos, int markerIndex)
@@ -333,18 +353,18 @@ void QGEPath::onDoubleClick(QPointF pos, int markerIndex)
     Q_UNUSED(pos);
     Q_UNUSED(markerIndex);
 //    Base::Console().Message("QGEPath::onDoubleClick()\n");
-    updatePath();
-    updateFeature();
-    clearMarkers(); 
-    inEdit(false);
+    onEndEdit();
 }
 
 void QGEPath::onEndEdit(void)
 {
 //    Base::Console().Message("QGEPath::onEndEdit()\n");
-    updatePath();
+    if (m_ghost != nullptr) {
+        scene()->removeItem(m_ghost);   //stop ghost from messing up brect
+    }
     inEdit(false);
-    updateFeature();
+    updatePath();
+    updateFeature();         //Q_EMIT pointsUpdated(m_deltas) ==> onLineEditComplete  <<<1
     clearMarkers(); 
 }
 
@@ -354,7 +374,7 @@ void QGEPath::updatePath(void)
 {
 //    Base::Console().Message("QGEPath::updatePath() - scale: %.3f\n", m_scale);
     if (m_deltas.empty()) {
-        Base::Console().Log("QGEPath::updatePath - no points\n");
+        Base::Console().Warning("QGEPath::updatePath - no points\n");
         return;
     }
     QPainterPath result;
@@ -366,18 +386,24 @@ void QGEPath::updatePath(void)
         }
     }
     setPath(result);
-//    setPrettyNormal();
 }
 
-void QGEPath::makeDeltasFromPoints(std::vector<QPointF> pts)
+QPointF QGEPath::makeDeltasFromPoints(void)
 {
-//    Base::Console().Message("QGEPath::makeDeltasFromPoints()\n");
+    return makeDeltasFromPoints(m_points);
+}
+
+QPointF QGEPath::makeDeltasFromPoints(std::vector<QPointF> pts)
+{
+    m_points = pts;
+//    Base::Console().Message("QGEPath::makeDeltasFromPoints(%d)\n",pts.size());
+    QPointF firstPt(0.0,0.0);
     if (pts.empty()) {
-        Base::Console().Log("QGEPath::makeDeltasFromPoints - no points\n");
-        return;
+        Base::Console().Warning("QGEPath::makeDeltasFromPoints - no points\n");
+        return firstPt;
     }
     std::vector<QPointF> deltas;
-    QPointF firstPt = pts.front();
+    firstPt = pts.front();
     QPointF newStart(0.0,0.0);
     deltas.push_back(newStart);
     unsigned int i = 1;
@@ -386,15 +412,32 @@ void QGEPath::makeDeltasFromPoints(std::vector<QPointF> pts)
         deltas.push_back(mapped);
     }
     m_deltas = deltas;
+    return firstPt;
 }
 
 //announce points editing is finished
 void QGEPath::updateFeature(void)
 {
-//    Base::Console().Message("QGEPath::updateFeature()\n");
+//    Base::Console().Message("QGEPath::updateFeature() - inEdit: %d pts: %d\n",inEdit(),m_points.size());
+    QPointF attach = m_points.front();
     if (!inEdit()) {
-        Q_EMIT pointsUpdated(m_deltas);
+        Q_EMIT pointsUpdated(attach, m_deltas);
     }
+}
+
+void QGEPath::drawGhost(void)
+{
+//    Base::Console().Message("QGEPath::drawGhost()\n");
+    if (m_ghost->scene() == nullptr) {
+        m_ghost->setParentItem(this);
+    }
+    QPainterPath qpp;
+    qpp.moveTo(m_points.front());
+    for (int i = 1; i < (int)m_points.size(); i++) {
+        qpp.lineTo(m_points.at(i));
+    }
+    m_ghost->setPath(qpp);
+    m_ghost->show();
 }
 
 QRectF QGEPath::boundingRect() const
@@ -458,12 +501,32 @@ void QGEPath::deletePoint(unsigned int atX)
     setDeltas(deltaCopy);
 }
 
-void QGEPath::dumpPoints(char* text)
+void QGEPath::dumpDeltas(char* text)
 {
     int idb = 0;
     for (auto& d: m_deltas) {
         Base::Console().Message("QGEP - %s - delta: %d %s\n", text,
                                  idb,TechDraw::DrawUtil::formatVector(d).c_str());
+        idb++;
+    } 
+}
+
+void QGEPath::dumpPoints(char* text)
+{
+    int idb = 0;
+    for (auto& d: m_points) {
+        Base::Console().Message("QGEP - %s - point: %d %s\n", text,
+                                 idb,TechDraw::DrawUtil::formatVector(d).c_str());
+        idb++;
+    } 
+}
+
+void QGEPath::dumpMarkerPos(char* text)
+{
+    int idb = 0;
+    for (auto& m: m_markers) {
+        Base::Console().Message("QGEP - %s - markerPos: %d %s\n", text,
+                                 idb,TechDraw::DrawUtil::formatVector(m->pos()).c_str());
         idb++;
     } 
 }

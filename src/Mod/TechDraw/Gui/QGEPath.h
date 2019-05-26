@@ -29,6 +29,7 @@
 #include <QMouseEvent>
 #include <QObject>
 
+#include <Base/Vector3D.h>
 #include "QGIVertex.h"
 #include "QGIPrimPath.h"
 
@@ -107,13 +108,20 @@ public:
     void setScale(double s) { m_scale = s; }
     double getScale(void)   { return m_scale; }    
     void setAttach(QPointF s) { m_attach = s; }
+    void setAttach(Base::Vector3d v) { m_attach = QPointF(v.x, v.y); }
     QPointF getAttach(void)   { return m_attach; }    
 
-    void makeDeltasFromPoints(std::vector<QPointF> pts);
+    QPointF makeDeltasFromPoints(std::vector<QPointF> pts);
+    QPointF makeDeltasFromPoints(void);
+    void setPoints(std::vector<QPointF> pts) { m_points = pts; }
     void updatePath();
     void updateFeature();
+    void drawGhost(void);
 
+    void dumpDeltas(char* text);
     void dumpPoints(char* text);
+    void dumpMarkerPos(char* text);
+    void restoreState(void);
 
 public Q_SLOTS:
     void onDragFinished(QPointF pos, int index);
@@ -122,7 +130,9 @@ public Q_SLOTS:
     void onEndEdit(void);
 
 Q_SIGNALS:
-    void pointsUpdated(std::vector<QPointF> pts);
+    void pointsUpdated(QPointF attach, std::vector<QPointF> deltas);
+    void attachMoved(QPointF attach);
+
     void hover(bool state);
     void selected(bool state);
 
@@ -133,6 +143,8 @@ protected:
     double getEdgeFuzz(void) const;
 
     std::vector<QPointF> m_deltas;       //deltas between points 1:1 scale, starts at (0,0)
+    std::vector<QPointF> m_points;       //actual pos of markers
+    std::vector<QPointF> m_saveDeltas;
     std::vector<QGMarker*> m_markers;
     QPointF m_attach;
     double m_scale;
@@ -140,6 +152,7 @@ protected:
     bool m_inEdit;
 
     QGIView* m_parentItem;
+    QGIPrimPath* m_ghost;
 };
 
 }

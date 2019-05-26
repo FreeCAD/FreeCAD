@@ -86,6 +86,12 @@ void QGIArrow::draw() {
         path = makeDot(m_size/2.0,m_size/2.0,isFlipped);
     } else if (m_style == 4) {
         path = makeOpenDot(m_size/2.0,m_size/2.0,isFlipped);
+    } else if (m_style == 5) {
+        if (m_dirMode) {
+            path = makeForkArrow(getDirection(), m_size/2.0,m_size/2.0);       //big enough?
+        } else {
+            path = makeForkArrow(m_size/2.0,m_size/2.0,isFlipped);       //big enough?
+        }
     } else {
         path = makeFilledTriangle(m_size,m_size/6.0,isFlipped);     //sb a question mark or ???
     }
@@ -216,6 +222,41 @@ QPainterPath QGIArrow::makeOpenDot(double length, double width, bool flipped)
     m_fill = Qt::NoBrush;
     return path;
 }
+
+QPainterPath QGIArrow::makeForkArrow(double length, double width, bool flipped)
+{
+//(0,0) is tip of arrow
+    if (flipped) {
+        length *= -1;
+    }
+
+    QPainterPath path;
+    path.moveTo(QPointF(Rez::guiX(length),Rez::guiX(-width)));
+    path.lineTo(QPointF(0.,0.));
+    path.lineTo(QPointF(Rez::guiX(length),Rez::guiX(width)));
+    m_fill = Qt::NoBrush;
+    return path;
+}
+
+QPainterPath QGIArrow::makeForkArrow(Base::Vector3d dir, double length, double width)
+{
+//(0,0) is tip of arrow
+    Base::Vector3d negDir = -dir;
+    Base::Vector3d normDir = dir;
+    negDir.Normalize();
+    normDir.Normalize();
+    Base::Vector3d perp(-normDir.y,normDir.x, 0.0);
+    Base::Vector3d barb1 = normDir * length + perp * width;
+    Base::Vector3d barb2 = normDir * length - perp * width;
+    
+    QPainterPath path;
+    path.moveTo(QPointF(Rez::guiX(barb1.x),Rez::guiX(barb1.y)));
+    path.lineTo(QPointF(0.,0.));
+    path.lineTo(QPointF(Rez::guiX(barb2.x),Rez::guiX(barb2.y)));
+    m_fill = Qt::NoBrush;
+    return path;
+}
+
 
 
 int QGIArrow::getPrefArrowStyle()

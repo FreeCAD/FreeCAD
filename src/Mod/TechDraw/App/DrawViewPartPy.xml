@@ -13,6 +13,11 @@
       <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
       <UserDocu>Feature for creating and manipulating Technical Drawing Part Views</UserDocu>
     </Documentation>
+    <Methode Name="clearCV">
+      <Documentation>
+        <UserDocu>clearCV() - remove all CosmeticVertices from the View. Returns nothing.</UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

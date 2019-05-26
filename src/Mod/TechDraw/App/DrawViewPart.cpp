@@ -102,7 +102,7 @@
 #include "DrawPage.h"
 #include "EdgeWalker.h"
 #include "LineGroup.h"
-
+#include "Cosmetic.h"
 
 #include <Mod/TechDraw/App/DrawViewPartPy.h>  // generated from DrawViewPartPy.xml
 
@@ -117,7 +117,9 @@ using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawViewPart, TechDraw::DrawView)
 
-DrawViewPart::DrawViewPart(void) : geometryObject(0)
+DrawViewPart::DrawViewPart(void) : 
+    geometryObject(0),
+    on1(true)
 {
     static const char *group = "Projection";
     static const char *sgroup = "HLR Parameters";
@@ -148,8 +150,16 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     ADD_PROPERTY_TYPE(IsoHidden ,(false),sgroup,App::Prop_None,"Hidden Iso u,v lines on/off");
     ADD_PROPERTY_TYPE(IsoCount ,(0),sgroup,App::Prop_None,"Number of isoparameters");
 
+    ADD_PROPERTY_TYPE(CosmeticVertexList ,(""),sgroup,App::Prop_None,"CosmeticVertex Save/Restore");
+
     geometryObject = nullptr;
     getRunControl();
+        
+//    Base::Vector3d org(0.0,0.0,0.0);        //App side coords
+//    addRandomVertex(org);
+//    Base::Vector3d pt(11.0,11.0,0.0);
+//    addRandomVertex(pt);
+
 }
 
 DrawViewPart::~DrawViewPart()
@@ -279,6 +289,13 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
+
+    //this is ghastly! but no convenient method for "object ready"
+    if (on1) {
+        rebuildCosmoVertex();
+        on1 = false;
+    }
+    
     App::Document* doc = getDocument();
     bool isRestoring = doc->testStatus(App::Document::Status::Restoring);
     const std::vector<App::DocumentObject*>& links = Source.getValues();
@@ -324,6 +341,11 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
                                                       Rotation.getValue());
      }
     geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
+    //add back the cosmetic vertices
+    for (auto& v: cosmoVertex) {
+        int idx = geometryObject->addRandomVertex(v->pageLocation * getScale());
+        v->linkGeom = idx;
+    }
 
 #if MOD_TECHDRAW_HANDLE_FACES
     auto start = chrono::high_resolution_clock::now();
@@ -380,7 +402,6 @@ short DrawViewPart::mustExecute() const
 void DrawViewPart::onChanged(const App::Property* prop)
 {
     DrawView::onChanged(prop);
-
 //TODO: when scale changes, any Dimensions for this View sb recalculated.  DVD should pick this up subject to topological naming issues.
 }
 
@@ -867,10 +888,30 @@ bool DrawViewPart::showSectionEdges(void)
     return m_sectionEdges;
 }
 
+//build cosmoVertex from CosmeticVertexList
+void DrawViewPart::rebuildCosmoVertex(void)
+{
+//    Base::Console().Message("DVP::rebuildCosmoVertx()\n");
+    cosmoVertex.clear();
+    std::vector<std::string> restoreVerts = CosmeticVertexList.getValues();
+    for (auto& rv: restoreVerts) {
+       if (!rv.empty()) {
+           CosmeticVertex* cv = new CosmeticVertex();
+           bool rc = cv->fromCSV(rv);
+           if (rc) {
+               cosmoVertex.push_back(cv);
+           } else {
+               delete cv;
+           }
+       }
+    }
+}
+
 //! remove features that are useless without this DVP
 //! hatches, geomhatches, dimensions,... 
 void DrawViewPart::unsetupObject()
 {
+    Base::Console().Message("DVP::unsetupObject()\n");
     nowUnsetting = true;
     App::Document* doc = getDocument();
     std::string docName = doc->getName();
@@ -924,7 +965,6 @@ void DrawViewPart::unsetupObject()
             }
         }
     }
-
 }
 
 //! is this an Isometric projection?
@@ -937,6 +977,65 @@ bool DrawViewPart::isIso(void) const
         result = true;
     }
     return result;
+}
+
+//********
+//* Cosmetics
+//********
+
+// adds a cosmetic vertex to cosmoVertex and CosmeticVertexList
+int DrawViewPart::addRandomVertex(Base::Vector3d pos)
+{
+//    Base::Console().Message("DVP::addRandomVertex(%s)\n", DrawUtil::formatVector(pos).c_str());
+    int newIdx = -1;
+    TechDraw::CosmeticVertex* rVert = new TechDraw::CosmeticVertex(pos);
+    cosmoVertex.push_back(rVert);
+
+    //stuff stringList
+    std::vector<std::string> saveVerts;
+    const std::vector<TechDraw::CosmeticVertex*> cosVerts = getCosmeticVertex();
+    for (auto& cv: cosVerts) {
+        std::string csv = cv->toCSV();
+        saveVerts.push_back(csv);
+    }
+    CosmeticVertexList.setValues(saveVerts);
+    return newIdx;
+}
+
+TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByIndex(int idx) const
+{
+//    Base::Console().Message("DVP::getCosmeticVertexByIndex(%d)\n", idx);
+    int cosmoOffset = 1000;
+    int realIdx = idx - cosmoOffset;
+    CosmeticVertex* result = nullptr;
+    const std::vector<TechDraw::CosmeticVertex*> verts = getCosmeticVertex();
+    if ((unsigned) realIdx < verts.size())  {
+        result = verts.at(realIdx);
+    }
+    return result;
+}
+
+//find the cosmetic vertex corresponding to geometry vertex idx
+TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByLink(int idx) const
+{
+//    Base::Console().Message("DVP::getVosmeticVertexByLinkIndex(%d)\n", idx);
+    CosmeticVertex* result = nullptr;
+    const std::vector<TechDraw::CosmeticVertex*> verts = getCosmeticVertex();
+    for (auto& cv: verts) {
+        if (cv->linkGeom == idx) {
+            result = cv;
+            break;
+        }
+    }
+    return result;
+}
+
+void DrawViewPart::clearCV(void) 
+{
+//    Base::Console().Message("DVP::clearCV()\n");
+    cosmoVertex.clear();
+    std::vector<std::string> noVerts;
+    CosmeticVertexList.setValues(noVerts);
 }
 
 PyObject *DrawViewPart::getPyObject(void)

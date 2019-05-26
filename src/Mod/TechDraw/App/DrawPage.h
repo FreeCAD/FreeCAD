@@ -49,6 +49,8 @@ public:
 
     App::PropertyFloatConstraint Scale;
     App::PropertyEnumeration ProjectionType; // First or Third Angle
+    
+    App::PropertyInteger  NextBalloonIndex;
 
     /** @name methods override Feature */
     //@{
@@ -91,7 +93,9 @@ public:
     void requestPaint(void);
     std::vector<App::DocumentObject*> getAllViews(void) ;
     bool balloonPlacing;
-    DrawViewPart *balloonParent;
+    DrawViewPart *balloonParent;    //could be many balloons on page? 
+    
+    int getNextBalloonIndex(void);
 
 protected:
     void onBeforeChange(const App::Property* prop);

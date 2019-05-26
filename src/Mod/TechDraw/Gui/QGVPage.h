@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_CANVASVIEW_H
-#define DRAWINGGUI_CANVASVIEW_H
+#ifndef TECHDRAWGUI_QGVIEW_H
+#define TECHDRAWGUI_QGVIEW_H
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
@@ -117,7 +117,7 @@ public:
     void saveSvg(QString filename);
     void postProcessXml(QTemporaryFile* tempFile, QString filename, QString pagename);
 
-    int balloonIndex;
+/*    int balloonIndex;*/
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
@@ -140,7 +140,6 @@ protected:
     
 
     QGITemplate *pageTemplate;
-//    std::vector<QGIView *> views;                          //<<< why?  scene already has a list of all the views.
 
 private:
     RendererType m_renderer;
@@ -161,6 +160,6 @@ private:
     void cancelBalloonPlacing(void);
 };
 
-} // namespace MDIViewPageGui
+} // namespace 
 
-#endif // DRAWINGGUI_CANVASVIEW_H
+#endif // TECHDRAWGUI_QGVIEW_H

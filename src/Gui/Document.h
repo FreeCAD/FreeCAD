@@ -98,7 +98,7 @@ public:
     /** signal on changed Object, the 2nd argument is the changed property
         of the referenced document object, not of the view provider */
     mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&,
-                                const App::Property&)>                   signalChangedObject;
+                                          const App::Property&)>                   signalChangedObject;
     /// signal on renamed Object
     mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalRelabelObject;
     /// signal on activated Object

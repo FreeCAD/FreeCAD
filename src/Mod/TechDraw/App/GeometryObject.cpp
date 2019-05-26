@@ -472,6 +472,15 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
     }  //end TopExp
 }
 
+int GeometryObject::addRandomVertex(Base::Vector3d pos)
+{
+//    Base::Console().Message("GO::addRandomVertex(%s)\n",DrawUtil::formatVector(pos).c_str());
+    TechDrawGeometry::Vertex* v = new TechDrawGeometry::Vertex(pos.x, - pos.y);
+    vertexGeom.push_back(v);
+    int idx = vertexGeom.size() - 1;
+    return idx;
+}
+
 //! empty Face geometry
 void GeometryObject::clearFaceGeom()
 {

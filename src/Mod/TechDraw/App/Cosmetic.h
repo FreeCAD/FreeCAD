@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>               *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,45 +20,73 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_REZ_H
-#define DRAWINGGUI_REZ_H
+#ifndef TECHDRAW_COSMETIC_H
+#define TECHDRAW_COSMETIC_H
 
-#include <QPointF>
-#include <QRectF>
-#include <QSize>
 #include <Base/Vector3D.h>
-#include <Base/Tools2D.h>
+#include <App/Material.h>
 
-namespace TechDrawGui
-{
+class TopoDS_Edge;
 
-/// Functions to handle mm resolution conversion
-class TechDrawGuiExport Rez
+namespace TechDrawGeometry {
+class BaseGeom;
+}
+
+namespace TechDraw {
+
+class TechDrawExport CosmeticVertex
 {
 public:
-    static double getParameter(void);
-    static double getRezFactor(void);
-    static void setRezFactor(double f);
-//turn App side value to Gui side value
-    static double guiX(double x);
-    static Base::Vector2d guiX(Base::Vector2d v);
-    static Base::Vector3d guiX(Base::Vector3d v);
-//turn Gui side value to App side value
-    static double appX(double x);
-    static Base::Vector2d appX(Base::Vector2d v);
-    static Base::Vector3d appX(Base::Vector3d v);
-    static QPointF appX(QPointF p);
+    CosmeticVertex();
+    CosmeticVertex(Base::Vector3d loc);
+    virtual ~CosmeticVertex() = default;
 
-    static QPointF guiPt(QPointF p);
-    static QPointF appPt(QPointF p);
+    std::string toCSV(void) const;
+    bool fromCSV(std::string& lineSpec);
+    void dump(char* title);
 
-    static QRectF guiRect(QRectF r);
-    static QSize guiSize(QSize s);
-    static QSize appSize(QSize s);
-    
-private:
-    static double m_rezFactor;
+    Base::Vector3d pageLocation;
+    Base::Vector3d modelLocation;
+    int            linkGeom;             //connection to corresponding "real" Vertex
+    App::Color     color;
+    double         size;
+    int            style;
+    bool           visible;
+
+protected:
+    std::vector<std::string> split(std::string csvLine);
+
 };
 
-} //end namespace TechDrawGui
-#endif
+class TechDrawExport CosmeticEdge
+{
+public:
+    CosmeticEdge();
+    CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2);
+    CosmeticEdge(TopoDS_Edge e);
+    virtual ~CosmeticEdge() = default;
+
+    std::string toCSV(void) const;
+    bool fromCSV(std::string& lineSpec);
+    void dump(char* title);
+
+    TechDrawGeometry::BaseGeom* geometry; 
+
+    int            linkGeom;             //connection to corresponding "real" Edge
+    App::Color     color;
+    double         width;
+    int            style;
+    bool           visible;
+
+protected:
+    std::vector<std::string> split(std::string csvLine);
+    double getDefEdgeWidth();
+    App::Color getDefEdgeColor();
+    int getDefEdgeStyle();
+
+};
+
+
+} //end namespace TechDraw
+
+#endif //TECHDRAW_COSMETIC_H

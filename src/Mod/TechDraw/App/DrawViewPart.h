@@ -68,6 +68,7 @@ class DrawProjectSplit;
 class DrawViewSection;
 class DrawViewDetail;
 class DrawViewBalloon;
+class CosmeticVertex;
 }
 
 namespace TechDraw
@@ -100,6 +101,8 @@ public:
     //App::PropertyBool   OutlinesHidden;
     App::PropertyBool   IsoHidden;
     App::PropertyInteger  IsoCount;
+
+    App::PropertyStringList  CosmeticVertexList;
 
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches(void) const;
@@ -136,7 +139,7 @@ public:
                                const bool flip=true) const;
 
     virtual short mustExecute() const;
-/*    virtual void onDocumentRestored() override;*/
+//    virtual void onDocumentRestored() override;
 
     bool handleFaces(void);
     bool showSectionEdges(void);
@@ -162,6 +165,12 @@ public:
     virtual TopoDS_Shape getSourceShapeFused(void) const; 
     bool isIso(void) const;
 
+    virtual int addRandomVertex(Base::Vector3d pos);
+    const std::vector<TechDraw::CosmeticVertex*> & getCosmeticVertex(void) const { return cosmoVertex; }
+    TechDraw::CosmeticVertex* getCosmeticVertexByIndex(int idx) const;
+    TechDraw::CosmeticVertex* getCosmeticVertexByLink(int idx) const;
+    void clearCV(void);
+
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
@@ -183,8 +192,13 @@ protected:
     bool m_sectionEdges;
     bool m_handleFaces;
 
+    //Cosmetics
+    std::vector<TechDraw::CosmeticVertex*> cosmoVertex;
+    void rebuildCosmoVertex(void);
+
 private:
     bool nowUnsetting;
+    bool on1;
 /*    bool m_restoreComplete;*/
 
 };

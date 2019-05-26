@@ -35,6 +35,7 @@ class DrawViewSection;
 class DrawHatch;
 class DrawGeomHatch;
 class DrawViewDetail;
+class DrawView;
 }
 
 namespace TechDrawGui
