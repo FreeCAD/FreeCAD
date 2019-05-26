@@ -137,34 +137,54 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=Fals
         ui.displayPoint(point, plane=plane, mask=mask)
     return point,ctrlPoint,info
 
-def getSupport(args=None):
+def getSupport(mouseEvent=None):
     "returns the supporting object and sets the working plane"
-    if not args:
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if len(sel) == 1:
-            sel = sel[0]
-            if sel.HasSubObjects:
-                if len(sel.SubElementNames) == 1:
-                    if "Face" in sel.SubElementNames[0]:
-                        if plane.weak:
-                            plane.alignToFace(sel.SubObjects[0])
-                        return sel.Object
+    plane.save()
+    if mouseEvent:
+        return setWorkingPlaneToObjectUnderCursor(mouseEvent)
+    return setWorkingPlaneToSelectedObject()
+
+def setWorkingPlaneToObjectUnderCursor(mouseEvent):
+    objectUnderCursor = Draft.get3DView().getObjectInfo((
+        mouseEvent["Position"][0],
+        mouseEvent["Position"][1]))
+
+    if not objectUnderCursor:
         return None
 
-    snapped = Draft.get3DView().getObjectInfo((args["Position"][0],args["Position"][1]))
-    if not snapped: return None
-    obj = None
-    plane.save()
     try:
-        obj = FreeCAD.ActiveDocument.getObject(snapped['Object'])
-        shape = obj.Shape
-        component = getattr(shape,snapped["Component"])
-        if plane.alignToFace(component, 0) \
-                or plane.alignToCurve(component, 0):
-            self.display(plane.axis)
+        componentUnderCursor = getattr(
+            FreeCAD.ActiveDocument.getObject(
+                objectUnderCursor['Object']
+                ).Shape,
+            objectUnderCursor["Component"])
+
+        if not plane.weak:
+            return None
+
+        if "Face" in objectUnderCursor["Component"]:
+            plane.alignToFace(componentUnderCursor)
+        else:
+            plane.alignToCurve(componentUnderCursor)
+        plane.weak = True
+        return objectUnderCursor
     except:
         pass
-    # don't set the object's support if we are in the middle of an operation
+
+    return None
+
+def setWorkingPlaneToSelectedObject():
+    sel = FreeCADGui.Selection.getSelectionEx()
+    if len(sel) != 1:
+        return None
+    sel = sel[0]
+    if sel.HasSubObjects \
+        and len(sel.SubElementNames) == 1 \
+        and "Face" in sel.SubElementNames[0]:
+        if plane.weak:
+            plane.alignToFace(sel.SubObjects[0])
+            plane.weak = True
+        return sel.Object
     return None
 
 def hasMod(args,mod):
