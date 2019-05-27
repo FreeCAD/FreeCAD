@@ -44,13 +44,18 @@ elif open.__module__ == 'io':
     pyopen = open
 
 
-def open(filename):
+def open(
+    filename
+):
     "called when freecad opens a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
     insert(filename, docname)
 
 
-def insert(filename, docname):
+def insert(
+    filename,
+    docname
+):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
@@ -61,14 +66,19 @@ def insert(filename, docname):
 
 
 # ********* module specific methods *********
-def import_z88_disp(filename, analysis=None, result_name_prefix=None):
+def import_z88_disp(
+    filename,
+    analysis=None,
+    result_name_prefix=None
+):
     '''insert a FreeCAD FEM mechanical result object in the ActiveDocument
     pure usage:
     import feminout.importZ88O2Results as importZ88O2Results
     disp_file = '/pathtofile/z88o2.txt'
     importZ88O2Results.import_z88_disp(disp_file)
 
-    the z888i1.txt FEMMesh file needs to be in the same directory as z88o2.txt (ahh, make a new document first ;-))
+    the z888i1.txt FEMMesh file needs to be in the same directory as z88o2.txt
+    # ahh, make a new document first ;-)
     '''
     from . import importZ88Mesh
     from . import importToolsFem
@@ -86,7 +96,10 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
             mesh_file = filename.replace('o2', 'i1')
             mesh_data = importZ88Mesh.read_z88_mesh(mesh_file)
             femmesh = importToolsFem.make_femmesh(mesh_data)
-            result_mesh_object = ObjectsFem.makeMeshResult(FreeCAD.ActiveDocument, 'Result_mesh')
+            result_mesh_object = ObjectsFem.makeMeshResult(
+                FreeCAD.ActiveDocument,
+                'Result_mesh'
+            )
             result_mesh_object.FemMesh = femmesh
         else:
             FreeCAD.Console.PrintError('Z88 mesh file z88i1.txt not found!')
@@ -108,10 +121,14 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
             FreeCAD.ActiveDocument.recompute()
 
     else:
-        FreeCAD.Console.PrintError('Problem on Z88 result file import. No nodes found in Z88 result file.\n')
+        FreeCAD.Console.PrintError(
+            'Problem on Z88 result file import. No nodes found in Z88 result file.\n'
+        )
 
 
-def read_z88_disp(z88_disp_input):
+def read_z88_disp(
+    z88_disp_input
+):
     '''
     read a z88 disp file and extract the nodes and elements
     z88 Displacement output file is z88o2.txt
