@@ -156,12 +156,6 @@ public:
      * aborted
      */
     void closeActiveTransaction(bool abort=false, int id=0);
-    /** Return auto transaction parameter setting
-     *
-     * When enabled, any transaction created on non-active document will create
-     * a new transaction in the active document if there isn't one open.
-     */
-    bool autoTransaction();
     //@}
 
     /** @name Signals of the Application */

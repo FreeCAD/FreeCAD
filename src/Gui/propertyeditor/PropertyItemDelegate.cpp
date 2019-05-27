@@ -174,9 +174,7 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     this->pressed = false;
 
     auto &app = App::GetApplication();
-    if(!app.autoTransaction()) 
-        return editor;
-    else if(app.getActiveTransaction())
+    if(app.getActiveTransaction())
         FC_LOG("editor already transacting " << app.getActiveTransaction());
     else {
         auto items = childItem->getPropertyData();

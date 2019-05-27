@@ -688,17 +688,11 @@ class UndoRedoCases(unittest.TestCase):
 
     # second transaction
     self.Doc.openTransaction("Transaction2")
-    if FreeCAD.autoTransaction():
-        # new behavior: no change, no transaction
-        self.assertEqual(self.Doc.UndoNames,['Transaction1'])
-        self.assertEqual(self.Doc.UndoCount,1)
-        self.assertEqual(self.Doc.RedoNames,[])
-        self.assertEqual(self.Doc.RedoCount,0)
-    else:
-        self.assertEqual(self.Doc.UndoNames,['Transaction2','Transaction1'])
-        self.assertEqual(self.Doc.UndoCount,2)
-        self.assertEqual(self.Doc.RedoNames,[])
-        self.assertEqual(self.Doc.RedoCount,0)
+    # new behavior: no change, no transaction
+    self.assertEqual(self.Doc.UndoNames,['Transaction1'])
+    self.assertEqual(self.Doc.UndoCount,1)
+    self.assertEqual(self.Doc.RedoNames,[])
+    self.assertEqual(self.Doc.RedoCount,0)
 
     self.Doc.getObject("test1").Integer  = 2
     self.assertEqual(self.Doc.UndoNames,['Transaction2','Transaction1'])
@@ -724,25 +718,19 @@ class UndoRedoCases(unittest.TestCase):
 
     # third transaction
     self.Doc.openTransaction("Transaction3")
-    if FreeCAD.autoTransaction():
-        self.Doc.getObject("test1").Integer  = 3
+    self.Doc.getObject("test1").Integer  = 3
     self.assertEqual(self.Doc.UndoNames,['Transaction3','Transaction2','Transaction1'])
     self.assertEqual(self.Doc.UndoCount,3)
-    if not FreeCAD.autoTransaction():
-        self.Doc.getObject("test1").Integer  = 3
     self.assertEqual(self.Doc.RedoNames,[])
     self.assertEqual(self.Doc.RedoCount,0)
 
     # fourth transaction
     self.Doc.openTransaction("Transaction4")
-    if FreeCAD.autoTransaction():
-        self.Doc.getObject("test1").Integer  = 4
+    self.Doc.getObject("test1").Integer  = 4
     self.assertEqual(self.Doc.UndoNames,['Transaction4','Transaction3','Transaction2','Transaction1'])
     self.assertEqual(self.Doc.UndoCount,4)
     self.assertEqual(self.Doc.RedoNames,[])
     self.assertEqual(self.Doc.RedoCount,0)
-    if not FreeCAD.autoTransaction():
-        self.Doc.getObject("test1").Integer  = 4
 
     # undo the fourth transaction
     self.Doc.undo()

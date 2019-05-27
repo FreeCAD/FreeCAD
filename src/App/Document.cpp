@@ -1047,11 +1047,7 @@ void Document::openTransaction(const char* name) {
         return;
     }
 
-    auto &app = GetApplication();
-    if(app.autoTransaction())
-        app.setActiveTransaction(name?name:"<empty>");
-    else
-        _openTransaction(name);
+    GetApplication().setActiveTransaction(name?name:"<empty>");
 }
 
 int Document::_openTransaction(const char* name, int id)
@@ -1081,7 +1077,6 @@ int Document::_openTransaction(const char* name, int id)
         auto activeDoc = app.getActiveDocument();
         if(activeDoc && 
            activeDoc!=this && 
-           app.autoTransaction() && 
            !activeDoc->hasPendingTransaction()) 
         {
             std::string aname("-> ");
@@ -1123,7 +1118,7 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What,
                     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
                         if(What) {
                             auto parent = What->getContainer();
-                            auto obj = dynamic_cast<DocumentObject*>(parent);
+                            auto obj = Base::freecad_dynamic_cast<DocumentObject>(parent);
                             const char *objName = obj?obj->getNameInDocument():0;
                             const char *propName = What->getName();
                             FC_LOG((ignore?"ignore":"auto") << " transaction (" 
@@ -1188,7 +1183,7 @@ void Document::commitTransaction()
         }
         signalCommitTransaction(*this);
         GetApplication().closeActiveTransaction(false,id);
-    }else if(GetApplication().autoTransaction())
+    }else
         GetApplication().closeActiveTransaction(false);
 }
 
@@ -1214,7 +1209,7 @@ void Document::abortTransaction()
         d->activeUndoTransaction = 0;
         signalAbortTransaction(*this);
         GetApplication().closeActiveTransaction(true,id);
-    }else if(GetApplication().autoTransaction())
+    }else
         GetApplication().closeActiveTransaction(true);
 }
 

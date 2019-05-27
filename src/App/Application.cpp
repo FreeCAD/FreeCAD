@@ -947,13 +947,6 @@ Application::TransactionSignaller::~TransactionSignaller() {
     }
 }
 
-bool Application::autoTransaction() {
-    static ParameterGrp::handle hGrp;
-    if(!hGrp) 
-        hGrp = GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Document");
-    return hGrp->GetBool("AutoTransaction",true);
-}
-
 const char* Application::getHomePath(void) const
 {
     return _mConfig["AppHomePath"].c_str();

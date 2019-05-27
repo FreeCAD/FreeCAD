@@ -167,8 +167,6 @@ PyMethodDef Application::Methods[] = {
      "getActiveTransaction() -> (name,id) return the current active transaction name and ID"},     
     {"closeActiveTransaction", (PyCFunction) Application::sCloseActiveTransaction, METH_VARARGS,
      "closeActiveTransaction(abort=False) -- commit or abort current active transaction"},     
-    {"autoTransaction", (PyCFunction) Application::sAutoTransaction, METH_VARARGS,
-     "autoTransaction() -> Bool -- Test if auto transaction is enabled"},
     {"isRestoring", (PyCFunction) Application::sIsRestoring, METH_VARARGS,
      "isRestoring() -> Bool -- Test if the application is opening some document"},
     {"dumpSWIG", (PyCFunction) Application::sDumpSWIG, METH_VARARGS,
@@ -910,17 +908,6 @@ PyObject *Application::sCloseActiveTransaction(PyObject * /*self*/, PyObject *ar
     
     PY_TRY {
         GetApplication().closeActiveTransaction(PyObject_IsTrue(abort),id);
-        Py_Return;
-    } PY_CATCH;
-}
-
-PyObject *Application::sAutoTransaction(PyObject * /*self*/, PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return 0;
-    
-    PY_TRY {
-        return Py::new_reference_to(Py::Boolean(GetApplication().autoTransaction()));
         Py_Return;
     } PY_CATCH;
 }

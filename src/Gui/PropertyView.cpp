@@ -184,13 +184,11 @@ void PropertyView::showEvent(QShowEvent *ev) {
 }
 
 void PropertyView::clearPropertyItemSelection() {
-    if(App::GetApplication().autoTransaction()) {
-        QModelIndex index;
-        propertyEditorData->clearSelection();
-        propertyEditorData->setCurrentIndex(index);
-        propertyEditorView->clearSelection();
-        propertyEditorView->setCurrentIndex(index);
-    }
+    QModelIndex index;
+    propertyEditorData->clearSelection();
+    propertyEditorData->setCurrentIndex(index);
+    propertyEditorView->clearSelection();
+    propertyEditorView->setCurrentIndex(index);
 }
 
 void PropertyView::slotRollback() {
