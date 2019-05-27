@@ -227,6 +227,7 @@ public:
 
 public:
     virtual void processEvent(NS::Event& ev) {
+        ev.log();
         this->process_event(ev);
     }
 };
@@ -239,6 +240,7 @@ public:
     IdleState(my_context ctx):my_base(ctx)
     {
         this->outermost_context().ns.setViewingMode(NavigationStyle::IDLE);
+        Base::Console().Log(" -> IdleState\n");
     }
     virtual ~IdleState(){}
 
@@ -493,6 +495,7 @@ public:
     {
         this->outermost_context().ns.setViewingMode(NavigationStyle::DRAGGING);
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        Base::Console().Log(" -> RotateState\n");
     }
     virtual ~RotateState(){}
 
@@ -534,6 +537,7 @@ public:
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::PANNING);
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        Base::Console().Log(" -> PanState\n");
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
@@ -579,6 +583,7 @@ public:
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::PANNING);
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        Base::Console().Log(" -> StickyPanState\n");
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
@@ -623,6 +628,7 @@ public:
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::DRAGGING);
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        Base::Console().Log(" -> TiltState\n");
         ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
     virtual ~TiltState(){}
@@ -671,6 +677,7 @@ public:
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::PANNING);
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        Base::Console().Log(" -> GestureState\n");
         ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         enableTilt = !(App::GetApplication().GetParameterGroupByPath
@@ -747,6 +754,7 @@ public:
 public:
     AwaitingReleaseState(my_context ctx):my_base(ctx)
     {
+        Base::Console().Log(" -> AwaitingReleaseState\n");
     }
     virtual ~AwaitingReleaseState(){}
 
@@ -796,6 +804,7 @@ public:
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::INTERACT);
+        Base::Console().Log(" -> InteractState\n");
     }
     virtual ~InteractState(){}
 
@@ -957,9 +966,11 @@ void GestureNavigationStyle::onRollGesture(int direction)
 {
     std::string cmd;
     if (direction == +1){
+        Base::Console().Log("Roll forward gesture\n");
         cmd = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/View")->GetASCII("GestureRollFwdCommand");
     } else if (direction == -1) {
+        Base::Console().Log("Roll backward gesture\n");
         cmd = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/View")->GetASCII("GestureRollBackCommand");
     }
@@ -991,6 +1002,8 @@ void GestureNavigationStyle::EventQueue::post(const NS::Event& ev)
 {
     ev.flags->processed = true;
     this->push(*ev.asMouseButtonEvent());
+    Base::Console().Log("postponed: ");
+    ev.log();
 }
 
 void GestureNavigationStyle::EventQueue::discardAll()
