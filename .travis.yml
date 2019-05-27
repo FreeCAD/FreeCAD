@@ -282,8 +282,9 @@ script:
         cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
         # run the tests
         #cmd.exe /C 'cd C:\Users\travis\build\FreeCAD\FreeCAD\build\bin && FreeCADCmd.exe --run-test 0'
+        # Make build fail if ANY of the following fails
+        set -ev 
         winpty.exe -Xallow-non-tty -Xplain /C/Users/travis/build/FreeCAD/FreeCAD/build/bin/FreeCADCmd.exe --run-test 0
-        #cd $HOME
     else
         sudo make -j2 install
         ${INSTALLED_APP_PATH} --console --run-test 0
