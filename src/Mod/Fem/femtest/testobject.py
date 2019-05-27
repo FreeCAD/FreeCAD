@@ -532,6 +532,7 @@ class TestObjectType(unittest.TestCase):
         mesh = ObjectsFem.makeMeshGmsh(doc)
         solverelmer = ObjectsFem.makeSolverElmer(doc)
 
+        # FemAnalysis
         self.assertTrue(is_derived_from(
             ObjectsFem.makeAnalysis(doc),
             'App::DocumentObject'
@@ -541,6 +542,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemAnalysis'
         ))
 
+        # ConstraintBearing
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintBearing(doc),
             'App::DocumentObject'
@@ -554,6 +556,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintBearing'
         ))
 
+        # ConstraintBodyHeatSource
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintBodyHeatSource(doc),
             'App::DocumentObject'
@@ -567,6 +570,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintBodyHeatSource'
         ))
 
+        # ConstraintContact
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintContact(doc),
             'App::DocumentObject'
@@ -580,6 +584,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintContact'
         ))
 
+        # ConstraintDisplacement
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintDisplacement(doc),
             'App::DocumentObject'
@@ -593,6 +598,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintDisplacement'
         ))
 
+        # ConstraintElectrostaticPotential
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintElectrostaticPotential(doc),
             'App::DocumentObject'
@@ -606,6 +612,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintElectrostaticPotential'
         ))
 
+        # ConstraintFixed
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintFixed(doc),
             'App::DocumentObject'
@@ -619,6 +626,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintFixed'
         ))
 
+        # ConstraintFlowVelocity
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintFlowVelocity(doc),
             'App::DocumentObject'
@@ -632,6 +640,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintFlowVelocity'
         ))
 
+        # ConstraintFluidBoundary
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintFluidBoundary(doc),
             'App::DocumentObject'
@@ -645,6 +654,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintFluidBoundary'
         ))
 
+        # ConstraintForce
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintForce(doc),
             'App::DocumentObject'
@@ -658,6 +668,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintForce'
         ))
 
+        # ConstraintGear
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintGear(doc),
             'App::DocumentObject'
@@ -671,6 +682,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintGear'
         ))
 
+        # ConstraintHeatflux
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintHeatflux(doc),
             'App::DocumentObject'
@@ -684,6 +696,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintHeatflux'
         ))
 
+        # ConstraintInitialFlowVelocity
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintInitialFlowVelocity(doc),
             'App::DocumentObject'
@@ -697,6 +710,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintInitialFlowVelocity'
         ))
 
+        # ConstraintInitialTemperature
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintInitialTemperature(doc),
             'App::DocumentObject'
@@ -710,6 +724,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintInitialTemperature'
         ))
 
+        # ConstraintPlaneRotation
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintPlaneRotation(doc),
             'App::DocumentObject'
@@ -723,6 +738,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintPlaneRotation'
         ))
 
+        # ConstraintPressure
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintPressure(doc),
             'App::DocumentObject'
@@ -736,6 +752,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintPressure'
         ))
 
+        # ConstraintPulley
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintPulley(doc),
             'App::DocumentObject'
@@ -749,6 +766,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintPulley'
         ))
 
+        # ConstraintSelfWeight
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintSelfWeight(doc),
             'App::DocumentObject'
@@ -762,6 +780,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintSelfWeight'
         ))
 
+        # ConstraintTemperature
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintTemperature(doc),
             'App::DocumentObject'
@@ -775,6 +794,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintTemperature'
         ))
 
+        # ConstraintTransform
         self.assertTrue(is_derived_from(
             ObjectsFem.makeConstraintTransform(doc),
             'App::DocumentObject'
@@ -784,6 +804,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::ConstraintTransform'
         ))
 
+        # FemElementFluid1D
         self.assertTrue(is_derived_from(
             ObjectsFem.makeElementFluid1D(doc),
             'App::DocumentObject'
@@ -797,6 +818,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemElementFluid1D'
         ))
 
+        # FemElementGeometry1D
         self.assertTrue(is_derived_from(
             ObjectsFem.makeElementGeometry1D(doc),
             'App::DocumentObject'
@@ -810,6 +832,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemElementGeometry1D'
         ))
 
+        # FemElementGeometry2D
         self.assertTrue(is_derived_from(
             ObjectsFem.makeElementGeometry2D(doc),
             'App::DocumentObject'
@@ -823,6 +846,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemElementGeometry2D'
         ))
 
+        # FemElementRotation1D
         self.assertTrue(is_derived_from(
             ObjectsFem.makeElementRotation1D(doc),
             'App::DocumentObject'
@@ -836,6 +860,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemElementRotation1D'
         ))
 
+        # Material
         self.assertTrue(is_derived_from(
             ObjectsFem.makeMaterialFluid(doc),
             'App::DocumentObject'
@@ -849,6 +874,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::Material'
         ))
 
+        # Material
         self.assertTrue(is_derived_from(
             materialsolid, 'App::DocumentObject'
         ))
@@ -859,6 +885,7 @@ class TestObjectType(unittest.TestCase):
             materialsolid, 'Fem::Material'
         ))
 
+        # MaterialMechanicalNonlinear
         self.assertTrue(is_derived_from(
             ObjectsFem.makeMaterialMechanicalNonlinear(doc, materialsolid),
             'App::DocumentObject'
@@ -872,6 +899,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::MaterialMechanicalNonlinear'
         ))
 
+        # FemMeshBoundaryLayer
         self.assertTrue(is_derived_from(
             mesh, 'App::DocumentObject'
         ))
@@ -894,6 +922,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemMeshBoundaryLayer'
         ))
 
+        # FemMeshGroup
         self.assertTrue(is_derived_from(
             ObjectsFem.makeMeshGroup(doc, mesh),
             'App::DocumentObject'
@@ -907,6 +936,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemMeshGroup'
         ))
 
+        # FemMeshRegion
         self.assertTrue(is_derived_from(
             ObjectsFem.makeMeshRegion(doc, mesh),
             'App::DocumentObject'
@@ -920,6 +950,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemMeshRegion'
         ))
 
+        # FemMeshShapeNetgenObject
         self.assertTrue(is_derived_from(
             ObjectsFem.makeMeshNetgen(doc),
             'App::DocumentObject'
@@ -929,6 +960,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemMeshShapeNetgenObject'
         ))
 
+        # FemMeshResult
         self.assertTrue(is_derived_from(
             ObjectsFem.makeMeshResult(doc),
             'App::DocumentObject'
@@ -942,6 +974,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemMeshResult'
         ))
 
+        # FemResultMechanical
         self.assertTrue(is_derived_from(
             ObjectsFem.makeResultMechanical(doc),
             'App::DocumentObject'
@@ -955,6 +988,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemResultMechanical'
         ))
 
+        # FemSolverCalculixCcxTools
         self.assertTrue(is_derived_from(
             ObjectsFem.makeSolverCalculixCcxTools(doc),
             'App::DocumentObject'
@@ -972,6 +1006,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemSolverCalculixCcxTools'
         ))
 
+        # FemSolverObjectCalculix
         self.assertTrue(is_derived_from(
             ObjectsFem.makeSolverCalculix(doc),
             'App::DocumentObject'
@@ -989,19 +1024,25 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemSolverObjectCalculix'
         ))
 
+        # FemSolverObjectElmer
         self.assertTrue(is_derived_from(
-            solverelmer, 'App::DocumentObject'
+            solverelmer,
+            'App::DocumentObject'
         ))
         self.assertTrue(is_derived_from(
-            solverelmer, 'Fem::FemSolverObject'
+            solverelmer,
+            'Fem::FemSolverObject'
         ))
         self.assertTrue(is_derived_from(
-            solverelmer, 'Fem::FemSolverObjectPython'
+            solverelmer,
+            'Fem::FemSolverObjectPython'
         ))
         self.assertTrue(is_derived_from(
-            solverelmer, 'Fem::FemSolverObjectElmer'
+            solverelmer,
+            'Fem::FemSolverObjectElmer'
         ))
 
+        # FemSolverObjectZ88
         self.assertTrue(is_derived_from(
             ObjectsFem.makeSolverZ88(doc),
             'App::DocumentObject'
@@ -1019,6 +1060,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemSolverObjectZ88'
         ))
 
+        # FemEquationElmerElasticity
         self.assertTrue(is_derived_from(
             ObjectsFem.makeEquationElasticity(doc, solverelmer),
             'App::DocumentObject'
@@ -1032,6 +1074,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemEquationElmerElasticity'
         ))
 
+        # FemEquationElmerElectrostatic
         self.assertTrue(is_derived_from(
             ObjectsFem.makeEquationElectrostatic(doc, solverelmer),
             'App::DocumentObject'
@@ -1045,6 +1088,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemEquationElmerElectrostatic'
         ))
 
+        # FemEquationElmerFlow
         self.assertTrue(is_derived_from(
             ObjectsFem.makeEquationFlow(doc, solverelmer),
             'App::DocumentObject'
@@ -1058,6 +1102,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemEquationElmerFlow'
         ))
 
+        # FemEquationElmerFluxsolver
         self.assertTrue(is_derived_from(
             ObjectsFem.makeEquationFluxsolver(doc, solverelmer),
             'App::DocumentObject'
@@ -1071,6 +1116,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::FemEquationElmerFluxsolver'
         ))
 
+        # FemEquationElmerHeat
         self.assertTrue(is_derived_from(
             ObjectsFem.makeEquationHeat(doc, solverelmer),
             'App::DocumentObject'
