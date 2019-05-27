@@ -3075,7 +3075,8 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     int objectCount = 0;
 
     if (testStatus(Document::PartialDoc)) {
-        FC_ERR("Cannot recompute partially loaded document: " << getName());
+        if(mustExecute()) 
+            FC_WARN("Please reload partial document '" << Label.getValue() << "' for recomputation.");
         return 0;
     }
 
