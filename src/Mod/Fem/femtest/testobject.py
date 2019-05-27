@@ -899,7 +899,7 @@ class TestObjectType(unittest.TestCase):
             'Fem::MaterialMechanicalNonlinear'
         ))
 
-        # FemMeshBoundaryLayer
+        # FemMeshGmsh
         self.assertTrue(is_derived_from(
             mesh, 'App::DocumentObject'
         ))
@@ -909,6 +909,8 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(
             mesh, 'Fem::FemMeshGmsh'
         ))
+
+        # FemMeshBoundaryLayer
         self.assertTrue(is_derived_from(
             ObjectsFem.makeMeshBoundaryLayer(doc, mesh),
             'App::DocumentObject'
