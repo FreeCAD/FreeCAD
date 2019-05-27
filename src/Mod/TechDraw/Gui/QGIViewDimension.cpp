@@ -402,10 +402,6 @@ void QGIViewDimension::updateView(bool update)
      }
      else if(vp->Fontsize.isTouched() ||
                vp->Font.isTouched()) {
-         QFont font = datumLabel->getFont();
-         font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
-         font.setFamily(QString::fromLatin1(vp->Font.getValue()));
-         datumLabel->setFont(font);
          updateDim();
     } else if (vp->LineWidth.isTouched()) {           //never happens!!
         m_lineWidth = vp->LineWidth.getValue();
@@ -432,10 +428,10 @@ void QGIViewDimension::updateDim(bool obtuse)
     QString labelText = QString::fromUtf8(dim->getFormatedValue(m_obtuse).c_str());
     
     QFont font = datumLabel->getFont();
-    font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
-
+    font.setPointSizeF(calculateFontPointSizeF(this, vp->Fontsize.getValue()));
     datumLabel->setFont(font);
+
     prepareGeometryChange();
     datumLabel->setDimString(labelText);
     datumLabel->setTolString();
