@@ -109,7 +109,7 @@ def getParamType(param):
                    "renderPolylineWidth","showPlaneTracker","UsePartPrimitives","DiscretizeEllipses",
                    "showUnit"]:
         return "bool"
-    elif param in ["color","constructioncolor","snapcolor"]:
+    elif param in ["color","constructioncolor","snapcolor","gridColor"]:
         return "unsigned"
     else:
         return None
