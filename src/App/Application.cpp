@@ -843,20 +843,39 @@ void Application::setActiveDocument(const char *Name)
 
 AutoTransaction::AutoTransaction(const char *name, bool tmpName) {
     auto &app = GetApplication();
-    if(name) {
+    if(name && app._activeTransactionGuard>=0) {
         if(!app.getActiveTransaction()
                 || (!tmpName && app._activeTransactionTmpName))
         {
-            app._activeTransactionTmpName = tmpName;
+            FC_LOG("auto transaction '" << name << "', " << tmpName);
             tid = app.setActiveTransaction(name);
+            app._activeTransactionTmpName = tmpName;
         }
     }
-    ++app._activeTransactionGuard;
+    // We use negative transaction guard to disable auto transaction from here
+    // and any stack below. This is to support user setting active transaction
+    // before having any existing AutoTransaction on stack, or 'persist'
+    // transaction that can out live AutoTransaction. 
+    if(app._activeTransactionGuard<0)
+        --app._activeTransactionGuard;
+    else if(tid || app._activeTransactionGuard>0)
+        ++app._activeTransactionGuard;
+    else if(app.getActiveTransaction()) {
+        FC_LOG("auto transaction disabled because of '" << app._activeTransactionName << "'");
+        --app._activeTransactionGuard;
+    } else
+        ++app._activeTransactionGuard;
 }
 
 AutoTransaction::~AutoTransaction() {
     auto &app = GetApplication();
-    if(--app._activeTransactionGuard == 0) {
+    if(app._activeTransactionGuard<0)
+        ++app._activeTransactionGuard;
+    else if(!app._activeTransactionGuard) {
+#ifdef FC_DEBUG
+        FC_ERR("Transaction guard error");
+#endif
+    } else if(--app._activeTransactionGuard == 0) {
         try {
             // We don't call close() here, because close() only closes
             // transaction that we opened during construction time. However,
@@ -877,26 +896,49 @@ void AutoTransaction::close(bool abort) {
     }
 }
 
-int Application::setActiveTransaction(const char *name) {
+void AutoTransaction::setEnable(bool enable) {
+    auto &app = GetApplication();
+    if(!app._activeTransactionGuard)
+        return;
+    if((enable && app._activeTransactionGuard>0)
+            || (!enable && app._activeTransactionGuard<0))
+        return;
+    app._activeTransactionGuard = -app._activeTransactionGuard;
+    if(!enable && app._activeTransactionTmpName) {
+        bool close = true;
+        for(auto &v : app.DocMap) {
+            if(v.second->hasPendingTransaction()) {
+                close = false;
+                break;
+            }
+        }
+        if(close)
+            app.closeActiveTransaction();
+    }
+}
+
+int Application::setActiveTransaction(const char *name, bool persist) {
     if(!name || !name[0])
         name = "Command";
 
-    if(_activeTransactionGuard && getActiveTransaction()) {
+    if(_activeTransactionGuard>0 && getActiveTransaction()) {
         if(_activeTransactionTmpName) {
-            _activeTransactionTmpName = false;
-            _activeTransactionName = name;
+            FC_LOG("transaction rename to '" << name << "'");
             for(auto &v : DocMap)
                 v.second->renameTransaction(name,_activeTransactionID);
         }else
             return 0;
     }else{
-        _activeTransactionTmpName = false;
+        FC_LOG("set active transaction '" << name << "'");
         _activeTransactionID = 0;
         for(auto &v : DocMap)
             v.second->commitTransaction();
         _activeTransactionID = Transaction::getNewID();
-        _activeTransactionName = name;
     }
+    _activeTransactionTmpName = false;
+    _activeTransactionName = name;
+    if(persist)
+        AutoTransaction::setEnable(false);
     return _activeTransactionID;
 }
 
@@ -909,12 +951,15 @@ const char *Application::getActiveTransaction(int *id) const {
 }
 
 void Application::closeActiveTransaction(bool abort, int id) {
-    if(_activeTransactionGuard && !abort)
-        return;
-
     if(!id) id = _activeTransactionID;
     if(!id) return;
 
+    if(_activeTransactionGuard>0 && !abort) {
+        FC_LOG("ignore close transaction");
+        return;
+    }
+
+    FC_LOG("close transaction '" << _activeTransactionName << "' " << abort);
     _activeTransactionID = 0;
 
     TransactionSignaller siganller(abort,false);

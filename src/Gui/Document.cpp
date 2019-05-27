@@ -408,6 +408,8 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         dlg->setDocumentName(this->getDocument()->getName());
     if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
         signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
+
+    App::AutoTransaction::setEnable(false);
     return true;
 }
 

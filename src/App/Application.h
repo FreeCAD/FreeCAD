@@ -133,6 +133,9 @@ public:
     /** Setup a pending application-wide active transaction
      *
      * @param name: new transaction name
+     * @param persist: by default, if the calling code is inside any invokation
+     * of a command, it will be auto closed once all command within the current
+     * stack exists. To disable auto closing, set persist=true
      *
      * @return The new transaction ID.
      *
@@ -143,7 +146,7 @@ public:
      * with the given name and ID. If more than one document is changed, the
      * transactions will share the same ID, and will be undo/redo together.
      */
-    int setActiveTransaction(const char *name);
+    int setActiveTransaction(const char *name, bool persist=false);
     /// Return the current active transaction name and ID
     const char *getActiveTransaction(int *tid=0) const;
     /** Commit/abort current active transactions
@@ -587,6 +590,17 @@ public:
      * the constructor. For aborting, it will abort any current transaction
      */
     void close(bool abort=false);
+
+    /** Enable/Disable any AutoTransaction instance in the current stack
+     *
+     * Once disabled, any empty temperary named transaction is closed. If there
+     * are non-empty or non-temperary named active transaction, it will not be
+     * auto closed. 
+     *
+     * This function may be used in, for example, Gui::Document::setEdit() to
+     * allow a transaction live past any command scope. 
+     */
+    static void setEnable(bool enable);
 
 private:
     int tid = 0;
