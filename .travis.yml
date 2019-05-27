@@ -285,7 +285,7 @@ script:
         # Make build fail if ANY of the following fails
         set -ev 
         winpty.exe -Xallow-non-tty -Xplain /C/Users/travis/build/FreeCAD/FreeCAD/build/bin/FreeCADCmd.exe --run-test 0 | tee runlog.txt
-        grep FAILED runlog.txt
+        grep FAILED runlog.txt ; [ $? == 1 ] && echo "Build succeeded and tests passed!" || ( echo "Tests failed!" && false )
     else
         sudo make -j2 install
         ${INSTALLED_APP_PATH} --console --run-test 0
