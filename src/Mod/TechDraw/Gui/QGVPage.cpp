@@ -96,6 +96,7 @@
 #include "ZVALUE.h"
 #include "ViewProviderPage.h"
 #include "QGVPage.h"
+#include "MDIViewPage.h"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -746,7 +747,9 @@ void QGVPage::saveSvg(QString filename)
     // the width and height attributes of the <svg> element."  >> but Inkscape won't read it without size info??
     svgGen.setViewBox(QRect(0, 0, Rez::guiX(page->getPageWidth()), Rez::guiX(page->getPageHeight())));
 
-    svgGen.setResolution(Rez::guiX(25.4));    // docs say this is DPI. Rez::guiX(1dot/mm) so 254 dpi?
+    // Set resolution in DPI. To keep text dimensions as they are on screen,
+    // use the very same resolution the screen paint device reports.
+    svgGen.setResolution(MDIViewPage::getFromScene(scene())->logicalDpiY());
 
     svgGen.setTitle(QObject::tr("FreeCAD SVG Export"));
     svgGen.setDescription(svgDescription);

@@ -259,7 +259,7 @@
            <string>Dimension font size in units</string>
           </property>
           <property name="value">
-           <double>3.500000000000000</double>
+           <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>FontSize</cstring>
