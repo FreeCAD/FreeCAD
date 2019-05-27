@@ -44,13 +44,18 @@ elif open.__module__ == 'io':
     pyopen = open
 
 
-def open(filename):
+def open(
+    filename
+):
     "called when freecad opens a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
     insert(filename, docname)
 
 
-def insert(filename, docname):
+def insert(
+    filename,
+    docname
+):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
@@ -61,14 +66,19 @@ def insert(filename, docname):
 
 
 # ********* module specific methods *********
-def import_dat(filename, Analysis=None):
+def import_dat(
+    filename,
+    Analysis=None
+):
     r = readResult(filename)
     # print("Results {}".format(r))
     return r
 
 
 # read a calculix result file and extract the data
-def readResult(dat_input):
+def readResult(
+    dat_input
+):
     FreeCAD.Console.PrintMessage('Read ccx results from dat file: {}\n'.format(dat_input))
     dat_file = pyopen(dat_input, "r")
     eigenvalue_output_section_found = False
