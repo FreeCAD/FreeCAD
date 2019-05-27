@@ -1374,4 +1374,13 @@ void MDIViewPage::showStatusMsg(const char* s1, const char* s2, const char* s3) 
     }
 }
 
+MDIViewPage *MDIViewPage::getFromScene(const QGraphicsScene *scene)
+{
+    if (scene != nullptr && scene->parent() != nullptr) {
+        return dynamic_cast<MDIViewPage *>(scene->parent());
+    }
+
+    return nullptr;
+}
+
 #include <Mod/TechDraw/Gui/moc_MDIViewPage.cpp>

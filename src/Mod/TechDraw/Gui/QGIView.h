@@ -111,7 +111,11 @@ public:
     
     static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
     static QGVPage* getGraphicsView(TechDraw::DrawView* dv);
+    static double calculateFontPointSizeF(const QGraphicsItem *graphicsItem, double sizeInMillimetres);
+    static const double DefaultFontSizeInMM;
+
     MDIViewPage* getMDIViewPage(void) const;
+
     // Mouse handling
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     boost::signals2::signal<void (QGIView*, QPointF)> signalSelectPoint;
@@ -133,6 +137,8 @@ protected:
 
     QString getPrefFont(void);
     double getPrefFontSize(void);
+    double calculateFontPointSizeF(double sizeInMillimetres) const;
+
     Base::Reference<ParameterGrp> getParmGroupCol(void);
 
     TechDraw::DrawView *viewObj;

@@ -203,7 +203,7 @@ void QGISectionLine::makeSymbolsTrad()
     extLineStart = m_start + offset;
     extLineEnd = m_end + offset;
     prepareGeometryChange();
-    m_symFont.setPointSize(m_symSize);
+    m_symFont.setPointSizeF(QGIView::calculateFontPointSizeF(this, m_symSize));
     m_symbol1->setFont(m_symFont);
     m_symbol1->setPlainText(QString::fromUtf8(m_symbol));
     if (m_arrowDir.y < 0.0) {         //pointing down
@@ -246,7 +246,7 @@ void QGISectionLine::makeSymbolsISO()
     symPosEnd = m_end - offset;
 
     prepareGeometryChange();
-    m_symFont.setPointSize(m_symSize);
+    m_symFont.setPointSizeF(QGIView::calculateFontPointSizeF(this, m_symSize));
     m_symbol1->setFont(m_symFont);
     m_symbol1->setPlainText(QString::fromUtf8(m_symbol));
     m_symbol1->centerAt(symPosStart);
