@@ -139,13 +139,17 @@ def compare_inp_files(
     # for python3 problem with 1DFlow input
     # TODO as soon as the 1DFlow result reading is fixed
     # this should be triggered in the 1DFlow unit test
-    lf1 = [l for l in f1 if not (l.startswith('**   written ') or l.startswith('**   file ') or l.startswith('17671.0,1'))]
+    lf1 = [l for l in f1 if not (
+        l.startswith('**   written ') or l.startswith('**   file ') or l.startswith('17671.0,1')
+    )]
     lf1 = force_unix_line_ends(lf1)
     file2 = open(file_name2, 'r')
     f2 = file2.readlines()
     file2.close()
     # TODO see comment on file1
-    lf2 = [l for l in f2 if not (l.startswith('**   written ') or l.startswith('**   file ') or l.startswith('17671.0,1'))]
+    lf2 = [l for l in f2 if not (
+        l.startswith('**   written ') or l.startswith('**   file ') or l.startswith('17671.0,1')
+    )]
     lf2 = force_unix_line_ends(lf2)
     import difflib
     diff = difflib.unified_diff(lf1, lf2, n=0)
@@ -169,12 +173,16 @@ def compare_files(
     file1.close()
     # workaround to compare geos of elmer test and temporary file path
     # (not only names change, path changes with operating system)
-    lf1 = [l for l in f1 if not (l.startswith('Merge "') or l.startswith('Save "') or l.startswith('// '))]
+    lf1 = [l for l in f1 if not (
+        l.startswith('Merge "') or l.startswith('Save "') or l.startswith('// ')
+    )]
     lf1 = force_unix_line_ends(lf1)
     file2 = open(file_name2, 'r')
     f2 = file2.readlines()
     file2.close()
-    lf2 = [l for l in f2 if not (l.startswith('Merge "') or l.startswith('Save "') or l.startswith('// '))]
+    lf2 = [l for l in f2 if not (
+        l.startswith('Merge "') or l.startswith('Save "') or l.startswith('// ')
+    )]
     lf2 = force_unix_line_ends(lf2)
     import difflib
     diff = difflib.unified_diff(lf1, lf2, n=0)
@@ -270,7 +278,9 @@ def collect_python_modules(
                 )
             else:
                 collected_modules.append(
-                    femsubdir.replace('/', '.') + '.' + os.path.splitext(os.path.basename(pyfile))[0]
+                    femsubdir.replace('/', '.') + '.' + os.path.splitext(
+                        os.path.basename(pyfile)
+                    )[0]
                 )
     return collected_modules
 
