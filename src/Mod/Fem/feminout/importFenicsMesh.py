@@ -31,9 +31,9 @@ __url__ = "http://www.freecadweb.org"
 import os
 
 import FreeCAD
-import FreeCADGui
 
-if FreeCAD.GuiUp == 1:
+if FreeCAD.GuiUp:
+    import FreeCADGui
     from PySide import QtGui, QtCore
 
 
@@ -52,7 +52,7 @@ elif open.__module__ == 'io':
     # because we'll redefine open below (Python3)
     pyopen = open
 
-if FreeCAD.GuiUp == 1:
+if FreeCAD.GuiUp:
     class WriteXDMFTaskPanel:
         """
         This task panel is used to write mesh groups with user defined values.
