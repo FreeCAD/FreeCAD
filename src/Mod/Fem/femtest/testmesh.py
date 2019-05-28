@@ -279,6 +279,90 @@ class TestMeshEleTetra10(unittest.TestCase):
         '''
 
     # ********************************************************************************************
+    def get_file_paths(
+        self,
+        file_extension
+    ):
+        outfile = self.base_outfile + file_extension
+        testfile = self.base_testfile + file_extension
+        # fcc_print(outfile)
+        # fcc_print(testfile)
+        return (outfile, testfile)
+
+    # ********************************************************************************************
+    def compare_mesh_files(
+        self,
+        femmesh_testfile,
+        femmesh_outfile,
+        filetyp
+    ):
+
+        # '''
+        fcc_print([
+            femmesh_testfile.Volumes[0],
+            femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])
+        ])
+        # '''
+
+        # test reading the test mesh
+        self.assertEqual(
+            femmesh_testfile.Nodes,
+            self.expected_nodes['nodes'],
+            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
+                self.elem,
+                filetyp
+            )
+        )
+        self.assertEqual(
+            [
+                femmesh_testfile.Volumes[0],
+                femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])
+            ],
+            self.expected_elem['volumes'],
+            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
+                self.elem,
+                filetyp
+            )
+        )
+        # test reading the written mesh
+        self.assertEqual(
+            femmesh_outfile.Nodes,
+            self.expected_nodes['nodes'],
+            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
+                self.elem,
+                filetyp
+            )
+        )
+        self.assertEqual(
+            [
+                femmesh_outfile.Volumes[0],
+                femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])
+            ],
+            self.expected_elem['volumes'],
+            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
+                self.elem,
+                filetyp
+            )
+        )
+        # test if both are equal
+        self.assertEqual(
+            femmesh_outfile.Nodes,
+            femmesh_testfile.Nodes,
+            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
+                self.elem,
+                filetyp
+            )
+        )
+        self.assertEqual(
+            femmesh_outfile.Volumes,
+            femmesh_testfile.Volumes,
+            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
+                self.elem,
+                filetyp
+            )
+        )
+
+    # ********************************************************************************************
     def test_tetra10_create(
         self
     ):
@@ -317,82 +401,18 @@ class TestMeshEleTetra10(unittest.TestCase):
         self
     ):
         # tetra10 element: reading from and writing to inp mesh file format
-        filetyp = 'inp'
-        outfile = self.base_outfile + filetyp
-        testfile = self.base_testfile + filetyp
-        # fcc_print(outfile)
-        # fcc_print(testfile)
+
+        file_extension = 'inp'
+        outfile, testfile = self.get_file_paths(file_extension)
+
         self.femmesh.writeABAQUS(outfile, 1, False)  # write the mesh
         femmesh_outfile = Fem.read(outfile)  # read the mesh from written mesh
         femmesh_testfile = Fem.read(testfile)  # read the mesh from test mesh
-        # reading the test mesh
-        # '''
-        fcc_print([
-            femmesh_testfile.Volumes[0],
-            femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])
-        ])
-        # '''
-        self.assertEqual(
-            femmesh_testfile.Nodes,
-            self.expected_nodes['nodes'],
-            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        self.assertEqual(
-            [
-                femmesh_testfile.Volumes[0],
-                femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])
-            ],
-            self.expected_elem['volumes'],
-            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        # reading the written mesh
-        self.assertEqual(
-            femmesh_outfile.Nodes,
-            self.expected_nodes['nodes'],
-            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        self.assertEqual(
-            [
-                femmesh_outfile.Volumes[0],
-                femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])
-            ],
-            self.expected_elem['volumes'],
-            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        # both
-        self.assertEqual(
-            femmesh_outfile.Nodes,
-            femmesh_testfile.Nodes,
-            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        self.assertEqual(
-            [
-                femmesh_outfile.Volumes[0],
-                femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])
-            ],
-            [
-                femmesh_testfile.Volumes[0],
-                femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])
-            ],
-            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
-                self.elem,
-                filetyp
-            )
+
+        self.compare_mesh_files(
+            femmesh_testfile,
+            femmesh_outfile,
+            file_extension
         )
 
     # ********************************************************************************************
@@ -400,70 +420,18 @@ class TestMeshEleTetra10(unittest.TestCase):
         self
     ):
         # tetra10 element: reading from and writing to unv mesh file format
-        filetyp = 'unv'
-        outfile = self.base_outfile + filetyp
-        testfile = self.base_testfile + filetyp
-        # fcc_print(outfile)
-        # fcc_print(testfile)
+
+        file_extension = 'unv'
+        outfile, testfile = self.get_file_paths(file_extension)
+
         self.femmesh.write(outfile)  # write the mesh
         femmesh_outfile = Fem.read(outfile)  # read the mesh from written mesh
         femmesh_testfile = Fem.read(testfile)  # read the mesh from test mesh
-        # reading the test mesh
-        self.assertEqual(
-            femmesh_testfile.Nodes,
-            self.expected_nodes['nodes'],
-            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        self.assertEqual(
-            [
-                femmesh_testfile.Volumes[0],
-                femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])
-            ],
-            self.expected_elem['volumes'],
-            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        # reading the written mesh
-        self.assertEqual(
-            femmesh_outfile.Nodes,
-            self.expected_nodes['nodes'],
-            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        self.assertEqual(
-            [
-                femmesh_outfile.Volumes[0],
-                femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])
-            ],
-            self.expected_elem['volumes'],
-            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        # both
-        self.assertEqual(
-            femmesh_outfile.Nodes,
-            femmesh_testfile.Nodes,
-            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        self.assertEqual(
-            femmesh_outfile.Volumes,
-            femmesh_testfile.Volumes,
-            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
-                self.elem,
-                filetyp
-            )
+
+        self.compare_mesh_files(
+            femmesh_testfile,
+            femmesh_outfile,
+            file_extension
         )
 
     # ********************************************************************************************
@@ -471,71 +439,19 @@ class TestMeshEleTetra10(unittest.TestCase):
         self
     ):
         # tetra10 element: reading from and writing to unv mesh file format
-        filetyp = 'vtk'
-        outfile = self.base_outfile + filetyp
-        testfile = self.base_testfile + filetyp
-        # fcc_print(outfile)
-        # fcc_print(testfile)
+
+        file_extension = 'vtk'
+        outfile, testfile = self.get_file_paths(file_extension)
+
         if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
             self.femmesh.write(outfile)  # write the mesh
             femmesh_outfile = Fem.read(outfile)  # read the mesh from written mesh
             femmesh_testfile = Fem.read(testfile)  # read the mesh from test mesh
-            # reading the test mesh
-            self.assertEqual(
-                femmesh_testfile.Nodes,
-                self.expected_nodes['nodes'],
-                "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
-                    self.elem,
-                    filetyp
-                )
-            )
-            self.assertEqual(
-                [
-                    femmesh_testfile.Volumes[0],
-                    femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])
-                ],
-                self.expected_elem['volumes'],
-                "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
-                    self.elem,
-                    filetyp
-                )
-            )
-            # reading the written mesh
-            self.assertEqual(
-                femmesh_outfile.Nodes,
-                self.expected_nodes['nodes'],
-                "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
-                    self.elem,
-                    filetyp
-                )
-            )
-            self.assertEqual(
-                [
-                    femmesh_outfile.Volumes[0],
-                    femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])
-                ],
-                self.expected_elem['volumes'],
-                "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
-                    self.elem,
-                    filetyp
-                )
-            )
-            # both
-            self.assertEqual(
-                femmesh_outfile.Nodes,
-                femmesh_testfile.Nodes,
-                "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
-                    self.elem,
-                    filetyp
-                )
-            )
-            self.assertEqual(
-                femmesh_outfile.Volumes,
-                femmesh_testfile.Volumes,
-                "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
-                    self.elem,
-                    filetyp
-                )
+
+            self.compare_mesh_files(
+                femmesh_testfile,
+                femmesh_outfile,
+                file_extension
             )
         else:
             fcc_print('FEM_VTK post processing is disabled.')
@@ -545,70 +461,18 @@ class TestMeshEleTetra10(unittest.TestCase):
         self
     ):
         # tetra10 element: reading from and writing to z88 mesh file format
-        filetyp = 'z88'
-        outfile = self.base_outfile + filetyp
-        testfile = self.base_testfile + filetyp
-        # fcc_print(outfile)
-        # fcc_print(testfile)
+
+        file_extension = 'z88'
+        outfile, testfile = self.get_file_paths(file_extension)
+
         self.femmesh.write(outfile)  # write the mesh
         femmesh_testfile = Fem.read(outfile)  # read the mesh from written mesh
         femmesh_outfile = Fem.read(testfile)  # read the mesh from test mesh
-        # reading the test mesh
-        self.assertEqual(
-            femmesh_testfile.Nodes,
-            self.expected_nodes['nodes'],
-            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        self.assertEqual(
-            [
-                femmesh_testfile.Volumes[0],
-                femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])
-            ],
-            self.expected_elem['volumes'],
-            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        # reading the written mesh
-        self.assertEqual(
-            femmesh_outfile.Nodes,
-            self.expected_nodes['nodes'],
-            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        self.assertEqual(
-            [
-                femmesh_outfile.Volumes[0],
-                femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])
-            ],
-            self.expected_elem['volumes'],
-            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        # both
-        self.assertEqual(
-            femmesh_outfile.Nodes,
-            femmesh_testfile.Nodes,
-            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
-                self.elem,
-                filetyp
-            )
-        )
-        self.assertEqual(
-            femmesh_outfile.Volumes,
-            femmesh_testfile.Volumes,
-            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
-                self.elem,
-                filetyp
-            )
+
+        self.compare_mesh_files(
+            femmesh_testfile,
+            femmesh_outfile,
+            file_extension
         )
 
     # ********************************************************************************************
