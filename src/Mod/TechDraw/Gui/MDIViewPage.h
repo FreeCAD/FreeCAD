@@ -71,7 +71,7 @@ public:
     void matchSceneRectToTemplate(void);
     
     bool onMsg(const char* pMsg,const char** ppReturn);
-      bool onHasMsg(const char* pMsg) const;
+    bool onHasMsg(const char* pMsg) const;
 
     void print();
     void print(QPrinter* printer);
@@ -100,6 +100,8 @@ public:
     void setTabText(std::string t);
 
     bool addView(const App::DocumentObject *obj);
+
+    static MDIViewPage *getFromScene(const QGraphicsScene *scene);
 
 public Q_SLOTS:
     void viewAll();
