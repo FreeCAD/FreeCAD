@@ -124,6 +124,7 @@ def import_z88_disp(
         FreeCAD.Console.PrintError(
             'Problem on Z88 result file import. No nodes found in Z88 result file.\n'
         )
+    return res_obj
 
 
 def read_z88_disp(
