@@ -126,6 +126,7 @@ def import_z88_mesh(
     if femmesh:
         mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
         mesh_object.FemMesh = femmesh
+    return mesh_object
 
 
 def read_z88_mesh(
