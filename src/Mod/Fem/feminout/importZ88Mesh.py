@@ -28,11 +28,14 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD Z88 Mesh reader and writer for FEM workbench
 
-import FreeCAD
 import os
+import FreeCAD
 
+# ************************************************************************************************
+# ********* generic FreeCAD import and export methods ********************************************
+# names are fix given from FreeCAD, these methods are called from FreeCAD
+# they are set in FEM modules Init.py
 
-# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -83,24 +86,33 @@ def export(
     f.close()
 
 
-# ********* module specific methods *********
-def write(
-    fem_mesh,
-    filename
-):
-    '''directly write a FemMesh to a Z88 mesh file format
-    fem_mesh: a FemMesh'''
+# ************************************************************************************************
+# ********* module specific methods **************************************************************
+# reader:
+# - a method uses a FemMesh instance, creates the FreeCAD document object and returns this object
+# - a method creates and returns a FemMesh (no FreeCAD document object) out of the FEM mesh dict
+# - a method reads the data from the mesh file or converts data and returns FEM mesh dictionary
+#
+# writer:
+# - a method directly writes a FemMesh to the mesh file
+# - a method takes a file handle, mesh data and writes to the file handle
 
-    if not fem_mesh.isDerivedFrom("Fem::FemMesh"):
-        FreeCAD.Console.PrintError("Not a FemMesh was given as parameter.\n")
-        return
-    femnodes_mesh = fem_mesh.Nodes
-    import femmesh.meshtools as FemMeshTools
-    femelement_table = FemMeshTools.get_femelement_table(fem_mesh)
-    z88_element_type = get_z88_element_type(fem_mesh, femelement_table)
-    f = pyopen(filename, "w")
-    write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
-    f.close()
+# ********* reader *******************************************************************************
+def import_z88_mesh(
+    filename,
+    analysis=None
+):
+    '''read a FEM mesh from a Z88 mesh file and
+    insert a FreeCAD FEM Mesh object in the ActiveDocument
+    '''
+
+    femmesh = read(filename)
+    mesh_name = os.path.basename(os.path.splitext(filename)[0])
+    if femmesh:
+        mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object.FemMesh = femmesh
+
+    return mesh_object
 
 
 def read(
@@ -109,24 +121,11 @@ def read(
     '''read a FemMesh from a Z88 mesh file and return the FemMesh
     '''
     # no document object is created, just the FemMesh is returned
+
     mesh_data = read_z88_mesh(filename)
     from . import importToolsFem
+
     return importToolsFem.make_femmesh(mesh_data)
-
-
-def import_z88_mesh(
-    filename,
-    analysis=None
-):
-    '''read a FEM mesh from a Z88 mesh file and
-    insert a FreeCAD FEM Mesh object in the ActiveDocument
-    '''
-    femmesh = read(filename)
-    mesh_name = os.path.basename(os.path.splitext(filename)[0])
-    if femmesh:
-        mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
-        mesh_object.FemMesh = femmesh
-    return mesh_object
 
 
 def read_z88_mesh(
@@ -385,6 +384,7 @@ def read_z88_mesh(
     FreeCAD.Console.PrintLog('\n')
 
     z88_mesh_file.close()
+
     return {
         'Nodes': nodes,
         'Seg2Elem': elements_seg2,
@@ -402,7 +402,26 @@ def read_z88_mesh(
     }
 
 
-# write z88 Mesh
+# ********* writer *******************************************************************************
+def write(
+    fem_mesh,
+    filename
+):
+    '''directly write a FemMesh to a Z88 mesh file format
+    fem_mesh: a FemMesh'''
+
+    if not fem_mesh.isDerivedFrom("Fem::FemMesh"):
+        FreeCAD.Console.PrintError("Not a FemMesh was given as parameter.\n")
+        return
+    femnodes_mesh = fem_mesh.Nodes
+    import femmesh.meshtools as FemMeshTools
+    femelement_table = FemMeshTools.get_femelement_table(fem_mesh)
+    z88_element_type = get_z88_element_type(fem_mesh, femelement_table)
+    f = pyopen(filename, "w")
+    write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
+    f.close()
+
+
 def write_z88_mesh_to_file(
     femnodes_mesh,
     femelement_table,
