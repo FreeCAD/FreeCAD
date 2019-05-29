@@ -1458,9 +1458,9 @@ Action * PythonGroupCommand::createAction(void)
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
         Py::Callable call(cmd.getAttr("GetCommands"));
-        Py::Tuple args;
-        Py::Tuple ret(call.apply(args));
-        for (Py::Tuple::iterator it = ret.begin(); it != ret.end(); ++it) {
+        Py::Sequence args;
+        Py::Sequence ret(call.apply(args));
+        for (auto it = ret.begin(); it != ret.end(); ++it) {
             Py::String str(*it);
             QAction* cmd = pcAction->addAction(QString());
             cmd->setProperty("CommandName", QByteArray(static_cast<std::string>(str).c_str()));
