@@ -153,7 +153,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
             ts.initCache(1);
         }
         if(subname && *subname && !ts.isNull())
-            ts = ts.getSubTopoShape(subname);
+            ts = ts.getSubTopoShape(subname,true);
         if(doTransform && !ts.isNull()) {
             static int sCopy = -1; 
             if(sCopy<0) {

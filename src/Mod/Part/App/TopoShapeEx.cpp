@@ -519,6 +519,7 @@ TopoShape TopoShape::getSubTopoShape(const char *Type, bool silent) const {
             FC_THROWM(Base::CADKernelError, "Mapped element not found: " << Type);
         return TopoShape();
     }
+
     auto type = shapeType(Type,silent);
     if(silent && type == TopAbs_SHAPE)
         return TopoShape();
@@ -616,7 +617,7 @@ TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf,
     resetElementMap();
     
     if(!copy) {
-        // OCCT checks the ScaleFactor against gp::Resotion() which is DBL_MIN!!!
+        // OCCT checks the ScaleFactor against gp::Resolution() which is DBL_MIN!!!
         copy = trsf.ScaleFactor()*trsf.HVectorialPart().Determinant() < 0. ||
                Abs(Abs(trsf.ScaleFactor()) - 1) > Precision::Confusion();
     }
