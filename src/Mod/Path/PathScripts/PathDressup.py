@@ -23,12 +23,12 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
 import PathScripts.PathJob as PathJob
 
 def selection():
     '''isActive() ... return True if a dressup command is possible.'''
-    if FreeCAD.ActiveDocument:
+    if FreeCAD.ActiveDocument and FreeCAD.GuiUp:
+        import FreeCADGui
         sel = FreeCADGui.Selection.getSelectionEx()
         if len(sel) == 1 and sel[0].Object.isDerivedFrom("Path::Feature") and PathJob.Instances():
             return sel[0].Object
