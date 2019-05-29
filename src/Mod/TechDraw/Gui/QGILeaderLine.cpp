@@ -265,6 +265,7 @@ void QGILeaderLine::startPathEdit(void)
 
 void QGILeaderLine::saveState(void)
 {
+//    Base::Console().Message("QGILL::saveState()\n");
     auto leadFeat = getFeature();
     if (leadFeat != nullptr) {
         m_savePoints = leadFeat->WayPoints.getValues();
@@ -275,11 +276,13 @@ void QGILeaderLine::saveState(void)
 
 void QGILeaderLine::restoreState(void)
 {
+//    Base::Console().Message("QGILL::restoreState()\n");
     auto leadFeat = getFeature();
     if (leadFeat != nullptr) {
         leadFeat->WayPoints.setValues(m_savePoints);
         leadFeat->X.setValue(m_saveX);
         leadFeat->Y.setValue(m_saveY);
+        leadFeat->recomputeFeature();
     }
 }
 
@@ -487,9 +490,10 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
 
 void QGILeaderLine::abandonEdit(void)
 {
-////    Base::Console().Message("QGIL::abandonEdit()\n");
+//    Base::Console().Message("QGIL::abandonEdit()\n");
     m_line->clearMarkers();
     m_line->restoreState();
+    restoreState();
 }
 
 double QGILeaderLine::getScale(void)

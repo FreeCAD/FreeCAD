@@ -252,6 +252,11 @@ void QGEPath::restoreState()
 {
 //    Base::Console().Message("QGEPath::restoreState()\n");
     inEdit(false);
+    if (m_ghost != nullptr) {
+        if (m_ghost->scene() != nullptr) {
+            scene()->removeItem(m_ghost);   //stop ghost from messing up brect
+        }
+    }
     m_deltas = m_saveDeltas;
     updatePath();
 }    
