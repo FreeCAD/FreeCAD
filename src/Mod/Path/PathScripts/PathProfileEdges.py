@@ -47,7 +47,7 @@ if FreeCAD.GuiUp:
     from PySide import QtGui
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 

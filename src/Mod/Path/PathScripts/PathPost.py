@@ -44,7 +44,7 @@ LOG_MODULE = PathLog.thisModule()
 PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
