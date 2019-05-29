@@ -354,6 +354,8 @@ void ActionGroup::onActivated (QAction* a)
             QToolButton* button = qobject_cast<QToolButton*>(menu->parent());
             if (button) {
                 button->setIcon(a->icon());
+                button->setText(a->text());
+                button->setToolTip(a->toolTip());
                 this->setProperty("defaultAction", QVariant(index));
             }
         }
