@@ -9,7 +9,7 @@ else:
 
 from PySide import QtGui
 
-# Qt tanslation handling
+# Qt translation handling
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
     def translate(context, text, disambig=None):

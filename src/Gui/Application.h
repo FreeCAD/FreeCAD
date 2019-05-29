@@ -46,10 +46,10 @@ class ViewProvider;
 class ViewProviderDocumentObject;
 
 /** The Application main class
- * This is the central class of the GUI 
+ * This is the central class of the GUI
  * @author Jürgen Riegel, Werner Mayer
  */
-class GuiExport Application 
+class GuiExport Application
 {
 public:
     /// construction
@@ -166,7 +166,7 @@ public:
     Gui::ViewProvider* getViewProvider(const App::DocumentObject*) const;
     //@}
 
-    /// true when the application shuting down
+    /// true when the application shutting down
     bool isClosing(void);
     void checkForPreviousCrashes();
 
@@ -205,7 +205,7 @@ public:
 
 public:
     //---------------------------------------------------------------------
-    // python exports goes here +++++++++++++++++++++++++++++++++++++++++++	
+    // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
     // static python wrapper of the exported functions
     static PyObject* sActivateWorkbenchHandler (PyObject *self,PyObject *args); // activates a workbench object
@@ -258,11 +258,11 @@ public:
 
     static PyObject* sCreateViewer             (PyObject *self,PyObject *args);
     static PyObject* sGetMarkerIndex           (PyObject *self,PyObject *args);
-    
+
     static PyObject* sAddDocObserver           (PyObject *self,PyObject *args);
     static PyObject* sRemoveDocObserver        (PyObject *self,PyObject *args);
 
-    static PyMethodDef    Methods[]; 
+    static PyMethodDef    Methods[];
 
 private:
     struct ApplicationP* d;

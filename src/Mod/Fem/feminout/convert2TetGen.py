@@ -75,7 +75,7 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
     EdgeFacets = {(PointList[0], PointList[1]): set([0])}
     Edge = []
 
-    # Finde all facets for each edge
+    # Find all facets for each edge
     for FacetIndex in range(len(allFacets)):
         Facet = allFacets[FacetIndex]
         for i in range(0, -len(Facet), -1):

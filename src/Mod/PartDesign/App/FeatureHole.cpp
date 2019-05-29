@@ -561,7 +561,7 @@ void Hole::updateDiameterParam()
             pitch = ThreadPitch.getValue();
         }
 
-        /* Use thread tap diameter, normall D - pitch */
+        /* Use thread tap diameter, normal D - pitch */
         diameter = diameter - pitch;
     }
     else {
@@ -1294,4 +1294,3 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 }
-
