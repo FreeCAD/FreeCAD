@@ -23,7 +23,6 @@
 # ***************************************************************************
 '''PathUtils -common functions used in PathScripts for filterig, sorting, and generating gcode toolpath data '''
 import FreeCAD
-import FreeCADGui
 import Part
 import Path
 import PathScripts
@@ -36,7 +35,6 @@ import sys
 from DraftGeomUtils import geomType
 from FreeCAD import Vector
 from PathScripts import PathJob
-from PathScripts import PathJobCmd
 from PathScripts import PathLog
 from PySide import QtCore
 from PySide import QtGui
@@ -50,6 +48,8 @@ else:
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
+UserInput = None
 
 def waiting_effects(function):
     def new_function(*args, **kwargs):
@@ -425,14 +425,8 @@ def findToolController(obj, name=None):
 
     PathLog.track('name: {}'.format(name))
     c = None
-    if FreeCAD.GuiUp:
-        # First check if a user has selected a tool controller in the tree. Return the first one and remove all from selection
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            if hasattr(sel.Object, 'Proxy'):
-                if isinstance(sel.Object.Proxy, PathScripts.PathToolController.ToolController):
-                    if c is None:
-                        c = sel.Object
-                    FreeCADGui.Selection.removeSelection(sel.Object)
+    if UserInput:
+        c = UserInput.selectedToolController()
     if c is not None:
         return c
 
@@ -449,16 +443,8 @@ def findToolController(obj, name=None):
             tc = None
     elif name is not None:  # More than one, make the user choose.
         tc = [i for i in controllers if i.Label == name][0]
-    else:
-        # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgTCChooser.ui")
-        form = FreeCADGui.PySideUic.loadUi(":/panels/DlgTCChooser.ui")
-        mylist = [i.Label for i in controllers]
-        form.uiToolController.addItems(mylist)
-        r = form.exec_()
-        if not r:
-            tc = None
-        else:
-            tc = [i for i in controllers if i.Label == form.uiToolController.currentText()][0]
+    elif UserInput:
+        tc = UserInput.chooseToolController(controllers)
     return tc
 
 
@@ -495,41 +481,12 @@ def addToJob(obj, jobname=None):
             return None
     else:
         jobs = GetJobs()
-        if len(jobs) == 0:
-            job = PathJobCmd.CommandJobCreate().Activated()
+        if len(jobs) == 0 and UserInput:
+            job = UserInput.createJob()
         elif len(jobs) == 1:
             job = jobs[0]
-        else:
-            selected = FreeCADGui.Selection.getSelection()
-            if 1 == len(selected) and selected[0] in jobs:
-                job = selected[0]
-            else:
-                modelSelected = []
-                for job in jobs:
-                    if all([o in job.Model.Group for o in selected]):
-                        modelSelected.append(job)
-                if 1 == len(modelSelected):
-                    job = modelSelected[0]
-                else:
-                    modelObjectSelected = []
-                    for job in jobs:
-                        if all([o in job.Proxy.baseObjects(job) for o in selected]):
-                            modelObjectSelected.append(job)
-                    if 1 == len(modelObjectSelected):
-                        job = modelObjectSelected[0]
-                    else:
-                        # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
-                        form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
-                        if modelObjectSelected:
-                            mylist = [j.Label for j in modelObjectSelected]
-                        else:
-                            mylist = [j.Label for j in jobs]
-                        form.cboProject.addItems(mylist)
-                        r = form.exec_()
-                        if r is False or r == 0:
-                            return None
-                        else:
-                            job = [j for j in jobs if j.Label == form.cboProject.currentText()][0]
+        elif UserInput:
+            job = UserInput.chooseJob(jobs)
 
     if obj and job:
         job.Proxy.addOperation(obj)
