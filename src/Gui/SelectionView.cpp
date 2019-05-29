@@ -395,7 +395,7 @@ void SelectionView::preselect(QListWidgetItem* item)
         char *end = std::strchr(objname,' ');
         if(end) *end = 0;
     }
-    QString cmd = QString::fromLatin1("Gui.Selection.preselect("
+    QString cmd = QString::fromLatin1("Gui.Selection.setPreselection("
         "App.getDocument('%1').getObject('%2'),'%3')")
         .arg(QString::fromLatin1(docname))
         .arg(QString::fromLatin1(objname))
