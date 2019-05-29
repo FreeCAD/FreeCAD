@@ -1,23 +1,20 @@
 #version:
 
+image: Visual Studio 2017
+
 environment:
   matrix:
-    - generator: "Visual Studio 12 Win64"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      # APPVEYOR_SAVE_CACHE_ON_ERROR: true
+      generator: "Visual Studio 15 2017 Win64"
       ARCH: "Win64"
-      Compiler: "MSVC2013"
-    - generator: "Visual Studio 12"
-      ARCH: "Win32"
-      Compiler: "MSVC2013"
+      Compiler: "MSVC2017"
 
-#cache: #
-cache: c:\users\appveyor\clcache
+cache: c:\users\appveyor\clcache -> appveyor.yml
 
 configuration:
   #- Debug
   - Release
-
-#branches:
-#  only:
 
 clone_depth: 1600
 
@@ -30,15 +27,10 @@ clone_depth: 1600
 #todo cleanup libpacks on the FreeCAD-ports-cache repo
 install:
   - cd C:\projects\freecad
-  - if [%ARCH%] == [Win64] (appveyor DownloadFile https://github.com/FreeCAD/FreeCAD-ports-cache/releases/download/v0.17/FreeCADLibs_11.5.1_x64_VC12.7z)
+  - if [%ARCH%] == [Win64] (appveyor DownloadFile https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z)
   - if [%ARCH%] == [Win64] (
-      powershell -Command 7z x FreeCADLibs_11.5.1_x64_VC12.7z > nul &&
-      ren FreeCADLibs_11.5_x64_VC12 FreeCADLibs)
-  - if [%ARCH%] == [Win32] (appveyor DownloadFile https://github.com/FreeCAD/FreeCAD-ports-cache/releases/download/v0.17/FreeCADLibs_11.5.1_x86_VC12.7z)
-  - if [%ARCH%] == [Win32] (
-      powershell -Command 7z x FreeCADLibs_11.5.1_x86_VC12.7z > nul &&
-      ren FreeCADLibs_11.5_x86_VC12 FreeCADLibs)
-  - dir
+      powershell -Command 7z x FreeCADLibs_12.1.2_x64_VC15.7z -oFreeCADLibs > nul &&
+      call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat")
   - set PATH=c:\Python37;c:\Python37\Scripts;%PATH%
   - pip install clcache
   - clcache -z
