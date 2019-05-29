@@ -222,7 +222,7 @@ if(MSVC)
         # Create install commands for dependencies for INSTALL target in FreeCAD solution
         option(FREECAD_INSTALL_DEPEND_DIRS "Create install dependency commands for the INSTALL target found
             in the FreeCAD solution." ON)
-        # Copy libpack smaller dependency folders to build folder per user request - if non-existant at destination
+        # Copy libpack smaller dependency folders to build folder per user request - if non-existent at destination
         if (NOT EXISTS ${CMAKE_BINARY_DIR}/bin/imageformats/qsvg.dll)
             option(FREECAD_COPY_DEPEND_DIRS_TO_BUILD "Copy smaller libpack dependency directories to build directory." OFF)
         endif()
@@ -1211,7 +1211,7 @@ if(MSVC)
     if(FREECAD_RELEASE_SEH)
         set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
     endif(FREECAD_RELEASE_SEH)
-  
+
     option(FREECAD_USE_MP_COMPILE_FLAG "Add /MP flag to the compiler definitions. Speeds up the compile on multi processor machines" OFF)
     if(FREECAD_USE_MP_COMPILE_FLAG)
         # set "Build with Multiple Processes"

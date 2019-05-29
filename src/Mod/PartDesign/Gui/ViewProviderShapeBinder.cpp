@@ -59,13 +59,13 @@ ViewProviderShapeBinder::ViewProviderShapeBinder()
     PointSize.setStatus(App::Property::Hidden, true);
     DisplayMode.setStatus(App::Property::Hidden, true);
 
-    //get the datum coloring sheme
+    //get the datum coloring scheme
     // set default color for datums (golden yellow with 60% transparency)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
             "User parameter:BaseApp/Preferences/Mod/PartDesign");
     unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
     App::Color col ( (uint32_t) shcol );
-    
+
     ShapeColor.setValue(col);
     LineColor.setValue(col);
     PointColor.setValue(col);
@@ -80,7 +80,7 @@ ViewProviderShapeBinder::~ViewProviderShapeBinder()
 
 bool ViewProviderShapeBinder::setEdit(int ModNum) {
     // TODO Share code with other view providers (2015-09-11, Fat-Zer)
-    
+
     if (ModNum == ViewProvider::Default || ModNum == 1) {
         // When double-clicking on the item for this pad the
         // object unsets and sets its edit mode without closing
@@ -118,7 +118,7 @@ bool ViewProviderShapeBinder::setEdit(int ModNum) {
 }
 
 void ViewProviderShapeBinder::unsetEdit(int ModNum) {
-    
+
     PartGui::ViewProviderPart::unsetEdit(ModNum);
 }
 
@@ -171,14 +171,14 @@ void ViewProviderShapeBinder::highlightReferences(const bool on, bool /*auxiliar
         if (!subs.empty() && !originalLineColors.empty()) {
             svp->LineColorArray.setValues(originalLineColors);
             originalLineColors.clear();
-            
+
             svp->DiffuseColor.setValues(originalFaceColors);
             originalFaceColors.clear();
         }
     }
 }
 
-void ViewProviderShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, const char* member) 
+void ViewProviderShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Edit shape binder"), receiver, member);

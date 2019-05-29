@@ -598,7 +598,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
         unsigned validPlaneCount = 0;
 
-        // Baseplanes are preaprooved
+        // Baseplanes are preapproved
         try {
             for ( auto plane: pcActiveBody->getOrigin ()->planes() ) {
                 planes.push_back (plane);
