@@ -38,7 +38,7 @@ from PySide import QtCore
 """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(text, context="Path_DressupLeadInOut", disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
