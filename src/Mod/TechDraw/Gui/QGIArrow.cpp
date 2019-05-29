@@ -191,10 +191,12 @@ QPainterPath QGIArrow::makeHashMark(Base::Vector3d dir, double length, double wi
 {
     double adjWidth = 1.0;
     Base::Vector3d negDir = -dir;
+    Base::Vector3d normDir = dir;
     negDir.Normalize();
+    normDir.Normalize();
     Base::Vector3d perp(-negDir.y,negDir.x, 0.0);
     Base::Vector3d barb1 = negDir * length - perp * (adjWidth * width);
-    Base::Vector3d barb2 = dir * length + perp * (adjWidth * width);
+    Base::Vector3d barb2 = normDir * length + perp * (adjWidth * width);
     
     QPainterPath path;
     path.moveTo(QPointF(Rez::guiX(barb1.x),Rez::guiX(barb1.y)));
