@@ -44,6 +44,9 @@ public:
     Base::Vector3d getXAxis();
     Base::Vector3d getYAxis();
     Base::Vector3d getZAxis();
+
+    virtual App::DocumentObject *getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
 };
 
 } //namespace PartDesign

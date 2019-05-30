@@ -28,6 +28,8 @@
 # include <gp_Pln.hxx>
 #endif
 
+#include <Mod/Part/App/PartPyCXX.h>
+#include <Mod/Part/App/OCCError.h>
 #include "DatumCS.h"
 
 using namespace PartDesign;
@@ -77,3 +79,30 @@ Base::Vector3d CoordinateSystem::getZAxis()
     rot.multVec(Base::Vector3d(0,0,1), normal);
     return normal;
 }
+
+App::DocumentObject *CoordinateSystem::getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int) const
+{
+    if(pmat && transform)
+        *pmat *= Placement.getValue().toMatrix();
+
+    if(!pyObj)
+        return const_cast<CoordinateSystem*>(this);
+
+    gp_Dir dir(0,0,1);
+    if(subname) {
+        if(strcmp(subname,"X")==0)
+            dir = gp_Dir(1,0,0);
+        else if(strcmp(subname,"Y")==0)
+            dir = gp_Dir(0,1,0);
+    }
+    PY_TRY {
+        BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), dir));
+        Part::TopoShape ts(builder.Shape());
+        if(pmat)
+            ts.transformShape(*pmat,false,true);
+        *pyObj =  Py::new_reference_to(Part::shape2pyshape(ts));
+        return const_cast<CoordinateSystem*>(this);
+    } PY_CATCH_OCC
+}
+
