@@ -74,6 +74,7 @@ def Startup():
             FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
             pass
         from PathScripts import PathToolController
+        from PathScripts import PathToolControllerGui
         from PathScripts import PathToolLibraryManager
         from PathScripts import PathUtilsGui
         Processed = True
