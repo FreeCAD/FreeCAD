@@ -47,22 +47,28 @@ elif open.__module__ == 'io':
 def open(
     filename
 ):
-    "called when freecad opens a file"
+    '''called when freecad opens a file
+    a FEM mesh object is created in a new document'''
+
     docname = os.path.splitext(os.path.basename(filename))[0]
-    insert(filename, docname)
+    return insert(filename, docname)
 
 
 def insert(
     filename,
     docname
 ):
-    "called when freecad wants to import a file"
+    '''called when freecad wants to import a file
+    a FEM mesh object is created in a existing document'''
+
     try:
         doc = FreeCAD.getDocument(docname)
     except NameError:
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
-    import_z88_mesh(filename)
+
+    import_z88_mesh(filename, docname)
+    return doc
 
 
 def export(
@@ -100,16 +106,27 @@ def export(
 # ********* reader *******************************************************************************
 def import_z88_mesh(
     filename,
-    analysis=None
+    analysis=None,
+    docname=None
 ):
     '''read a FEM mesh from a Z88 mesh file and
     insert a FreeCAD FEM Mesh object in the ActiveDocument
     '''
 
-    femmesh = read(filename)
+    try:
+        doc = FreeCAD.getDocument(docname)
+    except NameError:
+        try:
+            doc = FreeCAD.ActiveDocument
+        except NameError:
+            doc = FreeCAD.newDocument()
+    FreeCAD.ActiveDocument = doc
+
     mesh_name = os.path.basename(os.path.splitext(filename)[0])
+
+    femmesh = read(filename)
     if femmesh:
-        mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object = doc.addObject('Fem::FemMeshObject', mesh_name)
         mesh_object.FemMesh = femmesh
 
     return mesh_object
