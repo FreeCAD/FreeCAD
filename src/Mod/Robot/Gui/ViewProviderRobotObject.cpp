@@ -111,7 +111,7 @@ void ViewProviderRobotObject::setDragger()
 void ViewProviderRobotObject::resetDragger()
 {
     assert(pcDragger);
-    pcTcpRoot->removeAllChildren();
+    Gui::coinRemoveAllChildren(pcTcpRoot);
     pcDragger = 0;
 }
 
@@ -181,7 +181,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
         QString fn = QString::fromUtf8(filename);
         QFile file(fn);
         SoInput in;
-        pcRobotRoot->removeAllChildren();
+        Gui::coinRemoveAllChildren(pcRobotRoot);
         if (!fn.isEmpty() && file.open(QFile::ReadOnly)) {
             QByteArray buffer = file.readAll();
             in.setBuffer((void *)buffer.constData(), buffer.length());

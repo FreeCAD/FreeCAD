@@ -2121,7 +2121,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                 oldChildren.insert(it->second);
             }
 
-            childGroup->removeAllChildren();
+            Gui::coinRemoveAllChildren(childGroup);
 
             if(!deleting) {
                 for (std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it) {

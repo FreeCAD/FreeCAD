@@ -262,6 +262,8 @@ public:
     static PyObject* sExport                   (PyObject *self,PyObject *args);
     static PyObject* sReload                   (PyObject *self,PyObject *args);
 
+    static PyObject* sCoinRemoveAllChildren    (PyObject *self,PyObject *args);
+
     static PyObject* sActiveDocument           (PyObject *self,PyObject *args);
     static PyObject* sSetActiveDocument        (PyObject *self,PyObject *args);
     static PyObject* sActiveView               (PyObject *self,PyObject *args);

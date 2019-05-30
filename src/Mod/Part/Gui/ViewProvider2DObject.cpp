@@ -129,7 +129,7 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     double zGrid = 0.0;                     // carpet-grid separation
 
     SoGroup *parent = new Gui::SoSkipBoundingGroup();
-    GridRoot->removeAllChildren();
+    Gui::coinRemoveAllChildren(GridRoot);
     GridRoot->addChild(parent);
     SoBaseColor *mycolor;
     SoVertexProperty *vts;
@@ -238,7 +238,7 @@ void ViewProvider2DObject::updateData(const App::Property* prop)
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
         Base::BoundBox3d bbox = static_cast<const Part::PropertyPartShape*>(prop)->getBoundingBox();
         if (!bbox.IsValid()) return;
-        GridRoot->removeAllChildren();
+        Gui::coinRemoveAllChildren(GridRoot);
         Base::Placement place = static_cast<const Part::PropertyPartShape*>(prop)->getComplexData()->getPlacement();
         place.invert();
         Base::ViewProjMatrix proj(place.toMatrix());
@@ -262,11 +262,11 @@ void ViewProvider2DObject::onChanged(const App::Property* prop)
         if (ShowGrid.getValue())
             createGrid();
         else
-            GridRoot->removeAllChildren();
+            Gui::coinRemoveAllChildren(GridRoot);
     }
     if ((prop == &GridSize) || (prop == &GridStyle) || (prop == &TightGrid)) {
         if (ShowGrid.getValue()) {
-            GridRoot->removeAllChildren();
+            Gui::coinRemoveAllChildren(GridRoot);
             createGrid();
         }
     }

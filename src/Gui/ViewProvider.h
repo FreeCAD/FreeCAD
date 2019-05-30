@@ -82,9 +82,11 @@ enum ViewStatus {
 };
 
 
-// Convenience smart pointer to wrap coin node. It is basically
-// boost::intrusive plus implicit pointer conversion to save the trouble of
-// typing get() all the time.
+/** Convenience smart pointer to wrap coin node. 
+ *
+ * It is basically boost::intrusive plus implicit pointer conversion to save the
+ * trouble of typing get() all the time.
+ */
 template<class T>
 class CoinPtr: public boost::intrusive_ptr<T> {
 public:
@@ -100,6 +102,11 @@ public:
     }
 };
 
+/** Helper function to deal with bug in SoNode::removeAllChildren()
+ *
+ * @sa https://bitbucket.org/Coin3D/coin/pull-requests/119/fix-sochildlist-auditing/diff
+ */
+void GuiExport coinRemoveAllChildren(SoGroup *node);
 
 /** General interface for all visual stuff in FreeCAD
   * This class is used to generate and handle all around

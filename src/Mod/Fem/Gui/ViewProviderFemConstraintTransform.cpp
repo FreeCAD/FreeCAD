@@ -135,7 +135,7 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
         // Points and Normals are always updated together
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
             SbVec3f base(p->x, p->y, p->z);
@@ -269,7 +269,7 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
     } else if (transform_type == "Cylindrical") {
 
         // Points and Normals are always updated together
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();

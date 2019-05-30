@@ -848,8 +848,8 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
 void ManualAlignment::continueAlignment()
 {
     myFixedGroup.clearPoints();
-    d->picksepLeft->removeAllChildren();
-    d->picksepRight->removeAllChildren();
+    coinRemoveAllChildren(d->picksepLeft);
+    coinRemoveAllChildren(d->picksepRight);
 
     if (!myAlignModel.isEmpty()) {
         AlignmentGroup& grp = myAlignModel.activeGroup();
@@ -891,8 +891,8 @@ void ManualAlignment::reset()
     myFixedGroup.setAlignable(false);
     myFixedGroup.clear();
 
-    d->picksepLeft->removeAllChildren();
-    d->picksepRight->removeAllChildren();
+    coinRemoveAllChildren(d->picksepLeft);
+    coinRemoveAllChildren(d->picksepRight);
 
     if (myDocument) {
         this->connectDocumentDeletedObject.disconnect();
@@ -1186,8 +1186,8 @@ void ManualAlignment::onClear()
     myAlignModel.activeGroup().clear();
     myFixedGroup.clear();
 
-    d->picksepLeft->removeAllChildren();
-    d->picksepRight->removeAllChildren();
+    coinRemoveAllChildren(d->picksepLeft);
+    coinRemoveAllChildren(d->picksepRight);
 }
 
 void ManualAlignment::onCancel()

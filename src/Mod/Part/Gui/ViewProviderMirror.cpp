@@ -167,7 +167,7 @@ void ViewProviderMirror::unsetEdit(int ModNum)
         mf->Normal.setValue(norm[0],norm[1],norm[2]);
 
         pcRoot->removeChild(pcEditNode);
-        pcEditNode->removeAllChildren();
+        Gui::coinRemoveAllChildren(pcEditNode);
     }
     else {
         ViewProviderPart::unsetEdit(ModNum);

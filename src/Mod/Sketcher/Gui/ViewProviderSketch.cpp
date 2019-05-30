@@ -3546,7 +3546,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     // information layer
     if(rebuildinformationlayer) {
         // every time we start with empty information layer
-        edit->infoGroup->removeAllChildren();
+        Gui::coinRemoveAllChildren(edit->infoGroup);
     }
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
@@ -4300,7 +4300,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     if (ShowGrid.getValue())
         createGrid();
     else
-        GridRoot->removeAllChildren();
+        Gui::coinRemoveAllChildren(GridRoot);
 
     edit->RootCrossCoordinate->point.set1Value(0,SbVec3f(-dMagF, 0.0f, zCross));
     edit->RootCrossCoordinate->point.set1Value(1,SbVec3f(dMagF, 0.0f, zCross));
@@ -5315,7 +5315,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
 {
     const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
     // clean up
-    edit->constrGroup->removeAllChildren();
+    Gui::coinRemoveAllChildren(edit->constrGroup);
     edit->vConstrType.clear();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
@@ -6087,7 +6087,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         if (edit->sketchHandler)
             deactivateHandler();
 
-        edit->EditRoot->removeAllChildren();
+        Gui::coinRemoveAllChildren(edit->EditRoot);
         pcRoot->removeChild(edit->EditRoot);
 
         //visibility autoation

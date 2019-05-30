@@ -232,7 +232,7 @@ void ViewProviderInspection::updateData(const App::Property* prop)
                 }
             }
 
-            this->pcLinkRoot->removeAllChildren();
+            Gui::coinRemoveAllChildren(this->pcLinkRoot);
             this->pcLinkRoot->addChild(this->pcCoords);
             this->pcCoords->point.setNum(points.size());
             SbVec3f* pts = this->pcCoords->point.startEditing();

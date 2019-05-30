@@ -115,7 +115,7 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
     if (strcmp(prop->getName(),"BasePoint") == 0) {
         if (pcConstraint->Height.getValue() > Precision::Confusion()) {
             // Remove and recreate the symbol
-            pShapeSep->removeAllChildren();
+            Gui::coinRemoveAllChildren(pShapeSep);
 
             Base::Vector3d base = pcConstraint->BasePoint.getValue();
             Base::Vector3d axis = pcConstraint->Axis.getValue();

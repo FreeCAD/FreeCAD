@@ -98,14 +98,6 @@ do{\
 #define appendPath(_path, _node) (_path)->append(_node)
 #endif
 
-// Not using removeAllChildren() to work around of Coind3D bug
-// https://bitbucket.org/Coin3D/coin/pull-requests/119/fix-sochildlist-auditing/diff
-#define CLEAR_CHILDREN(_node) do {\
-    int count = _node->getNumChildren();\
-    for(;count>0;--count)\
-        _node->removeChild(count-1);\
-}while(0)
-
 ////////////////////////////////////////////////////////////////////////////
 class Gui::LinkInfo {
 
@@ -217,19 +209,19 @@ public:
         }
         for(auto &node : pcSnapshots) {
             if(node) {
-                CLEAR_CHILDREN(node);
+                coinRemoveAllChildren(node);
                 node.reset();
             }
         }
         for(auto &node : pcSwitches) {
             if(node) {
-                CLEAR_CHILDREN(node);
+                coinRemoveAllChildren(node);
                 node.reset();
             }
         }
         pcLinkedSwitch.reset();
         if(pcChildGroup) {
-            CLEAR_CHILDREN(pcChildGroup);
+            coinRemoveAllChildren(pcChildGroup);
             pcChildGroup.reset();
         }
         pcLinked = 0;
@@ -341,9 +333,9 @@ public:
 
         pcLinkedSwitch.reset();
 
-        CLEAR_CHILDREN(pcSnapshot);
+        coinRemoveAllChildren(pcSnapshot);
         pcModeSwitch->whichChild = -1;
-        CLEAR_CHILDREN(pcModeSwitch);
+        coinRemoveAllChildren(pcModeSwitch);
 
         auto childRoot = pcLinked->getChildRoot();
 
@@ -391,7 +383,7 @@ public:
             if(!pcChildGroup)
                 pcChildGroup = new SoGroup;
             else
-                CLEAR_CHILDREN(pcChildGroup);
+                coinRemoveAllChildren(pcChildGroup);
 
             NodeMap nodeMap;
 
@@ -710,7 +702,7 @@ public:
             linkInfo->remove(this);
             linkInfo.reset();
         }
-        CLEAR_CHILDREN(pcNode);
+        coinRemoveAllChildren(pcNode);
         pcNode->addChild(pcTransform);
     }
 
@@ -766,7 +758,7 @@ public:
             linkInfo->remove(this);
             linkInfo.reset();
         }
-        CLEAR_CHILDREN(pcRoot);
+        coinRemoveAllChildren(pcRoot);
     }
 
     void link(App::DocumentObject *obj) {
@@ -1056,7 +1048,7 @@ void LinkView::setSize(int _size) {
 }
 
 void LinkView::resetRoot() {
-    CLEAR_CHILDREN(pcLinkRoot);
+    coinRemoveAllChildren(pcLinkRoot);
     if(pcTransform)
         pcLinkRoot->addChild(pcTransform);
     if(pcShapeHints)
@@ -1106,7 +1098,7 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
         info.link(obj);
         if(obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false)) {
             info.isGroup = true;
-            CLEAR_CHILDREN(info.pcRoot);
+            coinRemoveAllChildren(info.pcRoot);
             groups.emplace(obj,i);
         }
     }
@@ -1280,7 +1272,7 @@ void LinkView::updateLink() {
     else{
         SoSelectionElementAction action(SoSelectionElementAction::None,true);
         action.apply(linkedRoot);
-        CLEAR_CHILDREN(linkedRoot);
+        coinRemoveAllChildren(linkedRoot);
     }
 
     SoTempPath path(10);

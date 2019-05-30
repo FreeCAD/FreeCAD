@@ -623,7 +623,7 @@ View3DInventorViewer::~View3DInventorViewer()
     // the root node but isn't destroyed when closing this viewer so
     // that it prevents all children from being deleted. To reduce this
     // likelihood we explicitly remove all child nodes now.
-    this->pcViewProviderRoot->removeAllChildren();
+    coinRemoveAllChildren(this->pcViewProviderRoot);
     this->pcViewProviderRoot->unref();
     this->pcViewProviderRoot = 0;
     this->backlight->unref();
@@ -713,8 +713,8 @@ void View3DInventorViewer::clearGroupOnTop() {
         SoSelectionElementAction action(SoSelectionElementAction::None,true);
         action.apply(pcGroupOnTopPreSel);
         action.apply(pcGroupOnTopSel);
-        pcGroupOnTopSel->removeAllChildren();
-        pcGroupOnTopPreSel->removeAllChildren();
+        coinRemoveAllChildren(pcGroupOnTopSel);
+        coinRemoveAllChildren(pcGroupOnTopPreSel);
         FC_LOG("clear annoation");
     }
 }
@@ -730,7 +730,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
     {
         SoSelectionElementAction action(SoSelectionElementAction::None,true);
         action.apply(pcGroupOnTopPreSel);
-        pcGroupOnTopPreSel->removeAllChildren();
+        coinRemoveAllChildren(pcGroupOnTopPreSel);
         objectsOnTopPreSel.clear();
         return;
     }
@@ -1030,7 +1030,7 @@ void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *
         if(node != editViewProvider->getTransformNode())
             pcEditingRoot->addChild(node);
     }
-    root->removeAllChildren();
+    coinRemoveAllChildren(root);
     ViewProviderLink::updateLinks(editViewProvider);
 }
 
@@ -3476,8 +3476,8 @@ void View3DInventorViewer::turnAllDimensionsOff()
 
 void View3DInventorViewer::eraseAllDimensions()
 {
-    static_cast<SoSwitch*>(dimensionRoot->getChild(0))->removeAllChildren();
-    static_cast<SoSwitch*>(dimensionRoot->getChild(1))->removeAllChildren();
+    coinRemoveAllChildren(static_cast<SoSwitch*>(dimensionRoot->getChild(0)));
+    coinRemoveAllChildren(static_cast<SoSwitch*>(dimensionRoot->getChild(1)));
 }
 
 void View3DInventorViewer::turn3dDimensionsOn()

@@ -68,6 +68,25 @@ FC_LOG_LEVEL_INIT("ViewProvider",true,true)
 using namespace std;
 using namespace Gui;
 
+
+namespace Gui {
+
+void coinRemoveAllChildren(SoGroup *group) {
+    if(!group)
+        return;
+    int count = group->getNumChildren();
+    if(!count)
+        return;
+    FC_TRACE("coin remove all children " << count);
+    SbBool autonotify = group->enableNotify(FALSE);
+    for(;count>0;--count)
+        group->removeChild(count-1);
+    group->enableNotify(autonotify);
+    group->touch();
+}
+
+} // namespace Gui
+
 //**************************************************************************
 //**************************************************************************
 // ViewProvider

@@ -135,12 +135,12 @@ void ViewProviderTransformed::unsetEdit(int ModNum)
     while (pcRejectedRoot->getNumChildren() > 7) {
         SoSeparator* sep = static_cast<SoSeparator*>(pcRejectedRoot->getChild(7));
         SoMultipleCopy* rejectedTrfms = static_cast<SoMultipleCopy*>(sep->getChild(2));
-        rejectedTrfms   ->removeAllChildren();
+        Gui::coinRemoveAllChildren(rejectedTrfms);
         sep->removeChild(1);
         sep->removeChild(0);
         pcRejectedRoot  ->removeChild(7);
     }
-    pcRejectedRoot->removeAllChildren();
+    Gui::coinRemoveAllChildren(pcRejectedRoot);
 
     pcRoot->removeChild(pcRejectedRoot);
 
@@ -182,7 +182,7 @@ void ViewProviderTransformed::recomputeFeature(void)
     while (pcRejectedRoot->getNumChildren() > 7) {
         SoSeparator* sep = static_cast<SoSeparator*>(pcRejectedRoot->getChild(7));
         SoMultipleCopy* rejectedTrfms = static_cast<SoMultipleCopy*>(sep->getChild(2));
-        rejectedTrfms   ->removeAllChildren();
+        Gui::coinRemoveAllChildren(rejectedTrfms);
         sep->removeChild(1);
         sep->removeChild(0);
         pcRejectedRoot  ->removeChild(7);

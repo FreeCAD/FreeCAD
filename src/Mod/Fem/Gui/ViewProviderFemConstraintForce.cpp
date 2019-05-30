@@ -139,7 +139,7 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
         int idx = 0;
 #else
         // Redraw all arrows
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 #endif
         // This should always point outside of the solid
         Base::Vector3d normal = pcConstraint->NormalDirection.getValue();

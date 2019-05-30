@@ -1733,7 +1733,7 @@ void SoFCPathAnnotation::setDetail(SoDetail *d) {
 void SoFCPathAnnotation::setPath(SoPath *newPath) {
     if(path) {
         path->unref();
-        removeAllChildren();
+        coinRemoveAllChildren(this);
         path = 0;
         if(tmpPath) {
             tmpPath->unref();
