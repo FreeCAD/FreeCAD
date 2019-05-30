@@ -119,7 +119,7 @@ void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* pro
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
         // Points and Normals are always updated together
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
             //Define base and normal directions

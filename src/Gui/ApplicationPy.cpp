@@ -197,6 +197,9 @@ PyMethodDef Application::Methods[] = {
      "removeDocumentObserver() -> None\n\n"
      "Remove an added document observer."},
 
+  {"coinRemoveAllChildren",     (PyCFunction) Application::sCoinRemoveAllChildren, METH_VARARGS,
+   "Remove all children from a group node"},
+
   {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -1327,3 +1330,18 @@ PyObject* Application::sRemoveDocObserver(PyObject * /*self*/, PyObject *args)
         Py_Return;
     } PY_CATCH;
 }
+
+PyObject* Application::sCoinRemoveAllChildren(PyObject * /*self*/, PyObject *args)
+{
+    PyObject *pynode;
+    if (!PyArg_ParseTuple(args, "O", &pynode))
+        return NULL;
+
+    PY_TRY {
+        void* ptr = 0;
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin","_p_SoGroup", pynode, &ptr, 0);
+        coinRemoveAllChildren(reinterpret_cast<SoGroup*>(ptr));
+        Py_Return;
+    }PY_CATCH;
+}
+

@@ -118,7 +118,7 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
 
     if (strcmp(prop->getName(),"BasePoint") == 0) {
         // Remove and recreate the symbol
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 
         // This should always point outside of the cylinder
         Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
