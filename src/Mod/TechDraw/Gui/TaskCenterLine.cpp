@@ -228,8 +228,7 @@ void TaskCenterLine::createCenterLine(void)
         vertical = true;
     }
     m_extendBy = ui->qsbExtend->rawValue();
-    //TODO: (if m_partFeat->getGeomTypeFromName(m_subNames.at(0)) == "Face") {
-    TechDraw::CosmeticEdge* ce = makeMidLine(m_subNames.at(0),vertical,m_extendBy);
+    TechDraw::CosmeticEdge* ce = calcEndPoints(m_subNames,vertical,m_extendBy);
     m_partFeat->addRandomEdge(ce);
     m_partFeat->requestPaint();
     Gui::Command::updateActive();
@@ -288,22 +287,29 @@ void TaskCenterLine::enableTaskButtons(bool b)
     m_btnCancel->setEnabled(b);
 }
 
-TechDraw::CosmeticEdge* TaskCenterLine::makeMidLine(std::string faceName, bool vert, double ext)
+TechDraw::CosmeticEdge* TaskCenterLine::calcEndPoints(std::vector<std::string> faceNames, bool vert, double ext)
 {
-//    Base::Console().Message("TCL::makeMidLine(%s, %d) \n",faceName.c_str(), vert);
+//    Base::Console().Message("TCL::calcEndPoints(%d, %d) \n",faceNames.size(), vert);
     TechDraw::CosmeticEdge* result = nullptr;
-    double scale = m_partFeat->getScale();
-    Base::Vector3d p1, p2;
-    int idx = TechDraw::DrawUtil::getIndexFromName(faceName);
-    std::vector<TechDrawGeometry::BaseGeom*> faceEdges = 
-        m_partFeat->getFaceEdgesByIndex(idx);
+
     Bnd_Box faceBox;
     faceBox.SetGap(0.0);
-    for (auto& fe: faceEdges) {
-        if (!fe->cosmetic) {
-            BRepBndLib::Add(fe->occEdge, faceBox);
+
+    for (auto& fn: faceNames) {
+        if (TechDraw::DrawUtil::getGeomTypeFromName(fn) != "Face") {
+            continue;
+        }
+        int idx = TechDraw::DrawUtil::getIndexFromName(fn);
+        std::vector<TechDrawGeometry::BaseGeom*> faceEdges = 
+                                                m_partFeat->getFaceEdgesByIndex(idx);
+        for (auto& fe: faceEdges) {
+            if (!fe->cosmetic) {
+                BRepBndLib::Add(fe->occEdge, faceBox);
+            }
         }
     }
+
+    double scale = m_partFeat->getScale();
     double Xmin,Ymin,Zmin,Xmax,Ymax,Zmax;
     faceBox.Get(Xmin,Ymin,Zmin,Xmax,Ymax,Zmax);
 
@@ -317,6 +323,7 @@ TechDraw::CosmeticEdge* TaskCenterLine::makeMidLine(std::string faceName, bool v
 
     Base::Vector3d bbxCenter(Xmid, Ymid, 0.0);
 
+    Base::Vector3d p1, p2;
     if (vert) {
         Base::Vector3d top(Xmid, Ymid - Yspan, 0.0);
         Base::Vector3d bottom(Xmid, Ymid + Yspan, 0.0);
