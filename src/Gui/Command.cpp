@@ -1135,6 +1135,8 @@ PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const cha
             type += int(AlterSelection);
         if (cmdType.find("ForEdit") != std::string::npos)
             type += int(ForEdit);
+        if (cmdType.find("NoTransaction") != std::string::npos)
+            type += int(NoTransaction);
         eType = type;
     }
 }

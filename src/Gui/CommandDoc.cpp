@@ -582,6 +582,7 @@ StdCmdRevert::StdCmdRevert()
     sWhatsThis    = "Std_Revert";
     sStatusTip    = QT_TR_NOOP("Reverts to the saved version of this file");
   //sPixmap       = "document-revert";
+    eType         = NoTransaction;
 }
 
 void StdCmdRevert::activated(int iMsg)
@@ -772,6 +773,7 @@ StdCmdQuit::StdCmdQuit()
   sPixmap       = "application-exit";
 #endif
   sAccel        = "Alt+F4";
+  eType         = NoTransaction;
 }
 
 void StdCmdQuit::activated(int iMsg)
