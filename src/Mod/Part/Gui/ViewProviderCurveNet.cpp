@@ -118,8 +118,8 @@ void ViewProviderCurveNet::updateData(const App::Property* prop)
         if (cShape.IsNull())
             return;
 
-        EdgeRoot->removeAllChildren();
-        VertexRoot->removeAllChildren();
+        Gui::coinRemoveAllChildren(EdgeRoot);
+        Gui::coinRemoveAllChildren(VertexRoot);
 
         try{
             computeEdges   (EdgeRoot,cShape);

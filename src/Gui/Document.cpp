@@ -1559,7 +1559,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
         if (childGroup->getNumChildren() != static_cast<int>(children.size())) {
 
             rebuild = true;
-            childGroup->removeAllChildren();
+            Gui::coinRemoveAllChildren(childGroup);
 
             for (std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it) {
                 ViewProvider* ChildViewProvider = getViewProvider(*it);

@@ -611,7 +611,7 @@ View3DInventorViewer::~View3DInventorViewer()
     // the root node but isn't destroyed when closing this viewer so
     // that it prevents all children from being deleted. To reduce this
     // likelihood we explicitly remove all child nodes now.
-    this->pcViewProviderRoot->removeAllChildren();
+    coinRemoveAllChildren(this->pcViewProviderRoot);
     this->pcViewProviderRoot->unref();
     this->pcViewProviderRoot = 0;
     this->backlight->unref();
@@ -3307,8 +3307,8 @@ void View3DInventorViewer::turnAllDimensionsOff()
 
 void View3DInventorViewer::eraseAllDimensions()
 {
-    static_cast<SoSwitch*>(dimensionRoot->getChild(0))->removeAllChildren();
-    static_cast<SoSwitch*>(dimensionRoot->getChild(1))->removeAllChildren();
+    coinRemoveAllChildren(static_cast<SoSwitch*>(dimensionRoot->getChild(0)));
+    coinRemoveAllChildren(static_cast<SoSwitch*>(dimensionRoot->getChild(1)));
 }
 
 void View3DInventorViewer::turn3dDimensionsOn()
