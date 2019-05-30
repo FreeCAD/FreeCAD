@@ -171,6 +171,21 @@ FreeCADGui.Workbench = Workbench
 
 Gui.addWorkbench(NoneWorkbench())
 
+# Monkey patching pivy.coin.SoGroup.removeAllChildren to work around a bug
+# https://bitbucket.org/Coin3D/coin/pull-requests/119/fix-sochildlist-auditing/diff
+
+def _SoGroup_init(self,*args):
+    import types
+    _SoGroup_init_orig(self,*args)
+    self.removeAllChildren = \
+        types.MethodType(FreeCADGui.coinRemoveAllChildren,self)
+try:
+    from pivy import coin
+    _SoGroup_init_orig = coin.SoGroup.__init__
+    coin.SoGroup.__init__ = _SoGroup_init
+except Exception:
+    pass
+
 # init modules
 InitApplications()
 

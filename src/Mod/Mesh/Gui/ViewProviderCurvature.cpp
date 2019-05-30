@@ -290,7 +290,7 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
     // set to the expected size
     if (prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
         Mesh::Feature* object = static_cast<const App::PropertyLink*>(prop)->getValue<Mesh::Feature*>();
-        this->pcLinkRoot->removeAllChildren();
+        Gui::coinRemoveAllChildren(this->pcLinkRoot);
         if (object) {
             const Mesh::MeshObject& kernel = object->Mesh.getValue();
             pcColorMat->diffuseColor.setNum((int)kernel.countPoints());
