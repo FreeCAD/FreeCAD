@@ -347,6 +347,9 @@ void ActionGroup::onActivated (QAction* a)
 {
     int index = _group->actions().indexOf(a);
 
+    // Calling QToolButton::setIcon() etc. has no effect if it has QAction set.
+    // We have to change the QAction icon instead
+#if 0
     QList<QWidget*> widgets = a->associatedWidgets();
     for (QList<QWidget*>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
         QMenu* menu = qobject_cast<QMenu*>(*it);
@@ -360,7 +363,10 @@ void ActionGroup::onActivated (QAction* a)
             }
         }
     }
-
+#endif
+    this->setIcon(a->icon());
+    this->setToolTip(a->toolTip());
+    this->setProperty("defaultAction", QVariant(index));
     _pcCmd->invoke(index, Command::TriggerChildAction);
 }
 
