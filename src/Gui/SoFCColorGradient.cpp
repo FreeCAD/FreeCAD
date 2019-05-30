@@ -39,6 +39,7 @@
 #include "DlgSettingsColorGradientImp.h"
 #include "MainWindow.h"
 #include "MDIView.h"
+#include "ViewProvider.h"
 
 using namespace Gui;
 
@@ -83,7 +84,7 @@ void SoFCColorGradient::finish()
 
 void SoFCColorGradient::setMarkerLabel( const SoMFString& label )
 {
-    labels->removeAllChildren();
+    coinRemoveAllChildren(labels);
 
     float fH=8.0f;
     int num = label.getNum();
@@ -294,7 +295,7 @@ void SoFCColorGradient::rebuildGradient()
 
     // first clear the children
     if ( getNumChildren() > 0 )
-        removeAllChildren();
+        coinRemoveAllChildren(this);
     addChild(ttype);
     addChild(labels);
     addChild(coords);
