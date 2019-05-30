@@ -594,8 +594,8 @@ CmdTechDrawCenterLine::CmdTechDrawCenterLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add a centerline to a Face");
-    sToolTipText    = QT_TR_NOOP("Add a centerline to a Face");
+    sMenuText       = QT_TR_NOOP("Add a centerline to a Face(s)");
+    sToolTipText    = QT_TR_NOOP("Add a centerline to a Face(s)");
     sWhatsThis      = "TechDraw_CenterLine";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-centerline";
@@ -643,7 +643,7 @@ void CmdTechDrawCenterLine::activated(int iMsg)
     }
     if (SubNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                             QObject::tr("You must select a Face for the center line."));
+                             QObject::tr("You must select a Face(s) for the center line."));
         return;
     }
 

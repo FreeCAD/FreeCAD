@@ -108,7 +108,9 @@ protected:
     QGIView* findParentQGIV();
     void updateCenterLine(void);
     void removeCenterLine(void);
-    TechDraw::CosmeticEdge* makeMidLine(std::string subName, bool vert, double ext);
+    TechDraw::CosmeticEdge* calcEndPoints(std::vector<std::string> faceNames,
+                                        bool vert,
+                                        double ext);
 
    void saveState(void);
    void restoreState(void);
