@@ -127,8 +127,13 @@ public:
     TopoDS_Shape getHidSeam(void)    { return hidSeam; }
     TopoDS_Shape getHidIso(void)     { return hidIso; }
 
+    //Are removeXXXXX functions really needed for GO?
     int addRandomVertex(Base::Vector3d pos);
+/*    void removeRandomVertex(TechDraw::CosmeticVertex* cv);*/
+/*    void removeRandomVertex(int idx);*/
     int addRandomEdge(TechDrawGeometry::BaseGeom* bg);
+/*    void removeRandomEdge(TechDraw::CosmeticEdge* ce);*/
+/*    void removeRandomEdge(int idx);*/
 
 protected:
     //HLR output

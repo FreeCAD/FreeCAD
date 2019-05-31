@@ -256,7 +256,6 @@ bool CosmeticEdge::fromCSV(std::string& lineSpec)
         return false;
     }
     std::vector<std::string> values = split(lineSpec);
-    Base::Console().Message("CE::fromCSV - values: %d\n",values.size());
     if (values.size() < maxCells) {
         Base::Console().Message( "CosmeticEdge::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
         return false;
@@ -293,7 +292,7 @@ bool CosmeticEdge::fromCSV(std::string& lineSpec)
 //duplicate of CV routine.  make static? or base class?
 std::vector<std::string> CosmeticEdge::split(std::string csvLine)
 {
-    Base::Console().Message("CE::split - csvLine: %s\n",csvLine.c_str());
+//    Base::Console().Message("CE::split - csvLine: %s\n",csvLine.c_str());
     std::vector<std::string>  result;
     std::stringstream     lineStream(csvLine);
     std::string           cell;
