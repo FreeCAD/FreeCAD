@@ -93,6 +93,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_CosmeticVertex";
     *draw << "TechDraw_Midpoints";
     *draw << "TechDraw_Quadrant";
+    *draw << "TechDraw_CosmeticEraser";
 
     return root;
 }
@@ -112,7 +113,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_ProjGroup";
     *views << "TechDraw_NewViewSection";
     *views << "TechDraw_NewViewDetail";
-//    *views << "TechDraw_Annotation";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_ArchView";
     *views << "TechDraw_Spreadsheet";
@@ -157,9 +157,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *anno << "TechDraw_RichAnno";
     *anno << "TechDraw_CosmeticVertexGrp";
     *anno << "TechDraw_CenterLine";
-//    *anno << "TechDraw_CosmeticVertex";
-//    *anno << "TechDraw_Midpoints";
-//    *anno << "TechDraw_Quadrant";
+    *anno << "TechDraw_CosmeticEraser";
 
     return root;
 }
@@ -179,7 +177,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *views << "TechDraw_ProjGroup";
     *views << "TechDraw_NewViewSection";
     *views << "TechDraw_NewViewDetail";
-//    *views << "TechDraw_Annotation";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_Spreadsheet";
 
@@ -214,9 +211,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
-//    *decor << "TechDraw_RedrawPage";
-//    *decor << "TechDraw_LeaderLine";
-//    *decor << "TechDraw_RichAnno";
 
     Gui::ToolBarItem *anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");
@@ -225,9 +219,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *anno << "TechDraw_RichAnno";
     *anno << "TechDraw_CosmeticVertexGrp";
     *anno << "TechDraw_CenterLine";
-//    *anno << "TechDraw_CosmeticVertex";
-//    *anno << "TechDraw_Midpoints";
-//    *anno << "TechDraw_Quadrant";
+    *anno << "TechDraw_CosmeticEraser";
 
     return root;
 }

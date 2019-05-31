@@ -168,6 +168,8 @@ public:
     bool isIso(void) const;
 
     virtual int addRandomVertex(Base::Vector3d pos);
+    virtual void removeRandomVertex(TechDraw::CosmeticVertex* cv);
+    virtual void removeRandomVertex(int idx);
     const std::vector<TechDraw::CosmeticVertex*> & getCosmeticVertex(void) const { return cosmoVertex; }
     TechDraw::CosmeticVertex* getCosmeticVertexByIndex(int idx) const;
     TechDraw::CosmeticVertex* getCosmeticVertexByLink(int idx) const;
@@ -176,6 +178,8 @@ public:
     virtual int addRandomEdge(Base::Vector3d start, Base::Vector3d end);
     virtual int addRandomEdge(TopoDS_Edge e);
     virtual int addRandomEdge(TechDraw::CosmeticEdge*);
+    virtual void removeRandomEdge(TechDraw::CosmeticEdge* ce);
+    virtual void removeRandomEdge(int idx);
     const std::vector<TechDraw::CosmeticEdge*> & getCosmeticEdge(void) const { return cosmoEdge; }
     TechDraw::CosmeticEdge* getCosmeticEdgeByIndex(int idx) const;
     TechDraw::CosmeticEdge* getCosmeticEdgeByLink(int idx) const;
@@ -205,9 +209,12 @@ protected:
     //Cosmetics
     std::vector<TechDraw::CosmeticVertex*> cosmoVertex;
     void rebuildCosmoVertex(void);
+    void stuffCosmeticVertexList(void);
 
     std::vector<TechDraw::CosmeticEdge*> cosmoEdge;
     void rebuildCosmoEdge(void);
+    void stuffCosmeticEdgeList(void);
+
 
 private:
     bool nowUnsetting;

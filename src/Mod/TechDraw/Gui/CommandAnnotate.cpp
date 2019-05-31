@@ -659,6 +659,97 @@ bool CmdTechDrawCenterLine::isActive(void)
     return (havePage && haveView);
 }
 
+//===========================================================================
+// TechDraw_CosmeticEraser
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawCosmeticEraser);
+
+CmdTechDrawCosmeticEraser::CmdTechDrawCosmeticEraser()
+  : Command("TechDraw_CosmeticEraser")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Remove a cosmetic object");
+    sToolTipText    = QT_TR_NOOP("Remove a cosmetic object");
+    sWhatsThis      = "TechDraw_CosmeticEraser";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-eraser";
+}
+
+void CmdTechDrawCosmeticEraser::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    if (selection.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                         QObject::tr("Nothing selected"));
+        return;
+    }
+
+    bool selectionError = false;
+    for (auto& s: selection) {
+        TechDraw::DrawViewPart * objFeat = static_cast<TechDraw::DrawViewPart*> (s.getObject());
+        if (!objFeat->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            selectionError = true;
+            break;
+        }
+    }
+    if (selectionError) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                         QObject::tr("At least 1 object in selection is not a part view"));
+        return;
+    }
+
+    TechDraw::DrawViewPart * objFeat = nullptr;
+    std::vector<std::string> SubNames;
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+        for (auto& s: SubNames) {
+            int idx = TechDraw::DrawUtil::getIndexFromName(s);
+            std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
+            if (geomType == "Edge") {
+                TechDraw::CosmeticEdge* ce = objFeat->getCosmeticEdgeByLink(idx);
+                if (ce != nullptr) {
+                    objFeat->removeRandomEdge(ce);
+                }
+            } else if (geomType == "Vertex") {
+                TechDraw::CosmeticVertex* cv = objFeat->getCosmeticVertexByLink(idx);
+                if (cv != nullptr) {
+                    objFeat->removeRandomVertex(cv);
+                }
+            } else {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                           QObject::tr("Unknown object type in selection"));
+                return;
+            }
+        }
+    }
+}
+
+bool CmdTechDrawCosmeticEraser::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
 
 void CreateTechDrawCommandsAnnotate(void)
 {
@@ -672,6 +763,7 @@ void CreateTechDrawCommandsAnnotate(void)
     rcCmdMgr.addCommand(new CmdTechDrawQuadrant());
     rcCmdMgr.addCommand(new CmdTechDrawAnnotation());
     rcCmdMgr.addCommand(new CmdTechDrawCenterLine());
+    rcCmdMgr.addCommand(new CmdTechDrawCosmeticEraser());
 }
 
 //===========================================================================

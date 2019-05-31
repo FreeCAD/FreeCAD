@@ -1019,8 +1019,13 @@ int DrawViewPart::addRandomVertex(Base::Vector3d pos)
     int newIdx = -1;
     TechDraw::CosmeticVertex* rVert = new TechDraw::CosmeticVertex(pos);
     cosmoVertex.push_back(rVert);
+    stuffCosmeticVertexList();
+    return newIdx;
+}
 
-    //stuff stringList
+void DrawViewPart::stuffCosmeticVertexList(void)
+{
+//    Base::Console().Message("DVP::stuffCosmeticVertexList()\n");
     std::vector<std::string> saveVerts;
     const std::vector<TechDraw::CosmeticVertex*> cosVerts = getCosmeticVertex();
     for (auto& cv: cosVerts) {
@@ -1028,18 +1033,50 @@ int DrawViewPart::addRandomVertex(Base::Vector3d pos)
         saveVerts.push_back(csv);
     }
     CosmeticVertexList.setValues(saveVerts);
-    return newIdx;
+}
+
+void DrawViewPart::removeRandomVertex(TechDraw::CosmeticVertex* cv)
+{
+//    Base::Console().Message("DVP::removeRandomVertex(cv) - cvs in: %d\n", cosmoVertex.size());
+    bool found = false;
+    std::vector<TechDraw::CosmeticVertex*> newCosmoVertex;
+    for (auto& v: cosmoVertex) {
+        if (cv == v) {
+            found = true;
+            continue;
+        } else {
+            newCosmoVertex.push_back(v);
+        }
+    }
+    if ( (cv != nullptr)  &&
+         (found) )  {
+        delete cv;
+    }
+     
+    cosmoVertex = newCosmoVertex;
+    stuffCosmeticVertexList();
+    recomputeFeature();
+}
+
+void DrawViewPart::removeRandomVertex(int idx)
+{
+    if (idx < (int) cosmoVertex.size()) {
+        TechDraw::CosmeticVertex* cvSave = cosmoVertex.at(idx);
+        cosmoVertex.erase(cosmoVertex.begin() + idx);
+        delete cvSave;
+    }
+     
+    stuffCosmeticVertexList();
+    recomputeFeature();
 }
 
 TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByIndex(int idx) const
 {
 //    Base::Console().Message("DVP::getCosmeticVertexByIndex(%d)\n", idx);
-    int cosmoOffset = 1000;
-    int realIdx = idx - cosmoOffset;
     CosmeticVertex* result = nullptr;
     const std::vector<TechDraw::CosmeticVertex*> verts = getCosmeticVertex();
-    if ((unsigned) realIdx < verts.size())  {
-        result = verts.at(realIdx);
+    if ((unsigned) idx < verts.size())  {
+        result = verts.at(idx);
     }
     return result;
 }
@@ -1084,7 +1121,7 @@ int DrawViewPart::addRandomEdge(Base::Vector3d p1, Base::Vector3d p2)
         std::string csv = ce->toCSV();
         saveEdges.push_back(csv);
     }
-    CosmeticEdgeList.setValues(saveEdges);
+    stuffCosmeticEdgeList();
     return newIdx;
 }
 
@@ -1094,15 +1131,7 @@ int DrawViewPart::addRandomEdge(TopoDS_Edge e)
     int newIdx = -1;
     TechDraw::CosmeticEdge* rEdge = new TechDraw::CosmeticEdge(e);
     cosmoEdge.push_back(rEdge);
-
-    //stuff stringList
-    std::vector<std::string> saveEdges;
-    const std::vector<TechDraw::CosmeticEdge*> cosEdges = getCosmeticEdge();
-    for (auto& ce: cosEdges) {
-        std::string csv = ce->toCSV();
-        saveEdges.push_back(csv);
-    }
-    CosmeticEdgeList.setValues(saveEdges);
+    stuffCosmeticEdgeList();
     return newIdx;
 }
 
@@ -1111,8 +1140,13 @@ int DrawViewPart::addRandomEdge(CosmeticEdge* ce)
 //    Base::Console().Message("DVP::addRandomEdge(CosmeticEdge)\n");
     int newIdx = -1;
     cosmoEdge.push_back(ce);
+    stuffCosmeticEdgeList();
+    return newIdx;
+}
 
-    //stuff stringList
+void DrawViewPart::stuffCosmeticEdgeList(void)
+{
+//    Base::Console().Message("DVP::stuffCosmeticEdgeList()\n");
     std::vector<std::string> saveEdges;
     const std::vector<TechDraw::CosmeticEdge*> cosEdges = getCosmeticEdge();
     for (auto& ce: cosEdges) {
@@ -1120,18 +1154,49 @@ int DrawViewPart::addRandomEdge(CosmeticEdge* ce)
         saveEdges.push_back(csv);
     }
     CosmeticEdgeList.setValues(saveEdges);
-    return newIdx;
+}
+
+void DrawViewPart::removeRandomEdge(TechDraw::CosmeticEdge* ce)
+{
+//    Base::Console().Message("DVP::removeRandomEdge(ce) - ces in: %d\n", cosmoEdge.size());
+    bool found = false;
+    std::vector<TechDraw::CosmeticEdge*> newCosmoEdge;
+    for (auto& e: cosmoEdge) {
+        if (ce == e) {
+            found = true;
+            continue;
+        } else {
+            newCosmoEdge.push_back(e);
+        }
+    }
+    if ( (ce != nullptr)  &&
+         (found) )  {
+        delete ce;
+    }
+    cosmoEdge = newCosmoEdge;
+    stuffCosmeticEdgeList();
+    recomputeFeature();
+}
+
+void DrawViewPart::removeRandomEdge(int idx)
+{
+//    Base::Console().Message("DVP::removeRandomEdge(%d) - ces in: %d\n", idx, cosmoEdge.size());
+    if (idx < (int) cosmoEdge.size()) {
+        TechDraw::CosmeticEdge* ceSave = cosmoEdge.at(idx);
+        cosmoEdge.erase(cosmoEdge.begin() + idx);
+        delete ceSave;
+    }
+    stuffCosmeticEdgeList();
+    recomputeFeature();
 }
 
 TechDraw::CosmeticEdge* DrawViewPart::getCosmeticEdgeByIndex(int idx) const
 {
 //    Base::Console().Message("DVP::getCosmeticEdgeByIndex(%d)\n", idx);
-    int cosmoOffset = 1000;
-    int realIdx = idx - cosmoOffset;
     CosmeticEdge* result = nullptr;
     const std::vector<TechDraw::CosmeticEdge*> edges = getCosmeticEdge();
-    if ((unsigned) realIdx < edges.size())  {
-        result = edges.at(realIdx);
+    if (idx < (int) edges.size())  {
+        result = edges.at(idx);
     }
     return result;
 }
