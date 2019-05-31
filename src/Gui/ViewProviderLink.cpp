@@ -39,6 +39,7 @@
 # include <Inventor/draggers/SoCenterballDragger.h>
 # include <Inventor/nodes/SoSurroundScale.h>
 # include <Inventor/nodes/SoCube.h>
+# include <Inventor/sensors/SoNodeSensor.h>
 #endif
 #include <atomic>
 #include <QApplication>
@@ -112,6 +113,10 @@ public:
 
     typedef LinkInfoPtr Pointer;
 
+    SoNodeSensor sensor;
+    SoNodeSensor switchSensor;
+    SoNodeSensor childSensor;
+
     std::array<CoinPtr<SoSeparator>,LinkView::SnapshotMax> pcSnapshots;
     std::array<CoinPtr<SoSwitch>,LinkView::SnapshotMax> pcSwitches;
     CoinPtr<SoSwitch> pcLinkedSwitch;
@@ -158,6 +163,18 @@ public:
         return ext->linkInfo;
     }
 
+    static void sensorCB(void *data, SoSensor *) {
+        static_cast<LinkInfo*>(data)->update();
+    }
+
+    static void switchSensorCB(void *data, SoSensor *) {
+        static_cast<LinkInfo*>(data)->updateSwitch();
+    }
+
+    static void childSensorCB(void *data, SoSensor *) {
+        static_cast<LinkInfo*>(data)->updateChildren();
+    }
+
     LinkInfo(ViewProviderDocumentObject *vp)
         :ref(0),pcLinked(vp) 
     {
@@ -165,6 +182,12 @@ public:
         connChangeIcon = vp->signalChangeIcon.connect(
                 boost::bind(&LinkInfo::slotChangeIcon,this));
         vp->forceUpdate(true);
+        sensor.setFunction(sensorCB);
+        sensor.setData(this);
+        switchSensor.setFunction(switchSensorCB);
+        switchSensor.setData(this);
+        childSensor.setFunction(childSensorCB);
+        childSensor.setData(this);
     }
 
     ~LinkInfo() {
@@ -201,6 +224,9 @@ public:
 
     void detach() {
         FC_LOG("link detach " << getLinkedNameSafe());
+        sensor.detach();
+        switchSensor.detach();
+        childSensor.detach();
         auto me = LinkInfoPtr(this);
         while(links.size()) {
             auto link = *links.begin();
@@ -228,11 +254,11 @@ public:
         connChangeIcon.disconnect();
     }
 
-    void updateSwitch() {
+    void updateSwitch(SoSwitch *node=0) {
         if(!isLinked() || !pcLinkedSwitch) return;
         int index = pcLinkedSwitch->whichChild.getValue();
         for(size_t i=0;i<pcSwitches.size();++i) {
-            if(!pcSwitches[i]) 
+            if(!pcSwitches[i] || (node && node!=pcSwitches[i])) 
                 continue;
             int count = pcSwitches[i]->getNumChildren();
             if((index<0 && i==LinkView::SnapshotChild) || !count)
@@ -314,6 +340,11 @@ public:
         if(!isLinked() || !(root=pcLinked->getRoot())) 
             return 0;
 
+        if(sensor.getAttachedNode()!=root) {
+            sensor.detach();
+            sensor.attach(root);
+        }
+
         auto &pcSnapshot = pcSnapshots[type];
         auto &pcModeSwitch = pcSwitches[type];
         if(pcSnapshot) {
@@ -337,6 +368,8 @@ public:
         pcModeSwitch->whichChild = -1;
         coinRemoveAllChildren(pcModeSwitch);
 
+        SoSwitch *pcUpdateSwitch = pcModeSwitch;
+
         auto childRoot = pcLinked->getChildRoot();
 
         if(type!=LinkView::SnapshotTransform)
@@ -352,6 +385,11 @@ public:
             }
 
             pcLinkedSwitch = static_cast<SoSwitch*>(node);
+            if(switchSensor.getAttachedNode() != pcLinkedSwitch) {
+                switchSensor.detach();
+                switchSensor.attach(pcLinkedSwitch);
+                pcUpdateSwitch = 0;
+            }
 
             pcSnapshot->addChild(pcModeSwitch);
             for(int i=0,count=pcLinkedSwitch->getNumChildren();i<count;++i) {
@@ -362,7 +400,7 @@ public:
                     pcModeSwitch->addChild(child);
             }
         }
-        updateSwitch();
+        updateSwitch(pcUpdateSwitch);
         return pcSnapshot;
     }
 
@@ -370,40 +408,54 @@ public:
         LinkInfoPtr me(this);
         for(auto link : links)
             link->onLinkedUpdateData(me,prop);
-        update();
+        // update();
     }
 
     void update() {
-        if(!isLinked()) return;
-        
-        if(pcLinked->isRestoring())
+        if(!isLinked() || pcLinked->isRestoring()) 
             return;
-
-        if(pcLinked->getChildRoot()) {
-            if(!pcChildGroup)
-                pcChildGroup = new SoGroup;
-            else
-                coinRemoveAllChildren(pcChildGroup);
-
-            NodeMap nodeMap;
-
-            for(auto child : pcLinked->claimChildren3D()) {
-                Pointer info = get(child,0);
-                if(!info) continue;
-                SoNode *node = info->getSnapshot(LinkView::SnapshotChild);
-                if(!node) continue;
-                nodeMap[node] = info;
-                pcChildGroup->addChild(node);
-            }
-
-            // Use swap instead of clear() here to avoid potential link
-            // destruction
-            this->nodeMap.swap(nodeMap);
-        }
+        
+        updateChildren();
 
         for(size_t i=0;i<pcSnapshots.size();++i) 
             if(pcSnapshots[i]) 
                 getSnapshot(i,true);
+    }
+
+    void updateChildren() {
+        if(!isLinked()) 
+            return;
+
+        if(!pcLinked->getChildRoot()) {
+            childSensor.detach();
+            if(pcChildGroup)
+                coinRemoveAllChildren(pcChildGroup);
+            return;
+        }
+
+        if(childSensor.getAttachedNode() != pcLinked->getChildRoot()) {
+            childSensor.detach();
+            childSensor.attach(pcLinked->getChildRoot());
+        }
+        if(!pcChildGroup)
+            pcChildGroup = new SoGroup;
+        else
+            coinRemoveAllChildren(pcChildGroup);
+
+        NodeMap nodeMap;
+
+        for(auto child : pcLinked->claimChildren3D()) {
+            Pointer info = get(child,0);
+            if(!info) continue;
+            SoNode *node = info->getSnapshot(LinkView::SnapshotChild);
+            if(!node) continue;
+            nodeMap[node] = info;
+            pcChildGroup->addChild(node);
+        }
+
+        // Use swap instead of clear() here to avoid potential link
+        // destruction
+        this->nodeMap.swap(nodeMap);
     }
 
     bool getElementPicked(bool addname, int type, 
@@ -640,16 +692,20 @@ void ViewProviderLinkObserver::extensionBeforeDelete() {
 }
 
 void ViewProviderLinkObserver::extensionOnChanged(const App::Property *prop) {
+#if 0
     auto owner = freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
     if(!owner || !linkInfo) return;
     if(prop != &owner->Visibility && prop != &owner->DisplayMode)
         linkInfo->update();
+#else
+    (void)prop;
+#endif
 }
 
 void ViewProviderLinkObserver::extensionModeSwitchChange() {
-    auto owner = freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
-    if(owner && linkInfo)
-        linkInfo->updateSwitch();
+    // auto owner = freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
+    // if(owner && linkInfo)
+    //     linkInfo->updateSwitch();
 }
 
 void ViewProviderLinkObserver::extensionUpdateData(const App::Property *prop) {
