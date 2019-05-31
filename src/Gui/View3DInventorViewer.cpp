@@ -797,7 +797,9 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
     // onTop==2 means on top only if whole object is selected,
     // onTop==3 means on top only if some sub-element is selected
     // onTop==1 means either
-    onTop = vp->OnTopWhenSelected.getValue() || svp->OnTopWhenSelected.getValue();
+    onTop = Gui::Selection().needPickedList() 
+            || vp->OnTopWhenSelected.getValue() 
+            || svp->OnTopWhenSelected.getValue();
     if(Reason.Type == SelectionChanges::SetPreselect) {
         SoHighlightElementAction action;
         action.setHighlighted(true);
