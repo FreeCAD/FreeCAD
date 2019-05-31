@@ -52,7 +52,6 @@ public Q_SLOTS:
 private:
     mutable QWidget *expressionEditor;
     mutable bool pressed;
-    mutable int activeTransactionID;
     bool changed;
 };
 

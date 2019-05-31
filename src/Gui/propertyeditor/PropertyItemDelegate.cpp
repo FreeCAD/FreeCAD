@@ -45,7 +45,7 @@ using namespace Gui::PropertyEditor;
 
 PropertyItemDelegate::PropertyItemDelegate(QObject* parent)
     : QItemDelegate(parent), expressionEditor(0)
-    , pressed(false), activeTransactionID(0),changed(false)
+    , pressed(false), changed(false)
 {
     connect(this, SIGNAL(closeEditor(QWidget*, QAbstractItemDelegate::EndEditHint)),
             this, SLOT(editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint)));
@@ -125,6 +125,7 @@ bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* mode
 
 void PropertyItemDelegate::editorClosed(QWidget *editor, QAbstractItemDelegate::EndEditHint hint)
 {
+#if 0
     int id = 0;
     auto &app = App::GetApplication();
     const char *name = app.getActiveTransaction(&id);
@@ -134,6 +135,7 @@ void PropertyItemDelegate::editorClosed(QWidget *editor, QAbstractItemDelegate::
         activeTransactionID = 0;
     }
     FC_LOG("editor close " << editor);
+#endif
 
     // don't close the editor when pressing Tab or Shift+Tab
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=34627#p290957
@@ -172,45 +174,6 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
         editor->setFocus();
     }
     this->pressed = false;
-
-    auto &app = App::GetApplication();
-    if(app.getActiveTransaction())
-        FC_LOG("editor already transacting " << app.getActiveTransaction());
-    else {
-        auto items = childItem->getPropertyData();
-        for(auto propItem=childItem->parent();items.empty() && propItem;propItem=propItem->parent())
-            items = propItem->getPropertyData();
-        if(items.empty()) 
-            FC_LOG("editor no item");
-        else {
-            auto prop = items[0];
-            auto parent = prop->getContainer();
-            auto obj  = dynamic_cast<App::DocumentObject*>(parent);
-            if(!obj || !obj->getDocument())
-                FC_LOG("invalid object");
-            else if(obj->getDocument()->hasPendingTransaction())
-                FC_LOG("pending transaction");
-            else {
-                std::ostringstream str;
-                str << "Change ";
-                for(auto prop : items) {
-                    if(prop->getContainer()!=obj) {
-                        obj = 0;
-                        break;
-                    }
-                }
-                if(obj && obj->getNameInDocument())
-                    str << obj->getNameInDocument() << '.';
-                else
-                    str << "property ";
-                str << prop->getName();
-                if(items.size()>1)
-                    str << "...";
-                activeTransactionID = app.setActiveTransaction(str.str().c_str());
-                FC_LOG("editor transaction " << app.getActiveTransaction());
-            }
-        }
-    }
 
     return editor;
 }

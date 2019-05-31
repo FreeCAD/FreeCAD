@@ -174,10 +174,62 @@ void PropertyEditor::currentChanged ( const QModelIndex & current, const QModelI
     //     openPersistentEditor(model()->buddy(current));
 }
 
+void PropertyEditor::setupTransaction(const QModelIndex &index) {
+    if(!autoupdate)
+        return;
+    if(this->state()!=EditingState) {
+        FC_LOG("editor not editing");
+        return;
+    }
+    auto &app = App::GetApplication();
+    if(app.getActiveTransaction()) {
+        FC_LOG("editor already transacting " << app.getActiveTransaction());
+        return;
+    }
+    PropertyItem* item = static_cast<PropertyItem*>(index.internalPointer());
+    auto items = item->getPropertyData();
+    for(auto propItem=item->parent();items.empty() && propItem;propItem=propItem->parent())
+        items = propItem->getPropertyData();
+    if(items.empty()) {
+        FC_LOG("editor no item");
+        return;
+    }
+    auto prop = items[0];
+    auto parent = prop->getContainer();
+    auto obj  = Base::freecad_dynamic_cast<App::DocumentObject>(parent);
+    if(!obj || !obj->getDocument()) {
+        FC_LOG("invalid object");
+        return;
+    }
+    if(obj->getDocument()->hasPendingTransaction()) {
+        FC_LOG("pending transaction");
+        return;
+    }
+    std::ostringstream str;
+    str << tr("Edit").toUtf8().constData() << ' ';
+    for(auto prop : items) {
+        if(prop->getContainer()!=obj) {
+            obj = 0;
+            break;
+        }
+    }
+    if(obj && obj->getNameInDocument())
+        str << obj->getNameInDocument() << '.';
+    else
+        str << tr("property").toUtf8().constData() << ' ';
+    str << prop->getName();
+    if(items.size()>1)
+        str << "...";
+    app.setActiveTransaction(str.str().c_str());
+    FC_LOG("editor transaction " << app.getActiveTransaction());
+}
+
 void PropertyEditor::onItemActivated ( const QModelIndex & index )
 {
-    if(index.column() == 1)
-        edit(model()->buddy(index),AllEditTriggers,0);
+    if(index.column() != 1)
+        return;
+    edit(model()->buddy(index),AllEditTriggers,0);
+    setupTransaction(index);
 }
 
 void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
@@ -186,16 +238,13 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (doc) {
             if (!doc->isTransactionEmpty()) {
-                doc->commitTransaction();
                 // Between opening and committing a transaction a recompute
                 // could already have been done
                 if (doc->isTouched())
                     doc->recompute();
             }
-            else {
-                doc->abortTransaction();
-            }
         }
+        App::GetApplication().closeActiveTransaction();
     }
 
     QModelIndex indexSaved = currentIndex();
@@ -220,6 +269,7 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
         setCurrentIndex(index);
         edit(index,AllEditTriggers,0);
     }
+    setupTransaction(currentIndex());
 }
 
 void PropertyEditor::reset()
