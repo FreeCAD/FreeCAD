@@ -1723,7 +1723,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "given the complete selection is cleared."},
     {"isSelected",           (PyCFunction) SelectionSingleton::sIsSelected, METH_VARARGS,
      "isSelected(object,resolve=True) -- Check if a given object is selected"},
-    {"setPreselection",      (PyCFunction) SelectionSingleton::sSetPreselection, METH_VARARGS,
+    {"setPreselection",      (PyCFunction) SelectionSingleton::sSetPreselection, METH_VARARGS|METH_KEYWORDS,
      "setPreselection() -- Set preselected object"},
     {"getPreselection",      (PyCFunction) SelectionSingleton::sGetPreselection, METH_VARARGS,
      "getPreselection() -- Get preselected object"},
@@ -2001,12 +2001,15 @@ PyObject *SelectionSingleton::sEnablePickedList(PyObject * /*self*/, PyObject *a
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sSetPreselection(PyObject * /*self*/, PyObject *args)
+PyObject *SelectionSingleton::sSetPreselection(PyObject * /*self*/, PyObject *args, PyObject *kwd)
 {
     PyObject *object;
     char* subname=0;
     float x=0,y=0,z=0;
-    if (PyArg_ParseTuple(args, "O!|sfff", &(App::DocumentObjectPy::Type),&object,&subname,&x,&y,&z)) {
+    int type=1;
+    static char *kwlist[] = {"obj","subname","x","y","z","tp",0};
+    if (PyArg_ParseTupleAndKeywords(args, kwd, "O!|sfffi", kwlist,
+                &(App::DocumentObjectPy::Type),&object,&subname,&x,&y,&z,&type)) {
         App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
         if (!docObj || !docObj->getNameInDocument()) {
@@ -2016,7 +2019,7 @@ PyObject *SelectionSingleton::sSetPreselection(PyObject * /*self*/, PyObject *ar
 
         Selection().setPreselect(docObj->getDocument()->getName(),
                                  docObj->getNameInDocument(),
-                                 subname,x,y,z,true);
+                                 subname,x,y,z,type);
         Py_Return;
     }
 
