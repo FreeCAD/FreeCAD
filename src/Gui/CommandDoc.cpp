@@ -97,6 +97,7 @@ StdCmdOpen::StdCmdOpen()
     sStatusTip    = QT_TR_NOOP("Open a document or import files");
     sPixmap       = "document-open";
     sAccel        = keySequenceToAccel(QKeySequence::Open);
+    eType         = NoTransaction;
 }
 
 void StdCmdOpen::activated(int iMsg)
