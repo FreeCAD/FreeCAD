@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathPreferencesPathDressup as PathPreferencesPathDressup
 
@@ -75,8 +74,10 @@ class HoldingTagPreferences:
         return PathPreferences.preferences().GetFloat(cls.DefaultHoldingTagRadius, ifNotSet)
 
     def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(":/preferences/PathDressupHoldingTags.ui")
-        self.label = translate("Path_DressupTag", 'Holding Tag')
+        if FreeCAD.GuiUp:
+            import FreeCADGui
+            self.form = FreeCADGui.PySideUic.loadUi(":/preferences/PathDressupHoldingTags.ui")
+            self.label = translate("Path_DressupTag", 'Holding Tag')
 
     def loadSettings(self):
         self.form.ifWidth.setText(FreeCAD.Units.Quantity(self.defaultWidth(0), FreeCAD.Units.Length).UserString)
