@@ -154,7 +154,7 @@ private:
     double m_zoomIncrement;
     int m_reversePan;
     int m_reverseScroll;
-    bool m_borderState;
+/*    bool m_borderState;*/
     QLabel *balloonCursor;
     QPoint balloonCursorPos;
     void cancelBalloonPlacing(void);
