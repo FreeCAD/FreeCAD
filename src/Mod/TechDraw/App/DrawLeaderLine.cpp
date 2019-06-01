@@ -66,6 +66,7 @@ DrawLeaderLine::DrawLeaderLine(void)
     Scale.setStatus(App::Property::Hidden,true);
     Rotation.setStatus(App::Property::ReadOnly,true);
     Rotation.setStatus(App::Property::Hidden,true);
+    Caption.setStatus(App::Property::Hidden,true);
 
     //generally, lines/leaders are not meant to move around.
     LockPosition.setValue(true);
