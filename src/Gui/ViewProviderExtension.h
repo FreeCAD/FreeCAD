@@ -86,6 +86,7 @@ public:
     virtual SoGroup*     extensionGetChildRoot(void) const {return nullptr;}
     virtual SoSeparator* extensionGetBackRoot(void) const {return nullptr;}
     virtual void extensionAttach(App::DocumentObject* ) { }
+    virtual void extensionReattach(App::DocumentObject* ) { }
     virtual void extensionSetDisplayMode(const char* ) { }
     virtual std::vector<std::string> extensionGetDisplayModes(void) const {return std::vector<std::string>();}
 

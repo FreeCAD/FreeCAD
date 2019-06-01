@@ -266,6 +266,12 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
         ext->extensionAttach(pcObj);
 }
 
+void ViewProviderDocumentObject::reattach(App::DocumentObject *pcObj) {
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for (Gui::ViewProviderExtension* ext : vector)
+        ext->extensionReattach(pcObj);
+}
+
 void ViewProviderDocumentObject::update(const App::Property* prop)
 {
     // bypass view provider update to always allow changing visibility from
