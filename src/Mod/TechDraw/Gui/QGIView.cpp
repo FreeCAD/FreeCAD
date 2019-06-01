@@ -455,7 +455,8 @@ void QGIView::drawBorder()
         return;
     }
 
-    //show neither
+    drawCaption();   //always draw caption
+
     auto vp = static_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
     if (!getFrameState() && !vp->KeepLabel.getValue()) {
          m_label->hide();
@@ -463,10 +464,7 @@ void QGIView::drawBorder()
          m_lock->hide();
         return;
     }
-    drawCaption();
 
-    //show both or show label
-    //double margin = 2.0;
     m_label->hide();
     m_border->hide();
     m_lock->hide();
