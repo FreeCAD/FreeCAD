@@ -201,7 +201,7 @@ public:
     /** Return a copy of the property if the link replacement affects this property 
      * 
      * @param owner: the parent object whose link property is to be replace.
-     *               Not that The parent may not be the container of this
+     *               Note that The parent may not be the container of this
      *               property. Link sub property can use this opportunity to
      *               adjust its relative links.
      * @param oldObj: object to be replaced

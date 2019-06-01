@@ -926,16 +926,28 @@ Property *PropertyLinkList::CopyOnLinkReplace(const App::DocumentObject *parent,
         App::DocumentObject *oldObj, App::DocumentObject *newObj) const
 {
     std::vector<DocumentObject*> links;
+    bool copied = false;
+    bool found = false;
     for(auto it=_lValueList.begin();it!=_lValueList.end();++it) {
         auto res = tryReplaceLink(getContainer(),*it,parent,oldObj,newObj);
         if(res.first) {
-            if(links.empty())
+            found = true;
+            if(!copied) {
+                copied = true;
                 links.insert(links.end(),_lValueList.begin(),it);
+            }
             links.push_back(res.first);
-        }else if(links.size())
+        } else if(*it == newObj) {
+            // in case newObj already exists here, we shall remove all existing
+            // entry, and instert it to take over oldObj's position.
+            if(!copied) {
+                copied = true;
+                links.insert(links.end(),_lValueList.begin(),it);
+            }
+        }else if(copied)
             links.push_back(*it);
     }
-    if(links.empty())
+    if(!found)
         return 0;
     auto p= new PropertyLinkList();
     p->_lValueList = std::move(links);
@@ -2335,6 +2347,7 @@ Property *PropertyLinkSubList::CopyOnLinkReplace(const App::DocumentObject *pare
     std::vector<App::DocumentObject *> values;
     std::vector<std::string> subs;
     auto itSub = _lSubList.begin();
+    std::vector<size_t> positions;
     for(auto itValue=_lValueList.begin();itValue!=_lValueList.end();++itValue,++itSub) {
         auto value = *itValue;
         const auto &sub = *itSub;
@@ -2353,11 +2366,36 @@ Property *PropertyLinkSubList::CopyOnLinkReplace(const App::DocumentObject *pare
                 subs.reserve(_lSubList.size());
                 subs.insert(subs.end(),_lSubList.begin(),itSub);
             }
+            if(res.first == newObj) {
+                // check for duplication
+                auto itS = subs.begin();
+                for(auto itV=values.begin();itV!=values.end();) {
+                    if(*itV == res.first && *itS == res.second) {
+                        itV = values.erase(itV);
+                        itS = subs.erase(itS);
+                    } else {
+                        ++itV;
+                        ++itS;
+                    }
+                }
+                positions.push_back(values.size());
+            }
             values.push_back(res.first);
             subs.push_back(std::move(res.second));
         }else if(values.size()) {
-            values.push_back(value);
-            subs.push_back(sub);
+            bool duplicate = false;
+            if(value == newObj) {
+                for(auto pos : positions) {
+                    if(sub == subs[pos]) {
+                        duplicate = true;
+                        break;
+                    }
+                }
+            }
+            if(!duplicate) {
+                values.push_back(value);
+                subs.push_back(sub);
+            }
         }
     }
     if(values.empty()) 
@@ -4031,21 +4069,49 @@ Property *PropertyXLinkSubList::CopyOnLinkReplace(const App::DocumentObject *par
         App::DocumentObject *oldObj, App::DocumentObject *newObj) const
 {
     std::unique_ptr<Property> copy;
+    PropertyXLinkSub *copied = 0;
+    std::set<std::string> subs;
     auto it = _Links.begin();
     for(;it!=_Links.end();++it) {
         copy.reset(it->CopyOnLinkReplace(parent,oldObj,newObj));
-        if(copy) break;
+        if(copy) {
+            copied = static_cast<PropertyXLinkSub*>(copy.get());
+            if(copied->getValue() == newObj) {
+                for(auto &sub : copied->getSubValues())
+                    subs.insert(sub);
+            }
+            break;
+        }
     }
     if(!copy)
         return 0;
     std::unique_ptr<PropertyXLinkSubList> p(new PropertyXLinkSubList);
     for(auto iter=_Links.begin();iter!=it;++iter) {
-        p->_Links.emplace_back();
-        iter->copyTo(p->_Links.back());
+        if(iter->getValue()==newObj && copied->getValue()==newObj) {
+            // merge subnames in case new object already exists
+            for(auto &sub : iter->getSubValues()) {
+                if(subs.insert(sub).second)
+                    copied->_SubList.push_back(sub);
+            }
+        } else {
+            p->_Links.emplace_back();
+            iter->copyTo(p->_Links.back());
+        }
     }
     p->_Links.emplace_back();
-    static_cast<PropertyXLinkSub&>(*copy).copyTo(p->_Links.back());
+    copied->copyTo(p->_Links.back());
+    copied = &p->_Links.back();
     for(++it;it!=_Links.end();++it) {
+        if((it->getValue()==newObj||it->getValue()==oldObj) 
+                && copied->getValue()==newObj) 
+        {
+            // merge subnames in case new object already exists
+            for(auto &sub : it->getSubValues()) {
+                if(subs.insert(sub).second)
+                    copied->_SubList.push_back(sub);
+            }
+            continue;
+        }
         p->_Links.emplace_back();
         copy.reset(it->CopyOnLinkReplace(parent,oldObj,newObj));
         if(copy)
