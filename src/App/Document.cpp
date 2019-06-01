@@ -3910,7 +3910,7 @@ std::vector<DocumentObject*> Document::copyObject(
     if(!recursive)
         deps = objs;
     else
-        deps = getDependencyList(objs,DepNoXLinked);
+        deps = getDependencyList(objs,DepNoXLinked|DepSort);
 
     if(!isSaved() && PropertyXLink::hasXLink(deps))
         throw Base::RuntimeError(
@@ -3934,6 +3934,7 @@ std::vector<DocumentObject*> Document::copyObject(
         use_buffer = false;
     }
 
+    std::vector<App::DocumentObject*> imported;
     if (use_buffer) {
         Base::ByteArrayOStreambuf obuf(res);
         std::ostream ostr(&obuf);
@@ -3942,7 +3943,7 @@ std::vector<DocumentObject*> Document::copyObject(
         Base::ByteArrayIStreambuf ibuf(res);
         std::istream istr(0);
         istr.rdbuf(&ibuf);
-        return md.importObjects(istr);
+        imported = md.importObjects(istr);
     } else {
         static Base::FileInfo fi(App::Application::getTempFileName());
         Base::ofstream ostr(fi, std::ios::out | std::ios::binary);
@@ -3950,8 +3951,21 @@ std::vector<DocumentObject*> Document::copyObject(
         ostr.close();
 
         Base::ifstream istr(fi, std::ios::in | std::ios::binary);
-        return md.importObjects(istr);
+        imported = md.importObjects(istr);
     }
+
+    if(imported.size()!=deps.size())
+        return imported;
+
+    std::unordered_map<App::DocumentObject*,size_t> indices;
+    size_t i=0;
+    for(auto o : deps)
+        indices[o] = i++;
+    std::vector<App::DocumentObject*> result;
+    result.reserve(objs.size());
+    for(auto o : objs)
+        result.push_back(imported[indices[o]]);
+    return result;
 }
 
 std::vector<App::DocumentObject*> 

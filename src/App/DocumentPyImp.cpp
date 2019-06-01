@@ -294,6 +294,7 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
         return NULL;    // NULL triggers exception
 
     std::vector<App::DocumentObject*> objs;
+    bool single = false;
     if(PySequence_Check(obj)) {
         Py::Sequence seq(obj);
         for(size_t i=0;i<seq.size();++i) {
@@ -307,12 +308,14 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
         PyErr_SetString(PyExc_TypeError, 
             "Expect first argument to be either a document object or sequence of document objects");
         return 0;
-    }else
+    }else {
         objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+        single = true;
+    }
 
     PY_TRY {
         auto ret = getDocumentPtr()->copyObject(objs,PyObject_IsTrue(rec));
-        if(ret.size()==1)
+        if(ret.size()==1 && single)
             return ret[0]->getPyObject();
 
         Py::Tuple tuple(ret.size());
