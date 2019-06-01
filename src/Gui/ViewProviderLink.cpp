@@ -109,7 +109,7 @@ public:
     Connection connChangeIcon;
 
     ViewProviderDocumentObject *pcLinked;
-    std::set<Gui::LinkOwner*> links;
+    std::unordered_set<Gui::LinkOwner*> links;
 
     typedef LinkInfoPtr Pointer;
 
@@ -198,9 +198,7 @@ public:
     }
 
     void remove(LinkOwner *owner) {
-        auto it = links.find(owner);
-        if(it!=links.end())
-            links.erase(it);
+        links.erase(owner);
     }
 
     bool isLinked() const {
@@ -222,28 +220,26 @@ public:
         return pcLinked->getDocument()->getDocument()->getName();
     }
 
-    void detach() {
+    void detach(bool unlink) {
         FC_LOG("link detach " << getLinkedNameSafe());
+        auto me = LinkInfoPtr(this);
+        if(unlink) {
+            while(links.size()) {
+                auto link = *links.begin();
+                links.erase(links.begin());
+                link->unlink(me);
+            }
+        }
         sensor.detach();
         switchSensor.detach();
         childSensor.detach();
-        auto me = LinkInfoPtr(this);
-        while(links.size()) {
-            auto link = *links.begin();
-            links.erase(links.begin());
-            link->unlink(me);
-        }
         for(auto &node : pcSnapshots) {
-            if(node) {
+            if(node)
                 coinRemoveAllChildren(node);
-                node.reset();
-            }
         }
         for(auto &node : pcSwitches) {
-            if(node) {
+            if(node)
                 coinRemoveAllChildren(node);
-                node.reset();
-            }
         }
         pcLinkedSwitch.reset();
         if(pcChildGroup) {
@@ -283,9 +279,10 @@ public:
             if(pcLinked) {
                 FC_LOG("link release " << getLinkedNameSafe());
                 auto ext = pcLinked->getExtensionByType<ViewProviderLinkObserver>(true);
-                if(ext) {
+                if(ext && ext->linkInfo == this) {
                     pcLinked->forceUpdate(false);
-                    ext->extensionBeforeDelete();
+                    detach(true);
+                    ext->linkInfo.reset();
                 }
             }
         }
@@ -668,7 +665,7 @@ ViewProviderLinkObserver::ViewProviderLinkObserver() {
 
 ViewProviderLinkObserver::~ViewProviderLinkObserver() {
     if(linkInfo) {
-        linkInfo->detach();
+        linkInfo->detach(true);
         linkInfo.reset();
     }
 }
@@ -685,9 +682,15 @@ void ViewProviderLinkObserver::setLinkVisible(bool visible) {
 }
 
 void ViewProviderLinkObserver::extensionBeforeDelete() {
+    if(linkInfo) 
+        linkInfo->detach(false);
+}
+
+void ViewProviderLinkObserver::extensionReattach(App::DocumentObject *) {
     if(linkInfo) {
-        linkInfo->detach();
-        linkInfo.reset();
+        linkInfo->pcLinked = 
+            freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
+        linkInfo->update();
     }
 }
 
@@ -1641,6 +1644,7 @@ void ViewProviderLink::reattach(App::DocumentObject *obj) {
     linkView->setOwner(this);
     if(childVp)
         childVp->reattach(obj);
+    ViewProviderDocumentObject::reattach(obj);
 }
 
 std::vector<std::string> ViewProviderLink::getDisplayModes(void) const

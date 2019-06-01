@@ -46,6 +46,7 @@ class GuiExport ViewProviderLinkObserver: public ViewProviderExtension {
 public:
     ViewProviderLinkObserver();
     virtual ~ViewProviderLinkObserver();
+    void extensionReattach(App::DocumentObject *) override;
     void extensionBeforeDelete() override;
     void extensionOnChanged(const App::Property *) override;
     void extensionUpdateData(const App::Property*) override;
