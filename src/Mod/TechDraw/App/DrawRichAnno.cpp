@@ -52,6 +52,11 @@ DrawRichAnno::DrawRichAnno(void)
     ADD_PROPERTY_TYPE(AnnoText, (""), group, App::Prop_None, "Anno text");
     ADD_PROPERTY_TYPE(ShowFrame, (true), group, App::Prop_None, "Outline rectangle on/off");
     ADD_PROPERTY_TYPE(MaxWidth, (-1.0), group, App::Prop_None, "Width limit before auto wrap");
+    Caption.setStatus(App::Property::Hidden,true);
+    Scale.setStatus(App::Property::Hidden,true);
+    ScaleType.setStatus(App::Property::Hidden,true);
+
+
 }
 
 DrawRichAnno::~DrawRichAnno()
