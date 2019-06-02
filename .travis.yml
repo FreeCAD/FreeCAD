@@ -239,6 +239,7 @@ before_install:
        curl -L https://github.com/frerich/clcache/releases/download/v4.2.0/clcache-4.2.0.zip --output clcache-4.2.0.zip
        7z x clcache-4.2.0.zip > /dev/null
        export PATH=$CLCACHE_PATH:$PATH
+       export PATH=$TEST_PATH:$PATH
        #reset clcache hit stats
        cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -z'
        # clcache stats before compilation
@@ -269,19 +270,22 @@ script:
 ####
 #  Install FreeCAD and run unit tests.  Test failures will fail the build
 ##
-#        MSBuild.exe /m FreeCAD_Trunk.sln
+#        MSBuild.exe /m FreeCAD.sln
   - |
     if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
         # call msbuild using clcache 
-        #cmd.exe /C '"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 && MSBuild.exe FreeCAD_Trunk.sln /p:CLToolExe=clcache.exe /p:TrackFileAccess=false /p:CLToolPath=C:\Users\travis\build\FreeCAD\FreeCAD /m:2 /nologo /verbosity:minimal /p:Configuration=Release /p:Platform=x64'
+        #cmd.exe /C '"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 && MSBuild.exe FreeCAD.sln /p:CLToolExe=clcache.exe /p:TrackFileAccess=false /p:CLToolPath=C:\Users\travis\build\FreeCAD\FreeCAD /m:2 /nologo /verbosity:minimal /p:Configuration=Release /p:Platform=x64'
         cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\.travis\build.bat'
         # ls -lahR
         cp -a ../FreeCADLibs/bin/* bin/
         # show clcache hit stats
         cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
         # run the tests
-        cmd.exe /C 'cd C:\Users\travis\build\FreeCAD\FreeCAD\build\bin && FreeCADCmd.exe --run-test 0'
-        cd $HOME
+        #cmd.exe /C 'cd C:\Users\travis\build\FreeCAD\FreeCAD\build\bin && FreeCADCmd.exe --run-test 0'
+        # Make build fail if ANY of the following fails
+        set -ev 
+        winpty.exe -Xallow-non-tty -Xplain /C/Users/travis/build/FreeCAD/FreeCAD/build/bin/FreeCADCmd.exe --run-test 0 | tee runlog.txt
+        grep FAILED runlog.txt ; [ $? == 1 ] && echo "Build succeeded and tests passed!" || ( echo "Tests failed!" && false )
     else
         sudo make -j2 install
         ${INSTALLED_APP_PATH} --console --run-test 0

@@ -47,6 +47,7 @@ public:
     static double appX(double x);
     static Base::Vector2d appX(Base::Vector2d v);
     static Base::Vector3d appX(Base::Vector3d v);
+    static QPointF appX(QPointF p);
 
     static QPointF guiPt(QPointF p);
     static QPointF appPt(QPointF p);

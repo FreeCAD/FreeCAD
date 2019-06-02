@@ -37,9 +37,18 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Control.h>
+#include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProviderDocumentObject.h>
+
 #include <Mod/TechDraw/App/LineGroup.h>
 
-
+#include "TaskBalloon.h"
 #include "ViewProviderBalloon.h"
 
 using namespace TechDrawGui;
@@ -61,7 +70,7 @@ ViewProviderBalloon::ViewProviderBalloon()
 
     hGrp = App::GetApplication().GetUserParameter()
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", 3.5);
+    double fontSize = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
     ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),group,App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(Fontsize,(fontSize)    ,group,(App::PropertyType)(App::Prop_None),"Dimension text size in units");
 
@@ -102,6 +111,41 @@ std::vector<std::string> ViewProviderBalloon::getDisplayModes(void) const
     std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
 
     return StrList;
+}
+
+bool ViewProviderBalloon::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default ) {
+        if (Gui::Control().activeDialog())  {
+            return false;
+        }
+        // clear the selection (convenience)
+        Gui::Selection().clearSelection();
+        auto qgivBalloon(dynamic_cast<QGIViewBalloon*>(getQView()));
+        if (qgivBalloon) {
+            Gui::Control().showDialog(new TaskDlgBalloon(qgivBalloon));
+        }
+        return true;
+    } else {
+        return ViewProviderDrawingView::setEdit(ModNum);
+    }
+    return true;
+}
+
+void ViewProviderBalloon::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderDrawingView::unsetEdit(ModNum);
+    }
+}
+
+bool ViewProviderBalloon::doubleClicked(void)
+{
+    setEdit(ViewProvider::Default);
+    return true;
 }
 
 void ViewProviderBalloon::updateData(const App::Property* p)

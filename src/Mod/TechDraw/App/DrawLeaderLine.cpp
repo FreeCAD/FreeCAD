@@ -66,6 +66,7 @@ DrawLeaderLine::DrawLeaderLine(void)
     Scale.setStatus(App::Property::Hidden,true);
     Rotation.setStatus(App::Property::ReadOnly,true);
     Rotation.setStatus(App::Property::Hidden,true);
+    Caption.setStatus(App::Property::Hidden,true);
 
     //generally, lines/leaders are not meant to move around.
     LockPosition.setValue(true);
@@ -77,8 +78,6 @@ DrawLeaderLine::~DrawLeaderLine()
 
 void DrawLeaderLine::onChanged(const App::Property* prop)
 {
-//    if (!isRestoring()) {
-//    }
     DrawView::onChanged(prop);
 }
 
@@ -112,15 +111,6 @@ App::DocumentObjectExecReturn *DrawLeaderLine::execute(void)
     return DrawView::execute();
 }
 
-//this doesn't really work because LeaderParent is not available?
-void DrawLeaderLine::onDocumentRestored(void)
-{
-//    Base::Console().Message("DLL::onDocumentRestored()\n");
-    requestPaint();
-    DrawView::onDocumentRestored();
-}
-
-
 DrawView* DrawLeaderLine::getBaseView(void) const
 {
     DrawView* result = nullptr;
@@ -133,7 +123,6 @@ DrawView* DrawLeaderLine::getBaseView(void) const
     }
     return result;
 }
-
 
 App::DocumentObject* DrawLeaderLine::getBaseObject(void) const
 {

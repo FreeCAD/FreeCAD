@@ -75,7 +75,8 @@ QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
     m_parentItem(myParent),
     m_lineWidth(0.0),
     m_lineColor(Qt::black),
-    m_hasHover(false)
+    m_hasHover(false),
+    m_blockDraw(false)
 
 {
     setHandlesChildEvents(false);
@@ -113,8 +114,12 @@ QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
     setZValue(ZVALUE::DIMENSION);
 
     QObject::connect(
-        m_line, SIGNAL(pointsUpdated(std::vector<QPointF>)),
-        this  , SLOT  (onLineEditFinished(std::vector<QPointF>))
+        m_line, SIGNAL(pointsUpdated(QPointF, std::vector<QPointF>)),
+        this  , SLOT  (onLineEditFinished(QPointF, std::vector<QPointF>))
+            );
+    QObject::connect(
+        m_line, SIGNAL(attachMoved(QPointF)),
+        this  , SLOT  (onAttachMoved(QPointF))
             );
     QObject::connect(
         m_line, SIGNAL(selected(bool)),
@@ -146,6 +151,36 @@ QVariant QGILeaderLine::itemChange(GraphicsItemChange change, const QVariant &va
     return QGIView::itemChange(change, value);
 }
 
+void QGILeaderLine::onSourceChange(TechDraw::DrawView* newParent)
+{
+//    Base::Console().Message("QGILL::onSoureChange(%s)\n",newParent->getNameInDocument());
+    std::string parentName = newParent->getNameInDocument();
+    QGIView* qgiParent = getQGIVByName(parentName);
+    if (qgiParent != nullptr) {
+        m_parentItem = qgiParent;
+        setParentItem(m_parentItem);
+        draw();
+    } else {
+        Base::Console().Warning("QGILL::onSourceChange - new parent %s has no QGIView\n",parentName.c_str());
+    }
+}
+
+void QGILeaderLine::onAttachMoved(QPointF attach)
+{
+    auto leadFeat( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
+    TechDraw::DrawView* parent = leadFeat->getBaseView();
+    double pScale = 1.0;
+    if (parent != nullptr) {
+        pScale = parent->getScale();
+    }
+    QPointF mapped = m_parentItem->mapFromItem(this,attach);  //map point to baseView
+    Base::Vector3d attachPoint = Base::Vector3d(mapped.x(),mapped.y(),0.0);
+    getFeature()->setPosition(Rez::appX(attachPoint.x / pScale),  //attach point must scale with parent.
+                              Rez::appX(- attachPoint.y / pScale),
+                              true);
+}
+
+
 void QGILeaderLine::select(bool state)
 {
     setSelected(state);
@@ -158,24 +193,45 @@ void QGILeaderLine::hover(bool state)
     draw();
 }
 
-void QGILeaderLine::onLineEditFinished(std::vector<QPointF> pts)
+void QGILeaderLine::closeEdit(void)
 {
-//    Base::Console().Message("QGILL::onLineEditFinished(%d)\n",pts.size());
-    QPointF p0 = pts.front();
-    if ( !(TechDraw::DrawUtil::fpCompare(p0.x(),0.0) &&
-           TechDraw::DrawUtil::fpCompare(p0.y(),0.0))  )  {
+//    Base::Console().Message("QGIL::closeEdit()\n");
+    if (m_line != nullptr) {
+        m_line->onEndEdit();   //to QGEPath
+    }
+}
+
+//from QGEPath
+void QGILeaderLine::onLineEditFinished(QPointF attach, std::vector<QPointF> deltas)
+{
+//    Base::Console().Message("QGILL::onLineEditFinished(%s, %d)\n", 
+//                            TechDraw::DrawUtil::formatVector(attach).c_str(),
+//                            deltas.size());
+    m_blockDraw = true;
+    double pScale = 1.0;
+    auto leadFeat( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
+    TechDraw::DrawView* parent = leadFeat->getBaseView();
+    if (parent != nullptr) {
+        pScale = parent->getScale();
+    }
+
+    QPointF p0 = deltas.front();
+    if ( !(TechDraw::DrawUtil::fpCompare(attach.x(),0.0) &&
+           TechDraw::DrawUtil::fpCompare(attach.y(),0.0))  )  {
         //p0 was moved. need to change AttachPoint and intervals from p0
-        QPointF mapped = m_parentItem->mapFromItem(this,p0);
+        QPointF mapped = m_parentItem->mapFromItem(this,attach);  //map point to baseView
         Base::Vector3d attachPoint = Base::Vector3d(mapped.x(),mapped.y(),0.0);
-        for (auto& p : pts) {
+        for (auto& p : deltas) {
             p -= p0;
         }
-        pts.at(0) = QPointF(0.0,0.0);
-        getFeature()->setPosition(Rez::appX(attachPoint.x),Rez::appX(- attachPoint.y), true);
+        deltas.at(0) = QPointF(0.0,0.0);
+        getFeature()->setPosition(Rez::appX(attachPoint.x / pScale),  //attach point must scale with parent.
+                                  Rez::appX(- attachPoint.y / pScale),
+                                  true);
     }
 
     std::vector<Base::Vector3d> waypoints;
-    for (auto& p: pts) {
+    for (auto& p: deltas) {
         Base::Vector3d v(p.x(),p.y(),0.0);
         waypoints.push_back(v);
     }
@@ -186,21 +242,48 @@ void QGILeaderLine::onLineEditFinished(std::vector<QPointF> pts)
     }
 
     if (m_parentItem == nullptr) {
-        Base::Console().Log("QGILL::onLineEditFinished - m_parentItem is NULL\n");
+        Base::Console().Warning("QGILL::onLineEditFinished - m_parentItem is NULL\n");
     } else {
         QGIView* qgiv = dynamic_cast<QGIView*>(m_parentItem);
         if (qgiv != nullptr) {
-            Q_EMIT editComplete(pts, qgiv);
+            Q_EMIT editComplete();           //to task
         }
     }
+    m_blockDraw = false;
+    draw();
 }
 
 void QGILeaderLine::startPathEdit(void)
 {
+    saveState();
+
     double scale = getScale();
     m_line->setScale(scale);
     m_line->inEdit(true);
     m_line->startPathEdit();
+}
+
+void QGILeaderLine::saveState(void)
+{
+//    Base::Console().Message("QGILL::saveState()\n");
+    auto leadFeat = getFeature();
+    if (leadFeat != nullptr) {
+        m_savePoints = leadFeat->WayPoints.getValues();
+        m_saveX = leadFeat->X.getValue();
+        m_saveY = leadFeat->Y.getValue();
+    }
+}
+
+void QGILeaderLine::restoreState(void)
+{
+//    Base::Console().Message("QGILL::restoreState()\n");
+    auto leadFeat = getFeature();
+    if (leadFeat != nullptr) {
+        leadFeat->WayPoints.setValues(m_savePoints);
+        leadFeat->X.setValue(m_saveX);
+        leadFeat->Y.setValue(m_saveY);
+        leadFeat->recomputeFeature();
+    }
 }
 
 void QGILeaderLine::updateView(bool update)
@@ -209,7 +292,7 @@ void QGILeaderLine::updateView(bool update)
     Q_UNUSED(update);
     auto leadFeat( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
     if ( leadFeat == nullptr ) {
-        Base::Console().Log("QGILL::updateView - no feature!\n");
+        Base::Console().Warning("QGILL::updateView - no feature!\n");
         return;
     }
 
@@ -217,39 +300,43 @@ void QGILeaderLine::updateView(bool update)
     if ( vp == nullptr ) {
         return;
     }
-
     draw();
 }
 
 void QGILeaderLine::draw()
 {
 //    Base::Console().Message("QGILL::draw()- %s\n", getViewObject()->getNameInDocument());
+    if (m_blockDraw) {
+//        Base::Console().Message("QGIL::draw - block draw\n");
+        return;
+    }
+
     if (!isVisible()) {
-        Base::Console().Log("QGIL::draw - not visible\n");
+//        Base::Console().Message("QGIL::draw - not visible\n");
         return;
     }
 
     TechDraw::DrawLeaderLine* leadFeat = getFeature();
     if((!leadFeat) ) {
-        Base::Console().Log("QGIL::draw - no feature\n");
+//        Base::Console().Message("QGIL::draw - no feature\n");
         return;
     }
 
     auto vp = static_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
     if ( vp == nullptr ) {
-        Base::Console().Log("QGIL::draw - no viewprovider\n");
+//        Base::Console().Message("QGIL::draw - no viewprovider\n");
         return;
     }
 
     TechDraw::DrawView* parent = leadFeat->getBaseView();
     QGVPage* view = QGIView::getGraphicsView(parent);
     if (view == nullptr) {
-        Base::Console().Log("QGIL::draw - no graphcisView for parent!! - setup?\n");
+//        Base::Console().Message("QGIL::draw - no graphcisView for parent!! - setup?\n");
         return;
     }
 
     if (m_line->inEdit()) {
-        Base::Console().Log("QGIL::draw - m_line is in edit\n");
+//        Base::Console().Message("QGIL::draw - m_line in edit\n");
         return;
     }
 
@@ -275,11 +362,12 @@ void QGILeaderLine::draw()
 //    if (leadFeat->Scalable.getValue()) {
 //        ptScale = scale;
 //   }
-    std::vector<QPointF> qPoints = convertWaypoints();
+    std::vector<QPointF> qPoints = waypointsToQPoints();
     if (qPoints.empty()) {
-        Base::Console().Log("QGIL::draw - no points\n");
+//        Base::Console().Warning("QGIL::draw - no points\n");
         return;
     }
+
     m_line->setStyle(m_lineStyle);
     double scaler = 1.0;
     m_line->setWidth(scaler * m_lineWidth);
@@ -287,7 +375,7 @@ void QGILeaderLine::draw()
     m_line->setNormalColor(m_lineColor);
     scale = getScale();
     m_line->setScale(scale);
-    m_line->makeDeltasFromPoints(qPoints);  //this is what messes up edit!??
+    m_line->makeDeltasFromPoints(qPoints);
     m_line->setPos(0,0); 
     m_line->updatePath();
     m_line->show();
@@ -307,6 +395,7 @@ void QGILeaderLine::draw()
         m_arrow2->setPrettyNormal();
         m_line->setPrettyNormal();
     }
+//    Base::Console().Message("QGIL::draw - exits\n");
 }
 
 void QGILeaderLine::drawBorder()
@@ -316,24 +405,32 @@ void QGILeaderLine::drawBorder()
 }
 
 //waypoints converted to QPointF
-std::vector<QPointF> QGILeaderLine::convertWaypoints() 
+std::vector<QPointF> QGILeaderLine::waypointsToQPoints() 
 {
-//    Base::Console().Message("QGIL::convertWaypoints()\n");
+//    Base::Console().Message("QGIL::waypointsToQPoints - #1 ()\n");
     TechDraw::DrawLeaderLine* featLine = getFeature();
     std::vector<QPointF> result;
     std::vector<Base::Vector3d> vPts = featLine->WayPoints.getValues();
     if (vPts.empty()) {
-        Base::Console().Log("QGIL::convertWaypoints - no points from feature!\n");
+        Base::Console().Warning("QGIL::waypointsToQPoints - no points from feature!\n");
         return result;
     }
 
-    QGraphicsItem* myParent = parentItem();
-    if (myParent != nullptr) {
-        for (auto& p: vPts) {
-            QPointF pConvert(p.x, p.y);
-            result.push_back(pConvert);
-        }
-    }    
+    for (auto& p: vPts) {
+        QPointF pConvert(p.x, p.y);
+        result.push_back(pConvert);
+    }
+    return result;
+}
+
+std::vector<QPointF> QGILeaderLine::waypointsToQPoints(std::vector<Base::Vector3d> pts)
+{ 
+//    Base::Console().Message("QGIL::waypointsToQPoints(%d) - #2\n", pts.size());
+    std::vector<QPointF> result;
+    for (auto& p: pts) {
+        QPointF pConvert(p.x, p.y);
+        result.push_back(pConvert);
+    }
     return result;
 }
 
@@ -393,7 +490,10 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
 
 void QGILeaderLine::abandonEdit(void)
 {
+//    Base::Console().Message("QGIL::abandonEdit()\n");
     m_line->clearMarkers();
+    m_line->restoreState();
+    restoreState();
 }
 
 double QGILeaderLine::getScale(void)

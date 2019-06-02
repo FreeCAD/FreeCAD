@@ -69,7 +69,9 @@ protected:
     QPainterPath makeHashMark(Base::Vector3d dir, double length, double width); 
     QPainterPath makeDot(double length, double width, bool flipped); 
     QPainterPath makeOpenDot(double length, double width, bool flipped); 
-   
+    QPainterPath makeForkArrow(double length, double width, bool flipped);
+    QPainterPath makeForkArrow(Base::Vector3d dir, double length, double width);
+
 private:
     QBrush m_brush;
     Qt::BrushStyle m_fill;

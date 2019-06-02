@@ -28,11 +28,14 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD Z88 Mesh reader and writer for FEM workbench
 
-import FreeCAD
 import os
+import FreeCAD
 
+# ************************************************************************************************
+# ********* generic FreeCAD import and export methods ********************************************
+# names are fix given from FreeCAD, these methods are called from FreeCAD
+# they are set in FEM modules Init.py
 
-# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -41,13 +44,18 @@ elif open.__module__ == 'io':
     pyopen = open
 
 
-def open(filename):
+def open(
+    filename
+):
     "called when freecad opens a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
     insert(filename, docname)
 
 
-def insert(filename, docname):
+def insert(
+    filename,
+    docname
+):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
@@ -57,7 +65,10 @@ def insert(filename, docname):
     import_z88_mesh(filename)
 
 
-def export(objectslist, filename):
+def export(
+    objectslist,
+    filename
+):
     "called when freecad exports a file"
     if len(objectslist) != 1:
         FreeCAD.Console.PrintError("This exporter can only export one object.\n")
@@ -75,43 +86,51 @@ def export(objectslist, filename):
     f.close()
 
 
-# ********* module specific methods *********
-def write(fem_mesh, filename):
-    '''directly write a FemMesh to a Z88 mesh file format
-    fem_mesh: a FemMesh'''
+# ************************************************************************************************
+# ********* module specific methods **************************************************************
+# reader:
+# - a method uses a FemMesh instance, creates the FreeCAD document object and returns this object
+# - a method creates and returns a FemMesh (no FreeCAD document object) out of the FEM mesh dict
+# - a method reads the data from the mesh file or converts data and returns FEM mesh dictionary
+#
+# writer:
+# - a method directly writes a FemMesh to the mesh file
+# - a method takes a file handle, mesh data and writes to the file handle
 
-    if not fem_mesh.isDerivedFrom("Fem::FemMesh"):
-        FreeCAD.Console.PrintError("Not a FemMesh was given as parameter.\n")
-        return
-    femnodes_mesh = fem_mesh.Nodes
-    import femmesh.meshtools as FemMeshTools
-    femelement_table = FemMeshTools.get_femelement_table(fem_mesh)
-    z88_element_type = get_z88_element_type(fem_mesh, femelement_table)
-    f = pyopen(filename, "w")
-    write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
-    f.close()
-
-
-def read(filename):
-    '''read a FemMesh from a Z88 mesh file and return the FemMesh
+# ********* reader *******************************************************************************
+def import_z88_mesh(
+    filename,
+    analysis=None
+):
+    '''read a FEM mesh from a Z88 mesh file and
+    insert a FreeCAD FEM Mesh object in the ActiveDocument
     '''
-    # no document object is created, just the FemMesh is returned
-    mesh_data = read_z88_mesh(filename)
-    from . import importToolsFem
-    return importToolsFem.make_femmesh(mesh_data)
 
-
-def import_z88_mesh(filename, analysis=None):
-    '''read a FEM mesh from a Z88 mesh file and insert a FreeCAD FEM Mesh object in the ActiveDocument
-    '''
     femmesh = read(filename)
     mesh_name = os.path.basename(os.path.splitext(filename)[0])
     if femmesh:
         mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
         mesh_object.FemMesh = femmesh
 
+    return mesh_object
 
-def read_z88_mesh(z88_mesh_input):
+
+def read(
+    filename
+):
+    '''read a FemMesh from a Z88 mesh file and return the FemMesh
+    '''
+    # no document object is created, just the FemMesh is returned
+
+    mesh_data = read_z88_mesh(filename)
+    from . import importToolsFem
+
+    return importToolsFem.make_femmesh(mesh_data)
+
+
+def read_z88_mesh(
+    z88_mesh_input
+):
     ''' reads a z88 mesh file z88i1.txt (Z88OSV14) or z88structure.txt (Z88AuroraV3)
         and extracts the nodes and elements
     '''
@@ -140,8 +159,11 @@ def read_z88_mesh(z88_mesh_input):
     nodes_count = int(mesh_info[1])
     elements_count = int(mesh_info[2])
     kflag = int(mesh_info[4])
-    if kflag:  # for non rotational elements ist --> kflag = 0 --> cartesian, kflag = 1 polar coordinates
-        FreeCAD.Console.PrintError("KFLAG = 1, Rotational coordinates not supported at the moment\n")
+    # for non rotational elements ist --> kflag = 0 --> cartesian, kflag = 1 polar coordinates
+    if kflag:
+        FreeCAD.Console.PrintError(
+            "KFLAG = 1, Rotational coordinates not supported at the moment\n"
+        )
         return {}
     nodes_first_line = 2  # first line is mesh_info
     nodes_last_line = nodes_count + 1
@@ -186,33 +208,57 @@ def read_z88_mesh(z88_mesh_input):
                 # not supported elements
                 if z88_element_type == 8:
                     # torus8
-                    FreeCAD.Console.PrintError("Z88 Element No. 8, torus8\n")
-                    FreeCAD.Console.PrintError("Rotational elements are not supported at the moment\n")
+                    FreeCAD.Console.PrintError(
+                        "Z88 Element No. 8, torus8\n"
+                    )
+                    FreeCAD.Console.PrintError(
+                        "Rotational elements are not supported at the moment\n"
+                    )
                     return {}
                 elif z88_element_type == 12:
                     # torus12
-                    FreeCAD.Console.PrintError("Z88 Element No. 12, torus12\n")
-                    FreeCAD.Console.PrintError("Rotational elements are not supported at the moment\n")
+                    FreeCAD.Console.PrintError(
+                        "Z88 Element No. 12, torus12\n"
+                    )
+                    FreeCAD.Console.PrintError(
+                        "Rotational elements are not supported at the moment\n"
+                    )
                     return {}
                 elif z88_element_type == 15:
                     # torus6
-                    FreeCAD.Console.PrintError("Z88 Element No. 15, torus6\n")
-                    FreeCAD.Console.PrintError("Rotational elements are not supported at the moment\n")
+                    FreeCAD.Console.PrintError(
+                        "Z88 Element No. 15, torus6\n"
+                    )
+                    FreeCAD.Console.PrintError(
+                        "Rotational elements are not supported at the moment\n"
+                    )
                     return {}
                 elif z88_element_type == 19:
                     # platte16
-                    FreeCAD.Console.PrintError("Z88 Element No. 19, platte16\n")
-                    FreeCAD.Console.PrintError("Not supported at the moment\n")
+                    FreeCAD.Console.PrintError(
+                        "Z88 Element No. 19, platte16\n"
+                    )
+                    FreeCAD.Console.PrintError(
+                        "Not supported at the moment\n"
+                    )
                     return {}
                 elif z88_element_type == 21:
                     # schale16, mixture made from hexa8 and hexa20 (thickness is linear)
-                    FreeCAD.Console.PrintError("Z88 Element No. 21, schale16\n")
-                    FreeCAD.Console.PrintError("Not supported at the moment\n")
+                    FreeCAD.Console.PrintError(
+                        "Z88 Element No. 21, schale16\n"
+                    )
+                    FreeCAD.Console.PrintError(
+                        "Not supported at the moment\n"
+                    )
                     return {}
                 elif z88_element_type == 22:
                     # schale12, mixtrue made from prism6 and prism15 (thickness is linear)
-                    FreeCAD.Console.PrintError("Z88 Element No. 22, schale12\n")
-                    FreeCAD.Console.PrintError("Not supported at the moment\n")
+                    FreeCAD.Console.PrintError(
+                        "Z88 Element No. 22, schale12\n"
+                    )
+                    FreeCAD.Console.PrintError(
+                        "Not supported at the moment\n"
+                    )
                     return {}
 
                 # supported elements
@@ -263,7 +309,8 @@ def read_z88_mesh(z88_mesh_input):
                     input_continues = False
                 elif z88_element_type == 16:
                     # volume16 Z88 --> tetra10 FreeCAD
-                    # N1, N2, N4, N3, N5, N8, N10, N7, N6, N9, , Z88 to FC is different as FC to Z88
+                    # N1, N2, N4, N3, N5, N8, N10, N7, N6, N9
+                    # Z88 to FC is different as FC to Z88
                     nd1 = int(linecolumns[0])
                     nd2 = int(linecolumns[1])
                     nd3 = int(linecolumns[2])
@@ -274,7 +321,9 @@ def read_z88_mesh(z88_mesh_input):
                     nd8 = int(linecolumns[7])
                     nd9 = int(linecolumns[8])
                     nd10 = int(linecolumns[9])
-                    elements_tetra10[elem_no] = (nd1, nd2, nd4, nd3, nd5, nd8, nd10, nd7, nd6, nd9)
+                    elements_tetra10[elem_no] = (
+                        nd1, nd2, nd4, nd3, nd5, nd8, nd10, nd7, nd6, nd9
+                    )
                     input_continues = False
                 elif z88_element_type == 1:
                     # volume1 Z88 --> hexa8 FreeCAD
@@ -291,9 +340,11 @@ def read_z88_mesh(z88_mesh_input):
                     input_continues = False
                 elif z88_element_type == 10:
                     # volume10 Z88 --> hexa20 FreeCAD
-                    # N2, N3, N4, N1, N6, N7, N8, N5, N10, N11, N12, N9,  N14, N15, N16, N13, N18, N19, N20, N17
+                    # N2, N3, N4, N1, N6, N7, N8, N5, N10, N11
+                    # N12, N9,  N14, N15, N16, N13, N18, N19, N20, N17
                     # or turn by 90 degree and they match !
-                    # N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19, N20
+                    # N1, N2, N3, N4, N5, N6, N7, N8, N9, N10
+                    # N11, N12, N13, N14, N15, N16, N17, N18, N19, N20
                     nd1 = int(linecolumns[0])
                     nd2 = int(linecolumns[1])
                     nd3 = int(linecolumns[2])
@@ -314,11 +365,14 @@ def read_z88_mesh(z88_mesh_input):
                     nd18 = int(linecolumns[17])
                     nd19 = int(linecolumns[18])
                     nd20 = int(linecolumns[19])
-                    elements_hexa20[elem_no] = (nd1, nd2, nd3, nd4, nd5, nd6, nd7, nd8, nd9, nd10,
-                                                nd11, nd12, nd13, nd14, nd15, nd16, nd17, nd18, nd19, nd20)
+                    elements_hexa20[elem_no] = (
+                        nd1, nd2, nd3, nd4, nd5, nd6, nd7, nd8, nd9, nd10,
+                        nd11, nd12, nd13, nd14, nd15, nd16, nd17, nd18, nd19, nd20
+                    )
                     input_continues = False
 
-                # unknown elements, some examples have -1 for some teaching reasons to show some other stuff
+                # unknown elements
+                # some examples have -1 for some teaching reasons to show some other stuff
                 else:
                     FreeCAD.Console.PrintError("Unknown element\n")
                     return {}
@@ -330,6 +384,7 @@ def read_z88_mesh(z88_mesh_input):
     FreeCAD.Console.PrintLog('\n')
 
     z88_mesh_file.close()
+
     return {
         'Nodes': nodes,
         'Seg2Elem': elements_seg2,
@@ -347,8 +402,32 @@ def read_z88_mesh(z88_mesh_input):
     }
 
 
-# write z88 Mesh
-def write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f):
+# ********* writer *******************************************************************************
+def write(
+    fem_mesh,
+    filename
+):
+    '''directly write a FemMesh to a Z88 mesh file format
+    fem_mesh: a FemMesh'''
+
+    if not fem_mesh.isDerivedFrom("Fem::FemMesh"):
+        FreeCAD.Console.PrintError("Not a FemMesh was given as parameter.\n")
+        return
+    femnodes_mesh = fem_mesh.Nodes
+    import femmesh.meshtools as FemMeshTools
+    femelement_table = FemMeshTools.get_femelement_table(fem_mesh)
+    z88_element_type = get_z88_element_type(fem_mesh, femelement_table)
+    f = pyopen(filename, "w")
+    write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
+    f.close()
+
+
+def write_z88_mesh_to_file(
+    femnodes_mesh,
+    femelement_table,
+    z88_element_type,
+    f
+):
     node_dimension = 3  # 2 for 2D not supported
     if (
         z88_element_type == 4
@@ -431,24 +510,33 @@ def write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
                     n[0], n[1], n[2], n[3], n[4], n[5], n[6], n[7]))
         elif z88_element_type == 10:
             # hexa20 FreeCAD --> volume10 Z88
-            # N2, N3, N4, N1, N6, N7, N8, N5, N10, N11, N12, N9,  N14, N15, N16, N13, N18, N19, N20, N17
+            # N2, N3, N4, N1, N6, N7, N8, N5, N10, N11
+            # N12, N9,  N14, N15, N16, N13, N18, N19, N20, N17
             # or turn by 90 degree and they match !
-            # N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19, N20
+            # N1, N2, N3, N4, N5, N6, N7, N8, N9, N10
+            # N11, N12, N13, N14, N15, N16, N17, N18, N19, N20
             f.write("{0} {1}\n".format(element, z88_element_type, element))
             f.write(
-                "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15} {16} {17} {18} {19}\n"
+                "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} "
+                "{10} {11} {12} {13} {14} {15} {16} {17} {18} {19}\n"
                 .format(
-                    n[0], n[1], n[2], n[3], n[4], n[5], n[6], n[7], n[8], n[9], n[10], n[11], n[12], n[13], n[14], n[15], n[16], n[17], n[18], n[19]
+                    n[0], n[1], n[2], n[3], n[4], n[5], n[6], n[7], n[8], n[9],
+                    n[10], n[11], n[12], n[13], n[14], n[15], n[16], n[17], n[18], n[19]
                 )
             )
         else:
-            FreeCAD.Console.PrintError("Writing of Z88 elementtype {0} not supported.\n".format(z88_element_type))
+            FreeCAD.Console.PrintError(
+                "Writing of Z88 elementtype {0} not supported.\n".format(z88_element_type)
+            )
             # TODO support schale12 (made from prism15) and schale16 (made from hexa20)
             return
 
 
 # Helper
-def get_z88_element_type(femmesh, femelement_table=None):
+def get_z88_element_type(
+    femmesh,
+    femelement_table=None
+):
     import femmesh.meshtools as FemMeshTools
     if not femmesh:
         print("Error: No femmesh!")

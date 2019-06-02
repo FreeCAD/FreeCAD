@@ -96,6 +96,7 @@
 #include "ZVALUE.h"
 #include "ViewProviderPage.h"
 #include "QGVPage.h"
+#include "MDIViewPage.h"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -149,8 +150,6 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
 
     bkgBrush = new QBrush(getBackgroundColor());
 
-    balloonIndex = 1;
-
     balloonCursor = new QLabel(this);
     balloonCursor->setPixmap(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png")));
     balloonCursor->hide();
@@ -168,7 +167,7 @@ void QGVPage::cancelBalloonPlacing(void)
 {
         getDrawPage()->balloonPlacing = false;
         balloonCursor->hide();
-        QApplication::setOverrideCursor(Qt::ArrowCursor);
+        QApplication::restoreOverrideCursor();
 }
 
 void QGVPage::drawBackground(QPainter *p, const QRectF &)
@@ -426,6 +425,7 @@ QGIView * QGVPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
     ourScene->addItem(vBalloon);
 
     vBalloon->setViewPartFeature(balloon);
+    vBalloon->dvBalloon = balloon;
 
     QGIView *parent = 0;
     parent = findParent(vBalloon);
@@ -747,7 +747,9 @@ void QGVPage::saveSvg(QString filename)
     // the width and height attributes of the <svg> element."  >> but Inkscape won't read it without size info??
     svgGen.setViewBox(QRect(0, 0, Rez::guiX(page->getPageWidth()), Rez::guiX(page->getPageHeight())));
 
-    svgGen.setResolution(Rez::guiX(25.4));    // docs say this is DPI. Rez::guiX(1dot/mm) so 254 dpi?
+    // Set resolution in DPI. To keep text dimensions as they are on screen,
+    // use the very same resolution the screen paint device reports.
+    svgGen.setResolution(MDIViewPage::getFromScene(scene())->logicalDpiY());
 
     svgGen.setTitle(QObject::tr("FreeCAD SVG Export"));
     svgGen.setDescription(svgDescription);
@@ -950,7 +952,6 @@ void QGVPage::enterEvent(QEvent *event)
         balloonCursor->hide();
         QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png")),0,32));
       } else {
-            setCursor(Qt::ArrowCursor);
         QApplication::restoreOverrideCursor();
         viewport()->setCursor(Qt::ArrowCursor);
     }
@@ -958,7 +959,7 @@ void QGVPage::enterEvent(QEvent *event)
 
 void QGVPage::leaveEvent(QEvent * event)
 {
-    QApplication::setOverrideCursor(Qt::ArrowCursor);
+    QApplication::restoreOverrideCursor();
     if(getDrawPage()->balloonPlacing) {
 
 
@@ -989,7 +990,6 @@ void QGVPage::leaveEvent(QEvent * event)
 void QGVPage::mousePressEvent(QMouseEvent *event)
 {
     QGraphicsView::mousePressEvent(event);
-//    setCursor(Qt::ArrowCursor);
 }
 
 void QGVPage::mouseMoveEvent(QMouseEvent *event)
@@ -1001,7 +1001,7 @@ void QGVPage::mouseMoveEvent(QMouseEvent *event)
 void QGVPage::mouseReleaseEvent(QMouseEvent *event)
 {
     if(getDrawPage()->balloonPlacing) {
-        QApplication::setOverrideCursor(Qt::ArrowCursor);
+        QApplication::restoreOverrideCursor();
         balloonCursor->hide();
 
         std::string FeatName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
@@ -1030,6 +1030,7 @@ void QGVPage::mouseReleaseEvent(QMouseEvent *event)
     }
 
     QGraphicsView::mouseReleaseEvent(event);
+    viewport()->setCursor(Qt::ArrowCursor);
 }
 
 TechDraw::DrawPage* QGVPage::getDrawPage()

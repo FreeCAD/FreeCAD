@@ -650,7 +650,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write('** Young\'s modulus unit is MPa = N/mm2\n')
         if self.analysis_type == "frequency" \
                 or self.selfweight_objects \
-                or (self.analysis_type == "thermomech" and not self.solver_obj.ThermoMechSteadyState):
+                or (
+                    self.analysis_type == "thermomech"
+                    and not self.solver_obj.ThermoMechSteadyState
+                ):
             f.write('** Density\'s unit is t/mm^3\n')
         if self.analysis_type == "thermomech":
             f.write('** Thermal conductivity unit is kW/mm/K = t*mm/K*s^3\n')
@@ -668,7 +671,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 PR = float(mat_obj.Material['PoissonRatio'])
             if self.analysis_type == "frequency" \
                     or self.selfweight_objects \
-                    or (self.analysis_type == "thermomech" and not self.solver_obj.ThermoMechSteadyState):
+                    or (
+                        self.analysis_type == "thermomech"
+                        and not self.solver_obj.ThermoMechSteadyState
+                    ):
                 density = FreeCAD.Units.Quantity(mat_obj.Material['Density'])
                 density_in_tonne_per_mm3 = float(density.getValueAs('t/mm^3'))
             if self.analysis_type == "thermomech":
@@ -695,7 +701,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
             if self.analysis_type == "frequency" \
                     or self.selfweight_objects \
-                    or (self.analysis_type == "thermomech" and not self.solver_obj.ThermoMechSteadyState):
+                    or (
+                        self.analysis_type == "thermomech"
+                        and not self.solver_obj.ThermoMechSteadyState
+                    ):
                 f.write('*DENSITY\n')
                 f.write('{0:.3e}\n'.format(density_in_tonne_per_mm3))
             if self.analysis_type == "thermomech":

@@ -60,6 +60,7 @@
 #include <TopExp_Explorer.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
 #include <TColgp_Array1OfPnt.hxx>
+#include <BRepLProp_CLProps.hxx>
 
 #include <cmath>
 #endif  // #ifndef _PreComp_
@@ -67,11 +68,14 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools2D.h>
+#include <Base/Parameter.h>
 
-#include <Mod/Part/App/Geometry.h>
+#include <App/Application.h>
+#include <App/Material.h>
+
+#include "DrawUtil.h"
 
 #include "Geometry.h"
-#include "DrawUtil.h"
 
 using namespace TechDrawGeometry;
 using namespace TechDraw;
@@ -143,6 +147,46 @@ Base::Vector2d BaseGeom::getEndPoint()
     return verts[1];
 }
 
+Base::Vector2d BaseGeom::getMidPoint()
+{
+//    Base::Console().Message("BG::getMidPoint()\n");
+    Base::Vector2d result;
+    BRepAdaptor_Curve adapt(occEdge);
+    double u = adapt.FirstParameter();
+    double v = adapt.LastParameter();
+    double range = v - u;
+    double midParm = u + (range / 2.0);
+    BRepLProp_CLProps prop(adapt,midParm,0,Precision::Confusion());
+    const gp_Pnt& pt = prop.Value();
+    result = Base::Vector2d(pt.X(),pt.Y());
+//    Base::Console().Message("BG::getMidPoint - returns: %s\n",
+//                            TechDraw::DrawUtil::formatVector(result).c_str());
+    return result;
+}
+
+std::vector<Base::Vector2d> BaseGeom::getQuads()
+{
+//    Base::Console().Message("BG::getQuads()\n");
+    std::vector<Base::Vector2d> result;
+    BRepAdaptor_Curve adapt(occEdge);
+    double u = adapt.FirstParameter();
+    double v = adapt.LastParameter();
+    double range = v - u;
+    double q1 = u + (range / 4.0);
+    double q2 = u + (range / 2.0);
+    double q3 = u + (3.0 * range / 4.0);
+    BRepLProp_CLProps prop(adapt,q1,0,Precision::Confusion());
+    const gp_Pnt& p1 = prop.Value();
+    result.push_back(Base::Vector2d(p1.X(),p1.Y()));
+    prop.SetParameter(q2);
+    const gp_Pnt& p2 = prop.Value();
+    result.push_back(Base::Vector2d(p2.X(),p2.Y()));
+    prop.SetParameter(q3);
+    const gp_Pnt& p3 = prop.Value();
+    result.push_back(Base::Vector2d(p3.X(),p3.Y()));
+//    Base::Console().Message("BG::getQuads - returns pts: %d\n", result.size());
+    return result;
+}
 
 double BaseGeom::minDist(Base::Vector2d p)
 {
@@ -955,3 +999,5 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
     }
     return result;
 }
+
+

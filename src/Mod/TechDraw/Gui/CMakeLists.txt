@@ -41,6 +41,7 @@ set(TechDrawGui_MOC_HDRS
     TaskGeomHatch.h
     TaskLeaderLine.h
     TaskRichAnno.h
+    TaskCosVertex.h
     QGEPath.h
     QGTracker.h
     QGILeaderLine.h
@@ -48,6 +49,7 @@ set(TechDrawGui_MOC_HDRS
     QGMText.h
     mrichtextedit.h
     mtextedit.h
+    TaskBalloon.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -70,7 +72,9 @@ set(TechDrawGui_UIC_SRCS
     TaskLeaderLine.ui
     TaskRichAnno.ui
     mrichtextedit.ui
-    )
+    TaskBalloon.ui
+    TaskCosVertex.ui
+)
 
 if(BUILD_QT5)
     qt5_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
@@ -100,6 +104,7 @@ SET(TechDrawGui_SRCS
     Command.cpp
     CommandCreateDims.cpp
     CommandDecorate.cpp
+    CommandAnnotate.cpp
     Resources/TechDraw.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -123,6 +128,9 @@ SET(TechDrawGui_SRCS
     TaskSectionView.ui
     TaskSectionView.cpp
     TaskSectionView.h
+    TaskBalloon.ui
+    TaskBalloon.cpp
+    TaskBalloon.h
     TaskGeomHatch.ui
     TaskGeomHatch.cpp
     TaskGeomHatch.h
@@ -132,6 +140,9 @@ SET(TechDrawGui_SRCS
     TaskRichAnno.ui
     TaskRichAnno.cpp
     TaskRichAnno.h
+    TaskCosVertex.ui
+    TaskCosVertex.cpp
+    TaskCosVertex.h
     DrawGuiUtil.cpp
     DrawGuiUtil.h
     Rez.cpp
@@ -280,7 +291,9 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskGeomHatch.ui
     TaskLeaderLine.ui
     TaskRichAnno.ui
+    TaskCosVertex.ui
     mrichtextedit.ui
+    TaskBalloon.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 

@@ -39,7 +39,6 @@
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
 
-#include "DrawView.h"
 #include "DrawPage.h"
 #include "DrawViewCollection.h"
 #include "DrawViewClip.h"
@@ -47,11 +46,15 @@
 #include "DrawProjGroupItem.h"
 #include "DrawLeaderLine.h"
 #include "DrawUtil.h"
+#include "Geometry.h"
+#include "Cosmetic.h"
 
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
-using namespace TechDraw;
+#include "DrawView.h"
 
+using namespace TechDraw;
+using namespace TechDrawGeometry;
 
 //===========================================================================
 // DrawView
@@ -188,6 +191,7 @@ short DrawView::mustExecute() const
     if (!isRestoring()) {
         result  =  (Scale.isTouched()  ||
                     ScaleType.isTouched() ||
+                    Caption.isTouched() ||
                     X.isTouched() ||
                     Y.isTouched() );
     }
@@ -321,12 +325,6 @@ std::vector<TechDraw::DrawLeaderLine*> DrawView::getLeaders() const
         }
     }
     return result;
-}
-
-void DrawView::addRandomVertex(Base::Vector3d pos)
-{
-    (void) pos;
-    Base::Console().Message("DV::addRandomVertex()\n");
 }
 
 void DrawView::Restore(Base::XMLReader &reader)

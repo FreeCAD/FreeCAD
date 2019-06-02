@@ -207,7 +207,8 @@ class _ViewProviderFemMeshGmsh:
         return True
 
     def dragObject(self, selfvp, dragged_object):
-        if hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+        if hasattr(dragged_object, "Proxy") \
+                and dragged_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
             objs = self.Object.MeshBoundaryLayerList
             objs.remove(dragged_object)
             self.Object.MeshBoundaryLayerList = objs

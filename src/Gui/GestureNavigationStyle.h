@@ -96,6 +96,7 @@ protected: // members variables
     int mouseMoveThreshold = 5;
     ///used by roll gesture detection logic, in AwaitingMoveState and AwaitingReleaseState.
     int rollDir = 0;
+    bool logging = false;
 
 protected: //helper functions
     bool isDraggerUnderCursor(SbVec2s pos);

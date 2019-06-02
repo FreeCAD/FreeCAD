@@ -125,6 +125,9 @@ public:
     TopoDS_Shape getHidSeam(void)    { return hidSeam; }
     TopoDS_Shape getHidIso(void)     { return hidIso; }
 
+    int addRandomVertex(Base::Vector3d pos);
+
+
 protected:
     //HLR output
     TopoDS_Shape visHard;

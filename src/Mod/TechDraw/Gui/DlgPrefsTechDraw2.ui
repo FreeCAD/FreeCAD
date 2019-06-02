@@ -216,6 +216,15 @@
             </iconset>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>5 - Fork</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/arrowfork.svg</normaloff>:/icons/arrowfork.svg</iconset>
+           </property>
+          </item>
          </widget>
         </item>
         <item row="7" column="0">
@@ -250,7 +259,7 @@
            <string>Dimension font size in units</string>
           </property>
           <property name="value">
-           <double>3.500000000000000</double>
+           <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>FontSize</cstring>

@@ -17,10 +17,14 @@ include_directories(
     ${PYCXX_INCLUDE_DIR}
 )
 
+if (BUILD_DYNAMIC_LINK_PYTHON)
+    set(LINK_PYTHON_LIBRARIES ${PYTHON_LIBRARIES})
+endif (BUILD_DYNAMIC_LINK_PYTHON)
+
 if(MSVC)
     set(FreeCADBase_LIBS
         ${Boost_LIBRARIES}
-        ${PYTHON_LIBRARIES}
+        ${LINK_PYTHON_LIBRARIES}
         debug ${XercesC_DEBUG_LIBRARIES}
         optimized ${XercesC_LIBRARIES}
         ${ZLIB_LIBRARIES}
@@ -45,7 +49,7 @@ if(MSVC)
     endif()
 elseif(MINGW)
     set(FreeCADBase_LIBS
-        ${PYTHON_LIBRARIES}
+        ${LINK_PYTHON_LIBRARIES}
         ${XercesC_LIBRARIES}
         ${Boost_LIBRARIES}
         ${ZLIB_LIBRARIES}
@@ -53,7 +57,7 @@ elseif(MINGW)
     )
 else(MSVC)
     set(FreeCADBase_LIBS
-        ${PYTHON_LIBRARIES}
+        ${LINK_PYTHON_LIBRARIES}
         ${XercesC_LIBRARIES}
         ${Boost_LIBRARIES}
         ${ZLIB_LIBRARIES}

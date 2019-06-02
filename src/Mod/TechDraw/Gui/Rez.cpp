@@ -85,6 +85,11 @@ Base::Vector3d Rez::appX(Base::Vector3d v)
     return result;
 }
 
+QPointF Rez::appX(QPointF p)
+{
+    return appPt(p);
+}
+
 
 //Misc conversions
 QPointF Rez::guiPt(QPointF p)
