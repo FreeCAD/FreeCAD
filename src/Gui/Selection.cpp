@@ -1375,57 +1375,33 @@ void SelectionSingleton::setVisible(int visible) {
 
 void SelectionSingleton::setSelection(const char* pDocName, const std::vector<App::DocumentObject*>& sel)
 {
-    if(_PickedList.size()) {
-        _PickedList.clear();
-        notify(SelectionChanges(SelectionChanges::PickedListChanged));
-    }
-
     App::Document *pcDoc;
     pcDoc = getDocument(pDocName);
     if (!pcDoc)
         return;
 
-    std::set<App::DocumentObject*> cur_sel, new_sel;
-    new_sel.insert(sel.begin(), sel.end());
-
-    // Make sure to keep the order of the currently selected objects
-    std::list<_SelObj> temp;
-    for (std::list<_SelObj>::const_iterator it = _SelList.begin(); it != _SelList.end(); ++it) {
-        if (it->pDoc != pcDoc)
-            temp.push_back(*it);
-        else {
-            cur_sel.insert(it->pObject);
-            if (new_sel.find(it->pObject) != new_sel.end())
-                temp.push_back(*it);
-        }
+    if(_PickedList.size()) {
+        _PickedList.clear();
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
-    // Get the objects we must add to the selection
-    std::vector<App::DocumentObject*> diff_new_cur;
-    std::back_insert_iterator< std::vector<App::DocumentObject*> > biit(diff_new_cur);
-    std::set_difference(new_sel.begin(), new_sel.end(), cur_sel.begin(), cur_sel.end(), biit);
-
-    _SelObj obj;
-    for (std::vector<App::DocumentObject*>::const_iterator it = diff_new_cur.begin(); it != diff_new_cur.end(); ++it) {
-        obj.pDoc = pcDoc;
-        obj.pObject = *it;
-        obj.DocName = pDocName;
-        obj.FeatName = (*it)->getNameInDocument();
-        obj.SubName = "";
-        obj.TypeName = (*it)->getTypeId().getName();
-        obj.x = 0.0f;
-        obj.y = 0.0f;
-        obj.z = 0.0f;
-        temp.push_back(obj);
+    bool touched = false;
+    for(auto obj : sel) {
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        _SelObj temp;
+        int ret = checkSelection(pDocName,obj->getNameInDocument(),0,0,temp);
+        if(ret!=0)
+            continue;
+        touched = true;
+        _SelList.push_back(temp);
     }
 
-    if (cur_sel == new_sel) // nothing has changed
-        return;
-
-    _SelList = temp;
-
-    notify(SelectionChanges(SelectionChanges::SetSelection,pDocName));
-    getMainWindow()->updateActions();
+    if(touched) {
+        _SelStackForward.clear();
+        notify(SelectionChanges(SelectionChanges::SetSelection,pDocName));
+        getMainWindow()->updateActions();
+    }
 }
 
 void SelectionSingleton::clearSelection(const char* pDocName, bool clearPreSelect)
