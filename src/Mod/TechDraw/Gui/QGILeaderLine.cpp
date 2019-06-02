@@ -375,6 +375,15 @@ void QGILeaderLine::draw()
     m_line->setNormalColor(m_lineColor);
     scale = getScale();
     m_line->setScale(scale);
+    if (leadFeat->StartSymbol.getValue() > -1) {
+        m_line->setStartAdjust(QGIArrow::getOverlapAdjust(leadFeat->StartSymbol.getValue(),
+                                                          QGIArrow::getPrefArrowSize()));
+    }
+    if (leadFeat->EndSymbol.getValue() > -1) {
+        m_line->setEndAdjust(QGIArrow::getOverlapAdjust(leadFeat->EndSymbol.getValue(),
+                                                        QGIArrow::getPrefArrowSize()));
+    }
+
     m_line->makeDeltasFromPoints(qPoints);
     m_line->setPos(0,0); 
     m_line->updatePath();
