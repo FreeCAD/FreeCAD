@@ -49,7 +49,7 @@ public:
     /*! Constructs a SelectionObject from the SelectionChanges structure.
      */
     SelectionObject(const SelectionChanges& msg);
-    SelectionObject(App::DocumentObject*);
+    explicit SelectionObject(App::DocumentObject*);
     virtual ~SelectionObject();
     /**
      * The default implementation returns an instance of @ref SelectionObjectPy.

@@ -451,15 +451,6 @@ static void linkConvert(bool unlink) {
         e.ReportException();
         return;
     }
-
-    for(auto &v : infos) {
-        auto &info = v.second;
-        auto top = info.topParent.getObject();
-        if(!top || info.subname.empty())
-            continue;
-        Selection().addSelection(top,info.subname.c_str());
-    }
-    Selection().selStackPush();
 }
 
 static bool linkConvertible(bool unlink) {
