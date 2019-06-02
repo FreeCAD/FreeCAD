@@ -1566,7 +1566,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         bool syncPlacement = FC_TREEPARAM(SyncPlacement) && targetItemObj->isGroup();
 
         bool setSelection = true;
-        std::vector<std::string> droppedNames;
+        std::vector<std::pair<App::DocumentObject*,std::string> > droppedObjects;
 
         std::vector<ItemInfo> infos;
         // Only keep text names here, because you never know when doing drag
@@ -1708,6 +1708,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     }
                 }
 
+                auto dropParent = targetParent;
+
                 auto manager = Application::Instance->macroManager();
                 std::ostringstream ss;
                 if(vpp) {
@@ -1763,14 +1765,28 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         }
                         ss << ")";
                     } else if(targetItemObj->getParentItem()) {
-                        auto parent = targetItemObj->getParentItem()->object();
-                        ss << Command::getObjectCmd(parent->getObject(),0,".replaceObject(",true)
+                        auto parentItem = targetItemObj->getParentItem();
+                        ss << Command::getObjectCmd(
+                                parentItem->object()->getObject(),0,".replaceObject(",true)
                             << Command::getObjectCmd(targetObj) << ","
                             << Command::getObjectCmd(obj) << ")";
+
+                        std::ostringstream ss;
+
+                        dropParent = 0;
+                        parentItem->getSubName(ss,dropParent);
+                        if(dropParent) 
+                            ss << parentItem->object()->getObject()->getNameInDocument() << '.';
+                        else 
+                            dropParent = parentItem->object()->getObject();
+                        ss << obj->getNameInDocument() << '.';
+                        dropName = ss.str();
+
                     } else {
                         TREE_WARN("ignore replace operation without parent");
                         continue;
                     }
+
                     Gui::Command::runCommand(Gui::Command::App, ss.str().c_str());
                     
                 }else{
@@ -1788,24 +1804,25 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     dropName = vp->dropObjectEx(obj,owner,subname.c_str(),info.subs);
                     if(manager->getLines() == lines)
                         manager->addLine(MacroManager::Gui,ss.str().c_str());
+                    if(dropName.size())
+                        dropName = targetSubname.str() + dropName;
                 }
 
                 touched = true;
 
                 // Construct the subname pointing to the dropped object
-                auto pos = targetSubname.tellp();
-                if(dropName.size())
-                    targetSubname << dropName << std::ends;
-                else 
+                if(dropName.empty()) {
+                    auto pos = targetSubname.tellp();
                     targetSubname << obj->getNameInDocument() << '.' << std::ends;
-                dropName = targetSubname.str();
-                targetSubname.seekp(pos);
+                    dropName = targetSubname.str();
+                    targetSubname.seekp(pos);
+                }
 
                 Base::Matrix4D newMat;
-                auto sobj = targetParent->getSubObject(dropName.c_str(),0,&newMat);
+                auto sobj = dropParent->getSubObject(dropName.c_str(),0,&newMat);
                 if(!sobj) {
                     FC_LOG("failed to find dropped object " 
-                            << targetParent->getFullName() << '.' << dropName);
+                            << dropParent->getFullName() << '.' << dropName);
                     setSelection = false;
                     continue;
                 }
@@ -1826,14 +1843,14 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         }
                     }
                 }
-                droppedNames.push_back(std::move(dropName));
+                droppedObjects.emplace_back(dropParent,dropName);
             }
-            if(setSelection && droppedNames.size()) {
+            if(setSelection && droppedObjects.size()) {
                 Selection().selStackPush();
                 Selection().clearCompleteSelection();
-                for(auto &sub : droppedNames)
-                    Selection().addSelection(targetParent->getDocument()->getName(),
-                        targetParent->getNameInDocument(), sub.c_str());
+                for(auto &v : droppedObjects)
+                    Selection().addSelection(v.first->getDocument()->getName(),
+                        v.first->getNameInDocument(), v.second.c_str());
                 Selection().selStackPush();
             }
         } catch (const Base::Exception& e) {
