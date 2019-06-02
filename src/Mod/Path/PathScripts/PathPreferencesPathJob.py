@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
@@ -40,6 +39,7 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class JobPreferencesPage:
     def __init__(self, parent=None):
+        import FreeCADGui
         self.form = FreeCADGui.PySideUic.loadUi(":preferences/PathJob.ui")
         self.form.toolBox.setCurrentIndex(0) # Take that qt designer!
 
