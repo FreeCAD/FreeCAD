@@ -1394,13 +1394,6 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                 }
                 auto item = static_cast<DocumentObjectItem*>(ti);
 
-                // if the item is already a child of the target item there is nothing to do
-                if (item->parent() == targetItem) {
-                    TREE_TRACE("cannot drop");
-                    event->ignore();
-                    return;
-                }
-
                 auto obj = item->object()->getObject();
 
                 if(!dropOnly && !vp->canDragAndDropObject(obj)) {
@@ -1507,8 +1500,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
         if(sels.contains(ti->parent())) 
             continue;
         if (ti == targetItem)
-            continue;
-        if (ti->parent() == targetItem)
             continue;
         auto item = static_cast<DocumentObjectItem*>(ti);
         items.emplace_back();
@@ -1846,7 +1837,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
             auto obj = item->object()->getObject();
             auto parentItem = item->getParentItem();
             if(!parentItem) {
-                if(obj->getDocument() == thisDoc)
+                if(da!=Qt::LinkAction && obj->getDocument()==thisDoc)
                     continue;
             }else if(dropOnly || item->myOwner!=targetItem) {
                 // We will not drag item out of parent if either, 1) the CTRL
