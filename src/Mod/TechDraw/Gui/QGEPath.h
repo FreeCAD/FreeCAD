@@ -122,6 +122,8 @@ public:
     void dumpPoints(char* text);
     void dumpMarkerPos(char* text);
     void restoreState(void);
+    void setStartAdjust(double adjust);
+    void setEndAdjust(double adjust);
 
 public Q_SLOTS:
     void onDragFinished(QPointF pos, int index);
@@ -153,6 +155,9 @@ protected:
 
     QGIView* m_parentItem;
     QGIPrimPath* m_ghost;
+    
+    double m_startAdj;
+    double m_endAdj;
 };
 
 }
