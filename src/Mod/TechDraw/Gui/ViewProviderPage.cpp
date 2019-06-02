@@ -84,11 +84,11 @@ ViewProviderPage::ViewProviderPage()
     m_pageName("")
 {
     sPixmap = "TechDraw_Tree_Page";
-    static const char *group = "Frames";
+    static const char *group = "Base";
 
-    ADD_PROPERTY_TYPE(ShowFrames ,(true),group,App::Prop_None,"Show or hide View frames and Labels on this Page");
+    ADD_PROPERTY_TYPE(ShowFrames ,(true),group,App::Prop_None,"NonGui! Show or hide View frames and Labels on this Page");
 
-    ShowFrames.setStatus(App::Property::ReadOnly,true);
+    ShowFrames.setStatus(App::Property::Hidden,true);
     Visibility.setStatus(App::Property::Hidden,true);
     DisplayMode.setStatus(App::Property::Hidden,true);
 }

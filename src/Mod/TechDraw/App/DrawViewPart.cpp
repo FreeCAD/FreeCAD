@@ -151,6 +151,7 @@ DrawViewPart::DrawViewPart(void) :
     ADD_PROPERTY_TYPE(IsoCount ,(0),sgroup,App::Prop_None,"Number of isoparameters");
 
     ADD_PROPERTY_TYPE(CosmeticVertexList ,(""),sgroup,App::Prop_None,"CosmeticVertex Save/Restore");
+    ADD_PROPERTY_TYPE(CosmeticEdgeList ,(""),sgroup,App::Prop_None,"CosmeticEdge Save/Restore");
 
     geometryObject = nullptr;
     getRunControl();
@@ -290,11 +291,8 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-    //this is ghastly! but no convenient method for "object ready"
-    if (on1) {
-        rebuildCosmoVertex();
-        on1 = false;
-    }
+    rebuildCosmoVertex();
+    rebuildCosmoEdge();
     
     App::Document* doc = getDocument();
     bool isRestoring = doc->testStatus(App::Document::Status::Restoring);
@@ -341,11 +339,6 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
                                                       Rotation.getValue());
      }
     geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
-    //add back the cosmetic vertices
-    for (auto& v: cosmoVertex) {
-        int idx = geometryObject->addRandomVertex(v->pageLocation * getScale());
-        v->linkGeom = idx;
-    }
 
 #if MOD_TECHDRAW_HANDLE_FACES
     auto start = chrono::high_resolution_clock::now();
@@ -358,6 +351,20 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
             return new App::DocumentObjectExecReturn(e4.GetMessageString());
         }
     }
+
+    //add back the cosmetic vertices
+    for (auto& v: cosmoVertex) {
+        int idx = geometryObject->addRandomVertex(v->pageLocation * getScale());
+        v->linkGeom = idx;
+    }
+
+    //add the cosmetic Edges to geometry Edges list
+    for (auto& e: cosmoEdge) {
+        TechDrawGeometry::BaseGeom* scaledGeom = e->scaledGeometry(getScale());
+        int idx = geometryObject->addRandomEdge(scaledGeom);
+        e->linkGeom = idx;
+    }
+
     auto end   = chrono::high_resolution_clock::now();
     auto diff  = end - start;
     double diffOut = chrono::duration <double, milli> (diff).count();
@@ -698,18 +705,18 @@ TechDrawGeometry::Vertex* DrawViewPart::getProjVertexByIndex(int idx) const
     return geoms.at(idx);
 }
 
-
-//this is never used!!
 //! returns existing geometry of 2D Face(idx)
-//version 1 Face has 1 wire
-std::vector<TechDrawGeometry::BaseGeom*> DrawViewPart::getProjFaceByIndex(int idx) const
+std::vector<TechDrawGeometry::BaseGeom*> DrawViewPart::getFaceEdgesByIndex(int idx) const
 {
-    (void) idx;
     std::vector<TechDrawGeometry::BaseGeom*> result;
     const std::vector<TechDrawGeometry::Face *>& faces = getFaceGeometry();
-    for (auto& f:faces) {
-        for (auto& w:f->wires) {
+    if (idx < (int) faces.size()) {
+        TechDrawGeometry::Face* projFace = faces.at(idx);
+        for (auto& w: projFace->wires) {
             for (auto& g:w->geoms) {
+                if (g->cosmetic) {
+                   Base::Console().Message("DVP::getFaceEdgesByIndex - found cosmetic edge\n");
+                }
                 result.push_back(g);
             }
         }
@@ -907,11 +914,30 @@ void DrawViewPart::rebuildCosmoVertex(void)
     }
 }
 
+//build cosmoEdge from CosmeticEdgeList
+void DrawViewPart::rebuildCosmoEdge(void)
+{
+//    Base::Console().Message("DVP::rebuildCosmoEdge()\n");
+    cosmoEdge.clear();
+    std::vector<std::string> restoreEdges = CosmeticEdgeList.getValues();
+    for (auto& re: restoreEdges) {
+       if (!re.empty()) {
+           CosmeticEdge* ce = new CosmeticEdge();
+           bool rc = ce->fromCSV(re);
+           if (rc) {
+               cosmoEdge.push_back(ce);
+           } else {
+               delete ce;
+           }
+       }
+    }
+}
+
 //! remove features that are useless without this DVP
 //! hatches, geomhatches, dimensions,... 
 void DrawViewPart::unsetupObject()
 {
-    Base::Console().Message("DVP::unsetupObject()\n");
+//    Base::Console().Message("DVP::unsetupObject()\n");
     nowUnsetting = true;
     App::Document* doc = getDocument();
     std::string docName = doc->getName();
@@ -990,8 +1016,13 @@ int DrawViewPart::addRandomVertex(Base::Vector3d pos)
     int newIdx = -1;
     TechDraw::CosmeticVertex* rVert = new TechDraw::CosmeticVertex(pos);
     cosmoVertex.push_back(rVert);
+    stuffCosmeticVertexList();
+    return newIdx;
+}
 
-    //stuff stringList
+void DrawViewPart::stuffCosmeticVertexList(void)
+{
+//    Base::Console().Message("DVP::stuffCosmeticVertexList()\n");
     std::vector<std::string> saveVerts;
     const std::vector<TechDraw::CosmeticVertex*> cosVerts = getCosmeticVertex();
     for (auto& cv: cosVerts) {
@@ -999,18 +1030,50 @@ int DrawViewPart::addRandomVertex(Base::Vector3d pos)
         saveVerts.push_back(csv);
     }
     CosmeticVertexList.setValues(saveVerts);
-    return newIdx;
+}
+
+void DrawViewPart::removeRandomVertex(TechDraw::CosmeticVertex* cv)
+{
+//    Base::Console().Message("DVP::removeRandomVertex(cv) - cvs in: %d\n", cosmoVertex.size());
+    bool found = false;
+    std::vector<TechDraw::CosmeticVertex*> newCosmoVertex;
+    for (auto& v: cosmoVertex) {
+        if (cv == v) {
+            found = true;
+            continue;
+        } else {
+            newCosmoVertex.push_back(v);
+        }
+    }
+    if ( (cv != nullptr)  &&
+         (found) )  {
+        delete cv;
+    }
+     
+    cosmoVertex = newCosmoVertex;
+    stuffCosmeticVertexList();
+    recomputeFeature();
+}
+
+void DrawViewPart::removeRandomVertex(int idx)
+{
+    if (idx < (int) cosmoVertex.size()) {
+        TechDraw::CosmeticVertex* cvSave = cosmoVertex.at(idx);
+        cosmoVertex.erase(cosmoVertex.begin() + idx);
+        delete cvSave;
+    }
+     
+    stuffCosmeticVertexList();
+    recomputeFeature();
 }
 
 TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByIndex(int idx) const
 {
 //    Base::Console().Message("DVP::getCosmeticVertexByIndex(%d)\n", idx);
-    int cosmoOffset = 1000;
-    int realIdx = idx - cosmoOffset;
     CosmeticVertex* result = nullptr;
     const std::vector<TechDraw::CosmeticVertex*> verts = getCosmeticVertex();
-    if ((unsigned) realIdx < verts.size())  {
-        result = verts.at(realIdx);
+    if ((unsigned) idx < verts.size())  {
+        result = verts.at(idx);
     }
     return result;
 }
@@ -1036,6 +1099,126 @@ void DrawViewPart::clearCV(void)
     cosmoVertex.clear();
     std::vector<std::string> noVerts;
     CosmeticVertexList.setValues(noVerts);
+}
+
+// adds a cosmetic edge to cosmoEdge and CosmeticEdgeList
+int DrawViewPart::addRandomEdge(Base::Vector3d p1, Base::Vector3d p2)
+{
+//    Base::Console().Message("DVP::addRandomEdge(%s, %s)\n",
+//                              DrawUtil::formatVector(p1).c_str(),
+//                              DrawUtil::formatVector(p2).c_str());
+    int newIdx = -1;
+    TechDraw::CosmeticEdge* rEdge = new TechDraw::CosmeticEdge(p1, p2);
+    cosmoEdge.push_back(rEdge);
+
+    //stuff stringList
+    std::vector<std::string> saveEdges;
+    const std::vector<TechDraw::CosmeticEdge*> cosEdges = getCosmeticEdge();
+    for (auto& ce: cosEdges) {
+        std::string csv = ce->toCSV();
+        saveEdges.push_back(csv);
+    }
+    stuffCosmeticEdgeList();
+    return newIdx;
+}
+
+int DrawViewPart::addRandomEdge(TopoDS_Edge e)
+{
+//    Base::Console().Message("DVP::addRandomEdge(TopoDS_Edge)\n");
+    int newIdx = -1;
+    TechDraw::CosmeticEdge* rEdge = new TechDraw::CosmeticEdge(e);
+    cosmoEdge.push_back(rEdge);
+    stuffCosmeticEdgeList();
+    return newIdx;
+}
+
+int DrawViewPart::addRandomEdge(CosmeticEdge* ce)
+{
+//    Base::Console().Message("DVP::addRandomEdge(CosmeticEdge)\n");
+    int newIdx = -1;
+    cosmoEdge.push_back(ce);
+    stuffCosmeticEdgeList();
+    return newIdx;
+}
+
+void DrawViewPart::stuffCosmeticEdgeList(void)
+{
+//    Base::Console().Message("DVP::stuffCosmeticEdgeList()\n");
+    std::vector<std::string> saveEdges;
+    const std::vector<TechDraw::CosmeticEdge*> cosEdges = getCosmeticEdge();
+    for (auto& ce: cosEdges) {
+        std::string csv = ce->toCSV();
+        saveEdges.push_back(csv);
+    }
+    CosmeticEdgeList.setValues(saveEdges);
+}
+
+void DrawViewPart::removeRandomEdge(TechDraw::CosmeticEdge* ce)
+{
+//    Base::Console().Message("DVP::removeRandomEdge(ce) - ces in: %d\n", cosmoEdge.size());
+    bool found = false;
+    std::vector<TechDraw::CosmeticEdge*> newCosmoEdge;
+    for (auto& e: cosmoEdge) {
+        if (ce == e) {
+            found = true;
+            continue;
+        } else {
+            newCosmoEdge.push_back(e);
+        }
+    }
+    if ( (ce != nullptr)  &&
+         (found) )  {
+        delete ce;
+    }
+    cosmoEdge = newCosmoEdge;
+    stuffCosmeticEdgeList();
+    recomputeFeature();
+}
+
+void DrawViewPart::removeRandomEdge(int idx)
+{
+//    Base::Console().Message("DVP::removeRandomEdge(%d) - ces in: %d\n", idx, cosmoEdge.size());
+    if (idx < (int) cosmoEdge.size()) {
+        TechDraw::CosmeticEdge* ceSave = cosmoEdge.at(idx);
+        cosmoEdge.erase(cosmoEdge.begin() + idx);
+        delete ceSave;
+    }
+    stuffCosmeticEdgeList();
+    recomputeFeature();
+}
+
+TechDraw::CosmeticEdge* DrawViewPart::getCosmeticEdgeByIndex(int idx) const
+{
+//    Base::Console().Message("DVP::getCosmeticEdgeByIndex(%d)\n", idx);
+    CosmeticEdge* result = nullptr;
+    const std::vector<TechDraw::CosmeticEdge*> edges = getCosmeticEdge();
+    if (idx < (int) edges.size())  {
+        result = edges.at(idx);
+    }
+    return result;
+}
+
+//find the cosmetic edge corresponding to geometry edge idx
+TechDraw::CosmeticEdge* DrawViewPart::getCosmeticEdgeByLink(int idx) const
+{
+//    Base::Console().Message("DVP::getCosmeticEdgeByLinkIndex(%d)\n", idx);
+    CosmeticEdge* result = nullptr;
+    const std::vector<TechDraw::CosmeticEdge*> edges = getCosmeticEdge();
+    for (auto& ce: edges) {
+        if (ce->linkGeom == idx) {
+            result = ce;
+            break;
+        }
+    }
+    return result;
+}
+
+void DrawViewPart::clearCE(void) 
+{
+//    Base::Console().Message("DVP::clearCE()\n");
+    cosmoEdge.clear();
+    std::vector<std::string> noEdges;
+    CosmeticEdgeList.setValues(noEdges);
 }
 
 PyObject *DrawViewPart::getPyObject(void)

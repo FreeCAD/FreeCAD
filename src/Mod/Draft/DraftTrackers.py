@@ -805,10 +805,16 @@ class wireTracker(Tracker):
                 p = wire.Vertexes[0].Point
                 self.coords.point.set1Value(t,[p.x,p.y,p.z])
 
+    def updateFromPointlist(self,points,forceclosed=False):
+        if points:
+            for i in range(len(points)):
+                p=points[i]
+                self.coords.point.set1Value(i,[p.x,p.y,p.z])
+
 class gridTracker(Tracker):
     "A grid tracker"
     def __init__(self):
-        col = [0.2,0.2,0.3]
+        col = self.getGridColor()
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         self.trans = coin.SoTransform()
@@ -843,6 +849,13 @@ class gridTracker(Tracker):
         s.addChild(self.lines3)
         Tracker.__init__(self,children=[s],name="gridTracker")
         self.reset()
+
+    def getGridColor(self):
+        color = Draft.getParam("gridColor", 842157055)
+        r = ((color>>24)&0xFF)/255
+        g = ((color>>16)&0xFF)/255
+        b = ((color>>8)&0xFF)/255
+        return [r, g, b]
 
     def update(self):
         "redraws the grid"

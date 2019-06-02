@@ -137,6 +137,7 @@ protected:
 
     QString getPrefFont(void);
     double getPrefFontSize(void);
+    double getDimFontSize(void);
     double calculateFontPointSizeF(double sizeInMillimetres) const;
 
     Base::Reference<ParameterGrp> getParmGroupCol(void);

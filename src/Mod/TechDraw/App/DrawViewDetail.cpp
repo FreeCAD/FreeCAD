@@ -80,6 +80,7 @@
 
 #include "Geometry.h"
 #include "GeometryObject.h"
+#include "Cosmetic.h"
 #include "EdgeWalker.h"
 #include "DrawProjectSplit.h"
 #include "DrawUtil.h"
@@ -156,6 +157,9 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
+
+    rebuildCosmoVertex();
+    rebuildCosmoEdge();
 
     App::DocumentObject* baseObj = BaseView.getValue();
     if (!baseObj)  {
@@ -347,8 +351,21 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         return new App::DocumentObjectExecReturn(e1.GetMessageString());
     }
 
+    //add back the cosmetic vertices
+    for (auto& v: cosmoVertex) {
+        int idx = geometryObject->addRandomVertex(v->pageLocation * getScale());
+        v->linkGeom = idx;
+    }
+
+    //add the cosmetic Edges to geometry Edges list
+    for (auto& e: cosmoEdge) {
+        TechDrawGeometry::BaseGeom* scaledGeom = e->scaledGeometry(getScale());
+        int idx = geometryObject->addRandomEdge(scaledGeom);
+        e->linkGeom = idx;
+    }
+
     requestPaint();
-    dvp->requestPaint();
+    dvp->requestPaint();  //to refresh detail highlight!
 
     return App::DocumentObject::StdReturn;
 }

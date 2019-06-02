@@ -813,6 +813,51 @@ void MeshProjection::projectParallelToMesh (const TopoDS_Shape &aShape, const Ba
     }
 }
 
+void MeshProjection::projectParallelToMesh (const std::vector<PolyLine> &aEdges, const Base::Vector3f& dir, std::vector<PolyLine>& rPolyLines) const
+{
+    // calculate the average edge length and create a grid
+    MeshAlgorithm clAlg(_rcMesh);
+    float fAvgLen = clAlg.GetAverageEdgeLength();
+    MeshFacetGrid cGrid(_rcMesh, 5.0f*fAvgLen);
+
+    Base::SequencerLauncher seq( "Project curve on mesh", aEdges.size() );
+
+    for (auto it : aEdges) {
+        std::vector<Base::Vector3f> points = it.points;
+
+        typedef std::pair<Base::Vector3f, unsigned long> HitPoint;
+        std::vector<HitPoint> hitPoints;
+        typedef std::pair<HitPoint, HitPoint> HitPoints;
+        std::vector<HitPoints> hitPointPairs;
+        for (auto it : points) {
+            Base::Vector3f result;
+            unsigned long index;
+            if (clAlg.NearestFacetOnRay(it, dir, cGrid, result, index)) {
+                hitPoints.push_back(std::make_pair(result, index));
+
+                if (hitPoints.size() > 1) {
+                    HitPoint p1 = hitPoints[hitPoints.size()-2];
+                    HitPoint p2 = hitPoints[hitPoints.size()-1];
+                    hitPointPairs.push_back(std::make_pair(p1, p2));
+                }
+            }
+        }
+
+        MeshCore::MeshProjection meshProjection(_rcMesh);
+        PolyLine polyline;
+        for (auto it : hitPointPairs) {
+            points.clear();
+            if (meshProjection.projectLineOnMesh(cGrid, it.first.first, it.first.second,
+                                                 it.second.first, it.second.second, dir, points)) {
+                polyline.points.insert(polyline.points.end(), points.begin(), points.end());
+            }
+        }
+        rPolyLines.push_back(polyline);
+
+        seq.next();
+    }
+}
+
 void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist, const MeshFacetGrid& rGrid,
                                          std::vector<SplitEdge>& rSplitEdges ) const
 {

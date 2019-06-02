@@ -116,7 +116,8 @@ BaseGeom::BaseGeom() :
     classOfEdge(ecNONE),
     visible(true),
     reversed(false),
-    ref3D(-1)                      //obs?
+    ref3D(-1),                      //obs?
+    cosmetic(false)
 {
 }
 

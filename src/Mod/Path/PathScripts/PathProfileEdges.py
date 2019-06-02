@@ -42,10 +42,6 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtGui
-
 
 # Qt translation handling
 def translate(context, text, disambig=None):

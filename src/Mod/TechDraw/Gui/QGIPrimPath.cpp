@@ -213,6 +213,12 @@ void QGIPrimPath::setStyle(Qt::PenStyle s)
     m_styleCurrent = s;
 }
 
+void QGIPrimPath::setStyle(int s)
+{
+    m_styleCurrent = (Qt::PenStyle) s;
+}
+
+
 void QGIPrimPath::setNormalColor(QColor c)
 {
     m_colNormal = c;

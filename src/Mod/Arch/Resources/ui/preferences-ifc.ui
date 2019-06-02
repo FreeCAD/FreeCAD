@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>463</width>
-    <height>802</height>
+    <height>829</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -524,6 +524,32 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>getStandardCase</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_19">
+        <property name="text">
+         <string>Add default site if no site is present in the document</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>IfcAddDefaultSite</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_20">
+        <property name="text">
+         <string>Add default building storey if none is found in the document</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>IfcAddDefaultStorey</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Arch</cstring>

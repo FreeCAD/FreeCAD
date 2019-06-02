@@ -105,25 +105,25 @@ def utf8_decode(text):
 
 # in-command shortcut definitions: Shortcut / Translation / related UI control
 inCommandShortcuts = {
-    "Relative":   ["R",translate("draft","Relative"),             "isRelative"],
-    "Continue":   ["T",translate("draft","Continue"),             "continueCmd"],
-    "Close":      ["O",translate("draft","Close"),                "closeButton"],
-    "Copy":       ["P",translate("draft","Copy"),                 "isCopy"],
-    "SubelementMode": ["D",translate("draft","Subelement mode"), "isSubelementMode"],
-    "Fill":       ["L",translate("draft","Fill"),                 "hasFill"],
-    "Exit":       ["A",translate("draft","Exit"),                 "finishButton"],
-    "Snap":       ["S",translate("draft","Snap On/Off"),          None],
-    "Increase":   ["[",translate("draft","Increase snap radius"), None],
-    "Decrease":   ["]",translate("draft","Decrease snap radius"), None],
-    "RestrictX":  ["X",translate("draft","Restrict X"),           None],
-    "RestrictY":  ["Y",translate("draft","Restrict Y"),           None],
-    "RestrictZ":  ["Z",translate("draft","Restrict Z"),           None],
-    "SelectEdge": ["E",translate("draft","Select edge"),          "selectButton"],
-    "AddHold":    ["Q",translate("draft","Add custom snap point"),None],
-    "Length":     ["H",translate("draft","Length mode"),          "lengthValue"],
-    "Wipe":       ["W",translate("draft","Wipe"),                 "wipeButton"],
-    "SetWP":      ["U",translate("draft","Set Working Plane"), "orientWPButton"],
-    "CycleSnap":  ["`",translate("draft","Cycle snap object"), None]
+    "Relative":       [Draft.getParam("inCommandShortcutRelative", "R"),translate("draft","Relative"),             "isRelative"],
+    "Continue":       [Draft.getParam("inCommandShortcutContinue", "T"),translate("draft","Continue"),             "continueCmd"],
+    "Close":          [Draft.getParam("inCommandShortcutClose", "O"),translate("draft","Close"),                "closeButton"],
+    "Copy":           [Draft.getParam("inCommandShortcutCopy", "P"),translate("draft","Copy"),                 "isCopy"],
+    "SubelementMode": [Draft.getParam("inCommandShortcutSubelementMode", "D"),translate("draft","Subelement mode"), "isSubelementMode"],
+    "Fill":           [Draft.getParam("inCommandShortcutFill", "L"),translate("draft","Fill"),                 "hasFill"],
+    "Exit":           [Draft.getParam("inCommandShortcutExit", "A"),translate("draft","Exit"),                 "finishButton"],
+    "Snap":           [Draft.getParam("inCommandShortcutSnap", "S"),translate("draft","Snap On/Off"),          None],
+    "Increase":       [Draft.getParam("inCommandShortcutIncrease", "["),translate("draft","Increase snap radius"), None],
+    "Decrease":       [Draft.getParam("inCommandShortcutDecrease", "]"),translate("draft","Decrease snap radius"), None],
+    "RestrictX":      [Draft.getParam("inCommandShortcutRestrictX", "X"),translate("draft","Restrict X"),           None],
+    "RestrictY":      [Draft.getParam("inCommandShortcutRestrictY", "Y"),translate("draft","Restrict Y"),           None],
+    "RestrictZ":      [Draft.getParam("inCommandShortcutRestrictZ", "Z"),translate("draft","Restrict Z"),           None],
+    "SelectEdge":     [Draft.getParam("inCommandShortcutSelectEdge", "E"),translate("draft","Select edge"),          "selectButton"],
+    "AddHold":        [Draft.getParam("inCommandShortcutAddHold", "Q"),translate("draft","Add custom snap point"),None],
+    "Length":         [Draft.getParam("inCommandShortcutLength", "H"),translate("draft","Length mode"),          "lengthValue"],
+    "Wipe":           [Draft.getParam("inCommandShortcutWipe", "W"),translate("draft","Wipe"),                 "wipeButton"],
+    "SetWP":          [Draft.getParam("inCommandShortcutSetWP", "U"),translate("draft","Set Working Plane"), "orientWPButton"],
+    "CycleSnap":      [Draft.getParam("inCommandShortcutCycleSnap", "`"),translate("draft","Cycle snap object"), None]
 }
 
 
@@ -345,7 +345,7 @@ class DraftToolBar:
         #print("taskmode: ",str(self.taskmode))
         self.paramcolor = Draft.getParam("color",255)>>8
         self.color = QtGui.QColor(self.paramcolor)
-        self.facecolor = QtGui.QColor(204,204,204)
+        self.facecolor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)>>8
         self.linewidth = Draft.getParam("linewidth",2)
         self.fontsize = Draft.getParam("textheight",0.20)
         self.paramconstr = Draft.getParam("constructioncolor",746455039)>>8
@@ -1468,6 +1468,8 @@ class DraftToolBar:
             return
         self.facecolorPix.fill(self.facecolor)
         self.facecolorButton.setIcon(QtGui.QIcon(self.facecolorPix))
+        if Draft.getParam("saveonexit",False):
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").SetUnsigned("DefaultShapeColor",self.facecolor.rgb()<<8)
         r = float(self.facecolor.red()/255.0)
         g = float(self.facecolor.green()/255.0)
         b = float(self.facecolor.blue()/255.0)
@@ -1874,69 +1876,70 @@ class DraftToolBar:
     def displayPoint(self, point=None, last=None, plane=None, mask=None):
         "this function displays the passed coords in the x, y, and z widgets"
 
-        if (not self.taskmode) or self.isTaskOn:
+        if self.taskmode and (not self.isTaskOn):
+            return
 
-            # get coords to display
-            dp = None
-            if point:
-                dp = point
-                if self.relativeMode and (last != None):
-                    if plane:
-                        dp = plane.getLocalRot(FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z))
-                    else:
-                        dp = FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z)
-                elif plane:
-                    dp = plane.getLocalCoords(point)
-
-            # set widgets
-            if dp:
-                if self.mask in ['y','z']:
-                    self.xValue.setText(displayExternal(dp.x,None,'Length'))
+        # get coords to display
+        dp = None
+        if point:
+            dp = point
+            if self.relativeMode and (last != None):
+                if plane:
+                    dp = plane.getLocalRot(FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z))
                 else:
-                    self.xValue.setText(displayExternal(dp.x,None,'Length'))
-                if self.mask in ['x','z']:
-                    self.yValue.setText(displayExternal(dp.y,None,'Length'))
-                else:
-                    self.yValue.setText(displayExternal(dp.y,None,'Length'))
-                if self.mask in ['x','y']:
-                    self.zValue.setText(displayExternal(dp.z,None,'Length'))
-                else:
-                    self.zValue.setText(displayExternal(dp.z,None,'Length'))
+                    dp = FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z)
+            elif plane:
+                dp = plane.getLocalCoords(point)
 
-            # set length and angle
-            if last and dp and plane:
-                self.lengthValue.setText(displayExternal(dp.Length,None,'Length'))
-                a = math.degrees(-DraftVecUtils.angle(dp,plane.u,plane.axis))
-                if not self.angleLock.isChecked():
-                    self.angleValue.setText(displayExternal(a,None,'Angle'))
-                if not mask:
-                    # automask
-                    if a in [0,180,-180]:
-                        mask = "x"
-                    elif a in [90,270,-90]:
-                        mask = "y"
-
-            # set masks
-            if (mask == "x") or (self.mask == "x"):
-                self.xValue.setEnabled(True)
-                self.yValue.setEnabled(False)
-                self.zValue.setEnabled(False)
-                self.setFocus()
-            elif (mask == "y") or (self.mask == "y"):
-                self.xValue.setEnabled(False)
-                self.yValue.setEnabled(True)
-                self.zValue.setEnabled(False)
-                self.setFocus("y")
-            elif (mask == "z") or (self.mask == "z"):
-                self.xValue.setEnabled(False)
-                self.yValue.setEnabled(False)
-                self.zValue.setEnabled(True)
-                self.setFocus("z")
+        # set widgets
+        if dp:
+            if self.mask in ['y','z']:
+                self.xValue.setText(displayExternal(dp.x,None,'Length'))
             else:
-                self.xValue.setEnabled(True)
-                self.yValue.setEnabled(True)
-                self.zValue.setEnabled(True)
-                self.setFocus()
+                self.xValue.setText(displayExternal(dp.x,None,'Length'))
+            if self.mask in ['x','z']:
+                self.yValue.setText(displayExternal(dp.y,None,'Length'))
+            else:
+                self.yValue.setText(displayExternal(dp.y,None,'Length'))
+            if self.mask in ['x','y']:
+                self.zValue.setText(displayExternal(dp.z,None,'Length'))
+            else:
+                self.zValue.setText(displayExternal(dp.z,None,'Length'))
+
+        # set length and angle
+        if last and dp and plane:
+            self.lengthValue.setText(displayExternal(dp.Length,None,'Length'))
+            a = math.degrees(-DraftVecUtils.angle(dp,plane.u,plane.axis))
+            if not self.angleLock.isChecked():
+                self.angleValue.setText(displayExternal(a,None,'Angle'))
+            if not mask:
+                # automask
+                if a in [0,180,-180]:
+                    mask = "x"
+                elif a in [90,270,-90]:
+                    mask = "y"
+
+        # set masks
+        if (mask == "x") or (self.mask == "x"):
+            self.xValue.setEnabled(True)
+            self.yValue.setEnabled(False)
+            self.zValue.setEnabled(False)
+            self.setFocus()
+        elif (mask == "y") or (self.mask == "y"):
+            self.xValue.setEnabled(False)
+            self.yValue.setEnabled(True)
+            self.zValue.setEnabled(False)
+            self.setFocus("y")
+        elif (mask == "z") or (self.mask == "z"):
+            self.xValue.setEnabled(False)
+            self.yValue.setEnabled(False)
+            self.zValue.setEnabled(True)
+            self.setFocus("z")
+        else:
+            self.xValue.setEnabled(True)
+            self.yValue.setEnabled(True)
+            self.zValue.setEnabled(True)
+            self.setFocus()
 
 
     def getDefaultColor(self,type,rgb=False):
@@ -1954,14 +1957,15 @@ class DraftToolBar:
             g = float(self.color.green()/255.0)
             b = float(self.color.blue()/255.0)
         elif type == "face":
-            r = float(self.facecolor.red()/255.0)
-            g = float(self.facecolor.green()/255.0)
-            b = float(self.facecolor.blue()/255.0)
+            color = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)
+            r = ((color>>24)&0xFF)/255
+            g = ((color>>16)&0xFF)/255
+            b = ((color>>8)&0xFF)/255
         elif type == "constr":
-            color = QtGui.QColor(Draft.getParam("constructioncolor",746455039)>>8)
-            r = color.red()/255.0
-            g = color.green()/255.0
-            b = color.blue()/255.0
+            color = Draft.getParam("constructioncolor",746455039)
+            r = ((color>>24)&0xFF)/255
+            g = ((color>>16)&0xFF)/255
+            b = ((color>>8)&0xFF)/255
         else:
             print("draft: error: couldn't get a color for ",type," type.")
         if rgb:
@@ -2416,39 +2420,65 @@ class ScaleTaskPanel:
         self.xLabel = QtGui.QLabel()
         layout.addWidget(self.xLabel,0,0,1,1)
         self.xValue = QtGui.QDoubleSpinBox()
-        self.xValue.setDecimals(Draft.getParam("precision"))
         self.xValue.setRange(.0000001,1000000.0)
+        self.xValue.setDecimals(Draft.getParam("precision"))
         self.xValue.setValue(1)
         layout.addWidget(self.xValue,0,1,1,1)
         self.yLabel = QtGui.QLabel()
         layout.addWidget(self.yLabel,1,0,1,1)
         self.yValue = QtGui.QDoubleSpinBox()
-        self.yValue.setDecimals(Draft.getParam("precision"))
         self.yValue.setRange(.0000001,1000000.0)
+        self.yValue.setDecimals(Draft.getParam("precision"))
         self.yValue.setValue(1)
         layout.addWidget(self.yValue,1,1,1,1)
         self.zLabel = QtGui.QLabel()
         layout.addWidget(self.zLabel,2,0,1,1)
         self.zValue = QtGui.QDoubleSpinBox()
-        self.zValue.setDecimals(Draft.getParam("precision"))
         self.zValue.setRange(.0000001,1000000.0)
+        self.zValue.setDecimals(Draft.getParam("precision"))
         self.zValue.setValue(1)
         layout.addWidget(self.zValue,2,1,1,1)
         self.lock = QtGui.QCheckBox()
+        self.lock.setChecked(FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("ScaleUniform",False))
         layout.addWidget(self.lock,3,0,1,2)
         self.relative = QtGui.QCheckBox()
+        self.relative.setChecked(FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("ScaleRelative",False))
         layout.addWidget(self.relative,4,0,1,2)
         self.isCopy = QtGui.QCheckBox()
+        self.isCopy.setChecked(FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("ScaleCopy",False))
         layout.addWidget(self.isCopy,5,0,1,2)
         self.isSubelementMode = QtGui.QCheckBox()
         layout.addWidget(self.isSubelementMode,6,0,1,2)
+        self.isClone = QtGui.QCheckBox()
+        layout.addWidget(self.isClone,7,0,1,2)
+        self.isClone.setChecked(FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("ScaleClone",False))
         self.pickrefButton = QtGui.QPushButton()
-        layout.addWidget(self.pickrefButton,7,0,1,2)
+        layout.addWidget(self.pickrefButton,8,0,1,2)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
         QtCore.QObject.connect(self.pickrefButton,QtCore.SIGNAL("clicked()"),self.pickRef)
+        QtCore.QObject.connect(self.lock,QtCore.SIGNAL("toggled(bool)"),self.setLock)
+        QtCore.QObject.connect(self.relative,QtCore.SIGNAL("toggled(bool)"),self.setRelative)
+        QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("toggled(bool)"),self.setCopy)
+        QtCore.QObject.connect(self.isClone,QtCore.SIGNAL("toggled(bool)"),self.setClone)
         self.retranslateUi()
+
+    def setLock(self,state):
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetBool("ScaleUniform",state)
+
+    def setRelative(self,state):
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetBool("ScaleRelative",state)
+
+    def setCopy(self,state):
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetBool("ScaleCopy",state)
+        if state and self.isClone.isChecked():
+            self.isClone.setChecked(False)
+
+    def setClone(self,state):
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetBool("ScaleClone",state)
+        if state and self.isCopy.isChecked():
+            self.isCopy.setChecked(False)
 
     def setValue(self,val=None):
         if self.lock.isChecked():
@@ -2468,6 +2498,7 @@ class ScaleTaskPanel:
         self.isCopy.setText(QtGui.QApplication.translate("draft", "Copy"))
         self.isSubelementMode.setText(QtGui.QApplication.translate("draft", "Modify subelements"))
         self.pickrefButton.setText(QtGui.QApplication.translate("Draft", "Pick from/to points", None))
+        self.isClone.setText(QtGui.QApplication.translate("Draft", "Create a clone", None))
 
     def pickRef(self):
         if self.sourceCmd:

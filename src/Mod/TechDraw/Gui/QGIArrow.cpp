@@ -277,7 +277,39 @@ double QGIArrow::getPrefArrowSize()
     return style;
 }
 
-
+double QGIArrow::getOverlapAdjust(int style, double size)
+{
+    // adjustment required depends on arrow size and type! :(
+    // ex for fork and tick, adjustment sb zero. 0.25 is good for filled triangle, 0.1 for open arrow.
+    // open circle sb = radius
+    // NOTE: this may need to be adjusted to account for line thickness too.
+//    Base::Console().Message("QGIA::getOverlapAdjust(%d, %.3f) \n",style, size);
+    double result = 1.0;
+    switch(style) {
+        case 0:         //filled triangle
+            result = 0.50 * size;
+            break;
+        case 1:         //open arrow
+            result = 0.10 * size;
+            break;
+        case 2:         //hash mark
+            result = 0.0;
+            break;
+        case 3:         //dot
+            result = 0.0;
+            break;
+        case 4:         //open circle
+                        //diameter is size/2 so radius is size/4
+            result = 0.25 * size;
+            break;
+        case 5:         //fork
+            result = 0.0;
+            break;
+        default:        //unknown
+            result = 1.0;
+    }
+    return result;
+}
 
 void QGIArrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {

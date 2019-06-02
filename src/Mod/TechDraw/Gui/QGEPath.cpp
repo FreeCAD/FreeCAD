@@ -29,6 +29,7 @@
 #include <QPainter>
 #include <QPainterPathStroker>
 #include <QStyleOptionGraphicsItem>
+#include <QVector2D>
 #endif
 
 #include <App/Application.h>
@@ -173,7 +174,9 @@ QGEPath::QGEPath() :
     m_attach(QPointF(0.0,0.0)),
     m_scale(1.0),
     m_inEdit(false),
-    m_parentItem(nullptr)
+    m_parentItem(nullptr),
+    m_startAdj(0.0),
+    m_endAdj(0.0)
 {
     setHandlesChildEvents(false);
     setAcceptHoverEvents(true);
@@ -384,12 +387,26 @@ void QGEPath::updatePath(void)
     }
     QPainterPath result;
     prepareGeometryChange();
+    QPointF startAdjVec(0.0,0.0);
+    QPointF endAdjVec(0.0,0.0);
     if (m_deltas.size() > 1) {
-        result.moveTo(m_deltas.front());       //(0,0)
-        for (int i = 1; i < (int)m_deltas.size(); i++) {
-            result.lineTo(m_deltas.at(i) * m_scale);
+        startAdjVec = m_deltas.at(1) - m_deltas.front();
+        endAdjVec = (*(m_deltas.end() - 2))- m_deltas.back();
+        //this next bit is ugly.
+        QVector2D startTemp(startAdjVec);
+        QVector2D endTemp(endAdjVec);
+        startTemp.normalize();
+        endTemp.normalize();
+        startAdjVec = startTemp.toPointF() * m_startAdj;
+        endAdjVec = endTemp.toPointF() * m_endAdj;
+        std::vector<QPointF> tempDeltas = m_deltas;
+        tempDeltas.front() += startAdjVec;
+        tempDeltas.back() += endAdjVec;
+        result.moveTo(tempDeltas.front());
+        for (int i = 1; i < (int)tempDeltas.size(); i++) {
+            result.lineTo(tempDeltas.at(i) * m_scale);
         }
-    }
+   }
     setPath(result);
 }
 
@@ -443,6 +460,16 @@ void QGEPath::drawGhost(void)
     }
     m_ghost->setPath(qpp);
     m_ghost->show();
+}
+
+void QGEPath::setStartAdjust(double adj)
+{
+    m_startAdj = Rez::guiX(adj);
+}
+
+void QGEPath::setEndAdjust(double adj)
+{
+    m_endAdj = Rez::guiX(adj);
 }
 
 QRectF QGEPath::boundingRect() const

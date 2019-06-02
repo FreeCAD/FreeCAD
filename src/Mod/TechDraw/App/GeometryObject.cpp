@@ -481,6 +481,40 @@ int GeometryObject::addRandomVertex(Base::Vector3d pos)
     return idx;
 }
 
+//void GeometryObject::removeRandomVertex(TechDraw::CosmeticVertex* cv)
+//{
+//    Base::Console().Message("GO::removeRandomVertex(cv)\n");
+
+//}
+
+//void GeometryObject::removeRandomVertex(int idx)
+//{
+//    Base::Console().Message("GO::removeRandomVertex(%d)\n", idx);
+
+//}
+
+int GeometryObject::addRandomEdge(TechDrawGeometry::BaseGeom* base)
+{
+//    Base::Console().Message("GO::addRandomEdge() - cosmetic: %d\n", base->cosmetic);
+    base->cosmetic = true;
+    edgeGeom.push_back(base);
+    
+    int idx = edgeGeom.size() - 1;
+    return idx;
+}
+
+//void GeometryObject::removeRandomEdge(TechDraw::CosmeticEdge* ce)
+//{
+//    Base::Console().Message("GO::removeRandomEdge(ce)\n");
+
+//}
+
+//void GeometryObject::removeRandomEdge(int idx)
+//{
+//    Base::Console().Message("GO::removeRandomEdge(%d)\n",idx);
+
+//}
+
 //! empty Face geometry
 void GeometryObject::clearFaceGeom()
 {

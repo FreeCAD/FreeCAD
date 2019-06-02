@@ -36,7 +36,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheetGui as PathSetupSheetGui
 import PathScripts.PathStock as PathStock
-import PathScripts.PathToolController as PathToolController
+import PathScripts.PathToolControllerGui as PathToolControllerGui
 import PathScripts.PathToolLibraryManager as PathToolLibraryManager
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
@@ -795,7 +795,7 @@ class TaskPanel:
     def toolControllerEdit(self):
         for item in self.form.toolControllerList.selectedItems():
             tc = item.data(self.DataObject)
-            dlg = PathToolController.DlgToolControllerEdit(tc)
+            dlg = PathToolControllerGui.DlgToolControllerEdit(tc)
             dlg.exec_()
         self.setFields()
         self.toolControllerSelect()
