@@ -2479,11 +2479,11 @@ Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
         return Py::None();
 
     if(PyObject_IsTrue(resolve))
-        return Py::Object(obj->getPyObject());
+        return Py::asObject(obj->getPyObject());
 
     return Py::TupleN(
-            Py::Object(obj->getPyObject()), 
-            Py::Object(parent->getPyObject()), 
+            Py::asObject(obj->getPyObject()), 
+            Py::asObject(parent->getPyObject()), 
             Py::String(subname.c_str()));
 }
 
