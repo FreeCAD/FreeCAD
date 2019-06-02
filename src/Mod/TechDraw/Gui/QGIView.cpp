@@ -681,6 +681,13 @@ double QGIView::getPrefFontSize()
     return hGrp->GetFloat("LabelSize", DefaultFontSizeInMM);
 }
 
+double QGIView::getDimFontSize()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                       GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    return hGrp->GetFloat("FontSize", DefaultFontSizeInMM);
+}
+
 double QGIView::calculateFontPointSizeF(const QGraphicsItem *item, double sizeInMillimetres)
 {
     const QWidget *widget = MDIViewPage::getFromScene(item->scene());

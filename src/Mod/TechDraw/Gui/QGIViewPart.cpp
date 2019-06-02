@@ -441,8 +441,8 @@ void QGIViewPart::drawViewPart()
         }
         if (showEdge) {
             item = new QGIEdge(i);
-            addToGroup(item);                                                   //item is at scene(0,0), not group(0,0)
-            item->setPos(0.0,0.0);                                              //now at group(0,0)
+            addToGroup(item);                         //item is at scene(0,0), not group(0,0)
+            item->setPos(0.0,0.0);                    //now at group(0,0)
             item->setPath(drawPainterPath(*itEdge));
             item->setWidth(lineWidth);
             item->setZValue(ZVALUE::EDGE);
@@ -691,7 +691,8 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         double sectionSpan;
         double sectionFudge = Rez::guiX(10.0);
         double xVal, yVal;
-        double fontSize = getPrefFontSize();
+//        double fontSize = getPrefFontSize();
+        double fontSize = getDimFontSize();
         if (horiz)  {
             double width = Rez::guiX(viewPart->getBoxX());
             double height = Rez::guiX(viewPart->getBoxY());

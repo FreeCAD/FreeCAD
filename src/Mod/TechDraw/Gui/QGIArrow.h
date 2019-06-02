@@ -57,6 +57,7 @@ public:
     void setDirection(Base::Vector3d v) { m_dir = v; }
     static int getPrefArrowStyle();
     static double getPrefArrowSize();
+    static double getOverlapAdjust(int style, double size);
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
