@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
 import PathScripts.PathPreferences as PathPreferences
 
 from PySide import QtCore, QtGui
