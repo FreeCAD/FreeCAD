@@ -86,7 +86,6 @@ std::unique_ptr<QPixmap>  TreeWidget::documentPixmap;
 std::unique_ptr<QPixmap>  TreeWidget::documentPartialPixmap;
 std::set<TreeWidget *> TreeWidget::Instances;
 static TreeWidget *_LastSelectedTreeWidget;
-static std::unordered_set<App::DocumentObject *> _DragOutList;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
 
@@ -1275,33 +1274,6 @@ void TreeWidget::startDragging() {
 
 void TreeWidget::startDrag(Qt::DropActions supportedActions)
 {
-    _DragOutList.clear();
-    std::deque<App::DocumentObject*> queue;
-    for(auto item : selectedItems()) {
-        if(item->type() == ObjectType) {
-            auto objItem = static_cast<DocumentObjectItem*>(item);
-            if(objItem->object() 
-                    && objItem->object()->getObject() 
-                    && objItem->object()->getObject()->getNameInDocument())
-            {
-                auto obj = objItem->object()->getObject();
-                if(_DragOutList.insert(obj).second)
-                    queue.push_back(obj);
-            }
-        }
-    }
-    while(queue.size()) {
-        auto obj = queue.front();
-        queue.pop_front();
-        for(auto o : obj->getOutList()) {
-            if(o && o->getNameInDocument() 
-                    && _DragOutList.insert(o).second)
-            {
-                queue.push_back(o);
-            }
-        }
-    }
-
     QTreeWidget::startDrag(supportedActions);
 }
 
@@ -1362,12 +1334,6 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 
         DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetItem);
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
-
-        if(_DragOutList.count(vp->getObject())) {
-            TREE_TRACE("recursive dependency");
-            event->ignore();
-            return;
-        }
 
         try {
             auto items = selectedItems();
@@ -1536,11 +1502,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
             return;
         }
 
-        if(_DragOutList.count(vp->getObject())) {
-            TREE_TRACE("recursive dependnecy");
-            return;
-        }
-
         if (da!=Qt::LinkAction && !vp->canDropObjects()) {
             if(!(event->possibleActions() & Qt::LinkAction) || items.size()!=1) {
                 TREE_TRACE("Cannot drop objects");
@@ -1578,6 +1539,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
             auto item = v.first;
             Gui::ViewProviderDocumentObject* vpc = item->object();
             App::DocumentObject* obj = vpc->getObject();
+
             std::ostringstream str;
             App::DocumentObject *topParent=0;
             auto owner = item->getRelativeParent(str,targetItemObj,&topParent,&info.topSubname);
@@ -1635,6 +1597,11 @@ void TreeWidget::dropEvent(QDropEvent *event)
         App::AutoTransaction committer("Drop object");
         try {
             auto targetObj = targetItemObj->object()->getObject();
+
+            auto inList = targetObj->getInListEx(true);
+            inList.insert(targetObj);
+            inList.insert(targetObj->getLinkedObject(true));
+
             std::string target = targetObj->getNameInDocument();
             auto targetDoc = targetObj->getDocument();
             for (auto &info : infos) {
@@ -1661,7 +1628,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 }
 
                 ViewProviderDocumentObject *vpp = 0;
-                if(info.parentDoc.size()) {
+                if(da!=Qt::LinkAction && info.parentDoc.size()) {
                     auto parentDoc = App::GetApplication().getDocument(info.parentDoc.c_str());
                     if(parentDoc) {
                         auto parent = parentDoc->getObject(info.parent.c_str());
@@ -1743,6 +1710,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         FCMD_OBJ_CMD(obj,"adjustRelativeLinks(" << Command::getObjectCmd(parentObj) << ")");
                     }
                 }
+
+                if(inList.count(obj))
+                    FC_THROWM(Base::RuntimeError,"Dependency loop detected");
 
                 std::string dropName;
                 ss.str("");
@@ -3240,7 +3210,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
                 updated = true;
         }else {
             DocumentObjectItem *childItem = it->second->rootItem;
-            if(item->isChildOfItem(childItem)) {
+            if(item==childItem || item->isChildOfItem(childItem)) {
                 TREE_ERR("Cyclic dependency in " 
                     << item->object()->getObject()->getFullName()
                     << '.' << childItem->object()->getObject()->getFullName());
