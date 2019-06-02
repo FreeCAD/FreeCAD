@@ -626,7 +626,7 @@ DocumentObject *LinkBaseExtension::getTrueLinkedObject(
         bool recurse, Base::Matrix4D *mat, int depth, bool noElement) const
 {
     if(noElement && extensionIsDerivedFrom(LinkElement::getExtensionClassTypeId()) 
-            && static_cast<const LinkElement*>(this)->myOwner)
+            && !static_cast<const LinkElement*>(this)->canDelete())
     {
         return 0;
     }
@@ -849,6 +849,10 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                         args.setItem(0,Py::Object(parent->getPyObject(),true));
                     }
                 }
+
+                auto owner = getContainer();
+                long ownerID = owner?owner->getID():0;
+
                 for(size_t i=objs.size();i<elementCount;++i) {
                     name.resize(offset);
                     name += std::to_string(i);
@@ -857,7 +861,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     // for example, undo and redo. So we try to re-claim the
                     // children element first.
                     auto obj = freecad_dynamic_cast<LinkElement>(doc->getObject(name.c_str()));
-                    if(obj && (!obj->myOwner || obj->myOwner==this))
+                    if(obj && (!obj->myOwner || obj->myOwner==ownerID))
                         obj->Visibility.setValue(false);
                     else {
                         if(!method.isNone()) {
@@ -894,9 +898,11 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
 
             }else if(elementCount<objs.size()){
                 std::vector<App::DocumentObject*> tmpObjs;
+                auto owner = getContainer();
+                long ownerID = owner?owner->getID():0;
                 while(objs.size()>elementCount) {
                     auto element = freecad_dynamic_cast<LinkElement>(objs.back());
-                    if(element && element->myOwner==this)
+                    if(element && element->myOwner==ownerID)
                         tmpObjs.push_back(objs.back());
                     objs.pop_back();
                 }
@@ -1019,13 +1025,15 @@ void LinkBaseExtension::syncElementList() {
     if(xlink) 
         subname = xlink->getSubName();
 
+    auto owner = getContainer();
+    auto ownerID = owner?owner->getID():0;
     auto elements = getElementListValue();
     for(size_t i=0;i<elements.size();++i) {
         auto element = freecad_dynamic_cast<LinkElement>(elements[i]);
-        if(!element || (element->myOwner && element->myOwner!=this)) 
+        if(!element || (element->myOwner && element->myOwner!=ownerID)) 
             continue;
 
-        element->myOwner = this;
+        element->myOwner = ownerID;
 
         element->SubElements.setStatus(Property::Hidden,sub!=0);
         element->SubElements.setStatus(Property::Immutable,sub!=0);
@@ -1113,11 +1121,11 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
                (subname && subname[0]) ||
                subElements.size() ||
                obj->getDocument()!=parent->getDocument() ||
-               (getElementListProperty()->find(obj->getNameInDocument(),&index) && idx!=index))
+               (getElementListProperty()->find(obj->getNameInDocument(),&idx) && idx!=index))
             {
                 std::string name = parent->getDocument()->getUniqueObjectName("Link");
                 auto link = new Link;
-                link->myOwner = this;
+                link->myOwner = parent->getID();
                 parent->getDocument()->addObject(link,name.c_str());
                 link->setLink(-1,obj,subname,subElements);
                 auto linked = link->getTrueLinkedObject(true);
@@ -1187,11 +1195,13 @@ void LinkBaseExtension::detachElement(DocumentObject *obj) {
     if(!obj || !obj->getNameInDocument() || obj->isRemoving())
         return;
     auto ext = obj->getExtensionByType<LinkBaseExtension>(true);
+    auto owner = getContainer();
+    long ownerID = owner?owner->getID():0;
     if(getLinkModeValue()==LinkModeAutoUnlink) {
-        if(!ext || ext->myOwner!=this)
+        if(!ext || ext->myOwner!=ownerID)
             return;
     }else if(getLinkModeValue()!=LinkModeAutoDelete) {
-        if(ext && ext->myOwner==this)
+        if(ext && ext->myOwner==ownerID)
             ext->myOwner = 0;
         return;
     }
@@ -1316,6 +1326,14 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(App::LinkElement, App::DocumentObject)
 LinkElement::LinkElement() {
     LINK_PROPS_ADD(LINK_PARAMS_ELEMENT);
     LinkBaseExtension::initExtension(this);
+}
+
+bool LinkElement::canDelete() const {
+    if(!myOwner)
+        return true;
+
+    auto owner = getContainer();
+    return !owner || !owner->getDocument()->getObjectByID(myOwner);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

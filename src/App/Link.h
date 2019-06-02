@@ -304,9 +304,7 @@ protected:
     mutable std::unordered_map<std::string,int> myLabelCache; // for label based subname lookup
     mutable bool enableLabelCache;
 
-    // WARNING! Do not try to access through myOwner, the object may have been
-    // deleted. Its purpose here is just to distinguish the owner.
-    LinkBaseExtension *myOwner;
+    long myOwner;
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -487,7 +485,7 @@ public:
         inherited::onDocumentRestored();
     }
 
-    bool canDelete() const {return myOwner==0;}
+    bool canDelete() const;
 };
 
 typedef App::FeaturePythonT<LinkElement> LinkElementPython;
