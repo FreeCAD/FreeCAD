@@ -1560,6 +1560,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
         bool syncPlacement = FC_TREEPARAM(SyncPlacement) && targetItemObj->isGroup();
 
+        bool setSelection = true;
+        std::vector<std::string> droppedNames;
+
         std::vector<ItemInfo> infos;
         // Only keep text names here, because you never know when doing drag
         // and drop some object may delete other objects.
@@ -1787,7 +1790,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 if(dropName.size())
                     targetSubname << dropName << std::ends;
                 else 
-                    targetSubname << obj->getNameInDocument() << '.';
+                    targetSubname << obj->getNameInDocument() << '.' << std::ends;
                 dropName = targetSubname.str();
                 targetSubname.seekp(pos);
 
@@ -1796,6 +1799,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 if(!sobj) {
                     FC_LOG("failed to find dropped object " 
                             << targetParent->getFullName() << '.' << dropName);
+                    setSelection = false;
                     continue;
                 }
 
@@ -1815,6 +1819,15 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         }
                     }
                 }
+                droppedNames.push_back(std::move(dropName));
+            }
+            if(setSelection && droppedNames.size()) {
+                Selection().selStackPush();
+                Selection().clearCompleteSelection();
+                for(auto &sub : droppedNames)
+                    Selection().addSelection(targetParent->getDocument()->getName(),
+                        targetParent->getNameInDocument(), sub.c_str());
+                Selection().selStackPush();
             }
         } catch (const Base::Exception& e) {
             committer.close(true);
@@ -1837,7 +1850,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
             auto obj = item->object()->getObject();
             auto parentItem = item->getParentItem();
             if(!parentItem) {
-                if(da!=Qt::LinkAction && obj->getDocument()==thisDoc)
+                if(da==Qt::MoveAction && obj->getDocument()==thisDoc)
                     continue;
             }else if(dropOnly || item->myOwner!=targetItem) {
                 // We will not drag item out of parent if either, 1) the CTRL
@@ -1987,38 +2000,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     manager->addLine(MacroManager::App,ss.str().c_str());
                 }
             }
-            DocumentObjectItem *scrollItem = 0;
-            for(auto obj : droppedObjs) {
-                auto it = targetDocItem->ObjectMap.find(obj);
-                if(it==targetDocItem->ObjectMap.end())
-                    continue;
-                DocumentObjectItem *item = it->second->rootItem;
-                if(!item && it->second->items.size())
-                    item = *it->second->items.begin();
-                if(item) {
-                    if(!scrollItem)
-                        scrollItem = item;
-                    targetDocItem->showItem(item,true);
-                    continue;
-                }
-                auto itDoc = DocumentMap.find(
-                        Application::Instance->getDocument(obj->getDocument()));
-                if(itDoc==DocumentMap.end())
-                    continue;
-                it = itDoc->second->ObjectMap.find(obj);
-                if(it == itDoc->second->ObjectMap.end())
-                    continue;
-                item = it->second->rootItem;
-                if(!item && it->second->items.size())
-                    item = *it->second->items.begin();
-                if(item) {
-                    if(!scrollItem)
-                        scrollItem = item;
-                    itDoc->second->showItem(item,true);
-                }
-            }
-            if(scrollItem)
-                scrollToItem(scrollItem);
+
+            Selection().setSelection(thisDoc->getName(),droppedObjs);
 
         } catch (const Base::Exception& e) {
             committer.close(true);
