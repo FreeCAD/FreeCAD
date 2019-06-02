@@ -25,7 +25,6 @@
 from __future__ import print_function
 
 import FreeCAD
-import FreeCADGui
 import Path
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
@@ -37,6 +36,9 @@ from PySide import QtCore
 
 """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
 
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui
 
 # Qt translation handling
 def translate(text, context="Path_DressupLeadInOut", disambig=None):
