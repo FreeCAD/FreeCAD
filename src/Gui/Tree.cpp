@@ -138,6 +138,7 @@ void TreeParams::onSyncSelectionChanged() {
 void TreeParams::onSyncViewChanged() {}
 void TreeParams::onSyncPlacementChanged() {}
 void TreeParams::onRecordSelectionChanged() {}
+void TreeParams::onRecomputeOnDropChanged() {}
 
 void TreeParams::onDocumentModeChanged() {
     App::GetApplication().setActiveDocument(App::GetApplication().getActiveDocument());
@@ -1479,6 +1480,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
 {
     //FIXME: This should actually be done inside dropMimeData
 
+    bool touched = false;
     QTreeWidgetItem* targetItem = itemAt(event->pos());
     // not dropped onto an item
     if (!targetItem)
@@ -1486,6 +1488,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
     // one of the source items is also the destination item, that's not allowed
     if (this->isItemSelected(targetItem))
         return;
+
+    App::Document *thisDoc;
 
     Base::EmptySequencer seq;
 
@@ -1524,6 +1528,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
     if (targetItem->type() == TreeWidget::ObjectType) {
         // add object to group
         DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetItem);
+        thisDoc = targetItemObj->getOwnerDocument()->document()->getDocument();
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
 
         if(!vp || !vp->getObject() || !vp->getObject()->getNameInDocument()) {
@@ -1785,6 +1790,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         manager->addLine(MacroManager::Gui,ss.str().c_str());
                 }
 
+                touched = true;
+
                 // Construct the subname pointing to the dropped object
                 auto pos = targetSubname.tellp();
                 if(dropName.size())
@@ -1838,11 +1845,12 @@ void TreeWidget::dropEvent(QDropEvent *event)
         }
     }
     else if (targetItem->type() == TreeWidget::DocumentType) {
+        auto targetDocItem = static_cast<DocumentItem*>(targetItem);
+        thisDoc = targetDocItem->document()->getDocument();
+
         std::vector<ItemInfo2> infos;
         infos.reserve(items.size());
         bool syncPlacement = FC_TREEPARAM(SyncPlacement);
-        auto targetDocItem = static_cast<DocumentItem*>(targetItem);
-        App::Document* thisDoc = targetDocItem->document()->getDocument();
 
         // check if items can be dragged
         for(auto &v : items) {
@@ -1857,7 +1865,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 // key is held, or 2) the dragging item is not inside the
                 // dropping document tree.
                 parentItem = 0;
-            }else if(!parentItem->object()->canDragObjects() || !parentItem->object()->canDragObject(obj)) {
+            }else if(!parentItem->object()->canDragObjects() 
+                    || !parentItem->object()->canDragObject(obj)) 
+            {
                 TREE_ERR("'" << obj->getFullName() << "' cannot be dragged out of '" << 
                     parentItem->object()->getObject()->getFullName() << "'");
                 return;
@@ -2000,7 +2010,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     manager->addLine(MacroManager::App,ss.str().c_str());
                 }
             }
-
+            touched = true;
             Selection().setSelection(thisDoc->getName(),droppedObjs);
 
         } catch (const Base::Exception& e) {
@@ -2011,6 +2021,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
             return;
         }
     }
+
+    if(touched && FC_TREEPARAM(RecomputeOnDrop))
+        thisDoc->recompute();
 }
 
 void TreeWidget::drawRow(QPainter *painter, const QStyleOptionViewItem &options, const QModelIndex &index) const
