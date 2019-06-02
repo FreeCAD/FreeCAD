@@ -64,6 +64,7 @@ public:
     /// Observer message from the Selection
     virtual void onSelectionChanged(const SelectionChanges& msg);
 
+    virtual void leaveEvent(QEvent*) override;
 
     bool onMsg(const char* pMsg,const char** ppReturn);
 

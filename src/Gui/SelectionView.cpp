@@ -119,6 +119,11 @@ SelectionView::~SelectionView()
 {
 }
 
+void SelectionView::leaveEvent(QEvent *)
+{
+    Selection().rmvPreselect();
+}
+
 /// @cond DOXERR
 void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
 {
@@ -183,7 +188,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
     else if (Reason.Type == SelectionChanges::SetSelection) {
         // remove all items
         selectionView->clear();
-        std::vector<SelectionSingleton::SelObj> objs = Gui::Selection().getSelection(Reason.pDocName);
+        std::vector<SelectionSingleton::SelObj> objs = Gui::Selection().getSelection(Reason.pDocName,0);
         for (std::vector<SelectionSingleton::SelObj>::iterator it = objs.begin(); it != objs.end(); ++it) {
             // save as user data
             QStringList list;
