@@ -345,7 +345,7 @@ class DraftToolBar:
         #print("taskmode: ",str(self.taskmode))
         self.paramcolor = Draft.getParam("color",255)>>8
         self.color = QtGui.QColor(self.paramcolor)
-        self.facecolor = QtGui.QColor(204,204,204)
+        self.facecolor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)>>8
         self.linewidth = Draft.getParam("linewidth",2)
         self.fontsize = Draft.getParam("textheight",0.20)
         self.paramconstr = Draft.getParam("constructioncolor",746455039)>>8
@@ -1469,6 +1469,8 @@ class DraftToolBar:
             return
         self.facecolorPix.fill(self.facecolor)
         self.facecolorButton.setIcon(QtGui.QIcon(self.facecolorPix))
+        if Draft.getParam("saveonexit",False):
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").SetUnsigned("DefaultShapeColor",self.facecolor.rgb()<<8)
         r = float(self.facecolor.red()/255.0)
         g = float(self.facecolor.green()/255.0)
         b = float(self.facecolor.blue()/255.0)

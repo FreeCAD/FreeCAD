@@ -139,6 +139,8 @@ def getParam(param,default=None):
     elif t == "unsigned":
         if default == None:
             default = 0
+        if param == "color":
+            return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeLineColor",default)
         return p.GetUnsigned(param,default)
     else:
         return None
@@ -147,11 +149,19 @@ def setParam(param,value):
     "setParam(parameterName,value): sets a Draft parameter with the given value"
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     t = getParamType(param)
-    if t == "int": p.SetInt(param,value)
-    elif t == "string": p.SetString(param,value)
-    elif t == "float": p.SetFloat(param,value)
-    elif t == "bool": p.SetBool(param,value)
-    elif t == "unsigned": p.SetUnsigned(param,value)
+    if t == "int":
+        p.SetInt(param,value)
+    elif t == "string":
+        p.SetString(param,value)
+    elif t == "float":
+        p.SetFloat(param,value)
+    elif t == "bool":
+        p.SetBool(param,value)
+    elif t == "unsigned":
+        if param == "color":
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").SetUnsigned("DefaultShapeLineColor",value)
+        else:
+            p.SetUnsigned(param,value)
 
 def precision():
     "precision(): returns the precision value from Draft user settings"
@@ -5754,13 +5764,13 @@ class _PathArray(_DraftObject):
             shape.Placement.Rotation, pathwire, count, xlate, align)
 
         base = []
-        
+
         for placement in placements:
             ns = shape.copy()
             ns.Placement = placement
 
             base.append(ns)
-            
+
         return (Part.makeCompound(base))
 
 class _PointArray(_DraftObject):
