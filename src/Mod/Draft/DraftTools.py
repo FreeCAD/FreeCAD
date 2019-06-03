@@ -4185,6 +4185,8 @@ class Scale(Modifier):
         self.center = self.node[0]
         if self.task.isSubelementMode.isChecked():
             self.scale_subelements()
+        elif self.task.isClone.isChecked():
+            self.scale_with_clone()
         else:
             self.scale_object()
         self.finish()
@@ -4197,6 +4199,16 @@ class Scale(Modifier):
                 self.commit(translate("draft", "Scale"), self.build_scale_subelements_command())
         except:
             FreeCAD.Console.PrintError(translate("draft", "Some subelements could not be scaled."))
+
+    def scale_with_clone(self):
+        if self.task.relative.isChecked():
+            self.delta = FreeCAD.DraftWorkingPlane.getGlobalCoords(self.delta)
+        objects = '[' + ','.join(['FreeCAD.ActiveDocument.' + object.Name for object in self.selected_objects]) + ']'
+        FreeCADGui.addModule("Draft")
+        self.commit(translate("draft","Copy") if self.task.isCopy.isChecked() else translate("draft","Scale"),
+                    ['clone = Draft.clone('+objects+',forcedraft=True)',
+                     'clone.Scale = '+DraftVecUtils.toString(self.delta),
+                     'FreeCAD.ActiveDocument.recompute()'])
 
     def build_copy_subelements_command(self):
         import Part
