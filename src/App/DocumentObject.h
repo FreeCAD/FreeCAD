@@ -59,6 +59,7 @@ enum ObjectStatus {
     PendingRemove = 12, // set by Document, indicating the object is in pending for remove after recompute
     ObjImporting = 13, // Mark the object as importing
     NoTouch = 14, // no touch on any property change
+    GeoClaimed = 15, // mark as claimed by GeoFeatureGroup
     Expand = 16,
 };
 

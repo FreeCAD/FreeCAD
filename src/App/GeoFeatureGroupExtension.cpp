@@ -34,6 +34,7 @@
 #include "Origin.h"
 #include "OriginGroupExtension.h"
 #include <Base/Console.h>
+#include <Base/Tools.h>
 //#include "GeoFeatureGroupPy.h"
 //#include "FeaturePythonPyImp.h"
 
@@ -202,9 +203,10 @@ void GeoFeatureGroupExtension::onExtendedUnsetupObject() {
 void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
 
     //objects are only allowed in a single GeoFeatureGroup
-    if(p == &Group) {
+    if(p == &Group && !Group.testStatus(Property::User3)) {
     
-        if(!getExtendedObject()->getDocument()->isPerformingTransaction()) {
+        if(!getExtendedObject()->isRestoring() &&
+           !getExtendedObject()->getDocument()->isPerformingTransaction()) {
                 
             bool error = false;
             auto corrected = Group.getValues();
@@ -226,9 +228,15 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
 
             //if an error was found we need to correct the values and inform the user
             if(error) {
+                Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, &Group);
                 Group.setValues(corrected);
                 throw Base::RuntimeError("Object can only be in a single GeoFeatureGroup");
             }
+        }
+
+        for(auto obj : Group.getValue()) {
+            if(obj && obj->getNameInDocument())
+                obj->Visibility.setStatus(Property::Output,false);
         }
     }
 
@@ -490,17 +498,11 @@ void GeoFeatureGroupExtension::getInvalidLinkObjects(const DocumentObject* obj, 
 
 bool GeoFeatureGroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int) const {
     for(auto obj : Group.getValues()) {
-        if(obj && obj->getNameInDocument()) {
-            if(!obj->hasExtension(GroupExtension::getExtensionClassTypeId()) ||
-               obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
-            {
-                ret.push_back(std::string(obj->getNameInDocument())+'.');
-            }
-        }
+        if(obj && obj->getNameInDocument() && obj->testStatus(ObjectStatus::GeoClaimed))
+            ret.push_back(std::string(obj->getNameInDocument())+'.');
     }
     return true;
 }
-
 
 
 // Python feature ---------------------------------------------------------
