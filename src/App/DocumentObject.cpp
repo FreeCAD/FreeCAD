@@ -651,6 +651,9 @@ void DocumentObject::onBeforeChange(const Property* prop)
 /// get called by the container when a Property was changed
 void DocumentObject::onChanged(const Property* prop)
 {
+    if(GetApplication().isClosingAll())
+        return;
+
     if(!GetApplication().isRestoring() && 
        prop && !prop->testStatus(Property::PartialTrigger) &&
        getDocument() && 

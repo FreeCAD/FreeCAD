@@ -223,7 +223,8 @@ init_freecad_module(void)
 #endif
 
 Application::Application(std::map<std::string,std::string> &mConfig)
-  : _mConfig(mConfig), _pActiveDoc(0), _isRestoring(false),_allowPartial(false),_objCount(-1)
+  : _mConfig(mConfig), _pActiveDoc(0), _isRestoring(false),_allowPartial(false)
+  , _isClosingAll(false), _objCount(-1)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
@@ -475,6 +476,7 @@ bool Application::closeDocument(const char* name)
 
 void Application::closeAllDocuments(void)
 {
+    Base::FlagToggler<bool> flag(_isClosingAll);
     std::map<std::string,Document*>::iterator pos;
     while((pos = DocMap.begin()) != DocMap.end())
         closeDocument(pos->first.c_str());
@@ -552,6 +554,10 @@ int Application::addPendingDocument(const char *FileName, const char *objName, b
 
 bool Application::isRestoring() const {
     return _isRestoring || Document::isAnyRestoring();
+}
+
+bool Application::isClosingAll() const {
+    return _isClosingAll;
 }
 
 struct DocTiming {

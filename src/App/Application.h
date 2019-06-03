@@ -126,6 +126,8 @@ public:
     int addPendingDocument(const char *FileName, const char *objName, bool allowPartial);
     /// Indicate whether the application is opening (restoring) some document
     bool isRestoring() const;
+    /// Indicate the application is closing all document
+    bool isClosingAll() const;
     //@}
     
     /** @name Application-wide trandaction setting */
@@ -532,6 +534,7 @@ private:
     std::map<std::string,std::set<std::string> > _pendingDocMap;
     bool _isRestoring;
     bool _allowPartial;
+    bool _isClosingAll;
 
     // for estimate max link depth
     int _objCount;
