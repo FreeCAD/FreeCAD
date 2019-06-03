@@ -488,7 +488,7 @@ Base::Matrix4D LinkBaseExtension::getTransform(bool transform) const {
 }
 
 bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret, int reason) const {
-    if(getElementListProperty()) {
+    if(!getLinkedObjectProperty() && getElementListProperty()) {
         for(auto obj : getElementListProperty()->getValues()) {
             if(obj && obj->getNameInDocument()) {
                 std::string name(obj->getNameInDocument());
@@ -962,10 +962,13 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             }
         }
         syncElementList();
-        if(_getShowElementValue() && _getElementCountProperty() && 
-            getElementCountValue()!=(int)elements.size())
+        if(_getShowElementValue() 
+                && _getElementCountProperty() 
+                && getElementListProperty() 
+                && getElementCountValue()!=getElementListProperty()->getSize())
         {
-            getElementCountProperty()->setValue(elements.size());
+            getElementCountProperty()->setValue(
+                    getElementListProperty()->getSize());
         }
     }else if(prop == getLinkedObjectProperty()) {
         auto group = linkedPlainGroup();
