@@ -110,16 +110,16 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=Fals
 
     ui = FreeCADGui.draftToolBar
 
-    # get point
     if target.node:
         last = target.node[-1]
     else:
         last = None
-    amod = hasMod(args,MODSNAP)
-    cmod = hasMod(args,MODCONSTRAIN)
 
+    amod = hasMod(args, MODSNAP)
+    cmod = hasMod(args, MODCONSTRAIN)
     point = None
-    if hasattr(FreeCADGui,"Snapper"):
+
+    if hasattr(FreeCADGui, "Snapper"):
         point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod,noTracker=noTracker)
         info = FreeCADGui.Snapper.snapInfo
         mask = FreeCADGui.Snapper.affinity
@@ -135,37 +135,58 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=Fals
             ui.displayPoint(point, target.node[0], plane=plane, mask=mask)
         else:
             ui.displayPoint(point, target.node[-1], plane=plane, mask=mask)
-    else: ui.displayPoint(point, plane=plane, mask=mask)
+    else:
+        ui.displayPoint(point, plane=plane, mask=mask)
     return point,ctrlPoint,info
 
-def getSupport(args=None):
+def getSupport(mouseEvent=None):
     "returns the supporting object and sets the working plane"
-    if not args:
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if len(sel) == 1:
-            sel = sel[0]
-            if sel.HasSubObjects:
-                if len(sel.SubElementNames) == 1:
-                    if "Face" in sel.SubElementNames[0]:
-                        if plane.weak:
-                            plane.alignToFace(sel.SubObjects[0])
-                        return sel.Object
+    plane.save()
+    if mouseEvent:
+        return setWorkingPlaneToObjectUnderCursor(mouseEvent)
+    return setWorkingPlaneToSelectedObject()
+
+def setWorkingPlaneToObjectUnderCursor(mouseEvent):
+    objectUnderCursor = Draft.get3DView().getObjectInfo((
+        mouseEvent["Position"][0],
+        mouseEvent["Position"][1]))
+
+    if not objectUnderCursor:
         return None
 
-    snapped = Draft.get3DView().getObjectInfo((args["Position"][0],args["Position"][1]))
-    if not snapped: return None
-    obj = None
-    plane.save()
     try:
-        obj = FreeCAD.ActiveDocument.getObject(snapped['Object'])
-        shape = obj.Shape
-        component = getattr(shape,snapped["Component"])
-        if plane.alignToFace(component, 0) \
-                or plane.alignToCurve(component, 0):
-            self.display(plane.axis)
+        componentUnderCursor = getattr(
+            FreeCAD.ActiveDocument.getObject(
+                objectUnderCursor['Object']
+                ).Shape,
+            objectUnderCursor["Component"])
+
+        if not plane.weak:
+            return None
+
+        if "Face" in objectUnderCursor["Component"]:
+            plane.alignToFace(componentUnderCursor)
+        else:
+            plane.alignToCurve(componentUnderCursor)
+        plane.weak = True
+        return objectUnderCursor
     except:
         pass
-    # don't set the object's support if we are in the middle of an operation
+
+    return None
+
+def setWorkingPlaneToSelectedObject():
+    sel = FreeCADGui.Selection.getSelectionEx()
+    if len(sel) != 1:
+        return None
+    sel = sel[0]
+    if sel.HasSubObjects \
+        and len(sel.SubElementNames) == 1 \
+        and "Face" in sel.SubElementNames[0]:
+        if plane.weak:
+            plane.alignToFace(sel.SubObjects[0])
+            plane.weak = True
+        return sel.Object
     return None
 
 def hasMod(args,mod):
@@ -530,42 +551,60 @@ class Line(Creator):
         self.isWire = wiremode
 
     def GetResources(self):
-        return {'Pixmap'  : 'Draft_Line',
-                'Accel' : "L,I",
+        return {'Pixmap': 'Draft_Line',
+                'Accel': "L,I",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Line", "Line"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Line", "Creates a 2-point line. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self,name=translate("draft","Line")):
         Creator.Activated(self,name)
-        if self.doc:
-            self.obj = None # stores the temp shape
-            self.oldWP = None # stores the WP if we modify it
-            if self.isWire:
-                self.ui.wireUi(name)
-            else:
-                self.ui.lineUi(name)
-            self.ui.setTitle(translate("draft", "Line"))
-            if sys.version_info.major < 3:
-                if isinstance(self.featureName,unicode):
-                    self.featureName = self.featureName.encode("utf8")
-            self.obj=self.doc.addObject("Part::Feature",self.featureName)
-            # self.obj.ViewObject.Selectable = False
-            Draft.formatObject(self.obj)
-            self.call = self.view.addEventCallback("SoEvent",self.action)
-            FreeCAD.Console.PrintMessage(translate("draft", "Pick first point")+"\n")
+        if not self.doc:
+            return
+        self.obj = None # stores the temp shape
+        self.oldWP = None # stores the WP if we modify it
+        if self.isWire:
+            self.ui.wireUi(name)
+        else:
+            self.ui.lineUi(name)
+        self.ui.setTitle(translate("draft", "Line"))
+        if sys.version_info.major < 3:
+            if isinstance(self.featureName,unicode):
+                self.featureName = self.featureName.encode("utf8")
+        self.obj=self.doc.addObject("Part::Feature",self.featureName)
+        Draft.formatObject(self.obj)
+        self.call = self.view.addEventCallback("SoEvent", self.action)
+        FreeCAD.Console.PrintMessage(translate("draft", "Pick first point")+"\n")
+
+    def action(self, arg):
+        "scene event handler"
+        if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+            self.finish()
+        elif arg["Type"] == "SoLocation2Event":
+            self.point, ctrlPoint, info = getPoint(self, arg)
+            redraw3DView()
+        elif arg["Type"] == "SoMouseButtonEvent" and \
+            arg["State"] == "DOWN" and \
+            arg["Button"] == "BUTTON1":
+                if (arg["Position"] == self.pos):
+                    return self.finish(False,cont=True)
+                if (not self.node) and (not self.support):
+                    getSupport(arg)
+                    self.point,ctrlPoint,info = getPoint(self,arg)
+                if self.point:
+                    self.ui.redraw()
+                    self.pos = arg["Position"]
+                    self.node.append(self.point)
+                    self.drawSegment(self.point)
+                    if (not self.isWire and len(self.node) == 2):
+                        self.finish(False,cont=True)
+                    if (len(self.node) > 2):
+                        if ((self.point-self.node[0]).Length < Draft.tolerance()):
+                            self.undolast()
+                            self.finish(True,cont=True)
 
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
-        if self.obj:
-            # remove temporary object, if any
-            try:
-                old = self.obj.Name
-            except ReferenceError:
-                # object already deleted, for some reason
-                pass
-            else:
-                todo.delay(self.doc.removeObject,old)
-        self.obj = None
+        self.removeTemporaryObject()
         if self.oldWP:
             FreeCAD.DraftWorkingPlane = self.oldWP
             if hasattr(FreeCADGui,"Snapper"):
@@ -600,40 +639,19 @@ class Line(Creator):
                              'Draft.autogroup(line)',
                              'FreeCAD.ActiveDocument.recompute()'])
         Creator.finish(self)
-        if self.ui:
-            if self.ui.continueMode:
-                self.Activated()
+        if self.ui and self.ui.continueMode:
+            self.Activated()
 
-    def action(self,arg):
-        "scene event handler"
-        if arg["Type"] == "SoKeyboardEvent":
-            # key detection
-            if arg["Key"] == "ESCAPE":
-                self.finish()
-        elif arg["Type"] == "SoLocation2Event":
-            # mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg)
-            redraw3DView()
-        elif arg["Type"] == "SoMouseButtonEvent":
-            # mouse button detection
-            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                if (arg["Position"] == self.pos):
-                    self.finish(False,cont=True)
-                else:
-                    if (not self.node) and (not self.support):
-                        getSupport(arg)
-                        self.point,ctrlPoint,info = getPoint(self,arg)
-                    if self.point:
-                        self.ui.redraw()
-                        self.pos = arg["Position"]
-                        self.node.append(self.point)
-                        self.drawSegment(self.point)
-                        if (not self.isWire and len(self.node) == 2):
-                            self.finish(False,cont=True)
-                        if (len(self.node) > 2):
-                            if ((self.point-self.node[0]).Length < Draft.tolerance()):
-                                self.undolast()
-                                self.finish(True,cont=True)
+    def removeTemporaryObject(self):
+        if self.obj:
+            try:
+                old = self.obj.Name
+            except ReferenceError:
+                # object already deleted, for some reason
+                pass
+            else:
+                todo.delay(self.doc.removeObject,old)
+        self.obj = None
 
     def undolast(self):
         "undoes last line segment"

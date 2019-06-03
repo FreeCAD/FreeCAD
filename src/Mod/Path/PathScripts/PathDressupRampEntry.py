@@ -22,7 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 import FreeCAD
-import FreeCADGui
 import Path
 import Part
 import PathScripts.PathDressup as PathDressup
@@ -32,6 +31,10 @@ import math
 
 from PathScripts import PathUtils
 from PySide import QtCore
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui
 
 
 # Qt translation handling

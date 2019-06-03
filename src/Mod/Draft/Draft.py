@@ -99,7 +99,8 @@ def getParamType(param):
                  "dimstyle","gridSize"]:
         return "int"
     elif param in ["constructiongroupname","textfont","patternFile","template",
-                   "snapModes","FontFile","ClonePrefix","labeltype"]:
+                   "snapModes","FontFile","ClonePrefix","labeltype"] \
+        or "inCommandShortcut" in param:
         return "string"
     elif param in ["textheight","tolerance","gridSpacing","arrowsize","extlines","dimspacing",
                    "dimovershoot","extovershoot"]:
@@ -109,7 +110,7 @@ def getParamType(param):
                    "renderPolylineWidth","showPlaneTracker","UsePartPrimitives","DiscretizeEllipses",
                    "showUnit"]:
         return "bool"
-    elif param in ["color","constructioncolor","snapcolor"]:
+    elif param in ["color","constructioncolor","snapcolor","gridColor"]:
         return "unsigned"
     else:
         return None

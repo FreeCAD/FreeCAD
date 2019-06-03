@@ -105,25 +105,25 @@ def utf8_decode(text):
 
 # in-command shortcut definitions: Shortcut / Translation / related UI control
 inCommandShortcuts = {
-    "Relative":   ["R",translate("draft","Relative"),             "isRelative"],
-    "Continue":   ["T",translate("draft","Continue"),             "continueCmd"],
-    "Close":      ["O",translate("draft","Close"),                "closeButton"],
-    "Copy":       ["P",translate("draft","Copy"),                 "isCopy"],
-    "SubelementMode": ["D",translate("draft","Subelement mode"), "isSubelementMode"],
-    "Fill":       ["L",translate("draft","Fill"),                 "hasFill"],
-    "Exit":       ["A",translate("draft","Exit"),                 "finishButton"],
-    "Snap":       ["S",translate("draft","Snap On/Off"),          None],
-    "Increase":   ["[",translate("draft","Increase snap radius"), None],
-    "Decrease":   ["]",translate("draft","Decrease snap radius"), None],
-    "RestrictX":  ["X",translate("draft","Restrict X"),           None],
-    "RestrictY":  ["Y",translate("draft","Restrict Y"),           None],
-    "RestrictZ":  ["Z",translate("draft","Restrict Z"),           None],
-    "SelectEdge": ["E",translate("draft","Select edge"),          "selectButton"],
-    "AddHold":    ["Q",translate("draft","Add custom snap point"),None],
-    "Length":     ["H",translate("draft","Length mode"),          "lengthValue"],
-    "Wipe":       ["W",translate("draft","Wipe"),                 "wipeButton"],
-    "SetWP":      ["U",translate("draft","Set Working Plane"), "orientWPButton"],
-    "CycleSnap":  ["`",translate("draft","Cycle snap object"), None]
+    "Relative":       [Draft.getParam("inCommandShortcutRelative", "R"),translate("draft","Relative"),             "isRelative"],
+    "Continue":       [Draft.getParam("inCommandShortcutContinue", "T"),translate("draft","Continue"),             "continueCmd"],
+    "Close":          [Draft.getParam("inCommandShortcutClose", "O"),translate("draft","Close"),                "closeButton"],
+    "Copy":           [Draft.getParam("inCommandShortcutCopy", "P"),translate("draft","Copy"),                 "isCopy"],
+    "SubelementMode": [Draft.getParam("inCommandShortcutSubelementMode", "D"),translate("draft","Subelement mode"), "isSubelementMode"],
+    "Fill":           [Draft.getParam("inCommandShortcutFill", "L"),translate("draft","Fill"),                 "hasFill"],
+    "Exit":           [Draft.getParam("inCommandShortcutExit", "A"),translate("draft","Exit"),                 "finishButton"],
+    "Snap":           [Draft.getParam("inCommandShortcutSnap", "S"),translate("draft","Snap On/Off"),          None],
+    "Increase":       [Draft.getParam("inCommandShortcutIncrease", "["),translate("draft","Increase snap radius"), None],
+    "Decrease":       [Draft.getParam("inCommandShortcutDecrease", "]"),translate("draft","Decrease snap radius"), None],
+    "RestrictX":      [Draft.getParam("inCommandShortcutRestrictX", "X"),translate("draft","Restrict X"),           None],
+    "RestrictY":      [Draft.getParam("inCommandShortcutRestrictY", "Y"),translate("draft","Restrict Y"),           None],
+    "RestrictZ":      [Draft.getParam("inCommandShortcutRestrictZ", "Z"),translate("draft","Restrict Z"),           None],
+    "SelectEdge":     [Draft.getParam("inCommandShortcutSelectEdge", "E"),translate("draft","Select edge"),          "selectButton"],
+    "AddHold":        [Draft.getParam("inCommandShortcutAddHold", "Q"),translate("draft","Add custom snap point"),None],
+    "Length":         [Draft.getParam("inCommandShortcutLength", "H"),translate("draft","Length mode"),          "lengthValue"],
+    "Wipe":           [Draft.getParam("inCommandShortcutWipe", "W"),translate("draft","Wipe"),                 "wipeButton"],
+    "SetWP":          [Draft.getParam("inCommandShortcutSetWP", "U"),translate("draft","Set Working Plane"), "orientWPButton"],
+    "CycleSnap":      [Draft.getParam("inCommandShortcutCycleSnap", "`"),translate("draft","Cycle snap object"), None]
 }
 
 
@@ -1874,69 +1874,70 @@ class DraftToolBar:
     def displayPoint(self, point=None, last=None, plane=None, mask=None):
         "this function displays the passed coords in the x, y, and z widgets"
 
-        if (not self.taskmode) or self.isTaskOn:
+        if self.taskmode and (not self.isTaskOn):
+            return
 
-            # get coords to display
-            dp = None
-            if point:
-                dp = point
-                if self.relativeMode and (last != None):
-                    if plane:
-                        dp = plane.getLocalRot(FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z))
-                    else:
-                        dp = FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z)
-                elif plane:
-                    dp = plane.getLocalCoords(point)
-
-            # set widgets
-            if dp:
-                if self.mask in ['y','z']:
-                    self.xValue.setText(displayExternal(dp.x,None,'Length'))
+        # get coords to display
+        dp = None
+        if point:
+            dp = point
+            if self.relativeMode and (last != None):
+                if plane:
+                    dp = plane.getLocalRot(FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z))
                 else:
-                    self.xValue.setText(displayExternal(dp.x,None,'Length'))
-                if self.mask in ['x','z']:
-                    self.yValue.setText(displayExternal(dp.y,None,'Length'))
-                else:
-                    self.yValue.setText(displayExternal(dp.y,None,'Length'))
-                if self.mask in ['x','y']:
-                    self.zValue.setText(displayExternal(dp.z,None,'Length'))
-                else:
-                    self.zValue.setText(displayExternal(dp.z,None,'Length'))
+                    dp = FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z)
+            elif plane:
+                dp = plane.getLocalCoords(point)
 
-            # set length and angle
-            if last and dp and plane:
-                self.lengthValue.setText(displayExternal(dp.Length,None,'Length'))
-                a = math.degrees(-DraftVecUtils.angle(dp,plane.u,plane.axis))
-                if not self.angleLock.isChecked():
-                    self.angleValue.setText(displayExternal(a,None,'Angle'))
-                if not mask:
-                    # automask
-                    if a in [0,180,-180]:
-                        mask = "x"
-                    elif a in [90,270,-90]:
-                        mask = "y"
-
-            # set masks
-            if (mask == "x") or (self.mask == "x"):
-                self.xValue.setEnabled(True)
-                self.yValue.setEnabled(False)
-                self.zValue.setEnabled(False)
-                self.setFocus()
-            elif (mask == "y") or (self.mask == "y"):
-                self.xValue.setEnabled(False)
-                self.yValue.setEnabled(True)
-                self.zValue.setEnabled(False)
-                self.setFocus("y")
-            elif (mask == "z") or (self.mask == "z"):
-                self.xValue.setEnabled(False)
-                self.yValue.setEnabled(False)
-                self.zValue.setEnabled(True)
-                self.setFocus("z")
+        # set widgets
+        if dp:
+            if self.mask in ['y','z']:
+                self.xValue.setText(displayExternal(dp.x,None,'Length'))
             else:
-                self.xValue.setEnabled(True)
-                self.yValue.setEnabled(True)
-                self.zValue.setEnabled(True)
-                self.setFocus()
+                self.xValue.setText(displayExternal(dp.x,None,'Length'))
+            if self.mask in ['x','z']:
+                self.yValue.setText(displayExternal(dp.y,None,'Length'))
+            else:
+                self.yValue.setText(displayExternal(dp.y,None,'Length'))
+            if self.mask in ['x','y']:
+                self.zValue.setText(displayExternal(dp.z,None,'Length'))
+            else:
+                self.zValue.setText(displayExternal(dp.z,None,'Length'))
+
+        # set length and angle
+        if last and dp and plane:
+            self.lengthValue.setText(displayExternal(dp.Length,None,'Length'))
+            a = math.degrees(-DraftVecUtils.angle(dp,plane.u,plane.axis))
+            if not self.angleLock.isChecked():
+                self.angleValue.setText(displayExternal(a,None,'Angle'))
+            if not mask:
+                # automask
+                if a in [0,180,-180]:
+                    mask = "x"
+                elif a in [90,270,-90]:
+                    mask = "y"
+
+        # set masks
+        if (mask == "x") or (self.mask == "x"):
+            self.xValue.setEnabled(True)
+            self.yValue.setEnabled(False)
+            self.zValue.setEnabled(False)
+            self.setFocus()
+        elif (mask == "y") or (self.mask == "y"):
+            self.xValue.setEnabled(False)
+            self.yValue.setEnabled(True)
+            self.zValue.setEnabled(False)
+            self.setFocus("y")
+        elif (mask == "z") or (self.mask == "z"):
+            self.xValue.setEnabled(False)
+            self.yValue.setEnabled(False)
+            self.zValue.setEnabled(True)
+            self.setFocus("z")
+        else:
+            self.xValue.setEnabled(True)
+            self.yValue.setEnabled(True)
+            self.zValue.setEnabled(True)
+            self.setFocus()
 
 
     def getDefaultColor(self,type,rgb=False):
