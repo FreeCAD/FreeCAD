@@ -1038,6 +1038,10 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
     try {
         Base::PyGILStateLocker lock;
         Py::Module mod(PyImport_ImportModule("inspect"), true);
+        if (mod.isNull()) {
+            PyErr_SetString(PyExc_ImportError, "Cannot load inspect module");
+            return 0;
+        }
         Py::Callable inspect(mod.getAttr("stack"));
         Py::Tuple args;
         Py::List list(inspect.apply(args));
