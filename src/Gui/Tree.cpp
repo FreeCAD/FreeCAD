@@ -1598,7 +1598,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
         try {
             auto targetObj = targetItemObj->object()->getObject();
 
-            auto inList = targetObj->getInListEx(true);
+            std::set<App::DocumentObject*> inList;
+            inList = targetObj->getInListEx(true);
             inList.insert(targetObj);
             inList.insert(targetObj->getLinkedObject(true));
 
@@ -1662,13 +1663,13 @@ void TreeWidget::dropEvent(QDropEvent *event)
                             if(topObj) {
                                 auto sobj = topObj->getSubObject(info.topSubname.c_str(),0,&mat);
                                 if(sobj == obj) {
-                                    propPlacement = dynamic_cast<App::PropertyPlacement*>(
+                                    propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
                                             obj->getPropertyByName("Placement"));
                                 }
                             }
                         }
                     }else{
-                        propPlacement = dynamic_cast<App::PropertyPlacement*>(
+                        propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
                                 obj->getPropertyByName("Placement"));
                         if(propPlacement)
                             mat = propPlacement->getValue().toMatrix();
@@ -1697,17 +1698,23 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     }
                 }
 
-                if(info.dragging) {
-                    // Construct the subname pointing to the future dropped location
-                    auto parentObj = targetObj;
-                    std::string dropName = vp->getDropPrefix();
-                    if(dropName.size()) 
-                        parentObj = targetObj->getSubObject(dropName.c_str());
+                if(da == Qt::MoveAction) {
+                    // Try to adjust relative links to avoid cyclic dependency, may
+                    // throw exception if failed
+                    ss.str("");
+                    ss << Command::getObjectCmd(obj) << ".adjustRelativeLinks("
+                        << Command::getObjectCmd(targetObj) << ")";
+                    manager->addLine(MacroManager::Gui,ss.str().c_str());
 
-                    if(parentObj) {
-                        // Try to adjust relative links to avoid cyclic dependency, may
-                        // throw exception if failed
-                        FCMD_OBJ_CMD(obj,"adjustRelativeLinks(" << Command::getObjectCmd(parentObj) << ")");
+                    std::set<App::DocumentObject*> visited;
+                    if(obj->adjustRelativeLinks(inList,&visited)) {
+                        inList = targetObj->getInListEx(true);
+                        inList.insert(targetObj);
+                        inList.insert(targetObj->getLinkedObject(true));
+
+                        // TODO: link adjustment and placement adjustment does
+                        // not work together at the moment.
+                        propPlacement = 0;
                     }
                 }
 
@@ -1797,13 +1804,13 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     continue;
                 }
 
-                if(propPlacement) {
+                if(da!=Qt::CopyAction && propPlacement) {
                     // try to adjust placement
                     if((info.dragging && sobj==obj) || 
                        (!info.dragging && sobj->getLinkedObject(false)==obj)) 
                     {
                         if(!info.dragging)
-                            propPlacement = dynamic_cast<App::PropertyPlacement*>(
+                            propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
                                     sobj->getPropertyByName("Placement"));
                         if(propPlacement) {
                             newMat *= propPlacement->getValue().inverse().toMatrix();
