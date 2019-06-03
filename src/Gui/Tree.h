@@ -189,7 +189,7 @@ private:
     void slotFinishOpenDocument();
     void _slotDeleteObject(const Gui::ViewProviderDocumentObject&, DocumentItem *deletingDoc);
     void slotDeleteObject(const Gui::ViewProviderDocumentObject&);
-    void slotChangeObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop, bool force);
+    void slotChangeObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
 
     void changeEvent(QEvent *e);
     void setupText();

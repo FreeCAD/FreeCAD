@@ -2094,7 +2094,9 @@ void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 
 void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::Property &prop)
 {
-    if(vp.isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))  {
+    if(!App::GetApplication().isRestoring()
+            && vp.isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))  
+    {
         const auto &vpd = static_cast<const ViewProviderDocumentObject&>(vp);
         if(&prop == &vpd.ShowInTree)
             ChangedObjects.emplace(vpd.getObject(),false);
@@ -2144,7 +2146,10 @@ struct UpdateDisabler {
     bool block;
     bool visible;
     bool focus;
-    UpdateDisabler(QWidget &w, bool block=true)
+
+    // Note! DO NOT block signal here, or else
+    // QTreeWidgetItem::setChildIndicatorPolicy() does not work
+    UpdateDisabler(QWidget &w, bool block=false)
         :widget(w),block(block)
     {
         _UpdateBlocked = true;
@@ -2258,15 +2263,11 @@ void TreeWidget::onUpdateStatus(void)
         if(docItem->connectChgObject.connected())
             continue;
         docItem->connectChgObject = docItem->document()->signalChangedObject.connect(
-                boost::bind(&TreeWidget::slotChangeObject, this, _1, _2, false));
+                boost::bind(&TreeWidget::slotChangeObject, this, _1, _2));
 
         bool partial = docItem->document()->getDocument()->testStatus(App::Document::PartialDoc);
         if(partial) 
             docItem->setIcon(0, *documentPartialPixmap);
-
-        App::PropertyBool dummy;
-        for(auto &v : docItem->ObjectMap)
-            slotChangeObject(*v.second->viewObject,dummy,true);
 
         for(auto &v : docItem->ObjectMap) {
             if(v.first->isError() && v.second->items.size() && !partial) {
@@ -2808,7 +2809,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
             boost::bind(&TreeWidget::slotDeleteObject, getTree(), _1));
     if(!App::GetApplication().isRestoring())
         connectChgObject = doc->signalChangedObject.connect(
-                boost::bind(&TreeWidget::slotChangeObject, getTree(), _1, _2, false));
+                boost::bind(&TreeWidget::slotChangeObject, getTree(), _1, _2));
     connectEdtObject = doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
     connectResObject = doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
     connectHltObject = doc->signalHighlightObject.connect(
@@ -3258,7 +3259,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
 }
 
 void TreeWidget::slotChangeObject(
-        const Gui::ViewProviderDocumentObject& view, const App::Property &prop, bool force) {
+        const Gui::ViewProviderDocumentObject& view, const App::Property &prop) {
 
     auto obj = view.getObject();
     if(!obj || !obj->getNameInDocument())
@@ -3268,16 +3269,14 @@ void TreeWidget::slotChangeObject(
     if(itEntry == ObjectTable.end() || itEntry->second.empty())
         return;
 
-    if(!force) {
-        _updateStatus();
+    _updateStatus();
 
-        // Let's not waste time on the newly added Visibility property in
-        // DocumentObject.
-        if(&prop == &obj->Visibility)
-            return;
-    }
+    // Let's not waste time on the newly added Visibility property in
+    // DocumentObject.
+    if(&prop == &obj->Visibility)
+        return;
 
-    if(force || &prop == &obj->Label) {
+    if(&prop == &obj->Label) {
         const char *label = obj->Label.getValue();
         auto firstData = *itEntry->second.begin();
         if(firstData->label != label) {
@@ -3288,11 +3287,10 @@ void TreeWidget::slotChangeObject(
                     item->setText(0, displayName);
             }
         }
-        if(!force)
-            return;
+        return;
     }
 
-    if(force || &prop == &obj->Label2) {
+    if(&prop == &obj->Label2) {
         const char *label = obj->Label2.getValue();
         auto firstData = *itEntry->second.begin();
         if(firstData->label2 != label) {
@@ -3303,17 +3301,12 @@ void TreeWidget::slotChangeObject(
                     item->setText(1, displayName);
             }
         }
-        if(!force)
-            return;
+        return;
     }
 
     bool output = prop.testStatus(App::Property::Output) 
                   || prop.testStatus(App::Property::NoRecompute);
-
-    if(force)
-        updateChildren(itEntry->first,itEntry->second,output,true);
-    else
-        ChangedObjects.emplace(obj,output);
+    ChangedObjects.emplace(obj,output);
 }
 
 void TreeWidget::updateChildren(App::DocumentObject *obj,
