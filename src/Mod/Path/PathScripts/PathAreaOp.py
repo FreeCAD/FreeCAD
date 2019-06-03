@@ -23,8 +23,8 @@
 # ***************************************************************************
 
 # SCRIPT NOTES:
-# - Need to add "UseRotation" property to task window UI, and attach appropriate onChange event handler
-# - Consult FC community about wording for "UseRotation" property
+# - Need to add "EnableRotation" property to task window UI, and attach appropriate onChange event handler
+# - Consult FC community about wording for "EnableRotation" property
 # - FUTURE: Relocate rotational calculations to Job setup tool, creating a Machine section
 #           with axis & rotation toggles and associated min/max values
 
@@ -44,8 +44,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "mlampert [FreeCAD], russ4262 (Russell Johnson)"
 __createdDate__ = "2017"
-__scriptVersion__ = "1h testing"
-__lastModified__ = "2019-05-03 10:52 CST"
+__scriptVersion__ = "2b testing"
+__lastModified__ = "2019-06-03 03:18 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -77,6 +77,7 @@ class ObjectOp(PathOp.ObjectOp):
         '''opFeatures(obj) ... returns the base features supported by all Path.Area based operations.
         The standard feature list is OR'ed with the return value of areaOpFeatures().
         Do not overwrite, implement areaOpFeatures(obj) instead.'''
+        # return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj) | PathOp.FeatureRotation
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj)
 
     def areaOpFeatures(self, obj):
@@ -102,9 +103,9 @@ class ObjectOp(PathOp.ObjectOp):
         self.initAreaOp(obj)
 
     def setupAdditionalProperties(self, obj):
-        if not hasattr(obj, 'UseRotation'):
-            obj.addProperty("App::PropertyEnumeration", "UseRotation", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use rotation to gain access to pockets/areas."))
-            obj.UseRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
+        if not hasattr(obj, 'EnableRotation'):
+            obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
+            obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
     def initAreaOp(self, obj):
         '''initAreaOp(obj) ... overwrite if the receiver class needs initialisation.
@@ -182,7 +183,7 @@ class ObjectOp(PathOp.ObjectOp):
             maxDep = 1.0
             minDep = 0.0
 
-            if obj.UseRotation == 'Off':
+            if obj.EnableRotation == 'Off':
                 bb = job.Stock.Shape.BoundBox
                 maxDep = bb.ZMax
                 minDep = bb.ZMin
@@ -211,7 +212,12 @@ class ObjectOp(PathOp.ObjectOp):
                     PathLog.debug("-initFinalDepth" + str(self.initFinalDepth))
                     PathLog.debug("-initOpFinalDepth" + str(self.initOpFinalDepth))
 
-        obj.UseRotation = 'Off'
+        # Initial setting for EnableRotation is taken from Job settings/SetupSheet
+        # User may override on per-operation basis as needed.
+        if hasattr(job.SetupSheet, 'SetupEnableRotation'):
+            obj.EnableRotation = job.SetupSheet.SetupEnableRotation
+        else:
+            obj.EnableRotation = 'Off'
 
         self.areaOpSetDefaultValues(obj, job)
 
@@ -292,8 +298,9 @@ class ObjectOp(PathOp.ObjectOp):
 
         # Instantiate class variables for operation reference
         self.rotateFlag = False
-        self.modelName = None
         self.leadIn = 2.0  # safOfset / 2.0
+        self.cloneNames = []
+        self.guiMsgs = []  # list of message tuples (title, msg) to be displayed in GUI 
 
         # Initialize depthparams
         finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
@@ -307,7 +314,7 @@ class ObjectOp(PathOp.ObjectOp):
             user_depths=None)
 
         # Recalculate operation heights for rotational operation
-        if obj.UseRotation != 'Off':
+        if obj.EnableRotation != 'Off':
             # Calculate operation heights based upon rotation radii
             opHeights = self.opDetermineRotationRadii(obj)  # return is [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
             (xRotRad, yRotRad, zRotRad) = opHeights[0]
@@ -339,6 +346,7 @@ class ObjectOp(PathOp.ObjectOp):
         for shp in aOS:
             if len(shp) == 2:
                 (fc, iH) = shp
+                #     fc, iH,   sub,     angle, axis
                 tup = fc, iH, 'notPocket', 0.0, 'X'
                 shapes.append(tup)
             else:
@@ -375,7 +383,7 @@ class ObjectOp(PathOp.ObjectOp):
             try:
                 (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
                 ppCmds = pp.Commands
-                if obj.UseRotation != 'Off' and self.rotateFlag is True:
+                if obj.EnableRotation != 'Off' and self.rotateFlag is True:
                     # Rotate model to index for cut
                     axisOfRot = 'A'
                     if axis == 'Y':
@@ -403,9 +411,15 @@ class ObjectOp(PathOp.ObjectOp):
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
             self.commandlist.append(Path.Command('G0', {'A': 0.0, 'F': self.axialFeed}))
             self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialFeed}))
-            FreeCAD.ActiveDocument.getObject(self.modelName).purgeTouched()
+
+        if len(self.cloneNames) > 0:
+            for cn in self.cloneNames:
+                if FreeCAD.ActiveDocument.getObject(cn):
+                    FreeCAD.ActiveDocument.removeObject(cn)
+                    PathLog.debug("Removed temp clone: " + cn)
 
         PathLog.debug("obj.Name: " + str(obj.Name))
+        self.guiMessage('title', None, show=True)
         return sims
 
     def areaOpRetractTool(self, obj):
@@ -450,14 +464,14 @@ class ObjectOp(PathOp.ObjectOp):
         else:
             zlim = bb.ZMax
 
-        if obj.UseRotation != 'B(y)':
+        if obj.EnableRotation != 'B(y)':
             # Rotation is around X-axis, cutter moves along same axis
             if math.fabs(bb.YMin) > math.fabs(bb.YMax):
                 ylim = bb.YMin
             else:
                 ylim = bb.YMax
 
-        if obj.UseRotation != 'A(x)':
+        if obj.EnableRotation != 'A(x)':
             # Rotation is around Y-axis, cutter moves along same axis
             if math.fabs(bb.XMin) > math.fabs(bb.XMax):
                 xlim = bb.XMin
@@ -473,9 +487,11 @@ class ObjectOp(PathOp.ObjectOp):
 
         return [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
 
-    def pocketRotationAnalysis(self, obj, objRef, sub, prnt):
+    def pocketRotationAnalysis(self, obj, face, prnt):
+        # def pocketRotationAnalysis(self, obj, objRef, sub, prnt):
         '''pocketRotationAnalysis(self, obj, objRef, sub, prnt)
             Determine X and Y independent rotation necessary to make normalAt = Z=1 (0,0,1) '''
+        PathLog.track()
 
         rtn = False
         axis = 'X'
@@ -483,7 +499,7 @@ class ObjectOp(PathOp.ObjectOp):
         angle = 500.0
         zTol = 1.0E-9
         rndTol = 1.0 - zTol
-        testId = "pocketRotationAnalysis() in PathAreaOp.py"
+        praInfo = "pocketRotationAnalysis() in PathAreaOp.py"
 
         def roundRoughValues(val, zTol, rndTol):
             # Convert VALxe-15 numbers to zero
@@ -495,19 +511,19 @@ class ObjectOp(PathOp.ObjectOp):
             else:
                 return val
 
-        face = objRef.Shape.getElement(sub)
+        # face = objRef.Shape.getElement(sub)
 
         norm = face.normalAt(0, 0)
         nX = roundRoughValues(norm.x, zTol, rndTol)
         nY = roundRoughValues(norm.y, zTol, rndTol)
         nZ = roundRoughValues(norm.z, zTol, rndTol)
-        testId += "\n -normalAt(0,0): " + str(nX) + ", " + str(nY) + ", " + str(nZ)
+        praInfo += "\n -normalAt(0,0): " + str(nX) + ", " + str(nY) + ", " + str(nZ)
 
         surf = face.Surface.Axis
         saX = roundRoughValues(surf.x, zTol, rndTol)
         saY = roundRoughValues(surf.y, zTol, rndTol)
         saZ = roundRoughValues(surf.z, zTol, rndTol)
-        testId += "\n -Surface.Axis: " + str(saX) + ", " + str(saY) + ", " + str(saZ)
+        praInfo += "\n -Surface.Axis: " + str(saX) + ", " + str(saY) + ", " + str(saZ)
 
         # Determine rotation needed and current orientation
         if saX == 0.0:
@@ -518,7 +534,7 @@ class ObjectOp(PathOp.ObjectOp):
                 elif saZ == -1.0:
                     angle = -180.0
                 else:
-                    testId += "_else_X" + str(saZ)
+                    praInfo += "_else_X" + str(saZ)
             elif saY == 1.0:
                 orientation = "Y"
                 angle = 90.0
@@ -537,16 +553,16 @@ class ObjectOp(PathOp.ObjectOp):
                 elif saX == -1.0:
                     angle = 90.0
                 else:
-                    testId += "_else_X" + str(saX)
+                    praInfo += "_else_X" + str(saX)
             else:
                 orientation = "X"
                 ratio = saX / saZ
                 angle = math.degrees(math.atan(ratio))
                 if ratio < 0.0:
-                    testId += " NEG-ratio"
-                    angle -= 90
+                    praInfo += " NEG-ratio"
+                    # angle -= 90
                 else:
-                    testId += " POS-ratio"
+                    praInfo += " POS-ratio"
                     angle = -1 * angle
                     if saX < 0.0:
                         angle = angle + 180.0
@@ -566,16 +582,18 @@ class ObjectOp(PathOp.ObjectOp):
             if nX != 0.0:
                 angle = -1 * angle
 
+        # Enforce enabled rotation in settings
         if orientation == 'Y':
             axis = 'X'
-            if obj.UseRotation == 'B(y)':  # Axis disabled
+            if obj.EnableRotation == 'B(y)':  # Axis disabled
                 angle = 500.0
         else:
             axis = 'Y'
-            if obj.UseRotation == 'A(x)':  # Axis disabled
+            if obj.EnableRotation == 'A(x)':  # Axis disabled
                 angle = 500.0
 
         if angle != 500.0 and angle != 0.0:
+            praInfo += "\n - ... rotation triggered"
             self.rotateFlag = True
             rtn = True
             if obj.ReverseDirection is True:
@@ -583,11 +601,28 @@ class ObjectOp(PathOp.ObjectOp):
                     angle = angle + 180.0
                 else:
                     angle = angle - 180.0
-            testId += "\n - ... rotation triggered"
         else:
-            testId += "\n - ... NO rotation triggered"
+            praInfo += "\n - ... NO rotation triggered"
 
-        testId += "\n -Suggested rotation:  angle: " + str(angle) + ",   axis: " + str(axis)
+        praInfo += "\n -Suggested rotation:  angle: " + str(angle) + ",   axis: " + str(axis)
         if prnt is True:
-            PathLog.debug("testId: " + testId)
-        return (rtn, angle, axis)
+            # PathLog.info("praInfo: " + str(praInfo))
+            PathLog.debug("praInfo: " + str(praInfo))
+        return (rtn, angle, axis, praInfo)
+
+    def guiMessage(self, title, msg, show=False):
+        if msg is not None:
+            self.guiMsgs.append((title, msg))
+        if show is True:
+            if FreeCAD.GuiUp and len(self.guiMsgs) > 0:
+                # self.guiMsgs.pop(0)  # remove formatted place holder.
+                from PySide.QtGui import QMessageBox
+                # from PySide import QtGui
+                for entry in self.guiMsgs:
+                    (title, msg) = entry
+                    QMessageBox.warning(None, title, msg)
+                    # QtGui.QMessageBox.warning(None, title, msg)
+                self.guiMsgs = []  # Reset messages
+                return True
+        return False
+
