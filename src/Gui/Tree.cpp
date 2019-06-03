@@ -1391,8 +1391,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                             event->ignore();
                             return;
                         }
-                        auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
-                        if((!ext || !ext->getLinkedObjectProperty()) && !targetItemObj->getParentItem()) {
+                        if(!targetItemObj->getParentItem()) {
                             TREE_TRACE("Cannot replace without parent");
                             event->ignore();
                             return;
@@ -1599,9 +1598,12 @@ void TreeWidget::dropEvent(QDropEvent *event)
             auto targetObj = targetItemObj->object()->getObject();
 
             std::set<App::DocumentObject*> inList;
-            inList = targetObj->getInListEx(true);
-            inList.insert(targetObj);
-            inList.insert(targetObj->getLinkedObject(true));
+            auto parentObj = targetObj;
+            if(da == Qt::LinkAction && targetItemObj->getParentItem())
+                parentObj = targetItemObj->getParentItem()->object()->getObject();
+            inList = parentObj->getInListEx(true);
+            inList.insert(parentObj);
+            inList.insert(parentObj->getLinkedObject(true));
 
             std::string target = targetObj->getNameInDocument();
             auto targetDoc = targetObj->getDocument();
@@ -1724,24 +1726,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 std::string dropName;
                 ss.str("");
                 if(da == Qt::LinkAction) {
-                    auto ext = targetObj->getExtensionByType<App::LinkBaseExtension>(true);
-                    if(ext && ext->getLinkedObjectProperty()) {
-                        ss << Command::getObjectCmd(vp->getObject())
-                            << ".setLink(" << Command::getObjectCmd(obj);
-                        if(info.subs.size()) {
-                            ss << ",'',[";
-                            for(auto &sub : info.subs) {
-                                auto dot = sub.rfind('.');
-                                if(dot == std::string::npos)
-                                    ss << "'" << sub;
-                                else
-                                    ss << "'" << sub.c_str()+dot+1;
-                                ss << "',";
-                            }
-                            ss << "]";
-                        }
-                        ss << ")";
-                    } else if(targetItemObj->getParentItem()) {
+                    if(targetItemObj->getParentItem()) {
                         auto parentItem = targetItemObj->getParentItem();
                         ss << Command::getObjectCmd(
                                 parentItem->object()->getObject(),0,".replaceObject(",true)
@@ -1758,7 +1743,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
                             dropParent = parentItem->object()->getObject();
                         ss << obj->getNameInDocument() << '.';
                         dropName = ss.str();
-
                     } else {
                         TREE_WARN("ignore replace operation without parent");
                         continue;
