@@ -116,6 +116,8 @@ public:
 
     virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
 
+    virtual void onExtendedUnsetupObject() override;
+
     virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
 
     std::vector<DocumentObject*> getAllChildren() const;

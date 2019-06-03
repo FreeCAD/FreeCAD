@@ -33,6 +33,7 @@
 #include "FeaturePythonPyImp.h"
 #include "GeoFeatureGroupExtension.h"
 #include <Base/Console.h>
+#include <Base/Tools.h>
 
 using namespace App;
 
@@ -131,6 +132,7 @@ std::vector< DocumentObject* > GroupExtension::removeObjects(std::vector< Docume
        if(res != end) {
            end = res;
            removed.push_back(obj);
+            obj->Visibility.setStatus(App::Property::Output,true);
        }
     }
     
@@ -315,7 +317,9 @@ void GroupExtension::extensionOnChanged(const Property* p) {
 
     //objects are only allowed in a single group. Note that this check must only be done for normal
     //groups, not any derived classes
-    if((this->getExtensionTypeId() == GroupExtension::getExtensionClassTypeId()) && p == &Group) {
+    if((this->getExtensionTypeId() == GroupExtension::getExtensionClassTypeId())
+        && p == &Group && !Group.testStatus(Property::User3)) 
+    {
 
         if(!getExtendedObject()->isRestoring() &&
            !getExtendedObject()->getDocument()->isPerformingTransaction()) {
@@ -338,9 +342,15 @@ void GroupExtension::extensionOnChanged(const Property* p) {
 
             //if an error was found we need to correct the values and inform the user
             if(error) {
+                Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, &Group);
                 Group.setValues(corrected);
                 throw Base::RuntimeError("Object can only be in a single Group");
             }
+        }
+
+        for(auto obj : Group.getValue()) {
+            if(obj && obj->getNameInDocument())
+                obj->Visibility.setStatus(Property::Output,false);
         }
     }
 
@@ -381,6 +391,15 @@ bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int) 
             ret.push_back(std::string(obj->getNameInDocument())+'.');
     }
     return true;
+}
+
+void GroupExtension::onExtendedUnsetupObject() {
+    for(auto obj : Group.getValues()) {
+        if(obj && obj->getNameInDocument() 
+                && !GeoFeatureGroupExtension::getGroupOfObject(obj))
+            obj->Visibility.setStatus(App::Property::Output,true);
+    }
+    DocumentObjectExtension::onExtendedUnsetupObject();
 }
 
 App::DocumentObjectExecReturn *GroupExtension::extensionExecute(void) {

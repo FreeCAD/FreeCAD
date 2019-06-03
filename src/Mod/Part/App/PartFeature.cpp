@@ -357,7 +357,10 @@ TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subna
 }
 
 struct ShapeCache {
-    std::map<const App::Document*,std::map<const App::DocumentObject*,TopoShape> > cache;
+
+    std::unordered_map<const App::Document*,
+        std::unordered_map<const App::DocumentObject*,TopoShape> > cache;
+
     bool inited = false;
     void init() {
         if(inited)
@@ -422,41 +425,46 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
             subname = _subname.c_str();
         }
     }
-    Base::PyGILStateLocker lock;
-    auto owner = obj->getSubObject(subname,&pyobj,&mat,transform);
-    if(!owner)
-        return shape;
-    auto linked = owner;
-    App::StringHasherRef hasher;
-    long tag = owner->getID();
-    hasher = owner->getDocument()->getStringHasher();
+
+    App::DocumentObject *linked = 0;
+    App::DocumentObject *owner = 0;
     Base::Matrix4D linkMat;
-    linked = owner->getLinkedObject(true,&linkMat,false);
-    if(pmat) {
-        if(resolveLink && obj!=owner)
-            *pmat = mat * linkMat;
-        else
-            *pmat = mat;
-    }
-    if(!linked)
-        linked = owner;
-    if(powner) 
-        *powner = resolveLink?linked:owner;
-
-    if(pyobj && PyObject_TypeCheck(pyobj,&TopoShapePy::Type)) {
-        shape = *static_cast<TopoShapePy*>(pyobj)->getTopoShapePtr();
-        if(!shape.isNull()) {
-            if(noElementMap) {
-                shape.resetElementMap();
-                shape.Tag = 0;
-                shape.Hasher.reset();
-            }
-            Py_DECREF(pyobj);
+    App::StringHasherRef hasher;
+    long tag;
+    {
+        Base::PyGILStateLocker lock;
+        owner = obj->getSubObject(subname,&pyobj,&mat,transform);
+        if(!owner)
             return shape;
+        tag = owner->getID();
+        hasher = owner->getDocument()->getStringHasher();
+        linked = owner->getLinkedObject(true,&linkMat,false);
+        if(pmat) {
+            if(resolveLink && obj!=owner)
+                *pmat = mat * linkMat;
+            else
+                *pmat = mat;
         }
-    }
+        if(!linked)
+            linked = owner;
+        if(powner) 
+            *powner = resolveLink?linked:owner;
 
-    Py_XDECREF(pyobj);
+        if(pyobj && PyObject_TypeCheck(pyobj,&TopoShapePy::Type)) {
+            shape = *static_cast<TopoShapePy*>(pyobj)->getTopoShapePtr();
+            if(!shape.isNull()) {
+                if(noElementMap) {
+                    shape.resetElementMap();
+                    shape.Tag = 0;
+                    shape.Hasher.reset();
+                }
+                Py_DECREF(pyobj);
+                return shape;
+            }
+        }
+
+        Py_XDECREF(pyobj);
+    }
 
     // nothing can be done if there is sub-element references
     if(needSubElement && subelement && *subelement)
@@ -486,7 +494,11 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         }
         return shape;
     }
-    if(owner!=linked) {
+
+    if(owner!=linked 
+        && !owner->getLinkedObject(false)->hasExtension(
+            App::GroupExtension::getExtensionClassTypeId(),false)) 
+    {
         shape = getTopoShape(linked,0,false,0,0,false,false);
         if(shape.isNull())
             return shape;
@@ -532,7 +544,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         App::DocumentObject *parent=0;
         Base::Matrix4D mat;
         auto subObj = owner->resolve(sub.c_str(), &parent, &childName,0,0,&mat,false);
-        if(!parent && !subObj)
+        if(!parent || !subObj)
             continue;
         visible = parent->isElementVisible(childName.c_str());
         if(visible==0)
@@ -559,14 +571,25 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     shape.Tag = tag;
     shape.Hasher = hasher;
     shape.makECompound(shapes);
-    _ShapeCache.setShape(owner,shape);
-    if(owner!=obj)
+
+    Base::Matrix4D ownerMat;
+    owner->getSubObject("",0,&ownerMat);
+    auto ownerShape = shape;
+    ownerShape.transformShape(ownerMat,false,true);
+    if(owner->getDocument()!=linked->getDocument()) 
+        ownerShape.reTagElementMap(owner->getID(),owner->getDocument()->getStringHasher());
+    _ShapeCache.setShape(owner,ownerShape);
+
+    if(owner==obj)
+        shape = ownerShape;
+    else {
         scaled = shape.transformShape(mat,false,true);
-    if(owner->getDocument()!=obj->getDocument()) {
-        shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
-        _ShapeCache.setShape(obj,shape);
-    }else if(scaled)
-        _ShapeCache.setShape(obj,shape);
+        if(owner->getDocument()!=obj->getDocument()) {
+            shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
+            _ShapeCache.setShape(obj,shape);
+        }else if(scaled)
+            _ShapeCache.setShape(obj,shape);
+    }
     if(noElementMap) {
         shape.resetElementMap();
         shape.Tag = 0;
