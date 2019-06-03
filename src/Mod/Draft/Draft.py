@@ -1858,13 +1858,14 @@ def scale(objectslist,scale=Vector(1,1,1),center=Vector(0,0,0),copy=False):
             m = FreeCAD.Matrix()
             m.move(obj.Placement.Base.negative())
             m.move(center.negative())
-            m.multiply(scale)
+            m.scale(scale.x,scale.y,scale.z)
             m.move(center)
             m.move(obj.Placement.Base)
             scaled_shape = scaled_shape.transformGeometry(m)
-        if getType(obj) == "Rectangled":
+        if getType(obj) == "Rectangle":
             p = []
-            for v in scaled_shape.Vertexes: p.append(v.Point)
+            for v in scaled_shape.Vertexes: 
+                p.append(v.Point)
             pl = obj.Placement.copy()
             pl.Base = p[0]
             diag = p[2].sub(p[0])
