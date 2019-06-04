@@ -552,9 +552,11 @@ private:
         PyObject* object;
         char* Name;
         PyObject *exportHidden = Py_None;
-        static char* kwd_list[] = {"obj", "name", "exportHidden",0};
-        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|O",
-                    kwd_list,&object,"utf-8",&Name,&exportHidden))
+        PyObject *legacy = Py_None;
+        PyObject *keepPlacement = Py_None;
+        static char* kwd_list[] = {"obj", "name", "exportHidden", "legacy", "keepPlacement",0};
+        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|OOO",
+                    kwd_list,&object,"utf-8",&Name,&exportHidden,&legacy,&keepPlacement))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
@@ -574,12 +576,20 @@ private:
                     objs.push_back(static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr());
             }
 
+            if(legacy == Py_None) {
+                auto hGrp = App::GetApplication().GetParameterGroupByPath(
+                        "User parameter:BaseApp/Preferences/Mod/Import");
+                legacy = hGrp->GetBool("ExportLegacy",false)?Py_True:Py_False;
+            }
+
             Import::ExportOCAF2 ocaf(hDoc, &getShapeColors);
-            if(exportHidden!=Py_None)
-                ocaf.setExportHiddenObject(PyObject_IsTrue(exportHidden));
-            if(!ocaf.canFallback(objs)) 
+            if(!PyObject_IsTrue(legacy) || !ocaf.canFallback(objs)) {
+                if(exportHidden!=Py_None)
+                    ocaf.setExportHiddenObject(PyObject_IsTrue(exportHidden));
+                if(keepPlacement!=Py_None)
+                    ocaf.setKeepPlacement(PyObject_IsTrue(keepPlacement));
                 ocaf.exportObjects(objs);
-            else {
+            } else {
                 bool keepExplicitPlacement = objs.size() > 1;
                 keepExplicitPlacement = Standard_True;
                 ExportOCAFGui ocaf(hDoc, keepExplicitPlacement);

@@ -46,6 +46,8 @@
 # include <TDF_AttributeSequence.hxx>
 #endif
 
+#include <XCAFDoc_ShapeMapTool.hxx>
+
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <Base/Parameter.h>
@@ -854,6 +856,7 @@ ExportOCAF2::ExportOCAF2(Handle(TDocStd_Document) h, GetShapeColorsFunc func)
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import");
     exportHidden = hGrp->GetBool("ExportHiddenObject",true);
+    keepPlacement = hGrp->GetBool("ExportKeepPlacement",false);
 
     Interface_Static::SetIVal("write.step.assembly",2);
 
@@ -928,6 +931,13 @@ TDF_Label ExportOCAF2::findComponent(const char *subname, TDF_Label label, TDF_L
     if(aShapeTool->GetComponents(ref,components)) {
         for(int i=1;i<=components.Length();++i) {
             auto component = components.Value(i);
+            if(std::isdigit((int)subname[0])) {
+                auto n = std::to_string(i-1)+".";
+                if(boost::starts_with(subname,n)) {
+                    labels.Append(component);
+                    return findComponent(subname+n.size(),component,labels);
+                }
+            }
             auto it = myNames.find(component);
             if(it == myNames.end())
                 continue;
@@ -943,7 +953,7 @@ TDF_Label ExportOCAF2::findComponent(const char *subname, TDF_Label label, TDF_L
 }
 
 void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj, 
-        const Part::TopoShape &shape, const std::string &prefix, const char *name)
+        const Part::TopoShape &shape, const std::string &prefix, const char *name, bool force)
 {
     setName(label,obj,name);
     if(aShapeTool->IsComponent(label)) {
@@ -968,7 +978,7 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
         names.push_back(prefix + "$" + obj->Label.getValue() + ".");
     }
 
-    if(!getShapeColors || !mySetups.emplace(obj,name?name:"").second)
+    if(!getShapeColors || (!force && !mySetups.emplace(obj,name?name:"").second))
         return;
 
     std::map<std::string, std::map<std::string,App::Color> > colors;
@@ -1001,7 +1011,6 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
 
     for(auto &v : colors) {
         TDF_Label nodeLabel = label;
-        Handle(XCAFDoc_GraphNode) shuo;
         if(v.first.size()) {
             TDF_LabelSequence labels;
             if(aShapeTool->IsComponent(label))
@@ -1042,7 +1051,7 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
                     FC_WARN("Current OCCT does not support element color override, for object "
                             << obj->getFullName());
                 }
-                continue;
+                // continue;
             }
 
             auto subShape = shape.getSubShape(vv.first.c_str(),true);
@@ -1050,7 +1059,23 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
                 FC_WARN("Failed to get subshape " << vv.first);
                 continue;
             }
+
+            // The following code is copied from OCCT 7.3 and is a work around
+            // a bug in previous versions
+            Handle(XCAFDoc_ShapeMapTool) A;
+            if (!nodeLabel.FindAttribute(XCAFDoc_ShapeMapTool::GetID(), A)) {
+                TopoDS_Shape aShape = aShapeTool->GetShape(nodeLabel);
+                if (!aShape.IsNull()) {
+                    A = XCAFDoc_ShapeMapTool::Set(nodeLabel);
+                    A->SetShape(aShape);
+                }
+            }
+
             TDF_Label subLabel = aShapeTool->AddSubShape(nodeLabel, subShape);
+            if(subLabel.IsNull()) {
+                FC_WARN("Failed to add subshape " << vv.first);
+                continue;
+            }
             aColorTool->SetColor(subLabel, color, colorType);
         }
     }
@@ -1165,19 +1190,33 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     // subs empty means obj is not a container.
     if(subs.empty()) {
 
-        // Search for non-located shape to see if we've stored the original shape before
-        if(!aShapeTool->FindShape(shape.getShape(),label)) {
-            auto baseShape = linkedShape;
-            auto linked = links.empty()?obj:links.back();
-            baseShape.setShape(baseShape.getShape().Located(TopLoc_Location()),false);
-            label = aShapeTool->NewShape();
-            aShapeTool->SetShape(label,baseShape.getShape());
-            setupObject(label,linked,baseShape,prefix);
-        }
+        if(!parent.IsNull()) {
+            // Search for non-located shape to see if we've stored the original shape before
+            if(!aShapeTool->FindShape(shape.getShape(),label)) {
+                auto baseShape = linkedShape;
+                auto linked = links.empty()?obj:links.back();
+                baseShape.setShape(baseShape.getShape().Located(TopLoc_Location()),false);
+                label = aShapeTool->NewShape();
+                aShapeTool->SetShape(label,baseShape.getShape());
+                setupObject(label,linked,baseShape,prefix);
+            }
 
-        if(!parent.IsNull()) 
             label = aShapeTool->AddComponent(parent,shape.getShape(),Standard_False);
-        setupObject(label,name?parentObj:obj,shape,prefix,name);
+            setupObject(label,name?parentObj:obj,shape,prefix,name);
+
+        }else{
+            // Here means we are exporting a single non-assembly object. We must
+            // not call setupObject() on a non-located baseshape like above,
+            // because OCCT does not respect shape style sharing when not
+            // exporting assembly
+            if(!keepPlacement) 
+                shape.setShape(shape.getShape().Located(TopLoc_Location()),false);
+            label = aShapeTool->AddShape(shape.getShape(),Standard_False, Standard_False);
+            auto o = name?parentObj:obj;
+            if(o!=linked)
+                setupObject(label,linked,shape,prefix,0,true);
+            setupObject(label,o,shape,prefix,name,true);
+        }
 
         myObjects.emplace(obj, label);
         for(auto link : links)
@@ -1262,17 +1301,14 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
 }
 
 bool ExportOCAF2::canFallback(std::vector<App::DocumentObject*> objs) {
-    bool hasPartGroup = false;
     for(size_t i=0;i<objs.size();++i) {
         auto obj = objs[i];
-        if(!obj || obj->getNameInDocument())
+        if(!obj || !obj->getNameInDocument())
             continue;
         if(obj->getExtensionByType<App::LinkBaseExtension>(true))
             return false;
-        if(!hasPartGroup && dynamic_cast<App::Part*>(obj))
-            hasPartGroup = true;
         for(auto &sub : obj->getSubObjects()) 
             objs.push_back(obj->getSubObject(sub.c_str()));
     }
-    return hasPartGroup;
+    return true;
 }

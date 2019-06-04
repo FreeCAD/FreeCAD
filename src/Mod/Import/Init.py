@@ -49,8 +49,9 @@ for p in (("UseLinkGroup",True),
           ("UseBaseName",True),
           ("ImportHiddenObject",True),
           ("ExportHiddenObject",True),
+          ("ExportKeepPlacement",True),
           ("ReduceObjects", False),
           ("ShowProgress", True),
-          ("ExpandCompound",True)):
+          ("ExpandCompound",False)):
     _checkParamBool(paramGetV,*p)
 

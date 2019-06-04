@@ -175,13 +175,15 @@ public:
     ExportOCAF2(Handle(TDocStd_Document) h, GetShapeColorsFunc func=GetShapeColorsFunc());
 
     void setExportHiddenObject(bool enable) {exportHidden=enable;}
+    void setKeepPlacement(bool enable) {keepPlacement=enable;}
     void exportObjects(std::vector<App::DocumentObject*> &objs, const char *name=0);
     bool canFallback(std::vector<App::DocumentObject*> objs);
 
 private:
     TDF_Label exportObject(App::DocumentObject *obj, const char *sub, TDF_Label parent, const char *name=0);
     void setupObject(TDF_Label label, App::DocumentObject *obj, 
-            const Part::TopoShape &shape, const std::string &prefix, const char *name=0);
+            const Part::TopoShape &shape, const std::string &prefix, 
+            const char *name=0, bool force=false);
     void setName(TDF_Label label, App::DocumentObject *obj, const char *name=0);
     TDF_Label findComponent(const char *subname, TDF_Label label, TDF_LabelSequence &labels);
 
@@ -200,6 +202,7 @@ private:
 
     App::Color defaultColor;
     bool exportHidden;
+    bool keepPlacement;
 };
 
 }

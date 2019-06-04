@@ -269,9 +269,11 @@ private:
         PyObject* object;
         char* Name;
         PyObject *exportHidden = Py_None;
-        static char* kwd_list[] = {"obj", "name", "exportHidden",0};
-        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|O",
-                    kwd_list,&object,"utf-8",&Name,&exportHidden))
+        PyObject *legacy = Py_None;
+        PyObject *keepPlacement = Py_None;
+        static char* kwd_list[] = {"obj", "name", "exportHidden", "legacy", "keepPlacement",0};
+        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|OOO",
+                    kwd_list,&object,"utf-8",&Name,&exportHidden,&legacy,&keepPlacement))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
@@ -284,10 +286,6 @@ private:
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
-            Import::ExportOCAF2 ocaf(hDoc);
-            if(exportHidden!=Py_None)
-                ocaf.setExportHiddenObject(PyObject_IsTrue(exportHidden));
-
             std::vector<App::DocumentObject*> objs;
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 PyObject* item = (*it).ptr();
@@ -295,7 +293,39 @@ private:
                     objs.push_back(static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr());
             }
 
-            ocaf.exportObjects(objs);
+            if(legacy == Py_None) {
+                auto hGrp = App::GetApplication().GetParameterGroupByPath(
+                        "User parameter:BaseApp/Preferences/Mod/Import");
+                legacy = hGrp->GetBool("ExportLegacy",false)?Py_True:Py_False;
+            }
+
+            Import::ExportOCAF2 ocaf(hDoc);
+            if(!PyObject_IsTrue(legacy) || !ocaf.canFallback(objs)) {
+                if(exportHidden!=Py_None)
+                    ocaf.setExportHiddenObject(PyObject_IsTrue(exportHidden));
+                if(keepPlacement!=Py_None)
+                    ocaf.setKeepPlacement(PyObject_IsTrue(keepPlacement));
+                ocaf.exportObjects(objs);
+            }else{
+                bool keepExplicitPlacement = objs.size() > 1;
+                keepExplicitPlacement = Standard_True;
+                ExportOCAF ocaf(hDoc, keepExplicitPlacement);
+                // That stuff is exporting a list of selected objects into FreeCAD Tree
+                std::vector <TDF_Label> hierarchical_label;
+                std::vector <TopLoc_Location> hierarchical_loc;
+                std::vector <App::DocumentObject*> hierarchical_part;
+                for(auto obj : objs)
+                    ocaf.exportObject(obj,hierarchical_label, hierarchical_loc,hierarchical_part);
+
+                // Free Shapes must have absolute placement and not explicit
+                std::vector <TDF_Label> FreeLabels;
+                std::vector <int> part_id;
+                ocaf.getFreeLabels(hierarchical_label,FreeLabels, part_id);
+#if OCC_VERSION_HEX >= 0x070200
+                // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
+                XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
+#endif
+            }
 
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {

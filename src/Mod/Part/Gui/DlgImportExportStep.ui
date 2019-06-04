@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>445</width>
-    <height>611</height>
+    <height>637</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,6 +20,32 @@
       <string>Export</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
+      <item row="6" column="0" colspan="3">
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Scheme</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="radioButtonAP203">
+           <property name="text">
+            <string notr="true">AP 203</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="radioButtonAP214">
+           <property name="text">
+            <string notr="true">AP 214</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
       <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxExportHiddenObj">
         <property name="toolTip">
@@ -48,32 +74,6 @@
         <property name="text">
          <string>Write out curves in parametric space of surface</string>
         </property>
-       </widget>
-      </item>
-      <item row="5" column="0" colspan="3">
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="title">
-         <string>Scheme</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QRadioButton" name="radioButtonAP203">
-           <property name="text">
-            <string notr="true">AP 203</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="radioButtonAP214">
-           <property name="text">
-            <string notr="true">AP 214</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </widget>
       </item>
       <item row="0" column="2">
@@ -107,6 +107,38 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item row="5" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxExportLegacy">
+        <property name="text">
+         <string>Use legacy exporter</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Mod/Import</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>ExportLegacy</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxKeepPlacement">
+        <property name="toolTip">
+         <string>Check this option to keep the placement information when exporting
+a single object. Please note that when import back the STEP file, the
+placement will be encoded into the shape geometry, instead of keeping
+it inside the Placement property.</string>
+        </property>
+        <property name="text">
+         <string>Export single object placement</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>ExportKeepPlacement</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Mod/Import</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
