@@ -146,14 +146,18 @@ bool DrawLeaderLine::keepUpdated(void)
 
 double DrawLeaderLine::getScale(void) const
 {
+//    Base::Console().Message("DLL::getScale()\n");
     double result = 1.0;
-    DrawView* parent = getBaseView();
-    if (parent != nullptr) {
-        result = parent->getScale();
-    } else {
-        //TARFU
-        Base::Console().Log("DrawLeaderLine - %s - scale not found.  Using 1.0. \n", getNameInDocument());
+    if (Scalable.getValue()) {
+        DrawView* parent = getBaseView();
+        if (parent != nullptr) {
+            result = parent->getScale();
+        } else {
+            //TARFU
+            Base::Console().Log("DrawLeaderLine - %s - scale not found.  Using 1.0. \n", getNameInDocument());
+        }
     }
+//    Base::Console().Message("DLL::getScale - returns: %.3f\n", result);
     return result;
 }
 
