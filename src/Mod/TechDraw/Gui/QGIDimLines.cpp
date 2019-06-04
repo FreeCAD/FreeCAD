@@ -50,11 +50,21 @@ void QGIDimLines::draw()
 {
 }
 
+QRectF QGIDimLines::boundingRect() const
+{
+    return shape().boundingRect().adjusted(-2, -2, 2, 2);  //room for 0.5 line widths? needs Rez::guiX??
+//    return childrenBoundingRect().adjusted(-2,-2,2,2);
+}
+
 //probably don't need this paint
 void QGIDimLines::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
+//    painter->drawRect(boundingRect());          //good for debugging
+
     QGIPrimPath::paint (painter, &myOption, widget);
 }
+
+
