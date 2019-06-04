@@ -130,12 +130,13 @@ public:
 
     void setViewPartFeature(TechDraw::DrawViewDimension *obj);
     int type() const override { return Type;}
-
-    virtual void drawBorder() override;
-    virtual void updateView(bool update = false) override;
+    QRectF boundingRect() const;
     virtual void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = 0 ) override;
+
+    virtual void drawBorder() override;
+    virtual void updateView(bool update = false) override;
     virtual QColor getNormalColor(void) override;
     QString getLabelText(void);
 

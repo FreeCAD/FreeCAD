@@ -1058,6 +1058,16 @@ QRectF QGIViewPart::boundingRect() const
     return QGIView::boundingRect();
 }
 
+void QGIViewPart::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
+    QStyleOptionGraphicsItem myOption(*option);
+    myOption.state &= ~QStyle::State_Selected;
+
+//    painter->drawRect(boundingRect());          //good for debugging
+
+    QGIView::paint (painter, &myOption, widget);
+}
+
+
 //QGIViewPart derived classes do not need a rotate view method as rotation is handled on App side.
 void QGIViewPart::rotateView(void)
 {
