@@ -359,7 +359,7 @@ TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subna
 struct ShapeCache {
 
     std::unordered_map<const App::Document*,
-        std::unordered_map<const App::DocumentObject*,TopoShape> > cache;
+        std::map<std::pair<const App::DocumentObject*, std::string> ,TopoShape> > cache;
 
     bool inited = false;
     void init() {
@@ -380,14 +380,21 @@ struct ShapeCache {
 
     void slotClear(const App::DocumentObject &obj) {
         auto it = cache.find(obj.getDocument());
-        if(it!=cache.end())
-            it->second.erase(&obj);
+        if(it==cache.end())
+            return;
+        auto &map = it->second;
+        for(auto it2=map.lower_bound(std::make_pair(&obj,std::string()));
+                it2!=map.end() && it2->first.first==&obj;)
+        {
+            it2 = map.erase(it2);
+        }
     }
 
-    bool getShape(const App::DocumentObject *obj, TopoShape &shape) {
+    bool getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname=0) {
         init();
         auto &entry = cache[obj->getDocument()];
-        auto it = entry.find(obj);
+        if(!subname) subname = "";
+        auto it = entry.find(std::make_pair(obj,std::string(subname)));
         if(it!=entry.end()) {
             shape = it->second;
             return true;
@@ -417,7 +424,8 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
 
     PyObject *pyobj = 0;
     Base::Matrix4D mat;
-    if(pmat) mat = *pmat;
+    Base::Matrix4D matOrig;
+    if(pmat) matOrig = mat = *pmat;
     if(powner) *powner = 0;
 
     std::string _subname;
@@ -474,6 +482,15 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     if(needSubElement && subelement && *subelement)
         return shape;
 
+    // NOTE! shape cache is always stored without top level transformation, i.e.
+    // with `transform` set to false. So make sure it is the case here.
+    if(transform) {
+        obj->getSubObject(0,0,&matOrig);
+        shape = getTopoShape(obj, subname, false, 0, 0, false, false, noElementMap);
+        shape.transformShape(matOrig,false,true);
+        return shape;
+    }
+
     // Check for cache
     if(obj==owner && _ShapeCache.getShape(obj,shape)) {
         if(noElementMap) {
@@ -483,116 +500,111 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         }
         return shape;
     }
+
     bool scaled = false;
-    if(obj!=owner && _ShapeCache.getShape(owner,shape)) {
-        scaled = shape.transformShape(mat,false,true);
-        if(owner->getDocument()!=obj->getDocument()) {
-            shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
-            _ShapeCache.setShape(obj,shape);
-        }else if(scaled)
-            _ShapeCache.setShape(obj,shape);
-        if(noElementMap) {
-            shape.resetElementMap();
-            shape.Tag = 0;
-            shape.Hasher.reset();
+    if(obj!=owner) {
+        if(!_ShapeCache.getShape(obj,shape,subname)) {
+            if(_ShapeCache.getShape(owner,shape)) {
+                auto scaled = shape.transformShape(mat,false,true);
+                if(owner->getDocument()!=obj->getDocument()) {
+                    shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
+                    _ShapeCache.setShape(obj,shape,subname);
+                } else if(scaled)
+                    _ShapeCache.setShape(obj,shape,subname);
+            }
         }
-        return shape;
+        if(!shape.isNull()) {
+            if(noElementMap) {
+                shape.resetElementMap();
+                shape.Tag = 0;
+                shape.Hasher.reset();
+            }
+            return shape;
+        }
     }
 
     if(owner!=linked 
         && !owner->getLinkedObject(false)->hasExtension(
             App::GroupExtension::getExtensionClassTypeId(),false)) 
     {
+        // if there is a linked object, and it is not directly linked to plain
+        // group (because link has special handling of visibility on children of
+        // plain group), obtain shape from the linked object
         shape = getTopoShape(linked,0,false,0,0,false,false);
         if(shape.isNull())
             return shape;
-        shape.transformShape(owner==obj?mat:linkMat,false,true);
+        if(owner==obj)
+            shape.transformShape(mat*linkMat,false,true);
+        else
+            shape.transformShape(linkMat,false,true);
         shape.reTagElementMap(tag,hasher);
-        _ShapeCache.setShape(owner,shape);
-        if(owner!=obj) 
-            scaled = shape.transformShape(mat,false,true);
-        if(owner->getDocument()!=obj->getDocument()) {
-            shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
-            _ShapeCache.setShape(obj,shape);
-        }else if(scaled)
-            _ShapeCache.setShape(obj,shape);
-        if(noElementMap) {
-            shape.resetElementMap();
-            shape.Tag = 0;
-            shape.Hasher.reset();
-        }
-        return shape;
-    }
 
-    // If no subelement reference, then try to create compound of sub objects
-    std::vector<TopoShape> shapes;
+    } else {
 
-    // acceleration for link array
-    auto link = owner->getExtensionByType<App::LinkBaseExtension>(true);
-    TopoShape baseShape;
-    std::string op;
-    if(link && link->getElementCountValue()) {
-        linked = link->getTrueLinkedObject(false);
-        if(linked && linked!=owner) {
-            baseShape = getTopoShape(linked,0,false,0,0,false,false);
-            if(!link->getShowElementValue())
-                baseShape.reTagElementMap(owner->getID(),owner->getDocument()->getStringHasher());
-        }
-    }
-    for(auto &sub : owner->getSubObjects()) {
-        if(sub.empty()) continue;
-        int visible;
-        if(sub[sub.size()-1] != '.')
-            sub += '.';
-        std::string childName;
-        App::DocumentObject *parent=0;
-        Base::Matrix4D mat;
-        auto subObj = owner->resolve(sub.c_str(), &parent, &childName,0,0,&mat,false);
-        if(!parent || !subObj)
-            continue;
-        visible = parent->isElementVisible(childName.c_str());
-        if(visible==0)
-            continue;
-        TopoShape shape;
-        if(baseShape.isNull()) {
-            shape = getTopoShape(owner,sub.c_str(),false,0,&subObj,false,false);
-            if(shape.isNull())
-                continue;
-        }else{
-            if(link && !link->getShowElementValue())
-                shape = baseShape.makETransform(mat,(TopoShape::indexPostfix()+childName).c_str());
-            else {
-                shape = baseShape.makETransform(mat);
-                shape.reTagElementMap(subObj->getID(),subObj->getDocument()->getStringHasher());
+        // Construct a compound of sub objects
+        std::vector<TopoShape> shapes;
+
+        // Acceleration for link array. Unlike non-array link, a link array does
+        // not return the linked object when calling getLinkedObject().
+        // Therefore, it should be handled here.
+        auto link = owner->getExtensionByType<App::LinkBaseExtension>(true);
+        TopoShape baseShape;
+        std::string op;
+        if(link && link->getElementCountValue()) {
+            linked = link->getTrueLinkedObject(false);
+            if(linked && linked!=owner) {
+                baseShape = getTopoShape(linked,0,false,0,0,false,false);
+                if(!link->getShowElementValue())
+                    baseShape.reTagElementMap(owner->getID(),owner->getDocument()->getStringHasher());
             }
         }
-        if(visible<0 && subObj && !subObj->Visibility.getValue())
-            continue;
-        shapes.push_back(shape);
+        for(auto &sub : owner->getSubObjects()) {
+            if(sub.empty()) continue;
+            int visible;
+            if(sub[sub.size()-1] != '.')
+                sub += '.';
+            std::string childName;
+            App::DocumentObject *parent=0;
+            Base::Matrix4D mat;
+            auto subObj = owner->resolve(sub.c_str(), &parent, &childName,0,0,&mat,false);
+            if(!parent || !subObj)
+                continue;
+            visible = parent->isElementVisible(childName.c_str());
+            if(visible==0)
+                continue;
+            TopoShape shape;
+            if(baseShape.isNull()) {
+                shape = getTopoShape(owner,sub.c_str(),false,0,&subObj,false,false);
+                if(shape.isNull())
+                    continue;
+            }else{
+                if(link && !link->getShowElementValue())
+                    shape = baseShape.makETransform(mat,(TopoShape::indexPostfix()+childName).c_str());
+                else {
+                    shape = baseShape.makETransform(mat);
+                    shape.reTagElementMap(subObj->getID(),subObj->getDocument()->getStringHasher());
+                }
+            }
+            if(visible<0 && subObj && !subObj->Visibility.getValue())
+                continue;
+            shapes.push_back(shape);
+        }
+        if(shapes.empty()) 
+            return shape;
+        shape.Tag = tag;
+        shape.Hasher = hasher;
+        shape.makECompound(shapes);
     }
-    if(shapes.empty()) 
-        return shape;
-    shape.Tag = tag;
-    shape.Hasher = hasher;
-    shape.makECompound(shapes);
 
-    Base::Matrix4D ownerMat;
-    owner->getSubObject("",0,&ownerMat);
-    auto ownerShape = shape;
-    ownerShape.transformShape(ownerMat,false,true);
-    if(owner->getDocument()!=linked->getDocument()) 
-        ownerShape.reTagElementMap(owner->getID(),owner->getDocument()->getStringHasher());
-    _ShapeCache.setShape(owner,ownerShape);
+    _ShapeCache.setShape(owner,shape);
 
-    if(owner==obj)
-        shape = ownerShape;
-    else {
+    if(owner!=obj) {
         scaled = shape.transformShape(mat,false,true);
         if(owner->getDocument()!=obj->getDocument()) {
             shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
-            _ShapeCache.setShape(obj,shape);
+            _ShapeCache.setShape(obj,shape,subname);
         }else if(scaled)
-            _ShapeCache.setShape(obj,shape);
+            _ShapeCache.setShape(obj,shape,subname);
     }
     if(noElementMap) {
         shape.resetElementMap();
