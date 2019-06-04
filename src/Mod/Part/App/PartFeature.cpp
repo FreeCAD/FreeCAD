@@ -66,6 +66,7 @@
 #include <App/FeaturePythonPyImp.h>
 #include <App/Document.h>
 #include <App/Link.h>
+#include <App/GeoFeatureGroupExtension.h>
 
 #include "PartPyCXX.h"
 #include "PartFeature.h"
@@ -397,7 +398,7 @@ struct ShapeCache {
         auto it = entry.find(std::make_pair(obj,std::string(subname)));
         if(it!=entry.end()) {
             shape = it->second;
-            return true;
+            return !shape.isNull();
         }
         return false;
     }
@@ -414,9 +415,11 @@ void Feature::clearShapeCache() {
     _ShapeCache.cache.clear();
 }
 
-TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subname, 
+static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subname, 
         bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner, 
-        bool resolveLink, bool transform, bool noElementMap)
+        bool resolveLink, bool transform, bool noElementMap,
+        std::vector<App::DocumentObject*> &linkStack)
+
 {
     TopoShape shape;
 
@@ -486,8 +489,9 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     // with `transform` set to false. So make sure it is the case here.
     if(transform) {
         obj->getSubObject(0,0,&matOrig);
-        shape = getTopoShape(obj, subname, false, 0, 0, false, false, noElementMap);
-        shape.transformShape(matOrig,false,true);
+        shape = _getTopoShape(obj, subname, false, 0, 0, false, false, noElementMap, linkStack);
+        if(!shape.isNull())
+            shape.transformShape(matOrig,false,true);
         return shape;
     }
 
@@ -523,14 +527,11 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         }
     }
 
-    if(owner!=linked 
-        && !owner->getLinkedObject(false)->hasExtension(
-            App::GroupExtension::getExtensionClassTypeId(),false)) 
-    {
-        // if there is a linked object, and it is not directly linked to plain
-        // group (because link has special handling of visibility on children of
-        // plain group), obtain shape from the linked object
-        shape = getTopoShape(linked,0,false,0,0,false,false);
+    auto link = owner->getExtensionByType<App::LinkBaseExtension>(true);
+    if(owner!=linked && (!link || !link->_ChildCache.getSize())) {
+        // if there is a linked object, and it is no child cache (which is used
+        // for special handling of plain group), obtain shape from the linked object
+        shape = Feature::getTopoShape(linked,0,false,0,0,false,false);
         if(shape.isNull())
             return shape;
         if(owner==obj)
@@ -541,19 +542,21 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
 
     } else {
 
+        if(link || owner->getExtensionByType<App::GeoFeatureGroupExtension>(true))
+            linkStack.push_back(owner);
+
         // Construct a compound of sub objects
         std::vector<TopoShape> shapes;
 
         // Acceleration for link array. Unlike non-array link, a link array does
         // not return the linked object when calling getLinkedObject().
         // Therefore, it should be handled here.
-        auto link = owner->getExtensionByType<App::LinkBaseExtension>(true);
         TopoShape baseShape;
         std::string op;
         if(link && link->getElementCountValue()) {
             linked = link->getTrueLinkedObject(false);
             if(linked && linked!=owner) {
-                baseShape = getTopoShape(linked,0,false,0,0,false,false);
+                baseShape = Feature::getTopoShape(linked,0,false,0,0,false,false);
                 if(!link->getShowElementValue())
                     baseShape.reTagElementMap(owner->getID(),owner->getDocument()->getStringHasher());
             }
@@ -569,13 +572,20 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
             auto subObj = owner->resolve(sub.c_str(), &parent, &childName,0,0,&mat,false);
             if(!parent || !subObj)
                 continue;
-            visible = parent->isElementVisible(childName.c_str());
+            if(linkStack.size() 
+                && parent->getExtensionByType<App::GroupExtension>(true,false))
+            {
+                visible = linkStack.back()->isElementVisible(childName.c_str());
+            }else
+                visible = parent->isElementVisible(childName.c_str());
             if(visible==0)
                 continue;
             TopoShape shape;
             if(baseShape.isNull()) {
-                shape = getTopoShape(owner,sub.c_str(),false,0,&subObj,false,false);
+                shape = _getTopoShape(owner,sub.c_str(),false,0,&subObj,false,false,false,linkStack);
                 if(shape.isNull())
+                    continue;
+                if(visible<0 && subObj && !subObj->Visibility.getValue())
                     continue;
             }else{
                 if(link && !link->getShowElementValue())
@@ -585,10 +595,12 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
                     shape.reTagElementMap(subObj->getID(),subObj->getDocument()->getStringHasher());
                 }
             }
-            if(visible<0 && subObj && !subObj->Visibility.getValue())
-                continue;
             shapes.push_back(shape);
         }
+
+        if(linkStack.size() && linkStack.back()==owner)
+            linkStack.pop_back();
+
         if(shapes.empty()) 
             return shape;
         shape.Tag = tag;
@@ -613,6 +625,16 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     }
     return shape;
 }
+
+TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subname, 
+        bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner, 
+        bool resolveLink, bool transform, bool noElementMap)
+{
+    std::vector<App::DocumentObject*> linkStack;
+    return _getTopoShape(obj,subname,needSubElement,
+            pmat,powner,resolveLink,transform,noElementMap,linkStack);
+}
+
 
 App::DocumentObject *Feature::getShapeOwner(const App::DocumentObject *obj, const char *subname)
 {
