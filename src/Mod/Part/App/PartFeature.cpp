@@ -395,13 +395,17 @@ struct ShapeCache {
         return false;
     }
 
-    void setShape(const App::DocumentObject *obj, const TopoShape &shape) {
+    void setShape(const App::DocumentObject *obj, const TopoShape &shape, const char *subname=0) {
         init();
-        cache[obj->getDocument()][obj] = shape;
+        if(!subname) subname = "";
+        cache[obj->getDocument()][std::make_pair(obj,std::string(subname))] = shape;
     }
-
 };
 static ShapeCache _ShapeCache;
+
+void Feature::clearShapeCache() {
+    _ShapeCache.cache.clear();
+}
 
 TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subname, 
         bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner, 

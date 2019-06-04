@@ -460,6 +460,9 @@ public:
         add_varargs_method("__fromPythonOCC__",&Module::fromPythonOCC,
             "__fromPythonOCC__(occ) -- Helper method to convert a pythonocc shape to an internal shape"
         );
+        add_varargs_method("clearShapeCache",&Module::clearShapeCache,
+            "clearShapeCache() -- Clears internal shape cache"
+        );
         add_keyword_method("getShape",&Module::getShape,
             "getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):\n"
             "Obtain the the TopoShape of a given object with SubName reference\n\n"
@@ -2214,6 +2217,13 @@ private:
 
         return Py::TupleN(sret,Py::Object(new Base::MatrixPy(new Base::Matrix4D(mat))),
                 subObj?Py::Object(subObj->getPyObject(),true):Py::Object());
+    }
+
+    Py::Object clearShapeCache(const Py::Tuple &args) {
+        if (!PyArg_ParseTuple(args.ptr(),""))
+            throw Py::Exception();
+        Part::Feature::clearShapeCache();
+        return Py::Object();
     }
 
     Py::Object getRelatedElements(const Py::Tuple& args) {
