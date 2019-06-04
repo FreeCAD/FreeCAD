@@ -1083,6 +1083,11 @@ void ExportOCAF2::exportObjects(std::vector<App::DocumentObject*> &objs, const c
 
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         dumpLabels(pDoc->Main(),aShapeTool,aColorTool);
+
+#if OCC_VERSION_HEX >= 0x070200
+    // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
+    aShapeTool->UpdateAssemblies();
+#endif
 }
 
 TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj, 
