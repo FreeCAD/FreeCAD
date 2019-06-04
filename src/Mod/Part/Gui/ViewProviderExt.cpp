@@ -1250,7 +1250,7 @@ struct ColorInfo {
 void ViewProviderPartExt::updateColors(Part::Feature *feature, 
         App::Document *sourceDoc, bool forceColorMap) 
 {
-    if(isRestoring() || !feature || UpdatingColor)
+    if(isRestoring() || !feature || feature->isRestoring() || UpdatingColor)
         return;
 
     Base::FlagToggler<> flag(UpdatingColor);
@@ -1380,8 +1380,8 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
             updateVisual(cShape);
         else 
             VisualTouched = true;
-        if(!isRestoring())
-            updateColors(feature);
+
+        updateColors(feature);
 
         if (!VisualTouched) {
             if (this->faceset->partIndex.getNum() > 
