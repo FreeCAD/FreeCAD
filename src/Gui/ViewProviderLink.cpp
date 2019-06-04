@@ -689,7 +689,7 @@ void ViewProviderLinkObserver::extensionBeforeDelete() {
 void ViewProviderLinkObserver::extensionReattach(App::DocumentObject *) {
     if(linkInfo) {
         linkInfo->pcLinked = 
-            freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
+            Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
         linkInfo->update();
     }
 }
@@ -706,9 +706,9 @@ void ViewProviderLinkObserver::extensionOnChanged(const App::Property *prop) {
 }
 
 void ViewProviderLinkObserver::extensionModeSwitchChange() {
-    // auto owner = freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
-    // if(owner && linkInfo)
-    //     linkInfo->updateSwitch();
+    auto owner = freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
+    if(owner && linkInfo)
+        linkInfo->updateSwitch();
 }
 
 void ViewProviderLinkObserver::extensionUpdateData(const App::Property *prop) {
