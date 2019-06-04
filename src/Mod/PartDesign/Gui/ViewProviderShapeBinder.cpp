@@ -331,6 +331,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
             self->Context.setValue(parent,parentSub.c_str());
         self->update();
         App::GetApplication().closeActiveTransaction();
+        return;
     }catch(Base::Exception &e) {
         e.ReportException();
     }catch(Standard_Failure &e) {
