@@ -3946,8 +3946,12 @@ void DocumentItem::selectItems(bool sync) {
             item->selected = 0;
             item->setSelected(false);
         }else if(item->selected) {
-            if(!first && item->selected==2) 
-                first = item;
+            if(item->selected == 2) {
+                if(!first)
+                    first = item;
+                if(sync)
+                    showItem(item,false,true);
+            }
             item->selected = 1;
             item->setSelected(true);
             last = item;
