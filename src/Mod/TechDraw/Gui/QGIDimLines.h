@@ -41,6 +41,7 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 175};
     int type() const { return Type;}
+    QRectF boundingRect() const;
 
 public:
     void draw();

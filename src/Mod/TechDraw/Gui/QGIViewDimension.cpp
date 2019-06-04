@@ -1268,8 +1268,9 @@ void QGIViewDimension::draw()
             ccwInner = false;
         }
 
-        double dimLineAdjust = Rez::guiX(QGIArrow::getOverlapAdjust(QGIArrow::getPrefArrowStyle(),
-                                                                   QGIArrow::getPrefArrowSize()));
+        //TODO: figure out the math for adjusting the arc so the tip doesn't overlap the arrowhead.
+//        double dimLineAdjust = Rez::guiX(QGIArrow::getOverlapAdjust(QGIArrow::getPrefArrowStyle(),
+//                                                                   QGIArrow::getPrefArrowSize()));
         QRectF  mappedRect = mapRectFromItem(datumLabel, datumLabel->boundingRect());
         lblCenter = Base::Vector3d(mappedRect.center().x(), mappedRect.center().y(), 0.0); 
 
@@ -1473,6 +1474,8 @@ void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsIte
     } else {
         setPens();
     }
+//    painter->drawRect(boundingRect());          //good for debugging
+
     QGIView::paint (painter, &myOption, widget);
     setPens();
 }
@@ -1588,5 +1591,11 @@ double QGIViewDimension::getDefaultTextVerticalOffset() const
 
     return textMult*Rez::guiX(vp->Fontsize.getValue()) + TextOffsetFudge;
 }
+
+QRectF QGIViewDimension::boundingRect() const
+{
+    return childrenBoundingRect().adjusted(-3,-3,3,3);
+}
+
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>
