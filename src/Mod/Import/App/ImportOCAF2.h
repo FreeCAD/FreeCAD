@@ -198,6 +198,8 @@ private:
 
     std::set<std::pair<App::DocumentObject*,std::string> > mySetups;
 
+    std::vector<App::DocumentObject*> groupLinks;
+
     GetShapeColorsFunc getShapeColors;
 
     App::Color defaultColor;

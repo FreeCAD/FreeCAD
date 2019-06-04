@@ -58,6 +58,7 @@
 #include <App/DocumentObjectPy.h>
 #include <App/Part.h>
 #include <App/Link.h>
+#include <App/GroupExtension.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/FeatureCompound.h>
 #include "ImportOCAF2.h"
@@ -1224,6 +1225,10 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         return label;
     }
 
+    if(obj->getExtensionByType<App::LinkBaseExtension>(true)
+            || obj->getExtensionByType<App::GeoFeatureGroupExtension>(true))
+        groupLinks.push_back(obj);
+
     // Create a new assembly
     label = aShapeTool->NewShape();
 
@@ -1239,8 +1244,17 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             FC_WARN("Cannot find object " << obj->getFullName() << '.' << sub);
             continue;
         }
-        int vis;
-        if(!parent || (vis=parent->isElementVisible(childName.c_str()))<0)
+        int vis = -1;
+        if(parent) {
+            if(groupLinks.size() 
+                && parent->getExtensionByType<App::GroupExtension>(true,false))
+            {
+                vis = groupLinks.back()->isElementVisible(childName.c_str());
+            }else
+                vis = parent->isElementVisible(childName.c_str());
+        }
+
+        if(vis < 0)
             vis = sobj->Visibility.getValue()?1:0;
 
         if(!vis && !exportHidden)
@@ -1276,6 +1290,9 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             aColorTool->SetVisibility(childLabel,Standard_False);
         }
     }
+
+    if(groupLinks.size() && groupLinks.back()==obj)
+        groupLinks.pop_back();
 
     // Finished adding components. Now retrieve the computed non-located shape
     auto baseShape = shape;
