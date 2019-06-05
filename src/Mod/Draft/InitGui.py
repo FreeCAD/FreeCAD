@@ -89,7 +89,7 @@ class DraftWorkbench (Workbench):
                             "Draft_SelectGroup","Draft_SelectPlane",
                             "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_AutoGroup"]
         self.lineList = ["Draft_UndoLine","Draft_FinishLine","Draft_CloseLine"]
-        self.utils = ["Draft_VisGroup","Draft_Heal","Draft_FlipDimension",
+        self.utils = ["Draft_Layer","Draft_Heal","Draft_FlipDimension",
                       "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit",
                       "Draft_Slope","Draft_SetWorkingPlaneProxy","Draft_AddConstruction"]
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',

@@ -5971,31 +5971,6 @@ class Draft_FlipDimension():
                 FreeCAD.ActiveDocument.recompute()
 
 
-class VisGroup():
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_VisGroup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_VisGroup", "VisGroup"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_VisGroup", "Adds a VisGroup")}
-
-    def Activated(self):
-        s = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Create VisGroup")
-        FreeCADGui.addModule("Draft")
-        if len(s) == 1:
-            if s[0].isDerivedFrom("App::DocumentObjectGroup"):
-                FreeCADGui.doCommand("v = Draft.makeVisGroup(FreeCAD.ActiveDocument."+s[0].Name+")")
-                FreeCADGui.doCommand('Draft.autogroup(v)')
-                FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
-                return
-        FreeCADGui.doCommand("v = Draft.makeVisGroup()")
-        FreeCADGui.doCommand('Draft.autogroup(v)')
-        FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
-
-
 class Mirror(Modifier):
     "The Draft_Mirror FreeCAD command definition"
 
@@ -6723,7 +6698,6 @@ FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
 FreeCADGui.addCommand('Draft_PathArray',PathArray())
 FreeCADGui.addCommand('Draft_PointArray',PointArray())
 FreeCADGui.addCommand('Draft_Heal',Heal())
-FreeCADGui.addCommand('Draft_VisGroup',VisGroup())
 FreeCADGui.addCommand('Draft_Mirror',Mirror())
 FreeCADGui.addCommand('Draft_Slope',Draft_Slope())
 FreeCADGui.addCommand('Draft_Stretch',Stretch())
