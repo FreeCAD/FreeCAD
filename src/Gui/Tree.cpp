@@ -2291,11 +2291,13 @@ void TreeWidget::onUpdateStatus(void)
         }
     }
 
-    if(errItem)
-        scrollToItem(errItem);
-
     updateGeometries();
     statusTimer->stop();
+    if(Selection().hasSelection() && !selectTimer->isActive())
+        onSelectTimer();
+
+    if(errItem)
+        scrollToItem(errItem);
 
     FC_LOG("done update status");
 }
@@ -2520,7 +2522,9 @@ void TreeWidget::changeEvent(QEvent *e)
 
 void TreeWidget::onItemSelectionChanged ()
 {
-    if (!this->isConnectionAttached() || this->isConnectionBlocked())
+    if (!this->isConnectionAttached() 
+            || this->isConnectionBlocked()
+            || _UpdateBlocked)
         return;
 
     _LastSelectedTreeWidget = this;
