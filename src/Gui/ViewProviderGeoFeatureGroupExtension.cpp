@@ -89,9 +89,9 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
         if(!obj || !obj->getNameInDocument())
             continue;
         if(outSet.count(obj)) 
-            obj->setStatus(App::ObjectStatus::GeoClaimed,false);
+            obj->setStatus(App::ObjectStatus::GeoExcluded,true);
         else {
-            obj->setStatus(App::ObjectStatus::GeoClaimed,true);
+            obj->setStatus(App::ObjectStatus::GeoExcluded,false);
             Result.push_back(obj);
         }
     }
