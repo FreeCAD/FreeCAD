@@ -315,11 +315,13 @@ TechDraw::CosmeticEdge* TaskCenterLine::calcEndPoints(std::vector<std::string> f
     faceBox.Get(Xmin,Ymin,Zmin,Xmax,Ymax,Zmax);
 
     double Xspan = fabs(Xmax - Xmin);
-    Xspan = (Xspan / 2.0) + (ext);
+//    Xspan = (Xspan / 2.0) + (ext * scale);    //this should be right? edges in GO are scaled!
+    Xspan = (Xspan / 2.0) + ext;
     double Xmid = Xmin + fabs(Xmax - Xmin) / 2.0;
 
     double Yspan = fabs(Ymax - Ymin);
-    Yspan = (Yspan / 2.0) + (ext);
+//    Yspan = (Yspan / 2.0) + (ext * scale);
+    Yspan = (Yspan / 2.0) + ext;
     double Ymid = Ymin + fabs(Ymax - Ymin) / 2.0;
 
     Base::Vector3d bbxCenter(Xmid, Ymid, 0.0);
@@ -328,16 +330,16 @@ TechDraw::CosmeticEdge* TaskCenterLine::calcEndPoints(std::vector<std::string> f
     if (vert) {
         Base::Vector3d top(Xmid, Ymid - Yspan, 0.0);
         Base::Vector3d bottom(Xmid, Ymid + Yspan, 0.0);
-        p1 = top / scale;
-        p2 = bottom / scale;
+        p1 = top;
+        p2 = bottom;
     } else {
         Base::Vector3d left(Xmid - Xspan, Ymid, 0.0);
         Base::Vector3d right(Xmid + Xspan, Ymid, 0.0);
-        p1 = left / scale;
-        p2 = right / scale;
+        p1 = left;
+        p2 = right;
     }
 
-    result = new TechDraw::CosmeticEdge(p1, p2, scale);
+    result = new TechDraw::CosmeticEdge(p1, p2, scale);  //p1 & p2 are as found in GO.
     App::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     result->color = ac;
@@ -363,7 +365,7 @@ Qt::PenStyle TaskCenterLine::getCenterStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("CenterLine", 2));
+    Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("CosmoCLStyle", 2));
     return centerStyle;
 }
 
@@ -371,13 +373,16 @@ QColor TaskCenterLine::getCenterColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CenterColor", 0x00000000));
+    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CosmoCLColor", 0x00000000));
     return fcColor.asValue<QColor>();
 }
 
 double TaskCenterLine::getExtendBy(void)
 {
-    return 3.0;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    double ext = hGrp->GetFloat("CosmoCLExtend", 3.0);
+    return ext;
 }
 
 //******************************************************************************

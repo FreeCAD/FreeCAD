@@ -291,12 +291,8 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-    //this is ghastly! but no convenient method for "object ready"
-    if (on1) {
-        rebuildCosmoVertex();
-        rebuildCosmoEdge();
-        on1 = false;
-    }
+    rebuildCosmoVertex();
+    rebuildCosmoEdge();
     
     App::Document* doc = getDocument();
     bool isRestoring = doc->testStatus(App::Document::Status::Restoring);
@@ -362,9 +358,10 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         v->linkGeom = idx;
     }
 
-    //add back the cosmetic Edges
+    //add the cosmetic Edges to geometry Edges list
     for (auto& e: cosmoEdge) {
-        int idx = geometryObject->addRandomEdge(e->geometry);
+        TechDrawGeometry::BaseGeom* scaledGeom = e->scaledGeometry(getScale());
+        int idx = geometryObject->addRandomEdge(scaledGeom);
         e->linkGeom = idx;
     }
 
