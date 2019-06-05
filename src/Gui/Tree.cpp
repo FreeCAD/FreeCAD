@@ -2293,8 +2293,16 @@ void TreeWidget::onUpdateStatus(void)
 
     updateGeometries();
     statusTimer->stop();
-    if(Selection().hasSelection() && !selectTimer->isActive())
-        onSelectTimer();
+
+    if(Selection().hasSelection() && !selectTimer->isActive()) {
+        this->blockConnection(true);
+        currentDocItem = 0;
+        for(auto &v : DocumentMap) {
+            v.second->setSelected(false);
+            v.second->selectItems(false);
+        }
+        this->blockConnection(false);
+    }
 
     if(errItem)
         scrollToItem(errItem);
