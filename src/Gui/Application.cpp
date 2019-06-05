@@ -1653,7 +1653,7 @@ void Application::runApplication(void)
     const std::map<std::string,std::string>& cfg = App::Application::Config();
     std::map<std::string,std::string>::const_iterator it;
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
     QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 #endif
 
