@@ -1653,6 +1653,10 @@ void Application::runApplication(void)
     const std::map<std::string,std::string>& cfg = App::Application::Config();
     std::map<std::string,std::string>::const_iterator it;
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+    QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+#endif
+
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
     // if application not yet created by the splasher
