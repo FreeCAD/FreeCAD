@@ -68,6 +68,15 @@ def translate(ctx,txt):
 arrowtypes = ["Dot","Circle","Arrow","Tick","Tick-2"]
 
 #---------------------------------------------------------------------------
+# Backwards compatibility
+#---------------------------------------------------------------------------
+
+import DraftLayer
+_VisGroup = DraftLayer.Layer
+_ViewProviderVisGroup = DraftLayer.ViewProviderLayer
+makeLayer = DraftLayer.makeLayer
+
+#---------------------------------------------------------------------------
 # General functions
 #---------------------------------------------------------------------------
 
@@ -123,6 +132,8 @@ def getParam(param,default=None):
     if t == "int":
         if default == None:
             default = 0
+        if param == "linewidth":
+            return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetInt("DefaultShapeLineWidth",default)
         return p.GetInt(param,default)
     elif t == "string":
         if default == None:
@@ -150,7 +161,10 @@ def setParam(param,value):
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     t = getParamType(param)
     if t == "int":
-        p.SetInt(param,value)
+        if param == "linewidth":
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").SetInt("DefaultShapeLineWidth",value)
+        else:
+            p.SetInt(param,value)
     elif t == "string":
         p.SetString(param,value)
     elif t == "float":
@@ -1336,21 +1350,6 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
         formatObject(obj)
         select(obj)
 
-    return obj
-
-def makeVisGroup(group=None,name="VisGroup"):
-    '''makeVisGroup([group]): creates a VisGroup object in the given group, or in the
-    active document if no group is given'''
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
-    _VisGroup(obj)
-    if FreeCAD.GuiUp:
-        _ViewProviderVisGroup(obj.ViewObject)
-        formatObject(obj)
-    if group:
-        group.addObject(obj)
     return obj
 
 def extrude(obj,vector,solid=False):
@@ -6273,82 +6272,6 @@ class _ViewProviderFacebinder(_ViewProviderDraft):
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
         return False
-
-
-class _VisGroup:
-    "The VisGroup object"
-    def __init__(self,obj):
-        self.Type = "VisGroup"
-        obj.Proxy = self
-        self.Object = obj
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self,state):
-        if state:
-            self.Type = state
-
-    def execute(self,obj):
-        pass
-
-class _ViewProviderVisGroup:
-    "A View Provider for the VisGroup object"
-    def __init__(self,vobj):
-        vobj.addProperty("App::PropertyColor","LineColor","Base","")
-        vobj.addProperty("App::PropertyColor","ShapeColor","Base","")
-        vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
-        vobj.addProperty("App::PropertyEnumeration","DrawStyle","Base","")
-        vobj.addProperty("App::PropertyInteger","Transparency","Base","")
-        vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"]
-        vobj.LineWidth = 1
-        vobj.LineColor = (0.13,0.15,0.37)
-        vobj.DrawStyle = "Solid"
-        vobj.Proxy = self
-
-    def getIcon(self):
-        import Arch_rc
-        return ":/icons/Draft_VisGroup.svg"
-
-    def attach(self,vobj):
-        self.Object = vobj.Object
-        return
-
-    def claimChildren(self):
-        return self.Object.Group
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self,state):
-        return None
-
-    def updateData(self,obj,prop):
-        if prop == "Group":
-            if obj.ViewObject:
-                obj.ViewObject.Proxy.onChanged(obj.ViewObject,"LineColor")
-
-    def onChanged(self,vobj,prop):
-        if hasattr(vobj,"Object"):
-            if vobj.Object:
-                if hasattr(vobj.Object,"Group"):
-                    if vobj.Object.Group:
-                        for o in vobj.Object.Group:
-                            if o.ViewObject:
-                                for p in ["LineColor","ShapeColor","LineWidth","DrawStyle","Transparency"]:
-                                    if hasattr(vobj,p):
-                                        if hasattr(o.ViewObject,p):
-                                            setattr(o.ViewObject,p,getattr(vobj,p))
-                                        elif hasattr(o,p):
-                                            # for Drawing views
-                                            setattr(o,p,getattr(vobj,p))
-                                        elif (p == "DrawStyle") and hasattr(o,"LineStyle"):
-                                            # Special case in Drawing views
-                                            setattr(o,"LineStyle",getattr(vobj,p))
-                                if vobj.Object.InList:
-                                    # touch the page if something was changed
-                                    if vobj.Object.InList[0].isDerivedFrom("Drawing::FeaturePage"):
-                                        vobj.Object.InList[0].touch()
 
 
 class WorkingPlaneProxy:

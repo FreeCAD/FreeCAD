@@ -1958,7 +1958,7 @@ class DraftToolBar:
             g = float(self.color.green()/255.0)
             b = float(self.color.blue()/255.0)
         elif type == "face":
-            color = facecolor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)
+            color = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)
             r = ((color>>24)&0xFF)/255
             g = ((color>>16)&0xFF)/255
             b = ((color>>8)&0xFF)/255
