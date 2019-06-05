@@ -3054,7 +3054,7 @@ void PropertyXLink::_setValue(std::string &&filename, std::string &&name,
     }else
         pObject = owner->getDocument()->getObject(name.c_str());
 
-    if(pObject || !info) {
+    if(pObject) {
         _setValue(pObject,std::move(subs),std::move(shadows));
         return;
     }
@@ -3101,7 +3101,13 @@ bool PropertyXLink::upgrade(Base::XMLReader &reader, const char *typeName) {
 }
 
 int PropertyXLink::checkRestore() const {
-    if(!docInfo) return 0;
+    if(!docInfo) {
+        if(!_pcLink && objectName.size()) {
+            // this condition means linked object not found
+            return 2;
+        }
+        return 0;
+    }
     if(!_pcLink) {
         if(testFlag(LinkAllowPartial) && 
            (!docInfo->pcDoc || 
@@ -3173,7 +3179,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
                     else
                         _path = docPath;
                 }else 
-                    FC_ERR("External document link without absolute path");
+                    FC_WARN("PropertyXLink export without saving the document");
             }
             if(_path.size())
                 path = _path.c_str();
@@ -3315,7 +3321,7 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
         return;
     }
 
-    if(file.size()) {
+    if(file.size() || (!object && name.size())) {
         this->stamp = stamp;
         _setValue(std::move(file),std::move(name),std::move(subs),std::move(shadows));
     }else

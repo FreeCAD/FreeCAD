@@ -2140,7 +2140,7 @@ Document::importObjects(Base::XMLReader& reader)
     reader.readEndElement("Document");
 
     signalImportObjects(objs, reader);
-    afterRestore(objs);
+    afterRestore(objs,true);
 
     signalFinishImportObjects(objs);
 
