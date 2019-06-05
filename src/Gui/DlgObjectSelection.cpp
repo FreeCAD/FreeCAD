@@ -274,24 +274,29 @@ void DlgObjectSelection::onItemChanged(QTreeWidgetItem * item, int column) {
             for(auto item : v.second->items)
                 item->setCheckState(0,Qt::Checked);
         }
-        for(auto &v : info.inList) {
-            if(v.second->checkState != Qt::PartiallyChecked)
-                continue;
-            bool partial = false;
-            for(auto &vv : v.second->outList) {
-                if(vv.second->checkState != Qt::Checked) {
-                    partial = true;
-                    break;
+        bool touched;
+        do {
+            touched = false;
+            for(auto &v : info.inList) {
+                if(v.second->checkState != Qt::PartiallyChecked)
+                    continue;
+                bool partial = false;
+                for(auto &vv : v.second->outList) {
+                    if(vv.second->checkState != Qt::Checked) {
+                        partial = true;
+                        break;
+                    }
                 }
+                if(partial)
+                    continue;
+                touched = true;
+                v.second->checkState = Qt::Checked;
+                v.second->depItem->setText(3,tr("Selected"));
+                v.second->depItem->setCheckState(0,Qt::Checked);
+                for(auto item : v.second->items)
+                    item->setCheckState(0,Qt::Checked);
             }
-            if(partial)
-                continue;
-            v.second->checkState = Qt::Checked;
-            v.second->depItem->setText(3,tr("Selected"));
-            v.second->depItem->setCheckState(0,Qt::Checked);
-            for(auto item : v.second->items)
-                item->setCheckState(0,Qt::Checked);
-        }
+        }while(touched);
     }
 }
 
