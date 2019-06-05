@@ -2187,6 +2187,8 @@ void TreeWidget::onUpdateStatus(void)
 
     UpdateDisabler disabler(*this);
 
+    std::vector<App::DocumentObject*> errors;
+
     // Checking for new objects
     for(auto &v : NewObjects) {
         auto doc = App::GetApplication().getDocument(v.first.c_str());
@@ -2200,7 +2202,11 @@ void TreeWidget::onUpdateStatus(void)
             continue;
         for(auto id : v.second) {
             auto obj = doc->getObjectByID(id);
-            if(!obj || docItem->ObjectMap.find(obj)!=docItem->ObjectMap.end())
+            if(!obj)
+                continue;
+            if(obj->isError())
+                errors.push_back(obj);
+            if(docItem->ObjectMap.count(obj))
                 continue;
             auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(gdoc->getViewProvider(obj));
             if(vpd)
@@ -2241,7 +2247,6 @@ void TreeWidget::onUpdateStatus(void)
     TimingPrint();
 
     // Checking for just restored documents
-    DocumentObjectItem *errItem = 0;
     for(auto &v : DocumentMap) {
         auto docItem = v.second;
         if(docItem->connectChgObject.connected())
@@ -2249,50 +2254,31 @@ void TreeWidget::onUpdateStatus(void)
         docItem->connectChgObject = docItem->document()->signalChangedObject.connect(
                 boost::bind(&TreeWidget::slotChangeObject, this, _1, _2));
 
-        bool partial = docItem->document()->getDocument()->testStatus(App::Document::PartialDoc);
-        if(partial) 
+        auto doc = v.first->getDocument();
+        if(doc->testStatus(App::Document::PartialDoc))
             docItem->setIcon(0, *documentPartialPixmap);
-
-        for(auto &v : docItem->ObjectMap) {
-            if(v.first->isError() && v.second->items.size() && !partial) {
-                auto item = v.second->rootItem;
-                if(!item) {
-                    item = *v.second->items.begin();
-                    docItem->showItem(item,false,true);
-                }
-                if(!errItem)
-                    errItem = item;
-            }
-        }
-
-        if(docItem->_ExpandInfo) {
-            auto doc = v.first->getDocument();
-            if(!doc->testStatus(App::Document::PartialDoc)) {
-                for(auto &entry : *docItem->_ExpandInfo) {
-                    const char *name = entry.first.c_str();
-                    bool legacy = name[0] == '*';
-                    if(legacy)
-                        ++name;
-                    auto obj = doc->getObject(name);
-                    if(!obj)
-                        continue;
-                    auto iter = docItem->ObjectMap.find(obj);
-                    if(iter==docItem->ObjectMap.end())
-                        continue;
-                    if(iter->second->rootItem)
-                        docItem->restoreItemExpansion(entry.second,iter->second->rootItem);
-                    else if(legacy && iter->second->items.size()) {
-                        auto item = *iter->second->items.begin();
-                        item->setExpanded(true);
-                    }
+        else if(docItem->_ExpandInfo) {
+            for(auto &entry : *docItem->_ExpandInfo) {
+                const char *name = entry.first.c_str();
+                bool legacy = name[0] == '*';
+                if(legacy)
+                    ++name;
+                auto obj = doc->getObject(name);
+                if(!obj)
+                    continue;
+                auto iter = docItem->ObjectMap.find(obj);
+                if(iter==docItem->ObjectMap.end())
+                    continue;
+                if(iter->second->rootItem)
+                    docItem->restoreItemExpansion(entry.second,iter->second->rootItem);
+                else if(legacy && iter->second->items.size()) {
+                    auto item = *iter->second->items.begin();
+                    item->setExpanded(true);
                 }
             }
-            docItem->_ExpandInfo.reset();
         }
+        docItem->_ExpandInfo.reset();
     }
-
-    updateGeometries();
-    statusTimer->stop();
 
     if(Selection().hasSelection() && !selectTimer->isActive()) {
         this->blockConnection(true);
@@ -2304,8 +2290,26 @@ void TreeWidget::onUpdateStatus(void)
         this->blockConnection(false);
     }
 
+    QTreeWidgetItem *errItem = 0;
+    for(auto obj : errors) {
+        auto it = ObjectTable.find(obj);
+        if(it == ObjectTable.end())
+            continue;
+        for(auto &data : it->second) {
+            auto item = data->rootItem;
+            if(!item && data->items.size()) {
+                item = *data->items.begin();
+                data->docItem->showItem(item,false,true);
+            }
+            if(!errItem)
+                errItem = item;
+        }
+    }
     if(errItem)
         scrollToItem(errItem);
+
+    updateGeometries();
+    statusTimer->stop();
 
     FC_LOG("done update status");
 }
