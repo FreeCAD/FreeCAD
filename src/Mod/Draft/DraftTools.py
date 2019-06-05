@@ -735,9 +735,9 @@ class Wire(Line):
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Wire',
-                'Accel' : "W, I",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "DWire"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain")}
+                'Accel' : "P, L",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Polyline"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
 
@@ -765,9 +765,9 @@ class Wire(Line):
                              'FreeCAD.ActiveDocument.recompute()'])])
                     return
 
-        Line.Activated(self,name=translate("draft","DWire"))
+        Line.Activated(self,name=translate("draft","Polyline"))
 
-
+ 
 class BSpline(Line):
     "a FreeCAD command for creating a B-spline"
 
