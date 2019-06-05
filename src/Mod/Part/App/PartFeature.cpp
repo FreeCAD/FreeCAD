@@ -529,7 +529,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
 
     auto link = owner->getExtensionByType<App::LinkBaseExtension>(true);
     if(owner!=linked && (!link || !link->_ChildCache.getSize())) {
-        // if there is a linked object, and it is no child cache (which is used
+        // if there is a linked object, and there is no child cache (which is used
         // for special handling of plain group), obtain shape from the linked object
         shape = Feature::getTopoShape(linked,0,false,0,0,false,false);
         if(shape.isNull())
