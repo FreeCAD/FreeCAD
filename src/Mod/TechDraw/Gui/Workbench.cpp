@@ -156,7 +156,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_RichAnno";
     *anno << "TechDraw_CosmeticVertexGrp";
-    *anno << "TechDraw_CenterLine";
+    *anno << "TechDraw_FaceCenterLine";
     *anno << "TechDraw_CosmeticEraser";
 
     return root;
@@ -218,7 +218,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_RichAnno";
     *anno << "TechDraw_CosmeticVertexGrp";
-    *anno << "TechDraw_CenterLine";
+    *anno << "TechDraw_FaceCenterLine";
     *anno << "TechDraw_CosmeticEraser";
 
     return root;

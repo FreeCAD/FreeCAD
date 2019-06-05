@@ -295,6 +295,8 @@ TechDraw::CosmeticEdge* TaskCenterLine::calcEndPoints(std::vector<std::string> f
     Bnd_Box faceBox;
     faceBox.SetGap(0.0);
 
+    double scale = m_partFeat->getScale();
+
     for (auto& fn: faceNames) {
         if (TechDraw::DrawUtil::getGeomTypeFromName(fn) != "Face") {
             continue;
@@ -309,16 +311,15 @@ TechDraw::CosmeticEdge* TaskCenterLine::calcEndPoints(std::vector<std::string> f
         }
     }
 
-    double scale = m_partFeat->getScale();
     double Xmin,Ymin,Zmin,Xmax,Ymax,Zmax;
     faceBox.Get(Xmin,Ymin,Zmin,Xmax,Ymax,Zmax);
 
     double Xspan = fabs(Xmax - Xmin);
-    Xspan = (Xspan / 2.0) + (ext * scale);
+    Xspan = (Xspan / 2.0) + (ext);
     double Xmid = Xmin + fabs(Xmax - Xmin) / 2.0;
 
     double Yspan = fabs(Ymax - Ymin);
-    Yspan = (Yspan / 2.0) + (ext * scale);
+    Yspan = (Yspan / 2.0) + (ext);
     double Ymid = Ymin + fabs(Ymax - Ymin) / 2.0;
 
     Base::Vector3d bbxCenter(Xmid, Ymid, 0.0);
@@ -327,16 +328,16 @@ TechDraw::CosmeticEdge* TaskCenterLine::calcEndPoints(std::vector<std::string> f
     if (vert) {
         Base::Vector3d top(Xmid, Ymid - Yspan, 0.0);
         Base::Vector3d bottom(Xmid, Ymid + Yspan, 0.0);
-        p1 = top;
-        p2 = bottom;
+        p1 = top / scale;
+        p2 = bottom / scale;
     } else {
         Base::Vector3d left(Xmid - Xspan, Ymid, 0.0);
         Base::Vector3d right(Xmid + Xspan, Ymid, 0.0);
-        p1 = left;
-        p2 = right;
+        p1 = left / scale;
+        p2 = right / scale;
     }
 
-    result = new TechDraw::CosmeticEdge(p1,p2);
+    result = new TechDraw::CosmeticEdge(p1, p2, scale);
     App::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     result->color = ac;
@@ -437,7 +438,7 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
     : TaskDialog()
 {
     widget  = new TaskCenterLine(partFeat,page,subNames);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-centerline"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-facecenterline"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -447,7 +448,7 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
 //    : TaskDialog()
 //{
 //    widget  = new TaskCenterLine(partVP);
-//    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-centerline"),
+//    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-facecenterline"),
 //                                             widget->windowTitle(), true, 0);
 //    taskbox->groupLayout()->addWidget(widget);
 //    Content.push_back(taskbox);

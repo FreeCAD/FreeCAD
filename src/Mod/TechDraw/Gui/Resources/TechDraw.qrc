@@ -66,7 +66,7 @@
         <file>icons/actions/techdraw-point.svg</file>
         <file>icons/actions/techdraw-midpoint.svg</file>
         <file>icons/actions/techdraw-quadrant.svg</file>
-        <file>icons/actions/techdraw-centerline.svg</file>
+        <file>icons/actions/techdraw-facecenterline.svg</file>
         <file>icons/actions/techdraw-eraser.svg</file>
         <file>icons/actions/section-up.svg</file>  
         <file>icons/actions/section-down.svg</file>
@@ -145,4 +145,4 @@
         <file>translations/TechDraw_ar.qm</file>
         <file>translations/TechDraw_vi.qm</file>
     </qresource>
-</RCC> 
+</RCC>
