@@ -587,21 +587,21 @@ bool CmdTechDrawAnnotation::isActive(void)
 // TechDraw_Centerline
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawCenterLine);
+DEF_STD_CMD_A(CmdTechDrawFaceCenterLine);
 
-CmdTechDrawCenterLine::CmdTechDrawCenterLine()
-  : Command("TechDraw_CenterLine")
+CmdTechDrawFaceCenterLine::CmdTechDrawFaceCenterLine()
+  : Command("TechDraw_FaceCenterLine")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Add a centerline to a Face(s)");
     sToolTipText    = QT_TR_NOOP("Add a centerline to a Face(s)");
-    sWhatsThis      = "TechDraw_CenterLine";
+    sWhatsThis      = "TechDraw_FaceCenterLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-centerline";
+    sPixmap         = "actions/techdraw-facecenterline";
 }
 
-void CmdTechDrawCenterLine::activated(int iMsg)
+void CmdTechDrawFaceCenterLine::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
@@ -652,7 +652,7 @@ void CmdTechDrawCenterLine::activated(int iMsg)
                                                     SubNames));
 }
 
-bool CmdTechDrawCenterLine::isActive(void)
+bool CmdTechDrawFaceCenterLine::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
@@ -762,7 +762,7 @@ void CreateTechDrawCommandsAnnotate(void)
     rcCmdMgr.addCommand(new CmdTechDrawMidpoints());
     rcCmdMgr.addCommand(new CmdTechDrawQuadrant());
     rcCmdMgr.addCommand(new CmdTechDrawAnnotation());
-    rcCmdMgr.addCommand(new CmdTechDrawCenterLine());
+    rcCmdMgr.addCommand(new CmdTechDrawFaceCenterLine());
     rcCmdMgr.addCommand(new CmdTechDrawCosmeticEraser());
 }
 
