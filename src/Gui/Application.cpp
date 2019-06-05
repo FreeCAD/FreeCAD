@@ -1134,14 +1134,7 @@ void Application::tryClose(QCloseEvent * e)
             itp = d->passive.begin();
         }
 
-        // remove all documents
-        size_t cnt = d->documents.size();
-        while (d->documents.size() > 0 && cnt > 0) {
-            // destroys also the Gui document
-            It = d->documents.begin();
-            App::GetApplication().closeDocument(It->second->getDocument()->getName());
-            --cnt; // avoid infinite loop
-        }
+        App::GetApplication().closeAllDocuments();
     }
 }
 
