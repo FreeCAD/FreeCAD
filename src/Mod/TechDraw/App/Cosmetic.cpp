@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <gp_Pnt.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
@@ -37,6 +38,7 @@
 #include <App/Material.h>
 
 #include "DrawUtil.h"
+#include "GeometryObject.h"
 #include "Geometry.h"
 
 #include "Cosmetic.h"
@@ -162,18 +164,44 @@ CosmeticEdge::CosmeticEdge()
     width  = getDefEdgeWidth();
     style = getDefEdgeStyle();
     visible = true;
+
 }
 
-CosmeticEdge::CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2)
+CosmeticEdge::CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2, double scale)
 {
+//    Base:: Console().Message("CE::CE(%s, %s, %.3f) \n",
+//                             DrawUtil::formatVector(p1).c_str(),
+//                             DrawUtil::formatVector(p2).c_str(), scale);
+    p1 = p1 / scale;
+    p2 = p2 / scale;
     gp_Pnt gp1(p1.x,p1.y,p1.z);
     gp_Pnt gp2(p2.x,p2.y,p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
     geometry = TechDrawGeometry::BaseGeom::baseFactory(e);
-    geometry->geomType = GENERIC;
+    geometry->geomType = GENERIC;       //treat every CE as a line for now
     geometry->classOfEdge = ecHARD;
     geometry->visible = true;
     geometry->cosmetic = true;
+
+    linkGeom = -1;
+    color = getDefEdgeColor();
+    width  = getDefEdgeWidth();
+    style = getDefEdgeStyle();
+    visible = true;
+
+}
+
+CosmeticEdge::CosmeticEdge(TopoDS_Edge e, double scale)
+{
+//    Base:: Console().Message("CE::CE(occEdge, %.3f) \n", scale);
+    TechDrawGeometry::BaseGeom* newGeom = nullptr;
+    TopoDS_Shape s = TechDrawGeometry::scaleShape(e, scale);
+    TopoDS_Edge newEdge = TopoDS::Edge(s);
+    newGeom = TechDrawGeometry::BaseGeom::baseFactory(newEdge);
+    newGeom->geomType = GENERIC;
+    newGeom->classOfEdge = ecHARD;
+    newGeom->visible = true;
+    newGeom->cosmetic = true;
 
     linkGeom = -1;
     color = getDefEdgeColor();
@@ -182,19 +210,20 @@ CosmeticEdge::CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2)
     visible = true;
 }
 
-CosmeticEdge::CosmeticEdge(TopoDS_Edge e)
+TechDrawGeometry::BaseGeom* CosmeticEdge::scaledGeometry(double scale)
 {
-    geometry = TechDrawGeometry::BaseGeom::baseFactory(e);
-    geometry->geomType = GENERIC;
-    geometry->classOfEdge = ecHARD;
-    geometry->visible = true;
-    geometry->cosmetic = true;
-
-    linkGeom = -1;
-    color = getDefEdgeColor();
-    width  = getDefEdgeWidth();
-    style = getDefEdgeStyle();
-    visible = true;
+//    Base::Console().Message("CE::getScaledGeometry(%.3f)\n",scale);
+    TechDrawGeometry::BaseGeom* newGeom = nullptr;
+    TopoDS_Edge e = geometry->occEdge;
+    TopoDS_Shape s = TechDrawGeometry::scaleShape(e, scale);
+    TopoDS_Edge newEdge = TopoDS::Edge(s);
+    newGeom = TechDrawGeometry::BaseGeom::baseFactory(newEdge);
+    newGeom->geomType = GENERIC;          //treat all geoms as lines for now
+                                          //TODO: handle at least circles
+    newGeom->classOfEdge = ecHARD;
+    newGeom->visible = true;
+    newGeom->cosmetic = true;
+    return newGeom;
 }
 
 double CosmeticEdge::getDefEdgeWidth()
@@ -220,7 +249,10 @@ App::Color CosmeticEdge::getDefEdgeColor()
 
 int CosmeticEdge::getDefEdgeStyle()
 {
-    return 1;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    int style = hGrp->GetInt("CosmoCLStyle", 2);
+    return style;
 }
 
 std::string CosmeticEdge::toCSV(void) const
@@ -233,6 +265,7 @@ std::string CosmeticEdge::toCSV(void) const
         p2d = geometry->getEndPoint();
         end = Base::Vector3d(p2d.x, p2d.y, 0.0);
     }
+
     ss << start.x << "," <<
         start.y << "," <<
         start.z << "," <<

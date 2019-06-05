@@ -447,7 +447,6 @@ void QGIViewPart::drawViewPart()
                 if (ce != nullptr) {
                     item->setNormalColor(ce->color.asValue<QColor>());
                     item->setWidth(ce->width * lineScaleFactor);
-    //                item->setStyle((Qt::PenStyle)ce->style);
                     item->setStyle(ce->style);
                 } 
             }
@@ -472,23 +471,6 @@ void QGIViewPart::drawViewPart()
 //            dumpPath(edgeId.str().c_str(),edgePath);
          }
     }
-    // Draw Cosmetic Edges
-//    int cosmoEdgeStart = 1000;
-//    const std::vector<TechDrawGreometry::CosmeticEdge *> &cEdges = viewPart->getEdgeCosmetic();
-//    std::vector<TechDrawGreometry::CosmeticEdge *>::const_iterator itcEdge = cEdges.begin();
-//    QGIEdge* item;
-//    for(int i = 0 ; itcEdge != cEdges.end(); itcEdge++, i++) {
-//            item = new QGIEdge(cosmoEdgeStart + i);
-//            addToGroup(item);
-//            item->setPos(0.0,0.0);
-////            item->setPath(drawPainterPath(*itcEdge));  //this won't work
-//            item->setWidth((*itcEdge)->width);
-//            item->setColor((*itcEdge)->color.asValue<QColor>();
-//            item->setZValue(ZVALUE::EDGE);
-//            item->setPrettyNormal();
-//    
-//    }
-
 
     // Draw Vertexs:
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
