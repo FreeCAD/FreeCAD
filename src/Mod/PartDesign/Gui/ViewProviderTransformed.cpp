@@ -123,7 +123,7 @@ bool ViewProviderTransformed::setEdit(int ModNum)
     pcRejectedRoot->addChild(rejectedNormb); // NOTE: The code relies on the last child added here being index 6
     pcRoot->addChild(pcRejectedRoot);
 
-    recomputeFeature();
+    recomputeFeature(false);
 
     return ViewProvider::setEdit(ModNum);
 }
@@ -152,19 +152,20 @@ bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
     return ViewProvider::onDelete(s);
 }
 
-void ViewProviderTransformed::recomputeFeature(void)
+void ViewProviderTransformed::recomputeFeature(bool recompute)
 {
     PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
-    pcTransformed->recomputeFeature(true);
+    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
+        pcTransformed->recomputeFeature(true);
     const PartDesign::Transformed::rejectedMap &rejected_trsf = pcTransformed->getRejectedTransformations();
     unsigned rejected = rejected_trsf.size();
     QString msg = QString::fromLatin1("%1");
     if (rejected > 0) {
         msg = QString::fromLatin1("<font color='orange'>%1<br/></font>\r\n%2");
         if (rejected == 1)
-            msg = msg.arg(QObject::tr("One transformed shape does not intersect support"));
+            msg = msg.arg(QObject::tr("One transformed shape is cuasing error"));
         else {
-            msg = msg.arg(QObject::tr("%1 transformed shapes do not intersect support"));
+            msg = msg.arg(QObject::tr("%1 transformed shapes are causing error"));
             msg = msg.arg(rejected);
         }
     }
@@ -176,6 +177,7 @@ void ViewProviderTransformed::recomputeFeature(void)
         msg = msg.arg(QString::fromLatin1("<font color='green'>%1<br/></font>"));
         msg = msg.arg(QObject::tr("Transformation succeeded"));
     }
+    diagMessage = msg;
     signalDiagnosis(msg);
 
     // Clear all the rejected stuff

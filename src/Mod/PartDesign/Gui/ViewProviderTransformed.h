@@ -63,8 +63,11 @@ protected:
     // node for the representation of rejected repetitions
     SoGroup           * pcRejectedRoot;
 
+    QString diagMessage;
+
 public:
-    void recomputeFeature();
+    void recomputeFeature(bool recompute=true);
+    QString getMessage() const {return diagMessage;}
 };
 
 

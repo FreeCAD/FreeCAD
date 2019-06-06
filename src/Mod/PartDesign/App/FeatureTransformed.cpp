@@ -307,6 +307,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     else
                         cutShapes.push_back(shapeCopy);
                 }catch(Standard_Failure &) {
+                    rejected.emplace_back(shape,std::vector<gp_Trsf>(t,t+1));
                     std::string msg("Transformation failed ");
                     msg += sub;
                     return new App::DocumentObjectExecReturn(msg.c_str());
@@ -315,21 +316,29 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         }
 
         try {
-            if(fuseShapes.size() > 1) {
-                support.makEFuse(fuseShapes);
-                if (support.isNull())
-                    return new App::DocumentObjectExecReturn("Shape fusion failed");
+            try {
+                if(fuseShapes.size() > 1) 
+                    support.makEFuse(fuseShapes);
+                if(cutShapes.size() > 1) {
+                    cutShapes[0] = support;
+                    result.makECut(cutShapes);
+                }else
+                    result = support;
+            } catch (Standard_Failure& e) {
+                std::string msg("Boolean operation failed");
+                if (e.GetMessageString() != NULL)
+                    msg += std::string(": '") + e.GetMessageString() + "'";
+                throw Base::CADKernelError(msg.c_str());
             }
-            if(cutShapes.size() > 1) {
-                cutShapes[0] = support;
-                result.makECut(support);
-            }else
-                result = support;
-        } catch (Standard_Failure& e) {
-            std::string msg("Boolean operation failed");
-            if (e.GetMessageString() != NULL)
-                msg += std::string(": '") + e.GetMessageString() + "'";
-            return new App::DocumentObjectExecReturn(msg.c_str());
+        } catch (Base::Exception &) {
+            if(cutShapes.size()) {
+                for(auto &s : cutShapes)
+                    rejected.emplace_back(s,std::vector<gp_Trsf>());
+            } else {
+                for(auto &s : fuseShapes)
+                    rejected.emplace_back(s,std::vector<gp_Trsf>());
+            }
+            throw;
         }
         originalShapes.clear();
     }
