@@ -94,7 +94,7 @@ Action * StdCmdLinkMakeGroup::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     // add the action items
-    pcAction->addAction(QObject::tr("Plain group"));
+    pcAction->addAction(QObject::tr("Simple group"));
     pcAction->addAction(QObject::tr("Group with links"));
     pcAction->addAction(QObject::tr("Group with transform links"));
     return pcAction;
@@ -108,7 +108,7 @@ void StdCmdLinkMakeGroup::languageChange()
         return;
     ActionGroup* pcAction = qobject_cast<ActionGroup*>(_pcAction);
     QList<QAction*> acts = pcAction->actions();
-    acts[0]->setText(QObject::tr("Plain group"));
+    acts[0]->setText(QObject::tr("Simple group"));
     acts[1]->setText(QObject::tr("Group with links"));
     acts[2]->setText(QObject::tr("Group with transform links"));
 }
@@ -131,12 +131,18 @@ void StdCmdLinkMakeGroup::activated(int option) {
             objs.push_back(sel.pObject);
     }
 
+    Selection().selStackPush();
+    Selection().clearCompleteSelection();
+
     Command::openCommand("Make link group");
     try {
         std::string groupName = doc->getUniqueObjectName("LinkGroup");
         Command::doCommand(Command::Doc,
             "App.getDocument('%s').addObject('App::LinkGroup','%s')",doc->getName(),groupName.c_str());
-        if(objs.size()) {
+        if(objs.empty()) {
+            Selection().addSelection(doc->getName(),groupName.c_str());
+            Selection().selStackPush();
+        }else{
             Command::doCommand(Command::Doc,"__objs__ = []");
             for(auto obj : objs) {
                 std::string name;
@@ -167,6 +173,12 @@ void StdCmdLinkMakeGroup::activated(int option) {
             Command::doCommand(Command::Doc,"App.getDocument('%s').getObject('%s').setLink(__objs__)",
                     doc->getName(),groupName.c_str());
             Command::doCommand(Command::Doc,"del __objs__");
+
+            for(size_t i=0;i<objs.size();++i) {
+                auto name = std::to_string(i)+".";
+                Selection().addSelection(doc->getName(),groupName.c_str(),name.c_str());
+            }
+            Selection().selStackPush();
         }
         if(option!=0) {
             Command::doCommand(Command::Doc,
@@ -211,12 +223,16 @@ void StdCmdLinkMake::activated(int) {
            objs.insert(sel.pObject);
     }
 
+    Selection().selStackPush();
+    Selection().clearCompleteSelection();
+
     Command::openCommand("Make link");
     try {
         if(objs.empty()) {
             std::string name = doc->getUniqueObjectName("Link");
             Command::doCommand(Command::Doc, "App.getDocument('%s').addObject('App::Link','%s')",
                 doc->getName(),name.c_str());
+            Selection().addSelection(doc->getName(),name.c_str());
         }else{
             for(auto obj : objs) {
                 std::string name = doc->getUniqueObjectName("Link");
@@ -224,8 +240,10 @@ void StdCmdLinkMake::activated(int) {
                     "App.getDocument('%s').addObject('App::Link','%s').setLink(App.getDocument('%s').%s)",
                     doc->getName(),name.c_str(),obj->getDocument()->getName(),obj->getNameInDocument());
                 setLinkLabel(obj,doc->getName(),name.c_str());
+                Selection().addSelection(doc->getName(),name.c_str());
             }
         }
+        Selection().selStackPush();
         Command::commitCommand();
     } catch (const Base::Exception& e) {
         Command::abortCommand();
@@ -305,6 +323,9 @@ void StdCmdLinkMakeRelative::activated(int) {
         return;
     }
 
+    Selection().selStackPush();
+    Selection().clearCompleteSelection();
+
     std::string name = doc->getUniqueObjectName("Link");
     Command::openCommand("Make link sub");
     try {
@@ -315,6 +336,8 @@ void StdCmdLinkMakeRelative::activated(int) {
         auto link = owner->getDocument()->getObject(name.c_str());
         FCMD_OBJ_CMD(link,"LinkTransform = True");
         setLinkLabel(obj,doc->getName(),name.c_str());
+        Selection().addSelection(doc->getName(),name.c_str());
+        Selection().selStackPush();
         Command::commitCommand();
     } catch (const Base::Exception& e) {
         Command::abortCommand();
