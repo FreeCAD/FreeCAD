@@ -1023,7 +1023,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             nonpositive_jacobian_elements = sorted(nonpositive_jacobian_elements)
             nonpositive_jacobian_elenodes = sorted(nonpositive_jacobian_elenodes)
             command_for_nonposjacnodes = (
-                'nonpositive_jacobian_elenodes = '
+                'nonpositive_jacobian_elenodes = {}'
                 .format(nonpositive_jacobian_elenodes)
             )
             command_to_highlight = (
