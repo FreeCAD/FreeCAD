@@ -756,9 +756,10 @@ void TreeWidget::updateStatus(bool delay) {
 }
 
 void TreeWidget::_updateStatus(bool delay) {
-    if(!delay) 
-        onUpdateStatus();
-    else if(!statusTimer->isActive()) {
+    if(!delay) {
+        if(statusTimer->isActive() || ChangedObjects.size() || NewObjects.size())
+            onUpdateStatus();
+    } else if(!statusTimer->isActive()) {
         int timeout = FC_TREEPARAM(StatusTimeout);
         if (timeout<0)
             timeout = 1;
@@ -2396,8 +2397,7 @@ void TreeWidget::scrollItemToTop()
         if(!tree->isConnectionAttached()) 
             continue;
 
-        if(tree->statusTimer->isActive())
-            tree->_updateStatus(false);
+        tree->_updateStatus(false);
 
         if(doc && Gui::Selection().hasSelection(doc->getDocument()->getName(),false)) {
             auto it = tree->DocumentMap.find(doc);
@@ -2423,8 +2423,7 @@ void TreeWidget::scrollItemToTop()
             tree->blockConnection(false);
         }
         tree->selectTimer->stop();
-        if(tree->statusTimer->isActive())
-            tree->_updateStatus(false);
+        tree->_updateStatus(false);
     }
 }
 
@@ -2618,8 +2617,7 @@ void TreeWidget::onItemSelectionChanged ()
 }
 
 void TreeWidget::onSelectTimer() {
-    if(statusTimer->isActive())
-        _updateStatus(false);
+    _updateStatus(false);
 
     bool syncSelect = FC_TREEPARAM(SyncSelection);
     this->blockConnection(true);
@@ -3450,6 +3448,7 @@ void TreeWidget::updateChildren(App::DocumentObject *obj,
 void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj, 
     const Gui::HighlightMode& high, bool set, const App::DocumentObject *parent, const char *subname)
 {
+    getTree()->_updateStatus(false);
     if(parent && parent->getDocument()!=document()->getDocument()) {
         auto it = getTree()->DocumentMap.find(Application::Instance->getDocument(parent->getDocument()));
         if(it!=getTree()->DocumentMap.end())
@@ -3563,6 +3562,8 @@ void DocumentItem::restoreItemExpansion(const ExpandInfoPtr &info, DocumentObjec
 void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
         const Gui::TreeItemMode& mode, const App::DocumentObject *parent, const char *subname)
 {
+    getTree()->_updateStatus(false);
+
     if((mode==Gui::ExpandItem||mode==Gui::ExpandPath) 
             && obj.getDocument()->getDocument()->testStatus(App::Document::Restoring)) 
     {
@@ -3642,6 +3643,7 @@ void DocumentItem::slotScrollToObject(const Gui::ViewProviderDocumentObject& obj
     auto item = it->second->rootItem;
     if(!item)
         item = *it->second->items.begin();
+    getTree()->_updateStatus(false);
     getTree()->scrollToItem(item);
 }
 
@@ -3661,6 +3663,7 @@ void DocumentItem::slotRecomputedObject(const App::DocumentObject &obj) {
 void DocumentItem::slotRecomputed(const App::Document &, const std::vector<App::DocumentObject*> &objs) {
     auto tree = getTree();
     bool scrolled = false;
+    tree->_updateStatus(false);
     for(auto obj : objs) {
         if(obj->isValid()) 
             continue;
