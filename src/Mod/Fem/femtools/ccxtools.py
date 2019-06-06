@@ -1024,7 +1024,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             nonpositive_jacobian_elenodes = sorted(nonpositive_jacobian_elenodes)
             command_for_nonposjacnodes = (
                 'nonpositive_jacobian_elenodes = '
-                .fomat(nonpositive_jacobian_elenodes)
+                .format(nonpositive_jacobian_elenodes)
             )
             command_to_highlight = (
                 "Gui.ActiveDocument.{}.HighlightedNodes = nonpositive_jacobian_elenodes"
