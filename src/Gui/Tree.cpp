@@ -138,6 +138,7 @@ void TreeParams::onSyncViewChanged() {}
 void TreeParams::onSyncPlacementChanged() {}
 void TreeParams::onRecordSelectionChanged() {}
 void TreeParams::onRecomputeOnDropChanged() {}
+void TreeParams::onKeepRootOrderChanged() {}
 
 void TreeParams::onDocumentModeChanged() {
     App::GetApplication().setActiveDocument(App::GetApplication().getActiveDocument());
@@ -594,6 +595,8 @@ void TreeWidget::checkTopParent(App::DocumentObject *&obj, std::string &subname)
         auto tree = *Instances.begin();
         auto it = tree->DocumentMap.find(Application::Instance->getDocument(obj->getDocument()));
         if(it != tree->DocumentMap.end()) {
+            if(tree->statusTimer->isActive())
+                tree->_updateStatus(false);
             auto parent = it->second->getTopParent(obj,subname);
             if(parent)
                 obj = parent;
@@ -2948,6 +2951,8 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     if(!parent || parent==this) {
         parent = this;
         data->rootItem = item;
+        if(index<0)
+            index = findRootIndex(obj.getObject());
     }
     if(index<0)
         parent->addChild(item);
@@ -3241,7 +3246,11 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
             DocumentObjectItem* childItem = static_cast<DocumentObjectItem*>(ci);
             if(childItem->requiredAtRoot()) {
                 item->removeChild(childItem);
-                this->addChild(childItem);
+                auto index = findRootIndex(childItem->object()->getObject());
+                if(index>=0)
+                    this->insertChild(index,childItem);
+                else
+                    this->addChild(childItem);
                 assert(childItem->parent()==this);
                 if(checkHidden)
                     updateItemsVisibility(childItem,false);
@@ -3256,6 +3265,68 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
     }
     if(updated) 
         getTree()->_updateStatus(delay);
+}
+
+int DocumentItem::findRootIndex(App::DocumentObject *childObj) {
+    if(!FC_TREEPARAM(KeepRootOrder) || !childObj || !childObj->getNameInDocument())
+        return -1;
+
+    // object id is monotonically increasing, so use this as a hint to insert
+    // object back so that we can have a stable order in root level.
+
+    int count = this->childCount();
+    if(!count)
+        return -1;
+
+    int first,last;
+
+    // find the last item
+    for(last=count-1;last>=0;--last) {
+        auto citem = this->child(last);
+        if(citem->type() == TreeWidget::ObjectType) {
+            auto obj = static_cast<DocumentObjectItem*>(citem)->object()->getObject();
+            if(obj->getID()<=childObj->getID())
+                return last+1;
+            break;
+        }
+    }
+
+    // find the first item
+    for(first=0;first<count;++first) {
+        auto citem = this->child(first);
+        if(citem->type() == TreeWidget::ObjectType) {
+            auto obj = static_cast<DocumentObjectItem*>(citem)->object()->getObject();
+            if(obj->getID()>=childObj->getID())
+                return first;
+            break;
+        }
+    }
+
+    // now do a binary search to find the lower bound, assuming the root level
+    // object is already in order
+    count = last-first;
+    int pos;
+    while (count > 0) {
+        int step = count / 2; 
+        pos = first + step;
+        for(;pos<=last;++pos) {
+            auto citem = this->child(pos);
+            if(citem->type() != TreeWidget::ObjectType)
+                continue;
+            auto obj = static_cast<DocumentObjectItem*>(citem)->object()->getObject();
+            if(obj->getID()<childObj->getID()) {
+                first = ++pos;
+                count -= step+1;
+            } else
+                count = step;
+            break;
+        }
+        if(pos>last)
+            return -1;
+    }
+    if(first>last)
+        return -1;
+    return first;
 }
 
 void TreeWidget::slotChangeObject(

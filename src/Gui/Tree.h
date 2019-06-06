@@ -310,6 +310,8 @@ protected:
                     QTreeWidgetItem *parent=0, int index=-1, 
                     DocumentObjectDataPtr ptrs = DocumentObjectDataPtr());
 
+    int findRootIndex(App::DocumentObject *childObj);
+
     DocumentObjectItem *findItemByObject(bool sync, 
             App::DocumentObject *obj, const char *subname, bool select=false);
 
@@ -491,6 +493,7 @@ public:
     FC_TREEPARAM_DEF(PreSelectionTimeout,int,Int,500) \
     FC_TREEPARAM_DEF(PreSelectionDelay,int,Int,700) \
     FC_TREEPARAM_DEF(RecomputeOnDrop,bool,Bool,true) \
+    FC_TREEPARAM_DEF(KeepRootOrder,bool,Bool,true) \
 
 #define FC_TREEPARAM_FUNCS(_name,_type,_Type,_default) \
     _type _name() const {return _##_name;} \
