@@ -198,9 +198,9 @@ void QGIDatumLabel::setFont(QFont f)
 {
     m_dimText->setFont(f);
     QFont tFont(f);
-    double fontSize = f.pointSizeF();
+    double fontSize = f.pixelSize();
     double tolAdj = getTolAdjust();
-    tFont.setPointSizeF(fontSize * tolAdj);
+    tFont.setPixelSize((int) (fontSize * tolAdj));
     m_tolText->setFont(tFont);
 }
 
@@ -429,7 +429,7 @@ void QGIViewDimension::updateDim(bool obtuse)
     
     QFont font = datumLabel->getFont();
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
-    font.setPointSizeF(calculateFontPointSizeF(this, vp->Fontsize.getValue()));
+    font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
     datumLabel->setFont(font);
 
     prepareGeometryChange();

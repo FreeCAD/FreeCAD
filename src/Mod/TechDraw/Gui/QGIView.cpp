@@ -98,7 +98,7 @@ QGIView::QGIView()
     m_pen.setColor(m_colCurrent);
 
     //Border/Label styling
-    m_font.setPointSizeF(calculateFontPointSizeF(getPrefFontSize()));
+    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
 
     m_decorPen.setStyle(Qt::DashLine);
     m_decorPen.setWidth(0); // 0 => 1px "cosmetic pen"
@@ -430,7 +430,7 @@ void QGIView::drawCaption()
     QRectF displayArea = customChildrenBoundingRect();
     m_caption->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
-    m_font.setPointSizeF(calculateFontPointSizeF(getPrefFontSize()));
+    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
     m_caption->setFont(m_font);
     QString captionStr = QString::fromUtf8(getViewObject()->Caption.getValue());
     m_caption->setPlainText(captionStr);
@@ -471,7 +471,7 @@ void QGIView::drawBorder()
 
     m_label->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
-    m_font.setPointSizeF(calculateFontPointSizeF(getPrefFontSize()));
+    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
 
     m_label->setFont(m_font);
     QString labelStr = QString::fromUtf8(getViewObject()->Label.getValue());
@@ -688,30 +688,11 @@ double QGIView::getDimFontSize()
     return hGrp->GetFloat("FontSize", DefaultFontSizeInMM);
 }
 
-double QGIView::calculateFontPointSizeF(const QGraphicsItem *item, double sizeInMillimetres)
+int QGIView::calculateFontPixelSize(double sizeInMillimetres)
 {
-    const QWidget *widget = MDIViewPage::getFromScene(item->scene());
-    if (widget == nullptr && !QApplication::topLevelWidgets().isEmpty()) {
-        // Fallback to some top level window if we are not assigned to a scene/widget yet
-        widget = QApplication::topLevelWidgets().first();
-    }
-
-    double logicalDPI = 96.0; // This is the most common value in PC world
-    if (widget != nullptr) {
-        logicalDPI = widget->logicalDpiY();
-    }
-
-    // Now calculate the correct font size to be used by a QGraphicsTextItem:
-    // 1) Start with font size in mm.
-    // 2) Convert it to "pixels" via Rex::GuiX().
-    // 3) Convert "pixels" to inches dividing them by DPI.
-    // 4) Convert inches to points - there are exactly 72 points to one inch.
-    return 72.0*Rez::guiX(sizeInMillimetres)/logicalDPI;
-}
-
-double QGIView::calculateFontPointSizeF(double sizeInMillimetres) const
-{
-    return calculateFontPointSizeF(this, sizeInMillimetres);
+    // Calculate font size in pixels by using resolution conversion
+    // and round to nearest integer
+    return (int) (Rez::guiX(sizeInMillimetres) + 0.5);
 }
 
 const double QGIView::DefaultFontSizeInMM = 5.0;
