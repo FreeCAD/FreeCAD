@@ -15,6 +15,7 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
+    ${QT_QTXMLPATTERNS_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
 
