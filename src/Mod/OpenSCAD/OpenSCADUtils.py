@@ -42,6 +42,8 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, None)
 
 import io
+import sys
+PY2 = sys.version_info.major == 2
 
 try:
     import FreeCAD
@@ -144,18 +146,23 @@ def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=Fals
     import FreeCAD,os,subprocess,tempfile,time
     def check_output2(*args,**kwargs):
         kwargs.update({'stdout':subprocess.PIPE,'stderr':subprocess.PIPE})
-        p=subprocess.Popen(*args,**kwargs)
+        if PY2:
+            p=subprocess.Popen(*args)
+        else:
+            p=subprocess.Popen(*args,**kwargs)
         stdoutd,stderrd = p.communicate()
-        stdoutd = stdoutd.decode("utf8")
-        stderrd = stderrd.decode("utf8")
+        if not PY2:
+            stdoutd = stdoutd.decode("utf8")
+            stderrd = stderrd.decode("utf8")
         if p.returncode != 0:
             raise OpenSCADError('%s %s\n' % (stdoutd.strip(),stderrd.strip()))
             #raise Exception,'stdout %s\n stderr%s' %(stdoutd,stderrd)
-        if stderrd.strip():
-            FreeCAD.Console.PrintWarning(stderrd+u'\n')
-        if stdoutd.strip():
-            FreeCAD.Console.PrintMessage(stdoutd+u'\n')
-            return stdoutd
+        if not PY2:
+            if stderrd.strip():
+                FreeCAD.Console.PrintWarning(stderrd+u'\n')
+            if stdoutd.strip():
+                FreeCAD.Console.PrintMessage(stdoutd+u'\n')
+                return stdoutd
 
     osfilename = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
@@ -182,7 +189,10 @@ def callopenscadstring(scadstr,outputext='csg'):
     dir1=tempfile.gettempdir()
     inputfilename=os.path.join(dir1,'%s.scad' % next(tempfilenamegen))
     inputfile = io.open(inputfilename,'w', encoding="utf8")
-    inputfile.write(scadstr)
+    if PY2:
+        inputfile.write(scadstr.decode('utf8'))
+    else:
+        inputfile.write(scadstr)
     inputfile.close()
     outputfilename = callopenscad(inputfilename,outputext=outputext,\
         keepname=True)
