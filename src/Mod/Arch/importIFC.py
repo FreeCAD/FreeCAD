@@ -50,7 +50,6 @@ from DraftGeomUtils import vec
 #  This module provides tools to import and export IFC files.
 
 DEBUG = False # Set to True to see debug messages. Otherwise, totally silent
-ADDDEFAULTSTOREY = False # If True, an exported file will ALWAYS have at least one storey
 ZOOMOUT = True # Set to False to not zoom extents after import
 
 if open.__module__ in ['__builtin__','io']:
@@ -229,6 +228,7 @@ def getPreferences():
     global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
     global FORCE_BREP, IMPORT_PROPERTIES, STORE_UID, SERIALIZE
     global SPLIT_LAYERS, EXPORT_2D, FULL_PARAMETRIC, FITVIEW_ONIMPORT
+    global ADD_DEFAULT_SITE, ADD_DEFAULT_STOREY
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
@@ -256,6 +256,8 @@ def getPreferences():
     EXPORT_2D = p.GetBool("ifcExport2D",True)
     FULL_PARAMETRIC = p.GetBool("IfcExportFreeCADProperties",False)
     FITVIEW_ONIMPORT = p.GetBool("ifcFitViewOnImport",False)
+    ADD_DEFAULT_SITE = p.GetBool("IfcAddDefaultSite",False)
+    ADD_DEFAULT_STOREY = p.GetBool("IfcAddDefaultStorey",False)
 
 # ************************************************************************************************
 # ********** open and import IFC ****************
@@ -2211,7 +2213,7 @@ def export(exportList,filename):
                     childfloors
                 )
             buildings.append(b)
-            if not defaulthost and not ADDDEFAULTSTOREY:
+            if not defaulthost and not ADD_DEFAULT_STOREY:
                 defaulthost = b
 
     # sites
@@ -2231,29 +2233,31 @@ def export(exportList,filename):
         sites.append(products[site.Name])
 
     if not sites:
-        if DEBUG: print("No site found. Adding default site")
-        sites = [ifcfile.createIfcSite(
+        if ADD_DEFAULT_SITE:
+            if DEBUG: print("No site found. Adding default site")
+            sites = [ifcfile.createIfcSite(
+                ifcopenshell.guid.new(),
+                history,"Default Site",
+                '',
+                None,
+                None,
+                None,
+                None,
+                "ELEMENT",
+                None,
+                None,
+                None,
+                None,
+                None
+            )]
+    if sites:
+        ifcfile.createIfcRelAggregates(
             ifcopenshell.guid.new(),
-            history,"Default Site",
+            history,
+            'ProjectLink',
             '',
-            None,
-            None,
-            None,
-            None,
-            "ELEMENT",
-            None,
-            None,
-            None,
-            None,
-            None
-        )]
-    ifcfile.createIfcRelAggregates(
-        ifcopenshell.guid.new(),
-        history,
-        'ProjectLink',
-        '',
-        project,sites
-    )
+            project,sites
+        )
     if not buildings:
         if DEBUG: print("No building found. Adding default building")
         buildings = [ifcfile.createIfcBuilding(
@@ -2270,6 +2274,14 @@ def export(exportList,filename):
             None,
             None
         )]
+        if buildings and (not sites):
+            ifcfile.createIfcRelAggregates(
+                ifcopenshell.guid.new(),
+                history,
+                'ProjectLink',
+                '',
+                project,buildings
+            )
         if floors:
             ifcfile.createIfcRelAggregates(
                 ifcopenshell.guid.new(),
@@ -2278,14 +2290,15 @@ def export(exportList,filename):
                 '',
                 buildings[0],floors
             )
-    ifcfile.createIfcRelAggregates(
-        ifcopenshell.guid.new(),
-        history,
-        'SiteLink',
-        '',
-        sites[0],
-        buildings
-    )
+    if sites and buildings:
+        ifcfile.createIfcRelAggregates(
+            ifcopenshell.guid.new(),
+            history,
+            'SiteLink',
+            '',
+            sites[0],
+            buildings
+        )
     untreated = []
     for k,v in products.items():
         if not(k in treated):
