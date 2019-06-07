@@ -304,6 +304,8 @@ add_library(FreeCADApp SHARED ${FreeCADApp_SRCS})
 
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
 
+add_dependencies(FreeCADApp fc_version)
+
 SET_BIN_DIR(FreeCADApp FreeCADApp)
 
 if(WIN32)
