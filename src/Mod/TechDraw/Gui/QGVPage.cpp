@@ -43,6 +43,9 @@
 #include <cmath>
 #endif
 
+#include <QXmlQuery>
+#include <QXmlResultItems>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Material.h>
@@ -72,6 +75,7 @@
 #include <Mod/TechDraw/App/DrawViewImage.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
+#include <Mod/TechDraw/App/QDomNodeModel.h>
 
 #include "Rez.h"
 #include "QGIDrawingTemplate.h"
@@ -740,16 +744,20 @@ void QGVPage::saveSvg(QString filename)
                              docName;
 
     QSvgGenerator svgGen;
-    QTemporaryFile* tempFile = new QTemporaryFile();;
-    svgGen.setOutputDevice(tempFile);
-    svgGen.setSize(QSize((int) Rez::guiX(page->getPageWidth()), (int) Rez::guiX(page->getPageHeight())));   //expects pixels, gets mm
+    QTemporaryFile temporaryFile;
+    svgGen.setOutputDevice(&temporaryFile);
+
+    // Set resolution in DPI. Use the actual one, i.e. Rez::guiX(inch)
+    svgGen.setResolution(Rez::guiX(25.4));
+
+    // Set size in pixels, which Qt recomputes using DPI to mm.
+    int pixelWidth = Rez::guiX(page->getPageWidth());
+    int pixelHeight = Rez::guiX(page->getPageHeight());
+    svgGen.setSize(QSize(pixelWidth, pixelHeight));
+
     //"By default this property is set to QSize(-1, -1), which indicates that the generator should not output
     // the width and height attributes of the <svg> element."  >> but Inkscape won't read it without size info??
-    svgGen.setViewBox(QRect(0, 0, Rez::guiX(page->getPageWidth()), Rez::guiX(page->getPageHeight())));
-
-    // Set resolution in DPI. To keep text dimensions as they are on screen,
-    // use the very same resolution the screen paint device reports.
-    svgGen.setResolution(MDIViewPage::getFromScene(scene())->logicalDpiY());
+    svgGen.setViewBox(QRect(0, 0, pixelWidth, pixelHeight));
 
     svgGen.setTitle(QObject::tr("FreeCAD SVG Export"));
     svgGen.setDescription(svgDescription);
@@ -760,6 +768,17 @@ void QGVPage::saveSvg(QString filename)
     m_vpPage->setFrameState(false);
     m_vpPage->setTemplateMarkers(false);
     toggleHatch(false);
+
+    // Here we temporarily hide the page template, because Qt would otherwise convert the SVG template
+    // texts into series of paths, making the later document edits practically unfeasible.
+    // We will insert the SVG template ourselves in the final XML postprocessing operation.
+    QGISVGTemplate *svgTemplate = dynamic_cast<QGISVGTemplate *>(pageTemplate);
+    bool templateVisible = false;
+    if (svgTemplate) {
+        templateVisible = svgTemplate->isVisible();
+        svgTemplate->hide();
+    }
+
     refreshViews();
     viewport()->repaint();
 
@@ -778,56 +797,119 @@ void QGVPage::saveSvg(QString filename)
     m_vpPage->setFrameState(saveState);
     m_vpPage->setTemplateMarkers(saveState);
     toggleHatch(true);
+    if (templateVisible) {
+        svgTemplate->show();
+    }
+
     refreshViews();
     viewport()->repaint();
 
-    tempFile->close();
-    postProcessXml(tempFile, filename, pageName);
+    temporaryFile.close();
+    postProcessXml(temporaryFile, filename, pageName);
 }
 
-void QGVPage::postProcessXml(QTemporaryFile* tempFile, QString fileName, QString pageName)
+void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QString pageName)
 {
-    QDomDocument doc(QString::fromUtf8("SvgDoc"));
-    QFile file(tempFile->fileName());
+    QDomDocument exportDoc(QString::fromUtf8("SvgDoc"));
+    QFile file(temporaryFile.fileName());
     if (!file.open(QIODevice::ReadOnly)) {
         Base::Console().Message("QGVPage::ppsvg - tempfile open error\n");
         return;
     }
-    if (!doc.setContent(&file)) {
+    if (!exportDoc.setContent(&file)) {
         Base::Console().Message("QGVPage::ppsvg - xml error\n");
         file.close();
         return;
     }
     file.close();
 
-    QDomElement docElem = doc.documentElement();          //root <svg>
+    QDomElement exportDocElem = exportDoc.documentElement();          //root <svg>
 
-    QDomNode n = docElem.firstChild();
-    bool firstGroupFound = false;
-    QString groupTag = QString::fromUtf8("g");
-    QDomElement e;
-    while(!n.isNull()) {
-        e = n.toElement();                          // try to convert the node to an element.
-        if(!e.isNull()) {
-            if (!firstGroupFound) {
-                if (e.tagName() == groupTag) {
-                    firstGroupFound = true;
-                    break;
+    QXmlQuery query(QXmlQuery::XQuery10);
+    QDomNodeModel model(query.namePool(), exportDoc);
+    query.setFocus(QXmlItem(model.fromDomNode(exportDocElem)));
+
+    // XPath query to select first <g> node as direct <svg> element descendant
+    query.setQuery(QString::fromUtf8(
+        "declare default element namespace \"" SVG_NS_URI "\"; "
+        "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
+        "/svg/g[1]"));
+
+    QXmlResultItems queryResult;
+    query.evaluateTo(&queryResult);
+
+    // Insert Freecad SVG namespace into namespace declarations
+    exportDocElem.setAttribute(QString::fromUtf8("xmlns:freecad"),
+                               QString::fromUtf8(FREECAD_SVG_NS_URI));
+
+    // Set the first group's id to page name
+    QDomElement g;
+    if (!queryResult.next().isNull()) {
+        g = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
+        g.setAttribute(QString::fromUtf8("id"), pageName);
+    }
+
+    // Now insert our template
+    QGISVGTemplate *svgTemplate = dynamic_cast<QGISVGTemplate *>(pageTemplate);
+    if (svgTemplate) {
+        DrawSVGTemplate *drawTemplate = svgTemplate->getSVGTemplate();
+        if (drawTemplate) {
+            QFile templateResultFile(QString::fromUtf8(drawTemplate->PageResult.getValue()));
+            if (templateResultFile.open(QIODevice::ReadOnly)) {
+                QDomDocument templateResultDoc(QString::fromUtf8("SvgDoc"));
+                if (templateResultDoc.setContent(&templateResultFile)) {
+                    QDomElement templateDocElem = templateResultDoc.documentElement();
+
+                    // Insert the template into a new group with id set to template name
+                    QDomElement groupWrapper = exportDoc.createElement(QString::fromUtf8("g"));
+                    Base::FileInfo fi(drawTemplate->Template.getValue());
+                    groupWrapper.setAttribute(QString::fromUtf8("id"),
+                                              QString::fromUtf8(fi.fileName().c_str()));
+                    groupWrapper.setAttribute(QString::fromUtf8("style"),
+                                              QString::fromUtf8("stroke: none;"));
+
+                    // Scale the template group correctly
+                    groupWrapper.setAttribute(QString::fromUtf8("transform"),
+                        QString().sprintf("scale(%f, %f)", Rez::guiX(1.0), Rez::guiX(1.0)));
+
+                    // Finally, transfer all template document child nodes under the wrapper group
+                    while (!templateDocElem.firstChild().isNull()) {
+                        groupWrapper.appendChild(templateDocElem.firstChild());
+                    }
+
+                    if (!g.isNull()) {
+                        g.insertBefore(groupWrapper, QDomNode());
+                    }
+                    else {
+                        exportDocElem.insertBefore(groupWrapper, QDomNode());
+                    }
                 }
             }
         }
-        n = n.nextSibling();
     }
-    e.setAttribute(QString::fromUtf8("id"),pageName);
 
+    // As icing on the cake, get rid of the empty <g>'s Qt SVG generator painting inserts.
+    // XPath query to select any <g> element anywhere with no child nodes whatsoever
+    query.setQuery(QString::fromUtf8(
+        "declare default element namespace \"" SVG_NS_URI "\"; "
+        "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
+        "//g[not(*)]"));
+
+    query.evaluateTo(&queryResult);
+    while (!queryResult.next().isNull()) {
+        g = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
+        g.parentNode().removeChild(g);
+    }
+
+    // Time to save our product
     QFile outFile( fileName );
     if( !outFile.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
         Base::Console().Message("QGVP::ppxml - failed to open file for writing: %s\n",qPrintable(fileName) );
     }
+
     QTextStream stream( &outFile );
-    stream << doc.toString();
+    stream << exportDoc.toString();
     outFile.close();
-    delete tempFile;
 }
 
 void QGVPage::paintEvent(QPaintEvent *event)
