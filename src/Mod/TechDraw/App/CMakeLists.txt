@@ -17,6 +17,7 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${QT_QTCORE_INCLUDE_DIR}
+    ${QT_QTXMLPATTERNS_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
 
@@ -99,6 +100,8 @@ SET(Draw_SRCS
     DrawLeaderLine.h
     DrawRichAnno.cpp
     DrawRichAnno.h
+    QDomNodeModel.cpp
+    QDomNodeModel.h
     )
 
 SET(TechDraw_SRCS
@@ -177,7 +180,7 @@ endif(FREECAD_USE_PCH)
 
 add_library(TechDraw SHARED ${TechDraw_SRCS} ${Draw_SRCS} ${TechDrawAlgos_SRCS}
                            ${Geometry_SRCS} ${Python_SRCS})
-target_link_libraries(TechDraw ${TechDrawLIBS};${QT_QTXML_LIBRARY};${TechDraw})
+target_link_libraries(TechDraw ${TechDrawLIBS};${QT_QTXML_LIBRARY};${QT_QTXMLPATTERNS_LIBRARY};${TechDraw})
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD
