@@ -299,18 +299,48 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
         for(auto &v : _PropChangeMap) {
             auto &data = v.second;
             auto prop = const_cast<Property*>(v.first);
-            if(!pcObj->getPropertyName(prop)) {
-                if(!Forward || v.second.name.empty())
-                    continue;
-                prop = pcObj->addDynamicProperty(
-                        data.property->getTypeId().getName(),
-                        v.second.name.c_str(), data.group.c_str(), data.doc.c_str(),
-                        data.attr, data.readonly, data.hidden);
-                if(!prop)
-                    continue;
-                prop->setStatusValue(data.property->getStatus());
-            }else if(!Forward && v.second.name.size()) {
+
+            if(!data.property) {
+                // here means we are undoing/redoing and property add operation
                 pcObj->removeDynamicProperty(v.second.name.c_str());
+                continue;
+            }
+
+            // getPropertyName() is specially coded to be safe even if prop has
+            // been destroies. We must prepare for the case where user removed
+            // a dynamic property but does not recordered as transaction.
+            auto name = pcObj->getPropertyName(prop);
+            if(!name) {
+                // Here means the original property is not found, probably removed
+                if(v.second.name.empty()) {
+                    // not a dynamic property, nothing to do
+                    continue;
+                }
+
+                // It is possible for the dynamic property to be removed and
+                // restored. But since restoring property is actually creating
+                // a new property, the property key inside redo stack will not
+                // match. So we search by name first.
+                prop = pcObj->getDynamicPropertyByName(v.second.name.c_str());
+                if(!prop) {
+                    // Still not found, re-create the property
+                    prop = pcObj->addDynamicProperty(
+                            data.property->getTypeId().getName(),
+                            v.second.name.c_str(), data.group.c_str(), data.doc.c_str(),
+                            data.attr, data.readonly, data.hidden);
+                    if(!prop)
+                        continue;
+                    prop->setStatusValue(data.property->getStatus());
+                }
+            }
+            // Because we now allow undo/redo dynamic property adding/removing,
+            // we have to enforce property type checking before calling Copy/Paste.
+            if(data.property->getTypeId() != prop->getTypeId()) {
+                FC_WARN("Cannot " << (Forward?"redo":"undo") 
+                        << " change of property " << prop->getName()
+                        << " because of type change: "
+                        << data.property->getTypeId().getName()
+                        << " -> " << prop->getTypeId().getName());
                 continue;
             }
             prop->Paste(*data.property);
@@ -320,9 +350,12 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
 
 void TransactionObject::setProperty(const Property* pcProp)
 {
-    auto pos = _PropChangeMap.find(pcProp);
-    if (pos == _PropChangeMap.end())
-        _PropChangeMap.emplace(pcProp,pcProp->Copy());
+    auto &data = _PropChangeMap[pcProp];
+    if(!data.property && data.name.empty()) {
+        data = pcProp->getContainer()->getDynamicPropertyData(pcProp);
+        data.property = pcProp->Copy();
+        data.property->setStatusValue(pcProp->getStatus());
+    }
 }
 
 void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
@@ -333,8 +366,9 @@ void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
 
     auto &data = _PropChangeMap[pcProp];
     if(data.name.size()) {
-        if(!add) {
-            delete data.property;
+        if(!add && !data.property) {
+            // this means add and remove the same property inside a single
+            // transaction, so they cancel each other out.
             _PropChangeMap.erase(pcProp);
         }
         return;
@@ -344,8 +378,12 @@ void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
         data.property = 0;
     }
     data = pcProp->getContainer()->getDynamicPropertyData(pcProp);
-    data.property = pcProp->Copy();
-    data.property->setStatusValue(pcProp->getStatus());
+    if(add) 
+        data.property = 0;
+    else {
+        data.property = pcProp->Copy();
+        data.property->setStatusValue(pcProp->getStatus());
+    }
 }
 
 unsigned int TransactionObject::getMemSize (void) const
