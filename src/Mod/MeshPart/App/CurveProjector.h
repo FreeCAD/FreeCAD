@@ -192,6 +192,10 @@ public:
      */
     void projectParallelToMesh (const TopoDS_Shape &aShape, const Base::Vector3f& dir, std::vector<PolyLine>& rPolyLines) const;
     /**
+     * Project all polylines onto the mesh using parallel projection.
+     */
+    void projectParallelToMesh (const std::vector<PolyLine>& aEdges, const Base::Vector3f& dir, std::vector<PolyLine>& rPolyLines) const;
+    /**
      * Cuts the mesh at the curve defined by \a aShape. This method call @ref projectToMesh() to get the
      * split the facet at the found points. @see projectToMesh() for more details.
      */
