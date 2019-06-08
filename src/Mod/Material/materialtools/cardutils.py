@@ -146,7 +146,14 @@ def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon, template=False)
     # duplicates are indicated on equality of mat dict
     # TODO if the unit is different two cards would be different too
     for a_path in dir_path_list:
-        mat_dict = read(a_path)
+        try:
+            mat_dict = read(a_path)
+        except:
+            FreeCAD.Console.PrintError(
+                'Error on reading card data. The card data will be empty for card:\n{}\n'
+                .format(a_path)
+            )
+            mat_dict = {}
         card_name = os.path.splitext(os.path.basename(a_path))[0]
         if (card_name == 'TEMPLATE') and (template is False):
             continue
