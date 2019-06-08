@@ -41,7 +41,8 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 175};
     int type() const { return Type;}
-    QRectF boundingRect() const;
+    virtual QRectF boundingRect() const override;
+    virtual QPainterPath shape() const override;
 
 public:
     void draw();
@@ -53,6 +54,7 @@ public:
 
 protected:
     //QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    double getEdgeFuzz(void) const;
 
 
 private:
