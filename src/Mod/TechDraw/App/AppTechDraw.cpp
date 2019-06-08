@@ -97,6 +97,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawViewImage       ::init();
 
    // Python Types
+    TechDraw::DrawPagePython      ::init();
     TechDraw::DrawViewPython      ::init();
     TechDraw::DrawViewPartPython  ::init();
     TechDraw::DrawViewMultiPython  ::init();
