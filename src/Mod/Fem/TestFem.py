@@ -117,6 +117,7 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_inp"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_unv"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_vkt"
+./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_yml"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_z88"
 ./bin/FreeCADCmd --run-test "femtest.testobject.TestObjectCreate.test_femobjects_make"
 ./bin/FreeCADCmd --run-test "femtest.testobject.TestObjectType.test_femobjects_type"
@@ -184,6 +185,9 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.t
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshEleTetra10.test_tetra10_vkt"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshEleTetra10.test_tetra10_yml"))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshEleTetra10.test_tetra10_z88"))
