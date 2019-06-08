@@ -114,7 +114,6 @@ def read(filename):
         f = pythonopen(filename)
     d = {}
     d["CardName"] = card_name_file  # CardName is the MatCard file name
-    ln = 0
     for ln, line in enumerate(f):
         ln += 1  # enumerate starts with 0, but we would like to have the real line number
         if line.startswith('#'):
