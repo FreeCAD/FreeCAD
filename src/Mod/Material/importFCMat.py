@@ -101,6 +101,8 @@ def decode(name):
 # Line5: FreeCAD version info or empty
 def read(filename):
     "reads a FCMat file and returns a dictionary from it"
+    # the reader should return a dictionary in any case even if the file 
+    # has problems, a empty dict shuld be returned un such case
     if isinstance(filename, unicode):
         if sys.version_info.major < 3:
             filename = filename.encode(sys.getfilesystemencoding())
@@ -113,8 +115,14 @@ def read(filename):
     d = {}
     d["CardName"] = card_name_file  # CardName is the MatCard file name
     ln = 0
-    for line in f:
-        if ln == 0:
+    for ln, line in enumerate(f):
+        ln += 1  # enumerate starts with 0, but we would like to have the real line number
+        if line.startswith('#'):
+            # a # is assumed to be a comment which is ignored
+            continue
+        # the use of line number is not smart for a data model
+        # a wrong user edit could break the file
+        if line.startswith(';') and ln == 0:
             v = line.split(";")[1].strip()  # Line 1
             if hasattr(v, "decode"):
                 v = v.decode('utf-8')
@@ -124,16 +132,15 @@ def read(filename):
                     "File CardName ( {} ) is not content CardName ( {} )\n"
                     .format(card_name_file, card_name_content)
                 )
-        elif ln == 1:
+        elif line.startswith(';') and ln == 1:
             v = line.split(";")[1].strip()  # Line 2
             if hasattr(v, "decode"):
                 v = v.decode('utf-8')
             d["AuthorAndLicense"] = v
         else:
             # ; is a Comment
-            # # might be a comment too ?
             # [ is a Section
-            if line[0] not in ";#[":
+            if line[0] not in ";[":
                 # split once on first occurrence
                 # a link could contain a = and thus would be split
                 k = line.split("=", 1)
@@ -142,7 +149,6 @@ def read(filename):
                     if hasattr(v, "decode"):
                         v = v.decode('utf-8')
                     d[k[0].strip()] = v
-        ln += 1
     return d
 
 
