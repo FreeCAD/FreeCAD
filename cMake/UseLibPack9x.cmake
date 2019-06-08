@@ -95,6 +95,7 @@ set(QT_INCLUDE_DIR
     ${FREECAD_LIBPACK_DIR}/include/Qt-4.8.5/QtTest
     ${FREECAD_LIBPACK_DIR}/include/Qt-4.8.5/QtUiTools
     ${FREECAD_LIBPACK_DIR}/include/Qt-4.8.5/QtXml
+    ${FREECAD_LIBPACK_DIR}/include/Qt-4.8.5/QtXmlPatterns
     ${FREECAD_LIBPACK_DIR}/include/Qt-4.8.5/QtOpenGl
     ${FREECAD_LIBPACK_DIR}/include/Qt-4.8.5/QtWebKit
 )
@@ -121,6 +122,7 @@ set(QT_LIBRARIES
     optimized QtSql4.lib
     optimized QtTest4.lib
     optimized QtXml4.lib
+    optimized QtXmlPatterns4.lib
     optimized QtOpenGl4.lib
     optimized QtWebKit4.lib
     debug QtCored4.lib
@@ -131,6 +133,7 @@ set(QT_LIBRARIES
     debug QtSqld4.lib
     debug QtTestd4.lib
     debug QtXmld4.lib
+    debug QtXmlPatternsd4.lib
     debug QtOpenGld4.lib
     debug QtWebKitd4.lib
 )
