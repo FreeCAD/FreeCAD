@@ -481,4 +481,16 @@ void DrawPage::Restore(Base::XMLReader &reader)
     reader.readEndElement("Properties");
 }
 
+// Python Drawing feature ---------------------------------------------------------
 
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawPagePython, TechDraw::DrawPage)
+template<> const char* TechDraw::DrawPagePython::getViewProviderName(void) const {
+    return "TechDrawGui::ViewProviderPage";
+}
+/// @endcond
+
+// explicit template instantiation
+template class TechDrawExport FeaturePythonT<TechDraw::DrawPage>;
+}
