@@ -32,6 +32,10 @@
 #include <QPainter>
 #endif
 
+#include <App/Application.h>
+#include <Base/Parameter.h>
+#include <Base/Console.h>
+
 #include "QGIDimLines.h"
 
 using namespace TechDrawGui;
@@ -50,19 +54,36 @@ void QGIDimLines::draw()
 {
 }
 
-QRectF QGIDimLines::boundingRect() const
+QPainterPath QGIDimLines::shape() const
 {
-    return shape().boundingRect().adjusted(-2, -2, 2, 2);  //room for 0.5 line widths? needs Rez::guiX??
-//    return childrenBoundingRect().adjusted(-2,-2,2,2);
+    QPainterPath outline;
+    QPainterPathStroker stroker;
+    stroker.setWidth(getEdgeFuzz());
+    outline = stroker.createStroke(path());
+    return outline;
 }
 
-//probably don't need this paint
+double QGIDimLines::getEdgeFuzz(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    double result = hGrp->GetFloat("EdgeFuzz",10.0);
+    return result;
+}
+
+
+QRectF QGIDimLines::boundingRect() const
+{
+    return shape().controlPointRect().adjusted(-3, -3, 3, 3);
+}
+
 void QGIDimLines::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-//    painter->drawRect(boundingRect());          //good for debugging
+//    painter->drawRect(boundingRect());   //good for debugging
+//    painter->drawPath(shape());          //good for debugging
 
     QGIPrimPath::paint (painter, &myOption, widget);
 }
