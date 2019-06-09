@@ -441,10 +441,19 @@ void QGIViewPart::drawViewPart()
         }
         if (showEdge) {
             item = new QGIEdge(i);
+            item->setWidth(lineWidth);
+            if ((*itEdge)->cosmetic == true) {
+                TechDraw::CosmeticEdge* ce = viewPart->getCosmeticEdgeByLink(i);
+                if (ce != nullptr) {
+                    item->setNormalColor(ce->color.asValue<QColor>());
+                    item->setWidth(ce->width * lineScaleFactor);
+                    item->setStyle(ce->style);
+                } 
+            }
             addToGroup(item);                                                   //item is at scene(0,0), not group(0,0)
             item->setPos(0.0,0.0);                                              //now at group(0,0)
             item->setPath(drawPainterPath(*itEdge));
-            item->setWidth(lineWidth);
+//            item->setWidth(lineWidth);
             item->setZValue(ZVALUE::EDGE);
             if(!(*itEdge)->visible) {
                 item->setWidth(lineWidthHid);
@@ -462,23 +471,6 @@ void QGIViewPart::drawViewPart()
 //            dumpPath(edgeId.str().c_str(),edgePath);
          }
     }
-    // Draw Cosmetic Edges
-//    int cosmoEdgeStart = 1000;
-//    const std::vector<TechDrawGreometry::CosmeticEdge *> &cEdges = viewPart->getEdgeCosmetic();
-//    std::vector<TechDrawGreometry::CosmeticEdge *>::const_iterator itcEdge = cEdges.begin();
-//    QGIEdge* item;
-//    for(int i = 0 ; itcEdge != cEdges.end(); itcEdge++, i++) {
-//            item = new QGIEdge(cosmoEdgeStart + i);
-//            addToGroup(item);
-//            item->setPos(0.0,0.0);
-////            item->setPath(drawPainterPath(*itcEdge));  //this won't work
-//            item->setWidth((*itcEdge)->width);
-//            item->setColor((*itcEdge)->color.asValue<QColor>();
-//            item->setZValue(ZVALUE::EDGE);
-//            item->setPrettyNormal();
-//    
-//    }
-
 
     // Draw Vertexs:
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
@@ -691,7 +683,8 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         double sectionSpan;
         double sectionFudge = Rez::guiX(10.0);
         double xVal, yVal;
-        double fontSize = getPrefFontSize();
+//        double fontSize = getPrefFontSize();
+        double fontSize = getDimFontSize();
         if (horiz)  {
             double width = Rez::guiX(viewPart->getBoxX());
             double height = Rez::guiX(viewPart->getBoxY());
@@ -1055,6 +1048,14 @@ QRectF QGIViewPart::boundingRect() const
 //    return childrenBoundingRect();
 //    return customChildrenBoundingRect();
     return QGIView::boundingRect();
+}
+void QGIViewPart::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
+    QStyleOptionGraphicsItem myOption(*option);
+    myOption.state &= ~QStyle::State_Selected;
+
+//    painter->drawRect(boundingRect());          //good for debugging
+
+    QGIView::paint (painter, &myOption, widget);
 }
 
 //QGIViewPart derived classes do not need a rotate view method as rotation is handled on App side.

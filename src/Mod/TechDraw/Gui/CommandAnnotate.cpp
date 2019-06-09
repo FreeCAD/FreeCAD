@@ -58,6 +58,7 @@
 #include "TaskLeaderLine.h"
 #include "TaskRichAnno.h"
 #include "TaskCosVertex.h"
+#include "TaskCenterLine.h"
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
@@ -582,6 +583,174 @@ bool CmdTechDrawAnnotation::isActive(void)
     return DrawGuiUtil::needPage(this);
 }
 
+//===========================================================================
+// TechDraw_Centerline
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawFaceCenterLine);
+
+CmdTechDrawFaceCenterLine::CmdTechDrawFaceCenterLine()
+  : Command("TechDraw_FaceCenterLine")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Add a centerline to a Face(s)");
+    sToolTipText    = QT_TR_NOOP("Add a centerline to a Face(s)");
+    sWhatsThis      = "TechDraw_FaceCenterLine";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-facecenterline";
+}
+
+void CmdTechDrawFaceCenterLine::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    TechDraw::DrawViewPart* baseFeat = nullptr;
+    if (!selection.empty()) {
+        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+        if( baseFeat == nullptr ) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("No base View in Selection."));
+            return;
+        }
+    } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("You must select a base View for the line."));
+            return;
+    }
+
+    std::vector<std::string> SubNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+    }
+    if (SubNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                             QObject::tr("You must select a Face(s) for the center line."));
+        return;
+    }
+
+    Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
+                                                    page,
+                                                    SubNames));
+}
+
+bool CmdTechDrawFaceCenterLine::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
+
+//===========================================================================
+// TechDraw_CosmeticEraser
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawCosmeticEraser);
+
+CmdTechDrawCosmeticEraser::CmdTechDrawCosmeticEraser()
+  : Command("TechDraw_CosmeticEraser")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Remove a cosmetic object");
+    sToolTipText    = QT_TR_NOOP("Remove a cosmetic object");
+    sWhatsThis      = "TechDraw_CosmeticEraser";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-eraser";
+}
+
+void CmdTechDrawCosmeticEraser::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    if (selection.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                         QObject::tr("Nothing selected"));
+        return;
+    }
+
+    bool selectionError = false;
+    for (auto& s: selection) {
+        TechDraw::DrawViewPart * objFeat = static_cast<TechDraw::DrawViewPart*> (s.getObject());
+        if (!objFeat->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            selectionError = true;
+            break;
+        }
+    }
+    if (selectionError) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                         QObject::tr("At least 1 object in selection is not a part view"));
+        return;
+    }
+
+    TechDraw::DrawViewPart * objFeat = nullptr;
+    std::vector<std::string> SubNames;
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+        for (auto& s: SubNames) {
+            int idx = TechDraw::DrawUtil::getIndexFromName(s);
+            std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
+            if (geomType == "Edge") {
+                TechDraw::CosmeticEdge* ce = objFeat->getCosmeticEdgeByLink(idx);
+                if (ce != nullptr) {
+                    objFeat->removeRandomEdge(ce);
+                }
+            } else if (geomType == "Vertex") {
+                TechDraw::CosmeticVertex* cv = objFeat->getCosmeticVertexByLink(idx);
+                if (cv != nullptr) {
+                    objFeat->removeRandomVertex(cv);
+                }
+            } else {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                           QObject::tr("Unknown object type in selection"));
+                return;
+            }
+        }
+    }
+}
+
+bool CmdTechDrawCosmeticEraser::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
 void CreateTechDrawCommandsAnnotate(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -593,6 +762,8 @@ void CreateTechDrawCommandsAnnotate(void)
     rcCmdMgr.addCommand(new CmdTechDrawMidpoints());
     rcCmdMgr.addCommand(new CmdTechDrawQuadrant());
     rcCmdMgr.addCommand(new CmdTechDrawAnnotation());
+    rcCmdMgr.addCommand(new CmdTechDrawFaceCenterLine());
+    rcCmdMgr.addCommand(new CmdTechDrawCosmeticEraser());
 }
 
 //===========================================================================

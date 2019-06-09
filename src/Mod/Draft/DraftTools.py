@@ -737,9 +737,9 @@ class Wire(Line):
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Wire',
-                'Accel' : "W, I",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "DWire"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain")}
+                'Accel' : "P, L",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Polyline"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
 
@@ -767,9 +767,9 @@ class Wire(Line):
                              'FreeCAD.ActiveDocument.recompute()'])])
                     return
 
-        Line.Activated(self,name=translate("draft","DWire"))
+        Line.Activated(self,name=translate("draft","Polyline"))
 
-
+ 
 class BSpline(Line):
     "a FreeCAD command for creating a B-spline"
 
@@ -4187,6 +4187,8 @@ class Scale(Modifier):
         self.center = self.node[0]
         if self.task.isSubelementMode.isChecked():
             self.scale_subelements()
+        elif self.task.isClone.isChecked():
+            self.scale_with_clone()
         else:
             self.scale_object()
         self.finish()
@@ -4199,6 +4201,16 @@ class Scale(Modifier):
                 self.commit(translate("draft", "Scale"), self.build_scale_subelements_command())
         except:
             FreeCAD.Console.PrintError(translate("draft", "Some subelements could not be scaled."))
+
+    def scale_with_clone(self):
+        if self.task.relative.isChecked():
+            self.delta = FreeCAD.DraftWorkingPlane.getGlobalCoords(self.delta)
+        objects = '[' + ','.join(['FreeCAD.ActiveDocument.' + object.Name for object in self.selected_objects]) + ']'
+        FreeCADGui.addModule("Draft")
+        self.commit(translate("draft","Copy") if self.task.isCopy.isChecked() else translate("draft","Scale"),
+                    ['clone = Draft.clone('+objects+',forcedraft=True)',
+                     'clone.Scale = '+DraftVecUtils.toString(self.delta),
+                     'FreeCAD.ActiveDocument.recompute()'])
 
     def build_copy_subelements_command(self):
         import Part
@@ -5094,31 +5106,6 @@ class Draft_FlipDimension():
                 FreeCAD.ActiveDocument.recompute()
 
 
-class VisGroup():
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_VisGroup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_VisGroup", "VisGroup"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_VisGroup", "Adds a VisGroup")}
-
-    def Activated(self):
-        s = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Create VisGroup")
-        FreeCADGui.addModule("Draft")
-        if len(s) == 1:
-            if s[0].isDerivedFrom("App::DocumentObjectGroup"):
-                FreeCADGui.doCommand("v = Draft.makeVisGroup(FreeCAD.ActiveDocument."+s[0].Name+")")
-                FreeCADGui.doCommand('Draft.autogroup(v)')
-                FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
-                return
-        FreeCADGui.doCommand("v = Draft.makeVisGroup()")
-        FreeCADGui.doCommand('Draft.autogroup(v)')
-        FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
-
-
 class Mirror(Modifier):
     "The Draft_Mirror FreeCAD command definition"
 
@@ -5846,7 +5833,6 @@ FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
 FreeCADGui.addCommand('Draft_PathArray',PathArray())
 FreeCADGui.addCommand('Draft_PointArray',PointArray())
 FreeCADGui.addCommand('Draft_Heal',Heal())
-FreeCADGui.addCommand('Draft_VisGroup',VisGroup())
 FreeCADGui.addCommand('Draft_Mirror',Mirror())
 FreeCADGui.addCommand('Draft_Slope',Draft_Slope())
 FreeCADGui.addCommand('Draft_Stretch',Stretch())

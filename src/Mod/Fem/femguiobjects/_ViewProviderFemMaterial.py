@@ -359,7 +359,13 @@ class _TaskPanelFemMaterial:
     def edit_material(self):
         # opens the material editor to choose a material or edit material params
         import MaterialEditor
-        new_material_params = MaterialEditor.editMaterial(card_path=self.card_path)
+        if self.card_path not in self.cards:
+            FreeCAD.Console.PrintLog(
+                'Card path not in cards, material dict will be used to open Material Editor.\n'
+            )
+            new_material_params = MaterialEditor.editMaterial(material=self.material)
+        else:
+            new_material_params = MaterialEditor.editMaterial(card_path=self.card_path)
         # material editor returns the mat_dict only, not a card_path
         # if the material editor was canceled a empty dict will be returned
         # do not change the self.material

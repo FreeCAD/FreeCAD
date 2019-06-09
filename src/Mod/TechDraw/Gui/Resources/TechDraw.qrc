@@ -66,6 +66,8 @@
         <file>icons/actions/techdraw-point.svg</file>
         <file>icons/actions/techdraw-midpoint.svg</file>
         <file>icons/actions/techdraw-quadrant.svg</file>
+        <file>icons/actions/techdraw-facecenterline.svg</file>
+        <file>icons/actions/techdraw-eraser.svg</file>
         <file>icons/actions/section-up.svg</file>  
         <file>icons/actions/section-down.svg</file>
         <file>icons/actions/section-left.svg</file>

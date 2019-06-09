@@ -168,11 +168,7 @@ void QGILeaderLine::onSourceChange(TechDraw::DrawView* newParent)
 void QGILeaderLine::onAttachMoved(QPointF attach)
 {
     auto leadFeat( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
-    TechDraw::DrawView* parent = leadFeat->getBaseView();
-    double pScale = 1.0;
-    if (parent != nullptr) {
-        pScale = parent->getScale();
-    }
+    double pScale = leadFeat->getScale();
     QPointF mapped = m_parentItem->mapFromItem(this,attach);  //map point to baseView
     Base::Vector3d attachPoint = Base::Vector3d(mapped.x(),mapped.y(),0.0);
     getFeature()->setPosition(Rez::appX(attachPoint.x / pScale),  //attach point must scale with parent.
@@ -208,12 +204,8 @@ void QGILeaderLine::onLineEditFinished(QPointF attach, std::vector<QPointF> delt
 //                            TechDraw::DrawUtil::formatVector(attach).c_str(),
 //                            deltas.size());
     m_blockDraw = true;
-    double pScale = 1.0;
     auto leadFeat( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
-    TechDraw::DrawView* parent = leadFeat->getBaseView();
-    if (parent != nullptr) {
-        pScale = parent->getScale();
-    }
+    double pScale = leadFeat->getScale();
 
     QPointF p0 = deltas.front();
     if ( !(TechDraw::DrawUtil::fpCompare(attach.x(),0.0) &&
@@ -256,8 +248,9 @@ void QGILeaderLine::onLineEditFinished(QPointF attach, std::vector<QPointF> delt
 void QGILeaderLine::startPathEdit(void)
 {
     saveState();
+    auto leadFeat( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
 
-    double scale = getScale();
+    double scale = leadFeat->getScale();
     m_line->setScale(scale);
     m_line->inEdit(true);
     m_line->startPathEdit();
@@ -373,8 +366,17 @@ void QGILeaderLine::draw()
     m_line->setWidth(scaler * m_lineWidth);
 
     m_line->setNormalColor(m_lineColor);
-    scale = getScale();
+    scale = leadFeat->getScale();
     m_line->setScale(scale);
+    if (leadFeat->StartSymbol.getValue() > -1) {
+        m_line->setStartAdjust(QGIArrow::getOverlapAdjust(leadFeat->StartSymbol.getValue(),
+                                                          QGIArrow::getPrefArrowSize()));
+    }
+    if (leadFeat->EndSymbol.getValue() > -1) {
+        m_line->setEndAdjust(QGIArrow::getOverlapAdjust(leadFeat->EndSymbol.getValue(),
+                                                        QGIArrow::getPrefArrowSize()));
+    }
+
     m_line->makeDeltasFromPoints(qPoints);
     m_line->setPos(0,0); 
     m_line->updatePath();
@@ -439,7 +441,7 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
     Base::Vector3d stdX(1.0,0.0,0.0);
     TechDraw::DrawLeaderLine* line = getFeature();
     
-    double scale = getScale();
+    double scale = line->getScale();
     QPointF lastOffset = (pathPoints.back() - pathPoints.front()) * scale;
 
     if (line->StartSymbol.getValue() > -1) {
@@ -494,16 +496,6 @@ void QGILeaderLine::abandonEdit(void)
     m_line->clearMarkers();
     m_line->restoreState();
     restoreState();
-}
-
-double QGILeaderLine::getScale(void)
-{
-    bool isScalable = getFeature()->Scalable.getValue();
-    double scale = getFeature()->getScale();
-    if (!isScalable) {
-        scale = 1.0;
-    }
-    return scale;
 }
 
 TechDraw::DrawLeaderLine* QGILeaderLine::getFeature(void)

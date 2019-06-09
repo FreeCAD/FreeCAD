@@ -73,7 +73,7 @@ def run_fem_solver(solver, working_dir=None):
                 fea.ccx_run()
                 fea.load_results()
             else:
-                App.Console.PrintError("Houston, we have a problem! {}\n".format(message))
+                App.Console.PrintError("Houston, we have a problem ...!\n{}\n".format(message))
     else:
         # App.Console.PrintMessage("Frame work solver!\n")
         try:

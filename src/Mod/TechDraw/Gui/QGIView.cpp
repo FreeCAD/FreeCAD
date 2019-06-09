@@ -52,10 +52,8 @@
 #include "ZVALUE.h"
 #include "DrawGuiUtil.h"
 #include "QGVPage.h"
-#include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
 #include "QGCustomBorder.h"
-#include "QGCustomLabel.h"
 #include "QGCustomText.h"
 #include "QGICaption.h"
 #include "QGCustomClip.h"
@@ -679,6 +677,13 @@ double QGIView::getPrefFontSize()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
     return hGrp->GetFloat("LabelSize", DefaultFontSizeInMM);
+}
+
+double QGIView::getDimFontSize()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                       GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    return hGrp->GetFloat("FontSize", DefaultFontSizeInMM);
 }
 
 double QGIView::calculateFontPointSizeF(const QGraphicsItem *item, double sizeInMillimetres)

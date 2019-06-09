@@ -1304,10 +1304,22 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 f.write('S, E, PEEQ\n')
             else:
                 f.write('S, E\n')
+            
+            # dat file
+            f.write('** outputs --> dat file\n')
+            f.write('** reaction forces for Constraint fixed\n')
+            # reaction forces for all Constraint fixed
+            # freecadweb.org/tracker/view.php?id=2934
+            for femobj in self.fixed_objects:
+                # femobj --> dict, FreeCAD document object is femobj['Object']
+                fix_obj_name = femobj['Object'].Name
+                f.write('*NODE PRINT, NSET={}, TOTALS=ONLY\n'.format(fix_obj_name))
+                f.write('RF\n\n')
+            # TODO: add Constraint Displacement if nodes are restrained
+
             # there is no need to write all integration point results
-            # as long as there is no reader for this
+            # as long as there is no reader for them
             # see https://forum.freecadweb.org/viewtopic.php?f=18&t=29060
-            # f.write('** outputs --> dat file\n')
             # f.write('*NODE PRINT , NSET=' + self.ccx_nall + '\n')
             # f.write('U \n')
             # f.write('*EL PRINT , ELSET=' + self.ccx_eall + '\n')
@@ -1369,7 +1381,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         beamsec_obj = self.beamsection_objects[0]['Object']
         beamrot_data = self.beamrotation_objects[0]
         for i, beamdirection in enumerate(beamrot_data['FEMRotations1D']):
-            elset_data = beamdirection['ids']  # ID's for this direction
+            # ID's for this direction
+            elset_data = beamdirection['ids']
             names = [
                 {'short': 'M0'},
                 {'short': 'B0'},
@@ -1382,7 +1395,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             ccx_elset['mat_obj_name'] = mat_obj.Name
             ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
             ccx_elset['beamsection_obj'] = beamsec_obj
-            ccx_elset['beam_normal'] = beamdirection['normal']  # normal for this direction
+            # normal for this direction
+            ccx_elset['beam_normal'] = beamdirection['normal']
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_single_mat_multiple_beam(self):
@@ -1408,7 +1422,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                     ccx_elset['mat_obj_name'] = mat_obj.Name
                     ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
                     ccx_elset['beamsection_obj'] = beamsec_obj
-                    ccx_elset['beam_normal'] = beamdirection['normal']  # normal for this direction
+                    # normal for this direction
+                    ccx_elset['beam_normal'] = beamdirection['normal']
                     self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_single_beam(self):

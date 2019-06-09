@@ -144,20 +144,22 @@ void QGIViewSection::drawSectionFace()
 
 void QGIViewSection::updateView(bool update)
 {
+    Q_UNUSED(update);
     auto viewPart( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
     if( viewPart == nullptr ) {
         return;
     }
 
-    if(update ||
-       viewPart->SectionNormal.isTouched() ||
-       viewPart->SectionOrigin.isTouched()) {
-        QGIViewPart::updateView(true);
-        drawSectionFace();
-    } else {
-        QGIViewPart::updateView();
-        drawSectionFace();
-    }
+//    if(update ||
+//       viewPart->SectionNormal.isTouched() ||
+//       viewPart->SectionOrigin.isTouched()) {
+////        QGIViewPart::updateView(true);
+////        drawSectionFace();
+//    } else {
+////        QGIViewPart::updateView();
+////        drawSectionFace();
+//    }
+    draw();
 }
 
 void QGIViewSection::drawSectionLine(TechDraw::DrawViewSection* s, bool b)

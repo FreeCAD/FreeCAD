@@ -50,7 +50,6 @@ from DraftGeomUtils import vec
 #  This module provides tools to import and export IFC files.
 
 DEBUG = False # Set to True to see debug messages. Otherwise, totally silent
-ADDDEFAULTSTOREY = False # If True, an exported file will ALWAYS have at least one storey
 ZOOMOUT = True # Set to False to not zoom extents after import
 
 if open.__module__ in ['__builtin__','io']:
@@ -229,6 +228,7 @@ def getPreferences():
     global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
     global FORCE_BREP, IMPORT_PROPERTIES, STORE_UID, SERIALIZE
     global SPLIT_LAYERS, EXPORT_2D, FULL_PARAMETRIC, FITVIEW_ONIMPORT
+    global ADD_DEFAULT_SITE, ADD_DEFAULT_STOREY
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
@@ -256,6 +256,8 @@ def getPreferences():
     EXPORT_2D = p.GetBool("ifcExport2D",True)
     FULL_PARAMETRIC = p.GetBool("IfcExportFreeCADProperties",False)
     FITVIEW_ONIMPORT = p.GetBool("ifcFitViewOnImport",False)
+    ADD_DEFAULT_SITE = p.GetBool("IfcAddDefaultSite",False)
+    ADD_DEFAULT_STOREY = p.GetBool("IfcAddDefaultStorey",False)
 
 # ************************************************************************************************
 # ********** open and import IFC ****************
@@ -1583,7 +1585,7 @@ def export(exportList,filename):
             if "IfcUID" in obj.IfcData.keys():
                 uid = str(obj.IfcData["IfcUID"])
         if not uid:
-            uid = ifcopenshell.guid.compress(uuid.uuid1().hex)
+            uid = ifcopenshell.guid.new()
             # storing the uid for further use
             if STORE_UID and hasattr(obj,"IfcData"):
                 d = obj.IfcData
@@ -1716,7 +1718,7 @@ def export(exportList,filename):
                 if six.PY2:
                     l = l.encode("utf8")
                 prod2 = ifcfile.createIfcBuildingElementProxy(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     l,
                     None,
@@ -1728,7 +1730,7 @@ def export(exportList,filename):
                 )
                 subproducts[o.Name] = prod2
                 ifcfile.createIfcRelAggregates(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     'Addition',
                     '',
@@ -1753,7 +1755,7 @@ def export(exportList,filename):
                 if six.PY2:
                     l = l.encode("utf8")
                 prod2 = ifcfile.createIfcOpeningElement(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     l,
                     None,
@@ -1764,7 +1766,7 @@ def export(exportList,filename):
                 )
                 subproducts[o.Name] = prod2
                 ifcfile.createIfcRelVoidsElement(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     'Subtraction',
                     '',
@@ -1840,14 +1842,14 @@ def export(exportList,filename):
                             psets.setdefault(pset,[]).append(p)
                     for pname,props in psets.items():
                         pset = ifcfile.createIfcPropertySet(
-                            ifcopenshell.guid.compress(uuid.uuid1().hex),
+                            ifcopenshell.guid.new(),
                             history,
                             pname,
                             None,
                             props
                         )
                         ifcfile.createIfcRelDefinesByProperties(
-                            ifcopenshell.guid.compress(uuid.uuid1().hex),
+                            ifcopenshell.guid.new(),
                             history,
                             None,
                             None,
@@ -1916,13 +1918,13 @@ def export(exportList,filename):
                                 print("Unable to create a property of type:",tp)
                         if props:
                             pset = ifcfile.createIfcPropertySet(
-                                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                                ifcopenshell.guid.new(),
                                 history,cat,
                                 None,
                                 props
                             )
                             ifcfile.createIfcRelDefinesByProperties(
-                                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                                ifcopenshell.guid.new(),
                                 history,
                                 None,
                                 None,
@@ -1966,14 +1968,14 @@ def export(exportList,filename):
                         props.append(ifcbin.createIfcPropertySingleValue(str(key),str(tp),val))
                 if props:
                     pset = ifcfile.createIfcPropertySet(
-                        ifcopenshell.guid.compress(uuid.uuid1().hex),
+                        ifcopenshell.guid.new(),
                         history,
                         'PropertySet',
                         None,
                         props
                     )
                     ifcfile.createIfcRelDefinesByProperties(
-                        ifcopenshell.guid.compress(uuid.uuid1().hex),
+                        ifcopenshell.guid.new(),
                         history,
                         None,
                         None,
@@ -2003,14 +2005,14 @@ def export(exportList,filename):
                 quantities.append(ifcfile.createIfcQuantityVolume('Volume',None,None,obj.Shape.Volume/1000000000.0))
             if quantities:
                 eltq = ifcfile.createIfcElementQuantity(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     "ElementQuantities",
                     None,
                     "FreeCAD",quantities
                 )
                 ifcfile.createIfcRelDefinesByProperties(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     None,
                     None,
@@ -2087,13 +2089,13 @@ def export(exportList,filename):
                                     FreeCADProps.append(ifcbin.createIfcPropertySingleValue("FreeCAD_"+prop,itype,ivalue))
             if FreeCADProps:
                 pset = ifcfile.createIfcPropertySet(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,'FreeCADPropertySet',
                     None,
                     FreeCADProps
                 )
                 ifcfile.createIfcRelDefinesByProperties(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     None,
                     None,
@@ -2102,14 +2104,14 @@ def export(exportList,filename):
                 )
             if FreeCADGuiProps:
                 pset = ifcfile.createIfcPropertySet(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     'FreeCADGuiPropertySet',
                     None,
                     FreeCADGuiProps
                 )
                 ifcfile.createIfcRelDefinesByProperties(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     None,
                     None,
@@ -2139,7 +2141,7 @@ def export(exportList,filename):
                         treated.append(c.Name)
                 if subs:
                     ifcfile.createIfcRelAggregates(
-                        ifcopenshell.guid.compress(uuid.uuid1().hex),
+                        ifcopenshell.new(),
                         history,
                         'Assembly',
                         '',
@@ -2163,7 +2165,7 @@ def export(exportList,filename):
             f = products[floor.Name]
             if children:
                 ifcfile.createIfcRelContainedInSpatialStructure(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.new(),
                     history,
                     'StoreyLink',
                     '',
@@ -2194,7 +2196,7 @@ def export(exportList,filename):
             b = products[building.Name]
             if children:
                 ifcfile.createIfcRelContainedInSpatialStructure(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     'BuildingLink',
                     '',
@@ -2203,7 +2205,7 @@ def export(exportList,filename):
                 )
             if childfloors:
                 ifcfile.createIfcRelAggregates(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     'BuildingLink',
                     '',
@@ -2211,7 +2213,7 @@ def export(exportList,filename):
                     childfloors
                 )
             buildings.append(b)
-            if not defaulthost and not ADDDEFAULTSTOREY:
+            if not defaulthost and not ADD_DEFAULT_STOREY:
                 defaulthost = b
 
     # sites
@@ -2231,33 +2233,35 @@ def export(exportList,filename):
         sites.append(products[site.Name])
 
     if not sites:
-        if DEBUG: print("No site found. Adding default site")
-        sites = [ifcfile.createIfcSite(
-            ifcopenshell.guid.compress(uuid.uuid1().hex),
-            history,"Default Site",
+        if ADD_DEFAULT_SITE:
+            if DEBUG: print("No site found. Adding default site")
+            sites = [ifcfile.createIfcSite(
+                ifcopenshell.guid.new(),
+                history,"Default Site",
+                '',
+                None,
+                None,
+                None,
+                None,
+                "ELEMENT",
+                None,
+                None,
+                None,
+                None,
+                None
+            )]
+    if sites:
+        ifcfile.createIfcRelAggregates(
+            ifcopenshell.guid.new(),
+            history,
+            'ProjectLink',
             '',
-            None,
-            None,
-            None,
-            None,
-            "ELEMENT",
-            None,
-            None,
-            None,
-            None,
-            None
-        )]
-    ifcfile.createIfcRelAggregates(
-        ifcopenshell.guid.compress(uuid.uuid1().hex),
-        history,
-        'ProjectLink',
-        '',
-        project,sites
-    )
+            project,sites
+        )
     if not buildings:
         if DEBUG: print("No building found. Adding default building")
         buildings = [ifcfile.createIfcBuilding(
-            ifcopenshell.guid.compress(uuid.uuid1().hex),
+            ifcopenshell.guid.new(),
             history,
             "Default Building",
             '',
@@ -2270,22 +2274,31 @@ def export(exportList,filename):
             None,
             None
         )]
+        if buildings and (not sites):
+            ifcfile.createIfcRelAggregates(
+                ifcopenshell.guid.new(),
+                history,
+                'ProjectLink',
+                '',
+                project,buildings
+            )
         if floors:
             ifcfile.createIfcRelAggregates(
-                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                ifcopenshell.guid.new(),
                 history,
                 'BuildingLink',
                 '',
                 buildings[0],floors
             )
-    ifcfile.createIfcRelAggregates(
-        ifcopenshell.guid.compress(uuid.uuid1().hex),
-        history,
-        'SiteLink',
-        '',
-        sites[0],
-        buildings
-    )
+    if sites and buildings:
+        ifcfile.createIfcRelAggregates(
+            ifcopenshell.guid.new(),
+            history,
+            'SiteLink',
+            '',
+            sites[0],
+            buildings
+        )
     untreated = []
     for k,v in products.items():
         if not(k in treated):
@@ -2298,7 +2311,7 @@ def export(exportList,filename):
     if untreated:
         if not defaulthost:
             defaulthost = ifcfile.createIfcBuildingStorey(
-                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                ifcopenshell.guid.new(),
                 history,
                 "Default Storey",
                 '',
@@ -2310,7 +2323,7 @@ def export(exportList,filename):
                 None
             )
             ifcfile.createIfcRelAggregates(
-                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                ifcopenshell.guid.new(),
                 history,
                 'DefaultStoreyLink',
                 '',
@@ -2318,7 +2331,7 @@ def export(exportList,filename):
                 [defaulthost]
             )
         ifcfile.createIfcRelContainedInSpatialStructure(
-            ifcopenshell.guid.compress(uuid.uuid1().hex),
+            ifcopenshell.guid.new(),
             history,
             'UnassignedObjectsLink',
             '',
@@ -2363,7 +2376,7 @@ def export(exportList,filename):
                 isr = ifcfile.createIfcStyledRepresentation(context,"Style","Material",[isi])
                 imd = ifcfile.createIfcMaterialDefinitionRepresentation(None,None,[isr],mat)
             ifcfile.createIfcRelAssociatesMaterial(
-                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                ifcopenshell.guid.new(),
                 history,
                 'MaterialLink',
                 '',
@@ -2443,7 +2456,7 @@ def export(exportList,filename):
             if six.PY2:
                 l = l.encode("utf8")
             ann = ifcfile.createIfcAnnotation(
-                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                ifcopenshell.guid.new(),
                 history,l,
                 '',
                 None,
@@ -2486,7 +2499,7 @@ def export(exportList,filename):
                 if six.PY2:
                     name = name.encode("utf8")
                 grp = ifcfile.createIfcGroup(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     name,
                     '',
@@ -2495,7 +2508,7 @@ def export(exportList,filename):
                 products[g[0]] = grp
                 spatialelements[g[0]] = grp
                 ass = ifcfile.createIfcRelAssignsToGroup(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     'GroupLink',
                     '',
@@ -2515,7 +2528,7 @@ def export(exportList,filename):
                     stack.setdefault(parent.Name,[]).append(spatialelements[g[0]])
     for k,v in stack.items():
         ifcfile.createIfcRelAggregates(
-            ifcopenshell.guid.compress(uuid.uuid1().hex),
+            ifcopenshell.guid.new(),
             history,
             'GroupStackLink',
             '',
@@ -2530,7 +2543,7 @@ def export(exportList,filename):
         if remaining:
             if not defaulthost:
                 defaulthost = ifcfile.createIfcBuildingStorey(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     "Default Storey",
                     '',
@@ -2542,7 +2555,7 @@ def export(exportList,filename):
                     None
                 )
                 ifcfile.createIfcRelAggregates(
-                    ifcopenshell.guid.compress(uuid.uuid1().hex),
+                    ifcopenshell.guid.new(),
                     history,
                     'DefaultStoreyLink',
                     '',
@@ -2550,7 +2563,7 @@ def export(exportList,filename):
                     [defaulthost]
                 )
             ifcfile.createIfcRelContainedInSpatialStructure(
-                ifcopenshell.guid.compress(uuid.uuid1().hex),
+                ifcopenshell.guid.new(),
                 history,
                 'AnnotationsLink',
                 '',

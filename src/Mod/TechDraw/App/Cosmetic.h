@@ -62,9 +62,11 @@ class TechDrawExport CosmeticEdge
 {
 public:
     CosmeticEdge();
-    CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2);
-    CosmeticEdge(TopoDS_Edge e);
+    CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2, double scale = 1.0);
+    CosmeticEdge(TopoDS_Edge e, double scale = 1.0);
     virtual ~CosmeticEdge() = default;
+
+    TechDrawGeometry::BaseGeom* scaledGeometry(double scale);
 
     std::string toCSV(void) const;
     bool fromCSV(std::string& lineSpec);
@@ -72,6 +74,8 @@ public:
 
     TechDrawGeometry::BaseGeom* geometry; 
 
+    Base::Vector3d start;
+    Base::Vector3d end;
     int            linkGeom;             //connection to corresponding "real" Edge
     App::Color     color;
     double         width;
