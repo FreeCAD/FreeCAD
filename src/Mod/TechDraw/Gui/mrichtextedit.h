@@ -84,6 +84,7 @@ Q_SIGNALS:
     void decreaseIndentation();
     void insertImage();
     void textSource();
+    void onSelectionChanged();
 
   protected:
     void mergeFormatOnWordOrSelection(const QTextCharFormat &format);
@@ -93,6 +94,8 @@ Q_SIGNALS:
     void list(bool checked, QTextListFormat::Style style);
     void indent(int delta);
     void focusInEvent(QFocusEvent *event);
+    bool hasMultipleSizes(void);
+
 
     QStringList m_paragraphItems;
     int m_fontsize_h1;
