@@ -1,4 +1,4 @@
-import sys, os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, DraftVecUtils
+import sys, os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Part, Draft_rc, DraftVecUtils
 from FreeCAD import Vector
 
 if FreeCAD.GuiUp:
@@ -139,10 +139,24 @@ class Edit():
 
     def resetTrackers(self):
         "reset Edit Trackers and set them again"
-        for t in self.trackers:
-            t.finalize()
+        self.removeTrackers()
         self.trackers = []
         self.setTrackers()
+    
+    def removeTrackers(self):
+        "reset Edit Trackers and set them again"
+        for t in self.trackers:
+            t.finalize()     
+
+    def hideTrackers(self):
+        "hide Edit Trackers"
+        for t in self.trackers:
+            t.off()
+
+    def showTrackers(self):
+        "show Edit Trackers"
+        for t in self.trackers:
+            t.on()
 
     def action(self,arg):
         "scene event handler"
@@ -177,84 +191,102 @@ class Edit():
                 self.ui.redraw()
                 
                 if self.editing == None:
-                    p = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
-                    done = False
-                    selobjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(p)
-                    if not selobjs:
-                        selobjs = [FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)]
-                    if not selobjs or selobjs == [None]:
-                        return
-                    for info in selobjs:
-                        if info["Object"] == self.obj.Name:
-                            if done:
-                                return
-                        if self.ui.addButton.isChecked() \
-                            and Draft.getType(self.obj) == "Wire" \
-                            and 'Edge' in info["Component"]:
-                                self.addPointOnEdge(FreeCAD.Vector(info["x"],info["y"],info["z"]), int(info["Component"][4:]))
-                                done = True
-                        elif self.ui.addButton.isChecked():
-                            if self.point:
+                    # USECASE: User click on one of the editpoints or another object
+                    ep = None
+                    selobjs = self.getSelection()
+                    if selobjs == None: return
+                    
+                    if self.ui.addButton.isChecked():# still quite raw
+                        # USECASE: User add a new point to the object
+                        for info in selobjs:
+                            if Draft.getType(self.obj) == "Wire" and 'Edge' in info["Component"]:
+                                pt = FreeCAD.Vector(info["x"],info["y"],info["z"])
+                                self.addPointToWire(pt, int(info["Component"][4:]))
+                            elif self.point:
                                 pt = self.point
-                                if "x" in info:
-                                    # prefer "real" 3D location over working-plane-driven one if possible
+                                if "x" in info:# prefer "real" 3D location over working-plane-driven one if possible
                                     pt = FreeCAD.Vector(info["x"],info["y"],info["z"])
-                                self.addPoint(pt,info)
-                                done = True
-                        ep = None
-                        if ('EditNode' in info["Component"]):#True as a result of getObjectInfo
-                            ep = int(info["Component"][8:])
-                        elif ('Vertex' in info["Component"]):# if vertex is clicked, the edit point is selected only if (distance < tolerance)
-                            p = FreeCAD.Vector(info["x"],info["y"],info["z"])
-                            for i,t in enumerate(self.trackers):
-                                if (t.get().sub(p)).Length <= 0.01:
-                                    ep = i
-                                    break
-                        elif ('Edge' in info["Component"]) or ('Face' in info["Component"]) : # if edge is clicked, the nearest edit point is selected, then tolerance is verified
-                            p = FreeCAD.Vector(info["x"],info["y"],info["z"])
-                            d = 1000000.0
-                            for i,t in enumerate(self.trackers):
-                                if (t.get().sub(p)).Length < d:
-                                    d = (t.get().sub(p)).Length
-                                    ep = i
-                            if d > 20:# should find a way to link the tolerance to zoom
-                                return
-                        if ep != None:
-                            if self.ui.delButton.isChecked():
-                                self.delPoint(ep)
-                             # don't do tan/sym on DWire/BSpline!
-                            elif ((Draft.getType(self.obj) == "BezCurve") and
-                                  (self.ui.sharpButton.isChecked())):
-                                self.smoothBezPoint(ep, info, 'Sharp')
-                            elif ((Draft.getType(self.obj) == "BezCurve") and
-                                  (self.ui.tangentButton.isChecked())):
-                                self.smoothBezPoint(ep, info, 'Tangent')
-                            elif ((Draft.getType(self.obj) == "BezCurve") and
-                                  (self.ui.symmetricButton.isChecked())):
-                                self.smoothBezPoint(ep, info, 'Symmetric')
-                            else:
-                                if self.ui.arc3PtButton.isChecked():
-                                    self.arc3Pt = True # store arc 3 points edit mode
-                                else:
-                                    self.arc3Pt = False # decide if it's deselected after every editing point
-                                self.ui.pointUi()
-                                self.ui.isRelative.show()
-                                self.editing = ep
-                                self.trackers[self.editing].off()
-                                self.finalizeGhost()
-                                self.ghost = self.initGhost(self.obj)
-                                '''if hasattr(self.obj.ViewObject,"Selectable"):
-                                    self.obj.ViewObject.Selectable = False'''
-                                self.node.append(self.trackers[self.editing].get())
-                                FreeCADGui.Snapper.setSelectMode(False)
-                            done = True
-                else:
+                                self.addPointToCurve(pt,info)
+                        self.removeTrackers() 
+                        self.editpoints = []
+                        self.setEditPoints(self.obj)
+                        self.resetTrackers()
+                        return
+                    
+                    ep = self.lookForClickedNode(selobjs,tolerance=20)
+                    if ep == None: return
+
+                    if self.ui.delButton.isChecked(): # still quite raw
+                        # USECASE: User delete a point of the object
+                        self.delPoint(ep)
+                        # don't do tan/sym on DWire/BSpline!
+                        self.removeTrackers()
+                        self.editpoints = []
+                        self.setEditPoints(self.obj)
+                        self.resetTrackers()
+                        return
+
+                    if Draft.getType(self.obj) == "BezCurve":
+                        # USECASE: User change the continuity of a Bezcurve point
+                        if self.ui.sharpButton.isChecked():
+                            return self.smoothBezPoint(ep, 'Sharp')
+                        elif self.ui.tangentButton.isChecked():
+                            return self.smoothBezPoint(ep, 'Tangent')
+                        elif self.ui.symmetricButton.isChecked():
+                            return self.smoothBezPoint(ep, 'Symmetric')
+
+                    self.ui.pointUi()
+                    self.ui.isRelative.show()
+                    self.editing = ep
+                    self.trackers[self.editing].off()
+                    self.finalizeGhost()
+                    self.ghost = self.initGhost(self.obj)
+                    '''if hasattr(self.obj.ViewObject,"Selectable"):
+                        self.obj.ViewObject.Selectable = False'''
+                    self.node.append(self.trackers[self.editing].get())
+                    FreeCADGui.Snapper.setSelectMode(False)
+
+                else: #if self.editing != None:
+                    # USECASE: Destination point of editing is clicked
                     self.finalizeGhost()
                     self.trackers[self.editing].on()
                     #if hasattr(self.obj.ViewObject,"Selectable"):
                     #    self.obj.ViewObject.Selectable = True
                     FreeCADGui.Snapper.setSelectMode(True)
                     self.numericInput(self.trackers[self.editing].get())
+    
+    def getSelection(self):
+        p = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
+        selobjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(p)
+        if not selobjs:
+            selobjs = [FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)]
+        if not selobjs or selobjs == [None]:
+            return None
+        else: return selobjs
+
+    def lookForClickedNode(self,selobjs,tolerance=20):
+        for info in selobjs:
+            #if info["Object"] == self.obj.Name:
+            #    return
+            if ('EditNode' in info["Component"]):#True as a result of getObjectInfo
+                ep = int(info["Component"][8:])
+            elif ('Vertex' in info["Component"]):# if vertex is clicked, the edit point is selected only if (distance < tolerance)
+                p = FreeCAD.Vector(info["x"],info["y"],info["z"])
+                for i,t in enumerate(self.trackers):
+                    if (t.get().sub(p)).Length <= 0.01:
+                        ep = i
+                        break
+            elif ('Edge' in info["Component"]) or ('Face' in info["Component"]) : # if edge is clicked, the nearest edit point is selected, then tolerance is verified
+                p = FreeCAD.Vector(info["x"],info["y"],info["z"])
+                d = 1000000.0
+                for i,t in enumerate(self.trackers):
+                    if (t.get().sub(p)).Length < d:
+                        d = (t.get().sub(p)).Length
+                        ep = i
+                if d > tolerance:# should find a way to link the tolerance to zoom
+                    return
+        return ep
+
 
     def numericInput(self,v,numy=None,numz=None):
         '''this function gets called by the toolbar
@@ -308,17 +340,25 @@ class Edit():
     def initGhost(self,obj):
         if Draft.getType(obj) == "Wire": 
             return wireTracker(obj.Shape)
+        elif Draft.getType(obj) == "BSpline":
+            return bsplineTracker()
         elif Draft.getType(obj) == "BezCurve":
             return bezcurveTracker()
+            
 
     def updateGhost(self,obj,idx,pt):
         if Draft.getType(obj) in ["Wire"]:
             self.ghost.on()
             pointList = self.applyPlacement(obj.Points)
             pointList[idx] = pt
-            #if self.pl: pointList[idx] = self.pl.multVec(pt)
-            self.ghost.update(wire=obj.Shape,points=pointList)
-            #incomplete
+            if obj.Closed: pointList.append(pointList[0])
+            self.ghost.updateFromPointlist(pointList)
+        elif Draft.getType(obj) == "BSpline":
+            self.ghost.on()
+            pointList = self.applyPlacement(obj.Points)
+            pointList[idx] = pt
+            if obj.Closed: pointList.append(pointList[0])
+            self.ghost.update(pointList)            
         elif Draft.getType(obj) == "BezCurve":
             self.ghost.on()
             plist = self.applyPlacement(obj.Points)
@@ -345,7 +385,7 @@ class Edit():
     # EDIT OBJECT TOOLS : Add/Delete Vertexes
     #---------------------------------------------------------------------------
 
-    def addPointOnEdge(self, newPoint, edgeIndex):
+    def addPointToWire(self, newPoint, edgeIndex):
         newPoints = []
         hasAddedPoint = False
         for index, point in enumerate(self.obj.Points):
@@ -359,7 +399,7 @@ class Edit():
         FreeCAD.ActiveDocument.recompute()
         self.resetTrackers()
 
-    def addPoint(self,point,info=None):
+    def addPointToCurve(self,point,info=None):
         if not (Draft.getType(self.obj) in ["BSpline","BezCurve"]): return
         pts = self.obj.Points
         if Draft.getType(self.obj) == "BezCurve":
@@ -603,12 +643,10 @@ class Edit():
                 index,self.obj.ViewObject.LineColor,\
                 marker=marker))
 
-    def smoothBezPoint(self,point, info=None, style='Symmetric'):
+    def smoothBezPoint(self,point, style='Symmetric'):
         "called when changing the continuity of a knot"
         style2cont = {'Sharp':0,'Tangent':1,'Symmetric':2}
         if not (Draft.getType(self.obj) == "BezCurve"):return
-        if  info['Component'].startswith('Edge'):
-            return # didn't click control point
         pts = self.obj.Points
         deg = self.obj.Degree
         if deg < 2: return

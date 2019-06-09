@@ -791,7 +791,7 @@ class wireTracker(Tracker):
         self.update(wire)
         Tracker.__init__(self,children=[self.coords,self.line],name="wireTracker")
 
-    def update(self,wire,forceclosed=False,points=None):
+    def update(self,wire,forceclosed=False):
         if wire:
             if self.closed or forceclosed:
                 self.line.numVertices.setValue(len(wire.Vertexes)+1)
@@ -804,6 +804,8 @@ class wireTracker(Tracker):
                 t = len(wire.Vertexes)
                 p = wire.Vertexes[0].Point
                 self.coords.point.set1Value(t,[p.x,p.y,p.z])
+
+    def updateFromPointlist(self,points,forceclosed=False):
         if points:
             for i in range(len(points)):
                 p=points[i]
