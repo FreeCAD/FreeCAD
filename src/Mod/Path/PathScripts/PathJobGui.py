@@ -30,7 +30,6 @@ import PathScripts.PathJob as PathJob
 import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathJobDlg as PathJobDlg
 import PathScripts.PathGeom as PathGeom
-# import PathScripts.PathGui as PathGui
 import PathScripts.PathGuiInit as PathGuiInit
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
@@ -41,7 +40,6 @@ import PathScripts.PathToolLibraryManager as PathToolLibraryManager
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import math
-# import sys
 import traceback
 
 from PySide import QtCore, QtGui
