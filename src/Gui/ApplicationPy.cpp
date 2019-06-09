@@ -168,7 +168,7 @@ PyMethodDef Application::Methods[] = {
    "setActiveDocument(string or App.Document) -> None\n\n"
    "Activate the specified document"},
   {"activeView", (PyCFunction)Application::sActiveView, METH_VARARGS,
-   "activeView() -> object or None\n\n"
+   "activeView(typename=None) -> object or None\n\n"
    "Return the active view of the active document or None if no one exists" },
   {"activateView", (PyCFunction)Application::sActivateView, METH_VARARGS,
    "activateView(type)\n\n"
@@ -248,16 +248,37 @@ PyObject* Gui::Application::sActiveDocument(PyObject * /*self*/, PyObject *args)
 
 PyObject* Gui::Application::sActiveView(PyObject * /*self*/, PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    const char *typeName=0;
+    if (!PyArg_ParseTuple(args, "|s", &typeName))
         return NULL;
 
-    Gui::MDIView* mdiView = Instance->activeView();
-    if (mdiView) {
-        // already incremented in getPyObject().
-        return mdiView->getPyObject();
-    }
+    PY_TRY {
+        Base::Type type;
+        if(typeName) {
+            type = Base::Type::fromName(typeName);
+            if(type.isBad()) {
+                PyErr_Format(PyExc_TypeError, "Invalid type '%s'", typeName);
+                return 0;
+            }
+        }
 
-    Py_Return;
+        Gui::MDIView* mdiView = Instance->activeView();
+        if (mdiView && (type.isBad() || mdiView->isDerivedFrom(type))) {
+            auto res = Py::asObject(mdiView->getPyObject());
+            if(!res.isNone() || !type.isBad()) 
+                return Py::new_reference_to(res);
+        }
+
+        if(type.isBad())
+            type = Gui::View3DInventor::getClassTypeId();
+        Instance->activateView(type, true);
+        mdiView = Instance->activeView();
+        if (mdiView)
+            return mdiView->getPyObject();
+
+        Py_Return;
+
+    } PY_CATCH
 }
 
 PyObject* Gui::Application::sActivateView(PyObject * /*self*/, PyObject *args)
