@@ -228,7 +228,7 @@ def getPreferences():
     global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
     global FORCE_BREP, IMPORT_PROPERTIES, STORE_UID, SERIALIZE
     global SPLIT_LAYERS, EXPORT_2D, FULL_PARAMETRIC, FITVIEW_ONIMPORT
-    global ADD_DEFAULT_SITE, ADD_DEFAULT_STOREY
+    global ADD_DEFAULT_SITE, ADD_DEFAULT_STOREY, ADD_DEFAULT_BUILDING
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
@@ -258,6 +258,7 @@ def getPreferences():
     FITVIEW_ONIMPORT = p.GetBool("ifcFitViewOnImport",False)
     ADD_DEFAULT_SITE = p.GetBool("IfcAddDefaultSite",False)
     ADD_DEFAULT_STOREY = p.GetBool("IfcAddDefaultStorey",False)
+    ADD_DEFAULT_BUILDING = p.GetBool("IfcAddDefaultBuilding",True)
 
 # ************************************************************************************************
 # ********** open and import IFC ****************
@@ -2149,7 +2150,7 @@ def export(exportList,filename):
                         subs
                     )
 
-    # floors/buildingparts
+    # storeys
 
     for floor in Draft.getObjectsOfType(objectslist,"Floor")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
         if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcType") and floor.IfcType == "Building Storey"):
@@ -2232,6 +2233,8 @@ def export(exportList,filename):
                             treated.append(c.Name)
         sites.append(products[site.Name])
 
+    # add default site, building and storey as required
+
     if not sites:
         if ADD_DEFAULT_SITE:
             if DEBUG: print("No site found. Adding default site")
@@ -2259,21 +2262,22 @@ def export(exportList,filename):
             project,sites
         )
     if not buildings:
-        if DEBUG: print("No building found. Adding default building")
-        buildings = [ifcfile.createIfcBuilding(
-            ifcopenshell.guid.new(),
-            history,
-            "Default Building",
-            '',
-            None,
-            None,
-            None,
-            None,
-            "ELEMENT",
-            None,
-            None,
-            None
-        )]
+        if ADD_DEFAULT_BUILDING:
+            if DEBUG: print("No building found. Adding default building")
+            buildings = [ifcfile.createIfcBuilding(
+                ifcopenshell.guid.new(),
+                history,
+                "Default Building",
+                '',
+                None,
+                None,
+                None,
+                None,
+                "ELEMENT",
+                None,
+                None,
+                None
+            )]
         if buildings and (not sites):
             ifcfile.createIfcRelAggregates(
                 ifcopenshell.guid.new(),
@@ -2299,10 +2303,13 @@ def export(exportList,filename):
             sites[0],
             buildings
         )
+
+    # treat objects that are not related to any site, building or storey
+
     untreated = []
     for k,v in products.items():
         if not(k in treated):
-            if k != buildings[0].Name:
+            if (not buildings) or (k != buildings[0].Name):
                 if not(Draft.getType(FreeCAD.ActiveDocument.getObject(k)) in ["Site","Building","Floor","BuildingPart"]):
                     untreated.append(v)
                 elif Draft.getType(FreeCAD.ActiveDocument.getObject(k)) == "BuildingPart":
@@ -2310,34 +2317,82 @@ def export(exportList,filename):
                         untreated.append(v)
     if untreated:
         if not defaulthost:
-            defaulthost = ifcfile.createIfcBuildingStorey(
+            if ADD_DEFAULT_STOREY:
+                defaulthost = ifcfile.createIfcBuildingStorey(
+                    ifcopenshell.guid.new(),
+                    history,
+                    "Default Storey",
+                    '',
+                    None,
+                    None,
+                    None,
+                    None,
+                    "ELEMENT",
+                    None
+                )
+                # if ADD_DEFAULT_STOREY is on, we need a building to host it, regardless of ADD_DEFAULT_BUILDING
+                if not buildings:
+                    if DEBUG: print("No building found. Adding default building")
+                    buildings = [ifcfile.createIfcBuilding(
+                        ifcopenshell.guid.new(),
+                        history,
+                        "Default Building",
+                        '',
+                        None,
+                        None,
+                        None,
+                        None,
+                        "ELEMENT",
+                        None,
+                        None,
+                        None
+                    )]
+                    if sites:
+                        ifcfile.createIfcRelAggregates(
+                            ifcopenshell.guid.new(),
+                            history,
+                            'SiteLink',
+                            '',
+                            sites[0],
+                            buildings
+                        )
+                    else:
+                        ifcfile.createIfcRelAggregates(
+                            ifcopenshell.guid.new(),
+                            history,
+                            'ProjectLink',
+                            '',
+                            project,buildings
+                        )
+                ifcfile.createIfcRelAggregates(
+                    ifcopenshell.guid.new(),
+                    history,
+                    'DefaultStoreyLink',
+                    '',
+                    buildings[0],
+                    [defaulthost]
+                )
+            elif buildings:
+                defaulthost = buildings[0]
+        if defaulthost:
+            ifcfile.createIfcRelContainedInSpatialStructure(
                 ifcopenshell.guid.new(),
                 history,
-                "Default Storey",
+                'UnassignedObjectsLink',
                 '',
-                None,
-                None,
-                None,
-                None,
-                "ELEMENT",
-                None
+                untreated,
+                defaulthost
             )
+        else:
+            # no default host: aggregate unassigned objects directly under the IfcProject - WARNING: NON STANDARD
+            if DEBUG: print("WARNING - Default building generation is disabled. You are producing a non-standard file.")
             ifcfile.createIfcRelAggregates(
                 ifcopenshell.guid.new(),
                 history,
-                'DefaultStoreyLink',
+                'ProjectLink',
                 '',
-                buildings[0],
-                [defaulthost]
+                project,untreated
             )
-        ifcfile.createIfcRelContainedInSpatialStructure(
-            ifcopenshell.guid.new(),
-            history,
-            'UnassignedObjectsLink',
-            '',
-            untreated,
-            defaulthost
-        )
 
     # materials
 

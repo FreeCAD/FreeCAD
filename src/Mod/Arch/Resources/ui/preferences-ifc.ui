@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>463</width>
-    <height>829</height>
+    <height>883</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -532,8 +532,11 @@
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBox_19">
+        <property name="toolTip">
+         <string>When exporting an IFC  file, if no site if found in the FreeCAD document, a default one will be added. A site is not mandatory by the IFC standard, but it is a common practice to always have at least one in the file.</string>
+        </property>
         <property name="text">
-         <string>Add default site if no site is present in the document</string>
+         <string>Add default site if none is found in the document</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>IfcAddDefaultSite</cstring>
@@ -544,7 +547,29 @@
        </widget>
       </item>
       <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_21">
+        <property name="toolTip">
+         <string>When exporting an IFC file, if no building if found in the FreeCAD document, a default one will be added.&lt;br/&gt;&lt;b&gt;Warning&lt;/b&gt;: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file. However, at FreeCAD, we believe having a building should not be mandatory, and this option is there so we have a chance to show our point of view to the world and try to convince others.</string>
+        </property>
+        <property name="text">
+         <string>Add default building if no ne is found in the document (no standard)</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>IfcAddDefaultBuilding</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="checkBox_20">
+        <property name="toolTip">
+         <string>When exporting an IFC  file, if no building storey if found in the FreeCAD document, a default one will be added. A building storey is not mandatory by the IFC standard, but it is a common practice to always have at least one in the file.</string>
+        </property>
         <property name="text">
          <string>Add default building storey if none is found in the document</string>
         </property>
