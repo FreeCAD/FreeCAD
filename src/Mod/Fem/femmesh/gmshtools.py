@@ -607,9 +607,16 @@ class GmshTools():
                     ''.join((str(n + 1) + ', ') for n in self.ele_node_map[e])
                 ).rstrip(', ')
                 geo.write("// " + e + "\n")
+                elestr1 = "{"
+                elestr2 = "}"
                 geo.write(
-                    "Characteristic Length { {} } = {};\n"
-                    .format(ele_nodes, self.ele_length_map[e])
+                    "Characteristic Length {} {} {} = {};\n"
+                    .format(
+                        elestr1,
+                        ele_nodes,
+                        elestr2,
+                        self.ele_length_map[e]
+                    )
                 )
             geo.write("\n")
 
