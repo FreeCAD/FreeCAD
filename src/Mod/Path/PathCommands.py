@@ -35,7 +35,6 @@ from PathScripts.PathUtils import findParentJob
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
-    # from DraftTools import translate
 else:
     def translate(ctxt, txt):
         return txt
@@ -79,7 +78,6 @@ class _CommandSelectLoop:
             return False
 
     def Activated(self):
-        # from PathScripts.PathUtils import loopdetect
         from PathScripts.PathUtils import horizontalEdgeLoop
         from PathScripts.PathUtils import horizontalFaceLoop
         sel = FreeCADGui.Selection.getSelectionEx()[0]

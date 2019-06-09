@@ -24,12 +24,10 @@
 
 import FreeCAD
 import Part
-# import Path
 import PathScripts.PathEngraveBase as PathEngraveBase
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathOpTools as PathOpTools
-# import PathScripts.PathUtil as PathUtil
 import math
 
 from PySide import QtCore
@@ -54,7 +52,6 @@ def toolDepthAndOffset(width, extraDepth, tool):
     tan = math.tan(math.radians(angle / 2))
 
     toolDepth = 0 if 0 == tan else width / tan
-    # extraDepth = extraDepth
     depth = toolDepth + extraDepth
     toolOffset = tool.FlatRadius
     extraOffset = tool.Diameter / 2 - width if 180 == angle else extraDepth / tan
