@@ -19,7 +19,7 @@ include_directories(
 
 if(BUILD_QT5)
     include_directories(
-        ${Qt5XmlPatterns_INCLUDES}
+        ${Qt5XmlPatterns_INCLUDE_DIRS}
     )
 else(BUILD_QT5)
     include_directories(
