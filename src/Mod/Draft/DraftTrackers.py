@@ -805,6 +805,12 @@ class wireTracker(Tracker):
                 p = wire.Vertexes[0].Point
                 self.coords.point.set1Value(t,[p.x,p.y,p.z])
 
+    def updateFromPointlist(self,points,forceclosed=False):
+        if points:
+            for i in range(len(points)):
+                p=points[i]
+                self.coords.point.set1Value(i,[p.x,p.y,p.z])
+
 class gridTracker(Tracker):
     "A grid tracker"
     def __init__(self):
