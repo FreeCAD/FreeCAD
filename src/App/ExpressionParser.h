@@ -40,6 +40,10 @@ _ExpressionAllocDefine(_ExpressionFastAlloc,boost::fast_pool_allocator);
 #define ExpressionFastAlloc(_t) _ExpressionFastAlloc<_t> 
 
 AppExport bool isAnyEqual(const App::any &v1, const App::any &v2);
+AppExport Base::Quantity anyToQuantity(const App::any &value, const char *errmsg = 0);
+AppExport ExpressionPtr expressionFromPy(const App::DocumentObject *owner, const Py::Object &value);
+AppExport Py::Object pyFromQuantity(const Base::Quantity &quantity);
+AppExport bool pyToQuantity(Base::Quantity &q, const Py::Object &pyobj);
 
 ////////////////////////////////////////////////////////////////////////////////////
 

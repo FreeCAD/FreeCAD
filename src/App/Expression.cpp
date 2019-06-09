@@ -115,6 +115,8 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 
 #define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError,_msg, (Expression*)0)
 
+#define TYPE_THROW(_msg) __EXPR_THROW(Base::TypeError,_msg, (Expression*)0)
+
 #define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError,_msg, (Expression*)0)
 
 #define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError,_msg, (Expression*)0)
@@ -557,7 +559,7 @@ App::any pyObjectToAny(Py::Object value, bool check) {
     }
 }
 
-static bool pyToQuantity(Quantity &q, const Py::Object &pyobj) {
+bool pyToQuantity(Quantity &q, const Py::Object &pyobj) {
     Timing(pyToQuantity);
     if (PyObject_TypeCheck(*pyobj, &Base::QuantityPy::Type))
         q = *static_cast<Base::QuantityPy*>(*pyobj)->getQuantityPtr();
@@ -624,8 +626,7 @@ Py::Object pyFromQuantity(const Quantity &quantity) {
     }
 }
 
-Quantity anyToQuantity(const Expression *e, 
-        const App::any &value, const char *msg = 0) {
+Quantity anyToQuantity(const App::any &value, const char *msg) {
     Timing(anyToQuantity);
     if (is_type(value,typeid(Quantity))) {
         return cast<Quantity>(value);
@@ -642,7 +643,7 @@ Quantity anyToQuantity(const Expression *e,
     }
     if(!msg)
         msg = "Failed to convert to Quantity";
-    __EXPR_THROW(TypeError,msg, e);
+    TYPE_THROW(msg);
 }
 
 static inline bool anyToLong(long &res, const App::any &value) {
@@ -682,9 +683,9 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
 
     if(!is_type(v1,v2.type())) {
         if(is_type(v1,typeid(Quantity))) 
-            return cast<Quantity>(v1) == anyToQuantity(0,v2);
+            return cast<Quantity>(v1) == anyToQuantity(v2);
         else if(is_type(v2,typeid(Quantity)))
-            return anyToQuantity(0,v1) == cast<Quantity>(v2);
+            return anyToQuantity(v1) == cast<Quantity>(v2);
 
         long l1,l2;
         double d1,d2;

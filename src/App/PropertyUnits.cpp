@@ -41,6 +41,7 @@
 #include <Base/PyObjectBase.h>
 #include <Base/QuantityPy.h>
 #include <Base/UnitPy.h>
+#include "ExpressionParser.h"
 
 using namespace App;
 using namespace Base;
@@ -120,7 +121,9 @@ void PropertyQuantity::setPyObject(PyObject *value)
     if (PyObject_TypeCheck(value, &(UnitPy::Type))) {
         Base::UnitPy  *pcObject = static_cast<Base::UnitPy*>(value);
         Base::Unit unit = *(pcObject->getUnitPtr());
+        aboutToSetValue();
         _Unit = unit;
+        hasSetValue();
     }
     else {
         Base::Quantity quant= createQuantityFromPy(value);
@@ -140,12 +143,12 @@ void PropertyQuantity::setPyObject(PyObject *value)
 
 void PropertyQuantity::setPathValue(const ObjectIdentifier & /*path*/, const App::any &value)
 {
-    if (value.type() == typeid(double))
-        setValue(App::any_cast<double>(value));
-    else if (value.type() == typeid(Base::Quantity))
-        setValue((App::any_cast<const Quantity&>(value)).getValue());
-    else
-        throw bad_cast();
+    auto q = App::anyToQuantity(value);
+    aboutToSetValue();
+    if(!q.getUnit().isEmpty())
+        _Unit = q.getUnit();
+    _dValue=q.getValue();
+    setValue(q.getValue());
 }
 
 App::any PropertyQuantity::getPathValue(const ObjectIdentifier & /*path*/) const
