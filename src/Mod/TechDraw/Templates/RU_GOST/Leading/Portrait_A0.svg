@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -997,7 +997,6 @@
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
   </g>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      x="-71.439308"
      y="831.56189"
@@ -1016,7 +1015,6 @@
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="ccccc" />
   <text
-     xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:3.52777767px;line-height:1.5;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="800.7002"
      y="1186.9922"
@@ -1175,7 +1173,6 @@
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="cc" />
   <text
-     xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:7.05555534px;line-height:1.5;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="735.48267"
      y="1138.7455"
@@ -1187,7 +1184,6 @@
        y="1138.7455"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05555534px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332">РИК-35.000000.000СБ</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:5.64444447px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="717.62097"
      y="1158.2562"
@@ -1199,7 +1195,6 @@
        y="1158.2562"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332">Название детали</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="717.81946"
      y="1177.5463"
@@ -1211,7 +1206,6 @@
        y="1177.5463"
        style="font-size:3.52777767px;stroke-width:0.26458332">Полоса     ——————————————</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="790.64166"
      y="1147.4844"
@@ -1222,7 +1216,6 @@
        y="1147.4844"
        style="font-size:3.52777767px;stroke-width:0.26458332">Лит.</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="804.47559"
      y="1147.7278"
@@ -1233,7 +1226,6 @@
        y="1147.7278"
        style="font-size:3.52777767px;stroke-width:0.26458332">Масса</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="819.43213"
      y="1147.7278"
@@ -1244,7 +1236,6 @@
        y="1147.7278"
        style="font-size:3.52777767px;stroke-width:0.26458332">Масштаб</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="788.52161"
      y="1167.4821"
@@ -1255,7 +1246,6 @@
        y="1167.4821"
        style="stroke-width:0.26458332">Лист</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="808.96637"
      y="1167.4821"
@@ -1266,7 +1256,6 @@
        y="1167.4821"
        style="stroke-width:0.26458332">Листов</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="651.46027"
      y="1152.4956"
@@ -1277,7 +1266,6 @@
        y="1152.4956"
        style="stroke-width:0.26458332">Изм</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="659.46844"
      y="1152.4948"
@@ -1288,7 +1276,6 @@
        y="1152.4948"
        style="stroke-width:0.26458332">Лист</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="672.11261"
      y="1152.145"
@@ -1299,7 +1286,6 @@
        y="1152.145"
        style="stroke-width:0.26458332">№ докум.</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="694.23853"
      y="1152.257"
@@ -1310,7 +1296,6 @@
        y="1152.257"
        style="stroke-width:0.26458332">Подп.</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="707.56091"
      y="1152.2217"
@@ -1321,7 +1306,6 @@
        y="1152.2217"
        style="stroke-width:0.26458332">Дата</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="652.89557"
      y="1157.1917"
@@ -1332,7 +1316,6 @@
        y="1157.1917"
        style="stroke-width:0.26458332">Разраб.</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="652.89209"
      y="1162.1572"
@@ -1343,7 +1326,6 @@
        y="1162.1572"
        style="stroke-width:0.26458332">Пров.</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="653.08502"
      y="1167.1531"
@@ -1354,7 +1336,6 @@
        y="1167.1531"
        style="stroke-width:0.26458332">Т. контр.</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="652.88525"
      y="1177.1447"
@@ -1365,7 +1346,6 @@
        y="1177.1447"
        style="stroke-width:0.26458332">Н. контр.</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="653.15051"
      y="1182.4854"
@@ -1376,7 +1356,6 @@
        y="1182.4854"
        style="stroke-width:0.26458332">Утв.</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="787.86877"
      y="1177.567"
@@ -1388,7 +1367,6 @@
        y="1177.567"
        style="font-size:3.52777767px;stroke-width:0.26458332">ООО «Рога и копыта»</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="668.97119"
      y="1157.1917"
@@ -1400,7 +1378,6 @@
        y="1157.1917"
        style="font-size:2.82222223px;stroke-width:0.26458332">Иванов И. И.</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="668.97119"
      y="1182.1874"
@@ -1412,7 +1389,6 @@
        y="1182.1874"
        style="font-size:2.82222223px;stroke-width:0.26458332">Иванов И. И.</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="668.97119"
      y="1162.1874"
@@ -1424,7 +1400,6 @@
        y="1162.1874"
        style="font-size:2.82222223px;stroke-width:0.26458332">Иванов И. И.</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="797.47888"
      y="1167.5088"
@@ -1436,7 +1411,6 @@
        y="1167.5088"
        style="stroke-width:0.26458332">1</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="821.9339"
      y="1167.5088"
@@ -1448,7 +1422,6 @@
        y="1167.5088"
        style="stroke-width:0.26458332">1</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="803.58362"
      y="1157.9941"
@@ -1460,7 +1433,6 @@
        y="1157.9941"
        style="font-size:4.23333311px;stroke-width:0.26458332">0.000</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="821.03326"
      y="1157.9941"
@@ -1472,7 +1444,6 @@
        y="1157.9941"
        style="font-size:4.23333311px;stroke-width:0.26458332">1:1</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11666656px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="707.27911"
      y="1156.9972"
@@ -1484,7 +1455,6 @@
        y="1156.9972"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11666656px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332">01.01.01</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11666656px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="707.27911"
      y="1161.9967"
@@ -1496,7 +1466,6 @@
        y="1161.9967"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11666656px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332">01.01.01</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11666656px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="707.27911"
      y="1181.9967"
@@ -1508,7 +1477,6 @@
        y="1181.9967"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11666656px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332">01.01.01</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      x="717.94861"
      y="1173.2676"
@@ -1520,7 +1488,6 @@
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332px"
        id="tspan1619">                        50×100 ГОСТ 103-2006</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      x="717.71094"
      y="1181.8663"
@@ -1532,7 +1499,6 @@
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332px"
        id="tspan1627">                    12Х18Н10Т ГОСТ 5949-75</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      x="718.073"
      y="1164.6993"
@@ -1544,7 +1510,6 @@
        y="1164.6993"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332px"> </tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      x="787.86877"
      y="1173.2563"
@@ -1556,7 +1521,6 @@
        y="1173.2563"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332px"> </tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      x="787.86877"
      y="1181.8776"
