@@ -77,7 +77,6 @@
 #include <Mod/TechDraw/App/DrawGeomHatchPy.h>  // generated from DrawGeomHatchPy.xml
 
 using namespace TechDraw;
-using namespace TechDrawGeometry;
 using namespace std;
 
 App::PropertyFloatConstraint::Constraints DrawGeomHatch::scaleRange = {Precision::Confusion(),
@@ -263,10 +262,10 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source, std::v
             resultEdges.push_back(edge);
         }
 
-        std::vector<TechDrawGeometry::BaseGeom*> resultGeoms;
+        std::vector<TechDraw::BaseGeom*> resultGeoms;
         int i = 0;
         for (auto& e: resultEdges) {
-            TechDrawGeometry::BaseGeom* base = BaseGeom::baseFactory(e);
+            TechDraw::BaseGeom* base = BaseGeom::baseFactory(e);
             if (base == nullptr) {
                 Base::Console().Log("FAIL - DGH::getTrimmedLines - baseFactory failed for edge: %d\n",i);
                 throw Base::ValueError("DGH::getTrimmedLines - baseFactory failed");
@@ -411,10 +410,10 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
     for (auto& ls: m_lineSets) {
         PATLineSpec hl = ls.getPATLineSpec();
         std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, ScalePattern.getValue());
-        std::vector<TechDrawGeometry::BaseGeom*> resultGeoms;
+        std::vector<TechDraw::BaseGeom*> resultGeoms;
         int i = 0;
         for (auto& e: candidates) {
-            TechDrawGeometry::BaseGeom* base = BaseGeom::baseFactory(e);
+            TechDraw::BaseGeom* base = BaseGeom::baseFactory(e);
             if (base == nullptr) {
                 Base::Console().Log("FAIL - DGH::getFaceOverlay - baseFactory failed for edge: %d\n",i);
                 throw Base::ValueError("DGH::getFaceOverlay - baseFactory failed");

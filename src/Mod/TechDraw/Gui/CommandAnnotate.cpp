@@ -62,6 +62,7 @@
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 using namespace std;
 
 
@@ -346,14 +347,14 @@ void execMidpoints(Gui::Command* cmd)
     }
 
     //combine 2 loops?
-    const std::vector<TechDrawGeometry::BaseGeom*> edges = objFeat->getEdgeGeometry();
+    const std::vector<TechDraw::BaseGeom*> edges = objFeat->getEdgeGeometry();
     double scale = objFeat->getScale();
     for (auto& s: SubNames) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
-        TechDrawGeometry::BaseGeom* geom = edges.at(GeoId);
-        Base::Vector2d mid = geom->getMidPoint();
-        Base::Vector3d mid3(mid.x / scale, - mid.y / scale, 0.0);
-        objFeat->addRandomVertex(mid3);
+        TechDraw::BaseGeom* geom = edges.at(GeoId);
+        Base::Vector3d mid = geom->getMidPoint();
+//        Base::Vector3d mid3(mid.x / scale, - mid.y / scale, 0.0);
+        objFeat->addCosmeticVertex(mid / scale);
     }
     cmd->updateActive();
 //    Base::Console().Message("execMidpoints - exits\n");
@@ -387,18 +388,18 @@ void execQuadrant(Gui::Command* cmd)
     }
 
     //combine 2 loops?
-    const std::vector<TechDrawGeometry::BaseGeom*> edges = objFeat->getEdgeGeometry();
+    const std::vector<TechDraw::BaseGeom*> edges = objFeat->getEdgeGeometry();
     double scale = objFeat->getScale();
     bool nonCircles = false;
     for (auto& s: SubNames) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
-        TechDrawGeometry::BaseGeom* geom = edges.at(GeoId);
+        TechDraw::BaseGeom* geom = edges.at(GeoId);
         //TODO: should this be restricted to circles??
-//        if (geom->geomType == TechDrawGeometry::CIRCLE) {
-            std::vector<Base::Vector2d> quads = geom->getQuads();
+//        if (geom->geomType == TechDraw::CIRCLE) {
+            std::vector<Base::Vector3d> quads = geom->getQuads();
             for (auto& q: quads) {
-                Base::Vector3d q3(q.x / scale, - q.y / scale, 0.0);
-                objFeat->addRandomVertex(q3);
+//                Base::Vector3d q3(q.x / scale, - q.y / scale, 0.0);
+                objFeat->addCosmeticVertex(q / scale);
             }
 //        } else {
 //            nonCircles = true;
@@ -641,7 +642,15 @@ void CmdTechDrawFaceCenterLine::activated(int iMsg)
             SubNames = (*itSel).getSubNames();
         }
     }
-    if (SubNames.empty()) {
+    std::vector<std::string> faceNames;
+    for (auto& s: SubNames) {
+        std::string geomType = DrawUtil::getGeomTypeFromName(s);
+        if (geomType == "Face") {
+            faceNames.push_back(s);
+        }
+    }
+    
+    if (faceNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                              QObject::tr("You must select a Face(s) for the center line."));
         return;
@@ -649,7 +658,7 @@ void CmdTechDrawFaceCenterLine::activated(int iMsg)
 
     Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
                                                     page,
-                                                    SubNames));
+                                                    faceNames));
 }
 
 bool CmdTechDrawFaceCenterLine::isActive(void)
@@ -728,12 +737,12 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             if (geomType == "Edge") {
                 TechDraw::CosmeticEdge* ce = objFeat->getCosmeticEdgeByLink(idx);
                 if (ce != nullptr) {
-                    objFeat->removeRandomEdge(ce);
+                    objFeat->removeCosmeticEdge(ce);
                 }
             } else if (geomType == "Vertex") {
                 TechDraw::CosmeticVertex* cv = objFeat->getCosmeticVertexByLink(idx);
                 if (cv != nullptr) {
-                    objFeat->removeRandomVertex(cv);
+                    objFeat->removeCosmeticVertex(cv);
                 }
             } else {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),

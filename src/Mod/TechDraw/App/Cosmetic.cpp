@@ -22,10 +22,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <gp_Pnt.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Ax1.hxx>
+#include <gp_Circ.hxx>
+#include <Geom_Circle.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <gp_Pnt.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Edge.hxx>
 #endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
@@ -44,12 +49,96 @@
 #include "Cosmetic.h"
 
 using namespace TechDraw;
-using namespace TechDrawGeometry;
 
-CosmeticVertex::CosmeticVertex()
+LineFormat::LineFormat()
 {
-    pageLocation = Base::Vector3d(0.0, 0.0, 0.0);
-    modelLocation = Base::Vector3d(0.0, 0.0, 0.0);
+    m_style = getDefEdgeStyle();
+    m_weight = getDefEdgeWidth();
+    m_color = getDefEdgeColor();
+    m_visible = true;
+}
+
+LineFormat::LineFormat(int style,
+               double weight,
+               App::Color color,
+               bool visible ) :
+    m_style(style),
+    m_weight(weight),
+    m_color(color),
+    m_visible(visible)
+{
+}
+
+void LineFormat::dump(char* title)
+{
+    Base::Console().Message("LF::dump - %s \n",title);
+    Base::Console().Message("LF::dump - %s \n",toCSV().c_str());
+}
+
+std::string LineFormat::toCSV(void) const
+{
+    std::stringstream ss;
+    ss << m_style << "," <<
+          m_weight << "," <<
+          m_color.asHexString() << "," <<
+          m_visible;
+    return ss.str();
+}
+
+bool LineFormat::fromCSV(std::string& lineSpec)
+{
+    unsigned int maxCells = 4;
+    if (lineSpec.length() == 0) {
+        Base::Console().Message( "LineFormat::fromCSV - lineSpec empty\n");
+        return false;
+    }
+    std::vector<std::string> values = DrawUtil::split(lineSpec);
+    if (values.size() < maxCells) {
+        Base::Console().Message( "LineFormat::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
+        return false;
+    }
+    m_style = atoi(values[0].c_str());
+    m_weight= atof(values[1].c_str());
+    m_color.fromHexString(values[2]);
+    m_visible = atoi(values[3].c_str());
+    return true;
+}
+
+//static preference getters.
+double LineFormat::getDefEdgeWidth()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+
+    double width = lg->getWeight("Graphic");
+    delete lg; 
+    return width;
+}
+
+App::Color LineFormat::getDefEdgeColor()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));  //black
+    return fcColor;
+}
+
+int LineFormat::getDefEdgeStyle()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    int style = hGrp->GetInt("CosmoCLStyle", 2);   //dashed
+    return style;
+}
+
+//****************************************************************************************
+
+CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
+{
+    point(Base::Vector3d(0.0, 0.0, 0.0));
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     App::Color fcColor;
@@ -62,11 +151,9 @@ CosmeticVertex::CosmeticVertex()
     visible = true;
 }
 
-CosmeticVertex::CosmeticVertex(Base::Vector3d loc)
+//CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(DrawUtil::invertY(loc))
+CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
 {
-    pageLocation = loc;
-    modelLocation = loc;
-
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     App::Color fcColor;
@@ -83,13 +170,9 @@ CosmeticVertex::CosmeticVertex(Base::Vector3d loc)
 std::string CosmeticVertex::toCSV(void) const
 {
     std::stringstream ss;
-    ss << pageLocation.x << "," <<
-          pageLocation.y << "," <<
-          pageLocation.z << "," <<
-
-          modelLocation.x << "," <<
-          modelLocation.y << "," <<
-          modelLocation.z << "," <<
+    ss << point().x << "," <<
+          point().y << "," <<
+          point().z << "," <<
 
           linkGeom << "," << 
           color.asHexString() << ","  <<
@@ -102,12 +185,12 @@ std::string CosmeticVertex::toCSV(void) const
 
 bool CosmeticVertex::fromCSV(std::string& lineSpec)
 {
-    unsigned int maxCells = 11;
+    unsigned int maxCells = 8;
     if (lineSpec.length() == 0) {
         Base::Console().Message( "CosmeticVertex::fromCSV - lineSpec empty\n");
         return false;
     }
-    std::vector<std::string> values = split(lineSpec);
+    std::vector<std::string> values = DrawUtil::split(lineSpec);
     if (values.size() < maxCells) {
         Base::Console().Message( "CosmeticVertex::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
         return false;
@@ -115,31 +198,13 @@ bool CosmeticVertex::fromCSV(std::string& lineSpec)
     double x = atof(values[0].c_str());
     double y = atof(values[1].c_str());
     double z = atof(values[2].c_str());
-    pageLocation = Base::Vector3d (x,y,z);
-    x = atof(values[3].c_str());
-    y = atof(values[4].c_str());
-    z = atof(values[5].c_str());
-    modelLocation = Base::Vector3d (x,y,z);
-    linkGeom = atoi(values[6].c_str());
-    color.fromHexString(values[7]);
-    size = atof(values[8].c_str());
-    style = atoi(values[9].c_str());
-    visible = atoi(values[10].c_str());
+    point(Base::Vector3d (x,y,z));
+    linkGeom = atoi(values[3].c_str());
+    color.fromHexString(values[4]);
+    size = atof(values[5].c_str());
+    style = atoi(values[6].c_str());
+    visible = atoi(values[7].c_str());
     return true;
-}
-
-std::vector<std::string> CosmeticVertex::split(std::string csvLine)
-{
-//    Base::Console().Message("CV::split - csvLine: %s\n",csvLine.c_str());
-    std::vector<std::string>  result;
-    std::stringstream     lineStream(csvLine);
-    std::string           cell;
-
-    while(std::getline(lineStream,cell, ','))
-    {
-        result.push_back(cell);
-    }
-    return result;
 }
 
 void CosmeticVertex::dump(char* title)
@@ -153,188 +218,160 @@ void CosmeticVertex::dump(char* title)
 //note this ctor has no occEdge or first/last point for geometry!
 CosmeticEdge::CosmeticEdge()
 {
-    geometry = new TechDrawGeometry::BaseGeom();
-    geometry->geomType = GENERIC;
-    geometry->classOfEdge = ecHARD;
-    geometry->visible = true;
-    geometry->cosmetic = true;
+    m_geometry = new TechDraw::BaseGeom();
+    m_geometry->geomType = GENERIC;
+    m_geometry->classOfEdge = ecHARD;
+    m_geometry->visible = true;
+    m_geometry->cosmetic = true;
 
-    linkGeom = -1;
-    color = getDefEdgeColor();
-    width  = getDefEdgeWidth();
-    style = getDefEdgeStyle();
-    visible = true;
-
+    m_linkGeom = -1;
+    m_format = LineFormat();
 }
 
-CosmeticEdge::CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2, double scale)
+//CosmeticEdge::CosmeticEdge(Base::Vector3d pt1, Base::Vector3d pt2)
+CosmeticEdge::CosmeticEdge(Base::Vector3d pt1, Base::Vector3d pt2)
 {
-//    Base:: Console().Message("CE::CE(%s, %s, %.3f) \n",
+//    Base:: Console().Message("CE::CE(%s, %s) \n",
 //                             DrawUtil::formatVector(p1).c_str(),
-//                             DrawUtil::formatVector(p2).c_str(), scale);
-    p1 = p1 / scale;
-    p2 = p2 / scale;
+//                             DrawUtil::formatVector(p2).c_str());
+    Base::Vector3d p1 = DrawUtil::invertY(pt1);
+    Base::Vector3d p2 = DrawUtil::invertY(pt2);
     gp_Pnt gp1(p1.x,p1.y,p1.z);
     gp_Pnt gp2(p2.x,p2.y,p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    geometry = TechDrawGeometry::BaseGeom::baseFactory(e);
-    geometry->geomType = GENERIC;       //treat every CE as a line for now
-    geometry->classOfEdge = ecHARD;
-    geometry->visible = true;
-    geometry->cosmetic = true;
+    m_geometry = TechDraw::BaseGeom::baseFactory(e);
+    m_geometry->classOfEdge = ecHARD;
+    m_geometry->visible = true;
+    m_geometry->cosmetic = true;
 
-    linkGeom = -1;
-    color = getDefEdgeColor();
-    width  = getDefEdgeWidth();
-    style = getDefEdgeStyle();
-    visible = true;
-
+    if (m_geometry->geomType == TechDraw::GeomType::GENERIC) {
+        //
+    } else if (m_geometry->geomType == TechDraw::GeomType::CIRCLE) {
+        //
+    }
+    m_linkGeom = -1;
+    m_format = LineFormat();
 }
 
-CosmeticEdge::CosmeticEdge(TopoDS_Edge e, double scale)
+//CosmeticEdge::CosmeticEdge(TopoDS_Edge e, Base::Vector3d mirrorPoint)
+CosmeticEdge::CosmeticEdge(TopoDS_Edge e)
 {
-//    Base:: Console().Message("CE::CE(occEdge, %.3f) \n", scale);
-    TechDrawGeometry::BaseGeom* newGeom = nullptr;
-    TopoDS_Shape s = TechDrawGeometry::scaleShape(e, scale);
-    TopoDS_Edge newEdge = TopoDS::Edge(s);
-    newGeom = TechDrawGeometry::BaseGeom::baseFactory(newEdge);
-    newGeom->geomType = GENERIC;
-    newGeom->classOfEdge = ecHARD;
-    newGeom->visible = true;
-    newGeom->cosmetic = true;
+//    Base:: Console().Message("CE::CE(occEdge) \n");
+    m_geometry = TechDraw::BaseGeom::baseFactory(e);
+    m_geometry->classOfEdge = ecHARD;
+    m_geometry->visible = true;
+    m_geometry->cosmetic = true;
 
-    linkGeom = -1;
-    color = getDefEdgeColor();
-    width  = getDefEdgeWidth();
-    style = getDefEdgeStyle();
-    visible = true;
+    m_linkGeom = -1;
+    m_format = LineFormat();
 }
 
-TechDrawGeometry::BaseGeom* CosmeticEdge::scaledGeometry(double scale)
+CosmeticEdge::CosmeticEdge(TechDraw::BaseGeom* g)
+{
+//    Base:: Console().Message("CE::CE(Base::Geom) \n");
+    m_geometry = g;
+    m_geometry->classOfEdge = ecHARD;
+    m_geometry->visible = true;
+    m_geometry->cosmetic = true;
+    m_linkGeom = -1;
+    m_format = LineFormat();
+}
+
+TechDraw::BaseGeom* CosmeticEdge::scaledGeometry(double scale)
 {
 //    Base::Console().Message("CE::getScaledGeometry(%.3f)\n",scale);
-    TechDrawGeometry::BaseGeom* newGeom = nullptr;
-    TopoDS_Edge e = geometry->occEdge;
-    TopoDS_Shape s = TechDrawGeometry::scaleShape(e, scale);
+    TechDraw::BaseGeom* newGeom = nullptr;
+    TopoDS_Edge e = m_geometry->occEdge;
+    TopoDS_Shape s = TechDraw::scaleShape(e, scale);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
-    newGeom = TechDrawGeometry::BaseGeom::baseFactory(newEdge);
-    newGeom->geomType = GENERIC;          //treat all geoms as lines for now
-                                          //TODO: handle at least circles
+    newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
     newGeom->classOfEdge = ecHARD;
     newGeom->visible = true;
     newGeom->cosmetic = true;
     return newGeom;
 }
 
-double CosmeticEdge::getDefEdgeWidth()
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
-
-    double width = lg->getWeight("Graphic");
-    delete lg; 
-    return width;
-}
-
-App::Color CosmeticEdge::getDefEdgeColor()
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
-    return fcColor;
-}
-
-int CosmeticEdge::getDefEdgeStyle()
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    int style = hGrp->GetInt("CosmoCLStyle", 2);
-    return style;
-}
-
 std::string CosmeticEdge::toCSV(void) const
 {
+//    Base::Console().Message( "CosmeticEdge::toCSV()\n");
     std::stringstream ss;
-    Base::Vector3d start, end;
-    if (geometry != nullptr) {
-        Base::Vector2d p2d = geometry->getStartPoint();
-        start = Base::Vector3d(p2d.x, p2d.y, 0.0);
-        p2d = geometry->getEndPoint();
-        end = Base::Vector3d(p2d.x, p2d.y, 0.0);
+    if (m_geometry != nullptr) {
+        ss << m_geometry->geomType << "," <<
+            m_linkGeom <<
+            ",$$$," <<
+            m_geometry->toCSV() <<
+            ",$$$," <<
+            m_format.toCSV() <<
+            std::endl;
     }
-
-    ss << start.x << "," <<
-        start.y << "," <<
-        start.z << "," <<
-        end.x << "," <<
-        end.y << "," <<
-        end.z << "," <<
-        linkGeom << "," << 
-        color.asHexString() << ","  <<
-        width << "," <<
-        style << ","  <<
-        visible << 
-        std::endl;
     return ss.str();
 }
 
 bool CosmeticEdge::fromCSV(std::string& lineSpec)
 {
-    unsigned int maxCells = 11;
-    if (lineSpec.length() == 0) {
-        Base::Console().Message( "CosmeticEdge::fromCSV - lineSpec empty\n");
+//    Base::Console().Message( "CosmeticEdge::fromCSV() - lineSpec: %s\n", lineSpec.c_str());
+    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
+    if (tokens.empty()) {
+        Base::Console().Message("CosmeticEdge::fromCSV - tokenize failed - no tokens\n");
         return false;
     }
-    std::vector<std::string> values = split(lineSpec);
+
+    if (tokens[0].length() == 0) {
+        Base::Console().Message( "CosmeticEdge::fromCSV - token0 empty\n");
+        return false;
+    }
+    
+    std::vector<std::string> values = DrawUtil::split(tokens[0]);
+    unsigned int maxCells = 2;
     if (values.size() < maxCells) {
         Base::Console().Message( "CosmeticEdge::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
         return false;
     }
-    Base::Vector3d start, end;
-    double x = atof(values[0].c_str());
-    double y = atof(values[1].c_str());
-    double z = atof(values[2].c_str());
-    start = Base::Vector3d (x,y,z);
-    x = atof(values[3].c_str());
-    y = atof(values[4].c_str());
-    z = atof(values[5].c_str());
-    end = Base::Vector3d (x,y,z);
+    int geomType = atoi(values[0].c_str());
+    m_linkGeom = atoi(values[1].c_str());
 
-    linkGeom = atoi(values[6].c_str());
-    color.fromHexString(values[7]);
-    width = atof(values[8].c_str());
-    style = atoi(values[9].c_str());
-    visible = atoi(values[10].c_str());
-
-    //dupl of ctor(p1,p2)
-    gp_Pnt gp1(start.x,start.y,start.z);
-    gp_Pnt gp2(end.x,end.y,end.z);
-    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    geometry = TechDrawGeometry::BaseGeom::baseFactory(e);
-    geometry->geomType = GENERIC;
-    geometry->classOfEdge = ecHARD;
-    geometry->visible = true;
-    geometry->cosmetic = true;
-
-    return true;
-}
-
-//duplicate of CV routine.  make static? or base class?
-std::vector<std::string> CosmeticEdge::split(std::string csvLine)
-{
-//    Base::Console().Message("CE::split - csvLine: %s\n",csvLine.c_str());
-    std::vector<std::string>  result;
-    std::stringstream     lineStream(csvLine);
-    std::string           cell;
-
-    while(std::getline(lineStream,cell, ','))
-    {
-        result.push_back(cell);
+    int lastToken = 0;
+    if (geomType == TechDraw::GeomType::GENERIC) {
+        if (tokens.size() != 4) {
+            Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
+            return false;
+        }
+        TechDraw::Generic* tempGeom = new TechDraw::Generic();
+        tempGeom->fromCSV(tokens[1] + ",$$$," + tokens[2]);
+        lastToken = 3;
+        m_geometry = tempGeom;
+        m_geometry->occEdge = GeometryUtils::edgeFromGeneric(tempGeom);
+    } else if (geomType == TechDraw::GeomType::CIRCLE) {
+        if (tokens.size() != 4) {
+            Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
+            return false;
+        }
+        TechDraw::Circle* tempGeom = new TechDraw::Circle();
+        tempGeom->fromCSV(tokens[1] + ",$$$," + tokens[2]);
+        lastToken = 3;
+        m_geometry = tempGeom;
+        m_geometry->occEdge = GeometryUtils::edgeFromCircle(tempGeom);
+    } else if (geomType == TechDraw::GeomType::ARCOFCIRCLE) {
+        if (tokens.size() != 5) {
+            Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
+            return false;
+        }
+        TechDraw::AOC* tempGeom = new TechDraw::AOC();
+        tempGeom->fromCSV(tokens[1] + ",$$$," + tokens[2] + ",$$$," + tokens[3]);
+        lastToken = 4;
+        m_geometry = tempGeom;
+        m_geometry->occEdge = GeometryUtils::edgeFromCircleArc(tempGeom);
+    } else {
+        Base::Console().Message("Cosmetic::fromCSV - unimplemented geomType: %d\n", geomType);
+        return false;
     }
-    return result;
+
+    m_format.fromCSV(tokens[lastToken]);
+
+    m_geometry->classOfEdge = ecHARD;
+    m_geometry->visible = true;
+    m_geometry->cosmetic = true;
+    return true;
 }
 
 //duplicate of CV routine.  make static? or base class?

@@ -38,7 +38,7 @@ namespace TechDraw {
 class DrawViewDimension;
 }
 
-namespace TechDrawGeometry {
+namespace TechDraw {
 class BaseGeom;
 class AOC;
 }

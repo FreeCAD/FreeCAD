@@ -229,7 +229,7 @@ void TaskCenterLine::createCenterLine(void)
     }
     m_extendBy = ui->qsbExtend->rawValue();
     TechDraw::CosmeticEdge* ce = calcEndPoints(m_subNames,vertical,m_extendBy);
-    m_partFeat->addRandomEdge(ce);
+    m_partFeat->addCosmeticEdge(ce);
     m_partFeat->requestPaint();
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
@@ -302,7 +302,7 @@ TechDraw::CosmeticEdge* TaskCenterLine::calcEndPoints(std::vector<std::string> f
             continue;
         }
         int idx = TechDraw::DrawUtil::getIndexFromName(fn);
-        std::vector<TechDrawGeometry::BaseGeom*> faceEdges = 
+        std::vector<TechDraw::BaseGeom*> faceEdges = 
                                                 m_partFeat->getFaceEdgesByIndex(idx);
         for (auto& fe: faceEdges) {
             if (!fe->cosmetic) {
@@ -339,13 +339,13 @@ TechDraw::CosmeticEdge* TaskCenterLine::calcEndPoints(std::vector<std::string> f
         p2 = right;
     }
 
-    result = new TechDraw::CosmeticEdge(p1, p2, scale);  //p1 & p2 are as found in GO.
+    result = new TechDraw::CosmeticEdge(p1 / scale, p2 / scale);  //p1 & p2 are as found in GO.
     App::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
-    result->color = ac;
-    result->width = ui->dsbWeight->value();
-    result->style = ui->cboxStyle->currentIndex();
-    result->visible = true;
+    result->m_format.m_color = ac;
+    result->m_format.m_weight = ui->dsbWeight->value();
+    result->m_format.m_style = ui->cboxStyle->currentIndex();
+    result->m_format.m_visible = true;
     return result;
 }
 
