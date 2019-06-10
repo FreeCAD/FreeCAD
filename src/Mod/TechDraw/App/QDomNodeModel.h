@@ -5,7 +5,7 @@
 #include <QXmlNamePool>
 #include <QDomDocument>
 
-class QDomNodeModel: public QAbstractXmlNodeModel
+class TechDrawExport QDomNodeModel: public QAbstractXmlNodeModel
 {
 public:
     QDomNodeModel(QXmlNamePool, QDomDocument, bool parsedReadOnly = false);
