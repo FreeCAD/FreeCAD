@@ -941,17 +941,27 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget
     //load the default values
     updateEnumerationList(getTypedObject<Fem::FemPostScalarClipFilter>()->Scalars, ui->Scalar);
     ui->InsideOut->setChecked(static_cast<Fem::FemPostScalarClipFilter*>(getObject())->InsideOut.getValue());
+    App::PropertyFloatConstraint& scalar_prop = static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
+    double scalar_factor = scalar_prop.getValue();
 
-    App::PropertyFloatConstraint& value = static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
-    //don't forget to sync the slider
+    // set spinbox scalar_factor, don't forget to sync the slider
     ui->Value->blockSignals(true);
-    ui->Value->setValue( value.getValue());
+    ui->Value->setValue(scalar_factor);
     ui->Value->blockSignals(false);
-    //don't forget to sync the slider
-    ui->Value->blockSignals(true);
-    ui->Value->setValue( value.getConstraints()->UpperBound * (1-double(value.getValue())/100.)
-                            + double(value.getValue())/100.*value.getConstraints()->UpperBound);
-    ui->Value->blockSignals(false);
+
+    // sync the slider
+    // slider min = 0%, slider max = 100%
+    //
+    //                 scalar_factor 
+    // slider_value = --------------- x 100
+    //                      max
+    //
+    double max = scalar_prop.getConstraints()->UpperBound;
+    int slider_value = (scalar_factor / max) * 100.;
+    ui->Slider->blockSignals(true);
+    ui->Slider->setValue(slider_value);
+    ui->Slider->blockSignals(false);
+    Base::Console().Log("init: scalar_factor, slider_value: %f, %i: \n", scalar_factor, slider_value);
 }
 
 TaskPostScalarClip::~TaskPostScalarClip() {
@@ -967,20 +977,25 @@ void TaskPostScalarClip::on_Scalar_currentIndexChanged(int idx) {
     static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Scalars.setValue(idx);
     recompute();
 
-    //update constraints and values
-    App::PropertyFloatConstraint& value = static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
-    ui->Maximum->setText(QString::number(value.getConstraints()->UpperBound));
-    ui->Minimum->setText(QString::number(value.getConstraints()->LowerBound));
+    // update constraints and values
+    App::PropertyFloatConstraint& scalar_prop = static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
+    double scalar_factor = scalar_prop.getValue();
+    double min = scalar_prop.getConstraints()->LowerBound;
+    double max = scalar_prop.getConstraints()->UpperBound;
 
-    //don't forget to sync the slider
+    ui->Maximum->setText(QString::number(min));
+    ui->Minimum->setText(QString::number(max));
+
+    // set scalar_factor, don't forget to sync the slider
     ui->Value->blockSignals(true);
-    ui->Value->setValue( value.getValue());
+    ui->Value->setValue(scalar_factor);
     ui->Value->blockSignals(false);
-    //don't forget to sync the slider
-    ui->Value->blockSignals(true);
-    ui->Value->setValue( value.getConstraints()->UpperBound * (1-double(value.getValue())/100.)
-                            + double(value.getValue())/100.*value.getConstraints()->UpperBound);
-    ui->Value->blockSignals(false);
+
+    // sync the slider
+    ui->Slider->blockSignals(true);
+    int slider_value = (scalar_factor / max) * 100.;
+    ui->Slider->setValue(slider_value);
+    ui->Slider->blockSignals(false);
 }
 
 void TaskPostScalarClip::on_Slider_valueChanged(int v) {

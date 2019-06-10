@@ -56,6 +56,13 @@
 
 #include "Rez.h"
 #include "ZVALUE.h"
+
+#include "QGCustomLabel.h"
+#include "QGCustomBorder.h"
+#include "QGCustomText.h"
+#include "QGICaption.h"
+#include "QGCustomImage.h"
+
 #include "QGIArrow.h"
 #include "QGIDimLines.h"
 #include "QGIViewDimension.h"
@@ -90,6 +97,7 @@ QGIDatumLabel::QGIDatumLabel()
     m_tolText->setParentItem(this);
 
     m_ctrl = false;
+    hasHover = false;
 }
 
 QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -141,6 +149,7 @@ void QGIDatumLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 void QGIDatumLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_EMIT hover(true);
+    hasHover = true;
     if (!isSelected()) {
         setPrettyPre();
     }
@@ -154,6 +163,7 @@ void QGIDatumLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     Q_UNUSED(view);
 
     Q_EMIT hover(false);
+    hasHover = false;
     if (!isSelected()) {
         setPrettyNormal();
     }
@@ -303,6 +313,9 @@ QGIViewDimension::QGIViewDimension() :
 {
     setHandlesChildEvents(false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+//    setAcceptHoverEvents(true);
+    setAcceptHoverEvents(false);
     setCacheMode(QGraphicsItem::NoCache);
 
     datumLabel = new QGIDatumLabel();
@@ -344,12 +357,63 @@ QGIViewDimension::QGIViewDimension() :
 
     dimLines->setStyle(Qt::SolidLine);
 
-//    toggleBorder(false);
-    setZValue(ZVALUE::DIMENSION);                    //note: this won't paint dimensions over another View if it stacks
-                                                     //above this Dimension's parent view.   need Layers?
+    setZValue(ZVALUE::DIMENSION);         //note: this won't paint dimensions over another View if it stacks
+                                          //above this Dimension's parent view.   need Layers?
+
+    m_label->hide();
+    m_border->hide();
+    m_caption->hide();
+    m_lock->hide();
+
+    setPrettyNormal();
 
 }
 
+QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+   if (change == ItemSelectedHasChanged && scene()) {
+        if(isSelected()) {
+            setSelected(false);
+            datumLabel->setSelected(true);
+            
+        } else {
+            datumLabel->setSelected(false);
+        }
+        draw();
+    }
+    return QGIView::itemChange(change, value);
+}
+
+void QGIViewDimension::select(bool state)
+{
+//    Base::Console().Message("QGIVD::select(%d)\n", state);
+    if (state) {
+        setPrettySel();
+    } else {
+        setPrettyNormal();
+    }
+    draw();
+}
+
+//surrogate for hover enter (true), hover leave (false) events
+void QGIViewDimension::hover(bool state)
+{
+    hasHover = state;
+    if (state) {
+        if (datumLabel->isSelected()) {
+            setPrettySel();
+        } else {
+            setPrettyPre();     //have hover, not selected -> preselect
+        }
+    } else {
+        if (datumLabel->isSelected()) {
+            setPrettySel();
+        } else {
+            setPrettyNormal();
+        }
+    }
+    draw();
+}
 
 void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
 {
@@ -365,18 +429,6 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
     datumLabel->setPosFromCenter(x, y);
 
     updateDim();
-    draw();
-}
-
-void QGIViewDimension::select(bool state)
-{
-    setSelected(state);
-    draw();
-}
-
-void QGIViewDimension::hover(bool state)
-{
-    hasHover = state;
     draw();
 }
 
@@ -472,7 +524,7 @@ void QGIViewDimension::datumLabelDragFinished()
 
 void QGIViewDimension::draw()
 {
-    if (!isVisible()) {                                                //should this be controlled by parent ViewPart?
+    if (!isVisible()) {
         return;
     }
 
@@ -1135,7 +1187,7 @@ void QGIViewDimension::draw()
         float bbX  = datumLabel->boundingRect().width();
         float bbY = datumLabel->boundingRect().height();
         datumLabel->setTransformOriginPoint(bbX / 2, bbY /2);
-        datumLabel->setRotation(0.0);                                                //label is always right side up & horizontal
+        datumLabel->setRotation(0.0);                //label is always right side up & horizontal
 
         //if inside the arc (len(DimLine < radius)) arrow goes from center to edge away from label
         //if outside the arc arrow kinks, then goes to edge nearest label
@@ -1418,20 +1470,15 @@ void QGIViewDimension::draw()
 
     }  //endif Distance/Diameter/Radius/Angle
 
-    // redraw the Dimension and the parent View
-    if (hasHover && !isSelected()) {
-        aHead1->setPrettyPre();
-        aHead2->setPrettyPre();
-        dimLines->setPrettyPre();
-    } else if (isSelected()) {
-        aHead1->setPrettySel();
-        aHead2->setPrettySel();
-        dimLines->setPrettySel();
-    } else {
-        aHead1->setPrettyNormal();
-        aHead2->setPrettyNormal();
-        dimLines->setPrettyNormal();
-    }
+//this is already handled in select() and hover()
+//    // redraw the Dimension and the parent View
+//    if (datumLabel->hasHover && !datumLabel->isSelected()) {
+//        setPrettyPre();
+//    } else if (datumLabel->isSelected()) {
+//        setPrettySel();
+//    } else {
+//        setPrettyNormal();
+//    }
 
     update();
     if (parentItem()) {
@@ -1440,59 +1487,6 @@ void QGIViewDimension::draw()
     } else {
         Base::Console().Log("INFO - QGIVD::draw - no parent to update\n");
     }
-}
-
-void QGIViewDimension::drawBorder(void)
-{
-//Dimensions have no border!
-//    Base::Console().Message("TRACE - QGIViewDimension::drawBorder - doing nothing!\n");
-}
-
-QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-   if (change == ItemSelectedHasChanged && scene()) {
-        if(isSelected()) {
-            datumLabel->setSelected(true);
-        } else {
-            datumLabel->setSelected(false);
-        }
-        draw();
-    }
-    return QGIView::itemChange(change, value);
-}
-
-void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-    QPaintDevice* hw = painter->device();
-    QSvgGenerator* svg = dynamic_cast<QSvgGenerator*>(hw);
-    setPens();
-    //double arrowSaveWidth = aHead1->getWidth();
-    if (svg) {
-        setSvgPens();
-    } else {
-        setPens();
-    }
-//    painter->drawRect(boundingRect());          //good for debugging
-
-    QGIView::paint (painter, &myOption, widget);
-    setPens();
-}
-
-void QGIViewDimension::setSvgPens(void)
-{
-    double svgLineFactor = 3.0;                     //magic number.  should be a setting somewhere.
-    dimLines->setWidth(m_lineWidth/svgLineFactor);
-    aHead1->setWidth(aHead1->getWidth()/svgLineFactor);
-    aHead2->setWidth(aHead2->getWidth()/svgLineFactor);
-}
-
-void QGIViewDimension::setPens(void)
-{
-    dimLines->setWidth(m_lineWidth);
-    aHead1->setWidth(m_lineWidth);
-    aHead2->setWidth(m_lineWidth);
 }
 
 QColor QGIViewDimension::getNormalColor()
@@ -1569,6 +1563,33 @@ Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir)
     return dirExt;
 }
 
+void QGIViewDimension::setPrettyPre(void)
+{
+    aHead1->setPrettyPre();
+    aHead2->setPrettyPre();
+    dimLines->setPrettyPre();
+}
+
+void QGIViewDimension::setPrettySel(void)
+{
+    aHead1->setPrettySel();
+    aHead2->setPrettySel();
+    dimLines->setPrettySel();
+}
+
+void QGIViewDimension::setPrettyNormal(void)
+{
+    aHead1->setPrettyNormal();
+    aHead2->setPrettyNormal();
+    dimLines->setPrettyNormal();
+}
+
+void QGIViewDimension::drawBorder(void)
+{
+//Dimensions have no border!
+//    Base::Console().Message("TRACE - QGIViewDimension::drawBorder - doing nothing!\n");
+}
+
 const double QGIViewDimension::TextOffsetFudge = 2.0;
 
 double QGIViewDimension::getDefaultTextHorizontalOffset(bool toLeft) const
@@ -1592,9 +1613,53 @@ double QGIViewDimension::getDefaultTextVerticalOffset() const
     return textMult*Rez::guiX(vp->Fontsize.getValue()) + TextOffsetFudge;
 }
 
+//frame, border, caption are never shown in QGIVD, so shouldn't be in bRect
 QRectF QGIViewDimension::boundingRect() const
 {
-    return childrenBoundingRect().adjusted(-3,-3,3,3);
+    QRectF labelRect = mapFromItem(datumLabel, datumLabel->boundingRect()).boundingRect();
+    QRectF linesRect = mapFromItem(dimLines, dimLines->boundingRect()).boundingRect();
+    QRectF aHead1Rect = mapFromItem(aHead1, aHead1->boundingRect()).boundingRect();
+    QRectF aHead2Rect = mapFromItem(aHead2, aHead2->boundingRect()).boundingRect();
+    QRectF result(labelRect);
+    result = result.united(linesRect);
+    result = result.united(aHead1Rect);
+    result = result.united(aHead2Rect);
+    return result;
+}
+
+void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
+    QStyleOptionGraphicsItem myOption(*option);
+    myOption.state &= ~QStyle::State_Selected;
+
+    QPaintDevice* hw = painter->device();
+    QSvgGenerator* svg = dynamic_cast<QSvgGenerator*>(hw);
+    setPens();
+    //double arrowSaveWidth = aHead1->getWidth();
+    if (svg) {
+        setSvgPens();
+    } else {
+        setPens();
+    }
+//    painter->drawRect(boundingRect());          //good for debugging
+
+//    QGIView::paint (painter, &myOption, widget);
+    QGraphicsItemGroup::paint(painter, &myOption, widget);
+    setPens();
+}
+
+void QGIViewDimension::setSvgPens(void)
+{
+    double svgLineFactor = 3.0;                     //magic number.  should be a setting somewhere.
+    dimLines->setWidth(m_lineWidth/svgLineFactor);
+    aHead1->setWidth(aHead1->getWidth()/svgLineFactor);
+    aHead2->setWidth(aHead2->getWidth()/svgLineFactor);
+}
+
+void QGIViewDimension::setPens(void)
+{
+    dimLines->setWidth(m_lineWidth);
+    aHead1->setWidth(m_lineWidth);
+    aHead2->setWidth(m_lineWidth);
 }
 
 

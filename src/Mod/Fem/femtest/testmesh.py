@@ -457,6 +457,32 @@ class TestMeshEleTetra10(unittest.TestCase):
             fcc_print('FEM_VTK post processing is disabled.')
 
     # ********************************************************************************************
+    def test_tetra10_yml(
+        self
+    ):
+        # tetra10 element: reading from and writing to yaml/json mesh file format
+
+        file_extension = 'yml'
+        outfile, testfile = self.get_file_paths(file_extension)
+
+        # TODO: implement yaml/json mesh reader writer method calls in C++
+        # self.femmesh.write(outfile)  # write the mesh
+        # femmesh_testfile = Fem.read(outfile)  # read the mesh from written mesh
+        # femmesh_outfile = Fem.read(testfile)  # read the mesh from test mesh
+        # directly use Python methods to read and write files
+        from feminout.importYamlJsonMesh import write
+        write(self.femmesh, outfile)
+        from feminout.importYamlJsonMesh import read
+        femmesh_testfile = read(outfile)
+        femmesh_outfile = read(testfile)
+
+        self.compare_mesh_files(
+            femmesh_testfile,
+            femmesh_outfile,
+            file_extension
+        )
+
+    # ********************************************************************************************
     def test_tetra10_z88(
         self
     ):

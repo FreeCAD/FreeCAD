@@ -1,0 +1,1537 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="Portrait_A4.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <title
+     id="title16258">RU_Leading_Portrait_A4</title>
+  <!-- Working space 10 10 287 200 -->
+  <!-- Title block 147 153 287 200 -->
+  <metadata
+     id="metadata849">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>RU_Leading_Portrait_A4</dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by/4.0/" />
+        <dc:date>09.06.19</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Abrosimov Anton</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by/4.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs847">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 148.50001 : 1"
+       inkscape:vp_y="0 : 1000.0001 : 0"
+       inkscape:vp_z="419.99998 : 148.50001 : 1"
+       inkscape:persp3d-origin="209.99999 : 99.000005 : 1"
+       id="perspective3708" />
+    <linearGradient
+       x1="649.42902"
+       y1="807.466"
+       x2="655.35199"
+       y2="485.909"
+       id="defitem29"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop92" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0.13756600;"
+         offset="1.0000000"
+         id="stop93" />
+    </linearGradient>
+    <radialGradient
+       cx="1049.72"
+       cy="345.56"
+       r="1202.15"
+       fx="1049.72"
+       fy="345.56"
+       id="defitem28"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop89" />
+      <stop
+         style="stop-color:#a8a8a8;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop90" />
+    </radialGradient>
+    <linearGradient
+       x1="287.5"
+       y1="636.70697"
+       x2="980"
+       y2="636.70697"
+       id="defitem30"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#464646;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop95" />
+      <stop
+         style="stop-color:#c2c2c2;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop96" />
+    </linearGradient>
+    <linearGradient
+       x1="921.091"
+       y1="403.18799"
+       x2="985.98199"
+       y2="317.44699"
+       id="defitem27"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#7e7e7e;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop86" />
+      <stop
+         style="stop-color:#e5e5e5;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop87" />
+    </linearGradient>
+    <linearGradient
+       x1="530.76099"
+       y1="346.30399"
+       x2="293.37"
+       y2="360.27499"
+       id="defitem26"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#5f5f5f;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop83" />
+      <stop
+         style="stop-color:#e5e5e5;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop84" />
+    </linearGradient>
+    <linearGradient
+       x1="164.013"
+       y1="412.91901"
+       x2="308.75"
+       y2="337.60999"
+       id="defitem25"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop80" />
+      <stop
+         style="stop-color:#bfbfbf;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop81" />
+    </linearGradient>
+    <linearGradient
+       x1="1094.25"
+       y1="270.854"
+       x2="992.48901"
+       y2="380.47198"
+       id="defitem24"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#6a6a6a;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop77" />
+      <stop
+         style="stop-color:#e6e6e6;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop78" />
+    </linearGradient>
+    <linearGradient
+       x1="1170.91"
+       y1="476.465"
+       x2="1049.84"
+       y2="549.37799"
+       id="defitem23"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#5f5f5f;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop74" />
+      <stop
+         style="stop-color:#ebebeb;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop75" />
+    </linearGradient>
+    <linearGradient
+       x1="783.716"
+       y1="105.486"
+       x2="576.14899"
+       y2="313.276"
+       id="defitem22"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#5a5a5a;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop71" />
+      <stop
+         style="stop-color:#c7c7c7;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop72" />
+    </linearGradient>
+    <linearGradient
+       x1="280.04401"
+       y1="418.698"
+       x2="128.05499"
+       y2="484.716"
+       id="defitem21"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#666666;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop68" />
+      <stop
+         style="stop-color:#d8d8d8;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop69" />
+    </linearGradient>
+    <linearGradient
+       x1="129.687"
+       y1="636.95398"
+       x2="220"
+       y2="584.40997"
+       id="defitem20"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop65" />
+      <stop
+         style="stop-color:#bbbbbb;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop66" />
+    </linearGradient>
+    <linearGradient
+       x1="1048.72"
+       y1="629.02802"
+       x2="1127.98"
+       y2="583.75299"
+       id="defitem19"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#5e5e5e;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop62" />
+      <stop
+         style="stop-color:#ededed;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop63" />
+    </linearGradient>
+    <linearGradient
+       x1="370.022"
+       y1="387.27301"
+       x2="581.32397"
+       y2="291.97699"
+       id="defitem18"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#636363;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop59" />
+      <stop
+         style="stop-color:#d6d6d6;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop60" />
+    </linearGradient>
+    <linearGradient
+       x1="732.15601"
+       y1="351.939"
+       x2="909.59399"
+       y2="351.939"
+       id="defitem17"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#676767;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop56" />
+      <stop
+         style="stop-color:#d3d3d3;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop57" />
+    </linearGradient>
+    <linearGradient
+       x1="1014.43"
+       y1="494.71301"
+       x2="1073.01"
+       y2="494.71301"
+       id="defitem16"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#666666;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop53" />
+      <stop
+         style="stop-color:#dcdcdc;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop54" />
+    </linearGradient>
+    <linearGradient
+       x1="272.59201"
+       y1="452.388"
+       x2="193.27699"
+       y2="516.37"
+       id="defitem15"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#6e6e6e;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop50" />
+      <stop
+         style="stop-color:#d8d8d8;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop51" />
+    </linearGradient>
+    <radialGradient
+       cx="1037.22"
+       cy="211.088"
+       r="1164.28"
+       fx="1037.22"
+       fy="211.088"
+       id="defitem14"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop47" />
+      <stop
+         style="stop-color:#aaaaaa;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop48" />
+    </radialGradient>
+    <linearGradient
+       x1="342.64999"
+       y1="732.12903"
+       x2="379.241"
+       y2="686.83002"
+       id="defitem13"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop44" />
+      <stop
+         style="stop-color:#989898;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop45" />
+    </linearGradient>
+    <radialGradient
+       cx="632.78101"
+       cy="484.409"
+       r="540.27899"
+       fx="632.78101"
+       fy="484.409"
+       id="defitem12"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop41" />
+      <stop
+         style="stop-color:#ededed;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop42" />
+    </radialGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#defitem12"
+       id="radialGradient3901"
+       gradientUnits="userSpaceOnUse"
+       cx="632.78101"
+       cy="484.409"
+       fx="632.78101"
+       fy="484.409"
+       r="540.27899" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem13"
+       id="linearGradient3903"
+       gradientUnits="userSpaceOnUse"
+       x1="342.64999"
+       y1="732.12903"
+       x2="379.241"
+       y2="686.83002" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#defitem14"
+       id="radialGradient3905"
+       gradientUnits="userSpaceOnUse"
+       cx="1037.22"
+       cy="211.088"
+       fx="1037.22"
+       fy="211.088"
+       r="1164.28" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem15"
+       id="linearGradient3907"
+       gradientUnits="userSpaceOnUse"
+       x1="272.59201"
+       y1="452.388"
+       x2="193.27699"
+       y2="516.37" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem16"
+       id="linearGradient3909"
+       gradientUnits="userSpaceOnUse"
+       x1="1014.43"
+       y1="494.71301"
+       x2="1073.01"
+       y2="494.71301" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem17"
+       id="linearGradient3911"
+       gradientUnits="userSpaceOnUse"
+       x1="732.15601"
+       y1="351.939"
+       x2="909.59399"
+       y2="351.939" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem18"
+       id="linearGradient3913"
+       gradientUnits="userSpaceOnUse"
+       x1="370.022"
+       y1="387.27301"
+       x2="581.32397"
+       y2="291.97699" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem19"
+       id="linearGradient3915"
+       gradientUnits="userSpaceOnUse"
+       x1="1048.72"
+       y1="629.02802"
+       x2="1127.98"
+       y2="583.75299" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem20"
+       id="linearGradient3917"
+       gradientUnits="userSpaceOnUse"
+       x1="129.687"
+       y1="636.95398"
+       x2="220"
+       y2="584.40997" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem21"
+       id="linearGradient3919"
+       gradientUnits="userSpaceOnUse"
+       x1="280.04401"
+       y1="418.698"
+       x2="128.05499"
+       y2="484.716" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem22"
+       id="linearGradient3921"
+       gradientUnits="userSpaceOnUse"
+       x1="783.716"
+       y1="105.486"
+       x2="576.14899"
+       y2="313.276" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem23"
+       id="linearGradient3923"
+       gradientUnits="userSpaceOnUse"
+       x1="1170.91"
+       y1="476.465"
+       x2="1049.84"
+       y2="549.37799" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem24"
+       id="linearGradient3925"
+       gradientUnits="userSpaceOnUse"
+       x1="1094.25"
+       y1="270.854"
+       x2="992.48901"
+       y2="380.47198" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem25"
+       id="linearGradient3927"
+       gradientUnits="userSpaceOnUse"
+       x1="164.013"
+       y1="412.91901"
+       x2="308.75"
+       y2="337.60999" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem26"
+       id="linearGradient3929"
+       gradientUnits="userSpaceOnUse"
+       x1="530.76099"
+       y1="346.30399"
+       x2="293.37"
+       y2="360.27499" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem27"
+       id="linearGradient3931"
+       gradientUnits="userSpaceOnUse"
+       x1="921.091"
+       y1="403.18799"
+       x2="985.98199"
+       y2="317.44699" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem30"
+       id="linearGradient3933"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.016038,0,-11.73855)"
+       x1="287.5"
+       y1="636.70697"
+       x2="980"
+       y2="636.70697" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#defitem28"
+       id="radialGradient3935"
+       gradientUnits="userSpaceOnUse"
+       cx="1092.7045"
+       cy="64.845284"
+       fx="1089.4004"
+       fy="64.844765"
+       r="1202.15" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem29"
+       id="linearGradient3937"
+       gradientUnits="userSpaceOnUse"
+       x1="649.42902"
+       y1="807.466"
+       x2="655.35199"
+       y2="485.909" />
+    <inkscape:perspective
+       id="perspective3947"
+       inkscape:persp3d-origin="0.49999997 : 0.33333335 : 1"
+       inkscape:vp_z="0.99999995 : 0.50000003 : 1"
+       inkscape:vp_y="0 : 1000.0001 : 0"
+       inkscape:vp_x="0 : 0.50000003 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3972"
+       inkscape:persp3d-origin="0.49999997 : 0.33333335 : 1"
+       inkscape:vp_z="0.99999995 : 0.50000003 : 1"
+       inkscape:vp_y="0 : 1000.0001 : 0"
+       inkscape:vp_x="0 : 0.50000003 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3997"
+       inkscape:persp3d-origin="0.49999997 : 0.33333335 : 1"
+       inkscape:vp_z="0.99999995 : 0.50000003 : 1"
+       inkscape:vp_y="0 : 1000.0001 : 0"
+       inkscape:vp_x="0 : 0.50000003 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#defitem12"
+       id="radialGradient4283"
+       gradientUnits="userSpaceOnUse"
+       cx="632.78101"
+       cy="484.409"
+       fx="632.78101"
+       fy="484.409"
+       r="540.27899" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem13"
+       id="linearGradient4285"
+       gradientUnits="userSpaceOnUse"
+       x1="342.64999"
+       y1="732.12903"
+       x2="379.241"
+       y2="686.83002" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#defitem14"
+       id="radialGradient4287"
+       gradientUnits="userSpaceOnUse"
+       cx="1037.22"
+       cy="211.088"
+       fx="1037.22"
+       fy="211.088"
+       r="1164.28" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem15"
+       id="linearGradient4289"
+       gradientUnits="userSpaceOnUse"
+       x1="272.59201"
+       y1="452.388"
+       x2="193.27699"
+       y2="516.37" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem16"
+       id="linearGradient4291"
+       gradientUnits="userSpaceOnUse"
+       x1="1014.43"
+       y1="494.71301"
+       x2="1073.01"
+       y2="494.71301" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem17"
+       id="linearGradient4293"
+       gradientUnits="userSpaceOnUse"
+       x1="732.15601"
+       y1="351.939"
+       x2="909.59399"
+       y2="351.939" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem18"
+       id="linearGradient4295"
+       gradientUnits="userSpaceOnUse"
+       x1="370.022"
+       y1="387.27301"
+       x2="581.32397"
+       y2="291.97699" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem19"
+       id="linearGradient4297"
+       gradientUnits="userSpaceOnUse"
+       x1="1048.72"
+       y1="629.02802"
+       x2="1127.98"
+       y2="583.75299" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem20"
+       id="linearGradient4299"
+       gradientUnits="userSpaceOnUse"
+       x1="129.687"
+       y1="636.95398"
+       x2="220"
+       y2="584.40997" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem21"
+       id="linearGradient4301"
+       gradientUnits="userSpaceOnUse"
+       x1="280.04401"
+       y1="418.698"
+       x2="128.05499"
+       y2="484.716" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem22"
+       id="linearGradient4303"
+       gradientUnits="userSpaceOnUse"
+       x1="783.716"
+       y1="105.486"
+       x2="576.14899"
+       y2="313.276" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem23"
+       id="linearGradient4305"
+       gradientUnits="userSpaceOnUse"
+       x1="1170.91"
+       y1="476.465"
+       x2="1049.84"
+       y2="549.37799" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem24"
+       id="linearGradient4307"
+       gradientUnits="userSpaceOnUse"
+       x1="1094.25"
+       y1="270.854"
+       x2="992.48901"
+       y2="380.47198" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem25"
+       id="linearGradient4309"
+       gradientUnits="userSpaceOnUse"
+       x1="164.013"
+       y1="412.91901"
+       x2="308.75"
+       y2="337.60999" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem26"
+       id="linearGradient4311"
+       gradientUnits="userSpaceOnUse"
+       x1="530.76099"
+       y1="346.30399"
+       x2="293.37"
+       y2="360.27499" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem27"
+       id="linearGradient4313"
+       gradientUnits="userSpaceOnUse"
+       x1="921.091"
+       y1="403.18799"
+       x2="985.98199"
+       y2="317.44699" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem30"
+       id="linearGradient4315"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.016038,0,-11.73855)"
+       x1="287.5"
+       y1="636.70697"
+       x2="980"
+       y2="636.70697" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#defitem28"
+       id="radialGradient4317"
+       gradientUnits="userSpaceOnUse"
+       cx="1092.7045"
+       cy="64.845284"
+       fx="1089.4004"
+       fy="64.844765"
+       r="1202.15" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem29"
+       id="linearGradient4319"
+       gradientUnits="userSpaceOnUse"
+       x1="649.42902"
+       y1="807.466"
+       x2="655.35199"
+       y2="485.909" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#defitem12"
+       id="radialGradient4515"
+       gradientUnits="userSpaceOnUse"
+       cx="632.78101"
+       cy="484.409"
+       fx="632.78101"
+       fy="484.409"
+       r="540.27899" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem13"
+       id="linearGradient4517"
+       gradientUnits="userSpaceOnUse"
+       x1="342.64999"
+       y1="732.12903"
+       x2="379.241"
+       y2="686.83002" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#defitem14"
+       id="radialGradient4519"
+       gradientUnits="userSpaceOnUse"
+       cx="1037.22"
+       cy="211.088"
+       fx="1037.22"
+       fy="211.088"
+       r="1164.28" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem15"
+       id="linearGradient4521"
+       gradientUnits="userSpaceOnUse"
+       x1="272.59201"
+       y1="452.388"
+       x2="193.27699"
+       y2="516.37" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem16"
+       id="linearGradient4523"
+       gradientUnits="userSpaceOnUse"
+       x1="1014.43"
+       y1="494.71301"
+       x2="1073.01"
+       y2="494.71301" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem17"
+       id="linearGradient4525"
+       gradientUnits="userSpaceOnUse"
+       x1="732.15601"
+       y1="351.939"
+       x2="909.59399"
+       y2="351.939" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem18"
+       id="linearGradient4527"
+       gradientUnits="userSpaceOnUse"
+       x1="370.022"
+       y1="387.27301"
+       x2="581.32397"
+       y2="291.97699" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem19"
+       id="linearGradient4529"
+       gradientUnits="userSpaceOnUse"
+       x1="1048.72"
+       y1="629.02802"
+       x2="1127.98"
+       y2="583.75299" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem20"
+       id="linearGradient4531"
+       gradientUnits="userSpaceOnUse"
+       x1="129.687"
+       y1="636.95398"
+       x2="220"
+       y2="584.40997" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem21"
+       id="linearGradient4533"
+       gradientUnits="userSpaceOnUse"
+       x1="280.04401"
+       y1="418.698"
+       x2="128.05499"
+       y2="484.716" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem22"
+       id="linearGradient4535"
+       gradientUnits="userSpaceOnUse"
+       x1="783.716"
+       y1="105.486"
+       x2="576.14899"
+       y2="313.276" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem23"
+       id="linearGradient4537"
+       gradientUnits="userSpaceOnUse"
+       x1="1170.91"
+       y1="476.465"
+       x2="1049.84"
+       y2="549.37799" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem24"
+       id="linearGradient4539"
+       gradientUnits="userSpaceOnUse"
+       x1="1094.25"
+       y1="270.854"
+       x2="992.48901"
+       y2="380.47198" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem25"
+       id="linearGradient4541"
+       gradientUnits="userSpaceOnUse"
+       x1="164.013"
+       y1="412.91901"
+       x2="308.75"
+       y2="337.60999" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem26"
+       id="linearGradient4543"
+       gradientUnits="userSpaceOnUse"
+       x1="530.76099"
+       y1="346.30399"
+       x2="293.37"
+       y2="360.27499" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem27"
+       id="linearGradient4545"
+       gradientUnits="userSpaceOnUse"
+       x1="921.091"
+       y1="403.18799"
+       x2="985.98199"
+       y2="317.44699" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem30"
+       id="linearGradient4547"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.016038,0,-11.73855)"
+       x1="287.5"
+       y1="636.70697"
+       x2="980"
+       y2="636.70697" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#defitem28"
+       id="radialGradient4549"
+       gradientUnits="userSpaceOnUse"
+       cx="1092.7045"
+       cy="64.845284"
+       fx="1089.4004"
+       fy="64.844765"
+       r="1202.15" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#defitem29"
+       id="linearGradient4551"
+       gradientUnits="userSpaceOnUse"
+       x1="649.42902"
+       y1="807.466"
+       x2="655.35199"
+       y2="485.909" />
+    <linearGradient
+       id="linearGradient3682">
+      <stop
+         id="stop3684"
+         offset="0"
+         style="stop-color:#ff6d0f;stop-opacity:1;" />
+      <stop
+         id="stop3686"
+         offset="1"
+         style="stop-color:#ff1000;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3864">
+      <stop
+         style="stop-color:#71b2f8;stop-opacity:1;"
+         offset="0"
+         id="stop3866" />
+      <stop
+         style="stop-color:#002795;stop-opacity:1;"
+         offset="1"
+         id="stop3868" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     inkscape:window-height="1021"
+     inkscape:window-width="1920"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     guidetolerance="10.0"
+     gridtolerance="10.0"
+     objecttolerance="10.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base"
+     inkscape:window-x="0"
+     inkscape:window-y="30"
+     inkscape:current-layer="svg2"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:window-maximized="1"
+     inkscape:zoom="0.5435391"
+     inkscape:cx="250.23275"
+     inkscape:cy="543.32057"
+     showguides="false"
+     inkscape:snap-intersection-paths="true"
+     inkscape:snap-bbox="true" />
+  <g
+     id="g452"
+     style="fill:none;stroke:#000000;stroke-width:0.13;stroke-linecap:butt;stroke-linejoin:miter"
+     transform="translate(0,-3e-6)" />
+  <!-- DrawingContent -->
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.49999997;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 20.250001,291.74999 H 204.75 V 5.2499992 H 20.250001 Z"
+     id="path7777"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="ccccc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 204.75,237.24999 v 54.5 H 20.25001 v -54.5 z"
+     id="path7779"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="ccccc" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:3.52777767px;line-height:1.5;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="169.70023"
+     y="294.9917"
+     id="text985"><tspan
+       sodipodi:role="line"
+       x="169.70023"
+       y="294.9917"
+       style="font-size:3.52777767px;line-height:1.5;stroke-width:0.26458332"
+       id="tspan987">Формат А4</tspan></text>
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 20.25001,241.76785 H 85.24982"
+     id="path4358"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 20.25001,251.75943 H 85.24982"
+     id="path4360"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.49999997;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 20.25001,256.75522 H 85.24982"
+     id="path4362"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 20.25001,266.74678 H 85.24982"
+     id="path4364"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 20.25001,276.73836 H 85.24982"
+     id="path4366"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.24999999;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 20.25001,281.73413 H 85.24982"
+     id="path4368"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 20.25001,286.72993 H 85.24982"
+     id="path4370"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 20.25001,246.76364 H 85.24982"
+     id="path4358-1"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 20.25001,261.751 H 85.24982"
+     id="path4358-5"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 20.25001,271.74255 H 85.24982"
+     id="path4358-3"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.49962434px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 85.24982,237.24999 v 54.5"
+     id="path4374-5"
+     inkscape:connector-curvature="0" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.49999997;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 85.24982,251.75944 H 204.75003"
+     id="path4356-9"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 85.24982,276.73835 H 204.75"
+     id="path4356-9-0"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 155.25001,251.75944 v 39.99054"
+     id="path4374-5-8"
+     inkscape:connector-curvature="0" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 155.25001,256.75522 H 204.75"
+     id="path4358-1-3"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 155.25001,271.74255 H 204.75"
+     id="path4364-7"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.49999994;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 170.25001,251.75943 v 19.98311"
+     id="path4358-1-3-9"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 187.25001,251.75944 v 19.98311"
+     id="path4358-1-3-9-8"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 160.12501,256.75522 v 14.98733"
+     id="path4358-1-3-9-87"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 165.12501,256.75522 v 14.98733"
+     id="path4358-1-3-9-2"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 175.25001,271.74999 v 4.98836"
+     id="path4358-1-3-9-2-1"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 75.25001,237.24999 v 54.5"
+     id="path4358-1-3-9-87-5"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.49999997;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 60.25001,237.24999 v 54.49999"
+     id="path4358-1-3-9-87-5-1"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 27.25001,237.24999 V 261.751"
+     id="path4358-1-3-9-87-5-1-7"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.49999997;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 37.25001,237.24999 v 54.5"
+     id="path4358-1-3-9-87-5-1-7-6"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:7.05555534px;line-height:1.5;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="104.48268"
+     y="246.745"
+     id="text4951"
+     freecad:editable="Номер"><tspan
+       sodipodi:role="line"
+       id="tspan4949"
+       x="104.48268"
+       y="246.745"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05555534px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332">РИК-35.000000.000СБ</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:5.64444447px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="86.620995"
+     y="266.25568"
+     id="text4951-2"
+     freecad:editable="Название"><tspan
+       sodipodi:role="line"
+       id="tspan4949-8"
+       x="86.620995"
+       y="266.25568"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332">Название детали</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="86.81945"
+     y="285.54581"
+     id="text1040"
+     freecad:editable="Материал2"><tspan
+       sodipodi:role="line"
+       id="tspan1038"
+       x="86.81945"
+       y="285.54581"
+       style="font-size:3.52777767px;stroke-width:0.26458332">Полоса     ——————————————</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="159.64168"
+     y="255.48389"
+     id="text1044"><tspan
+       sodipodi:role="line"
+       id="tspan1042"
+       x="159.64168"
+       y="255.48389"
+       style="font-size:3.52777767px;stroke-width:0.26458332">Лит.</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="173.47557"
+     y="255.72726"
+     id="text1048"><tspan
+       sodipodi:role="line"
+       id="tspan1046"
+       x="173.47557"
+       y="255.72726"
+       style="font-size:3.52777767px;stroke-width:0.26458332">Масса</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="188.43211"
+     y="255.72726"
+     id="text1052"><tspan
+       sodipodi:role="line"
+       id="tspan1050"
+       x="188.43211"
+       y="255.72726"
+       style="font-size:3.52777767px;stroke-width:0.26458332">Масштаб</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="157.52162"
+     y="275.48157"
+     id="text1056"><tspan
+       sodipodi:role="line"
+       id="tspan1054"
+       x="157.52162"
+       y="275.48157"
+       style="stroke-width:0.26458332">Лист</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="177.96635"
+     y="275.48157"
+     id="text1060"><tspan
+       sodipodi:role="line"
+       id="tspan1058"
+       x="177.96635"
+       y="275.48157"
+       style="stroke-width:0.26458332">Листов</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="20.460253"
+     y="260.49509"
+     id="text1064"><tspan
+       sodipodi:role="line"
+       id="tspan1062"
+       x="20.460253"
+       y="260.49509"
+       style="stroke-width:0.26458332">Изм</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="28.468447"
+     y="260.4942"
+     id="text1068"><tspan
+       sodipodi:role="line"
+       id="tspan1066"
+       x="28.468447"
+       y="260.4942"
+       style="stroke-width:0.26458332">Лист</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="41.112591"
+     y="260.14453"
+     id="text1072"><tspan
+       sodipodi:role="line"
+       id="tspan1070"
+       x="41.112591"
+       y="260.14453"
+       style="stroke-width:0.26458332">№ докум.</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="63.238552"
+     y="260.2565"
+     id="text1076"><tspan
+       sodipodi:role="line"
+       id="tspan1074"
+       x="63.238552"
+       y="260.2565"
+       style="stroke-width:0.26458332">Подп.</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="76.560936"
+     y="260.22119"
+     id="text1080"><tspan
+       sodipodi:role="line"
+       id="tspan1078"
+       x="76.560936"
+       y="260.22119"
+       style="stroke-width:0.26458332">Дата</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="21.895571"
+     y="265.19113"
+     id="text1084"><tspan
+       sodipodi:role="line"
+       id="tspan1082"
+       x="21.895571"
+       y="265.19113"
+       style="stroke-width:0.26458332">Разраб.</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="21.892122"
+     y="270.15677"
+     id="text1088"><tspan
+       sodipodi:role="line"
+       id="tspan1086"
+       x="21.892122"
+       y="270.15677"
+       style="stroke-width:0.26458332">Пров.</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="22.085039"
+     y="275.15253"
+     id="text1092"><tspan
+       sodipodi:role="line"
+       id="tspan1090"
+       x="22.085039"
+       y="275.15253"
+       style="stroke-width:0.26458332">Т. контр.</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="21.885241"
+     y="285.1441"
+     id="text1096"><tspan
+       sodipodi:role="line"
+       id="tspan1094"
+       x="21.885241"
+       y="285.1441"
+       style="stroke-width:0.26458332">Н. контр.</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="22.150499"
+     y="290.48486"
+     id="text1100"><tspan
+       sodipodi:role="line"
+       id="tspan1098"
+       x="22.150499"
+       y="290.48486"
+       style="stroke-width:0.26458332">Утв.</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="156.86879"
+     y="285.56647"
+     id="text1104"
+     freecad:editable="Организация2"><tspan
+       sodipodi:role="line"
+       id="tspan1102"
+       x="156.86879"
+       y="285.56647"
+       style="font-size:3.52777767px;stroke-width:0.26458332">ООО «Рога и копыта»</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="37.97118"
+     y="265.19113"
+     id="text7917"
+     freecad:editable="Разработал"><tspan
+       sodipodi:role="line"
+       id="tspan7915"
+       x="37.97118"
+       y="265.19113"
+       style="font-size:2.82222223px;stroke-width:0.26458332">Иванов И. И.</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="37.97118"
+     y="290.18692"
+     id="text7917-2"
+     freecad:editable="Утвердил"><tspan
+       sodipodi:role="line"
+       id="tspan7915-88"
+       x="37.97118"
+       y="290.18692"
+       style="font-size:2.82222223px;stroke-width:0.26458332">Иванов И. И.</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="37.97121"
+     y="270.18689"
+     id="text7917-2-3"
+     freecad:editable="Проверил"><tspan
+       sodipodi:role="line"
+       id="tspan7915-88-7"
+       x="37.97121"
+       y="270.18689"
+       style="font-size:2.82222223px;stroke-width:0.26458332">Иванов И. И.</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="166.47888"
+     y="275.50824"
+     id="text8200"
+     freecad:editable="Лист"><tspan
+       sodipodi:role="line"
+       id="tspan8198"
+       x="166.47888"
+       y="275.50824"
+       style="stroke-width:0.26458332">1</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="190.93388"
+     y="275.50824"
+     id="text8204"
+     freecad:editable="Листов"><tspan
+       sodipodi:role="line"
+       id="tspan8202"
+       x="190.93388"
+       y="275.50824"
+       style="stroke-width:0.26458332">1</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="172.58363"
+     y="265.99365"
+     id="text8208"
+     freecad:editable="Масса"><tspan
+       sodipodi:role="line"
+       id="tspan8206"
+       x="172.58363"
+       y="265.99365"
+       style="font-size:4.23333311px;stroke-width:0.26458332">0.000</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="190.03325"
+     y="265.99365"
+     id="text8208-6"
+     freecad:editable="Масштаб"><tspan
+       sodipodi:role="line"
+       id="tspan8206-4"
+       x="190.03325"
+       y="265.99365"
+       style="font-size:4.23333311px;stroke-width:0.26458332">1:1</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11666656px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="76.279106"
+     y="264.99664"
+     id="text8234"
+     freecad:editable="Дата_разработки"><tspan
+       sodipodi:role="line"
+       id="tspan8232"
+       x="76.279106"
+       y="264.99664"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11666656px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332">01.01.01</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11666656px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="76.279152"
+     y="269.99615"
+     id="text8234-0"
+     freecad:editable="Дата_проверки"><tspan
+       sodipodi:role="line"
+       id="tspan8232-8"
+       x="76.279152"
+       y="269.99615"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11666656px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332">01.01.01</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11666656px;line-height:1.5;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     x="76.279152"
+     y="289.99615"
+     id="text8234-0-9"
+     freecad:editable="Дата_утверждения"><tspan
+       sodipodi:role="line"
+       id="tspan8232-8-2"
+       x="76.279152"
+       y="289.99615"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11666656px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332">01.01.01</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="86.948639"
+     y="281.26709"
+     id="text1617"
+     freecad:editable="Материал1"><tspan
+       sodipodi:role="line"
+       x="86.948639"
+       y="281.26709"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332px"
+       id="tspan1619">                        50×100 ГОСТ 103-2006</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="86.71093"
+     y="289.86588"
+     id="text1625"
+     freecad:editable="Материал3"><tspan
+       sodipodi:role="line"
+       x="86.71093"
+       y="289.86588"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332px"
+       id="tspan1627">                    12Х18Н10Т ГОСТ 5949-75</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="87.07299"
+     y="272.69888"
+     id="text1813"
+     freecad:editable="Информация"><tspan
+       sodipodi:role="line"
+       id="tspan1811"
+       x="87.07299"
+       y="272.69888"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332px"> </tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="156.86879"
+     y="281.25589"
+     id="text2095"
+     freecad:editable="Организация1"><tspan
+       sodipodi:role="line"
+       id="tspan2093"
+       x="156.86879"
+       y="281.25589"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332px"> </tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="156.86879"
+     y="289.87708"
+     id="text2095-2"
+     freecad:editable="Организация3"><tspan
+       sodipodi:role="line"
+       id="tspan2093-5"
+       x="156.86879"
+       y="289.87708"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.26458332px"> </tspan></text>
+</svg>

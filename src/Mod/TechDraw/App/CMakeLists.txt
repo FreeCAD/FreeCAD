@@ -17,8 +17,20 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${QT_QTCORE_INCLUDE_DIR}
-    ${QT_QTXMLPATTERNS_INCLUDE_DIR}
 )
+
+if(BUILD_QT5)
+    include_directories(
+        ${Qt5XmlPatterns_INCLUDE_DIRS}
+    )
+    set(QtXmlPatternsLib ${Qt5XmlPatterns_LIBRARIES})
+else(BUILD_QT5)
+    include_directories(
+        ${QT_QTXMLPATTERNS_INCLUDE_DIR}
+    )
+    set(QtXmlPatternsLib ${QT_QTXMLPATTERNS_LIBRARY})
+endif(BUILD_QT5)
+
 link_directories(${OCC_LIBRARY_DIR})
 
 set(TechDrawLIBS
@@ -180,7 +192,7 @@ endif(FREECAD_USE_PCH)
 
 add_library(TechDraw SHARED ${TechDraw_SRCS} ${Draw_SRCS} ${TechDrawAlgos_SRCS}
                            ${Geometry_SRCS} ${Python_SRCS})
-target_link_libraries(TechDraw ${TechDrawLIBS};${QT_QTXML_LIBRARY};${QT_QTXMLPATTERNS_LIBRARY};${TechDraw})
+target_link_libraries(TechDraw ${TechDrawLIBS};${QtXmlPatternsLib};${TechDraw})
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD

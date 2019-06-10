@@ -15,8 +15,18 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
-    ${QT_QTXMLPATTERNS_INCLUDE_DIR}
 )
+
+if(BUILD_QT5)
+    include_directories(
+        ${Qt5XmlPatterns_INCLUDE_DIRS}
+    )
+else(BUILD_QT5)
+    include_directories(
+        ${QT_QTXMLPATTERNS_INCLUDE_DIR}
+    )
+endif(BUILD_QT5)
+
 link_directories(${OCC_LIBRARY_DIR})
 
 set(TechDrawGui_LIBS
