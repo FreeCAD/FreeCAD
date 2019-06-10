@@ -24,12 +24,10 @@
 
 import FreeCAD
 import Part
-import Path
 import PathScripts.PathEngraveBase as PathEngraveBase
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathOpTools as PathOpTools
-import PathScripts.PathUtil as PathUtil
 import math
 
 from PySide import QtCore
@@ -40,24 +38,26 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 def toolDepthAndOffset(width, extraDepth, tool):
     '''toolDepthAndOffset(width, extraDepth, tool) ... return tuple for given parameters.'''
     angle = tool.CuttingEdgeAngle
     if 0 == angle:
         angle = 180
-    tan = math.tan(math.radians(angle/2))
+    tan = math.tan(math.radians(angle / 2))
 
     toolDepth = 0 if 0 == tan else width / tan
-    extraDepth = extraDepth
     depth = toolDepth + extraDepth
     toolOffset = tool.FlatRadius
-    extraOffset = tool.Diameter/2 - width if 180 == angle else extraDepth / tan
+    extraOffset = tool.Diameter / 2 - width if 180 == angle else extraDepth / tan
     offset = toolOffset + extraOffset
     return (depth, offset)
+
 
 class ObjectDeburr(PathEngraveBase.ObjectOp):
     '''Proxy class for Deburr operation.'''
@@ -67,14 +67,14 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
     def initOperation(self, obj):
         PathLog.track(obj.Label)
-        obj.addProperty('App::PropertyDistance',    'Width',      'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'The desired width of the chamfer'))
-        obj.addProperty('App::PropertyDistance',    'ExtraDepth', 'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'The additional depth of the tool path'))
-        obj.addProperty('App::PropertyEnumeration', 'Join',       'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'How to join chamfer segments'))
+        obj.addProperty('App::PropertyDistance', 'Width', 'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'The desired width of the chamfer'))
+        obj.addProperty('App::PropertyDistance', 'ExtraDepth', 'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'The additional depth of the tool path'))
+        obj.addProperty('App::PropertyEnumeration', 'Join', 'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'How to join chamfer segments'))
         obj.Join = ['Round', 'Miter']
-        obj.setEditorMode('Join', 2) # hide for now
+        obj.setEditorMode('Join', 2)  # hide for now
 
     def opOnDocumentRestored(self, obj):
-        obj.setEditorMode('Join', 2) # hide for now
+        obj.setEditorMode('Join', 2)  # hide for now
 
     def opExecute(self, obj):
         PathLog.track(obj.Label)
@@ -125,7 +125,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
     def opRejectAddBase(self, obj, base, sub):
         '''The chamfer op can only deal with features of the base model, all others are rejected.'''
-        return not base in self.model
+        return base not in self.model
 
     def opSetDefaultValues(self, obj, job):
         PathLog.track(obj.Label, job.Label)
@@ -135,16 +135,17 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         obj.setExpression('StepDown', '0 mm')
         obj.StepDown = '0 mm'
 
+
 def SetupProperties():
     setup = []
     setup.append('Width')
     setup.append('ExtraDepth')
     return setup
 
-def Create(name, obj = None):
+
+def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Deburr operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectDeburr(obj, name)
     return obj
-

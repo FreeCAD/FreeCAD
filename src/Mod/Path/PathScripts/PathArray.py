@@ -246,7 +246,7 @@ class CommandPathArray:
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
             return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
-        except:
+        except(IndexError, AttributeError):
             return False
 
     def Activated(self):

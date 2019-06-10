@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
@@ -36,12 +35,11 @@ from PathScripts.PathUtils import findParentJob
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
-    from DraftTools import translate
 else:
     def translate(ctxt, txt):
         return txt
 
-__title__="FreeCAD Path Commands"
+__title__ = "FreeCAD Path Commands"
 __author__ = "sliptonic"
 __url__ = "http://www.freecadweb.org"
 
@@ -80,7 +78,6 @@ class _CommandSelectLoop:
             return False
 
     def Activated(self):
-        #from PathScripts.PathUtils import loopdetect
         from PathScripts.PathUtils import horizontalEdgeLoop
         from PathScripts.PathUtils import horizontalFaceLoop
         sel = FreeCADGui.Selection.getSelectionEx()[0]
@@ -104,7 +101,7 @@ class _CommandSelectLoop:
             for e in elist:
                 for i in loopwire.Edges:
                     if e.hashCode() == i.hashCode():
-                        FreeCADGui.Selection.addSelection(obj, "Edge"+str(elist.index(e)+1))
+                        FreeCADGui.Selection.addSelection(obj, "Edge" + str(elist.index(e) + 1))
 
     def formsPartOfALoop(self, obj, sub, names):
         if names[0][0:4] != 'Edge':
@@ -117,8 +114,10 @@ class _CommandSelectLoop:
             return False
         return True
 
+
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_SelectLoop', _CommandSelectLoop())
+
 
 class _ToggleOperation:
     "command definition to toggle Operation Active state"
@@ -135,7 +134,7 @@ class _ToggleOperation:
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
             return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
-        except:
+        except(IndexError, AttributeError):
             return False
 
     def Activated(self):
@@ -143,8 +142,10 @@ class _ToggleOperation:
         obj.Active = not(obj.Active)
         FreeCAD.ActiveDocument.recompute()
 
+
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_OpActiveToggle', _ToggleOperation())
+
 
 class _CopyOperation:
     "the Path Copy Operation command definition"
@@ -160,7 +161,7 @@ class _CopyOperation:
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
             return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
-        except:
+        except(IndexError, AttributeError):
             return False
 
     def Activated(self):
