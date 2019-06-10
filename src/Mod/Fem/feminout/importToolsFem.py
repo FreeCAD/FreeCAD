@@ -242,6 +242,96 @@ def make_femmesh(
     return mesh
 
 
+def make_dict_from_femmesh(
+    femmesh
+):
+    """
+    Converts FemMesh into dictionary structure which can immediately used
+    from importToolsFem.make_femmesh(mesh_data) to create a valid FEM mesh.
+    """
+    # this dict can be easily saved and reloaded by yaml
+    # see importYamlJasonMesh for a implementation
+
+    mesh_data = {}
+
+    seg2 = []
+    seg3 = []
+
+    tri3 = []
+    tri6 = []
+    quad4 = []
+    quad8 = []
+
+    tet4 = []
+    tet10 = []
+    hex8 = []
+    hex20 = []
+    pent6 = []
+    pent15 = []
+
+    # associations for lengths of tuples to different
+    # edge, face, and volume elements
+
+    len_to_edge = {2: seg2, 3: seg3}
+    len_to_face = {3: tri3, 6: tri6, 4: quad4, 8: quad8}
+    len_to_volume = {
+        4: tet4,
+        10: tet10,
+        8: hex8,
+        20: hex20,
+        6: pent6,
+        15: pent15
+    }
+
+    # analyze edges
+
+    for e in femmesh.Edges:
+        t = femmesh.getElementNodes(e)
+        len_to_edge[len(t)].append((e, t))
+
+    # analyze faces
+
+    for f in femmesh.Faces:
+        t = femmesh.getElementNodes(f)
+        len_to_face[len(t)].append((f, t))
+
+    # analyze volumes
+
+    for v in femmesh.Volumes:
+        t = femmesh.getElementNodes(v)
+        len_to_volume[len(t)].append((v, t))
+
+    mesh_data = {
+        'Nodes': dict([(k, (v.x, v.y, v.z))
+                       for (k, v) in femmesh.Nodes.items()]),
+        'Seg2Elem': dict(seg2),
+        'Seg3Elem': dict(seg3),
+
+        'Tria3Elem': dict(tri3),
+        'Tria6Elem': dict(tri6),
+        'Quad4Elem': dict(quad4),
+        'Quad8Elem': dict(quad8),
+
+        'Tetra4Elem': dict(tet4),
+        'Tetra10Elem': dict(tet10),
+        'Hexa8Elem': dict(hex8),
+        'Hexa20Elem': dict(hex20),
+        'Penta6Elem': dict(pent6),
+        'Penta15Elem': dict(pent15),
+
+        'Groups': dict([(
+            group_num, (
+                femmesh.getGroupName(group_num),
+                femmesh.getGroupElements(group_num)
+            )
+        ) for group_num in femmesh.Groups])
+
+    }
+    # no pyr5, pyr13?
+    # no groups?
+    return mesh_data
+
+
 def fill_femresult_mechanical(
     res_obj,
     result_set
