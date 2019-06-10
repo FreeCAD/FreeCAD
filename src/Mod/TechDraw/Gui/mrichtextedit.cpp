@@ -65,6 +65,9 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
             this,     SLOT(slotCurrentCharFormatChanged(QTextCharFormat)));
     connect(f_textedit, SIGNAL(cursorPositionChanged()),
             this,     SLOT(slotCursorPositionChanged()));
+    connect(f_textedit, SIGNAL(selectionChanged()),
+            this,     SLOT(onSelectionChanged()));
+
 
     m_fontsize_h1 = m_defFontSize + 8;
     m_fontsize_h2 = m_defFontSize + 6;
@@ -83,7 +86,8 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
                         << tr("Heading 2")
                         << tr("Heading 3")
                         << tr("Heading 4")
-                        << tr("Monospace");
+                        << tr("Monospace")
+                        << tr(" ");
     f_paragraph->addItems(m_paragraphItems);
 
     connect(f_paragraph, SIGNAL(activated(int)),
@@ -186,6 +190,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     QFontDatabase db;
     foreach(int size, db.standardSizes())
         f_fontsize->addItem(QString::number(size));
+    //TODO: void QComboBox::setEditText(const QString &text) to " " when multiple select
 
 //    connect(f_fontsize, SIGNAL(activated(QString)),
 //            this, SLOT(textSize(QString)));
@@ -316,6 +321,7 @@ void MRichTextEdit::textStrikeout() {
 }
 
 void MRichTextEdit::textSize(const QString &p) {
+//    qDebug() << "MRTE::textSize(" << p << ")";
     qreal pointSize = p.toFloat();
     if (p.toFloat() > 0) {
         QTextCharFormat fmt;
@@ -354,6 +360,7 @@ void MRichTextEdit::textLink(bool checked) {
 }
 
 void MRichTextEdit::textStyle(int index) {
+    //TODO: would prefer select font vs paragraph style.
     QTextCursor cursor = f_textedit->textCursor();
     cursor.beginEditBlock();
 
@@ -477,11 +484,25 @@ void MRichTextEdit::mergeFormatOnWordOrSelection(const QTextCharFormat &format) 
 }
 
 void MRichTextEdit::slotCursorPositionChanged() {
-    QTextList *l = f_textedit->textCursor().currentList();
-    if (m_lastBlockList && (l == m_lastBlockList || (l != 0 && m_lastBlockList != 0
-                                 && l->format().style() == m_lastBlockList->format().style()))) {
+//    qDebug() << "MRTE::slotCursorPositionChanged()";
+    //why do we change text style when selecting text?
+    QTextCursor cursor = f_textedit->textCursor();
+    if (cursor.hasSelection()) {                       //let selection logic handle this
         return;
-        }
+    }
+    //set font size widget to match curr char size
+    QTextCharFormat fmt = cursor.charFormat();
+    double currSize = fmt.fontPointSize();
+    int fSize = f_fontsize->findText(QString::number(currSize));
+    f_fontsize  ->setCurrentIndex(fSize);
+
+    QTextList *l = f_textedit->textCursor().currentList();
+
+    if (m_lastBlockList && 
+        (l == m_lastBlockList || 
+        (l != 0 && m_lastBlockList != 0 && l->format().style() == m_lastBlockList->format().style()) ) ) {
+        return;
+    }
     m_lastBlockList = l;
     if (l) {
         QTextListFormat lfmt = l->format();
@@ -502,6 +523,8 @@ void MRichTextEdit::slotCursorPositionChanged() {
 }
 
 void MRichTextEdit::fontChanged(const QFont &f) {
+//    qDebug() << "MRTE::fontChanged()";
+    //TODO: change this to real font selector
     f_fontsize->setCurrentIndex(f_fontsize->findText(QString::number(f.pointSize())));
     f_bold->setChecked(f.bold());
     f_italic->setChecked(f.italic());
@@ -565,10 +588,14 @@ void MRichTextEdit::bgColorChanged(const QColor &c) {
 }
 
 void MRichTextEdit::slotCurrentCharFormatChanged(const QTextCharFormat &format) {
-    fontChanged(format.font());
-    bgColorChanged((format.background().isOpaque()) ? format.background().color() : QColor());
-    fgColorChanged((format.foreground().isOpaque()) ? format.foreground().color() : QColor());
-    f_link->setChecked(format.isAnchor());
+//    qDebug() << "MRTE::slotCurrentCharFormatChanged()";
+    Q_UNUSED(format);
+    //again, why do we do all this just because the cursor moved?
+    //can it be this simple???
+//    fontChanged(format.font());
+//    bgColorChanged((format.background().isOpaque()) ? format.background().color() : QColor());
+//    fgColorChanged((format.foreground().isOpaque()) ? format.foreground().color() : QColor());
+//    f_link->setChecked(format.isAnchor());
 }
 
 void MRichTextEdit::slotClipboardDataChanged() {
@@ -643,6 +670,52 @@ void MRichTextEdit::onExit(void)
 {
     Q_EMIT editorFinished();
 }
+
+void MRichTextEdit::onSelectionChanged(void)
+{
+//    qDebug() << "MRTE::onSelectionChanged()";
+    if (hasMultipleSizes()) {
+        f_fontsize->setEditText(QString());
+        f_fontsize->setCurrentIndex(-1);
+    } else {
+        QTextCursor cursor = f_textedit->textCursor();
+        QTextCharFormat fmt = cursor.charFormat();
+        double currSize = fmt.fontPointSize();
+        int fSize = f_fontsize->findText(QString::number(currSize));
+        f_fontsize  ->setCurrentIndex(fSize);
+    }
+}
+
+//does selection have multiple sizes?
+bool MRichTextEdit::hasMultipleSizes(void)
+{
+//    qDebug() << "MRTE::hasMultipleSizes()";
+    bool result = false;
+    QTextCursor cursor = f_textedit->textCursor();
+    if (cursor.hasSelection()) {
+        int begin = cursor.selectionStart();
+        int end   = cursor.selectionEnd();
+        int currPos;
+        std::vector<QString> foundSizes;
+        std::map<QString, int> countMap;
+        for (currPos = begin; currPos < end; currPos++) {
+            cursor.setPosition(currPos);
+            QTextCharFormat fmt = cursor.charFormat();
+            double currSize = fmt.fontPointSize();
+            QString asQS = QString::number(currSize,'f',2);
+            foundSizes.push_back(asQS);
+            auto ret = countMap.insert(std::pair<QString, int>(asQS, 1));
+            if (ret.second == false) {            //already have this size
+                ret.first->second++;              //bump count
+            }
+        }
+        if (countMap.size() > 1) {
+            result = true;
+        }
+    }
+    return result;  
+} 
+
 
 void MRichTextEdit::setDefFontSize(int fs)
 {
