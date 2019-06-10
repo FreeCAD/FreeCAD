@@ -181,20 +181,21 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
     std::map<std::string, std::string> substitutions = EditableTexts.getValues();
     while (!queryResult.next().isNull())
     {
-        QDomElement tspanTempl = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
+        QDomElement tspan = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
 
         // Replace the editable text spans with new nodes holding actual values
         std::map<std::string, std::string>::iterator item =
-            substitutions.find(tspanTempl.parentNode().toElement()
+            substitutions.find(tspan.parentNode().toElement()
                                .attribute(QString::fromUtf8("freecad:editable")).toStdString());
         if (item != substitutions.end()) {
-            QDomElement tspanActual = templateDocument.createElement(QString::fromUtf8("tspan"));
-            tspanActual.appendChild(templateDocument.createTextNode(QString::fromUtf8(item->second.c_str())));
-
             // Keep all spaces in the text node
-            tspanActual.setAttribute(QString::fromUtf8("xml:space"), QString::fromUtf8("preserve"));
+            tspan.setAttribute(QString::fromUtf8("xml:space"), QString::fromUtf8("preserve"));
 
-            tspanTempl.parentNode().replaceChild(tspanActual, tspanTempl);
+            // Remove all child nodes and append text node with editable replacement as the only descendant
+            while (!tspan.lastChild().isNull()) {
+                tspan.removeChild(tspan.lastChild());
+            }
+            tspan.appendChild(templateDocument.createTextNode(QString::fromUtf8(item->second.c_str())));
         }
     }
 
