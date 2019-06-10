@@ -32,10 +32,6 @@ PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 PathLog.trackModule('PathCollision')
 FreeCAD.setLogLevel('Path.Area', 0)
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    # from PySide import QtGui
-
 
 # Qt translation handling
 def translate(context, text, disambig=None):
