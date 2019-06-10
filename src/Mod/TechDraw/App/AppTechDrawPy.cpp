@@ -343,31 +343,31 @@ private:
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
-                TechDrawGeometry::GeometryObject* go = dvp->getGeometryObject();
-                TopoDS_Shape s = TechDrawGeometry::mirrorShape(go->getVisHard());
+                TechDraw::GeometryObject* go = dvp->getGeometryObject();
+                TopoDS_Shape s = TechDraw::mirrorShape(go->getVisHard());
                 ss << dxfOut.exportEdges(s);
-                s = TechDrawGeometry::mirrorShape(go->getVisOutline());
+                s = TechDraw::mirrorShape(go->getVisOutline());
                 ss << dxfOut.exportEdges(s);
                 if (dvp->SmoothVisible.getValue()) {
-                    s = TechDrawGeometry::mirrorShape(go->getVisSmooth());
+                    s = TechDraw::mirrorShape(go->getVisSmooth());
                     ss << dxfOut.exportEdges(s);
                 }
                 if (dvp->SeamVisible.getValue()) {
-                    s = TechDrawGeometry::mirrorShape(go->getVisSeam());
+                    s = TechDraw::mirrorShape(go->getVisSeam());
                     ss << dxfOut.exportEdges(s);
                 }
                 if (dvp->HardHidden.getValue()) {
-                    s = TechDrawGeometry::mirrorShape(go->getHidHard());
+                    s = TechDraw::mirrorShape(go->getHidHard());
                     ss << dxfOut.exportEdges(s);
-                    s = TechDrawGeometry::mirrorShape(go->getHidOutline());
+                    s = TechDraw::mirrorShape(go->getHidOutline());
                     ss << dxfOut.exportEdges(s);
                 }
                 if (dvp->SmoothHidden.getValue()) {
-                    s = TechDrawGeometry::mirrorShape(go->getHidSmooth());
+                    s = TechDraw::mirrorShape(go->getHidSmooth());
                     ss << dxfOut.exportEdges(s);
                 }
                 if (dvp->SeamHidden.getValue()) {
-                    s = TechDrawGeometry::mirrorShape(go->getHidSeam());
+                    s = TechDraw::mirrorShape(go->getHidSeam());
                     ss << dxfOut.exportEdges(s);
                 }
                 // ss now contains all edges as Dxf
@@ -400,7 +400,7 @@ private:
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
-                TechDrawGeometry::GeometryObject* go = dvp->getGeometryObject();
+                TechDraw::GeometryObject* go = dvp->getGeometryObject();
                 //visible group begin "<g ... >"
                 ss << grpHead1;
 //                double thick = dvp->LineWidth.getValue();
@@ -461,8 +461,8 @@ private:
 
     void write1ViewDxf( ImpExpDxfWrite& writer, TechDraw::DrawViewPart* dvp, bool alignPage)
     {
-        TechDrawGeometry::GeometryObject* go = dvp->getGeometryObject();
-        TopoDS_Shape s = TechDrawGeometry::mirrorShape(go->getVisHard());
+        TechDraw::GeometryObject* go = dvp->getGeometryObject();
+        TopoDS_Shape s = TechDraw::mirrorShape(go->getVisHard());
         double offX = 0.0;
         double offY = 0.0;
         if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
@@ -486,40 +486,40 @@ private:
         BRepBuilderAPI_Transform mkTrf(s, xLate);
         s = mkTrf.Shape();                
         writer.exportShape(s);
-        s = TechDrawGeometry::mirrorShape(go->getVisOutline());
+        s = TechDraw::mirrorShape(go->getVisOutline());
         mkTrf.Perform(s);
         s = mkTrf.Shape();
         writer.exportShape(s);
         if (dvp->SmoothVisible.getValue()) {
-            s = TechDrawGeometry::mirrorShape(go->getVisSmooth());
+            s = TechDraw::mirrorShape(go->getVisSmooth());
             mkTrf.Perform(s);
             s = mkTrf.Shape();
             writer.exportShape(s);
         }
         if (dvp->SeamVisible.getValue()) {
-            s = TechDrawGeometry::mirrorShape(go->getVisSeam());
+            s = TechDraw::mirrorShape(go->getVisSeam());
             mkTrf.Perform(s);
             s = mkTrf.Shape();
             writer.exportShape(s);
         }
         if (dvp->HardHidden.getValue()) {
-            s = TechDrawGeometry::mirrorShape(go->getHidHard());
+            s = TechDraw::mirrorShape(go->getHidHard());
             mkTrf.Perform(s);
             s = mkTrf.Shape();
             writer.exportShape(s);
-            s = TechDrawGeometry::mirrorShape(go->getHidOutline());
+            s = TechDraw::mirrorShape(go->getHidOutline());
             mkTrf.Perform(s);
             s = mkTrf.Shape();
             writer.exportShape(s);
         }
         if (dvp->SmoothHidden.getValue()) {
-            s = TechDrawGeometry::mirrorShape(go->getHidSmooth());
+            s = TechDraw::mirrorShape(go->getHidSmooth());
             mkTrf.Perform(s);
             s = mkTrf.Shape();
             writer.exportShape(s);
         }
         if (dvp->SeamHidden.getValue()) {
-            s = TechDrawGeometry::mirrorShape(go->getHidSeam());
+            s = TechDraw::mirrorShape(go->getHidSeam());
             mkTrf.Perform(s);
             s = mkTrf.Shape();
             writer.exportShape(s);
@@ -723,7 +723,7 @@ private:
 
         const TopoDS_Shape& shape = pShape->getTopoShapePtr()->getShape();
         Base::Vector3d dir = static_cast<Base::VectorPy*>(pcObjDir)->value();
-        Base::Vector3d c = TechDrawGeometry::findCentroidVec(shape,dir);
+        Base::Vector3d c = TechDraw::findCentroidVec(shape,dir);
         PyObject* result = nullptr;
         result = new Base::VectorPy(new Base::Vector3d(c));
         return Py::asObject(result);

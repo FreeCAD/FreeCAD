@@ -54,7 +54,6 @@
 #include "DrawView.h"
 
 using namespace TechDraw;
-using namespace TechDrawGeometry;
 
 //===========================================================================
 // DrawView

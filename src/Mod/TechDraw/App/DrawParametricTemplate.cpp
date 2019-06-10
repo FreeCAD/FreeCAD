@@ -117,10 +117,10 @@ App::DocumentObjectExecReturn *DrawParametricTemplate::execute(void)
 
 int DrawParametricTemplate::drawLine(double x1, double y1, double x2, double y2)
 {
-    TechDrawGeometry::Generic *line = new TechDrawGeometry::Generic();
+    TechDraw::Generic *line = new TechDraw::Generic();
 
-    line->points.push_back(Base::Vector2d(x1, y1));
-    line->points.push_back(Base::Vector2d(x2, y2));
+    line->points.push_back(Base::Vector3d(x1, y1));
+    line->points.push_back(Base::Vector3d(x2, y2));
 
     geom.push_back(line); // Push onto geometry stack
     return geom.size() -1;
@@ -128,7 +128,7 @@ int DrawParametricTemplate::drawLine(double x1, double y1, double x2, double y2)
 
 int DrawParametricTemplate::clearGeometry()
 {
-    for(std::vector<TechDrawGeometry::BaseGeom *>::iterator it = geom.begin(); it != geom.end(); ++it) {
+    for(std::vector<TechDraw::BaseGeom *>::iterator it = geom.begin(); it != geom.end(); ++it) {
         delete *it;
         *it = 0;
     }

@@ -113,10 +113,10 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
 
     gp_Pnt inputCenter(0,0,0);
     TopoDS_Shape scaledShape;
-    scaledShape = TechDrawGeometry::scaleShape(copyShape,
+    scaledShape = TechDraw::scaleShape(copyShape,
                                                scale);
-    gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(Base::Vector3d(0.0,0.0,0.0),direction);
-    TechDrawGeometry::GeometryObject* go = buildGeometryObject(scaledShape,viewAxis);
+    gp_Ax2 viewAxis = TechDraw::getViewAxis(Base::Vector3d(0.0,0.0,0.0),direction);
+    TechDraw::GeometryObject* go = buildGeometryObject(scaledShape,viewAxis);
     result = getEdges(go);
 
     delete go;
@@ -124,10 +124,10 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
 }
 
 
-TechDrawGeometry::GeometryObject* DrawProjectSplit::buildGeometryObject(TopoDS_Shape shape,
+TechDraw::GeometryObject* DrawProjectSplit::buildGeometryObject(TopoDS_Shape shape,
                                                                         const gp_Ax2& viewAxis)
 {
-    TechDrawGeometry::GeometryObject* geometryObject = new TechDrawGeometry::GeometryObject("DrawProjectSplit",nullptr);
+    TechDraw::GeometryObject* geometryObject = new TechDraw::GeometryObject("DrawProjectSplit",nullptr);
 
     if (geometryObject->usePolygonHLR()){
         geometryObject->projectShapeWithPolygonAlgo(shape,
@@ -138,18 +138,18 @@ TechDrawGeometry::GeometryObject* DrawProjectSplit::buildGeometryObject(TopoDS_S
             viewAxis);
     }
         
-    geometryObject->extractGeometry(TechDrawGeometry::ecHARD,                   //always show the hard&outline visible lines
+    geometryObject->extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
                                     true);
-    geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,
+    geometryObject->extractGeometry(TechDraw::ecOUTLINE,
                                     true);
     return geometryObject;
 }
 
 //! get the projected edges with all their new intersections.
-std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDrawGeometry::GeometryObject* geometryObject)
+std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDraw::GeometryObject* geometryObject)
 {
-    const std::vector<TechDrawGeometry::BaseGeom*>& goEdges = geometryObject->getVisibleFaceEdges(true,true);
-    std::vector<TechDrawGeometry::BaseGeom*>::const_iterator itEdge = goEdges.begin();
+    const std::vector<TechDraw::BaseGeom*>& goEdges = geometryObject->getVisibleFaceEdges(true,true);
+    std::vector<TechDraw::BaseGeom*>::const_iterator itEdge = goEdges.begin();
     std::vector<TopoDS_Edge> origEdges;
     for (;itEdge != goEdges.end(); itEdge++) {
         origEdges.push_back((*itEdge)->occEdge);
