@@ -204,17 +204,20 @@ QColor QGIPrimPath::getSelectColor()
 
 void QGIPrimPath::setWidth(double w)
 {
+//    Base::Console().Message("QGIPP::setWidth(%.3f)\n", w);
     m_width = w;
     m_pen.setWidthF(m_width);
 }
 
 void QGIPrimPath::setStyle(Qt::PenStyle s)
 {
+//    Base::Console().Message("QGIPP::setStyle(QTPS: %d)\n", s);
     m_styleCurrent = s;
 }
 
 void QGIPrimPath::setStyle(int s)
 {
+//    Base::Console().Message("QGIPP::setStyle(int: %d)\n", s);
     m_styleCurrent = (Qt::PenStyle) s;
 }
 

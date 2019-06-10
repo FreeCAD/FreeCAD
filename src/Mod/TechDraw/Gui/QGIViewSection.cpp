@@ -89,7 +89,7 @@ void QGIViewSection::drawSectionFace()
         return;
     }
 
-    std::vector<TechDrawGeometry::Face *>::iterator fit = sectionFaces.begin();
+    std::vector<TechDraw::Face *>::iterator fit = sectionFaces.begin();
     QColor faceColor = (sectionVp->CutSurfaceColor.getValue()).asValue<QColor>();
     int i = 0;
     for(; fit != sectionFaces.end(); fit++, i++) {

@@ -42,6 +42,7 @@
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
 #include <Precision.hxx>
+#include <BRep_Builder.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepGProp.hxx>
@@ -56,6 +57,7 @@
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepLProp_SLProps.hxx>
 #include <BRepGProp_Face.hxx>
+#include <BRepTools.hxx>
 
 #endif
 
@@ -290,16 +292,6 @@ std::string DrawUtil::formatVector(const Base::Vector3d& v)
     return result;
 }
 
-std::string DrawUtil::formatVector(const Base::Vector2d& v)
-{
-    std::string result;
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
-    builder << " (" << v.x  << "," << v.y << ") ";
-    result = builder.str();
-    return result;
-}
-
 std::string DrawUtil::formatVector(const gp_Dir& v)
 {
     std::string result;
@@ -527,6 +519,59 @@ Base::Vector3d DrawUtil::Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
 
     return result;
 }
+
+std::string DrawUtil::shapeToString(TopoDS_Shape s)
+{
+    std::ostringstream buffer; 
+    BRepTools::Write(s, buffer);
+    return buffer.str();
+}
+
+TopoDS_Shape DrawUtil::shapeFromString(std::string s)
+{
+    TopoDS_Shape result;
+    BRep_Builder builder;
+    std::istringstream buffer(s);
+    BRepTools::Read(result, buffer, builder);
+    return result;
+}
+
+Base::Vector3d DrawUtil::invertY(Base::Vector3d v)
+{
+    Base::Vector3d result(v.x, -v.y, v.z);
+    return result;
+}
+
+std::vector<std::string> DrawUtil::split(std::string csvLine)
+{
+//    Base::Console().Message("DU::split - csvLine: %s\n",csvLine.c_str());
+    std::vector<std::string>  result;
+    std::stringstream     lineStream(csvLine);
+    std::string           cell;
+
+    while(std::getline(lineStream,cell, ','))
+    {
+        result.push_back(cell);
+    }
+    return result;
+}
+
+std::vector<std::string> DrawUtil::tokenize(std::string csvLine, std::string delimiter)
+{
+//    Base::Console().Message("DU::tokenize - csvLine: %s delimit: %s\n",csvLine.c_str(), delimiter.c_str());
+    std::string s(csvLine);
+    size_t pos = 0;
+    std::vector<std::string> tokens;
+    while ((pos = s.find(delimiter)) != std::string::npos) {
+        tokens.push_back(s.substr(0, pos));
+        s.erase(0, pos + delimiter.length());
+    }
+    if (!s.empty()) {     
+        tokens.push_back(s);
+    }
+    return tokens;
+}
+
 
 //============================
 // various debugging routines.

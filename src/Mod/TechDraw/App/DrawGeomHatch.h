@@ -32,7 +32,7 @@ class TopoDS_Edge;
 class TopoDS_Face;
 class Bnd_Box;
 
-namespace TechDrawGeometry
+namespace TechDraw
 {
 class BaseGeom;
 }

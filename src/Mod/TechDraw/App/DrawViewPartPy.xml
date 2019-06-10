@@ -13,9 +13,54 @@
       <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
       <UserDocu>Feature for creating and manipulating Technical Drawing Part Views</UserDocu>
     </Documentation>
-    <Methode Name="clearCV">
+    <Methode Name="makeCosmeticVertex">
       <Documentation>
-        <UserDocu>clearCV() - remove all CosmeticVertices from the View. Returns nothing.</UserDocu>
+        <UserDocu>makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns index of created vertex.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getCosmeticVertexByIndex">
+      <Documentation>
+        <UserDocu>getCosmeticVertexByIndex(idx) - returns CosmeticVertx[idx].</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeCosmeticVertex">
+      <Documentation>
+        <UserDocu>removeCosmeticVertex(idx) - remove CosmeticVertex[idx] from View. Returns None.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearCosmeticVertices">
+      <Documentation>
+        <UserDocu>clearCosmeticVertices() - remove all CosmeticVertices from the View. Returns nothing.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeCosmeticLine">
+      <Documentation>
+        <UserDocu>makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns index of created edge.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeCosmeticCircle">
+      <Documentation>
+        <UserDocu>makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns index of created edge.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeCosmeticCircleArc">
+      <Documentation>
+        <UserDocu>makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns index of created edge.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getCosmeticEdgeByIndex">
+      <Documentation>
+        <UserDocu>getCosmeticEdgeByIndex(idx) - returns CosmeticEdge[idx].</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeCosmeticEdge">
+      <Documentation>
+        <UserDocu>removeCosmeticEdge(idx) - remove CosmeticEdge[idx] from View. Returns None.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearCosmeticEdges">
+      <Documentation>
+        <UserDocu>clearCosmeticEdges() - remove all CosmeticLines from the View. Returns nothing.</UserDocu>
       </Documentation>
     </Methode>
     <CustomAttributes />

@@ -53,7 +53,7 @@ class DrawView;
 class DrawViewPart;
 }
 
-namespace TechDrawGeometry
+namespace TechDraw
 {
 class Face;
 }

@@ -82,7 +82,6 @@
 
 using namespace TechDraw;
 using namespace TechDrawGui;
-using namespace TechDrawGeometry;
 
 const float lineScaleFactor = Rez::guiX(1.);   // temp fiddle for devel
 
@@ -132,21 +131,21 @@ void QGIViewPart::setViewPartFeature(TechDraw::DrawViewPart *obj)
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));
 }
 
-QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) const
+QPainterPath QGIViewPart::drawPainterPath(TechDraw::BaseGeom *baseGeom) const
 {
     double rot = getViewObject()->Rotation.getValue();
     return geomToPainterPath(baseGeom,rot);
 }
 
 
-QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom, double rot)
+QPainterPath QGIViewPart::geomToPainterPath(TechDraw::BaseGeom *baseGeom, double rot)
 {
     Q_UNUSED(rot);
     QPainterPath path;
 
     switch(baseGeom->geomType) {
-        case TechDrawGeometry::CIRCLE: {
-          TechDrawGeometry::Circle *geom = static_cast<TechDrawGeometry::Circle *>(baseGeom);
+        case TechDraw::CIRCLE: {
+          TechDraw::Circle *geom = static_cast<TechDraw::Circle *>(baseGeom);
 
           double x = geom->center.x - geom->radius;
           double y = geom->center.y - geom->radius;
@@ -156,8 +155,8 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
                           Rez::guiX(geom->radius * 2),
                           Rez::guiX(geom->radius * 2));            //topleft@(x,y) radx,rady
         } break;
-        case TechDrawGeometry::ARCOFCIRCLE: {
-          TechDrawGeometry::AOC  *geom = static_cast<TechDrawGeometry::AOC *>(baseGeom);
+        case TechDraw::ARCOFCIRCLE: {
+          TechDraw::AOC  *geom = static_cast<TechDraw::AOC *>(baseGeom);
 
           pathArc(path,
                   Rez::guiX(geom->radius),
@@ -170,8 +169,8 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
                   Rez::guiX(geom->startPnt.x),
                   Rez::guiX(geom->startPnt.y));
         } break;
-        case TechDrawGeometry::ELLIPSE: {
-          TechDrawGeometry::Ellipse *geom = static_cast<TechDrawGeometry::Ellipse *>(baseGeom);
+        case TechDraw::ELLIPSE: {
+          TechDraw::Ellipse *geom = static_cast<TechDraw::Ellipse *>(baseGeom);
 
           // Calculate start and end points as ellipse with theta = 0 and pi
           double startX = geom->center.x + geom->major * cos(geom->angle),
@@ -202,8 +201,8 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
                   Rez::guiX(endY));
 
         } break;
-        case TechDrawGeometry::ARCOFELLIPSE: {
-          TechDrawGeometry::AOE *geom = static_cast<TechDrawGeometry::AOE *>(baseGeom);
+        case TechDraw::ARCOFELLIPSE: {
+          TechDraw::AOE *geom = static_cast<TechDraw::AOE *>(baseGeom);
 
           pathArc(path,
                   Rez::guiX(geom->major),
@@ -217,8 +216,8 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
                   Rez::guiX(geom->startPnt.y));
 
         } break;
-        case TechDrawGeometry::BEZIER: {
-          TechDrawGeometry::BezierSegment *geom = static_cast<TechDrawGeometry::BezierSegment *>(baseGeom);
+        case TechDraw::BEZIER: {
+          TechDraw::BezierSegment *geom = static_cast<TechDraw::BezierSegment *>(baseGeom);
 
           // Move painter to the beginning
           path.moveTo(Rez::guiX(geom->pnts[0].x), Rez::guiX(geom->pnts[0].y));
@@ -243,10 +242,10 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
               }
           }
         } break;
-        case TechDrawGeometry::BSPLINE: {
-          TechDrawGeometry::BSpline *geom = static_cast<TechDrawGeometry::BSpline *>(baseGeom);
+        case TechDraw::BSPLINE: {
+          TechDraw::BSpline *geom = static_cast<TechDraw::BSpline *>(baseGeom);
 
-          std::vector<TechDrawGeometry::BezierSegment>::const_iterator it = geom->segments.begin();
+          std::vector<TechDraw::BezierSegment>::const_iterator it = geom->segments.begin();
 
           // Move painter to the beginning of our first segment
           path.moveTo(Rez::guiX(it->pnts[0].x), Rez::guiX(it->pnts[0].y));
@@ -272,11 +271,11 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
               }
           }
         } break;
-        case TechDrawGeometry::GENERIC: {
-          TechDrawGeometry::Generic *geom = static_cast<TechDrawGeometry::Generic *>(baseGeom);
+        case TechDraw::GENERIC: {
+          TechDraw::Generic *geom = static_cast<TechDraw::Generic *>(baseGeom);
 
           path.moveTo(Rez::guiX(geom->points[0].x), Rez::guiX(geom->points[0].y));
-          std::vector<Base::Vector2d>::const_iterator it = geom->points.begin();
+          std::vector<Base::Vector3d>::const_iterator it = geom->points.begin();
           for(++it; it != geom->points.end(); ++it) {
               path.lineTo(Rez::guiX((*it).x), Rez::guiX((*it).y));
           }
@@ -334,6 +333,7 @@ void QGIViewPart::draw() {
 
 void QGIViewPart::drawViewPart()
 {
+//    Base::Console().Message("QGIVP::dvp()\n");
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if ( viewPart == nullptr ) {
         return;
@@ -364,8 +364,8 @@ void QGIViewPart::drawViewPart()
         // Draw Faces
         std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
         std::vector<TechDraw::DrawGeomHatch*> geomObjs = viewPart->getGeomHatches();
-        const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
-        std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
+        const std::vector<TechDraw::Face *> &faceGeoms = viewPart->getFaceGeometry();
+        std::vector<TechDraw::Face *>::const_iterator fit = faceGeoms.begin();
         for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
             QGIFace* newFace = drawFace(*fit,i);
             newFace->isHatched(false);
@@ -417,8 +417,8 @@ void QGIViewPart::drawViewPart()
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
     // Draw Edges
-    const std::vector<TechDrawGeometry::BaseGeom *> &geoms = viewPart->getEdgeGeometry();
-    std::vector<TechDrawGeometry::BaseGeom *>::const_iterator itEdge = geoms.begin();
+    const std::vector<TechDraw::BaseGeom *> &geoms = viewPart->getEdgeGeometry();
+    std::vector<TechDraw::BaseGeom *>::const_iterator itEdge = geoms.begin();
     QGIEdge* item;
     for(int i = 0 ; itEdge != geoms.end(); itEdge++, i++) {
         bool showEdge = false;
@@ -445,15 +445,14 @@ void QGIViewPart::drawViewPart()
             if ((*itEdge)->cosmetic == true) {
                 TechDraw::CosmeticEdge* ce = viewPart->getCosmeticEdgeByLink(i);
                 if (ce != nullptr) {
-                    item->setNormalColor(ce->color.asValue<QColor>());
-                    item->setWidth(ce->width * lineScaleFactor);
-                    item->setStyle(ce->style);
+                    item->setNormalColor(ce->m_format.m_color.asValue<QColor>());
+                    item->setWidth(ce->m_format.m_weight * lineScaleFactor);
+                    item->setStyle(ce->m_format.m_style);
                 } 
             }
             addToGroup(item);                                                   //item is at scene(0,0), not group(0,0)
             item->setPos(0.0,0.0);                                              //now at group(0,0)
             item->setPath(drawPainterPath(*itEdge));
-//            item->setWidth(lineWidth);
             item->setZValue(ZVALUE::EDGE);
             if(!(*itEdge)->visible) {
                 item->setWidth(lineWidthHid);
@@ -502,8 +501,8 @@ void QGIViewPart::drawViewPart()
         }
     }
 
-    const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
-    std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
+    const std::vector<TechDraw::Vertex *> &verts = viewPart->getVertexGeometry();
+    std::vector<TechDraw::Vertex *>::const_iterator vert = verts.begin();
     double cAdjust = vp->CenterScale.getValue();
 
     for(int i = 0 ; vert != verts.end(); ++vert, i++) {
@@ -529,7 +528,7 @@ void QGIViewPart::drawViewPart()
                     item->setRadius(lineWidth * vertexScaleFactor);
                 }
                 addToGroup(item);
-                item->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
+                item->setPos(Rez::guiX((*vert)->point.x), Rez::guiX((*vert)->point.y));
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
             }
@@ -543,13 +542,13 @@ void QGIViewPart::drawViewPart()
     }
 }
 
-QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
+QGIFace* QGIViewPart::drawFace(TechDraw::Face* f, int idx)
 {
-    std::vector<TechDrawGeometry::Wire *> fWires = f->wires;
+    std::vector<TechDraw::Wire *> fWires = f->wires;
     QPainterPath facePath;
-    for(std::vector<TechDrawGeometry::Wire *>::iterator wire = fWires.begin(); wire != fWires.end(); ++wire) {
+    for(std::vector<TechDraw::Wire *>::iterator wire = fWires.begin(); wire != fWires.end(); ++wire) {
         QPainterPath wirePath;
-        for(std::vector<TechDrawGeometry::BaseGeom *>::iterator edge = (*wire)->geoms.begin(); edge != (*wire)->geoms.end(); ++edge) {
+        for(std::vector<TechDraw::BaseGeom *>::iterator edge = (*wire)->geoms.begin(); edge != (*wire)->geoms.end(); ++edge) {
             //Save the start Position
             QPainterPath edgePath = drawPainterPath(*edge);
             // If the current end point matches the shape end point the new edge path needs reversing
@@ -992,6 +991,7 @@ void QGIViewPart::toggleCosmeticLines(bool state)
         }
     }
 }
+
 
 TechDraw::DrawHatch* QGIViewPart::faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const
 {

@@ -271,14 +271,14 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     m_cutShape = rawShape;
     gp_Pnt inputCenter;
     try {
-        inputCenter = TechDrawGeometry::findCentroid(rawShape,
+        inputCenter = TechDraw::findCentroid(rawShape,
                                                      Direction.getValue());
-        TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(rawShape,
+        TopoDS_Shape mirroredShape = TechDraw::mirrorShape(rawShape,
                                                     inputCenter,
                                                     getScale());
         gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
-            mirroredShape = TechDrawGeometry::rotateShape(mirroredShape,
+            mirroredShape = TechDraw::rotateShape(mirroredShape,
                                                           viewAxis,
                                                           Rotation.getValue());
         }
@@ -295,12 +295,12 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 
     try {
         TopoDS_Compound sectionCompound = findSectionPlaneIntersections(rawShape);
-        TopoDS_Shape mirroredSection = TechDrawGeometry::mirrorShape(sectionCompound,
+        TopoDS_Shape mirroredSection = TechDraw::mirrorShape(sectionCompound,
                                                                      inputCenter,
                                                                      getScale());
         gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
-            mirroredSection = TechDrawGeometry::rotateShape(mirroredSection,
+            mirroredSection = TechDraw::rotateShape(mirroredSection,
                                                             viewAxis,
                                                             Rotation.getValue());
         }
@@ -329,16 +329,16 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn(e2.GetMessageString());
     }
     //add back the cosmetic vertices
-    for (auto& v: cosmoVertex) {
-        int idx = geometryObject->addRandomVertex(v->pageLocation * getScale());
+    for (auto& v: vertexCosmetic) {
+        int idx = geometryObject->addCosmeticVertex(v->point() * getScale());
         v->linkGeom = idx;
     }
 
     //add the cosmetic Edges to geometry Edges list
-    for (auto& e: cosmoEdge) {
-        TechDrawGeometry::BaseGeom* scaledGeom = e->scaledGeometry(getScale());
-        int idx = geometryObject->addRandomEdge(scaledGeom);
-        e->linkGeom = idx;
+    for (auto& e: edgeCosmetic) {
+        TechDraw::BaseGeom* scaledGeom = e->scaledGeometry(getScale());
+        int idx = geometryObject->addCosmeticEdge(scaledGeom);
+        e->m_linkGeom = idx;
     }
 
     requestPaint();
@@ -389,23 +389,23 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 }
 
 //! get display geometry for Section faces
-std::vector<TechDrawGeometry::Face*> DrawViewSection::getFaceGeometry()
+std::vector<TechDraw::Face*> DrawViewSection::getFaceGeometry()
 {
-    std::vector<TechDrawGeometry::Face*> result;
+    std::vector<TechDraw::Face*> result;
     TopoDS_Compound c = sectionFaces;
     TopExp_Explorer faces(c, TopAbs_FACE);
     for (; faces.More(); faces.Next()) {
-        TechDrawGeometry::Face* f = new TechDrawGeometry::Face();
+        TechDraw::Face* f = new TechDraw::Face();
         const TopoDS_Face& face = TopoDS::Face(faces.Current());
         TopExp_Explorer wires(face, TopAbs_WIRE);
         for (; wires.More(); wires.Next()) {
-            TechDrawGeometry::Wire* w = new TechDrawGeometry::Wire();
+            TechDraw::Wire* w = new TechDraw::Wire();
             const TopoDS_Wire& wire = TopoDS::Wire(wires.Current());
             TopExp_Explorer edges(wire, TopAbs_EDGE);
             for (; edges.More(); edges.Next()) {
                 const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
                 //dumpEdge("edge",edgeCount,edge);
-                TechDrawGeometry::BaseGeom* base = TechDrawGeometry::BaseGeom::baseFactory(edge);
+                TechDraw::BaseGeom* base = TechDraw::BaseGeom::baseFactory(edge);
                 w->geoms.push_back(base);
             }
             f->wires.push_back(w);

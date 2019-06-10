@@ -78,7 +78,6 @@
 #include "DrawViewPart.h"
 #include "DrawViewDetail.h"
 
-using namespace TechDrawGeometry;
 using namespace TechDraw;
 using namespace std;
 
@@ -333,10 +332,10 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
     Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_PolyAlgo & co\n", m_parentName.c_str(), diffOut);
 }
 
-
 //!add edges meeting filter criteria for category, visibility
 void GeometryObject::extractGeometry(edgeClass category, bool visible)
 {
+//    Base::Console().Message("GO::extractGeometry(%d, %d)\n",category, visible);
     TopoDS_Shape filtEdges;
     if (visible) {
         switch (category) {
@@ -422,12 +421,12 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             BaseGeom* lastAdded = edgeGeom.back();
             bool v1Add = true, v2Add = true;
             bool c1Add = true;
-            TechDrawGeometry::Vertex* v1 = new TechDrawGeometry::Vertex(lastAdded->getStartPoint());
-            TechDrawGeometry::Vertex* v2 = new TechDrawGeometry::Vertex(lastAdded->getEndPoint());
-            TechDrawGeometry::Circle* circle = dynamic_cast<TechDrawGeometry::Circle*>(lastAdded);
-            TechDrawGeometry::Vertex* c1 = nullptr;
+            TechDraw::Vertex* v1 = new TechDraw::Vertex(lastAdded->getStartPoint());
+            TechDraw::Vertex* v2 = new TechDraw::Vertex(lastAdded->getEndPoint());
+            TechDraw::Circle* circle = dynamic_cast<TechDraw::Circle*>(lastAdded);
+            TechDraw::Vertex* c1 = nullptr;
             if (circle) {
-                c1 = new TechDrawGeometry::Vertex(circle->center);
+                c1 = new TechDraw::Vertex(circle->center);
                 c1->isCenter = true;
                 c1->visible = true;
             }
@@ -472,48 +471,24 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
     }  //end TopExp
 }
 
-int GeometryObject::addRandomVertex(Base::Vector3d pos)
+int GeometryObject::addCosmeticVertex(Base::Vector3d pos)
 {
-//    Base::Console().Message("GO::addRandomVertex(%s)\n",DrawUtil::formatVector(pos).c_str());
-    TechDrawGeometry::Vertex* v = new TechDrawGeometry::Vertex(pos.x, - pos.y);
+//    Base::Console().Message("GO::addCosmeticVertex(%s)\n",DrawUtil::formatVector(pos).c_str());
+    TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
     vertexGeom.push_back(v);
     int idx = vertexGeom.size() - 1;
     return idx;
 }
 
-//void GeometryObject::removeRandomVertex(TechDraw::CosmeticVertex* cv)
-//{
-//    Base::Console().Message("GO::removeRandomVertex(cv)\n");
 
-//}
-
-//void GeometryObject::removeRandomVertex(int idx)
-//{
-//    Base::Console().Message("GO::removeRandomVertex(%d)\n", idx);
-
-//}
-
-int GeometryObject::addRandomEdge(TechDrawGeometry::BaseGeom* base)
+int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base)
 {
-//    Base::Console().Message("GO::addRandomEdge() - cosmetic: %d\n", base->cosmetic);
+//    Base::Console().Message("GO::addCosmeticEdge() - cosmetic: %d\n", base->cosmetic);
     base->cosmetic = true;
     edgeGeom.push_back(base);
-    
     int idx = edgeGeom.size() - 1;
     return idx;
 }
-
-//void GeometryObject::removeRandomEdge(TechDraw::CosmeticEdge* ce)
-//{
-//    Base::Console().Message("GO::removeRandomEdge(ce)\n");
-
-//}
-
-//void GeometryObject::removeRandomEdge(int idx)
-//{
-//    Base::Console().Message("GO::removeRandomEdge(%d)\n",idx);
-
-//}
 
 //! empty Face geometry
 void GeometryObject::clearFaceGeom()
@@ -605,7 +580,7 @@ void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
     const std::vector<Vertex *>&  oldVerts = getVertexGeometry();
     std::vector<Vertex *> newVerts;
     for (auto& v: oldVerts) {
-        Base::Vector3d v3 = v->getAs3D();
+        Base::Vector3d v3 = v->point();
         double length = (v3 - center).Length();
         if (length < Precision::Confusion()) { 
             continue;
@@ -619,7 +594,7 @@ void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
 
 
 //! does this GeometryObject already have this vertex
-bool GeometryObject::findVertex(Base::Vector2d v)
+bool GeometryObject::findVertex(Base::Vector3d v)
 {
     bool found = false;
     std::vector<Vertex*>::iterator it = vertexGeom.begin();
@@ -638,7 +613,7 @@ bool GeometryObject::findVertex(Base::Vector2d v)
 //! used for individual views, but not secondary views in projection groups
 //! flip determines Y mirror or not.
 // getViewAxis 1
-gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
+gp_Ax2 TechDraw::getViewAxis(const Base::Vector3d origin,
                                      const Base::Vector3d& direction,
                                      const bool flip)
 {
@@ -674,7 +649,7 @@ gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
 
 //! gets a coordinate system specified by Z and X directions
 //getViewAxis 2
-gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
+gp_Ax2 TechDraw::getViewAxis(const Base::Vector3d origin,
                                      const Base::Vector3d& direction,
                                      const Base::Vector3d& xAxis,
                                      const bool flip)
@@ -693,7 +668,7 @@ gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
 }
 
 //! Returns the centroid of shape, as viewed according to direction
-gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
+gp_Pnt TechDraw::findCentroid(const TopoDS_Shape &shape,
                                     const Base::Vector3d &direction)
 {
     Base::Vector3d origin(0.0,0.0,0.0);
@@ -702,7 +677,7 @@ gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
 }
 
 //! Returns the centroid of shape, as viewed according to direction
-gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
+gp_Pnt TechDraw::findCentroid(const TopoDS_Shape &shape,
                                       const gp_Ax2 viewAxis)
 {
 //    Base::Vector3d origin(0.0,0.0,0.0);
@@ -729,17 +704,16 @@ gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
     return gp_Pnt(x, y, z);
 }
 
-Base::Vector3d TechDrawGeometry::findCentroidVec(const TopoDS_Shape &shape,
+Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape &shape,
                                               const Base::Vector3d &direction)
 {
-    gp_Pnt p = TechDrawGeometry::findCentroid(shape,direction);
+    gp_Pnt p = TechDraw::findCentroid(shape,direction);
     Base::Vector3d result(p.X(),p.Y(),p.Z());
     return result;
 }
 
-
 //!scales & mirrors a shape about a center
-TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
+TopoDS_Shape TechDraw::mirrorShape(const TopoDS_Shape &input,
                              const gp_Pnt& inputCenter,
                              double scale)
 {
@@ -773,7 +747,7 @@ TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
 }
 
 //!rotates a shape about a viewAxis
-TopoDS_Shape TechDrawGeometry::rotateShape(const TopoDS_Shape &input,
+TopoDS_Shape TechDraw::rotateShape(const TopoDS_Shape &input,
                              gp_Ax2& viewAxis,
                              double rotAngle)
 {
@@ -799,7 +773,7 @@ TopoDS_Shape TechDrawGeometry::rotateShape(const TopoDS_Shape &input,
 }
 
 //!scales a shape about a origin
-TopoDS_Shape TechDrawGeometry::scaleShape(const TopoDS_Shape &input,
+TopoDS_Shape TechDraw::scaleShape(const TopoDS_Shape &input,
                                           double scale)
 {
     TopoDS_Shape transShape;
@@ -818,7 +792,7 @@ TopoDS_Shape TechDrawGeometry::scaleShape(const TopoDS_Shape &input,
 }
 
 //!moves a shape
-TopoDS_Shape TechDrawGeometry::moveShape(const TopoDS_Shape &input,
+TopoDS_Shape TechDraw::moveShape(const TopoDS_Shape &input,
                                          const Base::Vector3d& motion)
 {
     TopoDS_Shape transShape;

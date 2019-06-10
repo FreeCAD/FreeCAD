@@ -41,7 +41,7 @@ namespace TechDraw {
 class DrawViewBalloon;
 }
 
-namespace TechDrawGeometry {
+namespace TechDraw {
 class BaseGeom;
 class AOC;
 }

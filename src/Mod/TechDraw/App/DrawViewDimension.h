@@ -152,10 +152,10 @@ protected:
 
 protected:
     Measure::Measurement *measurement;
-    double dist2Segs(Base::Vector2d s1,
-                     Base::Vector2d e1,
-                     Base::Vector2d s2,
-                     Base::Vector2d e2) const;
+    double dist2Segs(Base::Vector3d s1,
+                     Base::Vector3d e1,
+                     Base::Vector3d s2,
+                     Base::Vector3d e2) const;
     pointPair closestPoints(TopoDS_Shape s1,
                             TopoDS_Shape s2) const;
 

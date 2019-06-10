@@ -31,7 +31,7 @@
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
 
-namespace TechDrawGeometry {
+namespace TechDraw {
 
 enum ExtractionType {               //obs
     Plain,
@@ -75,29 +75,35 @@ class TechDrawExport BaseGeom
         TopoDS_Edge occEdge;            //projected Edge
         bool cosmetic;
 
-        std::vector<Base::Vector2d> findEndPoints();
-        Base::Vector2d getStartPoint();
-        Base::Vector2d getEndPoint();
-        Base::Vector2d getMidPoint();
-        std::vector<Base::Vector2d> getQuads();
-        double minDist(Base::Vector2d p);
-        Base::Vector2d nearPoint(Base::Vector2d p);
-        Base::Vector2d nearPoint(const BaseGeom* p);
+        virtual std::string toCSV(void) const;
+        virtual bool fromCSV(std::string s);
+        std::vector<Base::Vector3d> findEndPoints();
+        Base::Vector3d getStartPoint();
+        Base::Vector3d getEndPoint();
+        Base::Vector3d getMidPoint();
+        std::vector<Base::Vector3d> getQuads();
+        double minDist(Base::Vector3d p);
+        Base::Vector3d nearPoint(Base::Vector3d p);
+        Base::Vector3d nearPoint(const BaseGeom* p);
         static BaseGeom* baseFactory(TopoDS_Edge edge);
         bool closed(void);
         std::string dump();
 };
 
-typedef std::vector<BaseGeom *> BaseGeomPtrVector;
+typedef std::vector<BaseGeom *> BaseGeomPtrVector;        //obs?
 
 class TechDrawExport Circle: public BaseGeom
 {
     public:
         Circle(const TopoDS_Edge &e);
+        Circle(void);
         ~Circle() = default;
 
     public:
-        Base::Vector2d center;
+        virtual std::string toCSV(void) const override;
+        virtual bool fromCSV(std::string s) override;
+
+        Base::Vector3d center;
         double radius;
 };
 
@@ -108,7 +114,7 @@ class TechDrawExport Ellipse: public BaseGeom
         ~Ellipse() = default;
 
     public:
-        Base::Vector2d center;
+        Base::Vector3d center;
         double minor;
         double major;
 
@@ -123,9 +129,9 @@ class TechDrawExport AOE: public Ellipse
         ~AOE() = default;
 
     public:
-        Base::Vector2d startPnt;  //TODO: The points are used for drawing, the angles for bounding box calcs - seems redundant
-        Base::Vector2d endPnt;
-        Base::Vector2d midPnt;
+        Base::Vector3d startPnt;  //TODO: The points are used for drawing, the angles for bounding box calcs - seems redundant
+        Base::Vector3d endPnt;
+        Base::Vector3d midPnt;
 
         /// Angle in radian
         double startAngle;
@@ -142,12 +148,16 @@ class TechDrawExport AOC: public Circle
 {
     public:
         AOC(const TopoDS_Edge &e);
+        AOC(void);
         ~AOC() = default;
 
     public:
-        Base::Vector2d startPnt;
-        Base::Vector2d endPnt;
-        Base::Vector2d midPnt;
+        virtual std::string toCSV(void) const override;
+        virtual bool fromCSV(std::string s) override;
+
+        Base::Vector3d startPnt;
+        Base::Vector3d endPnt;
+        Base::Vector3d midPnt;
 
         /// Angle in radian  ??angle with horizontal?
         double startAngle;
@@ -174,8 +184,8 @@ public:
     int poles;
     int degree;
 
-    //Base::Vector2d pnts[4];
-    std::vector<Base::Vector2d> pnts;
+    //Base::Vector3d pnts[4];
+    std::vector<Base::Vector3d> pnts;
 };
 
 class TechDrawExport BSpline: public BaseGeom
@@ -185,9 +195,9 @@ class TechDrawExport BSpline: public BaseGeom
         ~BSpline() = default;
 
     public:
-        Base::Vector2d startPnt;
-        Base::Vector2d endPnt;
-        Base::Vector2d midPnt;
+        Base::Vector3d startPnt;
+        Base::Vector3d endPnt;
+        Base::Vector3d midPnt;
         double startAngle;
         double endAngle;
         /// Arc is drawn clockwise from startAngle to endAngle if true, counterclockwise if false
@@ -209,10 +219,12 @@ class TechDrawExport Generic: public BaseGeom
         Generic();
         ~Generic() = default;
 
-        Base::Vector2d asVector(void);
+        virtual std::string toCSV(void) const override;
+        virtual bool fromCSV(std::string s) override;
+        Base::Vector3d asVector(void);
         double slope(void);
-        Base::Vector2d apparentInter(Generic* g);
-        std::vector<Base::Vector2d> points;
+        Base::Vector3d apparentInter(Generic* g);
+        std::vector<Base::Vector3d> points;
 };
 
 
@@ -241,18 +253,21 @@ class TechDrawExport Face
 class TechDrawExport Vertex
 {
     public:
+        Vertex();
         Vertex(double x, double y);
-        Vertex(Base::Vector2d v) : Vertex(v.x,v.y) {}
+        Vertex(Base::Vector3d v) : Vertex(v.x,v.y) {}
         ~Vertex() = default;
 
-        Base::Vector2d pnt;
+        Base::Vector3d pnt;
         ExtractionType extractType;       //obs?
         bool visible;
         int ref3D;                        //obs. never used.
         bool isCenter;
         TopoDS_Vertex occVertex;
         bool isEqual(Vertex* v, double tol);
-        Base::Vector3d getAs3D(void) {return Base::Vector3d(pnt.x,pnt.y,0.0);}
+        Base::Vector3d point(void) const { return Base::Vector3d(pnt.x,pnt.y,0.0); }
+        void point(Base::Vector3d v){ pnt = Base::Vector3d(v.x, v.y); }
+
         double x() {return pnt.x;}
         double y() {return pnt.y;}
 };
@@ -275,15 +290,18 @@ class TechDrawExport GeometryUtils
         /*!
          * returns index[1:geoms.size()),reversed [true,false]
          */
-        static ReturnType nextGeom( Base::Vector2d atPoint,
-                                    std::vector<TechDrawGeometry::BaseGeom*> geoms,
+        static ReturnType nextGeom( Base::Vector3d atPoint,
+                                    std::vector<TechDraw::BaseGeom*> geoms,
                                     std::vector<bool> used,
                                     double tolerance );
 
         //! return a vector of BaseGeom*'s in tail to nose order
         static std::vector<BaseGeom*> chainGeoms(std::vector<BaseGeom*> geoms);
+        static TopoDS_Edge edgeFromGeneric(TechDraw::Generic* g);
+        static TopoDS_Edge edgeFromCircle(TechDraw::Circle* c);
+        static TopoDS_Edge edgeFromCircleArc(TechDraw::AOC* c);
 };
 
-} //end namespace TechDrawGeometry
+} //end namespace TechDraw
 
 #endif //TECHDRAW_GEOMETRY_H

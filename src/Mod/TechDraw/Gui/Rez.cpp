@@ -55,12 +55,6 @@ double Rez::guiX(double x)
    return getRezFactor() * x;
 }
 
-Base::Vector2d Rez::guiX(Base::Vector2d v)
-{
-    Base::Vector2d result(guiX(v.y),guiX(v.y));
-    return result;
-}
-
 Base::Vector3d Rez::guiX(Base::Vector3d v)
 {
     Base::Vector3d result(guiX(v.x),guiX(v.y),guiX(v.z));
@@ -71,12 +65,6 @@ Base::Vector3d Rez::guiX(Base::Vector3d v)
 double Rez::appX(double x)
 {
    return x / getRezFactor();
-}
-
-Base::Vector2d Rez::appX(Base::Vector2d v)
-{
-    Base::Vector2d result(appX(v.y),appX(v.y));
-    return result;
 }
 
 Base::Vector3d Rez::appX(Base::Vector3d v)

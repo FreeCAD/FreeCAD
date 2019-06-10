@@ -26,15 +26,41 @@
 #include <Base/Vector3D.h>
 #include <App/Material.h>
 
+#include "Geometry.h"
+
 class TopoDS_Edge;
 
-namespace TechDrawGeometry {
-class BaseGeom;
-}
+/*namespace TechDraw {*/
+/*class BaseGeom;*/
+/*}*/
 
 namespace TechDraw {
 
-class TechDrawExport CosmeticVertex
+class TechDrawExport LineFormat
+{
+public:
+    LineFormat();
+    LineFormat(int style,
+               double weight,
+               App::Color color,
+               bool visible );
+    ~LineFormat() = default;
+
+    int m_style;
+    double m_weight;
+    App::Color m_color;
+    bool m_visible;
+
+    static double getDefEdgeWidth();
+    static App::Color getDefEdgeColor();
+    static int getDefEdgeStyle();
+
+    void dump(char* title);
+    std::string toCSV() const;
+    bool fromCSV(std::string& lineSpec);
+};
+
+class TechDrawExport CosmeticVertex: public TechDraw::Vertex
 {
 public:
     CosmeticVertex();
@@ -45,8 +71,6 @@ public:
     bool fromCSV(std::string& lineSpec);
     void dump(char* title);
 
-    Base::Vector3d pageLocation;
-    Base::Vector3d modelLocation;
     int            linkGeom;             //connection to corresponding "real" Vertex
     App::Color     color;
     double         size;
@@ -54,39 +78,32 @@ public:
     bool           visible;
 
 protected:
-    std::vector<std::string> split(std::string csvLine);
+/*    std::vector<std::string> split(std::string csvLine);*/
 
 };
 
+//class TechDrawExport CosmeticEdge: publix TechDraw::BaseGeom
 class TechDrawExport CosmeticEdge
 {
 public:
     CosmeticEdge();
-    CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2, double scale = 1.0);
-    CosmeticEdge(TopoDS_Edge e, double scale = 1.0);
+    CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2);
+    CosmeticEdge(TopoDS_Edge e);
+    CosmeticEdge(TechDraw::BaseGeom* g);
     virtual ~CosmeticEdge() = default;
 
-    TechDrawGeometry::BaseGeom* scaledGeometry(double scale);
+    TechDraw::BaseGeom* scaledGeometry(double scale);
 
     std::string toCSV(void) const;
     bool fromCSV(std::string& lineSpec);
     void dump(char* title);
 
-    TechDrawGeometry::BaseGeom* geometry; 
-
-    Base::Vector3d start;
-    Base::Vector3d end;
-    int            linkGeom;             //connection to corresponding "real" Edge
-    App::Color     color;
-    double         width;
-    int            style;
-    bool           visible;
+    TechDraw::BaseGeom* m_geometry; 
+    LineFormat m_format;
+    int m_linkGeom;
 
 protected:
-    std::vector<std::string> split(std::string csvLine);
-    double getDefEdgeWidth();
-    App::Color getDefEdgeColor();
-    int getDefEdgeStyle();
+/*    std::vector<std::string> split(std::string csvLine);*/
 
 };
 
