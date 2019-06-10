@@ -96,11 +96,15 @@ class ObjectOp(PathOp.ObjectOp):
         obj.setEditorMode('PathParams', 2)  # hide
         obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
         obj.setEditorMode('removalshape', 2)  # hide
+
+        self.setupAdditionalProperties(obj)
+
+        self.initAreaOp(obj)
+
+    def setupAdditionalProperties(self, obj):
         if not hasattr(obj, 'UseRotation'):
             obj.addProperty("App::PropertyEnumeration", "UseRotation", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use rotation to gain access to pockets/areas."))
             obj.UseRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
-
-        self.initAreaOp(obj)
 
     def initAreaOp(self, obj):
         '''initAreaOp(obj) ... overwrite if the receiver class needs initialisation.
@@ -152,6 +156,9 @@ class ObjectOp(PathOp.ObjectOp):
         for prop in ['AreaParams', 'PathParams', 'removalshape']:
             if hasattr(obj, prop):
                 obj.setEditorMode(prop, 2)
+
+        self.setupAdditionalProperties(obj)
+
         self.docRestored = True
 
         self.areaOpOnDocumentRestored(obj)
