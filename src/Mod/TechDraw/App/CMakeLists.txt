@@ -192,7 +192,7 @@ endif(FREECAD_USE_PCH)
 
 add_library(TechDraw SHARED ${TechDraw_SRCS} ${Draw_SRCS} ${TechDrawAlgos_SRCS}
                            ${Geometry_SRCS} ${Python_SRCS})
-target_link_libraries(TechDraw ${TechDrawLIBS};${QT_QTXML_LIBRARY};${QtXmlPatternsLib};${TechDraw})
+target_link_libraries(TechDraw ${TechDrawLIBS};${QtXmlPatternsLib};${TechDraw})
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD
