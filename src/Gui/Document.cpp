@@ -2006,6 +2006,9 @@ std::vector<std::string> Document::getRedoVector(void) const
 }
 
 bool Document::checkTransactionID(bool undo, int iSteps) {
+    if(!iSteps)
+        return false;
+
     std::vector<int> ids;
     for (int i=0;i<iSteps;i++) {
         int id = getDocument()->getTransactionID(undo,i);
@@ -2061,10 +2064,6 @@ bool Document::checkTransactionID(bool undo, int iSteps) {
                 v.first->redo();
         }
     }
-    if(undo)
-        App::GetApplication().signalUndo();
-    else
-        App::GetApplication().signalRedo();
     return true;
 }
 
@@ -2083,6 +2082,7 @@ void Document::undo(int iSteps)
     for (int i=0;i<iSteps;i++) {
         getDocument()->undo();
     }
+    App::GetApplication().signalUndo();
 }
 
 /// Will REDO one or more steps
@@ -2096,6 +2096,7 @@ void Document::redo(int iSteps)
     for (int i=0;i<iSteps;i++) {
         getDocument()->redo();
     }
+    App::GetApplication().signalRedo();
 }
 
 PyObject* Document::getPyObject(void)
