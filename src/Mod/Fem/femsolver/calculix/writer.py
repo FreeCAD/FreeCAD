@@ -1304,18 +1304,20 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 f.write('S, E, PEEQ\n')
             else:
                 f.write('S, E\n')
-            
+
             # dat file
-            f.write('** outputs --> dat file\n')
-            f.write('** reaction forces for Constraint fixed\n')
-            # reaction forces for all Constraint fixed
-            # freecadweb.org/tracker/view.php?id=2934
-            for femobj in self.fixed_objects:
-                # femobj --> dict, FreeCAD document object is femobj['Object']
-                fix_obj_name = femobj['Object'].Name
-                f.write('*NODE PRINT, NSET={}, TOTALS=ONLY\n'.format(fix_obj_name))
-                f.write('RF\n\n')
-            # TODO: add Constraint Displacement if nodes are restrained
+            # reaction forces: freecadweb.org/tracker/view.php?id=2934
+            if self.fixed_objects:
+                f.write('** outputs --> dat file\n')
+                # reaction forces for all Constraint fixed
+                f.write('** reaction forces for Constraint fixed\n')
+                for femobj in self.fixed_objects:
+                    # femobj --> dict, FreeCAD document object is femobj['Object']
+                    fix_obj_name = femobj['Object'].Name
+                    f.write('*NODE PRINT, NSET={}, TOTALS=ONLY\n'.format(fix_obj_name))
+                    f.write('RF\n')
+                # TODO: add Constraint Displacement if nodes are restrained
+                f.write('\n')
 
             # there is no need to write all integration point results
             # as long as there is no reader for them

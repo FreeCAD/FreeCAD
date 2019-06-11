@@ -471,7 +471,7 @@ class TestMeshEleTetra10(unittest.TestCase):
         # femmesh_outfile = Fem.read(testfile)  # read the mesh from test mesh
         # directly use Python methods to read and write files
         from feminout.importYamlJsonMesh import write
-        write(self.femmesh, outfile)
+        write(outfile, self.femmesh)
         from feminout.importYamlJsonMesh import read
         femmesh_testfile = read(outfile)
         femmesh_outfile = read(testfile)
