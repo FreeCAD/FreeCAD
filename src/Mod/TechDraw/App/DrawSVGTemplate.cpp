@@ -184,9 +184,9 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
         QDomElement tspan = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
 
         // Replace the editable text spans with new nodes holding actual values
+        QString editableName = tspan.parentNode().toElement().attribute(QString::fromUtf8("freecad:editable"));
         std::map<std::string, std::string>::iterator item =
-            substitutions.find(tspan.parentNode().toElement()
-                               .attribute(QString::fromUtf8("freecad:editable")).toStdString());
+            substitutions.find(std::string(editableName.toUtf8().constData()));
         if (item != substitutions.end()) {
             // Keep all spaces in the text node
             tspan.setAttribute(QString::fromUtf8("xml:space"), QString::fromUtf8("preserve"));
@@ -273,6 +273,7 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
         return editables;
     }
 
+
     QDomDocument templateDocument;
     if (!templateDocument.setContent(&templateFile)) {
         Base::Console().Message("DrawPage::getEditableTextsFromTemplate() - failed to parse file: %s\n",
@@ -294,13 +295,14 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
     QXmlResultItems queryResult;
     query.evaluateTo(&queryResult);
 
-    while (!queryResult.next().isNull())
-    {
+    while (!queryResult.next().isNull()) {
         QDomElement tspan = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
 
-        // Takeover the names stored as attributes and the values stored as text items
-        editables[tspan.parentNode().toElement().attribute(QString::fromUtf8("freecad:editable"))
-                  .toStdString()] = tspan.firstChild().nodeValue().toStdString();
+        QString editableName = tspan.parentNode().toElement().attribute(QString::fromUtf8("freecad:editable"));
+        QString editableValue = tspan.firstChild().nodeValue();
+
+        editables[std::string(editableName.toUtf8().constData())] =
+            std::string(editableValue.toUtf8().constData());
     }
 
     return editables;
