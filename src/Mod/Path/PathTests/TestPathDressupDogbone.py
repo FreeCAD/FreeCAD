@@ -138,22 +138,14 @@ class TestDressupDogbone(PathTestBase):
             return "(%.2f, %.2f)" % (pt[0], pt[1])
 
         # Make sure we get 8 bones, 2 in each corner (different heights)
-        if False:
-            self.assertEquals(len(locs), 8)
-            self.assertEquals("(27.50, 27.50)", formatBoneLoc(locs[0]))
-            self.assertEquals("(27.50, 27.50)", formatBoneLoc(locs[1]))
-            self.assertEquals("(27.50, 72.50)", formatBoneLoc(locs[2]))
-            self.assertEquals("(27.50, 72.50)", formatBoneLoc(locs[3]))
-            self.assertEquals("(72.50, 27.50)", formatBoneLoc(locs[4]))
-            self.assertEquals("(72.50, 27.50)", formatBoneLoc(locs[5]))
-            self.assertEquals("(72.50, 72.50)", formatBoneLoc(locs[6]))
-            self.assertEquals("(72.50, 72.50)", formatBoneLoc(locs[7]))
-        # Make sure we get 4 bones, 1 in each corner
-        if True:
-            self.assertEquals(len(locs), 4)
-            self.assertEquals("(27.50, 27.50)", formatBoneLoc(locs[0]))
-            self.assertEquals("(27.50, 72.50)", formatBoneLoc(locs[1]))
-            self.assertEquals("(72.50, 27.50)", formatBoneLoc(locs[2]))
-            self.assertEquals("(72.50, 72.50)", formatBoneLoc(locs[3]))
+        self.assertEquals(len(locs), 8)
+        self.assertEquals("(27.50, 27.50)", formatBoneLoc(locs[0]))
+        self.assertEquals("(27.50, 27.50)", formatBoneLoc(locs[1]))
+        self.assertEquals("(27.50, 72.50)", formatBoneLoc(locs[2]))
+        self.assertEquals("(27.50, 72.50)", formatBoneLoc(locs[3]))
+        self.assertEquals("(72.50, 27.50)", formatBoneLoc(locs[4]))
+        self.assertEquals("(72.50, 27.50)", formatBoneLoc(locs[5]))
+        self.assertEquals("(72.50, 72.50)", formatBoneLoc(locs[6]))
+        self.assertEquals("(72.50, 72.50)", formatBoneLoc(locs[7]))
 
         FreeCAD.closeDocument("TestDressupDogbone")
