@@ -68,6 +68,8 @@ class DrawProjectSplit;
 class DrawViewSection;
 class DrawViewDetail;
 class DrawViewBalloon;
+class CosmeticVertex;
+class CosmeticEdge;
 }
 
 namespace TechDraw
@@ -101,6 +103,9 @@ public:
     App::PropertyBool   IsoHidden;
     App::PropertyInteger  IsoCount;
 
+    App::PropertyStringList  CosmeticVertexList;
+    App::PropertyStringList  CosmeticEdgeList;
+
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches(void) const;
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
@@ -118,7 +123,7 @@ public:
 
     TechDrawGeometry::BaseGeom* getProjEdgeByIndex(int idx) const;               //get existing geom for edge idx in projection
     TechDrawGeometry::Vertex* getProjVertexByIndex(int idx) const;               //get existing geom for vertex idx in projection
-    std::vector<TechDrawGeometry::BaseGeom*> getProjFaceByIndex(int idx) const;  //get edges for face idx in projection
+    std::vector<TechDrawGeometry::BaseGeom*> getFaceEdgesByIndex(int idx) const;  //get edges for face idx in projection
 
     virtual Base::BoundBox3d getBoundingBox() const;
     double getBoxX(void) const;
@@ -136,7 +141,7 @@ public:
                                const bool flip=true) const;
 
     virtual short mustExecute() const;
-/*    virtual void onDocumentRestored() override;*/
+//    virtual void onDocumentRestored() override;
 
     bool handleFaces(void);
     bool showSectionEdges(void);
@@ -162,6 +167,24 @@ public:
     virtual TopoDS_Shape getSourceShapeFused(void) const; 
     bool isIso(void) const;
 
+    virtual int addRandomVertex(Base::Vector3d pos);
+    virtual void removeRandomVertex(TechDraw::CosmeticVertex* cv);
+    virtual void removeRandomVertex(int idx);
+    const std::vector<TechDraw::CosmeticVertex*> & getCosmeticVertex(void) const { return cosmoVertex; }
+    TechDraw::CosmeticVertex* getCosmeticVertexByIndex(int idx) const;
+    TechDraw::CosmeticVertex* getCosmeticVertexByLink(int idx) const;
+    void clearCV(void);
+
+    virtual int addRandomEdge(Base::Vector3d start, Base::Vector3d end);
+    virtual int addRandomEdge(TopoDS_Edge e);
+    virtual int addRandomEdge(TechDraw::CosmeticEdge*);
+    virtual void removeRandomEdge(TechDraw::CosmeticEdge* ce);
+    virtual void removeRandomEdge(int idx);
+    const std::vector<TechDraw::CosmeticEdge*> & getCosmeticEdge(void) const { return cosmoEdge; }
+    TechDraw::CosmeticEdge* getCosmeticEdgeByIndex(int idx) const;
+    TechDraw::CosmeticEdge* getCosmeticEdgeByLink(int idx) const;
+    void clearCE(void);
+
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
@@ -183,8 +206,19 @@ protected:
     bool m_sectionEdges;
     bool m_handleFaces;
 
+    //Cosmetics
+    std::vector<TechDraw::CosmeticVertex*> cosmoVertex;
+    void rebuildCosmoVertex(void);
+    void stuffCosmeticVertexList(void);
+
+    std::vector<TechDraw::CosmeticEdge*> cosmoEdge;
+    void rebuildCosmoEdge(void);
+    void stuffCosmeticEdgeList(void);
+
+
 private:
     bool nowUnsetting;
+    bool on1;
 /*    bool m_restoreComplete;*/
 
 };

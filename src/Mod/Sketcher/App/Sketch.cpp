@@ -28,6 +28,11 @@
 # include <ShapeFix_Wire.hxx>
 # include <TopoDS_Compound.hxx>
 # include <Standard_Version.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <cmath>
+# include <iostream>
 #endif
 
 #include <Base/Writer.h>
@@ -50,15 +55,8 @@
 #include <Mod/Part/App/LineSegmentPy.h>
 #include <Mod/Part/App/BSplineCurvePy.h>
 
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-
 #include "Sketch.h"
 #include "Constraint.h"
-#include <cmath>
-
-#include <iostream>
 
 using namespace Sketcher;
 using namespace Base;
@@ -1488,9 +1486,15 @@ int Sketch::addConstraint(const Constraint *constraint)
 int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList)
 {
     int rtn = -1;
+    int cid = 0;
 
-    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it)
+    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++cid) {
         rtn = addConstraint (*it);
+
+        if(rtn == -1) {
+            Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
+        }
+    }
 
     return rtn;
 }
@@ -1504,6 +1508,10 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList,
     for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++cid) {
         if (!unenforceableConstraints[cid] && (*it)->Type != Block) {
             rtn = addConstraint (*it);
+
+            if(rtn == -1) {
+                Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
+            }
         }
         else {
             ++ConstraintsCounter; // For correct solver redundant reporting

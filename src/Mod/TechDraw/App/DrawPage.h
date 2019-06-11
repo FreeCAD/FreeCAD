@@ -30,6 +30,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
 namespace TechDraw
 {
@@ -48,6 +49,8 @@ public:
 
     App::PropertyFloatConstraint Scale;
     App::PropertyEnumeration ProjectionType; // First or Third Angle
+    
+    App::PropertyInteger  NextBalloonIndex;
 
     /** @name methods override Feature */
     //@{
@@ -89,7 +92,10 @@ public:
     bool isUnsetting(void) { return nowUnsetting; }
     void requestPaint(void);
     std::vector<App::DocumentObject*> getAllViews(void) ;
-
+    bool balloonPlacing;
+    DrawViewPart *balloonParent;    //could be many balloons on page? 
+    
+    int getNextBalloonIndex(void);
 
 protected:
     void onBeforeChange(const App::Property* prop);

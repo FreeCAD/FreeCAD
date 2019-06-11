@@ -94,6 +94,8 @@ def getDefaultColor(objectType):
         c = p.GetUnsigned("RebarColor",3111475967)
     elif objectType == "Panel":
         c = p.GetUnsigned("PanelColor",3416289279)
+    elif objectType == "Space":
+        c = p.GetUnsigned("defaultSpaceColor",4278190080)
     elif objectType == "Helpers":
         c = p.GetUnsigned("ColorHelpers",674321151)
     elif objectType == "Construction":
@@ -396,9 +398,10 @@ def closeHole(shape):
     else:
         return solid
 
-def getCutVolume(cutplane,shapes):
-    """getCutVolume(cutplane,shapes): returns a cut face and a cut volume
-    from the given shapes and the given cutting plane"""
+def getCutVolume(cutplane,shapes,clip=False):
+    """getCutVolume(cutplane,shapes,[clip]): returns a cut face and a cut volume
+    from the given shapes and the given cutting plane. If clip is True, the cutvolume will
+    also cut off everything outside the cutplane projection"""
     if not shapes:
         return None,None,None
     if not cutplane.Faces:
@@ -460,6 +463,13 @@ def getCutVolume(cutplane,shapes):
         cutvolume = cutface.extrude(cutnormal)
         cutnormal = cutnormal.negative()
         invcutvolume = cutface.extrude(cutnormal)
+        if clip:
+            extrudedplane = p.extrude(cutnormal)
+            bordervolume = invcutvolume.cut(extrudedplane)
+            cutvolume = cutvolume.fuse(bordervolume)
+            cutvolume = cutvolume.removeSplitter()
+            invcutvolume = extrudedplane
+            cutface = p
         return cutface,cutvolume,invcutvolume
 
 def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
@@ -734,7 +744,7 @@ def pruneIncluded(objectslist,strict=False):
         if obj.isDerivedFrom("Part::Feature"):
             if not (Draft.getType(obj) in ["Window","Clone","Pipe","Rebar"]):
                 for parent in obj.InList:
-                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Facebinder","Window","Roof"]):
+                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Facebinder","Window","Roof","Clone","Site"]):
                         if not parent.isDerivedFrom("Part::Part2DObject"):
                             # don't consider 2D objects based on arch elements
                             if hasattr(parent,"Host") and (parent.Host == obj):
@@ -1504,20 +1514,6 @@ class _CommandCheck:
                 FreeCADGui.Selection.addSelection(i[0])
 
 
-class _CommandIfcExplorer:
-    "the Arch Ifc Explorer command definition"
-    def GetResources(self):
-        return {'Pixmap'  : 'IFC',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_IfcExplorer","Ifc Explorer"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Check","Explore the contents of an IFC file")}
-
-    def Activated(self):
-        if hasattr(self,"dialog"):
-            del self.dialog
-        import importIFC
-        self.dialog = importIFC.explore()
-
-
 class _CommandSurvey:
     "the Arch Survey command definition"
     def GetResources(self):
@@ -1683,7 +1679,6 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())
     FreeCADGui.addCommand('Arch_CloseHoles',_CommandCloseHoles())
     FreeCADGui.addCommand('Arch_Check',_CommandCheck())
-    FreeCADGui.addCommand('Arch_IfcExplorer',_CommandIfcExplorer())
     FreeCADGui.addCommand('Arch_Survey',_CommandSurvey())
     FreeCADGui.addCommand('Arch_ToggleIfcBrepFlag',_ToggleIfcBrepFlag())
     FreeCADGui.addCommand('Arch_Component',_CommandComponent())

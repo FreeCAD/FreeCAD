@@ -154,9 +154,9 @@
       <translation>Просмотреть все коммиты на github</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
-      <source>See all commits on github</source>
-      <translation>Просмотреть все коммиты на github</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
+      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
+      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -208,22 +208,12 @@
       <source>Notes</source>
       <translation>Заметки</translation>
     </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
-      <source>Notes</source>
-      <translation>Заметки</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <location filename="../../Workbench.cpp" line="65"/>
-      <source>Start page</source>
-      <translation>Стартовая страница</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>Стартовая страница</translation>
     </message>

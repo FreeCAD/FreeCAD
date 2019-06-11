@@ -76,8 +76,8 @@ private:
     QGIArrow*          m_arrow2;
     QGCustomText*      m_symbol1;
     QGCustomText*      m_symbol2;
-    QPointF            m_start;
-    QPointF            m_end;
+    QPointF            m_start;         //start of section line
+    QPointF            m_end;           //end of section line
     Base::Vector3d     m_arrowDir;
     std::string        m_symFontName;
     QFont              m_symFont;

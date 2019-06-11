@@ -23,11 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Standard_math.hxx>
+
 # include <QString>
 # include <QSlider>
 #endif
 
-#include <Standard_math.hxx>
+
 #include "ui_TaskDriver.h"
 #include "TaskDriver.h"
 #include <Gui/Application.h>

@@ -147,8 +147,8 @@
       <translation>Об'єднати клітинки</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Об'єднати виділені клітинки в таблиці</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Розділити клітинку</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Розділити раніше об'єднані клітинки в таблиці</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Жирний текст</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Зробити у виділених клітинках текст жирним</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Текст курсивом</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Зробити у виділених клітинках текст курсивом</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Світло-сірий</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Підлаштувати</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

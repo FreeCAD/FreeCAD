@@ -52,6 +52,7 @@ SET(FemInOut_SRCS
     feminout/importInpMesh.py
     feminout/importToolsFem.py
     feminout/importVTKResults.py
+    feminout/importYamlJsonMesh.py
     feminout/importZ88Mesh.py
     feminout/importZ88O2Results.py
     feminout/readFenicsXDMF.py
@@ -128,6 +129,7 @@ SET(FemTests_SRCS
     femtest/__init__.py
     femtest/testccxtools.py
     femtest/testcommon.py
+    femtest/testmaterial.py
     femtest/testmesh.py
     femtest/testobject.py
     femtest/testresult.py
@@ -182,6 +184,7 @@ SET(FemTestsMesh_SRCS
     femtest/testfiles/mesh/tetra10_mesh.inp
     femtest/testfiles/mesh/tetra10_mesh.unv
     femtest/testfiles/mesh/tetra10_mesh.vtk
+    femtest/testfiles/mesh/tetra10_mesh.yml
     femtest/testfiles/mesh/tetra10_mesh.z88
 )
 

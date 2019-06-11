@@ -63,12 +63,14 @@ class _ViewProviderFemMaterialMechanicalNonlinear:
         return
 
     def setEdit(self, vobj, mode=0):
-        # avoid edit mode by return False, https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
+        # avoid edit mode by return False
+        # https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
         return False
 
     def doubleClicked(self, vobj):
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        # check if another VP is in edit mode
+        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
         if not guidoc.getInEdit():
             guidoc.setEdit(vobj.Object.Name)
         else:

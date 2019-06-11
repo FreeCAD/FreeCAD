@@ -31,7 +31,7 @@ import math
 
 """Path Array object and FreeCAD command"""
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -246,7 +246,7 @@ class CommandPathArray:
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
             return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
-        except:
+        except(IndexError, AttributeError):
             return False
 
     def Activated(self):

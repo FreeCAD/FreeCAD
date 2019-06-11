@@ -955,6 +955,18 @@ bool MeshTopoAlgorithm::CollapseEdge(unsigned long ulFacetPos, unsigned long ulN
 
 bool MeshTopoAlgorithm::IsCollapseEdgeLegal(const EdgeCollapse& ec) const
 {
+    // http://stackoverflow.com/a/27049418/148668
+    // Check connectivity
+    //
+    std::vector<unsigned long> commonPoints;
+    std::set_intersection(ec._adjacentFrom.begin(), ec._adjacentFrom.end(),
+                          ec._adjacentTo.begin(), ec._adjacentTo.end(),
+                          std::back_insert_iterator<std::vector<unsigned long> >(commonPoints));
+    if (commonPoints.size() > 2) {
+        return false;
+    }
+
+    // Check geometry
     std::vector<unsigned long>::const_iterator it;
     for (it = ec._changeFacets.begin(); it != ec._changeFacets.end(); ++it) {
         MeshFacet f = _rclMesh._aclFacetArray[*it];
@@ -973,6 +985,14 @@ bool MeshTopoAlgorithm::IsCollapseEdgeLegal(const EdgeCollapse& ec) const
             return false;
     }
 
+    // If the data structure is valid and the algorithm works as expected
+    // it should never happen to reject the edge-collapse here!
+    for (it = ec._removeFacets.begin(); it != ec._removeFacets.end(); ++it) {
+        MeshFacet f = _rclMesh._aclFacetArray[*it];
+        if (!f.IsValid())
+            return false;
+    }
+
     if (!_rclMesh._aclPointArray[ec._fromPoint].IsValid())
         return false;
 
@@ -988,12 +1008,33 @@ bool MeshTopoAlgorithm::CollapseEdge(const EdgeCollapse& ec)
     for (it = ec._removeFacets.begin(); it != ec._removeFacets.end(); ++it) {
         MeshFacet& f = _rclMesh._aclFacetArray[*it];
         f.SetInvalid();
+
+        // adjust the neighbourhood
+        std::vector<unsigned long> neighbours;
+        for (int i=0; i<3; i++) {
+            // get the neighbours of the facet that won't be invalidated
+            if (f._aulNeighbours[i] != ULONG_MAX) {
+                if (std::find(ec._removeFacets.begin(), ec._removeFacets.end(),
+                              f._aulNeighbours[i]) == ec._removeFacets.end()) {
+                    neighbours.push_back(f._aulNeighbours[i]);
+                }
+            }
+        }
+
+        if (neighbours.size() == 2) {
+            MeshFacet& n1 = _rclMesh._aclFacetArray[neighbours[0]];
+            n1.ReplaceNeighbour(*it, neighbours[1]);
+            MeshFacet& n2 = _rclMesh._aclFacetArray[neighbours[1]];
+            n2.ReplaceNeighbour(*it, neighbours[0]);
+        }
+        else if (neighbours.size() == 1) {
+            MeshFacet& n1 = _rclMesh._aclFacetArray[neighbours[0]];
+            n1.ReplaceNeighbour(*it, ULONG_MAX);
+        }
     }
 
     for (it = ec._changeFacets.begin(); it != ec._changeFacets.end(); ++it) {
         MeshFacet& f = _rclMesh._aclFacetArray[*it];
-
-        // The neighbourhood might be broken from now on!!!
         f.Transpose(ec._fromPoint, ec._toPoint);
     }
 
@@ -1502,6 +1543,8 @@ void MeshTopoAlgorithm::FlipNormals (void)
  * B  = #Boundaries
  * G  = Genus (Number of holes)
  * R  = #components
+ *
+ * See also http://max-limper.de/publications/Euler/
  */
 
 MeshComponents::MeshComponents( const MeshKernel& rclMesh )

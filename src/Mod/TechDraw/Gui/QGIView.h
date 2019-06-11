@@ -24,9 +24,12 @@
 #define DRAWINGGUI_QGRAPHICSITEMVIEW_H
 
 #include <QGraphicsItemGroup>
+#include <QObject>
 #include <QPen>
 #include <QFont>
-#include <QObject>
+#include <QColor>
+#include <QCursor>
+#include <QPointF>
 
 #include <App/DocumentObject.h>
 #include <Base/Parameter.h>
@@ -42,6 +45,7 @@ QT_END_NAMESPACE
 
 namespace TechDrawGui
 {
+class QGVPage;
 class QGCustomBorder;
 class QGCustomLabel;
 class QGCustomText;
@@ -49,6 +53,8 @@ class QGICaption;
 class MDIViewPage;
 class QGIViewClip;
 class QGCustomImage;
+class QGTracker;
+class QGIVertex;
 
 class TechDrawGuiExport  QGIView : public QObject, public QGraphicsItemGroup
 {
@@ -69,18 +75,20 @@ public:
     const std::string getViewNameAsString() const;
     void setViewFeature(TechDraw::DrawView *obj);
     TechDraw::DrawView * getViewObject() const;
+    double getScale(void);
 
-    virtual void toggleBorder(bool state = true);
+    virtual bool getFrameState(void);
     virtual void toggleCache(bool state);
     virtual void updateView(bool update = false);
     virtual void drawBorder(void);
-    virtual void isVisible(bool state) { m_visibility = state; }
-    virtual bool isVisible(void) {return m_visibility;}
+    virtual void isVisible(bool state);
+    virtual bool isVisible(void);
     virtual void draw(void);
     virtual void drawCaption(void);
     virtual void rotateView(void);
-    void makeMark(double x, double y);
-    void makeMark(Base::Vector3d v);
+    void makeMark(double x, double y, QColor c = Qt::red);
+    void makeMark(Base::Vector3d v, QColor c = Qt::red);
+    void makeMark(QPointF p, QColor c = Qt::red);
 
 
     /** Methods to ensure that Y-Coordinates are orientated correctly.
@@ -102,17 +110,25 @@ public:
     virtual QColor getSelectColor(void);
     
     static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
+    static QGVPage* getGraphicsView(TechDraw::DrawView* dv);
+    static double calculateFontPointSizeF(const QGraphicsItem *graphicsItem, double sizeInMillimetres);
+    static const double DefaultFontSizeInMM;
+
     MDIViewPage* getMDIViewPage(void) const;
+
     // Mouse handling
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     boost::signals2::signal<void (QGIView*, QPointF)> signalSelectPoint;
+
+public Q_SLOTS:
+    virtual void onSourceChange(TechDraw::DrawView* newParent);
 
 protected:
     QGIView* getQGIVByName(std::string name);
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     // Mouse handling
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+/*    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;*/
     // Preselection events:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
@@ -121,6 +137,9 @@ protected:
 
     QString getPrefFont(void);
     double getPrefFontSize(void);
+    double getDimFontSize(void);
+    double calculateFontPointSizeF(double sizeInMillimetres) const;
+
     Base::Reference<ParameterGrp> getParmGroupCol(void);
 
     TechDraw::DrawView *viewObj;
@@ -130,8 +149,6 @@ protected:
     //std::string alignMode;
     //QGIView* alignAnchor;
     bool m_locked;
-    bool borderVisible;
-    bool m_visibility;
     bool m_innerView;                                                  //View is inside another View
 
     QPen m_pen;

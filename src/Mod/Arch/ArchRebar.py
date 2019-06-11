@@ -76,13 +76,19 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
         if FreeCAD.GuiUp:
             sketch.ViewObject.hide()
         obj.Host = baseobj
+    elif sketch and not baseobj:
+        # a rebar could be based on a wire without the existence of a Structure
+        obj.Base = sketch
+        if FreeCAD.GuiUp:
+            sketch.ViewObject.hide()
+        obj.Host = None
     if diameter:
         obj.Diameter = diameter
     else:
         obj.Diameter = p.GetFloat("RebarDiameter",6)
     obj.Amount = amount
     obj.Document.recompute()
-    if offset:
+    if offset != None:
         obj.OffsetStart = offset
         obj.OffsetEnd = offset
     else:
@@ -116,7 +122,7 @@ class _CommandRebar:
                     sk = sel[1].Object
                     if sk.isDerivedFrom("Part::Feature"):
                         if len(sk.Shape.Wires) == 1:
-                            # we have a base object and a sketch: create the rebar now
+                            # we have a structure and a wire: create the rebar now
                             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
                             FreeCADGui.addModule("Arch")
                             FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+obj.Name+",FreeCAD.ActiveDocument."+sk.Name+")")
@@ -124,7 +130,7 @@ class _CommandRebar:
                             FreeCAD.ActiveDocument.recompute()
                             return
                 else:
-                    # we have only a base object: open the sketcher
+                    # we have only a structure: open the sketcher
                     FreeCADGui.activateWorkbench("SketcherWorkbench")
                     FreeCADGui.runCommand("Sketcher_NewSketch")
                     FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(obj,FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Rebar")
@@ -132,23 +138,18 @@ class _CommandRebar:
                     return
             elif obj.isDerivedFrom("Part::Feature"):
                 if len(obj.Shape.Wires) == 1:
-                # we have only the sketch: extract the base object from it
+                    # we have only a wire: extract its support object, if available, and make the rebar
+                    support = "None"
                     if hasattr(obj,"Support"):
                         if obj.Support:
                             if len(obj.Support) != 0:
-                                sup = obj.Support[0][0]
-                            else:
-                                print("Arch: error: couldn't extract a base object")
-                                return
-                            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
-                            FreeCADGui.addModule("Arch")
-                            FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+sup.Name+",FreeCAD.ActiveDocument."+obj.Name+")")
-                            FreeCAD.ActiveDocument.commitTransaction()
-                            FreeCAD.ActiveDocument.recompute()
-                            return
-                        else:
-                            print("Arch: error: couldn't extract a base object")
-                            return
+                                support = "FreeCAD.ActiveDocument."+obj.Support[0][0].Name
+                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
+                    FreeCADGui.addModule("Arch")
+                    FreeCADGui.doCommand("Arch.makeRebar("+support+",FreeCAD.ActiveDocument."+obj.Name+")")
+                    FreeCAD.ActiveDocument.commitTransaction()
+                    FreeCAD.ActiveDocument.recompute()
+                    return
 
         FreeCAD.Console.PrintMessage(translate("Arch","Please select a base face on a structural object")+"\n")
         FreeCADGui.Control.closeDialog()
@@ -272,7 +273,10 @@ class _Rebar(ArchComponent.Component):
                 baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
             else:
                 baseoffset = None
-            interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
+            if obj.ViewObject.RebarShape == "Stirrup":
+                interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
+            else:
+                interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
             interval = interval / (obj.Amount - 1)
             vinterval = DraftVecUtils.scaleTo(axis,interval)
             for i in range(obj.Amount):
@@ -374,7 +378,7 @@ class _Rebar(ArchComponent.Component):
         self.wires = []
         rot = FreeCAD.Rotation()
         if obj.Amount == 1:
-            barplacement = CalculatePlacement(obj.Amount, 1, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
+            barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
             placementlist.append(barplacement)
             if hasattr(obj,"Spacing"):
                 obj.Spacing = 0
@@ -383,17 +387,23 @@ class _Rebar(ArchComponent.Component):
                 baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
             else:
                 baseoffset = None
-            interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
+            if obj.ViewObject.RebarShape == "Stirrup":
+                interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
+            else:
+                interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
             interval = interval / (obj.Amount - 1)
             for i in range(obj.Amount):
-                barplacement = CalculatePlacement(obj.Amount, i+1, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
+                barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
                 placementlist.append(barplacement)
             if hasattr(obj,"Spacing"):
                 obj.Spacing = interval
         # Calculate placement of bars from custom spacing.
         if spacinglist:
             placementlist[:] = []
-            reqInfluenceArea = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
+            if obj.ViewObject.RebarShape == "Stirrup":
+                reqInfluenceArea = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
+            else:
+                reqInfluenceArea = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
             # Avoid unnecessary checks to pass like. For eg.: when we have values
             # like influenceArea is 100.00001 and reqInflueneArea is 100
             if round(influenceArea) > round(reqInfluenceArea):
@@ -527,14 +537,17 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
         modes=["Centerline"]
         return modes+ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)
 
-def CalculatePlacement(baramount, barnumber, size, axis, rotation, offsetstart, offsetend):
+def CalculatePlacement(baramount, barnumber, bardiameter, size, axis, rotation, offsetstart, offsetend, RebarShape = ""):
 
-    """ CalculatePlacement([baramount, barnumber, size, axis, rotation, offsetstart, offsetend]):
+    """ CalculatePlacement([baramount, barnumber, bardiameter, size, axis, rotation, offsetstart, offsetend, RebarShape]):
     Calculate the placement of the bar from given values."""
     if baramount == 1:
         interval = offsetstart
     else:
-        interval = size - (offsetstart + offsetend)
+        if RebarShape == "Stirrup":
+            interval = size - (offsetstart + offsetend + bardiameter)
+        else:
+            interval = size - (offsetstart + offsetend)
         interval = interval / (baramount - 1)
     bardistance = (interval * (barnumber - 1)) + offsetstart
     barplacement = DraftVecUtils.scaleTo(axis, bardistance)

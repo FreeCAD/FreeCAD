@@ -375,6 +375,7 @@ public:
     const std::set<unsigned long>& operator[] (unsigned long) const;
     MeshFacetArray::_TConstIterator GetFacet (unsigned long) const;
     std::set<unsigned long> NeighbourPoints(const std::vector<unsigned long>& , int level) const;
+    std::set<unsigned long> NeighbourPoints(unsigned long) const;
     void Neighbours (unsigned long ulFacetInd, float fMaxDist, MeshCollector& collect) const;
     Base::Vector3f GetNormal(unsigned long) const;
     void AddNeighbour(unsigned long, unsigned long);

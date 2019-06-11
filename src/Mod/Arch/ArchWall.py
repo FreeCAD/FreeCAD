@@ -235,7 +235,7 @@ class _CommandWall:
             self.tracker = DraftTrackers.boxTracker()
             if hasattr(FreeCAD,"DraftWorkingPlane"):
                 FreeCAD.DraftWorkingPlane.setup()
-            FreeCADGui.Snapper.getPoint(callback=self.getPoint,extradlg=self.taskbox())
+            FreeCADGui.Snapper.getPoint(callback=self.getPoint,extradlg=self.taskbox(),title=translate("Arch","First point of wall")+":")
 
     def getPoint(self,point=None,obj=None):
 
@@ -253,7 +253,7 @@ class _CommandWall:
             self.tracker.width(self.Width)
             self.tracker.height(self.Height)
             self.tracker.on()
-            FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
+            FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox(),title=translate("Arch","Next point")+":",mode="line")
         elif len(self.points) == 2:
             import Part
             l = Part.LineSegment(FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[0]),FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[1]))
@@ -298,6 +298,7 @@ class _CommandWall:
             FreeCADGui.doCommand('base.addGeometry(trace)')
         else:
             FreeCADGui.doCommand('base=Draft.makeLine(trace)')
+            FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
         FreeCADGui.doCommand('wall = Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
         FreeCADGui.doCommand('wall.Normal = FreeCAD.DraftWorkingPlane.getNormal()')
         if self.MultiMat:
@@ -330,11 +331,12 @@ class _CommandWall:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Wall options", utf8_decode=True))
+        w.setWindowTitle(translate("Arch","Wall options"))
         grid = QtGui.QGridLayout(w)
 
         matCombo = QtGui.QComboBox()
         matCombo.addItem(translate("Arch","Wall Presets..."))
+        matCombo.setToolTip(translate("Arch","This list shows all the MultiMaterials objects of this document. Create some to define wall types."))
         self.multimats = []
         self.MultiMat = None
         for o in FreeCAD.ActiveDocument.Objects:
@@ -348,33 +350,33 @@ class _CommandWall:
                     self.MultiMat = o
         grid.addWidget(matCombo,0,0,1,2)
 
-        label5 = QtGui.QLabel(translate("Arch","Length", utf8_decode=True))
+        label5 = QtGui.QLabel(translate("Arch","Length"))
         self.Length = ui.createWidget("Gui::InputField")
         self.Length.setText("0.00 mm")
         grid.addWidget(label5,1,0,1,1)
         grid.addWidget(self.Length,1,1,1,1)
 
-        label1 = QtGui.QLabel(translate("Arch","Width", utf8_decode=True))
+        label1 = QtGui.QLabel(translate("Arch","Width"))
         value1 = ui.createWidget("Gui::InputField")
         value1.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
         grid.addWidget(label1,2,0,1,1)
         grid.addWidget(value1,2,1,1,1)
 
-        label2 = QtGui.QLabel(translate("Arch","Height", utf8_decode=True))
+        label2 = QtGui.QLabel(translate("Arch","Height"))
         value2 = ui.createWidget("Gui::InputField")
         value2.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
         grid.addWidget(label2,3,0,1,1)
         grid.addWidget(value2,3,1,1,1)
 
-        label3 = QtGui.QLabel(translate("Arch","Alignment", utf8_decode=True))
+        label3 = QtGui.QLabel(translate("Arch","Alignment"))
         value3 = QtGui.QComboBox()
-        items = ["Center","Left","Right"]
+        items = [translate("Arch","Center"),translate("Arch","Left"),translate("Arch","Right")]
         value3.addItems(items)
-        value3.setCurrentIndex(items.index(self.Align))
+        value3.setCurrentIndex(["Center","Left","Right"].index(self.Align))
         grid.addWidget(label3,4,0,1,1)
         grid.addWidget(value3,4,1,1,1)
 
-        label4 = QtGui.QLabel(translate("Arch","Con&tinue", utf8_decode=True))
+        label4 = QtGui.QLabel(translate("Arch","Con&tinue"))
         value4 = QtGui.QCheckBox()
         value4.setObjectName("ContinueCmd")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)
@@ -385,7 +387,7 @@ class _CommandWall:
         grid.addWidget(label4,5,0,1,1)
         grid.addWidget(value4,5,1,1,1)
 
-        label5 = QtGui.QLabel(translate("Arch","Use sketches", utf8_decode=True))
+        label5 = QtGui.QLabel(translate("Arch","Use sketches"))
         value5 = QtGui.QCheckBox()
         value5.setObjectName("UseSketches")
         value5.setLayoutDirection(QtCore.Qt.RightToLeft)
@@ -622,7 +624,7 @@ class _Wall(ArchComponent.Component):
                                             if offset:
                                                 t = edge.tangentAt(offset)
                                                 p = t.cross(n)
-                                                p.multiply(1.1*obj.Width.Value)
+                                                p.multiply(1.1*obj.Width.Value+obj.Offset.Value)
                                                 p1 = edge.valueAt(offset).add(p)
                                                 p2 = edge.valueAt(offset).add(p.negative())
                                                 sh = Part.LineSegment(p1,p2).toShape()
@@ -730,11 +732,17 @@ class _Wall(ArchComponent.Component):
                             l = obj.Base.Shape.Length
                             if obj.Length.Value != l:
                                 obj.Length = l
+                                self.oldLength = None # delete the stored value to prevent triggering base change below
+
+    def onBeforeChange(self,obj,prop):
+
+        if prop == "Length":
+            self.oldLength = obj.Length.Value
 
     def onChanged(self,obj,prop):
 
         if prop == "Length":
-            if obj.Base and obj.Length.Value:
+            if obj.Base and obj.Length.Value and hasattr(self,"oldLength") and (self.oldLength != None) and (self.oldLength != obj.Length.Value):
                 if obj.Base.isDerivedFrom("Part::Feature"):
                     if len(obj.Base.Shape.Edges) == 1:
                         import DraftGeomUtils

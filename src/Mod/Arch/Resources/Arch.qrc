@@ -39,6 +39,7 @@
         <file>icons/Arch_Fixture.svg</file>
         <file>icons/Arch_Space.svg</file>
         <file>icons/Arch_Space_Tree.svg</file>
+        <file>icons/Arch_Space_Clone.svg</file>
         <file>icons/Arch_Stairs.svg</file>
         <file>icons/Arch_Stairs_Tree.svg</file>
         <file>icons/Arch_Rebar.svg</file>
@@ -70,6 +71,8 @@
         <file>icons/Arch_Material_Multi.svg</file>
         <file>icons/Arch_Schedule.svg</file>
         <file>icons/ArchWorkbench.svg</file>
+        <file>icons/Arch_Fence.svg</file>
+        <file>icons/Arch_Fence_Tree.svg</file>
         <file>ui/preferences-arch.ui</file>
         <file>ui/preferences-archdefaults.ui</file>
         <file>ui/preferences-ifc.ui</file>

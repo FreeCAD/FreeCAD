@@ -2358,6 +2358,7 @@ CmdBoxSelection::CmdBoxSelection()
     sToolTipText  = QT_TR_NOOP("Box selection");
     sWhatsThis    = "Part_BoxSelection";
     sStatusTip    = QT_TR_NOOP("Box selection");
+    sPixmap       = "Part_BoxSelection";
 }
 
 void CmdBoxSelection::activated(int iMsg)

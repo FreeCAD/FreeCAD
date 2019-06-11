@@ -80,11 +80,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* consaccel = new Gui::MenuItem();
     consaccel->setCommand("Sketcher tools");
     addSketcherWorkbenchTools(*consaccel);
-    
+
     Gui::MenuItem* bsplines = new Gui::MenuItem();
     bsplines->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines(*bsplines);
-    
+
     Gui::MenuItem* virtualspace = new Gui::MenuItem();
     virtualspace->setCommand("Sketcher virtual space");
     addSketcherWorkbenchVirtualSpace(*virtualspace);
@@ -118,11 +118,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* consaccel = new Gui::ToolBarItem(root);
     consaccel->setCommand("Sketcher tools");
     addSketcherWorkbenchTools( *consaccel );
-    
+
     Gui::ToolBarItem* bspline = new Gui::ToolBarItem(root);
     bspline->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines( *bspline );
-    
+
     Gui::ToolBarItem* virtualspace = new Gui::ToolBarItem(root);
     virtualspace->setCommand("Sketcher virtual space");
     addSketcherWorkbenchVirtualSpace( *virtualspace );

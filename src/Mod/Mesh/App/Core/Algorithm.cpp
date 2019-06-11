@@ -1746,6 +1746,24 @@ std::set<unsigned long> MeshRefPointToFacets::NeighbourPoints(const std::vector<
     return nb;
 }
 
+std::set<unsigned long> MeshRefPointToFacets::NeighbourPoints(unsigned long pos) const
+{
+    std::set<unsigned long> p;
+    const std::set<unsigned long>& vf = _map[pos];
+    for (std::set<unsigned long>::const_iterator it = vf.begin(); it != vf.end(); ++it) {
+        unsigned long p1, p2, p3;
+        _rclMesh.GetFacetPoints(*it, p1, p2, p3);
+        if (p1 != pos)
+            p.insert(p1);
+        if (p2 != pos)
+            p.insert(p2);
+        if (p3 != pos)
+            p.insert(p3);
+    }
+
+    return p;
+}
+
 void MeshRefPointToFacets::Neighbours (unsigned long ulFacetInd, float fMaxDist, MeshCollector& collect) const
 {
     std::set<unsigned long> visited;

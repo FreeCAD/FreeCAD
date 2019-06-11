@@ -326,11 +326,20 @@ class Component:
                         # if the final obj is rotated, this will screw all our IFC orientation. Better leave it like that then...
                         data = obj.Base.Proxy.getExtrusionData(obj.Base)
                         if data:
+                            return data
+                            # TODO above doesn't work if underlying shape is not at (0,0,0). But code below doesn't work well yet
                             # add the displacement of the final object
+                            disp = obj.Shape.CenterOfMass.sub(obj.Base.Shape.CenterOfMass)
                             if isinstance(data[2],(list,tuple)):
-                                return (data[0],data[1],[p.multiply(obj.Placement) for p in data[2]])
+                                ndata2 = []
+                                for p in data[2]:
+                                    p.move(disp)
+                                    ndata2.append(p)
+                                return (data[0],data[1],ndata2)
                             else:
-                                return (data[0],data[1],data[2].multiply(obj.Placement))
+                                ndata2 = data[2]
+                                ndata2.move(disp)
+                                return (data[0],data[1],ndata2)
             # the base is a Part Extrusion
             elif obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base:
@@ -668,6 +677,56 @@ class Component:
                 if hasattr(obj,"PerimeterLength") and (len(self.flatarea.Faces) == 1):
                     if obj.PerimeterLength.Value != self.flatarea.Faces[0].OuterWire.Length:
                         obj.PerimeterLength = self.flatarea.Faces[0].OuterWire.Length
+
+    def isStandardCase(self,obj):
+
+        # Standard Case has been set manually by the user
+        if obj.IfcType.endswith("Standard Case"):
+            return True
+        # Try to guess
+        import ArchIFC
+        if obj.IfcType + " Standard Case" in ArchIFC.IfcTypes:
+            # this type has a standard case
+            if obj.Additions or obj.Subtractions:
+                return False
+            if obj.Placement.Rotation.Axis.getAngle(FreeCAD.Vector(0,0,1)) > 0.01:
+                # reject rotated objects
+                return False
+            if obj.CloneOf:
+                return obj.CloneOf.Proxy.isStandardCase(obj.CloneOf)
+            if obj.IfcType == "Wall":
+                # rules:
+                # - vertically extruded
+                # - single baseline or no baseline
+                if (not obj.Base) or (len(obj.Base.Shape.Edges) == 1):
+                    if hasattr(obj,"Normal"):
+                        if obj.Normal in [FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1)]:
+                            return True
+            elif obj.IfcType in ["Beam","Column","Slab"]:
+                # rules:
+                # - have a single-wire profile or no profile
+                # - extrusion direction is perpendicular to the profile
+                if obj.Base and (len(obj.Base.Shape.Wires) != 1):
+                    return False
+                if not hasattr(obj,"Normal"):
+                    return False
+                if hasattr(obj,"Tool") and obj.Tool:
+                    return False
+                if obj.Normal == FreeCAD.Vector(0,0,0):
+                    return True
+                elif len(obj.Base.Shape.Wires) == 1:
+                    import DraftGeomUtils
+                    n = DraftGeomUtils.getNormal(obj.Base.Shape)
+                    if n:
+                        if (n.getAngle(obj.Normal) < 0.01) or (abs(n.getAngle(obj.Normal)-3.14159) < 0.01):
+                            return True
+            # TODO: Support windows and doors
+            # rules:
+            # - must have a rectangular shape
+            # - must have a host
+            # - must be parallel to the host plane
+            # - must have an IfcWindowType and IfcRelFillsElement (to be implemented in IFC exporter)
+            return False
 
 
 class ViewProviderComponent:
@@ -1182,7 +1241,7 @@ class ComponentTaskPanel:
         import Arch_rc, csv, os, ArchIFCSchema
 
         # get presets
-        self.ptypes = ArchIFCSchema.IfcTypes.keys()
+        self.ptypes = list(ArchIFCSchema.IfcTypes.keys())
         self.plabels = [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in self.ptypes]
         self.psetdefs = {}
         psetspath = os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","pset_definitions.csv")

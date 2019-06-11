@@ -164,5 +164,9 @@ def setDefaultTaskPanelLayout(style):
     preferences().SetInt(DefaultTaskPanelLayout, style)
 
 def experimentalFeaturesEnabled():
-    return preferences().GetBool(EnableExperimentalFeatures, False)
-
+    try:
+        import ocl
+        return preferences().GetBool(EnableExperimentalFeatures, False)
+    except:
+        FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
+        return False

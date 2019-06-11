@@ -99,7 +99,10 @@
 # include <GeomAPI_ExtremaCurveCurve.hxx>
 # include <ShapeConstruct_Curve.hxx>
 # include <LProp_NotDefined.hxx>
-#endif
+
+# include <ctime>
+# include <cmath>
+#endif //_PreComp_
 
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/LinePy.h>
@@ -134,9 +137,6 @@
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
-
-#include <ctime>
-#include <cmath>
 
 #include "Geometry.h"
 
@@ -3752,7 +3752,13 @@ void GeomLineSegment::Restore    (Base::XMLReader &reader)
         // the points are too close. The best try to restore is incrementing the distance.
         // for other objects, the best effort may be just to leave default values.
         reader.setPartialRestore(true);
-        end = start + Base::Vector3d(start.x*DBL_EPSILON,0,0);
+
+        if(start.x == 0) {
+            end = start + Base::Vector3d(DBL_EPSILON,0,0);
+        }
+        else {
+            end = start + Base::Vector3d(start.x*DBL_EPSILON,0,0);
+        }
 
         setPoints(start, end);
     }

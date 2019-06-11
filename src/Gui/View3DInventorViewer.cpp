@@ -484,7 +484,7 @@ void View3DInventorViewer::init()
     this->getSoRenderManager()->setGLRenderAction(new SoBoxSelectionRenderAction);
     this->getSoRenderManager()->getGLRenderAction()->setCacheContext(id);
 
-    // set the transperency and antialiasing settings
+    // set the transparency and antialiasing settings
 //  getGLRenderAction()->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
     getSoRenderManager()->getGLRenderAction()->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
 //  getGLRenderAction()->setSmoothing(true);
@@ -643,7 +643,8 @@ void View3DInventorViewer::OnChange(Gui::SelectionSingleton::SubjectType& rCalle
         SoFCSelectionAction cAct(Reason);
         cAct.apply(pcViewProviderRoot);
     }
-    else if (Reason.Type == SelectionChanges::RmvPreselect) {
+    else if (Reason.Type == SelectionChanges::RmvPreselect ||
+        Reason.Type == SelectionChanges::SetPreselect) {
         SoFCHighlightAction cAct(Reason);
         cAct.apply(pcViewProviderRoot);
     }

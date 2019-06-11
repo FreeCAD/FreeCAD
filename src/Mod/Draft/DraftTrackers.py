@@ -583,7 +583,23 @@ class ghostTracker(Tracker):
         if not isinstance(sel,list):
             sel = [sel]
         for obj in sel:
-            rootsep.addChild(self.getNode(obj))
+            import Part
+            if not isinstance(obj, Part.Vertex):
+                rootsep.addChild(self.getNode(obj))
+            else:
+                self.coords = coin.SoCoordinate3()
+                self.coords.point.setValue((obj.X,obj.Y,obj.Z))
+                color = coin.SoBaseColor()
+                color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
+                self.marker = coin.SoMarkerSet() # this is the marker symbol
+                self.marker.markerIndex = FreeCADGui.getMarkerIndex("quad", 9)
+                node = coin.SoAnnotation()
+                selnode = coin.SoSeparator()
+                selnode.addChild(self.coords)
+                selnode.addChild(color)
+                selnode.addChild(self.marker)
+                node.addChild(selnode)
+                rootsep.addChild(node)
         self.children.append(rootsep)        
         Tracker.__init__(self,dotted,scolor,swidth,children=self.children,name="ghostTracker")
 
@@ -674,10 +690,9 @@ class ghostTracker(Tracker):
                           matrix.A41,matrix.A42,matrix.A43,matrix.A44)
         self.trans.setMatrix(m)
 
-
 class editTracker(Tracker):
     "A node edit tracker"
-    def __init__(self,pos=Vector(0,0,0),name="None",idx=0,objcol=None,\
+    def __init__(self,pos=Vector(0,0,0),name=None,idx=0,objcol=None,\
             marker=FreeCADGui.getMarkerIndex("quad", 9),inactive=False):
         color = coin.SoBaseColor()
         if objcol:
@@ -692,9 +707,10 @@ class editTracker(Tracker):
             selnode = coin.SoSeparator()
         else:
             selnode = coin.SoType.fromName("SoFCSelection").createInstance()
-            selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
-            selnode.objectName.setValue(name)
-            selnode.subElementName.setValue("EditNode"+str(idx))
+            if name:
+                selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
+                selnode.objectName.setValue(name)
+                selnode.subElementName.setValue("EditNode"+str(idx))
         node = coin.SoAnnotation()
         selnode.addChild(self.coords)
         selnode.addChild(color)
@@ -720,7 +736,7 @@ class PlaneTracker(Tracker):
         # getting screen distance
         p1 = Draft.get3DView().getPoint((100,100))
         p2 = Draft.get3DView().getPoint((110,100))
-        bl = (p2.sub(p1)).Length * (Draft.getParam("snapRange",5)/2)
+        bl = (p2.sub(p1)).Length * (Draft.getParam("snapRange", 8)/2)
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         self.trans = coin.SoTransform()
@@ -792,7 +808,7 @@ class wireTracker(Tracker):
 class gridTracker(Tracker):
     "A grid tracker"
     def __init__(self):
-        col = [0.2,0.2,0.3]
+        col = self.getGridColor()
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         self.trans = coin.SoTransform()
@@ -827,6 +843,13 @@ class gridTracker(Tracker):
         s.addChild(self.lines3)
         Tracker.__init__(self,children=[s],name="gridTracker")
         self.reset()
+
+    def getGridColor(self):
+        color = Draft.getParam("gridColor", 842157055)
+        r = ((color>>24)&0xFF)/255
+        g = ((color>>16)&0xFF)/255
+        b = ((color>>8)&0xFF)/255
+        return [r, g, b]
 
     def update(self):
         "redraws the grid"

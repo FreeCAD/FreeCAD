@@ -66,9 +66,17 @@ def Startup():
         from PathScripts import PathSimpleCopy
         from PathScripts import PathSimulatorGui
         from PathScripts import PathStop
-        from PathScripts import PathSurfaceGui
+        try:
+            import ocl
+            from PathScripts import PathSurfaceGui
+        except:
+            import FreeCAD
+            FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
+            pass
         from PathScripts import PathToolController
+        from PathScripts import PathToolControllerGui
         from PathScripts import PathToolLibraryManager
+        from PathScripts import PathUtilsGui
         Processed = True
     else:
         PathLog.debug('Skipping PathGui initialisation')

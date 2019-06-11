@@ -80,6 +80,9 @@
 # include <Gui/Qt4All.h>
 #endif
 
+// OCCT
+#include <BRepBuilderAPI_MakePolygon.hxx>
+
 #endif //_PreComp_
 
 #endif // __PRECOMPILED_GUI__

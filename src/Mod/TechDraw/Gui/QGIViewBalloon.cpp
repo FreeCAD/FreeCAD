@@ -36,6 +36,7 @@
   # include <QPainter>
   # include <QPaintDevice>
   # include <QSvgGenerator>
+  # include <QApplication>
 
   # include <math.h>
 #endif
@@ -47,10 +48,12 @@
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <string>
 
 #include <Mod/Part/App/PartFeature.h>
 
+#include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -67,6 +70,7 @@
 #include "QGIViewDimension.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
+#include "TaskBalloon.h"
 
 #define PI  3.14159
 
@@ -74,6 +78,12 @@
 
 using namespace TechDraw;
 using namespace TechDrawGui;
+
+void QGIBalloonLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+{
+    Gui::Control().showDialog(new TaskDlgBalloon(parent));
+    QGraphicsItem::mouseDoubleClickEvent(event);
+}
 
 //**************************************************************
 QGIViewBalloon::QGIViewBalloon() :
@@ -84,7 +94,9 @@ QGIViewBalloon::QGIViewBalloon() :
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setCacheMode(QGraphicsItem::NoCache);
 
-    balloonLabel = new QGIDatumLabel();
+    balloonLabel = new QGIBalloonLabel();
+    balloonLabel->parent = this;
+
     addToGroup(balloonLabel);
     balloonLabel->setColor(getNormalColor());
     balloonLabel->setPrettyNormal();
@@ -129,73 +141,55 @@ QGIViewBalloon::QGIViewBalloon() :
         balloonLabel, SIGNAL(hover(bool)),
         this  , SLOT  (hover(bool)));
 
-    toggleBorder(false);
+//    toggleBorder(false);
     setZValue(ZVALUE::DIMENSION);                    //note: this won't paint dimensions over another View if it stacks
                                                      //above this Dimension's parent view.   need Layers?
 
 }
 
-void QGIViewBalloon::disconnect(void)
+void QGIViewBalloon::placeBalloon(QPointF pos)
 {
-    auto bnd = boost::bind(&QGIViewBalloon::parentViewMousePressed, this, _1, _2);
-    if (m_parent) {
-        m_parent->signalSelectPoint.disconnect(bnd);
-    }
-}
 
-void QGIViewBalloon::connect(QGIView *parent)
-{
-    auto bnd = boost::bind(&QGIViewBalloon::parentViewMousePressed, this, _1, _2);
-    parent->signalSelectPoint.connect(bnd);
-    m_parent = parent;
-}
-
-void QGIViewBalloon::parentViewMousePressed(QGIView *view, QPointF pos)
-{
-    //Base::Console().Message("%s::parentViewMousePressed from %s\n", this->getViewName(), view->getViewName());
-    onAttachPointPicked(view, pos);
-}
-
-void QGIViewBalloon::onAttachPointPicked(QGIView *view, QPointF pos)
-{
-    Q_UNUSED(view);
     auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
-    if( balloon == nullptr )
+    if( balloon == nullptr ) {
         return;
+    }
 
+    DrawView* balloonParent = nullptr;
+    App::DocumentObject* docObj = balloon->sourceView.getValue();
+    if (docObj == nullptr) {
+        return;
+    } else {
+        balloonParent = dynamic_cast<DrawView*>(docObj);
+    }
+    
+    auto featPage = balloonParent->findParentPage();
+    if (featPage == nullptr) {
+        return;
+    }
+    
     auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
     if ( vp == nullptr ) {
         return;
     }
 
-    auto bnd = boost::bind(&QGIViewBalloon::parentViewMousePressed, this, _1, _2);
+        balloon->OriginX.setValue(mapFromScene(pos).x());
+        balloon->OriginY.setValue(mapFromScene(pos).y());
 
-    if (balloon->OriginIsSet.getValue() == false) {
-        balloon->OriginX.setValue(pos.x());
-        balloon->OriginY.setValue(pos.y());
-        balloon->OriginIsSet.setValue(true);
+        int idx = featPage->getNextBalloonIndex();
+        QString labelText = QString::number(idx);
+        balloon->Text.setValue(std::to_string(idx).c_str());
+     
+        QFont font = balloonLabel->getFont();
+        font.setPointSizeF(calculateFontPointSizeF(vp->Fontsize.getValue()));
+        font.setFamily(QString::fromUtf8(vp->Font.getValue()));
+        balloonLabel->setFont(font);
+        prepareGeometryChange();
 
-        m_parent->signalSelectPoint.disconnect(bnd);
-
-        MDIViewPage* mdi = getMDIViewPage();
-        QGVPage* page;
-        if (mdi != nullptr) {
-            page = mdi->getQGVPage();
-
-            QString labelText = QString::fromUtf8(std::to_string(page->balloonIndex).c_str());
-            balloon->Text.setValue(std::to_string(page->balloonIndex++).c_str());
-
-            QFont font = balloonLabel->getFont();
-            font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
-            font.setFamily(QString::fromUtf8(vp->Font.getValue()));
-            balloonLabel->setFont(font);
-            prepareGeometryChange();
-
-            // Default label position
-            balloonLabel->setPosFromCenter(pos.x() + 200, pos.y() -200);
-            balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
-        }
-    }
+        // Default label position
+        balloonLabel->setPosFromCenter(mapFromScene(pos).x() + 200, mapFromScene(pos).y() -200);
+        balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
+//    }
 
     draw();
 }
@@ -268,13 +262,25 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
         return;
     }
 
-    if (balloon->OriginIsSet.getValue() == false)
-        return;
-
     QFont font = balloonLabel->getFont();
-    font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
+    font.setPointSizeF(calculateFontPointSizeF(vp->Fontsize.getValue()));
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
     balloonLabel->setFont(font);
+
+    QString labelText = QString::fromUtf8(balloon->Text.getStrValue().data());
+    balloonLabel->verticalSep = false;
+
+    if (strcmp(balloon->Symbol.getValueAsString(), "Rectangle") == 0) {
+        while (labelText.contains(QString::fromUtf8("|"))) {
+            int pos = labelText.indexOf(QString::fromUtf8("|"));
+            labelText.replace(pos, 1, QString::fromUtf8("   "));
+            QFontMetrics fm(balloonLabel->getFont());
+            balloonLabel->seps.push_back(fm.width((labelText.left(pos + 2))));
+            balloonLabel->verticalSep = true;
+        }
+    }
+
+    balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
 }
 
 void QGIViewBalloon::balloonLabelDragged(bool ctrl)
@@ -314,10 +320,6 @@ void QGIViewBalloon::draw_modifier(bool modifier)
        (!balloon->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()))) {
         balloonLabel->hide();
         hide();
-        return;
-    }
-
-    if (balloon->OriginIsSet.getValue() == false) {
         return;
     }
 
@@ -377,8 +379,14 @@ void QGIViewBalloon::draw_modifier(bool modifier)
         offset = (textWidth / 2.0) + Rez::guiX(2.0);
     } else if (strcmp(balloonType, "Rectangle") == 0) {
         //Add some room
-        textWidth = (textWidth * scale) + Rez::guiX(2.0);
         textHeight = (textHeight * scale) + Rez::guiX(1.0);
+        if (balloonLabel->verticalSep) {
+            for (std::vector<int>::iterator it = balloonLabel->seps.begin() ; it != balloonLabel->seps.end(); ++it) {
+                balloonPath.moveTo(lblCenter.x - (textWidth / 2.0) + *it, lblCenter.y - (textHeight / 2.0));
+                balloonPath.lineTo(lblCenter.x - (textWidth / 2.0) + *it, lblCenter.y + (textHeight / 2.0));
+            }
+        }
+        textWidth = (textWidth * scale) + Rez::guiX(2.0);
         balloonPath.addRect(lblCenter.x -(textWidth / 2.0), lblCenter.y - (textHeight / 2.0), textWidth, textHeight);
         offset = (textWidth / 2.0);
     } else if (strcmp(balloonType, "Triangle") == 0) {

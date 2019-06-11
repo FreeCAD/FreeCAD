@@ -59,6 +59,7 @@ DrawViewArch::DrawViewArch(void)
     ADD_PROPERTY_TYPE(AllOn ,(false),group,App::Prop_None,"If hidden objects must be shown or not");
     RenderMode.setEnums(RenderModeEnums);
     ADD_PROPERTY_TYPE(RenderMode, ((long)0),group,App::Prop_None,"The render mode to use");
+    ADD_PROPERTY_TYPE(FillSpaces ,(false),group,App::Prop_None,"If True, Arch Spaces are shown as a colored area");
     ADD_PROPERTY_TYPE(ShowHidden ,(false),group,App::Prop_None,"If the hidden geometry behind the section plane is shown or not");
     ADD_PROPERTY_TYPE(ShowFill ,(false),group,App::Prop_None,"If cut areas must be filled with a hatch pattern or not");
     ADD_PROPERTY_TYPE(LineWidth,(0.35),group,App::Prop_None,"Line width of this view");
@@ -70,26 +71,24 @@ DrawViewArch::~DrawViewArch()
 {
 }
 
-void DrawViewArch::onChanged(const App::Property* prop)
+short DrawViewArch::mustExecute() const
 {
+    short result = 0;
     if (!isRestoring()) {
-        if (prop == &Source ||
-            prop == &AllOn ||
-            prop == &RenderMode ||
-            prop == &ShowHidden ||
-            prop == &ShowFill ||
-            prop == &LineWidth ||
-            prop == &FontSize) {
-            try {
-                App::DocumentObjectExecReturn *ret = recompute();
-                delete ret;
-            }
-            catch (...) {
-            }
-        }
+        result = (Source.isTouched() ||
+                AllOn.isTouched() ||
+                RenderMode.isTouched() ||
+                ShowHidden.isTouched() ||
+                ShowFill.isTouched() ||
+                LineWidth.isTouched() ||
+                FontSize.isTouched());
     }
-    TechDraw::DrawViewSymbol::onChanged(prop);
+    if ((bool) result) {
+        return result;
+    }
+    return DrawViewSymbol::mustExecute();
 }
+
 
 App::DocumentObjectExecReturn *DrawViewArch::execute(void)
 {
@@ -115,7 +114,8 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
                  << ",linewidth=" << LineWidth.getValue()
                  << ",fontsize=" << FontSize.getValue()
                  << ",techdraw=True"
-                 << ",rotation=" << Rotation.getValue();
+                 << ",rotation=" << Rotation.getValue()
+                 << ",fillSpaces=" << (FillSpaces.getValue() ? "True" : "False");
 
         Base::Interpreter().runString("import ArchSectionPlane");
         Base::Interpreter().runStringArg("svgBody = ArchSectionPlane.getSVG(App.activeDocument().%s %s)",
@@ -123,7 +123,7 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
         Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
                                           FeatName.c_str(),svgHead.c_str(),svgTail.c_str());
     }
-    requestPaint();
+//    requestPaint();
     return DrawView::execute();
 }
 

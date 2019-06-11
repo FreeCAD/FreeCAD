@@ -24,7 +24,6 @@
 from __future__ import print_function
 import DraftGeomUtils
 import FreeCAD
-import FreeCADGui
 import math
 import Part
 import Path
@@ -34,7 +33,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
 """Dogbone Dressup object and FreeCAD command"""
 
@@ -47,7 +46,7 @@ else:
     PathLog.setLevel(PathLog.Level.NOTICE, LOG_MODULE)
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -1076,7 +1075,8 @@ class CommandDressupDogbone:
         FreeCAD.ActiveDocument.recompute()
 
 if FreeCAD.GuiUp:
-    # register the FreeCAD command
+    import FreeCADGui
+    from PySide import QtGui
     FreeCADGui.addCommand('Path_DressupDogbone', CommandDressupDogbone())
 
 FreeCAD.Console.PrintLog("Loading DressupDogbone... done\n")

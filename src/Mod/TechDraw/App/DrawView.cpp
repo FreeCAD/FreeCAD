@@ -39,18 +39,22 @@
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
 
-#include "DrawView.h"
 #include "DrawPage.h"
 #include "DrawViewCollection.h"
 #include "DrawViewClip.h"
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
+#include "DrawLeaderLine.h"
 #include "DrawUtil.h"
+#include "Geometry.h"
+#include "Cosmetic.h"
 
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
-using namespace TechDraw;
+#include "DrawView.h"
 
+using namespace TechDraw;
+using namespace TechDrawGeometry;
 
 //===========================================================================
 // DrawView
@@ -91,6 +95,7 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
+//    Base::Console().Message("DV::execute() - %s\n", getNameInDocument());
     handleXYLock();
     requestPaint();
     return App::DocumentObject::execute();
@@ -186,6 +191,7 @@ short DrawView::mustExecute() const
     if (!isRestoring()) {
         result  =  (Scale.isTouched()  ||
                     ScaleType.isTouched() ||
+                    Caption.isTouched() ||
                     X.isTouched() ||
                     Y.isTouched() );
     }
@@ -286,10 +292,11 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
     return result;
 }
 
-void DrawView::setPosition(double x, double y)
+void DrawView::setPosition(double x, double y, bool force)
 {
 //    Base::Console().Message("DV::setPosition(%.3f,%.3f) - \n",x,y,getNameInDocument());
-    if (!isLocked()) {
+    if ( (!isLocked()) ||
+         (force) ) {
         X.setValue(x);
         Y.setValue(y);
     }
@@ -302,6 +309,20 @@ double DrawView::getScale(void) const
     if (!(result > 0.0)) {
         result = 1.0;
         Base::Console().Log("DrawView - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),Scale.getValue());
+    }
+    return result;
+}
+
+//return list of Leaders which reference this DV
+std::vector<TechDraw::DrawLeaderLine*> DrawView::getLeaders() const
+{
+    std::vector<TechDraw::DrawLeaderLine*> result;
+    std::vector<App::DocumentObject*> children = getInList();
+    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawLeaderLine::getClassTypeId())) {
+            TechDraw::DrawLeaderLine* lead = dynamic_cast<TechDraw::DrawLeaderLine*>(*it);
+            result.push_back(lead);
+        }
     }
     return result;
 }
@@ -407,6 +428,7 @@ bool DrawView::keepUpdated(void)
 
 void DrawView::requestPaint(void)
 {
+//    Base::Console().Message("DV::requestPaint() - %s\n", getNameInDocument());
     signalGuiPaint(this);
 }
 

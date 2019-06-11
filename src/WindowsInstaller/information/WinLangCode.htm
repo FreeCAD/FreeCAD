@@ -1,0 +1,580 @@
+<html dir="ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="assetid" content="SP01019690"><title>Regional and Language Settings</title><link rel="stylesheet" type="text/css" href="stsk09-Dateien/ont.css"><script type="text/javascript" language="Javascript" src="stsk09-Dateien/sExpCollapse.js"></script><script type="text/javascript" language="JavaScript" src="stsk09-Dateien/backgo.js"></script><script>
+	var strShow = 'Show';
+	var strHide = 'Hide';
+
+	function go(url)
+	{
+		navigate(url);		
+	}
+</script><style type="text/CSS">
+	.ACICollapsed
+	{
+		display: none;
+	}
+
+	.ACECollapsed
+	{
+		display: none;
+	}
+</style><style type="text/CSS">
+		.ACICollapsed
+		{
+			display: inline;
+		}
+
+		.ACECollapsed
+		{
+			display: block;
+		}
+	</style><meta http-equiv="assetid" content="SP01019690"></head><noscript></noscript><body><table border="0" cellpadding="0" cellspacing="0" width="200"><tbody><tr><td colspan="6"><img src="stsk09-Dateien/psLogo.gif" alt="Microsoft Office SharePoint Portal Server 2003" border="0" height="31" width="202"></td></tr><tr><td><a href="http://www.greatwesthealthcare.com/_vti_bin/help/1033/sps/html/sharepointhelp.htm" title="Home button"><img src="stsk09-Dateien/home.gif" alt="Home" border="0" height="32" width="69"></a><a href="javascript:myBack()" title="Back button"><img src="stsk09-Dateien/back.gif" alt="Back" border="0" height="32" width="24"></a><a href="javascript:myForward()" title="Forward button"><img src="stsk09-Dateien/forward.gif" alt="Forward" border="0" height="32" width="23"></a><a href="javascript:self.print();" title="Print button"><img src="stsk09-Dateien/print.gif" alt="Print" border="0" height="32" width="59"></a><img src="stsk09-Dateien/bar.gif" border="0" height="32" width="1200"></td></tr></tbody></table><br><h1>Regional and Language Settings</h1>
+
+
+ 
+
+
+
+<p>This topic lists the regional and language settings you can specify
+from the command line by using operations in Stsadm.exe and by using
+HTML Administration pages. For more information about specifying
+regional and language settings, see <a href="http://www.greatwesthealthcare.com/_vti_bin/help/1033/sps/html/stsb05.htm" id="SP01019676" lcid=" ">Language Considerations</a>. For more information about the syntax for command-line operations, see <a href="http://www.greatwesthealthcare.com/_vti_bin/help/1033/sps/html/stsk01.htm" id="SP01019625" lcid=" ">Command-Line Operations</a>.
+</p><p>The following types of regional and language settings are used in Microsoft Windows SharePoint Services:</p>
+
+
+<ul><li><a href="#language">Language IDs</a></li><li><a href="#locale">Locale IDs</a></li><li><a href="#Time">Time zones</a></li><li><a href="#currency">Currency IDs</a></li></ul><h2><a id="Language" name="Language">Language IDs</a></h2><p>The
+Language ID determines the language used for text on pages in the Web
+site (such as the text on the Site Settings page). The languages
+available for site creation depend on the language template packs you
+have installed to your server or server farm. Web sites based on
+Windows SharePoint Services can be created in the following languages. </p><table><tbody><tr><td><b class="bterm">ID</b></td><td><b class="bterm">Language</b>
+</td><td><b class="bterm">ID</b></td><td><b class="bterm">Language</b>
+</td></tr><tr><td>1025</td><td>Arabic
+</td><td>1041
+</td><td>Japanese
+</td></tr><tr><td>1028
+</td><td>Chinese - Traditional
+</td><td>1042
+</td><td>Korean</td></tr><tr><td>1029
+</td><td>Czech</td><td>1043</td><td>Dutch
+</td></tr><tr><td>1030
+</td><td>Danish
+</td><td>1044
+</td><td>Norwegian
+</td></tr><tr><td>1031
+</td><td>German
+</td><td>1045
+</td><td>Polish
+</td></tr><tr><td>1032
+</td><td>Greek
+</td><td>1046
+</td><td>Portuguese - Brazilian
+</td></tr><tr><td>1033
+</td><td>English
+</td><td>1049
+</td><td>Russian
+</td></tr><tr><td>1034
+</td><td>Spanish
+</td><td>1053
+</td><td>Swedish
+</td></tr><tr><td>1035
+</td><td>Finnish
+</td><td>1054
+</td><td>Thai
+</td></tr><tr><td>1036
+</td><td>French
+</td><td>1055
+</td><td>Turkish
+</td></tr><tr><td>1037
+</td><td>Hebrew
+</td><td>2052
+</td><td>Chinese - Simplified
+</td></tr><tr><td>1038
+</td><td>Hungarian
+</td><td>2070
+</td><td>Portuguese
+</td></tr><tr><td>1040
+</td><td>Italian
+</td><td>3076</td><td>Chinese - Hong Kong</td></tr></tbody></table><p>Windows SharePoint Services also supports  input and display of text in the following languages, but not site creation.</p><table><tbody><tr><td><b class="bterm">ID</b></td><td><b class="bterm">Language</b>
+</td><td><b class="bterm">ID</b></td><td><b class="bterm">Language</b>
+</td></tr><tr><td>1026</td><td>Bulgarian</td><td>1048</td><td>Romanian</td></tr><tr><td>1050</td><td>Croatian
+</td><td>2074</td><td>Serbian</td></tr><tr><td>1061</td><td>Estonian
+</td><td>1051</td><td>Slovak</td></tr><tr><td>1081</td><td>Hindi with Indic PT</td><td>1060</td><td>Slovenian</td></tr><tr><td>1062</td><td>Latvian</td><td>1058</td><td>Ukrainian</td></tr><tr><td>1063</td><td>Lithuanian</td><td></td><td></td></tr></tbody></table><h2><a id="Locale" name="Locale">Locale IDs</a></h2><p>The
+Locale ID controls the numbering, sorting, calendar, and time
+formatting for the Web site. You can change the locale for a Web site
+by using the Regional Settings page. Web sites based on Windows
+SharePoint Services can be set to the following Locale IDs. </p><table><tbody><tr><td><b class="bterm">ID</b></td><td><b class="bterm">Locale</b></td><td><b class="bterm">ID</b></td><td><b class="bterm">Locale</b></td></tr><tr><td>1078</td><td>Afrikaans
+</td><td>1037
+</td><td>Hebrew 
+</td></tr><tr><td>1052
+</td><td>Albanian
+</td><td>1081
+</td><td>Hindi
+</td></tr><tr><td>5121
+</td><td>Arabic (Algeria) 
+</td><td>1038
+</td><td>Hungarian
+</td></tr><tr><td>15361
+</td><td>Arabic (Bahrain) 
+</td><td>1039
+</td><td>Icelandic
+</td></tr><tr><td>3073
+</td><td>Arabic (Egypt) 
+</td><td>1057
+</td><td>Indonesian
+</td></tr><tr><td>2049
+</td><td>Arabic (Iraq) 
+</td><td>1040
+</td><td>Italian (Italy)
+</td></tr><tr><td>11265
+</td><td>Arabic (Jordan) 
+</td><td>2064
+</td><td>Italian (Switzerland)
+</td></tr><tr><td>13313
+</td><td>Arabic (Kuwait) 
+</td><td>1041
+</td><td>Japanese
+</td></tr><tr><td>12289
+</td><td>Arabic (Lebanon) 
+</td><td>1099
+</td><td>Kannada
+</td></tr><tr><td>4097
+</td><td>Arabic (Libya) 
+</td><td>1087
+</td><td>Kazakh
+</td></tr><tr><td>6145
+</td><td>Arabic (Morocco) 
+</td><td>1111
+</td><td>Konkani
+</td></tr><tr><td>8193
+</td><td>Arabic (Oman) 
+</td><td>1042
+</td><td>Korean
+</td></tr><tr><td>16385
+</td><td>Arabic (Qatar) 
+</td><td>1088
+</td><td>Kyrgyz (Cyrillic)
+</td></tr><tr><td>1025
+</td><td>Arabic (Saudi Arabia) 
+</td><td>1062</td><td>Latvian
+</td></tr><tr><td>10241
+</td><td>Arabic (Syria) 
+</td><td>1063
+</td><td>Lithuanian
+</td></tr><tr><td>7169
+</td><td>Arabic (Tunisia) 
+</td><td>1071
+</td><td>Macedonian (FYROM)
+</td></tr><tr><td>14337
+</td><td>Arabic (U.A.E.) 
+</td><td>2110
+</td><td>Malay (Brunei Darussalam)
+</td></tr><tr><td>9217
+</td><td>Arabic (Yemen) 
+</td><td>1086
+</td><td>Malay (Malaysia)
+</td></tr><tr><td>1067
+</td><td>Armenian
+</td><td>1102
+</td><td>Marathi
+</td></tr><tr><td>2092
+</td><td>Azeri (Cyrillic)
+</td><td>1104
+</td><td>Mongolian (Cyrillic)
+</td></tr><tr><td>1068
+</td><td>Azeri (Latin)
+</td><td>1044
+</td><td>Norwegian (Bokmal)
+</td></tr><tr><td>1069
+</td><td>Basque
+</td><td>2068
+</td><td>Norwegian (Nynorsk)
+</td></tr><tr><td>1059
+</td><td>Belarusian
+</td><td>1045
+</td><td>Polish
+</td></tr><tr><td>1026
+</td><td>Bulgarian
+</td><td>1046
+</td><td>Portuguese (Brazil)
+</td></tr><tr><td>1027
+</td><td>Catalan
+</td><td>2070
+</td><td>Portuguese (Portugal)
+</td></tr><tr><td>3076
+</td><td>Chinese (Hong Kong)
+</td><td>1094
+</td><td>Punjabi
+</td></tr><tr><td>5124
+</td><td>Chinese (Macau)
+</td><td>1048
+</td><td>Romanian
+</td></tr><tr><td>2052
+</td><td>Chinese (PRC)
+</td><td>1049
+</td><td>Russian
+</td></tr><tr><td>4100
+</td><td>Chinese (Singapore)
+</td><td>1103
+</td><td>Sanskrit
+</td></tr><tr><td>1028
+</td><td>Chinese (Taiwan)
+</td><td>3098
+</td><td>Serbian (Cyrillic)
+</td></tr><tr><td>1050
+</td><td>Croatian
+</td><td>2074
+</td><td>Serbian (Latin)
+</td></tr><tr><td>1029
+</td><td>Czech
+</td><td>1051
+</td><td>Slovak
+</td></tr><tr><td>1030
+</td><td>Danish
+</td><td>1060
+</td><td>Slovenian
+</td></tr><tr><td>1125
+</td><td>Divehi
+</td><td>11274
+</td><td>Spanish (Argentina)
+</td></tr><tr><td>2067
+</td><td>Dutch (Belgium)
+</td><td>16394
+</td><td>Spanish (Bolivia)
+</td></tr><tr><td>1043
+</td><td>Dutch (Netherlands)
+</td><td>13322
+</td><td>Spanish (Chile)
+</td></tr><tr><td>3081
+</td><td>English (Australia)
+</td><td>9226
+</td><td>Spanish (Colombia)
+</td></tr><tr><td>10249
+</td><td>English (Belize)
+</td><td>5130
+</td><td>Spanish (Costa Rica)
+</td></tr><tr><td>4105
+</td><td>English (Canada)
+</td><td>7178
+</td><td>Spanish (Dominican Republic)
+</td></tr><tr><td>9225
+</td><td>English (Caribbean)
+</td><td>12298
+</td><td>Spanish (Ecuador)
+</td></tr><tr><td>6153
+</td><td>English (Ireland)
+</td><td>17418
+</td><td>Spanish (El Salvador)
+</td></tr><tr><td>8201
+</td><td>English (Jamaica)
+</td><td>4106</td><td>Spanish (Guatemala)
+</td></tr><tr><td>5129
+</td><td>English (New Zealand)
+</td><td>18442
+</td><td>Spanish (Honduras)
+</td></tr><tr><td>13321
+</td><td>English (Philippines)
+</td><td>2058
+</td><td>Spanish (Mexico)
+</td></tr><tr><td>7177
+</td><td>English (South Africa)
+</td><td>19466
+</td><td>Spanish (Nicaragua)
+</td></tr><tr><td>11273
+</td><td>English (Trinidad)
+</td><td>6154
+</td><td>Spanish (Panama)
+</td></tr><tr><td>2057
+</td><td>English (United Kingdom)
+</td><td>15370
+</td><td>Spanish (Paraguay)
+</td></tr><tr><td>1033
+</td><td>English (United States) &nbsp;
+</td><td>10250
+</td><td>Spanish (Peru)
+</td></tr><tr><td>12297
+</td><td>English (Zimbabwe)
+</td><td>20490
+</td><td>Spanish (Puerto Rico)
+</td></tr><tr><td>1061
+</td><td>Estonian
+</td><td>3082
+</td><td>Spanish (Spain)
+</td></tr><tr><td>1080
+</td><td>Faeroese
+</td><td>1034
+</td><td>Spanish (Traditional)
+</td></tr><tr><td>1065
+</td><td>Farsi 
+</td><td>14346
+</td><td>Spanish (Uruguay)
+</td></tr><tr><td>1035
+</td><td>Finnish
+</td><td>8202
+</td><td>Spanish (Venezuela)
+</td></tr><tr><td>2060
+</td><td>French (Belgium)
+</td><td>1089
+</td><td>Swahili
+</td></tr><tr><td>3084
+</td><td>French (Canada)
+</td><td>1053
+</td><td>Swedish
+</td></tr><tr><td>1036
+</td><td>French (France)
+</td><td>2077
+</td><td>Swedish (Finland)
+</td></tr><tr><td>5132
+</td><td>French (Luxembourg)
+</td><td>1114
+</td><td>Syriac
+</td></tr><tr><td>6156
+</td><td>French (Monaco)
+</td><td>1097
+</td><td>Tamil
+</td></tr><tr><td>4108
+</td><td>French (Switzerland)
+</td><td>1092
+</td><td>Tatar
+</td></tr><tr><td>1110
+</td><td>Galician
+</td><td>1098
+</td><td>Telugu
+</td></tr><tr><td>1079
+</td><td>Georgian
+</td><td>1054
+</td><td>Thai 
+</td></tr><tr><td>3079
+</td><td>German (Austria) 
+</td><td>1055
+</td><td>Turkish
+</td></tr><tr><td>1031
+</td><td>German (Germany) 
+</td><td>1058
+</td><td>Ukrainian
+</td></tr><tr><td>5127
+</td><td>German (Liechtenstein) 
+</td><td>1056
+</td><td>Urdu
+</td></tr><tr><td>4103
+</td><td>German (Luxembourg) 
+</td><td>2115
+</td><td>Uzbek (Cyrillic)
+</td></tr><tr><td>2055
+</td><td>German (Switzerland) 
+</td><td>1091
+</td><td>Uzbek (Latin)
+</td></tr><tr><td>1032
+</td><td>Greek
+</td><td>1066
+</td><td>Vietnamese
+</td></tr><tr><td>1095
+</td><td>Gujarati
+</td><td></td><td></td></tr></tbody></table><h2><a id="Time" name="Time">Time Zones</a></h2><p>Web
+sites based on Windows SharePoint Services can be set to any of the
+time zones recognized by Microsoft Windows Server&nbsp;2003.</p><table><tbody><tr><td><b class="bterm">Code</b>
+</td><td><b class="bterm">Time zone</b></td><td><b class="bterm">Code</b></td><td><b class="bterm">Time zone</b></td></tr><tr><td>39</td><td>(GMT-12:00) Eniwetok, Kwajalein</td><td>59</td><td>(GMT+02:00) Helsinki, Riga, Tallinn
+</td></tr><tr><td>16</td><td>(GMT-11:00) Midway Island, Samoa
+</td><td>27</td><td>(GMT+02:00) Jerusalem 26 (GMT+03:00) Baghdad
+</td></tr><tr><td>15</td><td>(GMT-10:00) Hawaii
+</td><td>74</td><td>(GMT+03:00) Kuwait, Riyadh
+</td></tr><tr><td>14</td><td>(GMT-09:00) Alaska
+</td><td>51</td><td>(GMT+03:00) Moscow, St. Petersburg, Volgograd
+</td></tr><tr><td>13</td><td>(GMT-08:00) Pacific Time (US and Canada); Tijuana
+</td><td>56</td><td>(GMT+03:00) Nairobi
+</td></tr><tr><td>38</td><td>(GMT-07:00) Arizona
+</td><td>25</td><td>(GMT+03:30) Tehran</td></tr><tr><td>12</td><td>(GMT-07:00) Mountain Time (US and Canada)
+</td><td>24</td><td>(GMT+04:00) Abu Dhabi, Muscat
+</td></tr><tr><td>55</td><td>(GMT-06:00) Central America
+</td><td>54</td><td>(GMT+04:00) Baku, Tbilisi, Yerevan 48 (GMT+04:30) Kabul
+</td></tr><tr><td>11</td><td>(GMT-06:00) Central Time (US and Canada)
+</td><td>58</td><td>(GMT+05:00) Ekaterinburg
+</td></tr><tr><td>37</td><td>(GMT-06:00) Mexico City
+</td><td>47
+</td><td>(GMT+05:00) Islamabad, Karachi, Tashkent
+</td></tr><tr><td>36</td><td>(GMT-06:00) Saskatchewan
+</td><td>23</td><td>(GMT+05:30) Calcutta, Chennai, Mumbai, New Delhi
+</td></tr><tr><td>35</td><td>(GMT-05:00) Bogota, Lima, Quito
+</td><td>62</td><td>(GMT+05:45) Kathmandu 46 (GMT+06:00) Almaty, Novosibirsk
+</td></tr><tr><td>10</td><td>(GMT-05:00) Eastern Time (US and Canada)
+</td><td>71</td><td>(GMT+06:00) Astana, Dhaka
+</td></tr><tr><td>34
+</td><td>(GMT-05:00) Indiana (East)
+</td><td>66</td><td>(GMT+06:00) Sri Jayawardenepura
+</td></tr><tr><td>9
+</td><td>(GMT-04:00) Atlantic Time (Canada)
+</td><td>61</td><td>(GMT+06:30) Rangoon
+</td></tr><tr><td>33</td><td>(GMT-04:00) Caracas, La Paz
+</td><td>22</td><td>(GMT+07:00) Bangkok, Hanoi, Jakarta
+</td></tr><tr><td>65</td><td>(GMT-04:00) Santiago
+</td><td>64</td><td>(GMT+07:00) Krasnoyarsk
+</td></tr><tr><td>28</td><td>(GMT-03:30) Newfoundland 8 (GMT-03:00) Brasilia
+</td><td>45</td><td>(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi
+</td></tr><tr><td>32</td><td>(GMT-03:00) Buenos Aires, Georgetown
+</td><td>63</td><td>(GMT+08:00) Irkutsk, Ulaan Bataar
+</td></tr><tr><td>60</td><td>(GMT-03:00) Greenland
+</td><td>21</td><td>(GMT+08:00) Kuala Lumpur, Singapore
+</td></tr><tr><td>30</td><td>(GMT-02:00) Mid-Atlantic
+</td><td>73</td><td>(GMT+08:00) Perth 75 (GMT+08:00) Taipei
+</td></tr><tr><td>29</td><td>(GMT-01:00) Azores
+</td><td>20</td><td>(GMT+09:00) Osaka, Sapporo, Tokyo 72 (GMT+09:00) Seoul
+</td></tr><tr><td>53</td><td>(GMT-01:00) Cape Verde Is.</td><td>70</td><td>(GMT+09:00) Yakutsk 19 (GMT+09:30) Adelaide
+</td></tr><tr><td>31</td><td>(GMT) Casablanca, Monrovia
+</td><td>44</td><td>(GMT+09:30) Darwin
+</td></tr><tr><td>2</td><td>(GMT) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London
+</td><td>18</td><td>(GMT+10:00) Brisbane
+</td></tr><tr><td>4</td><td>(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna
+</td><td>76</td><td>(GMT+10:00) Canberra, Melbourne, Sydney
+</td></tr><tr><td>6</td><td>(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague
+</td><td>43</td><td>(GMT+10:00) Guam, Port Moresby
+</td></tr><tr><td>3</td><td>(GMT+01:00) Brussels, Copenhagen, Madrid, Paris
+</td><td>42</td><td>(GMT+10:00) Hobart</td></tr><tr><td>57</td><td>(GMT+01:00) Sarajevo, Skopje, Sofija, Vilnius, Warsaw, Zagreb
+</td><td>68</td><td>(GMT+10:00) Vladivostok
+</td></tr><tr><td>69</td><td>(GMT+01:00) West Central Africa
+</td><td>41</td><td>(GMT+11:00) Magadan, Solomon Is., New Caledonia
+</td></tr><tr><td>7</td><td>(GMT+02:00) Athens, Istanbul, Minsk
+</td><td>17</td><td>(GMT+12:00) Auckland, Wellington
+</td></tr><tr><td>5</td><td>(GMT+02:00) Bucharest</td><td>40
+</td><td>(GMT+12:00) Fiji, Kamchatka, Marshall Is.
+</td></tr><tr><td>49
+</td><td>(GMT+02:00) Cairo
+</td><td>67
+</td><td>(GMT+13:00) Nuku'alofa
+</td></tr><tr><td>50
+</td><td>(GMT+02:00) Harare, Pretoria
+</td><td></td><td></td></tr></tbody></table><h2><a id="Currency" name="Currency">Currency IDs</a></h2><p>Web sites based on Windows SharePoint Services can be set to use the following currencies.
+</p><table><tbody><tr><td><b class="bterm">ID</b></td><td><b class="bterm">Currency</b>
+</td><td><b class="bterm">ID</b></td><td><b class="bterm">Currency</b>
+</td></tr><tr><td>5121</td><td>1,254 .ج.د (Arabic-Algeria)
+</td><td>4106
+</td><td>Q1,254 (Guatemala)
+</td></tr><tr><td>15361
+</td><td>1,254 .ب.د (Arabic-Bahrain)
+</td><td>18442
+</td><td>L. 1254 (Honduras)
+</td></tr><tr><td>3073
+</td><td>1,254 .م.ج (Arabic-Egypt)</td><td>3076
+</td><td>HK$1,254 (Hong Kong)
+</td></tr><tr><td>2049
+</td><td>1,254 .ع.د (Arabic-Iraq)
+</td><td>1038
+</td><td>1 254 Ft (Hungary)
+</td></tr><tr><td>11265
+</td><td>1,254 .ا.د (Arabic-Jordan)
+</td><td>1081
+</td><td>रु 1,254 (India)
+</td></tr><tr><td>13313
+</td><td>1,254 .ك.د (Arabic-Kuwait)
+</td><td>6153
+</td><td>IR£1,254 (Ireland)
+</td></tr><tr><td>12289
+</td><td>1,254 .ل.ل (Arabic-Lebanon)
+</td><td>1037
+</td><td>₪1,254 (Israel)
+</td></tr><tr><td>4097
+</td><td>1,254 .ل.د (Arabic-Libya)
+</td><td>1041
+</td><td>¥1,254 (Japan)
+</td></tr><tr><td>6145
+</td><td>1,254 .م.د (Arabic-Morocco)
+</td><td>1042
+</td><td>₩1,254 (Korea)
+</td></tr><tr><td>8193
+</td><td>1,254 .ع.ر (Arabic-Oman)
+</td><td>2058
+</td><td>$1,254 (Mexico)
+</td></tr><tr><td>16385
+</td><td>1,254 .ق.ر (Arabic-Qatar)
+</td><td>5129
+</td><td>$1,254 (New Zealand)
+</td></tr><tr><td>1025
+</td><td>1,254 .س.ر (Arabic-Saudi Arabia)
+</td><td>19466
+</td><td>C$ 1254 (Nicaragua)
+</td></tr><tr><td>10241
+</td><td>1,254 .س.ل (Arabic-Syria)
+</td><td>1044
+</td><td>kr 1 254 (Norway)
+</td></tr><tr><td>7169
+</td><td>1,254 .ت.د (Arabic-Tunisia)
+</td><td>1056
+</td><td>Rs 1,254 (Pakistan)
+</td></tr><tr><td>14337
+</td><td>1,254 .إ.د (Arabic-U.A.E)
+</td><td>6154
+</td><td>B/. 1,254 (Panama)
+</td></tr><tr><td>9217
+</td><td>1,254 .ي.ر (Arabic-Yemen)
+</td><td>15370
+</td><td>Gs 1.254 (Paraguay)
+</td></tr><tr><td>11274
+</td><td>$ 1.254 (Argentina)
+</td><td>2052
+</td><td>￥1,254 (People's Republic of China)
+</td></tr><tr><td>3081
+</td><td>$1,254 (Australia)
+</td><td>10250
+</td><td>S/. 1,254 (Peru)
+</td></tr><tr><td>3079
+</td><td>öS 1.254 (Austria)
+</td><td>1045
+</td><td>1 254 zł (Poland)
+</td></tr><tr><td>16394
+</td><td>$b 1.254 (Bolivia)
+</td><td>1049
+</td><td>1 254р. (Russia)
+</td></tr><tr><td>1046
+</td><td>R$ 1.254 (Brazil)
+</td><td>4100
+</td><td>$1,254 (Singapore)
+</td></tr><tr><td>3084
+</td><td>1 254 $ (Canada)
+</td><td>1051
+</td><td>1 254 Sk (Slovakia)
+</td></tr><tr><td>4105
+</td><td>$1,254 (Canada)
+</td><td>1060
+</td><td>1.254 SIT (Slovenia)
+</td></tr><tr><td>13322
+</td><td>$ 1.254 (Chile)
+</td><td>7177
+</td><td>R 1,254 (South Africa)
+</td></tr><tr><td>9226
+</td><td>$ 1.254 (Colombia)
+</td><td>1053
+</td><td>1.254 kr (Sweden)
+</td></tr><tr><td>5130
+</td><td>C1.254 (Costa Rica)
+</td><td>2055
+</td><td>SFr. 1'254 (Switzerland)
+</td></tr><tr><td>1029
+</td><td>1 254 Kč (Czech Republic)
+</td><td>1028
+</td><td>NT$1,254 (Taiwan)
+</td></tr><tr><td>1030
+</td><td>kr 1.254 (Denmark)
+</td><td>1054
+</td><td>฿1,254 (Thai)
+</td></tr><tr><td>7178
+</td><td>RD$1,254 (Dominican Republic)
+</td><td>1055
+</td><td>1.254 TL (Turkey)
+</td></tr><tr><td>17418
+</td><td>C1254 (El Salvador)
+</td><td>2057
+</td><td>£1,254 (United Kingdom)
+</td></tr><tr><td>-2
+</td><td>1,254 € (European Union)
+</td><td>1033
+</td><td>$1,254 (United States)
+</td></tr><tr><td>-1
+</td><td>€ 1,254 (European Union)
+</td><td>14346
+</td><td>$U 1.254 (Uruguay)
+</td></tr><tr><td>1065
+</td><td>1,254 ريال (Farsi)
+</td><td>8202
+</td><td>Bs 1.254 (Venezuela)
+</td></tr><tr><td>1032
+</td><td>1.254 Δρχ (Greece)
+</td><td>1066
+</td><td>1,254 ₫ (Vietnamese)
+</td></tr></tbody></table><center><a href="http://www.greatwesthealthcare.com/_vti_bin/help/1033/sps/html/SPSAdmincopyright.htm">©2003 Microsoft Corporation. All rights reserved.</a></center></body></html>

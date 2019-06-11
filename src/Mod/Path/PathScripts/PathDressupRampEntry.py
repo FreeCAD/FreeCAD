@@ -22,7 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 import FreeCAD
-import FreeCADGui
 import Path
 import Part
 import PathScripts.PathDressup as PathDressup
@@ -33,8 +32,12 @@ import math
 from PathScripts import PathUtils
 from PySide import QtCore
 
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui
 
-# Qt tanslation handling
+
+# Qt translation handling
 def translate(text, context="Path_DressupRampEntry", disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 

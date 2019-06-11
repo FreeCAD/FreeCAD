@@ -95,7 +95,9 @@ class _TaskPanelFemSolverCalculix:
     '''The TaskPanel for CalculiX ccx tools solver object'''
 
     def __init__(self, solver_object):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/SolverCalculix.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/SolverCalculix.ui"
+        )
 
         from femtools.ccxtools import CcxTools as ccx
         # we do not need to pass the analysis, it will be found on fea init
@@ -110,21 +112,71 @@ class _TaskPanelFemSolverCalculix:
         self.fem_console_message = ''
 
         # Connect Signals and Slots
-        QtCore.QObject.connect(self.form.tb_choose_working_dir, QtCore.SIGNAL("clicked()"), self.choose_working_dir)
-        QtCore.QObject.connect(self.form.pb_write_inp, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
-        QtCore.QObject.connect(self.form.pb_edit_inp, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile)
-        QtCore.QObject.connect(self.form.pb_run_ccx, QtCore.SIGNAL("clicked()"), self.runCalculix)
-        QtCore.QObject.connect(self.form.rb_static_analysis, QtCore.SIGNAL("clicked()"), self.select_static_analysis)
-        QtCore.QObject.connect(self.form.rb_frequency_analysis, QtCore.SIGNAL("clicked()"), self.select_frequency_analysis)
-        QtCore.QObject.connect(self.form.rb_thermomech_analysis, QtCore.SIGNAL("clicked()"), self.select_thermomech_analysis)
-        QtCore.QObject.connect(self.form.rb_check_mesh, QtCore.SIGNAL("clicked()"), self.select_check_mesh)
-
-        QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
-        QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("stateChanged(QProcess::ProcessState)"), self.calculixStateChanged)
-        QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("error(QProcess::ProcessError)"), self.calculixError)
-        QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("finished(int)"), self.calculixFinished)
-
-        QtCore.QObject.connect(self.Timer, QtCore.SIGNAL("timeout()"), self.UpdateText)
+        QtCore.QObject.connect(
+            self.form.tb_choose_working_dir,
+            QtCore.SIGNAL("clicked()"),
+            self.choose_working_dir
+        )
+        QtCore.QObject.connect(
+            self.form.pb_write_inp,
+            QtCore.SIGNAL("clicked()"),
+            self.write_input_file_handler
+        )
+        QtCore.QObject.connect(
+            self.form.pb_edit_inp,
+            QtCore.SIGNAL("clicked()"),
+            self.editCalculixInputFile
+        )
+        QtCore.QObject.connect(
+            self.form.pb_run_ccx,
+            QtCore.SIGNAL("clicked()"),
+            self.runCalculix
+        )
+        QtCore.QObject.connect(
+            self.form.rb_static_analysis,
+            QtCore.SIGNAL("clicked()"),
+            self.select_static_analysis
+        )
+        QtCore.QObject.connect(
+            self.form.rb_frequency_analysis,
+            QtCore.SIGNAL("clicked()"),
+            self.select_frequency_analysis
+        )
+        QtCore.QObject.connect(
+            self.form.rb_thermomech_analysis,
+            QtCore.SIGNAL("clicked()"),
+            self.select_thermomech_analysis
+        )
+        QtCore.QObject.connect(
+            self.form.rb_check_mesh,
+            QtCore.SIGNAL("clicked()"),
+            self.select_check_mesh
+        )
+        QtCore.QObject.connect(
+            self.Calculix,
+            QtCore.SIGNAL("started()"),
+            self.calculixStarted
+        )
+        QtCore.QObject.connect(
+            self.Calculix,
+            QtCore.SIGNAL("stateChanged(QProcess::ProcessState)"),
+            self.calculixStateChanged
+        )
+        QtCore.QObject.connect(
+            self.Calculix,
+            QtCore.SIGNAL("error(QProcess::ProcessError)"),
+            self.calculixError
+        )
+        QtCore.QObject.connect(
+            self.Calculix,
+            QtCore.SIGNAL("finished(int)"),
+            self.calculixFinished
+        )
+        QtCore.QObject.connect(
+            self.Timer,
+            QtCore.SIGNAL("timeout()"),
+            self.UpdateText
+        )
 
         self.update()
 
@@ -152,8 +204,10 @@ class _TaskPanelFemSolverCalculix:
     def femConsoleMessage(self, message="", color="#000000"):
         if sys.version_info.major < 3:
             message = message.encode("utf-8", "replace")
-        self.fem_console_message = self.fem_console_message + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
-            format(time.time() - self.Start, color, message)
+        self.fem_console_message = self.fem_console_message + (
+            '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'
+            .format(time.time() - self.Start, color, message)
+        )
         self.form.textEdit_Output.setText(self.fem_console_message)
         self.form.textEdit_Output.moveCursor(QtGui.QTextCursor.End)
 
@@ -298,7 +352,10 @@ class _TaskPanelFemSolverCalculix:
             if ext_editor_path:
                 self.start_ext_editor(ext_editor_path, self.fea.inp_file_name)
             else:
-                print("External editor is not defined in FEM preferences. Falling back to internal editor")
+                print(
+                    "External editor is not defined in FEM preferences. "
+                    "Falling back to internal editor"
+                )
                 FemGui.open(self.fea.inp_file_name)
 
     def runCalculix(self):
@@ -309,7 +366,10 @@ class _TaskPanelFemSolverCalculix:
         self.femConsoleMessage("Run CalculiX...")
 
         # run Calculix
-        print('run CalculiX at: {} with: {}'.format(self.fea.ccx_binary, os.path.splitext(self.fea.inp_file_name)[0]))
+        print(
+            'run CalculiX at: {} with: {}'
+            .format(self.fea.ccx_binary, os.path.splitext(self.fea.inp_file_name)[0])
+        )
         # change cwd because ccx may crash if directory has no write permission
         # there is also a limit of the length of file names so jump to the document directory
         self.cwd = QtCore.QDir.currentPath()

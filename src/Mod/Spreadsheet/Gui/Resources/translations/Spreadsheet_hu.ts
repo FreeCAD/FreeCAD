@@ -147,8 +147,8 @@
       <translation>Cellák egyesítése</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>A számolótáblában kijelölt cellák egyesítése</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Cellák szétválasztása</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>A számolótáblában előzőleg egyesített cellák szétválasztása</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Félkövér szöveg</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Félkövér szöveg beállítása a kijelölt cellákban</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Dőlt szöveg</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Dőlt szöveg beállítása a kijelölt cellákban</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Világosszürke</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Egyéni</translation>
+      <source>Custom Color</source>
+      <translation>Egyéni szín</translation>
     </message>
   </context>
   <context>

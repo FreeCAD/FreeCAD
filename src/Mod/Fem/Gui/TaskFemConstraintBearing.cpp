@@ -25,10 +25,12 @@
 
 #ifndef _PreComp_
 # include <sstream>
+
 # include <QRegExp>
 # include <QTextStream>
 # include <QMessageBox>
 # include <QAction>
+
 # include <Precision.hxx>
 # include <TopoDS.hxx>
 # include <BRepAdaptor_Surface.hxx>

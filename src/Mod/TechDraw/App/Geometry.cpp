@@ -60,6 +60,7 @@
 #include <TopExp_Explorer.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
 #include <TColgp_Array1OfPnt.hxx>
+#include <BRepLProp_CLProps.hxx>
 
 #include <cmath>
 #endif  // #ifndef _PreComp_
@@ -67,11 +68,14 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools2D.h>
+#include <Base/Parameter.h>
 
-#include <Mod/Part/App/Geometry.h>
+#include <App/Application.h>
+#include <App/Material.h>
+
+#include "DrawUtil.h"
 
 #include "Geometry.h"
-#include "DrawUtil.h"
 
 using namespace TechDrawGeometry;
 using namespace TechDraw;
@@ -112,7 +116,8 @@ BaseGeom::BaseGeom() :
     classOfEdge(ecNONE),
     visible(true),
     reversed(false),
-    ref3D(-1)                      //obs?
+    ref3D(-1),                      //obs?
+    cosmetic(false)
 {
 }
 
@@ -143,6 +148,46 @@ Base::Vector2d BaseGeom::getEndPoint()
     return verts[1];
 }
 
+Base::Vector2d BaseGeom::getMidPoint()
+{
+//    Base::Console().Message("BG::getMidPoint()\n");
+    Base::Vector2d result;
+    BRepAdaptor_Curve adapt(occEdge);
+    double u = adapt.FirstParameter();
+    double v = adapt.LastParameter();
+    double range = v - u;
+    double midParm = u + (range / 2.0);
+    BRepLProp_CLProps prop(adapt,midParm,0,Precision::Confusion());
+    const gp_Pnt& pt = prop.Value();
+    result = Base::Vector2d(pt.X(),pt.Y());
+//    Base::Console().Message("BG::getMidPoint - returns: %s\n",
+//                            TechDraw::DrawUtil::formatVector(result).c_str());
+    return result;
+}
+
+std::vector<Base::Vector2d> BaseGeom::getQuads()
+{
+//    Base::Console().Message("BG::getQuads()\n");
+    std::vector<Base::Vector2d> result;
+    BRepAdaptor_Curve adapt(occEdge);
+    double u = adapt.FirstParameter();
+    double v = adapt.LastParameter();
+    double range = v - u;
+    double q1 = u + (range / 4.0);
+    double q2 = u + (range / 2.0);
+    double q3 = u + (3.0 * range / 4.0);
+    BRepLProp_CLProps prop(adapt,q1,0,Precision::Confusion());
+    const gp_Pnt& p1 = prop.Value();
+    result.push_back(Base::Vector2d(p1.X(),p1.Y()));
+    prop.SetParameter(q2);
+    const gp_Pnt& p2 = prop.Value();
+    result.push_back(Base::Vector2d(p2.X(),p2.Y()));
+    prop.SetParameter(q3);
+    const gp_Pnt& p3 = prop.Value();
+    result.push_back(Base::Vector2d(p3.X(),p3.Y()));
+//    Base::Console().Message("BG::getQuads - returns pts: %d\n", result.size());
+    return result;
+}
 
 double BaseGeom::minDist(Base::Vector2d p)
 {
@@ -195,6 +240,22 @@ std::string BaseGeom::dump()
     ss << "BaseGeom: s:(" << start.x << "," << start.y << ") e:(" << end.x << "," << end.y << ") ";
     ss << "type: " << geomType << " class: " << classOfEdge << " viz: " << visible << " rev: " << reversed;
     return ss.str();
+}
+
+bool BaseGeom::closed(void)
+{
+    //return occEdge.Closed();        //based on a flag in occ. may not be correct!
+    bool result = false;
+    Base::Vector3d start(getStartPoint().x,
+                         getStartPoint().y,
+                         0.0);
+    Base::Vector3d end(getEndPoint().x,
+                       getEndPoint().y,
+                       0.0);
+    if (start.IsEqual(end, 0.00001)) {
+        result = true;
+    }
+    return result;
 }
 
 
@@ -252,7 +313,7 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
                 delete bspline;
                 bspline = nullptr;
             } else {
-                TopoDS_Edge circEdge = bspline->isCircle2(isArc);
+                TopoDS_Edge circEdge = bspline->asCircle(isArc);
                 if (!circEdge.IsNull()) {
                     if (isArc) {
                         aoc = new AOC(circEdge);
@@ -699,8 +760,8 @@ void BSpline::getCircleParms(bool& isCircle, double& radius, Base::Vector3d& cen
     }
 }
 
-// can this BSpline be a circle?
-TopoDS_Edge BSpline::isCircle2(bool& arc)
+// make a circular edge from BSpline
+TopoDS_Edge BSpline::asCircle(bool& arc)
 {
     TopoDS_Edge result;
     BRepAdaptor_Curve c(occEdge);
@@ -743,7 +804,7 @@ TopoDS_Edge BSpline::isCircle2(bool& arc)
         projm.Perform(pm);
     }
     catch(const StdFail_NotDone &e) {
-        Base::Console().Log("Geometry::isCircle2 - init: %s\n",e.GetMessageString());
+        Base::Console().Log("Geometry::asCircle - init: %s\n",e.GetMessageString());
         return result;
     }
     if ( (proj1.NbPoints() == 0) ||
@@ -760,7 +821,7 @@ TopoDS_Edge BSpline::isCircle2(bool& arc)
         pcm = projm.NearestPoint();
     }
     catch(const StdFail_NotDone &e) {
-        Base::Console().Log("Geometry::isCircle2 - nearPoint: %s\n",e.GetMessageString());
+        Base::Console().Log("Geometry::asCircle - nearPoint: %s\n",e.GetMessageString());
         return result;
     }
 
@@ -939,3 +1000,5 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
     }
     return result;
 }
+
+

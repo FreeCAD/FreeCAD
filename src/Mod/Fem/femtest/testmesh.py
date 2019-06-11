@@ -35,7 +35,10 @@ from os.path import join
 class TestMeshCommon(unittest.TestCase):
     fcc_print('import TestMeshCommon')
 
-    def setUp(self):
+    # ********************************************************************************************
+    def setUp(
+        self
+    ):
         # init, is executed before every test
         self.doc_name = "TestMeshCommon"
         try:
@@ -46,7 +49,10 @@ class TestMeshCommon(unittest.TestCase):
             FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
 
-    def test_mesh_seg2_python(self):
+    # ********************************************************************************************
+    def test_mesh_seg2_python(
+        self
+    ):
         seg2 = Fem.FemMesh()
         seg2.addNode(0, 0, 0, 1)
         seg2.addNode(2, 0, 0, 2)
@@ -54,14 +60,40 @@ class TestMeshCommon(unittest.TestCase):
         seg2.addEdge([1, 2])
         seg2.addEdge([2, 3], 2)
 
-        node_data = [seg2.NodeCount, seg2.Nodes]
-        edge_data = [seg2.EdgeCount, seg2.Edges[0], seg2.getElementNodes(seg2.Edges[0]), seg2.Edges[1], seg2.getElementNodes(seg2.Edges[1])]
-        expected_nodes = [3, {1: FreeCAD.Vector(0.0, 0.0, 0.0), 2: FreeCAD.Vector(2.0, 0.0, 0.0), 3: FreeCAD.Vector(4.0, 0.0, 0.0)}]
+        node_data = [
+            seg2.NodeCount,
+            seg2.Nodes
+        ]
+        edge_data = [
+            seg2.EdgeCount,
+            seg2.Edges[0],
+            seg2.getElementNodes(seg2.Edges[0]),
+            seg2.Edges[1],
+            seg2.getElementNodes(seg2.Edges[1])
+        ]
+        expected_nodes = [
+            3,
+            {
+                1: FreeCAD.Vector(0.0, 0.0, 0.0),
+                2: FreeCAD.Vector(2.0, 0.0, 0.0),
+                3: FreeCAD.Vector(4.0, 0.0, 0.0)
+            }
+        ]
         expected_edges = [2, 1, (1, 2), 2, (2, 3)]
-        self.assertEqual(node_data, expected_nodes, "Nodes of Python created seg2 element are unexpected")
-        self.assertEqual(edge_data, expected_edges, "Edges of Python created seg2 element are unexpected")
+        self.assertEqual(
+            node_data,
+            expected_nodes,
+            "Nodes of Python created seg2 element are unexpected"
+        )
+        self.assertEqual(
+            edge_data, expected_edges,
+            "Edges of Python created seg2 element are unexpected"
+        )
 
-    def test_mesh_seg3_python(self):
+    # ********************************************************************************************
+    def test_mesh_seg3_python(
+        self
+    ):
         seg3 = Fem.FemMesh()
         seg3.addNode(0, 0, 0, 1)
         seg3.addNode(1, 0, 0, 2)
@@ -72,7 +104,13 @@ class TestMeshCommon(unittest.TestCase):
         seg3.addEdge([3, 5, 4], 2)
 
         node_data = [seg3.NodeCount, seg3.Nodes]
-        edge_data = [seg3.EdgeCount, seg3.Edges[0], seg3.getElementNodes(seg3.Edges[0]), seg3.Edges[1], seg3.getElementNodes(seg3.Edges[1])]
+        edge_data = [
+            seg3.EdgeCount,
+            seg3.Edges[0],
+            seg3.getElementNodes(seg3.Edges[0]),
+            seg3.Edges[1],
+            seg3.getElementNodes(seg3.Edges[1])
+        ]
         expected_nodes = [
             5, {
                 1: FreeCAD.Vector(0.0, 0.0, 0.0),
@@ -83,10 +121,21 @@ class TestMeshCommon(unittest.TestCase):
             }
         ]
         expected_edges = [2, 1, (1, 3, 2), 2, (3, 5, 4)]
-        self.assertEqual(node_data, expected_nodes, "Nodes of Python created seg3 element are unexpected")
-        self.assertEqual(edge_data, expected_edges, "Edges of Python created seg3 element are unexpected")
+        self.assertEqual(
+            node_data,
+            expected_nodes,
+            "Nodes of Python created seg3 element are unexpected"
+        )
+        self.assertEqual(
+            edge_data,
+            expected_edges,
+            "Edges of Python created seg3 element are unexpected"
+        )
 
-    def test_unv_save_load(self):
+    # ********************************************************************************************
+    def test_unv_save_load(
+        self
+    ):
         tetra10 = Fem.FemMesh()
         tetra10.addNode(6, 12, 18, 1)
         tetra10.addNode(0, 0, 18, 2)
@@ -106,16 +155,28 @@ class TestMeshCommon(unittest.TestCase):
         tetra10.write(unv_file)
         newmesh = Fem.read(unv_file)
         expected = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-        self.assertEqual(newmesh.getElementNodes(1), expected, "Nodes order of quadratic volume element is unexpected")
+        self.assertEqual(
+            newmesh.getElementNodes(1),
+            expected,
+            "Nodes order of quadratic volume element is unexpected"
+        )
 
-    def test_writeAbaqus_precision(self):
+    # ********************************************************************************************
+    def test_writeAbaqus_precision(
+        self
+    ):
         # https://forum.freecadweb.org/viewtopic.php?f=18&t=22759#p176669
         # ccx reads only F20.0 (i. e. Fortran floating point field 20 chars wide)
         # thus precision is set to 13 in writeAbaqus
         seg2 = Fem.FemMesh()
         seg2.addNode(0, 0, 0, 1)
-        #            1234567890123456789012  1234567890123456789012  123456789012345678901234567
-        seg2.addNode(-5000000000000000000.1, -1.123456789123456e-14, -0.1234567890123456789e-101, 2)
+        seg2.addNode(
+            # 3456789012345678901234567
+            -5000000000000000000.1,
+            -1.123456789123456e-14,
+            -0.1234567890123456789e-101,
+            2
+        )
         seg2.addEdge([1, 2])
 
         inp_file = testtools.get_fem_test_tmp_dir() + '/seg2_mesh.inp'
@@ -133,18 +194,30 @@ class TestMeshCommon(unittest.TestCase):
         expected_win = '2, -5e+018, -1.123456789123e-014, -1.234567890123e-102'
         expected_lin = '2, -5e+18, -1.123456789123e-14, -1.234567890123e-102'
         expected = [expected_lin, expected_win]
-        self.assertTrue(True if read_node_line in expected else False,
-                        "Problem in test_writeAbaqus_precision, \n{0}\n{1}".format(read_node_line, expected))
+        self.assertTrue(
+            True if read_node_line in expected else False,
+            "Problem in test_writeAbaqus_precision, \n{0}\n{1}".format(
+                read_node_line,
+                expected
+            )
+        )
 
-    def tearDown(self):
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
         FreeCAD.closeDocument(self.doc_name)
         pass
 
 
+# ************************************************************************************************
 class TestMeshEleTetra10(unittest.TestCase):
     fcc_print('import TestMeshEleTetra10')
 
-    def setUp(self):
+    # ********************************************************************************************
+    def setUp(
+        self
+    ):
         self.doc_name = "TestMeshEleTetra10"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
@@ -155,8 +228,15 @@ class TestMeshEleTetra10(unittest.TestCase):
         self.active_doc = FreeCAD.ActiveDocument
 
         self.elem = 'tetra10'
-        self.base_testfile = join(testtools.get_fem_test_home_dir(), 'mesh', (self.elem + '_mesh.'))
-        self.base_outfile = join(testtools.get_fem_test_tmp_dir(), (self.elem + '_mesh.'))
+        self.base_testfile = join(
+            testtools.get_fem_test_home_dir(),
+            'mesh',
+            (self.elem + '_mesh.')
+        )
+        self.base_outfile = join(
+            testtools.get_fem_test_tmp_dir(),
+            (self.elem + '_mesh.')
+        )
         # 10 node tetrahedron --> tetra10
         femmesh = Fem.FemMesh()
         femmesh.addNode(6, 12, 18, 1)
@@ -198,7 +278,94 @@ class TestMeshEleTetra10(unittest.TestCase):
         fcc_print('\n')
         '''
 
-    def test_tetra10_create(self):
+    # ********************************************************************************************
+    def get_file_paths(
+        self,
+        file_extension
+    ):
+        outfile = self.base_outfile + file_extension
+        testfile = self.base_testfile + file_extension
+        # fcc_print(outfile)
+        # fcc_print(testfile)
+        return (outfile, testfile)
+
+    # ********************************************************************************************
+    def compare_mesh_files(
+        self,
+        femmesh_testfile,
+        femmesh_outfile,
+        filetyp
+    ):
+
+        # '''
+        fcc_print([
+            femmesh_testfile.Volumes[0],
+            femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])
+        ])
+        # '''
+
+        # test reading the test mesh
+        self.assertEqual(
+            femmesh_testfile.Nodes,
+            self.expected_nodes['nodes'],
+            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
+                self.elem,
+                filetyp
+            )
+        )
+        self.assertEqual(
+            [
+                femmesh_testfile.Volumes[0],
+                femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])
+            ],
+            self.expected_elem['volumes'],
+            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
+                self.elem,
+                filetyp
+            )
+        )
+        # test reading the written mesh
+        self.assertEqual(
+            femmesh_outfile.Nodes,
+            self.expected_nodes['nodes'],
+            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
+                self.elem,
+                filetyp
+            )
+        )
+        self.assertEqual(
+            [
+                femmesh_outfile.Volumes[0],
+                femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])
+            ],
+            self.expected_elem['volumes'],
+            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
+                self.elem,
+                filetyp
+            )
+        )
+        # test if both are equal
+        self.assertEqual(
+            femmesh_outfile.Nodes,
+            femmesh_testfile.Nodes,
+            "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
+                self.elem,
+                filetyp
+            )
+        )
+        self.assertEqual(
+            femmesh_outfile.Volumes,
+            femmesh_testfile.Volumes,
+            "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
+                self.elem,
+                filetyp
+            )
+        )
+
+    # ********************************************************************************************
+    def test_tetra10_create(
+        self
+    ):
         # tetra10 element: creating by Python
         node_data = {
             'count': self.femmesh.NodeCount,
@@ -207,10 +374,21 @@ class TestMeshEleTetra10(unittest.TestCase):
         elem_data = {
             'volcount': self.femmesh.VolumeCount,
             'tetcount': self.femmesh.TetraCount,
-            'volumes': [self.femmesh.Volumes[0], self.femmesh.getElementNodes(self.femmesh.Volumes[0])]
+            'volumes': [
+                self.femmesh.Volumes[0],
+                self.femmesh.getElementNodes(self.femmesh.Volumes[0])
+            ]
         }
-        self.assertEqual(node_data, self.expected_nodes, "Nodes of Python created " + self.elem + "mesh element are unexpected")
-        self.assertEqual(elem_data, self.expected_elem, "Elements of Python created " + self.elem + "mesh element are unexpected")
+        self.assertEqual(
+            node_data,
+            self.expected_nodes,
+            "Nodes of Python created " + self.elem + "mesh element are unexpected"
+        )
+        self.assertEqual(
+            elem_data,
+            self.expected_elem,
+            "Elements of Python created " + self.elem + "mesh element are unexpected"
+        )
         '''
         obj = doc.addObject("Fem::FemMeshObject" , elem)
         obj.FemMesh = femmesh
@@ -218,187 +396,115 @@ class TestMeshEleTetra10(unittest.TestCase):
         obj.ViewObject.DisplayMode = "Faces, Wireframe & Nodes"
         '''
 
-    def test_tetra10_inp(self):
+    # ********************************************************************************************
+    def test_tetra10_inp(
+        self
+    ):
         # tetra10 element: reading from and writing to inp mesh file format
-        filetyp = 'inp'
-        outfile = self.base_outfile + filetyp
-        testfile = self.base_testfile + filetyp
-        # fcc_print(outfile)
-        # fcc_print(testfile)
+
+        file_extension = 'inp'
+        outfile, testfile = self.get_file_paths(file_extension)
+
         self.femmesh.writeABAQUS(outfile, 1, False)  # write the mesh
         femmesh_outfile = Fem.read(outfile)  # read the mesh from written mesh
         femmesh_testfile = Fem.read(testfile)  # read the mesh from test mesh
-        # reading the test mesh
-        # fcc_print([femmesh_testfile.Volumes[0], femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])])
-        self.assertEqual(
-            femmesh_testfile.Nodes,
-            self.expected_nodes['nodes'],
-            "Test reading " + self.elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
-        )
-        self.assertEqual(
-            [femmesh_testfile.Volumes[0], femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])],
-            self.expected_elem['volumes'],
-            "Test reading " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
-        )
-        # reading the written mesh
-        self.assertEqual(
-            femmesh_outfile.Nodes,
-            self.expected_nodes['nodes'],
-            "Test reading " + self.elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
-        )
-        self.assertEqual(
-            [femmesh_outfile.Volumes[0], femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])],
-            self.expected_elem['volumes'],
-            "Test reading " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
-        )
-        # both
-        self.assertEqual(
-            femmesh_outfile.Nodes,
-            femmesh_testfile.Nodes,
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
-        )
-        self.assertEqual(
-            [femmesh_outfile.Volumes[0], femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])],
-            [femmesh_testfile.Volumes[0], femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])],
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
+
+        self.compare_mesh_files(
+            femmesh_testfile,
+            femmesh_outfile,
+            file_extension
         )
 
-    def test_tetra10_unv(self):
+    # ********************************************************************************************
+    def test_tetra10_unv(
+        self
+    ):
         # tetra10 element: reading from and writing to unv mesh file format
-        filetyp = 'unv'
-        outfile = self.base_outfile + filetyp
-        testfile = self.base_testfile + filetyp
-        # fcc_print(outfile)
-        # fcc_print(testfile)
+
+        file_extension = 'unv'
+        outfile, testfile = self.get_file_paths(file_extension)
+
         self.femmesh.write(outfile)  # write the mesh
         femmesh_outfile = Fem.read(outfile)  # read the mesh from written mesh
         femmesh_testfile = Fem.read(testfile)  # read the mesh from test mesh
-        # reading the test mesh
-        self.assertEqual(
-            femmesh_testfile.Nodes,
-            self.expected_nodes['nodes'],
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
-        )
-        self.assertEqual(
-            [femmesh_testfile.Volumes[0], femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])],
-            self.expected_elem['volumes'],
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
-        )
-        # reading the written mesh
-        self.assertEqual(
-            femmesh_outfile.Nodes,
-            self.expected_nodes['nodes'],
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
-        )
-        self.assertEqual(
-            [femmesh_outfile.Volumes[0], femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])],
-            self.expected_elem['volumes'],
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
-        )
-        # both
-        self.assertEqual(
-            femmesh_outfile.Nodes,
-            femmesh_testfile.Nodes,
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
-        )
-        self.assertEqual(
-            femmesh_outfile.Volumes,
-            femmesh_testfile.Volumes,
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
+
+        self.compare_mesh_files(
+            femmesh_testfile,
+            femmesh_outfile,
+            file_extension
         )
 
-    def test_tetra10_vkt(self):
+    # ********************************************************************************************
+    def test_tetra10_vkt(
+        self
+    ):
         # tetra10 element: reading from and writing to unv mesh file format
-        filetyp = 'vtk'
-        outfile = self.base_outfile + filetyp
-        testfile = self.base_testfile + filetyp
-        # fcc_print(outfile)
-        # fcc_print(testfile)
+
+        file_extension = 'vtk'
+        outfile, testfile = self.get_file_paths(file_extension)
+
         if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
             self.femmesh.write(outfile)  # write the mesh
             femmesh_outfile = Fem.read(outfile)  # read the mesh from written mesh
             femmesh_testfile = Fem.read(testfile)  # read the mesh from test mesh
-            # reading the test mesh
-            self.assertEqual(
-                femmesh_testfile.Nodes,
-                self.expected_nodes['nodes'],
-                "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
-            )
-            self.assertEqual(
-                [femmesh_testfile.Volumes[0], femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])],
-                self.expected_elem['volumes'],
-                "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
-            )
-            # reading the written mesh
-            self.assertEqual(
-                femmesh_outfile.Nodes,
-                self.expected_nodes['nodes'],
-                "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
-            )
-            self.assertEqual(
-                [femmesh_outfile.Volumes[0], femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])],
-                self.expected_elem['volumes'],
-                "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
-            )
-            # both
-            self.assertEqual(
-                femmesh_outfile.Nodes,
-                femmesh_testfile.Nodes,
-                "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
-            )
-            self.assertEqual(
-                femmesh_outfile.Volumes,
-                femmesh_testfile.Volumes,
-                "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
+
+            self.compare_mesh_files(
+                femmesh_testfile,
+                femmesh_outfile,
+                file_extension
             )
         else:
             fcc_print('FEM_VTK post processing is disabled.')
 
-    def test_tetra10_z88(self):
+    # ********************************************************************************************
+    def test_tetra10_yml(
+        self
+    ):
+        # tetra10 element: reading from and writing to yaml/json mesh file format
+
+        file_extension = 'yml'
+        outfile, testfile = self.get_file_paths(file_extension)
+
+        # TODO: implement yaml/json mesh reader writer method calls in C++
+        # self.femmesh.write(outfile)  # write the mesh
+        # femmesh_testfile = Fem.read(outfile)  # read the mesh from written mesh
+        # femmesh_outfile = Fem.read(testfile)  # read the mesh from test mesh
+        # directly use Python methods to read and write files
+        from feminout.importYamlJsonMesh import write
+        write(self.femmesh, outfile)
+        from feminout.importYamlJsonMesh import read
+        femmesh_testfile = read(outfile)
+        femmesh_outfile = read(testfile)
+
+        self.compare_mesh_files(
+            femmesh_testfile,
+            femmesh_outfile,
+            file_extension
+        )
+
+    # ********************************************************************************************
+    def test_tetra10_z88(
+        self
+    ):
         # tetra10 element: reading from and writing to z88 mesh file format
-        filetyp = 'z88'
-        outfile = self.base_outfile + filetyp
-        testfile = self.base_testfile + filetyp
-        # fcc_print(outfile)
-        # fcc_print(testfile)
+
+        file_extension = 'z88'
+        outfile, testfile = self.get_file_paths(file_extension)
+
         self.femmesh.write(outfile)  # write the mesh
         femmesh_testfile = Fem.read(outfile)  # read the mesh from written mesh
         femmesh_outfile = Fem.read(testfile)  # read the mesh from test mesh
-        # reading the test mesh
-        self.assertEqual(
-            femmesh_testfile.Nodes,
-            self.expected_nodes['nodes'],
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
-        )
-        self.assertEqual(
-            [femmesh_testfile.Volumes[0], femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])],
-            self.expected_elem['volumes'],
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
-        )
-        # reading the written mesh
-        self.assertEqual(
-            femmesh_outfile.Nodes,
-            self.expected_nodes['nodes'],
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
-        )
-        self.assertEqual(
-            [femmesh_outfile.Volumes[0], femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])],
-            self.expected_elem['volumes'],
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
-        )
-        # both
-        self.assertEqual(
-            femmesh_outfile.Nodes,
-            femmesh_testfile.Nodes,
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
-        )
-        self.assertEqual(
-            femmesh_outfile.Volumes,
-            femmesh_testfile.Volumes,
-            "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
+
+        self.compare_mesh_files(
+            femmesh_testfile,
+            femmesh_outfile,
+            file_extension
         )
 
-    def tearDown(self):
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
         # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
         pass

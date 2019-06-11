@@ -26,11 +26,12 @@
 
 # Make mesh of pn junction in TetGen format
 import FreeCAD
-import FreeCADGui
+App = FreeCAD  # shortcut
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    Gui = FreeCADGui  # shortcut
 # import Part
 import Mesh
-App = FreeCAD  # shortcut
-Gui = FreeCADGui  # shortcut
 
 ## \addtogroup FEM
 #  @{
@@ -45,12 +46,19 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
     f = open(filePath, 'w')
     f.write("# This file was generated from FreeCAD geometry\n")
     f.write("# Part 1 - node list\n")
+    '''
     f.write("%(TotalNumOfPoints)i  %(NumOfDimensions)i  %(NumOfProperties)i  %(BoundaryMarkerExists)i\n" % {
         'TotalNumOfPoints': len(allVertices),
         'NumOfDimensions': 3,
         'NumOfProperties': 0,
         'BoundaryMarkerExists': 0
     })
+    '''
+    f.write(
+        "TotalNumOfPoints: {},  NumOfDimensions; {}, "
+        "NumOfProperties: {}, BoundaryMarkerExists: {}\n"
+        .format(len(allVertices), 3, 0, 0)
+    )
     for PointIndex in range(len(allVertices)):
         f.write("%(PointIndex)5i %(x) e %(y) e %(z) e\n" % {
             'PointIndex': PointIndex,
@@ -67,7 +75,7 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
     EdgeFacets = {(PointList[0], PointList[1]): set([0])}
     Edge = []
 
-    # Finde all facets for each edge
+    # Find all facets for each edge
     for FacetIndex in range(len(allFacets)):
         Facet = allFacets[FacetIndex]
         for i in range(0, -len(Facet), -1):
@@ -92,10 +100,13 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
     EdgeKeys = EdgeFacets.keys()
     # disconnectedEdges = len(EdgeKeys)
     if beVerbose == 1:
-        FreeCAD.Console.PrintMessage('\nBoundaryMarker:' + repr(BoundaryMarker) + ' ' + repr(len(EdgeFacets)))
+        FreeCAD.Console.PrintMessage(
+            '\nBoundaryMarker:' + repr(BoundaryMarker) + ' ' + repr(len(EdgeFacets))
+        )
     searchForPair = 1
 
-    # Main loop: first search for all complementary facets, then fill one branch and repeat while edges are available
+    # Main loop: first search for all complementary facets
+    # then fill one branch and repeat while edges are available
     while len(EdgeFacets) > 0:
         removeEdge = 0
         for EdgeIndex in EdgeKeys:
@@ -141,7 +152,9 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
         searchForPair = 0
     # End of main loop
     if beVerbose == 1:
-        FreeCAD.Console.PrintMessage('\nNew BoundaryMarker:' + repr(BoundaryMarker) + ' ' + repr(len(EdgeFacets)))
+        FreeCAD.Console.PrintMessage(
+            '\nNew BoundaryMarker:' + repr(BoundaryMarker) + ' ' + repr(len(EdgeFacets))
+        )
 
     ## Part 2 - write all facets to *.poly file
     f.write("# Part 2 - facet list\n")
@@ -193,7 +206,8 @@ def createMesh():
     # Init objects
     if beVerbose == 1:
         FreeCAD.Console.PrintMessage("\nInit Objects...")
-    # App.closeDocument(App.ActiveDocument.Label) #closeDocument after restart of macro. Needs any ActiveDocument.
+    # closeDocument after restart of macro. Needs any ActiveDocument.
+    # App.closeDocument(App.ActiveDocument.Label)
     AppPyDoc = App.newDocument(PyDocumentName)
     NSideBox = AppPyDoc.addObject("Part::Box", NSideBoxName)
     PSideBox = AppPyDoc.addObject("Part::Box", PSideBoxName)
@@ -203,17 +217,33 @@ def createMesh():
     AdsorbtionBox = AppPyDoc.addObject("Part::Box", AdsorbtionBoxName)
     pnMesh = AppPyDoc.addObject("Mesh::Feature", pnMeshName)
 
-    BoxList = [NSideBox, DepletionBox, PSideBox, OxideBox, AdsorbtionBox, SurfDepletionBox]
+    BoxList = [
+        NSideBox,
+        DepletionBox,
+        PSideBox,
+        OxideBox,
+        AdsorbtionBox,
+        SurfDepletionBox
+    ]
     NSideBoxMesh = Mesh.Mesh()
     PSideBoxMesh = Mesh.Mesh()
     DepletionBoxMesh = Mesh.Mesh()
     SurfDepletionBoxMesh = Mesh.Mesh()
     OxideBoxMesh = Mesh.Mesh()
     AdsorbtionBoxMesh = Mesh.Mesh()
-    BoxMeshList = [NSideBoxMesh, DepletionBoxMesh, PSideBoxMesh, OxideBoxMesh, AdsorbtionBoxMesh, SurfDepletionBoxMesh]
+    BoxMeshList = [
+        NSideBoxMesh,
+        DepletionBoxMesh,
+        PSideBoxMesh,
+        OxideBoxMesh,
+        AdsorbtionBoxMesh,
+        SurfDepletionBoxMesh
+    ]
     if beVerbose == 1:
         if len(BoxList) != len(BoxMeshList):
-            FreeCAD.Console.PrintMessage("\n ERROR! Input len() of BoxList and BoxMeshList is not the same! ")
+            FreeCAD.Console.PrintMessage(
+                "\n ERROR! Input len() of BoxList and BoxMeshList is not the same! "
+            )
 
     ## Set sizes in nanometers
     if beVerbose == 1:
@@ -252,12 +282,30 @@ def createMesh():
 
     # Object placement
     Rot = App.Rotation(0, 0, 0, 1)
-    NSideBox.Placement = App.Placement(App.Vector(0, 0, -BulkHeight), Rot)
-    PSideBox.Placement = App.Placement(App.Vector(DepletionSize * 2 + BulkLength, 0, -BulkHeight), Rot)
-    DepletionBox.Placement = App.Placement(App.Vector(BulkLength, 0, -BulkHeight), Rot)
-    SurfDepletionBox.Placement = App.Placement(App.Vector(0, 0, 0), Rot)
-    OxideBox.Placement = App.Placement(App.Vector(0, 0, DepletionSize), Rot)
-    AdsorbtionBox.Placement = App.Placement(App.Vector(0, 0, DepletionSize + OxideThickness), Rot)
+    NSideBox.Placement = App.Placement(
+        App.Vector(0, 0, -BulkHeight),
+        Rot
+    )
+    PSideBox.Placement = App.Placement(
+        App.Vector(DepletionSize * 2 + BulkLength, 0, -BulkHeight),
+        Rot
+    )
+    DepletionBox.Placement = App.Placement(
+        App.Vector(BulkLength, 0, -BulkHeight),
+        Rot
+    )
+    SurfDepletionBox.Placement = App.Placement(
+        App.Vector(0, 0, 0),
+        Rot
+    )
+    OxideBox.Placement = App.Placement(
+        App.Vector(0, 0, DepletionSize),
+        Rot
+    )
+    AdsorbtionBox.Placement = App.Placement(
+        App.Vector(0, 0, DepletionSize + OxideThickness),
+        Rot
+    )
 
     ## Unite
     if beVerbose == 1:
@@ -270,29 +318,35 @@ def createMesh():
 
     # for index in range(len(BoxList)):
     for index in range(len(BoxList) - 1):  # Manual hack
-        BoxMeshList[index].addFacets(BoxList[index].Shape.tessellate(tessellationTollerance))
+        BoxMeshList[index].addFacets(
+            BoxList[index].Shape.tessellate(tessellationTollerance)
+        )
         nmesh.addMesh(BoxMeshList[index])
 
     nmesh.removeDuplicatedPoints()
     nmesh.removeDuplicatedFacets()
     pnMesh.Mesh = nmesh
 
-    # Hide all boxes
-    for box in BoxList:
-        Gui.hideObject(box)
-    # # Remove all boxes
+    if FreeCAD.GuiUp:
+        # Hide all boxes
+        for box in BoxList:
+            Gui.hideObject(box)
+
+    # Remove all boxes
     # for box in BoxList:
     #     App.ActiveDocument.removeObject(box.Name)
 
     # Update document
     AppPyDoc.recompute()
 
-    ## export to TenGen *.poly (use File|Export instead)
+    # export to TenGen *.poly (use File|Export instead)
     # filePath = "/home/tig/tmp/tetgen/pnJunction.poly"
     # exportMeshToTetGenPoly(pnMesh.Mesh,filePath,beVerbose)
 
-    Gui.activeDocument().activeView().viewAxometric()
-    Gui.SendMsgToActiveView("ViewFit")
+    if FreeCAD.GuiUp:
+        Gui.activeDocument().activeView().viewAxometric()
+        Gui.SendMsgToActiveView("ViewFit")
+
     if beVerbose == 1:
         FreeCAD.Console.PrintMessage("\nScript finished without errors.")
 

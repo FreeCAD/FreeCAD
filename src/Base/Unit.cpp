@@ -461,7 +461,11 @@ Unit Unit::Length(1);
 Unit Unit::Area(2);
 Unit Unit::Volume(3);
 Unit Unit::Mass(0,1);
-Unit Unit::Angle(0,0,0,0,0,0,0,1);
+
+// Angle, deg
+Unit Unit::Angle           (0,0,0,0,0,0,0,1);
+Unit Unit::AngleOfFriction (0,0,0,0,0,0,0,1);
+
 Unit Unit::Density(-3,1);
 
 Unit Unit::TimeSpan(0,0,1);

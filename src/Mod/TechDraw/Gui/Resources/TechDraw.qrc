@@ -39,6 +39,7 @@
         <file>icons/arrowfilled.svg</file>
         <file>icons/arrowopen.svg</file>
         <file>icons/arrowtick.svg</file>
+        <file>icons/arrowfork.svg</file>
         <file>icons/actions/techdraw-new-default.svg</file>
         <file>icons/actions/techdraw-new-pick.svg</file>
         <file>icons/actions/techdraw-view.svg</file>
@@ -60,7 +61,14 @@
         <file>icons/actions/techdraw-spreadsheet.svg</file>
         <file>icons/actions/techdraw-image.svg</file>
         <file>icons/actions/techdraw-viewdetail.svg</file>
-        <file>icons/actions/section-up.svg</file>
+        <file>icons/actions/techdraw-mline.svg</file>
+        <file>icons/actions/techdraw-textleader.svg</file>
+        <file>icons/actions/techdraw-point.svg</file>
+        <file>icons/actions/techdraw-midpoint.svg</file>
+        <file>icons/actions/techdraw-quadrant.svg</file>
+        <file>icons/actions/techdraw-facecenterline.svg</file>
+        <file>icons/actions/techdraw-eraser.svg</file>
+        <file>icons/actions/section-up.svg</file>  
         <file>icons/actions/section-down.svg</file>
         <file>icons/actions/section-left.svg</file>
         <file>icons/actions/section-right.svg</file>
@@ -71,6 +79,34 @@
         <file>icons/arrow-ccw.svg</file>
         <file>icons/arrow-cw.svg</file>
         <file>icons/techdraw-lock.png</file>
+        <file>icons/cursor-balloon.png</file>
+        <file>icons/none.svg</file>
+        <file>icons/circular.svg</file>
+        <file>icons/hexagon.svg</file>
+        <file>icons/inspection.svg</file>
+        <file>icons/rectangle.svg</file>
+        <file>icons/triangle.svg</file>
+        <file>icons/square.svg</file>
+        <file>icons/MRTE/menu.svg</file>
+        <file>icons/MRTE/bgColor.svg</file>
+        <file>icons/MRTE/fgColor.svg</file>
+        <file>icons/MRTE/listBullet.svg</file>
+        <file>icons/MRTE/listNumber.svg</file>
+        <file>icons/MRTE/application-exit.svg</file>
+        <file>icons/MRTE/document-save.svg</file>
+        <file>icons/MRTE/textBold.svg</file>
+        <file>icons/MRTE/textUnderline.svg</file>
+        <file>icons/MRTE/textStrike.svg</file>
+        <file>icons/MRTE/textItalic.svg</file>
+        <file>icons/MRTE/insertImage.svg</file>
+        <file>icons/MRTE/indentMore.svg</file>
+        <file>icons/MRTE/indentLess.svg</file>
+        <file>icons/MRTE/edit-cut.svg</file>
+        <file>icons/MRTE/edit-copy.svg</file>
+        <file>icons/MRTE/edit-paste.svg</file>
+        <file>icons/MRTE/edit-undo.svg</file>
+        <file>icons/MRTE/edit-redo.svg</file>
+        <file>icons/MRTE/internet-web-browser.svg</file>
         <file>translations/TechDraw_af.qm</file>
         <file>translations/TechDraw_zh-CN.qm</file>
         <file>translations/TechDraw_zh-TW.qm</file>

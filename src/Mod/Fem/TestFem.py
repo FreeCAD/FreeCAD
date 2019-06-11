@@ -30,6 +30,7 @@
 from femtest.testcommon import TestFemCommon
 from femtest.testobject import TestObjectCreate
 from femtest.testobject import TestObjectType
+from femtest.testmaterial import TestMaterialUnits
 from femtest.testmesh import TestMeshCommon
 from femtest.testmesh import TestMeshEleTetra10
 from femtest.testresult import TestResult
@@ -66,17 +67,27 @@ unittest.TextTestRunner().run(mytest)
 # examples from shell in build dir:
 # all FreeCAD tests
 ./bin/FreeCAD --run-test 0
+./bin/FreeCADCmd --run-test 0
 
 # all FEM tests
 ./bin/FreeCAD --run-test "TestFem"
+./bin/FreeCADCmd --run-test "TestFem"
 
 # module
 ./bin/FreeCAD --run-test "femtest.testccxtools"
 ./bin/FreeCAD --run-test "femtest.testcommon"
+./bin/FreeCAD --run-test "femtest.testmaterial"
 ./bin/FreeCAD --run-test "femtest.testmesh"
 ./bin/FreeCAD --run-test "femtest.testobject"
 ./bin/FreeCAD --run-test "femtest.testresult"
 ./bin/FreeCAD --run-test "femtest.testsolverframework"
+./bin/FreeCADCmd --run-test "femtest.testccxtools"
+./bin/FreeCADCmd --run-test "femtest.testcommon"
+./bin/FreeCADCmd --run-test "femtest.testmaterial"
+./bin/FreeCADCmd --run-test "femtest.testmesh"
+./bin/FreeCADCmd --run-test "femtest.testobject"
+./bin/FreeCADCmd --run-test "femtest.testresult"
+./bin/FreeCADCmd --run-test "femtest.testsolverframework"
 
 # class
 ./bin/FreeCAD --run-test "femtest.testcommon.TestFemCommon"
@@ -96,6 +107,8 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.testccxtools.TestCcxTools.test_5_Flow1D_thermomech_analysis"
 ./bin/FreeCADCmd --run-test "femtest.testcommon.TestFemCommon.test_adding_refshaps"
 ./bin/FreeCADCmd --run-test "femtest.testcommon.TestFemCommon.test_pyimport_all_FEM_modules"
+./bin/FreeCADCmd --run-test "femtest.testmaterial.TestMaterialUnits.test_known_quantity_units"
+./bin/FreeCADCmd --run-test "femtest.testmaterial.TestMaterialUnits.test_material_card_quantities"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshCommon.test_mesh_seg2_python"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshCommon.test_mesh_seg3_python"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshCommon.test_unv_save_load"
@@ -104,6 +117,7 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_inp"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_unv"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_vkt"
+./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_yml"
 ./bin/FreeCADCmd --run-test "femtest.testmesh.TestMeshEleTetra10.test_tetra10_z88"
 ./bin/FreeCADCmd --run-test "femtest.testobject.TestObjectCreate.test_femobjects_make"
 ./bin/FreeCADCmd --run-test "femtest.testobject.TestObjectType.test_femobjects_type"
@@ -143,6 +157,12 @@ import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testcommon.TestFemCommon.test_pyimport_all_FEM_modules"))
 
 import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmaterial.TestMaterialUnits.test_known_quantity_units"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmaterial.TestMaterialUnits.test_material_card_quantities"))
+
+import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshCommon.test_mesh_seg2_python"))
 
 import unittest
@@ -165,6 +185,9 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.t
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshEleTetra10.test_tetra10_vkt"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshEleTetra10.test_tetra10_yml"))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testmesh.TestMeshEleTetra10.test_tetra10_z88"))
@@ -201,7 +224,7 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.t
 
 
 # open files from FEM test suite source code
-# be careful on updating these files, they consist the original results!
+# be careful on updating these files, they contain the original results!
 # TODO update files, because some of them have non-existing FEM object classes
 doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/ccx/cube.FCStd')
 doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/ccx/cube_frequency.FCStd')

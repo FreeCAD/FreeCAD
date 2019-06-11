@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              * 
+#*   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -24,14 +24,21 @@ __title__="FreeCAD Draft Workbench - Init file"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
 
+
+
 class DraftWorkbench (Workbench):
     "the Draft Workbench"
     def __init__(self):
+
+        def QT_TRANSLATE_NOOP(scope, text):
+            return text
+
         self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Draft/Resources/icons/DraftWorkbench.svg"
-        self.__class__.MenuText = "Draft"
-        self.__class__.ToolTip = "The Draft module is used for basic 2D CAD Drafting"
+        self.__class__.MenuText = QT_TRANSLATE_NOOP("draft", "Draft")
+        self.__class__.ToolTip = QT_TRANSLATE_NOOP("draft", "The Draft module is used for basic 2D CAD Drafting")
 
     def Initialize(self):
+
         def QT_TRANSLATE_NOOP(scope, text):
             return text
 
@@ -68,13 +75,13 @@ class DraftWorkbench (Workbench):
             FreeCAD.Console.PrintError("Error: Initializing one or more of the Draft modules failed, Draft will not work as expected.\n")
 
         # setup menus
-        self.cmdList = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Arc_3Points","Draft_Ellipse",
+        self.cmdList = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_ArcTools","Draft_Ellipse",
                         "Draft_Polygon","Draft_Rectangle", "Draft_Text",
                         "Draft_Dimension", "Draft_BSpline","Draft_Point",
                         "Draft_ShapeString","Draft_Facebinder","Draft_BezierTools","Draft_Label"]
         self.modList = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Join", "Draft_Split", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
-                        "Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
+                        "Draft_Edit","Draft_Edit_Improved","Draft_WireToBSpline","Draft_AddPoint",
                         "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
                         "Draft_PathArray", "Draft_PointArray","Draft_Clone",
                         "Draft_Drawing","Draft_Mirror","Draft_Stretch"]
@@ -82,7 +89,7 @@ class DraftWorkbench (Workbench):
                             "Draft_SelectGroup","Draft_SelectPlane",
                             "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_AutoGroup"]
         self.lineList = ["Draft_UndoLine","Draft_FinishLine","Draft_CloseLine"]
-        self.utils = ["Draft_VisGroup","Draft_Heal","Draft_FlipDimension",
+        self.utils = ["Draft_Layer","Draft_Heal","Draft_FlipDimension",
                       "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit",
                       "Draft_Slope","Draft_SetWorkingPlaneProxy","Draft_AddConstruction"]
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
@@ -90,18 +97,18 @@ class DraftWorkbench (Workbench):
                          'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
                          'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho','Draft_Snap_Special',
                          'Draft_Snap_Dimensions','Draft_Snap_WorkingPlane']
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft creation tools"),self.cmdList)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft modification tools"),self.modList)
+        self.appendToolbar("Draft creation tools",self.cmdList)
+        self.appendToolbar("Draft modification tools",self.modList)
         self.appendMenu(QT_TRANSLATE_NOOP("draft","&Draft"),self.cmdList+self.modList)
-        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("Workbench","Utilities")],self.utils+self.treecmdList)
-        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("Workbench","Wire tools")],self.lineList)
-        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("Workbench","Snapping")],self.snapList)
+        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("draft","Utilities")],self.utils+self.treecmdList)
+        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("draft","Wire tools")],self.lineList)
+        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("draft","Snapping")],self.snapList)
         if hasattr(FreeCADGui,"draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
-                FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui","Draft")
+                FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui",QT_TRANSLATE_NOOP("draft", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui",QT_TRANSLATE_NOOP("draft", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui",QT_TRANSLATE_NOOP("draft", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui",QT_TRANSLATE_NOOP("draft", "Draft"))
                 FreeCADGui.draftToolBar.loadedPreferences = True
         Log ('Loading Draft module...done\n')
 
@@ -111,7 +118,7 @@ class DraftWorkbench (Workbench):
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.show()
         Log("Draft workbench activated\n")
-        
+
     def Deactivated(self):
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.Deactivated()
@@ -134,7 +141,7 @@ class DraftWorkbench (Workbench):
             if (FreeCADGui.Selection.getSelection()):
                 self.appendContextMenu("Utilities",self.treecmdList)
 
-    def GetClassName(self): 
+    def GetClassName(self):
         return "Gui::PythonWorkbench"
 
 FreeCADGui.addWorkbench(DraftWorkbench)

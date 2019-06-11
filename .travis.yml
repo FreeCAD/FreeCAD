@@ -24,11 +24,14 @@ env:
     - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
     - OSX_PORTS_CACHE=${OSX_PORTS_CACHE:-FreeCAD/FreeCAD-ports-cache}
     - DEPLOY=${DEPLOY:-0}
+    - GENERATOR="Unix Makefiles"
   matrix:
     # chunk.io key (if needed, obtain it with Yorik, PrzemoF, Kunda1)
     secure: MJu0ZU/9Yqut6bUkHoSrXTV/c/WhCLR0KnHKCsnEU081PYoukzH6ngzgKk7/trAH2In080d/ra4B2OmTNl/LAgV6DXKFY9dO1aG8QwcrHgaMPf0pHYUy/OfwQSFYFByQDV2OEMAHcIWc/dtNkzK2QUi44Kn7d0GtSEiN4s816lriWtjg0vmEGAU8MjvcAGss4gKyn05Xm1NUCYPKgpgIHsywLbpE76lv0eOYoosEuKv5Q9Pb4FMQts02+JUlqE8eY4ZZ3nV8iQbgIDdseOSA7Ixn05zWjU/ZRZ74TrYxMnzfUAwQcJe9OcqoESq+pPWQt5HYG66VmeVxQim1gmsiDASH51U/nswKt0Q4bISj3tVk0YZMFV8Ax+SzPvLEmFZJQGfgO1mg7HdNcz9N9G5JHPawrV19DwYIEFbAw8MCSAoIXFOcPQZUWXCbtjm7NO9vCjMrqyVJMDD9L8omvQajHoajuHbOT8KB250gFokeLj3z8yu++Tz+IrZX5inUMrXsARVt/ALXpi8rJPXmoFMpMUjyWmDPqPWlnqUhLtTtEtKpuOWP8ZnWVwkg4QYOUhCy95C1okJSGkG+ylHWncWfY4mS+UBT525laoh+GOhH+sRW+p2xkI21xGFRqg1oHjjgY1yIYF6nnSHPzxMBRYmZwagyXsjkFG5FPMWR2oYk0Yg
 cache:
     ccache: true
+    directories:
+      - $HOME/.ccache
 
 language: cpp
 python:
@@ -62,6 +65,26 @@ matrix:
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
           - PYTHON_MAJOR_VERSION=3
+
+      - os: windows
+        language: cpp
+        filter_secrets: false
+        env:
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -DFREECAD_RELEASE_PDB=OFF"
+          - GENERATOR="Visual Studio 15 2017 Win64"
+          - PYTHON_MAJOR_VERSION=3        
+          - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
+          - TEST_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\build\bin"
+          - CLCACHE_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\"
+          - VS15=true
+          - CCACHE_TEMPDIR=/tmp/.ccache-temp
+          - CCACHE_COMPRESS=1
+          - CCACHE_DIR=$HOME/.ccache
+          # enable this if clcache extended log is needed
+          #- CLCACHE_LOG=1
+        cache:
+          directories:
+            - $HOME/clcache
 
       - language: python
         python: 3.7
@@ -209,6 +232,28 @@ before_install:
        export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
        ;;
 
+   "windows")
+       #choco install -y python
+       #py -m pip install --quiet --upgrade pip
+       #py -m pip install git+https://github.com/frerich/clcache.git@v4.2.0
+       curl -L https://github.com/frerich/clcache/releases/download/v4.2.0/clcache-4.2.0.zip --output clcache-4.2.0.zip
+       7z x clcache-4.2.0.zip > /dev/null
+       export PATH=$CLCACHE_PATH:$PATH
+       export PATH=$TEST_PATH:$PATH
+       #reset clcache hit stats
+       cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -z'
+       # clcache stats before compilation
+       cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
+
+       curl -L https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z --output FreeCADLibs.7z
+       7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
+       export LIBPACK_DIR="$TRAVIS_BUILD_DIR\FreeCADLibs"
+
+       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_LIBPACK_DIR=$TRAVIS_BUILD_DIR\FreeCADLibs -DPYTHON_EXECUTABLE=$TRAVIS_BUILD_DIR\FreeCADLibs\bin\python.exe \
+       -DBUILD_QT5=TRUE"
+       export PATH=$MSBUILD_PATH:$PATH
+       ;;
+
    *)
        echo "Invalid or unsupported operating system ${TRAVIS_OS_NAME}"
        exit 1
@@ -219,18 +264,36 @@ install:
 ####
 #  Build FreeCAD with cmake options set above for each platform
 ##
-  - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
+  - mkdir build && cd build && cmake -G"${GENERATOR}" ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
 script:
 ####
 #  Install FreeCAD and run unit tests.  Test failures will fail the build
 ##
-  - sudo make -j2 install
-  - ${INSTALLED_APP_PATH} --console --run-test 0
-  - ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
-  - sleep 10 && pkill FreeCAD
-  - cat /tmp/FreeCAD_installed.log
-  - grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
+#        MSBuild.exe /m FreeCAD.sln
+  - |
+    if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
+        # call msbuild using clcache 
+        #cmd.exe /C '"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 && MSBuild.exe FreeCAD.sln /p:CLToolExe=clcache.exe /p:TrackFileAccess=false /p:CLToolPath=C:\Users\travis\build\FreeCAD\FreeCAD /m:2 /nologo /verbosity:minimal /p:Configuration=Release /p:Platform=x64'
+        cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\.travis\build.bat'
+        # ls -lahR
+        cp -a ../FreeCADLibs/bin/* bin/
+        # show clcache hit stats
+        cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
+        # run the tests
+        #cmd.exe /C 'cd C:\Users\travis\build\FreeCAD\FreeCAD\build\bin && FreeCADCmd.exe --run-test 0'
+        # Make build fail if ANY of the following fails
+        #set -ev 
+        winpty.exe -Xallow-non-tty -Xplain /C/Users/travis/build/FreeCAD/FreeCAD/build/bin/FreeCADCmd.exe --run-test 0 | tee runlog.txt
+        grep -q FAILED runlog.txt ; [ $? == 1 ] && echo "Build succeeded and tests passed!" || ( echo "Tests failed!" && false )
+    else
+        sudo make -j2 install
+        ${INSTALLED_APP_PATH} --console --run-test 0
+        ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
+        sleep 10 && pkill FreeCAD
+        cat /tmp/FreeCAD_installed.log
+        grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
+    fi
 
 after_success:
 ####

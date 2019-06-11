@@ -44,13 +44,18 @@ elif open.__module__ == 'io':
     pyopen = open
 
 
-def open(filename):
+def open(
+    filename
+):
     "called when freecad opens a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
     insert(filename, docname)
 
 
-def insert(filename, docname):
+def insert(
+    filename,
+    docname
+):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
@@ -60,30 +65,47 @@ def insert(filename, docname):
     importVtk(filename)
 
 
-def export(objectslist, filename):
+def export(
+    objectslist,
+    filename
+):
     "called when freecad exports an object to vtk"
     if len(objectslist) > 1:  # the case of no selected obj is caught by FreeCAD already
-        FreeCAD.Console.PrintError("This exporter can only export one object at once\n")
+        FreeCAD.Console.PrintError(
+            "This exporter can only export one object at once\n"
+        )
         return
 
     obj = objectslist[0]
     if obj.isDerivedFrom("Fem::FemPostPipeline"):
-        FreeCAD.Console.PrintError('Export of a VTK post object to vtk is not yet implemented !\n')
+        FreeCAD.Console.PrintError(
+            'Export of a VTK post object to vtk is not yet implemented !\n'
+        )
         return
     elif obj.isDerivedFrom("Fem::FemMeshObject"):
-        FreeCAD.Console.PrintError('Use export to FEM mesh formats to export a FEM mesh object to vtk!\n')
+        FreeCAD.Console.PrintError(
+            'Use export to FEM mesh formats to export a FEM mesh object to vtk!\n'
+        )
         return
     elif obj.isDerivedFrom("Fem::FemResultObject"):
         Fem.writeResult(filename, obj)
     else:
-        FreeCAD.Console.PrintError('Selected object is not supported by export to VTK.\n')
+        FreeCAD.Console.PrintError(
+            'Selected object is not supported by export to VTK.\n'
+        )
         return
 
 
 # ********* module specific methods *********
-def importVtk(filename, object_name=None, object_type=None):
+def importVtk(
+    filename,
+    object_name=None,
+    object_type=None
+):
     if not object_type:
-        vtkinout_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk")
+        vtkinout_prefs = FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk"
+        )
         object_type = vtkinout_prefs.GetInt("ImportObject", 0)
     if not object_name:
         object_name = os.path.splitext(os.path.basename(filename))[0]
@@ -97,10 +119,16 @@ def importVtk(filename, object_name=None, object_type=None):
         # FreeCAD result object
         importVtkFCResult(filename, object_name)
     else:
-        FreeCAD.Console.PrintError('Error, wrong parameter in VTK import pref: {}\n'.format(object_type))
+        FreeCAD.Console.PrintError(
+            'Error, wrong parameter in VTK import pref: {}\n'
+            .format(object_type)
+        )
 
 
-def importVtkVtkResult(filename, resultname):
+def importVtkVtkResult(
+    filename,
+    resultname
+):
     vtk_result_obj = FreeCAD.ActiveDocument.addObject("Fem::FemPostPipeline", resultname)
     vtk_result_obj.read(filename)
     vtk_result_obj.touch()
@@ -108,14 +136,23 @@ def importVtkVtkResult(filename, resultname):
     return vtk_result_obj
 
 
-def importVtkFemMesh(filename, meshname):
+def importVtkFemMesh(
+    filename,
+    meshname
+):
     meshobj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshObject", meshname)
     meshobj.FemMesh = Fem.read(filename)
     meshobj.touch()
     FreeCAD.ActiveDocument.recompute()
+    return meshobj
 
 
-def importVtkFCResult(filename, resultname, analysis=None, result_name_prefix=None):
+def importVtkFCResult(
+    filename,
+    resultname,
+    analysis=None,
+    result_name_prefix=None
+):
     # only fields from vtk are imported if they exactly named as the FreeCAD result properties
     # See _getFreeCADMechResultProperties() in FemVTKTools.cpp for the supported names
 
@@ -127,7 +164,8 @@ def importVtkFCResult(filename, resultname, analysis=None, result_name_prefix=No
 
     results_name = result_name_prefix + 'results'
     result_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
-    Fem.readResult(filename, result_obj.Name)  # readResult always creates a new femmesh named ResultMesh
+    # readResult always creates a new femmesh named ResultMesh
+    Fem.readResult(filename, result_obj.Name)
 
     # add missing DisplacementLengths (They should have been added by Fem.readResult)
     if not result_obj.DisplacementLengths:
@@ -147,3 +185,4 @@ def importVtkFCResult(filename, resultname, analysis=None, result_name_prefix=No
         analysis_object.addObject(result_obj)
     result_obj.touch()
     FreeCAD.ActiveDocument.recompute()
+    return result_obj

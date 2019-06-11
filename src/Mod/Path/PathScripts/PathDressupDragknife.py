@@ -24,7 +24,6 @@
 
 from __future__ import print_function
 import FreeCAD
-import FreeCADGui
 import Path
 from PySide import QtCore
 import math
@@ -33,8 +32,11 @@ import PathScripts.PathUtils as PathUtils
 
 """Dragknife Dressup object and FreeCAD command"""
 
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 

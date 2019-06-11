@@ -21,13 +21,15 @@ import PySide
 from PySide import QtGui, QtCore
 import tempfile
 
-___stpZversion___ = "1.3.2"
+___stpZversion___ = "1.3.4"
 
 
 if six.PY3:
     import gzip as gz
+    import builtins as builtin  #py3
 else:  # six.PY2
     import gzip_utf8 as gz
+    import __builtin__ as builtin #py2
     
 # import stepZ; reload(stepZ); import gzip_utf8; reload(gzip_utf8)
 
@@ -85,7 +87,8 @@ def open(filename):
     tempdir = tempfile.gettempdir() # get the current temporary directory
     tempfilepath = os.path.join(tempdir,fname + u'.stp')
 
-    with six.builtins.open(tempfilepath, 'wb') as f: #py3
+    #with six.builtins.open(tempfilepath, 'wb') as f: #py3
+    with builtin.open(tempfilepath, 'wb') as f: #py3
         f.write(file_content)
     #ImportGui.insert(filepath)
     ImportGui.open(tempfilepath)
@@ -110,7 +113,8 @@ def insert(filename,doc):
     tempdir = tempfile.gettempdir() # get the current temporary directory
     tempfilepath = os.path.join(tempdir,fname + u'.stp')
     
-    with six.builtins.open(tempfilepath, 'wb') as f: #py3
+    # with six.builtins.open(tempfilepath, 'wb') as f: #py3
+    with builtin.open(tempfilepath, 'wb') as f: #py3
         f.write(file_content)
     ImportGui.insert(tempfilepath, doc)
     #ImportGui.open(tempfilepath)
@@ -154,7 +158,7 @@ def export(objs,filename):
             QtGui.QApplication.restoreOverrideCursor()
             reply = QtGui.QMessageBox.information(None,"info", "File cannot be compressed because\na file with the same name exists\n'"+ namefpath+ "'")
         else:
-            with six.builtins.open(outfpath_stp, 'rb') as f_in:
+            with builtin.open(outfpath_stp, 'rb') as f_in:
                 file_content = f_in.read()
                 new_f_content = file_content
                 f_in.close()

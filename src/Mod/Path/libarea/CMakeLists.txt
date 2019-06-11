@@ -123,31 +123,44 @@ if(MSVC)
 
     set(area_LIBS
         ${Boost_LIBRARIES}
-        ${PYTHON_LIBRARIES}
         ${area_native_LIBS}
     )
+    if(BUILD_DYNAMIC_LINK_PYTHON)
+        list(APPEND area_LIBS ${PYTHON_LIBRARIES})
+    endif(BUILD_DYNAMIC_LINK_PYTHON)
 elseif(MINGW)
     set(area_native_LIBS
         Rpcrt4.lib
     )
     set(area_LIBS
         ${Boost_LIBRARIES}
-        ${PYTHON_LIBRARIES}
         ${area_native_LIBS}
     )
+    if(BUILD_DYNAMIC_LINK_PYTHON)
+        list(APPEND area_LIBS ${PYTHON_LIBRARIES})
+    endif(BUILD_DYNAMIC_LINK_PYTHON)
 else(MSVC)
     set(area_native_LIBS
         )
     set(area_LIBS
         ${Boost_LIBRARIES}
-        ${PYTHON_LIBRARIES}
     )
+    if(BUILD_DYNAMIC_LINK_PYTHON)
+        list(APPEND area_LIBS ${PYTHON_LIBRARIES})
+    endif(BUILD_DYNAMIC_LINK_PYTHON)
 endif(MSVC)
 
 target_link_libraries(area-native ${area_native_LIBS})
 SET_BIN_DIR(area-native area-native)
 
 target_link_libraries(area area-native ${area_LIBS} ${area_native_LIBS})
+
+# TODO why CMAKE_SHARED_LINKER_FLAGS is not used here?
+# This is a dirty workaround!
+if(NOT BUILD_DYNAMIC_LINK_PYTHON AND CMAKE_COMPILER_IS_CLANGXX)
+    target_link_libraries(area "-Wl,-undefined,dynamic_lookup")
+endif()
+
 SET_BIN_DIR(area area)
 SET_PYTHON_PREFIX_SUFFIX(area)
 

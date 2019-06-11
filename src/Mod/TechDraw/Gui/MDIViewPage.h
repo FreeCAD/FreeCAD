@@ -71,7 +71,7 @@ public:
     void matchSceneRectToTemplate(void);
     
     bool onMsg(const char* pMsg,const char** ppReturn);
-      bool onHasMsg(const char* pMsg) const;
+    bool onHasMsg(const char* pMsg) const;
 
     void print();
     void print(QPrinter* printer);
@@ -82,9 +82,6 @@ public:
     void saveSVG(std::string file);
     void saveDXF(std::string file);
     void savePDF(std::string file);
-
-    void setFrameState(bool state);
-    bool getFrameState(void) {return m_frameState;};
 
     void setDocumentObject(const std::string&);
     void setDocumentName(const std::string&);
@@ -103,6 +100,8 @@ public:
     void setTabText(std::string t);
 
     bool addView(const App::DocumentObject *obj);
+
+    static MDIViewPage *getFromScene(const QGraphicsScene *scene);
 
 public Q_SLOTS:
     void viewAll();
@@ -127,6 +126,7 @@ protected:
     QPrinter::PaperSize getPaperSize(int w, int h) const;
     void setDimensionGroups(void);
     void setBalloonGroups(void);
+    void setLeaderGroups(void);
     void showStatusMsg(const char* s1, const char* s2, const char* s3) const;
     
     void onDeleteObject(const App::DocumentObject& obj);
@@ -156,8 +156,6 @@ private:
     QPrinter::Orientation m_orientation;
     QPrinter::PaperSize m_paperSize;
     ViewProviderPage *m_vpPage;
-
-    bool m_frameState;
 
     QList<QGraphicsItem*> m_sceneSelected;
     QList<QGIView *> deleteItems;

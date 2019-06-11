@@ -21,7 +21,11 @@
 ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <algorithm>
+
+#ifndef _PreComp_
+# include <algorithm>
+#endif
+
 #include "VolSim.h"
 
 //************************************************************************************************************
@@ -103,7 +107,7 @@ float cStock::FindRectTop(int & xp, int & yp, int & x_size, int & y_size, bool s
 			}
 		}
 
-		// sweep up y direction 
+		// sweep up y direction
 		if (yu_ok)
 		{
 			int ty = yp + y_size;
@@ -124,7 +128,7 @@ float cStock::FindRectTop(int & xp, int & yp, int & x_size, int & y_size, bool s
 			}
 		}
 
-		// sweep down y direction 
+		// sweep down y direction
 		if (yd_ok)
 		{
 			int ty = yp - 1;
@@ -249,7 +253,7 @@ void cStock::FindRectBot(int & xp, int & yp, int & x_size, int & y_size, bool sc
 			}
 		}
 
-		// sweep up y direction 
+		// sweep up y direction
 		if (yu_ok)
 		{
 			int ty = yp + y_size;
@@ -270,7 +274,7 @@ void cStock::FindRectBot(int & xp, int & yp, int & x_size, int & y_size, bool sc
 			}
 		}
 
-		// sweep down y direction 
+		// sweep down y direction
 		if (yd_ok)
 		{
 			int ty = yp - 1;
@@ -502,7 +506,7 @@ void cStock::CreatePocket(float cxf, float cyf, float radf, float height)
 
 void cStock::ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool & tool)
 {
-	// tanslate coordinates
+	// translate coordinates
 	Point3D pi1 = ToInner(p1);
 	Point3D pi2 = ToInner(p2);
 	float rad = tool.radius;
@@ -552,7 +556,7 @@ void cStock::ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool & tool)
 	for (float r = 0.5f; r <= rad; r += (float)SIM_WALK_RES)
 	{
 		Point3D cupCirc(perpDirX * r, perpDirY * r, pi2.z);
-		float rotang = 180 * SIM_WALK_RES / (3.1415926535 * r); 
+		float rotang = 180 * SIM_WALK_RES / (3.1415926535 * r);
 		cupCirc.SetRotationAngle(-rotang);
 		float z = pi2.z + tool.GetToolProfileAt(r / rad);
 		for (float a = 0; a < cupAngle; a += rotang)
@@ -571,7 +575,7 @@ void cStock::ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool & tool)
 
 void cStock::ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimTool & tool, bool isCCW)
 {
-	// tanslate coordinates
+	// translate coordinates
 	Point3D pi1 = ToInner(p1);
 	Point3D pi2 = ToInner(p2);
 	Point3D centi(cent.x / m_res, cent.y / m_res, cent.z);
@@ -593,7 +597,7 @@ void cStock::ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimT
 	cpx += pi1.x;
 	cpy += pi1.y;
 	double eang = atan2(pi2.y - cpy, pi2.x - cpx); // end angle
-	
+
 	double ang = eang - sang;
 	if (!isCCW && ang > 0)
 		ang -= 2 * 3.1415926;
@@ -609,7 +613,7 @@ void cStock::ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimT
 	{
 		cupCirc.x = xynorm.x * r;
 		cupCirc.y = xynorm.y * r;
-		float rotang = (float)SIM_WALK_RES / r; 
+		float rotang = (float)SIM_WALK_RES / r;
 		int ndivs = (int)(ang / rotang) + 1;
 		if (!isCCW)
 			rotang = -rotang;

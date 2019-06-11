@@ -329,7 +329,7 @@ void StdCmdMergeProjects::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     QString exe = qApp->applicationName();
-    QString project = QFileDialog::getOpenFileName(Gui::getMainWindow(),
+    QString project = FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Merge project")), FileDialog::getWorkingDirectory(),
         QString::fromUtf8(QT_TR_NOOP("%1 document (*.FCStd)")).arg(exe));
     if (!project.isEmpty()) {

@@ -56,7 +56,7 @@
 # include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoCamera.h>
-# include <Gui/Inventor/SmSwitchboard.h>
+# include <Inventor/SbTime.h>
 
 /// Qt Include Files
 # include <QAction>
@@ -70,14 +70,14 @@
 # include <QPainter>
 # include <QTextStream>
 # include <QKeyEvent>
-#endif
 
-#ifndef _PreComp_
 # include <boost/bind.hpp>
+# include <boost/scoped_ptr.hpp>
 #endif
 
-#include <Inventor/SbTime.h>
-#include <boost/scoped_ptr.hpp>
+
+
+
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Tools.h>
@@ -102,6 +102,7 @@
 #include <Gui/SoFCBoundingBox.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
+#include <Gui/Inventor/SmSwitchboard.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/BodyBase.h>
@@ -300,7 +301,7 @@ ViewProviderSketch::ViewProviderSketch()
         this->RestoreCamera.setValue(hGrp->GetBool("RestoreCamera", true));
 
         // well it is not visibility automation but a good place nevertheless
-        this->Autoconstraints.setValue(hGrp->GetBool("AutoConstraints",false));
+        this->Autoconstraints.setValue(hGrp->GetBool("AutoConstraints", true));
     }
 
     sPixmap = "Sketcher_Sketch";
@@ -1749,7 +1750,10 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                             b != edit->combinedConstrBoxes[constrIdsStr].end(); ++b) {
 
 #ifdef FC_DEBUG
-                            Base::Console().Log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n", absPos[0],absPos[1],trans[0], trans[1], cursorPos[0], cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY, iconSize[0], iconSize[1], b->first.topLeft().x(),b->first.topLeft().y(),b->first.bottomRight().x(),b->first.bottomRight().y());
+                            // Useful code to debug coordinates and bounding boxes that does not need to be compiled in for
+                            // any debug operations.
+
+                            /*Base::Console().Log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n", absPos[0],absPos[1],trans[0], trans[1], cursorPos[0], cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY, iconSize[0], iconSize[1], b->first.topLeft().x(),b->first.topLeft().y(),b->first.bottomRight().x(),b->first.bottomRight().y());*/
 #endif
 
                             if (b->first.contains(iconX, iconY)) {
@@ -3802,7 +3806,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 }
                 catch(Base::CADKernelError &e) {
                     // it is "just" a visualisation matter OCC could not calculate the curvature
-                    // terminating here would mean that the other shapes would not be drawed.
+                    // terminating here would mean that the other shapes would not be drawn.
                     // Solution: Report the issue and set dummy curvature to 0
                     e.ReportException();
                     Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", GeoId);
@@ -4014,7 +4018,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             }
             catch(Base::CADKernelError &e) {
                 // it is "just" a visualisation matter OCC could not calculate the curvature
-                // terminating here would mean that the other shapes would not be drawed.
+                // terminating here would mean that the other shapes would not be drawn.
                 // Solution: Report the issue and set dummy curvature to 0
                 e.ReportException();
                 Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", GeoId);

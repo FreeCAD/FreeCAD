@@ -269,7 +269,8 @@ class plane:
         if len(sex) == 0:
             return False
         elif len(sex) == 1:
-            if not sex[0].Object.isDerivedFrom("Part::Shape"):
+            if not sex[0].Object.isDerivedFrom("Part::Feature") \
+                or not sex[0].Object.Shape:
                 return False
             return self.alignToCurve(sex[0].Object.Shape, offset) \
                 or self.alignToFace(sex[0].Object.Shape, offset) \

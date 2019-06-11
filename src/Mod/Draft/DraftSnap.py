@@ -195,7 +195,7 @@ class Snapper:
         self.setTrackers()
 
         # getting current snap Radius
-        self.radius =  self.getScreenDist(Draft.getParam("snapRange",5),screenpos)
+        self.radius =  self.getScreenDist(Draft.getParam("snapRange", 8),screenpos)
         if self.radiusTracker:
             self.radiusTracker.update(self.radius)
             self.radiusTracker.off()
@@ -225,9 +225,8 @@ class Snapper:
         point = self.getApparentPoint(screenpos[0],screenpos[1])
 
         # setup a track line if we got a last point
-        if lastpoint:
-            if self.trackLine:
-                self.trackLine.p1(lastpoint)
+        if lastpoint and self.trackLine:
+            self.trackLine.p1(lastpoint)
 
         # checking if parallel to one of the edges of the last objects or to a polar direction
         if active:
@@ -286,12 +285,10 @@ class Snapper:
                 return self.spoint
 
         if not active:
-
             # passive snapping
             snaps = [self.snapToVertex(self.snapInfo)]
 
         else:
-
             # first stick to the snapped object
             s = self.snapToVertex(self.snapInfo)
             if s:
@@ -383,6 +380,9 @@ class Snapper:
         if not snaps:
             self.spoint = self.cstr(lastpoint, constrain, point)
             self.running = False
+            if self.trackLine and lastpoint:
+                self.trackLine.p2(self.spoint)
+                self.trackLine.on()
             return self.spoint
 
         # calculating the nearest snap point
@@ -1133,10 +1133,10 @@ class Snapper:
         if self.constrainLine:
             self.constrainLine.off()
 
-    def getPoint(self,last=None,callback=None,movecallback=None,extradlg=None):
+    def getPoint(self,last=None,callback=None,movecallback=None,extradlg=None,title=None,mode="point"):
 
         """
-        getPoint([last],[callback],[movecallback],[extradlg]) : gets a 3D point
+        getPoint([last],[callback],[movecallback],[extradlg],[title]) : gets a 3D point
         from the screen. You can provide an existing point, in that case additional
         snap options and a tracker are available.
         You can also pass a function as callback, which will get called
@@ -1155,6 +1155,8 @@ class Snapper:
 
         If the callback function accepts more than one argument, it will also receive
         the last snapped object. Finally, a qt widget can be passed as an extra taskbox.
+        title is the title of the point task box
+        mode is the dialog box you want (default is point, you can also use wire and line)
 
         If getPoint() is invoked without any argument, nothing is done but the callbacks
         are removed, so it can be used as a cancel function.
@@ -1233,8 +1235,17 @@ class Snapper:
                     callback(None)
 
         # adding callback functions
+        if mode == "line":
+            interface = self.ui.lineUi
+        elif mode == "wire":
+            interface = self.ui.wireUi
+        else:
+            interface = self.ui.pointUi
         if callback:
-            self.ui.pointUi(cancel=cancel,getcoords=getcoords,extra=extradlg,rel=bool(last))
+            if title:
+                interface(title=title,cancel=cancel,getcoords=getcoords,extra=extradlg,rel=bool(last))
+            else:
+                interface(cancel=cancel,getcoords=getcoords,extra=extradlg,rel=bool(last))
             self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),click)
             self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),move)
 
@@ -1349,7 +1360,7 @@ class Snapper:
 
     def showradius(self):
         "shows the snap radius indicator"
-        self.radius =  self.getScreenDist(Draft.getParam("snapRange",10),(400,300))
+        self.radius =  self.getScreenDist(Draft.getParam("snapRange", 8),(400,300))
         if self.radiusTracker:
             self.radiusTracker.update(self.radius)
             self.radiusTracker.on()

@@ -32,7 +32,10 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
+#include <Base/GeometryPyCXX.h>
 #include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
@@ -57,6 +60,17 @@ public:
             "    poly (list of (x, y z) or (x, y) tuples of floats):\n"
             "    upVector ((x, y, z) tuple):\n"
             "    MaxSize (float):\n"
+        );
+        add_keyword_method("projectShapeOnMesh",&Module::projectShapeOnMesh,
+            "Projects a shape onto a mesh with a given maximum distance\n"
+            "projectShapeOnMesh(Shape, Mesh, float) -> polygon\n"
+            "or projects the shape in a given direction\n"
+            "\n"
+            "Multiple signatures are available:\n"
+            "\n"
+            "projectShapeOnMesh(Shape, Mesh, float) -> list of polygons\n"
+            "projectShapeOnMesh(Shape, Mesh, Vector) -> list of polygons\n"
+            "projectShapeOnMesh(list of polygons, Mesh, Vector) -> list of polygons\n"
         );
         add_varargs_method("wireFromSegment",&Module::wireFromSegment,
             "Create wire(s) from boundary of segment\n"
@@ -193,6 +207,125 @@ private:
         // use the MeshAlgos 
         MeshPart::MeshAlgos::LoftOnCurve(M,aShape,poly,Base::Vector3f(x,y,z),size);
         return Py::asObject(new Mesh::MeshPy(new Mesh::MeshObject(M)));
+    }
+    Py::Object projectShapeOnMesh(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        static char* kwds_maxdist[] = {"Shape", "Mesh", "MaxDistance", NULL};
+        PyObject *s, *m;
+        double maxDist;
+        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(),
+                                        "O!O!d", kwds_maxdist,
+                                        &Part::TopoShapePy::Type, &s,
+                                        &Mesh::MeshPy::Type, &m,
+                                        &maxDist)) {
+            TopoDS_Shape shape = static_cast<Part::TopoShapePy*>(s)->getTopoShapePtr()->getShape();
+            const Mesh::MeshObject* mesh = static_cast<Mesh::MeshPy*>(m)->getMeshObjectPtr();
+            MeshCore::MeshKernel kernel(mesh->getKernel());
+            kernel.Transform(mesh->getTransform());
+
+            MeshProjection proj(kernel);
+            std::vector<MeshProjection::PolyLine> polylines;
+            proj.projectToMesh(shape, maxDist, polylines);
+
+            Py::List list;
+            for (auto it : polylines) {
+                Py::List poly;
+                for (auto jt : it.points) {
+                    Py::Vector v(jt);
+                    poly.append(v);
+                }
+                list.append(poly);
+            }
+
+            return list;
+        }
+
+        static char* kwds_dir[] = {"Shape", "Mesh", "Direction", NULL};
+        PyErr_Clear();
+        PyObject *v;
+        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(),
+                                        "O!O!O!", kwds_dir,
+                                        &Part::TopoShapePy::Type, &s,
+                                        &Mesh::MeshPy::Type, &m,
+                                        &Base::VectorPy::Type, &v)) {
+            TopoDS_Shape shape = static_cast<Part::TopoShapePy*>(s)->getTopoShapePtr()->getShape();
+            const Mesh::MeshObject* mesh = static_cast<Mesh::MeshPy*>(m)->getMeshObjectPtr();
+            Base::Vector3d* vec = static_cast<Base::VectorPy*>(v)->getVectorPtr();
+            Base::Vector3f dir = Base::convertTo<Base::Vector3f>(*vec);
+
+            MeshCore::MeshKernel kernel(mesh->getKernel());
+            kernel.Transform(mesh->getTransform());
+
+            MeshProjection proj(kernel);
+            std::vector<MeshProjection::PolyLine> polylines;
+            proj.projectParallelToMesh(shape, dir, polylines);
+            Py::List list;
+            for (auto it : polylines) {
+                Py::List poly;
+                for (auto jt : it.points) {
+                    Py::Vector v(jt);
+                    poly.append(v);
+                }
+                list.append(poly);
+            }
+
+            return list;
+        }
+
+        static char* kwds_poly[] = {"Polygons", "Mesh", "Direction", NULL};
+        PyErr_Clear();
+        PyObject *seq;
+        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(),
+                                        "OO!O!", kwds_poly,
+                                        &seq,
+                                        &Mesh::MeshPy::Type, &m,
+                                        &Base::VectorPy::Type, &v)) {
+            std::vector<MeshProjection::PolyLine> polylinesIn;
+            Py::Sequence edges(seq);
+            polylinesIn.reserve(edges.size());
+
+            // collect list of sampled input edges
+            for (Py::Sequence::iterator it = edges.begin(); it != edges.end(); ++it) {
+                Py::Sequence edge(*it);
+                MeshProjection::PolyLine poly;
+                poly.points.reserve(edge.size());
+
+                for (Py::Sequence::iterator jt = edge.begin(); jt != edge.end(); ++jt) {
+                    Py::Vector pnt(*jt);
+                    poly.points.push_back(Base::convertTo<Base::Vector3f>(pnt.toVector()));
+                }
+
+                polylinesIn.push_back(poly);
+            }
+
+            const Mesh::MeshObject* mesh = static_cast<Mesh::MeshPy*>(m)->getMeshObjectPtr();
+            Base::Vector3d* vec = static_cast<Base::VectorPy*>(v)->getVectorPtr();
+            Base::Vector3f dir = Base::convertTo<Base::Vector3f>(*vec);
+
+            MeshCore::MeshKernel kernel(mesh->getKernel());
+            kernel.Transform(mesh->getTransform());
+
+            MeshProjection proj(kernel);
+            std::vector<MeshProjection::PolyLine> polylines;
+            proj.projectParallelToMesh(polylinesIn, dir, polylines);
+
+            Py::List list;
+            for (auto it : polylines) {
+                Py::List poly;
+                for (auto jt : it.points) {
+                    Py::Vector v(jt);
+                    poly.append(v);
+                }
+                list.append(poly);
+            }
+
+            return list;
+        }
+
+        throw Py::TypeError("Expected arguments are:\n"
+                            "Shape, Mesh, float or\n"
+                            "Shape, Mesh, Vector or\n"
+                            "Polygons, Mesh, Vector\n");
     }
     Py::Object wireFromSegment(const Py::Tuple& args)
     {
