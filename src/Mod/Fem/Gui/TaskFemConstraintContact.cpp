@@ -116,7 +116,6 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
         ui->lw_referencesMaster->addItem(makeRefText(Objects[1], SubElements[1]));		
         ui->lw_referencesSlave->addItem(makeRefText(Objects[0], SubElements[0]));
     }
-}
 
     //Selection buttons
     connect(ui->btnAddSlave, SIGNAL(clicked()),  this, SLOT(addToSelectionSlave()));
