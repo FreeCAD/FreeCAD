@@ -101,7 +101,7 @@ def decode(name):
 # Line5: FreeCAD version info or empty
 def read(filename):
     "reads a FCMat file and returns a dictionary from it"
-    # the reader should return a dictionary in any case even if the file 
+    # the reader should return a dictionary in any case even if the file
     # has problems, a empty dict shuld be returned un such case
     if isinstance(filename, unicode):
         if sys.version_info.major < 3:
