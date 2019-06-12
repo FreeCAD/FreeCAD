@@ -27,6 +27,7 @@
 #          with axis & rotation toggles and associated min/max values
 
 import FreeCAD
+import FreeCADGui
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
@@ -36,8 +37,6 @@ import Draft
 # from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 import math
-if FreeCAD.GuiUp:
-    import FreeCADGui
 
 __title__ = "Base class for PathArea based operations."
 __author__ = "sliptonic (Brad Collette)"
@@ -45,15 +44,14 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "mlampert [FreeCAD], russ4262 (Russell Johnson)"
 __createdDate__ = "2017"
-__scriptVersion__ = "2e testing"
-__lastModified__ = "2019-06-12 06:28 CST"
+__scriptVersion__ = "2f testing"
+__lastModified__ = "2019-06-12 14:12 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule()
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -233,8 +231,6 @@ class ObjectOp(PathOp.ObjectOp):
                 obj.FinalDepth.Value = finalDepth
                 obj.OpStartDepth.Value = startDepth
                 obj.OpFinalDepth.Value = finalDepth
-                # obj.OpStartDepth.UserString = str(startDepth) + ' mm'  # Read-only
-                # obj.OpFinalDepth.UserString = str(finalDepth) + ' mm'  # Read-only
 
                 if obj.EnableRotation != 'Off':
                     if self.initOpFinalDepth is None:
@@ -380,8 +376,8 @@ class ObjectOp(PathOp.ObjectOp):
                 if obj.StartDepth.Value == obj.OpStartDepth.Value:
                     obj.StartDepth.Value = self.strDep
 
-            # Create visual axises for debugging purposes.
-            if PathLog.getLevel() == 2:
+            # Create visual axises when debugging.
+            if PathLog.getLevel(PathLog.thisModule()) == 4:
                 self.visualAxis()
         else:
             self.strDep = obj.StartDepth.Value
@@ -564,12 +560,12 @@ class ObjectOp(PathOp.ObjectOp):
 
         return [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
 
-    def pocketRotationAnalysis(self, obj, norm, surf, prnt):
-        '''pocketRotationAnalysis(self, obj, norm, surf, prnt)
+    def faceRotationAnalysis(self, obj, norm, surf):
+        '''faceRotationAnalysis(self, obj, norm, surf)
             Determine X and Y independent rotation necessary to make normalAt = Z=1 (0,0,1) '''
         PathLog.track()
 
-        praInfo = "pocketRotationAnalysis() in PathAreaOp.py"
+        praInfo = "faceRotationAnalysis() in PathAreaOp.py"
         rtn = False
         axis = 'X'
         orientation = 'X'
@@ -677,8 +673,8 @@ class ObjectOp(PathOp.ObjectOp):
         else:
             praInfo += "\n - ... NO rotation triggered"
 
-        if prnt is True:
-            PathLog.info("praInfo: " + str(praInfo))
+        PathLog.debug("\n" + str(praInfo))
+
         return (rtn, angle, axis, praInfo)
 
     def guiMessage(self, title, msg, show=False):
@@ -722,6 +718,7 @@ class ObjectOp(PathOp.ObjectOp):
             zAx = 'zAxCyl'
             FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","visualAxis")
             FreeCADGui.ActiveDocument.getObject('visualAxis').Visibility = False
+            vaGrp = FreeCAD.ActiveDocument.getObject("visualAxis")
 
             FreeCAD.ActiveDocument.addObject("Part::Cylinder", xAx)
             cyl = FreeCAD.ActiveDocument.getObject(xAx)
@@ -730,11 +727,11 @@ class ObjectOp(PathOp.ObjectOp):
             cyl.Height = 0.01
             cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(0,1,0),90))
             cyl.purgeTouched()
-            FreeCAD.ActiveDocument.getObject("visualAxis").addObject(cyl)
             cylGui = FreeCADGui.ActiveDocument.getObject(xAx)
             cylGui.ShapeColor = (0.667,0.000,0.000)
-            cylGui.Transparency = 80
+            cylGui.Transparency = 85
             cylGui.Visibility = False
+            vaGrp.addObject(cyl)
 
             FreeCAD.ActiveDocument.addObject("Part::Cylinder", yAx)
             cyl = FreeCAD.ActiveDocument.getObject(yAx)
@@ -742,12 +739,12 @@ class ObjectOp(PathOp.ObjectOp):
             cyl.Radius = self.yRotRad
             cyl.Height = 0.01
             cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(1,0,0),90))
-            FreeCAD.ActiveDocument.getObject("visualAxis").addObject(cyl)
             cyl.purgeTouched()
             cylGui = FreeCADGui.ActiveDocument.getObject(yAx)
             cylGui.ShapeColor = (0.000,0.667,0.000)
-            cylGui.Transparency = 80
+            cylGui.Transparency = 85
             cylGui.Visibility = False
+            vaGrp.addObject(cyl)
             
             if False:
                 FreeCAD.ActiveDocument.addObject("Part::Cylinder", zAx)
@@ -755,18 +752,19 @@ class ObjectOp(PathOp.ObjectOp):
                 cyl.Label = zAx
                 cyl.Radius = self.yRotRad
                 cyl.Height = 0.01
-                cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(1,0,0),90))
-                FreeCAD.ActiveDocument.getObject("visualAxis").addObject(cyl)
+                # cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(1,0,0),90))
                 cyl.purgeTouched()
                 cylGui = FreeCADGui.ActiveDocument.getObject(zAx)
                 cylGui.ShapeColor = (0.000,0.000,0.498)
-                cylGui.Transparency = 80
+                cylGui.Transparency = 85
                 cylGui.Visibility = False
+                vaGrp.addObject(cyl)
+
 
     def useRotJobClones(self, cloneName):
         if FreeCAD.ActiveDocument.getObject('rotJobClones'):
             if cloneName == 'Delete':
-                if PathLog.getLevel() != 2:
+                if PathLog.getLevel(PathLog.thisModule()) < 4:
                     for cln in FreeCAD.ActiveDocument.getObject('rotJobClones').Group:
                         FreeCAD.ActiveDocument.removeObject(cln.Name)
                     FreeCAD.ActiveDocument.removeObject('rotJobClones')
@@ -854,7 +852,7 @@ class ObjectOp(PathOp.ObjectOp):
         clnStock.purgeTouched()
         return (clnBase, angle, clnStock, tag)
 
-    def applyInverseAngle(self, obj, clnBase, clnStock, axis, angle):
+    def applyInverseAngle(self, obj, clnBase, clnStock, axis, angle):        
         if axis == 'X':
             vect = FreeCAD.Vector(1, 0, 0)
         elif axis == 'Y':
@@ -864,12 +862,11 @@ class ObjectOp(PathOp.ObjectOp):
         clnStock = Draft.rotate(clnStock, (-2 * angle), center=FreeCAD.Vector(0.0, 0.0, 0.0), axis=vect, copy=False)
         clnBase.purgeTouched()
         clnStock.purgeTouched()
-        if obj.InverseAngle is False:
-            obj.InverseAngle = True
-        else:
-            obj.InverseAngle = False
+        # Update property and angle values
+        obj.InverseAngle = True
         angle = -1 * angle
-        PathLog.debug("  --Rotated to InverseAngle.")
+
+        PathLog.info(translate("Path", "Rotated to inverse angle."))
         return (clnBase, clnStock, angle)
 
     def calculateStartFinalDepths(self, obj, shape, stock):
