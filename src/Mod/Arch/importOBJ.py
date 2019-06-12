@@ -118,8 +118,16 @@ def getIndices(shape,offset):
                 flist.append(fi)
     return vlist,elist,flist
 
-def export(exportList,filename):
-    "called when freecad exports a file"
+
+def export(exportList,filename,colors=None):
+
+    """export(exportList,filename,colors=None):
+    Called when freecad exports a file. exportList is a list
+    of objects, filename is the .obj file to export (a .mtl
+    file with same name will also be created together), and
+    optionally colors can be a dict containing ["objectName:colorTuple"]
+    pairs for use in non-GUI mode."""
+
     import codecs
     outfile = codecs.open(filename,"wb",encoding="utf8")
     ver = FreeCAD.Version()
@@ -132,7 +140,7 @@ def export(exportList,filename):
     materials = []
     outfile.write("mtllib " + os.path.basename(filenamemtl) + "\n")
     for obj in objectslist:
-        if obj.isDerivedFrom("Part::Feature"):
+        if obj.isDerivedFrom("Part::Feature") or obj.isDerivedFrom("Mesh::Feature"):
             hires = None
             if FreeCAD.GuiUp:
                 visible = obj.ViewObject.isVisible()
@@ -163,7 +171,10 @@ def export(exportList,filename):
                 if hires:
                     vlist,elist,flist = getIndices(hires,offset)
                 else:
-                    vlist,elist,flist = getIndices(obj.Shape,offset)
+                    if hasattr(obj,"Shape") and obj.Shape:
+                        vlist,elist,flist = getIndices(obj.Shape,offset)
+                    elif hasattr(obj,"Mesh") and obj.Mesh:
+                        vlist,elist,flist = getIndices(obj.Mesh,offset)
                 if vlist == None:
                     FreeCAD.Console.PrintError("Unable to export object "+obj.Label+". Skipping.\n")
                 else:
@@ -179,9 +190,20 @@ def export(exportList,filename):
                                 materials.append(obj.Material)
                                 m = True
                     if not m:
-                        if FreeCAD.GuiUp:
+                        if colors:
+                            if obj.Name in colors:
+                                color = colors[obj.Name]
+                                if color:
+                                    if isinstance(color[0],tuple):
+                                        # this is a diffusecolor. For now, use the first color - #TODO: Support per-face colors
+                                        color = color[0]
+                                    #print("found color for obj",obj.Name,":",color)
+                                    mn = Draft.getrgb(color,testbw=False)[1:]
+                                    outfile.write("usemtl color_" + mn + "\n")
+                                    materials.append(("color_" + mn,color,0))
+                        elif FreeCAD.GuiUp:
                             if hasattr(obj.ViewObject,"ShapeColor") and hasattr(obj.ViewObject,"Transparency"):
-                                mn = Draft.getrgb(obj.ViewObject.ShapeColor)[1:]
+                                mn = Draft.getrgb(obj.ViewObject.ShapeColor,testbw=False)[1:]
                                 outfile.write("usemtl color_" + mn + "\n")
                                 materials.append(("color_" + mn,obj.ViewObject.ShapeColor,obj.ViewObject.Transparency))
 

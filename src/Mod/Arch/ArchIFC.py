@@ -41,6 +41,8 @@ def getIfcProduct(IfcType):
     "Returns an IFC product name from an obj.IfcType"
     
     name = "Ifc" + IfcType.replace(" ", "")
+    if IfcType == "Undefined":
+        name = "IfcBuildingElementProxy"
     if name in ArchIFCSchema.IfcProducts:
         return ArchIFCSchema.IfcProducts[name]
 
