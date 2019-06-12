@@ -271,7 +271,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         else:
             drawing_plane_normal = FreeCAD.Vector(0,0,1)
         if plane: drawing_plane_normal = plane.axis
-        if round(edge.Curve.Axis.getAngle(drawing_plane_normal),2) == 0:
+        if round(edge.Curve.Axis.getAngle(drawing_plane_normal),2) in [0, 3.14]:
             # perpendicular projection: circle
             svg = '<circle cx="' + str(cen.x)
             svg += '" cy="' + str(cen.y)
