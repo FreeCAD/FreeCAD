@@ -113,6 +113,7 @@ class PathWorkbench (Workbench):
         threedcmdgroup = threedopcmdlist
         if PathPreferences.experimentalFeaturesEnabled():
             projcmdlist.append("Path_Sanity")
+            engravecmdlist.append("Path_Vcarve")
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
 

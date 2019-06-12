@@ -47,6 +47,9 @@ class MESHGate(PathBaseGate):
     def allow(self, doc, obj, sub): # pylint: disable=unused-argument
         return obj.TypeId[0:4] == 'Mesh'
 
+class VCARVEGate:
+    def allow(self, doc, obj, sub):
+
 
 class ENGRAVEGate(PathBaseGate):
     def allow(self, doc, obj, sub): # pylint: disable=unused-argument
@@ -300,6 +303,10 @@ def surfaceselect():
     FreeCADGui.Selection.addSelectionGate(gate)
     FreeCAD.Console.PrintWarning("Surfacing Select Mode\n")
 
+def vcarveselect():
+    FreeCADGui.Selection.addSelectionGate(VCARVEGate())
+    FreeCAD.Console.PrintWarning("Vcarve Select Mode\n")
+
 
 def probeselect():
     FreeCADGui.Selection.addSelectionGate(PROBEGate())
@@ -328,6 +335,7 @@ def select(op):
     opsel['Surface'] = surfaceselect
     opsel['Waterline'] = surfaceselect
     opsel['Adaptive'] = adaptiveselect
+    opsel['Vcarve'] = vcarveselect
     opsel['Probe'] = probeselect
     opsel['Custom'] = customselect
     return opsel[op]
