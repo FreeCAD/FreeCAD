@@ -23,6 +23,7 @@
 
 import os
 import sys
+import FreeCAD
 
 # check for SSL support
 
