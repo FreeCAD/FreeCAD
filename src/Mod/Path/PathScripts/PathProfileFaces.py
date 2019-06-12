@@ -36,6 +36,14 @@ import numpy
 # from PathScripts.PathUtils import depth_params
 from PySide import QtCore
 
+__title__ = "Path Profile Faces Operation"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Path Profile operation based on faces."
+__created__ = "2014"
+__scriptVersion__ = "2f testing"
+__lastModified__ = "2019-06-12 14:12 CST"
+
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
@@ -45,14 +53,6 @@ else:
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
-
-__title__ = "Path Profile Faces Operation"
-__author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
-__doc__ = "Path Profile operation based on faces."
-__created__ = "2014"
-__scriptVersion__ = "2e testing"
-__lastModified__ = "2019-06-11 14:30 CST"
 
 
 class ObjectProfile(PathProfileBase.ObjectProfile):
@@ -99,6 +99,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         shapes = []
         self.profileshape = []
+        finalDepths = []
 
         baseSubsTuples = []
         subCount = 0
@@ -114,25 +115,24 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         if isinstance(shape, Part.Face):
                             rtn = False
                             (norm, surf) = self.getFaceNormAndSurf(shape)
-                            (rtn, angle, axis, praInfo)= self.pocketRotationAnalysis(obj, norm, surf, prnt=True)
-                            PathLog.info("praInfo: \n" + str(praInfo))
+                            (rtn, angle, axis, praInfo)= self.faceRotationAnalysis(obj, norm, surf)
                             if rtn is True:
                                 (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, subCount)
                                 # Verify faces are correctly oriented - InverseAngle might be necessary
                                 faceIA = getattr(clnBase.Shape, sub)
                                 (norm, surf) = self.getFaceNormAndSurf(faceIA)
-                                (rtn, praAngle, praAxis, praInfo) = self.pocketRotationAnalysis(obj, norm, surf, prnt=False)
+                                (rtn, praAngle, praAxis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)
                                 if rtn is True:
-                                    PathLog.error("  --Face not aligned after initial rotation.")
-                                    if obj.AttemptInverseAngle is True:
+                                    PathLog.error(translate("Path", "Face appears misaligned after initial rotation."))
+                                    if obj.AttemptInverseAngle is True and obj.InverseAngle is False:
                                         (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
                                     else:
-                                        msg = "Consider toggling the 'InverseAngle' property and recomputing."
+                                        msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
                                         PathLog.error(msg)
-                                        title = 'Rotation Warning'
-                                        self.guiMessage(title, msg, False)
+                                        # title = translate("Path", 'Rotation Warning')
+                                        # self.guiMessage(title, msg, False)
                                 else:
-                                    PathLog.debug("  --Face appears to be oriented correctly.")
+                                    PathLog.debug("Face appears to be oriented correctly.")
 
                                 tup = clnBase, sub, tag, angle, axis, clnStock
                             else:
@@ -151,7 +151,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     msg = "Multiple faces in Base Geometry."
                     msg += "  Depth settings will be applied to all faces."
                     msg = translate("Path", msg)
-                    PathLog.error(msg)
+                    PathLog.warning(msg)
                     #title = translate("Path", "Depth Warning")
                     #self.guiMessage(title, msg)
                 (Tags, Grps) = self.sortTuplesByIndex(allTuples, 2) # return (TagList, GroupList)
@@ -164,7 +164,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     baseSubsTuples.append(pair)
                 # Efor                       
             else:
-                PathLog.info("Use Rotation feature(property) is 'Off'.")
+                PathLog.info(translate("Path", "EnableRotation property is 'Off'."))
                 stock = PathUtils.findParentJob(obj).Stock
                 for (base, subList) in obj.Base:
                     baseSubsTuples.append((base, subList, 0.0, 'X', stock))
@@ -192,8 +192,10 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                     drillable = PathUtils.isDrillable(shape, wire)
                     if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
+                        PathLog.track()
                         # Recalculate depthparams
                         (strDep, finDep) = self.calculateStartFinalDepths(obj, shape, stock)
+                        finalDepths.append(finDep)
                         PathLog.debug("Adjusted face depths strDep: {}, and finDep: {}".format(self.strDep, self.finDep))
                         finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
                         self.depthparams = PathUtils.depth_params(
@@ -205,7 +207,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                             final_depth=finDep, #obj.FinalDepth.Value,
                             user_depths=None)
                         env = PathUtils.getEnvelope(shape, subshape=f, depthparams=self.depthparams)
-                        PathLog.track()
                         # shapes.append((env, True))
                         tup = env, True, 'pathProfileFaces', angle, axis, strDep, finDep
                         shapes.append(tup)
@@ -219,6 +220,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     if profileshape:
                         # Recalculate depthparams
                         (strDep, finDep) = self.calculateStartFinalDepths(obj, profileshape, stock)
+                        finalDepths.append(finDep)
                         PathLog.debug("Adjusted face depths strDep: {}, and finDep: {}".format(self.strDep, self.finDep))
                         finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
                         self.depthparams = PathUtils.depth_params(
@@ -235,7 +237,8 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     try:
                         env = PathUtils.getEnvelope(base.Shape, subshape=profileshape, depthparams=self.depthparams)
                     except Exception as ee:
-                        PathLog.error(translate('Path', 'getEnvelope() failed to return an object.'))
+                        # PathUtils.getEnvelope() failed to return an object.
+                        PathLog.error(translate('Path', 'Unable to create path for face(s).'))
                     else:
                         # shapes.append((env, False))
                         tup = env, False, 'pathProfileFaces', angle, axis, strDep, finDep
@@ -244,6 +247,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     for shape in faces:
                         # Recalculate depthparams
                         (strDep, finDep) = self.calculateStartFinalDepths(obj, shape, stock)
+                        finalDepths.append(finDep)
                         finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
                         self.depthparams = PathUtils.depth_params(
                             clearance_height=obj.ClearanceHeight.Value,
@@ -257,7 +261,11 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         tup = env, False, 'pathProfileFaces', angle, axis, strDep, finDep
                         shapes.append(tup)
                 # Eif
-            # Efor
+
+            # adjust FinalDepth as needed
+            finalDepth = min(finalDepths)
+            if obj.FinalDepth.Value < finalDepth:
+                obj.FinalDepth.Value = finalDepth
         else:  # Try to build targets from the job base
             if 1 == len(self.model) and hasattr(self.model[0], "Proxy"):
                 if isinstance(self.model[0].Proxy, ArchPanel.PanelSheet):  # process the sheet
@@ -295,7 +303,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         obj.processPerimeter = True
         obj.ReverseDirection = False
         obj.InverseAngle = False
-        obj.AttemptInverseAngle = False
+        obj.AttemptInverseAngle = True
         obj.B_AxisErrorOverride = False
 
 
