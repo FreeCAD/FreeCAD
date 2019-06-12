@@ -66,21 +66,29 @@ App::DocumentObjectExecReturn *Compound::execute(void)
         TopoDS_Compound comp;
         builder.MakeCompound(comp);
 
+        // avoid duplicates without changing the order
+        // See also ViewProviderCompound::updateData
+        std::set<DocumentObject*> tempLinks;
+
         const std::vector<DocumentObject*>& links = Links.getValues();
         for (std::vector<DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
             if (*it && (*it)->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 Part::Feature* fea = static_cast<Part::Feature*>(*it);
-                const TopoDS_Shape& sh = fea->Shape.getValue();
-                if (!sh.IsNull()) {
-                    builder.Add(comp, sh);
-                    TopTools_IndexedMapOfShape faceMap;
-                    TopExp::MapShapes(sh, TopAbs_FACE, faceMap);
-                    ShapeHistory hist;
-                    hist.type = TopAbs_FACE;
-                    for (int i=1; i<=faceMap.Extent(); i++) {
-                        hist.shapeMap[i-1].push_back(countFaces++);
+
+                auto pos = tempLinks.insert(fea);
+                if (pos.second) {
+                    const TopoDS_Shape& sh = fea->Shape.getValue();
+                    if (!sh.IsNull()) {
+                        builder.Add(comp, sh);
+                        TopTools_IndexedMapOfShape faceMap;
+                        TopExp::MapShapes(sh, TopAbs_FACE, faceMap);
+                        ShapeHistory hist;
+                        hist.type = TopAbs_FACE;
+                        for (int i=1; i<=faceMap.Extent(); i++) {
+                            hist.shapeMap[i-1].push_back(countFaces++);
+                        }
+                        history.push_back(hist);
                     }
-                    history.push_back(hist);
                 }
             }
         }
