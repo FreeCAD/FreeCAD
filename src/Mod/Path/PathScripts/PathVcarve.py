@@ -147,7 +147,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                     for point in step:
                         p = point[0]
                         z = calculate_depth(-(point[1]))
-                        path.append(Path.Command("G1 X{} Y{} Z{}".format(p.x, p.y, z)))
+                        path.append(Path.Command("G1 X{} Y{} Z{} F{}".format(p.x, p.y, z, obj.ToolController.HorizFeed.Value)))
 
             path.append(Path.Command("G0 Z{}".format(safeheight)))
 
@@ -207,6 +207,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
                 # we only consider the outer wire if this is a Face
                 modelshape = self.model[0].Shape
+                modelshape.tessellate(0.01)
                 self.buildPathMedial(obj, modelshape.Faces, zValues, modelshape.BoundBox.DiagonalLength/2)
                 # self.wires = wires
 
