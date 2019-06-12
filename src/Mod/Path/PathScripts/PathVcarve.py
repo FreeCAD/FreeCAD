@@ -34,7 +34,7 @@ import traceback
 import time
 import PathScripts.PathGeom as pg
 from PathScripts.PathOpTools import orientWire
-
+import math
 
 from PySide import QtCore
 
@@ -104,6 +104,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             polygon_ids =[]
             t_before = time.time()
             for idx, wire in enumerate(wires):
+                print('discretize: {}'.format(obj.Discretize))
                 pointList = wire.discretize(Deflection=obj.Discretize)
                 segwire = Part.Wire([Part.makeLine(p[0],p[1]) for p in zip(pointList, pointList[1:] )])
 
@@ -124,9 +125,14 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             seg_time = t_after-t_before
             return [pt_time, seg_time]
 
+        def calculate_depth(MIC):
+            # given a maximum inscribed circle (MIC) and tool angle,
+            # return depth of cut.
+            toolangle = obj.ToolController.Tool.CuttingEdgeAngle
+            return MIC / math.tan(math.radians(toolangle/2))
 
         def buildMedial(vd):
-            safeheight = 3.0
+            safeheight = obj.SafeHeight.Value
             path = []
             maw = ovd.MedialAxisWalk(  vd.getGraph() )
             toolpath = maw.walk()
@@ -140,7 +146,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 for step in chain:
                     for point in step:
                         p = point[0]
-                        z = -(point[1])
+                        z = calculate_depth(-(point[1]))
                         path.append(Path.Command("G1 X{} Y{} Z{}".format(p.x, p.y, z)))
 
             path.append(Path.Command("G0 Z{}".format(safeheight)))
@@ -183,7 +189,15 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         jobshapes = []
         zValues = self.getZValues(obj)
 
+        if obj.ToolController.Tool.ToolType != 'Engraver':
+            FreeCAD.Console.PrintError(
+                translate("Path_Vcarve", "This operation requires an engraver tool.") + "\n")
+            return
 
+        if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
+            FreeCAD.Console.PrintError(
+                translate("Path_Vcarve", "Engraver Cutting Edge Angle must be < 180 degrees.") + "\n")
+            return
         try:
             if len(self.model) == 1 and self.model[0].isDerivedFrom('Sketcher::SketchObject') or \
                     self.model[0].isDerivedFrom('Part::Part2DObject'):
