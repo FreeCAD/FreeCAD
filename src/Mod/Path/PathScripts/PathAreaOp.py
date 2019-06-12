@@ -27,7 +27,6 @@
 #          with axis & rotation toggles and associated min/max values
 
 import FreeCAD
-import FreeCADGui
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
@@ -37,6 +36,8 @@ import Draft
 # from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 import math
+if FreeCAD.GuiUp:
+    import FreeCADGui
 
 __title__ = "Base class for PathArea based operations."
 __author__ = "sliptonic (Brad Collette)"
@@ -45,7 +46,7 @@ __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "mlampert [FreeCAD], russ4262 (Russell Johnson)"
 __createdDate__ = "2017"
 __scriptVersion__ = "2e testing"
-__lastModified__ = "2019-06-11 14:30 CST"
+__lastModified__ = "2019-06-12 06:28 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
