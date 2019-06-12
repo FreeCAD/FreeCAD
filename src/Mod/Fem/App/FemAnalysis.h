@@ -43,23 +43,14 @@ public:
     FemAnalysis(void);
     virtual ~FemAnalysis();
 
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemAnalysis";
-    }
-    virtual App::DocumentObjectExecReturn *execute(void) {
-        return App::DocumentObject::StdReturn;
-    }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
-
     /// unique identifier of the Analysis
     App::PropertyUUID    Uid;
 
+    virtual const char* getViewProviderName() const {
+        return "FemGui::ViewProviderFemAnalysis";
+    }
 
 protected:
-    /// get called by the container when a property has changed
-    virtual void onChanged (const App::Property* prop);
     /// Support of backward compatibility
     virtual void handleChangedPropertyName(Base::XMLReader &reader,
                                            const char * TypeName,
