@@ -104,10 +104,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             polygon_ids =[]
             t_before = time.time()
             for idx, wire in enumerate(wires):
-                d = obj.Discretize
-                print('discretize: {}'.format(d))
-                d = 0.008
-                pointList = wire.discretize(Deflection=d)
+                pointList = wire.discretize(Deflection=obj.Discretize)
                 segwire = Part.Wire([Part.makeLine(p[0],p[1]) for p in zip(pointList, pointList[1:] )])
 
                 if idx == 0:

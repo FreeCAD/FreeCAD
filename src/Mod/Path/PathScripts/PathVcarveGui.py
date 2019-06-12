@@ -117,19 +117,19 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getFields(self, obj):
         '''getFields(obj) ... transfers values from UI to obj's proprties'''
-        # if obj.StartVertex != self.form.startVertex.value():
-        #     obj.StartVertex = self.form.startVertex.value()
+        if obj.Discretize != self.form.discretize.value():
+            obj.Discretize = self.form.discretize.value()
         self.updateToolController(obj, self.form.toolController)
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
-        # self.form.startVertex.setValue(obj.StartVertex)
+        self.form.discretize.setValue(obj.Discretize)
         self.setupToolController(obj, self.form.toolController)
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
-        # signals.append(self.form.startVertex.editingFinished)
+        signals.append(self.form.discretize.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
         return signals
 
