@@ -27,7 +27,6 @@ import FreeCADGui
 import PathScripts.PathVcarve as PathVcarve
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathSelection as PathSelection
 import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore, QtGui
@@ -43,8 +42,10 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
     '''Enhanced base geometry page to also allow special base objects.'''
@@ -59,10 +60,10 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             job = PathUtils.findParentJob(self.obj)
             base = job.Proxy.resourceClone(job, sel.Object)
             if not base:
-                PathLog.notice((translate("Path", "%s is not a Base Model object of the job %s")+"\n") % (sel.Object.Label, job.Label))
+                PathLog.notice((translate("Path", "%s is not a Base Model object of the job %s") + "\n") % (sel.Object.Label, job.Label))
                 continue
             if base in shapes:
-                PathLog.notice((translate("Path", "Base shape %s already in the list")+"\n") % (sel.Object.Label))
+                PathLog.notice((translate("Path", "Base shape %s already in the list") + "\n") % (sel.Object.Label))
                 continue
             if base.isDerivedFrom('Part::Part2DObject'):
                 if sel.HasSubObjects:
@@ -74,7 +75,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                             self.obj.Proxy.addBase(self.obj, base, sub)
                 else:
                     # when adding an entire shape to BaseShapes we can take its sub shapes out of Base
-                    self.obj.Base = [(p,el) for p,el in self.obj.Base if p != base]
+                    self.obj.Base = [(p, el) for p, el in self.obj.Base if p != base]
                     shapes.append(base)
                     self.obj.BaseShapes = shapes
                 added = True
@@ -108,6 +109,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         self.obj.BaseShapes = shapes
         return self.super().updateBase()
 
+
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     '''Page controller class for the Vcarve operation.'''
 
@@ -119,17 +121,21 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         '''getFields(obj) ... transfers values from UI to obj's proprties'''
         if obj.Discretize != self.form.discretize.value():
             obj.Discretize = self.form.discretize.value()
+        if obj.Threshold != self.form.threshold.value():
+            obj.Threshold = self.form.threshold.value()
         self.updateToolController(obj, self.form.toolController)
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
         self.form.discretize.setValue(obj.Discretize)
+        self.form.threshold.setValue(obj.Threshold)
         self.setupToolController(obj, self.form.toolController)
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
         signals.append(self.form.discretize.editingFinished)
+        signals.append(self.form.threshold.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
         return signals
 
@@ -137,11 +143,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         '''taskPanelBaseGeometryPage(obj, features) ... return page for adding base geometries.'''
         return TaskPanelBaseGeometryPage(obj, features)
 
-Command = PathOpGui.SetupOperation('Vcarve',
-        PathVcarve.Create,
-        TaskPanelOpPage,
-        'Path-Vcarve',
-        QtCore.QT_TRANSLATE_NOOP("PathVcarve", "Vcarve"),
+
+Command = PathOpGui.SetupOperation('Vcarve', PathVcarve.Create, TaskPanelOpPage,
+        'Path-Vcarve', QtCore.QT_TRANSLATE_NOOP("PathVcarve", "Vcarve"),
         QtCore.QT_TRANSLATE_NOOP("PathVcarve", "Creates a medial line engraving path"),
         PathVcarve.SetupProperties)
 

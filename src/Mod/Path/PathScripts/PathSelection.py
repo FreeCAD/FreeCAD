@@ -49,6 +49,23 @@ class MESHGate(PathBaseGate):
 
 class VCARVEGate:
     def allow(self, doc, obj, sub):
+        try:
+            shape = obj.Shape
+        except Exception: # pylint: disable=broad-except
+            return False
+
+        if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
+            return True
+
+        if shape.ShapeType == 'Edge':
+            return True
+
+        if sub:
+            subShape = shape.getElement(sub)
+            if subShape.ShapeType == 'Edge':
+                return True
+
+        return False
 
 
 class ENGRAVEGate(PathBaseGate):
