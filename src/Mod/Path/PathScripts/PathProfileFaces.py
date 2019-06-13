@@ -21,6 +21,12 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+# *                                                                         *
+# *   Additional modifications and contributions beginning 2019             *
+# *   Focus: 4th-axis integration                                           *
+# *   by Russell Johnson  <russ4262@gmail.com>                              *
+# *                                                                         *
+# ***************************************************************************
 
 import ArchPanel
 import FreeCAD
@@ -40,9 +46,10 @@ __title__ = "Path Profile Faces Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Profile operation based on faces."
+__contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2014"
-__scriptVersion__ = "2f testing"
-__lastModified__ = "2019-06-12 14:12 CST"
+__scriptVersion__ = "2g testing"
+__lastModified__ = "2019-06-12 23:29 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -136,7 +143,8 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
                                 tup = clnBase, sub, tag, angle, axis, clnStock
                             else:
-                                PathLog.debug(str(sub) + ": no rotation used")
+                                if self.warnDisabledAxis(obj, axis) is False:
+                                    PathLog.debug(str(sub) + ": No rotation used")
                                 axis = 'X'
                                 angle = 0.0
                                 tag = base.Name + '_' + axis + str(angle).replace('.', '_')
@@ -148,9 +156,8 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     # Efor
                 # Efor
                 if subCount > 1:
-                    msg = "Multiple faces in Base Geometry."
-                    msg += "  Depth settings will be applied to all faces."
-                    msg = translate("Path", msg)
+                    msg = translate('Path', "Multiple faces in Base Geometry.") + "  "
+                    msg += translate('Path', "Depth settings will be applied to all faces.")
                     PathLog.warning(msg)
                     #title = translate("Path", "Depth Warning")
                     #self.guiMessage(title, msg)
