@@ -600,12 +600,8 @@ class InstallWorker(QtCore.QThread):
         if not depsurl.endswith("/"):
             depsurl += "/"
         depsurl += "master/metadata.txt"
-        try:
-            mu = urlopen(depsurl)
-        except:
-            # no metadata.txt, we just continue without deps checking
-            pass
-        else:
+        mu = urlopen(depsurl)
+        if mu:
             # metadata.txt found
             depsfile = mu.read()
             mu.close()
