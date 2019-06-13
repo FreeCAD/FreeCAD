@@ -30,8 +30,6 @@
 
 # SCRIPT NOTES:
 # - Need test models for testing vertical faces scenarios.
-# - FUTURE: PathAreaOp.py need to relocate rotational settings 
-#   to Job setup, under Machine settings tab
 
 import FreeCAD
 import Part
