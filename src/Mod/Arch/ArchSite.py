@@ -522,7 +522,7 @@ class _Site:
         if not "IfcType" in pl:
             obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
             obj.IfcType = ArchIFC.IfcTypes
-            obj.IcfType = "Site"
+            obj.IfcType = "Site"
         self.Type = "Site"
 
     def onDocumentRestored(self,obj):
