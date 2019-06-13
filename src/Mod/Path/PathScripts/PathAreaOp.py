@@ -54,7 +54,7 @@ __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "mlampert [FreeCAD], russ4262 (Russell Johnson)"
 __createdDate__ = "2017"
 __scriptVersion__ = "2g testing"
-__lastModified__ = "2019-06-12 23:29 CST"
+__lastModified__ = "2019-06-13 15:37 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -751,7 +751,8 @@ class ObjectOp(PathOp.ObjectOp):
             yAx = 'yAxCyl'
             zAx = 'zAxCyl'
             FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","visualAxis")
-            FreeCADGui.ActiveDocument.getObject('visualAxis').Visibility = False
+            if FreeCAD.GuiUp:
+                FreeCADGui.ActiveDocument.getObject('visualAxis').Visibility = False
             vaGrp = FreeCAD.ActiveDocument.getObject("visualAxis")
 
             FreeCAD.ActiveDocument.addObject("Part::Cylinder", xAx)
@@ -761,10 +762,11 @@ class ObjectOp(PathOp.ObjectOp):
             cyl.Height = 0.01
             cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(0,1,0),90))
             cyl.purgeTouched()
-            cylGui = FreeCADGui.ActiveDocument.getObject(xAx)
-            cylGui.ShapeColor = (0.667,0.000,0.000)
-            cylGui.Transparency = 85
-            cylGui.Visibility = False
+            if FreeCAD.GuiUp:
+                cylGui = FreeCADGui.ActiveDocument.getObject(xAx)
+                cylGui.ShapeColor = (0.667,0.000,0.000)
+                cylGui.Transparency = 85
+                cylGui.Visibility = False
             vaGrp.addObject(cyl)
 
             FreeCAD.ActiveDocument.addObject("Part::Cylinder", yAx)
@@ -774,10 +776,11 @@ class ObjectOp(PathOp.ObjectOp):
             cyl.Height = 0.01
             cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(1,0,0),90))
             cyl.purgeTouched()
-            cylGui = FreeCADGui.ActiveDocument.getObject(yAx)
-            cylGui.ShapeColor = (0.000,0.667,0.000)
-            cylGui.Transparency = 85
-            cylGui.Visibility = False
+            if FreeCAD.GuiUp:
+                cylGui = FreeCADGui.ActiveDocument.getObject(yAx)
+                cylGui.ShapeColor = (0.000,0.667,0.000)
+                cylGui.Transparency = 85
+                cylGui.Visibility = False
             vaGrp.addObject(cyl)
             
             if False:
@@ -788,10 +791,11 @@ class ObjectOp(PathOp.ObjectOp):
                 cyl.Height = 0.01
                 # cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(1,0,0),90))
                 cyl.purgeTouched()
-                cylGui = FreeCADGui.ActiveDocument.getObject(zAx)
-                cylGui.ShapeColor = (0.000,0.000,0.498)
-                cylGui.Transparency = 85
-                cylGui.Visibility = False
+                if FreeCAD.GuiUp:
+                    cylGui = FreeCADGui.ActiveDocument.getObject(zAx)
+                    cylGui.ShapeColor = (0.000,0.000,0.498)
+                    cylGui.Transparency = 85
+                    cylGui.Visibility = False
                 vaGrp.addObject(cyl)
 
     def useTempJobClones(self, cloneName):
@@ -810,11 +814,13 @@ class ObjectOp(PathOp.ObjectOp):
                     FreeCAD.ActiveDocument.removeObject('rotJobClones')
         else:
             FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","rotJobClones")
-            FreeCADGui.ActiveDocument.getObject('rotJobClones').Visibility = False
+            if FreeCAD.GuiUp:
+                FreeCADGui.ActiveDocument.getObject('rotJobClones').Visibility = False
 
         if cloneName != 'Start' and cloneName != 'Delete':
             FreeCAD.ActiveDocument.getObject('rotJobClones').addObject(FreeCAD.ActiveDocument.getObject(cloneName))
-            FreeCADGui.ActiveDocument.getObject(cloneName).Visibility = False
+            if FreeCAD.GuiUp:
+                FreeCADGui.ActiveDocument.getObject(cloneName).Visibility = False
 
     def cloneBaseAndStock(self, obj, base, angle, axis, subCount):
         '''cloneBaseAndStock(obj, base, angle, axis, subCount)
@@ -837,8 +843,9 @@ class ObjectOp(PathOp.ObjectOp):
                 FreeCAD.ActiveDocument.removeObject(stckClnNm)
             FreeCAD.ActiveDocument.addObject('Part::Feature', clnNm).Shape = base.Shape
             FreeCAD.ActiveDocument.addObject('Part::Feature', stckClnNm).Shape = PathUtils.findParentJob(obj).Stock.Shape
-            FreeCADGui.ActiveDocument.getObject(stckClnNm).Transparency=90
-            FreeCADGui.ActiveDocument.getObject(clnNm).ShapeColor = (1.000,0.667,0.000)
+            if FreeCAD.GuiUp:
+                FreeCADGui.ActiveDocument.getObject(stckClnNm).Transparency=90
+                FreeCADGui.ActiveDocument.getObject(clnNm).ShapeColor = (1.000,0.667,0.000)
             self.useTempJobClones(clnNm)
             self.useTempJobClones(stckClnNm)
         clnBase = FreeCAD.ActiveDocument.getObject(clnNm)                                
