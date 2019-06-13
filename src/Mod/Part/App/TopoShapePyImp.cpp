@@ -2553,9 +2553,18 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
         PyErr_SetString(PyExc_TypeError, "distToShape: Shape parameter is invalid");
         return 0;
     }
-    BRepExtrema_DistShapeShape extss(s1, s2);
+    BRepExtrema_DistShapeShape extss;
+    extss.LoadS1(s1);
+    extss.LoadS2(s2);
+    try {
+        extss.Perform();
+    }
+    catch (const Standard_Failure& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
+        return 0;
+    }
     if (!extss.IsDone()) {
-        PyErr_SetString(PyExc_TypeError, "BRepExtrema_DistShapeShape failed");
+        PyErr_SetString(PyExc_RuntimeError, "BRepExtrema_DistShapeShape failed");
         return 0;
     }
     PyObject* solnPts = PyList_New(0);
