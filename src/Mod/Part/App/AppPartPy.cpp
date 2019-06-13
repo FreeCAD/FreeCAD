@@ -395,7 +395,7 @@ public:
             "Part.show(r[1][0])\n"
         );
         add_varargs_method("exportUnits",&Module::exportUnits,
-            "exportUnits([string=MM|M|IN]) -- Set units for exporting STEP/IGES files and returns the units."
+            "exportUnits([string=MM|M|INCH|FT|MI|KM|MIL|UM|CM|UIN]) -- Set units for exporting STEP/IGES files and returns the units."
         );
         add_varargs_method("setStaticValue",&Module::setStaticValue,
             "setStaticValue(string,string|int|float) -- Set a name to a value The value can be a string, int or float."
@@ -1740,16 +1740,11 @@ private:
             throw Py::Exception();
 
         if (unit) {
-            if (strcmp(unit,"M") == 0 || strcmp(unit,"MM") == 0 || strcmp(unit,"IN") == 0) {
-                if (!Interface_Static::SetCVal("write.iges.unit",unit)) {
-                    throw Py::RuntimeError("Failed to set 'write.iges.unit'");
-                }
-                if (!Interface_Static::SetCVal("write.step.unit",unit)) {
-                    throw Py::RuntimeError("Failed to set 'write.step.unit'");
-                }
+            if (!Interface_Static::SetCVal("write.iges.unit",unit)) {
+                throw Py::RuntimeError("Failed to set 'write.iges.unit'");
             }
-            else {
-                throw Py::ValueError("Wrong unit");
+            if (!Interface_Static::SetCVal("write.step.unit",unit)) {
+                throw Py::RuntimeError("Failed to set 'write.step.unit'");
             }
         }
 

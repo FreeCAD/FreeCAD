@@ -1462,7 +1462,9 @@ class recycler:
 
 # ************************************************************************************************
 # ********** export IFC ****************
-def export(exportList,filename):
+
+
+def export(exportList,filename,colors=None):
 
     "exports FreeCAD contents to an IFC file"
 
@@ -1671,7 +1673,7 @@ def export(exportList,filename):
 
         # getting the representation
 
-        representation,placement,shapetype = getRepresentation(ifcfile,context,obj,forcebrep=(brepflag or FORCE_BREP))
+        representation,placement,shapetype = getRepresentation(ifcfile,context,obj,forcebrep=(brepflag or FORCE_BREP),colors=colors)
         if getstd:
             if isStandardCase(obj,ifctype):
                 ifctype += "StandardCase"
@@ -1713,7 +1715,7 @@ def export(exportList,filename):
 
         if hasattr(obj,"Additions") and (shapetype in ["extrusion","no shape"]):
             for o in obj.Additions:
-                r2,p2,c2 = getRepresentation(ifcfile,context,o)
+                r2,p2,c2 = getRepresentation(ifcfile,context,o,colors=colors)
                 if DEBUG: print("      adding ",c2," : ",o.Label)
                 l = o.Label
                 if six.PY2:
@@ -1750,7 +1752,7 @@ def export(exportList,filename):
                             guests.append(o)
         if hasattr(obj,"Subtractions") and (shapetype in ["extrusion","no shape"]):
             for o in obj.Subtractions + guests:
-                r2,p2,c2 = getRepresentation(ifcfile,context,o,subtraction=True)
+                r2,p2,c2 = getRepresentation(ifcfile,context,o,subtraction=True,colors=colors)
                 if DEBUG: print("      subtracting ",c2," : ",o.Label)
                 l = o.Label
                 if six.PY2:
@@ -2597,34 +2599,112 @@ def export(exportList,filename):
         remaining = [anno for anno in annos.values() if anno not in swallowed]
         if remaining:
             if not defaulthost:
-                defaulthost = ifcfile.createIfcBuildingStorey(
+                if ADD_DEFAULT_STOREY:
+                    defaulthost = ifcfile.createIfcBuildingStorey(
+                        ifcopenshell.guid.new(),
+                        history,
+                        "Default Storey",
+                        '',
+                        None,
+                        None,
+                        None,
+                        None,
+                        "ELEMENT",
+                        None
+                    )
+                    # if ADD_DEFAULT_STOREY is on, we need a building to host it, regardless of ADD_DEFAULT_BUILDING
+                    if not buildings:
+                        buildings = [ifcfile.createIfcBuilding(
+                            ifcopenshell.guid.new(),
+                            history,
+                            "Default Building",
+                            '',
+                            None,
+                            None,
+                            None,
+                            None,
+                            "ELEMENT",
+                            None,
+                            None,
+                            None
+                        )]
+                        if sites:
+                            ifcfile.createIfcRelAggregates(
+                                ifcopenshell.guid.new(),
+                                history,
+                                'SiteLink',
+                                '',
+                                sites[0],
+                                buildings
+                            )
+                        else:
+                            ifcfile.createIfcRelAggregates(
+                                ifcopenshell.guid.new(),
+                                history,
+                                'ProjectLink',
+                                '',
+                                project,buildings
+                            )
+                    ifcfile.createIfcRelAggregates(
+                        ifcopenshell.guid.new(),
+                        history,
+                        'DefaultStoreyLink',
+                        '',
+                        buildings[0],
+                        [defaulthost]
+                    )
+                elif ADD_DEFAULT_BUILDING:
+                    if not buildings:
+                        defaulthost = ifcfile.createIfcBuilding(
+                            ifcopenshell.guid.new(),
+                            history,
+                            "Default Building",
+                            '',
+                            None,
+                            None,
+                            None,
+                            None,
+                            "ELEMENT",
+                            None,
+                            None,
+                            None
+                        )
+                        if sites:
+                            ifcfile.createIfcRelAggregates(
+                                ifcopenshell.guid.new(),
+                                history,
+                                'SiteLink',
+                                '',
+                                sites[0],
+                                [defaulthost]
+                            )
+                        else:
+                            ifcfile.createIfcRelAggregates(
+                                ifcopenshell.guid.new(),
+                                history,
+                                'ProjectLink',
+                                '',
+                                project,
+                                [defaulthost]
+                            )
+            if defaulthost:
+                ifcfile.createIfcRelContainedInSpatialStructure(
                     ifcopenshell.guid.new(),
                     history,
-                    "Default Storey",
+                    'AnnotationsLink',
                     '',
-                    None,
-                    None,
-                    None,
-                    None,
-                    "ELEMENT",
-                    None
+                    remaining,
+                    defaulthost
                 )
+            else:
                 ifcfile.createIfcRelAggregates(
                     ifcopenshell.guid.new(),
                     history,
-                    'DefaultStoreyLink',
+                    'ProjectLink',
                     '',
-                    buildings[0],
-                    [defaulthost]
+                    project,
+                    remaining
                 )
-            ifcfile.createIfcRelContainedInSpatialStructure(
-                ifcopenshell.guid.new(),
-                history,
-                'AnnotationsLink',
-                '',
-                remaining,
-                defaulthost
-            )
 
     if DEBUG: print("writing ",filename,"...")
 
@@ -2648,6 +2728,8 @@ def export(exportList,filename):
 
 # ************************************************************************************************
 # ********** helper for export IFC **************
+
+
 def isStandardCase(obj,ifctype):
 
     if ifctype.endswith("StandardCase"):
@@ -2997,7 +3079,7 @@ def getProfile(ifcfile,p):
     return profile
 
 
-def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1):
+def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1,colors=None):
 
     """returns an IfcShapeRepresentation object or None"""
 
@@ -3292,20 +3374,36 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             solidType = "MappedRepresentation"
 
         # set surface style
-        if FreeCAD.GuiUp and (not subtraction) and hasattr(obj.ViewObject,"ShapeColor"):
+        shapecolor = None
+        diffusecolor = None
+        transparency = 0.0
+        if colors:
+            # color dict is given
+            if obj.Name in colors:
+                color = colors[obj.Name]
+                shapecolor = color
+                if isinstance(color[0],tuple):
+                    # this is a diffusecolor. For now, use the first color - #TODO: Support per-face colors
+                    diffusecolor = color
+                    shapecolor = color[0]
+        elif FreeCAD.GuiUp and (not subtraction) and hasattr(obj.ViewObject,"ShapeColor"):
             # every object gets a surface style. If the obj has a material, the surfstyle
             # is named after it. Revit will treat surfacestyles as materials (and discard
             # actual ifcmaterial)
+            shapecolor = obj.ViewObject.ShapeColor[:3]
+            transparency = obj.ViewObject.Transparency/100.0
+            if hasattr(obj.ViewObject,"DiffuseColor"):
+                diffusecolor = obj.ViewObject.DiffuseColor
+        if shapecolor:
             key = None
-            rgbt = [obj.ViewObject.ShapeColor[:3]+(obj.ViewObject.Transparency/100.0,) for shape in shapes]
-            if hasattr(obj.ViewObject,"DiffuseColor") \
-                    and obj.ViewObject.DiffuseColor \
-                    and (len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)) \
+            rgbt = [shapecolor+(transparency,) for shape in shapes]
+            if diffusecolor \
+                    and (len(diffusecolor) == len(obj.Shape.Faces)) \
                     and (len(obj.Shape.Solids) == len(shapes)):
                 i = 0
                 rgbt = []
                 for sol in obj.Shape.Solids:
-                    rgbt.append(obj.ViewObject.DiffuseColor[i])
+                    rgbt.append(diffusecolor[i])
                     i += len(sol.Faces)
             for i,shape in enumerate(shapes):
                 key = rgbt[i]

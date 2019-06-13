@@ -42,10 +42,12 @@
 
 #include <stdio.h>
 #include <sstream>
+#include <iostream>
 
 
 // FreeCAD Base header
 #include <Base/Exception.h>
+#include <Base/Sequencer.h>
 #include <App/Application.h>
 
 
@@ -227,6 +229,15 @@ PyMOD_INIT_FUNC(FreeCAD)
 
     free(argv[0]);
     free(argv);
+
+    Base::EmptySequencer* seq = new Base::EmptySequencer();
+    (void)seq;
+    static Base::RedirectStdOutput stdcout;
+    static Base::RedirectStdLog    stdclog;
+    static Base::RedirectStdError  stdcerr;
+    std::cout.rdbuf(&stdcout);
+    std::clog.rdbuf(&stdclog);
+    std::cerr.rdbuf(&stdcerr);
 
 #if PY_MAJOR_VERSION >= 3
     //PyObject* module = _PyImport_FindBuiltin("FreeCAD");

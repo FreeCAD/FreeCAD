@@ -1536,8 +1536,10 @@ void Application::initConfig(int argc, char ** argv)
 
     // Init console ===========================================================
     Base::PyGILStateLocker lock;
-    _pConsoleObserverStd = new ConsoleObserverStd();
-    Console().AttachObserver(_pConsoleObserverStd);
+    if (mConfig["LoggingConsole"] == "1") {
+        _pConsoleObserverStd = new ConsoleObserverStd();
+        Console().AttachObserver(_pConsoleObserverStd);
+    }
     if (mConfig["Verbose"] == "Strict")
         Console().UnsetConsoleMode(ConsoleSingleton::Verbose);
 
