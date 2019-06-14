@@ -77,6 +77,11 @@ else(MSVC)
 endif(MSVC)
 
 if (BUILD_QT5)
+
+    if (Qt5WebEngineWidgets_FOUND AND BUILD_WITH_CONDA)
+        add_definitions(-DQTWEBENGINE)
+    endif()
+
     include_directories(
         ${Qt5Core_INCLUDE_DIRS}
         ${Qt5Widgets_INCLUDE_DIRS}

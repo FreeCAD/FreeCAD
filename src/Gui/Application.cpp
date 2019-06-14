@@ -1730,6 +1730,14 @@ void Application::runApplication(void)
 
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
+
+#if defined(QTWEBENGINE) && defined(Q_OS_LINUX)
+    // Avoid warning of 'Qt WebEngine seems to be initialized from a plugin...'
+    // QTWEBENGINE is defined in src/Gui/CMakeLists.txt, currently only enabled
+    // when build with Conda.
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+#endif
+
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
