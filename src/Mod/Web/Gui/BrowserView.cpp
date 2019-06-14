@@ -85,7 +85,10 @@
 
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
+#include <Base/Console.h>
 #include <CXX/Extensions.hxx>
+
+FC_LOG_LEVEL_INIT("Web",true,true)
 
 using namespace WebGui;
 using namespace Gui;
@@ -379,6 +382,12 @@ BrowserView::BrowserView(QWidget* parent)
       WindowParameter( "Browser" ),
       isLoading(false)
 {
+#if defined(QTWEBENGINE) && defined(Q_OS_LINUX)
+    // Otherwise cause crash on exit, probably due to double deletion
+    // Not sure if this applies to other platform
+    setAttribute(Qt::WA_DeleteOnClose,false);
+#endif
+
     view = new WebView(this);
     setCentralWidget(view);
     view->setAttribute(Qt::WA_OpaquePaintEvent, true);
@@ -448,6 +457,7 @@ BrowserView::BrowserView(QWidget* parent)
 /** Destroys the object and frees any allocated resources */
 BrowserView::~BrowserView()
 {
+    FC_LOG("destroying browser view");
 #ifdef QTWEBENGINE
     delete interceptLinks; // cleanup not handled implicitly
 #endif
