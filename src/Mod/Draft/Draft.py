@@ -5835,8 +5835,9 @@ class _Point(_DraftObject):
 
     def execute(self, obj):
         import Part
-        shape = Part.Vertex(Vector(obj.X.Value,obj.Y.Value,obj.Z.Value))
+        shape = Part.Vertex(Vector(0,0,0))
         obj.Shape = shape
+        obj.Placement.Base = FreeCAD.Vector(obj.X.Value,obj.Y.Value,obj.Z.Value)
 
 class _ViewProviderPoint(_ViewProviderDraft):
     "A viewprovider for the Draft Point object"
