@@ -215,6 +215,7 @@ class ObjectOp(PathOp.ObjectOp):
             # Adjust start and final depths if rotation is enabled
             if obj.EnableRotation != 'Off':
                 self.initWithRotation = True
+                self.stockBB = PathUtils.findParentJob(obj).Stock.Shape.BoundBox
                 # Calculate rotational distances/radii
                 opHeights = self.opDetermineRotationRadii(obj)  # return is list with tuples [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfset)]
                 (xRotRad, yRotRad, zRotRad) = opHeights[0]
