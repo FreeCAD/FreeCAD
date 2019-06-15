@@ -724,22 +724,6 @@ class ObjectOp(PathOp.ObjectOp):
                 return True
 
         # Types: information, warning, critical, question
-        if False:
-            reply = QtGui.QMessageBox.question(None,"",message,
-                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
-            if reply == QtGui.QMessageBox.Yes:
-                yes = 'yes'
-            if reply == QtGui.QMessageBox.No:
-                no = 'no'
-        if False:
-            msgBox = QtGui.QMessageBox()
-            msgBox.setText(translate("Arch","This mesh has more than 1000 facets."))
-            msgBox.setInformativeText(translate("Arch","This operation can take a long time. Proceed?"))
-            msgBox.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
-            msgBox.setDefaultButton(QtGui.QMessageBox.Cancel)
-            ret = msgBox.exec_()
-            if ret == QtGui.QMessageBox.Cancel:
-                return
         return False
 
     def visualAxis(self):
