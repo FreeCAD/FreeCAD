@@ -765,7 +765,7 @@ class DraftToolBar:
         self.colorButton.setIcon(QtGui.QIcon(self.colorPix))
         self.facecolorButton = self._pushbutton("facecolorButton",self.bottomtray, hide=False,square=True)
         self.facecolorPix = QtGui.QPixmap(16,16)
-        self.facecolorPix.fill(self.facecolor)
+        self.facecolorPix.fill(QtGui.QColor(self.facecolor))
         self.facecolorButton.setIcon(QtGui.QIcon(self.facecolorPix))
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
         bsize = p.GetInt("ToolbarIconSize",24)+2
