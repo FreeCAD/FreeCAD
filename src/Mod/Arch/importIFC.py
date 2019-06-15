@@ -1466,7 +1466,9 @@ class recycler:
 
 def export(exportList,filename,colors=None):
 
-    "exports FreeCAD contents to an IFC file"
+    """export(exportList,filename,colors=None) -- exports FreeCAD contents to an IFC file.
+    colors is an optional dictionary of objName:shapeColorTuple or objName:diffuseColorList elements
+    to be used in non-GUI mode if you want to be able to export colors."""
 
     getPreferences()
 

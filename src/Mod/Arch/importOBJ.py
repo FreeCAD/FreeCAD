@@ -220,7 +220,7 @@ def export(exportList,filename,colors=None):
         outfile = pythonopen(filenamemtl,"w")
         outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
         outfile.write("# http://www.freecadweb.org\n")
-        kinds = {"AmbientColor":"Ka ","DiffuseColor":"Kd ","SpecularColor":"Ks ","EmissiveColor":"Ke ","Transparency":"d "}
+        kinds = {"AmbientColor":"Ka ","DiffuseColor":"Kd ","SpecularColor":"Ks ","EmissiveColor":"Ke ","Transparency":"Tr "}
         done = [] # store names to avoid duplicates
         for mat in materials:
             if isinstance(mat,tuple):
