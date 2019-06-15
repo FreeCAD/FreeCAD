@@ -230,8 +230,10 @@ public:
 
     void LogQRSystemInformation(const System &system, int paramsNum = 0, int constrNum = 0, int rank = 0);
 
-    void LogMatrix(std::string str, Eigen::MatrixXd matrix);
-    void LogMatrix(std::string str, MatrixIndexType matrix );
+    void LogGroupOfConstraints(const std::string & str, std::vector< std::vector<Constraint *> > constraintgroups);
+
+    void LogMatrix(const std::string str, Eigen::MatrixXd matrix);
+    void LogMatrix(const std::string str, MatrixIndexType matrix );
 
 private:
     SolverReportingManager();
@@ -352,9 +354,27 @@ void SolverReportingManager::LogQRSystemInformation(const System &system, int pa
 
 }
 
+void SolverReportingManager::LogGroupOfConstraints(const std::string & str, std::vector< std::vector<Constraint *> > constraintgroups)
+{
+    std::stringstream tempstream;
+
+    tempstream << str << ":" << '\n';
+
+    for(auto group : constraintgroups)  {
+        tempstream << "[";
+
+        for(auto c :group)
+            tempstream << c->getTag() << " ";
+
+        tempstream << "]" << '\n';;
+    }
+
+    LogString(tempstream.str());
+}
+
 
 #ifdef _GCS_DEBUG
-void SolverReportingManager::LogMatrix(std::string str, Eigen::MatrixXd matrix )
+void SolverReportingManager::LogMatrix(const std::string str, Eigen::MatrixXd matrix )
 {
     std::stringstream tempstream;
 
@@ -367,7 +387,7 @@ void SolverReportingManager::LogMatrix(std::string str, Eigen::MatrixXd matrix )
 
 }
 
-void SolverReportingManager::LogMatrix(std::string str, MatrixIndexType matrix )
+void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType matrix )
 {
     std::stringstream tempstream;
 
@@ -4131,24 +4151,10 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
                 conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
             }
 
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-
-        stream.flush();
-
-        stream << "ConflictGroups: [";
-        for(auto group :conflictGroups)  {
-            stream << "[";
-
-            for(auto c :group)
-                stream << c->getTag();
-
-            stream << "]";
-        }
-        stream << "]" << std::endl;
-
-        tmp = stream.str();
-        SolverReportingManager::Manager().LogString(tmp);
-#endif
+            // Augment the information regarding the group of constraints that are conflicting or redundant.
+            if(debugMode==IterationLevel) {
+                SolverReportingManager::Manager().LogGroupOfConstraints("Analysing groups of constraints of special interest", conflictGroups);
+            }
 
             // try to remove the conflicting constraints and solve the
             // system in order to check if the removed constraints were
