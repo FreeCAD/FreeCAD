@@ -34,6 +34,7 @@
 # include <BRep_Tool.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
+# include <BRepFeat_MakePrism.hxx>
 # include <BRepProj_Projection.hxx>
 # include <Geom_Plane.hxx>
 # include <TopoDS.hxx>
@@ -542,6 +543,35 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
         throw Base::RuntimeError("SketchBased: Internal error: Unknown method for generatePrism()");
     }
 
+}
+
+void ProfileBased::generatePrism(TopoDS_Shape& prism,
+                                 const std::string& method,
+                                 const TopoDS_Shape& baseshape,
+                                 const TopoDS_Shape& profileshape,
+                                 const TopoDS_Face& sketchface,
+                                 const TopoDS_Face& uptoface,
+                                 const gp_Dir& direction,
+                                 Standard_Integer Mode,
+                                 Standard_Boolean Modify)
+{
+    if (method == "UpToFirst" || method == "UpToFace") {
+        BRepFeat_MakePrism PrismMaker;
+        TopoDS_Shape base = baseshape;
+        TopoDS_Face supportface = sketchface;
+        for (TopExp_Explorer xp(profileshape, TopAbs_FACE); xp.More(); xp.Next()) {
+            PrismMaker.Init(base, xp.Current(), supportface, direction, Mode, Modify);
+            PrismMaker.Perform(uptoface);
+            if (!PrismMaker.IsDone())
+                throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
+
+            base = PrismMaker.Shape();
+            if (Mode == 2)
+                Mode = 1;
+        }
+
+        prism = base;
+    }
 }
 
 bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Face& face,
