@@ -124,12 +124,16 @@ void ViewProviderShapeBinder::unsetEdit(int ModNum) {
 
 void ViewProviderShapeBinder::highlightReferences(const bool on, bool /*auxiliary*/)
 {
-    Part::Feature* obj;
+    App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
 
-    if(getObject()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
+    if (getObject()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
         PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(getObject())->Support, obj, subs);
     else
+        return;
+
+    // stop if not a Part feature was found
+    if (!obj || !obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return;
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
@@ -139,12 +143,12 @@ void ViewProviderShapeBinder::highlightReferences(const bool on, bool /*auxiliar
     if (on) {
          if (!subs.empty() && originalLineColors.empty()) {
             TopTools_IndexedMapOfShape eMap;
-            TopExp::MapShapes(obj->Shape.getValue(), TopAbs_EDGE, eMap);
+            TopExp::MapShapes(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_EDGE, eMap);
             originalLineColors = svp->LineColorArray.getValues();
             std::vector<App::Color> lcolors = originalLineColors;
             lcolors.resize(eMap.Extent(), svp->LineColor.getValue());
 
-            TopExp::MapShapes(obj->Shape.getValue(), TopAbs_FACE, eMap);
+            TopExp::MapShapes(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_FACE, eMap);
             originalFaceColors = svp->DiffuseColor.getValues();
             std::vector<App::Color> fcolors = originalFaceColors;
             fcolors.resize(eMap.Extent(), svp->ShapeColor.getValue());
