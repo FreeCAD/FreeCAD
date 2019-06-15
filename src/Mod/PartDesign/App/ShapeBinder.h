@@ -51,8 +51,7 @@ public:
     App::PropertyLinkSubListGlobal    Support;
     App::PropertyBool TraceSupport;
 
-    static void getFilteredReferences(App::PropertyLinkSubList* prop, Part::Feature*& object, std::vector< std::string >& subobjects);
-    static Part::TopoShape buildShapeFromReferences(Feature* obj, std::vector< std::string > subs);
+    static void getFilteredReferences(App::PropertyLinkSubList* prop, App::GeoFeature*& object, std::vector< std::string >& subobjects);
 
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderShapeBinder";
@@ -66,6 +65,7 @@ protected:
 private:
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
     virtual void onSettingDocument();
+    static Part::TopoShape buildShapeFromReferences(App::GeoFeature* obj, std::vector< std::string > subs);
 
     typedef boost::signals2::connection Connection;
     Connection connectDocumentChangedObject;
