@@ -97,6 +97,17 @@ def urlopen(url):
         return u
 
 
+def getserver(url):
+
+    """returns the server part of an url"""
+
+    if sys.version_info.major < 3:
+        from urlparse import urlparse
+    else:
+        from urllib.parse import urlparse
+    return '{uri.scheme}://{uri.netloc}/'.format(uri=urlparse(url))
+
+
 def update_macro_details(old_macro, new_macro):
 
     """Update a macro with information from another one

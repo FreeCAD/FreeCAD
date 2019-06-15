@@ -400,15 +400,13 @@ class CommandAddonManager:
         "shows or hides the progress bar"
 
         if state == True:
-            self.dialog.listWorkbenches.setEnabled(False)
-            self.dialog.listMacros.setEnabled(False)
+            self.dialog.tabWidget.setEnabled(False)
             self.dialog.buttonInstall.setEnabled(False)
             self.dialog.buttonUninstall.setEnabled(False)
             self.dialog.progressBar.show()
         else:
             self.dialog.progressBar.hide()
-            self.dialog.listWorkbenches.setEnabled(True)
-            self.dialog.listMacros.setEnabled(True)
+            self.dialog.tabWidget.setEnabled(True)
             if not (self.firsttime and self.firstmacro):
                 self.dialog.buttonInstall.setEnabled(True)
                 self.dialog.buttonUninstall.setEnabled(True)
