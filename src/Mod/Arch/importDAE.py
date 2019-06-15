@@ -189,7 +189,10 @@ def read(filename):
 
 def export(exportList,filename,tessellation=1,colors=None):
     
-    "called when freecad exports a file"
+    """export(exportList,filename,tessellation=1,colors=None) -- exports FreeCAD contents to a DAE file.
+    colors is an optional dictionary of objName:shapeColorTuple or objName:diffuseColorList elements
+    to be used in non-GUI mode if you want to be able to export colors. Tessellation is used when breaking
+    curved surfaces into triangles."""
     
     if not checkCollada(): return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
