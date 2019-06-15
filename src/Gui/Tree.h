@@ -82,6 +82,8 @@ public:
     void selectAllLinks(App::DocumentObject *obj); 
     void expandSelectedItems(TreeItemMode mode);
 
+    bool eventFilter(QObject *, QEvent *ev);
+
     struct SelInfo {
         App::DocumentObject *topParent;
         std::string subname;

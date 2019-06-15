@@ -88,6 +88,7 @@ std::set<TreeWidget *> TreeWidget::Instances;
 static TreeWidget *_LastSelectedTreeWidget;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
+bool _DragEventFilter;
 
 TreeParams::TreeParams() {
     GET_TREEVIEW_PARAM(hGrp);
@@ -1207,6 +1208,27 @@ bool TreeWidget::event(QEvent *e)
     return QTreeWidget::event(e);
 }
 
+bool TreeWidget::eventFilter(QObject *, QEvent *ev) {
+    switch (ev->type()) {
+    case QEvent::KeyPress:
+    case QEvent::KeyRelease: {
+        QKeyEvent *ke = static_cast<QKeyEvent *>(ev);
+        if (ke->key() != Qt::Key_Escape) {
+            // Qt 5 only recheck key modifier on mouse move, so generate a fake
+            // event to trigger drag cursor change
+            QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseMove, 
+                    mapFromGlobal(QCursor::pos()), QCursor::pos(), Qt::NoButton, 
+                    QApplication::mouseButtons(), QApplication::queryKeyboardModifiers());
+            QApplication::postEvent(this,mouseEvent);
+        }
+        break;
+    }
+    default:
+        break;
+    }
+    return false;
+}
+
 void TreeWidget::keyPressEvent(QKeyEvent *event)
 {
 #if 0
@@ -1282,6 +1304,10 @@ void TreeWidget::startDragging() {
 void TreeWidget::startDrag(Qt::DropActions supportedActions)
 {
     QTreeWidget::startDrag(supportedActions);
+    if(_DragEventFilter) {
+        _DragEventFilter = false;
+        qApp->removeEventFilter(this);
+    }
 }
 
 QMimeData * TreeWidget::mimeData (const QList<QTreeWidgetItem *> items) const
@@ -1318,10 +1344,22 @@ void TreeWidget::dragLeaveEvent(QDragLeaveEvent * event)
 
 void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 {
+#if QT_VERSION >= 0x050000
+    // Qt5 does not change drag cursor in response to modifier key press,
+    // because QDrag installs a event filter that eats up key event. We install
+    // a filter after Qt and generate fake mouse move event in response to key
+    // press event, which triggers QDrag to update its cursor
+    if(!_DragEventFilter) {
+        _DragEventFilter = true;
+        qApp->installEventFilter(this);
+    }
+#endif
+
     QTreeWidget::dragMoveEvent(event);
     if (!event->isAccepted())
         return;
 
+    auto modifier = QApplication::queryKeyboardModifiers();
     QTreeWidgetItem* targetItem = itemAt(event->pos());
     if (!targetItem || this->isItemSelected(targetItem)) {
         leaveEvent(0);
@@ -1329,9 +1367,9 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
     }
     else if (targetItem->type() == TreeWidget::DocumentType) {
         leaveEvent(0);
-        if(QApplication::keyboardModifiers()== Qt::ControlModifier)
+        if(modifier== Qt::ControlModifier)
             event->setDropAction(Qt::CopyAction);
-        else if(QApplication::keyboardModifiers()== Qt::AltModifier)
+        else if(modifier== Qt::AltModifier)
             event->setDropAction(Qt::LinkAction);
         else
             event->setDropAction(Qt::MoveAction);
@@ -1345,9 +1383,9 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
         try {
             auto items = selectedItems();
 
-            if(QApplication::keyboardModifiers() == Qt::ControlModifier)
+            if(modifier == Qt::ControlModifier)
                 event->setDropAction(Qt::CopyAction);
-            else if(QApplication::keyboardModifiers()== Qt::AltModifier && items.size()==1)
+            else if(modifier== Qt::AltModifier && items.size()==1)
                 event->setDropAction(Qt::LinkAction);
             else
                 event->setDropAction(Qt::MoveAction);
