@@ -517,14 +517,12 @@ class _Wall(ArchComponent.Component):
 
     "The Wall object"
 
-    def __init__(self,obj):
-
-        ArchComponent.Component.__init__(self,obj)
+    def __init__(self, obj):
+        ArchComponent.Component.__init__(self, obj)
         self.setProperties(obj)
         obj.IfcType = "Wall"
 
-    def setProperties(self,obj):
-
+    def setProperties(self, obj):
         lp = obj.PropertiesList
         if not "Length" in lp:
             obj.addProperty("App::PropertyLength","Length","Wall",QT_TRANSLATE_NOOP("App::Property","The length of this wall. Not used if this wall is based on an underlying object"))
@@ -561,11 +559,6 @@ class _Wall(ArchComponent.Component):
             obj.addProperty("App::PropertyInteger","CountBroken","Blocks",QT_TRANSLATE_NOOP("App::Property","The number of broken blocks"))
             obj.setEditorMode("CountBroken",1)
         self.Type = "Wall"
-
-    def onDocumentRestored(self,obj):
-
-        ArchComponent.Component.onDocumentRestored(self,obj)
-        self.setProperties(obj)
 
     def execute(self,obj):
 
@@ -735,12 +728,10 @@ class _Wall(ArchComponent.Component):
                                 self.oldLength = None # delete the stored value to prevent triggering base change below
 
     def onBeforeChange(self,obj,prop):
-
         if prop == "Length":
             self.oldLength = obj.Length.Value
 
-    def onChanged(self,obj,prop):
-
+    def onChanged(self, obj, prop):
         if prop == "Length":
             if obj.Base and obj.Length.Value and hasattr(self,"oldLength") and (self.oldLength != None) and (self.oldLength != obj.Length.Value):
                 if obj.Base.isDerivedFrom("Part::Feature"):

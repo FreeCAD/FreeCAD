@@ -1,0 +1,86 @@
+{
+    "IfcProject": {
+        "is_abstract": false,
+        "parent": "IfcContext",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Phase",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    "IfcProjectLibrary": {
+        "is_abstract": false,
+        "parent": "IfcContext",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Phase",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    }
+}

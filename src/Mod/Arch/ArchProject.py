@@ -95,7 +95,7 @@ class _CommandProject:
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
-class _Project:
+class _Project(ArchIFC.IfcContext):
 
     def __init__(self, obj):
         obj.Proxy = self
@@ -103,8 +103,7 @@ class _Project:
         obj.IfcType = "Project"
 
     def setProperties(self, obj):
-        import ArchIFC
-        ArchIFC.setProperties(obj)
+        ArchIFC.IfcContext.setProperties(self, obj)
         pl = obj.PropertiesList
         if not hasattr(obj,"Group"):
             obj.addExtension("App::GroupExtensionPython", self)
