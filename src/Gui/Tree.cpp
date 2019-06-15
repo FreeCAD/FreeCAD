@@ -757,15 +757,17 @@ void TreeWidget::updateStatus(bool delay) {
 
 void TreeWidget::_updateStatus(bool delay) {
     if(!delay) {
-        if(statusTimer->isActive() || ChangedObjects.size() || NewObjects.size())
-            onUpdateStatus();
-    } else if(!statusTimer->isActive()) {
-        int timeout = FC_TREEPARAM(StatusTimeout);
-        if (timeout<0)
-            timeout = 1;
-        FC_LOG("delay update status");
-        statusTimer->start(timeout);
+        if(statusTimer->isActive()) {
+            if(ChangedObjects.size() || NewObjects.size()) 
+                onUpdateStatus();
+            return;
+        }
     }
+    int timeout = FC_TREEPARAM(StatusTimeout);
+    if (timeout<0)
+        timeout = 1;
+    FC_LOG("delay update status");
+    statusTimer->start(timeout);
 }
 
 void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
@@ -2170,12 +2172,10 @@ struct UpdateDisabler {
 
 void TreeWidget::onUpdateStatus(void)
 {
-    if(App::GetApplication().isRestoring()) {
+    if(this->state()==DraggingState || App::GetApplication().isRestoring()) {
         _updateStatus();
         return;
     }
-
-    FC_LOG("begin update status");
 
     for(auto &v : DocumentMap) {
         if(v.first->isPerformingTransaction()) {
@@ -2188,6 +2188,8 @@ void TreeWidget::onUpdateStatus(void)
             return;
         }
     }
+
+    FC_LOG("begin update status");
 
     UpdateDisabler disabler(*this);
 
