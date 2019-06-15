@@ -239,6 +239,7 @@ private:
     std::string myName; // for debugging purpose
 
     friend class DocumentItem;
+    friend class DocumentObjectItem;
 
     typedef boost::signals2::connection Connection;
     Connection connectNewDocument;

@@ -4400,14 +4400,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
         // get the original icon set
         QIcon icon_org = object()->getIcon();
 
-        // Icon size from PM_ListViewIconSize is too big, and the TreeView will
-        // automatically scale down the icon to fit, which in turn causes the
-        // overlay status icon being scaled down too much. Use Qt standard icon
-        // size instead
-        //
-        // int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
-        static int w = -1;
-        if(w < 0) w = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon).width();
+        int w = getTree()->viewOptions().decorationSize.width();
 
         QPixmap pxOn,pxOff;
 
