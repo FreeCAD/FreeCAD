@@ -225,7 +225,13 @@ private:
     static std::unique_ptr<QPixmap> documentPartialPixmap;
     std::unordered_map<const Gui::Document*,DocumentItem*> DocumentMap;
     std::unordered_map<App::DocumentObject*,std::set<DocumentObjectDataPtr> > ObjectTable;
-    std::unordered_map<App::DocumentObject*,bool> ChangedObjects;
+
+    enum ChangedObjectStatus {
+        CS_Output,
+        CS_Error,
+    };
+    std::unordered_map<App::DocumentObject*,std::bitset<32> > ChangedObjects;
+
     std::unordered_map<std::string,std::vector<long> > NewObjects;
 
     static std::set<TreeWidget*> Instances;

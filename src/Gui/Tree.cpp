@@ -432,6 +432,7 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
     this->setDropIndicatorShown(false);
+    this->setDragDropMode(QTreeWidget::InternalMove);
     this->setRootIsDecorated(false);
     this->setColumnCount(2);
     this->setItemDelegate(new TreeWidgetEditDelegate(this));
@@ -2089,7 +2090,7 @@ void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::P
     {
         const auto &vpd = static_cast<const ViewProviderDocumentObject&>(vp);
         if(&prop == &vpd.ShowInTree)
-            ChangedObjects.emplace(vpd.getObject(),false);
+            ChangedObjects.emplace(vpd.getObject(),0);
     }
 }
 
@@ -2223,9 +2224,14 @@ void TreeWidget::onUpdateStatus(void)
 
     // Update children of changed objects
     for(auto &v : ChangedObjects) {
-        auto iter = ObjectTable.find(v.first);
+        auto obj = v.first;
+
+        auto iter = ObjectTable.find(obj);
         if(iter == ObjectTable.end())
             continue;
+
+        if(v.second.test(CS_Error) && obj->isError())
+            errors.push_back(obj);
 
         if(iter->second.size()) {
             auto data = *iter->second.begin();
@@ -2241,7 +2247,7 @@ void TreeWidget::onUpdateStatus(void)
             }
         }
 
-        updateChildren(iter->first, iter->second, v.second, false);
+        updateChildren(iter->first, iter->second, v.second.test(CS_Output), false);
     }
     ChangedObjects.clear();
 
@@ -2296,12 +2302,26 @@ void TreeWidget::onUpdateStatus(void)
         this->blockConnection(false);
     }
 
+    auto currentDocItem = getDocumentItem(Application::Instance->activeDocument());
+
     QTreeWidgetItem *errItem = 0;
     for(auto obj : errors) {
-        auto it = ObjectTable.find(obj);
-        if(it == ObjectTable.end())
-            continue;
-        for(auto &data : it->second) {
+        DocumentObjectDataPtr data;
+        if(currentDocItem) {
+            auto it = currentDocItem->ObjectMap.find(obj);
+            if(it!=currentDocItem->ObjectMap.end())
+                data = it->second;
+        }
+        if(!data) {
+            auto docItem = getDocumentItem(
+                    Application::Instance->getDocument(obj->getDocument()));
+            if(docItem) {
+                auto it = docItem->ObjectMap.find(obj);
+                if(it!=docItem->ObjectMap.end())
+                    data = it->second;
+            }
+        }
+        if(data) {
             auto item = data->rootItem;
             if(!item && data->items.size()) {
                 item = *data->items.begin();
@@ -3375,9 +3395,12 @@ void TreeWidget::slotChangeObject(
         return;
     }
 
-    bool output = prop.testStatus(App::Property::Output) 
-                  || prop.testStatus(App::Property::NoRecompute);
-    ChangedObjects.emplace(obj,output);
+    auto &s = ChangedObjects[obj];
+    if(prop.testStatus(App::Property::Output) 
+            || prop.testStatus(App::Property::NoRecompute))
+    {
+        s.set(CS_Output);
+    }
 }
 
 void TreeWidget::updateChildren(App::DocumentObject *obj,
@@ -3652,44 +3675,17 @@ void DocumentItem::slotScrollToObject(const Gui::ViewProviderDocumentObject& obj
 void DocumentItem::slotRecomputedObject(const App::DocumentObject &obj) {
     if(obj.isValid())
         return;
-    auto it = ObjectMap.find(const_cast<App::DocumentObject*>(&obj));
-    if(it == ObjectMap.end() || it->second->items.empty())
-        return;
-    auto item = it->second->rootItem;
-    if(!item)
-        item = *it->second->items.begin();
-    showItem(item,false,true);
-    getTree()->scrollToItem(item);
+    slotRecomputed(*obj.getDocument(), {const_cast<App::DocumentObject*>(&obj)});
 }
 
 void DocumentItem::slotRecomputed(const App::Document &, const std::vector<App::DocumentObject*> &objs) {
     auto tree = getTree();
-    bool scrolled = false;
-    tree->_updateStatus(false);
     for(auto obj : objs) {
-        if(obj->isValid()) 
-            continue;
-        auto it = ObjectMap.find(obj);
-        if(it == ObjectMap.end() || it->second->items.empty()) {
-            auto itDoc = tree->DocumentMap.find(
-                    Application::Instance->getDocument(obj->getDocument()));
-            if(itDoc!=tree->DocumentMap.end()) {
-                it = itDoc->second->ObjectMap.find(obj);
-                if(it == ObjectMap.end() || it->second->items.empty()) {
-                    FC_ERR("Cannot find recompute failure object " << obj->getFullName());
-                    continue;
-                }
-            }
-        }
-        auto item = it->second->rootItem;
-        if(!item)
-            item = *it->second->items.begin();
-        showItem(item,false,true);
-        if(!scrolled) {
-            scrolled = true;
-            tree->scrollToItem(item);
-        }
+        if(!obj->isValid()) 
+            tree->ChangedObjects[obj].set(TreeWidget::CS_Error);
     }
+    if(tree->ChangedObjects.size())
+        tree->_updateStatus();
 }
 
 Gui::Document* DocumentItem::document() const
