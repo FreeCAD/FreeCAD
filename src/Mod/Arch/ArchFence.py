@@ -317,6 +317,18 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
 
     def normalizeColors(self, obj, numberOfFaces):
         colors = obj.ViewObject.DiffuseColor
+
+        if obj.TypeId == 'PartDesign::Body':
+            # When colorizing a PartDesign Body we have two options
+            # 1. The whole body got a shape color, that means the tip has only a single diffuse color set
+            #   so we use the shape color of the body
+            # 2. "Set colors" was called on the tip and the individual faces where colorized.
+            #   We use the diffuseColors of the tip in that case
+            tipColors = obj.Tip.ViewObject.DiffuseColor
+            
+            if len(tipColors) > 1:
+                colors = tipColors
+
         numberOfColors = len(colors)
 
         if numberOfColors == 1:
