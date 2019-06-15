@@ -58,6 +58,15 @@ class _Fence(ArchComponent.Component):
 
         self.Type = "Fence"
 
+    def __getstate__(self):
+        return (self.sectionFaceNumbers)
+
+    def __setstate__(self, state):
+        if state is not None and isinstance(state, tuple):
+            self.sectionFaceNumbers = state[0]
+
+        return None
+
     def execute(self, obj):
         import Part
 
@@ -97,7 +106,7 @@ class _Fence(ArchComponent.Component):
             obj, pathwire, downRotation)
 
         postShapes = self.calculatePosts(obj, postPlacements)
-        sectionShapes = self.calculateSections(
+        sectionShapes, sectionFaceNumbers = self.calculateSections(
             obj, postPlacements, postLength, sectionLength)
 
         allShapes = []
@@ -105,6 +114,8 @@ class _Fence(ArchComponent.Component):
         allShapes.extend(sectionShapes)
 
         compound = Part.makeCompound(allShapes)
+
+        self.sectionFaceNumbers = sectionFaceNumbers
 
         self.applyShape(obj, compound, obj.Placement,
                         allowinvalid=True, allownosolid=True)
@@ -146,6 +157,11 @@ class _Fence(ArchComponent.Component):
 
         shapes = []
 
+        # For the colorization algorithm we have to store the number of faces for each section
+        # It is possible that a section is clipped. Then the number of faces is not equals to the
+        # number of faces in the original section
+        faceNumbers = []
+
         for i in range(obj.NumberOfSections):
             startPlacement = postPlacements[i]
             endPlacement = postPlacements[i + 1]
@@ -175,8 +191,9 @@ class _Fence(ArchComponent.Component):
             sectionCopy.Placement = placement
 
             shapes.append(sectionCopy)
+            faceNumbers.append(len(sectionCopy.Faces))
 
-        return shapes
+        return (shapes, faceNumbers)
 
     def clipSection(self, shape, length, clipLength):
         import Part
@@ -189,14 +206,12 @@ class _Fence(ArchComponent.Component):
                                FreeCAD.Vector(boundBox.XMin, boundBox.YMin, boundBox.ZMin))
         rightBox = Part.makeBox(halfLengthToCut, boundBox.YMax + 1, boundBox.ZMax + 1,
                                 FreeCAD.Vector(boundBox.XMin + halfLengthToCut + clipLength, boundBox.YMin, boundBox.ZMin))
-        
+
         newShape = shape.cut([leftBox, rightBox])
         newBoundBox = newShape.BoundBox
 
         newShape.translate(FreeCAD.Vector(-newBoundBox.XMin, 0, 0))
 
-        print(newShape.BoundBox)
-        
         return newShape.removeSplitter()
 
     def calculatePathWire(self, obj):
@@ -214,6 +229,17 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
 
     def __init__(self, vobj):
         ArchComponent.ViewProviderComponent.__init__(self, vobj)
+        self.setProperties(vobj)
+
+    def setProperties(self, vobj):
+        pl = vobj.PropertiesList
+
+        if not "UseOriginalColors" in pl:
+            vobj.addProperty("App::PropertyBool", "UseOriginalColors", "Fence", QT_TRANSLATE_NOOP(
+                "App::Property", "When true, the fence will be colored like the original post and section."))
+
+    def onDocumentRestored(self, vobj):
+        self.setProperties(vobj)
 
     def getIcon(self):
         import Arch_rc
@@ -233,6 +259,81 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
             children.append(self.Object.Path)
 
         return children
+
+    def updateData(self, obj, prop):
+        colorProps = ["Shape", "Section", "Post", "Path"]
+
+        if prop in colorProps:
+            self.applyColors(obj)
+        else:
+            super().updateData(obj, prop)
+
+    def onChanged(self, vobj, prop):
+        if prop == "UseOriginalColors":
+            self.applyColors(vobj.Object)
+        else:
+            super().onChanged(vobj, prop)
+
+    def applyColors(self, obj):
+        if not hasattr(obj.ViewObject, "UseOriginalColors") or not obj.ViewObject.UseOriginalColors:
+            obj.ViewObject.DiffuseColor = [obj.ViewObject.ShapeColor]
+        else:
+            post = obj.Post
+            section = obj.Section
+
+            numberOfPostFaces = len(post.Shape.Faces)
+            numberOfSectionFaces = len(section.Shape.Faces)
+
+            if hasattr(obj.Proxy, 'sectionFaceNumbers'):
+                sectionFaceNumbers = obj.Proxy.sectionFaceNumbers
+            else:
+                sectionFaceNumbers = [0]
+
+            if numberOfPostFaces == 0 or sum(sectionFaceNumbers) == 0:
+                return
+
+            postColors = self.normalizeColors(post, numberOfPostFaces)
+            defaultSectionColors = self.normalizeColors(
+                section, numberOfSectionFaces)
+
+            ownColors = []
+
+            # At first all posts are added to the shape
+            for i in range(obj.NumberOfPosts):
+                ownColors.extend(postColors)
+
+            # Next all sections are added
+            for i in range(obj.NumberOfSections):
+                actualSectionFaceCount = sectionFaceNumbers[i]
+
+                if actualSectionFaceCount == numberOfSectionFaces:
+                    ownColors.extend(defaultSectionColors)
+                else:
+                    ownColors.extend(self.normalizeColors(
+                        section, actualSectionFaceCount))
+
+            viewObject = obj.ViewObject
+            viewObject.DiffuseColor = ownColors
+
+    def normalizeColors(self, obj, numberOfFaces):
+        colors = obj.ViewObject.DiffuseColor
+        numberOfColors = len(colors)
+
+        if numberOfColors == 1:
+            return colors * numberOfFaces
+
+        colorsToUse = colors.copy()
+
+        if numberOfColors == numberOfFaces:
+            return colorsToUse
+        else:
+            # It is possible, that we have less faces than colors when something got clipped.
+            # Remove the unneeded colors at the beginning and end
+            halfNumberOfFacesToRemove = (numberOfColors - numberOfFaces) / 2
+            start = int(math.ceil(halfNumberOfFacesToRemove))
+            end = start + numberOfFaces
+
+            return colorsToUse[start:end]
 
 
 class _CommandFence:
@@ -330,12 +431,30 @@ if __name__ == '__main__':
     def buildPost():
         post = Part.makeBox(100, 100, 1000, FreeCAD.Vector(0, 0, 0))
 
-        Part.show(post, "Post")
+        Part.show(post, 'Post')
 
         return FreeCAD.ActiveDocument.getObject('Post')
+
+    def colorizeFaces(o, color=(0.6, 0.0, 0.0, 0.0), faceIndizes=[2]):
+        numberOfFaces = len(o.Shape.Faces)
+        vo = o.ViewObject
+
+        originalColors = vo.DiffuseColor
+
+        if len(originalColors) == 1:
+            newColors = originalColors * numberOfFaces
+        else:
+            newColors = originalColors.copy()
+
+        for i in faceIndizes:
+            newColors[i] = color
+
+        vo.DiffuseColor = newColors
 
     section = buildSection()
     path = buildPath()
     post = buildPost()
+
+    colorizeFaces(post)
 
     print(makeFence(section, post, path))
