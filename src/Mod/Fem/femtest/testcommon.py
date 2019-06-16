@@ -29,8 +29,6 @@ import unittest
 from . import utilstest as testtools
 from .utilstest import fcc_print
 
-from os.path import join
-
 
 class TestFemCommon(unittest.TestCase):
     fcc_print('import TestFemCommon')
@@ -81,7 +79,7 @@ class TestFemCommon(unittest.TestCase):
         pymodules = []
 
         # collect all Python modules in FEM
-        pymodules += testtools.collect_python_modules('') # FEM main dir
+        pymodules += testtools.collect_python_modules('')  # FEM main dir
         pymodules += testtools.collect_python_modules('femexamples')
         pymodules += testtools.collect_python_modules('feminout')
         pymodules += testtools.collect_python_modules('femmesh')
