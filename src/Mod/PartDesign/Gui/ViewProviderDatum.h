@@ -60,14 +60,14 @@ public:
     virtual std::string getElement(const SoDetail *) const;
     virtual SoDetail* getDetail(const char*) const;
 
-    /** 
+    /**
      * Enable/Disable the selectability of the datum
-     * This differs from the normal ViewProvider selectability in that, that with this enabled one 
+     * This differs from the normal ViewProvider selectability in that, that with this enabled one
      * can pick through the datum and select stuff behind it.
      */
     bool isPickable();
     void setPickable(bool val);
-    
+
     /**
      * Update the visual size to match the given extents
      * @note should be reimplemented in the offspings
@@ -123,6 +123,8 @@ protected:
 
     // Get the separator to fill with datum content
     SoSeparator *getShapeRoot () { return pShapeSep; }
+
+    virtual QIcon mergeOverlayIcons (const QIcon & orig) const override;
 
 private:
     SoSeparator* pShapeSep;
