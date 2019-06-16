@@ -313,11 +313,11 @@ class TestResult(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_stress_principal(
+    def test_stress_principal_std(
         self
     ):
         expected_principal = (-178.0076, -194.0749, -468.9075, 145.4499)
-        from femresult.resulttools import calculate_principal_stress as pr
+        from femresult.resulttools import calculate_principal_stress_std as pr
         prin = pr(self.get_stress_values())
         rounded_prin = (
             round(prin[0], 4),
@@ -330,6 +330,25 @@ class TestResult(unittest.TestCase):
             rounded_prin,
             expected_principal,
             "Calculated principal stresses are not the expected values."
+        )
+
+    # ********************************************************************************************
+    def test_stress_principal_reinforced(
+        self
+    ):
+        expected_principal = (-178.0076, -194.0749, -468.9075, 145.4499)
+        from femresult.resulttools import calculate_principal_stress_reinforced as prrc
+        prin = prrc(self.get_stress_values())
+        rounded_prin = (
+            round(prin[0], 4),
+            round(prin[1], 4),
+            round(prin[2], 4),
+            round(prin[3], 4))
+        # fcc_print(rounded_prin)
+        self.assertEqual(
+            rounded_prin,
+            expected_principal,
+            "Calculated principal reinforced stresses are not the expected values."
         )
 
     # ********************************************************************************************

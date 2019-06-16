@@ -324,7 +324,7 @@ def add_principal_stress(res_obj):
         res_obj.NodeStressYZ
     )
     for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
-        prin1, prin2, prin3, shear = calculate_principal_stress((Sxx, Syy, Szz, Sxy, Sxz, Syz))
+        prin1, prin2, prin3, shear = calculate_principal_stress_std((Sxx, Syy, Szz, Sxy, Sxz, Syz))
         prinstress1.append(prin1)
         prinstress2.append(prin2)
         prinstress3.append(prin3)
@@ -373,7 +373,7 @@ def calculate_von_mises(stress_tensor):
     return np.sqrt(1.5 * np.linalg.norm(normal - pressure)**2 + 3.0 * np.linalg.norm(shear)**2)
 
 
-def calculate_principal_stress(stress_tensor):
+def calculate_principal_stress_std(stress_tensor):
     s11 = stress_tensor[0]  # Sxx
     s22 = stress_tensor[1]  # Syy
     s33 = stress_tensor[2]  # Szz
@@ -397,6 +397,223 @@ def calculate_principal_stress(stress_tensor):
         return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
     # TODO might be possible without a try except for NaN
     # https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
+
+
+def calculate_principal_stress_reinforced(stress_tensor):
+    #
+    #   HarryvL - calculate principal stress vectors and values
+    #           - for total stresses use stress_tensor[0], stress_tensor[1], stress_tensor[2]
+    #             on the diagonal of the stress tensor
+    #
+    # difference to the original method:
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=90#p296539
+    #
+
+    s11 = stress_tensor[0]  # Sxx
+    s22 = stress_tensor[1]  # Syy
+    s33 = stress_tensor[2]  # Szz
+    s12 = stress_tensor[3]  # Sxy
+    s31 = stress_tensor[4]  # Sxz
+    s23 = stress_tensor[5]  # Syz
+    sigma = np.array([
+        [s11, s12, s31],
+        [s12, s22, s23],
+        [s31, s23, s33]
+    ])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
+
+    eigenvalues, eigenvectors = np.linalg.eig(sigma)
+
+    #
+    #   HarryvL: suppress complex eigenvalue and vectors that may occur for
+    #   near-zero (numerical noise) stress fields
+    #
+
+    eigenvalues = eigenvalues.real
+    eigenvectors = eigenvectors.real
+
+    eigenvectors[:, 0] = eigenvalues[0] * eigenvectors[:, 0]
+    eigenvectors[:, 1] = eigenvalues[1] * eigenvectors[:, 1]
+    eigenvectors[:, 2] = eigenvalues[2] * eigenvectors[:, 2]
+
+    idx = eigenvalues.argsort()[::-1]
+    eigenvalues = eigenvalues[idx]
+    eigenvectors = eigenvectors[:, idx]
+
+    maxshear = (eigenvalues[0] - eigenvalues[2]) / 2.0
+
+    return (eigenvalues[0], eigenvalues[1], eigenvalues[2], maxshear,
+            tuple([tuple(row) for row in eigenvectors.T]))
+
+
+def calculate_rho(stress_tensor, fy):
+
+    #
+    #   HarryvL - Calculation of Reinforcement Ratios and
+    #   Concrete Stresses according to http://heronjournal.nl/53-4/3.pdf
+    #           - See post:
+    #             https://forum.freecadweb.org/viewtopic.php?f=18&t=28821
+    #                   fy: factored yield strength of reinforcement bars
+    #
+
+    rmin = 1.0e9
+    eqmin = 14
+
+    sxx = stress_tensor[0]
+    syy = stress_tensor[1]
+    szz = stress_tensor[2]
+    sxy = stress_tensor[3]
+    syz = stress_tensor[5]
+    sxz = stress_tensor[4]
+
+    rhox = np.zeros(15)
+    rhoy = np.zeros(15)
+    rhoz = np.zeros(15)
+
+    #    i1=sxx+syy+szz NOT USED
+    #    i2=sxx*syy+syy*szz+szz*sxx-sxy**2-sxz**2-syz**2 NOT USED
+    i3 = (sxx * syy * szz + 2 * sxy * sxz * syz - sxx * syz**2
+          - syy * sxz**2 - szz * sxy**2)
+
+    #    Solution (5)
+    d = (sxx * syy - sxy**2)
+    if d != 0.:
+        rhoz[0] = i3 / d / fy
+
+    #    Solution (6)
+    d = (sxx * szz - sxz**2)
+    if d != 0.:
+        rhoy[1] = i3 / d / fy
+
+    #    Solution (7)
+    d = (syy * szz - syz**2)
+    if d != 0.:
+        rhox[2] = i3 / d / fy
+
+    #    Solution (9)
+    if sxx != 0.:
+        fc = sxz * sxy / sxx - syz
+        fxy = sxy**2 / sxx
+        fxz = sxz**2 / sxx
+
+        #    Solution (9+)
+        rhoy[3] = syy - fxy + fc
+        rhoy[3] /= fy
+        rhoz[3] = szz - fxz + fc
+        rhoz[3] /= fy
+
+        #    Solution (9-)
+        rhoy[4] = syy - fxy - fc
+        rhoy[4] /= fy
+        rhoz[4] = szz - fxz - fc
+        rhoz[4] /= fy
+
+    #   Solution (10)
+    if syy != 0.:
+        fc = syz * sxy / syy - sxz
+        fxy = sxy**2 / syy
+        fyz = syz**2 / syy
+
+        # Solution (10+)
+        rhox[5] = sxx - fxy + fc
+        rhox[5] /= fy
+        rhoz[5] = szz - fyz + fc
+        rhoz[5] /= fy
+
+        # Solution (10-)vm
+        rhox[6] = sxx - fxy - fc
+
+        rhox[6] /= fy
+        rhoz[6] = szz - fyz - fc
+        rhoz[6] /= fy
+
+    # Solution (11)
+    if szz != 0.:
+        fc = sxz * syz / szz - sxy
+        fxz = sxz**2 / szz
+        fyz = syz**2 / szz
+
+        # Solution (11+)
+        rhox[7] = sxx - fxz + fc
+        rhox[7] /= fy
+        rhoy[7] = syy - fyz + fc
+        rhoy[7] /= fy
+
+        # Solution (11-)
+        rhox[8] = sxx - fxz - fc
+        rhox[8] /= fy
+        rhoy[8] = syy - fyz - fc
+        rhoy[8] /= fy
+
+    # Solution (13)
+    rhox[9] = (sxx + sxy + sxz) / fy
+    rhoy[9] = (syy + sxy + syz) / fy
+    rhoz[9] = (szz + sxz + syz) / fy
+
+    # Solution (14)
+    rhox[10] = (sxx + sxy - sxz) / fy
+    rhoy[10] = (syy + sxy - syz) / fy
+    rhoz[10] = (szz - sxz - syz) / fy
+
+    # Solution (15)
+    rhox[11] = (sxx - sxy - sxz) / fy
+    rhoy[11] = (syy - sxy + syz) / fy
+    rhoz[11] = (szz - sxz + syz) / fy
+
+    # Solution (16)
+    rhox[12] = (sxx - sxy + sxz) / fy
+    rhoy[12] = (syy - sxy - syz) / fy
+    rhoz[12] = (szz + sxz - syz) / fy
+
+    # Solution (17)
+    if syz != 0.:
+        rhox[13] = (sxx - sxy * sxz / syz) / fy
+    if sxz != 0.:
+        rhoy[13] = (syy - sxy * syz / sxz) / fy
+    if sxy != 0.:
+        rhoz[13] = (szz - sxz * syz / sxy) / fy
+
+    for ir in range(0, rhox.size):
+
+        if rhox[ir] >= -1.e-10 and rhoy[ir] >= -1.e-10 and rhoz[ir] > -1.e-10:
+
+            # Concrete Stresses
+            scxx = sxx - rhox[ir] * fy
+            scyy = syy - rhoy[ir] * fy
+            sczz = szz - rhoz[ir] * fy
+            ic1 = (scxx + scyy + sczz)
+            ic2 = (scxx * scyy + scyy * sczz + sczz * scxx - sxy**2
+                   - sxz**2 - syz**2)
+            ic3 = (scxx * scyy * sczz + 2 * sxy * sxz * syz - scxx * syz**2
+                   - scyy * sxz**2 - sczz * sxy**2)
+
+            if ic1 <= 1.e-6 and ic2 >= -1.e-6 and ic3 <= 1.0e-6:
+
+                rsum = rhox[ir] + rhoy[ir] + rhoz[ir]
+
+                if rsum < rmin and rsum > 0.:
+                    rmin = rsum
+                    eqmin = ir
+
+    return rhox[eqmin], rhoy[eqmin], rhoz[eqmin]
+
+
+def calculate_mohr_coulomb(prin1, prin3, phi, fck):
+    #
+    #   HarryvL - Calculation of Mohr Coulomb yield criterion to judge
+    #             concrete curshing and shear failure
+    #                   phi: angle of internal friction
+    #                   fck: factored compressive strength of the matrix material (usually concrete)
+    #
+
+    coh = fck * (1 - np.sin(phi)) / 2 / np.cos(phi)
+
+    mc_stress = ((prin1 - prin3) + (prin1 + prin3) * np.sin(phi)
+                 - 2. * coh * np.cos(phi))
+
+    if mc_stress < 0.:
+        mc_stress = 0.
+
+    return mc_stress
 
 
 def calculate_disp_abs(displacements):
