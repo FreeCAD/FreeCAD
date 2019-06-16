@@ -411,6 +411,47 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                         "Thermomechanical analysis: No SpecificHeat "
                         "defined for at least one material.\n"  # allowed to be 0.0 (in ccx)
                     )
+            if femutils.is_of_type(mat_obj, 'Fem::MaterialReinforced'):
+                # additional tests for reinforced materials,
+                # they are needed for result calculation not for ccx analysis
+                mat_map_m = mat_obj.Material
+                if 'AngleOfFriction' in mat_map_m:
+                    # print(Units.Quantity(mat_map_m['AngleOfFriction']).Value)
+                    if not Units.Quantity(mat_map_m['AngleOfFriction']).Value:
+                        message += (
+                            "Value of AngleOfFriction is set to 0.0 "
+                            "for the matrix of a reinforced material.\n"
+                        )
+                else:
+                    message += (
+                        "No AngleOfFriction defined for the matrix "
+                        "of at least one reinforced material.\n"
+                    )
+                if 'CompressiveStrength' in mat_map_m:
+                    # print(Units.Quantity(mat_map_m['CompressiveStrength']).Value)
+                    if not Units.Quantity(mat_map_m['CompressiveStrength']).Value:
+                        message += (
+                            "Value of CompressiveStrength is set to 0.0 "
+                            "for the matrix of a reinforced material.\n"
+                        )
+                else:
+                    message += (
+                        "No CompressiveStrength defined for the matrinx "
+                        "of at least one reinforced material.\n"
+                    )
+                mat_map_r = mat_obj.Reinforcement
+                if 'YieldStrength' in mat_map_r:
+                    # print(Units.Quantity(mat_map_r['YieldStrength']).Value)
+                    if not Units.Quantity(mat_map_r['YieldStrength']).Value:
+                        message += (
+                            "Value of YieldStrength is set to 0.0 "
+                            "for the reinforcement of a reinforced material.\n"
+                        )
+                else:
+                    message += (
+                        "No YieldStrength defined for the reinforcement "
+                        "of at least one reinforced material.\n"
+                    )
         if len(self.materials_linear) == 1:
             mobj = self.materials_linear[0]['Object']
             if hasattr(mobj, 'References') and mobj.References:
