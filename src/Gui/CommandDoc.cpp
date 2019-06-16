@@ -417,6 +417,10 @@ void StdCmdNew::activated(int iMsg)
         .arg(qApp->translate("StdCmdNew","Unnamed"));
     runCommand(Command::Doc,cmd.toUtf8());
     doCommand(Command::Gui,"Gui.activeDocument().activeView().viewDefaultOrientation()");
+
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    if (hViewGrp->GetBool("ShowAxisCross"))
+        doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(True)");
 }
 
 //===========================================================================
