@@ -177,6 +177,6 @@ QIcon ViewProviderPipe::getIcon(void) const {
         str += QString::fromLatin1("Subtractive_");
 
     str += QString::fromLatin1("Pipe.svg");
-    return mergeTip(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 
