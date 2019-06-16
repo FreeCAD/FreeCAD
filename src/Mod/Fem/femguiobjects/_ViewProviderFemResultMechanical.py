@@ -33,7 +33,6 @@ import FreeCADGui
 import FemGui  # needed to display the icons in TreeView
 
 # for the panel
-import FemGui
 import femresult.resulttools as resulttools
 from PySide import QtCore
 from PySide import QtGui
@@ -658,12 +657,13 @@ def hide_femmeshes_postpiplines():
 
 
 def hide_parts_constraints():
+    from FemGui import getActiveAnalysis
     fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
     hide_constraints = fem_prefs.GetBool("HideConstraint", False)
     if hide_constraints:
         for o in FreeCAD.ActiveDocument.Objects:
             if o.isDerivedFrom('Fem::FemAnalysis'):
-                for acnstrmesh in FemGui.getActiveAnalysis().Group:
+                for acnstrmesh in getActiveAnalysis().Group:
                     if "Constraint" in acnstrmesh.TypeId:
                         acnstrmesh.ViewObject.Visibility = False
                 break

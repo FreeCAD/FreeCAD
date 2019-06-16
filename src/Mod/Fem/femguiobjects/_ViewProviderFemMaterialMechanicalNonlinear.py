@@ -37,7 +37,6 @@ from pivy import coin
 False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns 'FemGui'
 
 
-
 class _ViewProviderFemMaterialMechanicalNonlinear:
     "A View Provider for the FemMaterialMechanicalNonlinear object"
     def __init__(self, vobj):
