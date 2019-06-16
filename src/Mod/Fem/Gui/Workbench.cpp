@@ -87,6 +87,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "FEM_MaterialSolid"
            << "FEM_MaterialFluid"
            << "FEM_MaterialMechanicalNonlinear"
+           << "FEM_MaterialReinforced"
            << "FEM_MaterialEditor"
            << "Separator"
            << "FEM_ElementGeometry1D"
@@ -190,6 +191,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *material << "FEM_MaterialSolid"
               << "FEM_MaterialFluid"
               << "FEM_MaterialMechanicalNonlinear"
+              << "FEM_MaterialReinforced"
               << "FEM_MaterialEditor";
 
     Gui::MenuItem* elec = new Gui::MenuItem;
