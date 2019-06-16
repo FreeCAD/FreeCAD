@@ -39,7 +39,7 @@ class _ViewProviderFemMaterialReinforced:
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/fem-constraint-selfweight.svg"  # TODO: create one
+        return ":/icons/fem-material-reinforced.svg"
 
     def attach(self, vobj):
         from pivy import coin
