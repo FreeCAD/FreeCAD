@@ -38,7 +38,7 @@ if FreeCAD.GuiUp:
 
 def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
     """Export mesh to TetGen *.poly file format"""
-    ## Part 1 - write node list to output file
+    # ********** Part 1 - write node list to output file
     if beVerbose == 1:
             FreeCAD.Console.PrintMessage("\nExport of mesh to TetGen file ...")
     (allVertices, allFacets) = meshToExport.Topology
@@ -58,7 +58,7 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
             'z': allVertices[PointIndex].z
         })
 
-    ## Find out BoundaryMarker for each facet. If edge connects only two facets,
+    # Find out BoundaryMarker for each facet. If edge connects only two facets,
     # then this facets should have the same BoundaryMarker
     BoundaryMarkerExists = 1
     PointList = [allFacets[0][1], allFacets[0][0]]
@@ -147,7 +147,7 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
             '\nNew BoundaryMarker:' + repr(BoundaryMarker) + ' ' + repr(len(EdgeFacets))
         )
 
-    ## Part 2 - write all facets to *.poly file
+    # ********** Part 2 - write all facets to *.poly file
     f.write("# Part 2 - facet list\n")
     f.write("%(TotalNumOfFacets)i  %(BoundaryMarkerExists)i\n" % {
         'TotalNumOfFacets': len(allFacets),
@@ -163,7 +163,7 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
             #        f.write(repr(allFacets[FacetIndex][PointIndex]))
             f.write("%(PointIndex)i " % {'PointIndex': allFacets[FacetIndex][PointIndex]})
         f.write("\n")
-    ## Part 3 and Part 4 are zero
+    # ********** Part 3 and Part 4 are zero
     f.write("# Part 3 - the hole list.\n# There is no hole in bar.\n0\n")
     f.write("# Part 4 - the region list.\n# There is no region defined.\n0\n")
     f.write("# This file was generated from FreeCAD geometry\n")
@@ -179,11 +179,11 @@ def export(objectslist, filename):
 
 
 def createMesh():
-    ## ========================  Script beginning...  ========================
+    # ========================  Script beginning...  ========================
     beVerbose = 1
     if beVerbose == 1:
         FreeCAD.Console.PrintMessage("\n\n\n\n\n\n\n\nScript starts...")
-    ## Geometry definition
+    # Geometry definition
     # Define objects names
     PyDocumentName = "pnJunction"
     PSideBoxName = "PSide"
@@ -236,7 +236,7 @@ def createMesh():
                 "\n ERROR! Input len() of BoxList and BoxMeshList is not the same! "
             )
 
-    ## Set sizes in nanometers
+    # Set sizes in nanometers
     if beVerbose == 1:
         FreeCAD.Console.PrintMessage("\nSet sizes...")
     tessellationTollerance = 0.05
@@ -298,7 +298,7 @@ def createMesh():
         Rot
     )
 
-    ## Unite
+    # Unite
     if beVerbose == 1:
         FreeCAD.Console.PrintMessage("\nFuse objects...")
     fuseShape = BoxList[0].Shape
