@@ -1,22 +1,40 @@
-import sys, os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Part, Draft_rc, DraftVecUtils
+# -*- coding: utf8 -*-
+
+#***************************************************************************
+#*                                                                         *
+#*   Copyright (c) 2009, 2010                                              *
+#*   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *
+#*                                                                         *
+#*   This program is free software; you can redistribute it and/or modify  *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
+#*                                                                         *
+#***************************************************************************
+
+__title__="FreeCAD Draft Edit Tool"
+__author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin"
+__url__ = "http://www.freecadweb.org"
+
+import FreeCAD, FreeCADGui, Draft, DraftTools, math
+
 from FreeCAD import Vector
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtGui,QtCore
-    from DraftTools import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-
-from DraftSnap import *
 from DraftTrackers import *
-from pivy import coin
 
-import DraftTools
+from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
+from DraftTools import translate
 
 class Edit():
     "The Draft_Edit FreeCAD command definition"
@@ -400,6 +418,7 @@ class Edit():
         self.resetTrackers()
 
     def addPointToCurve(self,point,info=None):
+        import Part
         if not (Draft.getType(self.obj) in ["BSpline","BezCurve"]): return
         pts = self.obj.Points
         if Draft.getType(self.obj) == "BezCurve":
@@ -549,7 +568,7 @@ class Edit():
             if Draft.getType(self.obj) in ["BezCurve"]:
                 pts = self.recomputePointsBezier(pts,self.editing,v,self.obj.Degree,moveTrackers=False)
             # check that the new point lies on the plane of the wire
-            import DraftGeomUtils
+            import DraftGeomUtils, DraftVecUtils
             if self.obj.Closed:
                 n = DraftGeomUtils.getNormal(self.obj.Shape)
                 dv = editPnt.sub(pts[self.editing])
@@ -620,6 +639,8 @@ class Edit():
             self.finish()
 
     def resetTrackersBezier(self):
+        #in future move tracker definition to DraftTrackers
+        from pivy import coin
         knotmarkers = (coin.SoMarkerSet.DIAMOND_FILLED_9_9,#sharp
                 coin.SoMarkerSet.SQUARE_FILLED_9_9,        #tangent
                 coin.SoMarkerSet.HOURGLASS_FILLED_9_9)     #symmetric
@@ -738,6 +759,7 @@ class Edit():
             self.by = self.by.negative()
 
     def updateRectangle(self,v):
+        import DraftVecUtils
         delta = v.sub(self.obj.Placement.Base)
         if self.editing == 0:
             p = self.obj.Placement
@@ -834,6 +856,7 @@ class Edit():
                     self.updateCirclePts(0,1,1,1)
                     
             elif self.arc3Pt == False:
+                import Part
                 if self.editing == 0:#center point
                     import DraftVecUtils
                     p1 = self.obj.Shape.Vertexes[0].Point

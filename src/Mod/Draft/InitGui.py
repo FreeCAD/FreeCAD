@@ -67,12 +67,16 @@ class DraftWorkbench (Workbench):
         # import Draft tools, icons
         try:
             import os,Draft_rc,DraftTools, DraftGui
+            import DraftEdit
             from DraftTools import translate
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
         except Exception as inst:
             print(inst)
             FreeCAD.Console.PrintError("Error: Initializing one or more of the Draft modules failed, Draft will not work as expected.\n")
+        
+        # setup commands
+        FreeCADGui.addCommand('Draft_Edit',DraftEdit.Edit())
 
         # setup menus
         self.cmdList = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_ArcTools","Draft_Ellipse",
