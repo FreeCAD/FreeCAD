@@ -46,10 +46,10 @@ grbl_post.export(object, "/path/to/file.ncc")
 # Default values for command line arguments:
 OUTPUT_COMMENTS = True            # default output of comments in output gCode file
 OUTPUT_HEADER = True              # default output header in output gCode file
-OUTPUT_LINE_NUMBERS = False       # default does'nt utput lines numbers in output gCode file
+OUTPUT_LINE_NUMBERS = False       # default doesn't output line numbers in output gCode file
 SHOW_EDITOR = True                # default show the resulting file dialog output in GUI
 PRECISION = 3                     # Default precision for metric (see http://linuxcnc.org/docs/2.7/html/gcode/overview.html#_g_code_best_practices)
-TRANSLATE_DRILL_CYCLES = False     # If true, G81, G82 & G83 are translated in G0/G1 moves
+TRANSLATE_DRILL_CYCLES = False    # If true, G81, G82 & G83 are translated in G0/G1 moves
 PREAMBLE = '''G17 G90
 '''                               # default preamble text will appear at the beginning of the gCode output file.
 POSTAMBLE = '''M5

@@ -89,7 +89,7 @@ def decode(name):
 # in the module Material.py is another implementation of reading and writing FCMat files
 # this implementation uses the ConfigParser module
 # in ViewProviderFemMaterial in add_cards_from_a_dir() the parser from Material.py is used
-# since this mixture seams to be there for ages it should not be changed for 0.18
+# since this mixture seems to have be there for ages it should not be changed for 0.18
 # TODO: get rid of this mixture in FreeCAD 0.19
 
 # Metainformation
@@ -102,7 +102,7 @@ def decode(name):
 def read(filename):
     "reads a FCMat file and returns a dictionary from it"
     # the reader should return a dictionary in any case even if the file
-    # has problems, a empty dict shuld be returned un such case
+    # has problems, an empty dict should be returned in such case
     if isinstance(filename, unicode):
         if sys.version_info.major < 3:
             filename = filename.encode(sys.getfilesystemencoding())
@@ -117,7 +117,7 @@ def read(filename):
     for ln, line in enumerate(f):
         ln += 1  # enumerate starts with 0, but we would like to have the real line number
         if line.startswith('#'):
-            # a # is assumed to be a comment which is ignored
+            # a '#' is assumed to be a comment which is ignored
             continue
         # the use of line number is not smart for a data model
         # a wrong user edit could break the file
@@ -141,7 +141,7 @@ def read(filename):
             # [ is a Section
             if line[0] not in ";[":
                 # split once on first occurrence
-                # a link could contain a = and thus would be split
+                # a link could contain a '=' and thus would be split
                 k = line.split("=", 1)
                 if len(k) == 2:
                     v = k[1].strip()
@@ -223,7 +223,7 @@ def write(filename, dictionary, write_group_section=True):
                     f.write("\n[" + s["keyname"] + "]\n")
                 for k, i in s.items():
                     if (k != "keyname" and i != '') or k == "Name":
-                        # use only keys which are not empty and the name even if empty
+                        # use only keys which are not empty and the name, even if empty
                         if sys.version_info.major >= 3:
                             f.write(k + " = " + i + "\n")
                         else:
