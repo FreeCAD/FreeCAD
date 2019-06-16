@@ -1925,6 +1925,10 @@ void StdCmdViewCreate::activated(int iMsg)
     Q_UNUSED(iMsg);
     getActiveGuiDocument()->createView(View3DInventor::getClassTypeId());
     getActiveGuiDocument()->getActiveView()->viewAll();
+
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    if (hViewGrp->GetBool("ShowAxisCross"))
+        doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(True)");
 }
 
 bool StdCmdViewCreate::isActive(void)
@@ -2087,10 +2091,13 @@ void StdCmdAxisCross::activated(int iMsg)
     Q_UNUSED(iMsg);
     Gui::View3DInventor* view = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
     if (view) {
-        if(view->getViewer()->hasAxisCross()== false)
+        if (view->getViewer()->hasAxisCross() == false)
             doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(True)");
         else
             doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(False)");
+
+        ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hViewGrp->SetBool("ShowAxisCross", view->getViewer()->hasAxisCross());
     }
 }
 
