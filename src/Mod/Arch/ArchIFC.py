@@ -45,6 +45,7 @@ def getIfcProduct(IfcType):
         name = "IfcBuildingElementProxy"
     if name in ArchIFCSchema.IfcProducts:
         return ArchIFCSchema.IfcProducts[name]
+    return None
 
 def getIfcProductAttribute(ifcProduct, name):
     
@@ -81,6 +82,8 @@ def addIfcProductAttribute(obj, attribute):
     
     "Adds a given attribute property"
     
+    if not hasattr(obj,"IfcData"):
+        return
     IfcData = obj.IfcData
     if "attributes" not in IfcData:
         IfcData["attributes"] = "{}"
