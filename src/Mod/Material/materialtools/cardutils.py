@@ -607,7 +607,8 @@ def output_value_unit_info(param, value):
 
 def check_mat_units(mat):
     known_quantities = get_known_material_quantity_parameter()
-    # check if the param is a Quantity according card template, than chaeck unit
+    # check if the param is a Quantity according to the card template
+    # then check unit
     # print(known_quantities)
     units_ok = True
     for param, value in mat.items():

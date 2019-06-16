@@ -126,7 +126,9 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.testobject.TestObjectType.test_femobjects_derivedfromstd"
 ./bin/FreeCADCmd --run-test "femtest.testresult.TestResult.test_read_frd_massflow_networkpressure"
 ./bin/FreeCADCmd --run-test "femtest.testresult.TestResult.test_stress_von_mises"
-./bin/FreeCADCmd --run-test "femtest.testresult.TestResult.test_stress_principal"
+./bin/FreeCADCmd --run-test "femtest.testresult.TestResult.test_stress_principal_std"
+./bin/FreeCADCmd --run-test "femtest.testresult.TestResult.test_stress_principal_reinforced"
+./bin/FreeCADCmd --run-test "femtest.testresult.TestResult.test_rho"
 ./bin/FreeCADCmd --run-test "femtest.testresult.TestResult.test_disp_abs"
 ./bin/FreeCADCmd --run-test "femtest.testsolverframework.TestSolverFrameWork.test_solver_framework"
 
@@ -214,7 +216,13 @@ import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testresult.TestResult.test_stress_von_mises"))
 
 import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testresult.TestResult.test_stress_principal"))
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testresult.TestResult.test_stress_principal_std"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testresult.TestResult.test_stress_principal_reinforced"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testresult.TestResult.test_rho"))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testresult.TestResult.test_disp_abs"))

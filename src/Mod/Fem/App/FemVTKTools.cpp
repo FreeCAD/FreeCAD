@@ -660,6 +660,10 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
     // App::PropertyVectorList will be a list of vectors in vtk
     std::map<std::string, std::string> resFCVecProp;
     resFCVecProp["DisplacementVectors"] = "Displacement";
+    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70#p296317
+    resFCVecProp["PS1Vector"] = "Major Principal Stress";
+    resFCVecProp["PS2Vector"] = "Intermediate Principal Stress";
+    resFCVecProp["PS3Vector"] = "Minor Principal Stress";
 
     return resFCVecProp;
 }
@@ -686,11 +690,16 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     resFCScalProp["NodeStrainXZ"] = "Strain xz component";
     resFCScalProp["NodeStrainYZ"] = "Strain yz component";
     resFCScalProp["Peeq"] = "Equivalent Plastic Strain";
-    resFCScalProp["PrincipalMax"] = "Major Principal Stress";  // can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
-    resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress";  // can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE
-    resFCScalProp["PrincipalMin"] = "Minor Principal Stress";  // can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
+    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70#p296317
+    // resFCScalProp["PrincipalMax"] = "Major Principal Stress";  // can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
+    // resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress";  // can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE
+    // resFCScalProp["PrincipalMin"] = "Minor Principal Stress";  // can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
     resFCScalProp["StressValues"] = "von Mises Stress";
     resFCScalProp["Temperature"] = "Temperature";
+    resFCScalProp["MohrCoulomb"] = "MohrCoulomb";
+    resFCScalProp["ReinforcementRatio_x"] = "ReinforcementRatio_x";
+    resFCScalProp["ReinforcementRatio_y"] = "ReinforcementRatio_y";
+    resFCScalProp["ReinforcementRatio_z"] = "ReinforcementRatio_z";
 
     resFCScalProp["UserDefined"] = "UserDefinedMyName";  // this is empty or am I wrong ?!
     resFCScalProp["MassFlowRate"] = "Mass Flow Rate";

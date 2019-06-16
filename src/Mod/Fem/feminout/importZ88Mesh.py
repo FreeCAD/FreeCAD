@@ -484,12 +484,14 @@ def write_z88_mesh_to_file(
         # z88_element_type is checked for every element
         # but mixed elements are not supported up to date
         n = femelement_table[element]
-        if z88_element_type == 2 \
-                or z88_element_type == 4 \
-                or z88_element_type == 5 \
-                or z88_element_type == 9 \
-                or z88_element_type == 13 \
-                or z88_element_type == 25:
+        if (
+            z88_element_type == 2
+            or z88_element_type == 4
+            or z88_element_type == 5
+            or z88_element_type == 9
+            or z88_element_type == 13
+            or z88_element_type == 25
+        ):
             # seg2 FreeCAD --> stab4 Z88
             # N1, N2
             f.write("{0} {1}\n".format(element, z88_element_type, element))
