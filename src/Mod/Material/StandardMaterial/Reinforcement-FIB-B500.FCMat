@@ -1,0 +1,15 @@
+; Reinforcement-FIB-B500
+; (c) 2019 Bernd Hahnebach (CC-BY 3.0)
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+
+
+[General]
+Name = Reinforcement-Harry
+Description = Reinforcement inside concrete for reinforcement material examples, from fib examples, 0.84 x 0.75 x 500 MPa = 315 MPa (https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=200#p311705)
+
+[Mechanical]
+Density = 7850 kg/m^3
+PoissonRatio = 0.3
+YieldStrength = 315 MPa
+YoungsModulus = 210000 MPa
