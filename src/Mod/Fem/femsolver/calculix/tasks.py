@@ -184,9 +184,14 @@ class _Container(object):
 
         # get member
         # materials
-        self.materials_linear = self.get_several_member(
+        std_mats = self.get_several_member(
             'Fem::Material'
         )
+        rei_mats = self.get_several_member(
+            'Fem::MaterialReinforced'
+        )
+        self.materials_linear = std_mats + rei_mats
+
         self.materials_nonlinear = self.get_several_member(
             'Fem::MaterialMechanicalNonlinear'
         )

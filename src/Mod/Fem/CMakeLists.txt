@@ -36,11 +36,13 @@ SET(FemExamples_SRCS
     femexamples/__init__.py
     femexamples/ccx_cantilever_std.py
     femexamples/manager.py
+    femexamples/rc_wall_2d.py
 )
 
 SET(FemExampleMeshes_SRCS
     femexamples/meshes/__init__.py
     femexamples/meshes/mesh_canticcx_tetra10.py
+    femexamples/meshes/mesh_rc_wall_2d_tria6.py
 )
 
 SET(FemInOut_SRCS
@@ -206,6 +208,7 @@ SET(FemObjectsScripts_SRCS
     femobjects/_FemElementGeometry2D.py
     femobjects/_FemElementRotation1D.py
     femobjects/_FemMaterial.py
+    femobjects/_FemMaterialReinforced.py
     femobjects/_FemMaterialMechanicalNonlinear.py
     femobjects/_FemMeshBoundaryLayer.py
     femobjects/_FemMeshGmsh.py
@@ -286,6 +289,7 @@ SET(FemGuiScripts_SRCS
     femguiobjects/_ViewProviderFemElementGeometry2D.py
     femguiobjects/_ViewProviderFemElementRotation1D.py
     femguiobjects/_ViewProviderFemMaterial.py
+    femguiobjects/_ViewProviderFemMaterialReinforced.py
     femguiobjects/_ViewProviderFemMaterialMechanicalNonlinear.py
     femguiobjects/_ViewProviderFemMeshBoundaryLayer.py
     femguiobjects/_ViewProviderFemMeshGmsh.py
