@@ -31,16 +31,14 @@ __url__ = "http://www.freecadweb.org"
 import os
 
 import FreeCAD
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtGui, QtCore
-
-
 from . import importToolsFem
 from . import readFenicsXML
 from . import writeFenicsXML
 from . import writeFenicsXDMF
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui, QtCore
 
 
 # Template copied from importZ88Mesh.py. Thanks Bernd!
