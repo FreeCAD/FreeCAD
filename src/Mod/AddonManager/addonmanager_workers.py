@@ -35,6 +35,7 @@ from addonmanager_macro import Macro
 from addonmanager_utilities import urlopen
 from addonmanager_utilities import translate
 from addonmanager_utilities import symlink
+from addonmanager_utilities import getserver
 
 MACROS_BLACKLIST = ["BOLTS","WorkFeatures","how to install","PartsLibrary","FCGear"]
 OBSOLETE = ["assembly2","drawing_dimensioning","cura_engine"] # These addons will print an additional message informing the user
@@ -382,12 +383,12 @@ class ShowWorker(QtCore.QThread):
 
         self.info_label.emit( message )
         self.progressbar_show.emit(False)
-        l = self.loadImages( message )
+        l = self.loadImages( message, url )
         if l:
             self.info_label.emit( l )
         self.stop = True
 
-    def loadImages(self,message):
+    def loadImages(self,message,url):
         
         "checks if the given page contains images and downloads them"
 
@@ -402,6 +403,11 @@ class ShowWorker(QtCore.QThread):
             if not os.path.exists(store):
                 os.makedirs(store)
             for path in imagepaths:
+                if "?" in path:
+                    # remove everything after the ?
+                    path = path.split("?")[0]
+                if not path.startswith("http"):
+                    path = getserver(url) + path
                 name = path.split("/")[-1]
                 if name and path.startswith("http"):
                     storename = os.path.join(store,name)
@@ -426,7 +432,7 @@ class ShowWorker(QtCore.QThread):
                                 pix = pix.fromImage(img.scaled(300,300,QtCore.Qt.KeepAspectRatio,QtCore.Qt.FastTransformation))
                                 pix.save(storename, "jpeg",100)
                         
-                    message = message.replace(path,"file://"+storename.replace("\\","/"))
+                    message = message.replace(path,"file:///"+storename.replace("\\","/"))
             return message
         return None
 
@@ -547,7 +553,7 @@ class InstallWorker(QtCore.QThread):
                     try:
                         answer = repo.pull()
                     except:
-                        print("Error updating module",repos[idx][1]," - Please fix manually")
+                        print("Error updating module",self.repos[idx][1]," - Please fix manually")
                         answer = repo.status()
                         print(answer)
                     else:
