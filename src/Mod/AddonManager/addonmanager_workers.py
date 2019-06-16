@@ -553,7 +553,7 @@ class InstallWorker(QtCore.QThread):
                     try:
                         answer = repo.pull()
                     except:
-                        print("Error updating module",repos[idx][1]," - Please fix manually")
+                        print("Error updating module",self.repos[idx][1]," - Please fix manually")
                         answer = repo.status()
                         print(answer)
                     else:

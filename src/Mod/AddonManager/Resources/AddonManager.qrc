@@ -1,0 +1,31 @@
+<RCC>
+    <qresource> 
+        <file>icons/A2plus_workbench-icon.svg</file>
+        <file>icons/Airplane_workbench-icon.svg</file>
+        <file>icons/Arch_Textures_workbench_icon.svg</file>
+        <file>icons/BIM_workbench_icon.svg</file>
+        <file>icons/BOLTS_workbench_icon.svg</file>
+        <file>icons/cfd_workbench_icon.svg</file>
+        <file>icons/Curves_workbench_icon.svg</file>
+        <file>icons/Defeaturing_workbench_icon.svg</file>
+        <file>icons/Dodo_workbench_icon.svg</file>
+        <file>icons/EM_workbench_icon.svg</file>
+        <file>icons/ExplodedAssembly_workbench_icon.svg</file>
+        <file>icons/Fasteners_workbench_icon.svg</file>
+        <file>icons/Flamingo_workbench_icon.svg</file>
+        <file>icons/GDT_workbench_icon.svg</file>
+        <file>icons/Gears_workbench_icon.svg</file>
+        <file>icons/Glider_workbench_icon.svg</file>
+        <file>icons/Kicad-StepUp-tools-workbench_icon.svg</file>
+        <file>icons/Lattice2_workbench_icon.svg</file>
+        <file>icons/Lithophane_workbench_icon.svg</file>
+        <file>icons/Manipulator_workbench_icon.svg</file>
+        <file>icons/PartOMagic_workbench_icon.svg</file>
+        <file>icons/Plot_workbench_icon.svg</file>
+        <file>icons/Pyrate_workbench_icon.svg</file>
+        <file>icons/Reporting_workbench_icon.svg</file>
+        <file>icons/SheetMetal_workbench_icon.svg</file>
+        <file>icons/Ship_workbench_icon.svg</file>
+        <file>icons/Timber_workbench_icon.svg</file>
+    </qresource>
+</RCC> 
