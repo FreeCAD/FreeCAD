@@ -46,8 +46,6 @@ from DraftSnap import *
 from DraftTrackers import *
 from pivy import coin
 
-import DraftEdit
-
 #---------------------------------------------------------------------------
 # Preflight stuff
 #---------------------------------------------------------------------------
@@ -5822,7 +5820,6 @@ FreeCADGui.addCommand('Draft_Downgrade',Downgrade())
 FreeCADGui.addCommand('Draft_Trimex',Trimex())
 FreeCADGui.addCommand('Draft_Scale',Scale())
 FreeCADGui.addCommand('Draft_Drawing',Drawing())
-FreeCADGui.addCommand('Draft_Edit',DraftEdit.Edit())
 FreeCADGui.addCommand('Draft_Edit_Improved',EditImproved())
 FreeCADGui.addCommand('Draft_AddPoint',AddPoint())
 FreeCADGui.addCommand('Draft_DelPoint',DelPoint())
