@@ -224,7 +224,8 @@ init_freecad_module(void)
 
 Application::Application(std::map<std::string,std::string> &mConfig)
   : _mConfig(mConfig), _pActiveDoc(0), _isRestoring(false),_allowPartial(false)
-  , _isClosingAll(false), _objCount(-1)
+  , _isClosingAll(false), _objCount(-1), _activeTransactionID(0)
+  , _activeTransactionGuard(0), _activeTransactionTmpName(false)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
@@ -871,10 +872,12 @@ AutoTransaction::AutoTransaction(const char *name, bool tmpName) {
         --app._activeTransactionGuard;
     } else
         ++app._activeTransactionGuard;
+    FC_TRACE("construct auto Transaction " << app._activeTransactionGuard);
 }
 
 AutoTransaction::~AutoTransaction() {
     auto &app = GetApplication();
+    FC_TRACE("before destruct auto Transaction " << app._activeTransactionGuard);
     if(app._activeTransactionGuard<0)
         ++app._activeTransactionGuard;
     else if(!app._activeTransactionGuard) {
@@ -893,6 +896,7 @@ AutoTransaction::~AutoTransaction() {
         } catch(...)
         {}
     }
+    FC_TRACE("destruct auto Transaction " << app._activeTransactionGuard);
 }
 
 void AutoTransaction::close(bool abort) {
@@ -910,6 +914,7 @@ void AutoTransaction::setEnable(bool enable) {
             || (!enable && app._activeTransactionGuard<0))
         return;
     app._activeTransactionGuard = -app._activeTransactionGuard;
+    FC_TRACE("toggle auto Transaction " << app._activeTransactionGuard);
     if(!enable && app._activeTransactionTmpName) {
         bool close = true;
         for(auto &v : app.DocMap) {
