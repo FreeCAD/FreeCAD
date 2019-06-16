@@ -310,7 +310,7 @@ def add_von_mises(res_obj):
     return res_obj
 
 
-def add_principal_stress(res_obj):
+def add_principal_stress_std(res_obj):
     prinstress1 = []
     prinstress2 = []
     prinstress3 = []
@@ -334,6 +334,165 @@ def add_principal_stress(res_obj):
     res_obj.PrincipalMin = prinstress3
     res_obj.MaxShear = shearstress
     FreeCAD.Console.PrintMessage('Added principal stress and max shear values.\n')
+    return res_obj
+
+
+def get_concrete_nodes(res_obj):
+
+    #
+    # HarryvL: determine concrete / non-concrete nodes
+    #
+
+    from femmesh.meshtools import get_femnodes_by_refshape
+    femmesh = res_obj.Mesh.FemMesh
+    nsr = femmesh.NodeCount  # nsr number of stress results
+
+    # ic[iic]:
+    # ic = flag for material type; iic = node number
+    # ic = 0: NOT ASSIGNED
+    # ic = 1: ReinforcedMaterial
+    # ic = 2: NOT ReinforcedMaterial
+    ic = np.zeros(nsr)
+
+    for obj in res_obj.getParentGroup().Group:
+        if obj.isDerivedFrom('App::MaterialObjectPython') \
+                and femutils.is_of_type(obj, 'Fem::MaterialReinforced'):
+            print("ReinforcedMaterial")
+            if obj.References == []:
+                for iic in range(nsr):
+                    if ic[iic] == 0:
+                        ic[iic] = 1
+            else:
+                for ref in obj.References:
+                    concrete_nodes = get_femnodes_by_refshape(femmesh, ref)
+                    for cn in concrete_nodes:
+                        ic[cn - 1] = 1
+        elif obj.isDerivedFrom('App::MaterialObjectPython') \
+                and femutils.is_of_type(obj, 'Fem::Material'):
+            print("NOT ReinforcedMaterial")
+            if obj.References == []:
+                for iic in range(nsr):
+                    if ic[iic] == 0:
+                        ic[iic] = 2
+            else:
+                for ref in obj.References:
+                    non_concrete_nodes = get_femnodes_by_refshape(femmesh, ref)
+                    for ncn in non_concrete_nodes:
+                        ic[ncn - 1] = 2
+    return ic
+
+
+def add_principal_stress_reinforced(res_obj):
+
+    #
+    # HarryvL: determine concrete / non-concrete nodes
+    #
+    ic = get_concrete_nodes(res_obj)
+
+    #
+    # calculate principal and max Shear and fill them in res_obj
+    #
+    prinstress1 = []
+    prinstress2 = []
+    prinstress3 = []
+    shearstress = []
+    ps1v = []
+    ps2v = []
+    ps3v = []
+    #
+    # HarryvL: additional arrays to hold reinforcement ratios
+    # and mohr coulomb stress
+    #
+    rhx = []
+    rhy = []
+    rhz = []
+    moc = []
+
+    # material parameter
+    for obj in res_obj.getParentGroup().Group:
+        if femutils.is_of_type(obj, 'Fem::MaterialReinforced'):
+            matrix_af = float(
+                FreeCAD.Units.Quantity(obj.Material['AngleOfFriction']).getValueAs('rad')
+            )
+            matrix_cs = float(
+                FreeCAD.Units.Quantity(obj.Material['CompressiveStrength']).getValueAs('MPa')
+            )
+            reinforce_yield = float(
+                FreeCAD.Units.Quantity(obj.Reinforcement['YieldStrength']).getValueAs('MPa')
+            )
+    # print(matrix_af)
+    # print(matrix_cs)
+    # print(reinforce_yield)
+
+    iterator = zip(
+        res_obj.NodeStressXX,
+        res_obj.NodeStressYY,
+        res_obj.NodeStressZZ,
+        res_obj.NodeStressXY,
+        res_obj.NodeStressXZ,
+        res_obj.NodeStressYZ
+    )
+    for isv, stress_tensor in enumerate(iterator):
+
+        rhox = 0.
+        rhoy = 0.
+        rhoz = 0.
+        mc = 0.
+
+        if ic[isv] == 1:
+            #
+            # HarryvL: for concrete scxx etc. are affected by
+            # reinforcement (see calculate_rho(stress_tensor)). for all other
+            # materials scxx etc. are the original stresses
+            #
+            rhox, rhoy, rhoz = calculate_rho(
+                stress_tensor,
+                reinforce_yield
+            )
+
+        prin1, prin2, prin3, shear, psv = calculate_principal_stress_reinforced(
+            stress_tensor
+        )
+
+        prinstress1.append(prin1)
+        prinstress2.append(prin2)
+        prinstress3.append(prin3)
+        shearstress.append(shear)
+        ps1v.append(psv[0])
+        ps2v.append(psv[1])
+        ps3v.append(psv[2])
+
+        #
+        # reinforcement ratios and mohr coulomb criterion
+        #
+        rhx.append(rhox)
+        rhy.append(rhoy)
+        rhz.append(rhoz)
+        if ic[isv] == 1:
+            mc = calculate_mohr_coulomb(prin1, prin3, matrix_af, matrix_cs)
+        moc.append(mc)
+
+    res_obj.PrincipalMax = prinstress1
+    res_obj.PrincipalMed = prinstress2
+    res_obj.PrincipalMin = prinstress3
+    res_obj.MaxShear = shearstress
+    #
+    # HarryvL: additional concrete and principal stress plot
+    # results for use in _ViewProviderFemResultMechanical
+    #
+    res_obj.ReinforcementRatio_x = rhx
+    res_obj.ReinforcementRatio_y = rhy
+    res_obj.ReinforcementRatio_z = rhz
+    res_obj.MohrCoulomb = moc
+
+    res_obj.PS1Vector = ps1v
+    res_obj.PS2Vector = ps2v
+    res_obj.PS3Vector = ps3v
+
+    FreeCAD.Console.PrintMessage(
+        'Added principal stress and max shear values as well as'
+        'reinforcment rations, Mohr Coloumb values.\n'
+    )
     return res_obj
 
 

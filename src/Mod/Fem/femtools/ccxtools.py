@@ -223,7 +223,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
         ## @var materials_linear
         #  list of linear materials from the analysis. Updated with update_objects
-        self.materials_linear = self._get_several_member('Fem::Material')
+        self.materials_linear = (
+            self._get_several_member('Fem::Material')
+            + self._get_several_member('Fem::MaterialReinforced')
+        )
         ## @var materials_nonlinear
         #  list of nonlinear materials from the analysis. Updated with update_objects
         self.materials_nonlinear = self._get_several_member('Fem::MaterialMechanicalNonlinear')
