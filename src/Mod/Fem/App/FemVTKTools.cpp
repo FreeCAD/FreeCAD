@@ -660,6 +660,9 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
     // App::PropertyVectorList will be a list of vectors in vtk
     std::map<std::string, std::string> resFCVecProp;
     resFCVecProp["DisplacementVectors"] = "Displacement";
+    resFCVecProp["PS1Vector"] = "PS1Vector";
+    resFCVecProp["PS2Vector"] = "PS2Vector";
+    resFCVecProp["PS3Vector"] = "PS3Vector";
 
     return resFCVecProp;
 }
@@ -691,6 +694,10 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     resFCScalProp["PrincipalMin"] = "Minor Principal Stress";  // can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
     resFCScalProp["StressValues"] = "von Mises Stress";
     resFCScalProp["Temperature"] = "Temperature";
+    resFCScalProp["MohrCoulomb"] = "MohrCoulomb";
+    resFCScalProp["ReinforcementRatio_x"] = "ReinforcementRatio_x";
+    resFCScalProp["ReinforcementRatio_y"] = "ReinforcementRatio_y";
+    resFCScalProp["ReinforcementRatio_z"] = "ReinforcementRatio_z";
 
     resFCScalProp["UserDefined"] = "UserDefinedMyName";  // this is empty or am I wrong ?!
     resFCScalProp["MassFlowRate"] = "Mass Flow Rate";

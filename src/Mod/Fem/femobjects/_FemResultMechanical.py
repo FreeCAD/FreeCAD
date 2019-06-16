@@ -80,6 +80,56 @@ class _FemResultMechanical():
             "List of equivalent plastic strain values",
             True
         )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "MohrCoulomb",
+            "NodeData",
+            "List of Mohr Coulomb stress values",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "ReinforcementRatio_x",
+            "NodeData",
+            "Reinforcement ratio x-direction",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "ReinforcementRatio_y",
+            "NodeData",
+            "Reinforcement ratio y-direction",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "ReinforcementRatio_z",
+            "NodeData",
+            "Reinforcement ratio z-direction",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyVectorList",
+            "PS1Vector",
+            "NodeData",
+            "List of 1st Principal Stress Vectors",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyVectorList",
+            "PS2Vector",
+            "NodeData",
+            "List of 2nd Principal Stress Vectors",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyVectorList",
+            "PS3Vector",
+            "NodeData",
+            "List of 3rd Principal Stress Vectors",
+            True
+        )
+
         # readonly in propertyEditor of comboView
         obj.addProperty(
             "App::PropertyFloatList",
