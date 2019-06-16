@@ -36,11 +36,13 @@ SET(FemExamples_SRCS
     femexamples/__init__.py
     femexamples/ccx_cantilever_std.py
     femexamples/manager.py
+    femexamples/rc_wall_2d.py
 )
 
 SET(FemExampleMeshes_SRCS
     femexamples/meshes/__init__.py
     femexamples/meshes/mesh_canticcx_tetra10.py
+    femexamples/meshes/mesh_rc_wall_2d_tria6.py
 )
 
 SET(FemInOut_SRCS
