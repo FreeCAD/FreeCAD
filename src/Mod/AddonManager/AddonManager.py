@@ -258,10 +258,16 @@ class CommandAddonManager:
 
         from PySide import QtGui
         self.repos.append(addon_repo)
-        if addon_repo[2] == 1 :
-            self.dialog.listWorkbenches.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/button_valid.svg"),str(addon_repo[0]) + str(" ("+translate("AddonsInstaller","Installed")+")")))
+        import AddonManager_rc
+        addonicon = QtGui.QIcon(":/icons/" + addon_repo[0] + "_workbench_icon.svg")
+        if addonicon.isNull():
+            addonicon = QtGui.QIcon(":/icons/Group.svg")
+        if addon_repo[2] == 1:
+            item = QtGui.QListWidgetItem(addonicon,str(addon_repo[0]) + str(" ("+translate("AddonsInstaller","Installed")+")"))
+            item.setBackground(QtGui.QBrush(QtGui.QColor(0,182,41)))
+            self.dialog.listWorkbenches.addItem(item)
         else:
-            self.dialog.listWorkbenches.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/Group.svg"),str(addon_repo[0])))
+            self.dialog.listWorkbenches.addItem(QtGui.QListWidgetItem(addonicon,str(addon_repo[0])))
 
     def show_information(self, label):
 
@@ -358,7 +364,9 @@ class CommandAddonManager:
                 from PySide import QtGui
                 self.macros.append(macro)
                 if macro.is_installed():
-                    self.dialog.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/button_valid.svg"), macro.name + str(' (Installed)')))
+                    item = QtGui.QListWidgetItem(QtGui.QIcon(":/icons/applications-python.svg"), macro.name + str(' (Installed)'))
+                    item.setBackground(QtGui.QBrush(QtGui.QColor(0,182,41)))
+                    self.dialog.listMacros.addItem(item)
                 else:
                     self.dialog.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/applications-python.svg"),macro.name))
 
@@ -533,7 +541,7 @@ class CommandAddonManager:
                     wb[2] = 0
             for macro in self.macros:
                 if macro.is_installed():
-                    self.dialog.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/button_valid.svg"), macro.name + " ("+translate("AddonsInstaller","Installed")+")"))
+                    self.dialog.listMacros.addItem(item)
                 else:
                     self.dialog.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/applications-python.svg"),+macro.name))
 
@@ -546,7 +554,7 @@ class CommandAddonManager:
             w = self.dialog.listWorkbenches.item(i)
             if w.text().startswith(str(repo)):
                 w.setText(str(repo) + str(" ("+translate("AddonsInstaller","Update available")+")"))
-                w.setIcon(QtGui.QIcon(":/icons/debug-marker.svg"))
+                w.setBackground(QtGui.QBrush(QtGui.QColor(182,90,0)))
                 if not repo in self.doUpdate:
                     self.doUpdate.append(repo)
 
