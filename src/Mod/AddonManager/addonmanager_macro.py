@@ -27,7 +27,6 @@ import sys
 import FreeCAD
 
 from addonmanager_utilities import translate
-from addonmanager_utilities import urllib2
 from addonmanager_utilities import urlopen
 
 
@@ -95,7 +94,8 @@ class Macro(object):
         code = ""
         try:
             u = urlopen(url)
-        except urllib2.HTTPError:
+        except:
+            print("AddonManager: Debug: unable to open URL",url)
             return
         p = u.read()
         if sys.version_info.major >= 3 and isinstance(p, bytes):
@@ -108,7 +108,8 @@ class Macro(object):
                 rawcodeurl = rawcodeurl[0]
                 try:
                     u2 = urlopen(rawcodeurl)
-                except urllib2.HTTPError:
+                except:
+                    print("AddonManager: Debug: unable to open URL",rawcodeurl)
                     return
                 # code = u2.read()
                 # github is slow to respond... We need to use this trick below
@@ -146,7 +147,7 @@ class Macro(object):
                 code = HTMLParser().unescape(code)
                 code = code.replace(b'\xc2\xa0'.decode("utf-8"), ' ')
             except:
-                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to clean macro code: ") + code + '\n')
+                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to clean macro code") + ": "+ code + '\n')
             if sys.version_info.major < 3:
                 code = code.encode('utf8')
         desc = re.findall("<td class=\"ctEven left macro-description\">(.*?)<\/td>", p.replace('\n', ' '))

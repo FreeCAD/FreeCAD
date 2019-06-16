@@ -909,11 +909,15 @@ void CmdPartCompound::activated(int iMsg)
 
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
-    std::vector<std::string> tempSelNames;
+
+    // avoid duplicates without changing the order
+    std::set<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Links = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        str << "App.activeDocument()." << it->FeatName << ",";
-        tempSelNames.push_back(it->FeatName);
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
+        auto pos = tempSelNames.insert(it->FeatName);
+        if (pos.second) {
+            str << "App.activeDocument()." << it->FeatName << ",";
+        }
     }
     str << "]";
 

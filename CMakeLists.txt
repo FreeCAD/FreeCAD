@@ -557,7 +557,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
         # Ask Python to tell us it's include directory, if nobody else has
         if(NOT DEFINED PYTHON_INCLUDE_DIR)
             execute_process(COMMAND ${PYTHON_EXECUTABLE} -c
-             "from distutils.sysconfig import get_python_inc;print get_python_inc()"
+             "from distutils.sysconfig import get_python_inc;print(get_python_inc())"
                             OUTPUT_VARIABLE PYTHON_INCLUDE_DIR
                             RESULT_VARIABLE PYTHON_INCLUDE_DIR_RESULT
                             ERROR_QUIET)
@@ -570,7 +570,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
         if(NOT DEFINED PYTHON_LIBRARY)
             # Get the library path
             execute_process(COMMAND "${PYTHON_EXECUTABLE}" -c
-          "from distutils import sysconfig;print sysconfig.get_config_var('LIBDIR')"
+          "from distutils import sysconfig;print(sysconfig.get_config_var('LIBDIR'))"
                             OUTPUT_VARIABLE PYTHON_LIBRARY_DIR
                             RESULT_VARIABLE PYTHON_LIBRARY_DIR_RESULT
                             ERROR_QUIET)
@@ -581,7 +581,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
 
             # Get library filename - might not be safe to assume .dylib extension?
             execute_process(COMMAND "${PYTHON_EXECUTABLE}" -c
-                     "import sys;print 'libpython%d.%d.dylib'%sys.version_info[0:2]"
+                     "import sys;print('libpython%d.%d.dylib'%sys.version_info[0:2])"
                             OUTPUT_VARIABLE PYTHON_LIBRARY_FILE
                             RESULT_VARIABLE PYTHON_LIBRARY_FILE_RESULT
                             ERROR_QUIET)
@@ -925,6 +925,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
         find_package(Qt5Core REQUIRED)
         find_package(Qt5Network REQUIRED)
         find_package(Qt5Xml REQUIRED)
+        find_package(Qt5XmlPatterns REQUIRED)
         if(BUILD_GUI)
             find_package(Qt5Widgets REQUIRED)
             find_package(Qt5PrintSupport REQUIRED)
@@ -1354,6 +1355,7 @@ else(NOT BUILD_QT5)
     message(STATUS "Qt5Core:             ${Qt5Core_VERSION}")
     message(STATUS "Qt5Network:          ${Qt5Network_VERSION}")
     message(STATUS "Qt5Xml:              ${Qt5Xml_VERSION}")
+    message(STATUS "Qt5XmlPatterns:      ${Qt5XmlPatterns_VERSION}")
     if (BUILD_GUI)
         message(STATUS "Qt5Widgets:          ${Qt5Widgets_VERSION}")
         message(STATUS "Qt5PrintSupport:     ${Qt5PrintSupport_VERSION}")

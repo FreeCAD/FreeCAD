@@ -30,7 +30,6 @@ import PathScripts.PathGeom as PathGeom
 import TechDraw
 import math
 import numpy
-import sys
 
 from DraftGeomUtils import geomType
 from FreeCAD import Vector
@@ -44,12 +43,14 @@ if False:
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#FreeCAD.setLogLevel('Path.Area', 0)
+
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+
 UserInput = None
+
 
 def waiting_effects(function):
     def new_function(*args, **kwargs):
@@ -60,7 +61,7 @@ def waiting_effects(function):
         try:
             res = function(*args, **kwargs)
         # don't catch exceptions - want to know where they are coming from ....
-        #except Exception as e:
+        # except Exception as e:
         #    raise e
         #    print("Error {}".format(e.args[0]))
         finally:
@@ -148,7 +149,7 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                         PathLog.debug("candidate is a circle")
                         v0 = edge.Vertexes[0].Point
                         v1 = edge.Vertexes[1].Point
-                        #check if the cylinder seam is vertically aligned.  Eliminate tilted holes
+                        # check if the cylinder seam is vertically aligned.  Eliminate tilted holes
                         if (numpy.isclose(v1.sub(v0).x, 0, rtol=1e-05, atol=1e-06)) and \
                                 (numpy.isclose(v1.sub(v0).y, 0, rtol=1e-05, atol=1e-06)):
                             drillable = True
@@ -160,7 +161,7 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                             # object.  This eliminates extruded circles but allows
                             # actual holes.
                             if obj.isInside(lsp, 1e-6, False) or obj.isInside(lep, 1e-6, False):
-                                PathLog.track("inside check failed. lsp: {}  lep: {}".format(lsp,lep))
+                                PathLog.track("inside check failed. lsp: {}  lep: {}".format(lsp, lep))
                                 drillable = False
                             # eliminate elliptical holes
                             elif not hasattr(face.Surface, "Radius"):
@@ -168,15 +169,15 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                                 drillable = False
                             else:
                                 if tooldiameter is not None:
-                                    drillable = face.Surface.Radius >= tooldiameter/2
+                                    drillable = face.Surface.Radius >= tooldiameter / 2
                                 else:
                                     drillable = True
-            elif type(face.Surface) == Part.Plane and PathGeom.pointsCoincide(face.Surface.Axis, FreeCAD.Vector(0,0,1)):
+            elif type(face.Surface) == Part.Plane and PathGeom.pointsCoincide(face.Surface.Axis, FreeCAD.Vector(0, 0, 1)):
                 if len(face.Edges) == 1 and type(face.Edges[0].Curve) == Part.Circle:
                     center = face.Edges[0].Curve.Center
                     if obj.isInside(center, 1e-6, False):
                         if tooldiameter is not None:
-                            drillable = face.Edges[0].Curve.Radius >= tooldiameter/2
+                            drillable = face.Edges[0].Curve.Radius >= tooldiameter / 2
                         else:
                             drillable = True
         else:
@@ -189,12 +190,12 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                     else:
                         PathLog.debug("Has Radius, Circle")
                         if tooldiameter is not None:
-                            drillable = edge.Curve.Radius >= tooldiameter/2
+                            drillable = edge.Curve.Radius >= tooldiameter / 2
                             if not drillable:
                                 FreeCAD.Console.PrintMessage(
-                                        "Found a drillable hole with diameter: {}: "
-                                        "too small for the current tool with "
-                                        "diameter: {}".format(edge.Curve.Radius*2, tooldiameter))
+                                    "Found a drillable hole with diameter: {}: "
+                                    "too small for the current tool with "
+                                    "diameter: {}".format(edge.Curve.Radius * 2, tooldiameter))
                         else:
                             drillable = True
         PathLog.debug("candidate is drillable: {}".format(drillable))
@@ -204,7 +205,8 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
 
 
 # fixme set at 4 decimal places for testing
-def fmt(val): return format(val, '.4f')
+def fmt(val):
+    return format(val, '.4f')
 
 
 def segments(poly):
@@ -235,6 +237,7 @@ def loopdetect(obj, edge1, edge2):
     loopwire = next(x for x in loop)[1]
     return loopwire
 
+
 def horizontalEdgeLoop(obj, edge):
     '''horizontalEdgeLoop(obj, edge) ... returns a wire in the horizontal plane, if that is the only horizontal wire the given edge is a part of.'''
     h = edge.hashCode()
@@ -243,6 +246,7 @@ def horizontalEdgeLoop(obj, edge):
     if len(loops) == 1:
         return loops[0]
     return None
+
 
 def horizontalFaceLoop(obj, face, faceList=None):
     '''horizontalFaceLoop(obj, face, faceList=None) ... returns a list of face names which form the walls of a vertical hole face is a part of.
@@ -256,8 +260,8 @@ def horizontalFaceLoop(obj, face, faceList=None):
     for wire in wires:
         hashes = [e.hashCode() for e in wire.Edges]
 
-        #find all faces that share a an edge with the wire and are vertical
-        faces = ["Face%d"%(i+1) for i,f in enumerate(obj.Shape.Faces) if any(e.hashCode() in hashes for e in f.Edges) and PathGeom.isVertical(f)]
+        # find all faces that share a an edge with the wire and are vertical
+        faces = ["Face%d" % (i + 1) for i, f in enumerate(obj.Shape.Faces) if any(e.hashCode() in hashes for e in f.Edges) and PathGeom.isVertical(f)]
 
         if faceList and not all(f in faces for f in faceList):
             continue
@@ -265,7 +269,7 @@ def horizontalFaceLoop(obj, face, faceList=None):
         # verify they form a valid hole by getting the outline and comparing
         # the resulting XY footprint with that of the faces
         comp = Part.makeCompound([obj.Shape.getElement(f) for f in faces])
-        outline = TechDraw.findShapeOutline(comp, 1, FreeCAD.Vector(0,0,1))
+        outline = TechDraw.findShapeOutline(comp, 1, FreeCAD.Vector(0, 0, 1))
 
         # findShapeOutline always returns closed wires, by removing the
         # trace-backs single edge spikes don't contriubte to the bound box
@@ -283,6 +287,7 @@ def horizontalFaceLoop(obj, face, faceList=None):
         if w.isClosed() and PathGeom.isRoughly(bb1.XMin, bb2.XMin) and PathGeom.isRoughly(bb1.XMax, bb2.XMax) and PathGeom.isRoughly(bb1.YMin, bb2.YMin) and PathGeom.isRoughly(bb1.YMax, bb2.YMax):
             return faces
     return None
+
 
 def filterArcs(arcEdge):
     '''filterArcs(Edge) -used to split arcs that over 180 degrees. Returns list '''
@@ -302,10 +307,8 @@ def filterArcs(arcEdge):
             arcstpt = s.valueAt(s.FirstParameter)
             arcmid = s.valueAt(
                 (s.LastParameter - s.FirstParameter) * 0.5 + s.FirstParameter)
-            arcquad1 = s.valueAt((s.LastParameter - s.FirstParameter) *
-                                 0.25 + s.FirstParameter)  # future midpt for arc1
-            arcquad2 = s.valueAt((s.LastParameter - s.FirstParameter) *
-                                 0.75 + s.FirstParameter)  # future midpt for arc2
+            arcquad1 = s.valueAt((s.LastParameter - s.FirstParameter) * 0.25 + s.FirstParameter)  # future midpt for arc1
+            arcquad2 = s.valueAt((s.LastParameter - s.FirstParameter) * 0.75 + s.FirstParameter)  # future midpt for arc2
             arcendpt = s.valueAt(s.LastParameter)
             # reconstruct with 2 arcs
             arcseg1 = Part.ArcOfCircle(arcstpt, arcquad1, arcmid)
@@ -345,10 +348,6 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
     '''
     PathLog.track(partshape, subshape, depthparams)
 
-    # if partshape.Volume == 0.0:  #Not a 3D object
-    #     return None
-
-
     zShift = 0
     if subshape is not None:
         if isinstance(subshape, Part.Face):
@@ -360,7 +359,6 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
             PathLog.debug("About to section with params: {}".format(area.getParams()))
             sec = area.makeSections(heights=[0.0], project=True)[0].getShape()
 
-       # zShift = partshape.BoundBox.ZMin - subshape.BoundBox.ZMin
         PathLog.debug('partshapeZmin: {}, subshapeZMin: {}, zShift: {}'.format(partshape.BoundBox.ZMin, subshape.BoundBox.ZMin, zShift))
 
     else:
@@ -371,9 +369,7 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
     # If depthparams are passed, use it to calculate bottom and height of
     # envelope
     if depthparams is not None:
-#        eLength = float(stockheight)-partshape.BoundBox.ZMin
         eLength = depthparams.safe_height - depthparams.final_depth
-        #envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, eLength))
         zShift = depthparams.final_depth - sec.BoundBox.ZMin
         PathLog.debug('boundbox zMIN: {} elength: {} zShift {}'.format(partshape.BoundBox.ZMin, eLength, zShift))
     else:
@@ -467,6 +463,7 @@ def GetJobs(jobname=None):
         return [job for job in PathJob.Instances() if job.Name == jobname]
     return PathJob.Instances()
 
+
 def addToJob(obj, jobname=None):
     '''adds a path object to a job
     obj = obj
@@ -491,6 +488,7 @@ def addToJob(obj, jobname=None):
     if obj and job:
         job.Proxy.addOperation(obj)
     return job
+
 
 def rapid(x=None, y=None, z=None):
     """ Returns gcode string to perform a rapid move."""
@@ -583,11 +581,11 @@ def helicalPlunge(plungePos, rampangle, destZ, startZ, toold, plungeR, horizFeed
         raise Exception("Helical plunging requires a position!")
         return None
 
-    helixX = plungePos.x + toold/2 * plungeR
+    helixX = plungePos.x + toold / 2 * plungeR
     helixY = plungePos.y
 
     helixCirc = math.pi * toold * plungeR
-    dzPerRev = math.sin(rampangle/180. * math.pi) * helixCirc
+    dzPerRev = math.sin(rampangle / 180. * math.pi) * helixCirc
 
     # Go to the start of the helix position
     helixCmds += rapid(helixX, helixY)
@@ -595,7 +593,7 @@ def helicalPlunge(plungePos, rampangle, destZ, startZ, toold, plungeR, horizFeed
 
     # Helix as required to get to the requested depth
     lastZ = startZ
-    curZ = max(startZ-dzPerRev, destZ)
+    curZ = max(startZ - dzPerRev, destZ)
     done = False
     while not done:
         done = (curZ == destZ)
@@ -604,7 +602,7 @@ def helicalPlunge(plungePos, rampangle, destZ, startZ, toold, plungeR, horizFeed
 
         # Use two half-helixes; FreeCAD renders that correctly,
         # and it fits with the other code breaking up 360-degree arcs
-        helixCmds += arc(plungePos.x, plungePos.y, helixX, helixY, helixX - toold * plungeR, helixY, horizFeed, ez=(curZ + lastZ)/2., ccw=True)
+        helixCmds += arc(plungePos.x, plungePos.y, helixX, helixY, helixX - toold * plungeR, helixY, horizFeed, ez=(curZ + lastZ) / 2., ccw=True)
         helixCmds += arc(plungePos.x, plungePos.y, helixX - toold * plungeR, helixY, helixX, helixY, horizFeed, ez=curZ, ccw=True)
         lastZ = curZ
         curZ = max(curZ - dzPerRev, destZ)
@@ -641,7 +639,7 @@ def rampPlunge(edge, rampangle, destZ, startZ):
         ePoint = edge.Vertexes[-1].Point
 
     rampDist = edge.Length
-    rampDZ = math.sin(rampangle/180. * math.pi) * rampDist
+    rampDZ = math.sin(rampangle / 180. * math.pi) * rampDist
 
     rampCmds += rapid(sPoint.x, sPoint.y)
     rampCmds += rapid(z=startZ)
@@ -649,7 +647,7 @@ def rampPlunge(edge, rampangle, destZ, startZ):
     # Ramp down to the requested depth
     # FIXME: This might be an arc, so handle that as well
 
-    curZ = max(startZ-rampDZ, destZ)
+    curZ = max(startZ - rampDZ, destZ)
     done = False
     while not done:
         done = (curZ == destZ)
@@ -699,7 +697,7 @@ def sort_jobs(locations, keys, attractors=[]):
     def find_closest(location_list, location, dist):
         q = PriorityQueue()
 
-        for i,j in enumerate(location_list):
+        for i, j in enumerate(location_list):
             # prevent dictionary comparison by inserting the index
             q.put((dist(j, location) + weight(j), i, j))
 
@@ -719,6 +717,7 @@ def sort_jobs(locations, keys, attractors=[]):
         locations.remove(closest)
 
     return out
+
 
 def guessDepths(objshape, subs=None):
     """
@@ -751,6 +750,7 @@ def guessDepths(objshape, subs=None):
 
     return depth_params(clearance, safe, start, 1.0, 0.0, final, user_depths=None, equalstep=False)
 
+
 def drillTipLength(tool):
     """returns the length of the drillbit tip."""
     if tool.CuttingEdgeAngle == 180 or tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
@@ -760,13 +760,14 @@ def drillTipLength(tool):
             PathLog.error(translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°") % tool.CuttingEdgeAngle)
             return 0.0
         theta = math.radians(tool.CuttingEdgeAngle)
-        length = (tool.Diameter/2) / math.tan(theta/2) 
+        length = (tool.Diameter / 2) / math.tan(theta / 2)
         if length < 0:
             PathLog.error(translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length") % tool.CuttingEdgeAngle)
             return 0.0
         return length
 
-class depth_params:
+
+class depth_params(object):
     '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters
     (self, clearance_height, safe_height, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None], equalstep=False)
 
@@ -821,7 +822,7 @@ class depth_params:
     @property
     def safe_height(self):
         """
-        Height of top of raw stock material.  Rapid moves above safe height are 
+        Height of top of raw stock material.  Rapid moves above safe height are
         assumed to be safe within an operation.  May not be safe between
         operations or tool changes.
         All moves below safe height except retraction should be at feed rate.
@@ -922,5 +923,3 @@ class depth_params:
             return depths
         else:
             return [stop] + depths
-
-

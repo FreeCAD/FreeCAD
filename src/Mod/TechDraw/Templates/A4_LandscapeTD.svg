@@ -1535,8 +1535,8 @@
        id="text4183"
        y="198.72655"
        x="301.2355"
-       style="font-size:2.49999857px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       xml:space="preserve"><tspan
+       style="font-size:2.49999857px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial">
+       <tspan
          y="198.72655"
          x="301.2355"
          id="tspan4185"
@@ -1545,8 +1545,8 @@
        id="text4415"
        y="179.39999"
        x="304.01172"
-       style="font-size:7.90222239px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       xml:space="preserve"><tspan
+       style="font-size:7.90222239px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial">
+       <tspan
          y="179.39999"
          x="304.01172"
          id="tspan4417"
@@ -1576,14 +1576,12 @@
      id="g3298">
     <text
        freecad:editable="Designed_by_Name"
-       transform="scale(0.9999956,1.0000044)"
        sodipodi:linespacing="125%"
        id="text3266"
        y="160.67236"
        x="147.9312"
-       style="font-size:5.64441967000000044px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       xml:space="preserve"><tspan
-         style="font-size:3.95109367000000011px;text-anchor:start;text-align:start"
+       style="font-size:3.95px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial">
+       <tspan
          y="160.67236"
          x="147.9312"
          id="tspan3268"
@@ -1594,9 +1592,8 @@
        id="text3270"
        y="168.59135"
        x="147.93056"
-       style="font-size:5.64444446999999982px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       xml:space="preserve"><tspan
-         style="font-size:3.95111131999999987px;text-anchor:start;text-align:start"
+       style="font-size:3.95px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial">
+       <tspan
          y="168.59135"
          x="147.93056"
          id="tspan3272"
@@ -1607,9 +1604,8 @@
        id="text3274"
        y="191.45177"
        x="154.46243"
-       style="font-size:5.64444447px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       xml:space="preserve"><tspan
-         style="font-size:3.95111132px"
+       style="font-size:3.95px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial">
+       <tspan
          y="191.45177"
          x="154.46243"
          id="tspan3276"
@@ -1620,9 +1616,8 @@
        id="text3278"
        y="191.44733"
        x="173.94231"
-       style="font-size:5.64444447px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       xml:space="preserve"><tspan
-         style="font-size:3.95111132px"
+       style="font-size:3.95px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial">
+       <tspan
          y="191.44733"
          x="173.94231"
          id="tspan3280"
@@ -1633,8 +1628,8 @@
        id="text3282"
        y="158.72597"
        x="186.05237"
-       style="font-size:5.64444446999999982px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       xml:space="preserve"><tspan
+       style="font-size:5.64444446999999982px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial">
+       <tspan
          y="158.72597"
          x="186.05237"
          id="tspan3284"
@@ -1645,8 +1640,8 @@
        id="text3286"
        y="165.73558"
        x="185.99422"
-       style="font-size:3.95111131999999987px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       xml:space="preserve"><tspan
+       style="font-size:3.95111131999999987px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial">
+       <tspan
          y="165.73558"
          x="185.99422"
          id="tspan3288"
@@ -1657,8 +1652,8 @@
        id="text3290"
        y="191.31752"
        x="185.6927"
-       style="font-size:3.95111132px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       xml:space="preserve"><tspan
+       style="font-size:3.95111132px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial">
+       <tspan
          y="191.31752"
          x="185.6927"
          id="tspan3292"
@@ -1669,8 +1664,8 @@
        id="text3294"
        y="191.45177"
        x="248.32477"
-       style="font-size:3.95111131999999987px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       xml:space="preserve"><tspan
+       style="font-size:3.95111131999999987px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial">
+       <tspan
          y="191.45177"
          x="248.32477"
          id="tspan3296"

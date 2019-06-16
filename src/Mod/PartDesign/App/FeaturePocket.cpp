@@ -174,6 +174,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopExp_Explorer Ex(supportface,TopAbs_WIRE);
             if (!Ex.More())
                 supportface = TopoDS_Face();
+#if 0
             BRepFeat_MakePrism PrismMaker;
             PrismMaker.Init(base, profileshape, supportface, dir, 0, 1);
             PrismMaker.Perform(upToFace);
@@ -181,6 +182,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             if (!PrismMaker.IsDone())
                 return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
             TopoDS_Shape prism = PrismMaker.Shape();
+#else
+            TopoDS_Shape prism;
+            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, 0, 1);
+#endif
 
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);
