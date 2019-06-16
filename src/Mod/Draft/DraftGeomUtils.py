@@ -47,9 +47,11 @@ params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 def precision():
     "precision(): returns the Draft precision setting"
-    # Set precision level with a cap to avoid overspecification that:-
-    #  1 - whilst it is precise enough (e.g. that OCC would consider 2 points are conincident) (not sure what it should be 10 or otherwise);
-    #  2 - but FreeCAD / OCC can handle 'internally' (e.g. otherwise user may set something like 15 that the code would never consider 2 points are coincident as internal float is not that precise);
+    # Set precision level with a cap to avoid overspecification that:
+    #  1 - whilst it is precise enough (e.g. that OCC would consider 2 points are coincident)
+    #      (not sure what it should be 10 or otherwise);
+    #  2 - but FreeCAD/OCC can handle 'internally' (e.g. otherwise user may set something like
+    #      15 that the code would never consider 2 points are coincident as internal float is not that precise);
 
     precisionMax = 10
     precisionInt = params.GetInt("precision",6)

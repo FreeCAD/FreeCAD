@@ -201,14 +201,14 @@ def get_femnodes_ele_table(
 ):
     '''the femnodes_ele_table contains for each node its membership in elements
     {nodeID : [[eleID, NodePosition], [], ...], nodeID : [[], [], ...], ...}
-    stored informatation are:
+    stored information is:
     element number, the number of nodes per element
     the position of the node in the element.
     The position of the node in the element is coded
     as a set bit at that position in a bit array (integer)
     FIXME: the number of nodes per element should be
     replaced by the type of the element
-    but I did not know, how to get this from the mesh.
+    but I did not know how to get this from the mesh.
     Since the femelement_table contains either
     volume or face or edgemesh the femnodes_ele_table only
     has either volume or face or edge elements
@@ -1799,9 +1799,9 @@ def get_anlysis_empty_references_group_elements(
     aShape
 ):
     '''get the elementIDs if the Reference shape is empty
-    see get_analysis_group_elements() for more informatations
+    see get_analysis_group_elements() for more information
     on solid meshes only material objects could have an
-    empty reference without being something wrong!
+    empty reference without there being something wrong!
     face meshes could have empty ShellThickness and
     edge meshes could have empty BeamSection/FluidSection
     '''
