@@ -32,6 +32,7 @@
 #include <boost/signals2.hpp>
 
 #include <App/TransactionalObject.h>
+#include <Gui/BitmapFactory.h>
 #include <Base/Vector3D.h>
 
 class SbVec2s;
@@ -159,6 +160,7 @@ public:
     //@{
     /// deliver the icon shown in the tree view
     virtual QIcon getIcon(void) const;
+
     /** deliver the children belonging to this object
       * this method is used to deliver the objects to
       * the tree framework which should be grouped under its
@@ -360,6 +362,18 @@ protected:
                                  const View3DInventorViewer* viewer) const;
     /// Reimplemented from subclass
     void onChanged(const App::Property* prop);
+
+
+    /** @name Methods used by the Tree
+     * If you want to take control over the
+     * viewprovider specific overlay icons, such as status, you
+     * can reimplement this method.
+     */
+    virtual QIcon mergeOverlayIcons (const QIcon & orig) const;
+
+    /// Helper method to merge a pixmap into one corner of a QIcon
+    QIcon mergePixmap (const QIcon &base, const QPixmap &px, Gui::BitmapFactoryInst::Position position) const;
+
 
 protected:
     /// The root Separator of the ViewProvider
