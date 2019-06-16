@@ -46,14 +46,6 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
     f = open(filePath, 'w')
     f.write("# This file was generated from FreeCAD geometry\n")
     f.write("# Part 1 - node list\n")
-    '''
-    f.write("%(TotalNumOfPoints)i  %(NumOfDimensions)i  %(NumOfProperties)i  %(BoundaryMarkerExists)i\n" % {
-        'TotalNumOfPoints': len(allVertices),
-        'NumOfDimensions': 3,
-        'NumOfProperties': 0,
-        'BoundaryMarkerExists': 0
-    })
-    '''
     f.write(
         "TotalNumOfPoints: {},  NumOfDimensions; {}, "
         "NumOfProperties: {}, BoundaryMarkerExists: {}\n"
