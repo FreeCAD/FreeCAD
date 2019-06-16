@@ -4,7 +4,7 @@
 FCMAT_DIR="../"
 MATERIALS_FILE=Materials
 
-# Remove exisitng $MATERIALS_FILE.csv
+# Remove existing $MATERIALS_FILE.csv
 if [ -f "$MATERIALS_FILE.csv" ]
 then
 	rm $MATERIALS_FILE.csv
