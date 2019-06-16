@@ -27,5 +27,6 @@
         <file>icons/SheetMetal_workbench_icon.svg</file>
         <file>icons/Ship_workbench_icon.svg</file>
         <file>icons/Timber_workbench_icon.svg</file>
+        <file>icons/YAML_workbench_icon.svg</file>
     </qresource>
 </RCC> 
