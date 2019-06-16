@@ -31,14 +31,15 @@ import subprocess
 import os.path
 
 import FreeCAD
-if FreeCAD.GuiUp:
-    from PySide import QtGui
 import femtools.femutils as femutils
 import feminout.importZ88O2Results as importZ88O2Results
 
 from .. import run
 from .. import settings
 from . import writer
+
+if FreeCAD.GuiUp:
+    from PySide import QtGui
 
 
 class Check(run.Check):

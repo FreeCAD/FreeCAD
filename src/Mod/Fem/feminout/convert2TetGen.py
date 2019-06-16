@@ -26,12 +26,11 @@
 
 # Make mesh of pn junction in TetGen format
 import FreeCAD
+import Mesh
 App = FreeCAD  # shortcut
 if FreeCAD.GuiUp:
     import FreeCADGui
     Gui = FreeCADGui  # shortcut
-# import Part
-import Mesh
 
 ## \addtogroup FEM
 #  @{

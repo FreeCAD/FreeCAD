@@ -32,8 +32,6 @@ import subprocess
 import os.path
 
 import FreeCAD
-if FreeCAD.GuiUp:
-    from PySide import QtGui
 import femtools.femutils as femutils
 import feminout.importCcxFrdResults as importCcxFrdResults
 import feminout.importCcxDatResults as importCcxDatResults
@@ -41,6 +39,9 @@ import feminout.importCcxDatResults as importCcxDatResults
 from .. import run
 from .. import settings
 from . import writer
+
+if FreeCAD.GuiUp:
+    from PySide import QtGui
 
 
 _inputFileName = None
