@@ -32,8 +32,6 @@ import subprocess
 import os.path
 
 import FreeCAD
-if FreeCAD.GuiUp:
-    from PySide import QtGui
 import femtools.femutils as femutils
 import feminout.importCcxFrdResults as importCcxFrdResults
 import feminout.importCcxDatResults as importCcxDatResults
@@ -41,6 +39,9 @@ import feminout.importCcxDatResults as importCcxDatResults
 from .. import run
 from .. import settings
 from . import writer
+
+if FreeCAD.GuiUp:
+    from PySide import QtGui
 
 
 _inputFileName = None
@@ -184,9 +185,14 @@ class _Container(object):
 
         # get member
         # materials
-        self.materials_linear = self.get_several_member(
+        std_mats = self.get_several_member(
             'Fem::Material'
         )
+        rei_mats = self.get_several_member(
+            'Fem::MaterialReinforced'
+        )
+        self.materials_linear = std_mats + rei_mats
+
         self.materials_nonlinear = self.get_several_member(
             'Fem::MaterialMechanicalNonlinear'
         )

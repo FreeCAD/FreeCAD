@@ -75,6 +75,7 @@ def run_all():
     run_ccx_cantileverfaceload()
     run_ccx_cantilevernodeload()
     run_ccx_cantileverprescribeddisplacement()
+    run_rcwall2d()
 
 
 def run_ccx_cantileverfaceload(solver=None, base_name=None):
@@ -119,6 +120,20 @@ def run_ccx_cantileverprescribeddisplacement(solver=None, base_name=None):
     return doc
 
 
+def run_rcwall2d(solver=None, base_name=None):
+
+    from femexamples.rc_wall_2d import setup_rcwall2d as setup
+    doc = setup()
+
+    if base_name is None:
+        base_name = 'RC_FIB_Wall_2D'
+        if solver is not None:
+            base_name += ('_' + solver)
+    run_analysis(doc, base_name)
+
+    return doc
+
+
 '''
 from femexamples.manager import *
 
@@ -131,5 +146,7 @@ doc = run_ccx_cantileverprescribeddisplacement()
 doc = run_ccx_cantilevernodeload('calculix')
 doc = run_ccx_cantilevernodeload('ccxtools')
 doc = run_ccx_cantilevernodeload('z88')
+
+doc = run_rcwall2d()
 
 '''
