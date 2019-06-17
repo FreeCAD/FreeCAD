@@ -382,9 +382,8 @@ BrowserView::BrowserView(QWidget* parent)
       WindowParameter( "Browser" ),
       isLoading(false)
 {
-#if defined(QTWEBENGINE) && defined(Q_OS_LINUX)
+#if defined(QTWEBENGINE)
     // Otherwise cause crash on exit, probably due to double deletion
-    // Not sure if this applies to other platform
     setAttribute(Qt::WA_DeleteOnClose,false);
 #endif
 
