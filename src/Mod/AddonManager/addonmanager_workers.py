@@ -383,7 +383,7 @@ class ShowWorker(QtCore.QThread):
 
         self.info_label.emit( message )
         self.progressbar_show.emit(False)
-        l = self.loadImages( message, url )
+        l = self.loadImages( message, self.repos[self.idx][1] )
         if l:
             self.info_label.emit( l )
         self.stop = True
@@ -403,6 +403,7 @@ class ShowWorker(QtCore.QThread):
             if not os.path.exists(store):
                 os.makedirs(store)
             for path in imagepaths:
+                origpath = path
                 if "?" in path:
                     # remove everything after the ?
                     path = path.split("?")[0]
@@ -431,8 +432,7 @@ class ShowWorker(QtCore.QThread):
                                 pix = QtGui.QPixmap()
                                 pix = pix.fromImage(img.scaled(300,300,QtCore.Qt.KeepAspectRatio,QtCore.Qt.FastTransformation))
                                 pix.save(storename, "jpeg",100)
-                        
-                    message = message.replace(path,"file:///"+storename.replace("\\","/"))
+                    message = message.replace(origpath,"file:///"+storename.replace("\\","/"))
             return message
         return None
 
