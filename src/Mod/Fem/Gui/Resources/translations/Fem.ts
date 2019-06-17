@@ -273,7 +273,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="365"/>
+        <location filename="../../../femcommands/commands.py" line="530"/>
         <source>Fluxsolver heat</source>
         <translation type="unfinished"></translation>
     </message>
@@ -299,7 +299,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="397"/>
+        <location filename="../../../femcommands/commands.py" line="582"/>
         <source>Material for fluid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -326,6 +326,19 @@
         <source>Creates a nonlinear mechanical material</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="618"/>
+        <source>Creates a nonlinear mechanical material</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_MaterialReinforced</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="674"/>
+        <source>Reinforced material (concrete)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FEM_MaterialSolid</name>
@@ -335,7 +348,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="452"/>
+        <location filename="../../../femcommands/commands.py" line="705"/>
         <source>Material for solid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -414,16 +427,16 @@
         <source>Creates a FEM mesh group</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../../femcommands/commands.py" line="586"/>
-        <source>Creates a FEM mesh group</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
         <location filename="../../../femcommands/commands.py" line="603"/>
+        <source>FEM mesh from shape by Netgen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="957"/>
         <source>FEM mesh from shape by Netgen</source>
         <translation type="unfinished"></translation>
     </message>
@@ -479,11 +492,6 @@
         <source>Creates a FEM solver CalculiX (experimental)</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../../femcommands/commands.py" line="710"/>
-        <source>Creates a FEM solver CalculiX (experimental)</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>FEM_SolverCalculix</name>
@@ -520,16 +528,16 @@
         <source>Changes solver attributes and runs the calculations for the selected solver</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../../femcommands/commands.py" line="728"/>
-        <source>Changes solver attributes and runs the calculations for the selected solver</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>FEM_SolverElmer</name>
     <message>
         <location filename="../../../femcommands/commands.py" line="740"/>
+        <source>Solver Elmer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="1174"/>
         <source>Solver Elmer</source>
         <translation type="unfinished"></translation>
     </message>
