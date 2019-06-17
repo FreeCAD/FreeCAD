@@ -32,7 +32,7 @@ import ArchPanel
 import FreeCAD
 import Part
 import Path
-import PathScripts.PathAreaOp as PathAreaOp
+# import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathProfileBase as PathProfileBase
@@ -58,6 +58,8 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # Qt translation handling
+
+
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -122,7 +124,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         if isinstance(shape, Part.Face):
                             rtn = False
                             (norm, surf) = self.getFaceNormAndSurf(shape)
-                            (rtn, angle, axis, praInfo)= self.faceRotationAnalysis(obj, norm, surf)
+                            (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)
                             if rtn is True:
                                 (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, subCount)
                                 # Verify faces are correctly oriented - InverseAngle might be necessary
@@ -159,9 +161,9 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     msg = translate('Path', "Multiple faces in Base Geometry.") + "  "
                     msg += translate('Path', "Depth settings will be applied to all faces.")
                     PathLog.warning(msg)
-                    #title = translate("Path", "Depth Warning")
-                    #self.guiMessage(title, msg)
-                (Tags, Grps) = self.sortTuplesByIndex(allTuples, 2) # return (TagList, GroupList)
+                    # title = translate("Path", "Depth Warning")
+                    # self.guiMessage(title, msg)
+                (Tags, Grps) = self.sortTuplesByIndex(allTuples, 2)  # return (TagList, GroupList)
                 subList = []
                 for o in range(0, len(Tags)):
                     subList = []
@@ -169,7 +171,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         subList.append(sub)
                     pair = base, subList, angle, axis, stock
                     baseSubsTuples.append(pair)
-                # Efor                       
+                # Efor
             else:
                 PathLog.info(translate("Path", "EnableRotation property is 'Off'."))
                 stock = PathUtils.findParentJob(obj).Stock
@@ -194,7 +196,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         PathLog.error(msg)
                         FreeCAD.Console.PrintWarning(msg)
                         # return
-                
+
                 for shape, wire in holes:
                     f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                     drillable = PathUtils.isDrillable(shape, wire)
@@ -208,10 +210,10 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         self.depthparams = PathUtils.depth_params(
                             clearance_height=obj.ClearanceHeight.Value,
                             safe_height=obj.SafeHeight.Value,
-                            start_depth=strDep, #obj.StartDepth.Value,
+                            start_depth=strDep,  # obj.StartDepth.Value,
                             step_down=obj.StepDown.Value,
                             z_finish_step=finish_step,
-                            final_depth=finDep, #obj.FinalDepth.Value,
+                            final_depth=finDep,  # obj.FinalDepth.Value,
                             user_depths=None)
                         env = PathUtils.getEnvelope(shape, subshape=f, depthparams=self.depthparams)
                         # shapes.append((env, True))
@@ -233,17 +235,17 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         self.depthparams = PathUtils.depth_params(
                             clearance_height=obj.ClearanceHeight.Value,
                             safe_height=obj.SafeHeight.Value,
-                            start_depth=strDep, #obj.StartDepth.Value,
+                            start_depth=strDep,  # obj.StartDepth.Value,
                             step_down=obj.StepDown.Value,
                             z_finish_step=finish_step,
-                            final_depth=finDep, #obj.FinalDepth.Value,
+                            final_depth=finDep,  # obj.FinalDepth.Value,
                             user_depths=None)
                     else:
                         strDep = obj.StartDepth.Value
                         finDep = obj.FinalDepth.Value
                     try:
                         env = PathUtils.getEnvelope(base.Shape, subshape=profileshape, depthparams=self.depthparams)
-                    except Exception as ee:
+                    except Exception:
                         # PathUtils.getEnvelope() failed to return an object.
                         PathLog.error(translate('Path', 'Unable to create path for face(s).'))
                     else:
@@ -259,10 +261,10 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         self.depthparams = PathUtils.depth_params(
                             clearance_height=obj.ClearanceHeight.Value,
                             safe_height=obj.SafeHeight.Value,
-                            start_depth=strDep, #obj.StartDepth.Value,
+                            start_depth=strDep,  # obj.StartDepth.Value,
                             step_down=obj.StepDown.Value,
                             z_finish_step=finish_step,
-                            final_depth=finDep, #obj.FinalDepth.Value,
+                            final_depth=finDep,  # obj.FinalDepth.Value,
                             user_depths=None)
                         env = PathUtils.getEnvelope(base.Shape, subshape=shape, depthparams=self.depthparams)
                         tup = env, False, 'pathProfileFaces', angle, axis, strDep, finDep
@@ -325,9 +327,10 @@ def SetupProperties():
     setup.append("AttemptInverseAngle")
     return setup
 
-def Create(name, obj = None):
+
+def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Profile based on faces operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectProfile(obj, name)
+    obj.Proxy = ObjectProfile(obj, name)
     return obj
