@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation type="unfinished">Merge selected cells</translation>
+      <translation>Fusionar celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation type="unfinished">Split previously merged cells</translation>
+      <translation>Dividir celdas previamente fusionadas</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation type="unfinished">Set text in selected cells bold</translation>
+      <translation>Establecer texto en las celdas seleccionadas en negrita</translation>
     </message>
   </context>
   <context>
@@ -204,11 +204,11 @@
     </message>
     <message>
       <source>Italic text</source>
-      <translation>Cursiva</translation>
+      <translation>Texto en cursiva</translation>
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation type="unfinished">Set text in selected cells italic</translation>
+      <translation>Establecer texto en las celdas seleccionadas en cursiva</translation>
     </message>
   </context>
   <context>

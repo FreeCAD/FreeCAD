@@ -29,5 +29,42 @@
         <file>icons/Timber_workbench_icon.svg</file>
         <file>icons/YAML_workbench_icon.svg</file>
         <file>icons/BIMBots_workbench_icon.svg</file>
+        <file>translations/AddonManager_af.qm</file>
+        <file>translations/AddonManager_ar.qm</file>
+        <file>translations/AddonManager_ca.qm</file>
+        <file>translations/AddonManager_cs.qm</file>
+        <file>translations/AddonManager_de.qm</file>
+        <file>translations/AddonManager_el.qm</file>
+        <file>translations/AddonManager_es-ES.qm</file>
+        <file>translations/AddonManager_eu.qm</file>
+        <file>translations/AddonManager_fi.qm</file>
+        <file>translations/AddonManager_fil.qm</file>
+        <file>translations/AddonManager_fr.qm</file>
+        <file>translations/AddonManager_gl.qm</file>
+        <file>translations/AddonManager_hr.qm</file>
+        <file>translations/AddonManager_hu.qm</file>
+        <file>translations/AddonManager_id.qm</file>
+        <file>translations/AddonManager_it.qm</file>
+        <file>translations/AddonManager_ja.qm</file>
+        <file>translations/AddonManager_kab.qm</file>
+        <file>translations/AddonManager_ko.qm</file>
+        <file>translations/AddonManager_lt.qm</file>
+        <file>translations/AddonManager_nl.qm</file>
+        <file>translations/AddonManager_no.qm</file>
+        <file>translations/AddonManager_pl.qm</file>
+        <file>translations/AddonManager_pt-BR.qm</file>
+        <file>translations/AddonManager_pt-PT.qm</file>
+        <file>translations/AddonManager_ro.qm</file>
+        <file>translations/AddonManager_ru.qm</file>
+        <file>translations/AddonManager_sk.qm</file>
+        <file>translations/AddonManager_sl.qm</file>
+        <file>translations/AddonManager_sr.qm</file>
+        <file>translations/AddonManager_sv-SE.qm</file>
+        <file>translations/AddonManager_tr.qm</file>
+        <file>translations/AddonManager_uk.qm</file>
+        <file>translations/AddonManager_val-ES.qm</file>
+        <file>translations/AddonManager_vi.qm</file>
+        <file>translations/AddonManager_zh-CN.qm</file>
+        <file>translations/AddonManager_zh-TW.qm</file>
     </qresource>
 </RCC> 

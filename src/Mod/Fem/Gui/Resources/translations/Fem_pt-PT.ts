@@ -264,16 +264,16 @@
       <source>Creates a FEM equation for fluxsolver</source>
       <translation>Cria uma equação FEM para fluxsolver</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="349"/>
-      <source>Creates a FEM equation for fluxsolver</source>
-      <translation>Cria uma equação FEM para fluxsolver</translation>
-    </message>
   </context>
   <context>
     <name>FEM_EquationHeat</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="365"/>
+      <source>Fluxsolver heat</source>
+      <translation type="unfinished">Fluxsolver heat</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="530"/>
       <source>Fluxsolver heat</source>
       <translation type="unfinished">Fluxsolver heat</translation>
     </message>
@@ -290,16 +290,16 @@
       <source>Convert the surface of a FEM mesh to a mesh</source>
       <translation>Converter a superfície de uma malha FEM para uma malha</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="471"/>
-      <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Converter a superfície de uma malha FEM para uma malha</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MaterialFluid</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
+      <source>Material for fluid</source>
+      <translation type="unfinished">Material for fluid</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="582"/>
       <source>Material for fluid</source>
       <translation type="unfinished">Material for fluid</translation>
     </message>
@@ -327,15 +327,28 @@
       <translation>Cria um material mecânico não-linear</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="417"/>
+      <location filename="../../../femcommands/commands.py" line="618"/>
       <source>Creates a nonlinear mechanical material</source>
       <translation>Cria um material mecânico não-linear</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialReinforced</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="674"/>
+      <source>Reinforced material (concrete)</source>
+      <translation type="unfinished">Reinforced material (concrete)</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="452"/>
+      <source>Material for solid</source>
+      <translation type="unfinished">Material for solid</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="705"/>
       <source>Material for solid</source>
       <translation type="unfinished">Material for solid</translation>
     </message>
@@ -378,11 +391,6 @@
       <source>Display FEM mesh info</source>
       <translation>Exibir informações da malha FEM</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="538"/>
-      <source>Display FEM mesh info</source>
-      <translation>Exibir informações da malha FEM</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MeshGmshFromShape</name>
@@ -419,10 +427,18 @@
       <source>Creates a FEM mesh group</source>
       <translation>Cria um grupo de malha FEM</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="586"/>
-      <source>Creates a FEM mesh group</source>
-      <translation>Cria um grupo de malha FEM</translation>
+      <location filename="../../../femcommands/commands.py" line="603"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Forma para malha FEM usando Netgen</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="957"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Forma para malha FEM usando Netgen</translation>
     </message>
   </context>
   <context>
@@ -476,15 +492,28 @@
       <source>Creates a FEM solver CalculiX (experimental)</source>
       <translation>Criar um calculador FEM CalculiX (experimental)</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculix</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="708"/>
-      <source>Solver CalculiX (experimental)</source>
-      <translation>Calculador CalculiX (experimental)</translation>
+      <location filename="../../../femcommands/commands.py" line="679"/>
+      <source>Solver CalculiX Standard</source>
+      <translation type="unfinished">Solver CalculiX Standard</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="710"/>
-      <source>Creates a FEM solver CalculiX (experimental)</source>
-      <translation>Criar um calculador FEM CalculiX (experimental)</translation>
+      <location filename="../../../femcommands/commands.py" line="681"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation>Solver CalculiX</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation>Criar um calculador FEM usando o CalculiX</translation>
     </message>
   </context>
   <context>
@@ -499,15 +528,18 @@
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Altera os atributos do solver e executa os cálculos para o solver selecionado</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="726"/>
-      <source>Solver job control</source>
-      <translation>Controle de trabalho do Solver</translation>
+      <location filename="../../../femcommands/commands.py" line="740"/>
+      <source>Solver Elmer</source>
+      <translation type="unfinished">Solver Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="728"/>
-      <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Altera os atributos do solver e executa os cálculos para o solver selecionado</translation>
+      <location filename="../../../femcommands/commands.py" line="1174"/>
+      <source>Solver Elmer</source>
+      <translation type="unfinished">Solver Elmer</translation>
     </message>
   </context>
   <context>
@@ -616,32 +648,9 @@
       <translation>Remover</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
-      <source>Add</source>
-      <translation>Adicionar</translation>
-    </message>
-    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
       <source>Remove</source>
       <translation>Remover</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCalculix</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="681"/>
-      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="42"/>
-      <source>Solver CalculiX</source>
-      <translation>Solver CalculiX</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="44"/>
-      <source>Creates a FEM solver CalculiX</source>
-      <translation>Criar um calculador FEM usando o CalculiX</translation>
     </message>
   </context>
   <context>

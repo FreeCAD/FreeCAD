@@ -204,14 +204,14 @@
       <translation>Ενεργοποίηση ραμφίσματος</translation>
     </message>
     <message>
-      <location filename="PathDrilling.py" line="88"/>
-      <source>Height to clear top of material</source>
-      <translation type="unfinished">Height to clear top of material</translation>
+      <location filename="../../../PathScripts/PathDrilling.py" line="65"/>
+      <source>Enable pecking</source>
+      <translation>Ενεργοποίηση ραμφίσματος</translation>
     </message>
     <message>
-      <location filename="PathDrilling.py" line="71"/>
-      <source>Diameters of the holes</source>
-      <translation>Διάμετροι των οπών</translation>
+      <location filename="../../../PathScripts/PathDrilling.py" line="67"/>
+      <source>Enable dwell</source>
+      <translation type="unfinished">Enable dwell</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="68"/>
@@ -219,24 +219,44 @@
       <translation type="unfinished">Calculate the tip length and subtract from final depth</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDrilling.py" line="64"/>
-      <source>Incremental Drill depth before retracting to clear chips</source>
-      <translation>Σταδιακό βάθος διάτρησης πριν την απόσυρση για τον καθαρισμό των ρινισμάτων</translation>
+      <location filename="../../../PathScripts/PathDrilling.py" line="68"/>
+      <source>Calculate the tip length and subtract from final depth</source>
+      <translation type="unfinished">Calculate the tip length and subtract from final depth</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDrilling.py" line="65"/>
-      <source>Enable pecking</source>
-      <translation>Ενεργοποίηση ραμφίσματος</translation>
+      <location filename="../../../PathScripts/PathDrilling.py" line="69"/>
+      <source>Controls how tool retracts Default=G98</source>
+      <translation type="unfinished">Controls how tool retracts Default=G98</translation>
     </message>
     <message>
-      <location filename="PathPlane.py" line="44"/>
+      <location filename="../../../PathScripts/PathDrilling.py" line="72"/>
+      <source>The height where feed starts and height during retract tool when path is finished</source>
+      <translation>Το ύψος όπου ξεκινά η τροφοδοσία και το ύψος απόσυρσης εργαλείου όταν η διαδρομή έχει ολοκληρωθεί</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathMillFace.py" line="58"/>
+      <source>Shape to use for calculating Boundary</source>
+      <translation type="unfinished">Shape to use for calculating Boundary</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPlane.py" line="38"/>
       <source>Orientation plane of CNC path</source>
       <translation>Επίπεδο προσανατολισμού της διαδρομής CNC</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDrilling.py" line="67"/>
-      <source>Enable dwell</source>
-      <translation type="unfinished">Enable dwell</translation>
+      <location filename="../../../PathScripts/PathMillFace.py" line="58"/>
+      <source>Shape to use for calculating Boundary</source>
+      <translation type="unfinished">Shape to use for calculating Boundary</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="89"/>
+      <source>Reverse direction of pocket operation.</source>
+      <translation type="unfinished">Reverse direction of pocket operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="91"/>
+      <source>Inverse the angle. Example: -22.5 -&gt; 22.5 degrees.</source>
+      <translation type="unfinished">Inverse the angle. Example: -22.5 -&gt; 22.5 degrees.</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="99"/>
@@ -254,19 +274,19 @@
       <translation>Δημιουργήστε το προφίλ των στρογγυλών οπών</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPlane.py" line="38"/>
-      <source>Orientation plane of CNC path</source>
-      <translation>Επίπεδο προσανατολισμού της διαδρομής CNC</translation>
+      <location filename="../../../PathScripts/PathCollision.py" line="64"/>
+      <source>The base object this collision refers to</source>
+      <translation type="unfinished">The base object this collision refers to</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathMillFace.py" line="58"/>
-      <source>Shape to use for calculating Boundary</source>
-      <translation type="unfinished">Shape to use for calculating Boundary</translation>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="86"/>
+      <source>Profile round holes</source>
+      <translation>Δημιουργήστε το προφίλ των στρογγυλών οπών</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="71"/>
-      <source>Profile holes as well as the outline</source>
-      <translation>Δημιουργήστε το προφίλ των οπών και του περιγράμματος</translation>
+      <location filename="../../../PathScripts/PathCollision.py" line="60"/>
+      <source>The base object this collision refers to</source>
+      <translation type="unfinished">The base object this collision refers to</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileBase.py" line="59"/>
@@ -309,14 +329,14 @@
       <translation>Γωνία του μοτίβου zigzag</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfileBase.py" line="64"/>
-      <source>Maximum distance before a miter join is truncated</source>
-      <translation>Η μέγιστη απόσταση πριν περικοπεί μια λοξοτομή</translation>
+      <location filename="../../../PathScripts/PathPocketBase.py" line="77"/>
+      <source>Percent of cutter diameter to step over on each pass</source>
+      <translation>Ποσοστό της διαμέτρου του κόπτη προς υπέρθεση σε κάθε πέρασμα</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketBase.py" line="74"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>Επιπλέον μετατόπιση για την υποβολή αίτησης για τη διαδικασία. Η κατεύθυνση εξαρτάται από τη λειτουργία.</translation>
+      <location filename="../../../PathScripts/PathPocketBase.py" line="78"/>
+      <source>Angle of the zigzag pattern</source>
+      <translation>Γωνία του μοτίβου zigzag</translation>
     </message>
     <message>
       <location filename="PathStop.py" line="43"/>
@@ -329,9 +349,9 @@
       <translation>Μέθοδος μοτίβου</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketBase.py" line="78"/>
-      <source>Angle of the zigzag pattern</source>
-      <translation>Γωνία του μοτίβου zigzag</translation>
+      <location filename="../../../PathScripts/PathStop.py" line="36"/>
+      <source>Add Optional or Mandatory Stop to the program</source>
+      <translation>Προσθέστε Προαιρετική ή Υποχρεωτική Διακοπή στο πρόγραμμα</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -372,21 +392,6 @@
       <location filename="PathToolController.py" line="55"/>
       <source>Rapid rate for horizontal moves</source>
       <translation>Ταχύς ρυθμός για οριζόντιες κινήσεις</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="78"/>
-      <source>Direction of spindle rotation</source>
-      <translation>Κατεύθυνση περιστροφής της ατράκτου</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="80"/>
-      <source>Feed rate for vertical moves in Z</source>
-      <translation>Ρυθμός τροφοδοσίας για κατακόρυφες κινήσεις στον άξονα Z</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="81"/>
-      <source>Feed rate for horizontal moves</source>
-      <translation>Ρυθμός τροφοδοσίας για οριζόντιες κινήσεις</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="56"/>
@@ -562,6 +567,36 @@
   <context>
     <name>Path</name>
     <message>
+      <location filename="../../../PathScripts/PathToolController.py" line="234"/>
+      <source>Edit</source>
+      <translation>Επεξεργασία</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathEngraveGui.py" line="62"/>
+      <source>%s is not a Base Model object of the job %s</source>
+      <translation type="unfinished">%s is not a Base Model object of the job %s</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathEngraveGui.py" line="65"/>
+      <source>Base shape %s already in the list</source>
+      <translation type="unfinished">Base shape %s already in the list</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathEngraveGui.py" line="72"/>
+      <source>Ignoring vertex</source>
+      <translation type="unfinished">Ignoring vertex</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobGui.py" line="248"/>
+      <source>Edit</source>
+      <translation>Επεξεργασία</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathEngraveGui.py" line="62"/>
+      <source>%s is not a Base Model object of the job %s</source>
+      <translation type="unfinished">%s is not a Base Model object of the job %s</translation>
+    </message>
+    <message>
       <location filename="PathUtils.py" line="472"/>
       <source>Didn't find job %s</source>
       <translation>Δεν βρέθηκε η εργασία %s</translation>
@@ -587,19 +622,14 @@
       <translation>Η γονική εργασία %s δεν έχει αντικείμενο βάσης</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngraveGui.py" line="62"/>
-      <source>%s is not a Base Model object of the job %s</source>
-      <translation type="unfinished">%s is not a Base Model object of the job %s</translation>
+      <location filename="../../../PathScripts/PathUtils.py" line="770"/>
+      <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
+      <translation>Η Γωνία Περικοπής Ακμής (%.2f) θα έχει ως αποτέλεσμα αρνητικό μήκος άκρου εργαλείου</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngraveGui.py" line="65"/>
-      <source>Base shape %s already in the list</source>
-      <translation type="unfinished">Base shape %s already in the list</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathEngraveGui.py" line="72"/>
-      <source>Ignoring vertex</source>
-      <translation type="unfinished">Ignoring vertex</translation>
+      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
+      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
+      <translation type="unfinished">Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="514"/>
@@ -620,6 +650,109 @@
       <location filename="PathOpGui.py" line="762"/>
       <source>Pick Start Point</source>
       <translation>Διαλέξτε Σημείο Εκκίνησης</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOpGui.py" line="617"/>
+      <source>Heights</source>
+      <translation>Ύψη</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOpGui.py" line="776"/>
+      <source>AreaOp Operation</source>
+      <translation>Λειτουργία AreaOp</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOpGui.py" line="875"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation>Κατάργηση Λειτουργίας AreaOp</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOpGui.py" line="990"/>
+      <source>Pick Start Point</source>
+      <translation>Διαλέξτε Σημείο Εκκίνησης</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="343"/>
+      <source>
+&lt;br&gt;Pocket is based on extruded surface.</source>
+      <translation type="unfinished">
+&lt;br&gt;Pocket is based on extruded surface.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="344"/>
+      <source>
+&lt;br&gt;Bottom of pocket might be non-planar and/or not normal to spindle axis.</source>
+      <translation type="unfinished">
+&lt;br&gt;Bottom of pocket might be non-planar and/or not normal to spindle axis.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="345"/>
+      <source>
+&lt;br&gt;
+&lt;br&gt;&lt;i&gt;3D pocket bottom is NOT available in this operation&lt;/i&gt;.</source>
+      <translation type="unfinished">
+&lt;br&gt;
+&lt;br&gt;&lt;i&gt;3D pocket bottom is NOT available in this operation&lt;/i&gt;.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="529"/>
+      <source>Depth Warning</source>
+      <translation type="unfinished">Depth Warning</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="452"/>
+      <source>Consider toggling the InverseAngle property and recomputing the operation.</source>
+      <translation type="unfinished">Consider toggling the InverseAngle property and recomputing the operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="413"/>
+      <source>Processing subs individually ...</source>
+      <translation type="unfinished">Processing subs individually ...</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="527"/>
+      <source>Verify final depth of pocket shaped by vertical faces.</source>
+      <translation type="unfinished">Verify final depth of pocket shaped by vertical faces.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="574"/>
+      <source>Processing model as a whole ...</source>
+      <translation type="unfinished">Processing model as a whole ...</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="781"/>
+      <source>Can not identify loop.</source>
+      <translation type="unfinished">Can not identify loop.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
+      <source>Face appears misaligned after initial rotation.</source>
+      <translation type="unfinished">Face appears misaligned after initial rotation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="139"/>
+      <source>Consider toggling the 'InverseAngle' property and recomputing.</source>
+      <translation type="unfinished">Consider toggling the 'InverseAngle' property and recomputing.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="161"/>
+      <source>Multiple faces in Base Geometry.</source>
+      <translation type="unfinished">Multiple faces in Base Geometry.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="162"/>
+      <source>Depth settings will be applied to all faces.</source>
+      <translation type="unfinished">Depth settings will be applied to all faces.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="176"/>
+      <source>EnableRotation property is 'Off'.</source>
+      <translation type="unfinished">EnableRotation property is 'Off'.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="250"/>
+      <source>Unable to create path for face(s).</source>
+      <translation type="unfinished">Unable to create path for face(s).</translation>
     </message>
     <message>
       <location filename="PathCircularHoleBase.py" line="60"/>
@@ -672,51 +805,6 @@
       <translation>Διαδρομή</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="106"/>
-      <source>Path Dressup</source>
-      <translation>Αναδιαμόρφωση Διαδρομής</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="115"/>
-      <source>Supplemental Commands</source>
-      <translation type="unfinished">Supplemental Commands</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="105"/>
-      <source>Project Setup</source>
-      <translation>Εγκατάσταση Έργου</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="117"/>
-      <source>Path Modification</source>
-      <translation>Τροποποίηση Διαδρομής</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="110"/>
-      <source>Helpful Tools</source>
-      <translation>Βοηθητικά Εργαλεία</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="120"/>
-      <source>&amp;Path</source>
-      <translation>Διαδρομή</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="113"/>
-      <source>Path Dressup</source>
-      <translation>Αναδιαμόρφωση Διαδρομής</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="115"/>
-      <source>Supplemental Commands</source>
-      <translation type="unfinished">Supplemental Commands</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="234"/>
-      <source>Edit</source>
-      <translation>Επεξεργασία</translation>
-    </message>
-    <message>
       <location filename="PathPocket.py" line="153"/>
       <source>this object already in the list
 </source>
@@ -752,6 +840,14 @@
     </message>
   </context>
   <context>
+    <name>PathAdaptive</name>
+    <message>
+      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
+      <source>Adaptive</source>
+      <translation type="unfinished">Adaptive</translation>
+    </message>
+  </context>
+  <context>
     <name>PathAreaOp</name>
     <message>
       <location filename="PathAreaOp.py" line="86"/>
@@ -764,17 +860,45 @@
       <translation>δεν βρέθηκε εργασία για την λειτουργία %s.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathAreaOp.py" line="118"/>
+      <location filename="../../../PathScripts/PathAreaOp.py" line="136"/>
       <source>job %s has no Base.</source>
       <translation>η εργασία %s δεν έχει Βάση.</translation>
     </message>
   </context>
   <context>
-    <name>PathAdaptive</name>
+    <name>PathCustom</name>
     <message>
-      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
-      <source>Adaptive</source>
-      <translation type="unfinished">Adaptive</translation>
+      <location filename="../../../PathScripts/PathCustom.py" line="40"/>
+      <source>The gcode to be inserted</source>
+      <translation>Gcode προς εισαγωγή</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCustom.py" line="41"/>
+      <source>The tool controller that will be used to calculate the path</source>
+      <translation>Ο ελεγκτής εργαλείων που θα χρησιμοποιηθεί για τον υπολογισμό της διαδρομής</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCustom.py" line="40"/>
+      <source>The gcode to be inserted</source>
+      <translation>Gcode προς εισαγωγή</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathDeburr</name>
+    <message>
+      <location filename="../../../PathScripts/PathDeburr.py" line="70"/>
+      <source>The desired width of the chamfer</source>
+      <translation type="unfinished">The desired width of the chamfer</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDeburr.py" line="71"/>
+      <source>The additional depth of the tool path</source>
+      <translation type="unfinished">The additional depth of the tool path</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDeburrGui.py" line="102"/>
+      <source>Deburr</source>
+      <translation type="unfinished">Deburr</translation>
     </message>
   </context>
   <context>
@@ -851,8 +975,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathDrillingGui.py" line="109"/>
-      <source>Drilling</source>
-      <translation>Διάτρηση</translation>
+      <source>Creates a Path Drilling object from a features of a base object</source>
+      <translation>Δημιουργεί μια Διαδρομή Διάτρησης από τα χαρακτηριστικά ενός αντικειμένου βάσης</translation>
     </message>
   </context>
   <context>
@@ -872,23 +996,10 @@
       <source>Additional base objects to be engraved</source>
       <translation type="unfinished">Additional base objects to be engraved</translation>
     </message>
-  </context>
-  <context>
-    <name>PathDeburr</name>
     <message>
-      <location filename="../../../PathScripts/PathDeburrGui.py" line="102"/>
-      <source>Deburr</source>
-      <translation type="unfinished">Deburr</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDeburr.py" line="70"/>
-      <source>The desired width of the chamfer</source>
-      <translation type="unfinished">The desired width of the chamfer</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDeburr.py" line="71"/>
-      <source>The additional depth of the tool path</source>
-      <translation type="unfinished">The additional depth of the tool path</translation>
+      <location filename="../../../PathScripts/PathEngraveGui.py" line="140"/>
+      <source>Engrave</source>
+      <translation>Χάραξη</translation>
     </message>
   </context>
   <context>
@@ -975,24 +1086,9 @@
       <translation>Έναρξη περικοπής από το εσωτερικό ή το εξωτερικό</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathHelixGui.py" line="83"/>
-      <source>Creates a Path Helix object from a features of a base object</source>
-      <translation>Δημιουργεί ένα αντικείμενο ελικοειδούς διαδρομής από τα χαρακτηριστικά ενός αντικειμένου βάσης</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathHelix.py" line="51"/>
-      <source>The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</source>
-      <translation type="unfinished">The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathHelix.py" line="54"/>
       <source>Start cutting from the inside or outside</source>
       <translation>Έναρξη περικοπής από το εσωτερικό ή το εξωτερικό</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathHelix.py" line="57"/>
-      <source>Radius increment (must be smaller than tool diameter)</source>
-      <translation>Προσαύξηση ακτίνας (θα πρέπει να είναι μικρότερη από την διάμετρο του εργαλείου)</translation>
     </message>
   </context>
   <context>
@@ -1023,9 +1119,24 @@
       <translation>Μη υποστηριζόμενος τύπος αποθέματος %s(%d)</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="332"/>
-      <source>Stock not from Base bound box!</source>
-      <translation>Το απόθεμα δεν είναι από το πλαίσιο οριοθέτησης Βάσης!</translation>
+      <location filename="../../../PathScripts/PathJob.py" line="96"/>
+      <source>Select the Post Processor</source>
+      <translation>Επιλέξτε τον Τελικό Επεξεργαστή</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="97"/>
+      <source>Arguments for the Post Processor (specific to the script)</source>
+      <translation>Παράμετροι για τον Τελικό Επεξεργαστή (συγκεκριμένα για το σενάριο)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobGui.py" line="421"/>
+      <source>Stock not a box!</source>
+      <translation>Το απόθεμα δεν είναι κιβώτιο!</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="100"/>
+      <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
+      <translation>Για τον υπολογισμό Διαδρομών· το μικρότερο μέγεθος αυξάνει την ακρίβεια, αλλά επιβραδύνει τον υπολογισμό</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="103"/>
@@ -1043,9 +1154,9 @@
       <translation>Συλλογή διαθέσιμων ελεγκτών εργαλείων για αυτήν την εργασία.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="1020"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Μη υποστηριζόμενος τύπος αποθέματος %s(%d)</translation>
+      <location filename="../../../PathScripts/PathJob.py" line="96"/>
+      <source>Select the Post Processor</source>
+      <translation>Επιλέξτε τον Τελικό Επεξεργαστή</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="95"/>
@@ -1053,9 +1164,9 @@
       <translation>Το αρχείο εξόδου NC για αυτό το έργο</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="96"/>
-      <source>Select the Post Processor</source>
-      <translation>Επιλέξτε τον Τελικό Επεξεργαστή</translation>
+      <location filename="../../../PathScripts/PathJob.py" line="97"/>
+      <source>Arguments for the Post Processor (specific to the script)</source>
+      <translation>Παράμετροι για τον Τελικό Επεξεργαστή (συγκεκριμένα για το σενάριο)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="141"/>
@@ -1063,9 +1174,9 @@
       <translation>ΦύλλοΕγκατάστασης που περιέχει τις ρυθμίσεις για αυτήν την εργασία</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="99"/>
-      <source>An optional description for this job</source>
-      <translation type="unfinished">An optional description for this job</translation>
+      <location filename="../../../PathScripts/PathJob.py" line="100"/>
+      <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
+      <translation>Για τον υπολογισμό Διαδρομών· το μικρότερο μέγεθος αυξάνει την ακρίβεια, αλλά επιβραδύνει τον υπολογισμό</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="244"/>
@@ -1108,14 +1219,9 @@
       <translation>Μη υποστηριζόμενος τύπος αποθέματος</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJobDlg.py" line="65"/>
-      <source>2D</source>
-      <translation type="unfinished">2D</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobDlg.py" line="306"/>
-      <source>Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</source>
-      <translation>Βάση -/+%.2f/%.2f %.2f/%.2f %.2f/%.2f</translation>
+      <location filename="../../../PathScripts/PathJobDlg.py" line="66"/>
+      <source>Jobs</source>
+      <translation type="unfinished">Jobs</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="341"/>
@@ -1146,6 +1252,11 @@
       <translation type="unfinished">Holds the max Z value of Stock</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathOp.py" line="114"/>
+      <source>Holds the min Z value of Stock</source>
+      <translation type="unfinished">Holds the min Z value of Stock</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathOp.py" line="113"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Ορίστε ως ψευδές, για να εμποδίσετε την λειτουργία να δημιουργήσει κώδικα</translation>
@@ -1166,9 +1277,9 @@
       <translation>Οι τοποθεσίες βάσης για αυτήν την λειτουργία</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="103"/>
-      <source>Holds the calculated value for the StartDepth</source>
-      <translation>Περιέχει την υπολογισμένη τιμή για το Βάθος Εκκίνησης</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="106"/>
+      <source>Holds the calculated value for the FinalDepth</source>
+      <translation>Περιέχει την υπολογισμένη τιμή για το Τελικό Βάθος</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="137"/>
@@ -1181,14 +1292,9 @@
       <translation>Τελικό Βάθος του Εργαλείου- χαμηλότερη τιμή στον άξονα Ζ</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="112"/>
-      <source>Holds the max Z value of Stock</source>
-      <translation type="unfinished">Holds the max Z value of Stock</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="114"/>
-      <source>Holds the min Z value of Stock</source>
-      <translation type="unfinished">Holds the min Z value of Stock</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="144"/>
+      <source>Starting Depth internal use only for derived values</source>
+      <translation type="unfinished">Starting Depth internal use only for derived values</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="120"/>
@@ -1196,9 +1302,19 @@
       <translation>Ορίστε ως ψευδές, για να εμποδίσετε την λειτουργία να δημιουργήσει κώδικα</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="144"/>
-      <source>Starting Depth internal use only for derived values</source>
-      <translation type="unfinished">Starting Depth internal use only for derived values</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="121"/>
+      <source>An optional comment for this Operation</source>
+      <translation>Ένα προαιρετικό σχόλιο για αυτήν την Λειτουργία</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="122"/>
+      <source>User Assigned Label</source>
+      <translation>Ετικέτα που έχει Εκχωρηθεί από τον Χρήστη</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="150"/>
+      <source>Incremental Step Down of Tool</source>
+      <translation>Σταδιακό Βήμα Καθόδου του Εργαλείου</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="157"/>
@@ -1214,11 +1330,6 @@
       <location filename="../../../PathScripts/PathOp.py" line="161"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>Ορίστε ως Αληθές, αν καθορίζετε ένα Σημείο Εκκίνησης</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="133"/>
-      <source>The tool controller that will be used to calculate the path</source>
-      <translation>Ο ελεγκτής εργαλείων που θα χρησιμοποιηθεί για τον υπολογισμό της διαδρομής</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="291"/>
@@ -1242,6 +1353,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <source>Depths</source>
       <translation>Βάθη</translation>
     </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="161"/>
+      <source>Make True, if specifying a Start Point</source>
+      <translation>Ορίστε ως Αληθές, αν καθορίζετε ένα Σημείο Εκκίνησης</translation>
+    </message>
   </context>
   <context>
     <name>PathPocket</name>
@@ -1256,14 +1372,14 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Δημιουργεί μια Τρισδιάστατη Εσοχή Διαδρομής από μια όψη ή από όψεις</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="109"/>
-      <source>Vertical faces do not form a loop - ignoring</source>
-      <translation>Κάθετες όψεις δεν σχηματίζουν βρόχο - πραγματοποιείται παράβλεψη</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="100"/>
       <source>Pocket does not support shape %s.%s</source>
       <translation>Η εσοχή δεν υποστηρίζει το σχήμα %s.%s</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="109"/>
+      <source>Vertical faces do not form a loop - ignoring</source>
+      <translation>Κάθετες όψεις δεν σχηματίζουν βρόχο - πραγματοποιείται παράβλεψη</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
@@ -1306,31 +1422,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Δημιουργεί μια Εσοχή Διαδρομής από μια όψη ή από όψεις</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="458"/>
-      <source>Vertical faces do not form a loop - ignoring</source>
-      <translation>Κάθετες όψεις δεν σχηματίζουν βρόχο - πραγματοποιείται παράβλεψη</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="434"/>
-      <source>Pocket does not support shape %s.%s</source>
-      <translation>Η εσοχή δεν υποστηρίζει το σχήμα %s.%s</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
-      <source>Adaptive clearing and profiling</source>
-      <translation type="unfinished">Adaptive clearing and profiling</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketBaseGui.py" line="70"/>
-      <source>Pass Extension</source>
-      <translation>Επέκταση Περάσματος</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketBaseGui.py" line="71"/>
-      <source>The distance the facing operation will extend beyond the boundary shape.</source>
-      <translation>Η απόσταση κατά την οποία θα επεκταθεί η λειτουργία κατασκευής όψεων πέρα από το όριο του σχήματος.</translation>
-    </message>
-    <message>
       <location filename="PathPocket.py" line="177"/>
       <source>Generating toolpath with libarea offsets.
 </source>
@@ -1345,11 +1436,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
   </context>
   <context>
     <name>PathPocketShape</name>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="225"/>
-      <source>Reverse direction of pocket operation.</source>
-      <translation type="unfinished">Reverse direction of pocket operation.</translation>
-    </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="212"/>
       <source>Uses the outline of the base geometry.</source>
@@ -1370,16 +1456,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <source>When enabled connected extension edges are combined to wires.</source>
       <translation type="unfinished">When enabled connected extension edges are combined to wires.</translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="222"/>
-      <source>Match B rotations to model (error in FreeCAD rendering).</source>
-      <translation type="unfinished">Match B rotations to model (error in FreeCAD rendering).</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="225"/>
-      <source>Reverse direction of pocket operation.</source>
-      <translation type="unfinished">Reverse direction of pocket operation.</translation>
-    </message>
   </context>
   <context>
     <name>PathProfile</name>
@@ -1395,26 +1471,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
     </message>
     <message>
       <location filename="PathProfile.py" line="429"/>
-      <source>Face Profile</source>
-      <translation>Προφίλ Όψης</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
-      <source>Profile based on face or faces</source>
-      <translation type="unfinished">Profile based on face or faces</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="45"/>
-      <source>Edge Profile</source>
-      <translation>Προφίλ Ακμής</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="45"/>
-      <source>Profile based on edges</source>
-      <translation>Προφίλ βασισμένο σε ακμές</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
       <source>Face Profile</source>
       <translation>Προφίλ Όψης</translation>
     </message>
@@ -1607,6 +1663,56 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <source>Default speed for vertical rapid moves.</source>
       <translation type="unfinished">Default speed for vertical rapid moves.</translation>
     </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="100"/>
+      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
+      <translation type="unfinished">The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="101"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation type="unfinished">Expression set for the SafeHeight of new operations.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="102"/>
+      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
+      <translation type="unfinished">The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="103"/>
+      <source>Expression set for the ClearanceHeight of new operations.</source>
+      <translation type="unfinished">Expression set for the ClearanceHeight of new operations.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="97"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation type="unfinished">Default speed for horizontal rapid moves.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="98"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation type="unfinished">Default speed for vertical rapid moves.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="100"/>
+      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
+      <translation type="unfinished">The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="101"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation type="unfinished">Expression set for the SafeHeight of new operations.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="102"/>
+      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
+      <translation type="unfinished">The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="103"/>
+      <source>Expression set for the ClearanceHeight of new operations.</source>
+      <translation type="unfinished">Expression set for the ClearanceHeight of new operations.</translation>
+    </message>
   </context>
   <context>
     <name>PathStock</name>
@@ -1684,19 +1790,14 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>PathToolController</name>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="112"/>
-      <source>Unsupported PathToolController template version %s</source>
-      <translation>Μη υποστηριζόμενη έκδοση προτύπου ΕλεγκτήΕργαλείωνΔιαδρομής %s</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathToolController.py" line="360"/>
       <source>Error updating TC: %s</source>
       <translation>Σφάλμα κατά την ενημέρωση του TC: %s</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="335"/>
-      <source>Error updating TC: %s</source>
-      <translation>Σφάλμα κατά την ενημέρωση του TC: %s</translation>
+      <location filename="../../../PathScripts/PathToolController.py" line="112"/>
+      <source>Unsupported PathToolController template version %s</source>
+      <translation>Μη υποστηριζόμενη έκδοση προτύπου ΕλεγκτήΕργαλείωνΔιαδρομής %s</translation>
     </message>
   </context>
   <context>
@@ -1724,6 +1825,16 @@ If it is necessary to set the FinalDepth manually please select a different oper
     </message>
     <message>
       <location filename="PathArray.py" line="107"/>
+      <source>Creates an array from a selected path</source>
+      <translation>Δημιουργεί μια διάταξη από μια επιλεγμένη διαδρομή</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathArray.py" line="262"/>
+      <source>Please select exactly one path object</source>
+      <translation>Παρακαλώ επιλέξτε ακριβώς ένα αντικείμενο διαδρομής</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathArray.py" line="242"/>
       <source>Creates an array from a selected path</source>
       <translation>Δημιουργεί μια διάταξη από μια επιλεγμένη διαδρομή</translation>
     </message>
@@ -1790,11 +1901,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
 </source>
       <translation>Παρακαλώ επιλέξτε ένα αντικείμενο διαδρομής
 </translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="200"/>
-      <source>Please select a Path object</source>
-      <translation>Παρακαλώ επιλέξτε ένα αντικείμενο Διαδρομής</translation>
     </message>
     <message>
       <location filename="PathDressup.py" line="98"/>
@@ -1902,69 +2008,9 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <source>Create Dogbone Dress-up</source>
       <translation>Δημιουργήστε Αναδιαμόρφωση Περικοπής Dogbone</translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="864"/>
-      <source>Edit Dogbone Dress-up</source>
-      <translation>Επεξεργασία Αναδιαμόρφωσης Περικοπής Dogbone</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1049"/>
-      <source>Dogbone Dress-up</source>
-      <translation>Αναδιαμόρφωση Περικοπής Dogbone</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1050"/>
-      <source>Creates a Dogbone Dress-up object from a selected path</source>
-      <translation>Δημιουργεί ένα αντικείμενο Αναδιαμόρφωσης Περικοπής Dogbone από μια επιλεγμένη διαδρομή</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1064"/>
-      <source>Please select one path object</source>
-      <translation>Παρακαλώ επιλέξτε ένα αντικείμενο διαδρομής</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1068"/>
-      <source>The selected object is not a path</source>
-      <translation>Το επιλεγμένο αντικείμενο δεν είναι διαδρομή</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1072"/>
-      <source>Create Dogbone Dress-up</source>
-      <translation>Δημιουργήστε Αναδιαμόρφωση Περικοπής Dogbone</translation>
-    </message>
   </context>
   <context>
     <name>Path_DressupDragKnife</name>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
-      <source>DragKnife Dress-up</source>
-      <translation>Αναδιαμόρφωση Συρόμενης Λεπίδας</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
-      <source>Modifies a path to add dragknife corner actions</source>
-      <translation>Τροποποιεί μια διαδρομή για να προσθέσει γωνιακές ενέργειες για τη συρόμενη λεπίδα</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
-      <source>Please select one path object</source>
-      <translation>Παρακαλώ επιλέξτε ένα αντικείμενο διαδρομής</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
-      <source>The selected object is not a path</source>
-      <translation>Το επιλεγμένο αντικείμενο δεν είναι διαδρομή</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
-      <source>Please select a Path object</source>
-      <translation>Παρακαλώ επιλέξτε ένα αντικείμενο Διαδρομής</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
-      <source>Create Dress-up</source>
-      <translation>Δημιουργήστε Αναδιαμόρφωση</translation>
-    </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
       <source>DragKnife Dress-up</source>
@@ -2014,27 +2060,22 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation type="unfinished">The Mode of Point Radiusoffset or Center</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="64"/>
-      <source>The Style of LeadIn the Path</source>
-      <translation>Ο Τύπος Μορφοποίησης του σημείου Προσέγγισης στην Διαδρομή</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="66"/>
-      <source>The Style of LeadOut the Path</source>
-      <translation type="unfinished">The Style of LeadOut the Path</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="68"/>
-      <source>The Mode of Point Radiusoffset or Center</source>
-      <translation type="unfinished">The Mode of Point Radiusoffset or Center</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="338"/>
       <source>LeadInOut Dressup</source>
       <translation type="unfinished">LeadInOut Dressup</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="339"/>
+      <source>Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path</source>
+      <translation type="unfinished">Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="340"/>
+      <source>LeadInOut Dressup</source>
+      <translation type="unfinished">LeadInOut Dressup</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="341"/>
       <source>Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path</source>
       <translation type="unfinished">Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path</translation>
     </message>
@@ -2051,19 +2092,39 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <source>Angle of ramp.</source>
       <translation>Γωνία της κεκλιμένης επιφάνειας.</translation>
     </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="660"/>
+      <source>RampEntry Dress-up</source>
+      <translation>Αναδιαμόρφωση Καταχώρησης Κεκλιμένης Επιφάνειας</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="661"/>
+      <source>Creates a Ramp Entry Dress-up object from a selected path</source>
+      <translation>Δημιουργεί ένα αντικείμενο Αναδιαμόρφωσης Καταχώρησης Κεκλιμένης Επιφάνειας από μια επιλεγμένη διαδρομή</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="52"/>
+      <source>The base path to modify</source>
+      <translation>Η διαδρομή βάσης προς τροποποίηση</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="53"/>
+      <source>Angle of ramp.</source>
+      <translation>Γωνία της κεκλιμένης επιφάνειας.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="663"/>
+      <source>RampEntry Dress-up</source>
+      <translation>Αναδιαμόρφωση Καταχώρησης Κεκλιμένης Επιφάνειας</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="664"/>
+      <source>Creates a Ramp Entry Dress-up object from a selected path</source>
+      <translation>Δημιουργεί ένα αντικείμενο Αναδιαμόρφωσης Καταχώρησης Κεκλιμένης Επιφάνειας από μια επιλεγμένη διαδρομή</translation>
+    </message>
   </context>
   <context>
     <name>Path_DressupTag</name>
-    <message>
-      <location filename="../../../PathScripts/PathDressupTagGui.py" line="506"/>
-      <source>Tag Dress-up</source>
-      <translation>Αναδιαμόρφωση Προσάρτησης</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupTagGui.py" line="507"/>
-      <source>Creates a Tag Dress-up object from a selected path</source>
-      <translation>Δημιουργεί ένα αντικείμενο Αναδιαμόρφωσης Προσάρτησης από μια επιλεγμένη διαδρομή</translation>
-    </message>
     <message>
       <location filename="../../../PathScripts/PathDressupTag.py" line="115"/>
       <source>The base path to modify</source>
@@ -2088,6 +2149,51 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../../../PathScripts/PathDressupTag.py" line="119"/>
       <source>Radius of the fillet for the tag.</source>
       <translation>Ακτίνα του στρογγυλέματος για την προσάρτηση.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="115"/>
+      <source>The base path to modify</source>
+      <translation>Η διαδρομή βάσης προς τροποποίηση</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="116"/>
+      <source>Width of tags.</source>
+      <translation>Πλάτος των προσαρτήσεων.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTagGui.py" line="506"/>
+      <source>Tag Dress-up</source>
+      <translation>Αναδιαμόρφωση Προσάρτησης</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTagGui.py" line="507"/>
+      <source>Creates a Tag Dress-up object from a selected path</source>
+      <translation>Δημιουργεί ένα αντικείμενο Αναδιαμόρφωσης Προσάρτησης από μια επιλεγμένη διαδρομή</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="119"/>
+      <source>Radius of the fillet for the tag.</source>
+      <translation>Ακτίνα του στρογγυλέματος για την προσάρτηση.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="120"/>
+      <source>Locations of inserted holding tags</source>
+      <translation type="unfinished">Locations of inserted holding tags</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="121"/>
+      <source>IDs of disabled holding tags</source>
+      <translation type="unfinished">IDs of disabled holding tags</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="122"/>
+      <source>Factor determining the # of segments used to approximate rounded tags.</source>
+      <translation type="unfinished">Factor determining the # of segments used to approximate rounded tags.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="958"/>
+      <source>Cannot insert holding tags for this path - please select a Profile path</source>
+      <translation type="unfinished">Cannot insert holding tags for this path - please select a Profile path</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupTag.py" line="154"/>
@@ -2126,13 +2232,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Δημιουργεί μια Διαδρομή Άλματος</translation>
     </message>
     <message>
-      <location filename="PathHop.py" line="116"/>
-      <source>Please select one path object
-</source>
-      <translation>Παρακαλώ επιλέξτε ένα αντικείμενο διαδρομής
-</translation>
-    </message>
-    <message>
       <location filename="PathHop.py" line="119"/>
       <source>The selected object is not a path
 </source>
@@ -2140,19 +2239,14 @@ If it is necessary to set the FinalDepth manually please select a different oper
 </translation>
     </message>
     <message>
-      <location filename="PathHop.py" line="122"/>
-      <source>Create Hop</source>
-      <translation>Δημιουργήστε Άλμα</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathHop.py" line="97"/>
-      <source>Creates a Path Hop object</source>
-      <translation>Δημιουργεί μια Διαδρομή Άλματος</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathHop.py" line="111"/>
       <source>Please select one path object</source>
       <translation>Παρακαλώ επιλέξτε ένα αντικείμενο διαδρομής</translation>
+    </message>
+    <message>
+      <location filename="PathHop.py" line="122"/>
+      <source>Create Hop</source>
+      <translation>Δημιουργήστε Άλμα</translation>
     </message>
   </context>
   <context>
@@ -2176,6 +2270,16 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../../../PathScripts/PathInspect.py" line="237"/>
       <source>Please select exactly one path object</source>
       <translation>Παρακαλώ επιλέξτε ακριβώς ένα αντικείμενο διαδρομής</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathInspect.py" line="216"/>
+      <source>Inspect G-code</source>
+      <translation>Επιθεώρηση G-code</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathInspect.py" line="218"/>
+      <source>Inspects the G-code contents of a path</source>
+      <translation>Επιθεωρεί τα περιεχόμενα του G-code μιας διαδρομής</translation>
     </message>
   </context>
   <context>
@@ -2246,6 +2350,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <source>Create a Selection Plane object</source>
       <translation>Δημιουργήστε ένα αντικείμενο Επιπέδου Επιλογής</translation>
     </message>
+    <message>
+      <location filename="../../../PathScripts/PathPlane.py" line="121"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Δημιουργήστε ένα αντικείμενο Επιπέδου Επιλογής</translation>
+    </message>
   </context>
   <context>
     <name>Path_Post</name>
@@ -2311,11 +2420,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation type="unfinished">A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="144"/>
-      <source>No issues detected, {} has passed basic sanity check.</source>
-      <translation>Δεν εντοπίστηκαν προβλήματα, το {} πέρασε τον βασικό έλεγχο αξιοπιστίας.</translation>
-    </message>
-    <message>
       <location filename="PathSanity.py" line="50"/>
       <source>It appears the machine limits haven't been set.  Not able to check path extents.
 </source>
@@ -2335,24 +2439,9 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <source>Complete loop selection from two edges</source>
       <translation>Ολοκληρώστε την επιλογή βρόχου από δύο ακμές</translation>
     </message>
-    <message>
-      <location filename="../../../PathCommands.py" line="58"/>
-      <source>Finish Selecting Loop</source>
-      <translation>Ολοκλήρωση Επιλογής Βρόχου</translation>
-    </message>
-    <message>
-      <location filename="../../../PathCommands.py" line="60"/>
-      <source>Complete loop selection from two edges</source>
-      <translation>Ολοκληρώστε την επιλογή βρόχου από δύο ακμές</translation>
-    </message>
   </context>
   <context>
     <name>Path_SetupSheet</name>
-    <message>
-      <location filename="../../../PathScripts/PathSetupSheetGui.py" line="345"/>
-      <source>Edit SetupSheet</source>
-      <translation type="unfinished">Edit SetupSheet</translation>
-    </message>
     <message>
       <location filename="../../../PathScripts/PathSetupSheetGui.py" line="345"/>
       <source>Edit SetupSheet</source>
@@ -2378,34 +2467,9 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <source>Creates a non-parametric copy of another path</source>
       <translation>Δημιουργεί ένα μη παραμετρικό αντίγραφο κάποιας άλλης διαδρομής</translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathSimpleCopy.py" line="65"/>
-      <source>Simple Copy</source>
-      <translation>Απλό Αντίγραφο</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSimpleCopy.py" line="42"/>
-      <source>Creates a non-parametric copy of another path</source>
-      <translation>Δημιουργεί ένα μη παραμετρικό αντίγραφο κάποιας άλλης διαδρομής</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSimpleCopy.py" line="61"/>
-      <source>Please select exactly one path object</source>
-      <translation>Παρακαλώ επιλέξτε ακριβώς ένα αντικείμενο διαδρομής</translation>
-    </message>
   </context>
   <context>
     <name>Path_Simulator</name>
-    <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="563"/>
-      <source>CAM Simulator</source>
-      <translation>Προσομοιωτής CAM</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="565"/>
-      <source>Simulate Path G-Code on stock</source>
-      <translation>Προσομοίωση του G-Code της διαδρομής στο απόθεμα</translation>
-    </message>
     <message>
       <location filename="../../../PathScripts/PathSimulatorGui.py" line="563"/>
       <source>CAM Simulator</source>
@@ -2448,7 +2512,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Αυτή η λειτουργία απαιτεί την εγκατάσταση της βιβλιοθήκης OpenCamLib.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="101"/>
+      <location filename="../../../PathScripts/PathSurface.py" line="99"/>
       <source>This operation requires OpenCamLib to be installed.</source>
       <translation>Αυτή η λειτουργία απαιτεί την εγκατάσταση της βιβλιοθήκης OpenCamLib.</translation>
     </message>
@@ -2494,12 +2558,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Προσθέστε Ελεγκτή Εργαλείων στην εργασία</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="275"/>
+      <location filename="../../../PathScripts/PathToolControllerGui.py" line="122"/>
       <source>Add Tool Controller to the Job</source>
       <translation>Προσθέστε Ελεγκτή Εργαλείων στην εργασία</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="276"/>
+      <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
       <source>Add Tool Controller</source>
       <translation>Προσθέστε Ελεγκτή Εργαλείων</translation>
     </message>
@@ -2568,14 +2632,9 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Πίνακας εργαλείων LinuxCNC (*.tbl)</translation>
     </message>
     <message>
-      <location filename="TooltableEditor.py" line="593"/>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>Άνοιγμα πίνακα εργαλείων</translation>
-    </message>
-    <message>
-      <location filename="TooltableEditor.py" line="593"/>
-      <source>Tooltable XML (*.xml);;HeeksCAD tooltable (*.tooltable)</source>
-      <translation>Πίνακας εργαλείων XML (*.xml);; Πίνακας εργαλείων HeeksCAD (*.tooltable)</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="610"/>
@@ -2818,6 +2877,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>χιλιοστά</translation>
     </message>
     <message>
+      <location filename="TooltableEditor.py" line="593"/>
+      <source>Tooltable XML (*.xml);;HeeksCAD tooltable (*.tooltable)</source>
+      <translation>Πίνακας εργαλείων XML (*.xml);; Πίνακας εργαλείων HeeksCAD (*.tooltable)</translation>
+    </message>
+    <message>
       <location filename="TooltableEditor.py" line="651"/>
       <source>Object not found</source>
       <translation>Το αντικείμενο δεν βρέθηκε</translation>
@@ -2831,19 +2895,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathToolLibraryManager.py" line="514"/>
       <source>Tooltable XML (*.xml);;LinuxCNC tooltable (*.tbl)</source>
       <translation>Πίνακας εργαλείων XML (*.xml)·Πίνακας εργαλείων LinuxCNC (*.tbl)</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathCustom</name>
-    <message>
-      <location filename="../../../PathScripts/PathCustom.py" line="40"/>
-      <source>The gcode to be inserted</source>
-      <translation>Gcode προς εισαγωγή</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCustom.py" line="41"/>
-      <source>The tool controller that will be used to calculate the path</source>
-      <translation>Ο ελεγκτής εργαλείων που θα χρησιμοποιηθεί για τον υπολογισμό της διαδρομής</translation>
     </message>
   </context>
   <context>

@@ -285,7 +285,7 @@
     <message>
       <location filename="../../TankInstance.py" line="128"/>
       <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
-      <translation>Andel-bolumenaren eragiketak huts egin du. Tresna eragiketa berriro egiten saiatzen ari da, azalera askearen posizioa pixka bat mugituz</translation>
+      <translation>Andel-bolumenaren eragiketak huts egin du. Tresna eragiketa berriro egiten saiatzen ari da, gainazal askearen posizioa pixka bat mugituz</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="133"/>
@@ -355,7 +355,7 @@
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="122"/>
       <source>Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</source>
-      <translation>Eragiketa boolearrak huts egin du ur azpiko aldea eskuratzen saiatzean. Tresna eragiketa berriro egiten saiatzen ari da, azalera askearen posizioa pixka bat mugituz</translation>
+      <translation>Eragiketa boolearrak huts egin du ur azpiko aldea eskuratzen saiatzean. Tresna eragiketa berriro egiten saiatzen ari da, gainazal askearen posizioa pixka bat mugituz</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="197"/>

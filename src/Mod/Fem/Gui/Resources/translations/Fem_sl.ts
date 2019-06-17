@@ -145,7 +145,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="185"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+      <translation>Ustvari MKE pogoj začetne hitrosti toka</translation>
     </message>
   </context>
   <context>
@@ -264,18 +264,18 @@
       <source>Creates a FEM equation for fluxsolver</source>
       <translation>Ustvari MKE enačbo zareševalnik toka</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="349"/>
-      <source>Creates a FEM equation for fluxsolver</source>
-      <translation>Ustvari MKE enačbo zareševalnik toka</translation>
-    </message>
   </context>
   <context>
     <name>FEM_EquationHeat</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="365"/>
       <source>Fluxsolver heat</source>
-      <translation type="unfinished">Fluxsolver heat</translation>
+      <translation>Fluxsolver toplota</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="530"/>
+      <source>Fluxsolver heat</source>
+      <translation>Fluxsolver toplota</translation>
     </message>
   </context>
   <context>
@@ -290,18 +290,18 @@
       <source>Convert the surface of a FEM mesh to a mesh</source>
       <translation>Pretvori površje MKE ploskovja v ploskovje</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="471"/>
-      <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Pretvori površje MKE ploskovja v ploskovje</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MaterialFluid</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Snov za tekočino</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="582"/>
+      <source>Material for fluid</source>
+      <translation>Snov za tekočino</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
@@ -327,9 +327,17 @@
       <translation>Ustvari nelinearen material</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="417"/>
+      <location filename="../../../femcommands/commands.py" line="618"/>
       <source>Creates a nonlinear mechanical material</source>
       <translation>Ustvari nelinearen material</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialReinforced</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="674"/>
+      <source>Reinforced material (concrete)</source>
+      <translation type="unfinished">Reinforced material (concrete)</translation>
     </message>
   </context>
   <context>
@@ -337,7 +345,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="452"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Snov za trdnino</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="705"/>
+      <source>Material for solid</source>
+      <translation>Snov za trdnino</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -378,23 +391,18 @@
       <source>Display FEM mesh info</source>
       <translation>Prikaži podatke o ploskovju MKE</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="538"/>
-      <source>Display FEM mesh info</source>
-      <translation>Prikaži podatke o ploskovju MKE</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MeshGmshFromShape</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="556"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+      <translation>Ploskovje MKE iz Gmsh-jeve oblike</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="557"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>Ustvari ploskovje MKE iz oblike ploskovjevalnika Gmsh</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
@@ -419,10 +427,18 @@
       <source>Creates a FEM mesh group</source>
       <translation>Ustvari skupino ploskovij MKE</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="586"/>
-      <source>Creates a FEM mesh group</source>
-      <translation>Ustvari skupino ploskovij MKE</translation>
+      <location filename="../../../femcommands/commands.py" line="603"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Ploskovje MKE iz Netgenove oblike</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="957"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Ploskovje MKE iz Netgenove oblike</translation>
     </message>
   </context>
   <context>
@@ -476,15 +492,28 @@
       <source>Creates a FEM solver CalculiX (experimental)</source>
       <translation>Ustvari MKE reševalnik CalculiX (poskusno)</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculix</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="708"/>
-      <source>Solver CalculiX (experimental)</source>
-      <translation>Reševalnik CalculiX (poskusno)</translation>
+      <location filename="../../../femcommands/commands.py" line="679"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Reševalnik CalculiX Standard</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="710"/>
-      <source>Creates a FEM solver CalculiX (experimental)</source>
-      <translation>Ustvari MKE reševalnik CalculiX (poskusno)</translation>
+      <location filename="../../../femcommands/commands.py" line="681"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Ustvari standardni MKE reševalnik CalculiX s ccx orodji</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation>Reševalnik CalculiX</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation>Ustvari MKE CalculiX reševalnik</translation>
     </message>
   </context>
   <context>
@@ -499,15 +528,18 @@
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Spremeni značilke reševalnika in izvede izračune za izbran reševalnik</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="726"/>
-      <source>Solver job control</source>
-      <translation>Nadzor opravil reševalnika</translation>
+      <location filename="../../../femcommands/commands.py" line="740"/>
+      <source>Solver Elmer</source>
+      <translation>Reševalnik Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="728"/>
-      <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Spremeni značilke reševalnika in izvede izračune za izbran reševalnik</translation>
+      <location filename="../../../femcommands/commands.py" line="1174"/>
+      <source>Solver Elmer</source>
+      <translation>Reševalnik Elmer</translation>
     </message>
   </context>
   <context>
@@ -616,32 +648,9 @@
       <translation>Odstrani</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
-      <source>Add</source>
-      <translation>Dodaj</translation>
-    </message>
-    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCalculix</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="681"/>
-      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="42"/>
-      <source>Solver CalculiX</source>
-      <translation>Reševalnik CalculiX</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="44"/>
-      <source>Creates a FEM solver CalculiX</source>
-      <translation>Ustvari MKE CalculiX reševalnik</translation>
     </message>
   </context>
   <context>
