@@ -63,6 +63,8 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # Qt translation handling
+
+
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -106,8 +108,10 @@ class ObjectOp(PathOp.ObjectOp):
         obj.setEditorMode('PathParams', 2)  # hide
         obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
         obj.setEditorMode('removalshape', 2)  # hide
+        # obj.Proxy = self
 
         self.setupAdditionalProperties(obj)
+
 
         self.initAreaOp(obj)
 
@@ -166,12 +170,12 @@ class ObjectOp(PathOp.ObjectOp):
         for prop in ['AreaParams', 'PathParams', 'removalshape']:
             if hasattr(obj, prop):
                 obj.setEditorMode(prop, 2)
-        
+
         self.initOpFinalDepth = obj.OpFinalDepth.Value
         self.initOpStartDepth = obj.OpStartDepth.Value
         self.docRestored = True
-        #PathLog.debug("Imported existing OpFinalDepth of " + str(self.initOpFinalDepth) + " for recompute() purposes.")
-        #PathLog.debug("Imported existing StartDepth of " + str(self.initOpStartDepth) + " for recompute() purposes.")
+        # PathLog.debug("Imported existing OpFinalDepth of " + str(self.initOpFinalDepth) + " for recompute() purposes.")
+        # PathLog.debug("Imported existing StartDepth of " + str(self.initOpStartDepth) + " for recompute() purposes.")
 
         self.setupAdditionalProperties(obj)
         self.areaOpOnDocumentRestored(obj)
@@ -186,7 +190,7 @@ class ObjectOp(PathOp.ObjectOp):
         areaOpShapeForDepths() return value.
         Do not overwrite, overwrite areaOpSetDefaultValues(obj, job) instead.'''
         PathLog.debug("opSetDefaultValues(%s, %s)" % (obj.Label, job.Label))
-        
+
         # Initial setting for EnableRotation is taken from Job settings/SetupSheet
         # User may override on per-operation basis as needed.
         if hasattr(job.SetupSheet, 'SetupEnableRotation'):
@@ -338,7 +342,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.rotateFlag = False
         self.leadIn = 2.0  # self.safOfst / 2.0
         self.cloneNames = []
-        self.guiMsgs = []  # list of message tuples (title, msg) to be displayed in GUI 
+        self.guiMsgs = []  # list of message tuples (title, msg) to be displayed in GUI
         self.stockBB = PathUtils.findParentJob(obj).Stock.Shape.BoundBox
         self.useTempJobClones('Delete')  # Clear temporary group and recreate for temp job clones
 
@@ -374,7 +378,7 @@ class ObjectOp(PathOp.ObjectOp):
             obj.ClearanceHeight.Value = self.strDep + self.safOfset
             obj.SafeHeight.Value = self.strDep + self.safOfst
 
-            if self.initWithRotation == False:
+            if self.initWithRotation is False:
                 if obj.FinalDepth.Value == obj.OpFinalDepth.Value:
                     obj.FinalDepth.Value = self.finDep
                 if obj.StartDepth.Value == obj.OpStartDepth.Value:
@@ -496,7 +500,7 @@ class ObjectOp(PathOp.ObjectOp):
                 self.commandlist.extend(ppCmds)
                 sims.append(sim)
             # Eif
-            
+
             if self.areaOpRetractTool(obj):
                 self.endVector = None
 
@@ -735,7 +739,7 @@ class ObjectOp(PathOp.ObjectOp):
             xAx = 'xAxCyl'
             yAx = 'yAxCyl'
             zAx = 'zAxCyl'
-            FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","visualAxis")
+            FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "visualAxis")
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject('visualAxis').Visibility = False
             vaGrp = FreeCAD.ActiveDocument.getObject("visualAxis")
@@ -745,11 +749,11 @@ class ObjectOp(PathOp.ObjectOp):
             cyl.Label = xAx
             cyl.Radius = self.xRotRad
             cyl.Height = 0.01
-            cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(0,1,0),90))
+            cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0, 0, 0), FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 90))
             cyl.purgeTouched()
             if FreeCAD.GuiUp:
                 cylGui = FreeCADGui.ActiveDocument.getObject(xAx)
-                cylGui.ShapeColor = (0.667,0.000,0.000)
+                cylGui.ShapeColor = (0.667, 0.000, 0.000)
                 cylGui.Transparency = 85
                 cylGui.Visibility = False
             vaGrp.addObject(cyl)
@@ -759,15 +763,15 @@ class ObjectOp(PathOp.ObjectOp):
             cyl.Label = yAx
             cyl.Radius = self.yRotRad
             cyl.Height = 0.01
-            cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(1,0,0),90))
+            cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0, 0, 0), FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90))
             cyl.purgeTouched()
             if FreeCAD.GuiUp:
                 cylGui = FreeCADGui.ActiveDocument.getObject(yAx)
-                cylGui.ShapeColor = (0.000,0.667,0.000)
+                cylGui.ShapeColor = (0.000, 0.667, 0.000)
                 cylGui.Transparency = 85
                 cylGui.Visibility = False
             vaGrp.addObject(cyl)
-            
+
             if False:
                 FreeCAD.ActiveDocument.addObject("Part::Cylinder", zAx)
                 cyl = FreeCAD.ActiveDocument.getObject(zAx)
@@ -778,7 +782,7 @@ class ObjectOp(PathOp.ObjectOp):
                 cyl.purgeTouched()
                 if FreeCAD.GuiUp:
                     cylGui = FreeCADGui.ActiveDocument.getObject(zAx)
-                    cylGui.ShapeColor = (0.000,0.000,0.498)
+                    cylGui.ShapeColor = (0.000, 0.000, 0.498)
                     cylGui.Transparency = 85
                     cylGui.Visibility = False
                 vaGrp.addObject(cyl)
@@ -798,7 +802,7 @@ class ObjectOp(PathOp.ObjectOp):
                         FreeCAD.ActiveDocument.removeObject(cln.Name)
                     FreeCAD.ActiveDocument.removeObject('rotJobClones')
         else:
-            FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","rotJobClones")
+            FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "rotJobClones")
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject('rotJobClones').Visibility = False
 
@@ -817,8 +821,8 @@ class ObjectOp(PathOp.ObjectOp):
             tag = axis + '_' + axis + '_' + str(math.fabs(rndAng)).replace('.', '_')
         else:
             tag = axis + str(rndAng).replace('.', '_')
-        clnNm = obj.Name + '_base_' + '_' + str(subCount) + '_'  + tag
-        stckClnNm = obj.Name + '_stock_' + '_' + str(subCount) + '_'  + tag
+        clnNm = obj.Name + '_base_' + '_' + str(subCount) + '_' + tag
+        stckClnNm = obj.Name + '_stock_' + '_' + str(subCount) + '_' + tag
         if clnNm not in self.cloneNames:
             self.cloneNames.append(clnNm)
             self.cloneNames.append(stckClnNm)
@@ -829,11 +833,11 @@ class ObjectOp(PathOp.ObjectOp):
             FreeCAD.ActiveDocument.addObject('Part::Feature', clnNm).Shape = base.Shape
             FreeCAD.ActiveDocument.addObject('Part::Feature', stckClnNm).Shape = PathUtils.findParentJob(obj).Stock.Shape
             if FreeCAD.GuiUp:
-                FreeCADGui.ActiveDocument.getObject(stckClnNm).Transparency=90
-                FreeCADGui.ActiveDocument.getObject(clnNm).ShapeColor = (1.000,0.667,0.000)
+                FreeCADGui.ActiveDocument.getObject(stckClnNm).Transparency = 90
+                FreeCADGui.ActiveDocument.getObject(clnNm).ShapeColor = (1.000, 0.667, 0.000)
             self.useTempJobClones(clnNm)
             self.useTempJobClones(stckClnNm)
-        clnBase = FreeCAD.ActiveDocument.getObject(clnNm)                                
+        clnBase = FreeCAD.ActiveDocument.getObject(clnNm)
         clnStock = FreeCAD.ActiveDocument.getObject(stckClnNm)
         tag = base.Name + '_' + tag
         return (clnBase, clnStock, tag)
