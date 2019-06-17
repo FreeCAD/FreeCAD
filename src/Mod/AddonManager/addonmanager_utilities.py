@@ -81,6 +81,8 @@ def urlopen(url):
 
     """Opens an url with urllib2"""
 
+    timeout = 5
+
     if sys.version_info.major < 3:
         import urllib2
     else:
@@ -88,9 +90,9 @@ def urlopen(url):
 
     try:
         if ssl_ctx:
-            u = urllib2.urlopen(url, context=ssl_ctx)
+            u = urllib2.urlopen(url, context=ssl_ctx, timeout=timeout)
         else:
-            u = urllib2.urlopen(url)
+            u = urllib2.urlopen(url, timeout=timeout)
     except:
         return None
     else:
