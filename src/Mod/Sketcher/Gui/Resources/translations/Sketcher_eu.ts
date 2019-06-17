@@ -1553,7 +1553,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1818"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a rectangular array pattern of the geometry taking as reference the last selected point</translation>
+      <translation>Geometriaren matrize-eredu laukizuzena sortzen du, erreferentzia modura hautatutako azken puntua hartuta</translation>
     </message>
   </context>
   <context>
@@ -2733,7 +2733,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../CommandConstraints.cpp" line="7448"/>
       <source>You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</source>
-      <translation type="unfinished">You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</translation>
+      <translation>Ezin duzu elipse-arku bat barnetik beste elipse-arku batekin murriztu. Hautatu elipse-arku bakar bat.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7454"/>
@@ -3331,7 +3331,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../SketcherSettings.ui" line="87"/>
       <source>Font size</source>
-      <translation>Letra-tipoaren tamaina</translation>
+      <translation>Letra-tamaina</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="94"/>

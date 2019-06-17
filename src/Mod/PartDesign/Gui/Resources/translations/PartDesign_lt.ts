@@ -47,12 +47,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="92"/>
       <source>Create body</source>
-      <translation type="unfinished">Create body</translation>
+      <translation>Kurti daiktą</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="93"/>
       <source>Create a new body and make it active</source>
-      <translation>Sukurti naują kūną ir jį taisyti</translation>
+      <translation>Sukurti naują daiktą ir pradėti jį rengti</translation>
     </message>
   </context>
   <context>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="634"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation>Klonuoti pasirinktą daiktą ir įtraukti jį į rengiamą kūną</translation>
+      <translation>Klonuoti pasirinktąjį daiktą ir įtraukti jį į rengiamąjį daiktą</translation>
     </message>
   </context>
   <context>
@@ -299,7 +299,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="689"/>
       <source>Move object to other body</source>
-      <translation type="unfinished">Move object to other body</translation>
+      <translation>Perkelti daiktą į kitą daiktą</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="690"/>
@@ -538,7 +538,7 @@
     <message>
       <location filename="../../Command.cpp" line="1455"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Sukurti tiesiškąjį paviršių turintį kūną pasirinkus kelis jo skerspjūvius ir atimti jį iš kūno tūrio</translation>
+      <translation>Sukurti tiesiškąjį paviršių turintį daiktą pasirinkus kelis jo skerspjūvius</translation>
     </message>
   </context>
   <context>
@@ -556,7 +556,7 @@
     <message>
       <location filename="../../Command.cpp" line="1355"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Pratempti pasirinktą brėžinį nurodytu keliu ar skerspjūviu ir atimti jį iš kūno tūrio</translation>
+      <translation>Pratempti pasirinktą rėmelį nurodytu keliu ar skerspjūviu</translation>
     </message>
   </context>
   <context>
@@ -1055,7 +1055,7 @@
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-      <translation>Pasirinkote daiktus, nesančius rengiamo daikto dalimi. Prašom nurodyti kaip elgtis su šiuo pasirinkimu. Jei jūsų netenkina esamas pasirinkimas, atšaukite veiksmą.</translation>
+      <translation>Pasirinkote daiktus, nesančius rengiamo daikto nariais. Prašom nurodyti kaip elgtis su šiuo pasirinkimu. Jei jūsų netenkina esamas pasirinkimas, atšaukite veiksmą.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -2381,7 +2381,7 @@
     <message>
       <location filename="../../ViewProviderBody.cpp" line="137"/>
       <source>Toggle active body</source>
-      <translation>Įgalinti daiktą taisai</translation>
+      <translation>Įgalinti arba baigti daikto taisą</translation>
     </message>
   </context>
   <context>
@@ -2475,12 +2475,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="755"/>
       <source>Select body</source>
-      <translation type="unfinished">Select body</translation>
+      <translation>Parinkti daiktą</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="756"/>
       <source>Select a body from the list</source>
-      <translation type="unfinished">Select a body from the list</translation>
+      <translation>Pasirinkti daiktą iš sąrašo</translation>
     </message>
   </context>
   <context>
@@ -2623,7 +2623,7 @@
     <message>
       <location filename="../../Command.cpp" line="1523"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation>Pasirinkite kraštinę, sieną ar veikiamojo kūno sudedamąjį kūną.</translation>
+      <translation>Pasirinkite kraštinę, sieną ar veikiamąjį daiktą sudarantį kitą daiktą.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1533"/>
@@ -2668,7 +2668,7 @@
     <message>
       <location filename="../../Command.cpp" line="1856"/>
       <source>Please select only one subtractive or additive feature in an active body.</source>
-      <translation>Pirma reikia sukurti tik vieną atimantį ar pridedantį kūną veikiamajame kūne.</translation>
+      <translation>Pirma reikia sukurti tik vieną atimantį ar pridedantį daiktą rengiamajame daikte.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="73"/>
@@ -2873,7 +2873,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../Utils.cpp" line="88"/>
       <source>No active Body</source>
-      <translation>Nėra pasirinkto kūno</translation>
+      <translation>Nėra jokio pasirinkto daikto</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="89"/>
@@ -2887,12 +2887,12 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../Utils.cpp" line="104"/>
       <source>Active Body Required</source>
-      <translation>Reikia pasirinkti kūną</translation>
+      <translation>Reikia pasirinkti daiktą</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="105"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation>Kad sukurti naują detalę, dokumente turi būti pasirinktas veikiamasis kūnas. Prašome pasirinkti esamą kūną (dukart spustelėjus), arba jį sukurti.</translation>
+      <translation>Kad sukurti naują detalę, dokumente turi būti pasirinktas daiktas. Prašome pasirinkti daiktą (dukart spustelėjus), arba jį sukurti.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="142"/>

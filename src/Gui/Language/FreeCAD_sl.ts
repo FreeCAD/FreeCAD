@@ -1622,7 +1622,7 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
       <source>Find...</source>
-      <translation type="unfinished">Find...</translation>
+      <translation>Poišči ...</translation>
     </message>
   </context>
   <context>
@@ -1633,39 +1633,39 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
       <source>Find what:</source>
-      <translation type="unfinished">Find what:</translation>
+      <translation>Najdi, kar:</translation>
     </message>
     <message>
       <source>Look at</source>
-      <translation type="unfinished">Look at</translation>
+      <translation>Glej</translation>
     </message>
     <message>
       <source>Groups</source>
-      <translation type="unfinished">Groups</translation>
+      <translation>Skupine</translation>
     </message>
     <message>
       <source>Names</source>
-      <translation type="unfinished">Names</translation>
+      <translation>Imena</translation>
     </message>
     <message>
       <source>Values</source>
-      <translation type="unfinished">Values</translation>
+      <translation>Vrednosti</translation>
     </message>
     <message>
       <source>Match whole string only</source>
-      <translation type="unfinished">Match whole string only</translation>
+      <translation>Le ujemanje celotnega niza</translation>
     </message>
     <message>
       <source>Find Next</source>
-      <translation type="unfinished">Find Next</translation>
+      <translation>Najdi naslednje</translation>
     </message>
     <message>
       <source>Not found</source>
-      <translation type="unfinished">Not found</translation>
+      <translation>Ni mogoče najti</translation>
     </message>
     <message>
       <source>Can't find the text: %1</source>
-      <translation type="unfinished">Can't find the text: %1</translation>
+      <translation>Ni mogoče najti besedila: %1</translation>
     </message>
   </context>
   <context>
@@ -2779,7 +2779,7 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
       <source>Record GUI commands</source>
-      <translation type="unfinished">Record GUI commands</translation>
+      <translation>Beleži ukaze gr. up. vmesnika</translation>
     </message>
   </context>
   <context>
@@ -2874,7 +2874,7 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
       <source>Unit system:</source>
-      <translation type="unfinished">Unit system:</translation>
+      <translation>Merski sistem:</translation>
     </message>
   </context>
   <context>
@@ -3919,12 +3919,12 @@ Ali želite shraniti spremembe?</translation>
       <translation>Povlecite po zaslonu z dvema prstoma ali kliknite z desnim miškinim gumbom.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Povlecite po zaslonu z enim prstom ali kliknite z levim miškinim gumbom. V očrtovalniku in drugih načinih urejanja pridržite še tipko Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Uščipnite (na zaslonu dva prsta povlecite skupaj ali narazen), zavrtite miškino kolesce ali na tipkovnici pritisnite Stran ↑/Stran ↓.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4579,11 +4579,11 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
       <source>Translation Increment:</source>
-      <translation type="unfinished">Translation Increment:</translation>
+      <translation>Korak vzporednega premikanja:</translation>
     </message>
     <message>
       <source>Rotation Increment:</source>
-      <translation type="unfinished">Rotation Increment:</translation>
+      <translation>Korak sukanja:</translation>
     </message>
   </context>
   <context>

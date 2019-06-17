@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
+      <translation>Sekcja zawiera materiały dla programistów: Jak skompilować samodzielnie FreeCAD, jaka jest struktura kodu FreeCAD + jak się po nim poruszać, jak rozwijać nowe środowiska lub jak osadzać FreeCAD we własnej aplikacji.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -86,12 +86,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation type="unfinished">The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</translation>
+      <translation>Podręcznik FreeCAD jest kolejnym, bardziej liniowym sposobem prezentacji informacji zawartych na tej stronie wiki. Jest stworzony tak by można go było czytać jak książkę oraz by wstępnie wprowadzić Cie do treści innych stron z powyższej listy. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;Wersja w postaci e-booka&lt;/a&gt; jest również dostępna.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>Workbenches documentation</source>
-      <translation>Dokumentacja Środowisk</translation>
+      <translation>Dokumentacja środowisk</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
@@ -366,7 +366,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="348"/>
       <source>Page text color</source>
-      <translation type="unfinished">Page text color</translation>
+      <translation>Kolor czcionki na stronie</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="361"/>
@@ -381,7 +381,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="407"/>
       <source>Box background color</source>
-      <translation type="unfinished">Box background color</translation>
+      <translation>Kolor tła strony</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="420"/>
@@ -406,7 +406,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="486"/>
       <source>Use FreeCAD style sheet</source>
-      <translation type="unfinished">Use FreeCAD style sheet</translation>
+      <translation>Użyj styl strony FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="493"/>
@@ -446,7 +446,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="577"/>
       <source>Should the start page be closed after loading?</source>
-      <translation type="unfinished">Should the start page be closed after loading?</translation>
+      <translation>Czy strona startowa ma być zamknięta po załadowaniu?</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="596"/>
@@ -456,7 +456,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="603"/>
       <source>Close start page after loading</source>
-      <translation type="unfinished">Close start page after loading</translation>
+      <translation>Zamknij stronę startową po załadowaniu</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="610"/>

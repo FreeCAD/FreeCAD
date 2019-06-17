@@ -728,7 +728,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Face tools</source>
-      <translation>Инструменты редактирования граней</translation>
+      <translation>Инструменты работы с гранями</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -1751,7 +1751,7 @@
       <location filename="../../TaskPadParameters.cpp" line="128"/>
       <location filename="../../TaskPadParameters.cpp" line="416"/>
       <source>Two dimensions</source>
-      <translation>Два измерения</translation>
+      <translation>Два размера</translation>
     </message>
   </context>
   <context>
@@ -2028,7 +2028,7 @@
       <location filename="../../TaskPocketParameters.cpp" line="123"/>
       <location filename="../../TaskPocketParameters.cpp" line="443"/>
       <source>Two dimensions</source>
-      <translation>Два измерения</translation>
+      <translation>Два размера</translation>
     </message>
   </context>
   <context>
@@ -2313,7 +2313,7 @@
     <message>
       <location filename="../../TaskTransformedMessages.cpp" line="43"/>
       <source>Transformed feature messages</source>
-      <translation>Преобразование процедуры сообщений</translation>
+      <translation>Сообщения функции преобразования</translation>
     </message>
   </context>
   <context>
@@ -2893,7 +2893,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../Utils.cpp" line="105"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation>Чтобы создать новый объект "разработанной детали", в документе должно быть активное тело. Пожалуйста, сделайте существующее тело активным (двойной клик) или создайте новое.</translation>
+      <translation>Что бы создать новый объект в PartDesign, в документе должно быть активное Тело. Пожалуйста, сделайте тело активным (двойной щелчок) или создайте новое Тело.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="142"/>

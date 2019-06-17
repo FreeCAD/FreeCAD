@@ -106,7 +106,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Paràmetres</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="160"/>

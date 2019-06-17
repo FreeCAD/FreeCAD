@@ -441,7 +441,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="268"/>
       <source>Set default speed</source>
-      <translation type="unfinished">Set default speed</translation>
+      <translation>Establir velocitat per defecte</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="269"/>
