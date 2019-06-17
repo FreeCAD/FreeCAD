@@ -439,12 +439,12 @@ QIcon ViewProviderDatum::mergeOverlayIcons (const QIcon & orig) const
                 ".##aaa##.",
                 "##aaaaa##",
                 "##aaaaa##",
+                "#########",
+                "#########",
+                "#########",
                 ".##aaa##.",
-                "...###...",
-                "...###...",
-                "....#....",
-                "....#....",
-                "....#...."};
+                ".##aaa##.",
+                "...###..."};
 
                 px = QPixmap(feature_detached_xpm);
 
