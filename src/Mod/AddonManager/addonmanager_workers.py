@@ -588,8 +588,8 @@ class InstallWorker(QtCore.QThread):
                         print("copying macro:",f)
                         symlink(os.path.join(clonedir, f), os.path.join(macro_dir, f))
                         FreeCAD.ParamGet('User parameter:Plugins/'+self.repos[idx][0]).SetString("destination",clonedir)
-                        answer += "\n\n"+translate("AddonsInstaller", "A macro has been installed and is available the Macros menu") + ": <b>"
-                        answer += f + "</b>"
+                        answer += "\n\n"+translate("AddonsInstaller", "A macro has been installed and is available under Macro -> Macros menu")+":"
+                        answer += "\n<b>" + f + "</b>"
             self.progressbar_show.emit(False)
             self.info_label.emit(answer)
             self.mark_recompute.emit(self.repos[idx][0])
