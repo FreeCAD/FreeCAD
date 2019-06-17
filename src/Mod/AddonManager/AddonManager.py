@@ -264,7 +264,7 @@ class CommandAddonManager:
             addonicon = QtGui.QIcon(":/icons/Group.svg")
         if addon_repo[2] == 1:
             item = QtGui.QListWidgetItem(addonicon,str(addon_repo[0]) + str(" ("+translate("AddonsInstaller","Installed")+")"))
-            item.setBackground(QtGui.QBrush(QtGui.QColor(0,182,41)))
+            item.setForeground(QtGui.QBrush(QtGui.QColor(0,182,41)))
             self.dialog.listWorkbenches.addItem(item)
         else:
             self.dialog.listWorkbenches.addItem(QtGui.QListWidgetItem(addonicon,str(addon_repo[0])))
@@ -363,12 +363,15 @@ class CommandAddonManager:
             else:
                 from PySide import QtGui
                 self.macros.append(macro)
+                addonicon = QtGui.QIcon(":/icons/" + macro.name.replace(" ","_") + "_macro_icon.svg")
+                if addonicon.isNull():
+                    addonicon = QtGui.QIcon(":/icons/applications-python.svg")
                 if macro.is_installed():
-                    item = QtGui.QListWidgetItem(QtGui.QIcon(":/icons/applications-python.svg"), macro.name + str(' (Installed)'))
-                    item.setBackground(QtGui.QBrush(QtGui.QColor(0,182,41)))
+                    item = QtGui.QListWidgetItem(addonicon, macro.name + str(' (Installed)'))
+                    item.setForeground(QtGui.QBrush(QtGui.QColor(0,182,41)))
                     self.dialog.listMacros.addItem(item)
                 else:
-                    self.dialog.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/applications-python.svg"),macro.name))
+                    self.dialog.listMacros.addItem(QtGui.QListWidgetItem(addonicon,macro.name))
 
     def install(self,repos=None):
 
@@ -554,7 +557,7 @@ class CommandAddonManager:
             w = self.dialog.listWorkbenches.item(i)
             if w.text().startswith(str(repo)):
                 w.setText(str(repo) + str(" ("+translate("AddonsInstaller","Update available")+")"))
-                w.setBackground(QtGui.QBrush(QtGui.QColor(182,90,0)))
+                w.setForeground(QtGui.QBrush(QtGui.QColor(182,90,0)))
                 if not repo in self.doUpdate:
                     self.doUpdate.append(repo)
 
