@@ -103,6 +103,8 @@ def addIfcAttributeValueExpressions(obj, attribute):
     
     "Binds the given attribute properties with expressions"
 
+    if not attribute["name"] in obj.PropertiesList:
+        return
     if obj.getGroupOfProperty(attribute["name"]) != "IFC Attributes":
         return
     if attribute["name"] == "OverallWidth":
