@@ -363,6 +363,7 @@ class CommandAddonManager:
             else:
                 from PySide import QtGui
                 self.macros.append(macro)
+                import AddonManager_rc
                 addonicon = QtGui.QIcon(":/icons/" + macro.name.replace(" ","_") + "_macro_icon.svg")
                 if addonicon.isNull():
                     addonicon = QtGui.QIcon(":/icons/applications-python.svg")

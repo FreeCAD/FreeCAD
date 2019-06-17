@@ -4,4 +4,7 @@
 # License LGPL
 
 import AddonManager
+import AddonManager_rc
+
+FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.addCommand('Std_AddonMgr', AddonManager.CommandAddonManager())
