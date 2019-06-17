@@ -106,6 +106,8 @@ PyCommands = [["src/Mod/Draft",
                'lconvert -i Gui/Resources/translations/Imagepy.ts Gui/Resources/translations/Image.ts -o Gui/Resources/translations/Image.ts'],
               ["src/Mod/Image",
                'rm Gui/Resources/translations/Imagepy.ts'],
+              ["src/Mod/AddonManager",
+               "pylupdate *.py *.ui -ts Resources/translations/AddonManager.ts"],
                ]
 
 # add python folders to exclude list
