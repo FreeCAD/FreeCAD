@@ -78,13 +78,15 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderDatum,Gui::ViewProviderGeometryObject)
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderDatum,Gui::ViewProviderGeometryObject)
 
 // static data
 const double ViewProviderDatum::defaultSize = Gui::ViewProviderOrigin::defaultSize ();
 
 ViewProviderDatum::ViewProviderDatum()
 {
+    PartGui::ViewProviderAttachExtension::initExtension(this);
+
     pShapeSep = new SoSeparator();
     pShapeSep->ref();
     pPickStyle = new SoPickStyle();
@@ -410,47 +412,4 @@ void ViewProviderDatum::setPickable(bool val) {
         pPickStyle->style = SoPickStyle::SHAPE;
     else
         pPickStyle->style = SoPickStyle::UNPICKABLE;
-}
-
-QIcon ViewProviderDatum::mergeOverlayIcons (const QIcon & orig) const
-{
-    QIcon mergedicon = orig;
-
-    if (getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
-
-        bool attached = false;
-
-        try{
-            attached = getObject()->getExtensionByType<Part::AttachExtension>()->positionBySupport();
-        }
-        catch (...) { // We are just trying to get an icon, if no placement can be calculated, set unattached.
-            // set unattached
-        }
-
-        if(!attached) {
-            QPixmap px;
-
-            static const char * const feature_detached_xpm[]={
-                "9 9 3 1",
-                ". c None",
-                "# c #cc00cc",
-                "a c #ffffff",
-                "...###...",
-                ".##aaa##.",
-                "##aaaaa##",
-                "##aaaaa##",
-                "#########",
-                "#########",
-                "#########",
-                ".##aaa##.",
-                ".##aaa##.",
-                "...###..."};
-
-                px = QPixmap(feature_detached_xpm);
-
-                mergedicon = mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomLeft);
-        }
-    }
-
-    return mergedicon;
 }

@@ -27,15 +27,17 @@
 #include "Gui/ViewProviderGeometryObject.h"
 #include <Base/BoundBox.h>
 
+#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+
 class SoPickStyle;
 class SbBox3f;
 class SoGetBoundingBoxAction;
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderDatum : public Gui::ViewProviderGeometryObject
+class PartDesignGuiExport ViewProviderDatum : public Gui::ViewProviderGeometryObject, PartGui::ViewProviderAttachExtension
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderDatum);
+    PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderDatum);
 
 public:
     /// constructor
@@ -123,8 +125,6 @@ protected:
 
     // Get the separator to fill with datum content
     SoSeparator *getShapeRoot () { return pShapeSep; }
-
-    virtual QIcon mergeOverlayIcons (const QIcon & orig) const override;
 
 private:
     SoSeparator* pShapeSep;
