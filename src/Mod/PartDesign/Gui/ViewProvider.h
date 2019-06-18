@@ -28,6 +28,7 @@
 #include "ViewProviderBody.h"
 #include <Gui/ViewProviderPythonFeature.h>
 
+#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 
 namespace PartDesignGui {
 
@@ -36,9 +37,10 @@ class TaskDlgFeatureParameters;
 /**
  * A common base class for all part design features view providers
  */
-class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart {
+class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart, PartGui::ViewProviderAttachExtension
+{
     typedef PartGui::ViewProviderPart inherited;
-    PROPERTY_HEADER(PartDesignGui::ViewProvider);
+    PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProvider);
 
 public:
     /// constructor
