@@ -117,8 +117,7 @@ class _Fence(ArchComponent.Component):
 
         self.sectionFaceNumbers = sectionFaceNumbers
 
-        self.applyShape(obj, compound, obj.Placement,
-                        allowinvalid=True, allownosolid=True)
+        obj.Shape = compound
 
     def calculateNumberOfSections(self, pathLength, sectionLength, postLength):
         withoutLastPost = pathLength - postLength
@@ -325,7 +324,7 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
             # 2. "Set colors" was called on the tip and the individual faces where colorized.
             #   We use the diffuseColors of the tip in that case
             tipColors = obj.Tip.ViewObject.DiffuseColor
-            
+
             if len(tipColors) > 1:
                 colors = tipColors
 
@@ -470,3 +469,5 @@ if __name__ == '__main__':
     colorizeFaces(post)
 
     print(makeFence(section, post, path))
+
+    # _CommandFence().Activated()
