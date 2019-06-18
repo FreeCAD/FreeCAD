@@ -70,7 +70,7 @@ def importFCMat(fileName):
     )
     Config = configparser.RawConfigParser()
     Config.optionxform = str
-    Config.read(fileName)
+    Config.read(fileName, encoding='utf-8') # respect unicode filenames
     dict1 = {}
     for section in Config.sections():
         options = Config.options(section)
