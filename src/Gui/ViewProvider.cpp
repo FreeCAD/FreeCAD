@@ -271,7 +271,15 @@ QIcon ViewProvider::getIcon(void) const
 
 QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
 {
-    return orig;
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+
+    QIcon overlayedIcon = orig;
+
+    for (Gui::ViewProviderExtension* ext : vector) {
+        overlayedIcon = ext->extensionMergeOverlayIcons(overlayedIcon);
+    }
+
+    return overlayedIcon;
 }
 
 void ViewProvider::setTransformation(const Base::Matrix4D &rcMatrix)
@@ -498,21 +506,6 @@ void addNodes(Graph& graph, std::map<SoNode*, Vertex>& vertexNodeMap, SoNode* no
         }
     }
 }
-}
-
-QIcon ViewProvider::mergePixmap (const QIcon &base, const QPixmap &px, Gui::BitmapFactoryInst::Position position) const
-{
-    QIcon overlayedIcon;
-
-    int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
-
-    overlayedIcon.addPixmap(Gui::BitmapFactory().merge(base.pixmap(w, w, QIcon::Normal, QIcon::Off),
-                                                  px,position), QIcon::Normal, QIcon::Off);
-
-    overlayedIcon.addPixmap(Gui::BitmapFactory().merge(base.pixmap(w, w, QIcon::Normal, QIcon::On ),
-                                                  px,position), QIcon::Normal, QIcon::Off);
-
-    return overlayedIcon;
 }
 
 bool ViewProvider::checkRecursion(SoNode* node)

@@ -32,7 +32,6 @@
 #include <boost/signals2.hpp>
 
 #include <App/TransactionalObject.h>
-#include <Gui/BitmapFactory.h>
 #include <Base/Vector3D.h>
 
 class SbVec2s;
@@ -370,10 +369,6 @@ protected:
      * can reimplement this method.
      */
     virtual QIcon mergeOverlayIcons (const QIcon & orig) const;
-
-    /// Helper method to merge a pixmap into one corner of a QIcon
-    QIcon mergePixmap (const QIcon &base, const QPixmap &px, Gui::BitmapFactoryInst::Position position) const;
-
 
 protected:
     /// The root Separator of the ViewProvider
