@@ -59,7 +59,10 @@ class _Fence(ArchComponent.Component):
         self.Type = "Fence"
 
     def __getstate__(self):
-        return (self.sectionFaceNumbers)
+        if hasattr(self, 'sectionFaceNumbers'):
+            return (self.sectionFaceNumbers)
+        
+        return None
 
     def __setstate__(self, state):
         if state is not None and isinstance(state, tuple):
@@ -237,8 +240,10 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
             vobj.addProperty("App::PropertyBool", "UseOriginalColors", "Fence", QT_TRANSLATE_NOOP(
                 "App::Property", "When true, the fence will be colored like the original post and section."))
 
-    def onDocumentRestored(self, vobj):
+    def attach(self, vobj):
         self.setProperties(vobj)
+
+        return super().attach(vobj)
 
     def getIcon(self):
         import Arch_rc
