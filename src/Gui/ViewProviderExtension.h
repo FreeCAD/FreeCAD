@@ -29,10 +29,10 @@
 #include "ViewProviderDocumentObject.h"
 
 namespace Gui {
-    
+
 /**
  * @brief Extension with special viewprovider calls
- * 
+ *
  */
 class GuiExport ViewProviderExtension : public App::Extension
 {
@@ -48,13 +48,13 @@ public:
 
     Gui::ViewProviderDocumentObject*       getExtendedViewProvider();
     const Gui::ViewProviderDocumentObject* getExtendedViewProvider() const;
-   
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void) const { 
+
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void) const {
         return std::vector<App::DocumentObject*>(); }
-        
+
     virtual bool extensionOnDelete(const std::vector<std::string> &){ return true;}
- 
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void) const { 
+
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void) const {
         return std::vector<App::DocumentObject*>(); }
 
     virtual bool extensionCanDragObjects() const { return false; }
@@ -69,7 +69,7 @@ public:
     virtual void extensionHide(void) { }
     /// Shows the view provider
     virtual void extensionShow(void) { }
-    
+
     virtual SoSeparator* extensionGetFrontRoot(void) const {return nullptr;}
     virtual SoGroup*     extensionGetChildRoot(void) const {return nullptr;}
     virtual SoSeparator* extensionGetBackRoot(void) const {return nullptr;}
@@ -79,7 +79,9 @@ public:
 
     //update data of extended opject
     virtual void extensionUpdateData(const App::Property*);
-    
+
+    virtual QIcon extensionMergeOverlayIcons(const QIcon & orig) const {return orig;}
+
 private:
   //Gui::ViewProviderDocumentObject* m_viewBase = nullptr;
 };
@@ -95,11 +97,11 @@ class ViewProviderExtensionPythonT : public ExtensionT
 
 public:
     typedef ExtensionT Inherited;
-    
+
     ViewProviderExtensionPythonT() {
         ExtensionT::m_isPythonExtension = true;
         ExtensionT::initExtensionType(ViewProviderExtensionPythonT::getExtensionClassTypeId());
-        
+
         EXTENSION_ADD_PROPERTY(ExtensionProxy,(Py::Object()));
     }
     virtual ~ViewProviderExtensionPythonT() {
