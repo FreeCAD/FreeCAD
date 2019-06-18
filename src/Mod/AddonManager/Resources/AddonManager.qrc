@@ -3,6 +3,7 @@
         <file>icons/A2plus_workbench-icon.svg</file>
         <file>icons/Airplane_workbench-icon.svg</file>
         <file>icons/Arch_Textures_workbench_icon.svg</file>
+        <file>icons/BIMBots_workbench_icon.svg</file>
         <file>icons/BIM_workbench_icon.svg</file>
         <file>icons/BOLTS_workbench_icon.svg</file>
         <file>icons/cfd_workbench_icon.svg</file>
@@ -28,7 +29,6 @@
         <file>icons/Ship_workbench_icon.svg</file>
         <file>icons/Timber_workbench_icon.svg</file>
         <file>icons/YAML_workbench_icon.svg</file>
-        <file>icons/BIMBots_workbench_icon.svg</file>
         <file>translations/AddonManager_af.qm</file>
         <file>translations/AddonManager_ar.qm</file>
         <file>translations/AddonManager_ca.qm</file>
