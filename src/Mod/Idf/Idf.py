@@ -59,12 +59,12 @@ IDF_diag_path="/tmp" # path for output of footprint.lst and missing_models.lst
 ########################################################################################
 
 def open(filename):
-	"""called when freecad opens an Emn file"""
-	docname = os.path.splitext(os.path.basename(filename))[0]
-	doc = FreeCAD.newDocument(docname)
-	message='Started with opening of "'+filename+'" file\n'
-	FreeCAD.Console.PrintMessage(message)
-	process_emn(doc,filename)
+    """called when freecad opens an Emn file"""
+    docname = os.path.splitext(os.path.basename(filename))[0]
+    doc = FreeCAD.newDocument(docname)
+    message='Started with opening of "'+filename+'" file\n'
+    FreeCAD.Console.PrintMessage(message)
+    process_emn(doc,filename)
 
 def insert(filename,docname):
     """called when freecad imports an Emn file"""
