@@ -51,8 +51,8 @@ const char* PartDesignGui::ViewProviderBoolean::DisplayEnum[] = {"Result","Tools
 ViewProviderBoolean::ViewProviderBoolean()
 {
     sPixmap = "PartDesign_Boolean.svg";
-    initExtension(this);
-    
+    Gui::ViewProviderGeoFeatureGroupExtension::initExtension(this);
+
     ADD_PROPERTY(Display,((long)0));
     Display.setEnums(DisplayEnum);
 }
@@ -128,22 +128,22 @@ bool ViewProviderBoolean::onDelete(const std::vector<std::string> &s)
 
 void ViewProviderBoolean::attach(App::DocumentObject* obj) {
     PartGui::ViewProviderPartExt::attach(obj);
-    
+
     //set default display mode to override the "Group" display mode
     setDisplayMode("Flat Lines");
 }
 
 void ViewProviderBoolean::onChanged(const App::Property* prop) {
-    
+
     PartDesignGui::ViewProvider::onChanged(prop);
-    
+
     if(prop == &Display) {
-     
+
         if(Display.getValue() == 0) {
             auto vp = getBodyViewProvider();
             if(vp)
                 setDisplayMode(vp->DisplayMode.getValueAsString());
-            else 
+            else
                 setDisplayMode("Flat Lines");
         } else {
             setDisplayMode("Group");
