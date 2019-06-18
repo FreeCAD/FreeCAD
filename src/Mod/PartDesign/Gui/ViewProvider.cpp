@@ -49,11 +49,12 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
 :oldWb(""), oldTip(NULL), isSetTipIcon(false)
 {
+    PartGui::ViewProviderAttachExtension::initExtension(this);
 }
 
 ViewProvider::~ViewProvider()
@@ -244,11 +245,11 @@ QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
             "...###..."};
         px = QPixmap(feature_tip_xpm);
 
-        mergedicon = mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
+        mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
 
     }
 
-    return mergedicon;
+    return Gui::ViewProvider::mergeOverlayIcons(mergedicon);
 }
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)
