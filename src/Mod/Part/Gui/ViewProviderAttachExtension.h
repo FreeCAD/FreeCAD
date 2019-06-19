@@ -41,6 +41,7 @@ public:
 
     virtual QIcon extensionMergeOverlayIcons(const QIcon & orig) const override;
 
+    virtual void extensionUpdateData(const App::Property*) override;
 
 };
 
