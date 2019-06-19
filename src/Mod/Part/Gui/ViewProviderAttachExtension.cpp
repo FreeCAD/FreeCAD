@@ -86,6 +86,24 @@ QIcon ViewProviderAttachExtension::extensionMergeOverlayIcons(const QIcon & orig
     return mergedicon;
 }
 
+void ViewProviderAttachExtension::extensionUpdateData(const App::Property* prop)
+{
+    auto* attach = getExtendedViewProvider()->getObject()->getExtensionByType<Part::AttachExtension>();
+
+    if(attach) {
+        if( prop == &(attach->Support) ||
+            prop == &(attach->MapMode) ||
+            prop == &(attach->MapPathParameter) ||
+            prop == &(attach->MapReversed) ||
+            prop == &(attach->AttachmentOffset) ||
+            prop == &(attach->AttacherType) ) {
+
+            getExtendedViewProvider()->signalChangeIcon(); // signal icon change
+        }
+    }
+
+}
+
 namespace Gui {
     EXTENSION_PROPERTY_SOURCE_TEMPLATE(PartGui::ViewProviderAttachExtensionPython, PartGui::ViewProviderAttachExtension)
 
