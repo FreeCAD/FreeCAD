@@ -379,6 +379,11 @@ BrowserView::BrowserView(QWidget* parent)
       WindowParameter( "Browser" ),
       isLoading(false)
 {
+#if defined(QTWEBENGINE)
+    // Otherwise cause crash on exit, probably due to double deletion
+    setAttribute(Qt::WA_DeleteOnClose,false);
+#endif
+
     view = new WebView(this);
     setCentralWidget(view);
     view->setAttribute(Qt::WA_OpaquePaintEvent, true);
