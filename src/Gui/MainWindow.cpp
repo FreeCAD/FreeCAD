@@ -252,6 +252,10 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // Create the layout containing the workspace and a tab bar
     d->mdiArea = new QMdiArea();
+    // Movable tabs
+#if QT_VERSION >= 0x040800
+    d->mdiArea->setTabsMovable(true);
+#endif
 #if QT_VERSION >= 0x040500
     d->mdiArea->setTabPosition(QTabWidget::South);
     d->mdiArea->setViewMode(QMdiArea::TabbedView);
