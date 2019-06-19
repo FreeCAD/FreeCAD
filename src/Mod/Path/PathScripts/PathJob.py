@@ -409,6 +409,6 @@ def Create(name, base, templateFile = None):
     else:
         models = base
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectJob(obj, models, templateFile)
+    obj.Proxy = ObjectJob(obj, models, templateFile)
     return obj
 
