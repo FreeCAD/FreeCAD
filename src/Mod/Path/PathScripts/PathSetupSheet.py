@@ -259,13 +259,13 @@ class SetupSheet:
                 propName = OpPropertyName(opName, prop)
                 if hasattr(self.obj, propName):
                     setattr(obj, prop, getattr(self.obj, propName))
-        except Exception as exc:
+        except Exception:
             PathLog.info("SetupSheet has no support for {}".format(opName))
             #traceback.print_exc(exc)
 
 def Create(name = 'SetupSheet'):
     obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)
-    proxy = SetupSheet(obj)
+    obj.Proxy = SetupSheet(obj)
     return obj
 
 class _RegisteredOp(object):

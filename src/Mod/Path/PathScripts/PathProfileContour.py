@@ -28,7 +28,7 @@ import ArchPanel
 import FreeCAD
 import Part
 import Path
-import PathScripts.PathAreaOp as PathAreaOp
+# import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathProfileBase as PathProfileBase
 import PathScripts.PathLog as PathLog
 
@@ -116,6 +116,6 @@ def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Contour operation.'''
     if obj is None:
         obj   = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectContour(obj, name)
+    obj.Proxy = ObjectContour(obj, name)
     return obj
 

@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
 import Path
 
 import PathScripts.PathCircularHoleBase as PathCircularHoleBase
@@ -203,7 +202,7 @@ def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Helix operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectHelix(obj, name)
+    obj.Proxy = ObjectHelix(obj, name)
     if obj.Proxy:
-        proxy.findAllHoles(obj)
+        obj.Proxy.findAllHoles(obj)
     return obj

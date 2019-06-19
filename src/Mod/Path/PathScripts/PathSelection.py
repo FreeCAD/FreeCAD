@@ -48,7 +48,7 @@ class ENGRAVEGate:
     def allow(self, doc, obj, sub):
         try:
             shape = obj.Shape
-        except:
+        except Exception:
             return False
 
         if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
@@ -68,7 +68,7 @@ class CHAMFERGate:
     def allow(self, doc, obj, sub):
         try:
             shape = obj.Shape
-        except:
+        except Exception:
             return False
 
         if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
@@ -103,7 +103,7 @@ class PROFILEGate:
         profileable = False
         try:
             obj = obj.Shape
-        except:
+        except Exception:
             return False
 
         if obj.ShapeType == 'Edge':
@@ -138,7 +138,7 @@ class POCKETGate:
         pocketable = False
         try:
             obj = obj.Shape
-        except:
+        except Exception:
             return False
 
         if obj.ShapeType == 'Edge':
@@ -163,7 +163,7 @@ class ADAPTIVEGate:
         adaptive = True
         try:
             obj = obj.Shape
-        except:
+        except Exception:
             return False
             
         return adaptive

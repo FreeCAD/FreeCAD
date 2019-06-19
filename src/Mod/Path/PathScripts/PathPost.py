@@ -234,7 +234,7 @@ class CommandPathPost:
             elif hasattr(sel, "Path"):
                 try:
                     job = PathUtils.findParentJob(sel)
-                except:
+                except Exception:
                     job = None
             else:
                 job = None
