@@ -24,7 +24,7 @@
 
 from __future__ import print_function
 
-import ArchPanel
+# import ArchPanel
 import FreeCAD
 import Path
 import PathScripts.PathCircularHoleBase as PathCircularHoleBase
@@ -32,7 +32,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
-from PathScripts.PathUtils import fmt, waiting_effects
+# from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 
 __title__ = "Path Drilling Operation"

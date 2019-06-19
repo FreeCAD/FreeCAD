@@ -227,7 +227,7 @@ class ObjectJob:
         if obj.Operations.ViewObject:
             try:
                 obj.Operations.ViewObject.DisplayMode
-            except:
+            except Exception:
                 name = obj.Operations.Name
                 label = obj.Operations.Label
                 ops = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Operations")

@@ -146,5 +146,5 @@ def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Mill Facing operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectFace(obj, name)
+    obj.Proxy = ObjectFace(obj, name)
     return obj

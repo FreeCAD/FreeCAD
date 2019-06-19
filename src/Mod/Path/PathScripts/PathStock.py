@@ -227,7 +227,7 @@ def CreateFromBase(job, neg=None, pos=None, placement=None):
     PathLog.track(job.Label, neg, pos, placement)
     base = job.Model if job else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
-    proxy = StockFromBase(obj, base)
+    obj.Proxy = StockFromBase(obj, base)
 
     if neg:
         obj.ExtXneg = neg.x
@@ -243,14 +243,14 @@ def CreateFromBase(job, neg=None, pos=None, placement=None):
         obj.Placement = placement
 
     SetupStockObject(obj, StockType.FromBase)
-    proxy.execute(obj)
+    obj.Proxy.execute(obj)
     obj.purgeTouched()
     return obj
 
 def CreateBox(job, extent=None, placement=None):
     base = job.Model if job else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
-    proxy = StockCreateBox(obj)
+    obj.Proxy = StockCreateBox(obj)
 
     if extent:
         obj.Length = extent.x
@@ -275,7 +275,7 @@ def CreateBox(job, extent=None, placement=None):
 def CreateCylinder(job, radius=None, height=None, placement=None):
     base = job.Model if job else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
-    proxy = StockCreateCylinder(obj)
+    obj.Proxy = StockCreateCylinder(obj)
 
     if radius:
         obj.Radius = radius

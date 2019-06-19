@@ -94,7 +94,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
     if len(adaptiveResults) == 0 or len(adaptiveResults[0]["AdaptivePaths"]) == 0:
         return
 
-    minLiftDistance = op.tool.Diameter
+    # minLiftDistance = op.tool.Diameter
     helixRadius = 0
     for region in adaptiveResults:
         p1 =  region["HelixCenterPoint"]
@@ -126,7 +126,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
     finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
     if finish_step > stepDown:
         finish_step = stepDown
-        
+
     depth_params = PathUtils.depth_params(
             clearance_height=obj.ClearanceHeight.Value,
             safe_height=obj.SafeHeight.Value,
@@ -213,13 +213,13 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
                     x = region["HelixCenterPoint"][0] + r
                     y = region["HelixCenterPoint"][1]
-                    
+
                     curDep = passStartDepth
                     while curDep > (passEndDepth + depthPerOneCircle):
                         op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": curDep - (depthPerOneCircle/2), "I": -r, "F": op.horizFeed}))
                         op.commandlist.append(Path.Command("G2", { "X": x, "Y": y, "Z": curDep - depthPerOneCircle, "I": r, "F": op.horizFeed}))
                         curDep = curDep - depthPerOneCircle
-                    
+
                     lastStep = curDep - passEndDepth
                     if lastStep > (depthPerOneCircle/2):
                         op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": curDep - (lastStep/2), "I": -r, "F": op.horizFeed}))
@@ -252,7 +252,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     x = pt[0]
                     y = pt[1]
 
-                    dist = math.sqrt((x-lx)*(x-lx) + (y-ly)*(y-ly))
+                    # dist = math.sqrt((x-lx)*(x-lx) + (y-ly)*(y-ly))
 
                     if motionType == area.AdaptiveMotionType.Cutting:
                         z = passEndDepth

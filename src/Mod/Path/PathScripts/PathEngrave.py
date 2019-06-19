@@ -142,5 +142,5 @@ def Create(name, obj=None):
     '''Create(name) ... Creates and returns an Engrave operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectEngrave(obj, name)
+    obj.Proxy = ObjectEngrave(obj, name)
     return obj

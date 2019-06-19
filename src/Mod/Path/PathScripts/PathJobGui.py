@@ -328,7 +328,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
                 stock.ExtZneg = FreeCAD.Units.Quantity(self.form.stockExtZneg.text())
             if 'zpos' in fields:
                 stock.ExtZpos = FreeCAD.Units.Quantity(self.form.stockExtZpos.text())
-        except:
+        except Exception:
             pass
 
     def getFields(self, obj, fields=['xneg', 'xpos', 'yneg', 'ypos', 'zneg', 'zpos']):
@@ -419,7 +419,7 @@ class StockCreateBoxEdit(StockEdit):
                     obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockBoxHeight.text())
             else:
                 PathLog.error(translate('PathJob', 'Stock not a box!'))
-        except:
+        except Exception:
             pass
 
     def setFields(self, obj):
@@ -453,7 +453,7 @@ class StockCreateCylinderEdit(StockEdit):
                     obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockCylinderHeight.text())
             else:
                 PathLog.error(translate('PathJob', 'Stock not a cylinder!'))
-        except:
+        except Exception:
             pass
 
     def setFields(self, obj):
@@ -623,7 +623,7 @@ class TaskPanel:
                     if self.form.wcslist.item(i).checkState() == QtCore.Qt.CheckState.Checked:
                         flist.append(self.form.wcslist.item(i).text())
                 self.obj.Fixtures = flist
-            except:
+            except Exception:
                 FreeCAD.Console.PrintWarning("The Job was created without fixture support.  Please delete and recreate the job\r\n")
 
             self.updateTooltips()
@@ -829,7 +829,7 @@ class TaskPanel:
         elif 'Number' == prop:
             try:
                 tc.ToolNumber = int(item.text())
-            except:
+            except Exception:
                 pass
             item.setText("%d" % tc.ToolNumber)
         elif 'Spindle' == prop:
@@ -841,7 +841,7 @@ class TaskPanel:
                     speed = -speed
                 tc.SpindleDir = rot
                 tc.SpindleSpeed = speed
-            except:
+            except Exception:
                 pass
             item.setText("%s%g" % ('+' if tc.SpindleDir == 'Forward' else '-', tc.SpindleSpeed))
         elif 'HorizFeed' == prop or 'VertFeed' == prop:
@@ -853,14 +853,14 @@ class TaskPanel:
                 elif FreeCAD.Units.Unit() == val.Unit:
                     val = FreeCAD.Units.Quantity(item.text() + vUnit)
                     setattr(tc, prop, val)
-            except:
+            except Exception:
                 pass
             item.setText("%g" % getattr(tc, prop).getValueAs(vUnit))
         else:
             try:
                 val = FreeCAD.Units.Quantity(item.text())
                 setattr(tc, prop, val)
-            except:
+            except Exception:
                 pass
             item.setText("%g" % getattr(tc, prop).Value)
 

@@ -406,7 +406,7 @@ def getToolControllers(obj):
     '''returns all the tool controllers'''
     try:
         job = findParentJob(obj)
-    except:
+    except Exception:
         job = None
 
     if job:

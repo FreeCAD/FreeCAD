@@ -69,7 +69,7 @@ def Startup():
         try:
             import ocl
             from PathScripts import PathSurfaceGui
-        except:
+        except ImportError:
             import FreeCAD
             FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
             pass
