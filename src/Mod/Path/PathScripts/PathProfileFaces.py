@@ -48,8 +48,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Profile operation based on faces."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2014"
-__scriptVersion__ = "2g testing"
-__lastModified__ = "2019-06-12 23:29 CST"
+__scriptVersion__ = "2h testing"
+__lastModified__ = "2019-06-18 22:36 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -109,6 +109,8 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         shapes = []
         self.profileshape = []
         finalDepths = []
+        startDepths = []
+        faceDepths = []
 
         baseSubsTuples = []
         subCount = 0
@@ -179,9 +181,12 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     baseSubsTuples.append((base, subList, 0.0, 'X', stock))
 
             # for base in obj.Base:
+            finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
             for (base, subsList, angle, axis, stock) in baseSubsTuples:
                 holes = []
                 faces = []
+                faceDepths = []
+                startDepths = []
 
                 for sub in subsList:
                     shape = getattr(base.Shape, sub)
@@ -190,31 +195,40 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
                             for wire in shape.Wires[1:]:
                                 holes.append((base.Shape, wire))
+                        # Add face depth to list
+                        faceDepths.append(shape.BoundBox.ZMin)
                     else:
                         ignoreSub = base.Name + '.' + sub
                         msg = translate('Path', "Found a selected object which is not a face. Ignoring: {}".format(ignoreSub))
                         PathLog.error(msg)
                         FreeCAD.Console.PrintWarning(msg)
-                        # return
+
+                # Raise FinalDepth to lowest face in list on Inside profile ops
+                finDep = obj.FinalDepth.Value
+                if obj.Side == 'Inside':
+                    finDep = min(faceDepths)
+                finalDepths.append(finDep)
+
+                strDep = obj.StartDepth.Value
+                if strDep > stock.Shape.BoundBox.ZMax:
+                    strDep = stock.Shape.BoundBox.ZMax
+                startDepths.append(strDep)
+
+                # Recalculate depthparams
+                self.depthparams = PathUtils.depth_params(
+                    clearance_height=obj.ClearanceHeight.Value,
+                    safe_height=obj.SafeHeight.Value,
+                    start_depth=strDep,  # obj.StartDepth.Value,
+                    step_down=obj.StepDown.Value,
+                    z_finish_step=finish_step,
+                    final_depth=finDep,  # obj.FinalDepth.Value,
+                    user_depths=None)
 
                 for shape, wire in holes:
                     f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                     drillable = PathUtils.isDrillable(shape, wire)
                     if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
                         PathLog.track()
-                        # Recalculate depthparams
-                        (strDep, finDep) = self.calculateStartFinalDepths(obj, shape, stock)
-                        finalDepths.append(finDep)
-                        PathLog.debug("Adjusted face depths strDep: {}, and finDep: {}".format(self.strDep, self.finDep))
-                        finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-                        self.depthparams = PathUtils.depth_params(
-                            clearance_height=obj.ClearanceHeight.Value,
-                            safe_height=obj.SafeHeight.Value,
-                            start_depth=strDep,  # obj.StartDepth.Value,
-                            step_down=obj.StepDown.Value,
-                            z_finish_step=finish_step,
-                            final_depth=finDep,  # obj.FinalDepth.Value,
-                            user_depths=None)
                         env = PathUtils.getEnvelope(shape, subshape=f, depthparams=self.depthparams)
                         # shapes.append((env, True))
                         tup = env, True, 'pathProfileFaces', angle, axis, strDep, finDep
@@ -226,23 +240,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
                 if obj.processPerimeter:
                     PathLog.track()
-                    if profileshape:
-                        # Recalculate depthparams
-                        (strDep, finDep) = self.calculateStartFinalDepths(obj, profileshape, stock)
-                        finalDepths.append(finDep)
-                        PathLog.debug("Adjusted face depths strDep: {}, and finDep: {}".format(self.strDep, self.finDep))
-                        finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-                        self.depthparams = PathUtils.depth_params(
-                            clearance_height=obj.ClearanceHeight.Value,
-                            safe_height=obj.SafeHeight.Value,
-                            start_depth=strDep,  # obj.StartDepth.Value,
-                            step_down=obj.StepDown.Value,
-                            z_finish_step=finish_step,
-                            final_depth=finDep,  # obj.FinalDepth.Value,
-                            user_depths=None)
-                    else:
-                        strDep = obj.StartDepth.Value
-                        finDep = obj.FinalDepth.Value
                     try:
                         env = PathUtils.getEnvelope(base.Shape, subshape=profileshape, depthparams=self.depthparams)
                     except Exception:
@@ -254,49 +251,62 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         shapes.append(tup)
                 else:
                     for shape in faces:
+                        finalDep = finDep
                         # Recalculate depthparams
-                        (strDep, finDep) = self.calculateStartFinalDepths(obj, shape, stock)
-                        finalDepths.append(finDep)
-                        finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-                        self.depthparams = PathUtils.depth_params(
-                            clearance_height=obj.ClearanceHeight.Value,
-                            safe_height=obj.SafeHeight.Value,
-                            start_depth=strDep,  # obj.StartDepth.Value,
-                            step_down=obj.StepDown.Value,
-                            z_finish_step=finish_step,
-                            final_depth=finDep,  # obj.FinalDepth.Value,
-                            user_depths=None)
-                        env = PathUtils.getEnvelope(base.Shape, subshape=shape, depthparams=self.depthparams)
-                        tup = env, False, 'pathProfileFaces', angle, axis, strDep, finDep
+                        if obj.Side == 'Inside':
+                            if finalDep < shape.BoundBox.ZMin:
+                                custDepthparams = PathUtils.depth_params(
+                                    clearance_height=obj.ClearanceHeight.Value,
+                                    safe_height=obj.SafeHeight.Value,
+                                    start_depth=strDep,  # obj.StartDepth.Value,
+                                    step_down=obj.StepDown.Value,
+                                    z_finish_step=finish_step,
+                                    final_depth=shape.BoundBox.ZMin,  # obj.FinalDepth.Value,
+                                    user_depths=None)
+                                env = PathUtils.getEnvelope(base.Shape, subshape=shape, depthparams=custDepthparams)
+                                finalDep = shape.BoundBox.ZMin
+                            else:
+                                env = PathUtils.getEnvelope(base.Shape, subshape=shape, depthparams=self.depthparams)
+                        else:
+                            env = PathUtils.getEnvelope(base.Shape, subshape=shape, depthparams=self.depthparams)
+                        tup = env, False, 'pathProfileFaces', angle, axis, strDep, finalDep
                         shapes.append(tup)
                 # Eif
 
-            # adjust FinalDepth as needed
-            finalDepth = min(finalDepths)
-            if obj.FinalDepth.Value < finalDepth:
-                obj.FinalDepth.Value = finalDepth
+            # adjust Start/Final Depths as needed
+            # Raise existing Final Depth to level of lowest profile face
+            if obj.Side == 'Inside':
+                finalDepth = min(finalDepths)
+                if obj.FinalDepth.Value < finalDepth:
+                    obj.FinalDepth.Value = finalDepth
+            # Lower high Start Depth to top of Stock
+            startDepth = max(startDepths)
+            if obj.StartDepth.Value > startDepth:
+                obj.StartDepth.Value = startDepth
         else:  # Try to build targets from the job base
-            if 1 == len(self.model) and hasattr(self.model[0], "Proxy"):
-                if isinstance(self.model[0].Proxy, ArchPanel.PanelSheet):  # process the sheet
-                    if obj.processCircles or obj.processHoles:
-                        for shape in self.model[0].Proxy.getHoles(self.model[0], transform=True):
-                            for wire in shape.Wires:
-                                drillable = PathUtils.isDrillable(self.model[0].Proxy, wire)
-                                if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
+            if 1 == len(self.model):
+                if hasattr(self.model[0], "Proxy"):
+                    PathLog.info("hasattr() Proxy")
+                    if isinstance(self.model[0].Proxy, ArchPanel.PanelSheet):  # process the sheet
+                        if obj.processCircles or obj.processHoles:
+                            for shape in self.model[0].Proxy.getHoles(self.model[0], transform=True):
+                                for wire in shape.Wires:
+                                    drillable = PathUtils.isDrillable(self.model[0].Proxy, wire)
+                                    if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
+                                        f = Part.makeFace(wire, 'Part::FaceMakerSimple')
+                                        env = PathUtils.getEnvelope(self.model[0].Shape, subshape=f, depthparams=self.depthparams)
+                                        # shapes.append((env, True))
+                                        tup = env, True, 'pathProfileFaces', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
+                                        shapes.append(tup)
+
+                        if obj.processPerimeter:
+                            for shape in self.model[0].Proxy.getOutlines(self.model[0], transform=True):
+                                for wire in shape.Wires:
                                     f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                                     env = PathUtils.getEnvelope(self.model[0].Shape, subshape=f, depthparams=self.depthparams)
-                                    # shapes.append((env, True))
-                                    tup = env, True, 'pathProfileFaces', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
+                                    # shapes.append((env, False))
+                                    tup = env, False, 'pathProfileFaces', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
                                     shapes.append(tup)
-
-                    if obj.processPerimeter:
-                        for shape in self.model[0].Proxy.getOutlines(self.model[0], transform=True):
-                            for wire in shape.Wires:
-                                f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                                env = PathUtils.getEnvelope(self.model[0].Shape, subshape=f, depthparams=self.depthparams)
-                                # shapes.append((env, False))
-                                tup = env, False, 'pathProfileFaces', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
-                                shapes.append(tup)
 
         self.removalshapes = shapes
         PathLog.debug("%d shapes" % len(shapes))
@@ -314,6 +324,9 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         obj.InverseAngle = False
         obj.AttemptInverseAngle = True
         obj.B_AxisErrorOverride = False
+
+    def checkDepths(self, obj, shape):
+        return (strDept, finDep)
 
 
 def SetupProperties():
