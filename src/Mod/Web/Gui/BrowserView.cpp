@@ -227,6 +227,11 @@ BrowserView::BrowserView(QWidget* parent)
       isLoading(false),
       textSizeMultiplier(1.0)
 {
+#if defined(QTWEBENGINE)
+    // Otherwise cause crash on exit, probably due to double deletion
+    setAttribute(Qt::WA_DeleteOnClose,false);
+#endif
+
     view = new WebView(this);
     setCentralWidget(view);
 
