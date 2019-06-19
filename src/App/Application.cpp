@@ -1529,7 +1529,11 @@ void Application::initConfig(int argc, char ** argv)
     PyImport_AppendInittab ("FreeCAD", init_freecad_module);
     PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
 #endif
-    mConfig["PythonSearchPath"] = Interpreter().init(argc,argv);
+    const char* pythonpath = Interpreter().init(argc,argv);
+    if (pythonpath)
+        mConfig["PythonSearchPath"] = pythonpath;
+    else
+        Base::Console().Warning("Encoding of Python paths failed\n");
 
     // Parse the options that have impact on the init process
     ParseOptions(argc,argv);
