@@ -1019,6 +1019,10 @@ class TaskPanel:
             Draft.move(sel.Object, by)
 
     def updateSelection(self):
+        # Remove Job object if present in Selection: source of phantom paths
+        if self.obj in FreeCADGui.Selection.getSelection():
+            FreeCADGui.Selection.removeSelection(self.obj)
+
         sel = FreeCADGui.Selection.getSelectionEx()
 
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
