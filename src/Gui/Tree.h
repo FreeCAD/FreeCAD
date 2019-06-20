@@ -492,7 +492,7 @@ public:
 
 #define FC_TREEPARAM_DEFS \
     FC_TREEPARAM_DEF(SyncSelection,bool,Bool,true) \
-    FC_TREEPARAM_DEF(SyncView,bool,Bool,false) \
+    FC_TREEPARAM_DEF(SyncView,bool,Bool,true) \
     FC_TREEPARAM_DEF(PreSelection,bool,Bool,true) \
     FC_TREEPARAM_DEF(SyncPlacement,bool,Bool,false) \
     FC_TREEPARAM_DEF(RecordSelection,bool,Bool,true) \
