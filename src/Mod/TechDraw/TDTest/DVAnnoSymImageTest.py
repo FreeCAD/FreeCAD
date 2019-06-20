@@ -24,8 +24,10 @@ def DVAnnoSymImageTest():
 
     page = FreeCAD.ActiveDocument.addObject('TechDraw::DrawPage','Page')
     FreeCAD.ActiveDocument.addObject('TechDraw::DrawSVGTemplate','Template')
+    print("TDTestAnno - page + template added to document")
     FreeCAD.ActiveDocument.Template.Template = templateFileSpec
     FreeCAD.ActiveDocument.Page.Template = FreeCAD.ActiveDocument.Template
+    print('TDTestAnno - template set')
 #    page.ViewObject.show()    # unit tests run in console mode
 
     #annotation
@@ -38,6 +40,7 @@ def DVAnnoSymImageTest():
     rc = page.addView(anno)
     anno.X = 30.0
     anno.Y = 150.0
+    print('TDTestAnno - annotation created')
 
     #symbol
     sym = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewSymbol','TestSymbol')
@@ -48,13 +51,17 @@ def DVAnnoSymImageTest():
     rc = page.addView(sym)
     sym.X = 220.0
     sym.Y = 150.0
+    print('TDTestAnno - symbol created')
 
     #image
     img = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewImage','TestImage')
     img.ImageFile = imageFileSpec
     rc = page.addView(img)
+    print('TDTestAnno - image created')
 
     FreeCAD.ActiveDocument.recompute()
+    print('TDTestAnno - recomputed')
+
     rc = False
     if ("Up-to-date" in anno.State) and ("Up-to-date" in sym.State) and ("Up-to-date" in img.State):
         rc = True
