@@ -1260,11 +1260,11 @@ void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
     {
     case EXCEPTION_ACCESS_VIOLATION:
         throw Base::AccessViolation();
-        break;
     case EXCEPTION_FLT_DIVIDE_BY_ZERO:
     case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        throw Base::DivisionByZeroError("Division by zero!");
-        break;
+        //throw Base::DivisionByZeroError("Division by zero!");
+        Base::Console().Error("SEH exception (%u): Division by zero\n", code);
+        return;
     }
 
     std::stringstream str;
