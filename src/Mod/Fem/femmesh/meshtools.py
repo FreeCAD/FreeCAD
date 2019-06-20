@@ -1174,9 +1174,9 @@ def get_ref_facenodes_table(
                 'to retrieve the volume elements of the ref_face.\n'
             )
             # there is no face data
-            # if we retrieve the nodes ourself we gone have a problem:
-            # they are not sorted we just have the nodes.
-            # We need to sort them according the
+            # if we retrieve the nodes ourself we will have a problem:
+            # they are not sorted, we just have the nodes.
+            # We need to sort them according to the
             # shell mesh notation of tria3, tria6, quad4, quad8
             ref_face_nodes = femmesh.getNodesByFace(ref_face)
             # try to use getccxVolumesByFace() to get the volume ids
