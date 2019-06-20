@@ -558,3 +558,20 @@ void ViewProviderDocumentObject::onPropertyStatusChanged(
     if(!App::Document::isAnyRestoring() && pcObject && pcObject->getDocument())
         pcObject->getDocument()->signalChangePropertyEditor(*pcObject->getDocument(),prop);
 }
+
+ViewProviderDocumentObject *ViewProviderDocumentObject::getLinkedViewProvider(
+        std::string *subname, bool recursive) const
+{
+    (void)subname;
+    auto self = const_cast<ViewProviderDocumentObject*>(this);
+    if(!pcObject || !pcObject->getNameInDocument())
+        return self;
+    auto linked = pcObject->getLinkedObject(recursive);
+    if(!linked || linked == pcObject)
+        return self;
+    auto res = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+            Application::Instance->getViewProvider(linked));
+    if(!res)
+        res = self;
+    return res;
+}

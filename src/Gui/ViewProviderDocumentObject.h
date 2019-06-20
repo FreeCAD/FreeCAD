@@ -123,6 +123,20 @@ public:
             const char* group=0, const char* doc=0,
             short attr=0, bool ro=false, bool hidden=false) override;
 
+    /** Return the linked view object
+     *
+     * This function is mainly used for GUI navigation (e.g.
+     * StdCmdLinkSelectLinked). 
+     *
+     * @param subname: output as the subname referencing the linked object
+     * @param recursive: whether to follow the link recursively
+     *
+     * @return Returns the linked view provider. If none, it shall return
+     * itself.
+     */
+    virtual ViewProviderDocumentObject *getLinkedViewProvider(
+            std::string *subname=0, bool recursive=false) const;
+
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.

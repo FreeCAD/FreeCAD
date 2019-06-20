@@ -116,6 +116,8 @@ public:
     ValueT replaceObject(App::DocumentObject *, App::DocumentObject *);
     //@}
 
+    ViewProviderDocumentObject *getLinkedViewProvider(bool recursive) const;
+
     bool canAddToSceneGraph() const;
 
     bool getDropPrefix(std::string &prefix) const;
@@ -164,6 +166,7 @@ private:
     FC_PY_ELEMENT(canAddToSceneGraph) \
     FC_PY_ELEMENT(getDropPrefix) \
     FC_PY_ELEMENT(replaceObject) \
+    FC_PY_ELEMENT(getLinkedViewProvider) \
 
 #undef FC_PY_ELEMENT
 #define FC_PY_ELEMENT(_name) Py::Object py_##_name;
@@ -523,6 +526,13 @@ protected:
         default:
             return ViewProviderT::replaceObject(oldObj,newObj);
         }
+    }
+
+    virtual ViewProviderDocumentObject *getLinkedViewProvider(bool recursive=false) const {
+        auto res = imp->getLinkedViewProvider(recursive);
+        if(!res)
+            res = ViewProviderT::getLinkedViewProvider();
+        return res;
     }
 
 public:

@@ -50,6 +50,7 @@
 # include <Inventor/details/SoDetail.h> 
 #endif
 
+#include "ViewProviderDocumentObjectPy.h"
 #include "ViewProviderPythonFeature.h"
 #include "Tree.h"
 #include "Window.h"
@@ -1337,6 +1338,35 @@ ViewProviderPythonFeatureImp::replaceObject(
         e.ReportException();
     }
     return Rejected;
+}
+
+ViewProviderDocumentObject *
+ViewProviderPythonFeatureImp::getLinkedViewProvider(bool recursive) const
+{
+    if(py_getLinkedViewProvider.isNone() || pyCalling)
+        return 0;
+
+    Base::FlagToggler<> flag(pyCalling);
+
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args.setItem(0,Py::Boolean(recursive));
+        Py::Object res(Base::pyCall(py_getLinkedViewProvider.ptr(),args.ptr()));
+        if(res.isNone())
+            return 0;
+        if(PyObject_TypeCheck(res.ptr(),&ViewProviderDocumentObjectPy::Type))
+            return static_cast<ViewProviderDocumentObjectPy*>(
+                    res.ptr())->getViewProviderDocumentObjectPtr();
+
+        FC_ERR("getLinkedViewProvider(): invalid return object type '"
+                << res.ptr()->ob_type->tp_name << "'");
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return 0;
 }
 
 

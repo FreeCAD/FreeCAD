@@ -261,6 +261,9 @@ public:
     virtual void getPropertyMap(std::map<std::string,App::Property*> &Map) const override;
     virtual void getPropertyList(std::vector<App::Property*> &List) const override;
 
+    virtual ViewProviderDocumentObject *getLinkedViewProvider(
+            std::string *subname=0, bool recursive=false) const override;
+
 protected:
     bool setEdit(int ModNum) override;
     void setEditViewer(View3DInventorViewer*, int ModNum) override;

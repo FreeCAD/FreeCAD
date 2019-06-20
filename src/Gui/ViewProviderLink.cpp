@@ -2912,6 +2912,30 @@ void ViewProviderLink::getPropertyList(std::vector<App::Property*> &List) const 
         List.push_back(v.second);
 }
 
+ViewProviderDocumentObject *ViewProviderLink::getLinkedViewProvider(
+        std::string *subname, bool recursive) const 
+{
+    auto self = const_cast<ViewProviderLink*>(this);
+    auto ext = getLinkExtension();
+    if(!ext)
+        return self;
+    App::DocumentObject *linked = 0;
+    if(!recursive) {
+        linked = ext->getLink();
+        const char *s = ext->getSubName();
+        if(subname && s)
+            *subname = s;
+    } else
+        linked = ext->getTrueLinkedObject(recursive);
+    if(!linked)
+        return self;
+    auto res = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+            Application::Instance->getViewProvider(linked));
+    if(res)
+        return res;
+    return self;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////
 
 namespace Gui {

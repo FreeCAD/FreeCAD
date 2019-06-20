@@ -657,50 +657,61 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
     auto sobj = sels[0].pObject->getSubObject(sels[0].SubName);
     if(!sobj)
         return 0;
-    auto linked = sobj->getLinkedObject(false);
-    if(!linked)
+    auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+            Application::Instance->getViewProvider(sobj));
+    if(!vp)
         return 0;
-    if(linked==sobj) {
-        auto ext = sobj->getExtensionByType<App::LinkBaseExtension>(true);
-        if(ext) {
-            linked = ext->getTrueLinkedObject(false);
-            if(linked && linked!=sobj) {
-                if(finalLink) {
-                    auto linkFinal = ext->getTrueLinkedObject(true);
-                    if(linkFinal!=linked)
-                        return linkFinal;
-                    return 0;
-                }
-                return linked;
+
+    auto linkedVp = vp->getLinkedViewProvider(subname,finalLink);
+    if(!linkedVp || linkedVp==vp)
+        return 0;
+
+    if(finalLink && linkedVp == vp->getLinkedViewProvider())
+        return 0;
+
+    auto linked = linkedVp->getObject();
+    if(!linked || !linked->getNameInDocument())
+        return 0;
+
+    if(subname && sels[0].pObject!=sobj && sels[0].SubName) {
+        bool found = false;
+        int pre_len=0;
+        std::size_t post_len=0;
+        std::string prefix;
+        std::string prefix2;
+        // An object can be claimed by multiple objects. Let's try select one
+        // that causes minimum jump in tree view, and prefer upper over lower
+        // hierarchy (because of less depth/complexity of tree expansion)
+        for(auto &v : linked->getParents()) {
+            if(v.first != sels[0].pObject)
+                continue;
+            
+            const char *sub = v.second.c_str();
+            const char *dot = sub;
+            for(const char *s=sels[0].SubName; *s && *sub==*s; ++s,++sub) {
+                if(*sub == '.')
+                    dot = sub;
+            }
+            found = true;
+            if(dot-v.second.c_str() > pre_len 
+                    || (dot-v.second.c_str()==pre_len 
+                        && v.second.size()<post_len)) 
+            {
+                pre_len = dot-v.second.c_str();
+                prefix = std::string(sels[0].SubName,pre_len) + (v.second.c_str()+pre_len);
+                post_len = v.second.size();
+            }else if(!pre_len) {
+                if(prefix2.empty() || prefix2.size() > v.second.size())
+                    prefix2 = v.second;
             }
         }
-        if(sobj->getDocument()!=sels[0].pObject->getDocument()) {
-            if(finalLink)
-                return sobj;
-            for(const char *dot=strchr(sels[0].SubName,'.');dot;dot=strchr(dot+1,'.')) {
-                std::string sub(sels[0].SubName,dot+1-sels[0].SubName);
-                auto obj = sels[0].pObject->getSubObject(sub.c_str());
-                if(!obj)
-                    return 0;
-                obj = obj->getLinkedObject(true);
-                if(obj->getDocument()!=sels[0].pObject->getDocument()) {
-                    if(subname) {
-                        *subname = std::string(dot+1);
-                        return obj;
-                    }
-                }
-            }
-            return sobj;
+
+        if(found) {
+            linked = sels[0].pObject;
+            *subname = prefix.size()?prefix:prefix2 + *subname;
         }
-        return 0;
     }
 
-    if(finalLink) {
-        auto linkedFinal = sobj->getLinkedObject(true);
-        if(linkedFinal == linked)
-            return 0;
-        return linkedFinal;
-    }
     return linked;
 }
 
