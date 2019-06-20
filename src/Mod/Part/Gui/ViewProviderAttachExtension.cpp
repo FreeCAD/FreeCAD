@@ -45,41 +45,44 @@ QIcon ViewProviderAttachExtension::extensionMergeOverlayIcons(const QIcon & orig
 {
     QIcon mergedicon = orig;
 
-    auto* attach = getExtendedViewProvider()->getObject()->getExtensionByType<Part::AttachExtension>();
+    if (getExtendedViewProvider()->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
 
-    if (attach) {
+        auto* attach = getExtendedViewProvider()->getObject()->getExtensionByType<Part::AttachExtension>();
 
-        bool attached = false;
+        if (attach) {
 
-        try{
-            attached = attach->positionBySupport();
-        }
-        catch (...) { // We are just trying to get an icon, if no placement can be calculated, set unattached.
-            // set unattached
-        }
+            bool attached = false;
 
-        if(!attached) {
-            QPixmap px;
+            try{
+                attached = attach->positionBySupport();
+            }
+            catch (...) { // We are just trying to get an icon, if no placement can be calculated, set unattached.
+                // set unattached
+            }
 
-            static const char * const feature_detached_xpm[]={
-                "9 9 3 1",
-                ". c None",
-                "# c #cc00cc",
-                "a c #ffffff",
-                "...###...",
-                ".##aaa##.",
-                "##aaaaa##",
-                "##aaaaa##",
-                "#########",
-                "#########",
-                "#########",
-                ".##aaa##.",
-                ".##aaa##.",
-                "...###..."};
+            if(!attached) {
+                QPixmap px;
 
-                px = QPixmap(feature_detached_xpm);
+                static const char * const feature_detached_xpm[]={
+                    "9 9 3 1",
+                    ". c None",
+                    "# c #cc00cc",
+                    "a c #ffffff",
+                    "...###...",
+                    ".##aaa##.",
+                    "##aaaaa##",
+                    "##aaaaa##",
+                    "#########",
+                    "#########",
+                    "#########",
+                    ".##aaa##.",
+                    ".##aaa##.",
+                    "...###..."};
 
-                mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomLeft);
+                    px = QPixmap(feature_detached_xpm);
+
+                    mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomLeft);
+            }
         }
     }
 
@@ -88,17 +91,19 @@ QIcon ViewProviderAttachExtension::extensionMergeOverlayIcons(const QIcon & orig
 
 void ViewProviderAttachExtension::extensionUpdateData(const App::Property* prop)
 {
-    auto* attach = getExtendedViewProvider()->getObject()->getExtensionByType<Part::AttachExtension>();
+    if (getExtendedViewProvider()->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
+        auto* attach = getExtendedViewProvider()->getObject()->getExtensionByType<Part::AttachExtension>();
 
-    if(attach) {
-        if( prop == &(attach->Support) ||
-            prop == &(attach->MapMode) ||
-            prop == &(attach->MapPathParameter) ||
-            prop == &(attach->MapReversed) ||
-            prop == &(attach->AttachmentOffset) ||
-            prop == &(attach->AttacherType) ) {
+        if(attach) {
+            if( prop == &(attach->Support) ||
+                prop == &(attach->MapMode) ||
+                prop == &(attach->MapPathParameter) ||
+                prop == &(attach->MapReversed) ||
+                prop == &(attach->AttachmentOffset) ||
+                prop == &(attach->AttacherType) ) {
 
-            getExtendedViewProvider()->signalChangeIcon(); // signal icon change
+                getExtendedViewProvider()->signalChangeIcon(); // signal icon change
+            }
         }
     }
 
