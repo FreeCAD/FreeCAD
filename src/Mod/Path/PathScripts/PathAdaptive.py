@@ -536,5 +536,5 @@ def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Adaptive operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = PathAdaptive(obj,name)
+    obj.Proxy = PathAdaptive(obj,name)
     return obj
