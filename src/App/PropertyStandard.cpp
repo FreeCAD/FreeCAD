@@ -1383,7 +1383,9 @@ void PropertyString::setValue(const char* newLabel)
 
                 bool changed = false;
                 label = label.substr(0,lastpos+1);
-                if(boost::starts_with(obj->getNameInDocument(),label)) {
+                if(label != obj->getNameInDocument()
+                        && boost::starts_with(obj->getNameInDocument(),label))
+                {
                     // In case the label has the same base name as object's
                     // internal name, use it as the label instead.
                     const char *objName = obj->getNameInDocument();
@@ -1392,7 +1394,9 @@ void PropertyString::setValue(const char* newLabel)
                         if(*c<48 || *c>57)
                             break;
                     }
-                    if(*c == 0) {
+                    if(*c == 0 && std::find(objectLabels.begin(), objectLabels.end(),
+                                            obj->getNameInDocument())==objectLabels.end()) 
+                    {
                         label = obj->getNameInDocument();
                         changed = true;
                     }
