@@ -28,7 +28,6 @@ import ArchPanel
 import FreeCAD
 import Part
 import Path
-# import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathProfileBase as PathProfileBase
 import PathScripts.PathLog as PathLog
 
@@ -37,7 +36,9 @@ from PySide import QtCore
 
 FreeCAD.setLogLevel('Path.Area', 0)
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:

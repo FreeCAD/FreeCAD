@@ -38,7 +38,6 @@ from PySide import QtCore
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtGui
 
 # Qt translation handling
 def translate(text, context="Path_DressupLeadInOut", disambig=None):

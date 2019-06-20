@@ -23,20 +23,19 @@
 # ***************************************************************************
 
 import DraftGeomUtils
-import FreeCAD
-import Part
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
-import PathScripts.PathUtils as PathUtils
 import copy
 
 from PySide import QtCore
 
 __doc__ = "Base class for all ops in the engrave family."
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:

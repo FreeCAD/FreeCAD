@@ -31,7 +31,6 @@ from PySide import QtCore
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtGui
 
 """Axis remapping Dressup object and FreeCAD command.  This dressup remaps one axis of motion to another.
 For example, you can re-map the Y axis to A to control a 4th axis rotary."""

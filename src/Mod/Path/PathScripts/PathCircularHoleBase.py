@@ -29,8 +29,6 @@ import Part
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
-import string
-import sys
 
 from PySide import QtCore
 
@@ -44,8 +42,9 @@ __doc__ = "Base class an implementation for operations on circular holes."
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+LOGLEVEL = False
 
-if False:
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:

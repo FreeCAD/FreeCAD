@@ -24,15 +24,14 @@
 ''' Tool Controller defines tool, spindle speed and feed rates for Path Operations '''
 
 import FreeCAD
-import Part
 import Path
-import PathScripts
 import PathScripts.PathLog as PathLog
-import PathScripts.PathUtil as PathUtil
 
 from PySide import QtCore
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:

@@ -38,7 +38,9 @@ from PathScripts import PathLog
 from PySide import QtCore
 from PySide import QtGui
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
