@@ -682,7 +682,7 @@ def editMaterial(material=None, card_path=None):
     if result:
         return editor.getDict()
     else:
-        # on chancel button an empty dict is returned
+        # on cancel button an empty dict is returned
         return {}
 
 
