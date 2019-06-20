@@ -211,7 +211,7 @@ void CmdTechDrawCosmeticVertexGrp::activated(int iMsg)
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
     switch(iMsg) {
-        case 0:  
+        case 0:
             execCosmeticVertex(this);
             break;
         case 1:
@@ -220,7 +220,7 @@ void CmdTechDrawCosmeticVertexGrp::activated(int iMsg)
         case 2:
             execQuadrant(this);
             break;
-        default: 
+        default:
             Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n",iMsg);
     };
 //    Base::Console().Message("CMD::CosmeticVertexGrp - activated - exits\n");
@@ -266,7 +266,7 @@ void CmdTechDrawCosmeticVertexGrp::languageChange()
 
     QAction* arc1 = a[0];
     arc1->setText(QApplication::translate("CmdTechDrawCosmeticVertexGrp","Cosmetic Vertex"));
-    arc1->setToolTip(QApplication::translate("TechDraw_CosmeticVertex","Insert a Cosmetic Vertix into a View"));
+    arc1->setToolTip(QApplication::translate("TechDraw_CosmeticVertex","Insert a Cosmetic Vertex into a View"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
     arc2->setText(QApplication::translate("CmdMidpoints","Midpoints"));
@@ -769,5 +769,3 @@ void CreateTechDrawCommandsAnnotate(void)
 //===========================================================================
 // Selection Validation Helpers
 //===========================================================================
-
-
