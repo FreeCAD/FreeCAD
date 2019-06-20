@@ -3022,6 +3022,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
         item->setText(1, QString::fromUtf8(data->label2.c_str()));
     if(!obj.showInTree() && !showHidden())
         item->setHidden(true);
+    item->testStatus(true);
 
     populateItem(item);
     return true;
