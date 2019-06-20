@@ -407,11 +407,17 @@ public:
             "getSortedClusters(list of edges) -- Helper method to sort and cluster a variety of edges"
         );
         add_varargs_method("__sortEdges__",&Module::sortEdges,
-            "__sortEdges__(list of edges) -- Helper method to sort an unsorted list of edges so that afterwards\n"
-            "two adjacent edges share a common vertex"
+            "__sortEdges__(list of edges) -- list of edges\n"
+            "Helper method to sort an unsorted list of edges so that afterwards\n"
+            "the start and end vertex of two consecutive edges are geometrically coincident.\n"
+            "It returns a single list of edges and the algorithm stops after the first set of\n"
+            "connected edges which means that the output list can be smaller than the input list.\n"
+            "The sorted list can be used to create a Wire."
         );
         add_varargs_method("sortEdges",&Module::sortEdges2,
-            "sortEdges(list of edges) -- Helper method to sort a list of edges into a list of list of connected edges"
+            "sortEdges(list of edges) -- list of lists of edges\n"
+            "It does basically the same as __sortEdges__ but sorts all input edges and thus returns\n"
+            "a list of lists of edges"
         );
         add_varargs_method("__toPythonOCC__",&Module::toPythonOCC,
             "__toPythonOCC__(shape) -- Helper method to convert an internal shape to pythonocc shape"
