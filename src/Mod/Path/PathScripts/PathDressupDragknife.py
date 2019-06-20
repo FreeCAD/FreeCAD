@@ -34,7 +34,6 @@ import PathScripts.PathUtils as PathUtils
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtGui
 
 # Qt translation handling
 def translate(context, text, disambig=None):

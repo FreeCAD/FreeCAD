@@ -23,13 +23,8 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
-import PathScripts.PathGui as PathGui
-import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
-import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
-import PathScripts.PathUtil as PathUtil
 
 from PySide import QtCore, QtGui
 
@@ -42,7 +37,9 @@ __doc__ = "Task panel editor for a SetupSheet"
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:

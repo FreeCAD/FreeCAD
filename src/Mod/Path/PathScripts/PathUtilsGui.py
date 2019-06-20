@@ -22,7 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
 import FreeCADGui
 import PathScripts
 import PathScripts.PathJobCmd as PathJobCmd
@@ -43,7 +42,6 @@ class PathUtilsUserInput(object):
         return tc
 
     def chooseToolController(self, controllers):
-        # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgTCChooser.ui")
         form = FreeCADGui.PySideUic.loadUi(":/panels/DlgTCChooser.ui")
         mylist = [i.Label for i in controllers]
         form.uiToolController.addItems(mylist)
@@ -72,7 +70,6 @@ class PathUtilsUserInput(object):
                 if 1 == len(modelObjectSelected):
                     job = modelObjectSelected[0]
                 else:
-                    # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
                     form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
                     if modelObjectSelected:
                         mylist = [j.Label for j in modelObjectSelected]

@@ -31,8 +31,6 @@ import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import copy
 import math
-import sys
-import traceback
 
 from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
 from PathScripts.PathUtils import waiting_effects
@@ -40,7 +38,9 @@ from PySide import QtCore
 
 """Holding Tags Dressup object and FreeCAD command"""
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule()
 else:
@@ -552,7 +552,7 @@ class PathData:
             wire = Part.Wire(bottom)
             if wire.isClosed():
                 return wire
-        except Exception as e:
+        except Exception:
             #if sys.version_info.major < 3:
             #    traceback.print_exc(e)
             #else:
