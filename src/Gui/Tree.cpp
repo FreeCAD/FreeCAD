@@ -780,8 +780,8 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 
     Gui::Application::Instance->setupContextMenu("Tree", &view);
 
-    Workbench::createLinkMenu(&view);
     view << "Std_Expressions";
+    Workbench::createLinkMenu(&view);
 
     QMenu contextMenu;
 
@@ -829,18 +829,28 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         auto selItems = this->selectedItems();
         // if only one item is selected setup the edit menu
         if (selItems.size() == 1) {
+
+            auto cmd = Gui::Application::Instance->commandManager().getCommandByName("Std_LinkSelectLinked");
+            if(cmd && cmd->isActive())
+                cmd->addTo(&contextMenu);
+            cmd = Gui::Application::Instance->commandManager().getCommandByName("Std_LinkSelectLinkedFinal");
+            if(cmd && cmd->isActive())
+                cmd->addTo(&contextMenu);
+
             objitem->object()->setupContextMenu(&editMenu, this, SLOT(onStartEditing()));
             QList<QAction*> editAct = editMenu.actions();
             if (!editAct.isEmpty()) {
+                contextMenu.addSeparator();
                 for (QList<QAction*>::iterator it = editAct.begin(); it != editAct.end(); ++it)
                     contextMenu.addAction(*it);
                 QAction* first = editAct.front();
                 contextMenu.setDefaultAction(first);
                 if (objitem->object()->isEditing())
                     contextMenu.addAction(finishEditingAction);
-                contextMenu.addSeparator();
             }
         }
+
+        contextMenu.addSeparator();
 
         App::Document* doc = objitem->object()->getObject()->getDocument();
         showHiddenAction->setChecked(doc->ShowHidden.getValue());
