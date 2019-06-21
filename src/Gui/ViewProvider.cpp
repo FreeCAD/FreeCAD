@@ -41,6 +41,7 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/BoundBox.h>
 #include <Base/Matrix.h>
 #include <App/PropertyGeo.h>
 
@@ -107,11 +108,13 @@ ViewProvider::~ViewProvider()
         pcAnnotation->unref();
 }
 
-bool ViewProvider::startEditing(int ModNum)
+ViewProvider *ViewProvider::startEditing(int ModNum)
 {
-    bool ok = setEdit(ModNum);
-    if (ok) _iEditMode = ModNum;
-    return ok;
+    if(setEdit(ModNum)) {
+        _iEditMode = ModNum;
+        return this;
+    }
+    return 0;
 }
 
 int ViewProvider::getEditingMode() const
@@ -298,7 +301,7 @@ void ViewProvider::setTransformation(const SbMatrix &rcMatrix)
     pcTransform->setMatrix(rcMatrix);
 }
 
-SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix) const
+SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix)
 {
     double dMtrx[16];
     rcMatrix.getGLMatrix(dMtrx);
@@ -306,6 +309,15 @@ SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix) const
                     dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
                     dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
                     dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]);
+}
+
+Base::Matrix4D ViewProvider::convert(const SbMatrix &smat)
+{
+    Base::Matrix4D mat;
+    for(int i=0;i<4;++i)
+        for(int j=0;j<4;++j)
+            mat[i][j] = smat[j][i];
+    return mat;
 }
 
 void ViewProvider::addDisplayMaskMode(SoNode *node, const char* type)
@@ -381,11 +393,16 @@ std::string ViewProvider::getActiveDisplayMode(void) const
 
 void ViewProvider::hide(void)
 {
-    pcModeSwitch->whichChild = -1;
+    auto exts = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+
+    if(pcModeSwitch->whichChild.getValue() >= 0) {
+        pcModeSwitch->whichChild = -1;
+        for(auto ext : exts)
+            ext->extensionModeSwitchChange();
+    }
 
     //tell extensions that we hide
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : exts)
         ext->extensionHide();
 }
 
@@ -429,6 +446,10 @@ void ViewProvider::setOverrideMode(const std::string &mode)
     }
     if (pcModeSwitch->whichChild.getValue() != -1)
         setModeSwitch();
+    else {
+        for(auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>())
+            ext->extensionModeSwitchChange();
+    }
 }
 
 const string ViewProvider::getOverrideMode() {
@@ -442,16 +463,28 @@ void ViewProvider::setModeSwitch()
         pcModeSwitch->whichChild = _iActualMode;
     else if (viewOverrideMode < pcModeSwitch->getNumChildren())
         pcModeSwitch->whichChild = viewOverrideMode;
+    else
+        return;
+    for(auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>())
+        ext->extensionModeSwitchChange();
 }
 
 void ViewProvider::setDefaultMode(int val)
 {
     _iActualMode = val;
+    for(auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>())
+        ext->extensionModeSwitchChange();
+}
+
+int ViewProvider::getDefaultMode() const {
+    return viewOverrideMode>=0?viewOverrideMode:_iActualMode;
 }
 
 void ViewProvider::onChanged(const App::Property* prop)
 {
     Application::Instance->signalChangedObject(*this, *prop);
+
+    App::TransactionalObject::onChanged(prop);
 }
 
 std::string ViewProvider::toString() const
@@ -716,8 +749,18 @@ bool ViewProvider::canDropObjects() const {
     return false;
 }
 
-void ViewProvider::dropObject(App::DocumentObject* obj)
-{
+bool ViewProvider::canDragAndDropObject(App::DocumentObject* obj) const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector){
+        if(!ext->extensionCanDragAndDropObject(obj))
+            return false;
+    }
+
+    return true;
+}
+
+void ViewProvider::dropObject(App::DocumentObject* obj) {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
         if (ext->extensionCanDropObject(obj)) {
@@ -729,24 +772,52 @@ void ViewProvider::dropObject(App::DocumentObject* obj)
     throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
 }
 
-void ViewProvider::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
+bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+        const char *subname, const std::vector<std::string> &elements) const
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector){
+        if(ext->extensionCanDropObjectEx(obj,owner,subname, elements))
+            return true;
+    }
+    return canDropObject(obj);
+}
+
+std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+        const char *subname, const std::vector<std::string> &elements) 
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        if(ext->extensionCanDropObjectEx(obj, owner, subname, elements))
+            return ext->extensionDropObjectEx(obj, owner, subname, elements);
+    }
+    dropObject(obj);
+    return std::string();
+}
+
+int ViewProvider::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
         if (ext->extensionCanDropObject(newValue)) {
-            ext->extensionReplaceObject(oldValue, newValue);
-            return;
+            int ret = ext->extensionReplaceObject(oldValue, newValue);
+            if(ret>=0)
+                return !!ret;
         }
     }
-
-    throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
+    return -1;
 }
 
-void ViewProvider::Restore(Base::XMLReader& reader)
-{
-    setStatus(Gui::isRestoring, true);
+void ViewProvider::Restore(Base::XMLReader& reader) {
+    // Because some PropertyLists type properties are stored in a separate file,
+    // and is thus restored outside this function. So we rely on Gui::Document
+    // to set the isRestoring flags for us.
+    //
+    // setStatus(Gui::isRestoring, true);
+
     TransactionalObject::Restore(reader);
-    setStatus(Gui::isRestoring, false);
+
+    // setStatus(Gui::isRestoring, false);
 }
 
 void ViewProvider::updateData(const App::Property* prop)
@@ -811,4 +882,23 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren3D(void) const
             vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));
     }
     return vec;
+}
+
+void ViewProvider::beforeDelete() {
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionBeforeDelete();
+}
+
+bool ViewProvider::isLinkVisible() const {
+    auto ext = getExtensionByType<ViewProviderLinkObserver>(true);
+    if(!ext)
+        return true;
+    return ext->isLinkVisible();
+}
+
+void ViewProvider::setLinkVisible(bool visible) {
+    auto ext = getExtensionByType<ViewProviderLinkObserver>(true);
+    if(ext)
+        ext->setLinkVisible(visible);
 }

@@ -32,19 +32,26 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/details/SoDetail.h>
 
 #include "ViewProvider.h"
 #include "WidgetFactory.h"
 
+#include <Base/BoundBoxPy.h>
+
 // inclusion of the generated files (generated out of ViewProviderPy2.xml)
 #include <Gui/ViewProviderPy.h>
 #include <Gui/ViewProviderPy.cpp>
+#include <Gui/View3DPy.h>
+#include <Gui/View3DInventor.h>
 #include <Base/Interpreter.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
 #include <Base/Placement.h>
 #include <Base/PlacementPy.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectPy.h>
 
 using namespace Gui;
 
@@ -148,6 +155,137 @@ PyObject*  ViewProviderPy::isVisible(PyObject *args)
     } PY_CATCH;
 }
 
+PyObject*  ViewProviderPy::canDragObject(PyObject *args)
+{
+    PyObject *obj = Py_None;
+    if (!PyArg_ParseTuple(args, "|O", &obj))
+        return NULL;
+    PY_TRY {
+        bool ret;
+        if(obj == Py_None)
+            ret = getViewProviderPtr()->canDragObjects();
+        else if(!PyObject_TypeCheck(obj,&App::DocumentObjectPy::Type)) {
+            PyErr_SetString(PyExc_TypeError, "exepcting a type of DocumentObject");
+            return 0;
+        }else
+            ret = getViewProviderPtr()->canDragObject(
+                    static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+        return Py::new_reference_to(Py::Boolean(ret));
+    } PY_CATCH;
+}
+
+PyObject*  ViewProviderPy::canDropObject(PyObject *args)
+{
+    PyObject *obj = Py_None;
+    PyObject *owner = Py_None;
+    PyObject *pyElements = Py_None;
+    const char *subname = 0;
+    if (!PyArg_ParseTuple(args, "|OOsO", &obj,&owner,&subname,&pyElements))
+        return NULL;
+    PY_TRY {
+        bool ret;
+        if(obj == Py_None)
+            ret = getViewProviderPtr()->canDropObjects();
+        else if(!PyObject_TypeCheck(obj,&App::DocumentObjectPy::Type)) {
+            PyErr_SetString(PyExc_TypeError, "exepcting 'obj' to be of type DocumentObject");
+            return 0;
+        }
+        auto pcObject = static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr();
+        App::DocumentObject *pcOwner = 0;
+        if(owner!=Py_None) {
+            if(!PyObject_TypeCheck(owner,&App::DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "exepcting 'owner' to be of type DocumentObject");
+                return NULL;
+            }
+            pcOwner = static_cast<App::DocumentObjectPy*>(owner)->getDocumentObjectPtr();
+        }
+        App::PropertyStringList elements;
+        if(pyElements!=Py_None) {
+            try {
+                elements.setPyObject(pyElements);
+            }catch(...) {
+                PyErr_SetString(PyExc_TypeError, "exepcting the forth argument to be of type sequence of strings");
+                return 0;
+            }
+        }
+        ret = getViewProviderPtr()->canDropObjectEx(pcObject,pcOwner,subname,elements.getValues());
+        return Py::new_reference_to(Py::Boolean(ret));
+    } PY_CATCH;
+}
+
+PyObject*  ViewProviderPy::canDragAndDropObject(PyObject *args)
+{
+    PyObject *obj;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type,&obj))
+        return NULL;
+    PY_TRY {
+        bool ret = getViewProviderPtr()->canDragAndDropObject(
+                    static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+        return Py::new_reference_to(Py::Boolean(ret));
+    } PY_CATCH;
+}
+
+PyObject*  ViewProviderPy::dropObject(PyObject *args)
+{
+    PyObject *obj;
+    PyObject *owner = Py_None;
+    PyObject *pyElements = Py_None;
+    const char *subname = 0;
+    if (!PyArg_ParseTuple(args, "O!|OsO", &App::DocumentObjectPy::Type,&obj,&owner,&subname,&pyElements))
+        return NULL;
+    PY_TRY {
+        App::DocumentObject *pcOwner = 0;
+        if(owner!=Py_None) {
+            if(!PyObject_TypeCheck(owner,&App::DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "exepcting 'owner' to be of type DocumentObject");
+                return NULL;
+            }
+            pcOwner = static_cast<App::DocumentObjectPy*>(owner)->getDocumentObjectPtr();
+        }
+        App::PropertyStringList elements;
+        if(pyElements!=Py_None) {
+            try {
+                elements.setPyObject(pyElements);
+            }catch(...) {
+                PyErr_SetString(PyExc_TypeError, "exepcting the forth argument to be of type sequence of strings");
+                return 0;
+            }
+        }
+        auto ret = getViewProviderPtr()->dropObjectEx(
+                static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr(),
+                pcOwner, subname,elements.getValues());
+        return Py::new_reference_to(Py::String(ret));
+    } PY_CATCH;
+}
+
+PyObject*  ViewProviderPy::dragObject(PyObject *args)
+{
+    PyObject *obj;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type,&obj))
+        return NULL;
+    PY_TRY {
+        getViewProviderPtr()->dragObject(
+                static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+        Py_Return;
+    } PY_CATCH;
+}
+
+PyObject* ViewProviderPy::replaceObject(PyObject *args)
+{
+    PyObject *oldObj;
+    PyObject *newObj;
+    if (!PyArg_ParseTuple(args, "O!O!", 
+                &App::DocumentObjectPy::Type,&oldObj,
+                &App::DocumentObjectPy::Type,&newObj))
+        return NULL;
+    PY_TRY {
+        int ret = getViewProviderPtr()->replaceObject(
+                static_cast<App::DocumentObjectPy*>(oldObj)->getDocumentObjectPtr(),
+                static_cast<App::DocumentObjectPy*>(newObj)->getDocumentObjectPtr());
+        return Py::new_reference_to(Py::Int(ret));
+    } PY_CATCH;
+}
+
 PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
 {
     char* mode;
@@ -157,7 +295,7 @@ PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
 
     void* ptr = 0;
     try {
-        Base::Interpreter().convertSWIGPointerObj("pivy.coin","SoNode *", obj, &ptr, 0);
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin","_p_SoNode", obj, &ptr, 0);
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
@@ -239,6 +377,22 @@ PyObject* ViewProviderPy::claimChildren(PyObject* args)
     return Py::new_reference_to(ret);
 }
 
+PyObject *ViewProviderPy::signalChangeIcon(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    getViewProviderPtr()->signalChangeIcon();
+    Py_Return;
+}
+
+PyObject *ViewProviderPy::doubleClicked(PyObject *args) {
+    if(!PyArg_ParseTuple(args, ""))
+        return 0;
+    PY_TRY {
+        return Py::new_reference_to(Py::Boolean(getViewProviderPtr()->doubleClicked()));
+    }PY_CATCH;
+}
+
 PyObject *ViewProviderPy::getCustomAttributes(const char* attr) const
 {
     // search for dynamic property
@@ -273,8 +427,8 @@ int ViewProviderPy::setCustomAttributes(const char* attr, PyObject* value)
 Py::Object ViewProviderPy::getAnnotation(void) const
 {
     try {
-        SoNode* node = getViewProviderPtr()->getAnnotation();
-        PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", node, 1);
+        auto node = getViewProviderPtr()->getAnnotation();
+        PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoSeparator", node, 1);
         node->ref();
         return Py::Object(Ptr, true);
     }
@@ -291,8 +445,8 @@ void  ViewProviderPy::setAnnotation(Py::Object)
 Py::Object ViewProviderPy::getRootNode(void) const
 {
     try {
-        SoNode* node = getViewProviderPtr()->getRoot();
-        PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin","SoSeparator *", node, 1);
+        SoSeparator* node = getViewProviderPtr()->getRoot();
+        PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin","_p_SoSeparator", node, 1);
         node->ref();
         return Py::Object(Ptr, true);
     }
@@ -302,6 +456,24 @@ Py::Object ViewProviderPy::getRootNode(void) const
 }
 
 void  ViewProviderPy::setRootNode(Py::Object)
+{
+
+}
+
+Py::Object ViewProviderPy::getSwitchNode(void) const
+{
+    try {
+        SoSwitch* node = getViewProviderPtr()->getModeSwitch();
+        PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin","_p_SoSwitch", node, 1);
+        node->ref();
+        return Py::Object(Ptr, true);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+void  ViewProviderPy::setSwitchNode(Py::Object)
 {
 
 }
@@ -354,4 +526,31 @@ Py::Object ViewProviderPy::getIcon(void) const
     QIcon icon = getViewProviderPtr()->getIcon();
     return wrap.fromQIcon(new QIcon(icon));
 #endif
+}
+
+Py::Int ViewProviderPy::getDefaultMode(void) const
+{
+    return Py::Int((long)getViewProviderPtr()->getDefaultMode());
+}
+
+void ViewProviderPy::setDefaultMode(Py::Int arg)
+{
+    return getViewProviderPtr()->setDefaultMode(arg);
+}
+
+Py::Boolean ViewProviderPy::getCanRemoveChildrenFromRoot() const 
+{
+    return Py::Boolean(getViewProviderPtr()->canRemoveChildrenFromRoot());
+}
+
+Py::Boolean ViewProviderPy::getLinkVisibility() const {
+    return Py::Boolean(getViewProviderPtr()->isLinkVisible());
+}
+
+void ViewProviderPy::setLinkVisibility(Py::Boolean arg) {
+    getViewProviderPtr()->setLinkVisible(arg);
+}
+
+Py::String ViewProviderPy::getDropPrefix() const {
+    return Py::String(getViewProviderPtr()->getDropPrefix());
 }
