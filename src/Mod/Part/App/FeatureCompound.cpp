@@ -59,13 +59,23 @@ short Compound::mustExecute() const
 App::DocumentObjectExecReturn *Compound::execute(void)
 {
     try {
+        // avoid duplicates without changing the order
+        // See also ViewProviderCompound::updateData
+        std::set<DocumentObject*> tempLinks;
+
 #ifdef FC_NO_ELEMENT_MAP
         std::vector<ShapeHistory> history;
         int countFaces = 0;
 
+        BRep_Builder builder;
+        TopoDS_Compound comp;
+        builder.MakeCompound(comp);
+
         const std::vector<DocumentObject*>& links = Links.getValues();
         std::vector<TopoShape> shapes;
         for (std::vector<DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
+            if(!tempLinks.insert(*it).second)
+                continue;
             auto sh = Feature::getTopoShape(*it);
             if(!sh.isNull()) {
                 shapes.push_back(sh);
@@ -90,6 +100,8 @@ App::DocumentObjectExecReturn *Compound::execute(void)
 #else
         std::vector<TopoShape> shapes;
         for(auto obj : Links.getValues()) {
+            if(!tempLinks.insert(obj).second)
+                continue;
             auto sh = Feature::getTopoShape(obj);
             if(!sh.isNull())
                 shapes.push_back(sh);

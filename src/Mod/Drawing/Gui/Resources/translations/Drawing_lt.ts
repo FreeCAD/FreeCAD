@@ -194,7 +194,7 @@
       <location filename="../../Command.cpp" line="689"/>
       <location filename="../../Command.cpp" line="690"/>
       <source>Project shape onto a user-defined plane</source>
-      <translation>Projektuoti kūno atvaizdą į pasirinktą plokštumą</translation>
+      <translation>Projektuoti daikto atvaizdą į pasirinktą plokštumą</translation>
     </message>
   </context>
   <context>

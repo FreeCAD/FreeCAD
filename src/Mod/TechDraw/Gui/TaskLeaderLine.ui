@@ -77,6 +77,26 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pbCancelEdit">
+            <property name="text">
+             <string>Discard Changes</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -92,12 +112,12 @@
           <item>
            <widget class="QPushButton" name="pbTracker">
             <property name="text">
-             <string>Select Line Points</string>
+             <string>Pick Points</string>
             </property>
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer_2">
+           <spacer name="horizontalSpacer_3">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -185,6 +205,15 @@
                <normaloff>:/icons/arrowopendot.svg</normaloff>:/icons/arrowopendot.svg</iconset>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>Fork</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowfork.svg</normaloff>:/icons/arrowfork.svg</iconset>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="2" column="0">
@@ -244,6 +273,15 @@
              <property name="icon">
               <iconset resource="Resources/TechDraw.qrc">
                <normaloff>:/icons/arrowopendot.svg</normaloff>:/icons/arrowopendot.svg</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Fork</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowfork.svg</normaloff>:/icons/arrowfork.svg</iconset>
              </property>
             </item>
            </widget>

@@ -181,8 +181,8 @@
       <location filename="../../Command.cpp" line="337"/>
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>A jelenlegi kamera nézet nem távoli nézet, így a kép Nézőpont-fánysugár eredménye később eltérhet az elvárttól. 
+Folytatni szeretné?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
@@ -215,8 +215,8 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="771"/>
       <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>A jelenlegi kamera nézet nem távoli nézet, így a kép luxrender eredménye később eltérhet az elvárttól.
+Folytatni szeretné?</translation>
     </message>
   </context>
   <context>

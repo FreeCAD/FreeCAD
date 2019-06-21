@@ -35,6 +35,7 @@ class DrawViewSection;
 class DrawHatch;
 class DrawGeomHatch;
 class DrawViewDetail;
+class DrawView;
 }
 
 namespace TechDrawGui
@@ -50,6 +51,9 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 102};
     int type() const override { return Type;}
+    virtual void paint( QPainter * painter,
+                        const QStyleOptionGraphicsItem * option,
+                        QWidget * widget = 0 ) override;
 
 
     void toggleCache(bool state) override;

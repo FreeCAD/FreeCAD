@@ -106,6 +106,8 @@ PyCommands = [["src/Mod/Draft",
                'lconvert -i Gui/Resources/translations/Imagepy.ts Gui/Resources/translations/Image.ts -o Gui/Resources/translations/Image.ts'],
               ["src/Mod/Image",
                'rm Gui/Resources/translations/Imagepy.ts'],
+              ["src/Mod/AddonManager",
+               "pylupdate *.py *.ui -ts Resources/translations/AddonManager.ts"],
                ]
 
 # add python folders to exclude list
@@ -123,10 +125,10 @@ def find_tools(noobsolete=True):
     global QMAKE, LUPDATE, PYLUPDATE, LCONVERT
     if (os.system("qmake -version") == 0):
         QMAKE = "qmake"
-    elif (os.system("qmake-qt4 -version") == 0):
-        QMAKE = "qmake-qt4"
     elif (os.system("qmake-qt5 -version") == 0):
         QMAKE = "qmake-qt5"
+    elif (os.system("qmake-qt4 -version") == 0):
+        QMAKE = "qmake-qt4"
     else:
         raise Exception("Cannot find qmake")
     if (os.system("lupdate -version") == 0):
@@ -134,24 +136,24 @@ def find_tools(noobsolete=True):
         # TODO: we suppose lupdate is a symlink to lupdate-qt4 for now
         if noobsolete:
             LUPDATE += " -no-obsolete"
-    elif (os.system("lupdate-qt4 -version") == 0):
-        LUPDATE = "lupdate-qt4"
-        if noobsolete:
-            LUPDATE += " -no-obsolete"
     elif (os.system("lupdate-qt5 -version") == 0):
         LUPDATE = "lupdate-qt5"
+        if noobsolete:
+            LUPDATE += " -no-obsolete"
+    elif (os.system("lupdate-qt4 -version") == 0):
+        LUPDATE = "lupdate-qt4"
         if noobsolete:
             LUPDATE += " -noobsolete"
     else:
         raise Exception("Cannot find lupdate")
     if (os.system("pylupdate -version") == 0):
         PYLUPDATE = "pylupdate"
-    elif (os.system("pylupdate4 -version") == 0):
-        PYLUPDATE = "pylupdate4"
-        if noobsolete:
-            PYLUPDATE += " -noobsolete"
     elif (os.system("pylupdate5 -version") == 0):
         PYLUPDATE = "pylupdate5"
+        if noobsolete:
+            PYLUPDATE += " -noobsolete"
+    elif (os.system("pylupdate4 -version") == 0):
+        PYLUPDATE = "pylupdate4"
         if noobsolete:
             PYLUPDATE += " -noobsolete"
     else:

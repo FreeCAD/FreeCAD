@@ -31,7 +31,6 @@ import math
 import unittest
 
 from FreeCAD import Vector
-#from PathScripts.PathDressupHoldingTags import *
 from PathTests.PathTestUtils import PathTestBase
 
 class TestPathGeom(PathTestBase):

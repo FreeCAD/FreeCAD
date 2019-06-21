@@ -27,7 +27,7 @@ import FreeCADGui
 import Path
 from PySide import QtCore, QtGui
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 

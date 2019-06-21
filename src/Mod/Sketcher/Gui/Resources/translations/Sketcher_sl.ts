@@ -1553,7 +1553,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1818"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a rectangular array pattern of the geometry taking as reference the last selected point</translation>
+      <translation>Ustvari pravokotni vzorec geometrije glede na zadnjo izbrano to훾ko</translation>
     </message>
   </context>
   <context>
@@ -2733,7 +2733,7 @@ Dovoljene kombinacije: dve krivulji, kon훾na to훾ka in krivulja, dve kon훾ni to�
     <message>
       <location filename="../../CommandConstraints.cpp" line="7448"/>
       <source>You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</source>
-      <translation type="unfinished">You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</translation>
+      <translation>Loka elipse ni mogo훾e notranje omejiti z drugim lokom elipse. Izberi samo en lok elipse.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7454"/>

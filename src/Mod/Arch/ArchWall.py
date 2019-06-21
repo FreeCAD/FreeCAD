@@ -372,7 +372,7 @@ class _CommandWall:
         value3 = QtGui.QComboBox()
         items = [translate("Arch","Center"),translate("Arch","Left"),translate("Arch","Right")]
         value3.addItems(items)
-        value3.setCurrentIndex(items.index(self.Align))
+        value3.setCurrentIndex(["Center","Left","Right"].index(self.Align))
         grid.addWidget(label3,4,0,1,1)
         grid.addWidget(value3,4,1,1,1)
 

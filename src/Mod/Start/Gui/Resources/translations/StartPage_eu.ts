@@ -156,7 +156,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
+      <translation>Karpeta pertsonalizatu bat konfiguratu daiteke hemen erakutsia izan dadin. Horretarako aukera: 'Editatu -&gt; Hobespenak -&gt; Hasiera -&gt; Erakutsi karpeta gehigarria'</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>

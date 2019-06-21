@@ -41,8 +41,11 @@ def getIfcProduct(IfcType):
     "Returns an IFC product name from an obj.IfcType"
     
     name = "Ifc" + IfcType.replace(" ", "")
+    if IfcType == "Undefined":
+        name = "IfcBuildingElementProxy"
     if name in ArchIFCSchema.IfcProducts:
         return ArchIFCSchema.IfcProducts[name]
+    return None
 
 def getIfcProductAttribute(ifcProduct, name):
     
@@ -79,6 +82,8 @@ def addIfcProductAttribute(obj, attribute):
     
     "Adds a given attribute property"
     
+    if not hasattr(obj,"IfcData"):
+        return
     IfcData = obj.IfcData
     if "attributes" not in IfcData:
         IfcData["attributes"] = "{}"
@@ -98,6 +103,8 @@ def addIfcAttributeValueExpressions(obj, attribute):
     
     "Binds the given attribute properties with expressions"
 
+    if not attribute["name"] in obj.PropertiesList:
+        return
     if obj.getGroupOfProperty(attribute["name"]) != "IFC Attributes":
         return
     if attribute["name"] == "OverallWidth":

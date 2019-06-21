@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <sstream>
 # include <functional>
 # include <Bnd_Box.hxx>
 # include <BRep_Builder.hxx>
@@ -34,6 +35,7 @@
 # include <BRep_Tool.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
+# include <BRepFeat_MakePrism.hxx>
 # include <BRepProj_Projection.hxx>
 # include <Geom_Plane.hxx>
 # include <TopoDS.hxx>
@@ -613,10 +615,48 @@ void ProfileBased::generatePrism(TopoShape& prism,
         }catch(Standard_Failure &) {
             throw Base::RuntimeError("SketchBased: Length: Could not extrude the sketch!");
         }
-    } else {
-        throw Base::RuntimeError("SketchBased: Internal error: Unknown method for generatePrism()");
+    }
+    else {
+        std::stringstream str;
+        str << "ProfileBased: Internal error: Unknown method '"
+            << method << "' for generatePrism()";
+        throw Base::RuntimeError(str.str());
     }
 
+}
+
+void ProfileBased::generatePrism(TopoShape& prism,
+                                 const std::string& method,
+                                 const TopoShape& baseShape,
+                                 const TopoShape& profileshape,
+                                 const TopoDS_Face& supportface,
+                                 const TopoDS_Face& uptoface,
+                                 const gp_Dir& direction,
+                                 Standard_Integer Mode,
+                                 Standard_Boolean Modify)
+{
+    if (method == "UpToFirst" || method == "UpToFace" || method == "UpToLast") {
+        BRepFeat_MakePrism PrismMaker;
+        prism = baseShape;
+        for (auto face : profileshape.getSubTopoShapes(TopAbs_FACE)) {
+            PrismMaker.Init(prism.getShape(), TopoDS::Face(face.getShape()), 
+                    supportface, direction, Mode, Modify);
+            PrismMaker.Perform(uptoface);
+            if (!PrismMaker.IsDone())
+                throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
+
+            prism.makEShape(PrismMaker,{prism,face});
+            if (Mode == 2)
+                Mode = 1;
+        }
+
+    }
+    else {
+        std::stringstream str;
+        str << "ProfileBased: Internal error: Unknown method '"
+            << method << "' for generatePrism()";
+        throw Base::RuntimeError(str.str());
+    }
 }
 
 bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Face& face,

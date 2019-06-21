@@ -26,7 +26,7 @@ from PathScripts import PostUtils
 # ***************************************************************************/
 
 
-TOOLTIP='''
+TOOLTIP = '''
 This is an postprocessor file for the Path workbench. It will output path data
 in a format suitable for OpenSBP controllers like shopbot.  This postprocessor,
 once placed in the appropriate PathScripts folder, can be used directly from
@@ -50,7 +50,7 @@ ToDo
 
 '''
 
-TOOLTIP_ARGS='''
+TOOLTIP_ARGS = '''
 Arguments for opensbp:
     --comments          ... insert comments - mostly for debugging
     --inches            ... convert output to inches
@@ -80,15 +80,19 @@ POST_OPERATION = ''''''
 TOOL_CHANGE = ''''''
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
 
 CurrentState = {}
 
+
 def getMetricValue(val):
     return val
+
+
 def getImperialValue(val):
     return val / 25.4
+
 
 GetValue = getMetricValue
 
@@ -109,7 +113,6 @@ def export(objectslist, filename, argstring):
             OUTPUT_HEADER = False
         if arg == '--no-show-editor':
             SHOW_EDITOR = False
-
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -333,7 +336,6 @@ def parse(pathobj):
     global CurrentState
 
     output = ""
-    params = ['X', 'Y', 'Z', 'A', 'B', 'I', 'J', 'K', 'F', 'S', 'T']
     # Above list controls the order of parameters
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
@@ -356,7 +358,7 @@ def parse(pathobj):
             elif command[0] == '(':
                 output += "' " + command + "\n"
             else:
-                print("I don't know what the hell the command: ",end='')
+                print("I don't know what the hell the command: ", end='')
                 print(command + " means.  Maybe I should support it.")
     return output
 

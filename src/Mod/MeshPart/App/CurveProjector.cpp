@@ -29,6 +29,9 @@
 # include <Bnd_Box.hxx>
 # include <BndLib_Add3dCurve.hxx>
 # include <BRepAdaptor_Curve.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
 # include <GCPnts_UniformDeflection.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
 # include <gp_Pln.hxx>
@@ -39,6 +42,7 @@
 # include <Geom_Plane.hxx>
 # include <BRep_Tool.hxx>
 # include <GeomAPI_IntCS.hxx>
+# include <Standard_Failure.hxx>
 #endif
 
 
@@ -733,6 +737,85 @@ void MeshProjection::splitMeshByShape ( const TopoDS_Shape &aShape, float fMaxDi
     str.close();
 }
 
+bool MeshProjection::findIntersection(const Edge& edgeSegm, const Edge& meshEdge,
+                                      const Base::Vector3f& dir, Base::Vector3f& res) const
+{
+    Base::Vector3f planeNormal;
+    planeNormal = dir.Cross(edgeSegm.cPt2 - edgeSegm.cPt1);
+    float dist1 = planeNormal.Dot(meshEdge.cPt1 - edgeSegm.cPt1);
+    float dist2 = planeNormal.Dot(meshEdge.cPt2 - edgeSegm.cPt1);
+    if (dist1 * dist2 < 0) {
+        planeNormal = dir.Cross(meshEdge.cPt2 - meshEdge.cPt1);
+        dist1 = planeNormal.Dot(edgeSegm.cPt1 - meshEdge.cPt1);
+        dist2 = planeNormal.Dot(edgeSegm.cPt2 - meshEdge.cPt1);
+        if (dist1 * dist2 < 0) {
+            // intersection detected
+            float t = planeNormal.Dot(meshEdge.cPt1 - edgeSegm.cPt1) /
+                      planeNormal.Dot(edgeSegm.cPt2 - edgeSegm.cPt1);
+            res = edgeSegm.cPt1 * (1-t) + edgeSegm.cPt2 * t;
+            return true;
+        }
+    }
+    return false;
+}
+
+void MeshProjection::findSectionParameters(const TopoDS_Edge& edge, const Base::Vector3f& dir, std::set<double>& parameters) const
+{
+    MeshAlgorithm clAlg( _rcMesh );
+    float fAvgLen = clAlg.GetAverageEdgeLength();
+    BRepAdaptor_Curve adapt(edge);
+    double edgeLen = GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion());
+
+    std::vector<Base::Vector3f> polyline;
+    discretize(edge, polyline, std::max<size_t>(10, static_cast<size_t>(edgeLen/fAvgLen)));
+    if (polyline.empty())
+        return;
+
+    std::vector<Edge> lines;
+    Base::Vector3f start = polyline.front();
+    for (auto it = polyline.begin()+1; it != polyline.end(); ++it) {
+        Edge line;
+        line.cPt1 = start;
+        line.cPt2 = *it;
+        start = line.cPt2;
+        lines.push_back(line);
+    }
+
+    const MeshCore::MeshFacetArray& facets = _rcMesh.GetFacets();
+    const MeshCore::MeshPointArray& points = _rcMesh.GetPoints();
+
+    Base::Vector3f res;
+    for (auto it : facets) {
+        for (int i=0; i<3; i++) {
+            Base::Vector3f pt1 = points[it._aulPoints[i]];
+            Base::Vector3f pt2 = points[it._aulPoints[(i+1)%3]];
+            Edge line;
+            line.cPt1 = pt1;
+            line.cPt2 = pt2;
+
+            for (auto jt : lines) {
+                if (findIntersection(jt, line, dir, res)) {
+                    try {
+                        BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(res.x,res.y,res.z));
+                        BRepExtrema_DistShapeShape extss(aBuilder.Vertex(), edge);
+                        if (extss.NbSolution() == 1) {
+                            Standard_Real par;
+                            //gp_pnt pnt = extss.PointOnShape2(1);
+                            //Standard_Real par = BRep_Tool::Parameter(aBuilder.Vertex(), edge);
+                            extss.ParOnEdgeS2(1, par);
+                            parameters.insert(par);
+                            break;
+                        }
+                    }
+                    catch (const Standard_Failure&) {
+                        // ignore
+                    }
+                }
+            }
+        }
+    }
+}
+
 void MeshProjection::projectToMesh (const TopoDS_Shape &aShape, float fMaxDist, std::vector<PolyLine>& rPolyLines) const
 {
     // calculate the average edge length and create a grid
@@ -779,6 +862,51 @@ void MeshProjection::projectParallelToMesh (const TopoDS_Shape &aShape, const Ba
         const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
         std::vector<Base::Vector3f> points;
         discretize(aEdge, points, 5);
+
+        typedef std::pair<Base::Vector3f, unsigned long> HitPoint;
+        std::vector<HitPoint> hitPoints;
+        typedef std::pair<HitPoint, HitPoint> HitPoints;
+        std::vector<HitPoints> hitPointPairs;
+        for (auto it : points) {
+            Base::Vector3f result;
+            unsigned long index;
+            if (clAlg.NearestFacetOnRay(it, dir, cGrid, result, index)) {
+                hitPoints.push_back(std::make_pair(result, index));
+
+                if (hitPoints.size() > 1) {
+                    HitPoint p1 = hitPoints[hitPoints.size()-2];
+                    HitPoint p2 = hitPoints[hitPoints.size()-1];
+                    hitPointPairs.push_back(std::make_pair(p1, p2));
+                }
+            }
+        }
+
+        MeshCore::MeshProjection meshProjection(_rcMesh);
+        PolyLine polyline;
+        for (auto it : hitPointPairs) {
+            points.clear();
+            if (meshProjection.projectLineOnMesh(cGrid, it.first.first, it.first.second,
+                                                 it.second.first, it.second.second, dir, points)) {
+                polyline.points.insert(polyline.points.end(), points.begin(), points.end());
+            }
+        }
+        rPolyLines.push_back(polyline);
+
+        seq.next();
+    }
+}
+
+void MeshProjection::projectParallelToMesh (const std::vector<PolyLine> &aEdges, const Base::Vector3f& dir, std::vector<PolyLine>& rPolyLines) const
+{
+    // calculate the average edge length and create a grid
+    MeshAlgorithm clAlg(_rcMesh);
+    float fAvgLen = clAlg.GetAverageEdgeLength();
+    MeshFacetGrid cGrid(_rcMesh, 5.0f*fAvgLen);
+
+    Base::SequencerLauncher seq( "Project curve on mesh", aEdges.size() );
+
+    for (auto it : aEdges) {
+        std::vector<Base::Vector3f> points = it.points;
 
         typedef std::pair<Base::Vector3f, unsigned long> HitPoint;
         std::vector<HitPoint> hitPoints;

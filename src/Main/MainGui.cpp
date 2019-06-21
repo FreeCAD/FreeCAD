@@ -187,6 +187,7 @@ int main( int argc, char ** argv )
         // sets the default run mode for FC, starts with gui if not overridden in InitConfig...
         App::Application::Config()["RunMode"] = "Gui";
         App::Application::Config()["Console"] = "0";
+        App::Application::Config()["LoggingConsole"] = "1";
 
         // Inits the Application 
 #if defined (FC_OS_WIN32)

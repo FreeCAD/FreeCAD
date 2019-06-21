@@ -57,6 +57,7 @@ public:
     void setDirection(Base::Vector3d v) { m_dir = v; }
     static int getPrefArrowStyle();
     static double getPrefArrowSize();
+    static double getOverlapAdjust(int style, double size);
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
@@ -69,7 +70,9 @@ protected:
     QPainterPath makeHashMark(Base::Vector3d dir, double length, double width); 
     QPainterPath makeDot(double length, double width, bool flipped); 
     QPainterPath makeOpenDot(double length, double width, bool flipped); 
-   
+    QPainterPath makeForkArrow(double length, double width, bool flipped);
+    QPainterPath makeForkArrow(Base::Vector3d dir, double length, double width);
+
 private:
     QBrush m_brush;
     Qt::BrushStyle m_fill;

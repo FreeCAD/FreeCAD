@@ -142,7 +142,7 @@ def processArguments(argstring):
             print ('here')
             OUTPUT_DOUBLES = False
 
-    except:
+    except Exception:
         return False
 
     return True

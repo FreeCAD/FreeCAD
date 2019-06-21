@@ -53,10 +53,13 @@ EXTERNAL_MODULES+=' Mesh'
 EXTERNAL_MODULES+=' MeshPart'
 EXTERNAL_MODULES+=' Part'
 EXTERNAL_MODULES+=' Path'
+EXTERNAL_MODULES+=' PySide'
 EXTERNAL_MODULES+=' PySide.QtCore'
 EXTERNAL_MODULES+=' PySide.QtGui'
 EXTERNAL_MODULES+=' TechDraw'
+EXTERNAL_MODULES+=' area'
 EXTERNAL_MODULES+=' importlib'
+EXTERNAL_MODULES+=' pivy'
 
 ARGS+=" --errors-only"
 ARGS+=" --ignored-modules=$(echo ${EXTERNAL_MODULES} | tr ' ' ',')"

@@ -196,6 +196,7 @@ void MeshFaceAddition::startEditing(MeshGui::ViewProviderMesh* vp)
     Gui::View3DInventorViewer* viewer = view->getViewer();
     viewer->setEditing(true);
     viewer->setRedirectToSceneGraph(true);
+    viewer->setRedirectToSceneGraphEnabled(true);
 
     faceView->mesh = vp;
     faceView->attach(vp->getObject());
@@ -211,6 +212,7 @@ void MeshFaceAddition::finishEditing()
     Gui::View3DInventorViewer* viewer = view->getViewer();
     viewer->setEditing(false);
     viewer->setRedirectToSceneGraph(false);
+    viewer->setRedirectToSceneGraphEnabled(false);
 
     viewer->removeViewProvider(faceView);
     //faceView->mesh->finishEditing();
@@ -342,9 +344,13 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
     Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
 
     const SoEvent* ev = n->getEvent();
+    // If we are in navigation mode then ignore all but key events
+    if (!view->isRedirectedToSceneGraph()) {
+        if (!ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
+            return;
+        }
+    }
     if (ev->getTypeId() == SoLocation2Event::getClassTypeId()) {
-        // set as handled
-        n->getAction()->setHandled();
         n->setHandled();
         if (face->index.size() < 3) {
             SoPickedPoint * point = face->getPickedPoint(ev->getPosition(), view);
@@ -355,10 +361,12 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
         }
     }
     else if (ev->getTypeId() == SoMouseButtonEvent::getClassTypeId()) {
-        // set as handled
-        n->getAction()->setHandled();
-        n->setHandled();
         const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ev);
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 ||
+            mbe->getButton() == SoMouseButtonEvent::BUTTON2 ||
+            mbe->getButton() == SoMouseButtonEvent::BUTTON3) {
+            n->setHandled();
+        }
         if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
             that->addMarkerPoint();
         }
@@ -387,6 +395,16 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
             if (act == fin) {
                 QTimer::singleShot(300, that, SLOT(finishEditing()));
             }
+        }
+    }
+    // toggle between edit and navigation mode
+    else if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
+        const SoKeyboardEvent * const ke = static_cast<const SoKeyboardEvent *>(ev);
+        if (ke->getState() == SoButtonEvent::DOWN &&
+            ke->getKey() == SoKeyboardEvent::ESCAPE) {
+            SbBool toggle = view->isRedirectedToSceneGraph();
+            view->setRedirectToSceneGraph(!toggle);
+            n->setHandled();
         }
     }
 }

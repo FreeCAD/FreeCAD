@@ -51,8 +51,6 @@ public:
 
     virtual short mustExecute() const override;
     virtual App::DocumentObjectExecReturn *execute(void) override;
-    virtual void onDocumentRestored(void) override;
-
 
     virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderLeader";

@@ -476,6 +476,9 @@ public:
             const std::vector<App::DocumentObject*> &objs,
             const std::vector<std::string> &subs,
             const Base::Placement &origPlacement) const;
+
+private:
+    gp_Pnt getProximityPoint(eMapMode mode, const TopoDS_Shape& s1, const TopoDS_Shape& s2) const;
 };
 
 //====================================================================

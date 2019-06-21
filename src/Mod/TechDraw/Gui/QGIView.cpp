@@ -52,10 +52,8 @@
 #include "ZVALUE.h"
 #include "DrawGuiUtil.h"
 #include "QGVPage.h"
-#include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
 #include "QGCustomBorder.h"
-#include "QGCustomLabel.h"
 #include "QGCustomText.h"
 #include "QGICaption.h"
 #include "QGCustomClip.h"
@@ -98,7 +96,7 @@ QGIView::QGIView()
     m_pen.setColor(m_colCurrent);
 
     //Border/Label styling
-    m_font.setPointSize(getPrefFontSize());     //scene units (mm), not points
+    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
 
     m_decorPen.setStyle(Qt::DashLine);
     m_decorPen.setWidth(0); // 0 => 1px "cosmetic pen"
@@ -123,6 +121,11 @@ QGIView::QGIView()
 QGIView::~QGIView()
 {
     signalSelectPoint.disconnect_all_slots();
+}
+
+void QGIView::onSourceChange(TechDraw::DrawView* newParent)
+{
+    Q_UNUSED(newParent);
 }
 
 void QGIView::isVisible(bool state)
@@ -425,7 +428,7 @@ void QGIView::drawCaption()
     QRectF displayArea = customChildrenBoundingRect();
     m_caption->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
-    m_font.setPointSize(getPrefFontSize());     //scene units (0.1 mm), not points
+    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
     m_caption->setFont(m_font);
     QString captionStr = QString::fromUtf8(getViewObject()->Caption.getValue());
     m_caption->setPlainText(captionStr);
@@ -450,7 +453,8 @@ void QGIView::drawBorder()
         return;
     }
 
-    //show neither
+    drawCaption();   //always draw caption
+
     auto vp = static_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
     if (!getFrameState() && !vp->KeepLabel.getValue()) {
          m_label->hide();
@@ -458,17 +462,15 @@ void QGIView::drawBorder()
          m_lock->hide();
         return;
     }
-    drawCaption();
 
-    //show both or show label
-    //double margin = 2.0;
     m_label->hide();
     m_border->hide();
     m_lock->hide();
 
     m_label->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
-    m_font.setPointSize(getPrefFontSize());     //scene units (0.1 mm), not points
+    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
+
     m_label->setFont(m_font);
     QString labelStr = QString::fromUtf8(getViewObject()->Label.getValue());
     m_label->setPlainText(labelStr);
@@ -603,21 +605,10 @@ QGVPage* QGIView::getGraphicsView(TechDraw::DrawView* dv)
     }
     return graphicsView;
 }
+
 MDIViewPage* QGIView::getMDIViewPage(void) const
 {
-    MDIViewPage* result = nullptr;
-    QGraphicsScene* s = scene();
-    QObject* parent = nullptr;
-    if (s != nullptr) {
-        parent = s->parent();
-    }
-    if (parent != nullptr) {
-        MDIViewPage* mdi = dynamic_cast<MDIViewPage*>(parent);
-        if (mdi != nullptr) {
-            result = mdi;
-        }
-    }
-    return result;
+    return MDIViewPage::getFromScene(scene());
 }
 
 bool QGIView::getFrameState(void)
@@ -685,9 +676,24 @@ double QGIView::getPrefFontSize()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    double fontSize = hGrp->GetFloat("LabelSize", 3.5);
-    return Rez::guiX(fontSize);
+    return hGrp->GetFloat("LabelSize", DefaultFontSizeInMM);
 }
+
+double QGIView::getDimFontSize()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                       GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    return hGrp->GetFloat("FontSize", DefaultFontSizeInMM);
+}
+
+int QGIView::calculateFontPixelSize(double sizeInMillimetres)
+{
+    // Calculate font size in pixels by using resolution conversion
+    // and round to nearest integer
+    return (int) (Rez::guiX(sizeInMillimetres) + 0.5);
+}
+
+const double QGIView::DefaultFontSizeInMM = 5.0;
 
 void QGIView::dumpRect(char* text, QRectF r) {
     Base::Console().Message("DUMP - %s - rect: (%.3f,%.3f) x (%.3f,%.3f)\n",text,

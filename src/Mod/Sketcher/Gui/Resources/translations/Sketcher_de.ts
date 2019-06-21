@@ -1553,7 +1553,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1818"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a rectangular array pattern of the geometry taking as reference the last selected point</translation>
+      <translation>Erzeugt ein rechteckiges Array der Geometrie mit Bezug auf den zuletzt ausgewählten Punkt</translation>
     </message>
   </context>
   <context>
@@ -2733,7 +2733,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../CommandConstraints.cpp" line="7448"/>
       <source>You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</source>
-      <translation type="unfinished">You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</translation>
+      <translation>Sie können nicht den Bogen einer Ellipse auf den anderen Bogen der gleichen Ellipse einschränken. Wählen Sie nur einen Bogen einer Ellipse.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7454"/>

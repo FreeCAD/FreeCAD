@@ -627,6 +627,7 @@ QPainterPath QGIFace::shape() const
 void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
+//    painter->drawRect(boundingRect());          //good for debugging
 
     m_brush.setStyle(m_fillStyle);
     m_brush.setColor(m_fillColor);

@@ -345,7 +345,7 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="413"/>
       <source>value</source>
-      <translation type="unfinished">value</translation>
+      <translation>érték</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="436"/>

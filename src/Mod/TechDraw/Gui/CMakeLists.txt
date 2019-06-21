@@ -16,6 +16,17 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
 )
+
+if(BUILD_QT5)
+    include_directories(
+        ${Qt5XmlPatterns_INCLUDE_DIRS}
+    )
+else(BUILD_QT5)
+    include_directories(
+        ${QT_QTXMLPATTERNS_INCLUDE_DIR}
+    )
+endif(BUILD_QT5)
+
 link_directories(${OCC_LIBRARY_DIR})
 
 set(TechDrawGui_LIBS
@@ -41,6 +52,8 @@ set(TechDrawGui_MOC_HDRS
     TaskGeomHatch.h
     TaskLeaderLine.h
     TaskRichAnno.h
+    TaskCosVertex.h
+    TaskCenterLine.h
     QGEPath.h
     QGTracker.h
     QGILeaderLine.h
@@ -72,7 +85,9 @@ set(TechDrawGui_UIC_SRCS
     TaskRichAnno.ui
     mrichtextedit.ui
     TaskBalloon.ui
-    )
+    TaskCosVertex.ui
+    TaskCenterLine.ui
+)
 
 if(BUILD_QT5)
     qt5_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
@@ -102,6 +117,7 @@ SET(TechDrawGui_SRCS
     Command.cpp
     CommandCreateDims.cpp
     CommandDecorate.cpp
+    CommandAnnotate.cpp
     Resources/TechDraw.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -137,6 +153,12 @@ SET(TechDrawGui_SRCS
     TaskRichAnno.ui
     TaskRichAnno.cpp
     TaskRichAnno.h
+    TaskCosVertex.ui
+    TaskCosVertex.cpp
+    TaskCosVertex.h
+    TaskCenterLine.ui
+    TaskCenterLine.cpp
+    TaskCenterLine.h
     DrawGuiUtil.cpp
     DrawGuiUtil.h
     Rez.cpp
@@ -285,8 +307,10 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskGeomHatch.ui
     TaskLeaderLine.ui
     TaskRichAnno.ui
+    TaskCosVertex.ui
     mrichtextedit.ui
     TaskBalloon.ui
+    TaskCenterLine.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 

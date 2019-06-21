@@ -651,7 +651,10 @@ class _CommandFemMaterialMechanicalNonlinear(CommandManager):
         # CalculiX solver or new frame work CalculiX solver
         if solver_object \
                 and hasattr(solver_object, "Proxy") \
-                and (solver_object.Proxy.Type == 'Fem::FemSolverCalculixCcxTools' or solver_object.Proxy.Type == 'Fem::FemSolverObjectCalculix'):
+                and (
+                    solver_object.Proxy.Type == 'Fem::FemSolverCalculixCcxTools'
+                    or solver_object.Proxy.Type == 'Fem::FemSolverObjectCalculix'
+                ):
             print(
                 'Set MaterialNonlinearity and GeometricalNonlinearity to nonlinear for {}'
                 .format(solver_object.Label)
@@ -659,6 +662,37 @@ class _CommandFemMaterialMechanicalNonlinear(CommandManager):
             solver_object.MaterialNonlinearity = "nonlinear"
             solver_object.GeometricalNonlinearity = "nonlinear"
         FreeCADGui.Selection.clearSelection()
+        FreeCAD.ActiveDocument.recompute()
+
+
+class _CommandFemMaterialReinforced(CommandManager):
+    "The FEM_MaterialReinforced command definition"
+    def __init__(self):
+        super(_CommandFemMaterialReinforced, self).__init__()
+        self.resources = {
+            'Pixmap': 'fem-material-reinforced',
+            'MenuText': QtCore.QT_TRANSLATE_NOOP(
+                "FEM_MaterialReinforced",
+                "Reinforced material (concrete)"
+            ),
+            'Accel': "M, M",
+            'ToolTip': QtCore.QT_TRANSLATE_NOOP(
+                "FEM_MaterialReinforced",
+                "Creates a material for reinforced matrix material such as concrete"
+            )
+        }
+        self.is_active = 'with_analysis'
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create Reinforced Material")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand(
+            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
+            "makeMaterialReinforced(FreeCAD.ActiveDocument, 'ReinforcedMaterial'))"
+        )
+        FreeCADGui.doCommand(
+            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
+        )
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -1292,6 +1326,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     'FEM_MaterialMechanicalNonlinear',
     _CommandFemMaterialMechanicalNonlinear()
+)
+FreeCADGui.addCommand(
+    'FEM_MaterialReinforced',
+    _CommandFemMaterialReinforced()
 )
 FreeCADGui.addCommand(
     'FEM_MaterialSolid',

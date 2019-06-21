@@ -436,7 +436,7 @@ public:
             "Part.show(r[1][0])\n"
         );
         add_varargs_method("exportUnits",&Module::exportUnits,
-            "exportUnits([string=MM|M|IN]) -- Set units for exporting STEP/IGES files and returns the units."
+            "exportUnits([string=MM|M|INCH|FT|MI|KM|MIL|UM|CM|UIN]) -- Set units for exporting STEP/IGES files and returns the units."
         );
         add_varargs_method("setStaticValue",&Module::setStaticValue,
             "setStaticValue(string,string|int|float) -- Set a name to a value The value can be a string, int or float."
@@ -448,11 +448,17 @@ public:
             "getSortedClusters(list of edges) -- Helper method to sort and cluster a variety of edges"
         );
         add_varargs_method("__sortEdges__",&Module::sortEdges,
-            "__sortEdges__(list of edges) -- Helper method to sort an unsorted list of edges so that afterwards\n"
-            "two adjacent edges share a common vertex"
+            "__sortEdges__(list of edges) -- list of edges\n"
+            "Helper method to sort an unsorted list of edges so that afterwards\n"
+            "the start and end vertex of two consecutive edges are geometrically coincident.\n"
+            "It returns a single list of edges and the algorithm stops after the first set of\n"
+            "connected edges which means that the output list can be smaller than the input list.\n"
+            "The sorted list can be used to create a Wire."
         );
         add_varargs_method("sortEdges",&Module::sortEdges2,
-            "sortEdges(list of edges) -- Helper method to sort a list of edges into a list of list of connected edges"
+            "sortEdges(list of edges) -- list of lists of edges\n"
+            "It does basically the same as __sortEdges__ but sorts all input edges and thus returns\n"
+            "a list of lists of edges"
         );
         add_varargs_method("__toPythonOCC__",&Module::toPythonOCC,
             "__toPythonOCC__(shape) -- Helper method to convert an internal shape to pythonocc shape"
@@ -1944,16 +1950,11 @@ private:
             throw Py::Exception();
 
         if (unit) {
-            if (strcmp(unit,"M") == 0 || strcmp(unit,"MM") == 0 || strcmp(unit,"IN") == 0) {
-                if (!Interface_Static::SetCVal("write.iges.unit",unit)) {
-                    throw Py::RuntimeError("Failed to set 'write.iges.unit'");
-                }
-                if (!Interface_Static::SetCVal("write.step.unit",unit)) {
-                    throw Py::RuntimeError("Failed to set 'write.step.unit'");
-                }
+            if (!Interface_Static::SetCVal("write.iges.unit",unit)) {
+                throw Py::RuntimeError("Failed to set 'write.iges.unit'");
             }
-            else {
-                throw Py::ValueError("Wrong unit");
+            if (!Interface_Static::SetCVal("write.step.unit",unit)) {
+                throw Py::RuntimeError("Failed to set 'write.step.unit'");
             }
         }
 

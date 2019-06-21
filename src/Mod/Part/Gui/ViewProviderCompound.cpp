@@ -72,6 +72,24 @@ void ViewProviderCompound::updateData(const App::Property* prop)
             (prop)->getValues();
         Part::Compound* objComp = static_cast<Part::Compound*>(getObject());
         std::vector<App::DocumentObject*> sources = objComp->Links.getValues();
+
+        if (hist.size() != sources.size()) {
+            // avoid duplicates without changing the order
+            // See also Compound::execute
+            std::set<App::DocumentObject*> tempSources;
+            std::vector<App::DocumentObject*> filter;
+            for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it) {
+                Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+                if (objBase) {
+                    auto pos = tempSources.insert(objBase);
+                    if (pos.second) {
+                        filter.push_back(objBase);
+                    }
+                }
+            }
+
+            sources = filter;
+        }
         if (hist.size() != sources.size())
             return;
 

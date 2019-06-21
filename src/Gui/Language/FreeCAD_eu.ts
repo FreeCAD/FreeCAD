@@ -1245,7 +1245,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Auto load module after start up:</source>
-      <translation>Modulua automatikoki kargatu abiarazi ondoren:</translation>
+      <translation>Automatikoki kargatu modulua abiarazi ondoren:</translation>
     </message>
     <message>
       <source>Language</source>
@@ -1471,7 +1471,7 @@ Fitxategi-baimenen arazo bat ote da?</translation>
     <name>Gui::Dialog::DlgMacroRecord</name>
     <message>
       <source>Macro recording</source>
-      <translation>Makro-grabaketa</translation>
+      <translation>Makroen grabazioa</translation>
     </message>
     <message>
       <source>Macro name:</source>
@@ -1621,7 +1621,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Find...</source>
-      <translation type="unfinished">Find...</translation>
+      <translation>Bilatu...</translation>
     </message>
   </context>
   <context>
@@ -1632,39 +1632,39 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Find what:</source>
-      <translation type="unfinished">Find what:</translation>
+      <translation>Aurkitu:</translation>
     </message>
     <message>
       <source>Look at</source>
-      <translation type="unfinished">Look at</translation>
+      <translation>Bilatu hemen:</translation>
     </message>
     <message>
       <source>Groups</source>
-      <translation type="unfinished">Groups</translation>
+      <translation>Taldeak</translation>
     </message>
     <message>
       <source>Names</source>
-      <translation type="unfinished">Names</translation>
+      <translation>Izenak</translation>
     </message>
     <message>
       <source>Values</source>
-      <translation type="unfinished">Values</translation>
+      <translation>Balioak</translation>
     </message>
     <message>
       <source>Match whole string only</source>
-      <translation type="unfinished">Match whole string only</translation>
+      <translation>Kate osoko bat etortzeak soilik</translation>
     </message>
     <message>
       <source>Find Next</source>
-      <translation type="unfinished">Find Next</translation>
+      <translation>Bilatu hurrengoa</translation>
     </message>
     <message>
       <source>Not found</source>
-      <translation type="unfinished">Not found</translation>
+      <translation>Ez da aurkitu</translation>
     </message>
     <message>
       <source>Can't find the text: %1</source>
-      <translation type="unfinished">Can't find the text: %1</translation>
+      <translation>Ezin da testua aurkitu: %1</translation>
     </message>
   </context>
   <context>
@@ -2778,7 +2778,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Record GUI commands</source>
-      <translation type="unfinished">Record GUI commands</translation>
+      <translation>Grabatu EI komandoak</translation>
     </message>
   </context>
   <context>
@@ -2873,7 +2873,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Unit system:</source>
-      <translation type="unfinished">Unit system:</translation>
+      <translation>Unitate-sistema:</translation>
     </message>
   </context>
   <context>
@@ -3920,12 +3920,12 @@ Aldaketak gorde nahi dituzu?</translation>
       <translation>Arrastatu pantaila bi hatzekin EDO sakatu saguaren eskuineko botoia.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrastatu pantaila hatz batekin EDO sakatu saguaren ezkerreko botoia. Krokisgilean eta beste edizio modu batzuetan, mantendu Alt sakatuta.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Atximurkatu (ipini bi hatz pantailan eta arrastatu kanporantz edo barrurantz) EDO korritu saguaren erdiko botoia EDO PgUp/PgDown teklatuan.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4580,11 +4580,11 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
       <source>Translation Increment:</source>
-      <translation type="unfinished">Translation Increment:</translation>
+      <translation>Translazioaren gehikuntza:</translation>
     </message>
     <message>
       <source>Rotation Increment:</source>
-      <translation type="unfinished">Rotation Increment:</translation>
+      <translation>Biraketaren gehikuntza:</translation>
     </message>
   </context>
   <context>

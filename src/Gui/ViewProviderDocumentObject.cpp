@@ -68,6 +68,7 @@ PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
 ViewProviderDocumentObject::ViewProviderDocumentObject()
   : pcObject(0)
+  , pcDocument(0)
 {
     ADD_PROPERTY(DisplayMode,((long)0));
     ADD_PROPERTY(Visibility,(true));
@@ -179,6 +180,9 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
         if(getObject() && getObject()->Visibility.getValue()!=Visibility.getValue())
             getObject()->Visibility.setValue(Visibility.getValue());
     }
+
+    if (pcDocument)
+        pcDocument->setModified(true);
 
     ViewProvider::onChanged(prop);
 }

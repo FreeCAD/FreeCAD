@@ -89,7 +89,7 @@ def decode(name):
 # in the module Material.py is another implementation of reading and writing FCMat files
 # this implementation uses the ConfigParser module
 # in ViewProviderFemMaterial in add_cards_from_a_dir() the parser from Material.py is used
-# since this mixture seams to be there for ages it should not be changed for 0.18
+# since this mixture seems to have be there for ages it should not be changed for 0.18
 # TODO: get rid of this mixture in FreeCAD 0.19
 
 # Metainformation
@@ -101,6 +101,8 @@ def decode(name):
 # Line5: FreeCAD version info or empty
 def read(filename):
     "reads a FCMat file and returns a dictionary from it"
+    # the reader should return a dictionary in any case even if the file
+    # has problems, an empty dict should be returned in such case
     if isinstance(filename, unicode):
         if sys.version_info.major < 3:
             filename = filename.encode(sys.getfilesystemencoding())
@@ -112,9 +114,14 @@ def read(filename):
         f = pythonopen(filename)
     d = {}
     d["CardName"] = card_name_file  # CardName is the MatCard file name
-    ln = 0
-    for line in f:
-        if ln == 0:
+    for ln, line in enumerate(f):
+        ln += 1  # enumerate starts with 0, but we would like to have the real line number
+        if line.startswith('#'):
+            # a '#' is assumed to be a comment which is ignored
+            continue
+        # the use of line number is not smart for a data model
+        # a wrong user edit could break the file
+        if line.startswith(';') and ln == 0:
             v = line.split(";")[1].strip()  # Line 1
             if hasattr(v, "decode"):
                 v = v.decode('utf-8')
@@ -124,25 +131,23 @@ def read(filename):
                     "File CardName ( {} ) is not content CardName ( {} )\n"
                     .format(card_name_file, card_name_content)
                 )
-        elif ln == 1:
+        elif line.startswith(';') and ln == 1:
             v = line.split(";")[1].strip()  # Line 2
             if hasattr(v, "decode"):
                 v = v.decode('utf-8')
             d["AuthorAndLicense"] = v
         else:
             # ; is a Comment
-            # # might be a comment too ?
             # [ is a Section
-            if line[0] not in ";#[":
+            if line[0] not in ";[":
                 # split once on first occurrence
-                # a link could contain a = and thus would be split
+                # a link could contain a '=' and thus would be split
                 k = line.split("=", 1)
                 if len(k) == 2:
                     v = k[1].strip()
                     if hasattr(v, "decode"):
                         v = v.decode('utf-8')
                     d[k[0].strip()] = v
-        ln += 1
     return d
 
 
@@ -204,7 +209,7 @@ def write(filename, dictionary, write_group_section=True):
         f.write("; " + header["AuthorAndLicense"].encode("utf8") + "\n")
     f.write("; information about the content of such cards can be found on the wiki:\n")
     f.write("; https://www.freecadweb.org/wiki/Material\n")
-    f.write("; file created by FreeCAD" + rev + "\n")
+    f.write("; file created by FreeCAD " + rev + "\n")
     # write sections
     # write standard FCMat section if write group section parameter is set to False
     if write_group_section is False:
@@ -218,7 +223,7 @@ def write(filename, dictionary, write_group_section=True):
                     f.write("\n[" + s["keyname"] + "]\n")
                 for k, i in s.items():
                     if (k != "keyname" and i != '') or k == "Name":
-                        # use only keys which are not empty and the name even if empty
+                        # use only keys which are not empty and the name, even if empty
                         if sys.version_info.major >= 3:
                             f.write(k + " = " + i + "\n")
                         else:

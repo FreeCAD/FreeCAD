@@ -29,14 +29,9 @@
 #endif
 
 #include <gp_Pln.hxx>
-
-#include <Base/Vector3D.h>
-
-
-class TopoDS_Edge;
-class TopoDS_Shape;
 #include <TopoDS_Edge.hxx>
 
+#include <Base/Vector3D.h>
 #include <Mod/Mesh/App/Mesh.h>
 
 namespace MeshCore
@@ -170,6 +165,11 @@ public:
         unsigned long uE0, uE1; /**< start and endpoint of an edge */
         Base::Vector3f cPt; /**< Point on edge (\a uE0, \a uE1) */
     };
+    struct Edge
+    {
+        Base::Vector3f cPt1;
+        Base::Vector3f cPt2;
+    };
     struct PolyLine
     {
         std::vector<Base::Vector3f> points;
@@ -180,6 +180,15 @@ public:
     /// Destruction
     ~MeshProjection();
 
+    /**
+     * @brief findSectionParameters
+     * Find the parameters of the edge where when projecting the corresponding point will lie
+     * on an edge of the mesh.
+     * @param edge
+     * @param dir
+     * @param parameters
+     */
+    void findSectionParameters(const TopoDS_Edge& edge, const Base::Vector3f& dir, std::set<double>& parameters) const;
     void discretize(const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& polyline, std::size_t minPoints=2) const;
     /**
      * Searches all edges that intersect with the projected curve \a aShape. Therefore \a aShape must
@@ -192,6 +201,10 @@ public:
      */
     void projectParallelToMesh (const TopoDS_Shape &aShape, const Base::Vector3f& dir, std::vector<PolyLine>& rPolyLines) const;
     /**
+     * Project all polylines onto the mesh using parallel projection.
+     */
+    void projectParallelToMesh (const std::vector<PolyLine>& aEdges, const Base::Vector3f& dir, std::vector<PolyLine>& rPolyLines) const;
+    /**
      * Cuts the mesh at the curve defined by \a aShape. This method call @ref projectToMesh() to get the
      * split the facet at the found points. @see projectToMesh() for more details.
      */
@@ -200,6 +213,7 @@ public:
 protected:
     void projectEdgeToEdge(const TopoDS_Edge &aCurve, float fMaxDist, const MeshCore::MeshFacetGrid& rGrid,
                            std::vector<SplitEdge>& rSplitEdges) const;
+    bool findIntersection(const Edge&, const Edge&, const Base::Vector3f& dir, Base::Vector3f& res) const;
 
 private:
     const MeshKernel& _rcMesh;

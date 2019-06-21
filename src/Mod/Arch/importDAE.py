@@ -49,7 +49,9 @@ except NameError:
     pass
 
 def checkCollada():
+    
     "checks if collada if available"
+    
     global collada
     COLLADA = None
     try:
@@ -60,8 +62,11 @@ def checkCollada():
     else:
         return True
         
+        
 def triangulate(shape):
+    
     "triangulates the given face"
+    
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     mesher = p.GetInt("ColladaMesher",0)
     tessellation = p.GetFloat("ColladaTessellation",1.0)
@@ -82,7 +87,9 @@ def triangulate(shape):
 
     
 def open(filename):
+
     "called when freecad wants to open a file"
+
     if not checkCollada(): 
         return
     docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
@@ -92,8 +99,11 @@ def open(filename):
     read(filename)
     return doc
 
+
 def insert(filename,docname):
+
     "called when freecad wants to import a file"
+
     if not checkCollada(): 
         return
     try:
@@ -104,8 +114,11 @@ def insert(filename,docname):
     read(filename)
     return doc
 
+
 def decode(name):
+
     "decodes encoded strings"
+
     try:
         decodedName = (name.decode("utf8"))
     except UnicodeDecodeError:
@@ -116,7 +129,11 @@ def decode(name):
             decodedName = name
     return decodedName
 
+
 def read(filename):
+    
+    "reads a DAE file"
+    
     global col
     col = collada.Collada(filename, ignore=[collada.DaeUnsupportedError])
     # Read the unitmeter info from dae file and compute unit to convert to mm
@@ -169,8 +186,14 @@ def read(filename):
                     if color and FreeCAD.GuiUp:
                         obj.ViewObject.ShapeColor = color
 
-def export(exportList,filename,tessellation=1):
-    "called when freecad exports a file"
+
+def export(exportList,filename,tessellation=1,colors=None):
+    
+    """export(exportList,filename,tessellation=1,colors=None) -- exports FreeCAD contents to a DAE file.
+    colors is an optional dictionary of objName:shapeColorTuple or objName:diffuseColorList elements
+    to be used in non-GUI mode if you want to be able to export colors. Tessellation is used when breaking
+    curved surfaces into triangles."""
+    
     if not checkCollada(): return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     scale = p.GetFloat("ColladaScalingFactor",1.0)
@@ -261,7 +284,22 @@ def export(exportList,filename,tessellation=1):
                         matref = "ref_"+obj.Material.Name
                         matnode = collada.scene.MaterialNode(matref, mat, inputs=[])
         if not matnode:
-            if FreeCAD.GuiUp:
+            if colors:
+                if obj.Name in colors:
+                    color = colors[obj.Name]
+                    if color:
+                        if isinstance(color[0],tuple):
+                            # this is a diffusecolor. For now, use the first color - #TODO: Support per-face colors
+                            color = color[0]
+                        #print("found color for obj",obj.Name,":",color)
+                        kd = color[:3]
+                        effect = collada.material.Effect("effect_"+obj.Name, [], "phong", diffuse=kd, specular=(1,1,1))
+                        mat = collada.material.Material("mat_"+obj.Name, obj.Name, effect)
+                        colmesh.effects.append(effect)
+                        colmesh.materials.append(mat)
+                        matref = "ref_"+obj.Name
+                        matnode = collada.scene.MaterialNode(matref, mat, inputs=[])
+            elif FreeCAD.GuiUp:
                 if hasattr(obj.ViewObject,"ShapeColor"):
                     kd = obj.ViewObject.ShapeColor[:3]
                     effect = collada.material.Effect("effect_"+obj.Name, [], "phong", diffuse=kd, specular=(1,1,1))

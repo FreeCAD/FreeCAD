@@ -50,6 +50,7 @@
 #include <Base/Vector3D.h>
 #include <Gui/ViewProvider.h>
 
+#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
@@ -57,6 +58,8 @@
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/Cosmetic.h>
 
 #include "Rez.h"
 #include "ZVALUE.h"
@@ -77,6 +80,7 @@
 #include "ViewProviderViewPart.h"
 #include "MDIViewPage.h"
 
+using namespace TechDraw;
 using namespace TechDrawGui;
 using namespace TechDrawGeometry;
 
@@ -437,10 +441,19 @@ void QGIViewPart::drawViewPart()
         }
         if (showEdge) {
             item = new QGIEdge(i);
+            item->setWidth(lineWidth);
+            if ((*itEdge)->cosmetic == true) {
+                TechDraw::CosmeticEdge* ce = viewPart->getCosmeticEdgeByLink(i);
+                if (ce != nullptr) {
+                    item->setNormalColor(ce->color.asValue<QColor>());
+                    item->setWidth(ce->width * lineScaleFactor);
+                    item->setStyle(ce->style);
+                } 
+            }
             addToGroup(item);                                                   //item is at scene(0,0), not group(0,0)
             item->setPos(0.0,0.0);                                              //now at group(0,0)
             item->setPath(drawPainterPath(*itEdge));
-            item->setWidth(lineWidth);
+//            item->setWidth(lineWidth);
             item->setZValue(ZVALUE::EDGE);
             if(!(*itEdge)->visible) {
                 item->setWidth(lineWidthHid);
@@ -487,11 +500,17 @@ void QGIViewPart::drawViewPart()
                 }
             } else if(!usePolygonHLR){ //Disable dots WHEN usePolygonHLR
                 QGIVertex *item = new QGIVertex(i);
-                item->setNormalColor(vertexColor);
+                TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexByLink(i);
+                if (cv != nullptr) {
+                    item->setNormalColor(cv->color.asValue<QColor>());
+                    item->setRadius(cv->size);
+                } else {
+                    item->setNormalColor(vertexColor);
+                    item->setRadius(lineWidth * vertexScaleFactor);
+                }
                 item->setPrettyNormal();
                 addToGroup(item);
                 item->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
-                item->setRadius(lineWidth * vertexScaleFactor);
                 item->setZValue(ZVALUE::VERTEX);
             }
         }
@@ -664,7 +683,8 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         double sectionSpan;
         double sectionFudge = Rez::guiX(10.0);
         double xVal, yVal;
-        double fontSize = getPrefFontSize();
+//        double fontSize = getPrefFontSize();
+        double fontSize = getDimFontSize();
         if (horiz)  {
             double width = Rez::guiX(viewPart->getBoxX());
             double height = Rez::guiX(viewPart->getBoxY());
@@ -1028,6 +1048,14 @@ QRectF QGIViewPart::boundingRect() const
 //    return childrenBoundingRect();
 //    return customChildrenBoundingRect();
     return QGIView::boundingRect();
+}
+void QGIViewPart::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
+    QStyleOptionGraphicsItem myOption(*option);
+    myOption.state &= ~QStyle::State_Selected;
+
+//    painter->drawRect(boundingRect());          //good for debugging
+
+    QGIView::paint (painter, &myOption, widget);
 }
 
 //QGIViewPart derived classes do not need a rotate view method as rotation is handled on App side.

@@ -107,7 +107,7 @@ class _Extension(object):
 
         return switch
 
-    def _setColour(r, g, b):
+    def _setColour(self, r, g, b):
         self.material.diffuseColor = (r, g, b)
 
     def isValid(self):

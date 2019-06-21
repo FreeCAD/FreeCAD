@@ -37,6 +37,8 @@
 #define TRACKEREDIT 1
 #define TRACKERCANCEL 2
 #define TRACKERCANCELEDIT 3
+#define TRACKERFINISHED 4
+#define TRACKERSAVE 5
 
 class Ui_TaskLeaderLine;
 
@@ -75,9 +77,8 @@ public:
 
 public Q_SLOTS:
     void onTrackerClicked(bool b);
+    void onCancelEditClicked(bool b);
     void onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent);
-/*    void onEditorClicked(bool b);*/
-/*    void onViewPicked(QPointF pos, QGIView* qgParent);*/
 
 public:
     virtual bool accept();
@@ -91,12 +92,10 @@ public:
 
 
 protected Q_SLOTS:
-    void convertTrackerPoints(std::vector<QPointF> pts);
-    void onPointEditComplete(std::vector<QPointF> pts, QGIView* parent);
-/*    void onSaveAndExit(QString);*/
-/*    void onEditorExit(void);*/
+    void onPointEditComplete(void);
 
 protected:
+    void trackerPointsFromQPoints(std::vector<QPointF> pts);
     void changeEvent(QEvent *e);
     void startTracker(void);
     void removeTracker(void);
@@ -106,8 +105,6 @@ protected:
     void updateLeaderFeature();
     void commonFeatureUpdate(void);
     void removeFeature(void);
-
-/*    QPointF calcTextStartPos(double scale);*/
 
     void blockButtons(bool b);
     void setUiPrimary(void);
@@ -119,6 +116,8 @@ protected:
    QGIView* findParentQGIV();
    int getPrefArrowStyle();
 
+   void saveState(void);
+   void restoreState(void);
 
 private:
     Ui_TaskLeaderLine * ui;
@@ -153,6 +152,10 @@ private:
     QPushButton* m_btnCancel;
     
     int m_pbTrackerState;
+    
+    std::vector<Base::Vector3d> m_savePoints;
+    double m_saveX;
+    double m_saveY;
 };
 
 class TaskDlgLeaderLine : public Gui::TaskView::TaskDialog

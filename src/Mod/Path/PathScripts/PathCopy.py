@@ -28,7 +28,7 @@ from PySide import QtCore, QtGui
 
 """Path Copy object and FreeCAD command"""
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 

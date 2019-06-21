@@ -333,6 +333,12 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
                 if (mod.isNull())
                     throw Py::Exception();
                 PyObject* cls = mod.getAttr(reader.getAttribute("class")).ptr();
+                if (!cls) {
+                    std::stringstream s;
+                    s << "Module " << reader.getAttribute("module")
+                      << " has no class " << reader.getAttribute("class");
+                    throw Py::AttributeError(s.str());
+                }
 #if PY_MAJOR_VERSION >= 3
                 if (PyType_Check(cls)) {
 #else

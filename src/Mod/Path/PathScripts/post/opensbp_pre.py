@@ -49,13 +49,14 @@ Many other OpenSBP commands not handled
 from __future__ import print_function
 import FreeCAD
 import PathScripts.PathUtil as PathUtil
-import os, Path
+import os
+import Path
 
-AXIS = 'X','Y','Z','A','B'  #OpenSBP always puts multiaxis move parameters in this order
-SPEEDS = 'XY','Z','A','B'
+AXIS = 'X', 'Y', 'Z', 'A', 'B'  # OpenSBP always puts multiaxis move parameters in this order
+SPEEDS = 'XY', 'Z', 'A', 'B'
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
 
 
@@ -63,10 +64,10 @@ def open(filename):
     "called when freecad opens a file."
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
-    insert(filename,doc.Name)
+    insert(filename, doc.Name)
 
 
-def insert(filename,docname):
+def insert(filename, docname):
     "called when freecad imports a file"
     "This insert expects parse to return a list of strings"
     "each string will become a separate path"
@@ -76,7 +77,7 @@ def insert(filename,docname):
     gcode = parse(gcode)
     doc = FreeCAD.getDocument(docname)
     for subpath in gcode:
-        obj = doc.addObject("Path::Feature","Path")
+        obj = doc.addObject("Path::Feature", "Path")
         path = Path.Path(subpath)
         obj.Path = path
 
@@ -88,61 +89,60 @@ def parse(inputstring):
     lines = inputstring.split("\n")
     return_output = []
     output = ""
-    last = {'X':None,'Y':None,'Z':None,'A':None,'B':None}
-    lastrapidspeed = {'XY':"50", 'Z':"50", 'A':"50", 'B':"50" }  #set default rapid speeds
-    lastfeedspeed = {'XY':"50", 'Z':"50", 'A':"50", 'B':"50" } #set default feed speed
+    last = {'X': None, 'Y': None, 'Z': None, 'A': None, 'B': None}
+    lastrapidspeed = {'XY': "50", 'Z': "50", 'A': "50", 'B': "50"}  # set default rapid speeds
+    lastfeedspeed = {'XY': "50", 'Z': "50", 'A': "50", 'B': "50"}  # set default feed speed
     movecommand = ['G1', 'G0', 'G02', 'G03']
 
-    for l in lines:
+    for line in lines:
         # remove any leftover trailing and preceding spaces
-        l = l.strip()
-        if not l:
+        line = line.strip()
+        if not line:
             # discard empty lines
             continue
-        if l[0] in ["'","&"]:
+        if line[0] in ["'", "&"]:
             # discard comment and other non strictly gcode lines
-            if l[0:9] == "'New Path":
+            if line[0:9] == "'New Path":
                 # starting new path
-                if any (x in output for x in movecommand): #make sure the path has at least one move command.
+                if any(x in output for x in movecommand):  # make sure the path has at least one move command.
                     return_output.append(output)
                     output = ""
             continue
 
-        words = [a.strip() for a in l.split(",")]
+        words = [a.strip() for a in line.split(",")]
         words[0] = words[0].upper()
-        if words[0] in ["J2","J3","J4","J5","M2","M3","M4","M5"]: #multi-axis jogs and moves
-            if words[0][0] == 'J': #jog move
+        if words[0] in ["J2", "J3", "J4", "J5", "M2", "M3", "M4", "M5"]:  # multi-axis jogs and moves
+            if words[0][0] == 'J':  # jog move
                 s = "G0 "
-            else:   #feed move
+            else:   # feed move
                 s = "G1 "
             speed = lastfeedspeed["XY"]
 
-            for i  in range (1, len(words)):
-                if words [i] == '':
-                    if last[AXIS[i-1]] == None:
+            for i in range(1, len(words)):
+                if words[i] == '':
+                    if last[AXIS[i - 1]] is None:
                         continue
                     else:
-                        s += AXIS[i-1] + last[AXIS[i-1]]
+                        s += AXIS[i - 1] + last[AXIS[i - 1]]
                 else:
-                    s += AXIS[i-1] + words[i]
-                    last[AXIS[i-1]] = words[i]
-            output += s +" F" + speed + '\n'
+                    s += AXIS[i - 1] + words[i]
+                    last[AXIS[i - 1]] = words[i]
+            output += s + " F" + speed + '\n'
 
-        if words[0] in ["JA","JB","JX","JY","JZ","MA","MB","MX","MY","MZ"]: #single axis jogs and moves
-            if words[0][0] == 'J': #jog move
+        if words[0] in ["JA", "JB", "JX", "JY", "JZ", "MA", "MB", "MX", "MY", "MZ"]:  # single axis jogs and moves
+            if words[0][0] == 'J':  # jog move
                 s = "G0 "
-                if words[0][1] in ['X','Y']:
+                if words[0][1] in ['X', 'Y']:
                     speed = lastrapidspeed["XY"]
                 else:
                     speed = lastrapidspeed[words[0][1]]
 
-            else:   #feed move
+            else:    # feed move
                 s = "G1 "
-                if words[0][1] in ['X','Y']:
+                if words[0][1] in ['X', 'Y']:
                     speed = lastfeedspeed["XY"]
                 else:
                     speed = lastfeedspeed[words[0][1]]
-
 
             last[words[0][1]] = words[1]
             output += s
@@ -150,61 +150,60 @@ def parse(inputstring):
                 if val is not None:
                     output += key + str(val) + " F" + speed + "\n"
 
-        if words[0] in ["JS"]: #set jog speed
-            for i  in range (1, len(words)):
-                if words [i] == '':
+        if words[0] in ["JS"]:  # set jog speed
+            for i in range(1, len(words)):
+                if words[i] == '':
                     continue
                 else:
-                    lastrapidspeed[SPEEDS[i-1]] = words[i]
+                    lastrapidspeed[SPEEDS[i - 1]] = words[i]
 
-        if words[0] in ["MD"]: #move distance with distance and angle.
-            #unsupported at this time
+        if words[0] in ["MD"]:  # move distance with distance and angle.
+            # unsupported at this time
             continue
-        if words[0] in ["MH"]: #move home
-            #unsupported at this time
+        if words[0] in ["MH"]:  # move home
+            # unsupported at this time
             continue
-        if words[0] in ["MS"]: #set move speed
-            for i  in range (1, len(words)):
-                if words [i] == '':
+        if words[0] in ["MS"]:  # set move speed
+            for i in range(1, len(words)):
+                if words[i] == '':
                     continue
                 else:
-                    lastfeedspeed[SPEEDS[i-1]] = words[i]
-        if words[0] in ["MO"]: #motors off
-            #unsupported at this time
+                    lastfeedspeed[SPEEDS[i - 1]] = words[i]
+        if words[0] in ["MO"]:  # motors off
+            # unsupported at this time
             continue
 
-        if words[0] in ["TR"]: #Setting spindle speed
-            if  float(words[1]) < 0:
+        if words[0] in ["TR"]:  # Setting spindle speed
+            if float(words[1]) < 0:
                 s = "M4 S"
             else:
                 s = "M3 S"
             s += str(abs(float(words[1])))
             output += s + '\n'
 
-        if words[0] in ["CG"]: #Gcode circle/arc
-            if words[1] != "": # diameter mode
+        if words[0] in ["CG"]:  # Gcode circle/arc
+            if words[1] != "":  # diameter mode
                 print("diameter mode not supported")
                 continue
 
             else:
-                if words[7] == "1": #CW
+                if words[7] == "1":  # CW
                     s = "G2"
-                else: #CCW
+                else:  # CCW
                     s = "G3"
 
-
                 s += " X" + words[2] + " Y" + words[3] + " I" + words[4] + " J" + words[5] + " F" + str(lastfeedspeed["XY"])
-                output  += s + '\n'
+                output += s + '\n'
 
                 last["X"] = words[2]
                 last["Y"] = words[3]
 
-    #Make sure all appended paths have at least one move command.
-    if any (x in output for x in movecommand):
+    # Make sure all appended paths have at least one move command.
+    if any(x in output for x in movecommand):
         return_output.append(output)
         print("done preprocessing.")
 
     return return_output
 
-print(__name__ + " gcode preprocessor loaded.")
 
+print(__name__ + " gcode preprocessor loaded.")

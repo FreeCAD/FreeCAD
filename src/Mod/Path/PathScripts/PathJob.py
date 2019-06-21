@@ -45,7 +45,7 @@ else:
 
 """Path Job object and FreeCAD command"""
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -409,6 +409,6 @@ def Create(name, base, templateFile = None):
     else:
         models = base
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectJob(obj, models, templateFile)
+    obj.Proxy = ObjectJob(obj, models, templateFile)
     return obj
 

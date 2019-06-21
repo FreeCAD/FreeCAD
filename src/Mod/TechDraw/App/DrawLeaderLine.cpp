@@ -66,6 +66,7 @@ DrawLeaderLine::DrawLeaderLine(void)
     Scale.setStatus(App::Property::Hidden,true);
     Rotation.setStatus(App::Property::ReadOnly,true);
     Rotation.setStatus(App::Property::Hidden,true);
+    Caption.setStatus(App::Property::Hidden,true);
 
     //generally, lines/leaders are not meant to move around.
     LockPosition.setValue(true);
@@ -77,8 +78,6 @@ DrawLeaderLine::~DrawLeaderLine()
 
 void DrawLeaderLine::onChanged(const App::Property* prop)
 {
-//    if (!isRestoring()) {
-//    }
     DrawView::onChanged(prop);
 }
 
@@ -112,15 +111,6 @@ App::DocumentObjectExecReturn *DrawLeaderLine::execute(void)
     return DrawView::execute();
 }
 
-//this doesn't really work because LeaderParent is not available?
-void DrawLeaderLine::onDocumentRestored(void)
-{
-//    Base::Console().Message("DLL::onDocumentRestored()\n");
-    requestPaint();
-    DrawView::onDocumentRestored();
-}
-
-
 DrawView* DrawLeaderLine::getBaseView(void) const
 {
     DrawView* result = nullptr;
@@ -133,7 +123,6 @@ DrawView* DrawLeaderLine::getBaseView(void) const
     }
     return result;
 }
-
 
 App::DocumentObject* DrawLeaderLine::getBaseObject(void) const
 {
@@ -157,14 +146,18 @@ bool DrawLeaderLine::keepUpdated(void)
 
 double DrawLeaderLine::getScale(void) const
 {
+//    Base::Console().Message("DLL::getScale()\n");
     double result = 1.0;
-    DrawView* parent = getBaseView();
-    if (parent != nullptr) {
-        result = parent->getScale();
-    } else {
-        //TARFU
-        Base::Console().Log("DrawLeaderLine - %s - scale not found.  Using 1.0. \n", getNameInDocument());
+    if (Scalable.getValue()) {
+        DrawView* parent = getBaseView();
+        if (parent != nullptr) {
+            result = parent->getScale();
+        } else {
+            //TARFU
+            Base::Console().Log("DrawLeaderLine - %s - scale not found.  Using 1.0. \n", getNameInDocument());
+        }
     }
+//    Base::Console().Message("DLL::getScale - returns: %.3f\n", result);
     return result;
 }
 

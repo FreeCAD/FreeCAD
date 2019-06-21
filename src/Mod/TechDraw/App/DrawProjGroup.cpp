@@ -80,6 +80,7 @@ DrawProjGroup::DrawProjGroup(void)
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
     Rotation.setStatus(App::Property::Hidden,true);   //DPG does not rotate
+    Caption.setStatus(App::Property::Hidden,true);
 
 }
 

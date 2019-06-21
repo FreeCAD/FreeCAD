@@ -35,7 +35,7 @@ import os
 from PySide import QtCore, QtGui
 from collections import Counter
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 

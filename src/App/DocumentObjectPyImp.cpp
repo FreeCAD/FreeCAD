@@ -217,8 +217,20 @@ Py::List DocumentObjectPy::getState(void) const
 Py::Object DocumentObjectPy::getViewObject(void) const
 {
     try {
+        PyObject *dict = PySys_GetObject("modules");
+        if (!dict) {
+            return Py::None();
+        }
+
+        // check if the FreeCADGui module is already loaded, if not then don't try to load it
+        Py::Dict sysmod(dict);
+        if (!sysmod.hasKey("FreeCADGui")) {
+            return Py::None();
+        }
+
+        // double-check that the module doesn't have a null pointer
         Py::Module module(PyImport_ImportModule("FreeCADGui"),true);
-        if (!module.hasAttr("getDocument")) {
+        if (module.isNull() || !module.hasAttr("getDocument")) {
             // in v0.14+, the GUI module can be loaded in console mode (but doesn't have all its document methods)
             return Py::None();
         }

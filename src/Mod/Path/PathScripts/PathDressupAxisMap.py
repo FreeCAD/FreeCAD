@@ -22,18 +22,21 @@
 # *                                                                         *
 # ***************************************************************************
 import FreeCAD
-import FreeCADGui
 import Path
 import math
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtils as PathUtils
 
-from PySide import QtCore, QtGui
+from PySide import QtCore
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui
 
 """Axis remapping Dressup object and FreeCAD command.  This dressup remaps one axis of motion to another.
 For example, you can re-map the Y axis to A to control a 4th axis rotary."""
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 

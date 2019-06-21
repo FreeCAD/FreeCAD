@@ -175,6 +175,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopExp_Explorer Ex(supportface,TopAbs_WIRE);
             if (!Ex.More())
                 supportface = TopoDS_Face();
+#if 0
             BRepFeat_MakePrism PrismMaker;
             PrismMaker.Init(base.getShape(), profileshape.getShape(), supportface, dir, 0, 1);
             PrismMaker.Perform(upToFace);
@@ -184,6 +185,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
             TopoShape prism(0,getDocument()->getStringHasher());
             prism.makEShape(PrismMaker,{base,profileshape});
+#else
+            TopoShape prism(0,getDocument()->getStringHasher());
+            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, 0, 1);
+#endif
 
             // And the really expensive way to get the SubShape...
             try {

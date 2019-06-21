@@ -60,7 +60,7 @@ ViewProviderDimension::ViewProviderDimension()
 
     hGrp = App::GetApplication().GetUserParameter()
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", 3.5);
+    double fontSize = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
     ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),group,App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(Fontsize,(fontSize)    ,group,(App::PropertyType)(App::Prop_None),"Dimension text size in units");
 

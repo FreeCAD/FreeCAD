@@ -55,6 +55,7 @@ public:
     virtual double getWidth() { return m_width;}
     Qt::PenStyle getStyle() { return m_styleCurrent; }
     void setStyle(Qt::PenStyle s);
+    void setStyle(int s);
     virtual void setNormalColor(QColor c);
 
 protected:

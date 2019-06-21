@@ -76,6 +76,7 @@
 
 #include "Geometry.h"
 #include "GeometryObject.h"
+#include "Cosmetic.h"
 #include "HatchLine.h"
 #include "EdgeWalker.h"
 #include "DrawUtil.h"
@@ -191,6 +192,9 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
+
+    rebuildCosmoVertex();
+    rebuildCosmoEdge();
 
     App::DocumentObject* base = BaseView.getValue();
     if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
@@ -323,6 +327,18 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     catch (Standard_Failure& e2) {
         Base::Console().Log("LOG - DVS::execute - failed building section faces for %s - %s **\n",getNameInDocument(),e2.GetMessageString());
         return new App::DocumentObjectExecReturn(e2.GetMessageString());
+    }
+    //add back the cosmetic vertices
+    for (auto& v: cosmoVertex) {
+        int idx = geometryObject->addRandomVertex(v->pageLocation * getScale());
+        v->linkGeom = idx;
+    }
+
+    //add the cosmetic Edges to geometry Edges list
+    for (auto& e: cosmoEdge) {
+        TechDrawGeometry::BaseGeom* scaledGeom = e->scaledGeometry(getScale());
+        int idx = geometryObject->addRandomEdge(scaledGeom);
+        e->linkGeom = idx;
     }
 
     requestPaint();

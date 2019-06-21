@@ -746,8 +746,10 @@ PropertyLinkList::~PropertyLinkList()
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
         }
     }
 #endif
@@ -827,10 +829,14 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue) {
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
-            for(auto obj : _lValueList)
-                if(obj) obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-            for(auto obj : lValue)
-                if(obj) obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+            for(auto *obj : _lValueList) {
+                if (obj) 
+                    obj->_removeBackLink(parent);
+            }
+            for(auto *obj : lValue) {
+                if (obj) 
+                    obj->_addBackLink(parent);
+            }
         }
     }
 #endif
@@ -1684,8 +1690,10 @@ PropertyLinkSubList::~PropertyLinkSubList()
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
         }
     }
 #endif
@@ -1719,8 +1727,10 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
             if (lValue)
                 lValue->_addBackLink(parent);
         }
@@ -1764,13 +1774,17 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue, 
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
             //_lValueList can contain items multiple times, but we trust the document
             //object to ensure that this works
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
 
             //maintain backlinks. lValue can contain items multiple times, but we trust the document
             //object to ensure that the backlink is only added once
-            for(auto *obj : lValue)
-                obj->_addBackLink(parent);
+            for(auto *obj : lValue) {
+                if (obj)
+                    obj->_addBackLink(parent);
+            }
         }
     }
 #endif
@@ -1816,13 +1830,17 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
             //_lValueList can contain items multiple times, but we trust the document
             //object to ensure that this works
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
 
             //maintain backlinks. lValue can contain items multiple times, but we trust the document
             //object to ensure that the backlink is only added once
-            for(auto *obj : lValue)
-                obj->_addBackLink(parent);
+            for(auto *obj : lValue) {
+                if (obj)
+                    obj->_addBackLink(parent);
+            }
         }
     }
 #endif
@@ -1855,8 +1873,10 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
             //_lValueList can contain items multiple times, but we trust the document
             //object to ensure that this works
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
 
             //maintain backlinks. lValue can contain items multiple times, but we trust the document
             //object to ensure that the backlink is only added once

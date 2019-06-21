@@ -463,6 +463,7 @@ class _Site:
 
     def __init__(self,obj):
 
+        obj.Proxy = self
         self.setProperties(obj)
         obj.IfcType = "Site"
 

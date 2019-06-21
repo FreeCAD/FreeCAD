@@ -45,7 +45,7 @@ class MathParser:
             if self.vars.get(var) != None:
                 raise RuntimeError("Cannot redefine the value of " + var)
             self.vars[var] = vars[var]
-    
+
     def getValue(self):
         value = self.parseExpression()
         self.skipWhitespace()
@@ -56,23 +56,23 @@ class MathParser:
                 "' at index " +
                 str(self.index))
         return value
-    
+
     def peek(self):
         return self.string[self.index:self.index + 1]
-    
+
     def hasNext(self):
         return self.index < len(self.string)
-    
+
     def skipWhitespace(self):
         while self.hasNext():
             if self.peek() in ' \t\n\r':
                 self.index += 1
             else:
                 return
-    
+
     def parseExpression(self):
         return self.parseAddition()
-    
+
     def parseAddition(self):
         values = [self.parseMultiplication()]
         while True:
@@ -87,7 +87,7 @@ class MathParser:
             else:
                 break
         return sum(values)
-    
+
     def parseMultiplication(self):
         values = [self.parseParenthesis()]
         while True:
@@ -112,7 +112,7 @@ class MathParser:
         for factor in values:
             value *= factor
         return value
-    
+
     def parseParenthesis(self):
         self.skipWhitespace()
         char = self.peek()
@@ -128,7 +128,7 @@ class MathParser:
             return value
         else:
             return self.parseNegative()
-    
+
     def parseNegative(self):
         self.skipWhitespace()
         char = self.peek()
@@ -137,7 +137,7 @@ class MathParser:
             return -1 * self.parseParenthesis()
         else:
             return self.parseValue()
-    
+
     def parseValue(self):
         self.skipWhitespace()
         char = self.peek()
@@ -145,7 +145,7 @@ class MathParser:
             return self.parseNumber()
         else:
             return self.parseVariable()
-    
+
     def parseVariable(self):
         self.skipWhitespace()
         var = ''
@@ -156,7 +156,7 @@ class MathParser:
                 self.index += 1
             else:
                 break
-        
+
         value = self.vars.get(var, None)
         if value == None:
             raise ValueError(
@@ -164,15 +164,15 @@ class MathParser:
                 var +
                 "'")
         return float(value)
-    
+
     def parseNumber(self):
         self.skipWhitespace()
         strValue = ''
         decimal_found = False
         char = ''
-        
+
         while self.hasNext():
-            char = self.peek()            
+            char = self.peek()
             if char == '.':
                 if decimal_found:
                     raise SyntaxError(
@@ -186,7 +186,7 @@ class MathParser:
             else:
                 break
             self.index += 1
-        
+
         if len(strValue) == 0:
             if char == '':
                 raise SyntaxError("Unexpected end found")
@@ -197,21 +197,21 @@ class MathParser:
                     " but instead I found a '" +
                     char +
                     "'. What's up with that?")
-    
+
         return float(strValue)
 
 class Spreadsheet:
     """An object representing a spreadsheet. Can be used as a
     FreeCAD object or as a standalone python object.
     Cells of the spreadsheet can be got/set as arguments, as:
-    
+
         myspreadsheet = Spreadsheet()
         myspreadsheet.a1 = 54
         print(myspreadsheet.a1)
         myspreadsheet.a2 = "My text"
         myspreadsheet.b1 = "=a1*3"
         print(myspreadsheet.b1)
-        
+
     The cell names are case-insensitive (a1 = A1)
     """
 
@@ -269,13 +269,13 @@ class Spreadsheet:
                 return self._cells[key]
         else:
             return self.__dict__.__getitem__(key)
-            
+
     def __setitem__(self, key, value):
         __setattr__(self, key, value)
 
     def __getitem__(self, key):
         return __getattr__(self, key)
-            
+
     def __getstate__(self):
         self._cells["Type"] = self.Type
         if hasattr(self,"Object"):
@@ -347,7 +347,7 @@ class Spreadsheet:
             return True
         else:
             return False
-            
+
     def isNumeric(self,key):
         "isNumeric(cell): returns True if the given cell returns a number"
         key = key.lower()
@@ -376,7 +376,7 @@ class Spreadsheet:
             else:
                 if not nu:
                     # forbidden to set items at row 0
-                    if v == "0": 
+                    if v == "0":
                         return False
                 if v.isalpha():
                     if not allowMoreThanOneLetter:
@@ -394,7 +394,7 @@ class Spreadsheet:
         c = ''
         r = ''
         for ch in key:
-            if ch.isalpha(): 
+            if ch.isalpha():
                 c += ch
             else:
                 r += ch
@@ -420,7 +420,7 @@ class Spreadsheet:
             if index in [c,r]:
                 cells[k] = self._cells[k]
         return cells
-        
+
     def evaluate(self,key):
         "evaluate(key): evaluates the given formula"
         key = key.lower()
@@ -458,7 +458,7 @@ class Spreadsheet:
                         co.Proxy.setCells(co,obj)
                     elif Draft.getType(co) == "SpreadsheetPropertyController":
                         co.Proxy.compute(co)
-                    
+
     def getControlledCells(self,obj):
         "returns a list of cells managed by controllers"
         cells = []
@@ -499,18 +499,18 @@ class ViewProviderSpreadsheet(object):
             self.editor = SpreadsheetView(vobj.Object)
             addSpreadsheetView(self.editor)
         return True
-    
+
     def unsetEdit(self,vobj,mode=0):
         return False
 
     def doubleClicked(self,vobj):
         self.setEdit(vobj)
-        
+
     def claimChildren(self):
         if hasattr(self,"Object"):
             if hasattr(self.Object,"Controllers"):
                 return self.Object.Controllers
-                
+
     def __getstate__(self):
         return None
 
@@ -532,17 +532,17 @@ class SpreadsheetController:
         obj.FilterType = ["Object Type","Object Name"]
         obj.DataType = ["Get Property","Count"]
         obj.Direction = ["Horizontal","Vertical"]
-        
+
     def execute(self,obj):
         pass
-        
+
     def __getstate__(self):
         return self.Type
 
     def __setstate__(self,state):
         if state:
             self.Type = state
-            
+
     def onChanged(self,obj,prop):
         if prop == "DataType":
             if obj.DataType == "Count":
@@ -659,7 +659,7 @@ class SpreadsheetPropertyController:
         obj.addProperty("App::PropertyString","TargetProperty","Base","The property or constraint of the target object to control")
         obj.addProperty("App::PropertyString","Cell","Base","The cell that contains the value to apply to the property")
         obj.TargetType = ["Property","Constraint"]
-        
+
     def execute(self,obj):
         pass
 
@@ -708,14 +708,14 @@ class SpreadsheetPropertyController:
                             except:
                                 if DEBUG: print("unable to set constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value)
 
-        
+
     def __getstate__(self):
         return self.Type
 
     def __setstate__(self,state):
         if state:
             self.Type = state
-            
+
     def onChanged(self,obj,prop):
         pass
 
@@ -736,7 +736,7 @@ class SpreadsheetView(QtGui.QWidget):
     def __init__(self,spreadsheet=None):
         from DraftTools import translate
         QtGui.QWidget.__init__(self)
-        
+
         self.setWindowTitle(str(translate("Spreadsheet","Spreadsheet")))
         self.setObjectName("Spreadsheet viewer")
         self.verticalLayout = QtGui.QVBoxLayout(self)
@@ -877,7 +877,7 @@ class SpreadsheetView(QtGui.QWidget):
             if content == None:
                 content = ""
             self.lineEdit.setText(str(content))
-        
+
     def getEditLine(self):
         "called when something has been entered in the edit line"
         txt = str(self.lineEdit.text())
@@ -988,8 +988,8 @@ def makeSpreadsheet():
 
 
 def makeSpreadsheetController(spreadsheet,cell=None,direction=None):
-    """makeSpreadsheetController(spreadsheet,[cell,direction]): adds a 
-    controller to the given spreadsheet. Call can be a starting cell such as "A5", 
+    """makeSpreadsheetController(spreadsheet,[cell,direction]): adds a
+    controller to the given spreadsheet. Call can be a starting cell such as "A5",
     and direction can be "Horizontal" or "Vertical"."""
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","CellController")
     SpreadsheetController(obj)
@@ -1006,7 +1006,7 @@ def makeSpreadsheetController(spreadsheet,cell=None,direction=None):
 
 
 def makeSpreadsheetPropertyController(spreadsheet,object=None,prop=None,cell=None):
-    """makeSpreadsheetPropertyController(spreadsheet,[object,prop,cell]): adds a 
+    """makeSpreadsheetPropertyController(spreadsheet,[object,prop,cell]): adds a
     property controller, targeting the given object if any, to the given spreadsheet.
     You can give a property (such as "Length" or "Proxy.Length") and a cell address
     (such as "B6")."""
@@ -1092,7 +1092,7 @@ def export(exportList,filename):
         return
     obj = exportList[0]
     if Draft.getType(obj) != "Spreadsheet":
-        print("Spreadhseet: The selected object is not a spreadsheet")
+        print("Spreadsheet: The selected object is not a spreadsheet")
         return
     if not obj.Proxy._cells:
         print("Spreadsheet: The selected spreadsheet contains no cell")

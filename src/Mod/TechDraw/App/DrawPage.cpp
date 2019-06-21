@@ -101,6 +101,9 @@ DrawPage::DrawPage(void)
     }
 
     ADD_PROPERTY_TYPE(Scale, (1.0), group, (App::PropertyType)(App::Prop_None), "Scale factor for this Page");
+    ADD_PROPERTY_TYPE(NextBalloonIndex, (1), group, (App::PropertyType)(App::Prop_None),
+                     "Auto-numbering for Balloons");
+
     Scale.setConstraints(&scaleRange);
     double defScale = hGrp->GetFloat("DefaultScale",1.0);
     Scale.setValue(defScale);
@@ -406,6 +409,14 @@ void DrawPage::unsetupObject()
     Template.setValue(nullptr);
 }
 
+int DrawPage::getNextBalloonIndex(void)
+{
+    int result = NextBalloonIndex.getValue();
+    int newValue = result + 1;
+    NextBalloonIndex.setValue(newValue);
+    return result;
+}
+
 void DrawPage::handleChangedPropertyType(
         Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
 {
@@ -428,4 +439,16 @@ void DrawPage::handleChangedPropertyType(
     }
 }
 
+// Python Drawing feature ---------------------------------------------------------
 
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawPagePython, TechDraw::DrawPage)
+template<> const char* TechDraw::DrawPagePython::getViewProviderName(void) const {
+    return "TechDrawGui::ViewProviderPage";
+}
+/// @endcond
+
+// explicit template instantiation
+template class TechDrawExport FeaturePythonT<TechDraw::DrawPage>;
+}
