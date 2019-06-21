@@ -40,6 +40,7 @@
 #include "Exception.h"
 #include "PyObjectBase.h"
 #include <QCoreApplication>
+#include <frameobject.h>
 
 using namespace Base;
 
@@ -251,18 +252,24 @@ void ConsoleSingleton::SetConnectionMode(ConnectionMode mode)
  */
 void ConsoleSingleton::Message( const char *pMsg, ... )
 {
-    char format[BufferSize];
-    const unsigned int format_len = BufferSize;
+#define FC_CONSOLE_FMT(_type,_type2) \
+    char format[BufferSize];\
+    format[sizeof(format)-4] = '.';\
+    format[sizeof(format)-3] = '.';\
+    format[sizeof(format)-2] = '\n';\
+    format[sizeof(format)-1] = 0;\
+    const unsigned int format_len = sizeof(format)-4;\
+    va_list namelessVars;\
+    va_start(namelessVars, pMsg);\
+    vsnprintf(format, format_len, pMsg, namelessVars);\
+    format[sizeof(format)-5] = '.';\
+    va_end(namelessVars);\
+    if (connectionMode == Direct)\
+        Notify##_type(format);\
+    else\
+        QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_##_type2, format));
 
-    va_list namelessVars;
-    va_start(namelessVars, pMsg);  // Get the "..." vars
-    vsnprintf(format, format_len, pMsg, namelessVars);
-    va_end(namelessVars);
-
-    if (connectionMode == Direct)
-        NotifyMessage(format);
-    else
-        QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_Txt, format));
+    FC_CONSOLE_FMT(Message,Txt);
 }
 
 /** Prints a Message
@@ -282,18 +289,7 @@ void ConsoleSingleton::Message( const char *pMsg, ... )
  */
 void ConsoleSingleton::Warning( const char *pMsg, ... )
 {
-    char format[BufferSize];
-    const unsigned int format_len = BufferSize;
-
-    va_list namelessVars;
-    va_start(namelessVars, pMsg);  // Get the "..." vars
-    vsnprintf(format, format_len, pMsg, namelessVars);
-    va_end(namelessVars);
-
-    if (connectionMode == Direct)
-        NotifyWarning(format);
-    else
-        QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_Wrn, format));
+    FC_CONSOLE_FMT(Warning,Wrn);
 }
 
 /** Prints a Message
@@ -313,18 +309,7 @@ void ConsoleSingleton::Warning( const char *pMsg, ... )
  */
 void ConsoleSingleton::Error( const char *pMsg, ... )
 {
-    char format[BufferSize];
-    const unsigned int format_len = BufferSize;
-
-    va_list namelessVars;
-    va_start(namelessVars, pMsg);  // Get the "..." vars
-    vsnprintf(format, format_len, pMsg, namelessVars);
-    va_end(namelessVars);
-
-    if (connectionMode == Direct)
-        NotifyError(format);
-    else
-        QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_Err, format));
+    FC_CONSOLE_FMT(Error,Err);
 }
 
 
@@ -346,23 +331,11 @@ void ConsoleSingleton::Error( const char *pMsg, ... )
 
 void ConsoleSingleton::Log( const char *pMsg, ... )
 {
-    char format[BufferSize];
-    const unsigned int format_len = BufferSize;
-
-    if (_bVerbose)
+    if (!_bVerbose)
     {
-        va_list namelessVars;
-        va_start(namelessVars, pMsg);  // Get the "..." vars
-        vsnprintf(format, format_len, pMsg, namelessVars);
-        va_end(namelessVars);
-
-        if (connectionMode == Direct)
-            NotifyLog(format);
-        else
-            QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_Log, format));
+        FC_CONSOLE_FMT(Log,Log);
     }
 }
-
 
 /** Delivers the time/date
  *  This method gives you a string with the actual time/date. You can
@@ -464,7 +437,7 @@ int *ConsoleSingleton::GetLogLevel(const char *tag, bool create) {
 
 void ConsoleSingleton::Refresh() {
     if(_bCanRefresh)
-        QCoreApplication::sendPostedEvents();
+        qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 }
 
 void ConsoleSingleton::EnableRefresh(bool enable) {
@@ -552,7 +525,7 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         if (string)
-            Instance().Message("%s",string);            // process message
+            Instance().NotifyMessage(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -598,7 +571,7 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         if (string)
-            Instance().Warning("%s",string);            // process message
+            Instance().NotifyWarning(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -644,7 +617,7 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         if (string)
-            Instance().Error("%s",string);            // process message
+            Instance().NotifyError(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -690,7 +663,7 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         if (string)
-            Instance().Log("%s",string);            // process message
+            Instance().NotifyLog(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -968,8 +941,23 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
         str << d.count() << ' ';
     }
     if(print_tag) str << '<' << tag << "> ";
-    if(print_src) {
+    if(print_src==2) {
+        PyFrameObject* frame = PyEval_GetFrame();
+        if(frame) {
+            line = PyFrame_GetLineNumber(frame);
+#if PY_MAJOR_VERSION >= 3
+            src = PyUnicode_AsUTF8(frame->f_code->co_filename);
+#else
+            src = PyString_AsString(frame->f_code->co_filename);
+#endif
+        }
+    }
+    if(print_src && src && src[0]) {
+#ifdef FC_OS_WIN32
+        const char *_f = std::strrchr(src, '\\');
+#else
         const char *_f = std::strrchr(src, '/');
+#endif
         str << (_f?_f+1:src)<<"("<<line<<"): ";
     }
     return str;
