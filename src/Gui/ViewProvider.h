@@ -33,6 +33,7 @@
 #include <boost/intrusive_ptr.hpp>
 
 #include <App/TransactionalObject.h>
+#include <App/Material.h>
 #include <Base/Vector3D.h>
 
 class SbVec2s;
@@ -69,6 +70,7 @@ namespace Gui {
 class View3DInventorViewer;
 class ViewProviderPy;
 class ObjectItem;
+class MDIView;
 
 enum ViewStatus {
     UpdateData = 0,
@@ -119,6 +121,9 @@ public:
 
     // returns the root node of the Provider (3D)
     virtual SoSeparator* getRoot(void){return pcRoot;}
+    // return the mode switch node of the Provider (3D)
+    SoSwitch *getModeSwitch(void){return pcModeSwitch;}
+    SoTransform *getTransformNode(){return pcTransform;}
     // returns the root for the Annotations.
     SoSeparator* getAnnotation(void);
     // returns the root node of the Provider (3D)
@@ -127,6 +132,9 @@ public:
     virtual SoGroup* getChildRoot(void) const;
     // returns the root node of the Provider (3D)
     virtual SoSeparator* getBackRoot(void) const;
+    ///Indicate whether to be added to scene graph or not
+    virtual bool canAddToSceneGraph() const {return true;}
+
     /** deliver the children belonging to this object
       * this method is used to deliver the objects to
       * the 3DView which should be grouped under its
@@ -155,6 +163,7 @@ public:
         (void)Element;
         return std::vector<Base::Vector3d>();
     }
+
     /**
      * Get called if the object is about to get deleted.
      * Here you can delete other objects, switch their visibility or prevent the deletion of the object.
@@ -162,6 +171,12 @@ public:
      * @return          true if the deletion is approved by the view provider.
      */
     virtual bool onDelete(const std::vector<std::string> &subNames);
+    /** Called before deletion
+     *
+     * Unlike onDelete(), this function is guaranteed to be called before
+     * deletion, either by Document::remObject(), or on document deletion.
+     */
+    virtual void beforeDelete();
     /**
      * @brief Asks the view provider if the given object that is part of its
      * outlist can be removed from there without breaking it.
@@ -204,22 +219,78 @@ public:
     virtual bool canDragObjects() const;
     /** Check whether the object can be removed from the view provider by drag and drop */
     virtual bool canDragObject(App::DocumentObject*) const;
-    /** Tell the tree view if this object should appear there */
-    virtual bool showInTree() const
-    {
-      return true;
-    }
     /** Remove a child from the view provider by drag and drop */
     virtual void dragObject(App::DocumentObject*);
-    /** Check whether objects can be added to the view provider by drag and drop */
+    /** Check whether objects can be added to the view provider by drag and drop or drop only */
     virtual bool canDropObjects() const;
-    /** Check whether the object can be dropped to the view provider by drag and drop */
+    /** Check whether the object can be dropped to the view provider by drag and drop or drop only*/
     virtual bool canDropObject(App::DocumentObject*) const;
+    /** Return false to force drop only operation for a given object*/
+    virtual bool canDragAndDropObject(App::DocumentObject*) const;
     /** Add an object to the view provider by drag and drop */
     virtual void dropObject(App::DocumentObject*);
-    /** Replace an object to the view provider by drag and drop */
-    virtual void replaceObject(App::DocumentObject*, App::DocumentObject*);
+    /** Query object dropping with full quanlified name 
+     *
+     * Tree view now calls this function instead of canDropObject(), and may
+     * query for objects from other document. The default implementation
+     * (actually in ViewProviderDocumentObject) inhibites cross document
+     * dropping, and calls canDropObject(obj) for the rest. Override this
+     * function to enable cross document linking.
+     *
+     * @param obj: the object being dropped
+     *
+     * @param owner: the (grand)parent object of the dropping object. Maybe
+     * null. This may not be the top parent object, as tree view will try to
+     * find a parent of the dropping object realtive to this object to avoid
+     * cyclic dependency
+     *
+     * @param subname: subname reference to the dropping object
+     *
+     * @param elements: non-object sub-elements, e.g. Faces, Edges, selected
+     * when the object is being dropped
+     *
+     * @return Return whether the dropping action is allowed.
+     * */
+    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+            const char *subname, const std::vector<std::string> &elements) const;
+
+    /// return a subname referencing the sub-object holding the dropped objects
+    virtual std::string getDropPrefix() const { return std::string(); }
+
+    /** Add an object with full quanlified name to the view provider by drag and drop
+     *
+     * @param obj: the object being dropped
+     *
+     * @param owner: the (grand)parent object of the dropping object. Maybe
+     * null. This may not be the top parent object, as tree view will try to
+     * find a parent of the dropping object realtive to this object to avoid
+     * cyclic dependency
+     *
+     * @param subname: subname reference to the dropping object
+     *
+     * @param elements: non-object sub-elements, e.g. Faces, Edges, selected
+     * when the object is being dropped
+     *
+     * @return Optionally returns a subname reference locating the dropped
+     * object, which may or may not be the actual dropped object, e.g. it may be
+     * a link.
+     */
+    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+            const char *subname, const std::vector<std::string> &elements);
+    /** Replace an object to the view provider by drag and drop
+     *
+     * @param oldObj: object to be replaced
+     * @param newObj: object to replace with
+     *
+     * @return Returns 0 if not found, 1 if succeed, -1 if not supported
+     */
+    virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj);
     //@}
+
+    /** Tell the tree view if this object should apear there */
+    virtual bool showInTree() const { return true; }
+    /** Tell the tree view to remove children items from the tree root*/
+    virtual bool canRemoveChildrenFromRoot() const {return true;}
 
     /** @name Signals of the view provider */
     //@{
@@ -237,7 +308,7 @@ public:
      * update. E.g. only the view attribute has changed, or
      * the data has manipulated.
      */
-    void update(const App::Property*);
+    virtual void update(const App::Property*);
     virtual void updateData(const App::Property*);
     bool isUpdatesEnabled () const;
     void setUpdatesEnabled (bool enable);
@@ -268,6 +339,8 @@ public:
     virtual bool isShow(void) const;
     void setVisible(bool);
     bool isVisible() const;
+    void setLinkVisible(bool);
+    bool isLinkVisible() const;
     /// Overrides the display mode with mode.
     virtual void setOverrideMode(const std::string &mode);
     const std::string getOverrideMode();
@@ -293,7 +366,7 @@ protected:
     int getEditingMode() const;
 
 public:
-    bool startEditing(int ModNum = 0);
+    virtual ViewProvider *startEditing(int ModNum=0);
     bool isEditing() const;
     void finishEditing();
     /// adjust viewer settings when editing a view provider
@@ -333,8 +406,11 @@ public:
     /// set the viewing transformation of the provider
     virtual void setTransformation(const Base::Matrix4D &rcMatrix);
     virtual void setTransformation(const SbMatrix &rcMatrix);
-    SbMatrix convert(const Base::Matrix4D &rcMatrix) const;
+    static SbMatrix convert(const Base::Matrix4D &rcMatrix);
+    static Base::Matrix4D convert(const SbMatrix &sbMat);
     //@}
+
+    virtual MDIView *getMDIView() {return 0;}
 
 public:
     // this method is called by the viewer when the ViewProvider is in edit
@@ -363,6 +439,7 @@ public:
     /// Returns a list of added display mask modes
     std::vector<std::string> getDisplayMaskModes() const;
     void setDefaultMode(int);
+    int getDefaultMode() const;
     //@}
 
 protected:
