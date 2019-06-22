@@ -106,6 +106,14 @@ public:
     App::PropertyStringList  CosmeticVertexList;
     App::PropertyStringList  CosmeticEdgeList;
 
+    virtual short mustExecute() const;
+    virtual void onDocumentRestored() override;
+    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual const char* getViewProviderName(void) const {
+        return "TechDrawGui::ViewProviderViewPart";
+    }
+    virtual PyObject *getPyObject(void);
+
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches(void) const;
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
@@ -140,24 +148,9 @@ public:
                                const Base::Vector3d& direction,
                                const bool flip=true) const;
 
-    virtual short mustExecute() const;
-//    virtual void onDocumentRestored() override;
-
     bool handleFaces(void);
     bool showSectionEdges(void);
 
-    /** @name methods override Feature */
-    //@{
-    /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    //@}
-
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "TechDrawGui::ViewProviderViewPart";
-    }
-    //return PyObject as DrawViewPartPy
-    virtual PyObject *getPyObject(void);
     bool isUnsetting(void) { return nowUnsetting; }
     
     gp_Pln getProjPlane(void) const;
