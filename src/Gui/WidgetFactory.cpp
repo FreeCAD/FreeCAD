@@ -503,11 +503,8 @@ void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object
         if (!name.isEmpty() && !name.startsWith("_") && !name.startsWith("qt_")) {
             bool hasAttr = PyObject_HasAttrString(root, name.constData());
             if (!hasAttr) {
-#if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
-                Shiboken::AutoDecRef pyChild(Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide2_QtCoreTypes[SBK_QOBJECT_IDX], child));
-                PyObject_SetAttrString(root, name.constData(), pyChild);
-#elif defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-                Shiboken::AutoDecRef pyChild(Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide_QtCoreTypes[SBK_QOBJECT_IDX], child));
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+                Shiboken::AutoDecRef pyChild(Shiboken::Conversions::pointerToPython(reinterpret_cast<SbkObjectType*>(Shiboken::SbkType<QObject>()), child));
                 PyObject_SetAttrString(root, name.constData(), pyChild);
 #elif QT_VERSION >= 0x050000
                 const char* className = qt_identifyType(child, "PySide2.QtWidgets");
@@ -543,11 +540,7 @@ void PythonWrapper::setParent(PyObject* pyWdg, QObject* parent)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     if (parent) {
-#if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
-        Shiboken::AutoDecRef pyParent(Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide2_QtGuiTypes[SBK_QWIDGET_IDX], parent));
-#else
-        Shiboken::AutoDecRef pyParent(Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide_QtGuiTypes[SBK_QWIDGET_IDX], parent));
-#endif
+        Shiboken::AutoDecRef pyParent(Shiboken::Conversions::pointerToPython(reinterpret_cast<SbkObjectType*>(Shiboken::SbkType<QWidget>()), parent));
         Shiboken::Object::setParent(pyParent, pyWdg);
     }
 #else
