@@ -707,6 +707,11 @@ Py::Boolean ConstraintPy::getInVirtualSpace(void) const
     return Py::Boolean(this->getConstraintPtr()->isInVirtualSpace);
 }
 
+Py::Boolean ConstraintPy::getIsActive(void) const
+{
+    return Py::Boolean(this->getConstraintPtr()->isActive);
+}
+
 PyObject *ConstraintPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
