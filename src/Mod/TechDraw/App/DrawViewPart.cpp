@@ -284,7 +284,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-    rebuildCosmoVertex();
+//    rebuildCosmoVertex();
 //    rebuildCosmoEdge();
 
     App::Document* doc = getDocument();
@@ -1005,10 +1005,14 @@ void DrawViewPart::rebuildCosmoEdge(void)
 int DrawViewPart::addCosmeticVertex(Base::Vector3d pos)
 {
 //    Base::Console().Message("DVP::addCosmeticVertex(%s)\n", DrawUtil::formatVector(pos).c_str());
-    TechDraw::CosmeticVertex* rVert = new TechDraw::CosmeticVertex(pos);
-    vertexCosmetic.push_back(rVert);
+    TechDraw::CosmeticVertex* cv = new TechDraw::CosmeticVertex(pos);
+    vertexCosmetic.push_back(cv);
     int newIdx = (int) (vertexCosmetic.size() - 1);
-    stuffCosmeticVertexList();
+    std::string csv = cv->toCSV();
+    std::vector<std::string> vertexList = CosmeticVertexList.getValues();
+    vertexList.push_back(csv);
+    CosmeticVertexList.setValues(vertexList);
+
     return newIdx;
 }
 
@@ -1216,6 +1220,17 @@ TechDraw::CosmeticEdge* DrawViewPart::getCosmeticEdgeByLink(int idx) const
     }
     return result;
 }
+
+void DrawViewPart::onDocumentRestored()
+{
+    rebuildCosmoVertex();
+    rebuildCosmoEdge();
+//    requestPaint();
+    //if execute has not run yet, there will be no GO, and paint will not do anything.
+    execute();
+    DrawView::onDocumentRestored();
+}
+
 
 PyObject *DrawViewPart::getPyObject(void)
 {

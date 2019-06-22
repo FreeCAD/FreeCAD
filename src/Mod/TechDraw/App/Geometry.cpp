@@ -1222,8 +1222,9 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
 TopoDS_Edge GeometryUtils::edgeFromGeneric(TechDraw::Generic* g)
 {
 //    Base::Console().Message("GU::edgeFromGeneric()\n");
-    //note that this isn't quite right as g can be a polyline!
+    //TODO: note that this isn't quite right as g can be a polyline!
     //sb points.first, points.last
+    //and intermediates should be added to Point
     Base::Vector3d first = g->points.front();
     Base::Vector3d last  = g->points.back();
     gp_Pnt gp1(first.x, first.y, first.z);
@@ -1249,7 +1250,7 @@ TopoDS_Edge GeometryUtils::edgeFromCircle(TechDraw::Circle* c)
 
 TopoDS_Edge GeometryUtils::edgeFromCircleArc(TechDraw::AOC* c)
 {
-    Base::Console().Message("GU::edgeFromCircleArc()\n");
+//    Base::Console().Message("GU::edgeFromCircleArc()\n");
     gp_Pnt loc(c->center.x, c->center.y, c->center.z);
     gp_Dir dir(0,0,1);
     gp_Ax1 axis(loc, dir);
@@ -1257,9 +1258,6 @@ TopoDS_Edge GeometryUtils::edgeFromCircleArc(TechDraw::AOC* c)
     circle.SetAxis(axis);
     circle.SetRadius(c->radius);
     Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
-    Base::Console().Message("GU::edgeFromCircleArc - startAngle: %.3f endAngle: %.3f\n",c->startAngle,c->endAngle);
-//    double startAngle = c->startAngle * M_PI / 180.0;          //to radians
-//    double endAngle = c->endAngle * M_PI / 180.0;
     double startAngle = c->startAngle;
     double endAngle = c->endAngle;
     BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, startAngle, endAngle);
