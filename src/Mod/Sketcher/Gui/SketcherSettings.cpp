@@ -83,7 +83,7 @@ SketcherSettings::SketcherSettings(QWidget* parent)
     connect(ui->btnTVApply, SIGNAL(clicked(bool)), this, SLOT(onBtnTVApplyClicked(bool)));
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 SketcherSettings::~SketcherSettings()
@@ -223,6 +223,7 @@ void SketcherSettingsColors::saveSettings()
     ui->NonDrivingConstraintColor->onSave();
     ui->DatumColor->onSave();
     ui->ExprBasedConstrDimColor->onSave();
+    ui->DeactivatedConstrDimColor->onSave();
 
     ui->SketcherDatumWidth->onSave();
     ui->DefaultSketcherVertexWidth->onSave();
@@ -248,6 +249,7 @@ void SketcherSettingsColors::loadSettings()
     ui->NonDrivingConstraintColor->onRestore();
     ui->DatumColor->onRestore();
     ui->ExprBasedConstrDimColor->onRestore();
+    ui->DeactivatedConstrDimColor->onRestore();
 
     ui->SketcherDatumWidth->onRestore();
     ui->DefaultSketcherVertexWidth->onRestore();
