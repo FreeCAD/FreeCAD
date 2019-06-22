@@ -377,12 +377,157 @@ PyObject* ViewProviderPy::claimChildren(PyObject* args)
     return Py::new_reference_to(ret);
 }
 
+PyObject* ViewProviderPy::partialRender(PyObject* args)
+{
+    PyObject *value = Py_None;
+    PyObject *clear = Py_False;
+    if (!PyArg_ParseTuple(args, "|OO",&value,&clear))
+        return NULL;                     // NULL triggers exception
+
+    std::vector<std::string> values;
+    if(value != Py_None) {
+        PyObject *item = 0;
+        Py_ssize_t nSize;
+        if (PyList_Check(value) || PyTuple_Check(value))
+            nSize = PySequence_Size(value);
+        else {
+            item = value;
+            value = 0;
+            nSize = 1;
+        }
+        values.resize(nSize);
+        for (Py_ssize_t i = 0; i < nSize; ++i) {
+            if(value) item = PySequence_GetItem(value, i);
+            if (PyUnicode_Check(item)) {
+#if PY_MAJOR_VERSION >= 3
+                values[i] = PyUnicode_AsUTF8(item);
+#else
+                PyObject* unicode = PyUnicode_AsUTF8String(item);
+                values[i] = PyString_AsString(unicode);
+                Py_DECREF(unicode);
+#endif
+            }
+#if PY_MAJOR_VERSION < 3
+            else if (PyString_Check(item)) {
+                values[i] = PyString_AsString(item);
+            }
+#endif
+            else {
+                std::string error = std::string("type must be str or unicode");
+                if(item) {
+                    error += " not, ";
+                    error += item->ob_type->tp_name;
+                }
+                throw Base::TypeError(error + item->ob_type->tp_name);
+            }
+        }
+    }
+
+    Py::Int ret(getViewProviderPtr()->partialRender(values,PyObject_IsTrue(clear)));
+    return Py::new_reference_to(ret);
+}
+
+PyObject* ViewProviderPy::getElementColors(PyObject* args)
+{
+    const char *element = 0;
+    if (!PyArg_ParseTuple(args, "|s", &element)) 
+        return 0;
+
+    Py::Dict dict;
+    for(auto &v : getViewProviderPtr()->getElementColors(element)) {
+        auto &c = v.second;
+        dict.setItem(Py::String(v.first),
+                Py::TupleN(Py::Float(c.r),Py::Float(c.g),Py::Float(c.b),Py::Float(c.a)));
+    }
+    return Py::new_reference_to(dict);
+}
+
+PyObject* ViewProviderPy::setElementColors(PyObject* args)
+{
+    PyObject *pyObj;
+    if (!PyArg_ParseTuple(args, "O", &pyObj)) 
+        return 0;
+
+    if(!PyDict_Check(pyObj))
+        throw Py::TypeError("Expect a dict");
+
+    std::map<std::string,App::Color> colors;
+    Py::Dict dict(pyObj);
+    for(auto it=dict.begin();it!=dict.end();++it) {
+        const auto &value = *it;
+        if(!value.first.isString() || !value.second.isSequence())
+            throw Py::TypeError("Expect the dictonary contain items of type elementName:(r,g,b,a)");
+
+        App::PropertyColor prop;
+        prop.setPyObject(value.second.ptr());
+        colors[value.first.as_string()] = prop.getValue();
+    }
+    getViewProviderPtr()->setElementColors(colors);
+    Py_Return;
+}
+
+PyObject* ViewProviderPy::getElementPicked(PyObject* args)
+{
+    PyObject *obj;
+    if (!PyArg_ParseTuple(args, "O",&obj))
+        return NULL;
+    void *ptr = 0;
+    Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPickedPoint", obj, &ptr, 0);
+    SoPickedPoint *pp = reinterpret_cast<SoPickedPoint*>(ptr);
+    if(!pp) 
+        throw Base::TypeError("type must be of coin.SoPickedPoint");
+    std::string name;
+    if(!getViewProviderPtr()->getElementPicked(pp,name))
+        Py_Return;
+    return Py::new_reference_to(Py::String(name));
+}
+
+PyObject* ViewProviderPy::getDetailPath(PyObject* args)
+{
+    const char *sub;
+    PyObject *path;
+    PyObject *append = Py_True;
+    if (!PyArg_ParseTuple(args, "sO|O",&sub,&path,&append))
+        return NULL;
+    void *ptr = 0;
+    Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPath", path, &ptr, 0);
+    SoPath *pPath = reinterpret_cast<SoPath*>(ptr);
+    if(!pPath) 
+        throw Base::TypeError("type must be of coin.SoPath");
+    SoDetail *det = 0;
+    if(!getViewProviderPtr()->getDetailPath(
+            sub,static_cast<SoFullPath*>(pPath),PyObject_IsTrue(append),det))
+    {
+        if(det) delete det;
+        Py_Return;
+    }
+    if(!det)
+        return Py::new_reference_to(Py::True());
+    return Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoDetail", (void*)det, 0);
+}
+
 PyObject *ViewProviderPy::signalChangeIcon(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     getViewProviderPtr()->signalChangeIcon();
     Py_Return;
+}
+
+PyObject *ViewProviderPy::getBoundingBox(PyObject *args) {
+    PyObject *transform=Py_True;
+    PyObject *pyView = 0;
+    const char *subname = 0;
+    if (!PyArg_ParseTuple(args, "|sOO!", &subname,&transform,View3DInventorPy::type_object(),&pyView))
+        return NULL;
+    PY_TRY {
+        View3DInventor *view = 0;
+        if(pyView)
+            view = static_cast<View3DInventorPy*>(pyView)->getView3DIventorPtr();
+        auto bbox = getViewProviderPtr()->getBoundingBox(subname,PyObject_IsTrue(transform),view);
+        Py::Object ret(new Base::BoundBoxPy(new Base::BoundBox3d(bbox)));
+        return Py::new_reference_to(ret);
+    } PY_CATCH;
 }
 
 PyObject *ViewProviderPy::doubleClicked(PyObject *args) {
