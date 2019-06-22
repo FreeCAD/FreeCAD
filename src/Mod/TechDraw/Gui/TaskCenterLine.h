@@ -109,8 +109,9 @@ protected:
     void updateCenterLine(void);
     void removeCenterLine(void);
     TechDraw::CosmeticEdge* calcEndPoints(std::vector<std::string> faceNames,
-                                        bool vert,
-                                        double ext);
+                                          bool vert, double ext,
+                                          double hShift, double vShift,
+                                          double rotate);
 
    void saveState(void);
    void restoreState(void);

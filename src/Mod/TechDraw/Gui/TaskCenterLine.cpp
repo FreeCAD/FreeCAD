@@ -34,6 +34,7 @@
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -197,6 +198,8 @@ void TaskCenterLine::setUiPrimary()
     ui->dsbWeight->setValue(getCenterWidth());
     ui->cboxStyle->setCurrentIndex(getCenterStyle());
     ui->qsbExtend->setValue(getExtendBy());
+    int precision = Base::UnitsApi::getDecimals();
+    ui->dsbRotate->setDecimals(precision);
 }
 
 //void TaskCenterLine::enableVPUi(bool b)
@@ -227,8 +230,13 @@ void TaskCenterLine::createCenterLine(void)
     if (ui->rbVertical->isChecked()) {
         vertical = true;
     }
+    double hShift = ui->qsbHorizShift->rawValue();
+    double vShift = ui->qsbVertShift->rawValue();
+    double rotate = ui->dsbRotate->value();
     m_extendBy = ui->qsbExtend->rawValue();
-    TechDraw::CosmeticEdge* ce = calcEndPoints(m_subNames,vertical,m_extendBy);
+    TechDraw::CosmeticEdge* ce = calcEndPoints(m_subNames,vertical,
+                                               m_extendBy,
+                                               hShift, vShift, rotate);
     m_partFeat->addCosmeticEdge(ce);
     m_partFeat->requestPaint();
     Gui::Command::updateActive();
@@ -287,7 +295,10 @@ void TaskCenterLine::enableTaskButtons(bool b)
     m_btnCancel->setEnabled(b);
 }
 
-TechDraw::CosmeticEdge* TaskCenterLine::calcEndPoints(std::vector<std::string> faceNames, bool vert, double ext)
+TechDraw::CosmeticEdge* TaskCenterLine::calcEndPoints(std::vector<std::string> faceNames, 
+                                                      bool vert, double ext,
+                                                      double hShift, double vShift,
+                                                      double rotate)
 {
 //    Base::Console().Message("TCL::calcEndPoints(%d, %d) \n",faceNames.size(), vert);
     TechDraw::CosmeticEdge* result = nullptr;
@@ -296,6 +307,9 @@ TechDraw::CosmeticEdge* TaskCenterLine::calcEndPoints(std::vector<std::string> f
     faceBox.SetGap(0.0);
 
     double scale = m_partFeat->getScale();
+    double hss = hShift * scale;
+    double vss = vShift * scale;
+
 
     for (auto& fn: faceNames) {
         if (TechDraw::DrawUtil::getGeomTypeFromName(fn) != "Face") {
@@ -324,19 +338,31 @@ TechDraw::CosmeticEdge* TaskCenterLine::calcEndPoints(std::vector<std::string> f
     Yspan = (Yspan / 2.0) + ext;
     double Ymid = Ymin + fabs(Ymax - Ymin) / 2.0;
 
-    Base::Vector3d bbxCenter(Xmid, Ymid, 0.0);
-
     Base::Vector3d p1, p2;
     if (vert) {
-        Base::Vector3d top(Xmid, Ymid - Yspan, 0.0);
-        Base::Vector3d bottom(Xmid, Ymid + Yspan, 0.0);
+        Base::Vector3d top(Xmid + hss, (Ymid - Yspan) + vss, 0.0);
+        Base::Vector3d bottom(Xmid + hss, (Ymid + Yspan) + vss, 0.0);
         p1 = top;
         p2 = bottom;
     } else {
-        Base::Vector3d left(Xmid - Xspan, Ymid, 0.0);
-        Base::Vector3d right(Xmid + Xspan, Ymid, 0.0);
+        Base::Vector3d left((Xmid - Xspan) + hss, Ymid + vss, 0.0);
+        Base::Vector3d right((Xmid + Xspan) + hss, Ymid + vss, 0.0);
         p1 = left;
         p2 = right;
+    }
+
+    Base::Vector3d bbxCenter(Xmid, Ymid, 0.0);
+    if (!DrawUtil::fpCompare(rotate, 0.0)) {
+        double cosTheta = cos(rotate * M_PI / 180.0);
+        double sinTheta = sin(rotate * M_PI / 180.0);
+        Base::Vector3d toOrg = p1 - bbxCenter;
+        double xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
+        double yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
+        p1 = Base::Vector3d(xRot, yRot, 0.0) + bbxCenter;
+        toOrg = p2 - bbxCenter;
+        xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
+        yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
+        p2 = Base::Vector3d(xRot, yRot, 0.0) + bbxCenter;
     }
 
     result = new TechDraw::CosmeticEdge(p1 / scale, p2 / scale);  //p1 & p2 are as found in GO.
