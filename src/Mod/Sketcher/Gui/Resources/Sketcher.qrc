@@ -159,7 +159,7 @@
         <file>icons/Sketcher_MirrorSketch.svg</file>
         <file>icons/Sketcher_Move.svg</file>
         <file>icons/Sketcher_NewSketch.svg</file>
-	<file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
+        <file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
         <file>icons/Sketcher_Parabolic_Arc.svg</file>
         <file>icons/Sketcher_Parabolic_Arc_Constr.svg</file>
         <file>icons/Sketcher_ProfilesHexagon1.svg</file>
@@ -175,6 +175,7 @@
         <file>icons/Sketcher_Sketch.svg</file>
         <file>icons/Sketcher_SwitchVirtualSpace.svg</file>
         <file>icons/Sketcher_Symmetry.svg</file>
+        <file>icons/Sketcher_ToggleActiveConstraint.svg</file>
         <file>icons/Sketcher_ToggleConstraint.svg</file>
         <file>icons/Sketcher_ToggleConstruction.svg</file>
         <file>icons/Sketcher_ToggleNormal.svg</file>
@@ -209,6 +210,7 @@
         <file>icons/small/Constraint_VerticalDistance_sm.xpm</file>
         <file>icons/small/Constraint_Vertical_sm.xpm</file>
         <file>translations/Sketcher_af.qm</file>
+        <file>translations/Sketcher_ar.qm</file>
         <file>translations/Sketcher_ca.qm</file>
         <file>translations/Sketcher_cs.qm</file>
         <file>translations/Sketcher_de.qm</file>
@@ -241,9 +243,8 @@
         <file>translations/Sketcher_tr.qm</file>
         <file>translations/Sketcher_uk.qm</file>
         <file>translations/Sketcher_val-ES.qm</file>
+        <file>translations/Sketcher_vi.qm</file>
         <file>translations/Sketcher_zh-CN.qm</file>
         <file>translations/Sketcher_zh-TW.qm</file>
-        <file>translations/Sketcher_ar.qm</file>
-        <file>translations/Sketcher_vi.qm</file>
     </qresource>
 </RCC> 
