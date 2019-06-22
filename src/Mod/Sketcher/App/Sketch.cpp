@@ -1506,7 +1506,7 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList,
 
     int cid = 0;
     for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++cid) {
-        if (!unenforceableConstraints[cid] && (*it)->Type != Block) {
+        if (!unenforceableConstraints[cid] && (*it)->Type != Block && (*it)->isActive == true) {
             rtn = addConstraint (*it);
 
             if(rtn == -1) {
