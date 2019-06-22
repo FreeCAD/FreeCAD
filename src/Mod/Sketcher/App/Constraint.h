@@ -143,6 +143,8 @@ public:
     int InternalAlignmentIndex; // Note: for InternalAlignment Type this index indexes equal internal geometry elements (e.g. index of pole in a bspline). It is not a GeoId!!
     bool isInVirtualSpace;
 
+    bool isActive;
+
 protected:
     boost::uuids::uuid tag;
 };
