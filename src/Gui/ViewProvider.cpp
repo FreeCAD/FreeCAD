@@ -30,12 +30,14 @@
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/details/SoDetail.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/events/SoLocation2Event.h>
 # include <Inventor/actions/SoGetMatrixAction.h>
 # include <Inventor/actions/SoSearchAction.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -55,6 +57,7 @@
 #include "View3DInventorViewer.h"
 #include "SoFCDB.h"
 #include "ViewProviderExtension.h"
+#include "ViewParams.h"
 
 #include <boost/bind.hpp>
 
@@ -883,11 +886,153 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren3D(void) const
     }
     return vec;
 }
+bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
+    if(!isSelectable()) return false;
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        if(ext->extensionGetElementPicked(pp,subname))
+            return true;
+    subname = getElement(pp?pp->getDetail():0);
+    return true;
+}
+
+bool ViewProvider::getDetailPath(const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const {
+    if(pcRoot->findChild(pcModeSwitch) < 0) {
+        // this is possible in case of editing, where the switch node
+        // of the linked view object is temporarily removed from its root
+        // if(append)
+        //     pPath->append(pcRoot);
+        return false;
+    }
+    if(append) {
+        pPath->append(pcRoot);
+        pPath->append(pcModeSwitch);
+    }
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        if(ext->extensionGetDetailPath(subname,pPath,det))
+            return true;
+    det = getDetail(subname);
+    return true;
+}
+
+const std::string &ViewProvider::hiddenMarker() {
+    return App::DocumentObject::hiddenMarker();
+}
+
+const char *ViewProvider::hasHiddenMarker(const char *subname) {
+    return App::DocumentObject::hasHiddenMarker(subname);
+}
+
+int ViewProvider::partialRender(const std::vector<std::string> &elements, bool clear) {
+    if(elements.empty()) {
+        auto node = pcModeSwitch->getChild(_iActualMode);
+        if(node) {
+            FC_LOG("partial render clear");
+            SoSelectionElementAction action(SoSelectionElementAction::None,true);
+            action.apply(node);
+        }
+    }
+    int count = 0;
+    SoFullPath *path = static_cast<SoFullPath*>(new SoPath);
+    path->ref();
+    SoSelectionElementAction action;
+    action.setSecondary(true);
+    for(auto element : elements) {
+        bool hidden = hasHiddenMarker(element.c_str());
+        if(hidden) 
+            element.resize(element.size()-hiddenMarker().size());
+        path->truncate(0);
+        SoDetail *det = 0;
+        if(getDetailPath(element.c_str(),path,false,det)) {
+            if(!hidden && !det) {
+                FC_LOG("partial render element not found: " << element);
+                continue;
+            }
+            FC_LOG("partial render (" << path->getLength() << "): " << element);
+            if(!hidden) 
+                action.setType(clear?SoSelectionElementAction::Remove:SoSelectionElementAction::Append);
+            else
+                action.setType(clear?SoSelectionElementAction::Show:SoSelectionElementAction::Hide);
+            action.setElement(det);
+            action.apply(path);
+            ++count;
+        }
+        delete det;
+    }
+    path->unref();
+    return count;
+}
+
+bool ViewProvider::useNewSelectionModel() const {
+    return ViewParams::instance()->getUseNewSelection();
+}
 
 void ViewProvider::beforeDelete() {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector)
         ext->extensionBeforeDelete();
+}
+
+Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transform, MDIView *view) const {
+    if(!pcRoot || !pcModeSwitch || pcRoot->findChild(pcModeSwitch)<0)
+        return Base::BoundBox3d();
+
+    if(!view)
+        view  = Application::Instance->activeView();
+    auto iview = dynamic_cast<View3DInventor*>(view);
+    if(!iview) {
+        auto doc = Application::Instance->activeDocument();
+        if(doc) {
+            auto views = doc->getMDIViewsOfType(View3DInventor::getClassTypeId());
+            if(views.size())
+                iview = dynamic_cast<View3DInventor*>(views.front());
+        }
+        if(!iview) {
+            FC_ERR("no view");
+            return Base::BoundBox3d();
+        }
+    }
+
+    View3DInventorViewer* viewer = iview->getViewer();
+    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
+
+    auto mode = pcModeSwitch->whichChild.getValue();
+    if(mode < 0)
+        pcModeSwitch->whichChild = getDefaultMode();
+
+    SoTempPath path(20);
+    path.ref();
+    if(subname && subname[0]) {
+        SoDetail *det=0;
+        if(!getDetailPath(subname,&path,true,det)) {
+            if(mode < 0)
+                pcModeSwitch->whichChild = mode;
+            path.unrefNoDelete();
+            return Base::BoundBox3d();
+        }
+        delete det;
+    }
+    SoTempPath resetPath(3);
+    resetPath.ref();
+    if(!transform) {
+        resetPath.append(pcRoot);
+        resetPath.append(pcModeSwitch);
+        bboxAction.setResetPath(&resetPath,true,SoGetBoundingBoxAction::TRANSFORM);
+    }
+    if(path.getLength())
+        bboxAction.apply(&path);
+    else
+        bboxAction.apply(pcRoot);
+    if(mode < 0)
+        pcModeSwitch->whichChild = mode;
+    resetPath.unrefNoDelete();
+    path.unrefNoDelete();
+    auto bbox = bboxAction.getBoundingBox();
+    float minX,minY,minZ,maxX,maxY,maxZ;
+    bbox.getMax().getValue(maxX,maxY,maxZ);
+    bbox.getMin().getValue(minX,minY,minZ);
+    return Base::BoundBox3d(minX,minY,minZ,maxX,maxY,maxZ);
 }
 
 bool ViewProvider::isLinkVisible() const {
