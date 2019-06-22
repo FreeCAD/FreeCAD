@@ -1341,12 +1341,12 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
             // check if the edge already has a Horizontal/Vertical/Block constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
-                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId){
+                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                         QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId) {
+                if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                          QObject::tr("The selected edge already has a vertical constraint!"));
                     return;
@@ -1588,12 +1588,12 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
             // check if the edge already has a Horizontal or Vertical constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
-                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId){
+                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                          QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId) {
+                if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                                          QObject::tr("The selected edge already has a vertical constraint!"));
                     return;
