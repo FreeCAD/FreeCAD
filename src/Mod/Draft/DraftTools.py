@@ -5569,17 +5569,9 @@ class Draft_Arc_3Points:
             FreeCAD.ActiveDocument.recompute()
 
     def drawArc(self,point,info):
-
         if len(self.points) == 2:
-            import Part
             if point.sub(self.points[1]).Length > 0.001:
-                e = Part.Arc(self.points[0],self.points[1],point).toShape()
-                self.tracker.normal = e.Curve.Axis.negative() # for some reason the axis always points "backwards"
-                self.tracker.basevector = self.tracker.getDeviation()
-                self.tracker.setCenter(e.Curve.Center)
-                self.tracker.setRadius(e.Curve.Radius)
-                self.tracker.setStartPoint(self.points[0])
-                self.tracker.setEndPoint(point)
+                self.tracker.setBy3Points(self.points[0],self.points[1],point)
 
 
 #---------------------------------------------------------------------------
