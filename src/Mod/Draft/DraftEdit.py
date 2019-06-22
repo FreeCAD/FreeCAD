@@ -367,7 +367,8 @@ class Edit():
             return bsplineTracker()
         elif Draft.getType(obj) == "BezCurve":
             return bezcurveTracker()
-            
+        elif Draft.getType(obj) == "Circle":
+            return arcTracker()            
 
     def updateGhost(self,obj,idx,pt):
         if Draft.getType(obj) in ["Wire"]:
@@ -387,6 +388,42 @@ class Edit():
             plist = self.applyPlacement(obj.Points)
             pointList = self.recomputePointsBezier(plist,idx,pt,obj.Degree,moveTrackers=True)
             self.ghost.update(pointList,obj.Degree)
+        elif Draft.getType(obj) == "Circle":
+            self.ghost.on()
+            if self.arc3Pt == False:
+                self.ghost.setCenter(obj.Placement.Base)
+                self.ghost.setRadius(obj.Radius)
+                self.ghost.setStartAngle(math.radians(obj.FirstAngle))
+                self.ghost.setEndAngle(math.radians(obj.LastAngle))
+                if self.editing == 0:
+                    self.ghost.setCenter(pt)
+                elif self.editing == 1:
+                    self.ghost.setStartPoint(pt)
+                elif self.editing == 2:
+                    self.ghost.setEndPoint(pt)
+                elif self.editing == 3:
+                    self.ghost.setRadius(self.invpl.multVec(pt).Length)
+            elif self.arc3Pt == True:
+                if self.editing == 0:#center point
+                    import DraftVecUtils
+                    p1 = self.invpl.multVec(self.obj.Shape.Vertexes[0].Point)
+                    p2 = self.invpl.multVec(self.obj.Shape.Vertexes[1].Point)
+                    p0 = DraftVecUtils.project(self.invpl.multVec(pt),self.invpl.multVec(self.getArcMid()))
+                    self.ghost.autoinvert=False
+                    self.ghost.setRadius(p1.sub(p0).Length)
+                    self.ghost.setStartPoint(self.obj.Shape.Vertexes[1].Point)
+                    self.ghost.setEndPoint(self.obj.Shape.Vertexes[0].Point)
+                    self.ghost.setCenter(self.pl.multVec(p0))
+                    return
+                else:
+                    p1=self.obj.Shape.Vertexes[0].Point
+                    p2=self.getArcMid()
+                    p3=self.obj.Shape.Vertexes[1].Point                    
+                    if self.editing == 1: p1=pt
+                    elif self.editing == 3: p2=pt
+                    elif self.editing == 2: p3=pt
+                    self.ghost.setBy3Points(p1,p2,p3)
+
         DraftTools.redraw3DView()
 
     def applyPlacement(self,pointList):
@@ -552,6 +589,7 @@ class Edit():
             FreeCADGui.ActiveDocument.ActiveView.redraw()
         except AttributeError as err:
             pass
+
     #---------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Line/Wire/Bspline/Bezcurve
     #---------------------------------------------------------------------------
@@ -889,7 +927,8 @@ class Edit():
                         p1=self.obj.Shape.Vertexes[0].Point
                         p2=self.getArcMid()
                         p3=v
-                    arc=Part.ArcOfCircle(p1,p2,p3)#object is a support, do i have to delete it someway after?
+                    arc=Part.ArcOfCircle(p1,p2,p3)
+                    e = arc.toShape()
                     self.obj.Placement.Base=arc.Center
                     self.getPlacement(self.obj)
                     self.obj.Radius = arc.Radius
@@ -898,7 +937,8 @@ class Edit():
                     delta = self.invpl.multVec(p3)
                     dangleL = math.degrees(math.atan2(delta[1],delta[0]))
                     self.obj.FirstAngle = dangleF
-                    self.obj.LastAngle = dangleL                    
+                    self.obj.LastAngle = dangleL
+                    FreeCAD.Console.PrintMessage("Press I to invert the circle")#workaround until i find a proper way
                     self.updateCirclePts()
 
     def getArcMid(self):#Returns object midpoint
@@ -914,9 +954,7 @@ class Edit():
             return(midPoint)
             
     def arcInvert(self):
-        FA=self.obj.FirstAngle
-        self.obj.FirstAngle=self.obj.LastAngle
-        self.obj.LastAngle=FA
+        self.obj.FirstAngle, self.obj.LastAngle = self.obj.LastAngle, self.obj.FirstAngle
         self.obj.recompute()
         self.trackers[1].set(self.obj.Shape.Vertexes[0].Point)
         self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
