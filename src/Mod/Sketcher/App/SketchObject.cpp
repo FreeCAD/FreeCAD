@@ -5140,7 +5140,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
 
     for (std::vector<Part::Geometry *>::const_iterator it=svals.begin(); it != svals.end(); ++it){
         Part::Geometry *geoNew = (*it)->copy();
-        if(construction) {
+        if(construction && geoNew->getTypeId() != Part::GeomPoint::getClassTypeId()) {
             geoNew->Construction = true;
         }
         newVals.push_back(geoNew);
