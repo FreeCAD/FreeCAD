@@ -24,9 +24,10 @@
 #ifndef GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
 #define GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
 
+#include <Inventor/SoType.h>
+
 #include "ViewProvider.h"
 #include <App/DocumentObject.h>
-#include <Inventor/SoType.h>
 
 class SoMaterial;
 class SoDrawStyle;
@@ -59,15 +60,25 @@ public:
     // Display properties
     App::PropertyEnumeration DisplayMode;
     App::PropertyBool Visibility;
+    App::PropertyBool ShowInTree;
+    App::PropertyEnumeration OnTopWhenSelected;
 
     virtual void attach(App::DocumentObject *pcObject);
-    virtual void updateData(const App::Property*);
+    virtual void reattach(App::DocumentObject *);
+    virtual void update(const App::Property*) override;
     /// Set the active mode, i.e. the first item of the 'Display' property.
     void setActiveMode();
     /// Hide the object in the view
     virtual void hide(void);
     /// Show the object in the view
     virtual void show(void);
+
+    virtual bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *, 
+            const char *, const std::vector<std::string> &) const override;
+
+    virtual int replaceObject(App::DocumentObject*, App::DocumentObject*) override;
+
+    virtual bool showInTree() const;
 
     /// Get a list of TaskBoxes associated with this object
     virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const;
@@ -83,6 +94,22 @@ public:
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject();
 
+    /// return a hit element given the picked point which contains the full node path
+    virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const override;
+    /// return the coin node detail and path to the node of the subname
+    virtual bool getDetailPath(const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const override;
+
+    /* Force update visual
+     *
+     * These method exists because some view provider skips visual update when
+     * hidden (e.g. PartGui::ViewProviderPartExt). Call this function to force
+     * visual update.
+     */
+    //@{
+    virtual void forceUpdate(bool enable = true) {(void)enable;}
+    virtual bool isUpdateForced() const {return false;}
+    //@}
+
     /** @name Restoring view provider from document load */
     //@{
     virtual void startRestoring();
@@ -95,6 +122,20 @@ public:
             const char* type, const char* name=0,
             const char* group=0, const char* doc=0,
             short attr=0, bool ro=false, bool hidden=false) override;
+
+    /** Return the linked view object
+     *
+     * This function is mainly used for GUI navigation (e.g.
+     * StdCmdLinkSelectLinked). 
+     *
+     * @param subname: output as the subname referencing the linked object
+     * @param recursive: whether to follow the link recursively
+     *
+     * @return Returns the linked view provider. If none, it shall return
+     * itself.
+     */
+    virtual ViewProviderDocumentObject *getLinkedViewProvider(
+            std::string *subname=0, bool recursive=false) const;
 
     virtual std::string getFullName() const override;
 
