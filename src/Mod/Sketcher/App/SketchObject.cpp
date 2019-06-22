@@ -420,6 +420,64 @@ int SketchObject::testDrivingChange(int ConstrId, bool isdriving)
     return 0;
 }
 
+int SketchObject::setActive(int ConstrId, bool isactive)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    // copy the list
+    std::vector<Constraint *> newVals(vals);
+    // clone the changed Constraint
+    Constraint *constNew = vals[ConstrId]->clone();
+    constNew->isActive = isactive;
+    newVals[ConstrId] = constNew;
+    this->Constraints.setValues(newVals);
+
+    delete constNew;
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+
+    return 0;
+}
+
+int SketchObject::getActive(int ConstrId, bool &isactive)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    isactive = vals[ConstrId]->isActive;
+
+    return 0;
+}
+
+int SketchObject::toggleActive(int ConstrId)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    // copy the list
+    std::vector<Constraint *> newVals(vals);
+    // clone the changed Constraint
+    Constraint *constNew = vals[ConstrId]->clone();
+    constNew->isActive = !constNew->isActive;
+    newVals[ConstrId] = constNew;
+    this->Constraints.setValues(newVals);
+
+    delete constNew;
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+
+    return 0;
+}
+
 
 /// Make all dimensionals Driving/non-Driving
 int SketchObject::setDatumsDriving(bool isdriving)
