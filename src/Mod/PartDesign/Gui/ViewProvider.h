@@ -40,7 +40,7 @@ class TaskDlgFeatureParameters;
 class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart, PartGui::ViewProviderAttachExtension
 {
     typedef PartGui::ViewProviderPart inherited;
-    PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProvider);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProvider);
 
 public:
     /// constructor
@@ -48,9 +48,9 @@ public:
     /// destructor
     virtual ~ViewProvider();
 
-    virtual bool doubleClicked(void);
-    void updateData(const App::Property*);
-    void onChanged(const App::Property* prop);
+    virtual bool doubleClicked(void) override;
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property* prop) override;
 
     void setTipIcon(bool onoff);
 
@@ -68,14 +68,14 @@ public:
     //Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
     ViewProviderBody* getBodyViewProvider();
 
-    virtual PyObject* getPyObject(void);
+    virtual PyObject* getPyObject(void) override;
 
 protected:
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    virtual bool setEdit(int ModNum) override;
+    virtual void unsetEdit(int ModNum) override;
 
-    virtual bool onDelete(const std::vector<std::string> &);
+    virtual bool onDelete(const std::vector<std::string> &) override;
 
     virtual QIcon mergeOverlayIcons (const QIcon & orig) const override;
 
