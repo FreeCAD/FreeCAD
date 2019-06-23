@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #endif
 
+#include "OCCError.h"
 #include "PartPyCXX.h"
 #include "DatumFeature.h"
 
@@ -74,21 +75,14 @@ App::DocumentObject *Datum::getSubObject(const char *subname,
     if(!pyObj)
         return const_cast<Datum*>(this);
 
-    try {
+    Base::PyGILStateLocker lock;
+    PY_TRY {
         TopoShape ts(getShape().Located(TopLoc_Location()));
         if(pmat && !ts.isNull()) 
             ts.transformShape(*pmat,false,true);
         *pyObj =  Py::new_reference_to(shape2pyshape(ts.getShape()));
         return const_cast<Datum*>(this);
-    }catch(Standard_Failure &e) {
-        std::string str;
-        Standard_CString msg = e.GetMessageString();
-        str += typeid(e).name();
-        str += " ";
-        if (msg) {str += msg;}
-        else     {str += "No OCCT Exception Message";}
-        throw Base::CADKernelError(str.c_str());
-    }
+    } PY_CATCH_OCC
 }
 
 Base::Vector3d Datum::getBasePoint () const {

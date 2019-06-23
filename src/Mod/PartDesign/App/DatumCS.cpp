@@ -96,6 +96,8 @@ App::DocumentObject *CoordinateSystem::getSubObject(const char *subname,
         else if(strcmp(subname,"Y")==0)
             dir = gp_Dir(0,1,0);
     }
+
+    Base::PyGILStateLocker lock;
     PY_TRY {
         BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), dir));
         Part::TopoShape ts(builder.Shape());
