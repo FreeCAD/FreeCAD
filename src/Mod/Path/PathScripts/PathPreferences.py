@@ -167,6 +167,6 @@ def experimentalFeaturesEnabled():
     try:
         import ocl
         return preferences().GetBool(EnableExperimentalFeatures, False)
-    except:
+    except ImportError:
         FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
         return False

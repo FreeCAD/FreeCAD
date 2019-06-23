@@ -119,7 +119,7 @@ class PathSimulation:
         self.operation = self.activeOps[itool]
         try:
             self.tool = PathDressup.toolController(self.operation).Tool
-        except:
+        except Exception:
             self.tool = None
 
         # if hasattr(self.operation, "ToolController"):
@@ -214,7 +214,7 @@ class PathSimulation:
             try:
                 if newStock.isValid():
                     self.stock = newStock.removeSplitter()
-            except:
+            except Exception:
                 if self.debug:
                     print("invalid cut at cmd #{}".format(self.icmd))
         if not self.disableAnim:
@@ -345,7 +345,7 @@ class PathSimulation:
         try:
             startDir.normalize()
             endDir.normalize()
-        except:
+        except Exception:
             return (None, endPos)
         # height = self.height
 
@@ -367,7 +367,7 @@ class PathSimulation:
         pathWire = Part.Wire(toolPath)
         try:
             pathShell = pathWire.makePipeShell([fullProf], False, True)
-        except:
+        except Exception:
             if self.debug:
                 Part.show(pathWire)
                 Part.show(fullProf)

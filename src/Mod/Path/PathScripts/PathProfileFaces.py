@@ -32,14 +32,12 @@ import ArchPanel
 import FreeCAD
 import Part
 import Path
-# import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathProfileBase as PathProfileBase
 import PathScripts.PathUtils as PathUtils
 import numpy
 
-# from PathScripts.PathUtils import depth_params
 from PySide import QtCore
 
 __title__ = "Path Profile Faces Operation"
@@ -51,7 +49,9 @@ __created__ = "2014"
 __scriptVersion__ = "2h testing"
 __lastModified__ = "2019-06-18 22:36 CST"
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -325,8 +325,8 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         obj.AttemptInverseAngle = True
         obj.B_AxisErrorOverride = False
 
-    def checkDepths(self, obj, shape):
-        return (strDept, finDep)
+    # def checkDepths(self, obj, shape):
+    #     return (strDept, finDep)
 
 
 def SetupProperties():

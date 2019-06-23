@@ -38,7 +38,9 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of Mill Facing operation."
 
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -146,5 +148,5 @@ def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Mill Facing operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectFace(obj, name)
+    obj.Proxy = ObjectFace(obj, name)
     return obj

@@ -25,7 +25,6 @@
 import FreeCAD
 import FreeCADGui
 import Part
-import Path
 import PathScripts
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog

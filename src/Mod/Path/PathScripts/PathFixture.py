@@ -82,10 +82,6 @@ class _ViewProviderFixture:
     def getIcon(self):  # optional
         return ":/icons/Path-Datums.svg"
 
-#    def attach(self): #optional
-#        # this is executed on object creation and object load from file
-#        pass
-
     def onChanged(self, vobj, prop):  # optional
         mode = 2
         vobj.setEditorMode('LineWidth', mode)

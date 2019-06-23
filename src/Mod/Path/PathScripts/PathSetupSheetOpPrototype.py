@@ -22,8 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-import Path
 import PathScripts.PathLog as PathLog
 
 __title__ = "Setup Sheet for a Job."
@@ -32,7 +30,9 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Prototype objects to allow extraction of setup sheet values and editing."
 
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:

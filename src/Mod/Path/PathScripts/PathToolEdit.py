@@ -25,11 +25,10 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import math
 
-from PySide import QtCore, QtGui
+from PySide import QtGui
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 #PathLog.trackModule(PathLog.thisModule())

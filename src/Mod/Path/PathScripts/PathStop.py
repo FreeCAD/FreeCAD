@@ -25,7 +25,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -47,7 +47,6 @@ class Stop:
 
     def onChanged(self, obj, prop):
         pass
-#        FreeCAD.ActiveDocument.recompute()
 
     def execute(self, obj):
         if obj.Stop == 'Optional':
@@ -64,7 +63,6 @@ class Stop:
 class _ViewProviderStop:
 
     def __init__(self, vobj):  # mandatory
-        #        obj.addProperty("App::PropertyFloat","SomePropertyName","PropertyGroup","Description of this property")
         vobj.Proxy = self
         mode = 2
         vobj.setEditorMode('LineWidth', mode)

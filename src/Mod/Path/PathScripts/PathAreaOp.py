@@ -56,7 +56,9 @@ __createdDate__ = "2017"
 __scriptVersion__ = "2g testing"
 __lastModified__ = "2019-06-13 15:37 CST"
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule()
 else:
@@ -738,7 +740,7 @@ class ObjectOp(PathOp.ObjectOp):
         if not FreeCAD.ActiveDocument.getObject('xAxCyl'):
             xAx = 'xAxCyl'
             yAx = 'yAxCyl'
-            zAx = 'zAxCyl'
+            # zAx = 'zAxCyl'
             FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "visualAxis")
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject('visualAxis').Visibility = False
@@ -772,20 +774,20 @@ class ObjectOp(PathOp.ObjectOp):
                 cylGui.Visibility = False
             vaGrp.addObject(cyl)
 
-            if False:
-                FreeCAD.ActiveDocument.addObject("Part::Cylinder", zAx)
-                cyl = FreeCAD.ActiveDocument.getObject(zAx)
-                cyl.Label = zAx
-                cyl.Radius = self.yRotRad
-                cyl.Height = 0.01
-                # cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(1,0,0),90))
-                cyl.purgeTouched()
-                if FreeCAD.GuiUp:
-                    cylGui = FreeCADGui.ActiveDocument.getObject(zAx)
-                    cylGui.ShapeColor = (0.000, 0.000, 0.498)
-                    cylGui.Transparency = 85
-                    cylGui.Visibility = False
-                vaGrp.addObject(cyl)
+#             if False:
+#                 FreeCAD.ActiveDocument.addObject("Part::Cylinder", zAx)
+#                 cyl = FreeCAD.ActiveDocument.getObject(zAx)
+#                 cyl.Label = zAx
+#                 cyl.Radius = self.yRotRad
+#                 cyl.Height = 0.01
+#                 # cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(1,0,0),90))
+#                 cyl.purgeTouched()
+#                 if FreeCAD.GuiUp:
+#                     cylGui = FreeCADGui.ActiveDocument.getObject(zAx)
+#                     cylGui.ShapeColor = (0.000, 0.000, 0.498)
+#                     cylGui.Transparency = 85
+#                     cylGui.Visibility = False
+#                 vaGrp.addObject(cyl)
 
     def useTempJobClones(self, cloneName):
         '''useTempJobClones(cloneName)

@@ -52,15 +52,15 @@ __created__ = "2017"
 __scriptVersion__ = "2g testing"
 __lastModified__ = "2019-06-12 23:29 CST"
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # Qt translation handling
-
-
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -469,20 +469,20 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             # Eif
                         # Efor
                 # Efor
-                if False:
-                    if False:
-                        (Tags, Grps) = self.sortTuplesByIndex(allTuples, 2)  # return (TagList, GroupList)
-                        subList = []
-                        for o in range(0, len(Tags)):
-                            subList = []
-                            for (base, sub, tag, angle, axis, stock) in Grps[o]:
-                                subList.append(sub)
-                            pair = base, subList, angle, axis, stock
-                            baseSubsTuples.append(pair)
-                    if False:
-                        for (bs, sb, tg, agl, ax, stk) in allTuples:
-                            pair = bs, [sb], agl, ax, stk
-                            baseSubsTuples.append(pair)
+                # if False:
+                #     if False:
+                #         (Tags, Grps) = self.sortTuplesByIndex(allTuples, 2)  # return (TagList, GroupList)
+                #         subList = []
+                #         for o in range(0, len(Tags)):
+                #             subList = []
+                #             for (base, sub, tag, angle, axis, stock) in Grps[o]:
+                #                 subList.append(sub)
+                #             pair = base, subList, angle, axis, stock
+                #             baseSubsTuples.append(pair)
+                #     if False:
+                #         for (bs, sb, tg, agl, ax, stk) in allTuples:
+                #             pair = bs, [sb], agl, ax, stk
+                #             baseSubsTuples.append(pair)
             # ----------------------------------------------------------------------
 
             for o in baseSubsTuples:
