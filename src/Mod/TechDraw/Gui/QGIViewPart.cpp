@@ -327,6 +327,7 @@ void QGIViewPart::draw() {
     drawViewPart();
     drawMatting();
     QGIView::draw();
+    //this is old C/L
     drawCenterLines(true);   //have to draw centerlines after border to get size correct.
     drawAllSectionLines();   //same for section lines
 }
@@ -418,58 +419,63 @@ void QGIViewPart::drawViewPart()
 
     // Draw Edges
     const std::vector<TechDraw::BaseGeom *> &geoms = viewPart->getEdgeGeometry();
-    std::vector<TechDraw::BaseGeom *>::const_iterator itEdge = geoms.begin();
+    std::vector<TechDraw::BaseGeom *>::const_iterator itGeom = geoms.begin();
     QGIEdge* item;
-    for(int i = 0 ; itEdge != geoms.end(); itEdge++, i++) {
+    for(int i = 0 ; itGeom != geoms.end(); itGeom++, i++) {
         bool showEdge = false;
-        if ((*itEdge)->visible) {
-            if (((*itEdge)->classOfEdge == ecHARD) ||
-                ((*itEdge)->classOfEdge == ecOUTLINE) ||
-                (((*itEdge)->classOfEdge == ecSMOOTH) && viewPart->SmoothVisible.getValue()) ||
-                (((*itEdge)->classOfEdge == ecSEAM) && viewPart->SeamVisible.getValue())    ||
-                (((*itEdge)->classOfEdge == ecUVISO) && viewPart->IsoVisible.getValue())) {
+        if ((*itGeom)->visible) {
+            if (((*itGeom)->classOfEdge == ecHARD) ||
+                ((*itGeom)->classOfEdge == ecOUTLINE) ||
+                (((*itGeom)->classOfEdge == ecSMOOTH) && viewPart->SmoothVisible.getValue()) ||
+                (((*itGeom)->classOfEdge == ecSEAM) && viewPart->SeamVisible.getValue())    ||
+                (((*itGeom)->classOfEdge == ecUVISO) && viewPart->IsoVisible.getValue())) {
                 showEdge = true;
             }
         } else {
-            if ( (((*itEdge)->classOfEdge == ecHARD) && (viewPart->HardHidden.getValue())) ||
-                 (((*itEdge)->classOfEdge == ecOUTLINE) && (viewPart->HardHidden.getValue())) ||
-                 (((*itEdge)->classOfEdge == ecSMOOTH) && (viewPart->SmoothHidden.getValue())) ||
-                 (((*itEdge)->classOfEdge == ecSEAM) && (viewPart->SeamHidden.getValue()))    ||
-                 (((*itEdge)->classOfEdge == ecUVISO) && (viewPart->IsoHidden.getValue())) ) {
+            if ( (((*itGeom)->classOfEdge == ecHARD) && (viewPart->HardHidden.getValue())) ||
+                 (((*itGeom)->classOfEdge == ecOUTLINE) && (viewPart->HardHidden.getValue())) ||
+                 (((*itGeom)->classOfEdge == ecSMOOTH) && (viewPart->SmoothHidden.getValue())) ||
+                 (((*itGeom)->classOfEdge == ecSEAM) && (viewPart->SeamHidden.getValue()))    ||
+                 (((*itGeom)->classOfEdge == ecUVISO) && (viewPart->IsoHidden.getValue())) ) {
                 showEdge = true;
             }
         }
         if (showEdge) {
             item = new QGIEdge(i);
             item->setWidth(lineWidth);
-            if ((*itEdge)->cosmetic == true) {
-                TechDraw::CosmeticEdge* ce = viewPart->getCosmeticEdgeByLink(i);
-                if (ce != nullptr) {
-                    item->setNormalColor(ce->m_format.m_color.asValue<QColor>());
-                    item->setWidth(ce->m_format.m_weight * lineScaleFactor);
-                    item->setStyle(ce->m_format.m_style);
-                } 
+                //TODO: implement formats for geom lines.
+            if ((*itGeom)->cosmetic == true) {
+                int source = (*itGeom)->source();
+                int sourceIndex = (*itGeom)->sourceIndex();
+                if (source == 1) {  //this is a "CosmeticEdge"
+                    formatGeomFromCosmetic(sourceIndex, item);
+                } else if (source == 2) { //this is a "CenterLine"
+                    formatGeomFromCenterLine(sourceIndex, item);
+                } else {
+                    Base::Console().Message("QGIVP::drawVP - edge: %d is confused - source: %d\n",i,source);
+                }
             }
-            addToGroup(item);                                                   //item is at scene(0,0), not group(0,0)
-            item->setPos(0.0,0.0);                                              //now at group(0,0)
-            item->setPath(drawPainterPath(*itEdge));
+            addToGroup(item);                       //item is at scene(0,0), not group(0,0)
+            item->setPos(0.0,0.0);                  //now at group(0,0)
+            item->setPath(drawPainterPath(*itGeom));
             item->setZValue(ZVALUE::EDGE);
-            if(!(*itEdge)->visible) {
+            if(!(*itGeom)->visible) {
                 item->setWidth(lineWidthHid);
                 item->setHiddenEdge(true);
                 item->setZValue(ZVALUE::HIDEDGE);
             }
-            if ((*itEdge)->classOfEdge == ecUVISO) {
+            if ((*itGeom)->classOfEdge == ecUVISO) {
                 item->setWidth(lineWidthIso);
             }
             item->setPrettyNormal();
             //debug a path
-//            QPainterPath edgePath=drawPainterPath(*itEdge);
+//            QPainterPath edgePath=drawPainterPath(*itGeom);
 //            std::stringstream edgeId;
 //            edgeId << "QGIVP.edgePath" << i;
 //            dumpPath(edgeId.str().c_str(),edgePath);
          }
     }
+
 
     // Draw Vertexs:
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
@@ -519,7 +525,7 @@ void QGIViewPart::drawViewPart()
         } else {        //regular Vertex
             if (showVertices) {
                 QGIVertex *item = new QGIVertex(i);
-                TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexByLink(i);
+                TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexByGeom(i);
                 if (cv != nullptr) {
                     item->setNormalColor(cv->color.asValue<QColor>());
                     item->setRadius(cv->size);
@@ -539,6 +545,30 @@ void QGIViewPart::drawViewPart()
     auto drefs = viewPart->getDetailRefs();
     for (auto& r:drefs) {
         drawHighlight(r, true);
+    }
+}
+
+void QGIViewPart::formatGeomFromCosmetic(int sourceIndex, QGIEdge* item)
+{
+//    Base::Console().Message("QGIVP::formatGeomFromCosmetic(%d)\n",sourceIndex);
+    auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
+    TechDraw::CosmeticEdge* ce = partFeat->getCosmeticEdgeByIndex(sourceIndex);
+    if (ce != nullptr) {
+        item->setNormalColor(ce->m_format.m_color.asValue<QColor>());
+        item->setWidth(ce->m_format.m_weight * lineScaleFactor);
+        item->setStyle(ce->m_format.m_style);
+    }
+}
+
+void QGIViewPart::formatGeomFromCenterLine(int sourceIndex, QGIEdge* item)
+{
+//    Base::Console().Message("QGIVP::formatGeomFromCenterLine(%d)\n",sourceIndex);
+    auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
+    TechDraw::CenterLine* cl = partFeat->getCenterLineByIndex(sourceIndex);
+    if (cl != nullptr) {
+        item->setNormalColor(cl->fmt.m_color.asValue<QColor>());
+        item->setWidth(cl->fmt.m_weight * lineScaleFactor);
+        item->setStyle(cl->fmt.m_style);
     }
 }
 

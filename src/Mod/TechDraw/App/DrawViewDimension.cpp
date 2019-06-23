@@ -261,7 +261,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         m_hasGeometry = true;
     } else if(Type.isValue("Radius")){
         int idx = DrawUtil::getIndexFromName(subElements[0]);
-        TechDraw::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
+        TechDraw::BaseGeom* base = getViewPart()->getGeomByIndex(idx);
         TechDraw::Circle* circle;
         arcPoints pts;
         pts.center = Base::Vector3d(0.0,0.0,0.0);
@@ -348,7 +348,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         m_hasGeometry = true;
     } else if(Type.isValue("Diameter")){
         int idx = DrawUtil::getIndexFromName(subElements[0]);
-        TechDraw::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
+        TechDraw::BaseGeom* base = getViewPart()->getGeomByIndex(idx);
         TechDraw::Circle* circle;
         arcPoints pts;
         pts.center = Base::Vector3d(0.0,0.0,0.0);
@@ -440,8 +440,8 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         }
         int idx0 = DrawUtil::getIndexFromName(subElements[0]);
         int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-        TechDraw::BaseGeom* edge0 = getViewPart()->getProjEdgeByIndex(idx0);
-        TechDraw::BaseGeom* edge1 = getViewPart()->getProjEdgeByIndex(idx1);
+        TechDraw::BaseGeom* edge0 = getViewPart()->getGeomByIndex(idx0);
+        TechDraw::BaseGeom* edge1 = getViewPart()->getGeomByIndex(idx1);
         TechDraw::Generic *gen0;
         TechDraw::Generic *gen1;
         if (edge0 && edge0->geomType == TechDraw::GeomType::GENERIC) {
@@ -723,7 +723,7 @@ pointPair DrawViewDimension::getPointsOneEdge()
 
     //TODO: Check for straight line Edge?
     int idx = DrawUtil::getIndexFromName(subElements[0]);
-    TechDraw::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
+    TechDraw::BaseGeom* geom = getViewPart()->getGeomByIndex(idx);
     TechDraw::Generic* gen;
     if (geom && geom->geomType == TechDraw::GeomType::GENERIC) {
         gen = static_cast<TechDraw::Generic*>(geom);
@@ -744,8 +744,8 @@ pointPair DrawViewDimension::getPointsTwoEdges()
 
     int idx0 = DrawUtil::getIndexFromName(subElements[0]);
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-    TechDraw::BaseGeom* geom0 = getViewPart()->getProjEdgeByIndex(idx0);
-    TechDraw::BaseGeom* geom1 = getViewPart()->getProjEdgeByIndex(idx1);
+    TechDraw::BaseGeom* geom0 = getViewPart()->getGeomByIndex(idx0);
+    TechDraw::BaseGeom* geom1 = getViewPart()->getGeomByIndex(idx1);
     if ((geom0 == nullptr) ||
         (geom1 == nullptr) ) {
         Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
@@ -786,10 +786,10 @@ pointPair DrawViewDimension::getPointsEdgeVert()
     TechDraw::BaseGeom* e;
     TechDraw::Vertex* v;
     if (DrawUtil::getGeomTypeFromName(subElements[0]) == "Edge") {
-        e = getViewPart()->getProjEdgeByIndex(idx0);
+        e = getViewPart()->getGeomByIndex(idx0);
         v = getViewPart()->getProjVertexByIndex(idx1);
     } else {
-        e = getViewPart()->getProjEdgeByIndex(idx1);
+        e = getViewPart()->getGeomByIndex(idx1);
         v = getViewPart()->getProjVertexByIndex(idx0);
     }
     if ((v == nullptr) ||
@@ -882,7 +882,7 @@ bool DrawViewDimension::checkReferences2D() const
                 if (!s.empty()) { 
                     int idx = DrawUtil::getIndexFromName(s);
                     if (DrawUtil::getGeomTypeFromName(s) == "Edge") {
-                        TechDraw::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
+                        TechDraw::BaseGeom* geom = getViewPart()->getGeomByIndex(idx);
                         if (geom == nullptr) {
                             result = false;
                             break;
@@ -997,7 +997,7 @@ bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d poi
     bool result = false;
     const std::vector<std::string> &subElements      = References2D.getSubValues();
     int idx = DrawUtil::getIndexFromName(subElements[0]);
-    TechDraw::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
+    TechDraw::BaseGeom* base = getViewPart()->getGeomByIndex(idx);
     if( base && base->geomType == TechDraw::GeomType::ARCOFCIRCLE )  {
         TechDraw::AOC* aoc = static_cast<TechDraw::AOC*> (base);
         if (aoc->intersectsArc(s,pointOnCircle)) {

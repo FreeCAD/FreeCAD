@@ -116,13 +116,15 @@ BaseGeom::BaseGeom() :
     visible(true),
     reversed(false),
     ref3D(-1),                      //obs?
-    cosmetic(false)
+    cosmetic(false),
+    m_source(0),
+    m_sourceIndex(-1)
+    
 {
 }
 
 std::string BaseGeom::toCSV(void) const
 {
-//    Base::Console().Message("Geo::BaseGeom::toCSV()\n");
     std::stringstream ss;
     ss << geomType << "," <<
           extractType << "," <<
@@ -130,13 +132,15 @@ std::string BaseGeom::toCSV(void) const
           visible << "," <<
           reversed << "," <<
           ref3D << "," <<
-          cosmetic;
+          cosmetic << "," <<
+          m_source << "," <<
+          m_sourceIndex;
     return ss.str();
 }
 
 bool BaseGeom::fromCSV(std::string lineSpec)
 {
-    unsigned int maxCells = 7;
+    unsigned int maxCells = 9;
     if (lineSpec.length() == 0) {
         Base::Console().Message( "BG::fromCSV - lineSpec empty\n");
         return false;
@@ -154,6 +158,8 @@ bool BaseGeom::fromCSV(std::string lineSpec)
     reversed = (bool) atoi(values[4].c_str());
     ref3D = atoi(values[5].c_str());
     cosmetic = (bool) atoi(values[6].c_str());
+    m_source = atoi(values[7].c_str());
+    m_sourceIndex = atoi(values[8].c_str());
     return true;
 }
 
@@ -185,7 +191,6 @@ Base::Vector3d BaseGeom::getEndPoint()
 
 Base::Vector3d BaseGeom::getMidPoint()
 {
-//    Base::Console().Message("BG::getMidPoint()\n");
     Base::Vector3d result;
     BRepAdaptor_Curve adapt(occEdge);
     double u = adapt.FirstParameter();
@@ -195,14 +200,11 @@ Base::Vector3d BaseGeom::getMidPoint()
     BRepLProp_CLProps prop(adapt,midParm,0,Precision::Confusion());
     const gp_Pnt& pt = prop.Value();
     result = Base::Vector3d(pt.X(),pt.Y(), pt.Z());
-//    Base::Console().Message("BG::getMidPoint - returns: %s\n",
-//                            TechDraw::DrawUtil::formatVector(result).c_str());
     return result;
 }
 
 std::vector<Base::Vector3d> BaseGeom::getQuads()
 {
-//    Base::Console().Message("BG::getQuads()\n");
     std::vector<Base::Vector3d> result;
     BRepAdaptor_Curve adapt(occEdge);
     double u = adapt.FirstParameter();
@@ -220,7 +222,6 @@ std::vector<Base::Vector3d> BaseGeom::getQuads()
     prop.SetParameter(q3);
     const gp_Pnt& p3 = prop.Value();
     result.push_back(Base::Vector3d(p3.X(),p3.Y(), 0.0));
-//    Base::Console().Message("BG::getQuads - returns pts: %d\n", result.size());
     return result;
 }
 
@@ -279,7 +280,6 @@ std::string BaseGeom::dump()
 
 bool BaseGeom::closed(void)
 {
-    //return occEdge.Closed();        //based on a flag in occ. may not be correct!
     bool result = false;
     Base::Vector3d start(getStartPoint().x,
                          getStartPoint().y,
@@ -456,7 +456,6 @@ Circle::Circle(const TopoDS_Edge &e)
 }
 std::string Circle::toCSV(void) const
 {
-//    Base::Console().Message("Geo::Circle::toCSV()\n");
     std::string baseCSV = BaseGeom::toCSV();
     std::stringstream ss;
     ss << center.x << "," <<
@@ -468,6 +467,11 @@ std::string Circle::toCSV(void) const
 
 bool Circle::fromCSV(std::string lineSpec)
 {
+    if (lineSpec.length() == 0) {
+        Base::Console().Message( "Circle::fromCSV - lineSpec empty\n");
+        return false;
+    }
+
     std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
     //"baseCSV,$$$,circleCSV"
     if (tokens.size() != 2) {
@@ -476,10 +480,6 @@ bool Circle::fromCSV(std::string lineSpec)
 
     BaseGeom::fromCSV(tokens[0]);
     unsigned int maxCells = 4;
-    if (lineSpec.length() == 0) {
-        Base::Console().Message( "Circle::fromCSV - lineSpec empty\n");
-        return false;
-    }
     std::vector<std::string> values = DrawUtil::split(tokens[1]);
     if (values.size() < maxCells) {
         Base::Console().Message( "Circle::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
@@ -646,8 +646,6 @@ bool AOC::fromCSV(std::string lineSpec)
     return true;
 }
 
-
-
 //! Generic is a multiline
 Generic::Generic(const TopoDS_Edge &e)
 {
@@ -680,7 +678,6 @@ Generic::Generic()
 
 std::string Generic::toCSV(void) const
 {
-//    Base::Console().Message("Geo::Generic::toCSV()\n");
     std::string baseCSV = BaseGeom::toCSV();
     std::stringstream ss;
     ss << points.size() << ",";
@@ -721,7 +718,6 @@ bool Generic::fromCSV(std::string lineSpec)
             points.push_back(Base::Vector3d(x, y, z));
         }
     }
-//    occEdge = GeometryUtils::edgeFromGeneric(this);
     return true;
 }
 
@@ -832,8 +828,6 @@ BSpline::BSpline(const TopoDS_Edge &e)
         if (bezier->Degree() > 3) {
             Base::Console().Log("Geometry::BSpline - converted curve degree > 3\n");
         }
-//        Base::Console().Message("TRACE - Geo::BSpline - bezier degree: %d bezier poles: %d\n",
-//                            bezier->Degree(),bezier->NbPoles());
         tempSegment.poles = bezier->NbPoles();
         tempSegment.degree = bezier->Degree();
         for (int pole = 1; pole <= tempSegment.poles; ++pole) {
@@ -891,16 +885,12 @@ bool BSpline::isCircle()
     Base::Vector3d center;
     bool isArc = false;
     getCircleParms(result,radius,center,isArc);
-//    Base::Console().Message("TRACE - GEO::BS::isCircle - result: %d radius: %.3f center: %s isArc %d\n",
-//                            result,radius,DrawUtil::formatVector(center).c_str(),isArc);
-    
     return result;
 }
 
 //used by DVDim for approximate dims
 void BSpline::getCircleParms(bool& isCircle, double& radius, Base::Vector3d& center, bool& isArc)
 {
-//    bool result = false;
     double curveLimit = 0.0001;
     BRepAdaptor_Curve c(occEdge);
     Handle(Geom_BSplineCurve) spline = c.BSpline();
@@ -942,7 +932,6 @@ void BSpline::getCircleParms(bool& isCircle, double& radius, Base::Vector3d& cen
         Base::Console().Log("TechDraw - GEO::BSpline::getCircleParms - CLProps failed\n");
         isCircle = false;
         return;
-//        throw Base::RuntimeError(e.GetMessageString());
     }
     Base::Vector3d avgCenter = sumCenter/testCount;
     double errorCenter = 0;
@@ -1235,7 +1224,6 @@ TopoDS_Edge GeometryUtils::edgeFromGeneric(TechDraw::Generic* g)
 
 TopoDS_Edge GeometryUtils::edgeFromCircle(TechDraw::Circle* c)
 {
-//    Base::Console().Message("GU::edgeFromCircle()\n");
     gp_Pnt loc(c->center.x, c->center.y, c->center.z);
     gp_Dir dir(0,0,1);
     gp_Ax1 axis(loc, dir);
@@ -1250,7 +1238,6 @@ TopoDS_Edge GeometryUtils::edgeFromCircle(TechDraw::Circle* c)
 
 TopoDS_Edge GeometryUtils::edgeFromCircleArc(TechDraw::AOC* c)
 {
-//    Base::Console().Message("GU::edgeFromCircleArc()\n");
     gp_Pnt loc(c->center.x, c->center.y, c->center.z);
     gp_Dir dir(0,0,1);
     gp_Ax1 axis(loc, dir);

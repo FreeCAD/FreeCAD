@@ -136,7 +136,6 @@ short DrawViewDetail::mustExecute() const
 void DrawViewDetail::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        //Base::Console().Message("TRACE - DVD::onChanged(%s) - %s\n",prop->getName(),Label.getValue());
         if (prop == &Reference) {
             std::string lblText = "Detail " +
                                   std::string(Reference.getValue());
@@ -157,9 +156,6 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
-
-    rebuildCosmoVertex();
-    rebuildCosmoEdge();
 
     App::DocumentObject* baseObj = BaseView.getValue();
     if (!baseObj)  {
@@ -352,17 +348,14 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     }
 
     //add back the cosmetic vertices
-    for (auto& v: vertexCosmetic) {
+    for (auto& v: CVertexTable) {
         int idx = geometryObject->addCosmeticVertex(v->point() * getScale());
         v->linkGeom = idx;
     }
-
     //add the cosmetic Edges to geometry Edges list
-    for (auto& e: edgeCosmetic) {
-        TechDraw::BaseGeom* scaledGeom = e->scaledGeometry(getScale());
-        int idx = geometryObject->addCosmeticEdge(scaledGeom);
-        e->m_linkGeom = idx;
-    }
+    addCosmeticEdgesToGeom();
+    //add centerlines to geometry edges list
+    addCenterLinesToGeom();
 
     requestPaint();
     dvp->requestPaint();  //to refresh detail highlight!

@@ -70,6 +70,7 @@ class DrawViewDetail;
 class DrawViewBalloon;
 class CosmeticVertex;
 class CosmeticEdge;
+class CenterLine;
 }
 
 namespace TechDraw
@@ -105,6 +106,7 @@ public:
 
     App::PropertyStringList  CosmeticVertexList;
     App::PropertyStringList  CosmeticEdgeList;
+    App::PropertyStringList  CenterLineList;
 
     virtual short mustExecute() const;
     virtual void onDocumentRestored() override;
@@ -129,7 +131,7 @@ public:
     bool hasGeometry(void) const;
     TechDraw::GeometryObject* getGeometryObject(void) const { return geometryObject; }
 
-    TechDraw::BaseGeom* getProjEdgeByIndex(int idx) const;               //get existing geom for edge idx in projection
+    TechDraw::BaseGeom* getGeomByIndex(int idx) const;               //get existing geom for edge idx in projection
     TechDraw::Vertex* getProjVertexByIndex(int idx) const;               //get existing geom for vertex idx in projection
     std::vector<TechDraw::BaseGeom*> getFaceEdgesByIndex(int idx) const;  //get edges for face idx in projection
 
@@ -161,24 +163,42 @@ public:
     bool isIso(void) const;
 
     virtual int addCosmeticVertex(Base::Vector3d pos);
-    virtual void stuffCosmeticVertexList(void);
+    virtual void writeCVertProp(void);
     virtual void removeCosmeticVertex(TechDraw::CosmeticVertex* cv);
     virtual void removeCosmeticVertex(int idx);
-    const std::vector<TechDraw::CosmeticVertex*> & getCosmeticVertex(void) const { return vertexCosmetic; }
+    const std::vector<TechDraw::CosmeticVertex*> & getCosmeticVertex(void) const { return CVertexTable; }
     TechDraw::CosmeticVertex* getCosmeticVertexByIndex(int idx) const;
-    TechDraw::CosmeticVertex* getCosmeticVertexByLink(int idx) const;
+    TechDraw::CosmeticVertex* getCosmeticVertexByGeom(int idx) const;
     void clearCosmeticVertices(void);
 
     virtual int addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
     virtual int addCosmeticEdge(TopoDS_Edge e);
     virtual int addCosmeticEdge(TechDraw::CosmeticEdge*);
-    virtual void stuffCosmeticEdgeList(void);
+    virtual void writeCEdgeProp(void);
     virtual void removeCosmeticEdge(TechDraw::CosmeticEdge* ce);
     virtual void removeCosmeticEdge(int idx);
-    const std::vector<TechDraw::CosmeticEdge*> & getCosmeticEdge(void) const { return edgeCosmetic; }
+    const std::vector<TechDraw::CosmeticEdge*> & getCosmeticEdges(void) const { return CEdgeTable; }
     TechDraw::CosmeticEdge* getCosmeticEdgeByIndex(int idx) const;
-    TechDraw::CosmeticEdge* getCosmeticEdgeByLink(int idx) const;
+    TechDraw::CosmeticEdge* getCosmeticEdgeByGeom(int idx) const;
+    int getCosmeticEdgeIndex(TechDraw::CosmeticEdge* ce) const;
+    void replaceCosmeticEdge(int idx, TechDraw::CosmeticEdge* ce);
+    void replaceCosmeticEdgeByGeom(int geomIndex, TechDraw::CosmeticEdge* ce);
     void clearCosmeticEdges(void);
+
+    virtual int addCenterLine(TechDraw::CenterLine*);
+    virtual void writeCListProp(void);
+    virtual void removeCenterLine(TechDraw::CenterLine* cl);
+    virtual void removeCenterLine(int idx);
+    const std::vector<TechDraw::CenterLine*> & getCenterLines(void) const { return CLineTable; }
+    TechDraw::CenterLine* getCenterLineByIndex(int idx) const;
+    TechDraw::CenterLine* getCenterLineByGeom(int idx) const;
+    void replaceCenterLine(int idx, TechDraw::CenterLine* cl);
+    void replaceCenterLineByGeom(int geomIndex, TechDraw::CenterLine* cl);
+    void clearCenterLines(void);
+
+    void addCosmeticEdgesToGeom(void);
+    void addCenterLinesToGeom(void);
+
 
 protected:
     TechDraw::GeometryObject *geometryObject;
@@ -202,11 +222,14 @@ protected:
     bool m_handleFaces;
 
     //Cosmetics
-    std::vector<TechDraw::CosmeticVertex*> vertexCosmetic;
-    void rebuildCosmoVertex(void);
+    std::vector<TechDraw::CosmeticVertex*> CVertexTable;
+    void readCVertexProp(void);
 
-    std::vector<TechDraw::CosmeticEdge*> edgeCosmetic;
-    void rebuildCosmoEdge(void);
+    std::vector<TechDraw::CosmeticEdge*> CEdgeTable;
+    void readCEdgeProp(void);
+
+    std::vector<TechDraw::CenterLine*> CLineTable;
+    void readCLineProp(void);
 
 private:
     bool nowUnsetting;

@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <cmath>
 #include <gp_Pnt.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Ax1.hxx>
@@ -31,12 +32,13 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Edge.hxx>
+#include <BRepBndLib.hxx>
+#include <Bnd_Box.hxx>
 #endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
-#include <Base/Tools2D.h>
 #include <Base/Vector3D.h>
 
 #include <App/Application.h>
@@ -45,6 +47,7 @@
 #include "DrawUtil.h"
 #include "GeometryObject.h"
 #include "Geometry.h"
+#include "DrawViewPart.h"
 
 #include "Cosmetic.h"
 
@@ -151,7 +154,6 @@ CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
     visible = true;
 }
 
-//CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(DrawUtil::invertY(loc))
 CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
@@ -178,8 +180,7 @@ std::string CosmeticVertex::toCSV(void) const
           color.asHexString() << ","  <<
           size << "," <<
           style << ","  <<
-          visible << 
-          std::endl;
+          visible;
     return ss.str();
 }
 
@@ -219,67 +220,46 @@ void CosmeticVertex::dump(char* title)
 CosmeticEdge::CosmeticEdge()
 {
     m_geometry = new TechDraw::BaseGeom();
-    m_geometry->geomType = GENERIC;
-    m_geometry->classOfEdge = ecHARD;
-    m_geometry->visible = true;
-    m_geometry->cosmetic = true;
-
-    m_linkGeom = -1;
-    m_format = LineFormat();
+    init();
 }
 
-//CosmeticEdge::CosmeticEdge(Base::Vector3d pt1, Base::Vector3d pt2)
 CosmeticEdge::CosmeticEdge(Base::Vector3d pt1, Base::Vector3d pt2)
 {
-//    Base:: Console().Message("CE::CE(%s, %s) \n",
-//                             DrawUtil::formatVector(p1).c_str(),
-//                             DrawUtil::formatVector(p2).c_str());
     Base::Vector3d p1 = DrawUtil::invertY(pt1);
     Base::Vector3d p2 = DrawUtil::invertY(pt2);
     gp_Pnt gp1(p1.x,p1.y,p1.z);
     gp_Pnt gp2(p2.x,p2.y,p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
     m_geometry = TechDraw::BaseGeom::baseFactory(e);
-    m_geometry->classOfEdge = ecHARD;
-    m_geometry->visible = true;
-    m_geometry->cosmetic = true;
-
-    if (m_geometry->geomType == TechDraw::GeomType::GENERIC) {
-        //
-    } else if (m_geometry->geomType == TechDraw::GeomType::CIRCLE) {
-        //
-    }
-    m_linkGeom = -1;
-    m_format = LineFormat();
+    init();
 }
 
-//CosmeticEdge::CosmeticEdge(TopoDS_Edge e, Base::Vector3d mirrorPoint)
 CosmeticEdge::CosmeticEdge(TopoDS_Edge e)
 {
-//    Base:: Console().Message("CE::CE(occEdge) \n");
     m_geometry = TechDraw::BaseGeom::baseFactory(e);
-    m_geometry->classOfEdge = ecHARD;
-    m_geometry->visible = true;
-    m_geometry->cosmetic = true;
-
-    m_linkGeom = -1;
-    m_format = LineFormat();
+    init();
 }
 
 CosmeticEdge::CosmeticEdge(TechDraw::BaseGeom* g)
 {
-//    Base:: Console().Message("CE::CE(Base::Geom) \n");
     m_geometry = g;
+    init();
+}
+
+CosmeticEdge::~CosmeticEdge(void)
+{
+    delete m_geometry;
+}
+
+void CosmeticEdge::init(void)
+{
     m_geometry->classOfEdge = ecHARD;
     m_geometry->visible = true;
     m_geometry->cosmetic = true;
-    m_linkGeom = -1;
-    m_format = LineFormat();
 }
 
 TechDraw::BaseGeom* CosmeticEdge::scaledGeometry(double scale)
 {
-//    Base::Console().Message("CE::getScaledGeometry(%.3f)\n",scale);
     TechDraw::BaseGeom* newGeom = nullptr;
     TopoDS_Edge e = m_geometry->occEdge;
     TopoDS_Shape s = TechDraw::scaleShape(e, scale);
@@ -293,23 +273,19 @@ TechDraw::BaseGeom* CosmeticEdge::scaledGeometry(double scale)
 
 std::string CosmeticEdge::toCSV(void) const
 {
-//    Base::Console().Message( "CosmeticEdge::toCSV()\n");
     std::stringstream ss;
     if (m_geometry != nullptr) {
-        ss << m_geometry->geomType << "," <<
-            m_linkGeom <<
+        ss << m_geometry->geomType << 
             ",$$$," <<
             m_geometry->toCSV() <<
             ",$$$," <<
-            m_format.toCSV() <<
-            std::endl;
+            m_format.toCSV();
     }
     return ss.str();
 }
 
 bool CosmeticEdge::fromCSV(std::string& lineSpec)
 {
-//    Base::Console().Message( "CosmeticEdge::fromCSV() - lineSpec: %s\n", lineSpec.c_str());
     std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
     if (tokens.empty()) {
         Base::Console().Message("CosmeticEdge::fromCSV - tokenize failed - no tokens\n");
@@ -322,13 +298,12 @@ bool CosmeticEdge::fromCSV(std::string& lineSpec)
     }
     
     std::vector<std::string> values = DrawUtil::split(tokens[0]);
-    unsigned int maxCells = 2;
+    unsigned int maxCells = 1;
     if (values.size() < maxCells) {
         Base::Console().Message( "CosmeticEdge::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
         return false;
     }
     int geomType = atoi(values[0].c_str());
-    m_linkGeom = atoi(values[1].c_str());
 
     int lastToken = 0;
     if (geomType == TechDraw::GeomType::GENERIC) {
@@ -374,11 +349,249 @@ bool CosmeticEdge::fromCSV(std::string& lineSpec)
     return true;
 }
 
-//duplicate of CV routine.  make static? or base class?
+void CosmeticEdge::replaceGeometry(TechDraw::BaseGeom* g)
+{
+    delete m_geometry;
+    m_geometry = g;
+}
+
 void CosmeticEdge::dump(char* title)
 {
     Base::Console().Message("CE::dump - %s \n",title);
     Base::Console().Message("CE::dump - %s \n",toCSV().c_str());
 }
 
+//*********************************************************
+CenterLine::CenterLine(void)
+{
+    start = Base::Vector3d(0.0, 0.0, 0.0);
+    end = Base::Vector3d(0.0, 0.0, 0.0);
+    mode = 0;
+    hShift = 0.0;
+    vShift = 0.0;
+    rotate = 0.0;
+    extendBy = 0.0;
+}
+
+CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2)
+{
+    start = p1;
+    end = p2;
+    mode = 0;
+    hShift = 0.0;
+    vShift = 0.0;
+    rotate = 0.0;
+    extendBy = 0.0;
+}
+
+CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2,
+                       int m, 
+                       double h,
+                       double v,
+                       double r,
+                       double x)
+{
+    start = p1;
+    end = p2;
+    mode = m;
+    hShift = h;
+    vShift = v;
+    rotate = r;
+    extendBy = x;
+}
+
+CenterLine::~CenterLine()
+{
+}
+
+TechDraw::BaseGeom* CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFeat)
+{
+    double scale = partFeat->getScale();
+    if (m_faces.empty() ) {
+        Base::Console().Message("CL::scaledGeometry - no Faces!\n");
+        return nullptr;
+    }
+    
+    std::pair<Base::Vector3d, Base::Vector3d> ends = 
+                             calcEndPoints(partFeat,
+                                          m_faces,
+                                          mode, extendBy,
+                                          hShift,vShift, rotate);
+    TechDraw::BaseGeom* newGeom = nullptr;
+    Base::Vector3d p1 = DrawUtil::invertY(ends.first);
+    Base::Vector3d p2 = DrawUtil::invertY(ends.second);
+    gp_Pnt gp1(p1.x,p1.y,p1.z);
+    gp_Pnt gp2(p2.x,p2.y,p2.z);
+    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
+    TopoDS_Shape s = TechDraw::scaleShape(e, scale);
+    TopoDS_Edge newEdge = TopoDS::Edge(s);
+    newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
+    newGeom->classOfEdge = ecHARD;
+    newGeom->visible = true;
+    newGeom->cosmetic = true;
+    return newGeom;
+}
+
+std::string CenterLine::toCSV(void) const
+{
+    std::stringstream ss;
+    ss << start.x << "," <<   //0
+          start.y << "," <<   //1
+          start.z << "," <<   //2
+          end.x << "," <<     //3
+          end.y << "," <<     //4
+          end.z << "," <<     //5
+          mode << "," <<      //6
+          hShift << "," <<    //7
+          vShift << "," <<    //8
+          rotate << "," <<    //9
+          extendBy << "," <<  //10
+          m_faces.size();     //11
+    if (!m_faces.empty()) {
+        for (auto& f: m_faces) {
+            if (!f.empty()) {
+                ss << "," << f ;
+            }
+        }
+    }
+
+    std::string clCSV = ss.str();
+    std::string fmtCSV = fmt.toCSV();
+    return clCSV + ",$$$," + fmtCSV;
+}
+
+bool CenterLine::fromCSV(std::string& lineSpec)
+{
+    if (lineSpec.length() == 0) {
+        Base::Console().Message( "CenterLine::fromCSV - lineSpec empty\n");
+        return false;
+    }
+    
+    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
+    if (tokens.size() != 2) {
+        Base::Console().Message("CenterLine::fromCSV - tokenize failed - size: %d\n",tokens.size());
+    }
+
+    if (tokens[0].length() == 0) {
+        Base::Console().Message( "CenterLine::fromCSV - token0 empty\n");
+        return false;
+    }
+
+    std::vector<std::string> values = DrawUtil::split(tokens[0]);
+
+// variable length record, can't determine maxCells in advance.
+    double x = atof(values[0].c_str());
+    double y = atof(values[1].c_str());
+    double z = atof(values[2].c_str());
+    start = Base::Vector3d (x,y,z);
+    x = atof(values[3].c_str());
+    y = atof(values[4].c_str());
+    z = atof(values[5].c_str());
+    end = Base::Vector3d (x,y,z);
+    mode = atoi(values[6].c_str());
+    hShift = atof(values[7].c_str());
+    vShift = atof(values[8].c_str());
+    rotate = atof(values[9].c_str());
+    extendBy = atof(values[10].c_str());
+    int faceCount = atoi(values[11].c_str());
+    int i = 0;
+    for ( ; i < faceCount; i++ ) {
+        m_faces.push_back(values[12 + i]);
+    }
+    fmt.fromCSV(tokens[1]);
+    return true;
+}
+
+void CenterLine::dump(char* title)
+{
+    Base::Console().Message("CL::dump - %s \n",title);
+    Base::Console().Message("CL::dump - %s \n",toCSV().c_str());
+}
+
+std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart* partFeat,
+                                                      std::vector<std::string> faceNames, 
+                                                      int vert, double ext,
+                                                      double hShift, double vShift,
+                                                      double rotate)
+{
+    std::pair<Base::Vector3d, Base::Vector3d> result;
+    if (faceNames.empty()) {
+        Base::Console().Message("CL::calcEndPoints - no faces!\n");
+        return result;
+    }
+
+    Bnd_Box faceBox;
+    faceBox.SetGap(0.0);
+
+    double scale = partFeat->getScale();
+    double hss = hShift * scale;
+    double vss = vShift * scale;
+
+    for (auto& fn: faceNames) {
+        if (TechDraw::DrawUtil::getGeomTypeFromName(fn) != "Face") {
+            continue;
+        }
+        int idx = TechDraw::DrawUtil::getIndexFromName(fn);
+        std::vector<TechDraw::BaseGeom*> faceEdges = 
+                                                partFeat->getFaceEdgesByIndex(idx);
+        for (auto& fe: faceEdges) {
+            if (!fe->cosmetic) {
+                BRepBndLib::Add(fe->occEdge, faceBox);
+            }
+        }
+    }
+
+    double Xmin,Ymin,Zmin,Xmax,Ymax,Zmax;
+    faceBox.Get(Xmin,Ymin,Zmin,Xmax,Ymax,Zmax);
+
+    double Xspan = fabs(Xmax - Xmin);
+//    Xspan = (Xspan / 2.0) + (ext * scale);    //this should be right? edges in GO are scaled!
+//    Xspan = (Xspan / 2.0) + ext;
+    Xspan = (Xspan / 2.0);
+    double Xmid = Xmin + fabs(Xmax - Xmin) / 2.0;
+
+    double Yspan = fabs(Ymax - Ymin);
+//    Yspan = (Yspan / 2.0) + (ext * scale);
+//    Yspan = (Yspan / 2.0) + ext;
+    Yspan = (Yspan / 2.0);
+    double Ymid = Ymin + fabs(Ymax - Ymin) / 2.0;
+
+    Base::Vector3d p1, p2;
+    if (vert == 0) {                    //vertical
+        Base::Vector3d top(Xmid + hss, (Ymid - Yspan - ext) + vss, 0.0);
+        Base::Vector3d bottom(Xmid + hss, (Ymid + Yspan + ext) + vss, 0.0);
+        p1 = top;
+        p2 = bottom;
+    } else if (vert == 1) {            //horizontal
+        Base::Vector3d left((Xmid - Xspan - ext) + hss, Ymid + vss, 0.0);
+        Base::Vector3d right((Xmid + Xspan + ext) + hss, Ymid + vss, 0.0);
+        p1 = left;
+        p2 = right;
+    } else {      //vert == 2 //aligned
+        Base::Console().Message("CL::calcEndPoints - aligned is not implemented yet\n");
+        Base::Vector3d top(Xmid + hss, (Ymid - Yspan - ext) + vss, 0.0);
+        Base::Vector3d bottom(Xmid + hss, (Ymid + Yspan + ext) + vss, 0.0);
+        p1 = top;
+        p2 = bottom;
+    }
+    
+    Base::Vector3d bbxCenter(Xmid, Ymid, 0.0);
+    if (!DrawUtil::fpCompare(rotate, 0.0)) {
+        //rotate p1, p2 about bbxCenter
+        double cosTheta = cos(rotate * M_PI / 180.0);
+        double sinTheta = sin(rotate * M_PI / 180.0);
+        Base::Vector3d toOrg = p1 - bbxCenter;
+        double xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
+        double yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
+        p1 = Base::Vector3d(xRot, yRot, 0.0) + bbxCenter;
+        toOrg = p2 - bbxCenter;
+        xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
+        yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
+        p2 = Base::Vector3d(xRot, yRot, 0.0) + bbxCenter;
+    }
+
+    result.first = p1 / scale;
+    result.second = p2 / scale;
+    return result;
+}
 

@@ -41,6 +41,7 @@ class DrawView;
 namespace TechDrawGui
 {
 class QGIFace;
+class QGIEdge;
 
 class TechDrawGuiExport QGIViewPart : public QGIView
 {
@@ -104,6 +105,10 @@ protected:
     void removeDecorations(void);
     bool prefFaceEdges(void);
     bool prefPrintCenters(void);
+
+
+    void formatGeomFromCosmetic(int sourceIndex, QGIEdge* item);
+    void formatGeomFromCenterLine(int sourceIndex, QGIEdge* item);
 
 
 private:

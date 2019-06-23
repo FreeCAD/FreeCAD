@@ -51,7 +51,7 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
-#include <Mod/TechDraw/Gui/QGVPage.h>
+#include <Mod/TechDraw/App/Cosmetic.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
@@ -60,6 +60,7 @@
 #include "TaskCosVertex.h"
 #include "TaskCenterLine.h"
 #include "ViewProviderPage.h"
+#include "QGVPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -643,22 +644,47 @@ void CmdTechDrawFaceCenterLine::activated(int iMsg)
         }
     }
     std::vector<std::string> faceNames;
+    std::vector<std::string> edgeNames;
     for (auto& s: SubNames) {
         std::string geomType = DrawUtil::getGeomTypeFromName(s);
         if (geomType == "Face") {
             faceNames.push_back(s);
+        } else if (geomType == "Edge") {
+            edgeNames.push_back(s);
         }
     }
-    
-    if (faceNames.empty()) {
+
+    if ( (faceNames.empty()) && 
+         (edgeNames.empty()) ) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                             QObject::tr("You must select a Face(s) for the center line."));
+                             QObject::tr("You must select a Face(s) or an existing CenterLine."));
         return;
     }
+    if (!faceNames.empty()) {
+        Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
+                                                        page,
+                                                        faceNames));
+    } else if (edgeNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                             QObject::tr("No CenterLine in selection."));
+        return;
+    } else {
+        std::string edgeName = edgeNames.front();
+        int geomIdx = DrawUtil::getIndexFromName(edgeName);
+        const std::vector<TechDraw::BaseGeom  *> &geoms = baseFeat->getEdgeGeometry();
+        BaseGeom* bg = geoms.at(geomIdx);
+        int clIdx = bg->sourceIndex();
+        TechDraw::CenterLine* cl = baseFeat->getCenterLineByIndex(clIdx);
+        if (cl == nullptr) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("No CenterLine in selection."));
+            return;
+        }
 
-    Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
-                                                    page,
-                                                    faceNames));
+        Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
+                                                        page,
+                                                        edgeNames.front()));
+    }
 }
 
 bool CmdTechDrawFaceCenterLine::isActive(void)
@@ -735,12 +761,22 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             int idx = TechDraw::DrawUtil::getIndexFromName(s);
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
             if (geomType == "Edge") {
-                TechDraw::CosmeticEdge* ce = objFeat->getCosmeticEdgeByLink(idx);
-                if (ce != nullptr) {
-                    objFeat->removeCosmeticEdge(ce);
+                TechDraw::BaseGeom* bg = objFeat->getGeomByIndex(idx);
+                if ((bg != nullptr) &&
+                    (bg->cosmetic) ) {
+                    int source = bg->source();
+                    int sourceIndex = bg->sourceIndex();
+                    if (source == 1) {  //this is a "CosmeticEdge"
+                        objFeat->removeCosmeticEdge(sourceIndex);
+                    } else if (source == 2) { //this is a "CenterLine"
+                        objFeat->removeCenterLine(sourceIndex);
+                    } else {
+                        Base::Console().Message(
+                            "CMD::CosmeticEraserP - edge: %d is confused - source: %d\n",idx,source);
+                    }
                 }
             } else if (geomType == "Vertex") {
-                TechDraw::CosmeticVertex* cv = objFeat->getCosmeticVertexByLink(idx);
+                TechDraw::CosmeticVertex* cv = objFeat->getCosmeticVertexByGeom(idx);
                 if (cv != nullptr) {
                     objFeat->removeCosmeticVertex(cv);
                 }
