@@ -606,7 +606,6 @@ private:
     mutable std::vector<App::DocumentObject *> _outList;
     mutable std::map<std::string, App::DocumentObject*> _outListMap;
     mutable bool _outListCached = false;
-    mutable std::set<App::DocumentObject*> _listeners;
 };
 
 } //namespace App

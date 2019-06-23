@@ -436,9 +436,6 @@ private:
     static PyObject* sGetConfig         (PyObject *self,PyObject *args);
     static PyObject* sSetConfig         (PyObject *self,PyObject *args);
     static PyObject* sDumpConfig        (PyObject *self,PyObject *args);
-    static PyObject* sTemplateAdd       (PyObject *self,PyObject *args);
-    static PyObject* sTemplateDelete    (PyObject *self,PyObject *args);
-    static PyObject* sTemplateGet       (PyObject *self,PyObject *args);
     static PyObject* sAddImportType     (PyObject *self,PyObject *args);
     static PyObject* sGetImportType     (PyObject *self,PyObject *args);
     static PyObject* sAddExportType     (PyObject *self,PyObject *args);
@@ -461,7 +458,6 @@ private:
     static PyObject* sListDocuments     (PyObject *self,PyObject *args);
     static PyObject* sAddDocObserver    (PyObject *self,PyObject *args);
     static PyObject* sRemoveDocObserver (PyObject *self,PyObject *args);
-    static PyObject* sTranslateUnit     (PyObject *self,PyObject *args);
     static PyObject *sIsRestoring       (PyObject *self,PyObject *args);
 
     static PyObject *sSetLogLevel       (PyObject *self,PyObject *args);
