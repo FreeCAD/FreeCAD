@@ -61,8 +61,10 @@ EXTERNAL_MODULES+=' area'
 EXTERNAL_MODULES+=' importlib'
 EXTERNAL_MODULES+=' pivy'
 
-ARGS+=" --errors-only"
+#ARGS+=" --errors-only"
+ARGS+=" --disable=C,R"
 ARGS+=" --ignored-modules=$(echo ${EXTERNAL_MODULES} | tr ' ' ',')"
+ARGS+=" --ignore=post"
 ARGS+=" --jobs=4"
 
 if [ -z "$(which pylint)" ]; then
@@ -72,3 +74,4 @@ fi
 
 #pylint ${ARGS} PathScripts/ PathTests/
 pylint ${ARGS} PathScripts/
+
