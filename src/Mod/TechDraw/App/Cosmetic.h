@@ -30,11 +30,8 @@
 
 class TopoDS_Edge;
 
-/*namespace TechDraw {*/
-/*class BaseGeom;*/
-/*}*/
-
 namespace TechDraw {
+class DrawViewPart;
 
 class TechDrawExport LineFormat
 {
@@ -78,11 +75,9 @@ public:
     bool           visible;
 
 protected:
-/*    std::vector<std::string> split(std::string csvLine);*/
 
 };
 
-//class TechDrawExport CosmeticEdge: publix TechDraw::BaseGeom
 class TechDrawExport CosmeticEdge
 {
 public:
@@ -90,23 +85,58 @@ public:
     CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2);
     CosmeticEdge(TopoDS_Edge e);
     CosmeticEdge(TechDraw::BaseGeom* g);
-    virtual ~CosmeticEdge() = default;
+    virtual ~CosmeticEdge();
 
+    void init(void);
     TechDraw::BaseGeom* scaledGeometry(double scale);
 
-    std::string toCSV(void) const;
-    bool fromCSV(std::string& lineSpec);
+    virtual std::string toCSV(void) const;
+    virtual bool fromCSV(std::string& lineSpec);
+    void replaceGeometry(TechDraw::BaseGeom* newGeom);
     void dump(char* title);
 
-    TechDraw::BaseGeom* m_geometry; 
+    TechDraw::BaseGeom* m_geometry;
     LineFormat m_format;
-    int m_linkGeom;
 
 protected:
-/*    std::vector<std::string> split(std::string csvLine);*/
 
 };
 
+class TechDrawExport CenterLine
+{
+public:
+    CenterLine();
+    CenterLine(Base::Vector3d p1, Base::Vector3d p2);
+    CenterLine(Base::Vector3d p1, Base::Vector3d p2,
+               int m, 
+               double h,
+               double v,
+               double r,
+               double x);
+    ~CenterLine();
+
+    std::string toCSV(void) const;
+    bool fromCSV(std::string& lineSpec);
+    CosmeticEdge* toCosmeticEdge(TechDraw::DrawViewPart* partFeat); //??
+    TechDraw::BaseGeom* scaledGeometry(TechDraw::DrawViewPart* partFeat);
+    static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints(
+                                          TechDraw::DrawViewPart* partFeat,
+                                          std::vector<std::string> faceNames,
+                                          int vert, double ext,
+                                          double hShift, double vShift,
+                                          double rotate);
+    void dump(char* title);
+
+    Base::Vector3d start;
+    Base::Vector3d end;
+    std::vector<std::string> m_faces;
+    int mode;          // vert/horiz/aligned
+    double hShift;
+    double vShift;
+    double rotate;
+    double extendBy;
+    LineFormat fmt;
+};
 
 } //end namespace TechDraw
 

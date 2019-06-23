@@ -59,6 +59,12 @@ enum GeomType {
     GENERIC
 };
 
+enum SourceType {
+    GEOM,
+    COSEDGE,
+    CENTERLINE
+};
+
 class TechDrawExport BaseGeom
 {
     public:
@@ -74,6 +80,10 @@ class TechDrawExport BaseGeom
         int ref3D;                      //obs?
         TopoDS_Edge occEdge;            //projected Edge
         bool cosmetic;
+        int source(void) { return m_source; }
+        void source(int s) { m_source = s; }
+        int sourceIndex(void) { return m_sourceIndex; }
+        void sourceIndex(int si) { m_sourceIndex = si; }
 
         virtual std::string toCSV(void) const;
         virtual bool fromCSV(std::string s);
@@ -88,6 +98,11 @@ class TechDrawExport BaseGeom
         static BaseGeom* baseFactory(TopoDS_Edge edge);
         bool closed(void);
         std::string dump();
+
+    protected:
+        int m_source;
+        int m_sourceIndex;
+
 };
 
 typedef std::vector<BaseGeom *> BaseGeomPtrVector;        //obs?

@@ -82,7 +82,6 @@ PyObject* DrawViewPartPy::clearCosmeticEdges(PyObject *args)
 
 PyObject* DrawViewPartPy::makeCosmeticVertex(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::makeCosmeticVertex()\n");
     PyObject* pPnt1 = nullptr;
     if (!PyArg_ParseTuple(args, "O!", &(Base::VectorPy::Type), &pPnt1)) {
         throw Py::TypeError("expected (vector)");
@@ -96,25 +95,19 @@ PyObject* DrawViewPartPy::makeCosmeticVertex(PyObject *args)
 
 PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::makeCosmeticLine()\n");
     PyObject* pPnt1 = nullptr;
     PyObject* pPnt2 = nullptr;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-//    App::Color defCol = LineFormat::getDefEdgeColor();
-    //    PyObject* pColor = nullptr;
+    App::Color defCol = LineFormat::getDefEdgeColor();
+    PyObject* pColor = nullptr;
 
-    if (!PyArg_ParseTuple(args, "O!O!|id", &(Base::VectorPy::Type), &pPnt1,
+    if (!PyArg_ParseTuple(args, "O!O!|idO", &(Base::VectorPy::Type), &pPnt1,
                                         &(Base::VectorPy::Type), &pPnt2,
-                                        &style, &weight)) {
-        throw Py::TypeError("expected (vector, vector, [style, weight])");
+                                        &style, &weight,
+                                        &pColor)) {
+        throw Py::TypeError("expected (vector, vector,[style,weight,color])");
     }
-//    if (!PyArg_ParseTuple(args, "O!O!|idO", &(Base::VectorPy::Type), &pPnt1,
-//                                        &(Base::VectorPy::Type), &pPnt2,
-//                                        &style, &weight,
-//                                        &pColor)) {
-//        throw Py::TypeError("expected (vector, vector,[style,weight,color])");
-//    }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     //points inverted in addCosmeticEdge(p1, p2)
@@ -124,34 +117,32 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(idx);
     ce->m_format.m_style = style;
     ce->m_format.m_weight = weight;
-//    ce->m_format.m_color = pyTupleToColor(pColor);
-
+    if (pColor == nullptr) {
+        ce->m_format.m_color = defCol;
+    } else {
+        ce->m_format.m_color = pyTupleToColor(pColor);
+    }
+    dvp->writeCEdgeProp();
     return PyLong_FromLong(idx);
 }
 
 PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::makeCosmeticCircle()\n");
     PyObject* pPnt1 = nullptr;
     double radius = 5.0;
     double angle1 = 0.0;
     double angle2 = 360.0;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-//    App::Color defCol = LineFormat::getDefEdgeColor();
-    //    PyObject* pColor = nullptr;
+    App::Color defCol = LineFormat::getDefEdgeColor();
+    PyObject* pColor = nullptr;
 
-    if (!PyArg_ParseTuple(args, "O!d|id", &(Base::VectorPy::Type), &pPnt1,
+    if (!PyArg_ParseTuple(args, "O!d|idO", &(Base::VectorPy::Type), &pPnt1,
                                         &radius,
-                                        &style, &weight)) {
-        throw Py::TypeError("expected (vector, radius, [style, weight])");
+                                        &style, &weight,
+                                        &pColor)) {
+        throw Py::TypeError("expected (vector, vector,[style,weight,color])");
     }
-//    if (!PyArg_ParseTuple(args, "O!O!|idO", &(Base::VectorPy::Type), &pPnt1,
-//                                        &(Base::VectorPy::Type), &pPnt2,
-//                                        &style, &weight,
-//                                        &pColor)) {
-//        throw Py::TypeError("expected (vector, vector,[style,weight,color])");
-//    }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     Base::Vector3d pnt1 = DrawUtil::invertY(static_cast<Base::VectorPy*>(pPnt1)->value());
@@ -169,35 +160,33 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(idx);
     ce->m_format.m_style = style;
     ce->m_format.m_weight = weight;
-//    ce->m_format.m_color = pyTupleToColor(pColor);
+    if (pColor == nullptr) {
+        ce->m_format.m_color = defCol;
+    } else {
+        ce->m_format.m_color = pyTupleToColor(pColor);
+    }
+    dvp->writeCEdgeProp();
     return PyLong_FromLong(idx);
 }
 
 PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::makeCosmeticCircleArc()\n");
     PyObject* pPnt1 = nullptr;
     double radius = 5.0;
     double angle1 = 0.0;
     double angle2 = 360.0;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-//    App::Color defCol = LineFormat::getDefEdgeColor();
-    //    PyObject* pColor = nullptr;
+    App::Color defCol = LineFormat::getDefEdgeColor();
+    PyObject* pColor = nullptr;
 
-    if (!PyArg_ParseTuple(args, "O!ddd|id", &(Base::VectorPy::Type), &pPnt1,
+    if (!PyArg_ParseTuple(args, "O!ddd|idO", &(Base::VectorPy::Type), &pPnt1,
                                         &radius, &angle1, &angle2,
-                                        &style, &weight)) {
-        throw Py::TypeError("expected (vector, radius, start, end,[style, weight])");
+                                        &style, &weight, &pColor)) {
+        throw Py::TypeError("expected (vector, radius, start, end,[style, weight, color])");
     }
-//    if (!PyArg_ParseTuple(args, "O!O!|idO", &(Base::VectorPy::Type), &pPnt1,
-//                                        &(Base::VectorPy::Type), &pPnt2,
-//                                        &style, &weight,
-//                                        &pColor)) {
-//        throw Py::TypeError("expected (vector, vector,[style,weight,color])");
-//    }
 
-    //from here on is duplicate of makeCosmeticCircle
+    //from here on is almost duplicate of makeCosmeticCircle
     DrawViewPart* dvp = getDrawViewPartPtr();
     Base::Vector3d pnt1 = DrawUtil::invertY(static_cast<Base::VectorPy*>(pPnt1)->value());
     gp_Pnt loc(pnt1.x, pnt1.y, pnt1.z);
@@ -217,13 +206,17 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(idx);
     ce->m_format.m_style = style;
     ce->m_format.m_weight = weight;
-//    ce->m_format.m_color = pyTupleToColor(pColor);
+    if (pColor == nullptr) {
+        ce->m_format.m_color = defCol;
+    } else {
+        ce->m_format.m_color = pyTupleToColor(pColor);
+    }
+    dvp->writeCEdgeProp();
     return PyLong_FromLong(idx);
 }
 
 PyObject* DrawViewPartPy::getCosmeticVertexByIndex(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::getCosVertByIndex()\n");
     PyObject* result = nullptr;
     int idx = 0;
     if (!PyArg_ParseTuple(args, "i", &idx)) {
@@ -232,7 +225,7 @@ PyObject* DrawViewPartPy::getCosmeticVertexByIndex(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
     TechDraw::CosmeticVertex* cv = dvp->getCosmeticVertexByIndex(idx);
     if (cv != nullptr) {
-        Base::Console().Message("DVPPI::getCosVertbyIdx - found a CV\n");
+        Base::Console().Message("DVPPI::getCosVertbyIdx - CosmeticVertexPy not implemented yet\n");
         //make a py object
 
     }
@@ -241,7 +234,6 @@ PyObject* DrawViewPartPy::getCosmeticVertexByIndex(PyObject *args)
 
 PyObject* DrawViewPartPy::removeCosmeticVertex(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::removeCosVert()\n");
     int idx = 0;
     if (!PyArg_ParseTuple(args, "i", &idx)) {
         throw Py::TypeError("expected (index)");
@@ -254,7 +246,6 @@ PyObject* DrawViewPartPy::removeCosmeticVertex(PyObject *args)
 
 PyObject* DrawViewPartPy::getCosmeticEdgeByIndex(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::getCosEdgeByIndex()\n");
     int idx = 0;
     PyObject* result = nullptr;
     if (!PyArg_ParseTuple(args, "i", &idx)) {
@@ -263,8 +254,8 @@ PyObject* DrawViewPartPy::getCosmeticEdgeByIndex(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(idx);
     if (ce != nullptr) {
-        Base::Console().Message("DVPPI::getCosEdgebyIdx - found a CE\n");
-        //make a py object
+        Base::Console().Message("DVPPI::getCosEdgebyIdx - CosmeticEdgePy not implemented yet\n");
+        //make a py object?
     }
 
     return result;
@@ -295,6 +286,7 @@ int DrawViewPartPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 
 App::Color pyTupleToColor(PyObject* pColor)
 {
+//    Base::Console().Message("DVPPI::pyTupleToColor()\n");
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
     App::Color c(red, blue, green, alpha);
     if (PyTuple_Check(pColor)) {

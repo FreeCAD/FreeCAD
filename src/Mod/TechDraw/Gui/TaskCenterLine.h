@@ -51,6 +51,8 @@ namespace TechDraw
 class DrawPage;
 class DrawView;
 class DrawViewPart;
+class CosmeticEdge;
+class LineFormat;
 }
 
 namespace TechDraw
@@ -74,7 +76,9 @@ public:
     TaskCenterLine(TechDraw::DrawViewPart* baseFeat,
                    TechDraw::DrawPage* page,
                    std::vector<std::string> subNames);
-/*    TaskCenterLine(TechDrawGui::ViewProviderViewPart* partVP);*/
+    TaskCenterLine(TechDraw::DrawViewPart* baseFeat,
+                   TechDraw::DrawPage* page,
+                   std::string edgeName);
     ~TaskCenterLine();
 
 public Q_SLOTS:
@@ -97,24 +101,10 @@ protected:
 
     void blockButtons(bool b);
     void setUiPrimary(void);
-/*    void setUiEdit(void);*/
-/*    void enableVPUi(bool b);*/
-/*    void setEditCursor(QCursor c);*/
+    void setUiEdit(void);
 
-    void addCenterLine(void);
     void createCenterLine(void);
-
-
-    QGIView* findParentQGIV();
     void updateCenterLine(void);
-    void removeCenterLine(void);
-    TechDraw::CosmeticEdge* calcEndPoints(std::vector<std::string> faceNames,
-                                          bool vert, double ext,
-                                          double hShift, double vShift,
-                                          double rotate);
-
-   void saveState(void);
-   void restoreState(void);
 
     double getCenterWidth();
     QColor getCenterColor();
@@ -124,24 +114,20 @@ protected:
 
 private:
     Ui_TaskCenterLine * ui;
-    bool blockUpdate;
 
-    MDIViewPage* m_mdi;
-    QGraphicsScene* m_scene;
-    QGVPage* m_view;
-    ViewProviderViewPart* m_partVP;
     TechDraw::DrawViewPart* m_partFeat;
     TechDraw::DrawPage* m_basePage;
     bool m_createMode;
-
-    Qt::ContextMenuPolicy  m_saveContextPolicy;
-    bool m_inProgressLock;
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
 
     std::vector<std::string> m_subNames;
+    std::string m_edgeName;
     double m_extendBy;
+    int m_geomIndex;
+    TechDraw::CenterLine* m_cl;
+    int m_clIdx;
 };
 
 class TaskDlgCenterLine : public Gui::TaskView::TaskDialog
@@ -152,7 +138,9 @@ public:
     TaskDlgCenterLine(TechDraw::DrawViewPart* baseFeat,
                       TechDraw::DrawPage* page,
                       std::vector<std::string> subNames);
-/*    TaskDlgCenterLine(TechDrawGui::ViewProviderLeader* partVP);*/
+    TaskDlgCenterLine(TechDraw::DrawViewPart* baseFeat,
+                      TechDraw::DrawPage* page,
+                      std::string edgeName);
     ~TaskDlgCenterLine();
 
 public:

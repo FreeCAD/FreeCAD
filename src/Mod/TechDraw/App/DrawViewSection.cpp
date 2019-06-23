@@ -193,9 +193,6 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-    rebuildCosmoVertex();
-    rebuildCosmoEdge();
-
     App::DocumentObject* base = BaseView.getValue();
     if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
         return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
@@ -328,18 +325,16 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         Base::Console().Log("LOG - DVS::execute - failed building section faces for %s - %s **\n",getNameInDocument(),e2.GetMessageString());
         return new App::DocumentObjectExecReturn(e2.GetMessageString());
     }
+
     //add back the cosmetic vertices
-    for (auto& v: vertexCosmetic) {
+    for (auto& v: CVertexTable) {
         int idx = geometryObject->addCosmeticVertex(v->point() * getScale());
         v->linkGeom = idx;
     }
-
     //add the cosmetic Edges to geometry Edges list
-    for (auto& e: edgeCosmetic) {
-        TechDraw::BaseGeom* scaledGeom = e->scaledGeometry(getScale());
-        int idx = geometryObject->addCosmeticEdge(scaledGeom);
-        e->m_linkGeom = idx;
-    }
+    addCosmeticEdgesToGeom();
+    //add centerlines to geometry edges list
+    addCenterLinesToGeom();
 
     requestPaint();
     return App::DocumentObject::StdReturn;

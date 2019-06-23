@@ -1158,7 +1158,7 @@ int _isValidSingleEdge(Gui::Command* cmd) {
     if (SubNames.size() == 1) {                                                 //only 1 subshape selected
         if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {                                //the Name starts with "Edge"
             int GeoId( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
-            TechDraw::BaseGeom* geom = objFeat->getProjEdgeByIndex(GeoId);
+            TechDraw::BaseGeom* geom = objFeat->getGeomByIndex(GeoId);
             if (!geom) {
                 Base::Console().Error("Logic Error: no geometry for GeoId: %d\n",GeoId);
                 return isInvalid;
@@ -1235,8 +1235,8 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
             TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
             int GeoId0( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
             int GeoId1( TechDraw::DrawUtil::getIndexFromName(SubNames[1]) );
-            TechDraw::BaseGeom* geom0 = objFeat0->getProjEdgeByIndex(GeoId0);
-            TechDraw::BaseGeom* geom1 = objFeat0->getProjEdgeByIndex(GeoId1);
+            TechDraw::BaseGeom* geom0 = objFeat0->getGeomByIndex(GeoId0);
+            TechDraw::BaseGeom* geom1 = objFeat0->getGeomByIndex(GeoId1);
             if ((!geom0) || (!geom1)) {
                 Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",GeoId0,GeoId1);
                 return isInvalid;
@@ -1293,7 +1293,7 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
         } else {
             return false;
         }
-        e = objFeat0->getProjEdgeByIndex(eId);
+        e = objFeat0->getGeomByIndex(eId);
         v = objFeat0->getProjVertexByIndex(vId);
         if ((!e) || (!v)) {
             Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",eId,vId);
