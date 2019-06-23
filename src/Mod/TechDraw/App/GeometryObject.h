@@ -137,7 +137,8 @@ public:
     int addCosmeticVertex(Base::Vector3d pos);
 /*    void removeCosmeticVertex(TechDraw::CosmeticVertex* cv);*/
 /*    void removeCosmeticVertex(int idx);*/
-    int addCosmeticEdge(TechDraw::BaseGeom* bg);
+    int addCosmeticEdge(TechDraw::BaseGeom* bg, int s = 0, int si = -1);
+    int addCenterLine(TechDraw::BaseGeom* bg, int s = 0, int si = -1);
 /*    void removeCosmeticEdge(TechDraw::CosmeticEdge* ce);*/
 /*    void removeCosmeticEdge(int idx);*/
 

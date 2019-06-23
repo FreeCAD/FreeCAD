@@ -139,7 +139,7 @@ DrawViewPart::DrawViewPart(void) :
     //properties that control HLR algoaffect Appearance
     bool coarseView = hGrp->GetBool("CoarseView", false);
     ADD_PROPERTY_TYPE(CoarseView, (coarseView), sgroup, App::Prop_None, "Coarse View on/off");
-    //visible outline
+    //add property for visible outline?
     ADD_PROPERTY_TYPE(SmoothVisible ,(false),sgroup,App::Prop_None,"Visible Smooth lines on/off");
     ADD_PROPERTY_TYPE(SeamVisible ,(false),sgroup,App::Prop_None,"Visible Seam lines on/off");
     ADD_PROPERTY_TYPE(IsoVisible ,(false),sgroup,App::Prop_None,"Visible Iso u,v lines on/off");
@@ -151,6 +151,12 @@ DrawViewPart::DrawViewPart(void) :
 
     ADD_PROPERTY_TYPE(CosmeticVertexList ,(""),sgroup,App::Prop_None,"CosmeticVertex Save/Restore");
     ADD_PROPERTY_TYPE(CosmeticEdgeList ,(""),sgroup,App::Prop_None,"CosmeticEdge Save/Restore");
+    ADD_PROPERTY_TYPE(CenterLineList ,(""),sgroup,App::Prop_None,"CenterLine Save/Restore");
+
+    std::vector<std::string> emptyList;
+    CosmeticVertexList.setValues(emptyList);
+    CosmeticEdgeList.setValues(emptyList);
+    CenterLineList.setValues(emptyList);
 
     geometryObject = nullptr;
     getRunControl();
@@ -163,7 +169,6 @@ DrawViewPart::~DrawViewPart()
 
 TopoDS_Shape DrawViewPart::getSourceShape(void) const
 {
-//     Base::Console().Message("DVP::getSourceShape() - %s\n", getNameInDocument());
     TopoDS_Shape result;
     const std::vector<App::DocumentObject*>& links = Source.getValues();
     if (links.empty())  {
@@ -208,7 +213,6 @@ TopoDS_Shape DrawViewPart::getSourceShape(void) const
 
 std::vector<TopoDS_Shape> DrawViewPart::getShapesFromObject(App::DocumentObject* docObj) const
 {
-//    Base::Console().Message("DVP::getShapesFromObject() - %s\n", getNameInDocument());
     std::vector<TopoDS_Shape> result;
     App::GroupExtension* gex = dynamic_cast<App::GroupExtension*>(docObj);
     App::Property* gProp = docObj->getPropertyByName("Group");
@@ -256,7 +260,6 @@ std::vector<TopoDS_Shape> DrawViewPart::getShapesFromObject(App::DocumentObject*
 
 TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
 {
-//     Base::Console().Message("DVP::getSourceShapeFused() - %s\n", getNameInDocument());
     TopoDS_Shape baseShape = getSourceShape();
     if (!baseShape.IsNull()) {
         TopoDS_Iterator it(baseShape);
@@ -267,7 +270,7 @@ TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
             BRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone()) {
-                Base::Console().Error("DVp - Fusion failed - %s\n",getNameInDocument());
+                Base::Console().Error("DVP - Fusion failed - %s\n",getNameInDocument());
                 return baseShape;
             }
             fusedShape = mkFuse.Shape();
@@ -279,13 +282,9 @@ TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
-//    Base::Console().Message("DVP::execute() - %s\n",getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
-
-//    rebuildCosmoVertex();
-//    rebuildCosmoEdge();
 
     App::Document* doc = getDocument();
     bool isRestoring = doc->testStatus(App::Document::Status::Restoring);
@@ -346,18 +345,14 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     }
 
     //add back the cosmetic vertices
-    for (auto& v: vertexCosmetic) {
+    for (auto& v: CVertexTable) {
         int idx = geometryObject->addCosmeticVertex(v->point() * getScale());
         v->linkGeom = idx;
     }
-
     //add the cosmetic Edges to geometry Edges list
-    for (auto& e: edgeCosmetic) {
-        TechDraw::BaseGeom* scaledGeom = e->scaledGeometry(getScale());
-        int idx = geometryObject->addCosmeticEdge(scaledGeom);
-        e->m_linkGeom = idx;
-    }
-
+    addCosmeticEdgesToGeom();
+    //add centerlines to geometry edges list
+    addCenterLinesToGeom();
     auto end   = chrono::high_resolution_clock::now();
     auto diff  = end - start;
     double diffOut = chrono::duration <double, milli> (diff).count();
@@ -407,7 +402,6 @@ void DrawViewPart::onChanged(const App::Property* prop)
 //note: slightly different than routine with same name in DrawProjectSplit
 TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis)
 {
-//    Base::Console().Message("DVP::buildGO() - %s\n", getNameInDocument());
     TechDraw::GeometryObject* go = new TechDraw::GeometryObject(getNameInDocument(), this);
     go->setIsoCount(IsoCount.getValue());
     go->isPerspective(Perspective.getValue());
@@ -668,15 +662,15 @@ const std::vector<TechDraw::BaseGeom  *> & DrawViewPart::getEdgeGeometry() const
 }
 
 //! returns existing BaseGeom of 2D Edge(idx)
-TechDraw::BaseGeom* DrawViewPart::getProjEdgeByIndex(int idx) const
+TechDraw::BaseGeom* DrawViewPart::getGeomByIndex(int idx) const
 {
     const std::vector<TechDraw::BaseGeom *> &geoms = getEdgeGeometry();
     if (geoms.empty()) {
-        Base::Console().Log("INFO - getProjEdgeByIndex(%d) - no Edge Geometry. Probably restoring?\n",idx);
+        Base::Console().Log("INFO - getGeomByIndex(%d) - no Edge Geometry. Probably restoring?\n",idx);
         return NULL;
     }
     if ((unsigned)idx >= geoms.size()) {
-        Base::Console().Log("INFO - getProjEdgeByIndex(%d) - invalid index\n",idx);
+        Base::Console().Log("INFO - getGeomByIndex(%d) - invalid index\n",idx);
         return NULL;
     }
     return geoms.at(idx);
@@ -707,9 +701,11 @@ std::vector<TechDraw::BaseGeom*> DrawViewPart::getFaceEdgesByIndex(int idx) cons
         for (auto& w: projFace->wires) {
             for (auto& g:w->geoms) {
                 if (g->cosmetic) {
-                   Base::Console().Message("DVP::getFaceEdgesByIndex - found cosmetic edge\n");
+                    //if g is cosmetic, we should skip it
+                    Base::Console().Message("DVP::getFaceEdgesByIndex - found cosmetic edge\n");
+                } else {
+                    result.push_back(g);
                 }
-                result.push_back(g);
             }
         }
     }
@@ -727,11 +723,9 @@ std::vector<TopoDS_Wire> DrawViewPart::getWireForFace(int idx) const
         int i = 0;
         for (auto& g:w->geoms) {
             edges.push_back(g->occEdge);
-//            DrawUtil::dumpEdge("DVP Face edge",i,g->occEdge);
             i++;
         }
         TopoDS_Wire occwire = EdgeWalker::makeCleanWire(edges);
-//        BRepLib::BuildCurves3d(occwire);   //probably don't need this
         result.push_back(occwire);
     }
  
@@ -858,7 +852,6 @@ const std::vector<TechDraw::BaseGeom  *> DrawViewPart::getVisibleFaceEdges() con
     return geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
 }
 
-//is this really the projection plane??
 gp_Pln DrawViewPart::getProjPlane() const
 {
     Base::Vector3d plnPnt(0.0,0.0,0.0);
@@ -891,7 +884,6 @@ bool DrawViewPart::showSectionEdges(void)
 //! hatches, geomhatches, dimensions,... 
 void DrawViewPart::unsetupObject()
 {
-//    Base::Console().Message("DVP::unsetupObject()\n");
     nowUnsetting = true;
     App::Document* doc = getDocument();
     std::string docName = doc->getName();
@@ -963,18 +955,20 @@ bool DrawViewPart::isIso(void) const
 //* Cosmetics
 //********
 
-//build vertexCosmetic from CosmeticVertexList
-void DrawViewPart::rebuildCosmoVertex(void)
+//build CVertexTable from CosmeticVertexList
+void DrawViewPart::readCVertexProp(void)
 {
-//    Base::Console().Message("DVP::rebuildCosmoVertex()\n");
-    vertexCosmetic.clear();
+    CVertexTable.clear();
     std::vector<std::string> restoreVerts = CosmeticVertexList.getValues();
+    if (restoreVerts.empty()) {
+        return;
+    }
     for (auto& rv: restoreVerts) {
        if (!rv.empty()) {
            CosmeticVertex* cv = new CosmeticVertex();
            bool rc = cv->fromCSV(rv);
            if (rc) {
-               vertexCosmetic.push_back(cv);
+               CVertexTable.push_back(cv);
            } else {
                delete cv;
            }
@@ -982,18 +976,20 @@ void DrawViewPart::rebuildCosmoVertex(void)
     }
 }
 
-//build edgeCosmetic from CosmeticEdgeList
-void DrawViewPart::rebuildCosmoEdge(void)
+//build CEdgeTable from CosmeticEdgeList
+void DrawViewPart::readCEdgeProp(void)
 {
-//    Base::Console().Message("DVP::rebuildCosmoEdge()\n");
-    edgeCosmetic.clear();
+    CEdgeTable.clear();
     std::vector<std::string> restoreEdges = CosmeticEdgeList.getValues();
+    if (restoreEdges.empty()) {
+        return;
+    }
     for (auto& re: restoreEdges) {
        if (!re.empty()) {
            CosmeticEdge* ce = new CosmeticEdge();
            bool rc = ce->fromCSV(re);
            if (rc) {
-               edgeCosmetic.push_back(ce);
+               CEdgeTable.push_back(ce);
            } else {
                delete ce;
            }
@@ -1001,13 +997,33 @@ void DrawViewPart::rebuildCosmoEdge(void)
     }
 }
 
-// adds a cosmetic vertex to vertexCosmetic and CosmeticVertexList
+//build CLineTable from CenterLineList
+void DrawViewPart::readCLineProp(void)
+{
+    CLineTable.clear();
+    std::vector<std::string> restoreLines = CenterLineList.getValues();
+    if (restoreLines.empty()) {
+        return;
+    }
+    for (auto& rl: restoreLines) {
+       if (!rl.empty()) {
+           CenterLine* cl = new CenterLine();
+           bool rc = cl->fromCSV(rl);
+           if (rc) {
+               CLineTable.push_back(cl);
+           } else {
+               delete cl;
+           }
+       }
+    }
+}
+
+// adds a cosmetic vertex to CVertexTable and CosmeticVertexList
 int DrawViewPart::addCosmeticVertex(Base::Vector3d pos)
 {
-//    Base::Console().Message("DVP::addCosmeticVertex(%s)\n", DrawUtil::formatVector(pos).c_str());
     TechDraw::CosmeticVertex* cv = new TechDraw::CosmeticVertex(pos);
-    vertexCosmetic.push_back(cv);
-    int newIdx = (int) (vertexCosmetic.size() - 1);
+    int newIdx = (int) (CVertexTable.size());
+    CVertexTable.push_back(cv);
     std::string csv = cv->toCSV();
     std::vector<std::string> vertexList = CosmeticVertexList.getValues();
     vertexList.push_back(csv);
@@ -1016,9 +1032,8 @@ int DrawViewPart::addCosmeticVertex(Base::Vector3d pos)
     return newIdx;
 }
 
-void DrawViewPart::stuffCosmeticVertexList(void)
+void DrawViewPart::writeCVertProp(void)
 {
-//    Base::Console().Message("DVP::stuffCosmeticVertexList()\n");
     std::vector<std::string> saveVerts;
     const std::vector<TechDraw::CosmeticVertex*> cosVerts = getCosmeticVertex();
     for (auto& cv: cosVerts) {
@@ -1030,10 +1045,9 @@ void DrawViewPart::stuffCosmeticVertexList(void)
 
 void DrawViewPart::removeCosmeticVertex(TechDraw::CosmeticVertex* cv)
 {
-//    Base::Console().Message("DVP::removeCosmeticVertex(cv) - cvs in: %d\n", vertexCosmetic.size());
     bool found = false;
     std::vector<TechDraw::CosmeticVertex*> newCosmoVertex;
-    for (auto& v: vertexCosmetic) {
+    for (auto& v: CVertexTable) {
         if (cv == v) {
             found = true;
             continue;
@@ -1046,26 +1060,25 @@ void DrawViewPart::removeCosmeticVertex(TechDraw::CosmeticVertex* cv)
         delete cv;
     }
      
-    vertexCosmetic = newCosmoVertex;
-    stuffCosmeticVertexList();
+    CVertexTable = newCosmoVertex;
+    writeCVertProp();
     recomputeFeature();
 }
 
 void DrawViewPart::removeCosmeticVertex(int idx)
 {
-    if (idx < (int) vertexCosmetic.size()) {
-        TechDraw::CosmeticVertex* cvSave = vertexCosmetic.at(idx);
-        vertexCosmetic.erase(vertexCosmetic.begin() + idx);
+    if (idx < (int) CVertexTable.size()) {
+        TechDraw::CosmeticVertex* cvSave = CVertexTable.at(idx);
+        CVertexTable.erase(CVertexTable.begin() + idx);
         delete cvSave;
     }
      
-    stuffCosmeticVertexList();
+    writeCVertProp();
     recomputeFeature();
 }
 
 TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByIndex(int idx) const
 {
-//    Base::Console().Message("DVP::getCosmeticVertexByIndex(%d)\n", idx);
     CosmeticVertex* result = nullptr;
     const std::vector<TechDraw::CosmeticVertex*> verts = getCosmeticVertex();
     if ((unsigned) idx < verts.size())  {
@@ -1075,9 +1088,8 @@ TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByIndex(int idx) const
 }
 
 //find the cosmetic vertex corresponding to geometry vertex idx
-TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByLink(int idx) const
+TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByGeom(int idx) const
 {
-//    Base::Console().Message("DVP::getVosmeticVertexByLinkIndex(%d)\n", idx);
     CosmeticVertex* result = nullptr;
     const std::vector<TechDraw::CosmeticVertex*> verts = getCosmeticVertex();
     for (auto& cv: verts) {
@@ -1091,69 +1103,64 @@ TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByLink(int idx) const
 
 void DrawViewPart::clearCosmeticVertices(void) 
 {
-//    Base::Console().Message("DVP::clearCosmeticVertices()\n");
-    vertexCosmetic.clear();
+    CVertexTable.clear();
     std::vector<std::string> noVerts;
     CosmeticVertexList.setValues(noVerts);
 }
 
 void DrawViewPart::clearCosmeticEdges(void) 
 {
-//    Base::Console().Message("DVP::clearCosmeticEdges()\n");
-    edgeCosmetic.clear();
+    CEdgeTable.clear();
     std::vector<std::string> noEdges;
     CosmeticEdgeList.setValues(noEdges);
 }
 
-// adds a cosmetic edge to edgeCosmetic and CosmeticEdgeList
+// adds a cosmetic edge to CEdgeTable and CosmeticEdgeList
 int DrawViewPart::addCosmeticEdge(Base::Vector3d p1, Base::Vector3d p2)
 {
-//    Base::Console().Message("DVP::addCosmeticEdge(%s, %s)\n",
-//                              DrawUtil::formatVector(p1).c_str(),
-//                              DrawUtil::formatVector(p2).c_str());
     TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(p1, p2);
-    edgeCosmetic.push_back(ce);
-    int newIdx = (int) (edgeCosmetic.size() - 1);
-//    stuffCosmeticEdgeList();
+    int newIdx = (int) (CEdgeTable.size());
+    CEdgeTable.push_back(ce);
     std::string csv = ce->toCSV();
+
     std::vector<std::string> edgeList = CosmeticEdgeList.getValues();
     edgeList.push_back(csv);
     CosmeticEdgeList.setValues(edgeList);
+
     return newIdx;
 }
 
 int DrawViewPart::addCosmeticEdge(TopoDS_Edge e)
 {
-//    Base::Console().Message("DVP::addCosmeticEdge(TopoDS_Edge)\n");
     TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(e);
-    edgeCosmetic.push_back(ce);
-    int newIdx = (int) (edgeCosmetic.size() - 1);
-//    stuffCosmeticEdgeList();
+    int newIdx = (int) (CEdgeTable.size());
+    CEdgeTable.push_back(ce);
     std::string csv = ce->toCSV();
+
     std::vector<std::string> edgeList = CosmeticEdgeList.getValues();
     edgeList.push_back(csv);
     CosmeticEdgeList.setValues(edgeList);
+
     return newIdx;
 }
 
 int DrawViewPart::addCosmeticEdge(CosmeticEdge* ce)
 {
-//    Base::Console().Message("DVP::addCosmeticEdge(CosmeticEdge)\n");
-    edgeCosmetic.push_back(ce);
-    int newIdx = (int) (edgeCosmetic.size() - 1);
-//    stuffCosmeticEdgeList();
+    int newIdx = (int) (CEdgeTable.size());
+    CEdgeTable.push_back(ce);
     std::string csv = ce->toCSV();
+
     std::vector<std::string> edgeList = CosmeticEdgeList.getValues();
     edgeList.push_back(csv);
     CosmeticEdgeList.setValues(edgeList);
+
     return newIdx;
 }
 
-void DrawViewPart::stuffCosmeticEdgeList(void)
+void DrawViewPart::writeCEdgeProp(void)
 {
-//    Base::Console().Message("DVP::stuffCosmeticEdgeList()\n");
     std::vector<std::string> saveEdges;
-    const std::vector<TechDraw::CosmeticEdge*> cosEdges = getCosmeticEdge();
+    const std::vector<TechDraw::CosmeticEdge*> cosEdges = getCosmeticEdges();
     for (auto& ce: cosEdges) {
         std::string csv = ce->toCSV();
         saveEdges.push_back(csv);
@@ -1161,12 +1168,12 @@ void DrawViewPart::stuffCosmeticEdgeList(void)
     CosmeticEdgeList.setValues(saveEdges);
 }
 
+
 void DrawViewPart::removeCosmeticEdge(TechDraw::CosmeticEdge* ce)
 {
-//    Base::Console().Message("DVP::removeCosmeticEdge(ce) - ces in: %d\n", edgeCosmetic.size());
     bool found = false;
     std::vector<TechDraw::CosmeticEdge*> newCosmoEdge;
-    for (auto& e: edgeCosmetic) {
+    for (auto& e: CEdgeTable) {
         if (ce == e) {
             found = true;
             continue;
@@ -1178,28 +1185,44 @@ void DrawViewPart::removeCosmeticEdge(TechDraw::CosmeticEdge* ce)
          (found) )  {
         delete ce;
     }
-    edgeCosmetic = newCosmoEdge;
-    stuffCosmeticEdgeList();
+    CEdgeTable = newCosmoEdge;
+    writeCEdgeProp();
     recomputeFeature();
 }
 
 void DrawViewPart::removeCosmeticEdge(int idx)
 {
-//    Base::Console().Message("DVP::removeCosmeticEdge(%d) - ces in: %d\n", idx, edgeCosmetic.size());
-    if (idx < (int) edgeCosmetic.size()) {
-        TechDraw::CosmeticEdge* ceSave = edgeCosmetic.at(idx);
-        edgeCosmetic.erase(edgeCosmetic.begin() + idx);
+    if (idx < (int) CEdgeTable.size()) {
+        TechDraw::CosmeticEdge* ceSave = CEdgeTable.at(idx);
+        CEdgeTable.erase(CEdgeTable.begin() + idx);
         delete ceSave;
+        writeCEdgeProp();
+        recomputeFeature();
     }
-    stuffCosmeticEdgeList();
-    recomputeFeature();
+}
+
+void DrawViewPart::replaceCosmeticEdge(int idx, TechDraw::CosmeticEdge* ce)
+{
+    std::vector<TechDraw::CosmeticEdge*> edges = getCosmeticEdges();
+    if (idx < (int) edges.size())  {
+        edges.at(idx) = ce;
+        //TODO: GC old ce
+        writeCEdgeProp();
+        recomputeFeature();
+    }
+}
+
+void DrawViewPart::replaceCosmeticEdgeByGeom(int geomIndex, TechDraw::CosmeticEdge* ce)
+{
+    const std::vector<TechDraw::BaseGeom*> &geoms = getEdgeGeometry();
+    int sourceIndex = geoms.at(geomIndex)->sourceIndex();
+    replaceCosmeticEdge(sourceIndex, ce);
 }
 
 TechDraw::CosmeticEdge* DrawViewPart::getCosmeticEdgeByIndex(int idx) const
 {
-//    Base::Console().Message("DVP::getCosmeticEdgeByIndex(%d)\n", idx);
     CosmeticEdge* result = nullptr;
-    const std::vector<TechDraw::CosmeticEdge*> edges = getCosmeticEdge();
+    const std::vector<TechDraw::CosmeticEdge*> edges = getCosmeticEdges();
     if (idx < (int) edges.size())  {
         result = edges.at(idx);
     }
@@ -1207,30 +1230,166 @@ TechDraw::CosmeticEdge* DrawViewPart::getCosmeticEdgeByIndex(int idx) const
 }
 
 //find the cosmetic edge corresponding to geometry edge idx
-TechDraw::CosmeticEdge* DrawViewPart::getCosmeticEdgeByLink(int idx) const
+TechDraw::CosmeticEdge* DrawViewPart::getCosmeticEdgeByGeom(int idx) const
 {
-//    Base::Console().Message("DVP::getCosmeticEdgeByLinkIndex(%d)\n", idx);
     CosmeticEdge* result = nullptr;
-    const std::vector<TechDraw::CosmeticEdge*> edges = getCosmeticEdge();
-    for (auto& ce: edges) {
-        if (ce->m_linkGeom == idx) {
-            result = ce;
+    const std::vector<TechDraw::BaseGeom*> &geoms = getEdgeGeometry();
+    int sourceIndex = geoms.at(idx)->sourceIndex();
+    result = CEdgeTable.at(sourceIndex);
+    return result;
+}
+
+//find the index of a cosmetic edge
+int DrawViewPart::getCosmeticEdgeIndex(TechDraw::CosmeticEdge* ce) const
+{
+    int result = -1;
+    const std::vector<TechDraw::CosmeticEdge*> edges = getCosmeticEdges();
+    int i = 0;
+    int stop = (int) edges.size();
+    for (; i < stop; i++) {
+        if (edges.at(i) == ce) {
+            result = i;
             break;
         }
     }
     return result;
 }
 
+void DrawViewPart::clearCenterLines(void) 
+{
+    CLineTable.clear();
+    std::vector<std::string> noLines;
+    CenterLineList.setValues(noLines);
+}
+
+// adds a centerLine edge to CLineTable and CenterLineList
+int DrawViewPart::addCenterLine(CenterLine* cl)
+{
+    int newIdx = (int) (CLineTable.size());
+    CLineTable.push_back(cl);
+    std::string csv = cl->toCSV();
+    std::vector<std::string> lineList = CenterLineList.getValues();
+    lineList.push_back(csv);
+    CenterLineList.setValues(lineList);
+    return newIdx;
+}
+
+void DrawViewPart::writeCListProp(void)
+{
+    std::vector<std::string> saveLines;
+    const std::vector<TechDraw::CenterLine*> cLines = getCenterLines();
+    for (auto& cl: cLines) {
+        std::string csv = cl->toCSV();
+        saveLines.push_back(csv);
+    }
+    CenterLineList.setValues(saveLines);
+}
+
+void DrawViewPart::removeCenterLine(TechDraw::CenterLine* cl)
+{
+    bool found = false;
+    int i = 0;
+    int stop = CLineTable.size();
+    for ( ; i < stop; i++) {
+        TechDraw::CenterLine* l = CLineTable.at(i);
+        if (cl == l) {
+            found = true;
+            break;
+        }
+    }
+    if ( (cl != nullptr)  &&
+         (found) )  {
+        removeCenterLine(i);
+    }
+}
+
+void DrawViewPart::removeCenterLine(int idx)
+{
+    if (idx < (int) CLineTable.size()) {
+        CLineTable.erase(CLineTable.begin() + idx);
+        writeCListProp();
+        recomputeFeature();
+    }
+}
+
+void DrawViewPart::replaceCenterLine(int idx, TechDraw::CenterLine* cl)
+{
+    std::vector<TechDraw::CenterLine*> lines = getCenterLines();
+    if (idx < (int) lines.size())  {
+        lines.at(idx) = cl;
+        writeCListProp();
+        recomputeFeature();
+    }
+}
+
+void DrawViewPart::replaceCenterLineByGeom(int geomIndex, TechDraw::CenterLine* cl)
+{
+    const std::vector<TechDraw::BaseGeom*> &geoms = getEdgeGeometry();
+    int sourceIndex = geoms.at(geomIndex)->sourceIndex();
+    replaceCenterLine(sourceIndex, cl);
+}
+
+TechDraw::CenterLine* DrawViewPart::getCenterLineByIndex(int idx) const
+{
+    CenterLine* result = nullptr;
+    const std::vector<TechDraw::CenterLine*> lines = getCenterLines();
+    if (idx < (int) lines.size())  {
+        result = lines.at(idx);
+    }
+    return result;
+}
+
+//find the cosmetic edge corresponding to geometry edge idx
+TechDraw::CenterLine* DrawViewPart::getCenterLineByGeom(int idx) const
+{
+    const std::vector<TechDraw::BaseGeom*> &geoms = getEdgeGeometry();
+    int sourceIndex = geoms.at(idx)->sourceIndex();
+    CenterLine* result = nullptr;
+    const std::vector<TechDraw::CenterLine*> lines = getCenterLines();
+    result = lines.at(sourceIndex);
+    return result;
+}
+
+//add the cosmetic Edges to geometry Edges list
+void DrawViewPart::addCosmeticEdgesToGeom(void)
+{
+    int i = 0;
+    for ( ; i < (int) CEdgeTable.size(); i++) {
+        TechDraw::BaseGeom* scaledGeom = CEdgeTable.at(i)->scaledGeometry(getScale());
+        if (scaledGeom == nullptr) { 
+            Base::Console().Message("DVP::addCosmeticEdgesToGeom - scaledGeometry is null\n");
+            continue;
+        }
+//        int idx = 
+        (void) geometryObject->addCosmeticEdge(scaledGeom, 1, i);
+    }
+}
+
+//add the center lines to geometry Edges list
+void DrawViewPart::addCenterLinesToGeom(void)
+{
+    int i = 0;
+    for ( ; i < (int) CLineTable.size(); i++) {
+        TechDraw::BaseGeom* scaledGeom = CLineTable.at(i)->scaledGeometry(this);
+        if (scaledGeom == nullptr) { 
+            Base::Console().Message("DVP::addCenterLinesToGeom - scaledGeometry is null\n");
+            continue;
+        }
+//        int idx = 
+        (void) geometryObject->addCenterLine(scaledGeom, 2, i);
+    }
+}
+
 void DrawViewPart::onDocumentRestored()
 {
-    rebuildCosmoVertex();
-    rebuildCosmoEdge();
+    readCVertexProp();
+    readCEdgeProp();
+    readCLineProp();
 //    requestPaint();
     //if execute has not run yet, there will be no GO, and paint will not do anything.
     execute();
     DrawView::onDocumentRestored();
 }
-
 
 PyObject *DrawViewPart::getPyObject(void)
 {

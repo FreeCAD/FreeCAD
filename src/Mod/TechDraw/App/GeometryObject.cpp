@@ -412,6 +412,8 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             Base::Console().Log("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
             throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
         }
+        base->source(0);             //object geometry
+        base->sourceIndex(i-1);
         base->classOfEdge = category;
         base->visible = visible;
         edgeGeom.push_back(base);
@@ -473,22 +475,36 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
 
 int GeometryObject::addCosmeticVertex(Base::Vector3d pos)
 {
-//    Base::Console().Message("GO::addCosmeticVertex(%s)\n",DrawUtil::formatVector(pos).c_str());
     TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
     vertexGeom.push_back(v);
     int idx = vertexGeom.size() - 1;
     return idx;
 }
 
-
-int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base)
+int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,
+                                    int s, int si)
 {
-//    Base::Console().Message("GO::addCosmeticEdge() - cosmetic: %d\n", base->cosmetic);
     base->cosmetic = true;
+    base->source(s);           //1-CosmeticEdge, 2-CenterLine
+    base->sourceIndex(si);     //index into source;
+    
     edgeGeom.push_back(base);
     int idx = edgeGeom.size() - 1;
     return idx;
 }
+
+int GeometryObject::addCenterLine(TechDraw::BaseGeom* base,
+                                    int s, int si)
+{
+    base->cosmetic = true;
+    base->source(s);           //1-CosmeticEdge, 2-CenterLine
+    base->sourceIndex(si);     //index into source;
+    
+    edgeGeom.push_back(base);
+    int idx = edgeGeom.size() - 1;
+    return idx;
+}
+
 
 //! empty Face geometry
 void GeometryObject::clearFaceGeom()
