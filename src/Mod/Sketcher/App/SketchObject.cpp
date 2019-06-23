@@ -5174,11 +5174,13 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     int sourceid = 0;
     for (std::vector< Sketcher::Constraint * >::const_iterator it= scvals.begin(); it != scvals.end(); ++it,nextcid++,sourceid++) {
 
-        if ((*it)->Type == Sketcher::Distance ||
-            (*it)->Type == Sketcher::Radius ||
-            (*it)->Type == Sketcher::Diameter ||
-            (*it)->Type == Sketcher::Angle ||
-            (*it)->Type == Sketcher::SnellsLaw) {
+        if ((*it)->Type == Sketcher::Distance   ||
+            (*it)->Type == Sketcher::Radius     ||
+            (*it)->Type == Sketcher::Diameter   ||
+            (*it)->Type == Sketcher::Angle      ||
+            (*it)->Type == Sketcher::SnellsLaw  ||
+            (*it)->Type == Sketcher::DistanceX  ||
+            (*it)->Type == Sketcher::DistanceY ) {
             // then we link its value to the parent
             // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
             if ((*it)->isDriving) {
@@ -5191,45 +5193,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
 
                 boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
                 setExpression(Constraints.createPath(nextcid), expr);
-
-
             }
-
-        }
-        else if ((*it)->Type == Sketcher::DistanceX) {
-            // then we link its value to the parent
-            // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
-            if ((*it)->isDriving) {
-                App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
-
-                if(xinv) {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, std::string(1,'-') + spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
-                    setExpression(Constraints.createPath(nextcid), expr);
-                }
-                else {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
-
-                    setExpression(Constraints.createPath(nextcid), expr);
-                }
-            }
-
-        }
-        else if ((*it)->Type == Sketcher::DistanceY ) {
-            // then we link its value to the parent
-            // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
-            if ((*it)->isDriving) {
-                App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
-
-                if(yinv) {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, std::string(1,'-') + spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
-                    setExpression(Constraints.createPath(nextcid), expr);
-                }
-                else {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
-                    setExpression(Constraints.createPath(nextcid), expr);
-                }
-            }
-
         }
     }
 
