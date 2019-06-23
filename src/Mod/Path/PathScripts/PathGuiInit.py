@@ -25,7 +25,9 @@
 import PathScripts
 import PathScripts.PathLog as PathLog
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -69,7 +71,7 @@ def Startup():
         try:
             import ocl
             from PathScripts import PathSurfaceGui
-        except:
+        except ImportError:
             import FreeCAD
             FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
             pass

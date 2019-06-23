@@ -37,7 +37,9 @@ import json
 from PathScripts.PathPostProcessor import PostProcessor
 from PySide import QtCore
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -227,7 +229,7 @@ class ObjectJob:
         if obj.Operations.ViewObject:
             try:
                 obj.Operations.ViewObject.DisplayMode
-            except:
+            except Exception:
                 name = obj.Operations.Name
                 label = obj.Operations.Label
                 ops = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Operations")

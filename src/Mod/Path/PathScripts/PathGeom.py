@@ -38,7 +38,9 @@ __doc__ = "Functions to extract and convert between Path.Command and Part.Edge a
 
 Tolerance = 0.000001
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -405,7 +407,7 @@ def arcToHelix(edge, z0, z1):
 
 
     p1 = edge.valueAt(edge.FirstParameter)
-    p2 = edge.valueAt(edge.LastParameter)
+    # p2 = edge.valueAt(edge.LastParameter)
 
     cmd = cmdsForEdge(edge)[0]
     params = cmd.Parameters
@@ -459,7 +461,7 @@ def splitEdgeAt(edge, pt):
     p1 = edge.valueAt(edge.FirstParameter)
     p2 = pt
     p3 = edge.valueAt(edge.LastParameter)
-    edges = []
+    # edges = []
 
     if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
         # it's a line
