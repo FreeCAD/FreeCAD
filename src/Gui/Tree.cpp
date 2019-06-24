@@ -759,11 +759,9 @@ void TreeWidget::updateStatus(bool delay) {
 
 void TreeWidget::_updateStatus(bool delay) {
     if(!delay) {
-        if(statusTimer->isActive()) {
-            if(ChangedObjects.size() || NewObjects.size()) 
-                onUpdateStatus();
-            return;
-        }
+        if(ChangedObjects.size() || NewObjects.size()) 
+            onUpdateStatus();
+        return;
     }
     int timeout = FC_TREEPARAM(StatusTimeout);
     if (timeout<0)
@@ -1089,6 +1087,11 @@ void TreeWidget::selectAllInstances(const ViewProviderDocumentObject &vpd) {
     if(!isConnectionAttached()) 
         return;
 
+    if(selectTimer->isActive())
+        onSelectTimer();
+    else
+        _updateStatus(false);
+
     for(const auto &v : DocumentMap) 
         v.second->selectAllInstances(vpd);
 }
@@ -1121,6 +1124,8 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document *doc)
 
     if(tree->selectTimer->isActive())
         tree->onSelectTimer();
+    else
+        tree->_updateStatus(false);
 
     for(auto ti : tree->selectedItems()) {
         if(ti->type() != ObjectType) continue;
@@ -1168,6 +1173,12 @@ void TreeWidget::selectAllLinks(App::DocumentObject *obj) {
         TREE_ERR("invlaid object");
         return;
     }
+
+    if(selectTimer->isActive())
+        onSelectTimer();
+    else
+        _updateStatus(false);
+
     for(auto link: App::GetApplication().getLinksTo(obj,App::GetLinkRecursive|App::GetLinkArray)) 
     {
         if(!link || !link->getNameInDocument()) {
@@ -2613,6 +2624,11 @@ void TreeWidget::onItemSelectionChanged ()
 
     _LastSelectedTreeWidget = this;
 
+    if(selectTimer->isActive())
+        onSelectTimer();
+    else
+        _updateStatus(false);
+
     // block tmp. the connection to avoid to notify us ourself
     bool lock = this->blockConnection(true);
 
@@ -2687,6 +2703,7 @@ void TreeWidget::onItemSelectionChanged ()
 }
 
 void TreeWidget::onSelectTimer() {
+
     _updateStatus(false);
 
     bool syncSelect = FC_TREEPARAM(SyncSelection);
@@ -2841,7 +2858,7 @@ void TreeWidget::selectLinkedObject(App::DocumentObject *linked) {
     if(!isConnectionAttached()) 
         return;
 
-    auto linkedVp = dynamic_cast<ViewProviderDocumentObject*>(
+    auto linkedVp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
             Application::Instance->getViewProvider(linked));
     if(!linkedVp) {
         TREE_ERR("invalid linked view provider");
@@ -2852,6 +2869,11 @@ void TreeWidget::selectLinkedObject(App::DocumentObject *linked) {
         TREE_ERR("cannot find document of linked object");
         return;
     }
+
+    if(selectTimer->isActive())
+        onSelectTimer();
+    else
+        _updateStatus(false);
 
     auto it = linkedDoc->ObjectMap.find(linked);
     if(it == linkedDoc->ObjectMap.end()) {
