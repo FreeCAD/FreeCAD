@@ -69,7 +69,7 @@ class _PropertyEnumEditor(_PropertyEditor):
 
     def widget(self, parent):
         PathLog.track(self.prop.name, self.prop.getEnumValues())
-        return QtGui.QComboBox(parent);
+        return QtGui.QComboBox(parent)
 
     def setEditorData(self, widget):
         widget.clear()
