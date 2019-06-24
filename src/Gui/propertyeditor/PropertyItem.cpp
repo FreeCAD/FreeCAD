@@ -3588,11 +3588,20 @@ QVariant PropertyLinkItem::toString(const QVariant& prop) const
     return QVariant(list[2]);
 }
 
+QVariant PropertyLinkItem::data(int column, int role) const {
+    if(propertyItems.size() && column == 1 && role == Qt::TextColorRole) {
+        auto xlink = Base::freecad_dynamic_cast<const App::PropertyXLink>(propertyItems[0]);
+        if(xlink && xlink->checkRestore()>1)
+            return QVariant::fromValue(QColor(0xff,0,0));
+    }
+    return PropertyItem::data(column,role);
+}
+
 QVariant PropertyLinkItem::value(const App::Property* prop) const
 {
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()));
 
-    auto xlink = dynamic_cast<const App::PropertyXLink*>(prop);
+    auto xlink = Base::freecad_dynamic_cast<const App::PropertyXLink>(prop);
     isXLink = xlink!=0;
 
     const App::PropertyLink* prop_link = static_cast<const App::PropertyLink*>(prop);
@@ -3617,21 +3626,34 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     if (obj) {
         list << QString::fromLatin1(obj->getDocument()->getName());
         list << QString::fromLatin1(obj->getNameInDocument());
+
+        std::string _objName;
+        const char *objName = obj->getNameInDocument();
+        auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(c);
+        if(!objName || (owner && owner->getDocument()!=obj->getDocument())) {
+            _objName = obj->getFullName();
+            objName = _objName.c_str();
+        }
+
         if(xlink && xlink->getSubName(false)[0]) {
             auto subObj = obj->getSubObject(xlink->getSubName(false));
             if(subObj)
                 list << QString::fromLatin1("%1 (%2.%3)").
-                    arg(QString::fromUtf8(subObj->Label.getValue())).
-                    arg(QString::fromLatin1(obj->getNameInDocument())).
-                    arg(QString::fromUtf8(xlink->getSubName(false)));
+                    arg(QString::fromUtf8(subObj->Label.getValue()),
+                        QString::fromLatin1(objName),
+                        QString::fromUtf8(xlink->getSubName(false)));
             else
                 list << QString::fromLatin1("%1.%2").
-                    arg(QString::fromLatin1(obj->getNameInDocument())).
-                    arg(QString::fromUtf8(xlink->getSubName(false)));
-        }else
+                    arg(QString::fromLatin1(objName),
+                        QString::fromUtf8(xlink->getSubName(false)));
+        }else if(objName!=obj->Label.getValue()) {
+            list << QString::fromLatin1("%1 (%2)").
+                    arg(QString::fromUtf8(obj->Label.getValue()),
+                        QString::fromLatin1(objName));
+        } else {
             list << QString::fromUtf8(obj->Label.getValue());
-    }
-    else {
+        }
+    } else {
         // no object assigned
         // the document name
         if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
@@ -3644,8 +3666,13 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
 
         // the internal object name
         list << QString::fromLatin1("Null");
+
         // the object label
-        list << QString::fromLatin1("");
+        std::string msg;
+        if(xlink && xlink->checkRestore(&msg)>1)
+            list << QString::fromUtf8(msg.c_str());
+        else
+            list << QString::fromLatin1("");
     }
 
     // the name of this object

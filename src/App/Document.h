@@ -198,9 +198,8 @@ public:
     /// Restore the document from the file in Property Path
     void restore (const char *filename=0, 
             bool delaySignal=false, const std::set<std::string> &objNames={});
-    void afterRestore(bool checkXLink=false, bool checkPartial=false);
-    bool afterRestore(const std::vector<App::DocumentObject *> &, 
-            bool checkXLink=false, bool checkPartial=false);
+    void afterRestore(bool checkPartial=false);
+    bool afterRestore(const std::vector<App::DocumentObject *> &, bool checkPartial=false);
     enum ExportStatus {
         NotExporting,
         Exporting,

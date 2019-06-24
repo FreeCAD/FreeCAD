@@ -2446,12 +2446,12 @@ void Document::restore (const char *filename,
     }
 
     if(!delaySignal)
-        afterRestore(false,true);
+        afterRestore(true);
 }
 
-void Document::afterRestore(bool checkXLink, bool checkPartial) {
+void Document::afterRestore(bool checkPartial) {
     Base::FlagToggler<> flag(_IsRestoring,false);
-    if(!afterRestore(d->objectArray,checkXLink,checkPartial)) {
+    if(!afterRestore(d->objectArray,checkPartial)) {
         FC_WARN("Reload partial document " << getName());
         restore();
         return;
@@ -2460,8 +2460,7 @@ void Document::afterRestore(bool checkXLink, bool checkPartial) {
     setStatus(Document::Restoring, false);
 }
 
-bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, 
-        bool checkXLink, bool checkPartial) 
+bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool checkPartial) 
 {
     checkPartial = checkPartial && testStatus(Document::PartialDoc);
     if(checkPartial && d->touchedObjs.size())
@@ -2523,7 +2522,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray,
             d->addRecomputeLog("Unknown exception on restore",obj);
             FC_ERR("Failed to restore " << obj->getFullName() << ": " << "unknown exception");
         }
-        if(checkXLink && !d->touchedObjs.count(obj)) {
+        if(obj->isValid()) {
             auto &props = propMap[obj];
             props.clear();
             // refresh properties in case the object changes its property list
@@ -2531,19 +2530,16 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray,
             for(auto prop : props) {
                 auto link = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
                 int res;
-                if(link && (res=link->checkRestore())) {
+                std::string errMsg;
+                if(link && (res=link->checkRestore(&errMsg))) {
                     d->touchedObjs.insert(obj);
                     if(res==1)
-                        FC_WARN("'" << obj->getFullName() << "' xlink property '" 
-                                << prop->getName() << "' time stamp changed");
-                    else {
-                        std::ostringstream ss;
-                        ss << prop->getName() << " not restored";
-                        d->addRecomputeLog(ss.str(),obj);
-                        FC_WARN("'" << obj->getFullName() << "' xlink property '" 
-                                << prop->getName() << "' not restored");
+                        FC_WARN(errMsg);
+                    else  {
+                        FC_ERR(errMsg);
+                        d->addRecomputeLog(errMsg,obj);
+                        setStatus(Document::PartialRestore, true);
                     }
-                    break;
                 }
             }
         }

@@ -190,7 +190,7 @@ PropertyLinkBase::updateLabelReferences(App::DocumentObject *obj, const char *ne
     return ret;
 }
 
-static std::string propertyName(Property *prop) {
+static std::string propertyName(const Property *prop) {
     if(!prop)
         return std::string();
     auto obj = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
@@ -204,7 +204,7 @@ static std::string propertyName(Property *prop) {
             return name;
         }
     }
-    auto xlink = Base::freecad_dynamic_cast<PropertyXLink>(prop);
+    auto xlink = Base::freecad_dynamic_cast<const PropertyXLink>(prop);
     if(xlink)
         return propertyName(xlink->parent());
     return name;
@@ -1317,7 +1317,7 @@ std::string PropertyLinkBase::exportSubName(
         auto name = std::string(sub,dot-sub+1);
         obj = obj->getSubObject(name.c_str());
         if(!obj || !obj->getNameInDocument()) {
-            FC_ERR("missing sub object '" << name << "' in '" << sub <<"'");
+            FC_WARN("missing sub object '" << name << "' in '" << sub <<"'");
             break;
         }
         if(obj->isExporting()) {
@@ -3101,7 +3101,7 @@ App::Document *PropertyXLink::getDocument() const {
 }
 
 const char *PropertyXLink::getDocumentPath() const {
-    return docInfo?docInfo->filePath():0;
+    return docInfo?docInfo->filePath():filePath.c_str();
 }
 
 const char *PropertyXLink::getObjectName() const {
@@ -3120,10 +3120,18 @@ bool PropertyXLink::upgrade(Base::XMLReader &reader, const char *typeName) {
     return false;
 }
 
-int PropertyXLink::checkRestore() const {
+int PropertyXLink::checkRestore(std::string *msg) const {
     if(!docInfo) {
         if(!_pcLink && objectName.size()) {
             // this condition means linked object not found
+            if(msg) {
+                std::ostringstream ss;
+                ss << "Link not restored" << std::endl;
+                ss << "Object: " << objectName;
+                if(filePath.size())
+                    ss << std::endl << "File: " << filePath;
+                *msg = ss.str();
+            }
             return 2;
         }
         return 0;
@@ -3135,10 +3143,27 @@ int PropertyXLink::checkRestore() const {
         {
             return 0;
         }
+        if(msg) {
+            std::ostringstream ss;
+            ss << "Link not restored" << std::endl;
+            ss << "Linked object: " << objectName;
+            if(docInfo->pcDoc)
+                ss << std::endl << "Linked document: " << docInfo->pcDoc->Label.getValue();
+            else if(filePath.size())
+                ss << std::endl << "Linked file: " << filePath;
+            *msg = ss.str();
+        }
         return 2;
     }
-    if(docInfo->pcDoc && stamp==docInfo->pcDoc->LastModifiedDate.getValue())
+    if(!docInfo->pcDoc || stamp==docInfo->pcDoc->LastModifiedDate.getValue())
         return 0;
+
+    if(msg) {
+        std::ostringstream ss;
+        ss << "Time stamp changed on link " 
+            << _pcLink->getFullName();
+        *msg = ss.str();
+    }
     return 1;
 }
 
@@ -4280,10 +4305,10 @@ bool PropertyXLinkSubList::adjustLink(const std::set<App::DocumentObject*> &inLi
     return touched;
 }
 
-int PropertyXLinkSubList::checkRestore() const {
+int PropertyXLinkSubList::checkRestore(std::string *msg) const {
     for(auto &l : _Links) {
         int res;
-        if((res = l.checkRestore()))
+        if((res = l.checkRestore(msg)))
             return res;
     }
     return 0;
@@ -4393,11 +4418,11 @@ void PropertyXLinkContainer::breakLink(App::DocumentObject *obj, bool clear) {
     _XLinks.clear();
 }
 
-int PropertyXLinkContainer::checkRestore() const {
+int PropertyXLinkContainer::checkRestore(std::string *msg) const {
     if(_LinkRestored)
         return 1;
     for(auto &v : _XLinks) {
-        int res = v.second->checkRestore();
+        int res = v.second->checkRestore(msg);
         if(res)
             return res;
     }

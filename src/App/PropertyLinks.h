@@ -161,10 +161,15 @@ public:
 
     /** Test if the link is restored unchanged
      *
-     * @return For external linked object, return non zero in case the link is
-     * missing, or the time stamp has changed.
+     * @param msg: optional error message
+     *
+     * @return For external linked object, return 2 in case the link is
+     * missing, and 1 if the time stamp has changed.
      */
-    virtual int checkRestore() const {return 0;}
+    virtual int checkRestore(std::string *msg=0) const {
+        (void)msg;
+        return 0;
+    }
 
     /** Obtain the linked objects
      *
@@ -1055,7 +1060,7 @@ public:
     const char *getDocumentPath() const;
     const char *getObjectName() const;
 
-    virtual int checkRestore() const override;
+    virtual int checkRestore(std::string *msg=0) const override;
 
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
@@ -1267,7 +1272,7 @@ public:
 
     bool upgrade(Base::XMLReader &reader, const char *typeName);
 
-    virtual int checkRestore() const override;
+    virtual int checkRestore(std::string *msg=0) const override;
 
     virtual void setAllowPartial(bool enable) override;
 
@@ -1289,7 +1294,7 @@ public:
     ~PropertyXLinkContainer();
 
     virtual void afterRestore() override;
-    virtual int checkRestore() const override;
+    virtual int checkRestore(std::string *msg=0) const override;
     virtual void Save (Base::Writer &writer) const override;
     virtual void Restore(Base::XMLReader &reader) override;
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;

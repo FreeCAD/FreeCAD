@@ -158,7 +158,7 @@ public:
     QString propertyName() const;
     void setPropertyName(const QString&);
     void setPropertyValue(const QString&);
-    QVariant data(int column, int role) const;
+    virtual QVariant data(int column, int role) const;
     bool setData (const QVariant& value);
     Qt::ItemFlags flags(int column) const;
     int row() const;
@@ -176,7 +176,7 @@ protected:
     virtual void initialize();
     QString pythonIdentifier(const App::Property*) const;
 
-private:
+protected:
     QString propName;
     QString displayText;
     std::vector<App::Property*> propertyItems;
@@ -994,6 +994,7 @@ protected:
     virtual QVariant toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
+    virtual QVariant data(int column, int role) const override;
 
 protected:
     PropertyLinkItem();
