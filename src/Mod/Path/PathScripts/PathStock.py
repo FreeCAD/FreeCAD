@@ -44,6 +44,8 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class StockType:
+    # pylint: disable=no-init
+
     NoStock        = 'None'
     FromBase       = 'FromBase'
     CreateBox      = 'CreateBox'
@@ -120,6 +122,12 @@ class StockFromBase(Stock):
         else:
             PathLog.track(obj.Label, base.Label)
         obj.Proxy = self
+
+        # debugging aids
+        self.origin = None
+        self.length = None
+        self.width  = None
+        self.height = None
 
     def __getstate__(self):
         return None

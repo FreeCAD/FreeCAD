@@ -52,6 +52,10 @@ def translate(context, text, disambig=None):
 class ObjectEngrave(PathEngraveBase.ObjectOp):
     '''Proxy class for Engrave operation.'''
 
+    def __init__(self, obj, name):
+        super(ObjectEngrave, self).__init__(obj, name)
+        self.wires = []
+
     def opFeatures(self, obj):
         '''opFeatures(obj) ... return all standard features and edges based geomtries'''
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges
@@ -130,7 +134,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         if self.commandlist:
             self.commandlist.pop()
 
-    def opUpdateDepths(self, obj, ignoreErrors=False):
+    def opUpdateDepths(self, obj):
         '''updateDepths(obj) ... engraving is always done at the top most z-value'''
         job = PathUtils.findParentJob(obj)
         self.opSetDefaultValues(obj, job)
