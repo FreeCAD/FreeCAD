@@ -59,6 +59,8 @@ recompute path. Also enables more complicated dependencies beyond trees.
 # include <random>
 #endif
 
+#include <boost/algorithm/string.hpp>
+
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/subgraph.hpp>
 #include <boost/graph/graphviz.hpp>
@@ -74,6 +76,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <boost/regex.hpp>
 #include <unordered_set>
 #include <unordered_map>
+#include <random>
 
 #include <QCoreApplication>
 #include <QCryptographicHash>
@@ -145,7 +148,9 @@ struct DocumentP
 {
     // Array to preserve the creation order of created objects
     std::vector<DocumentObject*> objectArray;
-    std::map<std::string,DocumentObject*> objectMap;
+    std::unordered_map<std::string,DocumentObject*> objectMap;
+    std::unordered_map<long,DocumentObject*> objectIdMap;
+    long lastObjectId;
     DocumentObject* activeObject;
     Transaction *activeUndoTransaction;
     int iTransactionMode;
@@ -162,6 +167,13 @@ struct DocumentP
 #endif //USE_OLD_DAG
 
     DocumentP() {
+        static std::random_device _RD;
+        static std::mt19937 _RGEN(_RD());
+        static std::uniform_int_distribution<> _RDIST(0,5000);
+        // Set some random offset to reduce likelyhood of ID collison when
+        // copying shape from other document. It is probably better to randomize
+        // on each object ID.
+        lastObjectId = _RDIST(_RGEN); 
         activeObject = 0;
         activeUndoTransaction = 0;
         iTransactionMode = 0;
@@ -209,7 +221,7 @@ void Document::writeDependencyGraphViz(std::ostream &out)
     out << "\tordering=out;" << endl;
     out << "\tnode [shape = box];" << endl;
 
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+    for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
         out << "\t" << It->first << ";" <<endl;
         std::vector<DocumentObject*> OutList = It->second->getOutList();
         for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2)
@@ -564,11 +576,11 @@ void Document::exportGraphviz(std::ostream& out) const
             }
 
             // Internal document objects
-            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
+            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It)
                 addExpressionSubgraphIfNeeded(It->second, CSSubgraphs);
 
             // Add external document objects
-            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
                 std::vector<DocumentObject*> OutList = It->second->getOutList();
                 for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
                     if (*It2) {
@@ -589,11 +601,11 @@ void Document::exportGraphviz(std::ostream& out) const
             bool CSSubgraphs = depGrp->GetBool("GeoFeatureSubgraphs", true);
 
             // Add internal document objects
-            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
+            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It)
                 add(It->second, It->second->getNameInDocument(), It->second->Label.getValue(), CSSubgraphs);
 
             // Add external document objects
-            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
                 std::vector<DocumentObject*> OutList = It->second->getOutList();
                 for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
                     if (*It2) {
@@ -655,7 +667,7 @@ void Document::exportGraphviz(std::ostream& out) const
             bool omitGeoFeatureGroups = depGrp->GetBool("GeoFeatureSubgraphs", true);
 
             // Add edges between document objects
-            for (std::map<std::string, DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
 
                 if(omitGeoFeatureGroups) {
                     //coordinate systems are represented by subgraphs
@@ -1123,8 +1135,9 @@ void Document::onChanged(const Property* prop)
     // the Name property is a label for display purposes
     if (prop == &Label) {
         App::GetApplication().signalRelabelDocument(*this);
-    }
-    else if (prop == &Uid) {
+    } else if(prop == &ShowHidden) {
+        App::GetApplication().signalShowHidden(*this);
+    } else if (prop == &Uid) {
         std::string new_dir = getTransientDirectoryName(this->Uid.getValueStr(),this->FileName.getStrValue());
         std::string old_dir = this->TransientDir.getStrValue();
         Base::FileInfo TransDirNew(new_dir);
@@ -1270,6 +1283,8 @@ Document::Document(void)
 
     ADD_PROPERTY_TYPE(License,(license.c_str()),0,Prop_None,"License string of the Item");
     ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
+    ADD_PROPERTY_TYPE(ShowHidden,(false), 0,PropertyType(Prop_None), 
+                        "Whether to show hidden object items in the tree view");
 
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),
@@ -1293,14 +1308,12 @@ Document::~Document()
     catch (const boost::exception&) {
     }
 
-    std::map<std::string,DocumentObject*>::iterator it;
-
 #ifdef FC_LOGUPDATECHAIN
     Console().Log("-Delete Features of %s \n",getName());
 #endif
 
     d->objectArray.clear();
-    for (it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
+    for (auto it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
         it->second->setStatus(ObjectStatus::Destroy, true);
         delete(it->second);
     }
@@ -1404,7 +1417,6 @@ void Document::Restore(Base::XMLReader &reader)
             reader.readElement("Feature");
             string type = reader.getAttribute("type");
             string name = reader.getAttribute("name");
-
             try {
                 addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
             }
@@ -1468,6 +1480,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
     writer.writeFiles();
 }
 
+
 void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
                             Base::Writer &writer) const
 {
@@ -1481,12 +1494,18 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
         writer.Stream() << writer.ind() << "<Object "
         << "type=\"" << (*it)->getTypeId().getName()     << "\" "
         << "name=\"" << (*it)->getNameInDocument()       << "\" ";
+        << "id=\"" << (*it)->getID()       << "\" "
+        << "ViewType=\"" << (*it)->getViewProviderNameStored() << "\" ";
 
         // See DocumentObjectPy::getState
         if ((*it)->testStatus(ObjectStatus::Touch))
             writer.Stream() << "Touched=\"1\" ";
-        if ((*it)->testStatus(ObjectStatus::Error))
+        if ((*it)->testStatus(ObjectStatus::Error)) {
             writer.Stream() << "Invalid=\"1\" ";
+            auto desc = getErrorDescription(*it);
+            if(desc) 
+                writer.Stream() << "Error=\"" << Property::encodeAttribute(desc) << "\" ";
+        }
         writer.Stream() << "/>" << endl;
     }
 
@@ -1519,21 +1538,33 @@ Document::readObjects(Base::XMLReader& reader)
     setStatus(Document::KeepTrailingDigits, !reader.doNameMapping());
     std::vector<App::DocumentObject*> objs;
 
+
     // read the object types
     reader.readElement("Objects");
     int Cnt = reader.getAttributeAsInteger("Count");
+
+    long lastId = 0;
     for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Object");
         std::string type = reader.getAttribute("type");
         std::string name = reader.getAttribute("name");
+        const char *viewType = reader.hasAttribute("ViewType")?reader.getAttribute("ViewType"):0;
+
+        if(!testStatus(Status::Importing) && reader.hasAttribute("id")) {
+            // if not importing, then temporary reset lastObjectId and make the
+            // following addObject() generate the correct id for this object.
+            d->lastObjectId = reader.getAttributeAsInteger("id")-1;
+        }
 
         try {
             // Use name from XML as is and do NOT remove trailing digits because
             // otherwise we may cause a dependency to itself
             // Example: Object 'Cut001' references object 'Cut' and removing the
             // digits we make an object 'Cut' referencing itself.
-            App::DocumentObject* obj = addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
+            App::DocumentObject* obj = addObject(type.c_str(), obj_name, /*isNew=*/ false, viewType, partial);
             if (obj) {
+                if(lastId < obj->_Id)
+                    lastId = obj->_Id;
                 objs.push_back(obj);
                 // use this name for the later access because an object with
                 // the given name may already exist
@@ -1550,6 +1581,8 @@ Document::readObjects(Base::XMLReader& reader)
             Base::Console().Error("Cannot create object '%s': (%s)\n", name.c_str(), e.what());
         }
     }
+    if(!testStatus(Status::Importing))
+        d->lastObjectId = lastId;
 
     reader.readEndElement("Objects");
     setStatus(Document::KeepTrailingDigits, keepDigits);
@@ -1618,6 +1651,7 @@ Document::importObjects(Base::XMLReader& reader)
     std::vector<App::DocumentObject*> objs = readObjects(reader);
 
     reader.readEndElement("Document");
+
     signalImportObjects(objs, reader);
 
     // reset all touched
@@ -1837,7 +1871,8 @@ void Document::restore (void)
     }
     d->objectArray.clear();
     d->objectMap.clear();
-    d->activeObject = 0;
+    d->objectIdMap.clear();
+    d->lastObjectId = 0;
 
     Base::FileInfo fi(FileName.getValue());
     Base::ifstream file(fi, std::ios::in | std::ios::binary);
@@ -1957,12 +1992,75 @@ int Document::countObjects(void) const
    return static_cast<int>(d->objectArray.size());
 }
 
+void Document::getLinksTo(std::set<DocumentObject*> &links, 
+        const DocumentObject *obj, int options, int maxCount,
+        const std::vector<DocumentObject*> &objs) const 
+{
+    std::map<const App::DocumentObject*,App::DocumentObject*> linkMap;
+
+    for(auto o : objs.size()?objs:d->objectArray) {
+        if(o == obj) continue;
+        auto linked = o;
+        if(options & GetLinkArrayElement)
+            linked = o->getLinkedObject(false);
+        else {
+            auto ext = o->getExtensionByType<LinkBaseExtension>(true);
+            if(ext) 
+                linked = ext->getTrueLinkedObject(false,0,0,true);
+            else
+                linked = o->getLinkedObject(false);
+        }
+
+        if(linked && linked!=o) {
+            if(options & GetLinkRecursive)
+                linkMap[linked] = o;
+            else if(linked == obj || !obj) {
+                if((options & GetLinkExternal)
+                        && linked->getDocument()==o->getDocument())
+                    continue;
+                else if(options & GetLinkedObject)
+                    links.insert(linked);
+                else
+                    links.insert(o);
+                if(maxCount && maxCount<=(int)links.size())
+                    return;
+            }
+        }
+    }
+
+    if(!(options & GetLinkRecursive))
+        return;
+
+    std::vector<const DocumentObject*> current(1,obj);
+    for(int depth=0;current.size();++depth) {
+        if(!GetApplication().checkLinkDepth(depth,true))
+            break;
+        std::vector<const DocumentObject*> next;
+        for(auto o : current) {
+            auto iter = linkMap.find(o);
+            if(iter!=linkMap.end() && links.insert(iter->second).second) {
+                if(maxCount && maxCount<=(int)links.size())
+                    return;
+                next.push_back(iter->second);
+            }
+        }
+        current.swap(next);
+    }
+    return;
+}
+
+bool Document::hasLinksTo(const DocumentObject *obj) const {
+    std::set<DocumentObject *> links;
+    getLinksTo(links,obj,0,1);
+    return !links.empty();
+}
+
 std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) const
 {
     // result list
     std::vector<App::DocumentObject*> result;
     // go through all objects
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+    for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
         // get the outList and search if me is in that list
         std::vector<DocumentObject*> OutList = It->second->getOutList();
         for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2)
@@ -2597,7 +2695,8 @@ void Document::recomputeFeature(DocumentObject* Feat)
     }
 }
 
-DocumentObject * Document::addObject(const char* sType, const char* pObjectName, bool isNew)
+DocumentObject * Document::addObject(const char* sType, const char* pObjectName, 
+        bool isNew, const char *viewType, bool isPartial)
 {
     Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
 
@@ -2632,6 +2731,9 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
 
     // insert in the name map
     d->objectMap[ObjectName] = pcObject;
+    // generate object id and add to id map;
+    pcObject->_Id = ++d->lastObjectId;
+    d->objectIdMap[pcObject->_Id] = pcObject;
     // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
     // insert in the vector
@@ -2651,6 +2753,12 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
 
     // mark the object as new (i.e. set status bit 2) and send the signal
     pcObject->setStatus(ObjectStatus::New, true);
+
+    if(!viewType)
+        viewType = pcObject->getViewProviderNameOverride();
+    if(viewType) 
+        pcObject->_pcViewProviderName = viewType;
+
     signalNewObject(*pcObject);
 
     // do no transactions if we do a rollback!
@@ -2721,6 +2829,9 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
 
         // insert in the name map
         d->objectMap[ObjectName] = pcObject;
+        // generate object id and add to id map;
+        pcObject->_Id = ++d->lastObjectId;
+        d->objectIdMap[pcObject->_Id] = pcObject;
         // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
         pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
         // insert in the vector
@@ -2735,6 +2846,10 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
 
         // mark the object as new (i.e. set status bit 2) and send the signal
         pcObject->setStatus(ObjectStatus::New, true);
+
+        const char *viewType = pcObject->getViewProviderNameOverride();
+        pcObject->_pcViewProviderName = viewType?viewType:"";
+
         signalNewObject(*pcObject);
 
         // do no transactions if we do a rollback!
@@ -2777,6 +2892,9 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 
     // insert in the name map
     d->objectMap[ObjectName] = pcObject;
+    // generate object id and add to id map;
+    if(!pcObject->_Id) pcObject->_Id = ++d->lastObjectId;
+    d->objectIdMap[pcObject->_Id] = pcObject;
     // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
     // insert in the vector
@@ -2786,6 +2904,10 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 
     // mark the object as new (i.e. set status bit 2) and send the signal
     pcObject->setStatus(ObjectStatus::New, true);
+
+    const char *viewType = pcObject->getViewProviderNameOverride();
+    pcObject->_pcViewProviderName = viewType?viewType:"";
+
     signalNewObject(*pcObject);
 
     // do no transactions if we do a rollback!
@@ -2800,6 +2922,9 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 {
     std::string ObjectName = getUniqueObjectName(pObjectName);
     d->objectMap[ObjectName] = pcObject;
+    // generate object id and add to id map;
+    if(!pcObject->_Id) pcObject->_Id = ++d->lastObjectId;
+    d->objectIdMap[pcObject->_Id] = pcObject;
     d->objectArray.push_back(pcObject);
     // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
@@ -2810,6 +2935,9 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
     }
+
+    const char *viewType = pcObject->getViewProviderNameOverride();
+    pcObject->_pcViewProviderName = viewType?viewType:"";
 
     // send the signal
     signalNewObject(*pcObject);
@@ -2826,7 +2954,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 /// Remove an object out of the document
 void Document::removeObject(const char* sName)
 {
-    std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(sName);
+    auto pos = d->objectMap.find(sName);
 
     // name not found?
     if (pos == d->objectMap.end())
@@ -2900,6 +3028,7 @@ void Document::removeObject(const char* sName)
     }
 
     pos->second->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
+    d->objectIdMap.erase(pos->second->_Id);
     d->objectMap.erase(pos);
 }
 
@@ -2909,7 +3038,21 @@ void Document::_removeObject(DocumentObject* pcObject)
     // TODO Refactoring: share code with Document::removeObject() (2015-09-01, Fat-Zer)
     _checkTransaction(pcObject);
 
-    std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(pcObject->getNameInDocument());
+    auto pos = d->objectMap.find(pcObject->getNameInDocument());
+
+    if(!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
+        // Preserve link group children global visibility. See comments in
+        // removeObject() for more details.
+        for(auto &sub : pos->second->getSubObjects()) {
+            if(sub.empty())
+                continue;
+            if(sub[sub.size()-1]!='.')
+                sub += '.';
+            auto sobj = pos->second->getSubObject(sub.c_str());
+            if(sobj && sobj->getDocument()==this && !sobj->Visibility.getValue())
+                d->activeUndoTransaction->addObjectChange(sobj,&sobj->Visibility);
+        }
+    }
 
     if (d->activeObject == pcObject)
         d->activeObject = 0;
@@ -2942,6 +3085,7 @@ void Document::_removeObject(DocumentObject* pcObject)
 
     // remove from map
     pcObject->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
+    d->objectIdMap.erase(pcObject->_Id);
     d->objectMap.erase(pos);
 
     for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
@@ -3129,9 +3273,7 @@ DocumentObject * Document::getActiveObject(void) const
 
 DocumentObject * Document::getObject(const char *Name) const
 {
-    std::map<std::string,DocumentObject*>::const_iterator pos;
-
-    pos = d->objectMap.find(Name);
+    auto pos = d->objectMap.find(Name);
 
     if (pos != d->objectMap.end())
         return pos->second;
@@ -3139,10 +3281,19 @@ DocumentObject * Document::getObject(const char *Name) const
         return 0;
 }
 
+DocumentObject * Document::getObjectByID(long id) const
+{
+    auto it = d->objectIdMap.find(id);
+    if(it!=d->objectIdMap.end())
+        return it->second;
+    return 0;
+}
+
+
 // Note: This method is only used in Tree.cpp slotChangeObject(), see explanation there
 bool Document::isIn(const DocumentObject *pFeat) const
 {
-    for (std::map<std::string,DocumentObject*>::const_iterator o = d->objectMap.begin(); o != d->objectMap.end(); ++o) {
+    for (auto o = d->objectMap.begin(); o != d->objectMap.end(); ++o) {
         if (o->second == pFeat)
             return true;
     }
@@ -3152,9 +3303,7 @@ bool Document::isIn(const DocumentObject *pFeat) const
 
 const char * Document::getObjectName(DocumentObject *pFeat) const
 {
-    std::map<std::string,DocumentObject*>::const_iterator pos;
-
-    for (pos = d->objectMap.begin();pos != d->objectMap.end();++pos) {
+    for (auto pos = d->objectMap.begin();pos != d->objectMap.end();++pos) {
         if (pos->second == pFeat)
             return pos->first.c_str();
     }
@@ -3169,8 +3318,7 @@ std::string Document::getUniqueObjectName(const char *Name) const
     std::string CleanName = Base::Tools::getIdentifier(Name);
 
     // name in use?
-    std::map<std::string,DocumentObject*>::const_iterator pos;
-    pos = d->objectMap.find(CleanName);
+    auto pos = d->objectMap.find(CleanName);
 
     if (pos == d->objectMap.end()) {
         // if not, name is OK
@@ -3213,6 +3361,7 @@ std::vector<DocumentObject*> Document::getObjects() const
     return d->objectArray;
 }
 
+
 std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId) const
 {
     std::vector<DocumentObject*> Objects;
@@ -3251,7 +3400,7 @@ std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, con
 int Document::countObjectsOfType(const Base::Type& typeId) const
 {
     int ct=0;
-    for (std::map<std::string,DocumentObject*>::const_iterator it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
+    for (auto it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
         if (it->second->getTypeId().isDerivedFrom(typeId))
             ct++;
     }

@@ -148,6 +148,7 @@ using namespace boost::program_options;
 # include <new>
 #endif
 
+FC_LOG_LEVEL_INIT("App",true,true);
 
 //using Base::GetConsole;
 using namespace Base;
@@ -249,7 +250,7 @@ init_freecad_module(void)
 #endif
 
 Application::Application(std::map<std::string,std::string> &mConfig)
-  : _mConfig(mConfig), _pActiveDoc(0)
+  : _mConfig(mConfig), _pActiveDoc(0), _objCount(-1)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
@@ -481,6 +482,8 @@ bool Application::closeDocument(const char* name)
     std::unique_ptr<Document> delDoc (pos->second);
     DocMap.erase( pos );
 
+    _objCount = -1;
+
     // Trigger observers after removing the document from the internal map.
     signalDeletedDocument();
 
@@ -702,6 +705,51 @@ std::string Application::getHelpDir()
 #else
     return mConfig["DocPath"];
 #endif
+}
+
+int Application::checkLinkDepth(int depth, bool no_throw) {
+    if(_objCount<0) {
+        _objCount = 0;
+        for(auto &v : DocMap) 
+            _objCount += v.second->countObjects();
+    }
+    if(depth > _objCount+2) {
+        const char *msg = "Link recursion limit reached. "
+                "Please check for cyclic reference.";
+        if(no_throw) {
+            FC_ERR(msg);
+            return 0;
+        }else
+            throw Base::RuntimeError(msg);
+    }
+    return _objCount+2;
+}
+
+std::set<DocumentObject *> Application::getLinksTo(
+        const DocumentObject *obj, int options, int maxCount) const
+{
+    std::set<DocumentObject *> links;
+    if(!obj) {
+        for(auto &v : DocMap) {
+            v.second->getLinksTo(links,obj,options,maxCount);
+            if(maxCount && (int)links.size()>=maxCount)
+                break;
+        }
+    } else {
+        std::set<Document*> docs;
+        for(auto o : obj->getInList()) {
+            if(o && o->getNameInDocument() && docs.insert(o->getDocument()).second) {
+                o->getDocument()->getLinksTo(links,obj,options,maxCount);
+                if(maxCount && (int)links.size()>=maxCount)
+                    break;
+            }
+        }
+    }
+    return links;
+}
+
+bool Application::hasLinksTo(const DocumentObject *obj) const {
+    return !getLinksTo(obj,0,1).empty();
 }
 
 ParameterManager & Application::GetSystemParameter(void)
@@ -1009,11 +1057,13 @@ void Application::slotChangedDocument(const App::Document& doc, const Property& 
 void Application::slotNewObject(const App::DocumentObject&O)
 {
     this->signalNewObject(O);
+    _objCount = -1;
 }
 
 void Application::slotDeletedObject(const App::DocumentObject&O)
 {
     this->signalDeletedObject(O);
+    _objCount = -1;
 }
 
 void Application::slotBeforeChangeObject(const DocumentObject& O, const Property& Prop)

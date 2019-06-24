@@ -34,6 +34,7 @@
 #include "Origin.h"
 #include "OriginGroupExtension.h"
 #include <Base/Console.h>
+#include <Base/Tools.h>
 //#include "GeoFeatureGroupPy.h"
 //#include "FeaturePythonPyImp.h"
 
@@ -100,11 +101,9 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
         //There is a chance that a derived geofeaturegroup links with a local link and hence is not 
         //the parent group even though it links to the object. We use hasObject as one and only truth 
         //if it has the object within the group
-        if(inObj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()) &&
-           inObj->getExtensionByType<GeoFeatureGroupExtension>()->hasObject(obj)) {            
-
+        auto group = inObj->getExtensionByType<GeoFeatureGroupExtension>(true);
+        if(group && group->hasObject(obj))
             return inObj;
-        }
     }
 
     return nullptr;
@@ -124,10 +123,9 @@ Base::Placement GeoFeatureGroupExtension::recursiveGroupPlacement(GeoFeatureGrou
     
     auto inList = group->getExtendedObject()->getInList();
     for(auto* link : inList) {
-        if(link->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())){
-            if (link->getExtensionByType<GeoFeatureGroupExtension>()->hasObject(group->getExtendedObject()))
-                return recursiveGroupPlacement(link->getExtensionByType<GeoFeatureGroupExtension>()) * group->placement().getValue();
-        }
+        auto parent = link->getExtensionByType<GeoFeatureGroupExtension>(true);
+        if(parent && parent->hasObject(group->getExtendedObject()))
+            return recursiveGroupPlacement(parent) * group->placement().getValue();
     }
     
     return group->placement().getValue();
@@ -205,9 +203,10 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
                 //would return anyone of it and hence it is possible that we miss an error. We need a custom check
                 auto list = obj->getInList();
                 for (auto in : list) {
-                    if(in->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()) && //is GeoFeatureGroup?
-                    in != getExtendedObject() &&                                                  //is a different one?
-                    in->getExtensionByType<App::GeoFeatureGroupExtension>()->hasObject(obj)) {    //is not a non-grouping link?
+                    if(in == getExtendedObject())
+                        continue;
+                    auto parent = in->getExtensionByType<GeoFeatureGroupExtension>(true);
+                    if(parent && parent->hasObject(obj)) {
                         error = true;
                         corrected.erase(std::remove(corrected.begin(), corrected.end(), obj), corrected.end());
                     }
@@ -284,8 +283,6 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLin
     result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
     return result;
 }
-
-
 
 void GeoFeatureGroupExtension::getCSOutList(const App::DocumentObject* obj,
                                             std::vector< DocumentObject* >& vec) {
@@ -373,6 +370,59 @@ void GeoFeatureGroupExtension::recursiveCSRelevantLinks(const DocumentObject* ob
     }
 }
 
+bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
+        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const 
+{
+    ret = 0;
+    const char *dot;
+    if(!subname || *subname==0) {
+        auto obj = dynamic_cast<const DocumentObject*>(getExtendedContainer());
+        ret = const_cast<DocumentObject*>(obj);
+        if(mat && transform) 
+            *mat *= const_cast<GeoFeatureGroupExtension*>(this)->placement().getValue().toMatrix();
+    }else if((dot=strchr(subname,'.'))) {
+        if(subname[0]!='$')
+            ret = Group.find(std::string(subname,dot));
+        else{
+            std::string name = std::string(subname+1,dot);
+            for(auto child : Group.getValues()) {
+                if(name == child->Label.getStrValue()){
+                    ret = child;
+                    break;
+                }
+            }
+        }
+        if(ret) {
+            if(dot) ++dot;
+            if(dot && *dot && !ret->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+                // Consider this
+                // Body
+                //  | -- Pad
+                //        | -- Sketch
+                //
+                // Suppose we want to getSubObject(Body,"Pad.Sketch.")
+                // Because of the special property of geo feature group, both
+                // Pad and Sketch are children of Body, so we can't call
+                // getSubObject(Pad,"Sketch.") as this will transform Sketch
+                // using Pad's placement.
+                //
+                const char *next = strchr(dot,'.');
+                if(next) {
+                    App::DocumentObject *nret=0;
+                    extensionGetSubObject(nret,dot,pyObj,mat,transform,depth+1);
+                    if(nret) {
+                        ret = nret;
+                        return true;
+                    }
+                }
+            }
+            if(mat && transform) 
+                *mat *= const_cast<GeoFeatureGroupExtension*>(this)->placement().getValue().toMatrix();
+            ret = ret->getSubObject(dot?dot:"",pyObj,mat,true,depth+1);
+        }
+    }
+    return true;
+}
 
 bool GeoFeatureGroupExtension::areLinksValid(const DocumentObject* obj) {
 
@@ -446,6 +496,14 @@ void GeoFeatureGroupExtension::getInvalidLinkObjects(const DocumentObject* obj, 
                 vec.push_back(link);
         }
     }
+}
+
+bool GeoFeatureGroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int) const {
+    for(auto obj : Group.getValues()) {
+        if(obj && obj->getNameInDocument() && !obj->testStatus(ObjectStatus::GeoExcluded))
+            ret.push_back(std::string(obj->getNameInDocument())+'.');
+    }
+    return true;
 }
 
 

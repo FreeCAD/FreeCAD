@@ -69,7 +69,7 @@ public:
         Closable = 2,
         Restoring = 3,
         Recomputing = 4,
-        PartialRestore = 5
+        PartialRestore = 5,
     };
 
     /** @name Properties */
@@ -109,6 +109,8 @@ public:
     PropertyLink Tip;
     /// Tip object of the document (if any)
     PropertyString TipName;
+    /// Whether to show hidden items in TreeView
+    PropertyBool ShowHidden;
     //@}
 
     /** @name Signals of the document */
@@ -126,6 +128,8 @@ public:
     boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalBeforeChangeObject;
     /// signal on changed Object
     boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalChangedObject;
+    /// signal on manually called DocumentObject::touch()
+    boost::signals2::signal<void (const App::DocumentObject&)> signalTouchedObject;
     /// signal on relabeled Object
     boost::signals2::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
@@ -201,8 +205,11 @@ public:
      * @param sType       the type of created object
      * @param pObjectName if nonNULL use that name otherwise generate a new unique name based on the \a sType
      * @param isNew       if false don't call the \c DocumentObject::setupObject() callback (default is true)
+     * @param viewType    override object's view provider name
+     * @param isPartial   indicate if this object is meant to be partially loaded
      */
-    DocumentObject *addObject(const char* sType, const char* pObjectName=0, bool isNew=true);
+    DocumentObject *addObject(const char* sType, const char* pObjectName=0, 
+            bool isNew=true, const char *viewType=0, bool isPartial=false);
     /** Add an array of features of the given types and names.
      * Unicode names are set through the Label property.
      * @param sType       The type of created object
@@ -239,6 +246,8 @@ public:
     DocumentObject *getActiveObject(void) const;
     /// Returns a Object of this document
     DocumentObject *getObject(const char *Name) const;
+    /// Returns a Object of this document by its id
+    DocumentObject *getObjectByID(long id) const;
     /// Returns true if the DocumentObject is contained in this document
     bool isIn(const DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
@@ -248,7 +257,7 @@ public:
     /// Returns a name of the form prefix_number. d specifies the number of digits.
     std::string getStandardObjectName(const char *Name, int d) const;
     /// Returns a list of all Objects
-    std::vector<DocumentObject*> getObjects() const;
+    const std::vector<DocumentObject*> &getObjects() const;
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
     /// Returns all object with given extensions. If derived=true also all objects with extensions derived from the given one
     std::vector<DocumentObject*> getObjectsWithExtension(const Base::Type& typeId, bool derived = true) const;
@@ -358,6 +367,22 @@ public:
     std::vector<std::list<App::DocumentObject*> > getPathsByOutList
     (const App::DocumentObject* from, const App::DocumentObject* to) const;
     //@}
+
+    /** Return the links to a given object
+     *
+     * @param links: holds the links found
+     * @param obj: the linked object. If NULL, then all links are returned.
+     * @param option: @sa App::GetLinkOptions
+     * @param maxCount: limit the number of links returned, 0 means no limit
+     * @param objs: optional objects to search for, if empty, then all objects
+     * of this document are searched.
+     */
+    void getLinksTo(std::set<DocumentObject*> &links, 
+            const DocumentObject *obj, int options, int maxCount=0,
+            const std::vector<DocumentObject*> &objs = {}) const;
+
+    /// Check if there is any link to the given object
+    bool hasLinksTo(const DocumentObject *obj) const;
 
     /// Function called to signal that an object identifier has been renamed
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths, const std::function<bool(const App::DocumentObject*)> &selector = [](const App::DocumentObject *) { return true; });

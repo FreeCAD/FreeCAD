@@ -42,7 +42,8 @@
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
-
+# include <BRepAdaptor_Curve.hxx>
+# include <TopoDS.hxx>
 # include <GProp_GProps.hxx>
 # include <BRepGProp.hxx>
 # include <gce_MakeLin.hxx>
@@ -59,13 +60,18 @@
 #include <Base/Stream.h>
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
+#include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/Document.h>
 
+#include "PartPyCXX.h"
 #include "PartFeature.h"
 #include "PartFeaturePy.h"
+#include "TopoShapePy.h"
 
 using namespace Part;
 
+FC_LOG_LEVEL_INIT("Part",true,true);
 
 PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
 
@@ -112,20 +118,74 @@ PyObject *Feature::getPyObject(void)
     return Py::new_reference_to(PythonObject);
 }
 
-std::vector<PyObject *> Feature::getPySubObjects(const std::vector<std::string>& NameVec) const
+App::DocumentObject *Feature::getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
-    try {
-        std::vector<PyObject *> temp;
-        for (std::vector<std::string>::const_iterator it=NameVec.begin();it!=NameVec.end();++it) {
-            PyObject *obj = Shape.getShape().getPySubShape((*it).c_str());
-            if (obj)
-                temp.push_back(obj);
-        }
-        return temp;
+    // having '.' inside subname means it is referencing some children object,
+    // instead of any sub-element from ourself
+    if(subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')) 
+        return App::DocumentObject::getSubObject(subname,pyObj,pmat,transform,depth);
+
+    if(pmat && transform)
+        *pmat *= Placement.getValue().toMatrix();
+
+    if(!pyObj) {
+#if 0
+        if(subname==0 || *subname==0 || Shape.getShape().hasSubShape(subname))
+            return const_cast<Feature*>(this);
+        return nullptr;
+#else
+        // TopoShape::hasSubShape is kind of slow, let's cut outself some slack here.
+        return const_cast<Feature*>(this);
+#endif
     }
-    catch (Standard_Failure&) {
-        //throw Py::ValueError(e.GetMessageString());
-        return std::vector<PyObject *>();
+
+    try {
+        TopoShape ts(Shape.getShape());
+        bool doTransform = pmat && *pmat!=ts.getTransform();
+        if(doTransform) {
+            ts.setShape(ts.getShape().Located(TopLoc_Location()),false);
+            ts.initCache(1);
+        }
+        if(subname && *subname && !ts.isNull())
+            ts = ts.getSubTopoShape(subname,true);
+        if(doTransform && !ts.isNull()) {
+            static int sCopy = -1; 
+            if(sCopy<0) {
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                        "User parameter:BaseApp/Preferences/Mod/Part/General");
+                sCopy = hGrp->GetBool("CopySubShape",false)?1:0;
+            }
+            bool copy = sCopy?true:false;
+            if(!copy) {
+                // Work around OCC bug on transforming circular edge with an
+                // offseted surface. The bug probably affect other shape type,
+                // too.
+                TopExp_Explorer exp(ts.getShape(),TopAbs_EDGE);
+                if(exp.More()) {
+                    auto edge = TopoDS::Edge(exp.Current());
+                    exp.Next();
+                    if(!exp.More()) {
+                        BRepAdaptor_Curve curve(edge);
+                        copy = curve.GetType() == GeomAbs_Circle;
+                    }
+                }
+            }
+            ts.transformShape(*pmat,copy,true);
+        }
+        *pyObj =  Py::new_reference_to(shape2pyshape(ts));
+        return const_cast<Feature*>(this);
+    }catch(Standard_Failure &e) {
+        std::ostringstream str;
+        Standard_CString msg = e.GetMessageString();
+        str << typeid(e).name() << " ";
+        if (msg) {str << msg;}
+        else     {str << "No OCCT Exception Message";}
+        str << ": " << getFullName();
+        if (subname) 
+            str << '.' << subname;
+        FC_ERR(str.str());
+        return 0;
     }
 }
 
