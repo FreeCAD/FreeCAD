@@ -161,6 +161,18 @@ class ObjectOp(object):
             obj.addProperty("App::PropertyVectorDistance", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("PathOp", "The start point of this path"))
             obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("PathOp", "Make True, if specifying a Start Point"))
 
+        # members being set later
+        self.commandlist = None
+        self.horizFeed = None
+        self.horizRapid = None
+        self.job = None
+        self.model = None
+        self.radius = None
+        self.stock = None
+        self.tool = None
+        self.vertFeed = None
+        self.vertRapid = None
+
         self.initOperation(obj)
 
         if not hasattr(obj, 'DoNotSetDefaultValues') or not obj.DoNotSetDefaultValues:
@@ -220,6 +232,7 @@ class ObjectOp(object):
         '''opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.
         The default implementation returns "FeatureTool | FeatureDeptsh | FeatureHeights | FeatureStartPoint"
         Should be overwritten by subclasses.'''
+        # pylint: disable=unused-argument
         return FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint | FeatureBaseGeometry | FeatureFinishDepth
 
     def initOperation(self, obj):
@@ -261,6 +274,7 @@ class ObjectOp(object):
     def opRejectAddBase(self, obj, base, sub):
         '''opRejectAddBase(base, sub) ... if op returns True the addition of the feature is prevented.
         Should be overwritten by subclasses.'''
+        # pylint: disable=unused-argument
         return False
 
     def onChanged(self, obj, prop):
