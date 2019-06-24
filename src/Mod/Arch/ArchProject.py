@@ -23,7 +23,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,ArchCommands,math,re,datetime,ArchIFC
+import FreeCAD,Draft,ArchComponent,ArchCommands,math,re,datetime,ArchIFC,ArchIFCView
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -111,7 +111,7 @@ class _Project(ArchIFC.IfcContext):
     def onDocumentRestored(self, obj):
         self.setProperties(obj)
 
-class _ViewProviderProject:
+class _ViewProviderProject(ArchIFCView.IfcContextView):
 
     def __init__(self,vobj):
         vobj.Proxy = self
