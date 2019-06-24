@@ -33,6 +33,7 @@
 #include "FeaturePythonPyImp.h"
 #include "GeoFeatureGroupExtension.h"
 #include <Base/Console.h>
+#include <Base/Tools.h>
 
 using namespace App;
 
@@ -251,15 +252,12 @@ bool GroupExtension::recursiveHasObject(const DocumentObject* obj, const GroupEx
     return false;
 }
 
-
 bool GroupExtension::isChildOf(const GroupExtension* group, bool recursive) const
 {
     return group->hasObject(getExtendedObject(), recursive);
 }
 
-
-
-std::vector<DocumentObject*> GroupExtension::getObjects() const
+const std::vector<DocumentObject*> &GroupExtension::getObjects() const
 {
     return Group.getValues();
 }
@@ -348,6 +346,41 @@ void GroupExtension::extensionOnChanged(const Property* p) {
     App::Extension::extensionOnChanged(p);
 }
 
+bool GroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
+        PyObject **pyObj, Base::Matrix4D *mat, bool /*transform*/, int depth) const 
+{
+    const char *dot;
+    if(!subname || *subname==0) {
+        auto obj = Base::freecad_dynamic_cast<const DocumentObject>(getExtendedContainer());
+        ret = const_cast<DocumentObject*>(obj);
+        return true;
+    }
+    dot=strchr(subname,'.');
+    if(!dot)
+        return false;
+    if(subname[0]!='$')
+        ret = Group.find(std::string(subname,dot));
+    else{
+        std::string name = std::string(subname+1,dot);
+        for(auto child : Group.getValues()) {
+            if(name == child->Label.getStrValue()){
+                ret = child;
+                break;
+            }
+        }
+    }
+    if(!ret) 
+        return false;
+    return ret->getSubObject(dot+1,pyObj,mat,true,depth+1);
+}
+
+bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int) const {
+    for(auto obj : Group.getValues()) {
+        if(obj && obj->getNameInDocument())
+            ret.push_back(std::string(obj->getNameInDocument())+'.');
+    }
+    return true;
+}
 
 namespace App {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::GroupExtensionPython, App::GroupExtension)

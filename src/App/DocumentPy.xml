@@ -63,9 +63,20 @@
         <UserDocu>Commit an Undo/Redo transaction</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="addObject">
+    <Methode Name="addObject" Keyword="true">
       <Documentation>
-        <UserDocu>Add an object with given type and name to the document</UserDocu>
+          <UserDocu>addObject(type, name=None, objProxy=None, viewProxy=None, attach=False, viewType=None)
+
+Add an object to document
+
+type (String): the type of the document object to create.
+name (String): the optional name of the new object.
+objProxy (Object): the Python binding object to attach to the new document object.
+viewProxy (Object): the Python binding object to attach the view provider of this object.
+attach (Boolean): if True, then bind the document object first before adding to the document
+        to allow Python code to override view provider type. Once bound, and before adding to
+        the document, it will try to call Python binding object's attach(obj) method.
+viewType (String): override the view provider type directly, only effective when attach is False.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="removeObject">
@@ -123,6 +134,16 @@ Return a list of objects that match the specified type and name.
 Both parameters are optional.</UserDocu>
 		</Documentation>
 	</Methode>
+    <Methode Name="getLinksTo">
+        <Documentation>
+            <UserDocu>
+                getLinksTo(obj, options=0, maxCount=0): return objects linked to 'obj'
+
+                options: 1: recursive, 2: check link array. Options can combine.
+                maxCount: to limit the number of links returned
+            </UserDocu>
+        </Documentation>
+    </Methode>
 	  <Methode Name="supportedTypes">
 		  <Documentation>
 			  <UserDocu>A list of supported types of objects</UserDocu>

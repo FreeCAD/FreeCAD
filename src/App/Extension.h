@@ -301,17 +301,24 @@ private:
 };
 
 // Property define 
-#define EXTENSION_ADD_PROPERTY(_prop_, _defaultval_) \
+#define _EXTENSION_ADD_PROPERTY(_name, _prop_, _defaultval_) \
   do { \
     this->_prop_.setValue _defaultval_;\
-    propertyData.addProperty(static_cast<App::Extension*>(this), #_prop_, &this->_prop_); \
+    propertyData.addProperty(static_cast<App::Extension*>(this), _name, &this->_prop_); \
+  } while (0)
+
+
+#define EXTENSION_ADD_PROPERTY(_prop_, _defaultval_) \
+    _EXTENSION_ADD_PROPERTY(#_prop_, _prop_, _defaultval_)
+
+#define _EXTENSION_ADD_PROPERTY_TYPE(_name, _prop_, _defaultval_, _group_,_type_,_Docu_) \
+  do { \
+    this->_prop_.setValue _defaultval_;\
+    propertyData.addProperty(static_cast<App::Extension*>(this), _name, &this->_prop_, (_group_),(_type_),(_Docu_)); \
   } while (0)
 
 #define EXTENSION_ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
-  do { \
-    this->_prop_.setValue _defaultval_;\
-    propertyData.addProperty(static_cast<App::Extension*>(this), #_prop_, &this->_prop_, (_group_),(_type_),(_Docu_)); \
-  } while (0)
+    _EXTENSION_ADD_PROPERTY_TYPE(#_prop_, _prop_, _defaultval_, _group_,_type_,_Docu_)
   
 
 /**

@@ -31,6 +31,8 @@
 #include <App/PropertyGeo.h>
 // includes for findAllFacesCutBy()
 #include <TopoDS_Face.hxx>
+#include <BRep_Builder.hxx>
+#include <TopoDS_Compound.hxx>
 class gp_Dir;
 
 class BRepBuilderAPI_MakeShape;
@@ -63,10 +65,12 @@ public:
     virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const;
 
     virtual PyObject* getPyObject(void);
-    virtual std::vector<PyObject *> getPySubObjects(const std::vector<std::string>&) const;
 
     TopLoc_Location getLocation() const;
-    
+
+    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj, 
+            Base::Matrix4D *mat, bool transform, int depth) const override;
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute(void);
