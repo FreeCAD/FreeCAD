@@ -49,11 +49,13 @@ public:
     virtual const char* getViewProviderName(void) const = 0;
 
     /// Return a shape including Placement representing the datum feature
-    TopoDS_Shape getShape() const;
+    virtual TopoDS_Shape getShape() const;
 
     /// Returns a point of the feature it counts as it's base
     virtual Base::Vector3d getBasePoint () const;
 
+    virtual App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj, 
+            Base::Matrix4D *mat, bool transform, int depth) const override;
 protected:
     void onDocumentRestored();
     void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
