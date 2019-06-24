@@ -1287,7 +1287,7 @@ def get_ref_facenodes_areas(
 
             mesh_face_t1_area = get_triangle_area(P1, P2, P3)
             mesh_face_t2_area = get_triangle_area(P1, P3, P4)
-            mesh_face_area = mesh_face_t1_area + mesh_face_t1_area
+            mesh_face_area = mesh_face_t1_area + mesh_face_t2_area
             corner_node_area = mesh_face_area / 4.0
 
             node_area_table.append((face_table[mf][0], corner_node_area))
