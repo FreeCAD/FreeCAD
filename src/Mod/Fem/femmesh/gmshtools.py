@@ -754,7 +754,7 @@ class GmshTools():
         if not self.error:
             fem_mesh = Fem.read(self.temp_file_mesh)
             self.mesh_obj.FemMesh = fem_mesh
-            FreeCAD.Console.PrintError('  The Part should have a pretty new FEM mesh!\n')
+            FreeCAD.Console.PrintMessage('  The Part should have a pretty new FEM mesh!\n')
         else:
             FreeCAD.Console.PrintError('No mesh was created.\n')
         del self.temp_file_geometry
