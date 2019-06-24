@@ -82,13 +82,13 @@ public:
      * The second name is a UTF8 name of any kind. It's that name normally shown to
      * the user and stored in the App::Document::Name property.
      */
-    App::Document* newDocument(const char * Name=0l, const char * UserName=0l, bool isMainDoc=true);
+    App::Document* newDocument(const char * Name=0l, const char * UserName=0l, bool createView=true);
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
     /// find a unique document name
     std::string getUniqueDocumentName(const char *Name) const;
     /// Open an existing document from a file
-    App::Document* openDocument(const char * FileName=0l);
+    App::Document* openDocument(const char * FileName=0l, bool createView=true);
     /** Open multiple documents
      *
      * @param filenames: input file names
@@ -99,6 +99,7 @@ public:
      * file name. If errs is given, this function will catch all
      * Base::Exception and save the error message inside. Otherwise, it will
      * throw on exception when opening the input files.
+     * @param createView: whether to signal Gui module to create view on restore.
      *
      * @return Return opened document object corresponding to each input file
      * name, which maybe NULL if failed.
@@ -108,7 +109,8 @@ public:
     std::vector<Document*> openDocuments(const std::vector<std::string> &filenames, 
             const std::vector<std::string> *pathes=0,
             const std::vector<std::string> *labels=0,
-            std::vector<std::string> *errs=0);
+            std::vector<std::string> *errs=0,
+            bool createView = true);
     /// Retrieve the active document
     App::Document* getActiveDocument(void) const;
     /// Retrieve a named document
@@ -402,7 +404,7 @@ protected:
 
     /// open single document only
     App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
-            const char *label, bool isMainDoc, const std::set<std::string> &objNames);
+            const char *label, bool isMainDoc, bool createView, const std::set<std::string> &objNames);
 
     /// Helper class for App::Document to signal on close/abort transaction
     class AppExport TransactionSignaller {

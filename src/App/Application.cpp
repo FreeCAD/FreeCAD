@@ -380,7 +380,7 @@ void Application::renameDocument(const char *OldName, const char *NewName)
 #endif
 }
 
-Document* Application::newDocument(const char * Name, const char * UserName, bool isMainDoc)
+Document* Application::newDocument(const char * Name, const char * UserName, bool createView)
 {
     // get a valid name anyway!
     if (!Name || Name[0] == '\0')
@@ -441,7 +441,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
         Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),active);
     }
 
-    signalNewDocument(*_pActiveDoc,isMainDoc);
+    signalNewDocument(*_pActiveDoc,createView);
 
     // set the UserName after notifying all observers
     _pActiveDoc->Label.setValue(userName);
@@ -587,9 +587,9 @@ public:
     }
 };
 
-Document* Application::openDocument(const char * FileName) {
+Document* Application::openDocument(const char * FileName, bool createView) {
     std::vector<std::string> filenames(1,FileName);
-    auto docs = openDocuments(filenames);
+    auto docs = openDocuments(filenames,0,0,0,createView);
     if(docs.size())
         return docs.front();
     return 0;
@@ -599,7 +599,8 @@ std::vector<Document*> Application::openDocuments(
         const std::vector<std::string> &filenames, 
         const std::vector<std::string> *pathes, 
         const std::vector<std::string> *labels, 
-        std::vector<std::string> *errs)
+        std::vector<std::string> *errs,
+        bool createView)
 {
     std::vector<Document*> res(filenames.size(),nullptr);
     if(filenames.empty())
@@ -647,7 +648,7 @@ std::vector<Document*> Application::openDocuments(
                 if(labels && labels->size()>count)
                     label = (*labels)[count].c_str();
             }
-            auto doc = openDocumentPrivate(path,name,label,isMainDoc,objNames);
+            auto doc = openDocumentPrivate(path,name,label,isMainDoc,createView,objNames);
             FC_DURATION_PLUS(timing.d1,t1);
             if(doc)
                 newDocs.emplace_front(doc,timing);
@@ -693,7 +694,7 @@ std::vector<Document*> Application::openDocuments(
     Base::SequencerLauncher seq("Postprocessing...", newDocs.size());
     for(auto &v : newDocs) {
         FC_TIME_INIT(t1);
-        v.first->afterRestore(true,true);
+        v.first->afterRestore(true);
         FC_DURATION_PLUS(v.second.d2,t1);
         seq.next();
     }
@@ -712,7 +713,8 @@ std::vector<Document*> Application::openDocuments(
 
 Document* Application::openDocumentPrivate(const char * FileName, 
         const char *propFileName, const char *label,
-        bool isMainDoc, const std::set<std::string> &objNames)
+        bool isMainDoc, bool createView, 
+        const std::set<std::string> &objNames)
 {
     FileInfo File(FileName);
 
@@ -729,7 +731,8 @@ Document* Application::openDocumentPrivate(const char * FileName,
         std::string fi = FileInfo(it->second->FileName.getValue()).filePath();
         if (filepath != fi) 
             continue;
-        if(it->second->testStatus(App::Document::PartialDoc)) {
+        if(it->second->testStatus(App::Document::PartialDoc) 
+                || it->second->testStatus(App::Document::PartialRestore)) {
             // Here means a document is already partially loaded, but the document
             // is requested again, either partial or not. We must check if the 
             // document contains the required object
@@ -777,7 +780,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     // to only contain valid ASCII characters but the user name will be kept.
     if(!label)
         label = name.c_str();
-    Document* newDoc = newDocument(name.c_str(),label,isMainDoc);
+    Document* newDoc = newDocument(name.c_str(),label,isMainDoc && createView);
 
     newDoc->FileName.setValue(propFileName==FileName?File.filePath():propFileName);
 

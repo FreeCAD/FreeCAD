@@ -2209,22 +2209,30 @@ void Application::checkForPreviousCrashes()
 
 App::Document *Application::reopen(App::Document *doc) {
     if(!doc) return 0;
-    std::vector<std::string> docs;
     std::string name = doc->FileName.getValue();
-    if(doc->testStatus(App::Document::PartialDoc))
-        docs.push_back(doc->FileName.getValue());
-    else {
-        for(auto d : doc->getDependentDocuments(true))
-            if(d->testStatus(App::Document::PartialDoc))
-                docs.push_back(d->FileName.getValue());
-    }
     std::set<const Gui::Document*> untouchedDocs;
     for(auto &v : d->documents) {
         if(!v.second->isModified() && !v.second->getDocument()->isTouched())
             untouchedDocs.insert(v.second);
     }
-    for(auto &file : docs) 
-        open(file.c_str(),"FreeCAD");
+
+    WaitCursor wc;
+    wc.setIgnoreEvents(WaitCursor::NoEvents);
+
+    if(doc->testStatus(App::Document::PartialDoc) 
+            || doc->testStatus(App::Document::PartialRestore))
+    {
+        App::GetApplication().openDocument(name.c_str());
+    } else {
+        std::vector<std::string> docs;
+        for(auto d : doc->getDependentDocuments(true)) {
+            if(d->testStatus(App::Document::PartialDoc)
+                    || d->testStatus(App::Document::PartialRestore) )
+                docs.push_back(d->FileName.getValue());
+        }
+        for(auto &file : docs)
+            App::GetApplication().openDocument(file.c_str(),false);
+    }
 
     doc = 0;
     for(auto &v : d->documents) {
