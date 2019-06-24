@@ -53,7 +53,8 @@ Example:
 import sys,os,xml.sax,pycurl,StringIO
 
 
-files = [ ["Arch.ts",              "/Mod/Arch/Resources/translations/Arch.ts"],
+files = [ ["AddonManager.ts",      "/Mod/AddonManager/Resources/translations/AddonManager.ts"],
+          ["Arch.ts",              "/Mod/Arch/Resources/translations/Arch.ts"],
           ["Assembly.ts",          "/Mod/Assembly/Gui/Resources/translations/Assembly.ts"],
           ["draft.ts",             "/Mod/Draft/Resources/translations/Draft.ts"],
           ["Drawing.ts",           "/Mod/Drawing/Gui/Resources/translations/Drawing.ts"],

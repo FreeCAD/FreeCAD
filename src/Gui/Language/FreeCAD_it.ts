@@ -60,7 +60,7 @@
     <name>App::Property</name>
     <message>
       <source>The displayed size of the origin</source>
-      <translation>La dimensione visualizzata dell'originale</translation>
+      <translation>La dimensione visualizzata dell'origine</translation>
     </message>
     <message>
       <source>Visual size of the feature</source>
@@ -68,7 +68,7 @@
     </message>
     <message>
       <source>&lt;empty&gt;</source>
-      <translation>&lt;empty&gt;</translation>
+      <translation>&lt;vuoto&gt;</translation>
     </message>
     <message>
       <source>Angle</source>
@@ -95,7 +95,7 @@
     </message>
     <message>
       <source>Test console output</source>
-      <translation>Verificare l'output di console</translation>
+      <translation>Prova l'output della console</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Default</source>
-      <translation>Normale</translation>
+      <translation>Predefinito</translation>
     </message>
     <message>
       <source>Enable</source>
@@ -235,7 +235,7 @@
     <name>Gui::AlignmentView</name>
     <message>
       <source>Movable object</source>
-      <translation>Oggetto mobile</translation>
+      <translation>Oggetto movibile</translation>
     </message>
     <message>
       <source>Fixed object</source>
@@ -250,7 +250,7 @@
     </message>
     <message>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-      <translation>%1 i file della guida non trovato (%2). Potrebbe essere necessario installare il pacchetto %1 della documentazione.</translation>
+      <translation>%1 file della guida non trovati (%2). Potrebbe essere necessario installare il pacchetto %1 della documentazione.</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
@@ -261,7 +261,7 @@
     <name>Gui::AutoSaver</name>
     <message>
       <source>Please wait until the AutoRecovery file has been saved...</source>
-      <translation>Si prega di attendere fino a che il salvataggio del file di autorecupero sia terminato...</translation>
+      <translation>Si prega di attendere durante il salvataggio del file di recupero automatico...</translation>
     </message>
   </context>
   <context>
@@ -272,7 +272,7 @@
     </message>
     <message>
       <source>Press SHIFT and middle mouse button</source>
-      <translation>Premere Maiusc e il pulsante centrale del mouse</translation>
+      <translation>Premi MAIUSC e il pulsante centrale del mouse</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
@@ -387,7 +387,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Credits</source>
-      <translation>Crediti</translation>
+      <translation>Ringraziamenti</translation>
     </message>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
@@ -428,7 +428,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
       <source>Camera settings</source>
-      <translation>Impostazioni fotocamera</translation>
+      <translation>Impostazioni telecamera</translation>
     </message>
     <message>
       <source>Orientation</source>
@@ -1052,7 +1052,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>Modo di stampa:</translation>
+      <translation>Modalità di stampa:</translation>
     </message>
     <message>
       <source/>
@@ -1083,7 +1083,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgDisplayPropertiesImp</name>
     <message>
       <source>Default</source>
-      <translation>Normale</translation>
+      <translation>Predefinito</translation>
     </message>
     <message>
       <source>Aluminium</source>
@@ -1304,7 +1304,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Extra large (%1px)</source>
-      <translation>Extra grande (%1px)</translation>
+      <translation>Grandissimo (%1px)</translation>
     </message>
     <message>
       <source>Custom (%1px)</source>
@@ -1381,7 +1381,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Addons...</source>
-      <translation>Addons...</translation>
+      <translation>Estensioni...</translation>
     </message>
   </context>
   <context>
@@ -1422,7 +1422,7 @@ Il file esiste già.</translation>
     </message>
     <message>
       <source>Creation of file '%1' failed.</source>
-      <translation>Creazione del file '%1' non riuscita.</translation>
+      <translation>Creazione del file '%1' fallita.</translation>
     </message>
     <message>
       <source>Read-only</source>
@@ -1430,25 +1430,27 @@ Il file esiste già.</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation>Rinomina il File di Macro</translation>
+      <translation>Rinomina file Macro</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation>Immettere il nuovo nome:</translation>
+      <translation>Inserire un nuovo nome:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation>'%1' esiste già.</translation>
+      <translation>'%1' 
+esiste già.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation>Rinomina non riuscita</translation>
+      <translation>Impossibile rinominare</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation>Impossibile rinominare in '%1'. Forse un errore di autorizzazione del file?</translation>
+      <translation>Impossibile rinominare in '%1'.
+Forse un errore di autorizzazione del file?</translation>
     </message>
     <message>
       <source>Duplicate Macro</source>
@@ -1524,7 +1526,7 @@ Forse un errore di autorizzazione del file?</translation>
     </message>
     <message>
       <source>You have no write permission for the directory. Please, choose another one.</source>
-      <translation>Non si dispone dell'autorizzazione di scrittura nella cartella. Sceglierne un'altra.</translation>
+      <translation>Non hai i permessi di scrittura per la cartella. Scegline un'altra.</translation>
     </message>
   </context>
   <context>
@@ -1620,7 +1622,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Find...</source>
-      <translation type="unfinished">Find...</translation>
+      <translation>Trova...</translation>
     </message>
   </context>
   <context>
@@ -1631,39 +1633,39 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Find what:</source>
-      <translation type="unfinished">Find what:</translation>
+      <translation>Trova ciò che:</translation>
     </message>
     <message>
       <source>Look at</source>
-      <translation type="unfinished">Look at</translation>
+      <translation>Controlla</translation>
     </message>
     <message>
       <source>Groups</source>
-      <translation type="unfinished">Groups</translation>
+      <translation>Gruppi</translation>
     </message>
     <message>
       <source>Names</source>
-      <translation type="unfinished">Names</translation>
+      <translation>Nomi</translation>
     </message>
     <message>
       <source>Values</source>
-      <translation type="unfinished">Values</translation>
+      <translation>Valori</translation>
     </message>
     <message>
       <source>Match whole string only</source>
-      <translation type="unfinished">Match whole string only</translation>
+      <translation>Controlla solo la stringa intera</translation>
     </message>
     <message>
       <source>Find Next</source>
-      <translation type="unfinished">Find Next</translation>
+      <translation>Trova successivo</translation>
     </message>
     <message>
       <source>Not found</source>
-      <translation type="unfinished">Not found</translation>
+      <translation>Non trovato</translation>
     </message>
     <message>
       <source>Can't find the text: %1</source>
-      <translation type="unfinished">Can't find the text: %1</translation>
+      <translation>Impossibile trovare il testo: %1</translation>
     </message>
   </context>
   <context>
@@ -1686,7 +1688,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>User parameter</source>
-      <translation>Parametri utente</translation>
+      <translation>Parametro utente</translation>
     </message>
     <message>
       <source>Invalid input</source>
@@ -1698,7 +1700,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>System parameter</source>
-      <translation>Parametro di sistema</translation>
+      <translation>Parametri di sistema</translation>
     </message>
   </context>
   <context>
@@ -1865,7 +1867,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Please select an object from the list</source>
-      <translation>Seleziona un oggetto dell'elenco</translation>
+      <translation>Selezionare prima un oggetto dell'elenco</translation>
     </message>
     <message>
       <source>Search</source>
@@ -1990,7 +1992,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Show coordinate system in the corner</source>
-      <translation>Mostra le coordinate di sistema nell'angolo</translation>
+      <translation>Mostra il sistema di coordinate all'angolo</translation>
     </message>
     <message>
       <source>Show counter of frames per second</source>
@@ -2030,7 +2032,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Orbit style</source>
-      <translation>Stile Orbita</translation>
+      <translation>Stile orbita</translation>
     </message>
     <message>
       <source>Turntable</source>
@@ -2050,7 +2052,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Zoom step</source>
-      <translation>Passo di zoom</translation>
+      <translation>Fattore di zoom</translation>
     </message>
     <message>
       <source>Anti-Aliasing</source>
@@ -2130,7 +2132,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Marker size:</source>
-      <translation>Dimensioni del marcatore:</translation>
+      <translation>Grandezza segnaposto:</translation>
     </message>
   </context>
   <context>
@@ -2141,7 +2143,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation>Aprire un nuovo visualizzatore o riavviare %1 per applicare le modifiche di anti-alias.</translation>
+      <translation>Aprire un nuovo visualizzatore o riavviare %1 per applicare le modifiche all' Anti-Aliasing.</translation>
     </message>
     <message>
       <source>5px</source>
@@ -2546,7 +2548,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Back&amp;ground:</source>
-      <translation>Sfo&amp;ndo</translation>
+      <translation>Sfo&amp;ndo:</translation>
     </message>
     <message>
       <source>Current</source>
@@ -2777,7 +2779,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Record GUI commands</source>
-      <translation type="unfinished">Record GUI commands</translation>
+      <translation>Registra i comandi GUI</translation>
     </message>
   </context>
   <context>
@@ -2820,7 +2822,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message utf8="true">
       <source>Building Euro (cm/m²/m³)</source>
-      <translation>Sistema europeo (cm//m²/m³)</translation>
+      <translation>Sistema europeo (cm/m²/m³)</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cuft)</source>
@@ -2832,7 +2834,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Imperial Civil (ft/ft^2/ft^3)</source>
-      <translation>Imperiale civile (ft/ft ^2/ft ^3)</translation>
+      <translation>Imperiale civile (ft/ft^2/ft ^3)</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
@@ -2872,7 +2874,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Unit system:</source>
-      <translation type="unfinished">Unit system:</translation>
+      <translation>Sistema di unità:</translation>
     </message>
   </context>
   <context>
@@ -2983,15 +2985,15 @@ Specificare un'altra cartella.</translation>
     <name>Gui::Dialog::DlgWorkbenches</name>
     <message>
       <source>Workbenches</source>
-      <translation>Ambienti</translation>
+      <translation>Ambienti di lavoro</translation>
     </message>
     <message>
       <source>Enabled workbenches</source>
-      <translation>Ambienti abilitati</translation>
+      <translation>Ambienti di lavoro abilitati</translation>
     </message>
     <message>
       <source>Disabled workbenches</source>
-      <translation>Ambienti disabilitati</translation>
+      <translation>Ambienti di lavoro disabilitati</translation>
     </message>
     <message>
       <source>Move down</source>
@@ -3019,7 +3021,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Sort enabled workbenches</source>
-      <translation>Ordina gli ambienti abilitati</translation>
+      <translation>Ordina gli ambienti di lavoro abilitati</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -3035,11 +3037,11 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
-      <translation>Aggiunge tutti gli ambienti negli abilitati</translation>
+      <translation>Aggiunge tutti gli ambienti di lavoro agli abilitati</translation>
     </message>
     <message>
       <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Ordina gli ambienti abilitati&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Ordina gli ambienti di lavoro abilitati&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3247,14 +3249,14 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Removing a folder only takes effect after an application restart.</source>
-      <translation>Rimuovere una cartella ha effetto solo dopo il riavvio di un'applicazione.</translation>
+      <translation>La rimozione di una cartella ha effetto solo dopo il riavvio dell'applicazione.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::InputVector</name>
     <message>
       <source>Input vector</source>
-      <translation>Immetti vettore</translation>
+      <translation>Vettore di input</translation>
     </message>
     <message>
       <source>Vector</source>
@@ -3681,7 +3683,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Redirect Python output</source>
-      <translation>Reindirizza l'output Python</translation>
+      <translation>Reindirizza l'output di Python</translation>
     </message>
     <message>
       <source>Redirect Python errors</source>
@@ -3715,7 +3717,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Clears the search field</source>
-      <translation>Vuota il campo di ricerca</translation>
+      <translation>Svuota il campo di ricerca</translation>
     </message>
     <message>
       <source>Select only</source>
@@ -3759,7 +3761,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation>Segna da ricalcolare</translation>
+      <translation>Segna come da ricalcolare</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
@@ -3823,7 +3825,7 @@ Si desidera salvare le modifiche?</translation>
     </message>
     <message>
       <source>untitled[*]</source>
-      <translation>Senza titolo[*]</translation>
+      <translation>senza titolo[*]</translation>
     </message>
     <message>
       <source> - Editor</source>
@@ -3917,12 +3919,12 @@ Si desidera salvare le modifiche?</translation>
       <translation>Trascinare lo schermo con due dita, oppure premere il tasto destro del mouse.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Trascinare lo schermo con un dito, oppure premere il tasto sinistro del mouse. In Sketcher e altre modalità di modifica, tenere anche premuto Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Pizzicare (mettere due dita sullo schermo e trascinarli, avvicinandoli o allontanandoli). Oppure muovere la rotellina del mouse. Oppure usare i tasti Pgsu e Pggiù.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4458,7 +4460,7 @@ Vuoi uscire senza salvare i tuoi dati?</translation>
     </message>
     <message>
       <source>Press SHIFT and middle mouse button</source>
-      <translation>Premere Maiusc e il pulsante centrale del mouse</translation>
+      <translation>Premi MAIUSC e il pulsante centrale del mouse</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
@@ -4575,18 +4577,18 @@ Vuoi specificare un'altra cartella?</translation>
     </message>
     <message>
       <source>Translation Increment:</source>
-      <translation type="unfinished">Translation Increment:</translation>
+      <translation>Incremento di traslazione:</translation>
     </message>
     <message>
       <source>Rotation Increment:</source>
-      <translation type="unfinished">Rotation Increment:</translation>
+      <translation>Incremento di rotazione:</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
       <source>Plot mode:</source>
-      <translation>Modo di stampa:</translation>
+      <translation>Modalità di stampa:</translation>
     </message>
     <message>
       <source>Point size:</source>
@@ -4635,7 +4637,7 @@ Vuoi specificare un'altra cartella?</translation>
     </message>
     <message>
       <source>edit selection</source>
-      <translation>Modifica selezione</translation>
+      <translation>modifica selezione</translation>
     </message>
   </context>
   <context>
@@ -4754,7 +4756,7 @@ Vuoi specificare un'altra cartella?</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation>Segna da ricalcolare</translation>
+      <translation>Segna come da ricalcolare</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
@@ -4796,7 +4798,7 @@ Vuoi specificare un'altra cartella?</translation>
     <name>Gui::WorkbenchGroup</name>
     <message>
       <source>Select the '%1' workbench</source>
-      <translation>Seleziona  l'ambiente '%1'</translation>
+      <translation>Seleziona l'ambiente '%1'</translation>
     </message>
   </context>
   <context>
@@ -5116,7 +5118,7 @@ Vuoi continuare?</translation>
     </message>
     <message>
       <source>Choose an item:</source>
-      <translation>scegli un elemento:</translation>
+      <translation>Scegli un elemento:</translation>
     </message>
     <message>
       <source>Rename group</source>
@@ -5124,7 +5126,7 @@ Vuoi continuare?</translation>
     </message>
     <message>
       <source>The group '%1' cannot be renamed.</source>
-      <translation>Il gruppo '%1' non può essere rinominato</translation>
+      <translation>Il gruppo '%1' non può essere rinominato.</translation>
     </message>
     <message>
       <source>Existing group</source>
@@ -5804,7 +5806,7 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Ricalcola la feature o il documento</translation>
+      <translation>Ricalcola la Funzione o il documento</translation>
     </message>
   </context>
   <context>
@@ -7654,7 +7656,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
       <source>Default</source>
-      <translation>Normale</translation>
+      <translation>Predefinito</translation>
     </message>
     <message>
       <source>Windows XP</source>

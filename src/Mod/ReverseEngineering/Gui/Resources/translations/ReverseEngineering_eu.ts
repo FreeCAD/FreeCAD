@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Approximate B-spline surface...</source>
-      <translation>B-spline azalera hurbildua...</translation>
+      <translation>Hurbildu B-spline gainazalera...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
       <source>Approximate a B-spline surface</source>
-      <translation>Hurbildu B-spline azalera batera</translation>
+      <translation>Hurbildu B-spline gainazal batera</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="196"/>
       <source>Poisson surface reconstruction</source>
-      <translation>Poisson azaleraren berreraikitzea</translation>
+      <translation>Poisson gainazalaren berreraikitzea</translation>
     </message>
   </context>
   <context>
@@ -79,7 +79,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-spline surface</source>
-      <translation>Doitu B-spline azalera</translation>
+      <translation>Doitu B-spline gainazala</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>

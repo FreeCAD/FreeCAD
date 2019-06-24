@@ -111,7 +111,7 @@ public:
     
     static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
     static QGVPage* getGraphicsView(TechDraw::DrawView* dv);
-    static double calculateFontPointSizeF(const QGraphicsItem *graphicsItem, double sizeInMillimetres);
+    static int calculateFontPixelSize(double sizeInMillimetres);
     static const double DefaultFontSizeInMM;
 
     MDIViewPage* getMDIViewPage(void) const;
@@ -138,7 +138,6 @@ protected:
     QString getPrefFont(void);
     double getPrefFontSize(void);
     double getDimFontSize(void);
-    double calculateFontPointSizeF(double sizeInMillimetres) const;
 
     Base::Reference<ParameterGrp> getParmGroupCol(void);
 

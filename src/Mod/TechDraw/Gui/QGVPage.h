@@ -115,7 +115,7 @@ public:
 
     /// Renders the page to SVG with filename.
     void saveSvg(QString filename);
-    void postProcessXml(QTemporaryFile* tempFile, QString filename, QString pagename);
+    void postProcessXml(QTemporaryFile& tempFile, QString filename, QString pagename);
 
 /*    int balloonIndex;*/
 

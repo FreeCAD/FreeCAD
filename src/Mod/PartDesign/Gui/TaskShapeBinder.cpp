@@ -79,7 +79,7 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder *view, bool /*newObj*/,
     vp = view;
     
     //add initial values   
-    Part::Feature* obj = nullptr;
+    App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
             
     PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, subs);            
@@ -227,9 +227,9 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const {
         std::string subName(msg.pSubName);
 
         Part::Feature* selectedObj = nullptr;
-        Part::Feature* obj = nullptr;
+        App::GeoFeature* obj = nullptr;
         std::vector<std::string> refs;
-                
+
         PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, refs);
 
         // get selected object

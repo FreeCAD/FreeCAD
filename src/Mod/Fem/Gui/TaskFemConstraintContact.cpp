@@ -105,15 +105,17 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
 
     ui->lw_referencesMaster->clear();
     ui->lw_referencesSlave->clear();
-    if (Objects.size() > 0){
-        for (std::size_t i = 1; i < Objects.size(); i++) {
-           ui->lw_referencesMaster->addItem(makeRefText(Objects[i], SubElements[i]));
-        }
 
-        for (std::size_t i = 0; i < (Objects.size()-1); i++) {
-          ui->lw_referencesSlave->addItem(makeRefText(Objects[i], SubElements[i]));
-        }
-}
+    // QMessageBox::warning(this, tr("Objects.size"), QString::number(Objects.size()));
+    if (Objects.size() == 1) {
+        QMessageBox::warning(this, tr("Selection error"), tr("Only one face in object! - moved to master face")); 
+        ui->lw_referencesMaster->addItem(makeRefText(Objects[0], SubElements[0]));
+    }
+
+    if (Objects.size() == 2 ) {
+        ui->lw_referencesMaster->addItem(makeRefText(Objects[1], SubElements[1]));		
+        ui->lw_referencesSlave->addItem(makeRefText(Objects[0], SubElements[0]));
+    }
 
     //Selection buttons
     connect(ui->btnAddSlave, SIGNAL(clicked()),  this, SLOT(addToSelectionSlave()));

@@ -218,7 +218,6 @@ protected:
 
 private:
     bool nowUnsetting;
-    bool on1;
 /*    bool m_restoreComplete;*/
 
 };

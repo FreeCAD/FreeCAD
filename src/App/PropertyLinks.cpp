@@ -224,8 +224,10 @@ PropertyLinkList::~PropertyLinkList()
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
         }
     }
 #endif
@@ -251,8 +253,10 @@ void PropertyLinkList::setValue(DocumentObject* lValue)
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
             if (lValue)
                 lValue->_addBackLink(parent);
         }
@@ -282,10 +286,14 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue)
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
-            for(auto *obj : lValue)
-                obj->_addBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
+            for(auto *obj : lValue) {
+                if (obj)
+                    obj->_addBackLink(parent);
+            }
         }
     }
 #endif
@@ -651,8 +659,10 @@ PropertyLinkSubList::~PropertyLinkSubList()
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
         }
     }
 #endif
@@ -678,8 +688,10 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
             if (lValue)
                 lValue->_addBackLink(parent);
         }
@@ -716,13 +728,17 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             //_lValueList can contain items multiple times, but we trust the document
             //object to ensure that this works
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
 
             //maintain backlinks. lValue can contain items multiple times, but we trust the document
             //object to ensure that the backlink is only added once
-            for(auto *obj : lValue)
-                obj->_addBackLink(parent);
+            for(auto *obj : lValue) {
+                if (obj)
+                    obj->_addBackLink(parent);
+            }
         }
     }
 #endif
@@ -752,13 +768,17 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             //_lValueList can contain items multiple times, but we trust the document
             //object to ensure that this works
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
 
             //maintain backlinks. lValue can contain items multiple times, but we trust the document
             //object to ensure that the backlink is only added once
-            for(auto *obj : lValue)
-                obj->_addBackLink(parent);
+            for(auto *obj : lValue) {
+                if (obj)
+                    obj->_addBackLink(parent);
+            }
         }
     }
 #endif
@@ -780,8 +800,10 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             //_lValueList can contain items multiple times, but we trust the document
             //object to ensure that this works
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
+            for(auto *obj : _lValueList) {
+                if (obj)
+                    obj->_removeBackLink(parent);
+            }
 
             //maintain backlinks. lValue can contain items multiple times, but we trust the document
             //object to ensure that the backlink is only added once
@@ -1020,10 +1042,18 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<LinkSubList count=\"" <<  getSize() <<"\">" << endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
-        writer.Stream() << writer.ind() <<
-            "<Link " <<
-            "obj=\"" << _lValueList[i]->getNameInDocument() << "\" " <<
-            "sub=\"" << _lSubList[i] << "\"/>" << endl;
+        if (_lValueList[i]) {
+            writer.Stream() << writer.ind() <<
+                "<Link " <<
+                "obj=\"" << _lValueList[i]->getNameInDocument() << "\" " <<
+                "sub=\"" << _lSubList[i] << "\"/>" << endl;
+        }
+        else {
+            writer.Stream() << writer.ind() <<
+                "<Link " <<
+                "obj=\"\" " <<
+                "sub=\"" << _lSubList[i] << "\"/>" << endl;
+        }
     }
 
     writer.decInd();

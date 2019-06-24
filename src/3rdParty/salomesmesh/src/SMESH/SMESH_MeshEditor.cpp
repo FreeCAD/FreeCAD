@@ -24,6 +24,11 @@
 // Created   : Mon Apr 12 16:10:22 2004
 // Author    : Edward AGAPOV (eap)
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
+#endif
+
 #include "SMESH_MeshEditor.hxx"
 
 #include "SMDS_FaceOfNodes.hxx"
@@ -12868,3 +12873,7 @@ void SMESH_MeshEditor::copyPosition( const SMDS_MeshNode* from,
   default:;
   }
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif

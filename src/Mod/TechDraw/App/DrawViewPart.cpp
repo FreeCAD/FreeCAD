@@ -118,8 +118,7 @@ using namespace std;
 PROPERTY_SOURCE(TechDraw::DrawViewPart, TechDraw::DrawView)
 
 DrawViewPart::DrawViewPart(void) : 
-    geometryObject(0),
-    on1(true)
+    geometryObject(0)
 {
     static const char *group = "Projection";
     static const char *sgroup = "HLR Parameters";

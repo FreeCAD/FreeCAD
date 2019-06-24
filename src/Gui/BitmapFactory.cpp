@@ -650,13 +650,13 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     int width  = (int)size[0];
     int height = (int)size[1];
 
-    for (int y = 0; y < height; y++) 
+    for (int y = 0; y < height; y++)
     {
         unsigned char * line = &bytes[width*numcomponents*(height-(y+1))];
-        for (int x = 0; x < width; x++) 
+        for (int x = 0; x < width; x++)
         {
             QRgb rgb = p.pixel(x,y);
-            switch (numcomponents) 
+            switch (numcomponents)
             {
             default:
                 break;
@@ -699,13 +699,13 @@ void BitmapFactoryInst::convert(const SoSFImage& p, QImage& img) const
 
     img = QImage(width, height, QImage::Format_RGB32);
     QRgb * bits = (QRgb*) img.bits();
-    
-    for (int y = 0; y < height; y++) 
+
+    for (int y = 0; y < height; y++)
     {
         const unsigned char * line = &bytes[width*numcomponents*(height-(y+1))];
-        for (int x = 0; x < width; x++) 
+        for (int x = 0; x < width; x++)
         {
-            switch (numcomponents) 
+            switch (numcomponents)
             {
             default:
             case 1:
@@ -727,3 +727,17 @@ void BitmapFactoryInst::convert(const SoSFImage& p, QImage& img) const
     }
 }
 
+QIcon BitmapFactoryInst::mergePixmap (const QIcon &base, const QPixmap &px, Gui::BitmapFactoryInst::Position position)
+{
+    QIcon overlayedIcon;
+
+    int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+
+    overlayedIcon.addPixmap(Gui::BitmapFactory().merge(base.pixmap(w, w, QIcon::Normal, QIcon::Off),
+                                                       px,position), QIcon::Normal, QIcon::Off);
+
+    overlayedIcon.addPixmap(Gui::BitmapFactory().merge(base.pixmap(w, w, QIcon::Normal, QIcon::On ),
+                                                       px,position), QIcon::Normal, QIcon::Off);
+
+    return overlayedIcon;
+}

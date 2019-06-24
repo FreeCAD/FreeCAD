@@ -236,6 +236,12 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
             }
         }
     }
+
+    if (strcmp(recipient, "View") == 0) {
+        if (item->hasItems())
+            *item << "Separator";
+        Gui::StdWorkbench::setupContextMenu(recipient, item);
+    }
 }
 
 void Workbench::activated()

@@ -281,7 +281,6 @@ TaubinSmoothing::~TaubinSmoothing()
 
 void TaubinSmoothing::Smooth(unsigned int iterations)
 {
-    MeshCore::MeshPointArray::_TConstIterator v_it;
     MeshCore::MeshRefPointToPoints vv_it(kernel);
     MeshCore::MeshRefPointToFacets vf_it(kernel);
 
@@ -295,7 +294,6 @@ void TaubinSmoothing::Smooth(unsigned int iterations)
 
 void TaubinSmoothing::SmoothPoints(unsigned int iterations, const std::vector<unsigned long>& point_indices)
 {
-    MeshCore::MeshPointArray::_TConstIterator v_it;
     MeshCore::MeshRefPointToPoints vv_it(kernel);
     MeshCore::MeshRefPointToFacets vf_it(kernel);
 

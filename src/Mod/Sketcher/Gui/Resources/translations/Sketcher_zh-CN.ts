@@ -924,7 +924,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4872"/>
       <source>Create a B-spline via control points in the sketch.</source>
-      <translation type="unfinished">Create a B-spline via control points in the sketch.</translation>
+      <translation>通过草图控制点创建B样条。</translation>
     </message>
   </context>
   <context>
@@ -1122,7 +1122,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4916"/>
       <source>Create a periodic B-spline via control points in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline via control points in the sketch.</translation>
+      <translation>通过草图控制点创建周期性B样条。</translation>
     </message>
   </context>
   <context>
@@ -1553,7 +1553,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1818"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a rectangular array pattern of the geometry taking as reference the last selected point</translation>
+      <translation>以最后所选的点作为参考，创建图形的长方形阵列</translation>
     </message>
   </context>
   <context>
@@ -1883,42 +1883,42 @@
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="374"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying coincident constraints.</translation>
+      <translation>自动约束错误: 应用重合约束时草图无法求解。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="453"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</translation>
+      <translation>自动约束错误: 应用垂直/水平约束时草图无法求解。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="648"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying equality constraints.</translation>
+      <translation>自动约束错误: 应用相等约束时草图无法求解。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="702"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch without constraints.</translation>
+      <translation>自动约束错误: 无约束的不可解草图。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="739"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</translation>
+      <translation>自动约束错误: 应用垂直和水平约束后草图无法求解。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="761"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</translation>
+      <translation>自动约束错误: 应用点到点约束后草图无法求解。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="789"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying equality constraints.</translation>
+      <translation>自动约束错误: 应用相等约束后草图无法求解。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="1499"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
-      <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
+      <translation>无法猜测曲线的交叉点。尝试在你打算做圆角的曲线顶点之间添加一个重合约束。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="4893"/>
@@ -1948,7 +1948,7 @@
     <message>
       <location filename="../../../App/SketchObject.cpp" line="4919"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
-      <translation type="unfinished">The multiplicity cannot be increased beyond the degree of the B-spline.</translation>
+      <translation>多重性无法增加到超过B样条的自由度。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="4922"/>
@@ -2245,7 +2245,7 @@
       <location filename="../../CommandConstraints.cpp" line="1505"/>
       <location filename="../../CommandConstraints.cpp" line="1593"/>
       <source>The selected edge already has a horizontal constraint!</source>
-      <translation type="unfinished">The selected edge already has a horizontal constraint!</translation>
+      <translation>所选边已有水平约束!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1258"/>
@@ -2253,7 +2253,7 @@
       <location filename="../../CommandConstraints.cpp" line="1500"/>
       <location filename="../../CommandConstraints.cpp" line="1598"/>
       <source>The selected edge already has a vertical constraint!</source>
-      <translation type="unfinished">The selected edge already has a vertical constraint!</translation>
+      <translation>所选边已有垂直约束!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1264"/>
@@ -2263,7 +2263,7 @@
       <location filename="../../CommandConstraints.cpp" line="2020"/>
       <location filename="../../CommandConstraints.cpp" line="2070"/>
       <source>The selected edge already has a Block constraint!</source>
-      <translation type="unfinished">The selected edge already has a Block constraint!</translation>
+      <translation>所选边已有块约束!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1283"/>
@@ -2283,7 +2283,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1556"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
-      <translation type="unfinished">There are more than one fixed points selected. Select a maximum of one fixed point!</translation>
+      <translation>选取了多个固定点。最多只能选择一个固定点!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1711"/>
@@ -2309,7 +2309,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1991"/>
       <source>A Block constraint cannot be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</source>
-      <translation type="unfinished">A Block constraint cannot be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</translation>
+      <translation>如果草绘未解决或存在冗余和/或冲突约束, 则无法添加块约束。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2006"/>
@@ -2419,7 +2419,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3140"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
-      <translation type="unfinished">Cannot add a fixed x-coordinate constraint on the origin point!</translation>
+      <translation>无法于原点加入固定x座标的约束!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3198"/>
@@ -2435,7 +2435,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3388"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
-      <translation type="unfinished">Cannot add a fixed y-coordinate constraint on the origin point!</translation>
+      <translation>无法于原点加入固定y座标的约束!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3587"/>
@@ -2664,7 +2664,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="7106"/>
       <source>Cannot create constraint with external geometry only!!</source>
-      <translation type="unfinished">Cannot create constraint with external geometry only!!</translation>
+      <translation>无法仅通过外部几何图形创建约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7113"/>
@@ -2690,7 +2690,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="7295"/>
       <source>You cannot internally constrain an ellipse on other ellipse. Select only one ellipse.</source>
-      <translation type="unfinished">You cannot internally constrain an ellipse on other ellipse. Select only one ellipse.</translation>
+      <translation>不能将一个椭圆约束在另一个椭圆内。只能选择一个椭圆。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7301"/>
@@ -2708,7 +2708,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="7344"/>
       <location filename="../../CommandConstraints.cpp" line="7503"/>
       <source>Nothing to constrain</source>
-      <translation type="unfinished">Nothing to constrain</translation>
+      <translation>无可约束元素</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7345"/>
@@ -2733,12 +2733,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="7448"/>
       <source>You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</source>
-      <translation type="unfinished">You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</translation>
+      <translation>您无法将一椭圆之孤与另一椭圆之弧设定内部约束，请仅选择单一椭圆之弧。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7454"/>
       <source>You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
-      <translation type="unfinished">You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</translation>
+      <translation>您无法将一椭圆与另一椭圆之弧设定内部约束，请仅选择单一椭圆或椭圆之弧。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7504"/>
@@ -2928,7 +2928,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6709"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
-      <translation type="unfinished">The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</translation>
+      <translation>所选草图与此草图不平行。按住 Ctrl + Alt 以允许不平行的草图。</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6712"/>
@@ -3245,7 +3245,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
       <source>If selected, each element in the array is constrained with respect to the others using construction lines</source>
-      <translation type="unfinished">If selected, each element in the array is constrained with respect to the others using construction lines</translation>
+      <translation>如果选中，阵列中的每个元素依据辅助线进行约束</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="99"/>
@@ -3341,7 +3341,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketcherSettings.ui" line="123"/>
       <source>Ask for value after creating a dimensional constraint</source>
-      <translation type="unfinished">Ask for value after creating a dimensional constraint</translation>
+      <translation>创建尺寸约束后询问值</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="139"/>
@@ -3356,7 +3356,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketcherSettings.ui" line="162"/>
       <source>Constraint Creation "Continue Mode"</source>
-      <translation type="unfinished">Constraint Creation "Continue Mode"</translation>
+      <translation>约束创建 "继续模式"</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="205"/>
@@ -3680,11 +3680,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+      <translation>%1 发现了反向的外部几何圆弧。它们的端点在3维视图中环绕。
 
-%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
+%2 约束链接到端点。这些约束已在报告视图 (菜单视图-&gt;&gt; 视图-&gt;&gt; 报告视图) 中列出。 
 
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+单击 "在约束中交换端点" 按钮以重新分配端点。仅在 FreeCAD 中创建的草图是 v0.15以下旧版本时使用。</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="230"/>
@@ -3714,12 +3714,12 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="262"/>
       <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).</source>
-      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).</translation>
+      <translation>已启用方向锁定并重新计算%1 约束。这些约束已在报告视图 (菜单视图-&gt;&gt; 视图-&gt;&gt; 报告视图) 中列出。</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="276"/>
       <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
+      <translation>对%1 约束禁用了方向锁定。这些约束已在报告视图 (菜单视图-&gt;&gt; 面板-&gt;&gt; 报告视图) 中列出。请注意, 对于未来所有的约束, 锁定仍然默认为 ON。</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="288"/>

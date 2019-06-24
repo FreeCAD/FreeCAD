@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakePolygon.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include <CXX/Extensions.hxx>
@@ -60,6 +61,12 @@ public:
             "    poly (list of (x, y z) or (x, y) tuples of floats):\n"
             "    upVector ((x, y, z) tuple):\n"
             "    MaxSize (float):\n"
+        );
+        add_varargs_method("findSectionParameters",&Module::findSectionParameters,
+            "Find the parameters of the edge where when projecting the corresponding point\n"
+            "will lie on an edge of the mesh\n"
+            "\n"
+            "findSectionParameters(Edge, Mesh, Vector) -> list\n"
         );
         add_keyword_method("projectShapeOnMesh",&Module::projectShapeOnMesh,
             "Projects a shape onto a mesh with a given maximum distance\n"
@@ -207,6 +214,33 @@ private:
         // use the MeshAlgos 
         MeshPart::MeshAlgos::LoftOnCurve(M,aShape,poly,Base::Vector3f(x,y,z),size);
         return Py::asObject(new Mesh::MeshPy(new Mesh::MeshObject(M)));
+    }
+    Py::Object findSectionParameters(const Py::Tuple& args)
+    {
+        PyObject *e, *m, *v;
+        if (!PyArg_ParseTuple(args.ptr(), "O!O!O!", &(Part::TopoShapeEdgePy::Type), &e,
+                                                    &(Mesh::MeshPy::Type), &m,
+                                                    &(Base::VectorPy::Type),&v))
+            throw Py::Exception();
+
+        TopoDS_Shape shape = static_cast<Part::TopoShapePy*>(e)->getTopoShapePtr()->getShape();
+        const Mesh::MeshObject* mesh = static_cast<Mesh::MeshPy*>(m)->getMeshObjectPtr();
+        MeshCore::MeshKernel kernel(mesh->getKernel());
+        kernel.Transform(mesh->getTransform());
+        Base::Vector3d* vec = static_cast<Base::VectorPy*>(v)->getVectorPtr();
+        Base::Vector3f dir = Base::convertTo<Base::Vector3f>(*vec);
+
+        MeshProjection proj(kernel);
+        std::set<double> parameters;
+        proj.findSectionParameters(TopoDS::Edge(shape), dir, parameters);
+
+        Py::List list;
+        for (auto it : parameters) {
+            Py::Float val(it);
+            list.append(val);
+        }
+
+        return list;
     }
     Py::Object projectShapeOnMesh(const Py::Tuple& args, const Py::Dict& kwds)
     {

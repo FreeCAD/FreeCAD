@@ -1188,7 +1188,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="339"/>
       <source>Boolean: Accept: Input error</source>
-      <translation>Boolean: Accepter: erreur d'entrée</translation>
+      <translation>Booléen : Accepter : erreur d'entrée</translation>
     </message>
   </context>
   <context>

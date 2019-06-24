@@ -574,7 +574,7 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../TaskDialog.cpp" line="54"/>
       <source>Visible outline edges</source>
-      <translation>Élek látható körvonala</translation>
+      <translation>Látható körvonal élek</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="55"/>
@@ -599,7 +599,7 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../TaskDialog.cpp" line="59"/>
       <source>Hidden outline edges</source>
-      <translation>Rejtett szerkezeti élek</translation>
+      <translation>Rejtett vázlat élek</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="60"/>

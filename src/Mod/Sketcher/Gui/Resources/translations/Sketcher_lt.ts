@@ -3108,7 +3108,7 @@ Priimtini deriniai: dvi kreivės; galinis taškas ir kreivė; du galiniai taška
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6467"/>
       <source>This object belongs to another body, can't link.</source>
-      <translation>Šis objektas priklauso kitam kūnui, todėl jo negalima susieti.</translation>
+      <translation>Šis daiktas yra kito daikto narys, todėl jo negalima susieti.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6470"/>

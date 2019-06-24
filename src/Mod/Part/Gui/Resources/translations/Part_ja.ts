@@ -4777,7 +4777,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../AppPartGui.cpp" line="210"/>
       <location filename="../../AppPartGui.cpp" line="211"/>
       <source>Part design</source>
-      <translation>部品設計</translation>
+      <translation>パートデザイン</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="212"/>
@@ -5235,7 +5235,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>&amp;Part</source>
-      <translation>部品(&amp;p)</translation>
+      <translation>パート(&amp;P)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>

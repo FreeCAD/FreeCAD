@@ -62,7 +62,7 @@
       <location filename="../../Command.cpp" line="251"/>
       <location filename="../../Command.cpp" line="252"/>
       <source>Set URL</source>
-      <translation type="unfinished">Set URL</translation>
+      <translation>Axustes URL</translation>
     </message>
   </context>
   <context>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="335"/>
       <source>View source</source>
-      <translation type="unfinished">View source</translation>
+      <translation>Vista fonte</translation>
     </message>
   </context>
   <context>

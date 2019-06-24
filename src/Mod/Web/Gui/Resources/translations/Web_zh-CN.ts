@@ -62,7 +62,7 @@
       <location filename="../../Command.cpp" line="251"/>
       <location filename="../../Command.cpp" line="252"/>
       <source>Set URL</source>
-      <translation type="unfinished">Set URL</translation>
+      <translation>设置链接</translation>
     </message>
   </context>
   <context>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="525"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation type="unfinished">There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</translation>
+      <translation>加载文件时出错。有些数据可能已经修改或未全部恢复。在报告视图中查看有关对象的更具体信息。</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="657"/>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="335"/>
       <source>View source</source>
-      <translation type="unfinished">View source</translation>
+      <translation>查看来源</translation>
     </message>
   </context>
   <context>

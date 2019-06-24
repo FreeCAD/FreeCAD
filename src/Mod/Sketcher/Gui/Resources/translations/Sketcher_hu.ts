@@ -1553,7 +1553,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1818"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a rectangular array pattern of the geometry taking as reference the last selected point</translation>
+      <translation>Létrehoz egy téglalap alakú tömb mintát a geometriáról, az utolsó kijelölt referenciapont figyelembe vételével</translation>
     </message>
   </context>
   <context>
@@ -2733,7 +2733,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
     <message>
       <location filename="../../CommandConstraints.cpp" line="7448"/>
       <source>You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</source>
-      <translation type="unfinished">You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</translation>
+      <translation>Nem kényszeríthet belsőleg egy ellipszis ívet egy másik ellipszis ívhez. Csak egy ellipszis ívet jelöljön be.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7454"/>

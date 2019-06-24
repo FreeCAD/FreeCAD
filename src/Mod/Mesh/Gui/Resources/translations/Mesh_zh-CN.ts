@@ -1301,22 +1301,22 @@ is used when writing a file in AMF format</translation>
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="368"/>
+      <location filename="../../MeshEditor.cpp" line="376"/>
       <source>Add triangle</source>
       <translation>增加三角形</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="369"/>
+      <location filename="../../MeshEditor.cpp" line="377"/>
       <source>Flip normal</source>
       <translation>翻转法线</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="370"/>
+      <location filename="../../MeshEditor.cpp" line="378"/>
       <source>Clear</source>
       <translation>清除</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="385"/>
+      <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Finish</source>
       <translation>完成</translation>
     </message>
@@ -1324,7 +1324,7 @@ is used when writing a file in AMF format</translation>
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="711"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>完成</translation>
     </message>
@@ -1364,7 +1364,7 @@ is used when writing a file in AMF format</translation>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="166"/>
       <source>Compute</source>
-      <translation type="unfinished">Compute</translation>
+      <translation>计算</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="250"/>
@@ -1496,7 +1496,7 @@ is used when writing a file in AMF format</translation>
       <location filename="../../Segmentation.ui" line="92"/>
       <location filename="../../Segmentation.ui" line="172"/>
       <source>Curvature</source>
-      <translation type="unfinished">Curvature</translation>
+      <translation>曲率</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="109"/>
@@ -1521,12 +1521,12 @@ is used when writing a file in AMF format</translation>
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Max. Curvature</source>
-      <translation type="unfinished">Max. Curvature</translation>
+      <translation>最大曲率</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Min. Curvature</source>
-      <translation type="unfinished">Min. Curvature</translation>
+      <translation>最小曲率</translation>
     </message>
   </context>
   <context>
@@ -1560,7 +1560,7 @@ is used when writing a file in AMF format</translation>
       <location filename="../../SegmentationBestFit.ui" line="116"/>
       <location filename="../../SegmentationBestFit.ui" line="169"/>
       <source>Parameters...</source>
-      <translation type="unfinished">Parameters...</translation>
+      <translation>参数...</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>

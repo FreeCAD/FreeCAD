@@ -98,7 +98,6 @@ private:
     QPointer<MDIViewPage> m_mdiView;
     bool m_docReady;
     std::string m_pageName;
-    bool m_frameState;
     QGVPage* m_graphicsView;
 };
 

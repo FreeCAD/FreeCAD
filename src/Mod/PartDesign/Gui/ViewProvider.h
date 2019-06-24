@@ -28,6 +28,7 @@
 #include "ViewProviderBody.h"
 #include <Gui/ViewProviderPythonFeature.h>
 
+#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 
 namespace PartDesignGui {
 
@@ -36,9 +37,10 @@ class TaskDlgFeatureParameters;
 /**
  * A common base class for all part design features view providers
  */
-class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart {
+class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart, PartGui::ViewProviderAttachExtension
+{
     typedef PartGui::ViewProviderPart inherited;
-    PROPERTY_HEADER(PartDesignGui::ViewProvider);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProvider);
 
 public:
     /// constructor
@@ -46,38 +48,36 @@ public:
     /// destructor
     virtual ~ViewProvider();
 
-    virtual bool doubleClicked(void);
-    void updateData(const App::Property*);
-    void onChanged(const App::Property* prop);
-    
-    virtual QIcon getIcon(void) const;
-    
+    virtual bool doubleClicked(void) override;
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property* prop) override;
+
     void setTipIcon(bool onoff);
 
-    //body mode means that the object is part of a body and that the body is used to set the 
-    //visual properties, not the features. Hence setting body mode to true will hide most 
+    //body mode means that the object is part of a body and that the body is used to set the
+    //visual properties, not the features. Hence setting body mode to true will hide most
     //viewprovider properties.
     void setBodyMode(bool bodymode);
-    
+
     //makes this viewprovider visible in the scene graph without changing any properties,
-    //not the visibility one and also not the display mode. This can be used to show the 
-    //shape of this viewprovider from other viewproviders without doing anything to the 
+    //not the visibility one and also not the display mode. This can be used to show the
+    //shape of this viewprovider from other viewproviders without doing anything to the
     //document and properties.
     void makeTemporaryVisible(bool);
-    
+
     //Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
     ViewProviderBody* getBodyViewProvider();
 
-    virtual PyObject* getPyObject(void);
+    virtual PyObject* getPyObject(void) override;
 
 protected:
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    virtual bool setEdit(int ModNum) override;
+    virtual void unsetEdit(int ModNum) override;
 
-    virtual bool onDelete(const std::vector<std::string> &);
-    
-    virtual QIcon mergeTip(QIcon orig) const;
+    virtual bool onDelete(const std::vector<std::string> &) override;
+
+    virtual QIcon mergeOverlayIcons (const QIcon & orig) const override;
 
     /**
      * Returns a newly create dialog for the part to be placed in the task view

@@ -2970,7 +2970,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
         FC_TIME_LOG(t,"plane merging");
     }
 
-    FC_DURATION_DECL_INIT(td);
+    //FC_DURATION_DECL_INIT(td);
 
     if(use_bound) {
         bounds.SetGap(0.0);

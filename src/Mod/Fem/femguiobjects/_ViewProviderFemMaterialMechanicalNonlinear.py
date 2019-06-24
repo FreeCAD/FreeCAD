@@ -31,9 +31,10 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 import FemGui  # needed to display the icons in TreeView
-False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just returns 'FemGui'
 
 from pivy import coin
+
+False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns 'FemGui'
 
 
 class _ViewProviderFemMaterialMechanicalNonlinear:

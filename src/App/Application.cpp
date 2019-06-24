@@ -1260,11 +1260,11 @@ void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
     {
     case EXCEPTION_ACCESS_VIOLATION:
         throw Base::AccessViolation();
-        break;
     case EXCEPTION_FLT_DIVIDE_BY_ZERO:
     case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        throw Base::DivisionByZeroError("Division by zero!");
-        break;
+        //throw Base::DivisionByZeroError("Division by zero!");
+        Base::Console().Error("SEH exception (%u): Division by zero\n", code);
+        return;
     }
 
     std::stringstream str;
@@ -1529,15 +1529,21 @@ void Application::initConfig(int argc, char ** argv)
     PyImport_AppendInittab ("FreeCAD", init_freecad_module);
     PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
 #endif
-    mConfig["PythonSearchPath"] = Interpreter().init(argc,argv);
+    const char* pythonpath = Interpreter().init(argc,argv);
+    if (pythonpath)
+        mConfig["PythonSearchPath"] = pythonpath;
+    else
+        Base::Console().Warning("Encoding of Python paths failed\n");
 
     // Parse the options that have impact on the init process
     ParseOptions(argc,argv);
 
     // Init console ===========================================================
     Base::PyGILStateLocker lock;
-    _pConsoleObserverStd = new ConsoleObserverStd();
-    Console().AttachObserver(_pConsoleObserverStd);
+    if (mConfig["LoggingConsole"] == "1") {
+        _pConsoleObserverStd = new ConsoleObserverStd();
+        Console().AttachObserver(_pConsoleObserverStd);
+    }
     if (mConfig["Verbose"] == "Strict")
         Console().UnsetConsoleMode(ConsoleSingleton::Verbose);
 

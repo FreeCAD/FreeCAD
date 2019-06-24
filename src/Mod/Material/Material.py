@@ -65,12 +65,12 @@ def importFCMat(fileName):
         import configparser
 
     FreeCAD.Console.PrintError(
-        'This mat card reader is probably depretiated and not widely used in FreeCAD. '
+        'This mat card reader is probably deprecated and not widely used in FreeCAD. '
         'See comment in Material.py module.\n'
     )
     Config = configparser.RawConfigParser()
     Config.optionxform = str
-    Config.read(fileName)
+    Config.read(fileName, encoding='utf-8') # respect unicode filenames
     dict1 = {}
     for section in Config.sections():
         options = Config.options(section)
@@ -90,7 +90,7 @@ def exportFCMat(fileName, matDict):
     Config = configparser.RawConfigParser()
 
     FreeCAD.Console.PrintError(
-        'This mat card writer is probably depretiated and not widely used in FreeCAD. '
+        'This mat card writer is probably deprecated and not widely used in FreeCAD. '
         'See comment in Material.py module.\n'
     )
     # create groups

@@ -3354,7 +3354,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Part Design</source>
-      <translation>部品設計</translation>
+      <translation>パートデザイン</translation>
     </message>
   </context>
 </TS>

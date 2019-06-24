@@ -3575,7 +3575,7 @@ namespace { // Structures used by FixQuadraticElements()
 
     bool Contains( const SMDS_MeshNode* node ) const { return count(node); }
 
-    bool IsSpoiled(const QLink* bentLink ) const;
+    //bool IsSpoiled(const QLink* bentLink ) const;
 
     TLinkInSet GetBoundaryLink( const TLinkSet&      links,
                                 const TChainLink&    avoidLink,
@@ -3970,7 +3970,7 @@ namespace { // Structures used by FixQuadraticElements()
    * \brief Checks if the face is distorted due to bentLink
    */
   //================================================================================
-
+#if 0
   bool QFace::IsSpoiled(const QLink* bentLink ) const
   {
     // code is valid for convex faces only
@@ -3995,7 +3995,7 @@ namespace { // Structures used by FixQuadraticElements()
     return false;
     
   }
-
+#endif
   //================================================================================
   /*!
    * \brief Find pairs of continues faces 

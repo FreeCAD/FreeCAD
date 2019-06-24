@@ -91,15 +91,15 @@ public:
     /** Resizes the area of a pixmap
      * If the new size is greater than the old one the pixmap
      * will be placed in the center. The border area will be made
-     * depending on \a bgmode transparent or opaque. 
+     * depending on \a bgmode transparent or opaque.
      */
     QPixmap resize(int w, int h, const QPixmap& p, Qt::BGMode bgmode) const;
     /** Creates an opaque or transparent area in a pixmap
      * If the background mode is opaque then this method can
-     * be used for drawing a smaller pixmap into pixmap \a p. 
+     * be used for drawing a smaller pixmap into pixmap \a p.
      * Note: To draw a smaller pixmap into another one the
-     * area in the resulting pixmap for the small pixmapmust 
-     * be opaque in every pixel, otherwise the drawing may fail. 
+     * area in the resulting pixmap for the small pixmapmust
+     * be opaque in every pixel, otherwise the drawing may fail.
      *
      * If the background mode is transparent then this method can
      * be used for resizing the pixmap \a p and make the new space
@@ -107,7 +107,7 @@ public:
      */
     QPixmap fillRect(int x, int y, int w, int h, const QPixmap& p, Qt::BGMode) const;
     /** Merges the two pixmaps  \a p1 and \a p2 to one pixmap in
-     * vertical order if \a vertical is true, in horizontal order 
+     * vertical order if \a vertical is true, in horizontal order
      * otherwise. The method resizes the resulting pixmap.
      */
     QPixmap merge(const QPixmap& p1, const QPixmap& p2, bool vertical) const;
@@ -117,7 +117,7 @@ public:
      * resize the resulting pixmap.
      */
     QPixmap merge(const QPixmap& p1, const QPixmap& p2, Position pos = BitmapFactoryInst::BottomLeft) const;
-    /** Creates a disabled pixmap of the given pixmap \a p by changing the brightness 
+    /** Creates a disabled pixmap of the given pixmap \a p by changing the brightness
      * of all opaque pixels to a higher value.
      */
     QPixmap disabled(const QPixmap& p) const;
@@ -127,6 +127,9 @@ public:
     /** Converts a SoSFImage into a QImage.
      */
     void convert(const SoSFImage& img, QImage& out) const;
+
+    /// Helper method to merge a pixmap into one corner of a QIcon
+    static QIcon mergePixmap (const QIcon &base, const QPixmap &px, Gui::BitmapFactoryInst::Position position);
 
 private:
     bool loadPixmap(const QString& path, QPixmap&) const;
