@@ -38,6 +38,7 @@ class GroupExtensionPy;
 class AppExport GroupExtension : public DocumentObjectExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::GroupExtension);
+    typedef DocumentObjectExtension inherited;
 
 public:
     /// Constructor
@@ -91,7 +92,7 @@ public:
     bool isChildOf(const GroupExtension* group, bool recursive = true) const;
     /** Returns a list of all objects this group does have.
      */
-    std::vector<DocumentObject*> getObjects() const;
+    const std::vector<DocumentObject*> &getObjects() const;
     /** Returns a list of all objects of \a typeId this group does have.
      */
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
@@ -109,7 +110,12 @@ public:
     virtual PyObject* getExtensionPyObject(void) override;
 
     virtual void extensionOnChanged(const Property* p) override;
-    
+
+    virtual bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
+        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const override;
+
+    virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
+
     /// Properties
     PropertyLinkList Group;
 

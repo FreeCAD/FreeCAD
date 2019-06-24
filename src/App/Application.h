@@ -28,6 +28,7 @@
 #include <boost/signals2.hpp>
 
 #include <vector>
+#include <deque>
 
 #include <Base/PyObjectBase.h>
 #include <Base/Parameter.h>
@@ -48,6 +49,16 @@ class DocumentObject;
 class ApplicationObserver;
 class Property;
 
+enum GetLinkOption {
+    /// Get all links (both directly and in directly) linked to the given object
+    GetLinkRecursive = 1,
+    /// Get link array element instead of the array
+    GetLinkArrayElement = 2,
+    /// Get linked object instead of the link, no effect if GetLinkRecursive
+    GetLinkedObject = 4,
+    /// Get only external links, no effect if GetLinkRecursive
+    GetLinkExternal = 8,
+};
 
 
 /** The Application
@@ -124,6 +135,8 @@ public:
     boost::signals2::signal<void (const Document&)> signalUndoDocument;
     /// signal on redo in document
     boost::signals2::signal<void (const Document&)> signalRedoDocument;
+    /// signal on show hidden items
+    boost::signals2::signal<void (const Document&)> signalShowHidden;
     //@}
 
 
@@ -274,6 +287,34 @@ public:
     static std::string getHelpDir();
     //@}
 
+    /** @name Link handling */
+    //@{
+    
+    /** Check for link recursion depth
+     *
+     * @param depth: current depth
+     * @param no_throw: whether to throw exception
+     *
+     * @return Return the maximum remaining depth.
+     *
+     * The function uses an internal count of all objects in all documents as
+     * the limit of recursion depth.
+     */
+    int checkLinkDepth(int depth, bool no_throw=true);
+
+    /** Return the links to a given object
+     *
+     * @param obj: the linked object. If NULL, then all links are returned.
+     * @param option: @sa App::GetLinkOptions
+     * @param maxCount: limit the number of links returned, 0 means no limit
+     */
+    std::set<DocumentObject*> getLinksTo(
+            const DocumentObject *, int options, int maxCount=0) const;
+
+    /// Check if there is any link to the given object
+    bool hasLinksTo(const DocumentObject *obj) const;
+    //@}
+
     friend class App::Document;
 
 protected:
@@ -315,7 +356,6 @@ private:
     static ParameterManager *_pcUserParamMngr;
     //@}
 
-
     //---------------------------------------------------------------------
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
@@ -353,7 +393,10 @@ private:
     static PyObject *sSetLogLevel       (PyObject *self,PyObject *args);
     static PyObject *sGetLogLevel       (PyObject *self,PyObject *args);
 
-    static PyMethodDef    Methods[];
+    static PyObject *sCheckLinkDepth    (PyObject *self,PyObject *args);
+    static PyObject *sGetLinksTo        (PyObject *self,PyObject *args);
+
+    static PyMethodDef    Methods[]; 
 
     friend class ApplicationObserver;
 
@@ -400,6 +443,9 @@ private:
     std::map<std::string,ParameterManager *> mpcPramManager;
     std::map<std::string,std::string> &_mConfig;
     App::Document* _pActiveDoc;
+
+    // for estimate max link depth
+    int _objCount;
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;

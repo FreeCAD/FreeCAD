@@ -120,6 +120,13 @@ public:
 
     PyObject *getPyObject(void) override;
 
+    virtual std::vector<std::string> getSubObjects(int reason=0) const override;
+    virtual App::DocumentObject *getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
+
+    void setShowTip(bool enable) {
+        showTip = enable;
+    }
 
 protected:
     virtual void onSettingDocument() override;
@@ -146,6 +153,7 @@ protected:
 
 private:
     boost::signals2::scoped_connection connection;
+    bool showTip = false;
 };
 
 } //namespace PartDesign

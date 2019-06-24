@@ -35,6 +35,7 @@
 #include "Document.h"
 #include "DocumentPy.h"
 #include "DocumentObserverPython.h"
+#include "DocumentObjectPy.h"
 
 // FreeCAD Base header
 #include <Base/Interpreter.h>
@@ -144,7 +145,12 @@ PyMethodDef Application::Methods[] = {
      "'level' can either be string 'Log', 'Msg', 'Wrn', 'Error', or an integer value"},
     {"getLogLevel",          (PyCFunction) Application::sGetLogLevel, METH_VARARGS,
      "getLogLevel(tag) -- Get the log level of a string tag"},
-
+    {"checkLinkDepth",       (PyCFunction) Application::sCheckLinkDepth, METH_VARARGS,
+     "checkLinkDepth(depth) -- check link recursion depth"},
+    {"getLinksTo",       (PyCFunction) Application::sGetLinksTo, METH_VARARGS,
+     "getLinksTo(obj,options=0,maxCount=0) -- return the objects linked to 'obj'\n\n"
+     "options: 1: recursive, 2: check link array. Options can combine.\n"
+     "maxCount: to limit the number of links returned\n"},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -763,4 +769,40 @@ PyObject *Application::sGetLogLevel(PyObject * /*self*/, PyObject *args)
     } PY_CATCH;
 }
 
+PyObject *Application::sCheckLinkDepth(PyObject * /*self*/, PyObject *args)
+{
+    short depth = 0;
+    if (!PyArg_ParseTuple(args, "h", &depth))
+        return NULL;
+
+    PY_TRY {
+        return Py::new_reference_to(Py::Int(GetApplication().checkLinkDepth(depth,false)));
+    }PY_CATCH;
+}
+
+PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args)
+{
+    PyObject *pyobj = Py_None;
+    int options = 0;
+    short count = 0;
+    if (!PyArg_ParseTuple(args, "|Oih",&pyobj,&options, &count))
+        return NULL;
+
+    PY_TRY {
+        DocumentObject *obj = 0;
+        if(pyobj!=Py_None) {
+            if(!PyObject_TypeCheck(pyobj,&DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "Expect the first argument of type document object");
+                return 0;
+            }
+            obj = static_cast<DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
+        }
+        auto links = GetApplication().getLinksTo(obj,options,count);
+        Py::Tuple ret(links.size());
+        int i=0;
+        for(auto o : links) 
+            ret.setItem(i++,Py::Object(o->getPyObject(),true));
+        return Py::new_reference_to(ret);
+    }PY_CATCH;
+}
 
