@@ -1324,11 +1324,21 @@ void CmdFemPostLinearizedStressesFilter::activated(int)
     if (DataAlongLineFilter.match()) {
         Fem::FemPostDataAlongLineFilter* DataAlongLine = static_cast<Fem::FemPostDataAlongLineFilter*>(DataAlongLineFilter.Result[0][0].getObject());
         std::string FieldName = DataAlongLine->PlotData.getValue();
-        if  ((FieldName == "Max shear stress (Tresca)") || (FieldName == "Maximum Principal stress") || (FieldName == "Minimum Principal stress") || (FieldName == "Von Mises stress")) {
-             doCommand(Gui::Command::Doc,"t_coords = App.ActiveDocument.DataAlongLine.XAxisData");
-             doCommand(Gui::Command::Doc,"sValues = App.ActiveDocument.DataAlongLine.YAxisData");
-             doCommand(Gui::Command::Doc, Plot().c_str());
-        } else {
+        if  (
+                (FieldName == "Tresca Stress")
+                || (FieldName == "von Mises Stress")
+                || (FieldName == "Major Principal Stress")
+                || (FieldName == "Intermediate Principal Stress")
+                || (FieldName == "Minor Principal Stress")
+                // names need to match with names in FemVTKTools.cpp, this is not fail save, but ATM there is no better way for test on a stress result in vtk pipeline
+       ){
+                // TODO FIXME only works if the data along the line object has the name DataAlongLine
+                // we should get the selected data along the line object 
+                doCommand(Gui::Command::Doc,"t_coords = App.ActiveDocument.DataAlongLine.XAxisData");
+                doCommand(Gui::Command::Doc,"sValues = App.ActiveDocument.DataAlongLine.YAxisData");
+                doCommand(Gui::Command::Doc, Plot().c_str());
+        } 
+        else {
                 QMessageBox::warning(Gui::getMainWindow(),
                     qApp->translate("CmdFemPostLinearizedStressesFilter", "Wrong selection"),
                     qApp->translate("CmdFemPostLinearizedStressesFilter", "Select a Clip filter which clips a STRESS field along a line, please."));
