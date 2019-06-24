@@ -4416,6 +4416,7 @@ void PropertyXLinkContainer::breakLink(App::DocumentObject *obj, bool clear) {
             obj->_removeBackLink(owner);
     }
     _XLinks.clear();
+    _Deps.clear();
 }
 
 int PropertyXLinkContainer::checkRestore(std::string *msg) const {
