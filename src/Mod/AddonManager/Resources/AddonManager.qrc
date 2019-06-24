@@ -1,5 +1,5 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/A2plus_workbench-icon.svg</file>
         <file>icons/Airplane_workbench-icon.svg</file>
         <file>icons/Arch_Textures_workbench_icon.svg</file>
@@ -17,6 +17,7 @@
         <file>icons/GDT_workbench_icon.svg</file>
         <file>icons/Gears_workbench_icon.svg</file>
         <file>icons/Glider_workbench_icon.svg</file>
+        <file>icons/Inventor_workbench_icon.svg</file>
         <file>icons/Kicad-StepUp-tools-workbench_icon.svg</file>
         <file>icons/Lattice2_workbench_icon.svg</file>
         <file>icons/Lithophane_workbench_icon.svg</file>
@@ -67,4 +68,4 @@
         <file>translations/AddonManager_zh-CN.qm</file>
         <file>translations/AddonManager_zh-TW.qm</file>
     </qresource>
-</RCC> 
+</RCC>
