@@ -26,6 +26,7 @@
 # include <QCoreApplication>
 # include <QHeaderView>
 # include <QTextEdit>
+# include <QCheckBox>
 # include <QTextStream>
 # include <QThread>
 # include <QTreeWidget>
@@ -930,11 +931,13 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog() : widget(0), contentLabel(0)
 {
     this->setButtonPosition(TaskDialog::South);
     widget = new TaskCheckGeometryResults();
+
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
         widget->windowTitle(), false, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+
 
     contentLabel = new QTextEdit();
     contentLabel->setText(widget->getShapeContentString());
@@ -943,6 +946,33 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog() : widget(0), contentLabel(0)
     shapeContentBox->groupLayout()->addWidget(contentLabel);
     shapeContentBox->hideGroupBox();
     Content.push_back(shapeContentBox);
+
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
+
+    runBOPCheckBox = new QCheckBox();
+    runBOPCheckBox->setText(tr("Run BOP check"));
+    runBOPCheckBox->setToolTip(tr("Extra boolean operations check that can sometimes \
+find errors that the regular geometry check misses,\n but which said errors do not always \
+mean the checked object is unusable."));
+    runBOPCheckBox->setChecked(group->GetBool("RunBOPCheck"));
+    settingsBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
+        tr("Settings"), true, 0);
+    settingsBox->groupLayout()->addWidget(runBOPCheckBox);
+    settingsBox->hideGroupBox();
+    Content.push_back(settingsBox);
+    connect(runBOPCheckBox, SIGNAL(toggled(bool)),
+            this, SLOT(on_runBOPCheckBox_toggled(bool)));
+
+
+}
+
+void TaskCheckGeometryDialog::on_runBOPCheckBox_toggled(bool isOn)
+{
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
+    group->SetBool("RunBOPCheck", isOn);
+
 }
 
 TaskCheckGeometryDialog::~TaskCheckGeometryDialog()
