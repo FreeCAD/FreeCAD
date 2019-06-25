@@ -632,7 +632,9 @@ bool TaskLeaderLine::accept()
 {
 //    Base::Console().Message("TTL::accept()\n");
     if (m_inProgressLock) {
+        //accept() button shouldn't be available if there is an edit in progress.
         abandonEditSession();
+        removeTracker();
         return true;
     }
 
@@ -640,13 +642,16 @@ bool TaskLeaderLine::accept()
     if (!doc) return false;
 
     if (!getCreateMode())  {
+//        removeTracker();
         updateLeaderFeature();
     } else {
-        removeTracker();
+//        removeTracker();
         createLeaderFeature(m_trackerPoints);
     }
     m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     m_trackerMode = QGTracker::TrackerMode::None;
+    removeTracker();
+
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 
     return true;
@@ -656,6 +661,7 @@ bool TaskLeaderLine::reject()
 {
     if (m_inProgressLock) {
 //        Base::Console().Message("TTL::reject - edit in progress!!\n");
+        //reject() button shouldn't be available if there is an edit in progress.
         abandonEditSession();
         removeTracker();
         return false;
@@ -678,6 +684,7 @@ bool TaskLeaderLine::reject()
     }
 
     m_trackerMode = QGTracker::TrackerMode::None;
+    removeTracker();
 
     //make sure any dangling objects are cleaned up 
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
