@@ -1330,7 +1330,7 @@ void CmdFemPostLinearizedStressesFilter::activated(int)
                 || (FieldName == "Major Principal Stress")
                 || (FieldName == "Intermediate Principal Stress")
                 || (FieldName == "Minor Principal Stress")
-                // names need to match with names in FemVTKTools.cpp, this is not fail save, but ATM there is no better way for test on a stress result in vtk pipeline
+                // names need to match with names in FemVTKTools.cpp, this is not failsave, but ATM there is no better way for test on a stress result in vtk pipeline
        ){
                 // TODO FIXME only works if the data along the line object has the name DataAlongLine
                 // we should get the selected data along the line object 
