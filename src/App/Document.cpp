@@ -2534,9 +2534,9 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
                 if(link && (res=link->checkRestore(&errMsg))) {
                     d->touchedObjs.insert(obj);
                     if(res==1)
-                        FC_WARN(errMsg);
+                        FC_WARN(obj->getFullName() << '.' << prop->getName() << ": " << errMsg);
                     else  {
-                        FC_ERR(errMsg);
+                        FC_ERR(obj->getFullName() << '.' << prop->getName() << ": " << errMsg);
                         d->addRecomputeLog(errMsg,obj);
                         setStatus(Document::PartialRestore, true);
                     }
@@ -2623,11 +2623,12 @@ int Document::countObjects(void) const
 }
 
 void Document::getLinksTo(std::set<DocumentObject*> &links, 
-        const DocumentObject *obj, int options, int maxCount) const 
+        const DocumentObject *obj, int options, int maxCount,
+        const std::vector<DocumentObject*> &objs) const 
 {
     std::map<const App::DocumentObject*,App::DocumentObject*> linkMap;
 
-    for(auto o : d->objectArray) {
+    for(auto o : objs.size()?objs:d->objectArray) {
         if(o == obj) continue;
         auto linked = o;
         if(options & GetLinkArray) {
@@ -2641,9 +2642,15 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
 
         if(linked && linked!=o) {
             if(options & GetLinkRecursive)
-                linkMap.emplace(linked,o);
-            else if(linked == obj) {
-                links.insert(o);
+                linkMap[linked] = o;
+            else if(linked == obj || !obj) {
+                if(options & GetLinkedObject)
+                    links.insert(linked);
+                else if((options & GetLinkExternal)
+                        && linked->getDocument()==o->getDocument())
+                    continue;
+                else
+                    links.insert(o);
                 if(maxCount && maxCount<=(int)links.size())
                     return;
             }
@@ -3967,32 +3974,28 @@ std::vector<DocumentObject*> Document::copyObject(
 std::vector<App::DocumentObject*> 
 Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
 {
-    std::set<App::DocumentObject*> objSet;
-    std::vector<App::DocumentObject*> objs;
-    for(auto obj : objArray) {
-        if(!obj || !obj->getNameInDocument() || obj->getDocument()!=this)
-            continue;
-        std::vector<App::Property*> props;
-        obj->getPropertyList(props);
-        for(auto prop : props) {
-            auto link = dynamic_cast<App::PropertyLinkBase*>(prop);
-            if(!link || prop->testStatus(Property::Immutable) || obj->isReadOnly(prop))
-                continue;
-            for(auto linked : link->linkedObjects()) {
-                if(linked && linked->getNameInDocument() && 
-                    linked->getDocument()!=this && 
-                    objSet.insert(linked).second)
-                {
-                    objs.push_back(linked);
-                }
-            }
-        }
-    }
+    std::set<App::DocumentObject*> links;
+    getLinksTo(links,0,GetLinkArray|GetLinkExternal,0,objArray);
 
+    std::vector<App::DocumentObject*> objs;
+    objs.insert(objs.end(),links.begin(),links.end());
     objs = App::Document::getDependencyList(objs);
     if(objs.empty()) {
         FC_ERR("nothing to import");
         return objs;
+    }
+
+    for(auto it=objs.begin();it!=objs.end();) {
+        auto obj = *it;
+        if(obj->getDocument() == this) {
+            it = objs.erase(it);
+            continue;
+        }
+        ++it;
+        if(obj->testStatus(App::PartialObject)) {
+            throw Base::RuntimeError(
+                "Cannot import partial loaded object. Please reload the current document");
+        }
     }
 
     Base::FileInfo fi(App::Application::getTempFileName());
@@ -4014,11 +4017,11 @@ Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
     // First, find all link type properties that needs to be changed
     std::map<App::Property*,std::unique_ptr<App::Property> > propMap;
     std::vector<App::Property*> propList;
-    for(auto obj : objArray) {
+    for(auto obj : links) {
         propList.clear();
         obj->getPropertyList(propList);
         for(auto prop : propList) {
-            auto linkProp = dynamic_cast<PropertyLinkBase*>(prop);
+            auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
             if(linkProp && !prop->testStatus(Property::Immutable) && !obj->isReadOnly(prop)) {
                 auto copy = linkProp->CopyOnImportExternal(nameMap);
                 if(copy)

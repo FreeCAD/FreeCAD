@@ -797,6 +797,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     if (this->contextItem && this->contextItem->type() == DocumentType) {
         DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
+        App::GetApplication().setActiveDocument(doc);
         showHiddenAction->setChecked(docitem->showHidden());
         contextMenu.addAction(this->showHiddenAction);
         contextMenu.addAction(this->searchObjectsAction);
@@ -2119,6 +2120,7 @@ void TreeWidget::onReloadDoc() {
     for(auto &v : DocumentMap) {
         if(name == v.first->getDocument()->FileName.getValue()) {
             scrollToItem(v.second);
+            App::GetApplication().setActiveDocument(v.first->getDocument());
             break;
         }
     }

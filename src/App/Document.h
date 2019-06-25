@@ -220,7 +220,8 @@ public:
      *
      * @return the list of imported objects
      */
-    std::vector<App::DocumentObject*> importLinks(const std::vector<App::DocumentObject*> &objs);
+    std::vector<App::DocumentObject*> importLinks(
+            const std::vector<App::DocumentObject*> &objs = {});
     /// Opens the document from its file name
     //void open (void);
     /// Is the document already saved to a file?
@@ -505,9 +506,12 @@ public:
      * @param links: holds the links found
      * @param option: @sa App::GetLinkOptions
      * @param maxCount: limit the number of links returned, 0 means no limit
+     * @param objs: optional objects to search for, if empty, then all objects
+     * of this document are searched.
      */
     void getLinksTo(std::set<DocumentObject*> &links, 
-            const DocumentObject *obj, int options, int maxCount=0) const;
+            const DocumentObject *obj, int options, int maxCount=0,
+            const std::vector<DocumentObject*> &objs = {}) const;
 
     bool hasLinksTo(const DocumentObject *obj) const;
 

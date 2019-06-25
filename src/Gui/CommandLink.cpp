@@ -35,6 +35,7 @@
 #include "Tree.h"
 #include "Document.h"
 #include "Selection.h"
+#include "WaitCursor.h"
 #include "ViewProviderDocumentObject.h"
 
 #include <Base/Console.h>
@@ -574,12 +575,21 @@ static std::map<App::Document*, std::vector<App::DocumentObject*> > getLinkImpor
 }
 
 bool StdCmdLinkImport::isActive() {
-    return !getLinkImportSelections().empty();
+    auto links = getLinkImportSelections();
+    if(links.empty())
+        return false;
+    for(auto &v : links) {
+        if(v.first->testStatus(App::Document::PartialDoc))
+            return false;
+    }
+    return true;
 }
 
 void StdCmdLinkImport::activated(int) {
     Command::openCommand("Import links");
     try {
+        WaitCursor wc;
+        wc.setIgnoreEvents(WaitCursor::NoEvents);
         for(auto &v : getLinkImportSelections()) {
             auto doc = v.first;
             // TODO: Is it possible to do this using interpreter?
@@ -613,17 +623,19 @@ StdCmdLinkImportAll::StdCmdLinkImportAll()
 
 bool StdCmdLinkImportAll::isActive() {
     auto doc = App::GetApplication().getActiveDocument();
-    return doc && App::PropertyXLink::hasXLink(doc);
+    return doc && !doc->testStatus(App::Document::PartialDoc) && App::PropertyXLink::hasXLink(doc);
 }
 
 void StdCmdLinkImportAll::activated(int) {
     Command::openCommand("Import all links");
     try {
-        std::ostringstream str;
-        str << "for _o in App.ActiveDocument.importLinks():" << std::endl
-                << "  _o.ViewObject.Visibility=False" << std::endl
-            << "_o = None";
-        Command::runCommand(Command::Doc,str.str().c_str());
+        WaitCursor wc;
+        wc.setIgnoreEvents(WaitCursor::NoEvents);
+        auto doc = App::GetApplication().getActiveDocument();
+        if(doc) {
+            for(auto obj : doc->importLinks())
+                obj->Visibility.setValue(false);
+        }
         Command::commitCommand();
     } catch (const Base::Exception& e) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Failed to import all links"),

@@ -55,6 +55,10 @@ enum GetLinkOption {
     GetLinkRecursive = 1,
     /// Get link array instead of the array element
     GetLinkArray = 2,
+    /// Get linked object instead of the link, no effect if GetLinkRecursive
+    GetLinkedObject = 4,
+    /// Get only external links, no effect if GetLinkRecursive
+    GetLinkExternal = 8,
 };
 
 
