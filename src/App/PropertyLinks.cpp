@@ -3377,7 +3377,7 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
 Property *PropertyXLink::CopyOnImportExternal(
         const std::map<std::string,std::string> &nameMap) const
 {
-    auto owner = dynamic_cast<const DocumentObject*>(getContainer());
+    auto owner = Base::freecad_dynamic_cast<const DocumentObject>(getContainer());
     if(!owner || !owner->getDocument() || !_pcLink || !_pcLink->getNameInDocument())
         return 0;
 
@@ -3426,9 +3426,9 @@ void PropertyXLink::copyTo(PropertyXLink &other,
 {
     if(!linked)
         linked = _pcLink;
-    if(_pcLink && _pcLink->getNameInDocument()) {
-        other.docName = _pcLink->getDocument()->getName();
-        other.objectName = _pcLink->getNameInDocument();
+    if(linked && linked->getNameInDocument()) {
+        other.docName = linked->getDocument()->getName();
+        other.objectName = linked->getNameInDocument();
     }else{
         other.objectName = objectName;
         other.docName.clear();
