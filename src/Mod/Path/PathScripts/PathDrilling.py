@@ -38,7 +38,6 @@ import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore
-import math
 
 __title__ = "Path Drilling Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -46,8 +45,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Drilling operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2014"
-__scriptVersion__ = "1b testing"
-__lastModified__ = "2019-06-24 15:39 CST"
+__scriptVersion__ = "1c testing"
+__lastModified__ = "2019-06-25 14:49 CST"
 
 LOGLEVEL = False
 
@@ -101,67 +100,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         PathLog.track()
         PathLog.debug("\ncircularHoleExecute() in PathDrilling.py")
 
-        self.stockBB = PathUtils.findParentJob(obj).Stock.Shape.BoundBox
-        self.clearHeight = obj.ClearanceHeight.Value
-        self.safeHeight = obj.SafeHeight.Value
-        self.axialFeed = 0.0
-        self.axialRapid = 0.0
         lastAxis = None
         lastAngle = 0.0
-
-        # Import OpFinalDepth from pre-existing operation for recompute() scenarios
-        if self.defValsSet is True:
-            PathLog.debug("self.defValsSet is True.")
-            if self.initOpStartDepth is not None:
-                if self.initOpStartDepth != obj.OpStartDepth.Value:
-                    obj.OpStartDepth.Value = self.initOpStartDepth
-                    obj.StartDepth.Value = self.initOpStartDepth
-
-            if self.initOpFinalDepth is not None:
-                if self.initOpFinalDepth != obj.OpFinalDepth.Value:
-                    obj.OpFinalDepth.Value = self.initOpFinalDepth
-                    obj.FinalDepth.Value = self.initOpFinalDepth
-            self.defValsSet = False
-
-        if obj.EnableRotation == 'Off':
-            # maxDep = self.stockBB.ZMax
-            # minDep = self.stockBB.ZMin
-            self.strDep = obj.StartDepth.Value
-            self.finDep = obj.FinalDepth.Value
-        else:
-            # Calculate operation heights based upon rotation radii
-            opHeights = self.opDetermineRotationRadii(obj)
-            (self.xRotRad, self.yRotRad, self.zRotRad) = opHeights[0]
-            (self.clrOfset, self.safOfst) = opHeights[1]
-            PathLog.debug("Exec. opHeights[0]: " + str(opHeights[0]))
-            PathLog.debug("Exec. opHeights[1]: " + str(opHeights[1]))
-
-            # Set clearnance and safe heights based upon rotation radii
-            if obj.EnableRotation == 'A(x)':
-                self.strDep = self.xRotRad
-            elif obj.EnableRotation == 'B(y)':
-                self.strDep = self.yRotRad
-            else:
-                self.strDep = max(self.xRotRad, self.yRotRad)
-            self.finDep = -1 * self.strDep
-
-            obj.ClearanceHeight.Value = self.strDep + self.clrOfset
-            obj.SafeHeight.Value = self.strDep + self.safOfst
-
-            if self.initWithRotation is False:
-                if obj.FinalDepth.Value == obj.OpFinalDepth.Value:
-                    obj.FinalDepth.Value = self.finDep
-                if obj.StartDepth.Value == obj.OpStartDepth.Value:
-                    obj.StartDepth.Value = self.strDep
-
-            # Create visual axises when debugging.
-            if PathLog.getLevel(PathLog.thisModule()) == 4:
-                self.visualAxis()
-
-        # Set axial feed rates based upon horizontal feed rates
-        safeCircum = 2 * math.pi * obj.SafeHeight.Value
-        self.axialFeed = 360 / safeCircum * self.horizFeed
-        self.axialRapid = 360 / safeCircum * self.horizRapid
 
         self.commandlist.append(Path.Command("(Begin Drilling)"))
 
@@ -186,8 +126,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         for p in holes:
             cmd = "G81"
             cmdParams = {}
-            finDep = max(obj.FinalDepth.Value, p['finDep'])
-            cmdParams['Z'] = finDep - tiplength
+            cmdParams['Z'] = p['trgtDep'] - tiplength
             cmdParams['F'] = self.vertFeed
             cmdParams['R'] = obj.RetractHeight.Value
             if obj.PeckEnabled and obj.PeckDepth.Value > 0:
@@ -253,7 +192,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         obj.ReverseDirection = False
         obj.InverseAngle = False
         obj.B_AxisErrorOverride = False
-        obj.AttemptInverseAngle = True
+        obj.AttemptInverseAngle = False
 
         # Initial setting for EnableRotation is taken from Job SetupSheet
         # User may override on per-operation basis as needed.
@@ -262,53 +201,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             obj.EnableRotation = parentJob.SetupSheet.SetupEnableRotation
         else:
             obj.EnableRotation = 'Off'
-
-        # Adjust start and final depths if rotation is enabled
-        if obj.EnableRotation == 'Off':
-            startDepth = obj.StartDepth.Value
-            finalDepth = obj.FinalDepth.Value
-        else:
-            self.initWithRotation = True
-            self.stockBB = parentJob.Stock.Shape.BoundBox
-            # Calculate rotational distances/radii
-            opHeights = self.opDetermineRotationRadii(obj)  # return is list with tuples [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfset)]
-            (xRotRad, yRotRad, zRotRad) = opHeights[0]
-            # (self.clrOfset, self.safOfst) = opHeights[1]
-            PathLog.debug("Default opHeights[0]: " + str(opHeights[0]))
-            PathLog.debug("Default opHeights[1]: " + str(opHeights[1]))
-
-            if obj.EnableRotation == 'A(x)':
-                startDepth = xRotRad
-            if obj.EnableRotation == 'B(y)':
-                startDepth = yRotRad
-            else:
-                startDepth = max(xRotRad, yRotRad)
-            finalDepth = -1 * startDepth
-
-        # Manage operation start and final depths
-        if self.docRestored is True:  # This op is NOT the first in the Operations list
-            PathLog.debug("Doc restored")
-            obj.FinalDepth.Value = obj.OpFinalDepth.Value
-            obj.StartDepth.Value = obj.OpStartDepth.Value
-        else:
-            PathLog.debug("New operation")
-            obj.StartDepth.Value = startDepth
-            obj.FinalDepth.Value = finalDepth
-            obj.OpStartDepth.Value = startDepth
-            obj.OpFinalDepth.Value = finalDepth
-
-            if obj.EnableRotation != 'Off':
-                if self.initOpFinalDepth is None:
-                    self.initOpFinalDepth = finalDepth
-                    PathLog.debug("Saved self.initOpFinalDepth")
-                if self.initOpStartDepth is None:
-                    self.initOpStartDepth = startDepth
-                    PathLog.debug("Saved self.initOpStartDepth")
-                self.defValsSet = True
-            # Eif
-        # Eif
-        PathLog.debug("Default OpDepths are Start: {}, and Final: {}".format(obj.OpStartDepth.Value, obj.OpFinalDepth.Value))
-        PathLog.debug("Default Depths are Start: {}, and Final: {}".format(startDepth, finalDepth))
 
 
 def SetupProperties():
@@ -327,11 +219,12 @@ def SetupProperties():
     setup.append("AttemptInverseAngle")
     return setup
 
+
 def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Drilling operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectDrilling(obj, name)
+    obj.Proxy = ObjectDrilling(obj, name)
     if obj.Proxy:
-        proxy.findAllHoles(obj)
+        obj.Proxy.findAllHoles(obj)
     return obj

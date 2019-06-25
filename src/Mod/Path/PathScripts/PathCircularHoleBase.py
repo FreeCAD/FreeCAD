@@ -35,8 +35,6 @@ import Part
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
-import string
-import sys
 
 from PySide import QtCore
 import PathScripts.PathGeom as PathGeom
@@ -52,8 +50,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class an implementation for operations on circular holes."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2017"
-__scriptVersion__ = "1b testing"
-__lastModified__ = "2019-06-24 13:31 CST"
+__scriptVersion__ = "1c testing"
+__lastModified__ = "2019-06-25 14:49 CST"
 
 
 # Qt translation handling
@@ -182,22 +180,67 @@ class ObjectOp(PathOp.ObjectOp):
         PathLog.track()
         PathLog.debug("\nopExecute() in PathCircularHoleBase.py")
 
+        holes = []
+        baseSubsTuples = []
+        subCount = 0
+        allTuples = []
+        self.cloneNames = []
+        self.guiMsgs = []  # list of message tuples (title, msg) to be displayed in GUI
+        self.rotateFlag = False
+        self.useTempJobClones('Delete')  # Clear temporary group and recreate for temp job clones
+        self.stockBB = PathUtils.findParentJob(obj).Stock.Shape.BoundBox
+        self.clearHeight = obj.ClearanceHeight.Value
+        self.safeHeight = obj.SafeHeight.Value
+        self.axialFeed = 0.0
+        self.axialRapid = 0.0
+        trgtDep = None
+
         def haveLocations(self, obj):
             if PathOp.FeatureLocations & self.opFeatures(obj):
                 return len(obj.Locations) != 0
             return False
 
-        holes = []
+        if obj.EnableRotation == 'Off':
+            # maxDep = self.stockBB.ZMax
+            # minDep = self.stockBB.ZMin
+            self.strDep = obj.StartDepth.Value
+            self.finDep = obj.FinalDepth.Value
+        else:
+            # Calculate operation heights based upon rotation radii
+            opHeights = self.opDetermineRotationRadii(obj)
+            (self.xRotRad, self.yRotRad, self.zRotRad) = opHeights[0]
+            (self.clrOfset, self.safOfst) = opHeights[1]
+            PathLog.debug("Exec. opHeights[0]: " + str(opHeights[0]))
+            PathLog.debug("Exec. opHeights[1]: " + str(opHeights[1]))
 
-        baseSubsTuples = []
-        subCount = 0
-        allTuples = []
-        self.cloneNames = []
-        self.rotateFlag = False
-        self.guiMsgs = []  # list of message tuples (title, msg) to be displayed in GUI
-        self.useTempJobClones('Delete')  # Clear temporary group and recreate for temp job clones
+            # Set clearnance and safe heights based upon rotation radii
+            if obj.EnableRotation == 'A(x)':
+                self.strDep = self.xRotRad
+            elif obj.EnableRotation == 'B(y)':
+                self.strDep = self.yRotRad
+            else:
+                self.strDep = max(self.xRotRad, self.yRotRad)
+            self.finDep = -1 * self.strDep
 
-        if obj.EnableRotation != 'Off':
+            obj.ClearanceHeight.Value = self.strDep + self.clrOfset
+            obj.SafeHeight.Value = self.strDep + self.safOfst
+
+            # Create visual axises when debugging.
+            if PathLog.getLevel(PathLog.thisModule()) == 4:
+                self.visualAxis()
+
+            # Set axial feed rates based upon horizontal feed rates
+            safeCircum = 2 * math.pi * obj.SafeHeight.Value
+            self.axialFeed = 360 / safeCircum * self.horizFeed
+            self.axialRapid = 360 / safeCircum * self.horizRapid
+
+        # Complete rotational analysis and temp clone creation as needed
+        if obj.EnableRotation == 'Off':
+            PathLog.info("Enable Rotation setting is 'Off' for {}.".format(obj.Name))
+            stock = PathUtils.findParentJob(obj).Stock
+            for (base, subList) in obj.Base:
+                baseSubsTuples.append((base, subList, 0.0, 'A', stock))
+        else:
             for p in range(0, len(obj.Base)):
                 (base, subsList) = obj.Base[p]
                 for sub in subsList:
@@ -230,12 +273,15 @@ class ObjectOp(PathOp.ObjectOp):
                             else:
                                 PathLog.debug("Face appears to be oriented correctly.")
 
+                            cmnt = "{}: {} @ {};  ".format(sub, axis, str(round(angle, 5)))
+                            if cmnt not in obj.Comment:
+                                obj.Comment += cmnt
+
                             tup = clnBase, sub, tag, angle, axis, clnStock
                             allTuples.append(tup)
                         else:
                             if self.warnDisabledAxis(obj, axis, sub) is True:
-                                # Skip drill feature due to access issue
-                                pass
+                                pass  # Skip drill feature due to access issue
                             else:
                                 PathLog.debug(str(sub) + ": No rotation used")
                                 axis = 'X'
@@ -245,43 +291,57 @@ class ObjectOp(PathOp.ObjectOp):
                                 tup = base, sub, tag, angle, axis, stock
                                 allTuples.append(tup)
                         # Eif
-                        # allTuples.append(tup)
                     # Eif
                     subCount += 1
                 # Efor
             # Efor
-            (hTags, hGrps) = self.sortTuplesByIndex(allTuples, 2)  # return (TagList, GroupList)
+            (Tags, Grps) = self.sortTuplesByIndex(allTuples, 2)  # return (TagList, GroupList)
             subList = []
-            for o in range(0, len(hTags)):
-                PathLog.debug('hTag: {}'.format(hTags[o]))
+            for o in range(0, len(Tags)):
+                PathLog.debug('hTag: {}'.format(Tags[o]))
                 subList = []
-                for (base, sub, tag, angle, axis, stock) in hGrps[o]:
+                for (base, sub, tag, angle, axis, stock) in Grps[o]:
                     subList.append(sub)
                 pair = base, subList, angle, axis, stock
                 baseSubsTuples.append(pair)
             # Efor
-        else:
-            PathLog.info("Enable Rotation setting is 'Off' for {}.".format(obj.Name))
-            stock = PathUtils.findParentJob(obj).Stock
-            for (base, subList) in obj.Base:
-                baseSubsTuples.append((base, subList, 0.0, 'A', stock))
 
         for base, subs, angle, axis, stock in baseSubsTuples:
             for sub in subs:
                 if self.isHoleEnabled(obj, base, sub):
                     pos = self.holePosition(obj, base, sub)
                     if pos:
+                        # Default is treat selection as 'Face' shape
                         finDep = base.Shape.getElement(sub).BoundBox.ZMin
+                        if base.Shape.getElement(sub).ShapeType == 'Edge':
+                            msg = translate("Path", "Verify Final Depth of holes based on edges. {} depth is: {} mm".format(sub, round(finDep, 4))) + "  "
+                            msg += translate("Path", "Always select the bottom edge of the hole when using an edge.")
+                            PathLog.warning(msg)
+
+                        # If user has not adjusted Final Depth value, attempt to determine from sub
+                        if obj.OpFinalDepth.Value == obj.FinalDepth.Value:
+                            PathLog.info(translate('Path', 'Auto detecting Final Depth based on {}.'.format(sub)))
+                            trgtDep = finDep
+                        else:
+                            trgtDep = max(obj.FinalDepth.Value, finDep)
+
                         holes.append({'x': pos.x, 'y': pos.y, 'r': self.holeDiameter(obj, base, sub),
-                                     'angle': angle, 'axis': axis, 'finDep': finDep,
+                                     'angle': angle, 'axis': axis, 'trgtDep': trgtDep,
                                       'stkTop': stock.Shape.BoundBox.ZMax})
 
         if haveLocations(self, obj):
             for location in obj.Locations:
                 # holes.append({'x': location.x, 'y': location.y, 'r': 0, 'angle': 0.0, 'axis': 'X', 'finDep': obj.FinalDepth.Value})
+                trgtDep = obj.FinalDepth.Value
                 holes.append({'x': location.x, 'y': location.y, 'r': 0,
-                             'angle': 0.0, 'axis': 'X', 'finDep': obj.FinalDepth.Value,
+                             'angle': 0.0, 'axis': 'X', 'trgtDep': trgtDep,
                               'stkTop': PathUtils.findParentJob(obj).stock.Shape.BoundBox.ZMax})
+
+        # If all holes based upon edges, set post-operation Final Depth to highest edge height
+        if obj.OpFinalDepth.Value == obj.FinalDepth.Value:
+            if len(holes) == 1:
+                PathLog.info(translate('Path', "Single-hole operation. Saving Final Depth determined from hole base."))
+                obj.FinalDepth.Value = trgtDep
 
         if len(holes) > 0:
             self.circularHoleExecute(obj, holes)  # circularHoleExecute() located in PathDrilling.py
@@ -364,7 +424,7 @@ class ObjectOp(PathOp.ObjectOp):
         PathLog.debug("holes found: {}".format(holelist))
         return features
 
-    # Rotation-related methodss
+    # Rotation-related methods
     def opDetermineRotationRadii(self, obj):
         '''opDetermineRotationRadii(obj)
             Determine rotational radii for 4th-axis rotations, for clearance/safe heights '''
@@ -520,11 +580,12 @@ class ObjectOp(PathOp.ObjectOp):
                 else:
                     rtn = False
 
-        if angle == 500.0:
-            rtn = False
-
         if math.fabs(angle) == 0.0:
             angle = 0.0
+            rtn = False
+
+        if angle == 500.0:
+            angle == 0.0
             rtn = False
 
         if rtn is False:
@@ -680,6 +741,10 @@ class ObjectOp(PathOp.ObjectOp):
         norm = FreeCAD.Vector(0.0, 0.0, 0.0)
         surf = FreeCAD.Vector(0.0, 0.0, 0.0)
 
+        if face.ShapeType == 'Edge':
+            edgToFace = Part.Face(Part.Wire(Part.__sortEdges__([face])))
+            face = edgToFace
+
         if hasattr(face, 'normalAt'):
             n = face.normalAt(0, 0)
         elif hasattr(face, 'normal'):
@@ -688,6 +753,7 @@ class ObjectOp(PathOp.ObjectOp):
             s = face.Surface.Axis
         else:
             s = n
+
         norm.x = n.x
         norm.y = n.y
         norm.z = n.z
@@ -708,6 +774,8 @@ class ObjectOp(PathOp.ObjectOp):
 
         if obj.InverseAngle is True:
             angle = -1 * angle
+            if math.fabs(angle) == 0.0:
+                angle = 0.0
 
         # Create a temporary clone of model for rotational use.
         (clnBase, clnStock, tag) = self.cloneBaseAndStock(obj, base, angle, axis, subCount)
