@@ -701,6 +701,13 @@ BOPCheck.Perform();
         goSetupResultTypedSelection(faultyEntry, faultyShape, TopAbs_VERTEX);
       }
       entry->children.push_back(faultyEntry);
+
+      /*log BOPCheck errors to report view*/
+      std::cerr << faultyEntry->parent->name.toStdString().c_str() << " : "
+                << faultyEntry->name.toStdString().c_str() << " : "
+                << faultyEntry->type.toStdString().c_str() << " : "
+                << faultyEntry->error.toStdString().c_str()
+                << std::endl;
     }
   }
   return 1;
@@ -722,6 +729,13 @@ void TaskCheckGeometryResults::dispatchError(ResultEntry *entry, const BRepCheck
         }
     }
     goSetupResultBoundingBox(entry);
+
+    /*log BRepCheck errors to report view*/
+    std::cerr << entry->parent->name.toStdString().c_str() << " : "
+              << entry->name.toStdString().c_str() << " : "
+              << entry->type.toStdString().c_str() << " : "
+              << entry->error.toStdString().c_str() << " (BRepCheck)"
+              << std::endl;
 }
 
 void TaskCheckGeometryResults::setupFunctionMap()
