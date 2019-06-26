@@ -501,9 +501,10 @@ public:
      */
     StringHasherRef getStringHasher(int index=-1) const;
 
-    /** Return the object linked to this object
+    /** Return the links to a given object
      *
      * @param links: holds the links found
+     * @param obj: the linked object. If NULL, then all links are returned.
      * @param option: @sa App::GetLinkOptions
      * @param maxCount: limit the number of links returned, 0 means no limit
      * @param objs: optional objects to search for, if empty, then all objects
@@ -513,6 +514,7 @@ public:
             const DocumentObject *obj, int options, int maxCount=0,
             const std::vector<DocumentObject*> &objs = {}) const;
 
+    /// Check if there is any link to the given object
     bool hasLinksTo(const DocumentObject *obj) const;
 
     /// Called by objects during restore to ask for recompute

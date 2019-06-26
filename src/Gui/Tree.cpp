@@ -1180,7 +1180,7 @@ void TreeWidget::selectAllLinks(App::DocumentObject *obj) {
     else
         _updateStatus(false);
 
-    for(auto link: App::GetApplication().getLinksTo(obj,App::GetLinkRecursive|App::GetLinkArray)) 
+    for(auto link: App::GetApplication().getLinksTo(obj,App::GetLinkRecursive)) 
     {
         if(!link || !link->getNameInDocument()) {
             TREE_ERR("invalid linked object");

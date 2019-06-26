@@ -775,9 +775,8 @@ std::vector<std::string> DocumentObject::getSubObjects(int reason) const {
 
 std::vector<std::pair<App::DocumentObject *,std::string> > DocumentObject::getParents(int depth) const {
     std::vector<std::pair<App::DocumentObject *,std::string> > ret;
-    if(!getNameInDocument())
+    if(!getNameInDocument() || !GetApplication().checkLinkDepth(depth))
         return ret;
-    GetApplication().checkLinkDepth(depth);
     std::string name(getNameInDocument());
     name += ".";
     for(auto parent : getInList()) {

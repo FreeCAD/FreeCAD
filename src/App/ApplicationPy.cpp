@@ -822,15 +822,22 @@ PyObject *Application::sCheckLinkDepth(PyObject * /*self*/, PyObject *args)
 
 PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args)
 {
-    PyObject *obj;
+    PyObject *pyobj = Py_None;
     int options = 0;
     short count = 0;
-    if (!PyArg_ParseTuple(args, "O!|ih", &DocumentObjectPy::Type,&obj,&options, &count))
+    if (!PyArg_ParseTuple(args, "|Oih",&pyobj,&options, &count))
         return NULL;
 
     PY_TRY {
-        auto links = GetApplication().getLinksTo(
-            static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr(),options,count);
+        DocumentObject *obj = 0;
+        if(pyobj!=Py_None) {
+            if(!PyObject_TypeCheck(pyobj,&DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "Expect the first argument of type document object");
+                return 0;
+            }
+            obj = static_cast<DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
+        }
+        auto links = GetApplication().getLinksTo(obj,options,count);
         Py::Tuple ret(links.size());
         int i=0;
         for(auto o : links) 

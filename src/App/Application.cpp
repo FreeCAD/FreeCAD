@@ -1067,20 +1067,20 @@ std::string Application::getHelpDir()
 #endif
 }
 
-int Application::checkLinkDepth(int depth, bool no_exception) {
+int Application::checkLinkDepth(int depth, bool no_throw) {
     if(_objCount<0) {
         _objCount = 0;
         for(auto &v : DocMap) 
             _objCount += v.second->countObjects();
     }
     if(depth > _objCount+2) {
-        if(no_exception) {
-            Console().Error("Link recursion limit reached. "
-                "Please check for cyclic reference.\n");
+        const char *msg = "Link recursion limit reached. "
+                "Please check for cyclic reference.";
+        if(no_throw) {
+            FC_ERR(msg);
             return 0;
         }else
-            throw Base::RuntimeError("Link recursion limit reached. "
-                    "Please check for cyclic reference. ");
+            throw Base::RuntimeError(msg);
     }
     return _objCount+2;
 }
@@ -1089,12 +1089,27 @@ std::set<DocumentObject *> Application::getLinksTo(
         const DocumentObject *obj, int options, int maxCount) const
 {
     std::set<DocumentObject *> links;
-    for(auto &v : DocMap) {
-        v.second->getLinksTo(links,obj,options,maxCount);
-        if(maxCount && (int)links.size()>=maxCount)
-            break;
+    if(!obj) {
+        for(auto &v : DocMap) {
+            v.second->getLinksTo(links,obj,options,maxCount);
+            if(maxCount && (int)links.size()>=maxCount)
+                break;
+        }
+    } else {
+        std::set<Document*> docs;
+        for(auto o : obj->getInList()) {
+            if(o && o->getNameInDocument() && docs.insert(o->getDocument()).second) {
+                o->getDocument()->getLinksTo(links,obj,options,maxCount);
+                if(maxCount && (int)links.size()>=maxCount)
+                    break;
+            }
+        }
     }
     return links;
+}
+
+bool Application::hasLinksTo(const DocumentObject *obj) const {
+    return !getLinksTo(obj,0,1).empty();
 }
 
 ParameterManager & Application::GetSystemParameter(void)

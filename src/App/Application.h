@@ -53,8 +53,8 @@ class AutoTransaction;
 enum GetLinkOption {
     /// Get all links (both directly and in directly) linked to the given object
     GetLinkRecursive = 1,
-    /// Get link array instead of the array element
-    GetLinkArray = 2,
+    /// Get link array element instead of the array
+    GetLinkArrayElement = 2,
     /// Get linked object instead of the link, no effect if GetLinkRecursive
     GetLinkedObject = 4,
     /// Get only external links, no effect if GetLinkRecursive
@@ -365,14 +365,30 @@ public:
 
     /** @name Link handling */
     //@{
-    int checkLinkDepth(int depth, bool no_exception=true);
+    
+    /** Check for link recursion depth
+     *
+     * @param depth: current depth
+     * @param no_throw: whether to throw exception
+     *
+     * @return Return the maximum remaining depth.
+     *
+     * The function uses an internal count of all objects in all documents as
+     * the limit of recursion depth.
+     */
+    int checkLinkDepth(int depth, bool no_throw=true);
 
+    /** Return the links to a given object
+     *
+     * @param obj: the linked object. If NULL, then all links are returned.
+     * @param option: @sa App::GetLinkOptions
+     * @param maxCount: limit the number of links returned, 0 means no limit
+     */
     std::set<DocumentObject*> getLinksTo(
             const DocumentObject *, int options, int maxCount=0) const;
 
-    bool hasLinksTo(const DocumentObject *obj) const {
-        return !getLinksTo(obj,GetLinkArray,1).empty();
-    }
+    /// Check if there is any link to the given object
+    bool hasLinksTo(const DocumentObject *obj) const;
     //@}
 
     friend class App::Document;

@@ -2631,24 +2631,25 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
     for(auto o : objs.size()?objs:d->objectArray) {
         if(o == obj) continue;
         auto linked = o;
-        if(options & GetLinkArray) {
+        if(options & GetLinkArrayElement)
+            linked = o->getLinkedObject(false);
+        else {
             auto ext = o->getExtensionByType<LinkBaseExtension>(true);
             if(ext) 
                 linked = ext->getTrueLinkedObject(false,0,0,true);
             else
                 linked = o->getLinkedObject(false);
-        } else 
-            linked = o->getLinkedObject(false);
+        }
 
         if(linked && linked!=o) {
             if(options & GetLinkRecursive)
                 linkMap[linked] = o;
             else if(linked == obj || !obj) {
-                if(options & GetLinkedObject)
-                    links.insert(linked);
-                else if((options & GetLinkExternal)
+                if((options & GetLinkExternal)
                         && linked->getDocument()==o->getDocument())
                     continue;
+                else if(options & GetLinkedObject)
+                    links.insert(linked);
                 else
                     links.insert(o);
                 if(maxCount && maxCount<=(int)links.size())
@@ -2662,7 +2663,7 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
 
     std::vector<const DocumentObject*> current(1,obj);
     for(int depth=0;current.size();++depth) {
-        if(!GetApplication().checkLinkDepth(depth))
+        if(!GetApplication().checkLinkDepth(depth,true))
             break;
         std::vector<const DocumentObject*> next;
         for(auto o : current) {
@@ -2680,7 +2681,7 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
 
 bool Document::hasLinksTo(const DocumentObject *obj) const {
     std::set<DocumentObject *> links;
-    getLinksTo(links,obj,App::GetLinkArray,1);
+    getLinksTo(links,obj,0,1);
     return !links.empty();
 }
 
@@ -3975,7 +3976,7 @@ std::vector<App::DocumentObject*>
 Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
 {
     std::set<App::DocumentObject*> links;
-    getLinksTo(links,0,GetLinkArray|GetLinkExternal,0,objArray);
+    getLinksTo(links,0,GetLinkExternal,0,objArray);
 
     std::vector<App::DocumentObject*> objs;
     objs.insert(objs.end(),links.begin(),links.end());
