@@ -844,6 +844,36 @@ void MeshProjection::projectToMesh (const TopoDS_Shape &aShape, float fMaxDist, 
     }
 }
 
+void MeshProjection::projectOnMesh(const std::vector<Base::Vector3f>& pointsIn,
+                                   const Base::Vector3f& dir,
+                                   float tolerance,
+                                   std::vector<Base::Vector3f>& pointsOut) const
+{
+    // calculate the average edge length and create a grid
+    MeshAlgorithm clAlg(_rcMesh);
+    float fAvgLen = clAlg.GetAverageEdgeLength();
+    MeshFacetGrid cGrid(_rcMesh, 5.0f*fAvgLen);
+
+    Base::SequencerLauncher seq( "Project points on mesh", pointsIn.size() );
+
+    for (auto it : pointsIn) {
+        Base::Vector3f result;
+        unsigned long index;
+        if (clAlg.NearestFacetOnRay(it, dir, cGrid, result, index)) {
+            MeshCore::MeshGeomFacet geomFacet = _rcMesh.GetFacet(index);
+            if (tolerance > 0 && geomFacet.IntersectPlaneWithLine(it, dir, result)) {
+                if (geomFacet.IsPointOfFace(result, tolerance))
+                    pointsOut.push_back(result);
+            }
+            else {
+                pointsOut.push_back(result);
+            }
+        }
+
+        seq.next();
+    }
+}
+
 void MeshProjection::projectParallelToMesh (const TopoDS_Shape &aShape, const Base::Vector3f& dir, std::vector<PolyLine>& rPolyLines) const
 {
     // calculate the average edge length and create a grid
