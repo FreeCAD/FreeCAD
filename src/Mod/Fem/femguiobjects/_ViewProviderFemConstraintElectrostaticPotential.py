@@ -124,6 +124,17 @@ class _TaskPanel(object):
         self._obj.PotentialEnabled = \
             not self._paramWidget.potentialBox.isChecked()
         if self._obj.PotentialEnabled:
-            quantity = Units.Quantity(self._paramWidget.potentialTxt.text())
-            self._obj.Potential = float(quantity.getValueAs(unit))
+            # if the input widget shows not a green hook, but the user presses ok
+            # we could run into a syntax error on getting the quantity, try mV
+            quantity = None
+            try:
+                quantity = Units.Quantity(self._paramWidget.potentialTxt.text())
+            except:
+                FreeCAD.Console.PrintMessage(
+                    'Potential not set. OK has been triggered wihtout a green hook '
+                    'in the input field. Not recognised input: {}\n'
+                    .format(self._paramWidget.potentialTxt.text())
+                )
+            if quantity is not None:
+                self._obj.Potential = float(quantity.getValueAs(unit))
         self._obj.PotentialConstant = self._paramWidget.potentialConstantBox.isChecked()
