@@ -325,9 +325,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         obj.AttemptInverseAngle = True
         obj.B_AxisErrorOverride = False
 
-    # def checkDepths(self, obj, shape):
-    #     return (strDept, finDep)
-
 
 def SetupProperties():
     setup = PathProfileBase.SetupProperties()
