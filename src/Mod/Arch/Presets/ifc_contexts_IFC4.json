@@ -39,6 +39,36 @@
                 "is_enum": false,
                 "enum_values": []
             }
+        ],
+        "complex_attributes": [
+            {
+                "name": "OwnerHistory",
+                "type": "IfcOwnerHistory"
+            },
+            {
+                "name": "IsNestedBy",
+                "type": "IfcRelNests"
+            },
+            {
+                "name": "IsDecomposedBy",
+                "type": "IfcRelAggregates"
+            },
+            {
+                "name": "RepresentationContexts",
+                "type": "IfcRepresentationContext"
+            },
+            {
+                "name": "UnitsInContext",
+                "type": "IfcUnitAssignment"
+            },
+            {
+                "name": "IsDefinedBy",
+                "type": "IfcRelDefinesByProperties"
+            },
+            {
+                "name": "Declares",
+                "type": "IfcRelDeclares"
+            }
         ]
     },
     "IfcProjectLibrary": {
@@ -80,6 +110,36 @@
                 "type": "IfcLabel",
                 "is_enum": false,
                 "enum_values": []
+            }
+        ],
+        "complex_attributes": [
+            {
+                "name": "OwnerHistory",
+                "type": "IfcOwnerHistory"
+            },
+            {
+                "name": "IsNestedBy",
+                "type": "IfcRelNests"
+            },
+            {
+                "name": "IsDecomposedBy",
+                "type": "IfcRelAggregates"
+            },
+            {
+                "name": "RepresentationContexts",
+                "type": "IfcRepresentationContext"
+            },
+            {
+                "name": "UnitsInContext",
+                "type": "IfcUnitAssignment"
+            },
+            {
+                "name": "IsDefinedBy",
+                "type": "IfcRelDefinesByProperties"
+            },
+            {
+                "name": "Declares",
+                "type": "IfcRelDeclares"
             }
         ]
     }
