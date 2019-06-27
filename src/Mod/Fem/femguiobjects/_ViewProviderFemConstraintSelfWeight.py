@@ -32,7 +32,7 @@ import FreeCAD
 import FreeCADGui
 import FemGui  # needed to display the icons in TreeView
 
-False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns 'FemGui'
+False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 
 class _ViewProviderFemConstraintSelfWeight:
