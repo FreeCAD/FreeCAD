@@ -18,8 +18,7 @@ class IfcRoot:
 
         if not "IfcType" in obj.PropertiesList:
             obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
-            obj.IfcType = self.canonicaliseIfcTypes(self.getIfcTypes())
-
+            obj.IfcType = self.getCanonicalisedIfcTypes()
 
         if not "IfcProperties" in obj.PropertiesList:
             obj.addProperty("App::PropertyMap","IfcProperties","IFC",QT_TRANSLATE_NOOP("App::Property","IFC properties of this object"))
@@ -32,40 +31,41 @@ class IfcRoot:
         if obj.getGroupOfProperty(prop) == "IFC Attributes":
             self.setObjIfcAttributeValue(obj, prop, obj.getPropertyByName(prop))
 
-    def getIfcTypes(self):
+    def setupIfcAttributes(self, obj):
+        ifcTypeSchema = self.getIfcTypeSchema(obj.IfcType)
+        if ifcTypeSchema is None:
+            return
+        self.purgeUnusedIfcAttributesFromPropertiesList(ifcTypeSchema, obj)
+        self.addIfcAttributes(ifcTypeSchema, obj)
+
+    def getIfcTypeSchema(self, IfcType):
+        name = "Ifc" + IfcType.replace(" ", "")
+        if name in self.getIfcSchema():
+            return self.getIfcSchema()[name]
+
+    def getIfcSchema(self):
         return {}
 
-    def canonicaliseIfcTypes(self, IfcTypes):
-        return [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in IfcTypes.keys()]
+    def getCanonicalisedIfcTypes(self):
+        schema = self.getIfcSchema()
+        return [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in schema.keys()]
 
-    def getIfcProduct(self, IfcType):
-        name = "Ifc" + IfcType.replace(" ", "")
-        if name in self.getIfcTypes():
-            return self.getIfcTypes()[name]
-
-    def getIfcProductAttribute(self, ifcProduct, name):
-        for attribute in ifcProduct["attributes"]:
+    def getIfcAttribute(self, ifcTypeSchema, name):
+        for attribute in ifcTypeSchema["attributes"]:
             if attribute["name"].replace(' ', '') == name:
                 return attribute
         return None
 
-    def setupIfcAttributes(self, obj):
-        ifcProduct = self.getIfcProduct(obj.IfcType)
-        if ifcProduct is None:
-            return
-        self.purgeUnusedIfcAttributesFromPropertiesList(ifcProduct, obj)
-        self.addIfcProductAttributesToObj(ifcProduct, obj)
-
-    def addIfcProductAttributesToObj(self, ifcProduct, obj):
-        for attribute in ifcProduct["attributes"]:
+    def addIfcAttributes(self, ifcTypeSchema, obj):
+        for attribute in ifcTypeSchema["attributes"]:
             if attribute["name"] in obj.PropertiesList \
                 or attribute["name"] == "RefLatitude" \
                 or attribute["name"] == "RefLongitude":
                 continue
-            self.addIfcProductAttribute(obj, attribute)
+            self.addIfcAttribute(obj, attribute)
             self.addIfcAttributeValueExpressions(obj, attribute)
 
-    def addIfcProductAttribute(self, obj, attribute):
+    def addIfcAttribute(self, obj, attribute):
         IfcData = obj.IfcData
         if "attributes" not in IfcData:
             IfcData["attributes"] = "{}"
@@ -124,12 +124,12 @@ class IfcRoot:
         IfcData["attributes"] = json.dumps(IfcAttributes)
         obj.IfcData = IfcData
 
-    def purgeUnusedIfcAttributesFromPropertiesList(self, ifcProduct, obj):
+    def purgeUnusedIfcAttributesFromPropertiesList(self, ifcTypeSchema, obj):
         for property in obj.PropertiesList:
             if obj.getGroupOfProperty(property) != "IFC Attributes":
                 continue
-            ifcProductAttribute = self.getIfcProductAttribute(ifcProduct, property)
-            if ifcProductAttribute is None or ifcProductAttribute["is_enum"] is True:
+            ifcAttribute = self.getIfcAttribute(ifcTypeSchema, property)
+            if ifcAttribute is None or ifcAttribute["is_enum"] is True:
                 obj.removeProperty(property)
 
     def migrateDeprecatedAttributes(self, obj):
@@ -152,9 +152,9 @@ class IfcRoot:
             obj.removeProperty("IfcAttributes")
 
 class IfcProduct(IfcRoot):
-    def getIfcTypes(self):
+    def getIfcSchema(self):
         return ArchIFCSchema.IfcProducts
 
 class IfcContext(IfcRoot):
-    def getIfcTypes(self):
+    def getIfcSchema(self):
         return ArchIFCSchema.IfcContexts
