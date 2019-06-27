@@ -854,6 +854,26 @@ void MeshProjection::projectOnMesh(const std::vector<Base::Vector3f>& pointsIn,
     float fAvgLen = clAlg.GetAverageEdgeLength();
     MeshFacetGrid cGrid(_rcMesh, 5.0f*fAvgLen);
 
+    // get all boundary points and edges of the mesh
+    std::vector<Base::Vector3f> boundaryPoints;
+    std::vector<MeshCore::MeshGeomEdge> boundaryEdges;
+
+    const MeshCore::MeshFacetArray& facets = _rcMesh.GetFacets();
+    const MeshCore::MeshPointArray& points = _rcMesh.GetPoints();
+    for (auto it : facets) {
+        for (int i=0; i<3; i++) {
+            if (!it.HasNeighbour(i)) {
+                boundaryPoints.push_back(points[it._aulPoints[i]]);
+
+                MeshCore::MeshGeomEdge edge;
+                edge._bBorder = true;
+                edge._aclPoints[0] = points[it._aulPoints[i]];
+                edge._aclPoints[1] = points[it._aulPoints[(i+1)%3]];
+                boundaryEdges.push_back(edge);
+            }
+        }
+    }
+
     Base::SequencerLauncher seq( "Project points on mesh", pointsIn.size() );
 
     for (auto it : pointsIn) {
@@ -867,6 +887,36 @@ void MeshProjection::projectOnMesh(const std::vector<Base::Vector3f>& pointsIn,
             }
             else {
                 pointsOut.push_back(result);
+            }
+        }
+        else {
+            // go through the boundary points and check if the point can be directly projected
+            // onto one of them
+            auto boundaryPnt = std::find_if(boundaryPoints.begin(), boundaryPoints.end(),
+                                            [&it, &dir](const Base::Vector3f& pnt)->bool {
+                Base::Vector3f vec = pnt - it;
+                float angle = vec.GetAngle(dir);
+                return angle < 1e-6f;
+            });
+
+            if (boundaryPnt != boundaryPoints.end()) {
+                pointsOut.push_back(*boundaryPnt);
+            }
+            else {
+                // go through the boundary edges and check if the point can be directly projected
+                // onto one of them
+                Base::Vector3f result1, result2;
+                for (auto jt : boundaryEdges) {
+                    jt.ClosestPointsToLine(it, dir, result1, result2);
+                    float dot = (result1-jt._aclPoints[0]).Dot(result1-jt._aclPoints[1]);
+                    //float distance = Base::Distance(result1, result2);
+                    Base::Vector3f vec = result1 - it;
+                    float angle = vec.GetAngle(dir);
+                    if (dot <= 0 && angle < 1e-6f) {
+                        pointsOut.push_back(result1);
+                        break;
+                    }
+                }
             }
         }
 
