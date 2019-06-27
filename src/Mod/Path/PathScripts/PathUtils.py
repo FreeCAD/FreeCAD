@@ -38,7 +38,9 @@ from PathScripts import PathLog
 from PySide import QtCore
 from PySide import QtGui
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -406,7 +408,7 @@ def getToolControllers(obj):
     '''returns all the tool controllers'''
     try:
         job = findParentJob(obj)
-    except:
+    except Exception:
         job = None
 
     if job:

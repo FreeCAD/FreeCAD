@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
+      <translation>竖直居中对齐所选单元格的内容</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation type="unfinished">Merge selected cells</translation>
+      <translation>合并所选单元格</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation type="unfinished">Split previously merged cells</translation>
+      <translation>分割以前合并的单元格</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation type="unfinished">Set text in selected cells bold</translation>
+      <translation>加粗所选单元格内的文本</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation type="unfinished">Set text in selected cells italic</translation>
+      <translation>设置所选单元格内的文本为斜体</translation>
     </message>
   </context>
   <context>
@@ -223,14 +223,14 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation type="unfinished">Underline text in selected cells</translation>
+      <translation>所选单元格内的文本设置下划线</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>自定义颜色</translation>
     </message>
   </context>
   <context>
@@ -427,7 +427,7 @@
     </message>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>自定义颜色</translation>
     </message>
   </context>
   <context>

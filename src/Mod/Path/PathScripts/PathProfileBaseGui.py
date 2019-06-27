@@ -24,11 +24,8 @@
 
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathLog as PathLog
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathProfileFaces as PathProfileFaces
-import PathScripts.PathSelection as PathSelection
 
 from PySide import QtCore
 

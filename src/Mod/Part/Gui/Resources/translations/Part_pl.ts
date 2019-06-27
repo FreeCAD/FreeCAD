@@ -263,7 +263,7 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="62"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>Utwórz rurę</translation>
     </message>
   </context>
   <context>
@@ -294,17 +294,17 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
       <source>Boolean Fragments</source>
-      <translation type="unfinished">Boolean Fragments</translation>
+      <translation>Fragmenty boolowskie</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
       <source>Split objects where they intersect</source>
-      <translation type="unfinished">Split objects where they intersect</translation>
+      <translation>Podziel obiekty, które się przecinają</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
       <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+      <translation>Najpierw wybierz co najmniej dwa obiekty lub jeden lub więcej złożeń! Jeśli wybrano tylko jedno złożenie, złożone kształty zostaną przecięte między sobą (w przeciwnym razie związki z przecięciami własnymi są nieważne).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>

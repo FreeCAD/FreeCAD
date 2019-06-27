@@ -25,7 +25,6 @@
 import FreeCAD
 import FreeCADGui
 import Part
-import Path
 import PathScripts
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
@@ -34,7 +33,7 @@ import PathScripts.PathUtil as PathUtil
 
 from PySide import QtCore, QtGui
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 

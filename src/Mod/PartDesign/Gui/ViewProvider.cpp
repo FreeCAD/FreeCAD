@@ -49,11 +49,12 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
 :oldWb(""), oldTip(NULL), isSetTipIcon(false)
 {
+    PartGui::ViewProviderAttachExtension::initExtension(this);
 }
 
 ViewProvider::~ViewProvider()
@@ -189,48 +190,45 @@ void ViewProvider::updateData(const App::Property* prop)
 }
 
 void ViewProvider::onChanged(const App::Property* prop) {
-    
+
     //if the object is inside of a body we make sure it is the only visible one on activation
     if(prop == &Visibility && Visibility.getValue()) {
-    
+
         Part::BodyBase* body = Part::BodyBase::findBodyOf(getObject());
         if(body) {
-            
+
             //hide all features in the body other than this object
             for(App::DocumentObject* obj : body->Group.getValues()) {
-             
+
                 if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && obj != getObject()) {
                    Gui::ViewProvider* vp = Gui::Application::Instance->activeDocument()->getViewProvider(obj);
-                   if(!vp) 
+                   if(!vp)
                        return;
-                   
+
                    Gui::ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
                    if (vpd->Visibility.getValue())
                        vpd->Visibility.setValue(false);
                 }
-            }            
+            }
         }
     }
-    
+
     PartGui::ViewProviderPartExt::onChanged(prop);
 }
 
 void ViewProvider::setTipIcon(bool onoff) {
     isSetTipIcon = onoff;
-    
+
     signalChangeIcon();
 }
 
-QIcon ViewProvider::getIcon(void) const
+QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
 {
-    return mergeTip(Gui::BitmapFactory().pixmap(sPixmap));
-}
+    QIcon mergedicon = orig;
 
-QIcon ViewProvider::mergeTip(QIcon orig) const
-{
     if(isSetTipIcon) {
         QPixmap px;
-        
+
         static const char * const feature_tip_xpm[]={
             "9 9 3 1",
             ". c None",
@@ -247,18 +245,11 @@ QIcon ViewProvider::mergeTip(QIcon orig) const
             "...###..."};
         px = QPixmap(feature_tip_xpm);
 
-        QIcon icon_mod;
+        mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
 
-        int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
-
-        icon_mod.addPixmap(Gui::BitmapFactory().merge(orig.pixmap(w, w, QIcon::Normal, QIcon::Off),
-                                                    px,Gui::BitmapFactoryInst::BottomRight), QIcon::Normal, QIcon::Off);
-        icon_mod.addPixmap(Gui::BitmapFactory().merge(orig.pixmap(w, w, QIcon::Normal, QIcon::On ),
-                                                    px,Gui::BitmapFactoryInst::BottomRight), QIcon::Normal, QIcon::Off);
-        return icon_mod;
     }
-    else
-        return orig;
+
+    return Gui::ViewProvider::mergeOverlayIcons(mergedicon);
 }
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)
@@ -279,14 +270,14 @@ bool ViewProvider::onDelete(const std::vector<std::string> &)
 
     if (body != NULL) {
         // Deletion from the tree of a feature is handled by Document.removeObject, which has no clue
-        // about what a body is. Therefore, Bodies, although an "activable" container, know nothing 
+        // about what a body is. Therefore, Bodies, although an "activable" container, know nothing
         // about what happens at Document level with the features they contain.
         //
         // The Deletion command StdCmdDelete::activated, however does notify the viewprovider corresponding
         // to the feature (not body) of the imminent deletion (before actually doing it).
         //
-        // Consequently, the only way of notifying a body of the imminent deletion of one of its features 
-        // so as to do the clean up required (moving basefeature references, tip management) is from the 
+        // Consequently, the only way of notifying a body of the imminent deletion of one of its features
+        // so as to do the clean up required (moving basefeature references, tip management) is from the
         // viewprovider, so we call it here.
         //
         // fixes (#3084)
@@ -302,22 +293,22 @@ void ViewProvider::setBodyMode(bool bodymode) {
 
     std::vector<App::Property*> props;
     getPropertyList(props);
-    
+
     auto vp = getBodyViewProvider();
     if(!vp)
         return;
-    
+
     for(App::Property* prop : props) {
-        
+
         //we keep visibility and selectibility per object
         if(prop == &Visibility ||
            prop == &Selectable)
             continue;
-        
+
         //we hide only properties which are available in the body, not special ones
         if(!vp->getPropertyByName(prop->getName()))
             continue;
-            
+
         prop->setStatus(App::Property::Hidden, bodymode);
     }
 }
@@ -331,7 +322,7 @@ void ViewProvider::makeTemporaryVisible(bool onoff)
         }
         Gui::ViewProvider::show();
     }
-    else 
+    else
         Gui::ViewProvider::hide();
 }
 
@@ -352,7 +343,7 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
         if(vp && vp->isDerivedFrom(ViewProviderBody::getClassTypeId()))
            return static_cast<ViewProviderBody*>(vp);
     }
-    
+
     return nullptr;
 }
 

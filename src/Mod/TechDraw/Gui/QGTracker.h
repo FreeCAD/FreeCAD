@@ -92,7 +92,6 @@ protected:
     double getTrackerWeight();
 
 private:
-    double m_width;
     QGraphicsPathItem* m_track;
     QPointF m_segBegin;
     QPointF m_segEnd;
@@ -103,7 +102,6 @@ private:
     QPen m_trackPen;
     QPen m_tailPen;
     QPointF m_lastClick;
-    bool m_2clickPending;
 };
 
 } // namespace

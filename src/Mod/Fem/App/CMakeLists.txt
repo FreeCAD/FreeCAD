@@ -1,4 +1,9 @@
 
+# Many warnings caused by vtk
+if(CMAKE_COMPILER_IS_CLANGXX)
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override")
+endif()
+
 if(MSVC)
     add_definitions(-DFCAppFem -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
 else(MSVC)

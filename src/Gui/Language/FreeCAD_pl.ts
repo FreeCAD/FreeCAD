@@ -1620,7 +1620,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Find...</source>
-      <translation type="unfinished">Find...</translation>
+      <translation>Znajdź...</translation>
     </message>
   </context>
   <context>
@@ -1631,7 +1631,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Find what:</source>
-      <translation type="unfinished">Find what:</translation>
+      <translation>Znajdź co:</translation>
     </message>
     <message>
       <source>Look at</source>
@@ -1639,15 +1639,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Groups</source>
-      <translation type="unfinished">Groups</translation>
+      <translation>Grupy</translation>
     </message>
     <message>
       <source>Names</source>
-      <translation type="unfinished">Names</translation>
+      <translation>Nazwy</translation>
     </message>
     <message>
       <source>Values</source>
-      <translation type="unfinished">Values</translation>
+      <translation>Wartości</translation>
     </message>
     <message>
       <source>Match whole string only</source>
@@ -1655,11 +1655,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Find Next</source>
-      <translation type="unfinished">Find Next</translation>
+      <translation>Znajdź następny</translation>
     </message>
     <message>
       <source>Not found</source>
-      <translation type="unfinished">Not found</translation>
+      <translation>Nie znaleziono</translation>
     </message>
     <message>
       <source>Can't find the text: %1</source>
@@ -2776,7 +2776,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Record GUI commands</source>
-      <translation type="unfinished">Record GUI commands</translation>
+      <translation>Nagrywanie poleceń GUI</translation>
     </message>
   </context>
   <context>
@@ -2835,7 +2835,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
-      <translation type="unfinished">Minimum fractional inch:</translation>
+      <translation>Minimalny ułamek cala:</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2871,7 +2871,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Unit system:</source>
-      <translation type="unfinished">Unit system:</translation>
+      <translation>Układ jednostek:</translation>
     </message>
   </context>
   <context>
@@ -2914,7 +2914,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <translation>Ustawia teren obszaru na zbieranie elementów w widoku 3D. Większa wartość ułatwia wybieranie rzeczy, ale uniemożliwi wybór niektórych małych funkcji.</translation>
     </message>
     <message>
       <source>Tree View</source>
@@ -3038,7 +3038,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Sortuj włączone środowiska&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3132,7 +3132,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
+      <translation>Po usunięciu wybranych katalogów przejściowych nie będziesz w stanie odzyskać żadnych plików.</translation>
     </message>
   </context>
   <context>
@@ -3915,12 +3915,12 @@ Do you want to save your changes?</source>
       <translation>Przeciągnij po ekranie dwoma palcami lub kliknij prawym przyciskiem myszy.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Przeciągnij po ekranie jednym palcem lub naciśnij lewy przycisk myszy. W innych trybach edycji jak np. Sketcher dodatkowo przytrzymaj naciśnięty klawisz Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Uszczypnięcie (umieść dwa palce na ekranie i przeciągnij je od lub do siebie na wzajem) lub przewijanie środkowym przyciskiem myszy, bądź przyciskami PgUp/PgDown na klawiaturze.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>

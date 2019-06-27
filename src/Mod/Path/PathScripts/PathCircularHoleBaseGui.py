@@ -34,7 +34,9 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Implementation of circular hole specific base geometry page controller."
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -146,7 +148,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         '''checkeChanged() ... callback when checked status of a base feature changed'''
         PathLog.track()
         disabled = []
-        for i in xrange(0, self.form.baseList.rowCount()):
+        for i in range(0, self.form.baseList.rowCount()):
             item = self.form.baseList.item(i, 0)
             if item.checkState() != QtCore.Qt.Checked:
                 disabled.append(item.data(self.DataFeatureName))

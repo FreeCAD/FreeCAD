@@ -151,23 +151,28 @@ bool TaskDlgDatumParameters::accept() {
         if (result == QDialog::DialogCode::Rejected)
             return false;
         else if (!dlg.radioXRef->isChecked()) {
-            std::vector<App::DocumentObject*> objs;
+            std::vector<App::DocumentObject*> copyObjects;
+            std::vector<std::string> copySubValues;
             std::vector<std::string> subs = pcDatum->Support.getSubValues();
             int index = 0;
             for (App::DocumentObject* obj : pcDatum->Support.getValues()) {
                 if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
-                    objs.push_back(PartDesignGui::TaskFeaturePick::makeCopy(obj, subs[index], dlg.radioIndependent->isChecked()));
-                    copies.push_back(objs.back());
-                    subs[index] = "";
+                    auto* copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, subs[index], dlg.radioIndependent->isChecked());
+                    if (copy) {
+                        copyObjects.push_back(copy);
+                        copies.push_back(copyObjects.back());
+                        copySubValues.push_back(std::string());
+                    }
                 }
                 else {
-                    objs.push_back(obj);
+                    copyObjects.push_back(obj);
+                    copySubValues.push_back(subs[index]);
                 }
 
                 index++;
             }
 
-            pcDatum->Support.setValues(objs, subs);
+            pcDatum->Support.setValues(copyObjects, copySubValues);
         }
     }
 

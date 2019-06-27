@@ -263,7 +263,7 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="62"/>
       <source>Creates a tube</source>
-      <translation>Créer un tube</translation>
+      <translation>Crée un tube</translation>
     </message>
   </context>
   <context>
@@ -299,7 +299,7 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
       <source>Split objects where they intersect</source>
-      <translation>Diviser les objets où ils se croisent</translation>
+      <translation>Diviser les objets à leur intersection</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
@@ -324,7 +324,7 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
-      <translation>Trancher</translation>
+      <translation>Séparer</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
@@ -1766,7 +1766,7 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../Command.cpp" line="784"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation>Outils de compilation : travailler avec des listes de formes.</translation>
+      <translation>Outils de composition : travailler avec des listes de formes.</translation>
     </message>
   </context>
   <context>
@@ -1815,7 +1815,7 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../Command.cpp" line="661"/>
       <source>Split objects...</source>
-      <translation>Objets éclatés...</translation>
+      <translation>Éclater des objets...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="662"/>
@@ -1932,7 +1932,7 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../CommandSimple.cpp" line="273"/>
       <source>Remove feature from a shape</source>
-      <translation>Supprimer la fonctionnalité d’une forme</translation>
+      <translation>Supprimer la fonction d’une forme</translation>
     </message>
   </context>
   <context>
@@ -2148,7 +2148,7 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Utility to offset planar shapes</source>
-      <translation>Utilitaire pour décaler les formes planaires</translation>
+      <translation>Utilitaire pour décaler des formes planaires</translation>
     </message>
   </context>
   <context>
@@ -4205,7 +4205,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="522"/>
       <source>Select adjacent edges</source>
-      <translation>Sélectionnez les bords adjacents</translation>
+      <translation>Sélectionnez des bords adjacents</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="529"/>
@@ -4669,7 +4669,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
       <source>Wire from edges</source>
-      <translation>Fil à partir des arêtes</translation>
+      <translation>Fil à partir d'arêtes</translation>
     </message>
   </context>
   <context>

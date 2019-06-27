@@ -77,32 +77,32 @@
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="353"/>
+      <location filename="../../CurveOnMesh.cpp" line="363"/>
       <source>Create</source>
       <translation>Tạo</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="355"/>
+      <location filename="../../CurveOnMesh.cpp" line="365"/>
       <source>Close wire</source>
       <translation>Đóng dây</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="357"/>
+      <location filename="../../CurveOnMesh.cpp" line="367"/>
       <source>Clear</source>
       <translation>Xóa</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="358"/>
+      <location filename="../../CurveOnMesh.cpp" line="368"/>
       <source>Cancel</source>
       <translation>Hủy</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="566"/>
+      <location filename="../../CurveOnMesh.cpp" line="614"/>
       <source>Wrong mesh picked</source>
       <translation>Lưới được chọn sai</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="606"/>
+      <location filename="../../CurveOnMesh.cpp" line="654"/>
       <source>No point was picked</source>
       <translation>Không có điểm nào được chọn</translation>
     </message>
@@ -140,22 +140,22 @@
       <translation>Ước tính đường cong Spline</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="75"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="78"/>
       <source>Tolerance to mesh</source>
       <translation>Dung sai của lưới</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="101"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="104"/>
       <source>Continuity</source>
       <translation>Liên tục</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="108"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="111"/>
       <source>Maximum curve degree</source>
       <translation>Độ cong tối đa</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="132"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="135"/>
       <source>Start</source>
       <translation>Bắt đầu</translation>
     </message>

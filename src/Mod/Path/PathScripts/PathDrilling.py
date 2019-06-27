@@ -24,7 +24,6 @@
 
 from __future__ import print_function
 
-import ArchPanel
 import FreeCAD
 import Path
 import PathScripts.PathCircularHoleBase as PathCircularHoleBase
@@ -32,7 +31,6 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
-from PathScripts.PathUtils import fmt, waiting_effects
 from PySide import QtCore
 
 __title__ = "Path Drilling Operation"
@@ -40,7 +38,9 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Drilling operation."
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -135,7 +135,7 @@ def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Drilling operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectDrilling(obj, name)
+    obj.Proxy = ObjectDrilling(obj, name)
     if obj.Proxy:
-        proxy.findAllHoles(obj)
+        obj.Proxy.findAllHoles(obj)
     return obj

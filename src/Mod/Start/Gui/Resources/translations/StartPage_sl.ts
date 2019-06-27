@@ -156,7 +156,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
+      <translation>Mapo po meri, ki bo prikazana tukaj, lahko nastavite v meniju Uredi -&gt; Možnosti -&gt; Začetek -&gt; Prikaži dodatno mapo</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>

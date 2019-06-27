@@ -406,9 +406,25 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
             else
                 shapeProp = &static_cast<PartDesign::ShapeBinder*>(copy)->Shape;
         }
+        else if(obj->isDerivedFrom(App::Plane::getClassTypeId()) ||
+                obj->isDerivedFrom(App::Line::getClassTypeId())) {
 
-        if(independent && shapeProp) {
-            if(entity.empty())
+            copy = App::GetApplication().getActiveDocument()->addObject("PartDesign::ShapeBinder", name.c_str());
+
+            if (!independent) {
+                static_cast<PartDesign::ShapeBinder*>(copy)->Support.setValue(obj, entity.c_str());
+            }
+            else {
+                App::GeoFeature* geo = static_cast<App::GeoFeature*>(obj);
+                std::vector<std::string> subvalues;
+                subvalues.push_back(entity);
+                Part::TopoShape shape = PartDesign::ShapeBinder::buildShapeFromReferences(geo, subvalues);
+                static_cast<PartDesign::ShapeBinder*>(copy)->Shape.setValue(shape);
+            }
+        }
+
+        if (independent && shapeProp) {
+            if (entity.empty())
                 shapeProp->setValue(static_cast<Part::Feature*>(obj)->Shape.getValue());
             else
                 shapeProp->setValue(static_cast<Part::Feature*>(obj)->Shape.getShape().getSubShape(entity.c_str()));

@@ -35,7 +35,9 @@ from PySide import QtCore
 
 __doc__ = "Class and implementation of Path Engrave operation"
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -142,5 +144,5 @@ def Create(name, obj=None):
     '''Create(name) ... Creates and returns an Engrave operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectEngrave(obj, name)
+    obj.Proxy = ObjectEngrave(obj, name)
     return obj

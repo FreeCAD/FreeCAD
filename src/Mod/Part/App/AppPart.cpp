@@ -580,7 +580,7 @@ PyMOD_INIT_FUNC(Part)
             Interface_Static::SetCVal("write.iges.unit","M");
             break;
         case 2:
-            Interface_Static::SetCVal("write.iges.unit","IN");
+            Interface_Static::SetCVal("write.iges.unit","INCH");
             break;
         default:
             Interface_Static::SetCVal("write.iges.unit","MM");
@@ -595,7 +595,7 @@ PyMOD_INIT_FUNC(Part)
             Interface_Static::SetCVal("write.step.unit","M");
             break;
         case 2:
-            Interface_Static::SetCVal("write.step.unit","IN");
+            Interface_Static::SetCVal("write.step.unit","INCH");
             break;
         default:
             Interface_Static::SetCVal("write.step.unit","MM");

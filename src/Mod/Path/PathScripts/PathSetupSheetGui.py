@@ -28,7 +28,7 @@ import PathScripts.PathGui as PathGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSetupSheet as PathSetupSheet
-import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
+# import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathSetupSheetOpPrototypeGui as PathSetupSheetOpPrototypeGui
 import PathScripts.PathUtil as PathUtil
 
@@ -43,7 +43,9 @@ __doc__ = "Task panel editor for a SetupSheet"
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -57,12 +59,7 @@ class ViewProvider:
         PathLog.track(name)
         vobj.Proxy = self
         self.icon = name
-        mode = 2
-        #vobj.setEditorMode('BoundingBox', mode)
-        #vobj.setEditorMode('DisplayMode', mode)
-        #vobj.setEditorMode('Selectable', mode)
-        #vobj.setEditorMode('ShapeColor', mode)
-        #vobj.setEditorMode('Transparency', mode)
+        # mode = 2
 
     def attach(self, vobj):
         PathLog.track()

@@ -1162,8 +1162,8 @@ Please run the command to repair folds first</source>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="36"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation type="unfinished">This parameter indicates whether ZIP compression
-is used when writing a file in AMF format</translation>
+      <translation>Ce paramètre indique si la compression ZIP
+est utilisée lors de l'écriture d'un fichier au format AMF</translation>
     </message>
   </context>
   <context>
@@ -1300,22 +1300,22 @@ is used when writing a file in AMF format</translation>
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="368"/>
+      <location filename="../../MeshEditor.cpp" line="376"/>
       <source>Add triangle</source>
       <translation>Ajouter un triangle</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="369"/>
+      <location filename="../../MeshEditor.cpp" line="377"/>
       <source>Flip normal</source>
       <translation>Inverser les normales</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="370"/>
+      <location filename="../../MeshEditor.cpp" line="378"/>
       <source>Clear</source>
       <translation>Effacer</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="385"/>
+      <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Finish</source>
       <translation>Terminer</translation>
     </message>
@@ -1323,7 +1323,7 @@ is used when writing a file in AMF format</translation>
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="711"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Terminer</translation>
     </message>

@@ -204,14 +204,14 @@
       <translation>Gagalama etkinleştirmek</translation>
     </message>
     <message>
-      <location filename="PathDrilling.py" line="88"/>
-      <source>Height to clear top of material</source>
-      <translation>Malzemenin üstünü temizlemek için yükseklik</translation>
+      <location filename="../../../PathScripts/PathDrilling.py" line="65"/>
+      <source>Enable pecking</source>
+      <translation>Gagalama etkinleştirmek</translation>
     </message>
     <message>
-      <location filename="PathDrilling.py" line="71"/>
-      <source>Diameters of the holes</source>
-      <translation>Dosya adı</translation>
+      <location filename="../../../PathScripts/PathDrilling.py" line="67"/>
+      <source>Enable dwell</source>
+      <translation type="unfinished">Enable dwell</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="68"/>
@@ -219,24 +219,44 @@
       <translation type="unfinished">Calculate the tip length and subtract from final depth</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDrilling.py" line="64"/>
-      <source>Incremental Drill depth before retracting to clear chips</source>
-      <translation>Temiz cipslere geri çekmeden önce artımlı Matkap derinliği</translation>
+      <location filename="../../../PathScripts/PathDrilling.py" line="68"/>
+      <source>Calculate the tip length and subtract from final depth</source>
+      <translation type="unfinished">Calculate the tip length and subtract from final depth</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDrilling.py" line="65"/>
-      <source>Enable pecking</source>
-      <translation>Gagalama etkinleştirmek</translation>
+      <location filename="../../../PathScripts/PathDrilling.py" line="69"/>
+      <source>Controls how tool retracts Default=G98</source>
+      <translation type="unfinished">Controls how tool retracts Default=G98</translation>
     </message>
     <message>
-      <location filename="PathPlane.py" line="44"/>
+      <location filename="../../../PathScripts/PathDrilling.py" line="72"/>
+      <source>The height where feed starts and height during retract tool when path is finished</source>
+      <translation>Yem başlama yüksekliği ve yol bittiğinde geri çekme aracı sırasında yükseklik</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathMillFace.py" line="58"/>
+      <source>Shape to use for calculating Boundary</source>
+      <translation type="unfinished">Shape to use for calculating Boundary</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPlane.py" line="38"/>
       <source>Orientation plane of CNC path</source>
       <translation>CNC yollarının yönlendirme düzlemi</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDrilling.py" line="67"/>
-      <source>Enable dwell</source>
-      <translation type="unfinished">Enable dwell</translation>
+      <location filename="../../../PathScripts/PathMillFace.py" line="58"/>
+      <source>Shape to use for calculating Boundary</source>
+      <translation type="unfinished">Shape to use for calculating Boundary</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="89"/>
+      <source>Reverse direction of pocket operation.</source>
+      <translation type="unfinished">Reverse direction of pocket operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="91"/>
+      <source>Inverse the angle. Example: -22.5 -&gt; 22.5 degrees.</source>
+      <translation type="unfinished">Inverse the angle. Example: -22.5 -&gt; 22.5 degrees.</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="99"/>
@@ -254,19 +274,19 @@
       <translation>Profil yuvarlak delikleri</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPlane.py" line="38"/>
-      <source>Orientation plane of CNC path</source>
-      <translation>CNC yollarının yönlendirme düzlemi</translation>
+      <location filename="../../../PathScripts/PathCollision.py" line="64"/>
+      <source>The base object this collision refers to</source>
+      <translation type="unfinished">The base object this collision refers to</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathMillFace.py" line="58"/>
-      <source>Shape to use for calculating Boundary</source>
-      <translation type="unfinished">Shape to use for calculating Boundary</translation>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="86"/>
+      <source>Profile round holes</source>
+      <translation>Profil yuvarlak delikleri</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="71"/>
-      <source>Profile holes as well as the outline</source>
-      <translation>Profil delikleri ve anahat</translation>
+      <location filename="../../../PathScripts/PathCollision.py" line="60"/>
+      <source>The base object this collision refers to</source>
+      <translation type="unfinished">The base object this collision refers to</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileBase.py" line="59"/>
@@ -309,14 +329,14 @@
       <translation>Zikzak deseninin açısı</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfileBase.py" line="64"/>
-      <source>Maximum distance before a miter join is truncated</source>
-      <translation>Bir gönyeli birleştirme öncesi azami mesafe kesiliyor</translation>
+      <location filename="../../../PathScripts/PathPocketBase.py" line="77"/>
+      <source>Percent of cutter diameter to step over on each pass</source>
+      <translation>Her geçide adım atacak kesici çapı yüzdesi</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketBase.py" line="74"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>İşlem için uygulanacak ekstra ofset. Yön operasyona bağlıdır.</translation>
+      <location filename="../../../PathScripts/PathPocketBase.py" line="78"/>
+      <source>Angle of the zigzag pattern</source>
+      <translation>Zikzak deseninin açısı</translation>
     </message>
     <message>
       <location filename="PathStop.py" line="43"/>
@@ -329,9 +349,9 @@
       <translation>Desen yöntemi</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketBase.py" line="78"/>
-      <source>Angle of the zigzag pattern</source>
-      <translation>Zikzak deseninin açısı</translation>
+      <location filename="../../../PathScripts/PathStop.py" line="36"/>
+      <source>Add Optional or Mandatory Stop to the program</source>
+      <translation>İsteğe Bağlı veya Zorunlu Durdur programına ekleyin</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -372,21 +392,6 @@
       <location filename="PathToolController.py" line="55"/>
       <source>Rapid rate for horizontal moves</source>
       <translation>Yatay hareketler için hızlı oran</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="78"/>
-      <source>Direction of spindle rotation</source>
-      <translation>İş mili dönüş yönü</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="80"/>
-      <source>Feed rate for vertical moves in Z</source>
-      <translation>Z'de dikey hareketler için besleme hızı</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="81"/>
-      <source>Feed rate for horizontal moves</source>
-      <translation>Yatay hareketler için besleme hızı</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="56"/>
@@ -562,6 +567,36 @@
   <context>
     <name>Path</name>
     <message>
+      <location filename="../../../PathScripts/PathToolController.py" line="234"/>
+      <source>Edit</source>
+      <translation>Düzenle</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathEngraveGui.py" line="62"/>
+      <source>%s is not a Base Model object of the job %s</source>
+      <translation type="unfinished">%s is not a Base Model object of the job %s</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathEngraveGui.py" line="65"/>
+      <source>Base shape %s already in the list</source>
+      <translation type="unfinished">Base shape %s already in the list</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathEngraveGui.py" line="72"/>
+      <source>Ignoring vertex</source>
+      <translation type="unfinished">Ignoring vertex</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobGui.py" line="248"/>
+      <source>Edit</source>
+      <translation>Düzenle</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathEngraveGui.py" line="62"/>
+      <source>%s is not a Base Model object of the job %s</source>
+      <translation type="unfinished">%s is not a Base Model object of the job %s</translation>
+    </message>
+    <message>
       <location filename="PathUtils.py" line="472"/>
       <source>Didn't find job %s</source>
       <translation>İş %s bulamadım</translation>
@@ -587,19 +622,14 @@
       <translation>Üst iş %s bir temel nesne yok</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngraveGui.py" line="62"/>
-      <source>%s is not a Base Model object of the job %s</source>
-      <translation type="unfinished">%s is not a Base Model object of the job %s</translation>
+      <location filename="../../../PathScripts/PathUtils.py" line="770"/>
+      <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
+      <translation>Kenar kesme açısı (%.2f) negatif araç ipucu uzunluğu sonuç</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngraveGui.py" line="65"/>
-      <source>Base shape %s already in the list</source>
-      <translation type="unfinished">Base shape %s already in the list</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathEngraveGui.py" line="72"/>
-      <source>Ignoring vertex</source>
-      <translation type="unfinished">Ignoring vertex</translation>
+      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
+      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
+      <translation type="unfinished">Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="514"/>
@@ -620,6 +650,109 @@
       <location filename="PathOpGui.py" line="762"/>
       <source>Pick Start Point</source>
       <translation>Hedef noktası seç</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOpGui.py" line="617"/>
+      <source>Heights</source>
+      <translation>Yükseklik</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOpGui.py" line="776"/>
+      <source>AreaOp Operation</source>
+      <translation>AreaOp işlemi</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOpGui.py" line="875"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation>AreaOp işlemi uncreate</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOpGui.py" line="990"/>
+      <source>Pick Start Point</source>
+      <translation>Hedef noktası seç</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="343"/>
+      <source>
+&lt;br&gt;Pocket is based on extruded surface.</source>
+      <translation type="unfinished">
+&lt;br&gt;Pocket is based on extruded surface.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="344"/>
+      <source>
+&lt;br&gt;Bottom of pocket might be non-planar and/or not normal to spindle axis.</source>
+      <translation type="unfinished">
+&lt;br&gt;Bottom of pocket might be non-planar and/or not normal to spindle axis.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="345"/>
+      <source>
+&lt;br&gt;
+&lt;br&gt;&lt;i&gt;3D pocket bottom is NOT available in this operation&lt;/i&gt;.</source>
+      <translation type="unfinished">
+&lt;br&gt;
+&lt;br&gt;&lt;i&gt;3D pocket bottom is NOT available in this operation&lt;/i&gt;.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="529"/>
+      <source>Depth Warning</source>
+      <translation type="unfinished">Depth Warning</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="452"/>
+      <source>Consider toggling the InverseAngle property and recomputing the operation.</source>
+      <translation type="unfinished">Consider toggling the InverseAngle property and recomputing the operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="413"/>
+      <source>Processing subs individually ...</source>
+      <translation type="unfinished">Processing subs individually ...</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="527"/>
+      <source>Verify final depth of pocket shaped by vertical faces.</source>
+      <translation type="unfinished">Verify final depth of pocket shaped by vertical faces.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="574"/>
+      <source>Processing model as a whole ...</source>
+      <translation type="unfinished">Processing model as a whole ...</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="781"/>
+      <source>Can not identify loop.</source>
+      <translation type="unfinished">Can not identify loop.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
+      <source>Face appears misaligned after initial rotation.</source>
+      <translation type="unfinished">Face appears misaligned after initial rotation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="139"/>
+      <source>Consider toggling the 'InverseAngle' property and recomputing.</source>
+      <translation type="unfinished">Consider toggling the 'InverseAngle' property and recomputing.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="161"/>
+      <source>Multiple faces in Base Geometry.</source>
+      <translation type="unfinished">Multiple faces in Base Geometry.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="162"/>
+      <source>Depth settings will be applied to all faces.</source>
+      <translation type="unfinished">Depth settings will be applied to all faces.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="176"/>
+      <source>EnableRotation property is 'Off'.</source>
+      <translation type="unfinished">EnableRotation property is 'Off'.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="250"/>
+      <source>Unable to create path for face(s).</source>
+      <translation type="unfinished">Unable to create path for face(s).</translation>
     </message>
     <message>
       <location filename="PathCircularHoleBase.py" line="60"/>
@@ -672,51 +805,6 @@
       <translation>Yol</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="106"/>
-      <source>Path Dressup</source>
-      <translation>Yol Giydir</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="115"/>
-      <source>Supplemental Commands</source>
-      <translation type="unfinished">Supplemental Commands</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="105"/>
-      <source>Project Setup</source>
-      <translation>Proje kurulumu</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="117"/>
-      <source>Path Modification</source>
-      <translation>Yol Değişikliği</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="110"/>
-      <source>Helpful Tools</source>
-      <translation>Yararlı araçlar</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="120"/>
-      <source>&amp;Path</source>
-      <translation>Yol</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="113"/>
-      <source>Path Dressup</source>
-      <translation>Yol Giydir</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="115"/>
-      <source>Supplemental Commands</source>
-      <translation type="unfinished">Supplemental Commands</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="234"/>
-      <source>Edit</source>
-      <translation>Düzenle</translation>
-    </message>
-    <message>
       <location filename="PathPocket.py" line="153"/>
       <source>this object already in the list
 </source>
@@ -752,6 +840,14 @@
     </message>
   </context>
   <context>
+    <name>PathAdaptive</name>
+    <message>
+      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
+      <source>Adaptive</source>
+      <translation type="unfinished">Adaptive</translation>
+    </message>
+  </context>
+  <context>
     <name>PathAreaOp</name>
     <message>
       <location filename="PathAreaOp.py" line="86"/>
@@ -764,17 +860,45 @@
       <translation>buldum op %s iş yok.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathAreaOp.py" line="118"/>
+      <location filename="../../../PathScripts/PathAreaOp.py" line="136"/>
       <source>job %s has no Base.</source>
       <translation>iş %s yok tabanı vardır.</translation>
     </message>
   </context>
   <context>
-    <name>PathAdaptive</name>
+    <name>PathCustom</name>
     <message>
-      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
-      <source>Adaptive</source>
-      <translation type="unfinished">Adaptive</translation>
+      <location filename="../../../PathScripts/PathCustom.py" line="40"/>
+      <source>The gcode to be inserted</source>
+      <translation>Eklenecek gcode</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCustom.py" line="41"/>
+      <source>The tool controller that will be used to calculate the path</source>
+      <translation>Yolu hesaplamak için kullanılacak takım denetleyicisi</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCustom.py" line="40"/>
+      <source>The gcode to be inserted</source>
+      <translation>Eklenecek gcode</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathDeburr</name>
+    <message>
+      <location filename="../../../PathScripts/PathDeburr.py" line="70"/>
+      <source>The desired width of the chamfer</source>
+      <translation type="unfinished">The desired width of the chamfer</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDeburr.py" line="71"/>
+      <source>The additional depth of the tool path</source>
+      <translation type="unfinished">The additional depth of the tool path</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDeburrGui.py" line="102"/>
+      <source>Deburr</source>
+      <translation type="unfinished">Deburr</translation>
     </message>
   </context>
   <context>
@@ -851,8 +975,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathDrillingGui.py" line="109"/>
-      <source>Drilling</source>
-      <translation>Sondaj</translation>
+      <source>Creates a Path Drilling object from a features of a base object</source>
+      <translation>Bir temel nesnenin özelliklerinden bir Yol Sondaj nesnesi oluşturur</translation>
     </message>
   </context>
   <context>
@@ -872,23 +996,10 @@
       <source>Additional base objects to be engraved</source>
       <translation type="unfinished">Additional base objects to be engraved</translation>
     </message>
-  </context>
-  <context>
-    <name>PathDeburr</name>
     <message>
-      <location filename="../../../PathScripts/PathDeburrGui.py" line="102"/>
-      <source>Deburr</source>
-      <translation type="unfinished">Deburr</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDeburr.py" line="70"/>
-      <source>The desired width of the chamfer</source>
-      <translation type="unfinished">The desired width of the chamfer</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDeburr.py" line="71"/>
-      <source>The additional depth of the tool path</source>
-      <translation type="unfinished">The additional depth of the tool path</translation>
+      <location filename="../../../PathScripts/PathEngraveGui.py" line="140"/>
+      <source>Engrave</source>
+      <translation>Oymak</translation>
     </message>
   </context>
   <context>
@@ -975,24 +1086,9 @@
       <translation>İçten veya dıştan kesmeye başlayın</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathHelixGui.py" line="83"/>
-      <source>Creates a Path Helix object from a features of a base object</source>
-      <translation>Bir temel nesnenin özelliklerinden bir Yol Sondaj nesnesi oluşturur</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathHelix.py" line="51"/>
-      <source>The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</source>
-      <translation type="unfinished">The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathHelix.py" line="54"/>
       <source>Start cutting from the inside or outside</source>
       <translation>İçten veya dıştan kesmeye başlayın</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathHelix.py" line="57"/>
-      <source>Radius increment (must be smaller than tool diameter)</source>
-      <translation>Yarıçap artışı (takım çapından daha küçük olmalıdır)</translation>
     </message>
   </context>
   <context>
@@ -1023,9 +1119,24 @@
       <translation>Desteklenmeyen dosya biçimi)</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="332"/>
-      <source>Stock not from Base bound box!</source>
-      <translation>Stok temel ilişkili kutusundan değil!</translation>
+      <location filename="../../../PathScripts/PathJob.py" line="96"/>
+      <source>Select the Post Processor</source>
+      <translation>İşlem Sonucu Seçme</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="97"/>
+      <source>Arguments for the Post Processor (specific to the script)</source>
+      <translation>Post İşlemci İçin Argümanlar (komuta özgü)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobGui.py" line="421"/>
+      <source>Stock not a box!</source>
+      <translation>Stok kutusu değil!</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="100"/>
+      <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
+      <translation>Hesaplama yolları için; daha küçük değerler doğruluğu artırır, ancak hesaplamayı yavaşlatır</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="103"/>
@@ -1043,9 +1154,9 @@
       <translation>Bu iş için kullanılabilen takım denetleyicileri topluluğu.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="1020"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Desteklenmeyen dosya biçimi)</translation>
+      <location filename="../../../PathScripts/PathJob.py" line="96"/>
+      <source>Select the Post Processor</source>
+      <translation>İşlem Sonucu Seçme</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="95"/>
@@ -1053,9 +1164,9 @@
       <translation>Bu proje için NC çıktı dosyası</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="96"/>
-      <source>Select the Post Processor</source>
-      <translation>İşlem Sonucu Seçme</translation>
+      <location filename="../../../PathScripts/PathJob.py" line="97"/>
+      <source>Arguments for the Post Processor (specific to the script)</source>
+      <translation>Post İşlemci İçin Argümanlar (komuta özgü)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="141"/>
@@ -1063,9 +1174,9 @@
       <translation>Bu iş için ayarları tutan SetupSheet</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="99"/>
-      <source>An optional description for this job</source>
-      <translation>Bu iş için isteğe bağlı bir açıklama</translation>
+      <location filename="../../../PathScripts/PathJob.py" line="100"/>
+      <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
+      <translation>Hesaplama yolları için; daha küçük değerler doğruluğu artırır, ancak hesaplamayı yavaşlatır</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="244"/>
@@ -1108,14 +1219,9 @@
       <translation>Desteklenmeyen dosya biçimi</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJobDlg.py" line="65"/>
-      <source>2D</source>
-      <translation>2B</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobDlg.py" line="306"/>
-      <source>Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</source>
-      <translation>Taban - / +%.2f /% 2f%.2f /% 2f%.2f /% 2f</translation>
+      <location filename="../../../PathScripts/PathJobDlg.py" line="66"/>
+      <source>Jobs</source>
+      <translation>İşler</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="341"/>
@@ -1146,6 +1252,11 @@
       <translation>Malzemenin en büyük Z değerini tutar</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathOp.py" line="114"/>
+      <source>Holds the min Z value of Stock</source>
+      <translation type="unfinished">Holds the min Z value of Stock</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathOp.py" line="113"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>İşlemin kod üretmesini önlemek için Yanlış yapın</translation>
@@ -1166,8 +1277,8 @@
       <translation>Bu işlem için temel konumlar</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="103"/>
-      <source>Holds the calculated value for the StartDepth</source>
+      <location filename="../../../PathScripts/PathOp.py" line="106"/>
+      <source>Holds the calculated value for the FinalDepth</source>
       <translation>StartDepth için hesaplanan değeri</translation>
     </message>
     <message>
@@ -1181,14 +1292,9 @@
       <translation>Son Alet Derinliği - Z'deki en düşük değer</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="112"/>
-      <source>Holds the max Z value of Stock</source>
-      <translation>Malzemenin en büyük Z değerini tutar</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="114"/>
-      <source>Holds the min Z value of Stock</source>
-      <translation type="unfinished">Holds the min Z value of Stock</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="144"/>
+      <source>Starting Depth internal use only for derived values</source>
+      <translation type="unfinished">Starting Depth internal use only for derived values</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="120"/>
@@ -1196,9 +1302,19 @@
       <translation>İşlemin kod üretmesini önlemek için Yanlış yapın</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="144"/>
-      <source>Starting Depth internal use only for derived values</source>
-      <translation type="unfinished">Starting Depth internal use only for derived values</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="121"/>
+      <source>An optional comment for this Operation</source>
+      <translation>Bu İşlem için isteğe bağlı bir açıklama</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="122"/>
+      <source>User Assigned Label</source>
+      <translation>Kullanıcı atanan etiket</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="150"/>
+      <source>Incremental Step Down of Tool</source>
+      <translation>Aracı artımlı adım aşağı</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="157"/>
@@ -1214,11 +1330,6 @@
       <location filename="../../../PathScripts/PathOp.py" line="161"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>Bir Başlama Noktası belirtirken Doğru yapın</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="133"/>
-      <source>The tool controller that will be used to calculate the path</source>
-      <translation>Yolu hesaplamak için kullanılacak takım denetleyicisi</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="291"/>
@@ -1242,6 +1353,11 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <source>Depths</source>
       <translation>Derinlik</translation>
     </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="161"/>
+      <source>Make True, if specifying a Start Point</source>
+      <translation>Bir Başlama Noktası belirtirken Doğru yapın</translation>
+    </message>
   </context>
   <context>
     <name>PathPocket</name>
@@ -1256,14 +1372,14 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <translation>Bir yüz veya yüzlerden 3D Cep Yol nesnesi oluşturur</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="109"/>
-      <source>Vertical faces do not form a loop - ignoring</source>
-      <translation>Dikey yüzler bir döngü oluşturmaz - yoksayar</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="100"/>
       <source>Pocket does not support shape %s.%s</source>
       <translation>Cep%s şekli desteklemiyor.%S</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="109"/>
+      <source>Vertical faces do not form a loop - ignoring</source>
+      <translation>Dikey yüzler bir döngü oluşturmaz - yoksayar</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
@@ -1306,31 +1422,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <translation>Yüz veya yüzlerden Path Pocket nesnesi oluşturur</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="458"/>
-      <source>Vertical faces do not form a loop - ignoring</source>
-      <translation>Dikey yüzler bir döngü oluşturmaz - yoksayar</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="434"/>
-      <source>Pocket does not support shape %s.%s</source>
-      <translation>Cep%s şekli desteklemiyor.%S</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
-      <source>Adaptive clearing and profiling</source>
-      <translation>Uyarlanabilir alan ve profil oluşturma</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketBaseGui.py" line="70"/>
-      <source>Pass Extension</source>
-      <translation>Pass uzantısı</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketBaseGui.py" line="71"/>
-      <source>The distance the facing operation will extend beyond the boundary shape.</source>
-      <translation>Mesafe karşılıklı işlem sınır şekli uzatacaktır.</translation>
-    </message>
-    <message>
       <location filename="PathPocket.py" line="177"/>
       <source>Generating toolpath with libarea offsets.
 </source>
@@ -1345,11 +1436,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
   </context>
   <context>
     <name>PathPocketShape</name>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="225"/>
-      <source>Reverse direction of pocket operation.</source>
-      <translation type="unfinished">Reverse direction of pocket operation.</translation>
-    </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="212"/>
       <source>Uses the outline of the base geometry.</source>
@@ -1370,16 +1456,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <source>When enabled connected extension edges are combined to wires.</source>
       <translation type="unfinished">When enabled connected extension edges are combined to wires.</translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="222"/>
-      <source>Match B rotations to model (error in FreeCAD rendering).</source>
-      <translation type="unfinished">Match B rotations to model (error in FreeCAD rendering).</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="225"/>
-      <source>Reverse direction of pocket operation.</source>
-      <translation type="unfinished">Reverse direction of pocket operation.</translation>
-    </message>
   </context>
   <context>
     <name>PathProfile</name>
@@ -1395,26 +1471,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     </message>
     <message>
       <location filename="PathProfile.py" line="429"/>
-      <source>Face Profile</source>
-      <translation>Yüz Profili</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
-      <source>Profile based on face or faces</source>
-      <translation>Yüzey veya yüzeylere dayalı profil</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="45"/>
-      <source>Edge Profile</source>
-      <translation>Kenar profili</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="45"/>
-      <source>Profile based on edges</source>
-      <translation>Profil üzerine dayalı</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
       <source>Face Profile</source>
       <translation>Yüz Profili</translation>
     </message>
@@ -1607,6 +1663,56 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <source>Default speed for vertical rapid moves.</source>
       <translation type="unfinished">Default speed for vertical rapid moves.</translation>
     </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="100"/>
+      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
+      <translation type="unfinished">The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="101"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation type="unfinished">Expression set for the SafeHeight of new operations.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="102"/>
+      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
+      <translation type="unfinished">The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="103"/>
+      <source>Expression set for the ClearanceHeight of new operations.</source>
+      <translation type="unfinished">Expression set for the ClearanceHeight of new operations.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="97"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation type="unfinished">Default speed for horizontal rapid moves.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="98"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation type="unfinished">Default speed for vertical rapid moves.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="100"/>
+      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
+      <translation type="unfinished">The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="101"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation type="unfinished">Expression set for the SafeHeight of new operations.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="102"/>
+      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
+      <translation type="unfinished">The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheet.py" line="103"/>
+      <source>Expression set for the ClearanceHeight of new operations.</source>
+      <translation type="unfinished">Expression set for the ClearanceHeight of new operations.</translation>
+    </message>
   </context>
   <context>
     <name>PathStock</name>
@@ -1684,19 +1790,14 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
   <context>
     <name>PathToolController</name>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="112"/>
-      <source>Unsupported PathToolController template version %s</source>
-      <translation>Desteklenmeyen PathToolController şablon sürümü% s</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathToolController.py" line="360"/>
       <source>Error updating TC: %s</source>
       <translation>TC güncellenirken hata oluştu:% s</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="335"/>
-      <source>Error updating TC: %s</source>
-      <translation>TC güncellenirken hata oluştu:% s</translation>
+      <location filename="../../../PathScripts/PathToolController.py" line="112"/>
+      <source>Unsupported PathToolController template version %s</source>
+      <translation>Desteklenmeyen PathToolController şablon sürümü% s</translation>
     </message>
   </context>
   <context>
@@ -1724,6 +1825,16 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     </message>
     <message>
       <location filename="PathArray.py" line="107"/>
+      <source>Creates an array from a selected path</source>
+      <translation>Seçilen bir yol bir dizi oluşturur</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathArray.py" line="262"/>
+      <source>Please select exactly one path object</source>
+      <translation>Lütfen tam olarak bir yol nesnesi seçin</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathArray.py" line="242"/>
       <source>Creates an array from a selected path</source>
       <translation>Seçilen bir yol bir dizi oluşturur</translation>
     </message>
@@ -1790,11 +1901,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
 </source>
       <translation>Lütfen bir yol nesnesi seçin
 </translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="200"/>
-      <source>Please select a Path object</source>
-      <translation>Lütfen bir Yol nesnesi seçin</translation>
     </message>
     <message>
       <location filename="PathDressup.py" line="98"/>
@@ -1902,69 +2008,9 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <source>Create Dogbone Dress-up</source>
       <translation>Dogbone Dress-up Düzenle</translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="864"/>
-      <source>Edit Dogbone Dress-up</source>
-      <translation>Dogbone Dress-up Düzenle</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1049"/>
-      <source>Dogbone Dress-up</source>
-      <translation>Dogbone Dress-up Düzenle</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1050"/>
-      <source>Creates a Dogbone Dress-up object from a selected path</source>
-      <translation>Seçilen bir yol bir Dogbone Dress-up oluşturur</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1064"/>
-      <source>Please select one path object</source>
-      <translation>Lütfen bir yol nesnesi seçin</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1068"/>
-      <source>The selected object is not a path</source>
-      <translation>Seçilen nesne bir yol değil</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1072"/>
-      <source>Create Dogbone Dress-up</source>
-      <translation>Dogbone Dress-up Düzenle</translation>
-    </message>
   </context>
   <context>
     <name>Path_DressupDragKnife</name>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
-      <source>DragKnife Dress-up</source>
-      <translation>DragKnife Giydirme</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
-      <source>Modifies a path to add dragknife corner actions</source>
-      <translation>Dragknife köşe eylemleri eklemek için bir yolu değiştirir</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
-      <source>Please select one path object</source>
-      <translation>Lütfen bir yol nesnesi seçin</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
-      <source>The selected object is not a path</source>
-      <translation>Seçilen nesne bir yol değil</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
-      <source>Please select a Path object</source>
-      <translation>Lütfen bir Yol nesnesi seçin</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
-      <source>Create Dress-up</source>
-      <translation>Giydirme</translation>
-    </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
       <source>DragKnife Dress-up</source>
@@ -2014,27 +2060,22 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <translation type="unfinished">The Mode of Point Radiusoffset or Center</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="64"/>
-      <source>The Style of LeadIn the Path</source>
-      <translation>Yörünge Yaklaşım Biçimi</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="66"/>
-      <source>The Style of LeadOut the Path</source>
-      <translation type="unfinished">The Style of LeadOut the Path</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="68"/>
-      <source>The Mode of Point Radiusoffset or Center</source>
-      <translation type="unfinished">The Mode of Point Radiusoffset or Center</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="338"/>
       <source>LeadInOut Dressup</source>
       <translation type="unfinished">LeadInOut Dressup</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="339"/>
+      <source>Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path</source>
+      <translation type="unfinished">Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="340"/>
+      <source>LeadInOut Dressup</source>
+      <translation type="unfinished">LeadInOut Dressup</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="341"/>
       <source>Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path</source>
       <translation type="unfinished">Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path</translation>
     </message>
@@ -2051,19 +2092,39 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <source>Angle of ramp.</source>
       <translation>Rampa açısı.</translation>
     </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="660"/>
+      <source>RampEntry Dress-up</source>
+      <translation>Rampa Girişleri Giydirme</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="661"/>
+      <source>Creates a Ramp Entry Dress-up object from a selected path</source>
+      <translation>Seçilen bir yol bir Dogbone Dress-up oluşturur</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="52"/>
+      <source>The base path to modify</source>
+      <translation>Değiştirilecek taban yolu</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="53"/>
+      <source>Angle of ramp.</source>
+      <translation>Rampa açısı.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="663"/>
+      <source>RampEntry Dress-up</source>
+      <translation>Rampa Girişleri Giydirme</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="664"/>
+      <source>Creates a Ramp Entry Dress-up object from a selected path</source>
+      <translation>Seçilen bir yol bir Dogbone Dress-up oluşturur</translation>
+    </message>
   </context>
   <context>
     <name>Path_DressupTag</name>
-    <message>
-      <location filename="../../../PathScripts/PathDressupTagGui.py" line="506"/>
-      <source>Tag Dress-up</source>
-      <translation>Tag Giydirme</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupTagGui.py" line="507"/>
-      <source>Creates a Tag Dress-up object from a selected path</source>
-      <translation>Seçilen bir yol bir Dogbone Dress-up oluşturur</translation>
-    </message>
     <message>
       <location filename="../../../PathScripts/PathDressupTag.py" line="115"/>
       <source>The base path to modify</source>
@@ -2088,6 +2149,51 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../../../PathScripts/PathDressupTag.py" line="119"/>
       <source>Radius of the fillet for the tag.</source>
       <translation>Etiketi için köşe yarıçapı.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="115"/>
+      <source>The base path to modify</source>
+      <translation>Değiştirilecek taban yolu</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="116"/>
+      <source>Width of tags.</source>
+      <translation>Etiket genişliği.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTagGui.py" line="506"/>
+      <source>Tag Dress-up</source>
+      <translation>Tag Giydirme</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTagGui.py" line="507"/>
+      <source>Creates a Tag Dress-up object from a selected path</source>
+      <translation>Seçilen bir yol bir Dogbone Dress-up oluşturur</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="119"/>
+      <source>Radius of the fillet for the tag.</source>
+      <translation>Etiketi için köşe yarıçapı.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="120"/>
+      <source>Locations of inserted holding tags</source>
+      <translation type="unfinished">Locations of inserted holding tags</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="121"/>
+      <source>IDs of disabled holding tags</source>
+      <translation type="unfinished">IDs of disabled holding tags</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="122"/>
+      <source>Factor determining the # of segments used to approximate rounded tags.</source>
+      <translation type="unfinished">Factor determining the # of segments used to approximate rounded tags.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="958"/>
+      <source>Cannot insert holding tags for this path - please select a Profile path</source>
+      <translation type="unfinished">Cannot insert holding tags for this path - please select a Profile path</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupTag.py" line="154"/>
@@ -2126,13 +2232,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <translation>Bir nokta nesnesi oluşturur</translation>
     </message>
     <message>
-      <location filename="PathHop.py" line="116"/>
-      <source>Please select one path object
-</source>
-      <translation>Lütfen bir yol nesnesi seçin
-</translation>
-    </message>
-    <message>
       <location filename="PathHop.py" line="119"/>
       <source>The selected object is not a path
 </source>
@@ -2140,19 +2239,14 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
 </translation>
     </message>
     <message>
-      <location filename="PathHop.py" line="122"/>
-      <source>Create Hop</source>
-      <translation>Kopya oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathHop.py" line="97"/>
-      <source>Creates a Path Hop object</source>
-      <translation>Bir nokta nesnesi oluşturur</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathHop.py" line="111"/>
       <source>Please select one path object</source>
       <translation>Lütfen bir yol nesnesi seçin</translation>
+    </message>
+    <message>
+      <location filename="PathHop.py" line="122"/>
+      <source>Create Hop</source>
+      <translation>Kopya oluştur</translation>
     </message>
   </context>
   <context>
@@ -2176,6 +2270,16 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../../../PathScripts/PathInspect.py" line="237"/>
       <source>Please select exactly one path object</source>
       <translation>Lütfen tam olarak bir yol nesnesi seçin</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathInspect.py" line="216"/>
+      <source>Inspect G-code</source>
+      <translation>G-code incelemek</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathInspect.py" line="218"/>
+      <source>Inspects the G-code contents of a path</source>
+      <translation>Bir yolu G-code içeriğini inceler</translation>
     </message>
   </context>
   <context>
@@ -2246,6 +2350,11 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <source>Create a Selection Plane object</source>
       <translation>Seçim Düzlemi nesnesi oluşturma</translation>
     </message>
+    <message>
+      <location filename="../../../PathScripts/PathPlane.py" line="121"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Seçim Düzlemi nesnesi oluşturma</translation>
+    </message>
   </context>
   <context>
     <name>Path_Post</name>
@@ -2311,11 +2420,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <translation>Bir Araç Denetleyicisi bulunamadı. Varsayılan değerlerin kullanılması riskli olabilir. Lütfen bir Araç Denetleyicisi ekleyin.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="144"/>
-      <source>No issues detected, {} has passed basic sanity check.</source>
-      <translation>Herhangi bir sorun tespit edilmedi, {} aklı uygunluğunu kontrol etti.</translation>
-    </message>
-    <message>
       <location filename="PathSanity.py" line="50"/>
       <source>It appears the machine limits haven't been set.  Not able to check path extents.
 </source>
@@ -2335,24 +2439,9 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <source>Complete loop selection from two edges</source>
       <translation>İki kenardan komple loop seçimi</translation>
     </message>
-    <message>
-      <location filename="../../../PathCommands.py" line="58"/>
-      <source>Finish Selecting Loop</source>
-      <translation>Döngüyü Seçmeyi Sonlandır</translation>
-    </message>
-    <message>
-      <location filename="../../../PathCommands.py" line="60"/>
-      <source>Complete loop selection from two edges</source>
-      <translation>İki kenardan komple loop seçimi</translation>
-    </message>
   </context>
   <context>
     <name>Path_SetupSheet</name>
-    <message>
-      <location filename="../../../PathScripts/PathSetupSheetGui.py" line="345"/>
-      <source>Edit SetupSheet</source>
-      <translation>ÇizimPlanını Düzenle</translation>
-    </message>
     <message>
       <location filename="../../../PathScripts/PathSetupSheetGui.py" line="345"/>
       <source>Edit SetupSheet</source>
@@ -2378,34 +2467,9 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <source>Creates a non-parametric copy of another path</source>
       <translation>Başka bir yolun parametrik olmayan bir kopyasını oluşturur</translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathSimpleCopy.py" line="65"/>
-      <source>Simple Copy</source>
-      <translation>Basit Kopyalama</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSimpleCopy.py" line="42"/>
-      <source>Creates a non-parametric copy of another path</source>
-      <translation>Başka bir yolun parametrik olmayan bir kopyasını oluşturur</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSimpleCopy.py" line="61"/>
-      <source>Please select exactly one path object</source>
-      <translation>Lütfen tam olarak bir yol nesnesi seçin</translation>
-    </message>
   </context>
   <context>
     <name>Path_Simulator</name>
-    <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="563"/>
-      <source>CAM Simulator</source>
-      <translation>CAM Simülatörü</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="565"/>
-      <source>Simulate Path G-Code on stock</source>
-      <translation>Simülasyon Yolu G-Kodu stokta</translation>
-    </message>
     <message>
       <location filename="../../../PathScripts/PathSimulatorGui.py" line="563"/>
       <source>CAM Simulator</source>
@@ -2448,7 +2512,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <translation>Bu işlem, OpenCamLib'in kurulmasını gerektiriyor.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="101"/>
+      <location filename="../../../PathScripts/PathSurface.py" line="99"/>
       <source>This operation requires OpenCamLib to be installed.</source>
       <translation>Bu işlem, OpenCamLib'in kurulmasını gerektiriyor.</translation>
     </message>
@@ -2494,12 +2558,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <translation>İş için Araç Kontrol Cihazı Ekle</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="275"/>
+      <location filename="../../../PathScripts/PathToolControllerGui.py" line="122"/>
       <source>Add Tool Controller to the Job</source>
       <translation>İş için Araç Kontrol Cihazı Ekle</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="276"/>
+      <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
       <source>Add Tool Controller</source>
       <translation>Araç Kumandasını Ekle</translation>
     </message>
@@ -2568,14 +2632,9 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <translation>LinuxCNC araç tablosu (*.tbl)</translation>
     </message>
     <message>
-      <location filename="TooltableEditor.py" line="593"/>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>Araç masasını açın</translation>
-    </message>
-    <message>
-      <location filename="TooltableEditor.py" line="593"/>
-      <source>Tooltable XML (*.xml);;HeeksCAD tooltable (*.tooltable)</source>
-      <translation>Araç Tabanlı XML (*.xml);; HeeksCAD araç tablosu (*.tooltable)</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="610"/>
@@ -2818,6 +2877,11 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <translation>mm</translation>
     </message>
     <message>
+      <location filename="TooltableEditor.py" line="593"/>
+      <source>Tooltable XML (*.xml);;HeeksCAD tooltable (*.tooltable)</source>
+      <translation>Araç Tabanlı XML (*.xml);; HeeksCAD araç tablosu (*.tooltable)</translation>
+    </message>
+    <message>
       <location filename="TooltableEditor.py" line="651"/>
       <source>Object not found</source>
       <translation>Nesne bulunamadı</translation>
@@ -2831,19 +2895,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="PathToolLibraryManager.py" line="514"/>
       <source>Tooltable XML (*.xml);;LinuxCNC tooltable (*.tbl)</source>
       <translation>Araç Tabanlı XML (*.xml);; LinuxCNC araç tablosu (*.tbl)</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathCustom</name>
-    <message>
-      <location filename="../../../PathScripts/PathCustom.py" line="40"/>
-      <source>The gcode to be inserted</source>
-      <translation>Eklenecek gcode</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCustom.py" line="41"/>
-      <source>The tool controller that will be used to calculate the path</source>
-      <translation>Yolu hesaplamak için kullanılacak takım denetleyicisi</translation>
     </message>
   </context>
   <context>

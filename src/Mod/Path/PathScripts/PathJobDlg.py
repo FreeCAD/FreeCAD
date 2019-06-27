@@ -22,7 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
@@ -39,7 +38,9 @@ from collections import Counter
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:

@@ -1341,12 +1341,12 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
             // check if the edge already has a Horizontal/Vertical/Block constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
-                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId){
+                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                         QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId) {
+                if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                          QObject::tr("The selected edge already has a vertical constraint!"));
                     return;
@@ -1588,12 +1588,12 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
             // check if the edge already has a Horizontal or Vertical constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
-                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId){
+                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                          QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId) {
+                if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                                          QObject::tr("The selected edge already has a vertical constraint!"));
                     return;
@@ -7731,6 +7731,88 @@ bool CmdSketcherToggleDrivingConstraint::isActive(void)
     return isCreateGeoActive( getActiveGuiDocument() );
 }
 
+DEF_STD_CMD_A(CmdSketcherToggleActiveConstraint);
+
+CmdSketcherToggleActiveConstraint::CmdSketcherToggleActiveConstraint()
+:Command("Sketcher_ToggleActiveConstraint")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Toggle activate/deactivate constraint");
+    sToolTipText    = QT_TR_NOOP("Toggles activate/deactivate state for selected constraints");
+    sWhatsThis      = "Sketcher_ToggleActiveConstraint";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_ToggleActiveConstraint";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherToggleActiveConstraint::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    std::vector<Gui::SelectionObject> selection;
+
+    if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0){
+        // Now we check whether we have a constraint selected or not.
+
+        // get the selection
+        selection = getSelection().getSelectionEx();
+
+        // only one sketch with its subelements are allowed to be selected
+        if (selection.size() != 1 || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select constraint(s) from the sketch."));
+            return;
+        }
+
+        Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+        // get the needed lists and objects
+        const std::vector<std::string> &SubNames = selection[0].getSubNames();
+        if (SubNames.empty()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select constraint(s) from the sketch."));
+            return;
+        }
+
+        // undo command open
+        openCommand("Active/Deactivate constraints");
+
+        int successful=SubNames.size();
+
+        for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
+
+            if (it->size() > 10 && it->substr(0,10) == "Constraint") {
+                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
+                try {
+                    // issue the actual commands to toggle
+                    doCommand(Doc,"App.ActiveDocument.%s.toggleActive(%d) ",selection[0].getFeatName(),ConstrId);
+                }
+                catch(const Base::Exception&) {
+                    successful--;
+                }
+            }
+        }
+
+        if (successful > 0)
+            commitCommand();
+        else
+            abortCommand();
+
+        tryAutoRecompute(Obj);
+
+        // clear the selection (convenience)
+        getSelection().clearSelection();
+    }
+}
+
+bool CmdSketcherToggleActiveConstraint::isActive(void)
+{
+    return isCreateConstraintActive( getActiveGuiDocument() );
+}
+
+
 void CreateSketcherCommandsConstraints(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -7756,4 +7838,5 @@ void CreateSketcherCommandsConstraints(void)
     rcCmdMgr.addCommand(new CmdSketcherConstrainSnellsLaw());
     rcCmdMgr.addCommand(new CmdSketcherConstrainInternalAlignment());
     rcCmdMgr.addCommand(new CmdSketcherToggleDrivingConstraint());
+    rcCmdMgr.addCommand(new CmdSketcherToggleActiveConstraint());
 }

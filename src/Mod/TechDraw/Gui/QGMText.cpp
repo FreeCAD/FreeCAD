@@ -49,7 +49,7 @@ QGMText::QGMText() :
 
 QVariant QGMText::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    QPointF newPos(0.0,0.0);
+    //QPointF newPos(0.0,0.0);
     if(change == ItemPositionHasChanged && scene()) {
         Q_EMIT dragging();
     }

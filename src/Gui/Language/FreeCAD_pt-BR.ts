@@ -1619,7 +1619,7 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Find...</source>
-      <translation type="unfinished">Find...</translation>
+      <translation>Procurar...</translation>
     </message>
   </context>
   <context>
@@ -1630,39 +1630,39 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Find what:</source>
-      <translation type="unfinished">Find what:</translation>
+      <translation>O que encontrar:</translation>
     </message>
     <message>
       <source>Look at</source>
-      <translation type="unfinished">Look at</translation>
+      <translation>Procurar em</translation>
     </message>
     <message>
       <source>Groups</source>
-      <translation type="unfinished">Groups</translation>
+      <translation>Grupos</translation>
     </message>
     <message>
       <source>Names</source>
-      <translation type="unfinished">Names</translation>
+      <translation>Nomes</translation>
     </message>
     <message>
       <source>Values</source>
-      <translation type="unfinished">Values</translation>
+      <translation>Values</translation>
     </message>
     <message>
       <source>Match whole string only</source>
-      <translation type="unfinished">Match whole string only</translation>
+      <translation>Encontrar toda a string somente</translation>
     </message>
     <message>
       <source>Find Next</source>
-      <translation type="unfinished">Find Next</translation>
+      <translation>Localizar seguinte</translation>
     </message>
     <message>
       <source>Not found</source>
-      <translation type="unfinished">Not found</translation>
+      <translation>Não encontrado</translation>
     </message>
     <message>
       <source>Can't find the text: %1</source>
-      <translation type="unfinished">Can't find the text: %1</translation>
+      <translation>Não foi possível encontrar o texto: %1</translation>
     </message>
   </context>
   <context>
@@ -2775,7 +2775,7 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Record GUI commands</source>
-      <translation type="unfinished">Record GUI commands</translation>
+      <translation>Gravar comandos na GUI</translation>
     </message>
   </context>
   <context>
@@ -2870,7 +2870,7 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Unit system:</source>
-      <translation type="unfinished">Unit system:</translation>
+      <translation>Sistema de unidades:</translation>
     </message>
   </context>
   <context>
@@ -3914,12 +3914,12 @@ Deseja salvar as alterações?</translation>
       <translation>Arraste com dois dedos no monitor, ou pressione o botão direito do rato.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arraste a tela com um dedo ou pressione o botão esquerdo do rato. Em outros modos de edição ou no Sketcher, pressione também Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Pinça (Coloque dois dedos na tela e arraste-os afastando/aproximando um do outro). Ou o botão de rolagem do meio do mouse. Ou PgUp/PgDown no teclado.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4568,11 +4568,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Translation Increment:</source>
-      <translation type="unfinished">Translation Increment:</translation>
+      <translation>Incremento de translação:</translation>
     </message>
     <message>
       <source>Rotation Increment:</source>
-      <translation type="unfinished">Rotation Increment:</translation>
+      <translation>Incremento de rotação:</translation>
     </message>
   </context>
   <context>

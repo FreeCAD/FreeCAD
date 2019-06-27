@@ -152,6 +152,7 @@ SbColor ViewProviderSketch::PreselectColor              (0.88f,0.88f,0.0f);   //
 SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
 SbColor ViewProviderSketch::PreselectSelectedColor      (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
 SbColor ViewProviderSketch::CreateCurveColor            (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
+SbColor ViewProviderSketch::DeactivatedConstrDimColor   (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
 SbVec2s ViewProviderSketch::prvClickPos;
@@ -2815,11 +2816,20 @@ void ViewProviderSketch::updateColor(void)
             if (hasDatumLabel) {
                 SoDatumLabel *l = static_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
 
-                l->textColor = (getSketchObject()->constraintHasExpression(i) ? ExprBasedConstrDimColor:
-                                        (constraint->isDriving ? ConstrDimColor : NonDrivingConstrDimColor));
+                l->textColor = constraint->isActive ?
+                                    (getSketchObject()->constraintHasExpression(i) ?
+                                        ExprBasedConstrDimColor
+                                        :(constraint->isDriving ?
+                                            ConstrDimColor
+                                            : NonDrivingConstrDimColor))
+                                    :DeactivatedConstrDimColor;
 
             } else if (hasMaterial) {
-                m->diffuseColor = constraint->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
+                m->diffuseColor = constraint->isActive ?
+                                    (constraint->isDriving ?
+                                        ConstrDimColor
+                                        :NonDrivingConstrDimColor)
+                                    :DeactivatedConstrDimColor;
             }
         }
     }
@@ -2854,6 +2864,9 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
     QString                         baseUnitStr; // the expected base unit string
     double                          factor; // unit scaling factor, currently not used
     Base::UnitSystem                unitSys; // current unit system
+
+    if(!constraint->isActive)
+        return QString::fromLatin1(" ");
 
     // Get value of HideUnits option. Default is false.
     hGrpSketcher = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher");
@@ -2978,12 +2991,18 @@ QColor ViewProviderSketch::constrColor(int constraintId)
                                          (int)(PreselectColor[1] * 255.0f),
                                          (int)(PreselectColor[2] * 255.0f));
 
+    static QColor constrIconDisabledColor ((int)(DeactivatedConstrDimColor[0] * 255.0f),
+                                           (int)(DeactivatedConstrDimColor[1] * 255.0f),
+                                           (int)(DeactivatedConstrDimColor[2] * 255.0f));
+
     const std::vector<Sketcher::Constraint *> &constraints = getSketchObject()->Constraints.getValues();
 
     if (edit->PreselectConstraintSet.count(constraintId))
         return constrIconPreselColor;
     else if (edit->SelConstraintSet.find(constraintId) != edit->SelConstraintSet.end())
         return constrIconSelColor;
+    else if(!constraints[constraintId]->isActive)
+        return constrIconDisabledColor;
     else if(!constraints[constraintId]->isDriving)
         return nonDrivingConstrIcoColor;
     else
@@ -5294,7 +5313,11 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         // every constrained visual node gets its own material for preselection and selection
         SoMaterial *mat = new SoMaterial;
         mat->ref();
-        mat->diffuseColor = (*it)->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
+        mat->diffuseColor = (*it)->isActive ?
+                                ((*it)->isDriving ?
+                                    ConstrDimColor
+                                    :NonDrivingConstrDimColor)
+                                :DeactivatedConstrDimColor;
         // Get sketch normal
         Base::Vector3d RN(0,0,1);
 
@@ -5318,7 +5341,11 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 SoDatumLabel *text = new SoDatumLabel();
                 text->norm.setValue(norm);
                 text->string = "";
-                text->textColor = (*it)->isDriving?ConstrDimColor:NonDrivingConstrDimColor;;
+                text->textColor = (*it)->isActive ?
+                                        ((*it)->isDriving ?
+                                            ConstrDimColor
+                                            :NonDrivingConstrDimColor)
+                                        :DeactivatedConstrDimColor;
                 text->size.setValue(fontSize);
                 text->useAntialiasing = false;
                 SoAnnotation *anno = new SoAnnotation();
@@ -5684,6 +5711,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = (unsigned long)(ExprBasedConstrDimColor.getPackedValue());
     color = hGrp->GetUnsigned("ExprBasedConstrDimColor", color);
     ExprBasedConstrDimColor.setPackedValue((uint32_t)color, transparency);
+    // set expression based constraint color
+    color = (unsigned long)(DeactivatedConstrDimColor.getPackedValue());
+    color = hGrp->GetUnsigned("DeactivatedConstrDimColor", color);
+    DeactivatedConstrDimColor.setPackedValue((uint32_t)color, transparency);
 
     // set the external geometry color
     color = (unsigned long)(CurveExternalColor.getPackedValue());

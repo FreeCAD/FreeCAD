@@ -44,12 +44,12 @@
       <translation>这个组件正在复制的对象</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="493"/>
+      <location filename="../../ArchSite.py" line="502"/>
       <source>Other shapes that are appended to this object</source>
       <translation>附加到此对象的其他形状</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="495"/>
+      <location filename="../../ArchSite.py" line="504"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>从该对象中减去的其他形状</translation>
     </message>
@@ -79,7 +79,7 @@
       <translation>此对象所有垂直面的面积</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="497"/>
+      <location filename="../../ArchSite.py" line="506"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>此对象在 XY 平面上的投影面积</translation>
     </message>
@@ -114,7 +114,7 @@
       <translation>地板的计算面积</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="503"/>
+      <location filename="../../ArchSectionPlane.py" line="501"/>
       <source>The placement of this object</source>
       <translation>此对象的位置</translation>
     </message>
@@ -144,12 +144,12 @@
       <translation>轮廓绕其拉伸轴的旋转</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="498"/>
+      <location filename="../../ArchStructure.py" line="617"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>该元素长度, 其不基于轮廓</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="500"/>
+      <location filename="../../ArchStructure.py" line="619"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>该元素宽度, 其不基于轮廓</translation>
     </message>
@@ -194,22 +194,22 @@
       <translation>此面板的面积</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="512"/>
+      <location filename="../../ArchStructure.py" line="631"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>用于生成此对象轮廓的面生成器类型</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="537"/>
+      <location filename="../../ArchWall.py" line="539"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>该对象的法向拉伸方向((0,0,0)表示自动法向)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="793"/>
+      <location filename="../../ArchSectionPlane.py" line="791"/>
       <source>The linked object</source>
       <translation>链接的对象</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="803"/>
+      <location filename="../../ArchSectionPlane.py" line="801"/>
       <source>The line width of the rendered objects</source>
       <translation>着色对象的线宽</translation>
     </message>
@@ -251,7 +251,7 @@
     <message>
       <location filename="../../ArchPanel.py" line="1216"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
-      <translation type="unfinished">The position of the tag text. Keep (0,0,0) for center position</translation>
+      <translation>标签文本的位置。保持 (0,0,0) 为中心位置。</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1218"/>
@@ -349,7 +349,7 @@
       <translation>此元素的高度</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="506"/>
+      <location filename="../../ArchStructure.py" line="625"/>
       <source>The structural nodes of this element</source>
       <translation>这个元素的结构节点</translation>
     </message>
@@ -614,132 +614,132 @@
       <translation>要将结果打印到上面的电子表格</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="509"/>
+      <location filename="../../ArchSectionPlane.py" line="507"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>如果是假的, 非固态的也会被剪切, 可能会有错误的结果。</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="579"/>
+      <location filename="../../ArchSectionPlane.py" line="577"/>
       <source>The display length of this section plane</source>
       <translation>此剖面的显示长度</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="585"/>
+      <location filename="../../ArchSectionPlane.py" line="583"/>
       <source>The display height of this section plane</source>
       <translation>此剖面平面的显示高度</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="591"/>
+      <location filename="../../ArchSectionPlane.py" line="589"/>
       <source>The size of the arrows of this section plane</source>
       <translation>此剖面箭头的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="605"/>
+      <location filename="../../ArchSectionPlane.py" line="603"/>
       <source>Show the cut in the 3D view</source>
       <translation>在3D 视图中显示修剪</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="795"/>
+      <location filename="../../ArchSectionPlane.py" line="793"/>
       <source>The rendering mode to use</source>
       <translation>要使用的渲染模式</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="799"/>
+      <location filename="../../ArchSectionPlane.py" line="797"/>
       <source>If cut geometry is shown or not</source>
       <translation>几何属性是否显示</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="801"/>
+      <location filename="../../ArchSectionPlane.py" line="799"/>
       <source>If cut geometry is filled or not</source>
       <translation>几何属性是否填充</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="806"/>
+      <location filename="../../ArchSectionPlane.py" line="804"/>
       <source>The size of the texts inside this object</source>
       <translation>此对象内文本的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="809"/>
+      <location filename="../../ArchSectionPlane.py" line="807"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>如果选中, 则无论在3D 模型中是否可见, 都将显示源对象</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="468"/>
+      <location filename="../../ArchSite.py" line="477"/>
       <source>The base terrain of this site</source>
       <translation>本网站的基本地形</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="472"/>
+      <location filename="../../ArchSite.py" line="481"/>
       <source>The postal or zip code of this site</source>
       <translation>本网站的邮政或邮政编码</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="474"/>
+      <location filename="../../ArchSite.py" line="483"/>
       <source>The city of this site</source>
       <translation>本网站的城市</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="478"/>
+      <location filename="../../ArchSite.py" line="487"/>
       <source>The country of this site</source>
       <translation>本网站的国家</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="482"/>
+      <location filename="../../ArchSite.py" line="491"/>
       <source>The latitude of this site</source>
       <translation>本网站的纬度</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="484"/>
+      <location filename="../../ArchSite.py" line="493"/>
       <source>Angle between the true North and the North direction in this document</source>
       <translation>本文档中真正的北与北方向之间的夹角</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="489"/>
+      <location filename="../../ArchSite.py" line="498"/>
       <source>The elevation of level 0 of this site</source>
       <translation>本网站0级的海拔</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="499"/>
+      <location filename="../../ArchSite.py" line="508"/>
       <source>The perimeter length of this terrain</source>
       <translation>这一地形的周长</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="501"/>
+      <location filename="../../ArchSite.py" line="510"/>
       <source>The volume of earth to be added to this terrain</source>
       <translation>要添加到这一地形的地球体积</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="503"/>
+      <location filename="../../ArchSite.py" line="512"/>
       <source>The volume of earth to be removed from this terrain</source>
       <translation>从这个地形中移除的地球体积</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="505"/>
+      <location filename="../../ArchSite.py" line="514"/>
       <source>An extrusion vector to use when performing boolean operations</source>
       <translation>执行布尔运算时使用的拉伸向量</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="508"/>
+      <location filename="../../ArchSite.py" line="517"/>
       <source>Remove splitters from the resulting shape</source>
       <translation>从生成的形状中删除拆分器</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="656"/>
+      <location filename="../../ArchSite.py" line="665"/>
       <source>Show solar diagram or not</source>
       <translation>是否显示太阳图表</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="658"/>
+      <location filename="../../ArchSite.py" line="667"/>
       <source>The scale of the solar diagram</source>
       <translation>太阳图表的比例</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="661"/>
+      <location filename="../../ArchSite.py" line="670"/>
       <source>The position of the solar diagram</source>
       <translation>太阳图表的位置</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="663"/>
+      <location filename="../../ArchSite.py" line="672"/>
       <source>The color of the solar diagram</source>
       <translation>太阳图表的颜色</translation>
     </message>
@@ -785,81 +785,76 @@
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="290"/>
-      <source>A zone this space is part of</source>
-      <translation>此空间属于的区域</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="292"/>
       <source>The number of people who typically occupy this space</source>
       <translation>通常占据这个空间的人的数量</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="294"/>
+      <location filename="../../ArchSpace.py" line="292"/>
       <source>The electric power needed to light this space in Watts</source>
       <translation>需要用来照亮这个空间的瓦特电力</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="296"/>
+      <location filename="../../ArchSpace.py" line="294"/>
       <source>The electric power needed by the equipment of this space in Watts</source>
       <translation>该设备所需要的瓦特电力</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="298"/>
+      <location filename="../../ArchSpace.py" line="296"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
       <translation>如果为 对的, 设备电源将自动由此空间中包含的设备填充</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="300"/>
+      <location filename="../../ArchSpace.py" line="298"/>
       <source>The type of air conditioning of this space</source>
       <translation>此空间的空调类型</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="486"/>
+      <location filename="../../ArchSpace.py" line="495"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
       <translation>要显示的文本。使用$area，$label，$label，$tag，$floor，$floor，$walls，$ceiling来插入各自的数据</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="489"/>
+      <location filename="../../ArchSpace.py" line="498"/>
       <source>The name of the font</source>
       <translation>字体的名称</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="492"/>
+      <location filename="../../ArchSpace.py" line="501"/>
       <source>The color of the area text</source>
       <translation>区域文本的颜色</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="495"/>
+      <location filename="../../ArchSpace.py" line="504"/>
       <source>The size of the text font</source>
       <translation>文本字体的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="498"/>
+      <location filename="../../ArchSpace.py" line="507"/>
       <source>The size of the first line of text</source>
       <translation>文本第一条线的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="501"/>
+      <location filename="../../ArchSpace.py" line="510"/>
       <source>The space between the lines of text</source>
       <translation>文本线条之间的间距</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="504"/>
+      <location filename="../../ArchSpace.py" line="513"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>文本的位置。保持 (00, 0) 自动位置</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="506"/>
+      <location filename="../../ArchSpace.py" line="515"/>
       <source>The justification of the text</source>
       <translation>文本的合理性</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="509"/>
+      <location filename="../../ArchSpace.py" line="519"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>计算文本所用的小数个数</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="512"/>
+      <location filename="../../ArchSpace.py" line="522"/>
       <source>Show the unit suffix</source>
       <translation>显示单元后缀</translation>
     </message>
@@ -939,102 +934,102 @@
       <translation>楼梯边界与结构之间的偏移</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="496"/>
+      <location filename="../../ArchStructure.py" line="615"/>
       <source>An optional extrusion path for this element</source>
       <translation>此元素的可选拉伸路径</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="502"/>
+      <location filename="../../ArchStructure.py" line="621"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
       <translation>此元素的高度或拉伸深度。自动设定的场合保持0</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="508"/>
+      <location filename="../../ArchStructure.py" line="627"/>
       <source>A description of the standard profile this element is based upon</source>
       <translation>此元素基于的标准轮廓描述</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="510"/>
+      <location filename="../../ArchStructure.py" line="629"/>
       <source>Offset distance between the centerline and the nodes line</source>
       <translation>中线和节点线之间的偏移距离</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="788"/>
+      <location filename="../../ArchStructure.py" line="907"/>
       <source>If the nodes are visible or not</source>
       <translation>如果节点可见或未显示</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="790"/>
+      <location filename="../../ArchStructure.py" line="909"/>
       <source>The width of the nodes line</source>
       <translation>节点线的宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="792"/>
+      <location filename="../../ArchStructure.py" line="911"/>
       <source>The size of the node points</source>
       <translation>节点的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="795"/>
+      <location filename="../../ArchStructure.py" line="914"/>
       <source>The color of the nodes line</source>
       <translation>节点线的颜色</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="798"/>
+      <location filename="../../ArchStructure.py" line="917"/>
       <source>The type of structural node</source>
       <translation>结构节点类型</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1085"/>
+      <location filename="../../ArchStructure.py" line="1204"/>
       <source>Axes systems this structure is built on</source>
       <translation>该结构基于的轴网系统</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1086"/>
+      <location filename="../../ArchStructure.py" line="1205"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>当结构是基于轴上的，要排除元素编号</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1087"/>
+      <location filename="../../ArchStructure.py" line="1206"/>
       <source>If true the element are aligned with axes</source>
       <translation>如果为真的, 则元素与坐标轴对齐</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="528"/>
+      <location filename="../../ArchWall.py" line="530"/>
       <source>The length of this wall. Not used if this wall is based on an underlying object</source>
       <translation>墙体厚度. 当墙基于基对象时则不使用</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="530"/>
+      <location filename="../../ArchWall.py" line="532"/>
       <source>The width of this wall. Not used if this wall is based on a face</source>
       <translation>墙体宽度. 当墙基于一个面时则不使用</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="532"/>
+      <location filename="../../ArchWall.py" line="534"/>
       <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
       <translation>这面墙的高度。保持0自动。如果这面墙是基于固体则不使用</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="534"/>
+      <location filename="../../ArchWall.py" line="536"/>
       <source>The alignment of this wall on its base object, if applicable</source>
       <translation>如果适用，此墙在其基对象上的对齐方式</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="539"/>
+      <location filename="../../ArchWall.py" line="541"/>
       <source>The face number of the base object used to build this wall</source>
       <translation>用于建成此墙的基对象的面号</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="541"/>
+      <location filename="../../ArchWall.py" line="543"/>
       <source>The offset between this wall and its baseline (only for left and right alignments)</source>
       <translation>此墙与其基准线之间的偏移量 (仅用于左右对齐)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="946"/>
+      <location filename="../../ArchWindow.py" line="973"/>
       <source>The normal direction of this window</source>
       <translation>此窗口的正常方向</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="955"/>
+      <location filename="../../ArchWindow.py" line="982"/>
       <source>The area of this window</source>
       <translation>此面板的面积</translation>
     </message>
@@ -1049,7 +1044,7 @@
       <translation>在挤压之前添加到配置文件中的可选附加位置</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="961"/>
+      <location filename="../../ArchWindow.py" line="988"/>
       <source>Opens the subcomponents that have a hinge defined</source>
       <translation>打开具有铰链的子组件</translation>
     </message>
@@ -1089,12 +1084,12 @@
       <translation>层厚度列表</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="811"/>
+      <location filename="../../ArchSectionPlane.py" line="809"/>
       <source>The line color of the projected objects</source>
       <translation>投影对象的线条颜色</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="813"/>
+      <location filename="../../ArchSectionPlane.py" line="811"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>剪切面的颜色 (如果打开)</translation>
     </message>
@@ -1104,7 +1099,7 @@
       <translation>在线底部上的侧桁重叠部分</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1682"/>
+      <location filename="../../ArchWindow.py" line="1709"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>定义孔的线数。值0表示自动</translation>
     </message>
@@ -1194,7 +1189,7 @@
       <translation>钢筋的自定义间距</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="446"/>
+      <location filename="../../ArchRebar.py" line="455"/>
       <source>Shape of rebar</source>
       <translation>钢筋形状</translation>
     </message>
@@ -1204,17 +1199,17 @@
       <translation>如果方向错了，翻转屋顶方向</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="965"/>
+      <location filename="../../ArchWindow.py" line="992"/>
       <source>Shows plan opening symbols if available</source>
       <translation>如果有的话，显示计划开放符号</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="967"/>
+      <location filename="../../ArchWindow.py" line="994"/>
       <source>Show elevation opening symbols if available</source>
       <translation>如果有的话，显示仰角开放符号</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="933"/>
+      <location filename="../../ArchWindow.py" line="960"/>
       <source>The objects that host this window</source>
       <translation>承载此窗口的对象</translation>
     </message>
@@ -1269,12 +1264,12 @@
       <translation>此级别的(0,0,0) 点的级别</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="505"/>
+      <location filename="../../ArchSectionPlane.py" line="503"/>
       <source>The shape of this object</source>
       <translation>此对象的形状</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="597"/>
+      <location filename="../../ArchSectionPlane.py" line="595"/>
       <source>The line width of this object</source>
       <translation>此对象的线条宽度</translation>
     </message>
@@ -1336,7 +1331,7 @@
     <message>
       <location filename="../../ArchBuildingPart.py" line="499"/>
       <source>The individual face colors</source>
-      <translation type="unfinished">The individual face colors</translation>
+      <translation>个人面部颜色</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="501"/>
@@ -1414,47 +1409,47 @@
       <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="507"/>
+      <location filename="../../ArchSectionPlane.py" line="505"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation type="unfinished">The objects that must be considered by this section plane. Empty means the whole document.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="594"/>
+      <location filename="../../ArchSectionPlane.py" line="592"/>
       <source>The transparency of this object</source>
       <translation>此对象的透明度</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="602"/>
+      <location filename="../../ArchSectionPlane.py" line="600"/>
       <source>The color of this object</source>
       <translation>此对象的颜色</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="607"/>
+      <location filename="../../ArchSectionPlane.py" line="605"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>切割平面和实际视图切割之间的距离 (保持一个非常小的值, 但不是零)</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="470"/>
+      <location filename="../../ArchSite.py" line="479"/>
       <source>The street and house number of this site, with postal box or apartment number if needed</source>
       <translation type="unfinished">The street and house number of this site, with postal box or apartment number if needed</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="476"/>
+      <location filename="../../ArchSite.py" line="485"/>
       <source>The region, province or county of this site</source>
       <translation type="unfinished">The region, province or county of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="491"/>
+      <location filename="../../ArchSite.py" line="500"/>
       <source>A url that shows this site in a mapping website</source>
       <translation>在地图网站中显示此地点的 url</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="510"/>
+      <location filename="../../ArchSite.py" line="519"/>
       <source>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</source>
       <translation>模型 (0, 0, 0) 原点与地理坐标指示的点之间的可选偏移量</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="303"/>
+      <location filename="../../ArchSpace.py" line="301"/>
       <source>Specifies if this space is internal or external</source>
       <translation type="unfinished">Specifies if this space is internal or external</translation>
     </message>
@@ -1504,97 +1499,97 @@
       <translation type="unfinished">The 'left outline' of all segments of stairs </translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="544"/>
+      <location filename="../../ArchWall.py" line="546"/>
       <source>Enable this to make the wall generate blocks</source>
       <translation>启用此功能可从墙体生成砖块</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="546"/>
+      <location filename="../../ArchWall.py" line="548"/>
       <source>The length of each block</source>
       <translation>每个砖块的长度</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="548"/>
+      <location filename="../../ArchWall.py" line="550"/>
       <source>The height of each block</source>
       <translation>每个砖块的高度</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="550"/>
+      <location filename="../../ArchWall.py" line="552"/>
       <source>The horizontal offset of the first line of blocks</source>
       <translation>第一行砖块的水平偏移量</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="552"/>
+      <location filename="../../ArchWall.py" line="554"/>
       <source>The horizontal offset of the second line of blocks</source>
       <translation>第二行砖块的水平偏移量</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="554"/>
+      <location filename="../../ArchWall.py" line="556"/>
       <source>The size of the joints between each block</source>
       <translation>每个砖块之间接缝的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="556"/>
+      <location filename="../../ArchWall.py" line="558"/>
       <source>The number of entire blocks</source>
       <translation>整块砖块的数量</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="559"/>
+      <location filename="../../ArchWall.py" line="561"/>
       <source>The number of broken blocks</source>
       <translation>断开的砖块的数量</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="935"/>
+      <location filename="../../ArchWindow.py" line="962"/>
       <source>The components of this window</source>
       <translation>此窗口的组件</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="938"/>
+      <location filename="../../ArchWindow.py" line="965"/>
       <source>The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</source>
       <translation>此窗口在其宿主对象中形成的孔的深度。如果为 0, 则将自动计算该值。</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="940"/>
+      <location filename="../../ArchWindow.py" line="967"/>
       <source>An optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation>一个可选对象, 用于定义要从此窗口所在的主体减去的体积。</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="942"/>
+      <location filename="../../ArchWindow.py" line="969"/>
       <source>The width of this window</source>
-      <translation type="unfinished">The width of this window</translation>
+      <translation>窗口的宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="944"/>
+      <location filename="../../ArchWindow.py" line="971"/>
       <source>The height of this window</source>
-      <translation type="unfinished">The height of this window</translation>
+      <translation>窗口的高度</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="948"/>
+      <location filename="../../ArchWindow.py" line="975"/>
       <source>The preset number this window is based on</source>
       <translation>此窗口所基于的预设编号</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="951"/>
+      <location filename="../../ArchWindow.py" line="978"/>
       <source>The frame size of this window</source>
       <translation type="unfinished">The frame size of this window</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="953"/>
+      <location filename="../../ArchWindow.py" line="980"/>
       <source>The offset size of this window</source>
       <translation type="unfinished">The offset size of this window</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="957"/>
+      <location filename="../../ArchWindow.py" line="984"/>
       <source>The width of louvre elements</source>
       <translation>百叶窗组件的宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="959"/>
+      <location filename="../../ArchWindow.py" line="986"/>
       <source>The space between louvre elements</source>
       <translation>百叶窗组件之间的空间</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="963"/>
+      <location filename="../../ArchWindow.py" line="990"/>
       <source>The number of the wire that defines the hole. If 0, the value will be calculated automatically</source>
       <translation>导线的数量，由此定义孔的数量。如果为 0, 则将自动计算该值</translation>
     </message>
@@ -1629,14 +1624,14 @@
       <translation type="unfinished">The number of posts used to build the fence</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="514"/>
+      <location filename="../../ArchSite.py" line="523"/>
       <source>The type of this object</source>
-      <translation type="unfinished">The type of this object</translation>
+      <translation>此对象的类型</translation>
     </message>
     <message>
       <location filename="../../ArchIFC.py" line="23"/>
       <source>IFC data</source>
-      <translation type="unfinished">IFC data</translation>
+      <translation>IFC 数据</translation>
     </message>
     <message>
       <location filename="../../ArchIFC.py" line="26"/>
@@ -1644,42 +1639,42 @@
       <translation type="unfinished">IFC properties of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="95"/>
+      <location filename="../../ArchIFC.py" line="100"/>
       <source>Description of IFC attributes are not yet implemented</source>
       <translation type="unfinished">Description of IFC attributes are not yet implemented</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="512"/>
+      <location filename="../../ArchSectionPlane.py" line="510"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation type="unfinished">If True, resulting views will be clipped to the section plane area.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="514"/>
+      <location filename="../../ArchSectionPlane.py" line="512"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation type="unfinished">If true, the color of the objects material will be used to fill cut areas.</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="666"/>
+      <location filename="../../ArchSite.py" line="675"/>
       <source>When set to 'True North' the whole geometry will be rotated to match the true north of this site</source>
       <translation type="unfinished">When set to 'True North' the whole geometry will be rotated to match the true north of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="671"/>
+      <location filename="../../ArchSite.py" line="680"/>
       <source>Show compass or not</source>
-      <translation type="unfinished">Show compass or not</translation>
+      <translation>是否显示指南针</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="673"/>
+      <location filename="../../ArchSite.py" line="682"/>
       <source>The rotation of the Compass relative to the Site</source>
       <translation type="unfinished">The rotation of the Compass relative to the Site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="675"/>
+      <location filename="../../ArchSite.py" line="684"/>
       <source>The position of the Compass relative to the Site placement</source>
       <translation type="unfinished">The position of the Compass relative to the Site placement</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="677"/>
+      <location filename="../../ArchSite.py" line="686"/>
       <source>Update the Declination value based on the compass rotation</source>
       <translation type="unfinished">Update the Declination value based on the compass rotation</translation>
     </message>
@@ -1693,11 +1688,41 @@
       <source>The 'right outline' of all segments of stairs </source>
       <translation type="unfinished">The 'right outline' of all segments of stairs </translation>
     </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="503"/>
+      <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
+      <translation type="unfinished">If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="505"/>
+      <source>The line width of child objects</source>
+      <translation type="unfinished">The line width of child objects</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="508"/>
+      <source>The line color of child objects</source>
+      <translation type="unfinished">The line color of child objects</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="512"/>
+      <source>The shape color of child objects</source>
+      <translation type="unfinished">The shape color of child objects</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="516"/>
+      <source>The transparency of child objects</source>
+      <translation type="unfinished">The transparency of child objects</translation>
+    </message>
+    <message>
+      <location filename="../../ArchFence.py" line="238"/>
+      <source>When true, the fence will be colored like the original post and section.</source>
+      <translation type="unfinished">When true, the fence will be colored like the original post and section.</translation>
+    </message>
   </context>
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchWindow.py" line="1923"/>
+      <location filename="../../ArchWindow.py" line="1950"/>
       <source>Components</source>
       <translation>组件</translation>
     </message>
@@ -1717,12 +1742,12 @@
       <translation>创建轴线</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1917"/>
+      <location filename="../../ArchWindow.py" line="1944"/>
       <source>Remove</source>
       <translation>删除</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1918"/>
+      <location filename="../../ArchWindow.py" line="1945"/>
       <source>Add</source>
       <translation>添加</translation>
     </message>
@@ -1832,87 +1857,87 @@
       <translation>视图</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="482"/>
+      <location filename="../../ArchSectionPlane.py" line="480"/>
       <source>Create Section Plane</source>
       <translation>创建剖切面</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="442"/>
+      <location filename="../../ArchSite.py" line="450"/>
       <source>Create Site</source>
       <translation>创建场地</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="219"/>
+      <location filename="../../ArchStructure.py" line="283"/>
       <source>Create Structure</source>
       <translation>创建结构体</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="454"/>
+      <location filename="../../ArchWall.py" line="456"/>
       <source>Create Wall</source>
       <translation>创建墙</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1366"/>
+      <location filename="../../ArchWall.py" line="359"/>
       <source>Width</source>
       <translation>宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1367"/>
+      <location filename="../../ArchWall.py" line="365"/>
       <source>Height</source>
       <translation>高度</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="703"/>
+      <location filename="../../ArchWall.py" line="705"/>
       <source>Error: Invalid base object</source>
       <translation>错误:无效的基对象</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="700"/>
+      <location filename="../../ArchWall.py" line="702"/>
       <source>This mesh is an invalid solid</source>
       <translation>该网格是无效实体</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="673"/>
+      <location filename="../../ArchWindow.py" line="680"/>
       <source>Create Window</source>
       <translation>创建窗</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1919"/>
+      <location filename="../../ArchWindow.py" line="1946"/>
       <source>Edit</source>
       <translation>编辑</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1920"/>
+      <location filename="../../ArchWindow.py" line="1947"/>
       <source>Create/update component</source>
       <translation>创建/更新组件</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1921"/>
+      <location filename="../../ArchWindow.py" line="1948"/>
       <source>Base 2D object</source>
       <translation>二维基对象</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1927"/>
+      <location filename="../../ArchWindow.py" line="1954"/>
       <source>Wires</source>
       <translation>线框</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1924"/>
+      <location filename="../../ArchWindow.py" line="1951"/>
       <source>Create new component</source>
       <translation>创建新组件</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1925"/>
+      <location filename="../../ArchWindow.py" line="1952"/>
       <source>Name</source>
       <translation>名称</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1926"/>
+      <location filename="../../ArchWindow.py" line="1953"/>
       <source>Type</source>
       <translation>类型</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1928"/>
+      <location filename="../../ArchWindow.py" line="1955"/>
       <source>Thickness</source>
       <translation>厚度</translation>
     </message>
@@ -1922,7 +1947,7 @@
       <translation>错误:无法确定字符编码</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="291"/>
+      <location filename="../../importDAE.py" line="329"/>
       <source>file %s successfully created.</source>
       <translation>文件%s已成功创建.</translation>
     </message>
@@ -1972,32 +1997,32 @@
       <translation>创建楼梯</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1365"/>
+      <location filename="../../ArchWall.py" line="353"/>
       <source>Length</source>
       <translation>长度</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="561"/>
+      <location filename="../../ArchStructure.py" line="680"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation>错误: 无法沿此工具对象拉伸底部形状</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1138"/>
+      <location filename="../../ArchStructure.py" line="1257"/>
       <source>Couldn't compute a shape</source>
       <translation>无法计算形状</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="492"/>
+      <location filename="../../ArchWall.py" line="494"/>
       <source>Merge Wall</source>
       <translation>合并壁</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="505"/>
+      <location filename="../../ArchWall.py" line="507"/>
       <source>Please select only wall objects</source>
       <translation>请选择只有墙上的对象</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="507"/>
+      <location filename="../../ArchWall.py" line="509"/>
       <source>Merge Walls</source>
       <translation>合并壁</translation>
     </message>
@@ -2012,7 +2037,7 @@
       <translation>计算此对象形状时出的错</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="171"/>
+      <location filename="../../ArchStructure.py" line="227"/>
       <source>Create Structural System</source>
       <translation>创建结构体系</translation>
     </message>
@@ -2172,7 +2197,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>高度(毫米)</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1601"/>
+      <location filename="../../ArchCommands.py" line="1587"/>
       <source>Create Component</source>
       <translation>新增组件</translation>
     </message>
@@ -2187,17 +2212,17 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>墙壁只能基于零件或网格对象</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="704"/>
+      <location filename="../../ArchSpace.py" line="762"/>
       <source>Set text position</source>
       <translation>设置文本位置</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1621"/>
+      <location filename="../../ArchStructure.py" line="383"/>
       <source>Category</source>
       <translation>类别</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1622"/>
+      <location filename="../../ArchCommands.py" line="1608"/>
       <source>Key</source>
       <translation>关键字</translation>
     </message>
@@ -2207,12 +2232,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>值</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1625"/>
+      <location filename="../../ArchCommands.py" line="1611"/>
       <source>Unit</source>
       <translation>单位</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1650"/>
+      <location filename="../../ArchCommands.py" line="1636"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>创建 IFC 属性电子表格</translation>
     </message>
@@ -2242,7 +2267,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>创建面板表</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="651"/>
+      <location filename="../../ArchStructure.py" line="770"/>
       <source>Facemaker returned an error</source>
       <translation>服务器返回一个错误</translation>
     </message>
@@ -2267,137 +2292,137 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>创建连接器</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="958"/>
+      <location filename="../../ArchPrecast.py" line="990"/>
       <source>Precast elements</source>
       <translation>预制品</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="959"/>
+      <location filename="../../ArchPrecast.py" line="991"/>
       <source>Slab type</source>
       <translation>楼板类型</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="960"/>
+      <location filename="../../ArchPrecast.py" line="992"/>
       <source>Chamfer</source>
       <translation>倒直角</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="961"/>
+      <location filename="../../ArchPrecast.py" line="993"/>
       <source>Dent length</source>
       <translation>凹痕长度</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="962"/>
+      <location filename="../../ArchPrecast.py" line="994"/>
       <source>Dent width</source>
       <translation>凹痕宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="963"/>
+      <location filename="../../ArchPrecast.py" line="995"/>
       <source>Dent height</source>
       <translation>凹坑高度</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="964"/>
+      <location filename="../../ArchPrecast.py" line="996"/>
       <source>Slab base</source>
       <translation>楼板底部</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="965"/>
+      <location filename="../../ArchPrecast.py" line="997"/>
       <source>Number of holes</source>
       <translation>孔数</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="966"/>
+      <location filename="../../ArchPrecast.py" line="998"/>
       <source>Major diameter of holes</source>
       <translation>孔的主要直径</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="967"/>
+      <location filename="../../ArchPrecast.py" line="999"/>
       <source>Minor diameter of holes</source>
       <translation>小孔直径</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="968"/>
+      <location filename="../../ArchPrecast.py" line="1000"/>
       <source>Spacing between holes</source>
       <translation>孔间距</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="969"/>
+      <location filename="../../ArchPrecast.py" line="1001"/>
       <source>Number of grooves</source>
       <translation>凹槽数</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="970"/>
+      <location filename="../../ArchPrecast.py" line="1002"/>
       <source>Depth of grooves</source>
       <translation>凹槽深度</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="971"/>
+      <location filename="../../ArchPrecast.py" line="1003"/>
       <source>Height of grooves</source>
       <translation>沟槽高度</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="972"/>
+      <location filename="../../ArchPrecast.py" line="1004"/>
       <source>Spacing between grooves</source>
       <translation>凹槽间距</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="973"/>
+      <location filename="../../ArchPrecast.py" line="1005"/>
       <source>Number of risers</source>
       <translation>竖管数</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="974"/>
+      <location filename="../../ArchPrecast.py" line="1006"/>
       <source>Length of down floor</source>
       <translation>底层长度</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="975"/>
+      <location filename="../../ArchPrecast.py" line="1007"/>
       <source>Height of risers</source>
       <translation>冒口高度</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="976"/>
+      <location filename="../../ArchPrecast.py" line="1008"/>
       <source>Depth of treads</source>
       <translation>踏面深度</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1361"/>
+      <location filename="../../ArchPrecast.py" line="1393"/>
       <source>Precast options</source>
       <translation>预制选项</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1362"/>
+      <location filename="../../ArchPrecast.py" line="1394"/>
       <source>Dents list</source>
       <translation>凹痕名单</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1363"/>
+      <location filename="../../ArchPrecast.py" line="1395"/>
       <source>Add dent</source>
       <translation>添加凹痕</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1364"/>
+      <location filename="../../ArchPrecast.py" line="1396"/>
       <source>Remove dent</source>
       <translation>去删凹痕</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1368"/>
+      <location filename="../../ArchPrecast.py" line="1400"/>
       <source>Slant</source>
       <translation>倾斜文本</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1369"/>
+      <location filename="../../ArchPrecast.py" line="1401"/>
       <source>Level</source>
       <translation>水平</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1370"/>
+      <location filename="../../ArchPrecast.py" line="1402"/>
       <source>Rotation</source>
       <translation>旋转</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1929"/>
+      <location filename="../../ArchWindow.py" line="1956"/>
       <source>Offset</source>
       <translation>偏移</translation>
     </message>
@@ -2422,58 +2447,58 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>时间表</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="434"/>
+      <location filename="../../ArchSite.py" line="442"/>
       <source>There is no valid object in the selection.
 Site creation aborted.</source>
       <translation>所选内容中没有有效的对象。网站创建中止。</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="924"/>
+      <location filename="../../ArchStructure.py" line="1043"/>
       <source>Node Tools</source>
       <translation>节点工具</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="929"/>
+      <location filename="../../ArchStructure.py" line="1048"/>
       <source>Reset nodes</source>
       <translation>重置节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="936"/>
+      <location filename="../../ArchStructure.py" line="1055"/>
       <source>Edit nodes</source>
       <translation>编辑节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="942"/>
+      <location filename="../../ArchStructure.py" line="1061"/>
       <source>Extend nodes</source>
       <translation>延伸节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="943"/>
+      <location filename="../../ArchStructure.py" line="1062"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>延伸此元素的节点以到达另一个元素的节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="949"/>
+      <location filename="../../ArchStructure.py" line="1068"/>
       <source>Connect nodes</source>
       <translation>连接节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="950"/>
+      <location filename="../../ArchStructure.py" line="1069"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>将此元素的节点与另一个元素的节点连接</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="956"/>
+      <location filename="../../ArchStructure.py" line="1075"/>
       <source>Toggle all nodes</source>
       <translation>切换所有节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="957"/>
+      <location filename="../../ArchStructure.py" line="1076"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>切换文档的所有结构节点开/关</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1001"/>
+      <location filename="../../ArchStructure.py" line="1120"/>
       <source>Intersection found.
 </source>
       <translation>找到交集
@@ -2485,22 +2510,22 @@ Site creation aborted.</source>
       <translation>门</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1930"/>
+      <location filename="../../ArchWindow.py" line="1957"/>
       <source>Hinge</source>
       <translation>铰链</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1931"/>
+      <location filename="../../ArchWindow.py" line="1958"/>
       <source>Opening mode</source>
       <translation>打开模式</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1936"/>
+      <location filename="../../ArchWindow.py" line="1963"/>
       <source>Get selected edge</source>
       <translation>获取所选边缘</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1937"/>
+      <location filename="../../ArchWindow.py" line="1964"/>
       <source>Press to retrieve the selected edge</source>
       <translation>按下去来检索选定的边缘</translation>
     </message>
@@ -2530,17 +2555,17 @@ Site creation aborted.</source>
       <translation>新图层</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="337"/>
+      <location filename="../../ArchWall.py" line="338"/>
       <source>Wall Presets...</source>
       <translation>墙壁预设..。</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1914"/>
+      <location filename="../../ArchWindow.py" line="1941"/>
       <source>Hole wire</source>
       <translation>孔线</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1916"/>
+      <location filename="../../ArchWindow.py" line="1943"/>
       <source>Pick selected</source>
       <translation>选取选定的</translation>
     </message>
@@ -2625,17 +2650,17 @@ Site creation aborted.</source>
       <translation>此对象没有面</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="708"/>
+      <location filename="../../ArchSpace.py" line="766"/>
       <source>Space boundaries</source>
       <translation>空间边界</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="754"/>
+      <location filename="../../ArchWall.py" line="762"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>错误: 无法修改此墙的基础对象</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1913"/>
+      <location filename="../../ArchWindow.py" line="1940"/>
       <source>Window elements</source>
       <translation>窗口构件</translation>
     </message>
@@ -2729,7 +2754,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="203"/>
       <source>BuildingPart</source>
-      <translation type="unfinished">BuildingPart</translation>
+      <translation>构建组件</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="300"/>
@@ -2747,7 +2772,7 @@ Building creation aborted.</source>
       <translation>一切正常! 未发现问题</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1632"/>
+      <location filename="../../ArchCommands.py" line="1618"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>该对象没有 IfcProperties 属性。取消对象的电子表格创建:</translation>
     </message>
@@ -2930,47 +2955,47 @@ Floor creation aborted.</source>
       <translation>没有附加到此计划的电子表格</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1051"/>
+      <location filename="../../ArchSectionPlane.py" line="1049"/>
       <source>Section plane settings</source>
       <translation>截面平面设置</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1056"/>
+      <location filename="../../ArchSectionPlane.py" line="1054"/>
       <source>Objects seen by this section plane:</source>
       <translation>剖面中所看到的对象:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1057"/>
+      <location filename="../../ArchSectionPlane.py" line="1055"/>
       <source>Section plane placement:</source>
       <translation>截面平面放置:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1058"/>
+      <location filename="../../ArchSectionPlane.py" line="1056"/>
       <source>Rotate X</source>
       <translation>沿 X 轴旋转</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1060"/>
+      <location filename="../../ArchSectionPlane.py" line="1058"/>
       <source>Rotate Y</source>
       <translation>旋转 Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1062"/>
+      <location filename="../../ArchSectionPlane.py" line="1060"/>
       <source>Rotate Z</source>
       <translation>绕Z轴旋转</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1064"/>
+      <location filename="../../ArchSectionPlane.py" line="1062"/>
       <source>Resize</source>
       <translation>调整尺寸</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1066"/>
+      <location filename="../../ArchWall.py" line="373"/>
       <source>Center</source>
       <translation>中心</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="428"/>
+      <location filename="../../ArchSite.py" line="436"/>
       <source>Please either select only Building objects or nothing at all!
 Site is not allowed to accept any other object besides Building.
 Other objects will be removed from the selection.
@@ -2981,77 +3006,77 @@ Note: You can change that in the preferences.</source>
 备注：您可以在 "首选项" 中更改该选项。</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1012"/>
+      <location filename="../../ArchStructure.py" line="1131"/>
       <source>Choose another Structure object:</source>
       <translation>选择另一个构造对象:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1017"/>
+      <location filename="../../ArchStructure.py" line="1136"/>
       <source>The chosen object is not a Structure</source>
       <translation>所选对象不是构造体</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1020"/>
+      <location filename="../../ArchStructure.py" line="1139"/>
       <source>The chosen object has no structural nodes</source>
       <translation>所选对象没有构造节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1023"/>
+      <location filename="../../ArchStructure.py" line="1142"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>其中一个对象有超过2节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1030"/>
+      <location filename="../../ArchStructure.py" line="1149"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>无法找到合适的交点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1033"/>
+      <location filename="../../ArchStructure.py" line="1152"/>
       <source>Intersection found.</source>
       <translation>找到交集</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="498"/>
+      <location filename="../../ArchWall.py" line="500"/>
       <source>The selected wall contains no subwall to merge</source>
       <translation>在所选的墙上包含没有次墙来合并</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="691"/>
+      <location filename="../../ArchWall.py" line="693"/>
       <source>Cannot compute blocks for wall</source>
       <translation>无法计算墙体砖块量</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="658"/>
+      <location filename="../../ArchWindow.py" line="665"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation>在现有对象上选取一个面或选择一个预设</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1875"/>
+      <location filename="../../ArchWindow.py" line="1902"/>
       <source>Unable to create component</source>
       <translation>无法创建组件</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1915"/>
+      <location filename="../../ArchWindow.py" line="1942"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>线的数目在主体对象中定义一个孔。值为零时将自动采用最大线数</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1934"/>
+      <location filename="../../ArchWindow.py" line="1961"/>
       <source>+ default</source>
-      <translation type="unfinished">+ default</translation>
+      <translation>+ 默认</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1933"/>
+      <location filename="../../ArchWindow.py" line="1960"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1935"/>
+      <location filename="../../ArchWindow.py" line="1962"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="58"/>
+      <location filename="../../importDAE.py" line="60"/>
       <source>pycollada not found, collada support is disabled.</source>
       <translation>pycollada 未找到, collada 支持被禁用。</translation>
     </message>
@@ -3091,7 +3116,7 @@ Note: You can change that in the preferences.</source>
       <translation>错误: 您的 IfcOpenShell 版本太旧</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="222"/>
+      <location filename="../../importOBJ.py" line="244"/>
       <source>Successfully written</source>
       <translation>写入成功</translation>
     </message>
@@ -3101,7 +3126,7 @@ Note: You can change that in the preferences.</source>
       <translation>找到一个包含曲线的形状, 正在变成三角.</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="300"/>
+      <location filename="../../importOBJ.py" line="322"/>
       <source>Successfully imported</source>
       <translation>导入成功</translation>
     </message>
@@ -3117,44 +3142,159 @@ Site and Building objects will be removed from the selection.
 You can change that in the preferences.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1053"/>
+      <location filename="../../ArchSectionPlane.py" line="1051"/>
       <source>Remove highlighted objects from the list above</source>
       <translation type="unfinished">Remove highlighted objects from the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1054"/>
+      <location filename="../../ArchSectionPlane.py" line="1052"/>
       <source>Add selected</source>
       <translation>添加所选</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1055"/>
+      <location filename="../../ArchSectionPlane.py" line="1053"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1059"/>
+      <location filename="../../ArchSectionPlane.py" line="1057"/>
       <source>Rotates the plane along the X axis</source>
       <translation type="unfinished">Rotates the plane along the X axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1061"/>
+      <location filename="../../ArchSectionPlane.py" line="1059"/>
       <source>Rotates the plane along the Y axis</source>
       <translation type="unfinished">Rotates the plane along the Y axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1063"/>
+      <location filename="../../ArchSectionPlane.py" line="1061"/>
       <source>Rotates the plane along the Z axis</source>
       <translation type="unfinished">Rotates the plane along the Z axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1065"/>
+      <location filename="../../ArchSectionPlane.py" line="1063"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1067"/>
+      <location filename="../../ArchSectionPlane.py" line="1065"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation type="unfinished">Centers the plane on the objects in the list above</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="264"/>
+      <source>First point of the beam</source>
+      <translation type="unfinished">First point of the beam</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="266"/>
+      <source>Base point of column</source>
+      <translation type="unfinished">Base point of column</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="256"/>
+      <source>Next point</source>
+      <translation type="unfinished">Next point</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="367"/>
+      <source>Structure options</source>
+      <translation type="unfinished">Structure options</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="371"/>
+      <source>Drawing mode</source>
+      <translation type="unfinished">Drawing mode</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="372"/>
+      <source>Beam</source>
+      <translation type="unfinished">Beam</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="373"/>
+      <source>Column</source>
+      <translation type="unfinished">Column</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="792"/>
+      <source>Preset</source>
+      <translation type="unfinished">Preset</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="426"/>
+      <source>Switch L/H</source>
+      <translation type="unfinished">Switch L/H</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="428"/>
+      <source>Switch L/W</source>
+      <translation type="unfinished">Switch L/W</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="379"/>
+      <source>Con&amp;tinue</source>
+      <translation type="unfinished">Con&amp;tinue</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="238"/>
+      <source>First point of wall</source>
+      <translation type="unfinished">First point of wall</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="334"/>
+      <source>Wall options</source>
+      <translation type="unfinished">Wall options</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="339"/>
+      <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
+      <translation type="unfinished">This list shows all the MultiMaterials objects of this document. Create some to define wall types.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="371"/>
+      <source>Alignment</source>
+      <translation type="unfinished">Alignment</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="373"/>
+      <source>Left</source>
+      <translation>左视</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="373"/>
+      <source>Right</source>
+      <translation>右视</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="390"/>
+      <source>Use sketches</source>
+      <translation>使用草图</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="76"/>
+      <source>Structure</source>
+      <translation>结构</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="78"/>
+      <source>Window</source>
+      <translation>窗口</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="757"/>
+      <source>Window options</source>
+      <translation type="unfinished">Window options</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="761"/>
+      <source>Auto include in host object</source>
+      <translation type="unfinished">Auto include in host object</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="767"/>
+      <source>Sill height</source>
+      <translation type="unfinished">Sill height</translation>
     </message>
   </context>
   <context>
@@ -3348,7 +3488,7 @@ You can change that in the preferences.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="285"/>
       <source>BuildingPart</source>
-      <translation type="unfinished">BuildingPart</translation>
+      <translation>构建组件</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="287"/>
@@ -3368,21 +3508,16 @@ You can change that in the preferences.</translation>
       <source>Checks the selected objects for problems</source>
       <translation>检查所选对象的问题</translation>
     </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1523"/>
-      <source>Explore the contents of an IFC file</source>
-      <translation>浏览 IFC 文件的内容</translation>
-    </message>
   </context>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1591"/>
+      <location filename="../../ArchCommands.py" line="1577"/>
       <source>Clone component</source>
       <translation>克隆组件</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1593"/>
+      <location filename="../../ArchCommands.py" line="1579"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>将对象克隆为未定义的建筑组件</translation>
     </message>
@@ -3403,12 +3538,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1566"/>
+      <location filename="../../ArchCommands.py" line="1552"/>
       <source>Component</source>
       <translation>组件</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1568"/>
+      <location filename="../../ArchCommands.py" line="1554"/>
       <source>Creates an undefined architectural component</source>
       <translation>创建未定义的建筑组件</translation>
     </message>
@@ -3442,12 +3577,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../ArchFence.py" line="243"/>
+      <location filename="../../ArchFence.py" line="356"/>
       <source>Fence</source>
       <translation type="unfinished">Fence</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="244"/>
+      <location filename="../../ArchFence.py" line="357"/>
       <source>Creates a fence object from a selected section, post and path</source>
       <translation type="unfinished">Creates a fence object from a selected section, post and path</translation>
     </message>
@@ -3542,22 +3677,14 @@ You can change that in the preferences.</translation>
     </message>
   </context>
   <context>
-    <name>Arch_IfcExplorer</name>
-    <message>
-      <location filename="../../ArchCommands.py" line="1522"/>
-      <source>Ifc Explorer</source>
-      <translation>IFC导出</translation>
-    </message>
-  </context>
-  <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1641"/>
+      <location filename="../../ArchCommands.py" line="1627"/>
       <source>Create IFC spreadsheet...</source>
       <translation>创建 IFC 电子表格..。</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1643"/>
+      <location filename="../../ArchCommands.py" line="1629"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>创建一个电子表格以存储对象的ifc 属性。</translation>
     </message>
@@ -3586,12 +3713,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="../../ArchWall.py" line="473"/>
+      <location filename="../../ArchWall.py" line="475"/>
       <source>Merge Walls</source>
       <translation>合并壁</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="474"/>
+      <location filename="../../ArchWall.py" line="476"/>
       <source>Merges the selected walls, if possible</source>
       <translation>如果可能，合并选定的墙壁</translation>
     </message>
@@ -3797,12 +3924,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="466"/>
+      <location filename="../../ArchSectionPlane.py" line="464"/>
       <source>Section Plane</source>
       <translation>剖切平面</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="467"/>
+      <location filename="../../ArchSectionPlane.py" line="465"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>创建剖切平面对象,包括所选对象</translation>
     </message>
@@ -3823,12 +3950,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Site</name>
     <message>
-      <location filename="../../ArchSite.py" line="404"/>
+      <location filename="../../ArchSite.py" line="412"/>
       <source>Site</source>
       <translation>场地</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="406"/>
+      <location filename="../../ArchSite.py" line="414"/>
       <source>Creates a site object including selected objects.</source>
       <translation>创建场地,包含选定对象</translation>
     </message>
@@ -3875,12 +4002,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Structure</name>
     <message>
-      <location filename="../../ArchStructure.py" line="148"/>
+      <location filename="../../ArchStructure.py" line="199"/>
       <source>Structure</source>
       <translation>结构</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="150"/>
+      <location filename="../../ArchStructure.py" line="201"/>
       <source>Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>从零开始或从选定的对象(线,面或体)创建结构体</translation>
     </message>
@@ -3888,12 +4015,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1536"/>
+      <location filename="../../ArchCommands.py" line="1522"/>
       <source>Survey</source>
       <translation>调查</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1537"/>
+      <location filename="../../ArchCommands.py" line="1523"/>
       <source>Starts survey</source>
       <translation>开始调查</translation>
     </message>
@@ -3901,12 +4028,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1551"/>
+      <location filename="../../ArchCommands.py" line="1537"/>
       <source>Toggle IFC Brep flag</source>
       <translation>切换 IFC Brep 标志</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1552"/>
+      <location filename="../../ArchCommands.py" line="1538"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>强制是否将对象导出为 Brep</translation>
     </message>
@@ -3914,12 +4041,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1667"/>
+      <location filename="../../ArchCommands.py" line="1653"/>
       <source>Toggle subcomponents</source>
       <translation>切换子组件</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1668"/>
+      <location filename="../../ArchCommands.py" line="1654"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>显示或隐藏此对象的子组件</translation>
     </message>
@@ -3940,12 +4067,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Window</name>
     <message>
-      <location filename="../../ArchWindow.py" line="590"/>
+      <location filename="../../ArchWindow.py" line="594"/>
       <source>Window</source>
       <translation>窗</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="592"/>
+      <location filename="../../ArchWindow.py" line="596"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
       <translation>从所选对象创建窗对象(线框、矩形或草绘)</translation>
     </message>
@@ -4217,7 +4344,7 @@ You can change that in the preferences.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="722"/>
+      <location filename="../../ArchBuildingPart.py" line="746"/>
       <source>Writing camera position</source>
       <translation>写入相机位置</translation>
     </message>
@@ -4653,7 +4780,7 @@ You can change that in the preferences.</translation>
       <translation>透明度:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="357"/>
+      <location filename="../ui/preferences-ifc.ui" line="370"/>
       <source>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</source>
       <translation>一些IFC阅读器不喜欢对象导出为拉伸。使用此项可强制将所有对象导出为 BREP几何体。</translation>
     </message>
@@ -4693,7 +4820,7 @@ You can change that in the preferences.</translation>
       <translation>厚度</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="360"/>
+      <location filename="../ui/preferences-ifc.ui" line="373"/>
       <source>Force export as Brep</source>
       <translation>强制导出为 Brep</translation>
     </message>
@@ -4723,7 +4850,7 @@ You can change that in the preferences.</translation>
       <translation>日期</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="351"/>
+      <location filename="../ui/preferences-ifc.ui" line="364"/>
       <source>Export options</source>
       <translation>导出选项</translation>
     </message>
@@ -4933,22 +5060,22 @@ You can change that in the preferences.</translation>
       <translation>允许四方形</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="373"/>
+      <location filename="../ui/preferences-ifc.ui" line="386"/>
       <source>Use triangulation options set in the DAE options page</source>
       <translation>使用 "DAE 选项" 页中设置的三角选项</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="376"/>
+      <location filename="../ui/preferences-ifc.ui" line="389"/>
       <source>Use DAE triangulation options</source>
       <translation>使用 DAE 三角选项</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="389"/>
+      <location filename="../ui/preferences-ifc.ui" line="402"/>
       <source>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</source>
       <translation>在 IFC 中不能表示为曲线的曲面被分解为平面。如果选中此项, 将进行一些额外的计算以联接共面平面。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="392"/>
+      <location filename="../ui/preferences-ifc.ui" line="405"/>
       <source>Join coplanar facets when triangulating</source>
       <translation>当构建三角时加入共面平面</translation>
     </message>
@@ -4988,12 +5115,12 @@ You can change that in the preferences.</translation>
       <translation>在电子表格中导入 Ifc 属性</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="405"/>
+      <location filename="../ui/preferences-ifc.ui" line="418"/>
       <source>When exporting objects without UID, the generated UID will be stored inside the FreeCAD object for reuse next time that object is exported, which gives smaller diffs between versions</source>
       <translation>在导出不带 uid 的对象时, 生成的 uid 将存储在 FreeCAD 对象中, 以便在下次导出对象时重用, 从而在版本之间提供较小的差异</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="408"/>
+      <location filename="../ui/preferences-ifc.ui" line="421"/>
       <source>Store IFC universal ID in FreeCAD objects</source>
       <translation>在 FreeCAD 对象中存储 IFC 通用 ID</translation>
     </message>
@@ -5063,17 +5190,17 @@ You can change that in the preferences.</translation>
       <translation>拆分多层墙</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="424"/>
+      <location filename="../ui/preferences-ifc.ui" line="437"/>
       <source>Warning, experimental feature!</source>
       <translation>警告, 实验功能!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="427"/>
+      <location filename="../ui/preferences-ifc.ui" line="440"/>
       <source>Use IfcOpenShell serializer if available</source>
       <translation>使用 IfcOpenShell 序列化程序 (如果可用)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="440"/>
+      <location filename="../ui/preferences-ifc.ui" line="453"/>
       <source>Export 2D objects as IfcAnnotations</source>
       <translation>将2D 对象导出为 IfcAnnotations</translation>
     </message>
@@ -5098,12 +5225,12 @@ You can change that in the preferences.</translation>
       <translation>导入时调整视图</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="456"/>
+      <location filename="../ui/preferences-ifc.ui" line="469"/>
       <source>If this is checked, all FreeCAD object properties will be stored inside the exported objects, allowing to recreate a full parametric model on reimport.</source>
       <translation>如果选中此项, 则所有 FreeCAD 对象属性都将存储在导出的对象中, 这样允许在导入上重新导入时可以重新创建完整的参数化模型。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="459"/>
+      <location filename="../ui/preferences-ifc.ui" line="472"/>
       <source>Export full FreeCAD parametric model</source>
       <translation>导出全 FreeCAD 参数模型</translation>
     </message>
@@ -5158,22 +5285,22 @@ You can change that in the preferences.</translation>
       <translation>排除列表:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="472"/>
+      <location filename="../ui/preferences-ifc.ui" line="485"/>
       <source>If this is checked, when possible, similar entities will be used only once in the file. This can reduce the file size a lot, but will make it less easily readable by humans</source>
       <translation>如果选中此选项, 则在可能的情况下, 类似的实体将仅在文件中使用一次。这可以减少大量的文件大小, 但将使其不太容易被人类阅读</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="475"/>
+      <location filename="../ui/preferences-ifc.ui" line="488"/>
       <source>Reuse similar entities</source>
       <translation>重复使用类似实体</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="491"/>
+      <location filename="../ui/preferences-ifc.ui" line="504"/>
       <source>When possible, IFC objects that are extruded rectangles are exported as IfcRectangleProfileDef. However, some other applications notoriously have problems importing that entity. If this is your case, you can disable this here (all profiles will be exported as IfcArbitraryClosedProfileDef).</source>
       <translation>在可能的情况下, 被拉伸矩形的 ifc 对象将导出为 ifcrectangt塘 profiledef。但是, 其他一些应用程序在导入该实体时存在问题。如果这是您的情况, 您可以在此处禁用此功能 (所有配置文件将导出为 ifc意末关 profiledef)。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="494"/>
+      <location filename="../ui/preferences-ifc.ui" line="507"/>
       <source>Disable IfcRectangleProfileDef</source>
       <translation>禁用 ifcrectangleprofiledef</translation>
     </message>
@@ -5238,14 +5365,49 @@ You can change that in the preferences.</translation>
       <translation>线条颜色</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="507"/>
+      <location filename="../ui/preferences-ifc.ui" line="520"/>
       <source>Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects as standard cases when the necessary conditions are met.</source>
       <translation type="unfinished">Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects as standard cases when the necessary conditions are met.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="510"/>
-      <source>Auto-detet and export as standard cases when applicable</source>
-      <translation type="unfinished">Auto-detet and export as standard cases when applicable</translation>
+      <location filename="../ui/preferences-ifc.ui" line="348"/>
+      <source>Import full FreeCAD parametric definitions if available</source>
+      <translation type="unfinished">Import full FreeCAD parametric definitions if available</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="523"/>
+      <source>Auto-detect and export as standard cases when applicable</source>
+      <translation type="unfinished">Auto-detect and export as standard cases when applicable</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="536"/>
+      <source>When exporting an IFC  file, if no site if found in the FreeCAD document, a default one will be added. A site is not mandatory by the IFC standard, but it is a common practice to always have at least one in the file.</source>
+      <translation type="unfinished">When exporting an IFC  file, if no site if found in the FreeCAD document, a default one will be added. A site is not mandatory by the IFC standard, but it is a common practice to always have at least one in the file.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="539"/>
+      <source>Add default site if none is found in the document</source>
+      <translation type="unfinished">Add default site if none is found in the document</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="552"/>
+      <source>When exporting an IFC file, if no building if found in the FreeCAD document, a default one will be added.&lt;br/&gt;&lt;b&gt;Warning&lt;/b&gt;: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file. However, at FreeCAD, we believe having a building should not be mandatory, and this option is there so we have a chance to show our point of view to the world and try to convince others.</source>
+      <translation type="unfinished">When exporting an IFC file, if no building if found in the FreeCAD document, a default one will be added.&lt;br/&gt;&lt;b&gt;Warning&lt;/b&gt;: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file. However, at FreeCAD, we believe having a building should not be mandatory, and this option is there so we have a chance to show our point of view to the world and try to convince others.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="555"/>
+      <source>Add default building if no ne is found in the document (no standard)</source>
+      <translation type="unfinished">Add default building if no ne is found in the document (no standard)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="571"/>
+      <source>When exporting an IFC  file, if no building storey if found in the FreeCAD document, a default one will be added. A building storey is not mandatory by the IFC standard, but it is a common practice to always have at least one in the file.</source>
+      <translation type="unfinished">When exporting an IFC  file, if no building storey if found in the FreeCAD document, a default one will be added. A building storey is not mandatory by the IFC standard, but it is a common practice to always have at least one in the file.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="574"/>
+      <source>Add default building storey if none is found in the document</source>
+      <translation type="unfinished">Add default building storey if none is found in the document</translation>
     </message>
   </context>
   <context>

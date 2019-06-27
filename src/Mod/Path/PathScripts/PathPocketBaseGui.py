@@ -24,13 +24,10 @@
 
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathLog as PathLog
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathPocket as PathPocket
-import PathScripts.PathSelection as PathSelection
 
-from PySide import QtCore, QtGui
+from PySide import QtCore #, QtGui
 
 __title__ = "Path Pocket Base Operation UI"
 __author__ = "sliptonic (Brad Collette)"
@@ -73,9 +70,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if not (FeatureOutline & self.pocketFeatures()):
             form.useOutline.hide()
 
-        if True:
-            # currently doesn't have an effect or is experimental
-            form.minTravel.hide()
+        # if True:
+        #     # currently doesn't have an effect or is experimental
+        #     form.minTravel.hide()
 
         return form
 

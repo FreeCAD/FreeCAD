@@ -33,11 +33,11 @@ other than PathLog, then it probably doesn't belong here.
 '''
 
 import six
-
 import PathScripts.PathLog as PathLog
-import sys
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:

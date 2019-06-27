@@ -29,7 +29,9 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import math
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 
@@ -48,7 +50,7 @@ class ENGRAVEGate:
     def allow(self, doc, obj, sub):
         try:
             shape = obj.Shape
-        except:
+        except Exception:
             return False
 
         if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
@@ -68,7 +70,7 @@ class CHAMFERGate:
     def allow(self, doc, obj, sub):
         try:
             shape = obj.Shape
-        except:
+        except Exception:
             return False
 
         if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
@@ -103,7 +105,7 @@ class PROFILEGate:
         profileable = False
         try:
             obj = obj.Shape
-        except:
+        except Exception:
             return False
 
         if obj.ShapeType == 'Edge':
@@ -138,7 +140,7 @@ class POCKETGate:
         pocketable = False
         try:
             obj = obj.Shape
-        except:
+        except Exception:
             return False
 
         if obj.ShapeType == 'Edge':
@@ -163,7 +165,7 @@ class ADAPTIVEGate:
         adaptive = True
         try:
             obj = obj.Shape
-        except:
+        except Exception:
             return False
             
         return adaptive

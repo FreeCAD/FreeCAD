@@ -28,6 +28,8 @@ class IfcRoot:
     def onChanged(self, obj, prop):
         if prop == "IfcType":
             self.setupIfcAttributes(obj)
+        if not attribute["name"] in obj.PropertiesList:
+            return
         if obj.getGroupOfProperty(prop) == "IFC Attributes":
             self.setObjIfcAttributeValue(obj, prop, obj.getPropertyByName(prop))
 

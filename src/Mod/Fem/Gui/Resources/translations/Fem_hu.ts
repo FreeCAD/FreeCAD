@@ -145,7 +145,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="185"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+      <translation>Létrehoz egy véges-elemes módszerű kezdeti áramlási sebesség kényszerítést</translation>
     </message>
   </context>
   <context>
@@ -264,18 +264,18 @@
       <source>Creates a FEM equation for fluxsolver</source>
       <translation>Létrehoz egy végeselemes módszerű Flux megoldó egyenletet</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="349"/>
-      <source>Creates a FEM equation for fluxsolver</source>
-      <translation>Létrehoz egy végeselemes módszerű Flux megoldó egyenletet</translation>
-    </message>
   </context>
   <context>
     <name>FEM_EquationHeat</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="365"/>
       <source>Fluxsolver heat</source>
-      <translation type="unfinished">Fluxsolver heat</translation>
+      <translation>Fluxmegoldó hő</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="530"/>
+      <source>Fluxsolver heat</source>
+      <translation>Fluxmegoldó hő</translation>
     </message>
   </context>
   <context>
@@ -290,18 +290,18 @@
       <source>Convert the surface of a FEM mesh to a mesh</source>
       <translation>Egy VEM háló felületet átalakítja egy hálóvá</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="471"/>
-      <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Egy VEM háló felületet átalakítja egy hálóvá</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MaterialFluid</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Folyadék anyaga</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="582"/>
+      <source>Material for fluid</source>
+      <translation>Folyadék anyaga</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
@@ -327,9 +327,17 @@
       <translation>Létrehoz egy nemlineáris mechanikus anyagot</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="417"/>
+      <location filename="../../../femcommands/commands.py" line="618"/>
       <source>Creates a nonlinear mechanical material</source>
       <translation>Létrehoz egy nemlineáris mechanikus anyagot</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialReinforced</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="674"/>
+      <source>Reinforced material (concrete)</source>
+      <translation type="unfinished">Reinforced material (concrete)</translation>
     </message>
   </context>
   <context>
@@ -337,7 +345,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="452"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Szilárd test anyaga</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="705"/>
+      <source>Material for solid</source>
+      <translation>Szilárd test anyaga</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -378,23 +391,18 @@
       <source>Display FEM mesh info</source>
       <translation>FEM-háló adatainak megjelenítése</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="538"/>
-      <source>Display FEM mesh info</source>
-      <translation>FEM-háló adatainak megjelenítése</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MeshGmshFromShape</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="556"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+      <translation>VEM-háló az GMSH alakzat által</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="557"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>Egy VEM-háló létrehozása egy GMSH hálózó alakzatából</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
@@ -419,10 +427,18 @@
       <source>Creates a FEM mesh group</source>
       <translation>Egy VEM-háló csoportot hoz létre</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="586"/>
-      <source>Creates a FEM mesh group</source>
-      <translation>Egy VEM-háló csoportot hoz létre</translation>
+      <location filename="../../../femcommands/commands.py" line="603"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>VEM-háló alakzat Netgen által</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="957"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>VEM-háló alakzat Netgen által</translation>
     </message>
   </context>
   <context>
@@ -476,15 +492,28 @@
       <source>Creates a FEM solver CalculiX (experimental)</source>
       <translation>Létrehoz egy VEM megoldó CalculiiX (kísérleti)</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculix</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="708"/>
-      <source>Solver CalculiX (experimental)</source>
-      <translation>CalculiX megoldó (kísérleti)</translation>
+      <location filename="../../../femcommands/commands.py" line="679"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>CalculiX alapértelmezett megoldó</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="710"/>
-      <source>Creates a FEM solver CalculiX (experimental)</source>
-      <translation>Létrehoz egy VEM megoldó CalculiiX (kísérleti)</translation>
+      <location filename="../../../femcommands/commands.py" line="681"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Létrehoz egy normál CalculiX VEM megoldót ccx eszközzel</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation>CalculiX megoldó</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation>Létrehoz egy VEM CalculiX megoldót</translation>
     </message>
   </context>
   <context>
@@ -499,15 +528,18 @@
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Megoldó attribútumainak módosítása és a kiválasztott megoldó számításainak elindítása</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="726"/>
-      <source>Solver job control</source>
-      <translation>Munka megoldó ellenőrzés</translation>
+      <location filename="../../../femcommands/commands.py" line="740"/>
+      <source>Solver Elmer</source>
+      <translation>Elmer megoldó</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="728"/>
-      <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Megoldó attribútumainak módosítása és a kiválasztott megoldó számításainak elindítása</translation>
+      <location filename="../../../femcommands/commands.py" line="1174"/>
+      <source>Solver Elmer</source>
+      <translation>Elmer megoldó</translation>
     </message>
   </context>
   <context>
@@ -616,32 +648,9 @@
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
-      <source>Add</source>
-      <translation>Hozzáad</translation>
-    </message>
-    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
       <source>Remove</source>
       <translation>Törlés</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCalculix</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="681"/>
-      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="42"/>
-      <source>Solver CalculiX</source>
-      <translation>CalculiX megoldó</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="44"/>
-      <source>Creates a FEM solver CalculiX</source>
-      <translation>Létrehoz egy VEM CalculiX megoldót</translation>
     </message>
   </context>
   <context>

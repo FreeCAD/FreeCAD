@@ -946,10 +946,10 @@ std::set<int> FemMesh::getFacesOnly(void) const
     //         get the volume nodes
     //         if the face nodes are a subset of the volume nodes
     //             add the face to the volume faces and break
-    //     if face not belongs to a volume
+    //     if face doesn't belong to a volume
     //         add it to faces only
     //
-    // This means it is iterated over a lot of volumes many times, this is quite expensive !
+    // This means it is iterated over a lot of volumes many times, this is quite expensive!
     //
     // TODO make this faster
     // Idea:
@@ -959,7 +959,7 @@ std::set<int> FemMesh::getFacesOnly(void) const
     //     if not in volume faces
     //     add it to the faces only
     //
-    // but the volume faces does not seam know their global mesh ID, I could not found any method in SMESH
+    // but the volume faces do not seem to know their global mesh ID, I could not find any method in SMESH
 
     std::set<int> resultIDs;
 
@@ -2050,4 +2050,3 @@ Base::Quantity FemMesh::getVolume(void)const
 
 
 }
-

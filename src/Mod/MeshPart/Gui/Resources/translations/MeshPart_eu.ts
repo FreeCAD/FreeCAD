@@ -77,32 +77,32 @@
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="353"/>
+      <location filename="../../CurveOnMesh.cpp" line="363"/>
       <source>Create</source>
       <translation>Sortu</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="355"/>
+      <location filename="../../CurveOnMesh.cpp" line="365"/>
       <source>Close wire</source>
       <translation>Itxi lerroa</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="357"/>
+      <location filename="../../CurveOnMesh.cpp" line="367"/>
       <source>Clear</source>
       <translation>Garbitu</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="358"/>
+      <location filename="../../CurveOnMesh.cpp" line="368"/>
       <source>Cancel</source>
       <translation>Utzi</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="566"/>
+      <location filename="../../CurveOnMesh.cpp" line="614"/>
       <source>Wrong mesh picked</source>
       <translation>Sare okerra aukeratu da</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="606"/>
+      <location filename="../../CurveOnMesh.cpp" line="654"/>
       <source>No point was picked</source>
       <translation>Ez da punturik aukeratu</translation>
     </message>
@@ -140,22 +140,22 @@
       <translation>Spline hurbilketa</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="75"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="78"/>
       <source>Tolerance to mesh</source>
       <translation>Sarearekiko tolerantzia</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="101"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="104"/>
       <source>Continuity</source>
       <translation>Jarraitutasuna</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="108"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="111"/>
       <source>Maximum curve degree</source>
       <translation>Kurba-gradu maximoa</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="132"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="135"/>
       <source>Start</source>
       <translation>Hasi</translation>
     </message>
@@ -195,7 +195,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="68"/>
       <source>Surface deviation:</source>
-      <translation>Azaleraren desbideratzea:</translation>
+      <translation>Gainazalaren desbideratzea:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="91"/>
@@ -205,7 +205,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="119"/>
       <source>Relative surface deviation</source>
-      <translation>Azaleraren desbideratze erlatiboa</translation>
+      <translation>Gainazalaren desbideratze erlatiboa</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="126"/>
@@ -275,7 +275,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="344"/>
       <source>Optimize surface</source>
-      <translation>Optimizatu azalera</translation>
+      <translation>Optimizatu gainazala</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="354"/>

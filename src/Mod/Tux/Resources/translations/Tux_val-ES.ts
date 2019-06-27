@@ -56,7 +56,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="291"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Paràmetres</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="292"/>
@@ -86,12 +86,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
-      <translation type="unfinished">Undefined</translation>
+      <translation>Sense definir</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or H key.</source>
-      <translation type="unfinished">Middle mouse button or H key.</translation>
+      <translation>Botó central del ratolí o la tecla H.</translation>
     </message>
   </context>
 </TS>

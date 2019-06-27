@@ -25,6 +25,11 @@
 # include <unistd.h>
 #endif
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
+#endif
+
 #include "Base/Exception.h"
 #include <Base/Interpreter.h>
 #include <App/Application.h>
@@ -1988,3 +1993,7 @@ bool ExpressionParser::isTokenAUnit(const std::string & str)
     else
         return false;
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif

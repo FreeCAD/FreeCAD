@@ -25,13 +25,17 @@
 #ifndef _PreComp_
 # include <cfloat>
 # include <boost/bind.hpp>
+# include <gp_Lin.hxx>
+# include <gp_Pln.hxx>
 # include <BRep_Builder.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 #endif
 
 #include "ShapeBinder.h"
 #include <App/Document.h>
 #include <App/GroupExtension.h>
+#include <App/OriginFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #ifndef M_PI
@@ -69,13 +73,14 @@ short int ShapeBinder::mustExecute(void) const {
 App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
 
     if (!this->isRestoring()) {
-        Part::Feature* obj = nullptr;
+        App::GeoFeature* obj = nullptr;
         std::vector<std::string> subs;
 
         ShapeBinder::getFilteredReferences(&Support, obj, subs);
+
         //if we have a link we rebuild the shape, but we change nothing if we are a simple copy
         if (obj) {
-            Part::TopoShape shape = ShapeBinder::buildShapeFromReferences(obj, subs);
+            Part::TopoShape shape(ShapeBinder::buildShapeFromReferences(obj, subs));
             //now, shape is in object's CS, and includes local Placement of obj but nothing else.
 
             if (TraceSupport.getValue()) {
@@ -96,7 +101,7 @@ App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
     return Part::Feature::execute();
 }
 
-void ShapeBinder::getFilteredReferences(App::PropertyLinkSubList* prop, Part::Feature*& obj,
+void ShapeBinder::getFilteredReferences(App::PropertyLinkSubList* prop, App::GeoFeature*& obj,
                                         std::vector< std::string >& subobjects)
 {
     obj = nullptr;
@@ -111,63 +116,96 @@ void ShapeBinder::getFilteredReferences(App::PropertyLinkSubList* prop, Part::Fe
 
     //we only allow one part feature, so get the first one we find
     size_t index = 0;
-    while (index < objs.size() && !objs[index]->isDerivedFrom(Part::Feature::getClassTypeId()))
+    for (auto* it : objs) {
+        if (it && it->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            obj = static_cast<Part::Feature*>(it);
+            break;
+        }
         index++;
-
-    //do we have any part feature?
-    if (index >= objs.size())
-        return;
-
-    obj = static_cast<Part::Feature*>(objs[index]);
-
-    //if we have no subshpape we use the whole shape
-    if (subs[index].empty()) {
-        return;
     }
 
-    //collect all subshapes for the object
-    index = 0;
-    for (std::string sub : subs) {
+    //do we have any part feature?
+    if (obj) {
+        //if we have no subshpape we use the whole shape
+        if (subs[index].empty()) {
+            return;
+        }
 
-        //we only allow subshapes from a single Part::Feature
-        if (objs[index] != obj)
-            continue;
+        //collect all subshapes for the object
+        for (index = 0; index < objs.size(); index++) {
+            //we only allow subshapes from a single Part::Feature
+            if (objs[index] != obj)
+                continue;
 
-        //in this mode the full shape is not allowed, as we already started the subshape
-        //processing
-        if (sub.empty())
-            continue;
+            //in this mode the full shape is not allowed, as we already started the subshape
+            //processing
+            if (subs[index].empty())
+                continue;
 
-        subobjects.push_back(sub);
+            subobjects.push_back(subs[index]);
+        }
+    }
+    else {
+        // search for Origin features
+        for (auto* it : objs) {
+            if (it && it->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+                obj = static_cast<App::GeoFeature*>(it);
+                break;
+            }
+            else if (it && it->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+                obj = static_cast<App::GeoFeature*>(it);
+                break;
+            }
+        }
     }
 }
 
-Part::TopoShape ShapeBinder::buildShapeFromReferences( Part::Feature* obj, std::vector< std::string > subs) {
+Part::TopoShape ShapeBinder::buildShapeFromReferences(App::GeoFeature* obj, std::vector< std::string > subs) {
 
     if (!obj)
         return TopoDS_Shape();
 
-    if (subs.empty())
-        return obj->Shape.getShape();
+    if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        Part::Feature* part = static_cast<Part::Feature*>(obj);
+        if (subs.empty())
+            return part->Shape.getValue();
 
-    std::vector<TopoDS_Shape> shapes;
-    for (std::string sub : subs) {
-        shapes.push_back(obj->Shape.getShape().getSubShape(sub.c_str()));
-    }
-
-    if (shapes.size() == 1){
-        //single subshape. Return directly.
-        return shapes[0];
-    } else {
-        //multiple subshapes. Make a compound.
-        BRep_Builder builder;
-        TopoDS_Compound cmp;
-        builder.MakeCompound(cmp);
-        for(const TopoDS_Shape& sh : shapes){
-            builder.Add(cmp, sh);
+        std::vector<TopoDS_Shape> shapes;
+        for (std::string sub : subs) {
+            shapes.push_back(part->Shape.getShape().getSubShape(sub.c_str()));
         }
-        return cmp;
+
+        if (shapes.size() == 1) {
+            //single subshape. Return directly.
+            return shapes[0];
+        }
+        else {
+            //multiple subshapes. Make a compound.
+            BRep_Builder builder;
+            TopoDS_Compound cmp;
+            builder.MakeCompound(cmp);
+            for(const TopoDS_Shape& sh : shapes){
+                builder.Add(cmp, sh);
+            }
+            return cmp;
+        }
     }
+    else if (obj->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+        gp_Lin line;
+        BRepBuilderAPI_MakeEdge mkEdge(line);
+        Part::TopoShape shape(mkEdge.Shape());
+        shape.setPlacement(obj->Placement.getValue());
+        return shape;
+    }
+    else if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+        gp_Pln plane;
+        BRepBuilderAPI_MakeFace mkFace(plane);
+        Part::TopoShape shape(mkFace.Shape());
+        shape.setPlacement(obj->Placement.getValue());
+        return shape;
+    }
+
+    return TopoDS_Shape();
 }
 
 void ShapeBinder::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
@@ -199,7 +237,7 @@ void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::P
     if (!Prop.getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId()))
         return;
 
-    Part::Feature* obj = nullptr;
+    App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
     ShapeBinder::getFilteredReferences(&Support, obj, subs);
     if (obj) {

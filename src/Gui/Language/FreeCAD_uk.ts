@@ -1620,7 +1620,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Find...</source>
-      <translation type="unfinished">Find...</translation>
+      <translation>Знайти...</translation>
     </message>
   </context>
   <context>
@@ -1631,7 +1631,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Find what:</source>
-      <translation type="unfinished">Find what:</translation>
+      <translation>Що шукати:</translation>
     </message>
     <message>
       <source>Look at</source>
@@ -1639,15 +1639,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Groups</source>
-      <translation type="unfinished">Groups</translation>
+      <translation>Групи</translation>
     </message>
     <message>
       <source>Names</source>
-      <translation type="unfinished">Names</translation>
+      <translation>Назви</translation>
     </message>
     <message>
       <source>Values</source>
-      <translation type="unfinished">Values</translation>
+      <translation>Значення</translation>
     </message>
     <message>
       <source>Match whole string only</source>
@@ -1655,15 +1655,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Find Next</source>
-      <translation type="unfinished">Find Next</translation>
+      <translation>Шукати далі</translation>
     </message>
     <message>
       <source>Not found</source>
-      <translation type="unfinished">Not found</translation>
+      <translation>Не знайдено</translation>
     </message>
     <message>
       <source>Can't find the text: %1</source>
-      <translation type="unfinished">Can't find the text: %1</translation>
+      <translation>Не вдається знайти текст: %1</translation>
     </message>
   </context>
   <context>
@@ -2836,11 +2836,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
-      <translation type="unfinished">Minimum fractional inch:</translation>
+      <translation>Мінімальна частина дюйма:</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Мінімальна частина дюйма для відображення&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>1/2"</source>
@@ -2872,7 +2872,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Unit system:</source>
-      <translation type="unfinished">Unit system:</translation>
+      <translation>Система одиниць вимірювання:</translation>
     </message>
   </context>
   <context>
@@ -3508,7 +3508,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Selected points</source>
-      <translation type="unfinished">Selected points</translation>
+      <translation>Обрані точки</translation>
     </message>
     <message>
       <source>Apply incremental changes</source>
@@ -3912,19 +3912,19 @@ Do you want to save your changes?</source>
     <name>Gui::GestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation type="unfinished">Tap OR click left mouse button.</translation>
+      <translation>Торкніться або клацніть лівою кнопкою миші.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press right mouse button.</source>
       <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4206,7 +4206,7 @@ How do you want to proceed?</source>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation type="unfinished">Tap OR click left mouse button.</translation>
+      <translation>Торкніться або клацніть лівою кнопкою миші.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
@@ -7400,7 +7400,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+      <translation>Ці елементи обрані для видалення, але вони знаходяться не в активному документі.</translation>
     </message>
     <message>
       <source>Are you sure you want to continue?</source>
@@ -7519,7 +7519,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation type="unfinished">Set NaviCube to Isometric mode</translation>
+      <translation>Встановити NaviCube в ізометричний режим перегляду</translation>
     </message>
   </context>
   <context>

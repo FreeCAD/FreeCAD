@@ -77,7 +77,9 @@ __created__ = "2016"
 __scriptVersion__ = "3t Usable"
 __lastModified__ = "2019-05-10 10:37 CST"
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -1917,5 +1919,5 @@ def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Surface operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectSurface(obj, name)
+    obj.Proxy = ObjectSurface(obj, name)
     return obj

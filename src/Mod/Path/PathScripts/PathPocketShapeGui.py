@@ -28,11 +28,9 @@ import Part
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
-import PathScripts.PathOp as PathOp
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocketShape as PathPocketShape
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui
-import PathScripts.PathUtil as PathUtil
 
 from PySide import QtCore, QtGui
 from pivy import coin
@@ -45,7 +43,9 @@ __doc__ = "Pocket Shape operation page controller and command implementation."
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -54,7 +54,6 @@ else:
 class _Extension(object):
     ColourEnabled = (1.0,  .5, 1.0)
     ColourDisabled = (1.0, 1.0, .5)
-    #ColourDisabled = (.5, .5, .5)
     TransparencySelected = 0.0
     TransparencyDeselected = 0.7
 

@@ -27,15 +27,17 @@
 #include "Gui/ViewProviderGeometryObject.h"
 #include <Base/BoundBox.h>
 
+#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+
 class SoPickStyle;
 class SbBox3f;
 class SoGetBoundingBoxAction;
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderDatum : public Gui::ViewProviderGeometryObject
+class PartDesignGuiExport ViewProviderDatum : public Gui::ViewProviderGeometryObject, PartGui::ViewProviderAttachExtension
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderDatum);
+    PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderDatum);
 
 public:
     /// constructor
@@ -60,14 +62,14 @@ public:
     virtual std::string getElement(const SoDetail *) const;
     virtual SoDetail* getDetail(const char*) const;
 
-    /** 
+    /**
      * Enable/Disable the selectability of the datum
-     * This differs from the normal ViewProvider selectability in that, that with this enabled one 
+     * This differs from the normal ViewProvider selectability in that, that with this enabled one
      * can pick through the datum and select stuff behind it.
      */
     bool isPickable();
     void setPickable(bool val);
-    
+
     /**
      * Update the visual size to match the given extents
      * @note should be reimplemented in the offspings

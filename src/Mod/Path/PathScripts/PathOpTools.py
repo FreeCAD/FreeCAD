@@ -24,7 +24,6 @@
 
 import FreeCAD
 import Part
-import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import math
@@ -36,7 +35,9 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Collection of functions used by various Path operations. The functions are specific to Path and the algorithms employed by Path's operations."
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -203,7 +204,7 @@ def offsetWire(wire, base, offset, forward):
         PathLog.track('closed - inside')
         try:
             owire = wire.makeOffset2D(-offset)
-        except:
+        except Exception:
             # most likely offsetting didn't work because the wire is a hole
             # and the offset is too big - making the hole vanish
             return None

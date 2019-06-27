@@ -21,12 +21,8 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# import Draft
 import FreeCAD
 import FreeCADGui
-# import Path
-# import PathScripts
-# import PathScripts.PathDressupTag as PathDressupTag
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathDressupHoldingTags as PathDressupTag

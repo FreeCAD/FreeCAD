@@ -132,18 +132,18 @@ void ViewProvider::finishEditing()
 
 bool ViewProvider::setEdit(int ModNum)
 {
-    Q_UNUSED(ModNum); 
+    Q_UNUSED(ModNum);
     return true;
 }
 
 void ViewProvider::unsetEdit(int ModNum)
 {
-    Q_UNUSED(ModNum); 
+    Q_UNUSED(ModNum);
 }
 
 void ViewProvider::setEditViewer(View3DInventorViewer*, int ModNum)
 {
-    Q_UNUSED(ModNum); 
+    Q_UNUSED(ModNum);
 }
 
 void ViewProvider::unsetEditViewer(View3DInventorViewer*)
@@ -162,7 +162,7 @@ void ViewProvider::setUpdatesEnabled (bool enable)
 
 void highlight(const HighlightMode& high)
 {
-    Q_UNUSED(high); 
+    Q_UNUSED(high);
 }
 
 void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
@@ -266,7 +266,20 @@ void ViewProvider::update(const App::Property* prop)
 
 QIcon ViewProvider::getIcon(void) const
 {
-    return Gui::BitmapFactory().pixmap(sPixmap);
+    return mergeOverlayIcons (Gui::BitmapFactory().pixmap(sPixmap));
+}
+
+QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+
+    QIcon overlayedIcon = orig;
+
+    for (Gui::ViewProviderExtension* ext : vector) {
+        overlayedIcon = ext->extensionMergeOverlayIcons(overlayedIcon);
+    }
+
+    return overlayedIcon;
 }
 
 void ViewProvider::setTransformation(const Base::Matrix4D &rcMatrix)
@@ -531,8 +544,8 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec2s& pos, const View3DInven
     SoTransform* trans = new SoTransform;
     trans->setMatrix(gm.getMatrix());
     trans->ref();
-    
-    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated 
+
+    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated
     // transformation
     SoSeparator* root = new SoSeparator;
     root->ref();
@@ -556,7 +569,7 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir
 {
     // Note: There seems to be a bug with setRay() which causes SoRayPickAction
     // to fail to get intersections between the ray and a line
-    
+
     //first get the path to this node and calculate the current setTransformation
     SoSearchAction sa;
     sa.setNode(pcRoot);
@@ -564,19 +577,19 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir
     sa.apply(viewer->getSoRenderManager()->getSceneGraph());
     SoGetMatrixAction gm(viewer->getSoRenderManager()->getViewportRegion());
     gm.apply(sa.getPath());
-    
-    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated 
+
+    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated
     // transformation
     SoTransform* trans = new SoTransform;
     trans->ref();
     trans->setMatrix(gm.getMatrix());
-    
+
     SoSeparator* root = new SoSeparator;
     root->ref();
     root->addChild(viewer->getSoRenderManager()->getCamera());
     root->addChild(trans);
     root->addChild(pcRoot);
-    
+
     //get the picked point
     SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
     rp.setRay(pos,dir);
@@ -783,7 +796,7 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren(void) const
     for (Gui::ViewProviderExtension* ext : vector) {
         std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren();
         if (!nvec.empty())
-            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));  
+            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));
     }
     return vec;
 }
@@ -795,7 +808,7 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren3D(void) const
     for (Gui::ViewProviderExtension* ext : vector) {
         std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren3D();
         if (!nvec.empty())
-            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));  
+            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));
     }
     return vec;
 }

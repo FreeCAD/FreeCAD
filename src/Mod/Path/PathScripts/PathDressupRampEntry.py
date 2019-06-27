@@ -34,7 +34,6 @@ from PySide import QtCore
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtGui
 
 
 # Qt translation handling

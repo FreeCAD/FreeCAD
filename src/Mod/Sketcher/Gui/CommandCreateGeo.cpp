@@ -1155,10 +1155,14 @@ public:
                 if(SnapMode == SNAP_MODE_45Degree && Mode != STATUS_Close) {
                     // -360, -315, -270, -225, -180, -135, -90, -45,  0, 45,  90, 135, 180, 225, 270, 315, 360
                     //  N/A,    a, perp,    a,  par,    a,perp,   a,N/A,  a,perp,   a, par,   a,perp,   a, N/A
+
+                    // #3974: if in radians, the printf %f defaults to six decimals, which leads to loss of precision
+                    double arcAngle = abs(round( (endAngle - startAngle) / (M_PI/4)) * 45); // in degrees
+
                     Gui::Command::doCommand(Gui::Command::Doc,
-                                            "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%i,%f)) ",
+                                            "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%i,App.Units.Quantity('%f deg'))) ",
                                             sketchgui->getObject()->getNameInDocument(),
-                                            lastCurve, abs(endAngle-startAngle));
+                                            lastCurve, arcAngle);
                 }
                 if (Mode == STATUS_Close) {
                     // close the loop by constrain to the first curve point

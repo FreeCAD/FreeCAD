@@ -27,7 +27,6 @@ import FreeCADGui
 import PathScripts.PathSurface as PathSurface
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
-# import PathScripts.PathPocketBaseGui as PathPocketBaseGui
 
 from PySide import QtCore
 
@@ -46,8 +45,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getFields(self, obj):
         '''getFields(obj) ... transfers values from UI to obj's proprties'''
-        # if obj.StartVertex != self.form.startVertex.value():
-        #     obj.StartVertex = self.form.startVertex.value()
         PathGui.updateInputField(obj, 'DepthOffset', self.form.depthOffset)
         PathGui.updateInputField(obj, 'SampleInterval', self.form.sampleInterval)
 
@@ -73,7 +70,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
-        # self.form.startVertex.setValue(obj.StartVertex)
         self.selectInComboBox(obj.Algorithm, self.form.algorithmSelect)
         self.selectInComboBox(obj.BoundBox, self.form.boundBoxSelect)
         self.selectInComboBox(obj.DropCutterDir, self.form.dropCutterDirSelect)
@@ -94,7 +90,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
-        # signals.append(self.form.startVertex.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.algorithmSelect.currentIndexChanged)
         signals.append(self.form.boundBoxSelect.currentIndexChanged)

@@ -91,7 +91,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
       <source>Error: {err}</source>
-      <translation type="unfinished">Error: {err}</translation>
+      <translation>Помилка: {err}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
       <source>Attachment...</source>
-      <translation type="unfinished">Attachment...</translation>
+      <translation>Вкладення...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Поганий вибір</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -170,7 +170,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Поганий вибір</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation type="unfinished">Connect objects</translation>
+      <translation>Зʼєднати обʼєкти</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
@@ -230,7 +230,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Поганий вибір</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
@@ -284,7 +284,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Поганий вибір</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -334,7 +334,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
-      <translation type="unfinished">Boolean XOR</translation>
+      <translation>Логічний XOR</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
@@ -1015,7 +1015,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="168"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</translation>
+      <translation>Площина буде проходити через перші дві вершини та буде перпендикулярною до площини, яка проходить через всі три вершини.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="170"/>

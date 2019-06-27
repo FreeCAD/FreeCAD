@@ -31,16 +31,16 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 import FemGui  # needed to display the icons in TreeView
-False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just returns 'FemGui'
 
 # for the panel
-import FemGui
 import femresult.resulttools as resulttools
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
 from PySide.QtGui import QApplication
 import numpy as np
+
+False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns 'FemGui'
 
 
 class _ViewProviderFemResultMechanical:
@@ -467,6 +467,28 @@ class _TaskPanelFemResultShow:
         exy = np.array(self.result_obj.NodeStrainXY)
         exz = np.array(self.result_obj.NodeStrainXZ)
         eyz = np.array(self.result_obj.NodeStrainYZ)
+
+        # Display of Reinforcement Ratios and Mohr Coulomb Criterion
+        rx = np.array(self.result_obj.ReinforcementRatio_x)
+        ry = np.array(self.result_obj.ReinforcementRatio_y)
+        rz = np.array(self.result_obj.ReinforcementRatio_z)
+        mc = np.array(self.result_obj.MohrCoulomb)
+
+        ps1vector = np.array(self.result_obj.PS1Vector)
+        s1x = np.array(ps1vector[:, 0])
+        s1y = np.array(ps1vector[:, 1])
+        s1z = np.array(ps1vector[:, 2])
+
+        ps2vector = np.array(self.result_obj.PS2Vector)
+        s2x = np.array(ps2vector[:, 0])
+        s2y = np.array(ps2vector[:, 1])
+        s2z = np.array(ps2vector[:, 2])
+
+        ps3vector = np.array(self.result_obj.PS1Vector)
+        s3x = np.array(ps3vector[:, 0])
+        s3y = np.array(ps3vector[:, 1])
+        s3z = np.array(ps3vector[:, 2])
+
         userdefined_eq = self.form.user_def_eq.toPlainText()  # Get equation to be used
         UserDefinedFormula = eval(userdefined_eq).tolist()
         self.result_obj.UserDefined = UserDefinedFormula
@@ -486,7 +508,8 @@ class _TaskPanelFemResultShow:
         del x, y, z, T, Von, Peeq, P1, P2, P3
         del sxx, syy, szz, sxy, sxz, syz
         del exx, eyy, ezz, exy, exz, eyz
-        del MF, NP
+        del MF, NP, rx, ry, rz, mc
+        del s1x, s1y, s1z, s2x, s2y, s2z, s3x, s3y, s3z
 
     def select_displacement_type(self, disp_type):
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -634,12 +657,13 @@ def hide_femmeshes_postpiplines():
 
 
 def hide_parts_constraints():
+    from FemGui import getActiveAnalysis
     fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
     hide_constraints = fem_prefs.GetBool("HideConstraint", False)
     if hide_constraints:
         for o in FreeCAD.ActiveDocument.Objects:
             if o.isDerivedFrom('Fem::FemAnalysis'):
-                for acnstrmesh in FemGui.getActiveAnalysis().Group:
+                for acnstrmesh in getActiveAnalysis().Group:
                     if "Constraint" in acnstrmesh.TypeId:
                         acnstrmesh.ViewObject.Visibility = False
                 break

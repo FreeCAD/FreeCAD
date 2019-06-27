@@ -25,7 +25,6 @@
 import FreeCAD
 import Part
 import Path
-import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathProfileBase as PathProfileBase
@@ -36,7 +35,9 @@ from PySide import QtCore
 
 """Path Profile from Edges Object and Command"""
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -104,5 +105,5 @@ def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Profile based on edges operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectProfile(obj, name)
+    obj.Proxy = ObjectProfile(obj, name)
     return obj

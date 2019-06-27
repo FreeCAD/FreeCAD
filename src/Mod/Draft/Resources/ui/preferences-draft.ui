@@ -339,7 +339,7 @@ Values with differences below this value will be treated as same. This value wil
          <string>If this option is set, when creating Draft objects on top of an existing face of another object, the &quot;Support&quot; property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</string>
         </property>
         <property name="text">
-         <string>Set the Support properry when possible</string>
+         <string>Set the Support property when possible</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>useSupport</cstring>

@@ -924,7 +924,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4872"/>
       <source>Create a B-spline via control points in the sketch.</source>
-      <translation type="unfinished">Create a B-spline via control points in the sketch.</translation>
+      <translation>Crea un B-spline donats els punts de control en l'esbós.</translation>
     </message>
   </context>
   <context>
@@ -1122,7 +1122,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4916"/>
       <source>Create a periodic B-spline via control points in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline via control points in the sketch.</translation>
+      <translation>Crea un B-spline periòdic donats uns punts de control en l'esbós.</translation>
     </message>
   </context>
   <context>
@@ -1553,7 +1553,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1818"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a rectangular array pattern of the geometry taking as reference the last selected point</translation>
+      <translation>Crea un patró de matriu rectangular de la geometria prenent com a referència l'últim punt seleccionat</translation>
     </message>
   </context>
   <context>
@@ -1883,37 +1883,37 @@
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="374"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying coincident constraints.</translation>
+      <translation>Error de restricció automàtica: esbós irresoluble si s'apliquen restriccions coincidents.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="453"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</translation>
+      <translation>Error de restricció automàtica: esbós irresoluble si s'apliquen restriccions verticals/horitzontals.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="648"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying equality constraints.</translation>
+      <translation>Error de restricció automàtica: esbós irresoluble si s'apliquen restriccions d'igualtat.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="702"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch without constraints.</translation>
+      <translation>Error de restricció: esbós irresoluble sense restriccions.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="739"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</translation>
+      <translation>Error de restricció: esbós irresoluble després d'aplicar restriccions verticals i horitzontals.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="761"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</translation>
+      <translation>Error de restricció: esbós irresoluble si s'apliquen restriccions de punt a punt.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="789"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying equality constraints.</translation>
+      <translation>Error de restricció: esbós irresoluble si s'apliquen restriccions d'igualtat.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="1499"/>
@@ -1928,7 +1928,7 @@
     <message>
       <location filename="../../../App/SketchObject.cpp" line="4897"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
-      <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
+      <translation>L'índex de geometria BSpline (GeoID) està fora de les restriccions.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="4900"/>
@@ -1938,7 +1938,7 @@
     <message>
       <location filename="../../../App/SketchObject.cpp" line="4905"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
-      <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline curve.</translation>
+      <translation>L'índex de geometria (GeoId) proporcionat no és una corba de B-spline.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="4912"/>
@@ -1948,7 +1948,7 @@
     <message>
       <location filename="../../../App/SketchObject.cpp" line="4919"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
-      <translation type="unfinished">The multiplicity cannot be increased beyond the degree of the B-spline.</translation>
+      <translation>La multiplicitat no es pot augmentar més enllà del grau del B-spline.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="4922"/>
@@ -2245,7 +2245,7 @@
       <location filename="../../CommandConstraints.cpp" line="1505"/>
       <location filename="../../CommandConstraints.cpp" line="1593"/>
       <source>The selected edge already has a horizontal constraint!</source>
-      <translation type="unfinished">The selected edge already has a horizontal constraint!</translation>
+      <translation>L'aresta seleccionada ja té una restricció horitzontal.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1258"/>
@@ -2253,7 +2253,7 @@
       <location filename="../../CommandConstraints.cpp" line="1500"/>
       <location filename="../../CommandConstraints.cpp" line="1598"/>
       <source>The selected edge already has a vertical constraint!</source>
-      <translation type="unfinished">The selected edge already has a vertical constraint!</translation>
+      <translation>L'aresta seleccionada ja té una restricció vertical.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1264"/>
@@ -2263,7 +2263,7 @@
       <location filename="../../CommandConstraints.cpp" line="2020"/>
       <location filename="../../CommandConstraints.cpp" line="2070"/>
       <source>The selected edge already has a Block constraint!</source>
-      <translation type="unfinished">The selected edge already has a Block constraint!</translation>
+      <translation>L'aresta seleccionada ja té una restricció de Bloc.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1283"/>
@@ -2283,7 +2283,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1556"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
-      <translation type="unfinished">There are more than one fixed points selected. Select a maximum of one fixed point!</translation>
+      <translation>Hi ha més d'un punt fixe seleccionat! Seleccioneu-ne com a màxim un de fixe.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1711"/>
@@ -2419,7 +2419,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3140"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
-      <translation type="unfinished">Cannot add a fixed x-coordinate constraint on the origin point!</translation>
+      <translation>No es pot afegir una restricció de coordenada x fixa sobre el punt d'origen.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3198"/>
@@ -2435,7 +2435,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3388"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
-      <translation type="unfinished">Cannot add a fixed y-coordinate constraint on the origin point!</translation>
+      <translation>No es pot afegir una restricció de coordenada y fixa sobre el punt d'origen.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3587"/>
@@ -2686,7 +2686,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="7295"/>
       <source>You cannot internally constrain an ellipse on other ellipse. Select only one ellipse.</source>
-      <translation type="unfinished">You cannot internally constrain an ellipse on other ellipse. Select only one ellipse.</translation>
+      <translation>No podeu restringir internament una el·lipse sobre una altra el·lipse. Seleccioneu-ne sols una.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7301"/>
@@ -2704,7 +2704,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="7344"/>
       <location filename="../../CommandConstraints.cpp" line="7503"/>
       <source>Nothing to constrain</source>
-      <translation type="unfinished">Nothing to constrain</translation>
+      <translation>No hi ha res per a restringir</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7345"/>
@@ -2729,12 +2729,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="7448"/>
       <source>You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</source>
-      <translation type="unfinished">You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</translation>
+      <translation>No podeu restringir internament un arc d'el·lipse sobre un altre arc d'el·lipse. Seleccioneu-ne sols un.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7454"/>
       <source>You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
-      <translation type="unfinished">You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</translation>
+      <translation>No podeu restringir internament una el·lipse o un arc d'el·lipse. Seleccioneu només una el·lipse o un arc d'el·lipse.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7504"/>
@@ -2924,7 +2924,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6709"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
-      <translation type="unfinished">The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</translation>
+      <translation>L'esbós seleccionat no és paral·lel a aquest esbós. Manteniu les tecles Ctrl+Alt per a permetre esbossos no paral·lels.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6712"/>
@@ -3241,7 +3241,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
       <source>If selected, each element in the array is constrained with respect to the others using construction lines</source>
-      <translation type="unfinished">If selected, each element in the array is constrained with respect to the others using construction lines</translation>
+      <translation>Si està seleccionat, cada element de la matriu es restringeix respecte als altres utilitzant les línies de construcció</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="99"/>
@@ -3676,11 +3676,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
-
-%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
-
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+      <translation>S'han trobat %1 arcs de geometria externa inversa. Els seus extrems estan encerclats en la vista 3D. %2 restriccions s'apliquen als extrems. Les restriccions s'han llistat en la vista d'informe (menú Vista -&gt; Panells -&gt; Vista d'informe). Feu clic a «Intercanvia els extrems en les restriccions» per a reassignar els extrems. Feu això només una vegada en esbossos creats en una versió del FreeCAD anterior a la v0.15</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="230"/>

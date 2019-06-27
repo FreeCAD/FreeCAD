@@ -29,6 +29,9 @@
 #include <QRectF>
 #include "DrawTemplate.h"
 
+#define SVG_NS_URI         "http://www.w3.org/2000/svg"
+#define FREECAD_SVG_NS_URI "http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+
 namespace TechDraw
 {
 
@@ -61,7 +64,6 @@ public:
 
     double getWidth() const;
     double getHeight() const;
-    void getBlockDimensions(double &x, double &y, double &width, double &height) const;
 
 protected:
     void onChanged(const App::Property* prop);
@@ -71,8 +73,6 @@ protected:
      * Also populates editableSvgIds
      */
     std::map<std::string, std::string> getEditableTextsFromTemplate();
-
-    QRectF blockDimensions;
 };
 
 typedef App::FeaturePythonT<DrawSVGTemplate> DrawSVGTemplatePython;

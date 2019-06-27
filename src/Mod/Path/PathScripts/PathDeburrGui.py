@@ -28,7 +28,6 @@ import PathScripts.PathDeburr as PathDeburr
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathSelection as PathSelection
 
 from PySide import QtCore, QtGui
 
@@ -37,7 +36,9 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Deburr operation page controller and command implementation."
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:

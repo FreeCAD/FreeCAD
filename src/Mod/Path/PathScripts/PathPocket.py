@@ -24,18 +24,18 @@
 
 import FreeCAD
 import Part
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPocketBase as PathPocketBase
 import PathScripts.PathUtils as PathUtils
-import sys
 
 from PySide import QtCore
 
 __doc__ = "Class and implementation of the Pocket operation."
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -100,5 +100,5 @@ def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Pocket operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectPocket(obj, name)
+    obj.Proxy = ObjectPocket(obj, name)
     return obj
