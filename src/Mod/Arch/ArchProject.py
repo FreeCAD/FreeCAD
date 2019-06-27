@@ -67,7 +67,7 @@ class _CommandProject:
     "the Arch Project command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_Site', # TODO: replace with a custom icon
+        return {'Pixmap'  : 'Arch_Project',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Project", "Project"),
                 'Accel': "P, O",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Project", "Creates a project entity aggregating the selected sites.")}
@@ -119,7 +119,7 @@ class _ViewProviderProject(ArchIFCView.IfcContextView):
 
     def getIcon(self):
         import Arch_rc
-        return ":/icons/Arch_Site_Tree.svg" # TODO: replace with custom icon
+        return ":/icons/Arch_Project_Tree.svg"
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Project', _CommandProject())
