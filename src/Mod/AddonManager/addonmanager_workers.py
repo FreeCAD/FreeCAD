@@ -200,10 +200,14 @@ class CheckWBWorker(QtCore.QThread):
                         repo = git.Repo(clonedir)
                         repo.head.reset('--hard')
                     gitrepo = git.Git(clonedir)
-                    gitrepo.fetch()
-                    if "git pull" in gitrepo.status():
-                        self.mark.emit(repo[0])
-                        upds.append(repo[0])
+                    try:
+                        gitrepo.fetch()
+                    except:
+                        print("AddonManager: Unable to fetch git updates for repo",repo[0])
+                    else:
+                        if "git pull" in gitrepo.status():
+                            self.mark.emit(repo[0])
+                            upds.append(repo[0])
         self.enable.emit(len(upds))
         self.stop = True
 
@@ -436,7 +440,8 @@ class ShowWorker(QtCore.QThread):
                                 pix = QtGui.QPixmap()
                                 pix = pix.fromImage(img.scaled(300,300,QtCore.Qt.KeepAspectRatio,QtCore.Qt.FastTransformation))
                                 pix.save(storename, "jpeg",100)
-                    message = message.replace(origpath,"file:///"+storename.replace("\\","/"))
+                    message = message.replace("src=\""+origpath,"src=\"file:///"+storename.replace("\\","/"))
+            #print(message)
             return message
         return None
 
