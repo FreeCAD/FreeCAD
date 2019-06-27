@@ -277,7 +277,7 @@ class FillMacroListWorker(QtCore.QThread):
         self.progressbar_show.emit(True)
         u = urlopen("https://www.freecadweb.org/wiki/Macros_recipes")
         if not u:
-           return 
+           return
         p = u.read()
         u.close()
         if sys.version_info.major >= 3 and isinstance(p, bytes):
@@ -385,7 +385,7 @@ class ShowWorker(QtCore.QThread):
             message = desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
 
         if self.repos[self.idx][0] in OBSOLETE:
-            message = " <strong style=\"background: #FF0000;\">"+translate("AddonsInstaller","This add-on is marked as obsolete")+"</strong><br/><br/>"+translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced add-on in this list provides the same functionality.")+"<br/><br/>" + message
+            message = " <strong style=\"background: #FF0000;\">"+translate("AddonsInstaller","This addon is marked as obsolete")+"</strong><br/><br/>"+translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/><br/>" + message
 
         self.info_label.emit( message )
         self.progressbar_show.emit(False)
@@ -432,7 +432,7 @@ class ShowWorker(QtCore.QThread):
                             f = open(storename,"wb")
                             f.write(imagedata)
                             f.close()
-    
+
                             # resize the image to 300x300px if needed
                             from PySide import QtCore,QtGui
                             img = QtGui.QImage(storename)
@@ -696,4 +696,3 @@ class InstallWorker(QtCore.QThread):
         if bakdir:
             shutil.rmtree(bakdir)
         return translate("AddonsInstaller", "Successfully installed") + " " + zipurl
-
