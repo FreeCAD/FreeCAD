@@ -7215,6 +7215,38 @@ unsigned int SketchObject::getMemSize(void) const
 
 void SketchObject::Save(Writer &writer) const
 {
+    int index = -1;
+    auto &geos = const_cast<Part::PropertyGeometryList&>(ExternalGeo).getValues();
+    for(auto geo : geos)
+        geo->RefIndex= -1;
+
+    if(isExporting()) {
+        // We cannot export shape with the new topological naming, because it
+        // uses hasher indices that are unique only within its owner document.
+        // Therefore, we cannot rely on Geometry::Ref as key to map geometry to
+        // external object reference. So, before exporting, we pre-calculate
+        // the mapping and store them in Geometry::RefIndex. When importing,
+        // inside updateGeometryRef() (called by onDocumentRestore()), we shall
+        // regenerate Geometry::Ref based on RefIndex. 
+        //
+        // Note that the regenerated Ref will not be using the new topological
+        // naming either, because we didn't export them.  This is exactly the
+        // same as if we are opening a legacy file without new names.
+        // updateGeometryRef() will know how to handle the name change thanks
+        // to a flag setup in onUpdateElementReference().
+        for(auto &key : externalGeoRef) {
+            ++index;
+            auto iter = externalGeoRefMap.find(key);
+            if(iter == externalGeoRefMap.end())
+                continue;
+            for(auto id : iter->second) {
+                auto it = externalGeoMap.find(id);
+                if(it != externalGeoMap.end()) 
+                    geos[it->second]->RefIndex = index;
+            }
+        }
+    }
+
     // save the father classes
     Part::Part2DObject::Save(writer);
 }
@@ -7359,9 +7391,21 @@ void SketchObject::updateGeometryRefs() {
         if(originalRefs.size() && originalRefs[i]!=key) 
             refMap[originalRefs[i]] = key;
     }
-    if(refMap.size()) {
-        auto geos = ExternalGeo.getValues();
-        bool touched = false;
+    bool touched = false;
+    auto geos = ExternalGeo.getValues();
+    if(refMap.empty()) {
+        for(auto geo : geos) {
+            if(geo->RefIndex<0)
+                continue;
+            if(geo->RefIndex < (int)externalGeoRef.size() 
+                    && geo->Ref != externalGeoRef[geo->RefIndex])
+            {
+                touched = true;
+                geo->Ref = externalGeoRef[geo->RefIndex];
+            }
+            geo->RefIndex = -1;
+        }
+    }else{
         for(auto &v : refMap) {
             auto it = externalGeoRefMap.find(v.first);
             if(it == externalGeoRefMap.end())
@@ -7378,9 +7422,9 @@ void SketchObject::updateGeometryRefs() {
                 }
             }
         }
-        if(touched)
-            ExternalGeo.setValues(std::move(geos));
     }
+    if(touched)
+        ExternalGeo.setValues(std::move(geos));
 }
 
 void SketchObject::onDocumentRestored()

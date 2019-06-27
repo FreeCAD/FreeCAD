@@ -97,6 +97,7 @@ public:
 
     long Id;
     std::string Ref;
+    int RefIndex;
 
     enum Flag {
         Defining = 0, // allow an external geometry to build shape

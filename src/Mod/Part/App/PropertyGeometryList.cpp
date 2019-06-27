@@ -187,6 +187,7 @@ void PropertyGeometryList::Save(Writer &writer) const
                         << _lValueList[i]->getTypeId().getName() 
                         << "\" id=\"" << _lValueList[i]->Id 
                         << "\" ref=\"" << encodeAttribute(_lValueList[i]->Ref) 
+                        << "\" refIndex=\"" << _lValueList[i]->RefIndex 
                         << "\" flags=\"" << _lValueList[i]->Flags.to_ulong() << "\">" << endl;
         writer.incInd();
         _lValueList[i]->Save(writer);
@@ -214,6 +215,8 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
             newG->Id = reader.getAttributeAsInteger("id");
         if(reader.hasAttribute("ref"))
             newG->Ref = reader.getAttribute("ref");
+        if(reader.hasAttribute("refIndex"))
+            newG->RefIndex = reader.getAttributeAsInteger("refIndex");
         if(reader.hasAttribute("flags")) {
             newG->Flags = (unsigned long)reader.getAttributeAsUnsigned("flags");
             newG->setFlag(Part::Geometry::Sync,false);

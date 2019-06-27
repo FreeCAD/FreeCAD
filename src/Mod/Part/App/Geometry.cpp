@@ -188,7 +188,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Part::Geometry,Base::Persistence)
 static std::atomic<long> _GeometryID;
 
 Geometry::Geometry()
-  : Construction(false), Id(++_GeometryID)
+  : Construction(false), Id(++_GeometryID), RefIndex(-1)
 {
     createNewTag();
 }
@@ -251,6 +251,7 @@ Geometry *Geometry::clone(void) const
     cpy->tag = this->tag;
     cpy->Id = this->Id;
     cpy->Ref = this->Ref;
+    cpy->RefIndex = this->RefIndex;
     cpy->Flags = this->Flags;
     return cpy;
 }
