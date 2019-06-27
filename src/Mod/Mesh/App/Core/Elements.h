@@ -164,6 +164,22 @@ public:
   Base::BoundBox3f GetBoundBox () const;
   /** Checks if the edge intersects with the given bounding box. */
   bool IntersectBoundingBox (const Base::BoundBox3f &rclBB) const;
+  /** Calculates the intersection point of the line defined by the base \a rclPt and the direction \a rclDir
+   * with the edge. The intersection must be inside the edge. If there is no intersection false is returned.
+   */
+  bool IntersectWithLine (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes) const;
+  /**
+   * Calculates the projection of a point onto the line defined by the edge. The caller must check if
+   * the projection point is inside the edge.
+   */
+  void ProjectPointToLine (const Base::Vector3f &rclPoint, Base::Vector3f &rclProj) const;
+  /**
+   * Get the closest points \a rclPnt1 and \a rclPnt2 of the line defined by this edge and the line
+   * defined by \a rclPt and \a rclDir.
+   * If the two points are identical then both lines intersect each other.
+   */
+  void ClosestPointsToLine(const Base::Vector3f &linePt, const Base::Vector3f &lineDir,
+                           Base::Vector3f& rclPnt1, Base::Vector3f& rclPnt2) const;
 
 public:
   Base::Vector3f _aclPoints[2];  /**< Corner points */
