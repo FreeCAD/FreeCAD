@@ -426,12 +426,16 @@ public:
 
     /** Helper function to export a subname reference
      *
+     * @param output: output subname if the subname is modified
      * @param obj: linked object
-     * @param sub: subname reference
-     * @param check: if Ture, then the return string will be empty if non of
-     *               sub object referenced is exporting.
-     * 
-     * @return The subname reference suitable for exporting
+     * @param sub: input subname reference
+     * @param first_obj: if true, then the first object referenced in subname
+     *                   is obtained by searching the owner document of obj,
+     *                   otherwise the subname search among obj's sub-objects.
+     *
+     * @return Return output.c_str() if the subname is modified for exporting
+     * otherwise, return the input subname
+     *
      * @sa importSubName(), restoreLabelReference()
      *
      * The function go through the input subname reference and changes any sub
@@ -442,7 +446,8 @@ public:
      * restoreLabelReference() can be used together to restore the reference
      * during import.
      */
-    static std::string exportSubName(const App::DocumentObject *obj, const char *sub, bool check=false);
+    static const char *exportSubName(std::string &output, 
+            const App::DocumentObject *obj, const char *subname, bool first_obj=false);
 
     /** Helper function to import a subname reference
      *

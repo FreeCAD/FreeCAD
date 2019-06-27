@@ -1306,16 +1306,52 @@ std::string PropertyLinkBase::importSubName(Base::XMLReader &reader, const char 
     return str.str();
 }
 
-std::string PropertyLinkBase::exportSubName(
-        const App::DocumentObject *obj, const char *sub, bool check) 
+const char *PropertyLinkBase::exportSubName(std::string &output,
+        const App::DocumentObject *obj, const char *sub, bool first_obj) 
 {
-    if(!obj)
-        return (!check&&sub)?std::string(sub):std::string();
     std::ostringstream str;
+    const char *res = sub;
+
+    if(!sub || !sub[0])
+        return res;
+
+    bool touched = false;
+    if(first_obj) {
+        auto dot = strchr(sub,'.');
+        if(!dot)
+            return res;
+        const char *hash;
+        for(hash=sub;hash<dot && *hash!='#';++hash);
+        App::Document *doc = 0;
+        if(*hash == '#')
+            doc = GetApplication().getDocument(std::string(sub,hash-sub).c_str());
+        else {
+            hash = 0;
+            if(obj && obj->getNameInDocument())
+                doc = obj->getDocument();
+        }
+        if(!doc) {
+            FC_ERR("Failed to get document for the first object in " << sub);
+            return res;
+        }
+        obj = doc->getObject(std::string(sub,dot-sub).c_str());
+        if(!obj || !obj->getNameInDocument())
+            return res;
+        if(hash) {
+            if(!obj->isExporting())
+                str << doc->getName() << '#';
+            sub = hash+1;
+        }
+    }else if(!obj || !obj->getNameInDocument()) 
+        return res;
+
     for(const char *dot=strchr(sub,'.');dot;sub=dot+1,dot=strchr(sub,'.')) {
         // name with trailing '.'
         auto name = std::string(sub,dot-sub+1);
-        obj = obj->getSubObject(name.c_str());
+        if(first_obj)
+            first_obj = false;
+        else
+            obj = obj->getSubObject(name.c_str());
         if(!obj || !obj->getNameInDocument()) {
             FC_WARN("missing sub object '" << name << "' in '" << sub <<"'");
             break;
@@ -1324,21 +1360,22 @@ std::string PropertyLinkBase::exportSubName(
             if(name[0] == '$') {
                 if(name.compare(1,name.size()-2,obj->Label.getValue())!=0) {
                     str << obj->getExportName(true) << "@.";
-                    check = false;
+                    touched = true;
                     continue;
                 }
             } else if(name.compare(0,name.size()-1,obj->getNameInDocument())==0) {
                 str << obj->getExportName(true) << '.';
-                check = false;
+                touched = true;
                 continue;
             }
         }
         str << name;
     }
-    if(check)
-        return std::string();
+    if(!touched)
+        return res;
     str << sub;
-    return str.str();
+    output = str.str();
+    return output.c_str();
 }
 
 App::DocumentObject *PropertyLinkBase::tryImport(const App::Document *doc,
@@ -1424,7 +1461,8 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
         const auto &sub = shadow.second.empty()?_cSubList[i]:shadow.second;
         writer.Stream() << writer.ind() << "<Sub value=\"";
         if(exporting) {
-            writer.Stream() << exportSubName(_pcLinkSub,sub.c_str());
+            std::string exportName;
+            writer.Stream() << exportSubName(exportName,_pcLinkSub,sub.c_str());
             if(shadow.second.size() && shadow.first == _cSubList[i])
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
@@ -2199,7 +2237,8 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
 
         writer.Stream() << writer.ind() << "<Link obj=\"" << obj->getExportName() << "\" sub=\"";
         if(exporting) {
-            writer.Stream() << exportSubName(obj,sub.c_str());
+            std::string exportName;
+            writer.Stream() << exportSubName(exportName,obj,sub.c_str());
             if(shadow.second.size() && _lSubList[i]==shadow.first)
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
@@ -3245,7 +3284,8 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         const auto &shadowSub = _ShadowSubList[0];
         const auto &sub = shadowSub.second.empty()?subName:shadowSub.second;
         if(exporting) {
-            writer.Stream() << "\" sub=\"" << exportSubName(_pcLink,sub.c_str());
+            std::string exportName;
+            writer.Stream() << "\" sub=\"" << exportSubName(exportName,_pcLink,sub.c_str());
             if(shadowSub.second.size() && shadowSub.first==subName)
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         }else{
@@ -3269,7 +3309,8 @@ void PropertyXLink::Save (Base::Writer &writer) const {
             const auto &sub = shadow.second.empty()?_SubList[i]:shadow.second;
             writer.Stream() << writer.ind() << "<Sub value=\"";
             if(exporting) {
-                writer.Stream() << exportSubName(_pcLink,sub.c_str());
+                std::string exportName;
+                writer.Stream() << exportSubName(exportName,_pcLink,sub.c_str());
                 if(shadow.second.size() && shadow.first == _SubList[i])
                     writer.Stream() << "\" " ATTR_MAPPED "=\"1";
             } else {

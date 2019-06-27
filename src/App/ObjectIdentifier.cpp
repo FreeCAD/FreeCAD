@@ -393,12 +393,9 @@ std::string ObjectIdentifier::toPersistentString() const {
 
     if(subObjectName.getString().size()) {
         const char *subname = subObjectName.getString().c_str();
-
-        std::string exportName = PropertyLinkBase::exportSubName(result.resolvedDocumentObject,subname);
-        if(exportName.size())
-            s << String(exportName,true).toString() << '.';
-        else
-            s << subObjectName.toString() << '.';
+        std::string exportName;
+        s << String(PropertyLinkBase::exportSubName(exportName,
+                        result.resolvedDocumentObject,subname),true).toString() << '.';
     }
 
     s << components[result.propertyIndex].getName();
