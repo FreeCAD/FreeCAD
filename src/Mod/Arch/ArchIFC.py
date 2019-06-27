@@ -28,8 +28,7 @@ class IfcRoot:
     def onChanged(self, obj, prop):
         if prop == "IfcType":
             self.setupIfcAttributes(obj)
-        if not attribute["name"] in obj.PropertiesList:
-            return
+            self.setupIfcComplexAttributes(obj)
         if obj.getGroupOfProperty(prop) == "IFC Attributes":
             self.setObjIfcAttributeValue(obj, prop, obj.getPropertyByName(prop))
 
@@ -39,6 +38,20 @@ class IfcRoot:
             return
         self.purgeUnusedIfcAttributesFromPropertiesList(ifcTypeSchema, obj)
         self.addIfcAttributes(ifcTypeSchema, obj)
+
+    def setupIfcComplexAttributes(self, obj):
+        ifcTypeSchema = self.getIfcTypeSchema(obj.IfcType)
+        if ifcTypeSchema is None:
+            return
+        IfcData = obj.IfcData
+        if "complex_attributes" not in IfcData:
+            IfcData["complex_attributes"] = "{}"
+        ifcComplexAttributes = json.loads(IfcData["complex_attributes"])
+        for attribute in ifcTypeSchema["complex_attributes"]:
+            if attribute["name"] not in ifcComplexAttributes.keys():
+                ifcComplexAttributes[attribute["name"]] = {}
+        IfcData["complex_attributes"] = json.dumps(ifcComplexAttributes)
+        obj.IfcData = IfcData
 
     def getIfcTypeSchema(self, IfcType):
         name = "Ifc" + IfcType.replace(" ", "")
@@ -125,6 +138,16 @@ class IfcRoot:
         IfcAttributes[attributeName]["value"] = value
         IfcData["attributes"] = json.dumps(IfcAttributes)
         obj.IfcData = IfcData
+
+    def setObjIfcComplexAttributeValue(self, obj, attributeName, value):
+        IfcData = obj.IfcData
+        IfcAttributes = json.loads(IfcData["complex_attributes"])
+        IfcAttributes[attributeName] = value
+        IfcData["complex_attributes"] = json.dumps(IfcAttributes)
+        obj.IfcData = IfcData
+
+    def getObjIfcComplexAttribute(self, obj, attributeName):
+        return json.loads(obj.IfcData["complex_attributes"])[attributeName]
 
     def purgeUnusedIfcAttributesFromPropertiesList(self, ifcTypeSchema, obj):
         for property in obj.PropertiesList:
