@@ -2190,23 +2190,20 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     }
 }
 
-static bool _UpdateBlocked;
+static int _UpdateBlocked;
 
 struct UpdateDisabler {
     QWidget &widget;
-    bool locked;
-    bool block;
     bool visible;
     bool focus;
 
     // Note! DO NOT block signal here, or else
     // QTreeWidgetItem::setChildIndicatorPolicy() does not work
-    UpdateDisabler(QWidget &w, bool block=false)
-        :widget(w),block(block)
+    UpdateDisabler(QWidget &w)
+        :widget(w)
     {
-        _UpdateBlocked = true;
-        if(block)
-            locked = widget.blockSignals(true);
+        if(++_UpdateBlocked > 1)
+            return;
         focus = widget.hasFocus();
         visible = widget.isVisible();
         if(visible) {
@@ -2220,15 +2217,15 @@ struct UpdateDisabler {
         }
     }
     ~UpdateDisabler() {
-        _UpdateBlocked = false;
+        if(_UpdateBlocked<=0 || --_UpdateBlocked!=0)
+            return;
+
         if(visible) {
             widget.setVisible(true);
             // widget.setUpdatesEnabled(true);
             if(focus)
                 widget.setFocus();
         }
-        if(block)
-            widget.blockSignals(locked);
     }
 };
 
@@ -3096,6 +3093,7 @@ void TreeWidget::slotDeleteDocument(const Gui::Document& Doc)
     NewObjects.erase(Doc.getDocument()->getName());
     auto it = DocumentMap.find(&Doc);
     if (it != DocumentMap.end()) {
+        UpdateDisabler disabler(*this);
         auto docItem = it->second;
         for(auto &v : docItem->ObjectMap) {
             for(auto item : v.second->items)
