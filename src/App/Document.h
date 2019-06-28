@@ -169,6 +169,7 @@ public:
     boost::signals2::signal<void (const App::Document&)> signalCommitTransaction;
     // signal an aborted transaction
     boost::signals2::signal<void (const App::Document&)> signalAbortTransaction;
+    boost::signals2::signal<void (const App::Document&,const App::Property&)> signalChangePropertyEditor;
     //@}
 
     /** @name File handling of the document */
@@ -340,8 +341,8 @@ public:
     bool redo() ;
     /// returns true if the document is in an Transaction phase, e.g. currently performing a redo/undo or rollback
     bool isPerformingTransaction() const;
-    /// \internal remove property from a transactional object with name \a name
-    void removePropertyOfObject(TransactionalObject*, const char*);
+    /// \internal add or remove property from a transactional object
+    void addOrRemovePropertyOfObject(TransactionalObject*, Property *prop, bool add);
     //@}
 
     /** @name dependency stuff */
@@ -389,6 +390,8 @@ public:
 
     virtual PyObject *getPyObject(void);
 
+    virtual std::string getFullName() const override;
+
     friend class Application;
     /// because of transaction handling
     friend class TransactionalObject;
@@ -401,7 +404,7 @@ public:
 
 protected:
     /// Construction
-    Document(void);
+    Document(const char *name = "");
 
     void _removeObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);
@@ -438,6 +441,8 @@ private:
     // pointer to the python class
     Py::Object DocumentPythonObject;
     struct DocumentP* d;
+
+    std::string myName;
 };
 
 template<typename T>

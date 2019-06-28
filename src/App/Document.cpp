@@ -940,15 +940,20 @@ bool Document::redo(void)
     return false;
 }
 
-void Document::removePropertyOfObject(TransactionalObject* obj, const char* name)
+void Document::addOrRemovePropertyOfObject(TransactionalObject* obj, Property *prop, bool add)
 {
-    Property* prop = obj->getDynamicPropertyByName(name);
-    if (prop) {
-        if (d->activeUndoTransaction)
-            d->activeUndoTransaction->removeProperty(obj, prop);
-        for (auto it : mUndoTransactions)
-            it->removeProperty(obj, prop);
+    if (!prop || !obj) 
+        return;
+    if(d->iUndoMode && !isPerformingTransaction() && !d->activeUndoTransaction) {
+        if(!testStatus(Restoring) || testStatus(Importing)) {
+            int tid=0;
+            const char *name = GetApplication().getActiveTransaction(&tid);
+            if(name && tid>0)
+                _openTransaction(name,tid);
+        }
     }
+    if (d->activeUndoTransaction)
+        d->activeUndoTransaction->addOrRemoveProperty(obj, prop, add);
 }
 
 bool Document::isPerformingTransaction() const
@@ -1202,7 +1207,8 @@ void Document::setTransactionMode(int iMode)
 //--------------------------------------------------------------------------
 // constructor
 //--------------------------------------------------------------------------
-Document::Document(void)
+Document::Document(const char *name)
+    : myName(name)
 {
     // Remark: In a constructor we should never increment a Python object as we cannot be sure
     // if the Python interpreter gets a reference of it. E.g. if we increment but Python don't
@@ -1957,7 +1963,12 @@ bool Document::isSaved() const
  */
 const char* Document::getName() const
 {
-    return GetApplication().getDocumentName(this);
+    // return GetApplication().getDocumentName(this);
+    return myName.c_str();
+}
+
+std::string Document::getFullName() const {
+    return myName;
 }
 
 /// Remove all modifications. After this call The document becomes valid again.

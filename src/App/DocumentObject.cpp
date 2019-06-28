@@ -529,27 +529,44 @@ void DocumentObject::setDocument(App::Document* doc)
     onSettingDocument();
 }
 
-void DocumentObject::onAboutToRemoveProperty(const char* name)
+bool DocumentObject::removeDynamicProperty(const char* name)
 {
-    if (_pDoc) {
-        _pDoc->removePropertyOfObject(this, name);
+    if (!_pDoc) 
+        return false;
 
-        Property* prop = getDynamicPropertyByName(name);
-        if (prop) {
-            auto expressions = ExpressionEngine.getExpressions();
-            std::vector<App::ObjectIdentifier> removeExpr;
+    Property* prop = getDynamicPropertyByName(name);
+    if(!prop || prop->testStatus(App::Property::LockDynamic))
+        return false;
 
-            for (auto it : expressions) {
-                if (it.first.getProperty() == prop) {
-                    removeExpr.push_back(it.first);
-                }
-            }
+    if(prop->isDerivedFrom(PropertyLinkBase::getClassTypeId()))
+        clearOutListCache();
 
-            for (auto it : removeExpr) {
-                ExpressionEngine.setValue(it, boost::shared_ptr<Expression>());
-            }
+    _pDoc->addOrRemovePropertyOfObject(this, prop, false);
+
+    auto expressions = ExpressionEngine.getExpressions();
+    std::vector<App::ObjectIdentifier> removeExpr;
+
+    for (auto it : expressions) {
+        if (it.first.getProperty() == prop) {
+            removeExpr.push_back(it.first);
         }
     }
+
+    for (auto it : removeExpr) {
+        ExpressionEngine.setValue(it, boost::shared_ptr<Expression>());
+    }
+
+    return TransactionalObject::removeDynamicProperty(name);
+}
+
+App::Property* DocumentObject::addDynamicProperty(
+    const char* type, const char* name, const char* group, const char* doc,
+    short attr, bool ro, bool hidden)
+{
+    auto prop = TransactionalObject::addDynamicProperty(type,name,group,doc,attr,ro,hidden);
+    if(prop && _pDoc)
+        _pDoc->addOrRemovePropertyOfObject(this, prop, true);
+    return prop;
 }
 
 void DocumentObject::onBeforeChange(const Property* prop)
@@ -580,8 +597,14 @@ void DocumentObject::onChanged(const Property* prop)
         _pDoc->signalRelabelObject(*this);
 
     // set object touched if it is an input property
-    if (!(prop->getType() & Prop_Output)) {
-        StatusBits.set(ObjectStatus::Touch);
+    if (!testStatus(ObjectStatus::NoTouch) 
+            && !(prop->getType() & Prop_Output) 
+            && !prop->testStatus(Property::Output)) 
+    {
+        if(!StatusBits.test(ObjectStatus::Touch)) {
+            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
+            StatusBits.set(ObjectStatus::Touch);
+        }
         // must execute on document recompute
         if (!(prop->getType() & Prop_NoRecompute))
             StatusBits.set(ObjectStatus::Enforce);
@@ -1006,5 +1029,11 @@ const char *DocumentObject::hasHiddenMarker(const char *subname) {
 
 bool DocumentObject::redirectSubName(std::ostringstream &, DocumentObject *, DocumentObject *) const {
     return false;
+}
+
+void DocumentObject::onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) {
+    (void)oldStatus;
+    if(!Document::isAnyRestoring() && getNameInDocument() && getDocument())
+        getDocument()->signalChangePropertyEditor(*getDocument(),prop);
 }
 
