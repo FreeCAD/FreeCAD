@@ -423,7 +423,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     }
 
     // create the FreeCAD document
-    std::unique_ptr<Document> newDoc(new Document());
+    std::unique_ptr<Document> newDoc(new Document(name.c_str()));
 
     // add the document to the internal list
     DocMap[name] = newDoc.release(); // now owned by the Application
@@ -448,6 +448,8 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     _pActiveDoc->signalAbortTransaction.connect(boost::bind(&App::Application::slotAbortTransaction, this, _1));
     _pActiveDoc->signalStartSave.connect(boost::bind(&App::Application::slotStartSaveDocument, this, _1, _2));
     _pActiveDoc->signalFinishSave.connect(boost::bind(&App::Application::slotFinishSaveDocument, this, _1, _2));
+    _pActiveDoc->signalChangePropertyEditor.connect(
+            boost::bind(&App::Application::slotChangePropertyEditor, this, _1, _2));
 
     // make sure that the active document is set in case no GUI is up
     {
@@ -1131,6 +1133,11 @@ void Application::slotFinishSaveDocument(const App::Document& doc, const std::st
     this->signalFinishSaveDocument(doc, filename);
 }
 
+void Application::slotChangePropertyEditor(const App::Document &doc, const App::Property &prop)
+{
+    this->signalChangePropertyEditor(doc,prop);
+}
+
 //**************************************************************************
 // Init, Destruct and singleton
 
@@ -1410,6 +1417,7 @@ void Application::initTypes(void)
     App ::PropertyIntegerSet        ::init();
     App ::PropertyMap               ::init();
     App ::PropertyString            ::init();
+    App ::PropertyPersistentObject  ::init();
     App ::PropertyUUID              ::init();
     App ::PropertyFont              ::init();
     App ::PropertyStringList        ::init();
