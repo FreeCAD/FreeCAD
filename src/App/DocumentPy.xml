@@ -52,8 +52,7 @@
       <Documentation>
           <UserDocu>openTransaction(name) - Open a new Undo/Redo transaction.
 
-If BaseApp->Preferences->Document->AutoTransaction is enabled, this function
-does not actuall create a new transaction, but calls
+This function no long creates a new transaction, but calls
 FreeCAD.setActiveTransaction(name) instead, which will auto creates a
 transaction with the given name when any change happed in any opened document.
 If more than one document is changed, all newly created transactions will have

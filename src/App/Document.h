@@ -372,8 +372,9 @@ public:
      *
      * @param name: transaction name
      *
-     * If BaseApp->Preference->Document->AutoTransaction is enabled, this
-     * function calls App::Application::setActiveTransaction(name) instead.
+     * This function calls App::Application::setActiveTransaction(name) instead
+     * to setup a potential transaction which will only be created if there is
+     * actual changes.
      */
     void openTransaction(const char* name=0);
     /** Open a new command Undo/Redo, an UTF-8 name can be specified

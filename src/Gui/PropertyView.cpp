@@ -192,13 +192,12 @@ void PropertyView::clearPropertyItemSelection() {
 }
 
 void PropertyView::slotRollback() {
-    // If auto transaction (BaseApp->Preferences->Document->AutoTransaction) is
-    // enabled, PropertyItemDelegate will setup application active transaction
-    // on entering edit mode, and close active transaction when exit editing.
-    // But, when the user clicks undo/redo button while editing some property,
-    // the current active transaction will be closed by design, which cause
-    // further editing to be not recorded. Hence, we force unselect any property
-    // item on undo/redo
+    // PropertyItemDelegate will setup application active transaction on
+    // entering edit mode, and close active transaction when exit editing.  But,
+    // when the user clicks undo/redo button while editing some property, the
+    // current active transaction will be closed by design, which cause further
+    // editing to be not recorded. Hence, we force unselect any property item on
+    // undo/redo
     clearPropertyItemSelection();
 }
 
