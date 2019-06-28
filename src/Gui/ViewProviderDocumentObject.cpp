@@ -48,6 +48,7 @@
 #include "ViewProviderExtension.h"
 #include <Gui/ViewProviderDocumentObjectPy.h>
 
+FC_LOG_LEVEL_INIT("Gui",true,true)
 
 using namespace Gui;
 
@@ -97,13 +98,30 @@ const char* ViewProviderDocumentObject::detachFromDocument()
     return "";
 }
 
-void ViewProviderDocumentObject::onAboutToRemoveProperty(const char* prop)
+bool ViewProviderDocumentObject::removeDynamicProperty(const char* name)
 {
     // transactions of view providers are also managed in App::Document.
     App::DocumentObject* docobject = getObject();
     App::Document* document = docobject ? docobject->getDocument() : nullptr;
     if (document)
-        document->removePropertyOfObject(this, prop);
+        document->addOrRemovePropertyOfObject(this, prop, false);
+
+    return ViewProvider::removeDynamicProperty(name);
+}
+
+App::Property* ViewProviderDocumentObject::addDynamicProperty(
+    const char* type, const char* name, const char* group, const char* doc,
+    short attr, bool ro, bool hidden)
+{
+    auto prop = ViewProvider::addDynamicProperty(type,name,group,doc,attr,ro,hidden);
+    if(prop) {
+        // transactions of view providers are also managed in App::Document.
+        App::DocumentObject* docobject = getObject();
+        App::Document* document = docobject ? docobject->getDocument() : nullptr;
+        if (document)
+            document->addOrRemovePropertyOfObject(this, prop, true);
+    }
+    return prop;
 }
 
 void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
@@ -131,8 +149,11 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
         }
     }
 
-    if (pcDocument)
+    if (pcDocument && !pcDocument->isModified()) {
+        if(prop)
+            FC_LOG(prop->getFullName() << " changed");
         pcDocument->setModified(true);
+    }
 
     ViewProvider::onChanged(prop);
 }
@@ -313,4 +334,18 @@ PyObject* ViewProviderDocumentObject::getPyObject()
         pyViewObject = new ViewProviderDocumentObjectPy(this);
     pyViewObject->IncRef();
     return pyViewObject;
+}
+
+void ViewProviderDocumentObject::onPropertyStatusChanged(
+        const App::Property &prop, unsigned long oldStatus) 
+{
+    (void)oldStatus;
+    if(!App::Document::isAnyRestoring() && pcObject && pcObject->getDocument())
+        pcObject->getDocument()->signalChangePropertyEditor(*pcObject->getDocument(),prop);
+}
+
+std::string ViewProviderDocumentObject::getFullName() const {
+    if(pcObject)
+        return pcObject->getFullName() + ".ViewObject";
+    return std::string();
 }

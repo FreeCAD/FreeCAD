@@ -19,6 +19,11 @@
         <UserDocu>Return the value of a named property.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getPropertyTouchList">
+      <Documentation>
+        <UserDocu>Return a list of index of touched values for list type properties.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getTypeOfProperty">
 		  <Documentation>
 			  <UserDocu>Return the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination. </UserDocu>
@@ -52,6 +57,30 @@ If the list contains 'Hidden' then the item even doesn't appear in the property 
 			  <UserDocu>Return the name of the group which the property belongs to in this class. The properties sorted in different named groups for convenience.</UserDocu>
 		  </Documentation>
 	  </Methode>
+      <Methode Name="setPropertyStatus">
+            <Documentation>
+                <UserDocu>
+setPropertyStatus(name,val): Set property status
+
+name(String): property name
+
+val(String|Int|[String|Int...]): text or integer value, or list/tuple of
+values. Call getPropertyStatus() to get a list of supported text value.
+If the text start with '-' or the integer value is negative, then the
+status is cleared.
+                </UserDocu>
+            </Documentation>
+      </Methode>
+      <Methode Name="getPropertyStatus">
+            <Documentation>
+                <UserDocu>
+getPropertyStatus(name=''): Get property status.
+
+name(String): property name. If name is empty, return a list of supported
+text names of the status.
+                </UserDocu>
+            </Documentation>
+      </Methode>
 	  <Methode Name="getDocumentationOfProperty">
 		  <Documentation>
 			  <UserDocu>Return the documentation string of the property of this class.</UserDocu>
