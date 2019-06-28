@@ -115,7 +115,7 @@ public:
     /// Return the object ID that is unique within its owner document
     long getID() const {return _Id;}
     /// Return the object full name of the form DocName#ObjName
-    std::string getFullName() const;
+    virtual std::string getFullName() const override;
     virtual bool isAttachedToDocument() const;
     virtual const char* detachFromDocument();
     /// gets the document in which this Object is handled
@@ -365,6 +365,13 @@ public:
         return _pcViewProviderName.c_str();
     }
 
+    virtual bool removeDynamicProperty(const char* prop) override;
+
+    virtual App::Property* addDynamicProperty(
+            const char* type, const char* name=0,
+            const char* group=0, const char* doc=0,
+            short attr=0, bool ro=false, bool hidden=false) override;
+
     /** Resolve the last document object referenced in the subname
      * 
      * @param subname: dot separated subname
@@ -438,8 +445,6 @@ protected:
     void resetError(void){StatusBits.reset(ObjectStatus::Error);}
     void setDocument(App::Document* doc);
 
-    /// \internal get called when removing a property of name \a prop
-    void onAboutToRemoveProperty(const char* prop);
     /// get called before the value is changed
     virtual void onBeforeChange(const Property* prop);
     /// get called by the container when a property was changed
@@ -452,6 +457,9 @@ protected:
     virtual void setupObject();
     /// get called when object is going to be removed from the document
     virtual void unsetupObject();
+
+    /// get called when a property status has changed
+    virtual void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) override;
 
      /// python object of this class and all descendent
 protected: // attributes

@@ -319,37 +319,9 @@ PropertyVectorList::~PropertyVectorList()
 //**************************************************************************
 // Base class implementer
 
-void PropertyVectorList::setSize(int newSize)
-{
-    _lValueList.resize(newSize);
-}
-
-int PropertyVectorList::getSize(void) const
-{
-    return static_cast<int>(_lValueList.size());
-}
-
-void PropertyVectorList::setValue(const Base::Vector3d& lValue)
-{
-    aboutToSetValue();
-    _lValueList.resize(1);
-    _lValueList[0]=lValue;
-    hasSetValue();
-}
-
 void PropertyVectorList::setValue(double x, double y, double z)
 {
-    aboutToSetValue();
-    _lValueList.resize(1);
-    _lValueList[0].Set(x,y,z);
-    hasSetValue();
-}
-
-void PropertyVectorList::setValues(const std::vector<Base::Vector3d>& values)
-{
-    aboutToSetValue();
-    _lValueList = values;
-    hasSetValue();
+    setValue(Base::Vector3d(x,y,z));
 }
 
 PyObject *PropertyVectorList::getPyObject(void)
@@ -362,37 +334,10 @@ PyObject *PropertyVectorList::getPyObject(void)
     return list;
 }
 
-void PropertyVectorList::setPyObject(PyObject *value)
-{
-    if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
-        std::vector<Base::Vector3d> values;
-        values.resize(nSize);
-
-        for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            PropertyVector val;
-            val.setPyObject( item );
-            values[i] = val.getValue();
-        }
-
-        setValues(values);
-    }
-    else if (PyObject_TypeCheck(value, &(VectorPy::Type))) {
-        Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(value);
-        Base::Vector3d* val = pcObject->getVectorPtr();
-        setValue(*val);
-    }
-    else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
-        PropertyVector val;
-        val.setPyObject( value );
-        setValue( val.getValue() );
-    }
-    else {
-        std::string error = std::string("type must be 'Vector' or list of 'Vector', not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
+Base::Vector3d PropertyVectorList::getPyValue(PyObject *item) const {
+    PropertyVector val;
+    val.setPyObject( item );
+    return val.getValue();
 }
 
 void PropertyVectorList::Save (Base::Writer &writer) const
@@ -463,9 +408,7 @@ Property *PropertyVectorList::Copy(void) const
 
 void PropertyVectorList::Paste(const Property &from)
 {
-    aboutToSetValue();
-    _lValueList = dynamic_cast<const PropertyVectorList&>(from)._lValueList;
-    hasSetValue();
+    setValues(dynamic_cast<const PropertyVectorList&>(from)._lValueList);
 }
 
 unsigned int PropertyVectorList::getMemSize (void) const
@@ -638,6 +581,18 @@ void PropertyPlacement::setValue(const Base::Placement &pos)
     _cPos=pos;
     hasSetValue();
 }
+
+bool PropertyPlacement::setValueIfChanged(const Base::Placement &pos,double tol,double atol)
+{
+    if(_cPos.getPosition().IsEqual(pos.getPosition(),tol)
+            && _cPos.getRotation().isSame(pos.getRotation(),atol))
+    {
+        return false;
+    }
+    setValue(pos);
+    return true;
+}
+
 
 const Base::Placement & PropertyPlacement::getValue(void)const
 {
@@ -826,31 +781,6 @@ PropertyPlacementList::~PropertyPlacementList()
 //**************************************************************************
 // Base class implementer
 
-void PropertyPlacementList::setSize(int newSize)
-{
-    _lValueList.resize(newSize);
-}
-
-int PropertyPlacementList::getSize(void) const
-{
-    return static_cast<int>(_lValueList.size());
-}
-
-void PropertyPlacementList::setValue(const Base::Placement& lValue)
-{
-    aboutToSetValue();
-    _lValueList.resize(1);
-    _lValueList[0]=lValue;
-    hasSetValue();
-}
-
-void PropertyPlacementList::setValues(const std::vector<Base::Placement>& values)
-{
-    aboutToSetValue();
-    _lValueList = values;
-    hasSetValue();
-}
-
 PyObject *PropertyPlacementList::getPyObject(void)
 {
     PyObject* list = PyList_New( getSize() );
@@ -861,37 +791,10 @@ PyObject *PropertyPlacementList::getPyObject(void)
     return list;
 }
 
-void PropertyPlacementList::setPyObject(PyObject *value)
-{
-    if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
-        std::vector<Base::Placement> values;
-        values.resize(nSize);
-
-        for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            PropertyPlacement val;
-            val.setPyObject( item );
-            values[i] = val.getValue();
-        }
-
-        setValues(values);
-    }
-    else if (PyObject_TypeCheck(value, &(PlacementPy::Type))) {
-        Base::PlacementPy  *pcObject = static_cast<Base::PlacementPy*>(value);
-        Base::Placement* val = pcObject->getPlacementPtr();
-        setValue(*val);
-    }
-    else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
-        PropertyPlacement val;
-        val.setPyObject( value );
-        setValue( val.getValue() );
-    }
-    else {
-        std::string error = std::string("type must be 'Placement' or list of 'Placement', not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
+Base::Placement PropertyPlacementList::getPyValue(PyObject *item) const {
+    PropertyPlacement val;
+    val.setPyObject( item );
+    return val.getValue();
 }
 
 void PropertyPlacementList::Save (Base::Writer &writer) const
@@ -975,9 +878,7 @@ Property *PropertyPlacementList::Copy(void) const
 
 void PropertyPlacementList::Paste(const Property &from)
 {
-    aboutToSetValue();
-    _lValueList = dynamic_cast<const PropertyPlacementList&>(from)._lValueList;
-    hasSetValue();
+    setValues(dynamic_cast<const PropertyPlacementList&>(from)._lValueList);
 }
 
 unsigned int PropertyPlacementList::getMemSize (void) const
