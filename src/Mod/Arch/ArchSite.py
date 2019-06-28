@@ -457,7 +457,7 @@ Site creation aborted.") + "\n"
 
 
 
-class _Site:
+class _Site(ArchIFC.IfcProduct):
 
     "The Site object"
 
@@ -469,8 +469,7 @@ class _Site:
 
     def setProperties(self,obj):
 
-        import ArchIFC
-        ArchIFC.setProperties(obj)
+        ArchIFC.IfcProduct.setProperties(self, obj)
 
         pl = obj.PropertiesList
         if not "Terrain" in pl:
@@ -519,10 +518,7 @@ class _Site:
             obj.addProperty("App::PropertyVector","OriginOffset","Site",QT_TRANSLATE_NOOP("App::Property","An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates"))
         if not hasattr(obj,"Group"):
             obj.addExtension("App::GroupExtensionPython", self)
-        if not "IfcType" in pl:
-            obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
-            obj.IfcType = ArchIFC.IfcTypes
-            obj.IfcType = "Site"
+
         self.Type = "Site"
 
     def onDocumentRestored(self,obj):
@@ -572,7 +568,7 @@ class _Site:
 
     def onChanged(self,obj,prop):
 
-        ArchIFC.onChanged(obj, prop)
+        ArchIFC.IfcProduct.onChanged(self, obj, prop)
         if prop == "Terrain":
             if obj.Terrain:
                 if FreeCAD.GuiUp:

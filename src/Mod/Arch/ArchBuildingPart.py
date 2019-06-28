@@ -307,7 +307,7 @@ class CommandBuildingPart:
 
 
 
-class BuildingPart:
+class BuildingPart(ArchIFC.IfcProduct):
 
 
     "The BuildingPart object"
@@ -320,7 +320,7 @@ class BuildingPart:
         self.setProperties(obj)
 
     def setProperties(self,obj):
-        ArchIFC.setProperties(obj)
+        ArchIFC.IfcProduct.setProperties(self, obj)
 
         pl = obj.PropertiesList
         if not "Height" in pl:
@@ -357,7 +357,7 @@ class BuildingPart:
 
     def onChanged(self,obj,prop):
 
-        ArchIFC.onChanged(obj, prop)
+        ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
         if prop == "Height":
             for child in obj.Group:

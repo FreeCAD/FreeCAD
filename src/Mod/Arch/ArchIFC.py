@@ -65,7 +65,7 @@ class IfcRoot:
         schema = self.getIfcSchema()
         return [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in schema.keys()]
 
-    def getIfcAttribute(self, ifcTypeSchema, name):
+    def getIfcAttributeSchema(self, ifcTypeSchema, name):
         for attribute in ifcTypeSchema["attributes"]:
             if attribute["name"].replace(' ', '') == name:
                 return attribute
@@ -153,7 +153,7 @@ class IfcRoot:
         for property in obj.PropertiesList:
             if obj.getGroupOfProperty(property) != "IFC Attributes":
                 continue
-            ifcAttribute = self.getIfcAttribute(ifcTypeSchema, property)
+            ifcAttribute = self.getIfcAttributeSchema(ifcTypeSchema, property)
             if ifcAttribute is None or ifcAttribute["is_enum"] is True:
                 obj.removeProperty(property)
 
