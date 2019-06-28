@@ -50,7 +50,14 @@
     </Methode>
     <Methode Name="openTransaction">
       <Documentation>
-        <UserDocu>Open a new Undo/Redo transaction.</UserDocu>
+          <UserDocu>openTransaction(name) - Open a new Undo/Redo transaction.
+
+This function no long creates a new transaction, but calls
+FreeCAD.setActiveTransaction(name) instead, which will auto creates a
+transaction with the given name when any change happed in any opened document.
+If more than one document is changed, all newly created transactions will have
+the same internal ID and will be undo/redo together.
+          </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="abortTransaction">
@@ -232,6 +239,18 @@ Both parameters are optional.</UserDocu>
       </Documentation>
       <Parameter Name="RecomputesFrozen" Type="Boolean"/>
     </Attribute>
+    <Attribute Name="HasPendingTransaction" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Check if there is a pending transaction</UserDocu>
+      </Documentation>
+      <Parameter Name="HasPendingTransaction" Type="Boolean"/>
+    </Attribute>
+	<Attribute Name="Transacting" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>Indicate whether the document is undoing/redoing</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Transacting" Type="Boolean" />
+	</Attribute>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>
