@@ -74,11 +74,12 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent) :
     ui->inputValue->selectAll();
     QTimer::singleShot(0, ui->inputValue, SLOT(setFocus()));
 
-    i = ui->comboEndType->findText(QString::fromUtf8(parent->dvBalloon->EndType.getValueAsString()));
+    i = parent->dvBalloon->EndType.getValue();
     ui->comboEndType->setCurrentIndex(i);
 
-    i = ui->comboSymbol->findText(QString::fromUtf8(parent->dvBalloon->Symbol.getValueAsString()));
+    i = parent->dvBalloon->Symbol.getValue();
     ui->comboSymbol->setCurrentIndex(i);
+
 }
 
 TaskBalloon::~TaskBalloon()
@@ -91,8 +92,8 @@ bool TaskBalloon::accept()
 {
         m_parent->dvBalloon->Text.setValue(ui->inputValue->text().toUtf8().constData());
         m_parent->dvBalloon->SymbolScale.setValue(ui->inputScale->text().toDouble());
-        m_parent->dvBalloon->EndType.setValue(ui->comboEndType->currentText().toUtf8().constData());
-        m_parent->dvBalloon->Symbol.setValue(ui->comboSymbol->currentText().toUtf8().constData());
+        m_parent->dvBalloon->EndType.setValue(ui->comboEndType->currentIndex());
+        m_parent->dvBalloon->Symbol.setValue(ui->comboSymbol->currentIndex());
         m_parent->updateView(true);
 
     return true;
