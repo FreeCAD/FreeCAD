@@ -386,7 +386,7 @@ class ObjectOp(PathOp.ObjectOp):
                 if obj.StartDepth.Value == obj.OpStartDepth.Value:
                     obj.StartDepth.Value = self.strDep
 
-            # Create visual axises when debugging.
+            # Create visual axes when debugging.
             if PathLog.getLevel(PathLog.thisModule()) == 4:
                 self.visualAxis()
         else:
