@@ -428,7 +428,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                     if planar is True:
                                         base = FreeCAD.ActiveDocument.getObject(useFace)
                                         sub = 'Face1'
-                                        PathLog.debug('  -successful face crated: {}'.format(useFace))
+                                        PathLog.debug('  -successful face created: {}'.format(useFace))
                                     else:
                                         PathLog.error(translate("Path", "Failed to create a planar face from edges in {}.".format(sub)))
                                 # --------------------------------------------------------
