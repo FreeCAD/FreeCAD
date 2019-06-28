@@ -373,6 +373,10 @@ PyObject*  DocumentPy::commitTransaction(PyObject * args)
     Py_Return;
 }
 
+Py::Boolean DocumentPy::getHasPendingTransaction() const {
+    return Py::Boolean(getDocumentPtr()->hasPendingTransaction());
+}
+
 PyObject*  DocumentPy::undo(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
@@ -723,5 +727,9 @@ PyObject* DocumentPy::getLinksTo(PyObject *args)
             ret.setItem(i++,Py::Object(o->getPyObject(),true));
         return Py::new_reference_to(ret);
     }PY_CATCH
+Py::Boolean DocumentPy::getTransacting() const {
+    return Py::Boolean(getDocumentPtr()->isPerformingTransaction());
+}
+
 }
 

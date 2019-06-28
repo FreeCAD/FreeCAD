@@ -48,6 +48,7 @@ class Document;
 class DocumentObject;
 class ApplicationObserver;
 class Property;
+class AutoTransaction;
 
 enum GetLinkOption {
     /// Get all links (both directly and in directly) linked to the given object
@@ -105,6 +106,37 @@ public:
     void setActiveDocument(const char *Name);
     /// close all documents (without saving)
     void closeAllDocuments(void);
+    /** @name Application-wide trandaction setting */
+    //@{
+    /** Setup a pending application-wide active transaction
+     *
+     * @param name: new transaction name
+     * @param persist: by default, if the calling code is inside any invokation
+     * of a command, it will be auto closed once all command within the current
+     * stack exists. To disable auto closing, set persist=true
+     *
+     * @return The new transaction ID.
+     *
+     * Call this function to setup an application-wide transaction. All current
+     * pending transactions of opening documents will be commited first.
+     * However, no new transaction is created by this call. Any subsequent
+     * changes in any current opening document will auto create a transaction
+     * with the given name and ID. If more than one document is changed, the
+     * transactions will share the same ID, and will be undo/redo together.
+     */
+    int setActiveTransaction(const char *name, bool persist=false);
+    /// Return the current active transaction name and ID
+    const char *getActiveTransaction(int *tid=0) const;
+    /** Commit/abort current active transactions
+     *
+     * @param abort: whether to abort or commit the transactions
+     *
+     * Bsides calling this function directly, it will be called by automatically
+     * if 1) any new transaction is created with a different ID, or 2) any
+     * transaction with the current active transaction ID is either commited or
+     * aborted
+     */
+    void closeActiveTransaction(bool abort=false, int id=0);
     //@}
 
     /** @name Signals of the Application */
@@ -133,8 +165,16 @@ public:
     boost::signals2::signal<void (const Document&, const std::string&)> signalFinishSaveDocument;
     /// signal on undo in document
     boost::signals2::signal<void (const Document&)> signalUndoDocument;
+    /// signal on application wide undo
+    boost::signals2::signal<void ()> signalUndo;
     /// signal on redo in document
     boost::signals2::signal<void (const Document&)> signalRedoDocument;
+    /// signal on application wide redo
+    boost::signals2::signal<void ()> signalRedo;
+    /// signal before close/abort active transaction
+    boost::signals2::signal<void (bool)> signalBeforeCloseTransaction;
+    /// signal after close/abort active transaction
+    boost::signals2::signal<void (bool)> signalCloseTransaction;
     /// signal on show hidden items
     boost::signals2::signal<void (const Document&)> signalShowHidden;
     //@}
@@ -345,6 +385,15 @@ protected:
     void slotChangePropertyEditor(const App::Document&, const App::Property &);
     //@}
 
+    /// Helper class for App::Document to signal on close/abort transaction
+    class AppExport TransactionSignaller {
+    public:
+        TransactionSignaller(bool abort,bool signal);
+        ~TransactionSignaller();
+    private:
+        bool abort;
+    };
+
 private:
     /// Constructor
     Application(std::map<std::string,std::string> &mConfig);
@@ -397,6 +446,9 @@ private:
     static PyObject *sCheckLinkDepth    (PyObject *self,PyObject *args);
     static PyObject *sGetLinksTo        (PyObject *self,PyObject *args);
 
+    static PyObject *sSetActiveTransaction  (PyObject *self,PyObject *args);
+    static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args);
+    static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
     static PyMethodDef    Methods[]; 
 
     friend class ApplicationObserver;
@@ -448,6 +500,13 @@ private:
     // for estimate max link depth
     int _objCount;
 
+    friend class AutoTransaction;
+
+    std::string _activeTransactionName;
+    int _activeTransactionID;
+    int _activeTransactionGuard;
+    bool _activeTransactionTmpName;
+
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;
 };
@@ -456,6 +515,60 @@ private:
 inline App::Application &GetApplication(void){
     return *App::Application::_pcSingleton;
 }
+
+/// Helper class to manager transaction (i.e. undo/redo)
+class AppExport AutoTransaction {
+private:
+    /// Private new operator to prevent heap allocation
+    void* operator new(size_t size);
+
+public:
+    /** Construtor
+     *
+     * @param name: optional new transaction name on construction
+     * @param tmpName: if true and a new transaction is setup, the name given is
+     * considered as temperary, and subsequent construction of this class (or
+     * calling Application::setActiveTransaction()) can override the transaction
+     * name.
+     *
+     * The constructor increments an internal counter
+     * (Application::_activeTransactionGuard). The counter prevents any new
+     * active transaction being setup. It also prevents close (i.e. commits) the
+     * current active transaction until it reaches zero. It does not have any
+     * effect on aborting transaction, though.
+     */
+    AutoTransaction(const char *name=0, bool tmpName=false);
+
+    /** Destructor
+     *
+     * This destructor decrease an internal counter
+     * (Application::_activeTransactionGuard), and will commit any current
+     * active transaction when the counter reaches zero.
+     */
+    ~AutoTransaction();
+
+    /** Close or abort the transaction
+     *
+     * This function can be used to explicitly close (i.e. commit) the
+     * transaction, if the current transaction ID matches the one created inside
+     * the constructor. For aborting, it will abort any current transaction
+     */
+    void close(bool abort=false);
+
+    /** Enable/Disable any AutoTransaction instance in the current stack
+     *
+     * Once disabled, any empty temperary named transaction is closed. If there
+     * are non-empty or non-temperary named active transaction, it will not be
+     * auto closed. 
+     *
+     * This function may be used in, for example, Gui::Document::setEdit() to
+     * allow a transaction live past any command scope. 
+     */
+    static void setEnable(bool enable);
+
+private:
+    int tid = 0;
+};
 
 } // namespace App
 

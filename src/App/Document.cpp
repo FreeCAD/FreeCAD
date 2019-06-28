@@ -121,6 +121,10 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include "GeoFeatureGroupExtension.h"
 #include "Origin.h"
 #include "OriginGroupExtension.h"
+#include "Link.h"
+#include "GeoFeature.h"
+
+FC_LOG_LEVEL_INIT("App", true, true, true);
 
 using Base::Console;
 using Base::streq;
@@ -152,6 +156,7 @@ typedef std::vector <size_t> Path;
 
 namespace App {
 
+static bool _IsRelabeling;
 // Pimpl class
 struct DocumentP
 {
@@ -881,26 +886,38 @@ bool Document::checkOnCycle(void)
     return false;
 }
 
-bool Document::undo(void)
+bool Document::undo(int id)
 {
     if (d->iUndoMode) {
+        if(id) {
+            auto it = mUndoMap.find(id);
+            if(it == mUndoMap.end())
+                return false;
+            if(it->second != d->activeUndoTransaction) {
+                while(mUndoTransactions.size() && mUndoTransactions.back()!=it->second)
+                    undo(0);
+            }
+        }
+
         if (d->activeUndoTransaction)
-            commitTransaction();
-        else if (mUndoTransactions.empty())
+            _commitTransaction(true);
+        if (mUndoTransactions.empty())
             return false;
 
         // redo
-        d->activeUndoTransaction = new Transaction();
+        d->activeUndoTransaction = new Transaction(mUndoTransactions.back()->getID());
         d->activeUndoTransaction->Name = mUndoTransactions.back()->Name;
-        d->undoing = true;
+
+        Base::FlagToggler<bool> flag(d->undoing);
         // applying the undo
         mUndoTransactions.back()->apply(*this,false);
-        d->undoing = false;
 
         // save the redo
+        mRedoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
         mRedoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = 0;
 
+        mUndoMap.erase(mUndoTransactions.back()->getID());
         delete mUndoTransactions.back();
         mUndoTransactions.pop_back();
 
@@ -911,25 +928,35 @@ bool Document::undo(void)
     return false;
 }
 
-bool Document::redo(void)
+bool Document::redo(int id)
 {
     if (d->iUndoMode) {
+        if(id) {
+            auto it = mRedoMap.find(id);
+            if(it == mRedoMap.end())
+                return false;
+            while(mRedoTransactions.size() && mRedoTransactions.back()!=it->second)
+                redo(0);
+        }
+
         if (d->activeUndoTransaction)
-            commitTransaction();
+            _commitTransaction(true);
 
         assert(mRedoTransactions.size()!=0);
 
         // undo
-        d->activeUndoTransaction = new Transaction();
+        d->activeUndoTransaction = new Transaction(mRedoTransactions.back()->getID());
         d->activeUndoTransaction->Name = mRedoTransactions.back()->Name;
 
         // do the redo
-        d->undoing = true;
+        Base::FlagToggler<bool> flag(d->undoing);
         mRedoTransactions.back()->apply(*this,true);
-        d->undoing = false;
+
+        mUndoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
         mUndoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = 0;
 
+        mRedoMap.erase(mRedoTransactions.back()->getID());
         delete mRedoTransactions.back();
         mRedoTransactions.pop_back();
 
@@ -979,34 +1006,100 @@ std::vector<std::string> Document::getAvailableRedoNames() const
     return vList;
 }
 
-void Document::openTransaction(const char* name)
+void Document::openTransaction(const char* name) {
+    if(isPerformingTransaction()) {
+        FC_WARN("Cannot open transaction while transacting");
+        return;
+    }
+
+    GetApplication().setActiveTransaction(name?name:"<empty>");
+}
+
+int Document::_openTransaction(const char* name, int id)
 {
+    if(isPerformingTransaction()) {
+        FC_WARN("Cannot open transaction while transacting");
+        return 0;
+    }
+
     if (d->iUndoMode) {
+        if(id && mUndoMap.find(id)!=mUndoMap.end())
+            throw Base::RuntimeError("invalid transaction id");
         if (d->activeUndoTransaction)
-            commitTransaction();
+            _commitTransaction(true);
         _clearRedos();
 
-        d->activeUndoTransaction = new Transaction();
-        if (name)
-            d->activeUndoTransaction->Name = name;
-        else
-            d->activeUndoTransaction->Name = "<empty>";
+        d->activeUndoTransaction = new Transaction(id);
+        if (!name)
+            name = "<empty>";
+        d->activeUndoTransaction->Name = name;
+        mUndoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
+        id = d->activeUndoTransaction->getID();
 
-        signalOpenTransaction(*this, d->activeUndoTransaction->Name);
+        signalOpenTransaction(*this, name);
+
+        auto &app = GetApplication();
+        auto activeDoc = app.getActiveDocument();
+        if(activeDoc && 
+           activeDoc!=this && 
+           !activeDoc->hasPendingTransaction()) 
+        {
+            std::string aname("-> ");
+            aname += d->activeUndoTransaction->Name;
+            FC_LOG("auto transaction " << getName() << " -> " << activeDoc->getName());
+            activeDoc->_openTransaction(aname.c_str(),id);
+        }
+        return id;
+    }
+    return 0;
+}
+
+void Document::renameTransaction(const char *name, int id) {
+    if(name && d->activeUndoTransaction && d->activeUndoTransaction->getID()==id) {
+        if(boost::starts_with(d->activeUndoTransaction->Name, "-> "))
+            d->activeUndoTransaction->Name.resize(3);
+        else
+            d->activeUndoTransaction->Name.clear();
+        d->activeUndoTransaction->Name += name;
     }
 }
 
-void Document::_checkTransaction(DocumentObject* pcObject)
+void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What, int line)
 {
     // if the undo is active but no transaction open, open one!
-    if (d->iUndoMode) {
+    if (d->iUndoMode && !isPerformingTransaction()) {
         if (!d->activeUndoTransaction) {
+            if(!testStatus(Restoring) || testStatus(Importing)) {
+                int tid=0;
+                const char *name = GetApplication().getActiveTransaction(&tid);
+                if(name && tid>0) {
+                    bool ignore = false;
+                    if(What) {
+                        auto parent = What->getContainer();
+                        auto parentObj = Base::freecad_dynamic_cast<DocumentObject>(parent);
+                        if(!parentObj || What->testStatus(Property::NoModify))
+                            ignore = true;
+                    }
+                    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                        if(What) 
+                            FC_LOG((ignore?"ignore":"auto") << " transaction (" 
+                                    << line << ") '" << What->getFullName()); 
+                        else
+                            FC_LOG((ignore?"ignore":"auto") <<" transaction (" 
+                                    << line << ") '" << name << "' in " << getName());
+                    }
+                    if(!ignore)
+                        _openTransaction(name,tid);
+                    return;
+                }
+            }
+            if(!pcDelObj) return;
             // When the object is going to be deleted we have to check if it has already been added to
             // the undo transactions
             std::list<Transaction*>::iterator it;
             for (it = mUndoTransactions.begin(); it != mUndoTransactions.end(); ++it) {
-                if ((*it)->hasObject(pcObject)) {
-                    openTransaction();
+                if ((*it)->hasObject(pcDelObj)) {
+                    _openTransaction("Delete");
                     break;
                 }
             }
@@ -1016,35 +1109,79 @@ void Document::_checkTransaction(DocumentObject* pcObject)
 
 void Document::_clearRedos()
 {
+    if(isPerformingTransaction()) {
+        FC_ERR("Cannot clear redo while transacting");
+        return;
+    }
+
+    mRedoMap.clear();
     while (!mRedoTransactions.empty()) {
         delete mRedoTransactions.back();
         mRedoTransactions.pop_back();
     }
 }
 
-void Document::commitTransaction()
+void Document::commitTransaction() {
+    if(isPerformingTransaction()) {
+        FC_WARN("Cannot commit transaction while transacting");
+        return;
+    }
+
+    if (d->activeUndoTransaction)
+        GetApplication().closeActiveTransaction(false,d->activeUndoTransaction->getID());
+}
+
+void Document::_commitTransaction(bool notify)
 {
+    if(isPerformingTransaction()) {
+        FC_WARN("Cannot commit transaction while transacting");
+        return;
+    }
+
     if (d->activeUndoTransaction) {
+        Application::TransactionSignaller signaller(false,true);
+        int id = d->activeUndoTransaction->getID();
         mUndoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = 0;
         // check the stack for the limits
         if(mUndoTransactions.size() > d->UndoMaxStackSize){
+            mUndoMap.erase(mUndoTransactions.front()->getID());
             delete mUndoTransactions.front();
             mUndoTransactions.pop_front();
         }
         signalCommitTransaction(*this);
+
+        if(notify)
+            GetApplication().closeActiveTransaction(false,id);
     }
 }
 
-void Document::abortTransaction()
+void Document::abortTransaction() {
+    if(isPerformingTransaction()) {
+        FC_WARN("Cannot abort transaction while transacting");
+        return;
+    }
+    if (d->activeUndoTransaction) 
+        GetApplication().closeActiveTransaction(true,d->activeUndoTransaction->getID());
+}
+
+void Document::_abortTransaction()
 {
+    if(isPerformingTransaction()) {
+        FC_WARN("Cannot abort transaction while transacting");
+        return;
+    }
+
     if (d->activeUndoTransaction) {
-        d->rollback = true;
-        // applying the so far made changes
-        d->activeUndoTransaction->apply(*this,false);
-        d->rollback = false;
+        Application::TransactionSignaller signaller(true,true);
+        {
+            Base::FlagToggler<bool> flag(d->rollback);
+            // applying the so far made changes
+            d->activeUndoTransaction->apply(*this,false);
+        }
 
         // destroy the undo
+        mUndoMap.erase(d->activeUndoTransaction->getID());
         delete d->activeUndoTransaction;
         d->activeUndoTransaction = 0;
         signalAbortTransaction(*this);
@@ -1059,6 +1196,26 @@ bool Document::hasPendingTransaction() const
         return false;
 }
 
+int Document::getTransactionID(bool undo, unsigned pos) const {
+    if(undo) {
+        if(d->activeUndoTransaction) {
+            if(pos == 0)
+                return d->activeUndoTransaction->getID();
+            --pos;
+        }
+        if(pos>=mUndoTransactions.size())
+            return 0;
+        auto rit = mUndoTransactions.rbegin();
+        for(;pos;++rit,--pos);
+        return (*rit)->getID();
+    }
+    if(pos>=mRedoTransactions.size())
+        return 0;
+    auto rit = mRedoTransactions.rbegin();
+    for(;pos;++rit,--pos);
+    return (*rit)->getID();
+}
+
 bool Document::isTransactionEmpty() const
 {
     if (d->activeUndoTransaction) {
@@ -1070,8 +1227,15 @@ bool Document::isTransactionEmpty() const
 
 void Document::clearUndos()
 {
+    if(isPerformingTransaction()) {
+        FC_ERR("Cannot clear undos while transacting");
+        return;
+    }
+
     if (d->activeUndoTransaction)
-        commitTransaction();
+        _commitTransaction(true);
+
+    mUndoMap.clear();
 
     // When cleaning up the undo stack we must delete the transactions from front
     // to back because a document object can appear in several transactions but
@@ -1091,16 +1255,40 @@ void Document::clearUndos()
     _clearRedos();
 }
 
-int Document::getAvailableUndos() const
+int Document::getAvailableUndos(int id) const
 {
+    if(id) {
+        auto it = mUndoMap.find(id);
+        if(it == mUndoMap.end())
+            return 0;
+        int i = 0;
+        if(d->activeUndoTransaction) {
+            ++i;
+            if(d->activeUndoTransaction->getID()==id)
+                return i;
+        }
+        auto rit = mUndoTransactions.rbegin();
+        for(;rit!=mUndoTransactions.rend()&&*rit!=it->second;++rit,++i);
+        assert(rit!=mUndoTransactions.rend());
+        return i+1;
+    }
     if (d->activeUndoTransaction)
         return static_cast<int>(mUndoTransactions.size() + 1);
     else
         return static_cast<int>(mUndoTransactions.size());
 }
 
-int Document::getAvailableRedos() const
+int Document::getAvailableRedos(int id) const
 {
+    if(id) {
+        auto it = mRedoMap.find(id);
+        if(it == mRedoMap.end())
+            return 0;
+        int i = 0;
+        for(auto rit=mRedoTransactions.rbegin();*rit!=it->second;++rit,++i);
+        assert(i<(int)mRedoTransactions.size());
+        return i+1;
+    }
     return static_cast<int>(mRedoTransactions.size());
 }
 
@@ -1139,6 +1327,8 @@ unsigned int Document::getMaxUndoStackSize(void)const
 
 void Document::onBeforeChange(const Property* prop)
 {
+    if(prop == &Label)
+        oldLabel = Label.getValue();
     signalBeforeChange(*this, *prop);
 }
 
@@ -1148,6 +1338,7 @@ void Document::onChanged(const Property* prop)
 
     // the Name property is a label for display purposes
     if (prop == &Label) {
+        Base::FlagToggler<> flag(_IsRelabeling);
         App::GetApplication().signalRelabelDocument(*this);
     } else if(prop == &ShowHidden) {
         App::GetApplication().signalShowHidden(*this);
@@ -1189,9 +1380,11 @@ void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Prop
 {
     if(Who->isDerivedFrom(App::DocumentObject::getClassTypeId()))
         signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
-
-    if (d->activeUndoTransaction && !d->rollback)
-        d->activeUndoTransaction->addObjectChange(Who,What);
+    if(!d->rollback && !_IsRelabeling) {
+        _checkTransaction(0,What,__LINE__);
+        if (d->activeUndoTransaction)
+            d->activeUndoTransaction->addObjectChange(Who,What);
+    }
 }
 
 void Document::onChangedProperty(const DocumentObject *Who, const Property *What)
@@ -2736,6 +2929,7 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     // do no transactions if we do a rollback!
     if (!d->rollback) {
         // Undo stuff
+        _checkTransaction(0,0,__LINE__);
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
     }
@@ -2822,6 +3016,7 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
         // do no transactions if we do a rollback!
         if (!d->rollback) {
             // Undo stuff
+            _checkTransaction(0,0,__LINE__);
             if (d->activeUndoTransaction) {
                 d->activeUndoTransaction->addObjectDel(pcObject);
             }
@@ -2897,6 +3092,7 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
     // do no transactions if we do a rollback!
     if (!d->rollback) {
         // Undo stuff
+        _checkTransaction(0,0,__LINE__);
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
     }
@@ -2952,6 +3148,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
     // do no transactions if we do a rollback!
     if (!d->rollback) {
         // Undo stuff
+        _checkTransaction(0,0,__LINE__);
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
     }
@@ -2980,7 +3177,7 @@ void Document::removeObject(const char* sName)
     if (pos == d->objectMap.end())
         return;
 
-    _checkTransaction(pos->second);
+    _checkTransaction(pos->second,0,__LINE__);
 
     if (d->activeObject == pos->second)
         d->activeObject = 0;
@@ -3056,7 +3253,7 @@ void Document::removeObject(const char* sName)
 void Document::_removeObject(DocumentObject* pcObject)
 {
     // TODO Refactoring: share code with Document::removeObject() (2015-09-01, Fat-Zer)
-    _checkTransaction(pcObject);
+    _checkTransaction(pcObject,0,__LINE__);
 
     auto pos = d->objectMap.find(pcObject->getNameInDocument());
 

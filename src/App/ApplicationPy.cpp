@@ -151,6 +151,19 @@ PyMethodDef Application::Methods[] = {
      "getLinksTo(obj,options=0,maxCount=0) -- return the objects linked to 'obj'\n\n"
      "options: 1: recursive, 2: check link array. Options can combine.\n"
      "maxCount: to limit the number of links returned\n"},
+    {"setActiveTransaction", (PyCFunction) Application::sSetActiveTransaction, METH_VARARGS,
+     "setActiveTransaction(name, persist=False) -- setup active transaction with the given name\n\n"
+     "name: the transaction name\n"
+     "persist(False): by default, if the calling code is inside any invokation of a command, it\n"
+     "                will be auto closed once all command within the current stack exists. To\n"
+     "                disable auto closing, set persist=True\n"
+     "Returns the transaction ID for the active transaction. An application-wide\n"
+     "active transaction causes any document changes to open a transaction with\n"
+     "the given name and ID."},
+    {"getActiveTransaction", (PyCFunction) Application::sGetActiveTransaction, METH_VARARGS,
+     "getActiveTransaction() -> (name,id) return the current active transaction name and ID"},     
+    {"closeActiveTransaction", (PyCFunction) Application::sCloseActiveTransaction, METH_VARARGS,
+     "closeActiveTransaction(abort=False) -- commit or abort current active transaction"},     
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -804,5 +817,48 @@ PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args)
             ret.setItem(i++,Py::Object(o->getPyObject(),true));
         return Py::new_reference_to(ret);
     }PY_CATCH;
+}
+
+PyObject *Application::sSetActiveTransaction(PyObject * /*self*/, PyObject *args)
+{
+    char *name;
+    PyObject *persist = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O", &name,&persist))
+        return 0;
+    
+    PY_TRY {
+        Py::Int ret(GetApplication().setActiveTransaction(name,PyObject_IsTrue(persist)));
+        return Py::new_reference_to(ret);
+    }PY_CATCH;
+}
+
+PyObject *Application::sGetActiveTransaction(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    
+    PY_TRY {
+        int id = 0;
+        const char *name = GetApplication().getActiveTransaction(&id);
+        if(!name || id<=0)
+            Py_Return;
+        Py::Tuple ret(2);
+        ret.setItem(0,Py::String(name));
+        ret.setItem(1,Py::Int(id));
+        return Py::new_reference_to(ret);
+    }PY_CATCH;
+}
+
+PyObject *Application::sCloseActiveTransaction(PyObject * /*self*/, PyObject *args)
+{
+    PyObject *abort = Py_False;
+    int id = 0;
+    if (!PyArg_ParseTuple(args, "|Oi", &abort,&id))
+        return 0;
+    
+    PY_TRY {
+        GetApplication().closeActiveTransaction(PyObject_IsTrue(abort),id);
+        Py_Return;
+    } PY_CATCH;
 }
 
