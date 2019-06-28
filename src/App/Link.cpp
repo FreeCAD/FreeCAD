@@ -263,7 +263,7 @@ int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visi
             propElementVis->setSize(index+1, true);
         }
         propElementVis->setStatus(Property::User3,true);
-        propElementVis->set1Value(index,visible,true);
+        propElementVis->set1Value(index,visible);
         propElementVis->setStatus(Property::User3,false);
         const auto &elements = _getElementListValue();
         if(index<(int)elements.size()) {
@@ -1144,7 +1144,7 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
             if(old == obj)
                 return;
 
-            getElementListProperty()->set1Value(index,obj,true);
+            getElementListProperty()->set1Value(index,obj);
         }
         detachElement(old);
         return;

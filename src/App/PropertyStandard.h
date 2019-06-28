@@ -319,10 +319,6 @@ public:
      */
     virtual ~PropertyIntegerList();
 
-    void set1Value (int idx, const long &value, bool touch=false) override {
-        _set1Value(idx,value,touch);
-    }
-
     virtual const char* getEditorName(void) const
     { return "Gui::PropertyEditor::PropertyIntegerListItem"; }
 
@@ -602,10 +598,6 @@ public:
      */
     virtual ~PropertyFloatList();
     
-    void set1Value (int idx, const double &value, bool touch=false) override {
-        _set1Value(idx,value,touch);
-    }
-
     virtual const char* getEditorName(void) const
     { return "Gui::PropertyEditor::PropertyFloatListItem"; }
 
@@ -751,10 +743,6 @@ public:
     void setValues(const std::list<std::string>&);
     using inherited::setValues;
     
-    void set1Value (int idx, const std::string& value, bool touch=false) override {
-        _set1Value(idx,value,touch);
-    }
-    
     virtual const char* getEditorName(void) const
     { return "Gui::PropertyEditor::PropertyStringListItem"; }
     
@@ -827,10 +815,6 @@ class AppExport PropertyBoolList : public PropertyListsT<bool,boost::dynamic_bit
 public:
     PropertyBoolList();
     virtual ~PropertyBoolList();
-
-    void set1Value (int idx, bool value, bool touch=true) override {
-        _set1Value(idx,value,touch);
-    }
 
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
@@ -913,10 +897,6 @@ public:
      */
     virtual ~PropertyColorList();
 
-    void set1Value (int idx, const Color& value, bool touch=false) override {
-        _set1Value(idx,value,touch);
-    }
-    
     virtual PyObject *getPyObject(void);
     
     virtual void Save (Base::Writer &writer) const;
@@ -1004,10 +984,6 @@ public:
     * A more elaborate description of the destructor.
     */
     virtual ~PropertyMaterialList();
-
-    void set1Value(int idx, const Material& value, bool touch=false) override {
-        _set1Value(idx,value,touch);
-    }
 
     virtual PyObject *getPyObject(void);
 

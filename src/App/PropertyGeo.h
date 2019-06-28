@@ -212,10 +212,6 @@ public:
     void setValue(double x, double y, double z);
     using inherited::setValue;
 
-    void set1Value (int idx, const Base::Vector3d& value, bool touch=false) override {
-        _set1Value(idx,value,touch);
-    }
-
     virtual PyObject *getPyObject(void);
 
     virtual void Save (Base::Writer &writer) const;
@@ -390,10 +386,6 @@ public:
     PropertyPlacementList();
 
     virtual ~PropertyPlacementList();
-
-    void set1Value (int idx, const Base::Placement& value, bool touch=false) override {
-        _set1Value(idx,value,touch);
-    }
 
     virtual PyObject *getPyObject(void);
 

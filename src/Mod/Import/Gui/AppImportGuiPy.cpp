@@ -334,12 +334,12 @@ private:
         }
         if(vp->OverrideMaterialList.getSize()<=index)
             vp->OverrideMaterialList.setSize(index+1);
-        vp->OverrideMaterialList.set1Value(index,true,false);
+        vp->OverrideMaterialList.set1Value(index,true);
         App::Material mat(App::Material::DEFAULT);
         if(vp->MaterialList.getSize()<=index)
             vp->MaterialList.setSize(index+1,mat);
         mat.diffuseColor = color;
-        vp->MaterialList.set1Value(index,mat,true);
+        vp->MaterialList.set1Value(index,mat);
     }
     virtual void applyElementColors(App::DocumentObject *obj, 
             const std::map<std::string,App::Color> &colors) override 

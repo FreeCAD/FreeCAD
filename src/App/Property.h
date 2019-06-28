@@ -250,168 +250,6 @@ private:
 };
 
 
-/** Helper class to construct list like properties
- *
- * This class is not derived from Property so that we can have more that one
- * base class for list like properties, e.g. see PropertyList, and
- * PropertyLinkListBase
- */
-class AppExport PropertyListsBase
-{
-public:
-    virtual void setSize(int newSize)=0;   
-    virtual int getSize(void) const =0;   
-
-    const std::set<int> &getTouchList() const {
-        return _touchList;
-    }
-
-    void clearTouchList() {
-        _touchList.clear();
-    }
-
-protected:
-    virtual void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) {
-        (void)vals;
-        (void)indices;
-        throw Base::NotImplementedError("not implemented");
-    }
-
-    void _setPyObject(PyObject *);
-
-protected:
-    std::set<int> _touchList;
-};
-
-/** Base class of all property lists.
- * The PropertyLists class is the base class for properties which can contain
- * multiple values, not only a single value.
- * All property types which may contain more than one value inherits this class.
- */
-class AppExport PropertyLists : public Property, public PropertyListsBase
-{
-    TYPESYSTEM_HEADER();
-public:
-    virtual void setPyObject(PyObject *obj) override {
-        _setPyObject(obj);
-    }
-
-    // if the order of the elements in the list relevant?
-    // if yes, certain operations, like restoring must make sure that the
-    // order is kept despite errors.
-    inline void setOrderRelevant(bool on) { this->setStatus(Status::Ordered,on); };
-    inline bool isOrderRelevant() const { return this->testStatus(Status::Ordered);}
-
-};
-
-
-/** Helper class to implement PropertyLists */
-template<class T, class ListT = std::vector<T>, class ParentT = PropertyLists >
-class PropertyListsT: public ParentT
-{
-public:
-    typedef typename ListT::const_reference const_reference;
-    typedef ListT list_type;
-    typedef ParentT parent_type;
-
-    virtual void setSize(int newSize, const_reference def) {
-        _lValueList.resize(newSize,def);
-    }
-
-    virtual void setSize(int newSize) override {
-        _lValueList.resize(newSize);
-    }
-
-    virtual int getSize(void) const override {
-        return static_cast<int>(_lValueList.size());
-    }
-
-    void setValue(const_reference value) {
-        ListT vals;
-        vals.resize(1,value);
-        setValues(vals);
-    }
-
-    virtual void setValues(const ListT &newValues = ListT()) {
-        this->aboutToSetValue();
-        this->_touchList.clear();
-        this->_lValueList = newValues;
-        this->hasSetValue();
-    }
-
-    void setValue(const ListT &newValues = ListT()) {
-        setValues(newValues);
-    }
-
-    const ListT &getValues(void) const{return _lValueList;}
-
-    // alias to getValues
-    const ListT &getValue(void) const{return getValues();}
-
-    const_reference operator[] (int idx) const {return _lValueList[idx];} 
-
-    virtual void setPyObject(PyObject *value) override {
-        try {
-            setValue(getPyValue(value));
-            return;
-        }catch(...){}
-        parent_type::setPyObject(value);
-    }
-
-protected:
-
-    /** Helper function to set one value
-     *
-     * The reason to define a protected _set1Value() instead of a public
-     * set1Value() is to maintain source code compatibility with added 
-     * \c TouchList functionality. Derived class shall define its own
-     * set1Value() with a proper default \c touch parameter. 
-     */
-    void _set1Value(int index, const_reference value, bool touch) {
-        int size = getSize();
-        if(index<-1 || index>size)
-            throw Base::RuntimeError("index out of bound");
-        // TODO: we have to always call aboutToSetValue() to make sure undo/redo
-        // works regardless of the value of 'touch'. But this gives unbalanced
-        // calls to hasSetValue(). What to do...
-        this->aboutToSetValue();
-        if(index==-1 || index == size) {
-            index = size;
-            setSize(index+1,value);
-        }else
-            _lValueList[index] = value;
-        this->_touchList.insert(index);
-        if(touch) {
-            this->hasSetValue();
-            this->_touchList.clear();
-        }
-    }
-
-    /** Derived class is expected to make this public with a proper default \c touch */
-    virtual void set1Value(int index, const_reference value, bool touch)=0;
-
-    void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) override 
-    {
-        ListT values;
-        // old version boost::dynamic_bitset don't have reserve(). What a shame!
-        // values.reserve(vals.size());
-        for(auto item : vals)
-            values.push_back(getPyValue(item));
-        if(indices.empty())
-            setValues(values);
-        else {
-            assert(values.size()==indices.size());
-            for(int i=0,count=values.size();i<count;++i)
-                set1Value(indices[i],values[i],i+1==count);
-        }
-    }
-
-    virtual T getPyValue(PyObject *item) const = 0;
-
-protected:
-    ListT _lValueList;
-};
-
 /** A template class that is used to inhibit multiple nested calls to aboutToSetValue/hasSetValue for properties.
  *
  * A template class that is used to inhibit multiple nested calls to
@@ -487,11 +325,163 @@ public:
         P & mProp; /**< Referenced to property we work on */
     };
 
-    static AtomicPropertyChange * getAtomicPropertyChange(P & prop) { return new AtomicPropertyChange(prop); }
-    
 private:
     int signalCounter; /**< Counter for invoking transaction start/stop */
     bool hasChanged;
+};
+
+/** Helper class to construct list like properties
+ *
+ * This class is not derived from Property so that we can have more that one
+ * base class for list like properties, e.g. see PropertyList, and
+ * PropertyLinkListBase
+ */
+class AppExport PropertyListsBase
+{
+public:
+    virtual void setSize(int newSize)=0;   
+    virtual int getSize(void) const =0;   
+
+    const std::set<int> &getTouchList() const {
+        return _touchList;
+    }
+
+    void clearTouchList() {
+        _touchList.clear();
+    }
+
+protected:
+    virtual void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) {
+        (void)vals;
+        (void)indices;
+        throw Base::NotImplementedError("not implemented");
+    }
+
+    void _setPyObject(PyObject *);
+
+protected:
+    std::set<int> _touchList;
+};
+
+/** Base class of all property lists.
+ * The PropertyLists class is the base class for properties which can contain
+ * multiple values, not only a single value.
+ * All property types which may contain more than one value inherits this class.
+ */
+class AppExport PropertyLists : public Property, public PropertyListsBase
+
+{
+    TYPESYSTEM_HEADER();
+public:
+    virtual void setPyObject(PyObject *obj) override {
+        _setPyObject(obj);
+    }
+
+    // if the order of the elements in the list relevant?
+    // if yes, certain operations, like restoring must make sure that the
+    // order is kept despite errors.
+    inline void setOrderRelevant(bool on) { this->setStatus(Status::Ordered,on); };
+    inline bool isOrderRelevant() const { return this->testStatus(Status::Ordered);}
+
+};
+
+/** Helper class to implement PropertyLists */
+template<class T, class ListT = std::vector<T>, class ParentT = PropertyLists >
+class PropertyListsT: public ParentT
+                    , public AtomicPropertyChangeInterface<PropertyListsT<T,ListT,ParentT> >
+{
+public:
+    typedef typename ListT::const_reference const_reference;
+    typedef ListT list_type;
+    typedef ParentT parent_type;
+    typedef typename AtomicPropertyChangeInterface<
+        PropertyListsT<T,ListT,ParentT> >::AtomicPropertyChange atomic_change;
+
+    friend atomic_change;
+
+    virtual void setSize(int newSize, const_reference def) {
+        _lValueList.resize(newSize,def);
+    }
+
+    virtual void setSize(int newSize) override {
+        _lValueList.resize(newSize);
+    }
+
+    virtual int getSize(void) const override {
+        return static_cast<int>(_lValueList.size());
+    }
+
+    void setValue(const_reference value) {
+        ListT vals;
+        vals.resize(1,value);
+        setValues(vals);
+    }
+
+    virtual void setValues(const ListT &newValues = ListT()) {
+        atomic_change guard(*this);
+        this->_touchList.clear();
+        this->_lValueList = newValues;
+        guard.tryInvoke();
+    }
+
+    void setValue(const ListT &newValues = ListT()) {
+        setValues(newValues);
+    }
+
+    const ListT &getValues(void) const{return _lValueList;}
+
+    // alias to getValues
+    const ListT &getValue(void) const{return getValues();}
+
+    const_reference operator[] (int idx) const {return _lValueList[idx];} 
+
+    virtual void setPyObject(PyObject *value) override {
+        try {
+            setValue(getPyValue(value));
+            return;
+        }catch(...){}
+        parent_type::setPyObject(value);
+    }
+
+    virtual void set1Value(int index, const_reference value) {
+        int size = getSize();
+        if(index<-1 || index>size)
+            throw Base::RuntimeError("index out of bound");
+
+        atomic_change guard(*this);
+        if(index==-1 || index == size) {
+            index = size;
+            setSize(index+1,value);
+        }else
+            _lValueList[index] = value;
+        this->_touchList.insert(index);
+        guard.tryInvoke();
+    }
+
+protected:
+
+    void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) override 
+    {
+        ListT values;
+        // old version boost::dynamic_bitset don't have reserve(). What a shame!
+        // values.reserve(vals.size());
+        for(auto item : vals)
+            values.push_back(getPyValue(item));
+        if(indices.empty())
+            setValues(values);
+        else {
+            atomic_change guard(*this);
+            assert(values.size()==indices.size());
+            for(int i=0,count=values.size();i<count;++i)
+                set1Value(indices[i],values[i]);
+            guard.tryInvoke();
+        }
+    }
+
+    virtual T getPyValue(PyObject *item) const = 0;
+
+protected:
+    ListT _lValueList;
 };
 
 } // namespace App

@@ -778,7 +778,7 @@ void PropertyLinkList::setSize(int newSize, const_reference def) {
         _lValueList[i] = def;
 }
 
-void PropertyLinkList::set1Value(int idx, DocumentObject* const &value, bool touch) {
+void PropertyLinkList::set1Value(int idx, DocumentObject* const &value) {
     DocumentObject *obj = 0;
     if(idx>=0 && idx<(int)_lValueList.size()) {
         obj = _lValueList[idx];
@@ -804,7 +804,7 @@ void PropertyLinkList::set1Value(int idx, DocumentObject* const &value, bool tou
     }
 #endif
 
-    _set1Value(idx,value,touch);
+    inherited::set1Value(idx,value);
 }
 
 void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue) {

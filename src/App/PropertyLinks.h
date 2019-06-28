@@ -698,7 +698,7 @@ public:
     */
     void setValues(const std::vector<DocumentObject*>&) override;
 
-    void set1Value(int idx, DocumentObject * const &value, bool touch=false) override;
+    void set1Value(int idx, DocumentObject * const &value) override;
 
     virtual PyObject *getPyObject(void);
 
