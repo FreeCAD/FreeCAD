@@ -227,10 +227,10 @@ class FemInputWriter():
         # check shape type of reference shape
         for femobj in self.force_objects:
             # femobj --> dict, FreeCAD document object is femobj['Object']
-            FreeCAD.Console.PrintMessage(
-                "Constraint force:" + ' ' + femobj['Object'].Name + '\n'
-            )
             frc_obj = femobj['Object']
+            FreeCAD.Console.PrintMessage(
+                "Constraint force:" + ' ' + frc_obj.Name + '\n'
+            )
             if femobj['RefShapeType'] == 'Vertex':
                 FreeCAD.Console.PrintLog(
                     "load on vertices --> we do not need the "

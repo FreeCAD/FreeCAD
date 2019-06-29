@@ -652,7 +652,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     FreeCAD.Console.PrintMessage(
                         "Dir given as parameter \'{}\' doesn't exist.\n".format(self.working_dir)
                     )
-                    pass
                 else:
                     FreeCAD.Console.PrintError(
                         "Dir given as parameter \'{}\' doesn't exist "
@@ -891,7 +890,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ccx_stdout, ccx_stderr = p.communicate()
         if sys.version_info.major >= 3:
             ccx_stdout = ccx_stdout.decode()
-            ccx_stderr = ccx_stderr.decode()
+            # ccx_stderr = ccx_stderr.decode()
         m = re.search(r"(\d+).(\d+)", ccx_stdout)
         return (int(m.group(1)), int(m.group(2)))
 
