@@ -762,13 +762,11 @@ void DocumentObject::Save (Base::Writer &writer) const
  * @brief Associate the expression \expr with the object identifier \a path in this document object.
  * @param path Target object identifier for the result of the expression
  * @param expr Expression tree
- * @param comment Optional comment describing the expression
  */
 
-void DocumentObject::setExpression(const ObjectIdentifier &path, boost::shared_ptr<Expression> expr, const char * comment)
+void DocumentObject::setExpression(const ObjectIdentifier &path, boost::shared_ptr<Expression> expr)
 {
-    ExpressionEngine.setValue(path, expr, comment);
-    connectRelabelSignals();
+    ExpressionEngine.setValue(path, expr);
 }
 
 /**
@@ -797,46 +795,6 @@ const PropertyExpressionEngine::ExpressionInfo DocumentObject::getExpression(con
 void DocumentObject::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdentifier> &paths)
 {
     ExpressionEngine.renameObjectIdentifiers(paths);
-}
-
-/**
- * @brief Helper function that sets up a signal to track document object renames.
- */
-
-void DocumentObject::connectRelabelSignals()
-{
-    // Only keep signal if the ExpressionEngine has at least one expression
-    if (ExpressionEngine.numExpressions() > 0) {
-
-        // Not already connected?
-        if (!onRelabledObjectConnection.connected()) {
-            onRelabledObjectConnection = getDocument()->signalRelabelObject
-                    .connect(boost::bind(&PropertyExpressionEngine::slotObjectRenamed,
-                                         &ExpressionEngine, _1));
-        }
-
-        // Connect to signalDeletedObject, to properly track deletion of other objects
-        // that might be referenced in an expression
-        if (!onDeletedObjectConnection.connected()) {
-            onDeletedObjectConnection = getDocument()->signalDeletedObject
-                    .connect(boost::bind(&PropertyExpressionEngine::slotObjectDeleted,
-                                         &ExpressionEngine, _1));
-        }
-
-        try {
-            // Crude method to resolve all expression dependencies
-            ExpressionEngine.execute();
-        }
-        catch (...) {
-            // Ignore any error
-        }
-    }
-    else {
-        // Disconnect signals; nothing to track now
-        onRelabledObjectConnection.disconnect();
-        onRelabledDocumentConnection.disconnect();
-        onDeletedObjectConnection.disconnect();
-    }
 }
 
 void DocumentObject::onDocumentRestored()

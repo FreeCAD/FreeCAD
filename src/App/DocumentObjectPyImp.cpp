@@ -27,6 +27,7 @@
 #include "DocumentObject.h"
 #include "Document.h"
 #include "Expression.h"
+#include "GeoFeature.h"
 #include "GroupExtension.h"
 #include "GeoFeatureGroupExtension.h"
 
@@ -327,9 +328,11 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
     else if (PyString_Check(expr)) {
         const char * exprStr = PyString_AsString(expr);
 #endif
-        boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr));
+        boost::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), exprStr));
+        if(shared_expr && comment)
+            shared_expr->comment = comment;
 
-        getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
+        getDocumentObjectPtr()->setExpression(p, shared_expr);
     }
     else if (PyUnicode_Check(expr)) {
 #if PY_MAJOR_VERSION >= 3
@@ -341,7 +344,9 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
             Py_DECREF(unicode);
             boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr.c_str()));
 
-            getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
+            if(shared_expr && comment)
+                shared_expr->comment = comment;
+            getDocumentObjectPtr()->setExpression(p, shared_expr);
         }
         else {
             // utf-8 encoding failed
@@ -779,6 +784,28 @@ PyObject *DocumentObjectPy::resolve(PyObject *args)
         ret.setItem(1,parent?Py::Object(parent->getPyObject(),true):Py::None());
         ret.setItem(2,Py::String(elementName.c_str()));
         ret.setItem(3,Py::String(subElement?subElement:""));
+        return Py::new_reference_to(ret);
+    } PY_CATCH;
+
+    Py_Return;
+}
+
+PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
+{
+    const char *subname;
+    PyObject *append = Py_False;
+    int type = 0;
+    if (!PyArg_ParseTuple(args, "s|Oi",&subname,&append,&type))
+        return NULL;                             // NULL triggers exception 
+
+    PY_TRY {
+        std::pair<std::string,std::string> elementName;
+        auto obj = GeoFeature::resolveElement(getDocumentObjectPtr(), subname,elementName,
+                PyObject_IsTrue(append),(GeoFeature::ElementNameType)type);
+        Py::Tuple ret(3);
+        ret.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::None());
+        ret.setItem(1,Py::String(elementName.first));
+        ret.setItem(2,Py::String(elementName.second));
         return Py::new_reference_to(ret);
     } PY_CATCH;
 
