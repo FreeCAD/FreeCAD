@@ -13,6 +13,7 @@ SET(Arch_SRCS
     ArchWall.py
     importIFC.py
     importIFClegacy.py
+    exportIFCHelper.py
     Arch.py
     ArchBuilding.py
     ArchFloor.py
