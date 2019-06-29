@@ -388,6 +388,70 @@ public:
         std::string *childName=0, const char **subElement=0,
         PyObject **pyObj=0, Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
 
+    /** Resolve a link reference that is relative to this object reference
+     *
+     * @param subname: on input, this is the subname reference to the object
+     * that is to be assigned a link. On output, the reference may be offseted
+     * to be rid off any common parent.
+     * @param link: on input, this is the top parent of the link reference. On
+     * output, it may be altered to one of its child to be rid off any common
+     * parent.
+     * @param linkSub: on input, this the subname of the link reference. On
+     * output, it may be offseted to be rid off any common parent.
+     *
+     * @return The corrected top parent of the object that is to be assigned the
+     * link. If the output 'subname' is empty, then return the object itself.
+     *
+     * To avoid any cyclic reference, an object must not be assign a link to any
+     * of the object in its parent. This function can be used to resolve any
+     * common parents of an object and its link target.
+     *
+     * For example, with the following object hierarchy
+     *
+     * Group
+     *   |--Group001
+     *   |   |--Box
+     *   |   |--Cylinder
+     *   |--Group002
+     *       |--Box001
+     *       |--Cylinder001
+     *
+     * If you want add a link of Group.Group002.Box001 to Group.Group001, you
+     * can call with the following parameter (which are usually obtained from
+     * Selection.getSelectionEx(), check usage in TreeWidget::onDropEvent()):
+     *      std::string subname("Group002.");
+     *      auto link = Group;
+     *      std::string linkSub("Group001.Box001.");
+     *      parent = Group.resolveRelativeLink(subname,link,linkSub);
+     *
+     * The resolving result is as follow:
+     *      return  -> Group001
+     *      subname -> ""
+     *      link    -> Group002
+     *      linkSub -> "Box001."
+     *
+     * The common parent 'Group' is removed.
+     */
+    App::DocumentObject *resolveRelativeLink(std::string &subname, 
+            App::DocumentObject *&link, std::string &linkSub) const;
+
+    /** Called to adjust link properties to avoid cyclic links
+     *
+     * @param inList: the recursive in-list of the future parent object,
+     * including the parent itself.
+     * @param visited: optional set holding the visited objects. If null then
+     * only this object is adjusted, or else all object inside the out-list of
+     * this object will be checked.
+     *
+     * @return Return whether the object has been modified
+     *
+     * This function tries to adjust any relative link properties (i.e. link
+     * properties that can hold subnames) to avoid cyclic when added to the
+     * future parent.
+     */
+    virtual bool adjustRelativeLinks(const std::set<App::DocumentObject*> &inList,
+            std::set<App::DocumentObject*> *visited=0);
+
     /** Allow object to redirect a subname path
      *
      * @param ss: input as the current subname path from \a topParent leading
@@ -404,7 +468,7 @@ public:
     virtual bool redirectSubName(std::ostringstream &ss,
             DocumentObject *topParent, DocumentObject *child) const;
 
-    /** Sepecial marker to mark the object has hidden
+    /** Sepecial marker to mark the object as hidden
      *
      * It is used by Gui::ViewProvider::getElementColors(), but exposed here
      * for convenience

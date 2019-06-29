@@ -1012,6 +1012,91 @@ DocumentObject *DocumentObject::resolve(const char *subname,
     return obj;
 }
 
+DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
+        DocumentObject *&link, std::string &linkSub) const
+{
+    if(!link || !link->getNameInDocument() || !getNameInDocument())
+        return 0;
+    auto ret = const_cast<DocumentObject*>(this);
+    if(link != ret) {
+        auto sub = subname.c_str();
+        auto nextsub = sub;
+        for(auto dot=strchr(nextsub,'.');dot;nextsub=dot+1,dot=strchr(nextsub,'.')) {
+            std::string subcheck(sub,nextsub-sub);
+            subcheck += link->getNameInDocument();
+            subcheck += '.';
+            if(getSubObject(subcheck.c_str())==link) {
+                ret = getSubObject(std::string(sub,dot+1-sub).c_str());
+                if(!ret) 
+                    return 0;
+                subname = std::string(dot+1);
+                break;
+            }
+        }
+        return ret;
+    }
+
+    size_t pos=0,linkPos=0;
+    std::string linkssub,ssub;
+    do {
+        linkPos = linkSub.find('.',linkPos);
+        if(linkPos == std::string::npos) {
+            link = 0;
+            return 0;
+        }
+        ++linkPos;
+        pos = subname.find('.',pos);
+        if(pos == std::string::npos) {
+            subname.clear();
+            ret = 0;
+            break;
+        }
+        ++pos;
+    }while(subname.compare(0,pos,linkSub,0,linkPos)==0);
+
+    if(pos != std::string::npos) {
+        ret = getSubObject(subname.substr(0,pos).c_str());
+        if(!ret) {
+            link = 0;
+            return 0;
+        }
+        subname = subname.substr(pos);
+    }
+    if(linkPos) {
+        link = link->getSubObject(linkSub.substr(0,linkPos).c_str());
+        if(!link)
+            return 0;
+        linkSub = linkSub.substr(linkPos);
+    }
+    return ret;
+}
+
+bool DocumentObject::adjustRelativeLinks(
+        const std::set<App::DocumentObject *> &inList,
+        std::set<App::DocumentObject *> *visited)
+{
+    if(visited)
+        visited->insert(this);
+
+    bool touched = false;
+    std::vector<Property*> props;
+    getPropertyList(props);
+    for(auto prop : props) {
+        auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
+        if(linkProp && linkProp->adjustLink(inList))
+            touched = true;
+    }
+    if(visited) {
+        for(auto obj : getOutList()) {
+            if(!visited->count(obj))  {
+                if(obj->adjustRelativeLinks(inList,visited))
+                    touched = true;
+            }
+        }
+    }
+    return touched;
+}
+
 const std::string &DocumentObject::hiddenMarker() {
     static std::string marker("!hide");
     return marker;
