@@ -825,7 +825,6 @@ class TaskPanel(object):
             else:
                 for page in reversed(self.featurePages):
                     toolbox.addItem(page.form, page.getTitle(obj))
-            PathLog.info("Title: '%s'" % opTitle)
             toolbox.setWindowTitle(opTitle)
             if opPage.getIcon(obj):
                 toolbox.setWindowIcon(QtGui.QIcon(opPage.getIcon(obj)))
