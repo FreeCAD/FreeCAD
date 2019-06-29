@@ -25,15 +25,20 @@
 #ifndef _PreComp_
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string/replace.hpp>
 #include "Cell.h"
 #include "Utils.h"
 #include <boost/tokenizer.hpp>
 #include <Base/Reader.h>
 #include <Base/Quantity.h>
 #include <Base/Writer.h>
+#include <Base/Console.h>
 #include <App/Expression.h>
 #include "Sheet.h"
 #include <iomanip>
+
+FC_LOG_LEVEL_INIT("Spreadsheet",true,true);
 
 #ifdef _MSC_VER
 #define __func__ __FUNCTION__
@@ -42,6 +47,22 @@
 using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
+
+/////////////////////////////////////////////////////////
+
+// expose the read() function for simpler partial xml reading in setExpression()
+class ReaderPrivate: public Base::XMLReader {
+public:
+    ReaderPrivate(const char* FileName, std::istream &is)
+        :XMLReader(FileName,is)
+    {}
+
+    bool read() {
+        return XMLReader::read();
+    }
+};
+
+///////////////////////////////////////////////////////////
 
 const int Cell::EXPRESSION_SET       = 1;
 const int Cell::ALIGNMENT_SET        = 4;
@@ -85,7 +106,7 @@ Cell::Cell(const CellAddress &_address, PropertySheet *_owner)
     , alignment(ALIGNMENT_HIMPLIED | ALIGNMENT_LEFT | ALIGNMENT_VIMPLIED | ALIGNMENT_VCENTER)
     , style()
     , foregroundColor(0, 0, 0, 1)
-    , backgroundColor(1, 1, 1, 0)
+    , backgroundColor(1, 1, 1, 1)
     , displayUnit()
     , alias()
     , computedUnit()
@@ -100,7 +121,7 @@ Cell::Cell(PropertySheet *_owner, const Cell &other)
     : address(other.address)
     , owner(_owner)
     , used(other.used)
-    , expression(other.expression ? other.expression->copy() : 0)
+    , expression(other.expression ? other.expression->copy() : nullptr)
     , alignment(other.alignment)
     , style(other.style)
     , foregroundColor(other.foregroundColor)
@@ -112,6 +133,7 @@ Cell::Cell(PropertySheet *_owner, const Cell &other)
     , colSpan(other.colSpan)
 {
     setUsed(MARK_SET, false);
+    setDirty();
 }
 
 Cell &Cell::operator =(const Cell &rhs)
@@ -131,7 +153,9 @@ Cell &Cell::operator =(const Cell &rhs)
     setSpans(rhs.rowSpan, rhs.colSpan);
 
     setUsed(MARK_SET, false);
+    setDirty();
 
+    signaller.tryInvoke();
     return *this;
 }
 
@@ -155,18 +179,40 @@ void Cell::setExpression(App::Expression *expr)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
 
+    owner->setDirty(address);
+
     /* Remove dependencies */
     owner->removeDependencies(address);
+
+    if(expr && expr->comment.size()) {
+        if(!boost::starts_with(expr->comment,"<Cell "))
+            FC_WARN("Unknown style of cell "
+                << owner->sheet()->getFullName() << '.' << address.toString());
+        else {
+            try {
+                std::istringstream in(expr->comment);
+                ReaderPrivate reader("<memory>", in);
+                reader.read();
+                restore(reader,true);
+            }catch(Base::Exception &e) {
+                e.ReportException();
+                FC_ERR("Failed to restore style of cell "
+                    << owner->sheet()->getFullName() << '.' 
+                    << address.toString() << ": " << e.what());
+            }
+        }
+        expr->comment.clear();
+    }
 
     if (expression)
         delete expression;
     expression = expr;
-    setUsed(EXPRESSION_SET, expression != 0);
+    setUsed(EXPRESSION_SET, !!expression);
 
     /* Update dependencies */
     owner->addDependencies(address);
 
-    owner->rebuildDocDepList();
+    signaller.tryInvoke();
 }
 
 /**
@@ -174,9 +220,23 @@ void Cell::setExpression(App::Expression *expr)
   *
   */
 
-const App::Expression *Cell::getExpression() const
+const App::Expression *Cell::getExpression(bool withFormat) const
 {
-    return expression;
+    if(withFormat && expression) {
+        if((used & (ALIGNMENT_SET
+                                | STYLE_SET
+                                | FOREGROUND_COLOR_SET
+                                | BACKGROUND_COLOR_SET
+                                | DISPLAY_UNIT_SET 
+                                | ALIAS_SET
+                                | SPANS_SET)))
+        {
+            std::ostringstream ss;
+            save(ss,"",true);
+            expression->comment = ss.str();
+        }
+    }
+    return expression.get();
 }
 
 /**
@@ -184,7 +244,7 @@ const App::Expression *Cell::getExpression() const
   *
   */
 
-bool Cell::getStringContent(std::string & s) const
+bool Cell::getStringContent(std::string & s, bool persistent) const
 {
     if (expression) {
         if (freecad_dynamic_cast<App::StringExpression>(expression)) {
@@ -211,13 +271,24 @@ bool Cell::getStringContent(std::string & s) const
     }
 }
 
+void Cell::afterRestore() {
+    auto expr = freecad_dynamic_cast<StringExpression>(expression);
+    if(expr) 
+        setContent(expr->getText().c_str());
+}
+
 void Cell::setContent(const char * value)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
     App::Expression * expr = 0;
 
-    setUsed(PARSE_EXCEPTION_SET, false);
+    clearException();
     if (value != 0) {
+        if(owner->sheet()->isRestoring()) {
+            expression = new App::StringExpression(owner->sheet(),value);
+            setUsed(EXPRESSION_SET, true);
+            return;
+        }
         if (*value == '=') {
             try {
                 expr = App::ExpressionParser::parse(owner->sheet(), value + 1);
@@ -248,7 +319,21 @@ void Cell::setContent(const char * value)
         }
     }
 
-    setExpression(expr);
+    try {
+        setExpression(expr);
+        signaller.tryInvoke();
+    } catch (Base::Exception &e) {
+        if(value) {
+            std::string _value;
+            if(*value != '=') {
+                _value = "=";
+                _value += value;
+                value = _value.c_str();
+            }
+            setExpression(new App::StringExpression(owner->sheet(), value));
+            setParseException(e.what());
+        }
+    }
 }
 
 /**
@@ -265,6 +350,8 @@ void Cell::setAlignment(int _alignment)
 
         alignment = _alignment;
         setUsed(ALIGNMENT_SET, alignment != (ALIGNMENT_HIMPLIED | ALIGNMENT_LEFT | ALIGNMENT_VIMPLIED | ALIGNMENT_VCENTER));
+        setDirty();
+        signaller.tryInvoke();
     }
 }
 
@@ -291,6 +378,9 @@ void Cell::setStyle(const std::set<std::string> & _style)
 
         style = _style;
         setUsed(STYLE_SET, style.size() > 0);
+        setDirty();
+
+        signaller.tryInvoke();
     }
 }
 
@@ -317,6 +407,9 @@ void Cell::setForeground(const App::Color &color)
 
         foregroundColor = color;
         setUsed(FOREGROUND_COLOR_SET, foregroundColor != App::Color(0, 0, 0, 1));
+        setDirty();
+
+        signaller.tryInvoke();
     }
 }
 
@@ -343,6 +436,9 @@ void Cell::setBackground(const App::Color &color)
 
         backgroundColor = color;
         setUsed(BACKGROUND_COLOR_SET, backgroundColor != App::Color(1, 1, 1, 0));
+        setDirty();
+
+        signaller.tryInvoke();
     }
 }
 
@@ -380,6 +476,9 @@ void Cell::setDisplayUnit(const std::string &unit)
 
         displayUnit = newDisplayUnit;
         setUsed(DISPLAY_UNIT_SET, !displayUnit.isEmpty());
+        setDirty();
+
+        signaller.tryInvoke();
     }
 }
 
@@ -414,7 +513,9 @@ void Cell::setAlias(const std::string &n)
             owner->aliasProp.erase(address);
 
         setUsed(ALIAS_SET, !alias.empty());
+        setDirty();
 
+        signaller.tryInvoke();
     }
 }
 
@@ -435,6 +536,9 @@ void Cell::setComputedUnit(const Base::Unit &unit)
 
     computedUnit = unit;
     setUsed(COMPUTED_UNIT_SET, !computedUnit.isEmpty());
+    setDirty();
+
+    signaller.tryInvoke();
 }
 
 /**
@@ -465,6 +569,8 @@ void Cell::setSpans(int rows, int columns)
         colSpan = (columns == -1 ? 1 : columns);
         setUsed(SPANS_SET, (rowSpan != 1 || colSpan != 1) );
         setUsed(SPANS_UPDATED);
+        setDirty();
+        signaller.tryInvoke();
     }
 }
 
@@ -482,18 +588,30 @@ bool Cell::getSpans(int &rows, int &columns) const
 
 void Cell::setException(const std::string &e)
 {
+    if(e.size() && owner && owner->sheet()) {
+        FC_ERR(owner->sheet()->getFullName() << '.' 
+                << address.toString() << ": " << e);
+    }
     exceptionStr = e;
     setUsed(EXCEPTION_SET);
 }
 
 void Cell::setParseException(const std::string &e)
 {
+    if(e.size() && owner && owner->sheet()) {
+        FC_ERR(owner->sheet()->getFullName() << '.' 
+                << address.toString() << ": " << e);
+    }
     exceptionStr = e;
     setUsed(PARSE_EXCEPTION_SET);
 }
 
 void Cell::setResolveException(const std::string &e)
 {
+    if(e.size() && owner && owner->sheet()) {
+        FC_LOG(owner->sheet()->getFullName() << '.' 
+                << address.toString() << ": " << e);
+    }
     exceptionStr = e;
     setUsed(RESOLVE_EXCEPTION_SET);
 }
@@ -505,14 +623,22 @@ void Cell::clearResolveException()
 
 void Cell::clearException()
 {
-    if (!isUsed(PARSE_EXCEPTION_SET))
-        exceptionStr = "";
+    exceptionStr.clear();
     setUsed(EXCEPTION_SET, false);
+    setUsed(RESOLVE_EXCEPTION_SET, false);
+    setUsed(PARSE_EXCEPTION_SET, false);
 }
 
 void Cell::clearDirty()
 {
-    owner->clearDirty(address);
+    if(owner)
+        owner->clearDirty(address);
+}
+
+void Cell::setDirty()
+{
+    if(owner)
+        owner->setDirty(address);
 }
 
 /**
@@ -530,7 +656,7 @@ void Cell::moveAbsolute(CellAddress newAddress)
   *
   */
 
-void Cell::restore(Base::XMLReader &reader)
+void Cell::restore(Base::XMLReader &reader, bool checkAlias)
 {
     const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : 0;
     const char* alignment = reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : 0;
@@ -585,7 +711,7 @@ void Cell::restore(Base::XMLReader &reader)
     }
     if (displayUnit)
         setDisplayUnit(displayUnit);
-    if (alias)
+    if (alias && (!checkAlias || !owner->revAliasProp.count(alias)))
         setAlias(alias);
 
     if (rowSpan || colSpan) {
@@ -601,46 +727,55 @@ void Cell::restore(Base::XMLReader &reader)
   *
   */
 
-void Cell::save(Base::Writer &writer) const
-{
+void Cell::save(Base::Writer &writer) const {
+    save(writer.Stream(),writer.ind(),false);
+}
+
+void Cell::save(std::ostream &os, const char *indent, bool noContent) const {
     if (!isUsed())
         return;
 
-    writer.Stream() << writer.ind() << "<Cell ";
+    os << indent << "<Cell ";
 
-    writer.Stream() << "address=\"" << address.toString() << "\" ";
+    if (!noContent) {
+        os << "address=\"" << address.toString() << "\" ";
 
-    if (isUsed(EXPRESSION_SET)) {
-        std::string content;
-
-        getStringContent(content);
-        writer.Stream() << "content=\"" << App::Property::encodeAttribute(content) << "\" ";
+        if(isUsed(EXPRESSION_SET)) {
+            std::string content;
+            getStringContent(content,true);
+            os << "content=\"" << App::Property::encodeAttribute(content) << "\" ";
+        }
     }
 
     if (isUsed(ALIGNMENT_SET))
-        writer.Stream() << "alignment=\"" << encodeAlignment(alignment) << "\" ";
+        os << "alignment=\"" << encodeAlignment(alignment) << "\" ";
 
     if (isUsed(STYLE_SET))
-        writer.Stream() << "style=\"" << encodeStyle(style) << "\" ";
+        os << "style=\"" << encodeStyle(style) << "\" ";
 
     if (isUsed(FOREGROUND_COLOR_SET))
-        writer.Stream() << "foregroundColor=\"" << encodeColor(foregroundColor) << "\" ";
+        os << "foregroundColor=\"" << encodeColor(foregroundColor) << "\" ";
 
     if (isUsed(BACKGROUND_COLOR_SET))
-        writer.Stream() << "backgroundColor=\"" << encodeColor(backgroundColor) << "\" ";
+        os << "backgroundColor=\"" << encodeColor(backgroundColor) << "\" ";
 
     if (isUsed(DISPLAY_UNIT_SET))
-        writer.Stream() << "displayUnit=\"" << App::Property::encodeAttribute(displayUnit.stringRep) << "\" ";
+        os << "displayUnit=\"" << App::Property::encodeAttribute(displayUnit.stringRep) << "\" ";
 
     if (isUsed(ALIAS_SET))
-        writer.Stream() << "alias=\"" << App::Property::encodeAttribute(alias) << "\" ";
+        os << "alias=\"" << App::Property::encodeAttribute(alias) << "\" ";
 
     if (isUsed(SPANS_SET)) {
-        writer.Stream() << "rowSpan=\"" << rowSpan<< "\" ";
-        writer.Stream() << "colSpan=\"" << colSpan << "\" ";
+        os << "rowSpan=\"" << rowSpan<< "\" ";
+        os << "colSpan=\"" << colSpan << "\" ";
     }
 
-    writer.Stream() << "/>" << std::endl;
+    if(editMode) 
+        os << "editMode=\"" << editMode << "\" ";
+
+    os << "/>";
+    if(!noContent)
+        os << std::endl;
 }
 
 /**
@@ -654,8 +789,6 @@ void Cell::setUsed(int mask, bool state)
         used |= mask;
     else
         used &= ~mask;
-
-    owner->setDirty(address);
 }
 
 /**
@@ -696,23 +829,27 @@ void Cell::visit(App::ExpressionVisitor &v)
 
 int Cell::decodeAlignment(const std::string & itemStr, int alignment)
 {
-    if (itemStr == "himplied")
-        alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_HIMPLIED;
-    else if (itemStr == "left")
+    if (itemStr == "himplied") {
+        if(!(alignment & ALIGNMENT_HORIZONTAL))
+            alignment |= ALIGNMENT_LEFT;
+        alignment |= Cell::ALIGNMENT_HIMPLIED;
+    } else if (itemStr == "left")
         alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_LEFT;
     else if (itemStr == "center")
         alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_HCENTER;
     else if (itemStr == "right")
         alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_RIGHT;
-    else if (itemStr == "vimplied")
-        alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_VIMPLIED;
-    else if (itemStr == "top")
+    else if (itemStr == "vimplied") {
+        if(!(alignment & ALIGNMENT_VERTICAL))
+            alignment |= ALIGNMENT_VCENTER;
+        alignment |= Cell::ALIGNMENT_VIMPLIED;
+    } else if (itemStr == "top")
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_TOP;
     else if (itemStr == "vcenter")
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_VCENTER;
     else if (itemStr == "bottom")
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_BOTTOM;
-    else
+    else if(itemStr.size())
         throw Base::ValueError("Invalid alignment.");
 
     return alignment;
