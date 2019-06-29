@@ -351,13 +351,11 @@ public:
 
     /* Expression support */
 
-    virtual void setExpression(const ObjectIdentifier & path, boost::shared_ptr<App::Expression> expr, const char *comment = 0);
+    virtual void setExpression(const ObjectIdentifier & path, boost::shared_ptr<App::Expression> expr);
 
     virtual const PropertyExpressionEngine::ExpressionInfo getExpression(const ObjectIdentifier &path) const;
 
     virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
-
-    virtual void connectRelabelSignals();
 
     const std::string & getOldLabel() const { return oldLabel; }
 
@@ -530,11 +528,6 @@ protected: // attributes
     Py::Object PythonObject;
     /// pointer to the document this object belongs to
     App::Document* _pDoc;
-
-    // Connections to track relabeling of document and document objects
-    boost::signals2::scoped_connection onRelabledDocumentConnection;
-    boost::signals2::scoped_connection onRelabledObjectConnection;
-    boost::signals2::scoped_connection onDeletedObjectConnection;
 
     /// Old label; used for renaming expressions
     std::string oldLabel;
