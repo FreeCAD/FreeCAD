@@ -176,6 +176,11 @@ non-object sub-element name if any.
                 </UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="adjustRelativeLinks">
+            <Documentation>
+                <UserDocu>adjustRelativeLinks(parent,recursive=True) -- auto correct potential cyclic dependencies</UserDocu>
+            </Documentation>
+        </Methode>
     <Attribute Name="OutList" ReadOnly="true">
       <Documentation>
         <UserDocu>A list of all objects this object links to.</UserDocu>

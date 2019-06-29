@@ -146,6 +146,12 @@ public:
     /// Get valid paths for this property; used by auto completer
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
+    /// Called at the begining of Document::afterRestore(). See comments there.
+    virtual void afterRestore() {}
+
+    /// Called before calling DocumentObject::onDocumentRestored()
+    virtual void onContainerRestored() {}
+
     /** Property status handling
      */
     //@{
@@ -188,6 +194,11 @@ public:
     virtual Property *Copy(void) const = 0;
     /// Paste the value from the property (mainly for Undo/Redo and transactions)
     virtual void Paste(const Property &from) = 0;
+
+    /// Called when a child property has changed value
+    virtual void hasSetChildValue(Property &) {}
+    /// Called before a child property changing value
+    virtual void aboutToSetChildValue(Property &) {}
 
     friend class PropertyContainer;
     friend struct PropertyData;
