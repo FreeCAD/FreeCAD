@@ -237,7 +237,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         obj.setEditorMode('ExtensionFeature', 2)
 
-    def opOnDocumentRestored(self, obj):
+    def areaOpOnDocumentRestored(self, obj):
         '''opOnDocumentRestored(obj) ... adds the UseOutline property if it doesn't exist.'''
         self.initPocketOp(obj)
 
