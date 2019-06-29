@@ -334,6 +334,8 @@ class SelectPlane(DraftTool):
         self.offset = 0
         if not self.doc:
             return
+        if self.handle():
+            return
         self.ui.selectPlaneUi()
         FreeCAD.Console.PrintMessage(translate("draft", "Pick a face to define the drawing plane")+"\n")
         if plane.alignToSelection(self.offset):
