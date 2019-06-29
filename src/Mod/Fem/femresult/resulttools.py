@@ -141,8 +141,9 @@ def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
 def get_stats(res_obj, result_type):
     match_table = get_all_stats(res_obj)
     match_table["None"] = (0.0, 0.0, 0.0)
-    stats = (0.0, 0.0, 0.0)
-    stats = match_table[result_type]
+    stats = ()
+    if result_type in match_table:
+        stats = match_table[result_type]
     return stats
 
 
