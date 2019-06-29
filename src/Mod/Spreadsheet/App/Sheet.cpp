@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <boost/regex.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/range/adaptor/map.hpp>
 #include <boost/range/algorithm/copy.hpp>
@@ -41,6 +42,7 @@
 #include <Base/Stream.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
+#include <Base/Console.h>
 #include "Sheet.h"
 #include "SheetObserver.h"
 #include "Utils.h"
@@ -52,6 +54,8 @@
 #include <boost/regex.hpp>
 #include <boost/bind.hpp>
 #include <deque>
+
+FC_LOG_LEVEL_INIT("Spreadsheet",true,true);
 
 using namespace Base;
 using namespace App;
@@ -78,19 +82,13 @@ typedef Traits::edge_descriptor Edge;
 
 Sheet::Sheet()
     : DocumentObject()
-    , props(this)
+    , props(PropertyContainer::dynamicProps)
     , cells(this)
 {
-    ADD_PROPERTY_TYPE(docDeps, (0), "Spreadsheet", (PropertyType)(Prop_Transient|Prop_ReadOnly|Prop_Hidden), "Dependencies");
-    ADD_PROPERTY_TYPE(cells, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Cell contents");
-    ADD_PROPERTY_TYPE(columnWidths, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Column widths");
+    ADD_PROPERTY_TYPE(cells, (), "Spreadsheet", (PropertyType)(Prop_Hidden), "Cell contents");
+    ADD_PROPERTY_TYPE(columnWidths, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Column widths");
+    ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Row heights");
     ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Row heights");
-
-    docDeps.setSize(0);
-    docDeps.setScope(LinkScope::Global);
-
-    onRenamedDocumentConnection = GetApplication().signalRenameDocument.connect(boost::bind(&Spreadsheet::Sheet::onRenamedDocument, this, _1));
-    onRelabledDocumentConnection = GetApplication().signalRelabelDocument.connect(boost::bind(&Spreadsheet::Sheet::onRelabledDocument, this, _1));
 }
 
 /**
@@ -123,7 +121,6 @@ void Sheet::clearAll()
     columnWidths.clear();
     rowHeights.clear();
     removedAliases.clear();
-    docDeps.setValues(std::vector<DocumentObject*>());
 
     for (ObserverMap::iterator i = observers.begin(); i != observers.end(); ++i)
         delete i->second;
@@ -175,12 +172,14 @@ bool Sheet::importFromFile(const std::string &filename, char delimiter, char quo
                 }
             }
             catch (...) {
+                signaller.tryInvoke();
                 return false;
             }
 
             ++row;
         }
         file.close();
+        signaller.tryInvoke();
         return true;
     }
     else
@@ -365,16 +364,7 @@ void Sheet::setCell(CellAddress address, const char * value)
         return;
     }
 
-    // Update expression, delete old first if necessary
-    Cell * cell = getNewCell(address);
-
-    if (cell->getExpression()) {
-        setContent(address, 0);
-    }
     setContent(address, value);
-
-    // Recompute dependencies
-    touch();
 }
 
 /**
@@ -421,14 +411,15 @@ Property * Sheet::getProperty(const char * addr) const
   *
   */
 
-void Sheet::getCellAddress(const Property *prop, CellAddress & address)
+bool Sheet::getCellAddress(const Property *prop, CellAddress & address)
 {
     std::map<const Property*, CellAddress >::const_iterator i = propAddress.find(prop);
 
-    if (i != propAddress.end())
+    if (i != propAddress.end()) {
         address = i->second;
-    else
-        throw Base::TypeError("Property is not a cell");
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -488,7 +479,7 @@ void Sheet::onSettingDocument()
 
 Property * Sheet::setFloatProperty(CellAddress key, double value)
 {
-    Property * prop = props.getPropertyByName(key.toString().c_str());
+    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
     PropertyFloat * floatProp;
 
     if (!prop || prop->getTypeId() != PropertyFloat::getClassTypeId()) {
@@ -496,7 +487,7 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
             this->removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
-        floatProp = freecad_dynamic_cast<PropertyFloat>(props.addDynamicProperty("App::PropertyFloat", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_Transient));
+        floatProp = freecad_dynamic_cast<PropertyFloat>(addDynamicProperty("App::PropertyFloat", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
     }
     else
         floatProp = static_cast<PropertyFloat*>(prop);
@@ -519,7 +510,7 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
 
 Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base::Unit & unit)
 {
-    Property * prop = props.getPropertyByName(key.toString().c_str());
+    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
     PropertySpreadsheetQuantity * quantityProp;
 
     if (!prop || prop->getTypeId() != PropertySpreadsheetQuantity::getClassTypeId()) {
@@ -527,7 +518,7 @@ Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base:
             this->removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
-        Property * p = props.addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_Transient);
+        Property * p = addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist);
         quantityProp = freecad_dynamic_cast<PropertySpreadsheetQuantity>(p);
     }
     else
@@ -553,7 +544,7 @@ Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base:
 
 Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
 {
-    Property * prop = props.getPropertyByName(key.toString().c_str());
+    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
     PropertyString * stringProp = freecad_dynamic_cast<PropertyString>(prop);
 
     if (!stringProp) {
@@ -561,7 +552,7 @@ Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
             this->removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
-        stringProp = freecad_dynamic_cast<PropertyString>(props.addDynamicProperty("App::PropertyString", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_Transient));
+        stringProp = freecad_dynamic_cast<PropertyString>(addDynamicProperty("App::PropertyString", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
     }
 
     propAddress[stringProp] = key;
@@ -597,12 +588,30 @@ void Sheet::updateAlias(CellAddress key)
             }
         }
 
-        if (!aliasProp)
-            aliasProp = props.addDynamicProperty(prop->getTypeId().getName(), alias.c_str(), 0, 0, Prop_ReadOnly | Prop_Transient);
+        if (!aliasProp) {
+            aliasProp = addDynamicProperty(prop->getTypeId().getName(), alias.c_str(), 0, 0, Prop_ReadOnly | Prop_NoPersist);
+            aliasProp->setStatus(App::Property::Hidden,true);
+        }
 
         aliasProp->Paste(*prop);
     }
 }
+
+struct CurrentAddressLock {
+    CurrentAddressLock(int &r, int &c, const CellAddress &addr)
+        :row(r),col(c)
+    {
+        row = addr.row();
+        col = addr.col();
+    }
+    ~CurrentAddressLock() {
+        row = -1;
+        col = -1;
+    }
+
+    int &row;
+    int &col;
+};
 
 /**
   * Update the Property given by \a key. This will also eventually trigger recomputations of cells depending on \a key.
@@ -616,11 +625,12 @@ void Sheet::updateProperty(CellAddress key)
     Cell * cell = getCell(key);
 
     if (cell != 0) {
-        Expression * output;
+        std::unique_ptr<Expression> output;
         const Expression * input = cell->getExpression();
 
         if (input) {
-            output = input->eval();
+            CurrentAddressLock lock(currentRow,currentCol,key);
+            output = cells.eval(input);
         }
         else {
             std::string s;
@@ -641,8 +651,6 @@ void Sheet::updateProperty(CellAddress key)
         }
         else
             setStringProperty(key, freecad_dynamic_cast<StringExpression>(output)->getText().c_str());
-
-        delete output;
     }
     else
         clear(key);
@@ -661,6 +669,12 @@ void Sheet::updateProperty(CellAddress key)
 
 Property *Sheet::getPropertyByName(const char* name) const
 {
+    std::string _name;
+    CellAddress addr;
+    if(addr.parseAbsoluteAddress(name)) {
+        _name = addr.toString(true);
+        name = _name.c_str();
+    }
     Property * prop = getProperty(name);
 
     if (prop)
@@ -669,20 +683,10 @@ Property *Sheet::getPropertyByName(const char* name) const
         return DocumentObject::getPropertyByName(name);
 }
 
-/**
- * @brief Get name of a property, given a pointer to it.
- * @param prop Pointer to property.
- * @return Pointer to string.
- */
-
-const char *Sheet::getPropertyName(const Property *prop) const
-{
-    const char * name = props.getPropertyName(prop);
-
-    if (name)
-        return name;
-    else
-        return PropertyContainer::getPropertyName(prop);
+void Sheet::touchCells(Range range) {
+    do {
+        cells.setDirty(*range);
+    }while(range.next());
 }
 
 /**
@@ -693,18 +697,20 @@ const char *Sheet::getPropertyName(const Property *prop) const
 void Sheet::recomputeCell(CellAddress p)
 {
     Cell * cell = cells.getValue(p);
-    std::string docName = getDocument()->Label.getValue();
-    std::string docObjName = std::string(getNameInDocument());
-    std::string name = docName + "#" + docObjName + "." + p.toString();
 
     try {
-        if (cell) {
-            cell->clearException();
-            cell->clearResolveException();
+        if (cell && cell->hasException()) {
+            std::string content;
+            cell->getStringContent(content);
+            cell->setContent(content.c_str());
         }
+
         updateProperty(p);
-        cells.clearDirty(p);
-        cellErrors.erase(p);
+
+        if(!cell || !cell->hasException()) {
+            cells.clearDirty(p);
+            cellErrors.erase(p);
+        }
     }
     catch (const Base::Exception & e) {
         QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
@@ -712,9 +718,15 @@ void Sheet::recomputeCell(CellAddress p)
         setStringProperty(p, Base::Tools::toStdString(msg));
         if (cell)
             cell->setException(e.what());
+        else
+            e.ReportException();
 
         // Mark as erroneous
         cellErrors.insert(p);
+        cellUpdated(p);
+
+        if(e.isDerivedFrom(Base::AbortException::getClassTypeId()))
+            throw;
     }
 
     updateAlias(p);
@@ -742,78 +754,117 @@ DocumentObjectExecReturn *Sheet::execute(void)
          dirtyCells.insert(*i);
     }
 
-    // Push dirty cells onto queue
-    for (std::set<CellAddress>::const_iterator i = dirtyCells.begin(); i != dirtyCells.end(); ++i) {
-        // Create queue and a graph structure to compute order of evaluation
-        std::deque<CellAddress> workQueue;
-        DependencyList graph;
-        std::map<CellAddress, Vertex> VertexList;
-        std::map<Vertex, CellAddress> VertexIndexList;
+    DependencyList graph;
+    std::map<CellAddress, Vertex> VertexList;
+    std::map<Vertex, CellAddress> VertexIndexList;
+    std::deque<CellAddress> workQueue(dirtyCells.begin(),dirtyCells.end());
+    while(workQueue.size()) {
+        CellAddress currPos = workQueue.front();
+        workQueue.pop_front();
 
-        workQueue.push_back(*i);
+        // Insert into map of CellPos -> Index, if it doesn't exist already
+        auto res = VertexList.emplace(currPos,Vertex());
+        if(res.second) {
+            res.first->second = add_vertex(graph);
+            VertexIndexList[res.first->second] = currPos;
+        }
 
-        while (workQueue.size() > 0) {
-            CellAddress currPos = workQueue.front();
-            std::set<CellAddress> s;
-
-            // Get other cells that depends on the current cell (currPos)
-            providesTo(currPos, s);
-            workQueue.pop_front();
-
-            // Insert into map of CellPos -> Index, if it doesn't exist already
-            if (VertexList.find(currPos) == VertexList.end()) {
-                VertexList[currPos] = add_vertex(graph);
-                VertexIndexList[VertexList[currPos]] = currPos;
+        // Process cells that depend on the current cell
+        for(auto &dep : providesTo(currPos)) {
+            auto resDep = VertexList.emplace(dep,Vertex());
+            if(resDep.second) {
+                resDep.first->second = add_vertex(graph);
+                VertexIndexList[resDep.first->second] = dep;
+                if(dirtyCells.insert(dep).second)
+                    workQueue.push_back(dep);
             }
+            // Add edge to graph to signal dependency
+            add_edge(res.first->second, resDep.first->second, graph);
+        }
+    }
+    // Compute cells
+    std::list<Vertex> make_order;
+    // Sort graph topologically to find evaluation order
+    try {
+        boost::topological_sort(graph, std::front_inserter(make_order));
+        // Recompute cells
+        FC_LOG("recomputing " << getFullName());
+        for(auto &pos : make_order) {
+            const auto &addr = VertexIndexList[pos];
+            FC_LOG(addr.toString());
+            recomputeCell(addr);
+        }
+    } catch (std::exception&) {
+        for(auto &v : VertexList) {
+            Cell * cell = cells.getValue(v.first);
+            // Mark as erroneous
+            cellErrors.insert(v.first);
+            if (cell)
+                cell->setException("Pending computation due to cyclic dependency");
+            updateProperty(v.first);
+            updateAlias(v.first);
+        }
 
-            // Process cells that depend on the current cell
-            std::set<CellAddress>::const_iterator i = s.begin();
-            while (i != s.end()) {
+        // Try to be more user friendly by finding individual loops
+        while(dirtyCells.size()) {
+
+            std::deque<CellAddress> workQueue;
+            DependencyList graph;
+            std::map<CellAddress, Vertex> VertexList;
+            std::map<Vertex, CellAddress> VertexIndexList;
+
+            CellAddress currentAddr = *dirtyCells.begin();
+            workQueue.push_back(currentAddr);
+            dirtyCells.erase(dirtyCells.begin());
+
+            while (workQueue.size() > 0) {
+                CellAddress currPos = workQueue.front();
+                workQueue.pop_front();
+
                 // Insert into map of CellPos -> Index, if it doesn't exist already
-                if (VertexList.find(*i) == VertexList.end()) {
-                    VertexList[*i] = add_vertex(graph);
-                    VertexIndexList[VertexList[*i]] = *i;
-                    workQueue.push_back(*i);
+                auto res = VertexList.emplace(currPos,Vertex());
+                if(res.second) {
+                    res.first->second = add_vertex(graph);
+                    VertexIndexList[res.first->second] = currPos;
                 }
-                // Add edge to graph to signal dependency
-                add_edge(VertexList[currPos], VertexList[*i], graph);
-                ++i;
+
+                // Process cells that depend on the current cell
+                for(auto &dep : providesTo(currPos)) {
+                    auto resDep = VertexList.emplace(dep,Vertex());
+                    if(resDep.second) {
+                        resDep.first->second = add_vertex(graph);
+                        VertexIndexList[resDep.first->second] = dep;
+                        workQueue.push_back(dep);
+                        dirtyCells.erase(dep);
+                    }
+                    // Add edge to graph to signal dependency
+                    add_edge(res.first->second, resDep.first->second, graph);
+                }
+            }
+
+            std::list<Vertex> make_order;
+            try {
+                boost::topological_sort(graph, std::front_inserter(make_order));
+            } catch (std::exception&) {
+                // Cycle detected; flag all with errors
+                std::ostringstream ss;
+                ss << "Cyclic dependency" << std::endl;
+                int count = 0;
+                for(auto &v : VertexList) {
+                    if(count==20)
+                        ss << std::endl;
+                    else
+                        ss << ", ";
+                    ss << v.first.toString();
+                }
+                std::string msg = ss.str();
+                for(auto &v : VertexList) {
+                    Cell * cell = cells.getValue(v.first);
+                    if (cell)
+                        cell->setException(msg.c_str());
+                }
             }
         }
-
-        // Compute cells
-        std::list<Vertex> make_order;
-
-        // Sort graph topologically to find evaluation order
-        try {
-            boost::topological_sort(graph, std::front_inserter(make_order));
-
-            // Recompute cells
-            std::list<Vertex>::const_iterator i = make_order.begin();
-            while (i != make_order.end()) {
-                recomputeCell(VertexIndexList[*i]);
-                ++i;
-            }
-        }
-        catch (std::exception&) {
-            // Cycle detected; flag all with errors
-
-            std::map<CellAddress, Vertex>::const_iterator i = VertexList.begin();
-            while (i != VertexList.end()) {
-                Cell * cell = cells.getValue(i->first);
-
-                // Mark as erroneous
-                cellErrors.insert(i->first);
-
-                if (cell)
-                    cell->setException("Circular dependency.");
-                updateProperty(i->first);
-                updateAlias(i->first);
-
-                ++i;
-            }
-        }
-
     }
 
     // Signal update of column widths
@@ -832,16 +883,6 @@ DocumentObjectExecReturn *Sheet::execute(void)
     rowHeights.clearDirty();
     columnWidths.clearDirty();
 
-    std::set<DocumentObject*> ds(cells.getDocDeps());
-
-    // Make sure we don't reference ourselves
-    ds.erase(this);
-
-    std::vector<DocumentObject*> dv(ds.begin(), ds.end());
-    docDeps.setValues(dv);
-
-    purgeTouched();
-
     if (cellErrors.size() == 0)
         return DocumentObject::StdReturn;
     else
@@ -855,12 +896,9 @@ DocumentObjectExecReturn *Sheet::execute(void)
 
 short Sheet::mustExecute(void) const
 {
-    if (cellErrors.size() > 0 || cells.isTouched() || columnWidths.isTouched() || rowHeights.isTouched())
+    if (cellErrors.size() > 0 || cells.isDirty())
         return 1;
-    else if (cells.getDocDeps().size() == 0)
-        return 0;
-    else
-        return -1;
+    return DocumentObject::mustExecute();
 }
 
 
@@ -887,15 +925,6 @@ void Sheet::clear(CellAddress address, bool /*all*/)
         this->removeDynamicProperty(aliasStr.c_str());
 
     cells.clear(address);
-
-    // Update dependencies
-    std::set<DocumentObject*> ds(cells.getDocDeps());
-
-    // Make sure we don't reference ourselves
-    ds.erase(this);
-
-    std::vector<DocumentObject*> dv(ds.begin(), ds.end());
-    docDeps.setValues(dv);
 
     propAddress.erase(prop);
     this->removeDynamicProperty(addr.c_str());
@@ -993,6 +1022,48 @@ std::vector<std::string> Sheet::getUsedCells() const
     return usedCells;
 }
 
+void Sheet::updateColumnsOrRows(bool horizontal, int section, int count) 
+{
+    auto &hiddenProp = horizontal?hiddenColumns:hiddenRows;
+    const auto &hidden = hiddenProp.getValues();
+    auto it = hidden.lower_bound(section);
+    if(it!=hidden.end()) {
+        std::set<long> newHidden(hidden.begin(),it);
+        if(count>0) {
+            for(;it!=hidden.end();++it)
+                newHidden.insert(*it + count);
+        } else {
+            it = hidden.lower_bound(section-count);
+            if(it!=hidden.end()) {
+                for(;it!=hidden.end();++it)
+                    newHidden.insert(*it+count);
+            }
+        }
+        hiddenProp.setValues(newHidden);
+    }
+
+    const auto &sizes = horizontal?columnWidths.getValues():rowHeights.getValues();
+    auto iter = sizes.lower_bound(section);
+    if(iter!=sizes.end()) {
+        std::map<int,int> newsizes(sizes.begin(),iter);
+        if(count>0) {
+            for(;iter!=sizes.end();++iter)
+                newsizes.emplace(iter->first + count, iter->second);
+        } else {
+            iter = sizes.lower_bound(section-count);
+            if(iter!=sizes.end()) {
+                for(;iter!=sizes.end();++iter)
+                    newsizes.emplace(iter->first+count, iter->second);
+            }
+        }
+        if(horizontal) {
+            columnWidths.setValues(newsizes);
+        } else {
+            rowHeights.setValues(newsizes);
+        }
+    }
+}
+
 /**
   * Insert \a count columns at before column \a col in the spreadsheet.
   *
@@ -1003,8 +1074,8 @@ std::vector<std::string> Sheet::getUsedCells() const
 
 void Sheet::insertColumns(int col, int count)
 {
-
     cells.insertColumns(col, count);
+    updateColumnsOrRows(true,col,count);
 }
 
 /**
@@ -1018,6 +1089,7 @@ void Sheet::insertColumns(int col, int count)
 void Sheet::removeColumns(int col, int count)
 {
     cells.removeColumns(col, count);
+    updateColumnsOrRows(true,col,-count);
 }
 
 /**
@@ -1031,6 +1103,7 @@ void Sheet::removeColumns(int col, int count)
 void Sheet::insertRows(int row, int count)
 {
     cells.insertRows(row, count);
+    updateColumnsOrRows(false,row,count);
 }
 
 /**
@@ -1044,6 +1117,7 @@ void Sheet::insertRows(int row, int count)
 void Sheet::removeRows(int row, int count)
 {
     cells.removeRows(row, count);
+    updateColumnsOrRows(false,row,-count);
 }
 
 /**
@@ -1203,17 +1277,6 @@ void Sheet::setSpans(CellAddress address, int rows, int columns)
 }
 
 /**
- * @brief Called when a document object is renamed.
- * @param docObj Renamed document object.
- */
-
-void Sheet::renamedDocumentObject(const DocumentObject * docObj)
-{
-    cells.renamedDocumentObject(docObj);
-    cells.touch();
-}
-
-/**
  * @brief Called when alias \a alias at \a address is removed.
  * @param address Address of alias.
  * @param alias Removed alias.
@@ -1243,13 +1306,11 @@ std::set<std::string> Sheet::dependsOn(CellAddress address) const
 
 void Sheet::providesTo(CellAddress address, std::set<std::string> & result) const
 {
-    const char * docName = getDocument()->Label.getValue();
-    const char * docObjName = getNameInDocument();
-    std::string fullName = std::string(docName) + "#" + std::string(docObjName) + "." + address.toString();
-    std::set<CellAddress> tmpResult = cells.getDeps(fullName);
+    std::string fullName = getFullName() + ".";
+    std::set<CellAddress> tmpResult = cells.getDeps(fullName + address.toString());
 
     for (std::set<CellAddress>::const_iterator i = tmpResult.begin(); i != tmpResult.end(); ++i)
-        result.insert(std::string(docName) + "#" + std::string(docObjName) + "." + i->toString());
+        result.insert(fullName + i->toString());
 }
 
 /**
@@ -1258,38 +1319,18 @@ void Sheet::providesTo(CellAddress address, std::set<std::string> & result) cons
  * @param result Set of links.
  */
 
-void Sheet::providesTo(CellAddress address, std::set<CellAddress> & result) const
+std::set<CellAddress>  Sheet::providesTo(CellAddress address) const
 {
-    const char * docName = getDocument()->Label.getValue();
-    const char * docObjName = getNameInDocument();
-    std::string fullName = std::string(docName) + "#" + std::string(docObjName) + "." + address.toString();
-    result = cells.getDeps(fullName);
+    return cells.getDeps(getFullName()+"."+address.toString());
 }
 
 void Sheet::onDocumentRestored()
 {
-    cells.resolveAll();
-    execute();
-}
-
-/**
- * @brief Slot called when a document is relabelled.
- * @param document Relabelled document.
- */
-
-void Sheet::onRelabledDocument(const Document &document)
-{
-    cells.renamedDocument(&document);
-    cells.purgeTouched();
-}
-
-/**
- * @brief Unimplemented.
- * @param document
- */
-
-void Sheet::onRenamedDocument(const Document & /*document*/)
-{
+    auto ret = execute();
+    if(ret!=DocumentObject::StdReturn) {
+        FC_ERR("Failed to restore " << getFullName() << ": " << ret->Why);
+        delete ret;
+    }
 }
 
 /**
@@ -1299,6 +1340,11 @@ void Sheet::onRenamedDocument(const Document & /*document*/)
 
 void Sheet::observeDocument(Document * document)
 {
+    // observer is no longer required as PropertySheet is now derived from
+    // PropertyLinkBase and will handle all the link related behavior
+#if 1
+    (void)document;
+#else
     ObserverMap::const_iterator it = observers.find(document->getName());
 
     if (it != observers.end()) {
@@ -1311,6 +1357,7 @@ void Sheet::observeDocument(Document * document)
 
         observers[document->getName()] = observer;
     }
+#endif
 }
 
 void Sheet::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdentifier> &paths)
@@ -1319,6 +1366,45 @@ void Sheet::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdent
 
     cells.renameObjectIdentifiers(paths);
 }
+std::string Sheet::getRow(int offset) const {
+    if(currentRow < 0)
+        throw Base::RuntimeError("No current row");
+    int row = currentRow + offset;
+    if(row<0 || row>CellAddress::MAX_ROWS)
+        throw Base::ValueError("Out of range");
+    return std::to_string(row+1);
+}
+
+std::string Sheet::getColumn(int offset) const {
+    if(currentCol < 0)
+        throw Base::RuntimeError("No current column");
+    int col = currentCol + offset;
+    if(col<0 || col>CellAddress::MAX_COLUMNS)
+        throw Base::ValueError("Out of range");
+    if (col < 26) {
+        char txt[2];
+        txt[0] = (char)('A' + col);
+        txt[1] = 0;
+        return txt;
+    }
+
+    col -= 26;
+    char txt[3];
+    txt[0] = (char)('A' + (col / 26));
+    txt[1] = (char)('A' + (col % 26));
+    txt[2] = 0;
+    return txt;
+}
+
+void Sheet::onChanged(const App::Property *prop) {
+    if(!isRestoring() && getDocument() && !getDocument()->isPerformingTransaction()) {
+        if(prop == &PythonMode) 
+            cells.setDirty();
+    }
+    App::DocumentObject::onChanged(prop);
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 TYPESYSTEM_SOURCE(Spreadsheet::PropertySpreadsheetQuantity, App::PropertyQuantity);
 
