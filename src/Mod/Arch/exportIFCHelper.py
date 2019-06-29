@@ -7,6 +7,31 @@ def getObjectsOfIfcType(objects, ifcType):
             results.append(object)
     return results
 
+class SIUnitCreator:
+    def __init__(self, file, text, type):
+        self.prefixes = ["EXA", "PETA", "TERA", "GIGA", "MEGA", "KILO", "HECTO",
+            "DECA", "DECI", "CENTI", "MILLI", "MICRO", "NANO", "PICO", "FEMTO",
+            "ATTO"]
+        self.unitNames = ["AMPERE", "BECQUEREL", "CANDELA", "COULOMB",
+            "CUBIC_METRE", "DEGREE CELSIUS", "FARAD", "GRAM", "GRAY", "HENRY",
+            "HERTZ", "JOULE", "KELVIN", "LUMEN", "LUX", "MOLE", "NEWTON", "OHM",
+            "PASCAL", "RADIAN", "SECOND", "SIEMENS", "SIEVERT", "SQUARE METRE",
+            "METRE", "STERADIAN", "TESLA", "VOLT", "WATT", "WEBER"]
+        self.text = text
+        self.SIUnit = file.createIfcSIUnit(None, type, self.getSIPrefix(), self.getSIUnitName())
+
+    def getSIPrefix(self):
+        for prefix in self.prefixes:
+            if prefix in self.text.upper():
+                return prefix
+        return None
+
+    def getSIUnitName(self):
+        for unitName in self.unitNames:
+            if unitName in self.text.upper():
+                return unitName
+        return None
+
 class ContextCreator:
     def __init__(self, file, objects):
         self.file = file
@@ -34,11 +59,15 @@ class ContextCreator:
 
     def createTargetCRS(self):
         try:
-            return self.file.createIfcCoordinateReferenceSystem(
+            SIUnit = SIUnitCreator(self.file, self.project_data["map_unit"], "LENGTHUNIT")
+            return self.file.createIfcProjectedCRS(
                 self.project_data["name"],
                 self.project_data["description"],
                 self.project_data["geodetic_datum"],
-                self.project_data["vertical_datum"]
+                self.project_data["vertical_datum"],
+                self.project_data["map_projection"],
+                self.project_data["map_zone"],
+                SIUnit.SIUnit
                 )
         except:
             return None
