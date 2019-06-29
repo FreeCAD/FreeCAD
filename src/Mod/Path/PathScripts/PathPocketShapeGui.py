@@ -166,6 +166,8 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         else:
             self.form.showExtensions.setCheckState(QtCore.Qt.Unchecked)
 
+        self.blockUpdateData = False
+
         global Page
         Page = self
 
@@ -176,7 +178,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketExtEdit.ui")
 
     def forAllItemsCall(self, cb):
-        PathLog.track()
         for modelRow in range(self.model.rowCount()):
             model = self.model.item(modelRow, 0)
             for featureRow in range(model.rowCount()):
@@ -186,23 +187,29 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                     ext = item.data(self.DataObject)
                     cb(item, ext)
 
+    def currentExtensions(self):
+        extensions = []
+        def extractExtension(item, ext):
+            if ext and ext.edge and item.checkState() == QtCore.Qt.Checked:
+                extensions.append(ext.ext)
+        self.forAllItemsCall(extractExtension)
+        PathLog.track('extensions', extensions)
+        return extensions
+
+    def updateProxyExtensions(self, obj):
+        self.extensions = self.currentExtensions()
+        obj.Proxy.setExtensions(obj, self.extensions)
+
     def getFields(self, obj):
         PathLog.track(obj.Label, self.model.rowCount(), self.model.columnCount())
+        self.blockUpdateData = True
 
         if obj.ExtensionCorners != self.form.extendCorners.isChecked():
             obj.ExtensionCorners = self.form.extendCorners.isChecked()
         self.defaultLength.updateProperty()
 
-        extensions = []
-
-        def extractExtension(item, ext):
-            if ext and ext.edge and item.checkState() == QtCore.Qt.Checked:
-                extensions.append(ext.ext)
-
-        self.forAllItemsCall(extractExtension)
-
-        self.extensions = extensions
-        obj.Proxy.setExtensions(obj, extensions)
+        self.updateProxyExtensions(obj)
+        self.blockUpdateData = False
 
     def setFields(self, obj):
         PathLog.track(obj.Label)
@@ -319,9 +326,13 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         if hasattr(self, 'selectionModel') and selectedExtensions:
             self.restoreSelection(selectedExtensions)
 
+        self.form.extensionTree.blockSignals(False)
+
     def updateData(self, obj, prop):
-        if prop in ['Base', 'ExtensionLengthDefault']:
-            self.setExtensions(obj.Proxy.getExtensions(obj))
+        PathLog.track(obj.Label, prop, self.blockUpdateData)
+        if not self.blockUpdateData:
+            if prop in ['Base', 'ExtensionLengthDefault']:
+                self.setExtensions(obj.Proxy.getExtensions(obj))
 
     def restoreSelection(self, selection):
         PathLog.track()
@@ -350,7 +361,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
             def setSelectionVisuals(item, ext):
                 if selectItem(item, ext):
-                    self.selectionModel.select(item.index(), QtGui.QItemSelectionModel.Select)
+                    self.selectionModel.select(item.index(), QtCore.QItemSelectionModel.Select)
 
                 selected = self.selectionModel.isSelected(item.index())
                 if selected:
@@ -377,6 +388,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.setDirty()
 
     def _extensionsSetState(self, state):
+        PathLog.track(state)
         for index in self.selectionModel.selectedIndexes():
             item = self.model.itemFromIndex(index)
             ext = item.data(self.DataObject)
@@ -392,11 +404,13 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self._extensionsSetState(QtCore.Qt.Checked)
 
     def updateItemEnabled(self, item):
+        PathLog.track(item)
         ext = item.data(self.DataObject)
         if item.checkState() == QtCore.Qt.Checked:
             ext.enable()
         else:
             ext.disable()
+        self.updateProxyExtensions(self.obj)
         self.setDirty()
 
     def showHideExtension(self):
@@ -412,6 +426,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         #self.setDirty()
 
     def toggleExtensionCorners(self):
+        PathLog.track()
         self.setExtensions(self.obj.Proxy.getExtensions(self.obj))
         self.selectionChanged()
         self.setDirty()
