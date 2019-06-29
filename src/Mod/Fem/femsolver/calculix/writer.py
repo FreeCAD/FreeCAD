@@ -721,9 +721,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
             # nonlinear material properties
             if self.solver_obj.MaterialNonlinearity == 'nonlinear':
-                for femobj in self.material_nonlinear_objects:
-                    # femobj --> dict, FreeCAD document object is femobj['Object']
-                    nl_mat_obj = femobj['Object']
+                for nlfemobj in self.material_nonlinear_objects:
+                    # femobj --> dict, FreeCAD document object is nlfemobj['Object']
+                    nl_mat_obj = nlfemobj['Object']
                     if nl_mat_obj.LinearBaseMaterial == mat_obj:
                         if nl_mat_obj.MaterialModelNonlinearity == "simple hardening":
                             f.write('*PLASTIC\n')
