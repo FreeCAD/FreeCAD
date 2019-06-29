@@ -39,7 +39,7 @@ from PySide import QtCore
 from PySide import QtGui
 import sys
 
-False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns 'FemGui'
+False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 if sys.version_info.major >= 3:
     unicode = str
