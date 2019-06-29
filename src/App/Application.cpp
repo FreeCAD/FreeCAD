@@ -1577,18 +1577,28 @@ void Application::initTypes(void)
     App ::PropertyUUID              ::init();
     App ::PropertyFont              ::init();
     App ::PropertyStringList        ::init();
+    App ::PropertyLinkBase          ::init();
+    App ::PropertyLinkListBase      ::init();
     App ::PropertyLink              ::init();
     App ::PropertyLinkChild         ::init();
     App ::PropertyLinkGlobal        ::init();
+    App ::PropertyLinkHidden        ::init();
     App ::PropertyLinkSub           ::init();
     App ::PropertyLinkSubChild      ::init();
     App ::PropertyLinkSubGlobal     ::init();
+    App ::PropertyLinkSubHidden     ::init();
     App ::PropertyLinkList          ::init();
     App ::PropertyLinkListChild     ::init();
     App ::PropertyLinkListGlobal    ::init();
+    App ::PropertyLinkListHidden    ::init();
     App ::PropertyLinkSubList       ::init();
     App ::PropertyLinkSubListChild  ::init();
     App ::PropertyLinkSubListGlobal ::init();
+    App ::PropertyLinkSubListHidden ::init();
+    App ::PropertyXLink             ::init();
+    App ::PropertyXLinkSub          ::init();
+    App ::PropertyXLinkSubList      ::init();
+    App ::PropertyXLinkContainer    ::init();
     App ::PropertyMatrix            ::init();
     App ::PropertyVector            ::init();
     App ::PropertyVectorDistance    ::init();
@@ -1608,6 +1618,7 @@ void Application::initTypes(void)
     App ::PropertyFile              ::init();
     App ::PropertyFileIncluded      ::init();
     App ::PropertyPythonObject      ::init();
+    App ::PropertyExpressionContainer  ::init();
     App ::PropertyExpressionEngine  ::init();
 
     // Extension classes
