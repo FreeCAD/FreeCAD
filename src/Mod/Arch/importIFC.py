@@ -1945,7 +1945,7 @@ def export(exportList,filename,colors=None):
                 #if DEBUG : print("      adding ifc attributes")
                 props = []
                 for key in obj.IfcData:
-                    if not (key in ["attributes","IfcUID","FlagForceBrep"]):
+                    if not (key in ["attributes", "complex_attributes", "IfcUID", "FlagForceBrep"]):
 
                         # (deprecated) properties in IfcData dict are stored as "key":"type(value)"
 
