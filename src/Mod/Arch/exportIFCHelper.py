@@ -78,7 +78,7 @@ class ContextCreator:
         return self.file.createIfcProject(
             self.getProjectGUID(),
             self.file.by_type("IfcOwnerHistory")[0],
-            self.project_object.Name, self.project_object.Description,
+            self.project_object.Label, self.project_object.Description,
             self.project_object.ObjectType, self.project_object.LongName,
             self.project_object.Phase,
             [self.model_context],
