@@ -107,6 +107,7 @@ class _Project(ArchIFC.IfcContext):
         pl = obj.PropertiesList
         if not hasattr(obj,"Group"):
             obj.addExtension("App::GroupExtensionPython", self)
+        self.Type = "Project"
 
     def onDocumentRestored(self, obj):
         self.setProperties(obj)

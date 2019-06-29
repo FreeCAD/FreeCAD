@@ -2224,7 +2224,7 @@ def export(exportList,filename,colors=None):
 
     # sites
 
-    for site in Draft.getObjectsOfType(objectslist,"Site"):
+    for site in exportIFCHelper.getObjectsOfIfcType(objectslist, "Site"):
         objs = Draft.getGroupContents(site,walls=True,addgroups=True)
         objs = Arch.pruneIncluded(objs)
         children = []
