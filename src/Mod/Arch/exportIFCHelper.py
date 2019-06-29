@@ -1,4 +1,4 @@
-import FreeCAD, Draft, json
+import FreeCAD, Draft, json, ifcopenshell
 
 def getObjectsOfIfcType(objects, ifcType):
     results = []
@@ -85,8 +85,9 @@ class ContextCreator:
             self.file.by_type("IfcUnitAssignment")[0])
 
     def getProjectGUID(self):
-        # TODO: This GUID generation does not conform to the spec
-        return FreeCAD.ActiveDocument.Uid[:22].replace("-", "_")
+        # TODO: Do not generate a new one each time, but at least this one
+        # conforms to the community consensus on how a GUID is generated.
+        return ifcopenshell.guid.new()
 
     def getProjectObject(self):
         try:

@@ -2147,7 +2147,7 @@ def export(exportList,filename,colors=None):
                         treated.append(c.Name)
                 if subs:
                     ifcfile.createIfcRelAggregates(
-                        ifcopenshell.new(),
+                        ifcopenshell.guid.new(),
                         history,
                         'Assembly',
                         '',
@@ -2171,7 +2171,7 @@ def export(exportList,filename,colors=None):
             f = products[floor.Name]
             if children:
                 ifcfile.createIfcRelContainedInSpatialStructure(
-                    ifcopenshell.new(),
+                    ifcopenshell.guid.new(),
                     history,
                     'StoreyLink',
                     '',
