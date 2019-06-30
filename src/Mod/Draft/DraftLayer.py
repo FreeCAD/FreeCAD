@@ -346,7 +346,7 @@ class ViewProviderLayerContainer:
     def mergeByName(self):
 
         if hasattr(self,"Object") and hasattr(self.Object,"Group"):
-            layers = [o for o in self.Object.Group if (hasattr(o,"Proxy") and isinstance(otherobj.Proxy,Layer))]
+            layers = [o for o in self.Object.Group if (hasattr(o,"Proxy") and isinstance(o.Proxy,Layer))]
             todelete = []
             for layer in layerss:
                 if layer.Label[-1].isdigit() and layer.Label[-2].isdigit() and layer.Label[-3].isdigit():

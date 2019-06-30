@@ -5314,22 +5314,28 @@ class SetAutoGroup():
                 gn.extend(Draft.getGroupNames())
             if gn:
                 self.groups.extend(gn)
-                self.labels = ["None"]
+                self.labels = [translate("draft","None")]
                 self.icons = [self.ui.getIcon(":/icons/button_invalid.svg")]
                 for g in gn:
                     o = FreeCAD.ActiveDocument.getObject(g)
                     if o:
                         self.labels.append(o.Label)
                         self.icons.append(o.ViewObject.Icon)
+                self.labels.append(translate("draft","Add new Layer"))
+                self.icons.append(self.ui.getIcon(":/icons/document-new.svg"))
                 self.ui.sourceCmd = self
-                self.ui.popupMenu(self.labels,self.icons)
+                from PySide import QtCore
+                pos = self.ui.autoGroupButton.mapToGlobal(QtCore.QPoint(0,self.ui.autoGroupButton.geometry().height()))
+                self.ui.popupMenu(self.labels,self.icons,pos)
 
     def proceed(self,labelname):
         self.ui.sourceCmd = None
-        if labelname == "None":
-            self.ui.setAutoGroup(None)
-        else:
-            if labelname in self.labels:
+        if labelname in self.labels:
+            if labelname == self.labels[0]:
+                self.ui.setAutoGroup(None)
+            elif labelname == self.labels[-1]:
+                FreeCADGui.runCommand("Draft_Layer")
+            else:
                 i = self.labels.index(labelname)
                 self.ui.setAutoGroup(self.groups[i])
 

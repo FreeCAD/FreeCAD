@@ -2026,7 +2026,7 @@ class DraftToolBar:
     def selectplane(self):
         FreeCADGui.runCommand("Draft_SelectPlane")
 
-    def popupMenu(self,llist,ilist=None):
+    def popupMenu(self,llist,ilist=None,pos=None):
         "pops up a menu filled with the given list"
         self.groupmenu = QtGui.QMenu()
         for i,l in enumerate(llist):
@@ -2034,7 +2034,8 @@ class DraftToolBar:
                 self.groupmenu.addAction(ilist[i],l)
             else:
                 self.groupmenu.addAction(l)
-        pos = FreeCADGui.getMainWindow().cursor().pos()
+        if not pos:
+            pos = FreeCADGui.getMainWindow().cursor().pos()
         self.groupmenu.popup(pos)
         QtCore.QObject.connect(self.groupmenu,QtCore.SIGNAL("triggered(QAction *)"),self.popupTriggered)
 
