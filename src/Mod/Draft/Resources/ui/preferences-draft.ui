@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>486</width>
-    <height>758</height>
+    <height>781</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,16 +17,7 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <property name="leftMargin">
-    <number>9</number>
-   </property>
-   <property name="topMargin">
-    <number>9</number>
-   </property>
-   <property name="rightMargin">
-    <number>9</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>9</number>
    </property>
    <item>
@@ -373,6 +364,25 @@ Values with differences below this value will be treated as same. This value wil
         </item>
        </layout>
       </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_3">
+        <property name="toolTip">
+         <string>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</string>
+        </property>
+        <property name="text">
+         <string>Show groups in layers list drop-down button</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AutogroupAddGroups</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -442,7 +452,7 @@ Values with differences below this value will be treated as same. This value wil
           <property name="toolTip">
            <string>This is the default color for objects being drawn while in construction mode.</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>44</red>
             <green>125</green>
@@ -505,14 +515,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutRelative</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutRelative</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -555,14 +565,14 @@ Values with differences below this value will be treated as same. This value wil
               <property name="placeholderText">
                <string/>
               </property>
-              <property name="clearButtonEnabled">
-               <bool>false</bool>
+              <property name="prefEntry" stdset="0">
+               <cstring>inCommandShortcutContinue</cstring>
               </property>
               <property name="prefPath" stdset="0">
                <cstring>Mod/Draft</cstring>
               </property>
-              <property name="prefEntry" stdset="0">
-               <cstring>inCommandShortcutContinue</cstring>
+              <property name="clearButtonEnabled" stdset="0">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -605,14 +615,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutClose</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutClose</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -657,14 +667,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutCopy</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutCopy</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -705,14 +715,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutSubelementMode</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutSubelementMode</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -753,14 +763,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutFill</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutFill</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -805,14 +815,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutExit</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutExit</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -853,14 +863,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutSelectEdge</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutSelectEdge</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -901,14 +911,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutAddHold</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutAddHold</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -953,14 +963,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutLength</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutLength</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -1001,14 +1011,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutWipe</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutWipe</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -1049,14 +1059,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutSetWP</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutSetWP</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -1101,14 +1111,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutCycleSnap</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutCycleSnap</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -1159,14 +1169,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutSnap</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutSnap</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -1207,14 +1217,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutIncreaseRadius</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutIncreaseRadius</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -1255,14 +1265,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutDecreaseRadius</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutDecreaseRadius</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -1307,14 +1317,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutRestrictX</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutRestrictX</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -1355,14 +1365,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutRestrictY</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>inCommandShortcutRestrictY</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -1403,14 +1413,14 @@ Values with differences below this value will be treated as same. This value wil
             <property name="placeholderText">
              <string/>
             </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
+            <property name="prefEntry" stdset="0">
+             <cstring>RestrictZ</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Draft</cstring>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>RestrictZ</cstring>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -1440,8 +1450,18 @@ Values with differences below this value will be treated as same. This value wil
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefSpinBox</class>
    <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -1455,23 +1475,13 @@ Values with differences below this value will be treated as same. This value wil
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefColorButton</class>
-   <extends>Gui::ColorButton</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefLineEdit</class>
    <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

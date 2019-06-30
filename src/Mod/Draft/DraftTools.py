@@ -5303,20 +5303,26 @@ class SetAutoGroup():
             self.ui = FreeCADGui.draftToolBar
             s = FreeCADGui.Selection.getSelection()
             if len(s) == 1:
-                if s[0].isDerivedFrom("App::DocumentObjectGroup") or (Draft.getType(s[0]) in ["Site","Building","Floor"]):
+                if (Draft.getType(s[0]) == "Layer") or \
+                ( FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool("AutogroupAddGroups",False) and \
+                (s[0].isDerivedFrom("App::DocumentObjectGroup") or (Draft.getType(s[0]) in ["Site","Building","Floor","BuildingPart",]))):
                     self.ui.setAutoGroup(s[0].Name)
                     return
             self.groups = ["None"]
-            gn = Draft.getGroupNames()
+            gn = [o.Name for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == "Layer"]
+            if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool("AutogroupAddGroups",False):
+                gn.extend(Draft.getGroupNames())
             if gn:
                 self.groups.extend(gn)
                 self.labels = ["None"]
+                self.icons = [self.ui.getIcon(":/icons/button_invalid.svg")]
                 for g in gn:
                     o = FreeCAD.ActiveDocument.getObject(g)
                     if o:
                         self.labels.append(o.Label)
+                        self.icons.append(o.ViewObject.Icon)
                 self.ui.sourceCmd = self
-                self.ui.popupMenu(self.labels)
+                self.ui.popupMenu(self.labels,self.icons)
 
     def proceed(self,labelname):
         self.ui.sourceCmd = None
