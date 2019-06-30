@@ -234,7 +234,11 @@ class _ArchPipe(ArchComponent.Component):
         # move and rotate the profile to the first point
         delta = w.Vertexes[0].Point-p.CenterOfMass
         p.translate(delta)
-        v1 = w.Vertexes[1].Point-w.Vertexes[0].Point
+        import Draft
+        if Draft.getType(obj.Base) == "BezCurve":
+            v1 = obj.Base.Placement.multVec(obj.Base.Points[1])-w.Vertexes[0].Point
+        else: 
+            v1 = w.Vertexes[1].Point-w.Vertexes[0].Point
         v2 = DraftGeomUtils.getNormal(p)
         rot = FreeCAD.Rotation(v2,v1)
         p.rotate(p.CenterOfMass,rot.Axis,math.degrees(rot.Angle))
