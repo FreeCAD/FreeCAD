@@ -415,7 +415,7 @@ class ObjectDressup:
 
         # initialized later
         self.boneShapes = None
-        self.toolRadius = None
+        self.toolRadius = 0
         self.dbg = None
         self.locationBlacklist = None
         self.shapes = None
