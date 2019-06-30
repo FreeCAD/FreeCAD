@@ -35,16 +35,14 @@ def get_FemMeshObjectMeshGroups(
     fem_mesh_obj
 ):
     """
-        Get mesh groups from mesh. This also throws no exception if there
-        is no Groups property at all (e.g. Netgen meshes).
+        Get mesh groups from mesh.
     """
-    fem_mesh = fem_mesh_obj.FemMesh
-    try:
-        gmshgroups = fem_mesh.Groups
-    except:
-        gmshgroups = ()
+    # this method is not really needed. It is used in Fenics mesh only.
+    # there was an exception handling if there was no Group property, but
+    # any FemMesh should have the Group property
+    # if not it would be a bug SMESH
 
-    return gmshgroups
+    return fem_mesh_obj.FemMesh.Groups
 
 
 def get_FemMeshObjectOrder(
