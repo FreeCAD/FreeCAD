@@ -30,7 +30,7 @@ import FreeCAD
 
 try:
     import fenics
-except:
+except ImportError:
     FreeCAD.Console.PrintError("No Fenics modules found, please install them.")
 else:
     import numpy as np

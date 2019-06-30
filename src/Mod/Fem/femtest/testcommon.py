@@ -105,7 +105,7 @@ class TestFemCommon(unittest.TestCase):
             fcc_print('Try importing {0} ...'.format(mod))
             try:
                 im = __import__('{0}'.format(mod))
-            except:
+            except ImportError:
                 im = False
             if not im:
                 # to get an error message what was going wrong
