@@ -435,7 +435,10 @@ class DraftToolBar:
         if hide:
             button.hide()
         if icon:
-            button.setIcon(QtGui.QIcon.fromTheme(icon, QtGui.QIcon(':/icons/'+icon+'.svg')))
+            if icon.endswith(".svg"):
+                button.setIcon(QtGui.QIcon(icon))
+            else:
+                button.setIcon(QtGui.QIcon.fromTheme(icon, QtGui.QIcon(':/icons/'+icon+'.svg')))
             #button.setIconSize(QtCore.QSize(isize, isize))
         if checkable:
             button.setCheckable(True)
@@ -772,9 +775,10 @@ class DraftToolBar:
         self.widthButton = self._spinbox("widthButton", self.bottomtray, val=self.linewidth,hide=False,size=(bsize * 2,bsize))
         self.widthButton.setSuffix("px")
         self.fontsizeButton = self._spinbox("fontsizeButton",self.bottomtray, val=self.fontsize,vmax=999, hide=False,double=True,size=(bsize * 4,bsize))
-        self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',square=True)
-        self.autoGroupButton = self._pushbutton("autoGroup",self.bottomtray,icon="Draft_AutoGroup_off",hide=False,width=120)
+        self.autoGroupButton = self._pushbutton("autoGroup",self.bottomtray,icon=":/icons/button_invalid.svg",hide=False,width=120)
         self.autoGroupButton.setText("None")
+        self.autoGroupButton.setFlat(True)
+        self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',square=True)
 
         QtCore.QObject.connect(self.wplabel,QtCore.SIGNAL("pressed()"),self.selectplane)
         QtCore.QObject.connect(self.colorButton,QtCore.SIGNAL("pressed()"),self.getcol)
@@ -2022,14 +2026,20 @@ class DraftToolBar:
     def selectplane(self):
         FreeCADGui.runCommand("Draft_SelectPlane")
 
-    def popupMenu(self,mlist):
+    def popupMenu(self,llist,ilist=None):
         "pops up a menu filled with the given list"
         self.groupmenu = QtGui.QMenu()
-        for i in mlist:
-            self.groupmenu.addAction(i)
+        for i,l in enumerate(llist):
+            if ilist:
+                self.groupmenu.addAction(ilist[i],l)
+            else:
+                self.groupmenu.addAction(l)
         pos = FreeCADGui.getMainWindow().cursor().pos()
         self.groupmenu.popup(pos)
         QtCore.QObject.connect(self.groupmenu,QtCore.SIGNAL("triggered(QAction *)"),self.popupTriggered)
+
+    def getIcon(self,iconpath):
+        return QtGui.QIcon(iconpath)
 
     def popupTriggered(self,action):
         self.sourceCmd.proceed(str(action.text()))
@@ -2093,7 +2103,7 @@ class DraftToolBar:
             self.autogroup = None
             self.autoGroupButton.setText("None")
             self.autoGroupButton.setIcon(QtGui.QIcon.fromTheme('Draft_AutoGroup_off',
-                                                               QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg')))
+                                                               QtGui.QIcon(':/icons/button_invalid.svg')))
             self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
             self.autoGroupButton.setDown(False)
         else:
@@ -2101,15 +2111,14 @@ class DraftToolBar:
             if obj:
                 self.autogroup = value
                 self.autoGroupButton.setText(obj.Label)
-                self.autoGroupButton.setIcon(QtGui.QIcon.fromTheme('Draft_AutoGroup_on',
-                                                                   QtGui.QIcon(':/icons/Draft_AutoGroup_on.svg')))
+                self.autoGroupButton.setIcon(obj.ViewObject.Icon)
                 self.autoGroupButton.setToolTip(translate("draft", "Autogroup: ")+obj.Label)
                 self.autoGroupButton.setDown(False)
             else:
                 self.autogroup = None
                 self.autoGroupButton.setText("None")
                 self.autoGroupButton.setIcon(QtGui.QIcon.fromTheme('Draft_AutoGroup_off',
-                                                                   QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg')))
+                                                                   QtGui.QIcon(':/icons/button_invalid.svg')))
                 self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
                 self.autoGroupButton.setDown(False)
 
