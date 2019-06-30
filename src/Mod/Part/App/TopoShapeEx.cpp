@@ -691,20 +691,19 @@ TopoShape &TopoShape::makECopy(const TopoShape &shape, const char *op, bool copy
 static std::vector<TopoShape> prepareProfiles(const std::vector<TopoShape> &shapes,size_t offset=0) {
     std::vector<TopoShape> ret;
     for(size_t i=offset;i<shapes.size();++i) {
-        auto &sh = shapes[i];
+        auto sh = shapes[i];
         if(sh.isNull())
             HANDLE_NULL_INPUT;
         auto shape = sh.getShape();
-        // Extract first element of a compound
+        // Allow compounds with a single face, wire or vertex or
+        // if there are only edges building one wire
         if (shape.ShapeType() == TopAbs_COMPOUND) {
-            TopoDS_Iterator it(shape);
-            for (; it.More(); it.Next()) {
-                if (it.Value().IsNull())
-                    HANDLE_NULL_INPUT;
-                shape = it.Value();
-                break;
-            }
-        } else if (shape.ShapeType() == TopAbs_FACE) {
+            sh = sh.makEWires();
+            if(sh.isNull())
+                HANDLE_NULL_INPUT;
+            shape = sh.getShape();
+        }
+        if (shape.ShapeType() == TopAbs_FACE) {
             shape = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
         } else if (shape.ShapeType() == TopAbs_WIRE) {
             BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape));
