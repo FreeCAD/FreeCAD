@@ -52,12 +52,12 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
         self.highlightingRules.append((QtCore.QRegExp("\\bF[0-9\\.]+\\b"),speedFormat))
 
     def highlightBlock(self, text):
-        for pattern, format in self.highlightingRules:
+        for pattern, hlFormat in self.highlightingRules:
             expression = QtCore.QRegExp(pattern)
             index = expression.indexIn(text)
             while index >= 0:
                 length = expression.matchedLength()
-                self.setFormat(index, length, format)
+                self.setFormat(index, length, hlFormat)
                 index = expression.indexIn(text, index + length)
 
 
