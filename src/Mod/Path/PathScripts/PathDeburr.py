@@ -83,8 +83,8 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         (depth, offset) = toolDepthAndOffset(obj.Width.Value, obj.ExtraDepth.Value, self.tool)
         PathLog.track(obj.Label, depth, offset)
 
-        self.basewires = []
-        self.adjusted_basewires = []
+        self.basewires = [] # pylint: disable=attribute-defined-outside-init
+        self.adjusted_basewires = [] # pylint: disable=attribute-defined-outside-init
         wires = []
         for base, subs in obj.Base:
             edges = []
@@ -97,7 +97,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                     basewires.extend(sub.Wires)
                 else:
                     basewires.append(Part.Wire(sub.Edges))
-            self.edges = edges
+            self.edges = edges # pylint: disable=attribute-defined-outside-init
             for edgelist in Part.sortEdges(edges):
                 basewires.append(Part.Wire(edgelist))
 
@@ -118,7 +118,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         zValues.append(depth)
         PathLog.track(obj.Label, depth, zValues)
 
-        self.wires = wires
+        self.wires = wires # pylint: disable=attribute-defined-outside-init
         self.buildpathocc(obj, wires, zValues, True)
 
         # the last command is a move to clearance, which is automatically added by PathOp
