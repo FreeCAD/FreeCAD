@@ -21,15 +21,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *                                                                         *
-# *   Additional modifications and contributions beginning 2019             *
-# *   Focus: 4th-axis integration                                           *
-# *   by Russell Johnson  <russ4262@gmail.com>                              *
-# *                                                                         *
-# ***************************************************************************
-
-# SCRIPT NOTES:
-# - Need test models for testing vertical faces scenarios.
 
 import FreeCAD
 import Part
@@ -49,8 +40,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2017"
-__scriptVersion__ = "2g testing"
-__lastModified__ = "2019-06-12 23:29 CST"
+__scriptVersion__ = "2h testing"
+__lastModified__ = "2019-06-30 17:19 CST"
 
 LOGLEVEL = False
 
@@ -59,6 +50,7 @@ if LOGLEVEL:
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -371,7 +363,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if obj.Base:
             PathLog.debug('Processing... obj.Base')
             self.removalshapes = []
-            # ----------------------------------------------------------------------
             if obj.EnableRotation == 'Off':
                 stock = PathUtils.findParentJob(obj).Stock
                 for (base, subList) in obj.Base:
@@ -429,12 +420,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         for sub in subsList:
                             subCount += 1
                             if 'Face' in sub:
-                                rtn = False
-
                                 PathLog.debug(translate('Path', "Base Geometry sub: {}".format(sub)))
+                                rtn = False
                                 face = base.Shape.getElement(sub)
-
-                                # --------------------------------------------------------
                                 if type(face.Surface) == Part.SurfaceOfExtrusion:
                                     # extrusion wall
                                     PathLog.debug('analyzing type() == Part.SurfaceOfExtrusion')
@@ -447,7 +435,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                         PathLog.debug('  -successful face created: {}'.format(useFace))
                                     else:
                                         PathLog.error(translate("Path", "Failed to create a planar face from edges in {}.".format(sub)))
-                                # --------------------------------------------------------
 
                                 (norm, surf) = self.getFaceNormAndSurf(face)
                                 (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)
@@ -482,24 +469,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             else:
                                 ignoreSub = base.Name + '.' + sub
                                 PathLog.error(translate('Path', "Selected feature is not a Face. Ignoring: {}".format(ignoreSub)))
-                            # Eif
-                        # Efor
-                # Efor
-                # if False:
-                #     if False:
-                #         (Tags, Grps) = self.sortTuplesByIndex(allTuples, 2)  # return (TagList, GroupList)
-                #         subList = []
-                #         for o in range(0, len(Tags)):
-                #             subList = []
-                #             for (base, sub, tag, angle, axis, stock) in Grps[o]:
-                #                 subList.append(sub)
-                #             pair = base, subList, angle, axis, stock
-                #             baseSubsTuples.append(pair)
-                #     if False:
-                #         for (bs, sb, tg, agl, ax, stk) in allTuples:
-                #             pair = bs, [sb], agl, ax, stk
-                #             baseSubsTuples.append(pair)
-            # ----------------------------------------------------------------------
 
             for o in baseSubsTuples:
                 self.horiz = []
@@ -581,9 +550,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
             # Adjust obj.FinalDepth.Value as needed.
             if len(finalDepths) > 0:
-                finalDepths = min(finalDepths)
+                finalDep = min(finalDepths)
                 if subCount == 1:
-                    obj.FinalDepth.Value = finDep
+                    obj.FinalDepth.Value = finalDep
         else:
             # process the job base object as a whole
             PathLog.debug(translate("Path", 'Processing model as a whole ...'))
@@ -598,7 +567,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 outline.translate(FreeCAD.Vector(0, 0, stockBB.ZMin - 1))
                 body = outline.extrude(FreeCAD.Vector(0, 0, stockBB.ZLength + 2))
                 self.bodies.append(body)
-                # self.removalshapes.append((self.stock.Shape.cut(body), False))
                 self.removalshapes.append((self.stock.Shape.cut(body), False, 'pathPocketShape', 0.0, 'X', strDep, finDep))
 
         for (shape, hole, sub, angle, axis, strDep, finDep) in self.removalshapes:
@@ -606,11 +574,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         if self.removalshapes:
             obj.removalshape = self.removalshapes[0][0]
-
-        # if PathLog.getLevel(PathLog.thisModule()) != 4:
-            # if self.delTempNameList > 0:
-            #    for tmpNm in self.tempNameList:
-            #        FreeCAD.ActiveDocument.removeObject(tmpNm)
 
         return self.removalshapes
 
@@ -815,7 +778,7 @@ def SetupProperties():
     return setup
 
 
-def Create(name, obj=None):
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Pocket operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject('Path::FeaturePython', name)
