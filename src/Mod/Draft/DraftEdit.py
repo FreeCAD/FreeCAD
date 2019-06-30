@@ -607,20 +607,24 @@ class Edit():
         if ( ( self.editing == 0 ) and ( (editPnt - pts[-1]).Length < tol) ) or ( self.editing == len(pts) - 1 ) and ( (editPnt - pts[0]).Length < tol):
             self.obj.Closed = True
         # DNC: fix error message if edited point coincides with one of the existing points
-        if ( editPnt in pts ) == False: # checks if point enter is equal to other, this could cause a OCC problem
-            if Draft.getType(self.obj) in ["BezCurve"]:
-                pts = self.recomputePointsBezier(pts,self.editing,v,self.obj.Degree,moveTrackers=False)
-            # check that the new point lies on the plane of the wire
-            import DraftGeomUtils, DraftVecUtils
-            if self.obj.Closed:
-                n = DraftGeomUtils.getNormal(self.obj.Shape)
-                dv = editPnt.sub(pts[self.editing])
-                rn = DraftVecUtils.project(dv,n)
-                if dv.Length:
-                    editPnt = editPnt.add(rn.negative())
-            pts[self.editing] = editPnt
-            self.obj.Points = pts
-            self.trackers[self.editing].set(self.pl.multVec(v))
+        if ( editPnt in pts ) == True: # checks if point enter is equal to other, this could cause a OCC problem
+            FreeCAD.Console.PrintMessage(translate("draft", "Is not possible to have two coincident points in this object, please try again.")+"\n")
+            if Draft.getType(self.obj) in ["BezCurve"]: self.resetTrackers()
+            else: self.trackers[self.editing].set(self.pl.multVec(self.obj.Points[self.editing]))            
+            return
+        if Draft.getType(self.obj) in ["BezCurve"]:
+            pts = self.recomputePointsBezier(pts,self.editing,v,self.obj.Degree,moveTrackers=False)
+        # check that the new point lies on the plane of the wire
+        import DraftGeomUtils, DraftVecUtils
+        if self.obj.Closed:
+            n = DraftGeomUtils.getNormal(self.obj.Shape)
+            dv = editPnt.sub(pts[self.editing])
+            rn = DraftVecUtils.project(dv,n)
+            if dv.Length:
+                editPnt = editPnt.add(rn.negative())
+        pts[self.editing] = editPnt
+        self.obj.Points = pts
+        self.trackers[self.editing].set(self.pl.multVec(v))            
 
 
     def recomputePointsBezier(self,pts,idx,v,degree,moveTrackers=True):
@@ -632,54 +636,50 @@ class Edit():
         if ( ( idx == 0 ) and ( (editPnt - pts[-1]).Length < tol) ) or ( idx == len(pts) - 1 ) and ( (editPnt - pts[0]).Length < tol):
             self.obj.Closed = True
         # DNC: fix error message if edited point coincides with one of the existing points
-        if ( editPnt in pts ) == False:
-            if Draft.getType(self.obj) in ["BezCurve"]:
-                knot = None
-                ispole = idx % degree
+        #if ( editPnt in pts ) == False:
+        knot = None
+        ispole = idx % degree
 
-                if ispole == 0: #knot
-                    if degree >=3:
-                        if idx >= 1: #move left pole
-                            knotidx = idx if idx < len(pts) else 0
-                            pts[idx-1] = pts[idx-1] + editPnt - pts[knotidx]
-                            if moveTrackers: self.trackers[idx-1].set(pts[idx-1])
-                        if idx < len(pts)-1: #move right pole
-                            pts[idx+1] = pts[idx+1] + editPnt - pts[idx]
-                            if moveTrackers: self.trackers[idx+1].set(pts[idx+1])
-                        if idx == 0 and self.obj.Closed: # move last pole
-                            pts[-1] = pts [-1] + editPnt -pts[idx]
-                            if moveTrackers: self.trackers[-1].set(pts[-1])
+        if ispole == 0: #knot
+            if degree >=3:
+                if idx >= 1: #move left pole
+                    knotidx = idx if idx < len(pts) else 0
+                    pts[idx-1] = pts[idx-1] + editPnt - pts[knotidx]
+                    if moveTrackers: self.trackers[idx-1].set(pts[idx-1])
+                if idx < len(pts)-1: #move right pole
+                    pts[idx+1] = pts[idx+1] + editPnt - pts[idx]
+                    if moveTrackers: self.trackers[idx+1].set(pts[idx+1])
+                if idx == 0 and self.obj.Closed: # move last pole
+                    pts[-1] = pts [-1] + editPnt -pts[idx]
+                    if moveTrackers: self.trackers[-1].set(pts[-1])
 
-                elif ispole == 1 and (idx >=2 or self.obj.Closed): #right pole
-                    knot = idx -1
-                    changep = idx -2 # -1 in case of closed curve
+        elif ispole == 1 and (idx >=2 or self.obj.Closed): #right pole
+            knot = idx -1
+            changep = idx -2 # -1 in case of closed curve
 
-                elif ispole == degree-1 and idx <= len(pts)-3: #left pole
-                    knot = idx +1
-                    changep = idx +2
+        elif ispole == degree-1 and idx <= len(pts)-3: #left pole
+            knot = idx +1
+            changep = idx +2
 
-                elif ispole == degree-1 and self.obj.Closed and idx == len(pts)-1: #last pole
-                    knot = 0
-                    changep = 1
+        elif ispole == degree-1 and self.obj.Closed and idx == len(pts)-1: #last pole
+            knot = 0
+            changep = 1
 
-                if knot is not None: # we need to modify the opposite pole
-                    segment = int(knot / degree) -1
-                    cont=self.obj.Continuity[segment] if \
-                        len(self.obj.Continuity) > segment else 0
-                    if cont == 1: #tangent
-                        pts[changep] = self.obj.Proxy.modifytangentpole(\
-                                pts[knot],editPnt,pts[changep])
-                        if moveTrackers: self.trackers[changep].set(pts[changep])
-                    elif cont ==2: #symmetric
-                        pts[changep] = self.obj.Proxy.modifysymmetricpole(\
-                                pts[knot],editPnt)
-                        if moveTrackers: self.trackers[changep].set(pts[changep])
-                pts[idx]=v
+        if knot is not None: # we need to modify the opposite pole
+            segment = int(knot / degree) -1
+            cont=self.obj.Continuity[segment] if \
+                len(self.obj.Continuity) > segment else 0
+            if cont == 1: #tangent
+                pts[changep] = self.obj.Proxy.modifytangentpole(\
+                        pts[knot],editPnt,pts[changep])
+                if moveTrackers: self.trackers[changep].set(pts[changep])
+            elif cont ==2: #symmetric
+                pts[changep] = self.obj.Proxy.modifysymmetricpole(\
+                        pts[knot],editPnt)
+                if moveTrackers: self.trackers[changep].set(pts[changep])
+        pts[idx]=v
 
-            return pts #returns the list of new points, taking into account knot continuity
-
-        else:
-            self.finish()
+        return pts #returns the list of new points, taking into account knot continuity
 
     def resetTrackersBezier(self):
         #in future move tracker definition to DraftTrackers
