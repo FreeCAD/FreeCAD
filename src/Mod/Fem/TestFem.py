@@ -37,6 +37,18 @@ from femtest.testresult import TestResult
 from femtest.testccxtools import TestCcxTools
 from femtest.testsolverframework import TestSolverFrameWork
 
+# dummy usage to get flake8 and lgtm quiet
+False if TestFemCommon.__name__ else True
+False if TestObjectCreate.__name__ else True
+False if TestObjectType.__name__ else True
+False if TestMaterialUnits.__name__ else True
+False if TestMeshCommon.__name__ else True
+False if TestMeshEleTetra10.__name__ else True
+False if TestMeshEleTetra10.__name__ else True
+False if TestResult.__name__ else True
+False if TestCcxTools.__name__ else True
+False if TestSolverFrameWork.__name__ else True
+
 
 # For more information on how to run a specific test class or a test method see
 # file src/Mod/Test/__init__ and forum https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546
