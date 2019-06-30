@@ -33,8 +33,6 @@ import PathScripts.PathUtils as PathUtils
 from DraftGeomUtils import findWires
 from PySide import QtCore
 
-"""Path Profile from Edges Object and Command"""
-
 LOGLEVEL = False
 
 if LOGLEVEL:
@@ -79,11 +77,14 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         if obj.Base:
             basewires = []
 
+            zMin = None
             for b in obj.Base:
                 edgelist = []
                 for sub in b[1]:
                     edgelist.append(getattr(b[0].Shape, sub))
                 basewires.append((b[0], findWires(edgelist)))
+                if zMin is None or b[0].Shape.BoundBox.ZMin < zMin:
+                    zMin = b[0].Shape.BoundBox.ZMin
 
             for base,wires in basewires:
                 for wire in wires:
@@ -91,7 +92,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
                     # shift the compound to the bottom of the base object for
                     # proper sectioning
-                    zShift = b[0].Shape.BoundBox.ZMin - f.BoundBox.ZMin
+                    zShift = zMin - f.BoundBox.ZMin
                     newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), f.Placement.Rotation)
                     f.Placement = newPlace
                     env = PathUtils.getEnvelope(base.Shape, subshape=f, depthparams=self.depthparams)

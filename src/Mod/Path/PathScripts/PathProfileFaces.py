@@ -100,15 +100,9 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         self.baseObject().initAreaOp(obj)
 
-    def opOnDocumentRestored(self, obj):
-        '''opOnDocumentRestored(obj) ... adds the properties if they doesn't exist.'''
-        # self.initAreaOp(obj)
-        pass
-
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... returns envelope for all base shapes or wires for Arch.Panels.'''
         PathLog.track()
-        PathLog.info("----- areaOpShapes() in PathProfileFaces.py")
 
         if obj.UseComp:
             self.commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
@@ -117,6 +111,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         shapes = []
         self.profileshape = []
+        finalDepths = []
         startDepths = []
         faceDepths = []
 
