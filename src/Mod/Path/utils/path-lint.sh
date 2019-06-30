@@ -73,5 +73,5 @@ if [ -z "$(which pylint)" ]; then
 fi
 
 #pylint ${ARGS} PathScripts/ PathTests/
-pylint ${ARGS} PathScripts/
+pylint ${ARGS} PathScripts/PathEngraveBase.py PathScripts/PathDressupDogbone.py
 
