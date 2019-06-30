@@ -178,7 +178,16 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         Page = self
 
     def cleanupPage(self, obj):
-        self.obj.ViewObject.RootNode.removeChild(self.switch)
+        # If the object was already destroyed we can't access obj.Name.
+        # This is the case if this was a new op and the user hit Cancel.
+        # Unfortunately there's no direct way to determine the object's
+        # livelihood without causing an error so we look for the object
+        # in the document and clean up if it still exists.
+        for o in self.obj.Document.getObjectsByLabel(self.obj.Label):
+            if o == obj:
+                self.obj.ViewObject.RootNode.removeChild(self.switch)
+                return
+        PathLog.debug("%s already destroyed - no cleanup required" % (obj.Label))
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketExtEdit.ui")
