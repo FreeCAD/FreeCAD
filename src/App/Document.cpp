@@ -936,7 +936,7 @@ bool Document::undo(int id)
         }
 
         if (d->activeUndoTransaction)
-            commitTransaction();
+            _commitTransaction(true);
         if (mUndoTransactions.empty())
             return false;
         // redo
@@ -975,7 +975,7 @@ bool Document::redo(int id)
         }
 
         if (d->activeUndoTransaction)
-            commitTransaction();
+            _commitTransaction(true);
 
         assert(mRedoTransactions.size()!=0);
 
@@ -1061,7 +1061,7 @@ int Document::_openTransaction(const char* name, int id)
         if(id && mUndoMap.find(id)!=mUndoMap.end())
             throw Base::RuntimeError("invalid transaction id");
         if (d->activeUndoTransaction)
-            commitTransaction();
+            _commitTransaction(true);
         _clearRedos();
 
         d->activeUndoTransaction = new Transaction(id);
@@ -1163,13 +1163,22 @@ void Document::_clearRedos()
     }
 }
 
-void Document::commitTransaction()
-{
+void Document::commitTransaction() {
     if(isPerformingTransaction()) {
         FC_WARN("Cannot commit transaction while transacting");
         return;
     }
 
+    if (d->activeUndoTransaction)
+        GetApplication().closeActiveTransaction(false,d->activeUndoTransaction->getID());
+}
+
+void Document::_commitTransaction(bool notify)
+{
+    if(isPerformingTransaction()) {
+        FC_WARN("Cannot commit transaction while transacting");
+        return;
+    }
     if (d->activeUndoTransaction) {
         Application::TransactionSignaller signaller(false,true);
         int id = d->activeUndoTransaction->getID();
@@ -1182,12 +1191,22 @@ void Document::commitTransaction()
             mUndoTransactions.pop_front();
         }
         signalCommitTransaction(*this);
-        GetApplication().closeActiveTransaction(false,id);
-    }else
-        GetApplication().closeActiveTransaction(false);
+
+        if(notify)
+            GetApplication().closeActiveTransaction(false,id);
+    }
 }
 
-void Document::abortTransaction()
+void Document::abortTransaction() {
+    if(isPerformingTransaction()) {
+        FC_WARN("Cannot abort transaction while transacting");
+        return;
+    }
+    if (d->activeUndoTransaction) 
+        GetApplication().closeActiveTransaction(true,d->activeUndoTransaction->getID());
+}
+
+void Document::_abortTransaction()
 {
     if(isPerformingTransaction()) {
         FC_WARN("Cannot abort transaction while transacting");
@@ -1203,14 +1222,11 @@ void Document::abortTransaction()
         }
 
         // destroy the undo
-        int id = d->activeUndoTransaction->getID();
         mUndoMap.erase(d->activeUndoTransaction->getID());
         delete d->activeUndoTransaction;
         d->activeUndoTransaction = 0;
         signalAbortTransaction(*this);
-        GetApplication().closeActiveTransaction(true,id);
-    }else
-        GetApplication().closeActiveTransaction(true);
+    }
 }
 
 bool Document::hasPendingTransaction() const
@@ -1258,7 +1274,7 @@ void Document::clearUndos()
     }
 
     if (d->activeUndoTransaction)
-        commitTransaction();
+        _commitTransaction(true);
 
     mUndoMap.clear();
 

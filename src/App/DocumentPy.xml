@@ -60,16 +60,6 @@ the same internal ID and will be undo/redo together.
           </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="_openTransaction">
-      <Documentation>
-          <UserDocu>_openTransaction(name,id=0) - Open a new Undo/Redo transaction.
-
-This function creates the actual transaction with 'name' and an optional
-internal ID regardless of auto transaction setting. It is provided in case any
-module want the old behiavor.
-          </UserDocu>
-      </Documentation>
-    </Methode>
     <Methode Name="abortTransaction">
       <Documentation>
         <UserDocu>Abort an Undo/Redo transaction (rollback)</UserDocu>

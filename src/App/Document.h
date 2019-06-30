@@ -377,17 +377,6 @@ public:
      * actual changes.
      */
     void openTransaction(const char* name=0);
-    /** Open a new command Undo/Redo, an UTF-8 name can be specified
-     *
-     * @param name: transaction name
-     * @param id: transaction ID, if 0 then the ID is auto generated.
-     *
-     * @return: Return the ID of the new transaction.
-     *
-     * This function creates an actual transaction regardless of Application
-     * AutoTransaction setting.
-     */
-    int _openTransaction(const char* name=0, int id=0);
     /// Rename the current transaction if the id matches
     void renameTransaction(const char *name, int id);
     /// Commit the Command transaction. Do nothing If there is no Command transaction open.
@@ -570,6 +559,22 @@ protected:
         const std::vector<App::DocumentObject*> &objs = std::vector<App::DocumentObject*>());
 
     std::string getTransientDirectoryName(const std::string& uuid, const std::string& filename) const;
+
+    /** Open a new command Undo/Redo, an UTF-8 name can be specified
+     *
+     * @param name: transaction name
+     * @param id: transaction ID, if 0 then the ID is auto generated.
+     *
+     * @return: Return the ID of the new transaction.
+     *
+     * This function creates an actual transaction regardless of Application
+     * AutoTransaction setting.
+     */
+    int _openTransaction(const char* name=0, int id=0);
+    /// Internally called by App::Application to commit the Command transaction.
+    void _commitTransaction(bool notify=false);
+    /// Internally called by App::Application to abort the running transaction.
+    void _abortTransaction();
 
 private:
     // # Data Member of the document +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

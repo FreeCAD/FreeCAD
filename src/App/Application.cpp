@@ -946,7 +946,7 @@ int Application::setActiveTransaction(const char *name, bool persist) {
         FC_LOG("set active transaction '" << name << "'");
         _activeTransactionID = 0;
         for(auto &v : DocMap)
-            v.second->commitTransaction();
+            v.second->_commitTransaction();
         _activeTransactionID = Transaction::getNewID();
     }
     _activeTransactionTmpName = false;
@@ -981,9 +981,9 @@ void Application::closeActiveTransaction(bool abort, int id) {
         if(v.second->getTransactionID(true) != id)
             continue;
         if(abort)
-            v.second->abortTransaction();
+            v.second->_abortTransaction();
         else
-            v.second->commitTransaction();
+            v.second->_commitTransaction();
     }
 }
 
