@@ -32,7 +32,7 @@ from PySide import QtCore
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-"""Axis remapping Dressup object and FreeCAD command.  This dressup remaps one axis of motion to another.
+__doc__ = """Axis remapping Dressup object and FreeCAD command.  This dressup remaps one axis of motion to another.
 For example, you can re-map the Y axis to A to control a 4th axis rotary."""
 
 # Qt translation handling
@@ -141,7 +141,7 @@ class ObjectDressup:
 class ViewProviderDressup:
 
     def __init__(self, vobj):
-        vobj.Proxy = self
+        self.obj = vobj.Object
 
     def attach(self, vobj):
         self.obj = vobj.Object
@@ -167,6 +167,7 @@ class ViewProviderDressup:
 
     def onDelete(self, arg1=None, arg2=None):
         '''this makes sure that the base operation is added back to the project and visible'''
+        # pylint: disable=unused-argument
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
         job = PathUtils.findParentJob(arg1.Object)
         job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
@@ -174,6 +175,7 @@ class ViewProviderDressup:
         return True
 
 class CommandPathDressup:
+    # pylint: disable=no-init
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
@@ -185,7 +187,7 @@ class CommandPathDressup:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):
@@ -213,7 +215,7 @@ class CommandPathDressup:
         FreeCADGui.doCommand('obj.Base = base')
         FreeCADGui.doCommand('obj.Radius = 45')
         FreeCADGui.doCommand('job.Proxy.addOperation(obj, base)')
-        FreeCADGui.doCommand('PathScripts.PathDressupAxisMap.ViewProviderDressup(obj.ViewObject)')
+        FreeCADGui.doCommand('obj.ViewObject.Proxy = PathScripts.PathDressupAxisMap.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(base.Name).Visibility = False')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
