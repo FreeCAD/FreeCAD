@@ -45,7 +45,7 @@ __title__="FreeCAD Project"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeProject(objectslist=None, baseobj=None, name="Project"):
+def makeProject(sites=None, name="Project"):
 
     '''makeProject(sites): creates a project aggregating the list of sites.'''
 
@@ -58,8 +58,8 @@ def makeProject(objectslist=None, baseobj=None, name="Project"):
     _Project(obj)
     if FreeCAD.GuiUp:
         _ViewProviderProject(obj.ViewObject)
-    if objectslist:
-        obj.Group = objectslist
+    if sites:
+        obj.Group = sites
     return obj
 
 class _CommandProject:

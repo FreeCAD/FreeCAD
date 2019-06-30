@@ -41,7 +41,7 @@ import Draft
 import Arch
 import DraftVecUtils
 import ArchIFCSchema
-import exportIFCHelper
+import importIFCHelper, exportIFCHelper
 from DraftGeomUtils import vec
 
 ## @package importIFC
@@ -453,6 +453,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
         import FreeCADGui
         FreeCADGui.ActiveDocument.activeView().viewAxonometric()
 
+    projectImporter = importIFCHelper.ProjectImporter(ifcfile, objects)
+    projectImporter.execute()
+
     # handle IFC products
 
     for product in products:
@@ -670,53 +673,54 @@ def insert(filename,docname,skip=[],only=[],root=None):
             # full Arch objects
 
             for freecadtype,ifctypes in typesmap.items():
-                if ptype in ifctypes:
-                    if clone:
-                        obj = getattr(Arch,"make"+freecadtype)(name=name)
-                        obj.CloneOf = clone
-                        if shape:
-                            if shape.Solids:
-                                s1 = shape.Solids[0]
-                            else:
-                                s1 = shape
-                            if clone.Shape.Solids:
-                                s2 = clone.Shape.Solids[0]
-                            else:
-                                s1 = clone.Shape
-                            if hasattr(s1,"CenterOfMass") and hasattr(s2,"CenterOfMass"):
-                                v = s1.CenterOfMass.sub(s2.CenterOfMass)
-                                if product.Representation:
-                                    r = getRotation(product.Representation.Representations[0].Items[0].MappingTarget)
-                                    if not r.isNull():
-                                        v = v.add(s2.CenterOfMass)
-                                        v = v.add(r.multVec(s2.CenterOfMass.negative()))
-                                    obj.Placement.Rotation = r
-                                    obj.Placement.move(v)
-                            else:
-                                print("failed to compute placement ",)
-                    else:
-                        obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
-                        if freecadtype in ["Wall","Structure"] and baseobj and baseobj.isDerivedFrom("Part::Extrusion"):
-                            # remove intermediary extrusion for types that can extrude themselves
-                            obj.Base = baseobj.Base
-                            obj.Placement = obj.Placement.multiply(baseobj.Placement)
-                            obj.Height = baseobj.Dir.Length
-                            obj.Normal = FreeCAD.Vector(baseobj.Dir).normalize()
-                            bn = baseobj.Name
-                            FreeCAD.ActiveDocument.removeObject(bn)
-                        if (freecadtype in ["Structure","Wall"]) and not baseobj:
-                            # remove sizes to prevent auto shape creation for types that don't require a base object
-                            obj.Height = 0
-                            obj.Width = 0
-                            obj.Length = 0
-                        if store:
-                            sharedobjects[store] = obj
+                if ptype not in ifctypes:
+                    continue
+                if clone:
+                    obj = getattr(Arch,"make"+freecadtype)(name=name)
+                    obj.CloneOf = clone
+                    if shape:
+                        if shape.Solids:
+                            s1 = shape.Solids[0]
+                        else:
+                            s1 = shape
+                        if clone.Shape.Solids:
+                            s2 = clone.Shape.Solids[0]
+                        else:
+                            s1 = clone.Shape
+                        if hasattr(s1,"CenterOfMass") and hasattr(s2,"CenterOfMass"):
+                            v = s1.CenterOfMass.sub(s2.CenterOfMass)
+                            if product.Representation:
+                                r = getRotation(product.Representation.Representations[0].Items[0].MappingTarget)
+                                if not r.isNull():
+                                    v = v.add(s2.CenterOfMass)
+                                    v = v.add(r.multVec(s2.CenterOfMass.negative()))
+                                obj.Placement.Rotation = r
+                                obj.Placement.move(v)
+                        else:
+                            print("failed to compute placement ",)
+                else:
+                    obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
+                    if freecadtype in ["Wall","Structure"] and baseobj and baseobj.isDerivedFrom("Part::Extrusion"):
+                        # remove intermediary extrusion for types that can extrude themselves
+                        obj.Base = baseobj.Base
+                        obj.Placement = obj.Placement.multiply(baseobj.Placement)
+                        obj.Height = baseobj.Dir.Length
+                        obj.Normal = FreeCAD.Vector(baseobj.Dir).normalize()
+                        bn = baseobj.Name
+                        FreeCAD.ActiveDocument.removeObject(bn)
+                    if (freecadtype in ["Structure","Wall"]) and not baseobj:
+                        # remove sizes to prevent auto shape creation for types that don't require a base object
+                        obj.Height = 0
+                        obj.Width = 0
+                        obj.Length = 0
+                    if store:
+                        sharedobjects[store] = obj
 
-                    if ptype == "IfcBuildingStorey":
-                        if product.Elevation:
-                            obj.Placement.Base.z = product.Elevation * getScaling(ifcfile)
+                if ptype == "IfcBuildingStorey":
+                    if product.Elevation:
+                        obj.Placement.Base.z = product.Elevation * getScaling(ifcfile)
 
-                    break
+                break
 
             if not obj:
                 obj = Arch.makeComponent(baseobj,name=name)
@@ -751,6 +755,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
             # setting IFC attributes
 
                 for attribute in ArchIFCSchema.IfcProducts[product.is_a()]["attributes"]:
+                    if attribute["name"] == "Name":
+                        continue
                     #print("attribute:",attribute["name"])
                     if hasattr(product, attribute["name"]) and getattr(product, attribute["name"]) and hasattr(obj,attribute["name"]):
                         #print("Setting attribute",attribute["name"],"to",getattr(product, attribute["name"]))
@@ -1090,23 +1096,25 @@ def insert(filename,docname,skip=[],only=[],root=None):
         # additions
 
         for host,children in additions.items():
-            if host in objects.keys():
-                cobs = []
-                for child in children:
-                    if child in objects.keys():
-                        if child not in swallowed: # don't add objects already in groups
-                            cobs.append(objects[child])
-                if cobs:
-                    if DEBUG and first:
-                        print("")
-                        first = False
-                    if DEBUG and (len(cobs) > 10) and (not(Draft.getType(objects[host]) in ["Site","Building","Floor","BuildingPart"])):
-                        # avoid huge fusions
-                        print("more than 10 shapes to add: skipping.")
-                    else:
-                        if DEBUG: print("    adding",len(cobs), "object(s) to", objects[host].Label)
-                        Arch.addComponents(cobs,objects[host])
-                        if DEBUG: FreeCAD.ActiveDocument.recompute()
+            if host not in objects.keys():
+                continue
+            cobs = []
+            for child in children:
+                if child in objects.keys() \
+                    and child not in swallowed: # don't add objects already in groups
+                        cobs.append(objects[child])
+            if not cobs:
+                continue
+            if DEBUG and first:
+                print("")
+                first = False
+            if DEBUG and (len(cobs) > 10) and (not(Draft.getType(objects[host]) in ["Site","Building","Floor","BuildingPart","Project"])):
+                # avoid huge fusions
+                print("more than 10 shapes to add: skipping.")
+            else:
+                if DEBUG: print("    adding",len(cobs), "object(s) to", objects[host].Label)
+                Arch.addComponents(cobs,objects[host])
+                if DEBUG: FreeCAD.ActiveDocument.recompute()
 
         if DEBUG and first: print("done.")
 
@@ -1116,7 +1124,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
         for obj in objects.values():
             if obj.isDerivedFrom("Part::Feature"):
-                if obj.Shape.isNull() and not(Draft.getType(obj) in ["Site"]):
+                if obj.Shape.isNull() and not(Draft.getType(obj) in ["Site","Project"]):
                     Arch.rebuildArchShape(obj)
 
     FreeCAD.ActiveDocument.recompute()

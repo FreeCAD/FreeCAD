@@ -74,6 +74,8 @@ class IfcRoot:
     def addIfcAttributes(self, ifcTypeSchema, obj):
         for attribute in ifcTypeSchema["attributes"]:
             if attribute["name"] in obj.PropertiesList \
+                or attribute["name"] == "RefLatitude" \
+                or attribute["name"] == "RefLongitude" \
                 or attribute["name"] == "Name":
                 continue
             self.addIfcAttribute(obj, attribute)
