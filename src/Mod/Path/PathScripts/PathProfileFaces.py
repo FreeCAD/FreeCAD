@@ -46,8 +46,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Profile operation based on faces."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2014"
-__scriptVersion__ = "2h testing"
-__lastModified__ = "2019-06-18 22:36 CST"
+__scriptVersion__ = "2i testing"
+__lastModified__ = "2019-06-29 23:05 CST"
 
 LOGLEVEL = False
 
@@ -94,12 +94,21 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         if not hasattr(obj, 'AttemptInverseAngle'):
             obj.addProperty('App::PropertyBool', 'AttemptInverseAngle', 'Rotation', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Attempt the inverse angle for face access if original rotation fails.'))
 
+        if not hasattr(obj, 'HandleMultipleFeatures'):
+            obj.addProperty('App::PropertyEnumeration', 'HandleMultipleFeatures', 'Profile', QtCore.QT_TRANSLATE_NOOP('PathPocket', 'Choose how to process multiple Base Geometry features.'))
+        obj.HandleMultipleFeatures = ['Collectively', 'Individually']
+
         self.baseObject().initAreaOp(obj)
+
+    def opOnDocumentRestored(self, obj):
+        '''opOnDocumentRestored(obj) ... adds the properties if they doesn't exist.'''
+        # self.initAreaOp(obj)
+        pass
 
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... returns envelope for all base shapes or wires for Arch.Panels.'''
         PathLog.track()
-        PathLog.debug("----- areaOpShapes() in PathProfileFaces.py")
+        PathLog.info("----- areaOpShapes() in PathProfileFaces.py")
 
         if obj.UseComp:
             self.commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
@@ -108,7 +117,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         shapes = []
         self.profileshape = []
-        finalDepths = []
         startDepths = []
         faceDepths = []
 
@@ -140,8 +148,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                                     else:
                                         msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
                                         PathLog.error(msg)
-                                        # title = translate("Path", 'Rotation Warning')
-                                        # self.guiMessage(title, msg, False)
                                 else:
                                     PathLog.debug("Face appears to be oriented correctly.")
 
@@ -154,17 +160,11 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                                 tag = base.Name + '_' + axis + str(angle).replace('.', '_')
                                 stock = PathUtils.findParentJob(obj).Stock
                                 tup = base, sub, tag, angle, axis, stock
-                            # Eif
                             allTuples.append(tup)
-                        # Eif
-                    # Efor
-                # Efor
                 if subCount > 1:
                     msg = translate('Path', "Multiple faces in Base Geometry.") + "  "
                     msg += translate('Path', "Depth settings will be applied to all faces.")
                     PathLog.warning(msg)
-                    # title = translate("Path", "Depth Warning")
-                    # self.guiMessage(title, msg)
                 (Tags, Grps) = self.sortTuplesByIndex(allTuples, 2)  # return (TagList, GroupList)
                 subList = []
                 for o in range(0, len(Tags)):
@@ -175,7 +175,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     baseSubsTuples.append(pair)
                 # Efor
             else:
-                PathLog.info(translate("Path", "EnableRotation property is 'Off'."))
+                PathLog.debug(translate("Path", "EnableRotation property is 'Off'."))
                 stock = PathUtils.findParentJob(obj).Stock
                 for (base, subList) in obj.Base:
                     baseSubsTuples.append((base, subList, 0.0, 'X', stock))
@@ -205,9 +205,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
                 # Raise FinalDepth to lowest face in list on Inside profile ops
                 finDep = obj.FinalDepth.Value
-                if obj.Side == 'Inside':
-                    finDep = min(faceDepths)
-                finalDepths.append(finDep)
 
                 strDep = obj.StartDepth.Value
                 if strDep > stock.Shape.BoundBox.ZMax:
@@ -239,46 +236,37 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     self.profileshape.append(profileshape)
 
                 if obj.processPerimeter:
-                    PathLog.track()
-                    try:
-                        env = PathUtils.getEnvelope(base.Shape, subshape=profileshape, depthparams=self.depthparams)
-                    except Exception:
-                        # PathUtils.getEnvelope() failed to return an object.
-                        PathLog.error(translate('Path', 'Unable to create path for face(s).'))
-                    else:
-                        # shapes.append((env, False))
-                        tup = env, False, 'pathProfileFaces', angle, axis, strDep, finDep
-                        shapes.append(tup)
-                else:
-                    for shape in faces:
-                        finalDep = finDep
-                        # Recalculate depthparams
-                        if obj.Side == 'Inside':
-                            if finalDep < shape.BoundBox.ZMin:
-                                custDepthparams = PathUtils.depth_params(
-                                    clearance_height=obj.ClearanceHeight.Value,
-                                    safe_height=obj.SafeHeight.Value,
-                                    start_depth=strDep,  # obj.StartDepth.Value,
-                                    step_down=obj.StepDown.Value,
-                                    z_finish_step=finish_step,
-                                    final_depth=shape.BoundBox.ZMin,  # obj.FinalDepth.Value,
-                                    user_depths=None)
-                                env = PathUtils.getEnvelope(base.Shape, subshape=shape, depthparams=custDepthparams)
-                                finalDep = shape.BoundBox.ZMin
-                            else:
-                                env = PathUtils.getEnvelope(base.Shape, subshape=shape, depthparams=self.depthparams)
+                    if obj.HandleMultipleFeatures == 'Collectively':
+                        PathLog.track()
+                        try:
+                            env = PathUtils.getEnvelope(base.Shape, subshape=profileshape, depthparams=self.depthparams)
+                        except Exception:
+                            # PathUtils.getEnvelope() failed to return an object.
+                            PathLog.error(translate('Path', 'Unable to create path for face(s).'))
                         else:
-                            env = PathUtils.getEnvelope(base.Shape, subshape=shape, depthparams=self.depthparams)
-                        tup = env, False, 'pathProfileFaces', angle, axis, strDep, finalDep
-                        shapes.append(tup)
-                # Eif
+                            # shapes.append((env, False))
+                            tup = env, False, 'pathProfileFaces', angle, axis, strDep, finDep
+                            shapes.append(tup)
+                    elif obj.HandleMultipleFeatures == 'Individually':
+                        for shape in faces:
+                            finalDep = obj.FinalDepth.Value
+                            custDepthparams = self.depthparams
+                            if obj.Side == 'Inside':
+                                if finalDep < shape.BoundBox.ZMin:
+                                    # Recalculate depthparams
+                                    finalDep = shape.BoundBox.ZMin
+                                    custDepthparams = PathUtils.depth_params(
+                                        clearance_height=obj.ClearanceHeight.Value,
+                                        safe_height=obj.SafeHeight.Value,
+                                        start_depth=strDep,  # obj.StartDepth.Value,
+                                        step_down=obj.StepDown.Value,
+                                        z_finish_step=finish_step,
+                                        final_depth=finalDep,  # obj.FinalDepth.Value,
+                                        user_depths=None)
+                            env = PathUtils.getEnvelope(base.Shape, subshape=shape, depthparams=custDepthparams)
+                            tup = env, False, 'pathProfileFaces', angle, axis, strDep, finalDep
+                            shapes.append(tup)
 
-            # adjust Start/Final Depths as needed
-            # Raise existing Final Depth to level of lowest profile face
-            if obj.Side == 'Inside':
-                finalDepth = min(finalDepths)
-                if obj.FinalDepth.Value < finalDepth:
-                    obj.FinalDepth.Value = finalDepth
             # Lower high Start Depth to top of Stock
             startDepth = max(startDepths)
             if obj.StartDepth.Value > startDepth:
@@ -324,9 +312,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         obj.InverseAngle = False
         obj.AttemptInverseAngle = True
         obj.B_AxisErrorOverride = False
-
-    # def checkDepths(self, obj, shape):
-    #     return (strDept, finDep)
+        obj.HandleMultipleFeatures = 'Collectively'
 
 
 def SetupProperties():
@@ -338,6 +324,7 @@ def SetupProperties():
     setup.append("InverseAngle")
     setup.append("B_AxisErrorOverride")
     setup.append("AttemptInverseAngle")
+    setup.append("HandleMultipleFeatures")
     return setup
 
 
