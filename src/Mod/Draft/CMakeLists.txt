@@ -24,7 +24,6 @@ SET(Draft_SRCS
     importDWG.py
     importAirfoilDAT.py
     TestDraft.py
-    OfflineRenderingUtils.py
 )
 SOURCE_GROUP("" FILES ${Draft_SRCS})
 
