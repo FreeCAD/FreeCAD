@@ -211,7 +211,8 @@ class Extension(object):
                 if r > 0:
                     c1 = Part.makeCircle(r, circle.Center, circle.Axis, edge.FirstParameter * 180 / math.pi, edge.LastParameter * 180 / math.pi)
                     return [Part.Wire([edge]), Part.Wire([c1])]
-                return None
+                # the extension is bigger than the hole - so let's just cover the whole hole
+                return Part.Wire([edge])
 
             else:
                 PathLog.track(self.feature, self.sub, type(edge.Curve), endPoints(edge))
@@ -546,7 +547,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 # add faces for extensions
                 self.exts = []
                 for ext in self.getExtensions(obj):
-                    wire = Part.Face(ext.getWire())
+                    wire = ext.getWire()
                     if wire:
                         face = Part.Face(wire)
                         self.horiz.append(face)
