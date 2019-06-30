@@ -334,7 +334,6 @@ class ObjectOp(PathOp.ObjectOp):
             areaOpUseProjection(obj)      ... return true if operation can use projection
         instead.'''
         PathLog.track()
-        PathLog.info("\n----- opExecute() in PathAreaOp.py")
         # PathLog.debug("OpDepths are Start: {}, and Final: {}".format(obj.OpStartDepth.Value, obj.OpFinalDepth.Value))
         # PathLog.debug("Depths are Start: {}, and Final: {}".format(obj.StartDepth.Value, obj.FinalDepth.Value))
         # PathLog.debug("initOpDepths are Start: {}, and Final: {}".format(self.initOpStartDepth, self.initOpFinalDepth))

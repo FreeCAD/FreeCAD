@@ -80,8 +80,14 @@ class _Extension(object):
         if not ext is None:
             wire =  ext.getWire()
             if wire:
-                poly = [p for p in wire.discretize(Deflection=0.01)][:-1]
-                polygon = [(p.x, p.y, p.z) for p in poly]
+                if isinstance(wire, (list, tuple)):
+                    p0 = [p for p in wire[0].discretize(Deflection=0.02)]
+                    p1 = [p for p in wire[1].discretize(Deflection=0.02)]
+                    p2 = list(reversed(p1))
+                    polygon = [(p.x, p.y, p.z) for p in (p0 + p2)]
+                else:
+                    poly = [p for p in wire.discretize(Deflection=0.02)][:-1]
+                    polygon = [(p.x, p.y, p.z) for p in poly]
                 crd.point.setValues(polygon)
             else:
                 return None
@@ -166,17 +172,27 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         else:
             self.form.showExtensions.setCheckState(QtCore.Qt.Unchecked)
 
+        self.blockUpdateData = False
+
         global Page
         Page = self
 
     def cleanupPage(self, obj):
-        self.obj.ViewObject.RootNode.removeChild(self.switch)
+        # If the object was already destroyed we can't access obj.Name.
+        # This is the case if this was a new op and the user hit Cancel.
+        # Unfortunately there's no direct way to determine the object's
+        # livelihood without causing an error so we look for the object
+        # in the document and clean up if it still exists.
+        for o in self.obj.Document.getObjectsByLabel(self.obj.Label):
+            if o == obj:
+                self.obj.ViewObject.RootNode.removeChild(self.switch)
+                return
+        PathLog.debug("%s already destroyed - no cleanup required" % (obj.Label))
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketExtEdit.ui")
 
     def forAllItemsCall(self, cb):
-        PathLog.track()
         for modelRow in range(self.model.rowCount()):
             model = self.model.item(modelRow, 0)
             for featureRow in range(model.rowCount()):
@@ -186,23 +202,29 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                     ext = item.data(self.DataObject)
                     cb(item, ext)
 
+    def currentExtensions(self):
+        extensions = []
+        def extractExtension(item, ext):
+            if ext and ext.edge and item.checkState() == QtCore.Qt.Checked:
+                extensions.append(ext.ext)
+        self.forAllItemsCall(extractExtension)
+        PathLog.track('extensions', extensions)
+        return extensions
+
+    def updateProxyExtensions(self, obj):
+        self.extensions = self.currentExtensions()
+        obj.Proxy.setExtensions(obj, self.extensions)
+
     def getFields(self, obj):
         PathLog.track(obj.Label, self.model.rowCount(), self.model.columnCount())
+        self.blockUpdateData = True
 
         if obj.ExtensionCorners != self.form.extendCorners.isChecked():
             obj.ExtensionCorners = self.form.extendCorners.isChecked()
         self.defaultLength.updateProperty()
 
-        extensions = []
-
-        def extractExtension(item, ext):
-            if ext and ext.edge and item.checkState() == QtCore.Qt.Checked:
-                extensions.append(ext.ext)
-
-        self.forAllItemsCall(extractExtension)
-
-        self.extensions = extensions
-        obj.Proxy.setExtensions(obj, extensions)
+        self.updateProxyExtensions(obj)
+        self.blockUpdateData = False
 
     def setFields(self, obj):
         PathLog.track(obj.Label)
@@ -319,9 +341,13 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         if hasattr(self, 'selectionModel') and selectedExtensions:
             self.restoreSelection(selectedExtensions)
 
+        self.form.extensionTree.blockSignals(False)
+
     def updateData(self, obj, prop):
-        if prop in ['Base', 'ExtensionLengthDefault']:
-            self.setExtensions(obj.Proxy.getExtensions(obj))
+        PathLog.track(obj.Label, prop, self.blockUpdateData)
+        if not self.blockUpdateData:
+            if prop in ['Base', 'ExtensionLengthDefault']:
+                self.setExtensions(obj.Proxy.getExtensions(obj))
 
     def restoreSelection(self, selection):
         PathLog.track()
@@ -350,7 +376,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
             def setSelectionVisuals(item, ext):
                 if selectItem(item, ext):
-                    self.selectionModel.select(item.index(), QtGui.QItemSelectionModel.Select)
+                    self.selectionModel.select(item.index(), QtCore.QItemSelectionModel.Select)
 
                 selected = self.selectionModel.isSelected(item.index())
                 if selected:
@@ -377,6 +403,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.setDirty()
 
     def _extensionsSetState(self, state):
+        PathLog.track(state)
         for index in self.selectionModel.selectedIndexes():
             item = self.model.itemFromIndex(index)
             ext = item.data(self.DataObject)
@@ -392,11 +419,13 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self._extensionsSetState(QtCore.Qt.Checked)
 
     def updateItemEnabled(self, item):
+        PathLog.track(item)
         ext = item.data(self.DataObject)
         if item.checkState() == QtCore.Qt.Checked:
             ext.enable()
         else:
             ext.disable()
+        self.updateProxyExtensions(self.obj)
         self.setDirty()
 
     def showHideExtension(self):
@@ -412,6 +441,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         #self.setDirty()
 
     def toggleExtensionCorners(self):
+        PathLog.track()
         self.setExtensions(self.obj.Proxy.getExtensions(self.obj))
         self.selectionChanged()
         self.setDirty()
