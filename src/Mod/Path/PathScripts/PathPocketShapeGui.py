@@ -80,8 +80,14 @@ class _Extension(object):
         if not ext is None:
             wire =  ext.getWire()
             if wire:
-                poly = [p for p in wire.discretize(Deflection=0.01)][:-1]
-                polygon = [(p.x, p.y, p.z) for p in poly]
+                if isinstance(wire, (list, tuple)):
+                    p0 = [p for p in wire[0].discretize(Deflection=0.02)]
+                    p1 = [p for p in wire[1].discretize(Deflection=0.02)]
+                    p2 = list(reversed(p1))
+                    polygon = [(p.x, p.y, p.z) for p in (p0 + p2)]
+                else:
+                    poly = [p for p in wire.discretize(Deflection=0.02)][:-1]
+                    polygon = [(p.x, p.y, p.z) for p in poly]
                 crd.point.setValues(polygon)
             else:
                 return None
