@@ -46,7 +46,7 @@ public:
     };
 
     /// constructor.
-    ViewProviderPythonFeatureImp(ViewProviderDocumentObject*);
+    ViewProviderPythonFeatureImp(ViewProviderDocumentObject*, App::PropertyPythonObject &);
     /// destructor.
     ~ViewProviderPythonFeatureImp();
 
@@ -124,6 +124,7 @@ public:
 
 private:
     ViewProviderDocumentObject* object;
+    App::PropertyPythonObject &Proxy;
     bool has__object__;
     mutable bool pyCalling;
 
@@ -186,7 +187,7 @@ public:
     /// constructor.
     ViewProviderPythonFeatureT() : _attached(false) {
         ADD_PROPERTY(Proxy,(Py::Object()));
-        imp = new ViewProviderPythonFeatureImp(this);
+        imp = new ViewProviderPythonFeatureImp(this,Proxy);
     }
     /// destructor.
     virtual ~ViewProviderPythonFeatureT() {

@@ -288,8 +288,9 @@ ViewProviderPythonFeatureObserver::~ViewProviderPythonFeatureObserver()
 
 // ----------------------------------------------------------------------------
 
-ViewProviderPythonFeatureImp::ViewProviderPythonFeatureImp(ViewProviderDocumentObject* vp)
-  : object(vp), has__object__(false), pyCalling(false)
+ViewProviderPythonFeatureImp::ViewProviderPythonFeatureImp(
+        ViewProviderDocumentObject* vp, App::PropertyPythonObject &proxy)
+  : object(vp), Proxy(proxy), has__object__(false), pyCalling(false)
 {
 #if 0
     (void)ViewProviderPythonFeatureObserver::instance();
@@ -858,15 +859,12 @@ void ViewProviderPythonFeatureImp::finishRestoring()
 {
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.isNone()) {
-                object->show();
-                static_cast<App::PropertyPythonObject*>(proxy)->setValue(Py::Int(1));
-            }else if(!py_finishRestoring.isNone())
-                Base::pyCall(py_finishRestoring.ptr());
-        }
+        Py::Object vp = Proxy.getValue();
+        if (vp.isNone()) {
+            object->show();
+            Proxy.setValue(Py::Int(1));
+        }else if(!py_finishRestoring.isNone())
+            Base::pyCall(py_finishRestoring.ptr());
     }catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         e.ReportException();
