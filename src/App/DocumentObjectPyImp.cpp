@@ -712,16 +712,30 @@ PyObject *DocumentObjectPy::getElementMapVersion(PyObject *args) {
 
 PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
 {
+    // Dynamic proeprty is now directly supported in PropertyContainer. So we
+    // can comment out here and let PropertyContainerPy handle it.
+#if 1
+    (void)attr;
+#else
     // search for dynamic property
     Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(attr);
     if (prop)
         return prop->getPyObject();
     else
+#endif
         return 0;
 }
 
 int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
 {
+    // The following code is practically the same as in PropertyContainerPy,
+    // especially since now dynamic proeprty is directly supported in
+    // PropertyContainer. So we can comment out here and let PropertyContainerPy
+    // handle it.
+#if 1
+    (void)attr;
+    (void)obj;
+#else
     // explicitly search for dynamic property
     try {
         Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(attr);
@@ -775,6 +789,7 @@ int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
         }
         return 1;
     } 
+#endif
 
     return 0;
 }

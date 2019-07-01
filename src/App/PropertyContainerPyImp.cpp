@@ -32,6 +32,7 @@
 #include "Property.h"
 #include "PropertyLinks.h"
 #include "Application.h"
+#include "DocumentObject.h"
 
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
@@ -468,12 +469,14 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
     // search in PropertyList
     Property *prop = getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop) {
-        PyObject* pyobj = prop->getPyObject();
-        if (!pyobj && PyErr_Occurred()) {
-            // the Python exception is already set
-            throw Py::Exception();
-        }
-        return pyobj;
+        PY_TRY {
+            PyObject* pyobj = prop->getPyObject();
+            if (!pyobj && PyErr_Occurred()) {
+                // the Python exception is already set
+                throw Py::Exception();
+            }
+            return pyobj;
+        }PY_CATCH
     }
     else if (Base::streq(attr, "__dict__")) {
         // get the properties to the C++ PropertyContainer class
@@ -493,6 +496,27 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
             }
         }
         return dict;
+    } else if(Base::streq(attr,"Shape")
+            && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId())) 
+    {
+        // Special treatment of Shape property
+        static PyObject *_getShape = 0;
+        if(!_getShape) {
+            _getShape = Py_None;
+            PyObject *mod = PyImport_ImportModule("Part");
+            if(!mod) {
+                PyErr_Clear();
+            } else {
+                Py::Object pyMod = Py::asObject(mod);
+                if(pyMod.hasAttr("getShape"))
+                    _getShape = Py::new_reference_to(pyMod.getAttr("getShape"));
+            }
+        }
+        if(_getShape != Py_None) {
+            Py::Tuple args(1);
+            args.setItem(0,Py::Object(const_cast<PropertyContainerPy*>(this)));
+            return PyObject_CallObject(_getShape, args.ptr());
+        }
     }
 
     return 0;
@@ -512,7 +536,10 @@ int PropertyContainerPy::setCustomAttributes(const char* attr, PyObject *obj)
             throw Py::AttributeError(s.str());
         }
 
-        prop->setPyObject(obj);
+        PY_TRY {
+            prop->setPyObject(obj);
+        }_PY_CATCH(return(-1))
+
         return 1;
     }
 
