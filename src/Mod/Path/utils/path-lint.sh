@@ -68,12 +68,11 @@ ARGS+=" --ignored-modules=$(echo ${EXTERNAL_MODULES} | tr ' ' ',')"
 ARGS+=" --ignore=post"
 ARGS+=" --jobs=4"
 
-if [ -z "$(which pylint)" ]; then
+if [ -z "$(which pylint3)" ]; then
   echo "Cannot find pylint, please install and try again!"
   exit 1
 fi
 
 #pylint3 ${ARGS} PathScripts/ PathTests/
-#pylint3 ${ARGS} PathScripts/
-pylint3 ${ARGS} PathScripts/PathCircu*
+pylint3 ${ARGS} PathScripts/
 
