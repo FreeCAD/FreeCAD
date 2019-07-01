@@ -1254,6 +1254,27 @@ void LinkBaseExtension::expandSubname(std::string &subname) const {
     subname = ss.str();
 }
 
+static bool isExcludedProperties(const char *name) {
+#define CHECK_EXCLUDE_PROP(_name) if(strcmp(name,#_name)==0) return true;
+    CHECK_EXCLUDE_PROP(Shape);
+    CHECK_EXCLUDE_PROP(Proxy);
+    CHECK_EXCLUDE_PROP(Placement);
+    return false;
+}
+
+Property *LinkBaseExtension::extensionGetPropertyByName(const char* name) const {
+    auto prop = inherited::extensionGetPropertyByName(name);
+    if(prop || isExcludedProperties(name))
+        return prop;
+    auto owner = getContainer();
+    if(owner && owner->canLinkProperties()) {
+        auto linked = getTrueLinkedObject(true);
+        if(linked)
+            return linked->getPropertyByName(name);
+    }
+    return 0;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 namespace App {

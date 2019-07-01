@@ -261,6 +261,8 @@ public:
 
     virtual PyObject* getExtensionPyObject(void) override;
 
+    virtual Property *extensionGetPropertyByName(const char* name) const override;
+
     static int getArrayIndex(const char *subname, const char **psubname=0);
     int getElementIndex(const char *subname, const char **psubname=0) const;
     void elementNameFromIndex(int idx, std::ostream &ss) const;

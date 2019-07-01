@@ -2888,6 +2888,30 @@ void ViewProviderLink::onBeforeChange(const App::Property *prop) {
     inherited::onBeforeChange(prop);
 }
 
+static bool isExcludedProperties(const char *name) {
+#define CHECK_EXCLUDE_PROP(_name) if(strcmp(name,#_name)==0) return true;
+    CHECK_EXCLUDE_PROP(Proxy);
+    return false;
+}
+
+App::Property *ViewProviderLink::getPropertyByName(const char *name) const {
+    auto prop = inherited::getPropertyByName(name);
+    if(prop || isExcludedProperties(name))
+        return prop;
+    if(childVp) {
+        prop = childVp->getPropertyByName(name);
+        if(prop && !prop->testStatus(App::Property::Hidden))
+            return prop;
+        prop = 0;
+    }
+    if(pcObject && pcObject->canLinkProperties()) {
+        auto linked = getLinkedViewProvider(0,true);
+        if(linked && linked!=this)
+            prop = linked->getPropertyByName(name);
+    }
+    return prop;
+}
+
 void ViewProviderLink::getPropertyMap(std::map<std::string,App::Property*> &Map) const {
     inherited::getPropertyMap(Map);
     if(!childVp)
