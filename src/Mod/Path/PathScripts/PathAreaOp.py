@@ -46,13 +46,13 @@ __createdDate__ = "2017"
 __scriptVersion__ = "2h testing"
 __lastModified__ = "2019-06-30 17:17 CST"
 
-LOGLEVEL = False
+LOGLEVEL = PathLog.Level.DEBUG
+PathLog.setLevel(LOGLEVEL, PathLog.thisModule())
+# PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+
+if LOGLEVEL is PathLog.Level.DEBUG:
     PathLog.trackModule()
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 # Qt translation handling
@@ -424,12 +424,12 @@ class ObjectOp(PathOp.ObjectOp):
         sims = []
         numShapes = len(shapes)
 
-        if numShapes == 1:
-            nextAxis = shapes[0][4]
-        elif numShapes > 1:
-            nextAxis = shapes[1][4]
-        else:
-            nextAxis = 'L'
+        # if numShapes == 1:
+        #     nextAxis = shapes[0][4]
+        # elif numShapes > 1:
+        #     nextAxis = shapes[1][4]
+        # else:
+        #     nextAxis = 'L'
 
         for ns in range(0, numShapes):
             (shape, isHole, sub, angle, axis, strDep, finDep) = shapes[ns]
@@ -533,7 +533,7 @@ class ObjectOp(PathOp.ObjectOp):
         # bb = parentJob.Stock.Shape.BoundBox
         xlim = 0.0
         ylim = 0.0
-        zlim = 0.0
+        # zlim = 0.0
 
         # Determine boundbox radius based upon xzy limits data
         if math.fabs(self.stockBB.ZMin) > math.fabs(self.stockBB.ZMax):
@@ -571,7 +571,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         praInfo = "faceRotationAnalysis()"
         rtn = True
-        axis = 'X'
+        # axis = 'X'
         orientation = 'X'
         angle = 500.0
         precision = 6
@@ -643,9 +643,9 @@ class ObjectOp(PathOp.ObjectOp):
                     if saX < 0.0:
                         angle = angle + 180.0
         elif saZ == 0.0:
-            if saY != 0.0:
-                angle = math.degrees(math.atan(saX / saY))
-                orientation = "Y"
+            # if saY != 0.0:
+            angle = math.degrees(math.atan(saX / saY))
+            orientation = "Y"
 
         if saX + nX == 0.0:
             angle = -1 * angle
