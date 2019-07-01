@@ -336,12 +336,18 @@ def fill_femresult_mechanical(
 ):
     ''' fills a FreeCAD FEM mechanical result object with result data
     '''
+    if 'number' in result_set:
+        eigenmode_number = result_set['number']
+    else:
+        eigenmode_number = 0
+    
     if 'time' in result_set:
         step_time = result_set['time']
         step_time = round(step_time, 2)
 
     # if disp exists, fill res_obj.NodeNumbers and
     # res_obj.DisplacementVectors as well as stress and strain
+    # furthermore the eigenmode number
     if 'disp' in result_set:
         disp = result_set['disp']
         res_obj.DisplacementVectors = list(map((lambda x: x), disp.values()))
@@ -414,6 +420,10 @@ def fill_femresult_mechanical(
                     res_obj.Peeq = Pe
                 else:
                     res_obj.Peeq = list(Peeq.values())
+
+        # fill eigenmode number if they exist
+        if eigenmode_number > 0:
+            res_obj.Eigenmode = eigenmode_number
 
     # fill res_obj.Temperature if they exist
     # TODO, check if it is possible to have Temperature without disp
