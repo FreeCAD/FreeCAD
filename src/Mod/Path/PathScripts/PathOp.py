@@ -238,12 +238,12 @@ class ObjectOp(object):
     def initOperation(self, obj):
         '''initOperation(obj) ... implement to create additional properties.
         Should be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def opOnDocumentRestored(self, obj):
         '''opOnDocumentRestored(obj) ... implement if an op needs special handling like migrating the data model.
         Should be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def opOnChanged(self, obj, prop):
         '''opOnChanged(obj, prop) ... overwrite to process property changes.
@@ -252,24 +252,24 @@ class ObjectOp(object):
         distinguish between assigning a different value and assigning the same
         value again.
         Can safely be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def opSetDefaultValues(self, obj, job):
         '''opSetDefaultValues(obj, job) ... overwrite to set initial default values.
         Called after the receiver has been fully created with all properties.
         Can safely be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def opUpdateDepths(self, obj):
         '''opUpdateDepths(obj) ... overwrite to implement special depths calculation.
         Can safely be overwritten by subclass.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def opExecute(self, obj):
         '''opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def opRejectAddBase(self, obj, base, sub):
         '''opRejectAddBase(base, sub) ... if op returns True the addition of the feature is prevented.
@@ -491,7 +491,7 @@ class ObjectOp(object):
         if obj.Comment:
             self.commandlist.append(Path.Command("(%s)" % obj.Comment))
 
-        result = self.opExecute(obj)
+        result = self.opExecute(obj) # pylint: disable=assignment-from-no-return
 
         if FeatureHeights & self.opFeatures(obj):
             # Let's finish by rapid to clearance...just for safety

@@ -296,7 +296,7 @@ class StockEdit(object):
                 widget.hide()
         if select:
             self.form.stock.setCurrentIndex(self.Index)
-        editor = self.editorFrame()
+        editor = self.editorFrame() # pylint: disable=assignment-from-none
         showHide(self.form.stockFromExisting, editor)
         showHide(self.form.stockFromBase, editor)
         showHide(self.form.stockCreateBox, editor)

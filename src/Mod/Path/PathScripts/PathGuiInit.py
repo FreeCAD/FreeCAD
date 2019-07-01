@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# pylint: disable=unused-variable
+# pylint: disable=unused-import
 
 import PathScripts.PathLog as PathLog
 

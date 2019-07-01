@@ -170,7 +170,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         else:
             self.form.showExtensions.setCheckState(QtCore.Qt.Unchecked)
 
-        self.blockUpdateData = False
+        self.blockUpdateData = False # pylint: disable=attribute-defined-outside-init
 
     def cleanupPage(self, obj):
         # If the object was already destroyed we can't access obj.Name.
@@ -207,19 +207,19 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         return extensions
 
     def updateProxyExtensions(self, obj):
-        self.extensions = self.currentExtensions()
+        self.extensions = self.currentExtensions() # pylint: disable=attribute-defined-outside-init
         obj.Proxy.setExtensions(obj, self.extensions)
 
     def getFields(self, obj):
         PathLog.track(obj.Label, self.model.rowCount(), self.model.columnCount())
-        self.blockUpdateData = True
+        self.blockUpdateData = True # pylint: disable=attribute-defined-outside-init
 
         if obj.ExtensionCorners != self.form.extendCorners.isChecked():
             obj.ExtensionCorners = self.form.extendCorners.isChecked()
         self.defaultLength.updateProperty()
 
         self.updateProxyExtensions(obj)
-        self.blockUpdateData = False
+        self.blockUpdateData = False # pylint: disable=attribute-defined-outside-init
 
     def setFields(self, obj):
         PathLog.track(obj.Label)

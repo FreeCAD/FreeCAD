@@ -155,7 +155,7 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
     return drillable
 
 
-# fixme set at 4 decimal places for testing
+# set at 4 decimal places for testing
 def fmt(val):
     return format(val, '.4f')
 
