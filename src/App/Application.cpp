@@ -405,7 +405,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     }
 
     // create the FreeCAD document
-    std::unique_ptr<Document> newDoc(new Document());
+    std::unique_ptr<Document> newDoc(new Document(name.c_str()));
 
     // add the document to the internal list
     DocMap[name] = newDoc.release(); // now owned by the Application

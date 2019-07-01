@@ -69,7 +69,7 @@
 #include "Thumbnail.h"
 #include "ViewProviderLink.h"
 
-FC_LOG_LEVEL_INIT("Gui::Document",true,true)
+FC_LOG_LEVEL_INIT("Gui",true,true)
 
 using namespace Gui;
 
@@ -764,8 +764,10 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
     }
 
     // a property of an object has changed
-    if(!Prop.testStatus(App::Property::NoModify))
+    if(!Prop.testStatus(App::Property::NoModify) && !isModified()) {
+        FC_LOG(Prop.getFullName() << " modified");
         setModified(true);
+    }
 }
 
 void Document::slotRelabelObject(const App::DocumentObject& Obj)
@@ -866,11 +868,14 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
     obj->recomputeFeature(true);
 }
 
-void Document::slotTouchedObject(const App::DocumentObject &)
+void Document::slotTouchedObject(const App::DocumentObject &Obj)
 {
     getMainWindow()->updateActions(true);
     TreeWidget::updateStatus(true);
-    setModified(true);
+    if(!isModified()) {
+        FC_LOG(Obj.getFullName() << " touched");
+        setModified(true);
+    }
 }
 
 void Document::addViewProvider(Gui::ViewProviderDocumentObject* vp)
@@ -2187,8 +2192,10 @@ void Document::toggleInSceneGraph(ViewProvider *vp) {
     }
 }
 
-void Document::slotChangePropertyEditor(const App::Document &doc, const App::Property &) {
-    if(getDocument() == &doc)
+void Document::slotChangePropertyEditor(const App::Document &doc, const App::Property &Prop) {
+    if(getDocument() == &doc) {
+        FC_LOG(Prop.getFullName() << " editor changed");
         setModified(true);
+    }
 }
 

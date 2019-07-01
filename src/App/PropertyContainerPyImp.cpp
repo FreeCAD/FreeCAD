@@ -41,6 +41,8 @@
 #include "PropertyContainerPy.h"
 #include "PropertyContainerPy.cpp"
 
+FC_LOG_LEVEL_INIT("Property", true, 2);
+
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
@@ -537,6 +539,7 @@ int PropertyContainerPy::setCustomAttributes(const char* attr, PyObject *obj)
         }
 
         PY_TRY {
+            FC_TRACE("Set property " << prop->getFullName());
             prop->setPyObject(obj);
         }_PY_CATCH(return(-1))
 

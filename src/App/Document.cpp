@@ -1116,17 +1116,10 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What,
                             ignore = true;
                     }
                     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                        if(What) {
-                            auto parent = What->getContainer();
-                            auto obj = Base::freecad_dynamic_cast<DocumentObject>(parent);
-                            const char *objName = obj?obj->getNameInDocument():0;
-                            const char *propName = What->getName();
+                        if(What) 
                             FC_LOG((ignore?"ignore":"auto") << " transaction (" 
-                                    << line << ") '" << name 
-                                    << "' on change of " << getName() << '.'
-                                    << (objName?objName:"<?>") << '.' 
-                                    << (propName?propName:"<?>"));
-                        }else
+                                    << line << ") '" << What->getFullName()); 
+                        else
                             FC_LOG((ignore?"ignore":"auto") <<" transaction (" 
                                     << line << ") '" << name << "' in " << getName());
                     }
@@ -1447,8 +1440,8 @@ void Document::setTransactionMode(int iMode)
 //--------------------------------------------------------------------------
 // constructor
 //--------------------------------------------------------------------------
-Document::Document(void)
-    :Hasher(new StringHasher)
+Document::Document(const char *name)
+    :Hasher(new StringHasher), myName(name)
 {
     // Remark: In a constructor we should never increment a Python object as we cannot be sure
     // if the Python interpreter gets a reference of it. E.g. if we increment but Python don't
@@ -2594,7 +2587,12 @@ bool Document::isSaved() const
  */
 const char* Document::getName() const
 {
-    return GetApplication().getDocumentName(this);
+    // return GetApplication().getDocumentName(this);
+    return myName.c_str();
+}
+
+std::string Document::getFullName() const {
+    return myName;
 }
 
 /// Remove all modifications. After this call The document becomes valid again.

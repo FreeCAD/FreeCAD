@@ -122,6 +122,8 @@ public:
     /// get the name of this property in the belonging container
     const char* getName(void) const;
 
+    std::string getFullName() const;
+
     /// Get the class name of the associated property editor item
     virtual const char* getEditorName(void) const { return ""; }
 

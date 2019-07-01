@@ -517,6 +517,8 @@ public:
 
     virtual PyObject *getPyObject(void);
 
+    virtual std::string getFullName() const override;
+
     /// Indicate if there is any document restoring/importing
     static bool isAnyRestoring();
 
@@ -532,7 +534,7 @@ public:
 
 protected:
     /// Construction
-    Document(void);
+    Document(const char *name = "");
 
     void _removeObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);
@@ -588,6 +590,7 @@ private:
     struct DocumentP* d;
 
     std::string oldLabel;
+    std::string myName;
 };
 
 template<typename T>

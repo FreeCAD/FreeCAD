@@ -158,6 +158,8 @@ public:
 
   virtual unsigned int getMemSize (void) const;
 
+  virtual std::string getFullName() const {return std::string();}
+
   /// find a property by its name
   virtual Property *getPropertyByName(const char* name) const;
   /// get the name of a property

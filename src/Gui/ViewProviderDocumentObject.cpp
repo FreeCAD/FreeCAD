@@ -60,6 +60,7 @@
 #include "Tree.h"
 #include <Gui/ViewProviderDocumentObjectPy.h>
 
+FC_LOG_LEVEL_INIT("Gui",true,true)
 
 using namespace Gui;
 
@@ -181,8 +182,11 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             getObject()->Visibility.setValue(Visibility.getValue());
     }
 
-    if (pcDocument)
+    if (pcDocument && !pcDocument->isModified()) {
+        if(prop)
+            FC_LOG(prop->getFullName() << " changed");
         pcDocument->setModified(true);
+    }
 
     ViewProvider::onChanged(prop);
 }
@@ -578,4 +582,10 @@ ViewProviderDocumentObject *ViewProviderDocumentObject::getLinkedViewProvider(
     if(!res)
         res = self;
     return res;
+}
+
+std::string ViewProviderDocumentObject::getFullName() const {
+    if(pcObject)
+        return pcObject->getFullName() + ".ViewObject";
+    return std::string();
 }

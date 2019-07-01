@@ -193,21 +193,12 @@ PropertyLinkBase::updateLabelReferences(App::DocumentObject *obj, const char *ne
 static std::string propertyName(const Property *prop) {
     if(!prop)
         return std::string();
-    auto obj = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
-    std::string name;
-    if(obj) 
-        name = obj->getFullName() + ".";
-    if(prop->getContainer()) {
-        auto n = prop->getName();
-        if(n) {
-            name += n;
-            return name;
-        }
+    if(!prop->getContainer() || !prop->getName()) {
+        auto xlink = Base::freecad_dynamic_cast<const PropertyXLink>(prop);
+        if(xlink)
+            return propertyName(xlink->parent());
     }
-    auto xlink = Base::freecad_dynamic_cast<const PropertyXLink>(prop);
-    if(xlink)
-        return propertyName(xlink->parent());
-    return name;
+    return prop->getFullName();
 }
 
 void PropertyLinkBase::updateElementReferences(DocumentObject *feature, bool reverse) {

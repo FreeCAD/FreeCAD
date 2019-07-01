@@ -123,7 +123,7 @@ public:
     long getID() const {return _Id;}
     /// returns the name that is safe to be exported to other document
     std::string getExportName(bool forced=false) const;
-    std::string getFullName() const;
+    virtual std::string getFullName() const override;
     virtual bool isAttachedToDocument() const;
     virtual const char* detachFromDocument();
     /// gets the document in which this Object is handled

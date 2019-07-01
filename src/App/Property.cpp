@@ -65,6 +65,17 @@ const char* Property::getName(void) const
     return myName;
 }
 
+std::string Property::getFullName() const {
+    std::string name;
+    if(myName) {
+        if(father)
+            name = father->getFullName() + ".";
+        name += myName;
+    }else
+        return "?";
+    return name;
+}
+
 short Property::getType(void) const
 {
     short type = 0;
