@@ -198,7 +198,7 @@ class TaskPanelPage(object):
         '''__init__(obj, features) ... framework initialisation.
         Do not overwrite, implement initPage(obj) instead.'''
         self.obj = obj
-        self.form = self.getForm()
+        self.form = self.getForm() # pylint: disable=assignment-from-no-return
         self.signalDirtyChanged = None
         self.setClean()
         self.setTitle('-')
@@ -278,32 +278,32 @@ class TaskPanelPage(object):
         Note that this function is invoked after all page controllers have been created.
         Should be overwritten by subclasses.'''
         # pylint: disable=unused-argument
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def cleanupPage(self, obj):
         '''cleanupPage(obj) ... overwrite to perform any cleanup tasks before page is destroyed.
         Can safely be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def modifyStandardButtons(self, buttonBox):
         '''modifyStandardButtons(buttonBox) ... overwrite if the task panel standard buttons need to be modified.
         Can safely be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def getForm(self):
         '''getForm() ... return UI form for this page.
         Must be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def getFields(self, obj):
         '''getFields(obj) ... overwrite to transfer values from UI to obj's properties.
         Can safely be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def setFields(self, obj):
         '''setFields(obj) ... overwrite to transfer obj's property values to UI.
         Can safely be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return signals which, when triggered, cause the receiver to update the model.
@@ -319,7 +319,7 @@ class TaskPanelPage(object):
         manually.
         Can safely be overwritten by subclasses.'''
         # pylint: disable=unused-argument
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def updateData(self, obj, prop):
         '''updateData(obj, prop) ... overwrite if the receiver needs to react to property changes that might not have been caused by the receiver itself.
@@ -332,13 +332,13 @@ class TaskPanelPage(object):
         In such a scenario the first property assignment will cause all changes in the UI of the other fields to be overwritten by setFields(obj).
         You have been warned.'''
         # pylint: disable=unused-argument
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def updateSelection(self, obj, sel):
         '''updateSelection(obj, sel) ... overwrite to customize UI depending on current selection.
         Can safely be overwritten by subclasses.'''
         # pylint: disable=unused-argument
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     # helpers
     def selectInComboBox(self, name, combo):
@@ -1040,9 +1040,7 @@ class TaskPanel(object):
 
 class CommandSetStartPoint:
     '''Command to set the start point for an operation.'''
-
-    def __init__(self):
-        pass
+    # pylint: disable=no-init
 
     def GetResources(self):
         return {'Pixmap': 'Path-StartPoint',

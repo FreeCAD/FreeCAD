@@ -311,7 +311,7 @@ class ToolLibraryManager():
                     fp,fname = openFileWithExtension(filename[0], '.tbl')
                     for key in tt.Tools:
                         t = tt.Tools[key]
-                        fp.write("T{} P{} Y{} Z{} A{} B{} C{} U{} V{} W{} D{} I{} J{} Q{} ;{}\n".format(key,key,0,t.LengthOffset,0,0,0,0,0,0,t.Diameter,0,0,0,t.Name))
+                        fp.write("T{0} P{0} Y{1} Z{2} A{3} B{4} C{5} U{6} V{7} W{8} D{9} I{10} J{11} Q{12} ;{13}\n".format(key,0,t.LengthOffset,0,0,0,0,0,0,t.Diameter,0,0,0,t.Name))
                 else:
                     fp,fname = openFileWithExtension(filename[0], '.json')
                     json.dump(self.templateAttrs(tt), fp, sort_keys=True, indent=2)

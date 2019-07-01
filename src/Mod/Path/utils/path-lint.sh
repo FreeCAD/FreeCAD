@@ -59,6 +59,7 @@ EXTERNAL_MODULES+=' PySide.QtGui'
 EXTERNAL_MODULES+=' TechDraw'
 EXTERNAL_MODULES+=' area'
 EXTERNAL_MODULES+=' importlib'
+EXTERNAL_MODULES+=' ocl'
 EXTERNAL_MODULES+=' pivy'
 
 #ARGS+=" --errors-only"
@@ -72,6 +73,6 @@ if [ -z "$(which pylint)" ]; then
   exit 1
 fi
 
-#pylint ${ARGS} PathScripts/ PathTests/
-pylint ${ARGS} PathScripts/
+#pylint3 ${ARGS} PathScripts/ PathTests/
+pylint3 ${ARGS} PathScripts/
 

@@ -29,7 +29,6 @@ import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import math
-import sys
 
 from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
 from PySide import QtCore
@@ -42,6 +41,7 @@ PathLog.trackModule()
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+MaxInt = 99999999999999
 
 class TagSolid:
     def __init__(self, proxy, z, R):
@@ -164,11 +164,11 @@ class ObjectDressup:
 
         self.obj = obj
 
-        minZ = +sys.maxint
+        minZ = +MaxInt
         minX = minZ
         minY = minZ
 
-        maxZ = -sys.maxint
+        maxZ = -MaxInt
         maxX = maxZ
         maxY = maxZ
 

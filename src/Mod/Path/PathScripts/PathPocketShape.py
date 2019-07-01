@@ -96,7 +96,7 @@ def selectOffsetWire(feature, wires):
     closest = None
     for w in wires:
         dist = feature.distToShape(w)[0]
-        if closest is None or dist > closest[0]:
+        if closest is None or dist > closest[0]: # pylint: disable=unsubscriptable-object
             closest = (dist, w)
     if closest is not None:
         return closest[1]
@@ -135,6 +135,8 @@ class Extension(object):
         self.sub = sub
         self.length = length
         self.direction = direction
+
+        self.wire = None
 
     def getSubLink(self):
         return "%s:%s" % (self.feature, self.sub)
@@ -228,7 +230,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     '''Proxy object for Pocket operation.'''
 
     def areaOpFeatures(self, obj):
-        return super(self.__class__, self).areaOpFeatures(obj) | PathOp.FeatureLocations
+        return super(ObjectPocket, self).areaOpFeatures(obj) | PathOp.FeatureLocations
 
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... setup receiver'''
@@ -522,7 +524,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             self.guiMessage(title, msg, False)
 
                 # add faces for extensions
-                self.exts = []
+                self.exts = [] # pylint: disable=attribute-defined-outside-init
                 for ext in self.getExtensions(obj):
                     wire = ext.getWire()
                     if wire:

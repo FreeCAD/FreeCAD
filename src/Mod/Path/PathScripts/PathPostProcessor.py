@@ -58,7 +58,7 @@ class PostProcessor:
             exec("reload(%s)" % 'current_post') # pylint: disable=exec-used
         except NameError:
             # Python 3.4+
-            from importlib import reload        # pylint: disable=redefined-builtin,unused-variable
+            from importlib import reload        # pylint: disable=redefined-builtin,unused-import
             exec("reload(%s)" % 'current_post') # pylint: disable=exec-used
 
         sys.path = syspath

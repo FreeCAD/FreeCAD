@@ -85,6 +85,7 @@ class ObjectOp(PathOp.ObjectOp):
     def circularHoleFeatures(self, obj):
         '''circularHoleFeatures(obj) ... overwrite to add operations specific features.
         Can safely be overwritten by subclasses.'''
+        # pylint: disable=unused-argument
         return 0
 
     def initOperation(self, obj):
@@ -97,10 +98,11 @@ class ObjectOp(PathOp.ObjectOp):
     def initCircularHoleOperation(self, obj):
         '''initCircularHoleOperation(obj) ... overwrite if the subclass needs initialisation.
         Can safely be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def baseIsArchPanel(self, obj, base):
         '''baseIsArchPanel(obj, base) ... return true if op deals with an Arch.Panel.'''
+        # pylint: disable=unused-argument
         return hasattr(base, "Proxy") and isinstance(base.Proxy, ArchPanel.PanelSheet)
 
     def getArchPanelEdge(self, obj, base, sub):
@@ -112,6 +114,7 @@ class ObjectOp(PathOp.ObjectOp):
         Obviously this is as fragile as can be, but currently the best we can do while the panel sheets
         hide the actual features from Path and they can't be referenced directly.
         '''
+        # pylint: disable=unused-argument
         ids = sub.split(".")
         holeId = int(ids[0])
         wireId = int(ids[1])
@@ -355,7 +358,7 @@ class ObjectOp(PathOp.ObjectOp):
         holes is a list of dictionaries with 'x', 'y' and 'r' specified for each hole.
         Note that for Vertexes, non-circular Edges and Locations r=0.
         Must be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def findAllHoles(self, obj):
         if not self.getJob(obj):
