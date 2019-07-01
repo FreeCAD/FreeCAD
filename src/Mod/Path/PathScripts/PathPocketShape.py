@@ -397,7 +397,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             faceNums = ""
                             for f in subsList:
                                 faceNums += '_' + f.replace('Face', '')
-                            (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, faceNums)
+                            (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, faceNums) # pylint: disable=unused-variable
 
                             # Verify faces are correctly oriented - InverseAngle might be necessary
                             PathLog.debug("Checking if faces are oriented correctly after rotation...")
