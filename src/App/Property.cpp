@@ -185,17 +185,7 @@ void Property::setStatusValue(unsigned long status) {
     StatusBits = decltype(StatusBits)(status);
 
     if(father) {
-        static unsigned long _signalMask = (1<<Immutable)
-                                        | (1<<ReadOnly)
-                                        | (1<<Hidden)
-                                        | (1<<Transient)
-                                        | (1<<NoModify)
-                                        | (1<<PartialTrigger)
-                                        | (1<<NoRecompute)
-                                        | (1<<Output)
-                                        | (1<<Single)
-                                        | (1<<Ordered)
-                                        | (1<<EvalOnRestore);
+        static unsigned long _signalMask = (1<<ReadOnly) | (1<<Hidden);
         if((status & _signalMask) != (oldStatus & _signalMask))
             father->onPropertyStatusChanged(*this,oldStatus);
     }
