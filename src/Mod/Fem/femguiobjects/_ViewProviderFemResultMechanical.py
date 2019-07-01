@@ -325,116 +325,49 @@ class _TaskPanelFemResultShow:
         self.reset_mesh_color()
 
     def abs_displacement_selected(self, state):
-        FreeCAD.FEM_dialog["results_type"] = "Uabs"
-        self.select_displacement_type("Uabs")
+        self.result_selected("Uabs", self.result_obj.DisplacementLengths, "mm")
 
     def x_displacement_selected(self, state):
-        FreeCAD.FEM_dialog["results_type"] = "U1"
-        self.select_displacement_type("U1")
+        res_disp_u1 = self.get_scalar_disp_list(
+            self.result_obj.DisplacementVectors, 0
+        )
+        self.result_selected("U1", res_disp_u1, "mm")
 
     def y_displacement_selected(self, state):
-        FreeCAD.FEM_dialog["results_type"] = "U2"
-        self.select_displacement_type("U2")
+        res_disp_u2 = self.get_scalar_disp_list(
+            self.result_obj.DisplacementVectors, 1
+        )
+        self.result_selected("U2", res_disp_u2, "mm")
 
     def z_displacement_selected(self, state):
-        FreeCAD.FEM_dialog["results_type"] = "U3"
-        self.select_displacement_type("U3")
+        res_disp_u3 = self.get_scalar_disp_list(
+            self.result_obj.DisplacementVectors, 2
+        )
+        self.result_selected("U3", res_disp_u3, "mm")
 
     def vm_stress_selected(self, state):
-        FreeCAD.FEM_dialog["results_type"] = "Sabs"
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        if self.suitable_results:
-            self.mesh_obj.ViewObject.setNodeColorByScalars(
-                self.result_obj.NodeNumbers,
-                self.result_obj.StressValues
-            )
-        (minm, avg, maxm) = self.get_result_stats("Sabs")
-        self.set_result_stats("MPa", minm, avg, maxm)
-        QtGui.QApplication.restoreOverrideCursor()
+        self.result_selected("Sabs", self.result_obj.StressValues, "MPa")
 
     def max_shear_selected(self, state):
-        FreeCAD.FEM_dialog["results_type"] = "MaxShear"
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        if self.suitable_results:
-            self.mesh_obj.ViewObject.setNodeColorByScalars(
-                self.result_obj.NodeNumbers,
-                self.result_obj.MaxShear
-            )
-        (minm, avg, maxm) = self.get_result_stats("MaxShear")
-        self.set_result_stats("MPa", minm, avg, maxm)
-        QtGui.QApplication.restoreOverrideCursor()
+        self.result_selected("MaxShear", self.result_obj.MaxShear, "MPa")
 
     def max_prin_selected(self, state):
-        FreeCAD.FEM_dialog["results_type"] = "MaxPrin"
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        if self.suitable_results:
-            self.mesh_obj.ViewObject.setNodeColorByScalars(
-                self.result_obj.NodeNumbers,
-                self.result_obj.PrincipalMax
-            )
-        (minm, avg, maxm) = self.get_result_stats("MaxPrin")
-        self.set_result_stats("MPa", minm, avg, maxm)
-        QtGui.QApplication.restoreOverrideCursor()
+        self.result_selected("MaxPrin", self.result_obj.PrincipalMax, "MPa")
 
     def temperature_selected(self, state):
-        FreeCAD.FEM_dialog["results_type"] = "Temp"
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        if self.suitable_results:
-            self.mesh_obj.ViewObject.setNodeColorByScalars(
-                self.result_obj.NodeNumbers,
-                self.result_obj.Temperature
-            )
-        (minm, avg, maxm) = self.get_result_stats("Temp")
-        self.set_result_stats("K", minm, avg, maxm)
-        QtGui.QApplication.restoreOverrideCursor()
+        self.result_selected("Temp", self.result_obj.Temperature, "K")
 
     def massflowrate_selected(self, state):
-        FreeCAD.FEM_dialog["results_type"] = "MFlow"
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        if self.suitable_results:
-            self.mesh_obj.ViewObject.setNodeColorByScalars(
-                self.result_obj.NodeNumbers,
-                self.result_obj.MassFlowRate
-            )
-        (minm, avg, maxm) = self.get_result_stats("MFlow")
-        self.set_result_stats("kg/s", minm, avg, maxm)
-        QtGui.QApplication.restoreOverrideCursor()
+        self.result_selected("MFlow", self.result_obj.MassFlowRate, "kg/s")
 
     def networkpressure_selected(self, state):
-        FreeCAD.FEM_dialog["results_type"] = "NPress"
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        if self.suitable_results:
-            self.mesh_obj.ViewObject.setNodeColorByScalars(
-                self.result_obj.NodeNumbers,
-                self.result_obj.NetworkPressure
-            )
-        (minm, avg, maxm) = self.get_result_stats("NPress")
-        self.set_result_stats("MPa", minm, avg, maxm)
-        QtGui.QApplication.restoreOverrideCursor()
+        self.result_selected("NPress", self.result_obj.NetworkPressure, "MPa")
 
     def min_prin_selected(self, state):
-        FreeCAD.FEM_dialog["results_type"] = "MinPrin"
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        if self.suitable_results:
-            self.mesh_obj.ViewObject.setNodeColorByScalars(
-                self.result_obj.NodeNumbers,
-                self.result_obj.PrincipalMin
-            )
-        (minm, avg, maxm) = self.get_result_stats("MinPrin")
-        self.set_result_stats("MPa", minm, avg, maxm)
-        QtGui.QApplication.restoreOverrideCursor()
+        self.result_selected("MinPrin", self.result_obj.PrincipalMin, "MPa")
 
     def peeq_selected(self, state):
-        FreeCAD.FEM_dialog["results_type"] = "Peeq"
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        if self.suitable_results:
-            self.mesh_obj.ViewObject.setNodeColorByScalars(
-                self.result_obj.NodeNumbers,
-                self.result_obj.Peeq
-            )
-        (minm, avg, maxm) = self.get_result_stats("Peeq")
-        self.set_result_stats("", minm, avg, maxm)
-        QtGui.QApplication.restoreOverrideCursor()
+        self.result_selected("Peeq", self.result_obj.Peeq, "")
 
     def user_defined_text(self, equation):
         FreeCAD.FEM_dialog["results_type"] = "user"
@@ -499,15 +432,7 @@ class _TaskPanelFemResultShow:
         minm = min(UserDefinedFormula)
         avg = sum(UserDefinedFormula) / len(UserDefinedFormula)
         maxm = max(UserDefinedFormula)
-
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        if self.suitable_results:
-            self.mesh_obj.ViewObject.setNodeColorByScalars(
-                self.result_obj.NodeNumbers,
-                UserDefinedFormula
-            )
-        self.set_result_stats("", minm, avg, maxm)
-        QtGui.QApplication.restoreOverrideCursor()
+        self.update_colors_stats(UserDefinedFormula, "",  minm, avg, maxm)
 
         # Dummy use of the variables to get around flake8 error
         del x, y, z, T, Von, Peeq, P1, P2, P3
@@ -516,26 +441,27 @@ class _TaskPanelFemResultShow:
         del MF, NP, rx, ry, rz, mc
         del s1x, s1y, s1z, s2x, s2y, s2z, s3x, s3y, s3z
 
-    def select_displacement_type(self, disp_type):
+    def get_scalar_disp_list(self, vector_list, axis):
+        # list is needed, as zib-object is not subscriptable in py3
+        d = list(zip(*self.result_obj.DisplacementVectors))
+        scalar_list = list(d[axis])
+        return scalar_list
+
+    def result_selected(self, res_type, res_values, res_unit):
+        # What is the FreeCAD.FEM_dialog for ???
+        # Where is it initialized ?
+        FreeCAD.FEM_dialog["results_type"] = res_type
+        (minm, avg, maxm) = self.get_result_stats(res_type)
+        self.update_colors_stats(res_values, res_unit, minm, avg, maxm)
+
+    def update_colors_stats(self, res_values, res_unit, minm, avg, maxm):
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        if disp_type == "Uabs":
-            if self.suitable_results:
-                self.mesh_obj.ViewObject.setNodeColorByScalars(
-                    self.result_obj.NodeNumbers,
-                    self.result_obj.DisplacementLengths
-                )
-        else:
-            match = {"U1": 0, "U2": 1, "U3": 2}
-            # list is needed, as zib-object is not subscriptable in py3
-            d = list(zip(*self.result_obj.DisplacementVectors))
-            displacements = list(d[match[disp_type]])
-            if self.suitable_results:
-                self.mesh_obj.ViewObject.setNodeColorByScalars(
-                    self.result_obj.NodeNumbers,
-                    displacements
-                )
-        (minm, avg, maxm) = self.get_result_stats(disp_type)
-        self.set_result_stats("mm", minm, avg, maxm)
+        if self.suitable_results:
+            self.mesh_obj.ViewObject.setNodeColorByScalars(
+                self.result_obj.NodeNumbers,
+                res_values
+            )
+        self.set_result_stats(res_unit, minm, avg, maxm)
         QtGui.QApplication.restoreOverrideCursor()
 
     def set_result_stats(self, unit, minm, avg, maxm):
