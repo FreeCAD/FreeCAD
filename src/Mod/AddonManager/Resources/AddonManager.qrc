@@ -1,5 +1,6 @@
 <RCC>
     <qresource>
+        <file>icons/3D_Printing_Tools_workbench_icon.svg</file>
         <file>icons/A2plus_workbench-icon.svg</file>
         <file>icons/Airplane_workbench-icon.svg</file>
         <file>icons/Arch_Textures_workbench_icon.svg</file>
