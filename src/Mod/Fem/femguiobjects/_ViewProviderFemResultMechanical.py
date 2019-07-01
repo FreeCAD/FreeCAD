@@ -473,18 +473,22 @@ class _TaskPanelFemResultShow:
         x = np.array(dispvectors[:, 0])
         y = np.array(dispvectors[:, 1])
         z = np.array(dispvectors[:, 2])
-        ps1vector = np.array(self.result_obj.PS1Vector)
-        s1x = np.array(ps1vector[:, 0])
-        s1y = np.array(ps1vector[:, 1])
-        s1z = np.array(ps1vector[:, 2])
-        ps2vector = np.array(self.result_obj.PS2Vector)
-        s2x = np.array(ps2vector[:, 0])
-        s2y = np.array(ps2vector[:, 1])
-        s2z = np.array(ps2vector[:, 2])
-        ps3vector = np.array(self.result_obj.PS1Vector)
-        s3x = np.array(ps3vector[:, 0])
-        s3y = np.array(ps3vector[:, 1])
-        s3z = np.array(ps3vector[:, 2])
+        # If PSxVector is empty all UserDefined equation does not work
+        if self.result_obj.PS1Vector:
+            ps1vector = np.array(self.result_obj.PS1Vector)
+            s1x = np.array(ps1vector[:, 0])
+            s1y = np.array(ps1vector[:, 1])
+            s1z = np.array(ps1vector[:, 2])
+        if self.result_obj.PS2Vector:
+            ps2vector = np.array(self.result_obj.PS2Vector)
+            s2x = np.array(ps2vector[:, 0])
+            s2y = np.array(ps2vector[:, 1])
+            s2z = np.array(ps2vector[:, 2])
+        if self.result_obj.PS3Vector:
+            ps3vector = np.array(self.result_obj.PS1Vector)
+            s3x = np.array(ps3vector[:, 0])
+            s3y = np.array(ps3vector[:, 1])
+            s3z = np.array(ps3vector[:, 2])
 
         FreeCAD.FEM_dialog["results_type"] = "None"
         self.update()
