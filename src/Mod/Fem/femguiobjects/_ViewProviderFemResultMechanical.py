@@ -138,6 +138,7 @@ class _TaskPanelFemResultShow:
 
         # Connect Signals and Slots
         # result type radio buttons
+        # TODO: move to combo box, to be independent from result types and result types count
         QtCore.QObject.connect(
             self.form.rb_none, QtCore.SIGNAL("toggled(bool)"),
             self.none_selected
@@ -198,7 +199,8 @@ class _TaskPanelFemResultShow:
             self.networkpressure_selected
         )
         QtCore.QObject.connect(
-            self.form.rb_peeq, QtCore.SIGNAL("toggled(bool)"),
+            self.form.rb_peeq,
+            QtCore.SIGNAL("toggled(bool)"),
             self.peeq_selected
         )
 
@@ -439,10 +441,9 @@ class _TaskPanelFemResultShow:
         self.form.user_def_eq.toPlainText()
 
     def calculate(self):
-        FreeCAD.FEM_dialog["results_type"] = "None"
-        self.update()
-        self.restore_result_dialog()
-        # Convert existing values to numpy array
+
+        # Convert existing result values to numpy array
+        # scalars
         P1 = np.array(self.result_obj.PrincipalMax)
         P2 = np.array(self.result_obj.PrincipalMed)
         P3 = np.array(self.result_obj.PrincipalMin)
@@ -451,10 +452,6 @@ class _TaskPanelFemResultShow:
         T = np.array(self.result_obj.Temperature)
         MF = np.array(self.result_obj.MassFlowRate)
         NP = np.array(self.result_obj.NetworkPressure)
-        dispvectors = np.array(self.result_obj.DisplacementVectors)
-        x = np.array(dispvectors[:, 0])
-        y = np.array(dispvectors[:, 1])
-        z = np.array(dispvectors[:, 2])
         sxx = np.array(self.result_obj.NodeStressXX)
         syy = np.array(self.result_obj.NodeStressYY)
         szz = np.array(self.result_obj.NodeStressZZ)
@@ -467,28 +464,31 @@ class _TaskPanelFemResultShow:
         exy = np.array(self.result_obj.NodeStrainXY)
         exz = np.array(self.result_obj.NodeStrainXZ)
         eyz = np.array(self.result_obj.NodeStrainYZ)
-
-        # Display of Reinforcement Ratios and Mohr Coulomb Criterion
         rx = np.array(self.result_obj.ReinforcementRatio_x)
         ry = np.array(self.result_obj.ReinforcementRatio_y)
         rz = np.array(self.result_obj.ReinforcementRatio_z)
         mc = np.array(self.result_obj.MohrCoulomb)
-
+        # vectors
+        dispvectors = np.array(self.result_obj.DisplacementVectors)
+        x = np.array(dispvectors[:, 0])
+        y = np.array(dispvectors[:, 1])
+        z = np.array(dispvectors[:, 2])
         ps1vector = np.array(self.result_obj.PS1Vector)
         s1x = np.array(ps1vector[:, 0])
         s1y = np.array(ps1vector[:, 1])
         s1z = np.array(ps1vector[:, 2])
-
         ps2vector = np.array(self.result_obj.PS2Vector)
         s2x = np.array(ps2vector[:, 0])
         s2y = np.array(ps2vector[:, 1])
         s2z = np.array(ps2vector[:, 2])
-
         ps3vector = np.array(self.result_obj.PS1Vector)
         s3x = np.array(ps3vector[:, 0])
         s3y = np.array(ps3vector[:, 1])
         s3z = np.array(ps3vector[:, 2])
 
+        FreeCAD.FEM_dialog["results_type"] = "None"
+        self.update()
+        self.restore_result_dialog()
         userdefined_eq = self.form.user_def_eq.toPlainText()  # Get equation to be used
         UserDefinedFormula = eval(userdefined_eq).tolist()
         self.result_obj.UserDefined = UserDefinedFormula
@@ -504,6 +504,7 @@ class _TaskPanelFemResultShow:
             )
         self.set_result_stats("", minm, avg, maxm)
         QtGui.QApplication.restoreOverrideCursor()
+
         # Dummy use of the variables to get around flake8 error
         del x, y, z, T, Von, Peeq, P1, P2, P3
         del sxx, syy, szz, sxy, sxz, syz
