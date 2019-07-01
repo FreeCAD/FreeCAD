@@ -70,7 +70,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if not hasattr(obj, 'HandleMultipleFeatures'):
             obj.addProperty('App::PropertyEnumeration', 'HandleMultipleFeatures', 'Pocket', QtCore.QT_TRANSLATE_NOOP('PathPocket', 'Choose how to process multiple Base Geometry features.'))
         obj.HandleMultipleFeatures = ['Collectively', 'Individually']
-        pass
 
     def opOnDocumentRestored(self, obj):
         '''opOnDocumentRestored(obj) ... adds the properties if they doesn't exist.'''

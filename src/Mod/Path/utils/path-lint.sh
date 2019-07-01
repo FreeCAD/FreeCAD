@@ -74,5 +74,6 @@ if [ -z "$(which pylint)" ]; then
 fi
 
 #pylint3 ${ARGS} PathScripts/ PathTests/
-pylint3 ${ARGS} PathScripts/
+#pylint3 ${ARGS} PathScripts/
+pylint3 ${ARGS} PathScripts/PathCircu*
 
