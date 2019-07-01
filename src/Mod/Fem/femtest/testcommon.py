@@ -37,14 +37,15 @@ class TestFemCommon(unittest.TestCase):
     def setUp(
         self
     ):
-        # init, is executed before every test
-        self.doc_name = "TestsFemCommon"
-        try:
-            FreeCAD.setActiveDocument(self.doc_name)
-        except:
+        # setUp is executed before every test
+        # setting up a document to hold the tests
+        self.doc_name = self.__class__.__name__
+        if FreeCAD.ActiveDocument:
+            if FreeCAD.ActiveDocument.Name != self.doc_name:
+                FreeCAD.newDocument(self.doc_name)
+        else:
             FreeCAD.newDocument(self.doc_name)
-        finally:
-            FreeCAD.setActiveDocument(self.doc_name)
+        FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
 
     # ********************************************************************************************
@@ -104,7 +105,7 @@ class TestFemCommon(unittest.TestCase):
             fcc_print('Try importing {0} ...'.format(mod))
             try:
                 im = __import__('{0}'.format(mod))
-            except:
+            except ImportError:
                 im = False
             if not im:
                 # to get an error message what was going wrong

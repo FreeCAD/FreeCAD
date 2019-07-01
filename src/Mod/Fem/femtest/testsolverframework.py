@@ -40,15 +40,18 @@ class TestSolverFrameWork(unittest.TestCase):
     def setUp(
         self
     ):
-        # init, is executed before every test
-        self.doc_name = "TestSolverFrameWork"
-        try:
-            FreeCAD.setActiveDocument(self.doc_name)
-        except:
+        # setUp is executed before every test
+        # setting up a document to hold the tests
+        self.doc_name = self.__class__.__name__
+        if FreeCAD.ActiveDocument:
+            if FreeCAD.ActiveDocument.Name != self.doc_name:
+                FreeCAD.newDocument(self.doc_name)
+        else:
             FreeCAD.newDocument(self.doc_name)
-        finally:
-            FreeCAD.setActiveDocument(self.doc_name)
+        FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
+
+        # more inits
         self.mesh_name = 'Mesh'
         self.temp_dir = testtools.get_fem_test_tmp_dir()
         self.test_file_dir = join(testtools.get_fem_test_home_dir(), 'ccx')

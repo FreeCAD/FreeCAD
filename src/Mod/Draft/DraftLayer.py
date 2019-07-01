@@ -277,6 +277,20 @@ class ViewProviderLayer:
                                     parent.Group = g
                     FreeCAD.ActiveDocument.recompute()
 
+    def setupContextMenu(self,vobj,menu):
+
+        from PySide import QtCore,QtGui
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/button_right.svg"),translate("draft","Activate this layer"),menu)
+        action1.triggered.connect(self.activate)
+        menu.addAction(action1)
+
+    def activate(self):
+        
+        if hasattr(self,"Object"):
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.Selection.addSelection(self.Object)
+            FreeCADGui.runCommand("Draft_AutoGroup")
+
 
 class LayerContainer:
 
@@ -289,7 +303,9 @@ class LayerContainer:
 
     def execute(self,obj):
 
-        return
+        g = obj.Group
+        g.sort(key=lambda o: o.Label)
+        obj.Group = g
 
     def __getstate__(self):
 
@@ -330,7 +346,7 @@ class ViewProviderLayerContainer:
     def mergeByName(self):
 
         if hasattr(self,"Object") and hasattr(self.Object,"Group"):
-            layers = [o for o in self.Object.Group if (hasattr(o,"Proxy") and isinstance(otherobj.Proxy,Layer))]
+            layers = [o for o in self.Object.Group if (hasattr(o,"Proxy") and isinstance(o.Proxy,Layer))]
             todelete = []
             for layer in layerss:
                 if layer.Label[-1].isdigit() and layer.Label[-2].isdigit() and layer.Label[-3].isdigit():

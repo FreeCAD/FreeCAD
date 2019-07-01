@@ -46,11 +46,11 @@ public:
     explicit ElementView(QWidget *parent = 0);
     ~ElementView();
 
-        
+
 Q_SIGNALS:
     void onFilterShortcutPressed();
     void signalCloseShape();
-    
+
 protected:
     void contextMenuEvent (QContextMenuEvent* event);
     void keyPressEvent(QKeyEvent * event);
@@ -75,7 +75,7 @@ protected Q_SLOTS:
     void doSymmetricConstraint();
     void doTangentConstraint();
     // Other Commands
-    void doToggleConstruction();    
+    void doToggleConstruction();
     // Acelerators
     void doCloseShape();
     void doConnect();
@@ -102,13 +102,16 @@ private:
     void slotElementsChanged(void);
     void updateIcons(int element);
     void updatePreselection();
+    void updateVisibility(int filterindex);
+    void setItemVisibility(int elementindex,int filterindex);
     void clearWidget();
 
 public Q_SLOTS:
-    void on_listWidgetElements_itemSelectionChanged(void); 
+    void on_listWidgetElements_itemSelectionChanged(void);
     void on_listWidgetElements_itemEntered(QListWidgetItem *item);
     void on_listWidgetElements_filterShortcutPressed();
     void on_listWidgetElements_currentFilterChanged ( int index );
+    void on_listWidgetElements_currentModeFilterChanged ( int index );
     void on_namingBox_stateChanged(int state);
     void on_autoSwitchBox_stateChanged(int state);
 
@@ -124,10 +127,10 @@ private:
     Ui_TaskSketcherElements* ui;
     int focusItemIndex;
     int previouslySelectedItemIndex;
-    
+
     bool isNamingBoxChecked;
     bool isautoSwitchBoxChecked;
-    
+
     bool inhibitSelectionUpdate;
 };
 

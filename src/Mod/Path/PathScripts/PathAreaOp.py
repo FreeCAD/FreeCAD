@@ -21,16 +21,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *                                                                         *
-# *   Additional modifications and contributions beginning 2019             *
-# *   Focus: 4th-axis integration                                           *
-# *   by Russell Johnson  <russ4262@gmail.com>                              *
-# *                                                                         *
-# ***************************************************************************
-
-# SCRIPT NOTES:
-# - FUTURE: Relocate rotational calculations to Job setup tool, creating a Machine section
-#          with axis & rotation toggles and associated min/max values
 
 import FreeCAD
 import Path
@@ -51,10 +41,10 @@ __title__ = "Base class for PathArea based operations."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties for Path.Area based operations."
-__contributors__ = "mlampert [FreeCAD], russ4262 (Russell Johnson)"
+__contributors__ = "russ4262 (Russell Johnson)"
 __createdDate__ = "2017"
-__scriptVersion__ = "2g testing"
-__lastModified__ = "2019-06-13 15:37 CST"
+__scriptVersion__ = "2h testing"
+__lastModified__ = "2019-06-30 17:17 CST"
 
 LOGLEVEL = False
 
@@ -64,9 +54,8 @@ if LOGLEVEL:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+
 # Qt translation handling
-
-
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -113,8 +102,6 @@ class ObjectOp(PathOp.ObjectOp):
         # obj.Proxy = self
 
         self.setupAdditionalProperties(obj)
-
-
         self.initAreaOp(obj)
 
     def setupAdditionalProperties(self, obj):
@@ -176,8 +163,6 @@ class ObjectOp(PathOp.ObjectOp):
         self.initOpFinalDepth = obj.OpFinalDepth.Value
         self.initOpStartDepth = obj.OpStartDepth.Value
         self.docRestored = True
-        # PathLog.debug("Imported existing OpFinalDepth of " + str(self.initOpFinalDepth) + " for recompute() purposes.")
-        # PathLog.debug("Imported existing StartDepth of " + str(self.initOpStartDepth) + " for recompute() purposes.")
 
         self.setupAdditionalProperties(obj)
         self.areaOpOnDocumentRestored(obj)
@@ -225,7 +210,7 @@ class ObjectOp(PathOp.ObjectOp):
                 # Calculate rotational distances/radii
                 opHeights = self.opDetermineRotationRadii(obj)  # return is list with tuples [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfset)]
                 (xRotRad, yRotRad, zRotRad) = opHeights[0]
-                # (self.safOfset, self.safOfst) = opHeights[1]
+                # (clrOfset, safOfst) = opHeights[1]
                 PathLog.debug("opHeights[0]: " + str(opHeights[0]))
                 PathLog.debug("opHeights[1]: " + str(opHeights[1]))
 
@@ -334,10 +319,6 @@ class ObjectOp(PathOp.ObjectOp):
             areaOpUseProjection(obj)      ... return true if operation can use projection
         instead.'''
         PathLog.track()
-        PathLog.info("\n----- opExecute() in PathAreaOp.py")
-        # PathLog.debug("OpDepths are Start: {}, and Final: {}".format(obj.OpStartDepth.Value, obj.OpFinalDepth.Value))
-        # PathLog.debug("Depths are Start: {}, and Final: {}".format(obj.StartDepth.Value, obj.FinalDepth.Value))
-        # PathLog.debug("initOpDepths are Start: {}, and Final: {}".format(self.initOpStartDepth, self.initOpFinalDepth))
 
         # Instantiate class variables for operation reference
         self.endVector = None
@@ -366,7 +347,7 @@ class ObjectOp(PathOp.ObjectOp):
             # Calculate operation heights based upon rotation radii
             opHeights = self.opDetermineRotationRadii(obj)
             (self.xRotRad, self.yRotRad, self.zRotRad) = opHeights[0]
-            (self.safOfset, self.safOfst) = opHeights[1]
+            (self.clrOfset, self.safOfst) = opHeights[1]
 
             # Set clearnance and safe heights based upon rotation radii
             if obj.EnableRotation == 'A(x)':
@@ -377,7 +358,7 @@ class ObjectOp(PathOp.ObjectOp):
                 self.strDep = max(self.xRotRad, self.yRotRad)
             self.finDep = -1 * self.strDep
 
-            obj.ClearanceHeight.Value = self.strDep + self.safOfset
+            obj.ClearanceHeight.Value = self.strDep + self.clrOfset
             obj.SafeHeight.Value = self.strDep + self.safOfst
 
             if self.initWithRotation is False:
@@ -514,7 +495,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         self.useTempJobClones('Delete')  # Delete temp job clone group and contents
         self.guiMessage('title', None, show=True)  # Process GUI messages to user
-        PathLog.debug("obj.Name: " + str(obj.Name))
+        PathLog.debug("obj.Name: " + str(obj.Name) + "\n\n")
         return sims
 
     def areaOpRetractTool(self, obj):
@@ -543,6 +524,7 @@ class ObjectOp(PathOp.ObjectOp):
         Can safely be overwritten by subclasses.'''
         return False
 
+    # Rotation-related methods
     def opDetermineRotationRadii(self, obj):
         '''opDetermineRotationRadii(obj)
             Determine rotational radii for 4th-axis rotations, for clearance/safe heights '''
@@ -578,7 +560,7 @@ class ObjectOp(PathOp.ObjectOp):
         zRotRad = math.sqrt(xlim**2 + ylim**2)
 
         clrOfst = parentJob.SetupSheet.ClearanceHeightOffset.Value
-        safOfst = parentJob.SetupSheet.ClearanceHeightOffset.Value
+        safOfst = parentJob.SetupSheet.SafeHeightOffset.Value
 
         return [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfst)]
 
@@ -587,7 +569,7 @@ class ObjectOp(PathOp.ObjectOp):
             Determine X and Y independent rotation necessary to make normalAt = Z=1 (0,0,1) '''
         PathLog.track()
 
-        praInfo = "faceRotationAnalysis() in PathAreaOp.py"
+        praInfo = "faceRotationAnalysis()"
         rtn = True
         axis = 'X'
         orientation = 'X'
@@ -677,24 +659,39 @@ class ObjectOp(PathOp.ObjectOp):
                 angle = -1 * angle
 
         # Enforce enabled rotation in settings
+        praInfo += "\n -Initial orientation:  {}".format(orientation)
         if orientation == 'Y':
             axis = 'X'
             if obj.EnableRotation == 'B(y)':  # Required axis disabled
-                rtn = False
-        else:
+                if angle == 180.0 or angle == -180.0:
+                    axis = 'Y'
+                else:
+                    rtn = False
+        elif orientation == 'X':
             axis = 'Y'
             if obj.EnableRotation == 'A(x)':  # Required axis disabled
-                rtn = False
+                if angle == 180.0 or angle == -180.0:
+                    axis = 'X'
+                else:
+                    rtn = False
+
+        if math.fabs(angle) == 0.0:
+            angle = 0.0
+            rtn = False
 
         if angle == 500.0:
+            angle == 0.0
             rtn = False
 
-        if angle == 0.0:
-            rtn = False
+        if rtn is False:
+            if orientation == 'Z' and angle == 0.0 and obj.ReverseDirection is True:
+                if obj.EnableRotation == 'B(y)':
+                    axis = 'Y'
+                rtn = True
 
         if rtn is True:
             self.rotateFlag = True
-            rtn = True
+            # rtn = True
             if obj.ReverseDirection is True:
                 if angle < 180.0:
                     angle = angle + 180.0
@@ -718,18 +715,20 @@ class ObjectOp(PathOp.ObjectOp):
         if msg is not None:
             self.guiMsgs.append((title, msg))
         if show is True:
-            if FreeCAD.GuiUp and len(self.guiMsgs) > 0:
-                # self.guiMsgs.pop(0)  # remove formatted place holder.
-                from PySide.QtGui import QMessageBox
-                # from PySide import QtGui
-                for entry in self.guiMsgs:
-                    (title, msg) = entry
-                    QMessageBox.warning(None, title, msg)
-                    # QtGui.QMessageBox.warning(None, title, msg)
-                self.guiMsgs = []  # Reset messages
-                return True
-
-        # Types: information, warning, critical, question
+            if len(self.guiMsgs) > 0:
+                if FreeCAD.GuiUp:
+                    from PySide.QtGui import QMessageBox
+                    for entry in self.guiMsgs:
+                        (title, msg) = entry
+                        QMessageBox.warning(None, title, msg)
+                    self.guiMsgs = []  # Reset messages
+                    return True
+                else:
+                    for entry in self.guiMsgs:
+                        (title, msg) = entry
+                        PathLog.warning("{}:: {}".format(title, msg))
+                    self.guiMsgs = []  # Reset messages
+                    return True
         return False
 
     def visualAxis(self):
@@ -774,21 +773,6 @@ class ObjectOp(PathOp.ObjectOp):
                 cylGui.Visibility = False
             vaGrp.addObject(cyl)
 
-#             if False:
-#                 FreeCAD.ActiveDocument.addObject("Part::Cylinder", zAx)
-#                 cyl = FreeCAD.ActiveDocument.getObject(zAx)
-#                 cyl.Label = zAx
-#                 cyl.Radius = self.yRotRad
-#                 cyl.Height = 0.01
-#                 # cyl.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(1,0,0),90))
-#                 cyl.purgeTouched()
-#                 if FreeCAD.GuiUp:
-#                     cylGui = FreeCADGui.ActiveDocument.getObject(zAx)
-#                     cylGui.ShapeColor = (0.000, 0.000, 0.498)
-#                     cylGui.Transparency = 85
-#                     cylGui.Visibility = False
-#                 vaGrp.addObject(cyl)
-
     def useTempJobClones(self, cloneName):
         '''useTempJobClones(cloneName)
             Manage use of temporary model clones for rotational operation calculations.
@@ -829,16 +813,18 @@ class ObjectOp(PathOp.ObjectOp):
             self.cloneNames.append(clnNm)
             self.cloneNames.append(stckClnNm)
             if FreeCAD.ActiveDocument.getObject(clnNm):
-                FreeCAD.ActiveDocument.removeObject(clnNm)
+                FreeCAD.ActiveDocument.getObject(clnNm).Shape = base.Shape
+            else:
+                FreeCAD.ActiveDocument.addObject('Part::Feature', clnNm).Shape = base.Shape
+                self.useTempJobClones(clnNm)
             if FreeCAD.ActiveDocument.getObject(stckClnNm):
-                FreeCAD.ActiveDocument.removeObject(stckClnNm)
-            FreeCAD.ActiveDocument.addObject('Part::Feature', clnNm).Shape = base.Shape
-            FreeCAD.ActiveDocument.addObject('Part::Feature', stckClnNm).Shape = PathUtils.findParentJob(obj).Stock.Shape
+                FreeCAD.ActiveDocument.getObject(stckClnNm).Shape = PathUtils.findParentJob(obj).Stock.Shape
+            else:
+                FreeCAD.ActiveDocument.addObject('Part::Feature', stckClnNm).Shape = PathUtils.findParentJob(obj).Stock.Shape
+                self.useTempJobClones(stckClnNm)
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject(stckClnNm).Transparency = 90
                 FreeCADGui.ActiveDocument.getObject(clnNm).ShapeColor = (1.000, 0.667, 0.000)
-            self.useTempJobClones(clnNm)
-            self.useTempJobClones(stckClnNm)
         clnBase = FreeCAD.ActiveDocument.getObject(clnNm)
         clnStock = FreeCAD.ActiveDocument.getObject(stckClnNm)
         tag = base.Name + '_' + tag
@@ -879,6 +865,8 @@ class ObjectOp(PathOp.ObjectOp):
 
         if obj.InverseAngle is True:
             angle = -1 * angle
+            if math.fabs(angle) == 0.0:
+                angle = 0.0
 
         # Create a temporary clone of model for rotational use.
         (clnBase, clnStock, tag) = self.cloneBaseAndStock(obj, base, angle, axis, subCount)
@@ -953,14 +941,18 @@ class ObjectOp(PathOp.ObjectOp):
         GroupList.pop(0)
         return (TagList, GroupList)
 
-    def warnDisabledAxis(self, obj, axis):
+    def warnDisabledAxis(self, obj, axis, sub=''):
         '''warnDisabledAxis(self, obj, axis)
             Provide user feedback if required axis is disabled'''
         if axis == 'X' and obj.EnableRotation == 'B(y)':
-            PathLog.warning(translate('Path', "Part feature is inaccessible.  Selected feature(s) require 'A(x)' for access."))
+            msg = translate('Path', "{}:: {} is inaccessible.".format(obj.Name, sub)) + "  "
+            msg += translate('Path', "Selected feature(s) require 'Enable Rotation: A(x)' for access.")
+            PathLog.warning(msg)
             return True
         elif axis == 'Y' and obj.EnableRotation == 'A(x)':
-            PathLog.warning(translate('Path', "Part feature is inaccessible.  Selected feature(s) require 'B(y)' for access."))
+            msg = translate('Path', "{}:: {} is inaccessible.".format(obj.Name, sub)) + "  "
+            msg += translate('Path', "Selected feature(s) require 'Enable Rotation: B(y)' for access.")
+            PathLog.warning(msg)
             return True
         else:
             return False
