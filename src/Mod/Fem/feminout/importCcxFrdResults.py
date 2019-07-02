@@ -160,6 +160,10 @@ def importFrd(
                     if has_reinforced_mat is False:
                         # fill PrincipalMax, PrincipalMed, PrincipalMin, MaxShear
                         res_obj = restools.add_principal_stress_std(res_obj)
+                else:
+                    # if a pure frd file was opened no analysis and thus no parent group
+                    # fill PrincipalMax, PrincipalMed, PrincipalMin, MaxShear
+                    res_obj = restools.add_principal_stress_std(res_obj)
                 # fill Stats
                 res_obj = restools.fill_femresult_stats(res_obj)
 
