@@ -1672,7 +1672,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 parentObj = targetItemObj->getParentItem()->object()->getObject();
             inList = parentObj->getInListEx(true);
             inList.insert(parentObj);
-            inList.insert(parentObj->getLinkedObject(true));
 
             std::string target = targetObj->getNameInDocument();
             auto targetDoc = targetObj->getDocument();
@@ -1779,9 +1778,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
                     std::set<App::DocumentObject*> visited;
                     if(obj->adjustRelativeLinks(inList,&visited)) {
-                        inList = targetObj->getInListEx(true);
-                        inList.insert(targetObj);
-                        inList.insert(targetObj->getLinkedObject(true));
+                        inList = parentObj->getInListEx(true);
+                        inList.insert(parentObj);
 
                         // TODO: link adjustment and placement adjustment does
                         // not work together at the moment.
@@ -1790,7 +1788,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 }
 
                 if(inList.count(obj))
-                    FC_THROWM(Base::RuntimeError,"Dependency loop detected");
+                    FC_THROWM(Base::RuntimeError,
+                            "Dependency loop detected for " << obj->getFullName());
 
                 std::string dropName;
                 ss.str("");

@@ -2132,6 +2132,8 @@ bool ViewProviderLink::canDropObjects() const {
 bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj, 
         App::DocumentObject *owner, const char *subname, const std::vector<std::string> &elements) const
 {
+    if(pcObject == obj || pcObject == owner)
+        return false;
     auto ext = getLinkExtension();
     if(isGroup(ext))
         return true;
@@ -2139,8 +2141,14 @@ bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj,
         return false;
     if(!hasSubName && linkView->isLinked()) {
         auto linked = getLinkedView(false,ext);
-        if(linked)
+        if(linked) {
+            auto linkedVdp = freecad_dynamic_cast<ViewProviderDocumentObject>(linked);
+            if(linkedVdp) {
+                if(linkedVdp->getObject()==obj || linkedVdp->getObject()==owner)
+                    return false;
+            }
             return linked->canDropObjectEx(obj,owner,subname,elements);
+        }
     }
     if(obj->getDocument() != getObject()->getDocument() && 
        !freecad_dynamic_cast<App::PropertyXLink>(ext->getLinkedObjectValue()))
