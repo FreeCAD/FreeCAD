@@ -21,6 +21,15 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+# *                                                                         *
+# *   Additional modifications and contributions beginning 2019             *
+# *   Focus: 4th-axis integration                                           *
+# *   by Russell Johnson  <russ4262@gmail.com>                              *
+# *                                                                         *
+# ***************************************************************************
+
+# SCRIPT NOTES:
+# - Need test models for testing vertical faces scenarios.
 
 import FreeCAD
 import Part
@@ -50,7 +59,6 @@ if LOGLEVEL:
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -88,7 +96,7 @@ def selectOffsetWire(feature, wires):
     closest = None
     for w in wires:
         dist = feature.distToShape(w)[0]
-        if closest is None or dist > closest[0]:
+        if closest is None or dist > closest[0]: # pylint: disable=unsubscriptable-object
             closest = (dist, w)
     if closest is not None:
         return closest[1]
@@ -127,6 +135,8 @@ class Extension(object):
         self.sub = sub
         self.length = length
         self.direction = direction
+
+        self.wire = None
 
     def getSubLink(self):
         return "%s:%s" % (self.feature, self.sub)
@@ -220,7 +230,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     '''Proxy object for Pocket operation.'''
 
     def areaOpFeatures(self, obj):
-        return super(self.__class__, self).areaOpFeatures(obj) | PathOp.FeatureLocations
+        return super(ObjectPocket, self).areaOpFeatures(obj) | PathOp.FeatureLocations
 
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... setup receiver'''
@@ -362,7 +372,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         if obj.Base:
             PathLog.debug('Processing... obj.Base')
-            self.removalshapes = []
+            self.removalshapes = [] # pylint: disable=attribute-defined-outside-init
+            # ----------------------------------------------------------------------
             if obj.EnableRotation == 'Off':
                 stock = PathUtils.findParentJob(obj).Stock
                 for (base, subList) in obj.Base:
@@ -379,14 +390,14 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         PathLog.info("Common Surface.Axis or normalAt() value found for loop faces.")
                         rtn = False
                         subCount += 1
-                        (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)
+                        (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
                         PathLog.info("angle: {};  axis: {}".format(angle, axis))
 
                         if rtn is True:
                             faceNums = ""
                             for f in subsList:
                                 faceNums += '_' + f.replace('Face', '')
-                            (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, faceNums)
+                            (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, faceNums) # pylint: disable=unused-variable
 
                             # Verify faces are correctly oriented - InverseAngle might be necessary
                             PathLog.debug("Checking if faces are oriented correctly after rotation...")
@@ -420,7 +431,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         for sub in subsList:
                             subCount += 1
                             if 'Face' in sub:
-                                PathLog.debug(translate('Path', "Base Geometry sub: {}".format(sub)))
                                 rtn = False
                                 face = base.Shape.getElement(sub)
                                 if type(face.Surface) == Part.SurfaceOfExtrusion:
@@ -437,7 +447,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                         PathLog.error(translate("Path", "Failed to create a planar face from edges in {}.".format(sub)))
 
                                 (norm, surf) = self.getFaceNormAndSurf(face)
-                                (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)
+                                (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
 
                                 if rtn is True:
                                     faceNum = sub.replace('Face', '')
@@ -445,7 +455,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                     # Verify faces are correctly oriented - InverseAngle might be necessary
                                     faceIA = clnBase.Shape.getElement(sub)
                                     (norm, surf) = self.getFaceNormAndSurf(faceIA)
-                                    (rtn, praAngle, praAxis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)
+                                    (rtn, praAngle, praAxis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
                                     if rtn is True:
                                         PathLog.debug("Face not aligned after initial rotation.")
                                         if obj.AttemptInverseAngle is True and obj.InverseAngle is False:
@@ -471,8 +481,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                 PathLog.error(translate('Path', "Selected feature is not a Face. Ignoring: {}".format(ignoreSub)))
 
             for o in baseSubsTuples:
-                self.horiz = []
-                self.vert = []
+                self.horiz = [] # pylint: disable=attribute-defined-outside-init
+                self.vert = [] # pylint: disable=attribute-defined-outside-init
                 subBase = o[0]
                 subsList = o[1]
                 angle = o[2]
@@ -494,8 +504,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         if vFace.BoundBox.ZMin > vFinDep:
                             vFinDep = vFace.BoundBox.ZMin
                     # Determine if vertical faces for a loop: Extract planar loop wire as new horizontal face.
-                    self.vertical = PathGeom.combineConnectedShapes(self.vert)
-                    self.vWires = [TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1)) for shape in self.vertical]
+                    self.vertical = PathGeom.combineConnectedShapes(self.vert) # pylint: disable=attribute-defined-outside-init
+                    self.vWires = [TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1)) for shape in self.vertical] # pylint: disable=attribute-defined-outside-init
                     for wire in self.vWires:
                         w = PathGeom.removeDuplicateEdges(wire)
                         face = Part.Face(w)
@@ -514,7 +524,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             self.guiMessage(title, msg, False)
 
                 # add faces for extensions
-                self.exts = []
+                self.exts = [] # pylint: disable=attribute-defined-outside-init
                 for ext in self.getExtensions(obj):
                     wire = ext.getWire()
                     if wire:
@@ -528,7 +538,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     f.translate(FreeCAD.Vector(0, 0, finDep - f.BoundBox.ZMin))
 
                 # check all faces and see if they are touching/overlapping and combine those into a compound
-                self.horizontal = []
+                self.horizontal = [] # pylint: disable=attribute-defined-outside-init
                 for shape in PathGeom.combineConnectedShapes(self.horiz):
                     shape.sewShape()
                     # shape.tessellate(0.1)
@@ -558,18 +568,18 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             PathLog.debug(translate("Path", 'Processing model as a whole ...'))
             finDep = obj.FinalDepth.Value
             strDep = obj.StartDepth.Value
-            self.outlines = [Part.Face(TechDraw.findShapeOutline(base.Shape, 1, FreeCAD.Vector(0, 0, 1))) for base in self.model]
+            self.outlines = [Part.Face(TechDraw.findShapeOutline(base.Shape, 1, FreeCAD.Vector(0, 0, 1))) for base in self.model] # pylint: disable=attribute-defined-outside-init
             stockBB = self.stock.Shape.BoundBox
 
-            self.removalshapes = []
-            self.bodies = []
+            self.removalshapes = [] # pylint: disable=attribute-defined-outside-init
+            self.bodies = [] # pylint: disable=attribute-defined-outside-init
             for outline in self.outlines:
                 outline.translate(FreeCAD.Vector(0, 0, stockBB.ZMin - 1))
                 body = outline.extrude(FreeCAD.Vector(0, 0, stockBB.ZLength + 2))
                 self.bodies.append(body)
                 self.removalshapes.append((self.stock.Shape.cut(body), False, 'pathPocketShape', 0.0, 'X', strDep, finDep))
 
-        for (shape, hole, sub, angle, axis, strDep, finDep) in self.removalshapes:
+        for (shape, hole, sub, angle, axis, strDep, finDep) in self.removalshapes: # pylint: disable=unused-variable
             shape.tessellate(0.05)  # originally 0.1
 
         if self.removalshapes:
@@ -682,7 +692,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             if PathGeom.isRoughly(0, saSum.y):
                 if PathGeom.isRoughly(0, saSum.z):
                     PathLog.debug("Combined subs suggest loop of faces. Checking ...")
-                    go is True
+                    go = True
 
         if go is True:
             lastExtrusion = None
@@ -717,7 +727,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             rnded = FreeCAD.Vector(roundValue(precision, raw.x), roundValue(precision, raw.y), roundValue(precision, raw.z))
                             if rnded.x == 0.0 or rnded.y == 0.0 or rnded.z == 0.0:
                                 for fc2 in tmpExt.Shape.Faces:
-                                    (norm2, raw2) = self.getFaceNormAndSurf(fc2)
+                                    (norm2, raw2) = self.getFaceNormAndSurf(fc2) # pylint: disable=unused-variable
                                     rnded2 = FreeCAD.Vector(roundValue(precision, raw2.x), roundValue(precision, raw2.y), roundValue(precision, raw2.z))
                                     if rnded == rnded2:
                                         matchList.append(fc2)
@@ -778,7 +788,7 @@ def SetupProperties():
     return setup
 
 
-def Create(name, obj = None):
+def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Pocket operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject('Path::FeaturePython', name)

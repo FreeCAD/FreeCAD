@@ -50,15 +50,17 @@ def translate(context, text, disambig=None):
 
 
 class _TempObject:
-        Path = None
-        Name = "Fixture"
-        InList = []
-        Label = "Fixture"
+    # pylint: disable=no-init
+    Path = None
+    Name = "Fixture"
+    InList = []
+    Label = "Fixture"
 
 
 class DlgSelectPostProcessor:
 
     def __init__(self, parent=None):
+        # pylint: disable=unused-argument
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgSelectPostProcessor.ui")
         firstItem = None
         for post in PathPreferences.allEnabledPostProcessors():
@@ -93,6 +95,7 @@ class DlgSelectPostProcessor:
 
 
 class CommandPathPost:
+    # pylint: disable=no-init
     subpart = 1
 
     def resolveFileName(self, job):
@@ -188,7 +191,7 @@ class CommandPathPost:
 
         return False
 
-    def exportObjectsWith(self, objs, job, needFilename=True, filepart=None):
+    def exportObjectsWith(self, objs, job, needFilename=True):
         PathLog.track()
         # check if the user has a project and has set the default post and
         # output filename
@@ -234,7 +237,7 @@ class CommandPathPost:
             elif hasattr(sel, "Path"):
                 try:
                     job = PathUtils.findParentJob(sel)
-                except Exception:
+                except Exception: # pylint: disable=broad-except
                     job = None
             else:
                 job = None
@@ -378,7 +381,7 @@ class CommandPathPost:
                 postlist.append(sublist)
 
         fail = True
-        rc = ''
+        rc = '' # pylint: disable=unused-variable
         if split:
             for slist in postlist:
                 (fail, rc) = self.exportObjectsWith(slist, job)

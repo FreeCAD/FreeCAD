@@ -53,12 +53,13 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth | self.pocketOpFeatures(obj)
 
     def pocketOpFeatures(self, obj):
+        # pylint: disable=unused-argument
         return 0
 
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... overwrite to initialize subclass.
         Can safely be overwritten by subclass.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def pocketInvertExtraOffset(self):
         '''pocketInvertExtraOffset() ... return True if ExtraOffset's direction is inward.

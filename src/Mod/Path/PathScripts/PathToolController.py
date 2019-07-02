@@ -43,6 +43,8 @@ def translate(context, text, disambig=None):
 
 class ToolControllerTemplate:
     '''Attribute and sub element strings for template export/import.'''
+    # pylint: disable=no-init
+
     Expressions  = 'xengine'
     ExprExpr     = 'expr'
     ExprProp     = 'prop'

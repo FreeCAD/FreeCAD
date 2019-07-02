@@ -192,7 +192,7 @@ def offsetWire(wire, base, offset, forward):
             return Part.Wire([edge])
 
         # if we get to this point the assumption is that makeOffset2D can deal with the edge
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     owire = orientWire(wire.makeOffset2D(offset), True)
     debugWire('makeOffset2D_%d' % len(wire.Edges), owire)
@@ -204,7 +204,7 @@ def offsetWire(wire, base, offset, forward):
         PathLog.track('closed - inside')
         try:
             owire = wire.makeOffset2D(-offset)
-        except Exception:
+        except Exception: # pylint: disable=broad-except
             # most likely offsetting didn't work because the wire is a hole
             # and the offset is too big - making the hole vanish
             return None
