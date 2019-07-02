@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import sys
 import FreeCAD
 
 
@@ -70,7 +71,10 @@ def importFCMat(fileName):
     )
     Config = configparser.RawConfigParser()
     Config.optionxform = str
-    Config.read(fileName, encoding='utf-8')  # respect unicode filenames
+    if sys.version_info.major >= 3:
+        Config.read(fileName, encoding='utf-8')  # respect unicode filenames
+    else:
+        Config.read(fileName)
     dict1 = {}
     for section in Config.sections():
         options = Config.options(section)
