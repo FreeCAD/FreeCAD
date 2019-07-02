@@ -1107,20 +1107,19 @@ bool DocumentObject::adjustRelativeLinks(
     std::vector<Property*> props;
     getPropertyList(props);
     for(auto prop : props) {
-        auto linkProp = dynamic_cast<PropertyLinkBase*>(prop);
+        auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
         if(linkProp && linkProp->adjustLink(inList))
             touched = true;
     }
-    if(!touched)
-        return false;
-
     if(visited) {
         for(auto obj : getOutList()) {
-            if(!visited->count(obj)) 
-                obj->adjustRelativeLinks(inList,visited);
+            if(!visited->count(obj))  {
+                if(obj->adjustRelativeLinks(inList,visited))
+                    touched = true;
+            }
         }
     }
-    return true;
+    return touched;
 }
 
 std::string DocumentObject::getElementMapVersion(const App::Property *_prop, bool restored) const {

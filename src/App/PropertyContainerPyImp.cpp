@@ -469,6 +469,9 @@ PyObject* PropertyContainerPy::restorePropertyContent(PyObject *args)
 PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
 {
     // search in PropertyList
+    if(FC_LOG_INSTANCE.level()>FC_LOGLEVEL_TRACE) {
+        FC_TRACE("Get property " << attr);
+    }
     Property *prop = getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop) {
         PY_TRY {

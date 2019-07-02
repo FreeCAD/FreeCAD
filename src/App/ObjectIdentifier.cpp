@@ -1801,11 +1801,7 @@ bool ObjectIdentifier::adjustLinks(ExpressionVisitor &v, const std::set<App::Doc
     ResolveResults result(*this);
     if(!result.resolvedDocumentObject)
         return false;
-    if(!result.resolvedSubObject) {
-        if(inList.count(result.resolvedDocumentObject))
-            FC_THROWM(Base::RuntimeError,"cyclic reference to " 
-                    << result.resolvedDocumentObject->getFullName());
-    }else{
+    if(result.resolvedSubObject) {
         PropertyLinkSub prop;
         prop.setValue(result.resolvedDocumentObject, {subObjectName.getString()});
         if(prop.adjustLink(inList)) {

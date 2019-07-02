@@ -672,24 +672,8 @@ void PropertyLink::breakLink(App::DocumentObject *obj, bool clear) {
         setValue(0);
 }
 
-static inline void adjustLinkError(bool relative, 
-        App::Property *prop, App::DocumentObject *link, const char *subname="") 
-{
-    const char *msg = relative?"Failed to adjust relateive link":"Cyclic link";
-    auto owner = dynamic_cast<DocumentObject*>(prop->getContainer());
-    if(!owner)
-        THROWM(Base::RuntimeError,msg);
-    std::ostringstream ss;
-    ss << msg << " to " << link->getFullName() << '.' << subname
-        << " by " << owner->getFullName() << '.' << prop->getName();
-    THROWM(Base::RuntimeError,ss.str());
-}
-
 bool PropertyLink::adjustLink(const std::set<App::DocumentObject*> &inList) {
-    if (_pcScope==LinkScope::Hidden)
-        return false;
-    if(_pcLink && _pcLink->getNameInDocument() && inList.count(_pcLink))
-        adjustLinkError(false,this,_pcLink);
+    (void)inList;
     return false;
 }
 
@@ -1017,12 +1001,7 @@ void PropertyLinkList::breakLink(App::DocumentObject *obj, bool clear) {
 }
 
 bool PropertyLinkList::adjustLink(const std::set<App::DocumentObject*> &inList) {
-    if (_pcScope==LinkScope::Hidden)
-        return false;
-    for(auto o : _lValueList) {
-        if(o && o->getNameInDocument() && inList.count(o))
-            adjustLinkError(false,this,o);
-    }
+    (void)inList;
     return false;
 }
 
@@ -1675,7 +1654,7 @@ static App::DocumentObject *adjustLinkSubs(App::PropertyLinkBase *prop,
             break;
         }
         if(pos == std::string::npos)
-            adjustLinkError(true,prop,link,sub.c_str());
+            return 0;
     }
     return newLink;
 }
@@ -1687,8 +1666,11 @@ bool PropertyLinkSub::adjustLink(const std::set<App::DocumentObject*> &inList) {
         return false;
     auto subs = _cSubList;
     auto link = adjustLinkSubs(this,inList,_pcLinkSub,subs);
-    setValue(link,std::move(subs));
-    return true;
+    if(link) {
+        setValue(link,std::move(subs));
+        return true;
+    }
+    return false;
 }
 
 //**************************************************************************
@@ -2559,7 +2541,7 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*> &inLis
             }
         }
         if(pos == std::string::npos)
-            adjustLinkError(true,this,link,sub.c_str());
+            return false;
     }
     if(touched)
         setValues(links,subs);
@@ -3642,8 +3624,11 @@ bool PropertyXLink::adjustLink(const std::set<App::DocumentObject*> &inList) {
         return false;
     auto subs = _SubList;
     auto link = adjustLinkSubs(this,inList,_pcLink,subs); 
-    _setValue(link,std::move(subs));
-    return true;
+    if(link) {
+        _setValue(link,std::move(subs));
+        return true;
+    }
+    return false;
 }
 
 std::vector<std::string> PropertyXLink::getSubValues(bool newStyle) const {
