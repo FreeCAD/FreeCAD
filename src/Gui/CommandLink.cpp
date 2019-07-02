@@ -270,40 +270,8 @@ StdCmdLinkMakeRelative::StdCmdLinkMakeRelative()
     sPixmap       = "LinkSub";
 }
 
-static App::DocumentObject *resolveLinkRelative(std::string *subname=0) {
-    const auto &sels = Selection().getCompleteSelection(false);
-    if(sels.size()==1 && sels[0].SubName && sels[0].SubName[0]) {
-        auto sobj = sels[0].pObject->getSubObject(sels[0].SubName);
-        if(sobj && sobj!=sels[0].pObject) {
-            if(subname)
-                *subname = sels[0].SubName;
-            return sels[0].pObject;
-        }
-    }
-    if(sels.size()!=2 || 
-       !sels[0].pObject || !sels[0].pObject->getNameInDocument() ||
-       !sels[1].pObject || !sels[1].pObject->getNameInDocument())
-        return 0;
-    auto len1 = strlen(sels[0].SubName);
-    auto len2 = strlen(sels[1].SubName);
-    if(len1>len2) {
-        if(strncmp(sels[0].SubName,sels[1].SubName,len2)==0) {
-            if(subname)
-                *subname = sels[0].SubName+len2;
-            return sels[1].pObject;
-        }
-    }else if(len1<len2) {
-        if(strncmp(sels[1].SubName,sels[0].SubName,len1)==0) {
-            if(subname)
-                *subname = sels[1].SubName+len1;
-            return sels[0].pObject;
-        }
-    }
-    return 0;
-}
-
 bool StdCmdLinkMakeRelative::isActive() {
-    return resolveLinkRelative()!=0;
+    return Selection().hasSubSelection();
 }
 
 void StdCmdLinkMakeRelative::activated(int) {
@@ -312,37 +280,29 @@ void StdCmdLinkMakeRelative::activated(int) {
         FC_ERR("no active document");
         return;
     }
-    std::string subname;
-    auto owner = resolveLinkRelative(&subname);
-    if(!owner) {
-        FC_ERR("invalid selection");
-        return;
-    }
-    auto obj = owner->getSubObject(subname.c_str());
-    if(!obj) {
-        FC_ERR("invalid sub-object " << owner->getFullName() << '.' << subname);
-        return;
-    }
-
-    Selection().selStackPush();
-    Selection().clearCompleteSelection();
-
-    std::string name = doc->getUniqueObjectName("Link");
-    Command::openCommand("Make link sub");
+    Command::openCommand("Make relative link");
     try {
-        Command::doCommand(Command::Doc, 
-            "App.getDocument('%s').addObject('App::Link','%s').setLink(App.getDocument('%s').%s,'%s')", 
-            doc->getName(),name.c_str(),
-            owner->getDocument()->getName(),owner->getNameInDocument(), subname.c_str());
-        auto link = owner->getDocument()->getObject(name.c_str());
-        FCMD_OBJ_CMD(link,"LinkTransform = True");
-        setLinkLabel(obj,doc->getName(),name.c_str());
-        Selection().addSelection(doc->getName(),name.c_str());
+        std::vector<std::string> newNames;
+        for(auto &sel : Selection().getCompleteSelection(0)) {
+            std::string name = doc->getUniqueObjectName("Link");
+            FCMD_DOC_CMD(doc,"addObject('App::Link','" << name << "').setLink("
+                    << getObjectCmd(sel.pObject) << ",'" << sel.SubName << "')");
+            auto link = doc->getObject(name.c_str());
+            FCMD_OBJ_CMD(link,"LinkTransform = True");
+            setLinkLabel(sel.pResolvedObject,doc->getName(),name.c_str());
+
+            newNames.push_back(std::move(name));
+        }
         Selection().selStackPush();
+        Selection().clearCompleteSelection();
+        for(auto &name : newNames)
+            Selection().addSelection(doc->getName(),name.c_str());
+        Selection().selStackPush();
+
         Command::commitCommand();
     } catch (const Base::Exception& e) {
         Command::abortCommand();
-        QMessageBox::critical(getMainWindow(), QObject::tr("Create link sub failed"),
+        QMessageBox::critical(getMainWindow(), QObject::tr("Failed to create relative link"),
             QString::fromLatin1(e.what()));
         e.ReportException();
     }
