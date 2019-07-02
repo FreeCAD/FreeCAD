@@ -20,6 +20,7 @@ endif(BUILD_GUI)
 
 # Python non Gui packages and modules
 SET(FemScripts_SRCS
+    codeformating.md
     Init.py
     InitGui.py
     ObjectsFem.py
