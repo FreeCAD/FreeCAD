@@ -2320,6 +2320,11 @@ void TreeWidget::onUpdateStatus(void)
     // Checking for just restored documents
     for(auto &v : DocumentMap) {
         auto docItem = v.second;
+
+        for(auto obj : docItem->PopulateObjects)
+            docItem->populateObject(obj);
+        docItem->PopulateObjects.clear();
+
         if(docItem->connectChgObject.connected())
             continue;
         docItem->connectChgObject = docItem->document()->signalChangedObject.connect(
@@ -4253,8 +4258,10 @@ DocumentObjectItem::~DocumentObjectItem()
 
     if(myOwner && myData->items.empty()) {
         auto it = myOwner->_ParentMap.find(object()->getObject());
-        if(it!=myOwner->_ParentMap.end() && it->second.size())
-            myOwner->populateObject(*it->second.begin());
+        if(it!=myOwner->_ParentMap.end() && it->second.size()) {
+            myOwner->PopulateObjects.push_back(*it->second.begin());
+            myOwner->getTree()->_updateStatus();
+        }
     }
 }
 

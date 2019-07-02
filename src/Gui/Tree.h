@@ -336,6 +336,7 @@ private:
     Gui::Document* pDocument;
     std::unordered_map<App::DocumentObject*,DocumentObjectDataPtr> ObjectMap;
     std::unordered_map<App::DocumentObject*, std::set<App::DocumentObject*> > _ParentMap;
+    std::vector<App::DocumentObject*> PopulateObjects;
 
     ExpandInfoPtr _ExpandInfo;
     void restoreItemExpansion(const ExpandInfoPtr &, DocumentObjectItem *);
