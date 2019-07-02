@@ -432,7 +432,7 @@ class _TaskPanelFemResultShow:
         minm = min(UserDefinedFormula)
         avg = sum(UserDefinedFormula) / len(UserDefinedFormula)
         maxm = max(UserDefinedFormula)
-        self.update_colors_stats(UserDefinedFormula, "",  minm, avg, maxm)
+        self.update_colors_stats(UserDefinedFormula, "", minm, avg, maxm)
 
         # Dummy use of the variables to get around flake8 error
         del x, y, z, T, Von, Peeq, P1, P2, P3

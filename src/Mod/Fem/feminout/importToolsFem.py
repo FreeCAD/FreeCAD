@@ -340,7 +340,7 @@ def fill_femresult_mechanical(
         eigenmode_number = result_set['number']
     else:
         eigenmode_number = 0
-    
+
     if 'time' in result_set:
         step_time = result_set['time']
         step_time = round(step_time, 2)
