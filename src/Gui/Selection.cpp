@@ -406,6 +406,7 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const c
         tempSelObj.SubName = subelement;
         tempSelObj.TypeName = obj->getTypeId().getName();
         tempSelObj.pObject  = obj;
+        tempSelObj.pResolvedObject  = sel.pResolvedObject;
         tempSelObj.pDoc     = obj->getDocument();
         tempSelObj.x        = sel.x;
         tempSelObj.y        = sel.y;
@@ -436,6 +437,25 @@ bool SelectionSingleton::hasSelection(const char* doc, bool resolve) const
     return false;
 }
 
+bool SelectionSingleton::hasSubSelection(const char* doc) const
+{
+    App::Document *pcDoc = 0;
+    if(!doc || strcmp(doc,"*")!=0) {
+        pcDoc = getDocument(doc);
+        if (!pcDoc)
+            return false;
+    }
+    for(auto &sel : _SelList) {
+        if((!pcDoc || pcDoc == sel.pDoc)
+                && sel.pObject != sel.pResolvedObject)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 std::vector<SelectionSingleton::SelObj> SelectionSingleton::getPickedList(const char* pDocName) const
 {
     std::vector<SelObj> temp;
@@ -455,6 +475,7 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getPickedList(const 
             tempSelObj.SubName  = It->SubName.c_str();
             tempSelObj.TypeName = It->TypeName.c_str();
             tempSelObj.pObject  = It->pObject;
+            tempSelObj.pResolvedObject  = It->pResolvedObject;
             tempSelObj.pDoc     = It->pDoc;
             tempSelObj.x        = It->x;
             tempSelObj.y        = It->y;
@@ -1765,6 +1786,8 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "overwrite: overwrite the top back selection stack with current selection."},
     {"hasSelection",      (PyCFunction) SelectionSingleton::sHasSelection, METH_VARARGS,
      "hasSelection(docName=None, resolve=False) -- check if there is any selection\n"},
+    {"hasSubSelection",   (PyCFunction) SelectionSingleton::sHasSubSelection, METH_VARARGS,
+     "hasSubSelection(docName=None) -- check if there is any selection with subname\n"},
     {"getSelectionFromStack",(PyCFunction) SelectionSingleton::sGetSelectionFromStack, METH_VARARGS,
      "getSelectionFromStack(docName=None,resolve=1,index=0) -- Return a list of SelectionObjects from selection stack\n"
      "\ndocName - document name. None means the active document, and '*' means all document"
@@ -2235,6 +2258,17 @@ PyObject *SelectionSingleton::sHasSelection(PyObject * /*self*/, PyObject *args)
         else
             ret = Selection().hasSelection();
         return Py::new_reference_to(Py::Boolean(ret));
+    } PY_CATCH;
+}
+
+PyObject *SelectionSingleton::sHasSubSelection(PyObject * /*self*/, PyObject *args)
+{
+    const char *doc = 0;
+    if (!PyArg_ParseTuple(args, "|s",&doc))
+        return NULL;                             // NULL triggers exception 
+
+    PY_TRY {
+        return Py::new_reference_to(Py::Boolean(Selection().hasSubSelection(doc)));
     } PY_CATCH;
 }
 

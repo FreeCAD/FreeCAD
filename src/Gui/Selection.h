@@ -361,6 +361,7 @@ public:
         const char* TypeName;
         App::Document* pDoc;
         App::DocumentObject*  pObject;
+        App::DocumentObject* pResolvedObject;
         float x,y,z;
     };
 
@@ -505,6 +506,7 @@ public:
     std::vector<SelObj> getCompleteSelection(int resolve=1) const;
     bool hasSelection() const;
     bool hasSelection(const char* doc, bool resolve=true) const;
+    bool hasSubSelection(const char *doc=0) const;
     bool hasPreselection() const;
 
     /// Size of selected entities for all documents
@@ -555,6 +557,7 @@ protected:
     static PyObject *sSetVisible          (PyObject *self,PyObject *args);
     static PyObject *sPushSelStack        (PyObject *self,PyObject *args);
     static PyObject *sHasSelection        (PyObject *self,PyObject *args);
+    static PyObject *sHasSubSelection     (PyObject *self,PyObject *args);
     static PyObject *sGetSelectionFromStack(PyObject *self,PyObject *args);
 
 protected:
