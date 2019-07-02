@@ -116,7 +116,6 @@ def exportFCMat(fileName, matDict):
 
 
 if __name__ == '__main__':
-    import sys
     import getopt
     try:
         opts, args = getopt.getopt(sys.argv[1:], "c:", ["output-csv="])
