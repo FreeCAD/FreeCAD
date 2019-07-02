@@ -21,12 +21,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *                                                                         *
-# *   Additional modifications and contributions beginning 2019             *
-# *   Focus: improve 3D facial pockets                                      *
-# *   by Russell Johnson  <russ4262@gmail.com>                              *
-# *                                                                         *
-# ***************************************************************************
 
 import FreeCAD
 import Part
@@ -43,8 +37,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of the 3D Pocket operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2014"
-__scriptVersion__ = "1a testing"
-__lastModified__ = "2019-06-28 23:45 CST"
+__scriptVersion__ = "1b testing"
+__lastModified__ = "2019-07-01 20:13 CST"
 
 LOGLEVEL = False
 
@@ -134,7 +128,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
 
 def SetupProperties():
-    return PathPocketBase.SetupProperties().append("HandleMultipleFeatures")
+    return PathPocketBase.SetupProperties() + ["HandleMultipleFeatures"]
 
 
 def Create(name, obj=None):
