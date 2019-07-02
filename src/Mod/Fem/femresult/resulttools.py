@@ -30,6 +30,7 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import femtools.femutils as femutils
 import numpy as np
+from math import isnan
 
 
 ## Removes all result objects and result meshes from an analysis group
@@ -533,7 +534,17 @@ def calculate_von_mises(stress_tensor):
     return np.sqrt(1.5 * np.linalg.norm(normal - pressure)**2 + 3.0 * np.linalg.norm(shear)**2)
 
 
-def calculate_principal_stress_std(stress_tensor):
+def calculate_principal_stress_std(
+    stress_tensor
+):
+
+    # if NaN is inside the array, which can happen on Calculix frd result files return NaN
+    # https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=32649#p274291
+    for s in stress_tensor:
+        if isnan(s) is True:
+            return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
+
     s11 = stress_tensor[0]  # Sxx
     s22 = stress_tensor[1]  # Syy
     s33 = stress_tensor[2]  # Szz
@@ -546,17 +557,11 @@ def calculate_principal_stress_std(stress_tensor):
         [s31, s23, s33]
     ])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
 
-    try:  # it will fail if NaN is inside the array, which can happen on Calculix frd result files
-        # compute principal stresses
-        eigvals = list(np.linalg.eigvalsh(sigma))
-        eigvals.sort()
-        eigvals.reverse()
-        maxshear = (eigvals[0] - eigvals[2]) / 2.0
-        return (eigvals[0], eigvals[1], eigvals[2], maxshear)
-    except:
-        return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
-    # TODO might be possible without a try except for NaN
-    # https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
+    eigvals = list(np.linalg.eigvalsh(sigma))
+    eigvals.sort()
+    eigvals.reverse()
+    maxshear = (eigvals[0] - eigvals[2]) / 2.0
+    return (eigvals[0], eigvals[1], eigvals[2], maxshear)
 
 
 def calculate_principal_stress_reinforced(stress_tensor):
