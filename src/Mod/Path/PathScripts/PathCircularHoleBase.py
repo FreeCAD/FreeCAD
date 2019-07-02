@@ -85,6 +85,7 @@ class ObjectOp(PathOp.ObjectOp):
     def circularHoleFeatures(self, obj):
         '''circularHoleFeatures(obj) ... overwrite to add operations specific features.
         Can safely be overwritten by subclasses.'''
+        # pylint: disable=unused-argument
         return 0
 
     def initOperation(self, obj):
@@ -97,10 +98,11 @@ class ObjectOp(PathOp.ObjectOp):
     def initCircularHoleOperation(self, obj):
         '''initCircularHoleOperation(obj) ... overwrite if the subclass needs initialisation.
         Can safely be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def baseIsArchPanel(self, obj, base):
         '''baseIsArchPanel(obj, base) ... return true if op deals with an Arch.Panel.'''
+        # pylint: disable=unused-argument
         return hasattr(base, "Proxy") and isinstance(base.Proxy, ArchPanel.PanelSheet)
 
     def getArchPanelEdge(self, obj, base, sub):
@@ -112,6 +114,7 @@ class ObjectOp(PathOp.ObjectOp):
         Obviously this is as fragile as can be, but currently the best we can do while the panel sheets
         hide the actual features from Path and they can't be referenced directly.
         '''
+        # pylint: disable=unused-argument
         ids = sub.split(".")
         holeId = int(ids[0])
         wireId = int(ids[1])
@@ -184,15 +187,15 @@ class ObjectOp(PathOp.ObjectOp):
         baseSubsTuples = []
         subCount = 0
         allTuples = []
-        self.cloneNames = []
-        self.guiMsgs = []  # list of message tuples (title, msg) to be displayed in GUI
-        self.rotateFlag = False
-        self.useTempJobClones('Delete')  # Clear temporary group and recreate for temp job clones
-        self.stockBB = PathUtils.findParentJob(obj).Stock.Shape.BoundBox
-        self.clearHeight = obj.ClearanceHeight.Value
-        self.safeHeight = obj.SafeHeight.Value
-        self.axialFeed = 0.0
-        self.axialRapid = 0.0
+        self.cloneNames = []    # pylint: disable=attribute-defined-outside-init
+        self.guiMsgs = []       # pylint: disable=attribute-defined-outside-init
+        self.rotateFlag = False # pylint: disable=attribute-defined-outside-init
+        self.useTempJobClones('Delete') # pylint: disable=attribute-defined-outside-init
+        self.stockBB = PathUtils.findParentJob(obj).Stock.Shape.BoundBox # pylint: disable=attribute-defined-outside-init
+        self.clearHeight = obj.ClearanceHeight.Value # pylint: disable=attribute-defined-outside-init
+        self.safeHeight = obj.SafeHeight.Value # pylint: disable=attribute-defined-outside-init
+        self.axialFeed = 0.0 # pylint: disable=attribute-defined-outside-init
+        self.axialRapid = 0.0 # pylint: disable=attribute-defined-outside-init
         trgtDep = None
 
         def haveLocations(self, obj):
@@ -203,27 +206,27 @@ class ObjectOp(PathOp.ObjectOp):
         if obj.EnableRotation == 'Off':
             # maxDep = self.stockBB.ZMax
             # minDep = self.stockBB.ZMin
-            self.strDep = obj.StartDepth.Value
-            self.finDep = obj.FinalDepth.Value
+            strDep = obj.StartDepth.Value
+            finDep = obj.FinalDepth.Value
         else:
             # Calculate operation heights based upon rotation radii
             opHeights = self.opDetermineRotationRadii(obj)
-            (self.xRotRad, self.yRotRad, self.zRotRad) = opHeights[0]
-            (self.clrOfset, self.safOfst) = opHeights[1]
+            (self.xRotRad, self.yRotRad, self.zRotRad) = opHeights[0] # pylint: disable=attribute-defined-outside-init
+            (clrOfset, safOfst) = opHeights[1]
             PathLog.debug("Exec. opHeights[0]: " + str(opHeights[0]))
             PathLog.debug("Exec. opHeights[1]: " + str(opHeights[1]))
 
             # Set clearnance and safe heights based upon rotation radii
             if obj.EnableRotation == 'A(x)':
-                self.strDep = self.xRotRad
+                strDep = self.xRotRad
             elif obj.EnableRotation == 'B(y)':
-                self.strDep = self.yRotRad
+                strDep = self.yRotRad
             else:
-                self.strDep = max(self.xRotRad, self.yRotRad)
-            self.finDep = -1 * self.strDep
+                strDep = max(self.xRotRad, self.yRotRad)
+            finDep = -1 * strDep
 
-            obj.ClearanceHeight.Value = self.strDep + self.clrOfset
-            obj.SafeHeight.Value = self.strDep + self.safOfst
+            obj.ClearanceHeight.Value = strDep + clrOfset
+            obj.SafeHeight.Value = strDep + safOfst
 
             # Create visual axises when debugging.
             if PathLog.getLevel(PathLog.thisModule()) == 4:
@@ -231,8 +234,8 @@ class ObjectOp(PathOp.ObjectOp):
 
             # Set axial feed rates based upon horizontal feed rates
             safeCircum = 2 * math.pi * obj.SafeHeight.Value
-            self.axialFeed = 360 / safeCircum * self.horizFeed
-            self.axialRapid = 360 / safeCircum * self.horizRapid
+            self.axialFeed = 360 / safeCircum * self.horizFeed # pylint: disable=attribute-defined-outside-init
+            self.axialRapid = 360 / safeCircum * self.horizRapid # pylint: disable=attribute-defined-outside-init
 
         # Complete rotational analysis and temp clone creation as needed
         if obj.EnableRotation == 'Off':
@@ -248,14 +251,14 @@ class ObjectOp(PathOp.ObjectOp):
                         shape = getattr(base.Shape, sub)
                         rtn = False
                         (norm, surf) = self.getFaceNormAndSurf(shape)
-                        (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)
+                        (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
                         if rtn is True:
                             (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, subCount)
                             # Verify faces are correctly oriented - InverseAngle might be necessary
                             PathLog.debug("Verifing {} orientation: running faceRotationAnalysis() again.".format(sub))
                             faceIA = getattr(clnBase.Shape, sub)
                             (norm, surf) = self.getFaceNormAndSurf(faceIA)
-                            (rtn, praAngle, praAxis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)
+                            (rtn, praAngle, praAxis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
                             if rtn is True:
                                 msg = obj.Name + ":: "
                                 msg += translate("Path", "{} might be misaligned after initial rotation.".format(sub)) + "  "
@@ -355,7 +358,7 @@ class ObjectOp(PathOp.ObjectOp):
         holes is a list of dictionaries with 'x', 'y' and 'r' specified for each hole.
         Note that for Vertexes, non-circular Edges and Locations r=0.
         Must be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def findAllHoles(self, obj):
         if not self.getJob(obj):
@@ -585,7 +588,7 @@ class ObjectOp(PathOp.ObjectOp):
             rtn = False
 
         if angle == 500.0:
-            angle == 0.0
+            angle = 0.0
             rtn = False
 
         if rtn is False:
@@ -595,7 +598,7 @@ class ObjectOp(PathOp.ObjectOp):
                 rtn = True
 
         if rtn is True:
-            self.rotateFlag = True
+            self.rotateFlag = True # pylint: disable=attribute-defined-outside-init
             # rtn = True
             if obj.ReverseDirection is True:
                 if angle < 180.0:
@@ -626,13 +629,13 @@ class ObjectOp(PathOp.ObjectOp):
                     for entry in self.guiMsgs:
                         (title, msg) = entry
                         QMessageBox.warning(None, title, msg)
-                    self.guiMsgs = []  # Reset messages
+                    self.guiMsgs = []  # pylint: disable=attribute-defined-outside-init
                     return True
                 else:
                     for entry in self.guiMsgs:
                         (title, msg) = entry
                         PathLog.warning("{}:: {}".format(title, msg))
-                    self.guiMsgs = []  # Reset messages
+                    self.guiMsgs = []  # pylint: disable=attribute-defined-outside-init
                     return True
         return False
 
@@ -818,7 +821,7 @@ class ObjectOp(PathOp.ObjectOp):
         else:
             strDep = min(obj.StartDepth.Value, stockTop)
             if strDep <= finDep:
-                strDep = stockTop  # self.strDep
+                strDep = stockTop
                 msg = translate('Path', "Start depth <= face depth.\nIncreased to stock top.")
                 PathLog.error(msg)
         return (strDep, finDep)

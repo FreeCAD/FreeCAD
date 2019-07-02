@@ -54,7 +54,6 @@ if LOGLEVEL:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -71,7 +70,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if not hasattr(obj, 'HandleMultipleFeatures'):
             obj.addProperty('App::PropertyEnumeration', 'HandleMultipleFeatures', 'Pocket', QtCore.QT_TRANSLATE_NOOP('PathPocket', 'Choose how to process multiple Base Geometry features.'))
         obj.HandleMultipleFeatures = ['Collectively', 'Individually']
-        pass
 
     def opOnDocumentRestored(self, obj):
         '''opOnDocumentRestored(obj) ... adds the properties if they doesn't exist.'''
@@ -83,7 +81,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return shapes representing the solids to be removed.'''
         PathLog.track()
-        PathLog.info("----- areaOpShapes() in PathPocket.py")
 
         removalshapes = []
         if obj.Base:

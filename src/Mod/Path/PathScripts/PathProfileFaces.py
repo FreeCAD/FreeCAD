@@ -100,15 +100,9 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         self.baseObject().initAreaOp(obj)
 
-    def opOnDocumentRestored(self, obj):
-        '''opOnDocumentRestored(obj) ... adds the properties if they doesn't exist.'''
-        # self.initAreaOp(obj)
-        pass
-
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... returns envelope for all base shapes or wires for Arch.Panels.'''
         PathLog.track()
-        PathLog.info("----- areaOpShapes() in PathProfileFaces.py")
 
         if obj.UseComp:
             self.commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
@@ -116,9 +110,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
             self.commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
         shapes = []
-        self.profileshape = []
-        startDepths = []
-        faceDepths = []
+        self.profileshape = [] # pylint: disable=attribute-defined-outside-init
 
         baseSubsTuples = []
         subCount = 0
@@ -134,13 +126,13 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         if isinstance(shape, Part.Face):
                             rtn = False
                             (norm, surf) = self.getFaceNormAndSurf(shape)
-                            (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)
+                            (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
                             if rtn is True:
                                 (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, subCount)
                                 # Verify faces are correctly oriented - InverseAngle might be necessary
                                 faceIA = getattr(clnBase.Shape, sub)
                                 (norm, surf) = self.getFaceNormAndSurf(faceIA)
-                                (rtn, praAngle, praAxis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)
+                                (rtn, praAngle, praAxis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
                                 if rtn is True:
                                     PathLog.error(translate("Path", "Face appears misaligned after initial rotation."))
                                     if obj.AttemptInverseAngle is True and obj.InverseAngle is False:
@@ -212,7 +204,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                 startDepths.append(strDep)
 
                 # Recalculate depthparams
-                self.depthparams = PathUtils.depth_params(
+                self.depthparams = PathUtils.depth_params( # pylint: disable=attribute-defined-outside-init
                     clearance_height=obj.ClearanceHeight.Value,
                     safe_height=obj.SafeHeight.Value,
                     start_depth=strDep,  # obj.StartDepth.Value,
@@ -240,7 +232,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         PathLog.track()
                         try:
                             env = PathUtils.getEnvelope(base.Shape, subshape=profileshape, depthparams=self.depthparams)
-                        except Exception:
+                        except Exception: # pylint: disable=broad-except
                             # PathUtils.getEnvelope() failed to return an object.
                             PathLog.error(translate('Path', 'Unable to create path for face(s).'))
                         else:
@@ -296,7 +288,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                                     tup = env, False, 'pathProfileFaces', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
                                     shapes.append(tup)
 
-        self.removalshapes = shapes
+        self.removalshapes = shapes # pylint: disable=attribute-defined-outside-init
         PathLog.debug("%d shapes" % len(shapes))
 
         return shapes

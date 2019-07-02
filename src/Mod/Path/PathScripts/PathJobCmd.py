@@ -53,6 +53,9 @@ class CommandJobCreate:
     and a template to be used for the initial creation.
     '''
 
+    def __init__(self):
+        pass
+
     def GetResources(self):
         return {'Pixmap': 'Path-Job',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Job"),
@@ -89,6 +92,10 @@ class CommandJobTemplateExport:
     file path (see preferences) and named in accordance with job_*.json it will automatically be found
     on Job creation and be available for selection.
     '''
+
+
+    def __init__(self):
+        pass
 
     def GetResources(self):
         return {'Pixmap': 'Path-ExportTemplate',

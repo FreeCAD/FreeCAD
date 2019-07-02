@@ -139,8 +139,6 @@ class _Extension(object):
     def deselect(self):
         self.material.transparency = self.TransparencyDeselected
 
-Page = None
-
 class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     DataObject = QtCore.Qt.ItemDataRole.UserRole
     DataSwitch = QtCore.Qt.ItemDataRole.UserRole + 2
@@ -153,18 +151,18 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def initPage(self, obj):
         self.setTitle("Extensions")
-        self.extensions = obj.Proxy.getExtensions(obj)
+        self.extensions = obj.Proxy.getExtensions(obj) # pylint: disable=attribute-defined-outside-init
 
-        self.defaultLength = PathGui.QuantitySpinBox(self.form.defaultLength, obj, 'ExtensionLengthDefault')
+        self.defaultLength = PathGui.QuantitySpinBox(self.form.defaultLength, obj, 'ExtensionLengthDefault') # pylint: disable=attribute-defined-outside-init
 
         self.form.extensionTree.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.form.extensionTree.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
 
-        self.switch = coin.SoSwitch()
+        self.switch = coin.SoSwitch() # pylint: disable=attribute-defined-outside-init
         self.obj.ViewObject.RootNode.addChild(self.switch)
         self.switch.whichChild = coin.SO_SWITCH_ALL
 
-        self.model = QtGui.QStandardItemModel(self.form.extensionTree)
+        self.model = QtGui.QStandardItemModel(self.form.extensionTree) # pylint: disable=attribute-defined-outside-init
         self.model.setHorizontalHeaderLabels(['Base', 'Extension'])
 
         if 0 < len(obj.ExtensionFeature):
@@ -172,10 +170,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         else:
             self.form.showExtensions.setCheckState(QtCore.Qt.Unchecked)
 
-        self.blockUpdateData = False
-
-        global Page
-        Page = self
+        self.blockUpdateData = False # pylint: disable=attribute-defined-outside-init
 
     def cleanupPage(self, obj):
         # If the object was already destroyed we can't access obj.Name.
@@ -196,7 +191,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         for modelRow in range(self.model.rowCount()):
             model = self.model.item(modelRow, 0)
             for featureRow in range(model.rowCount()):
-                feature = model.child(featureRow, 0);
+                feature = model.child(featureRow, 0)
                 for edgeRow in range(feature.rowCount()):
                     item = feature.child(edgeRow, 0)
                     ext = item.data(self.DataObject)
@@ -212,19 +207,19 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         return extensions
 
     def updateProxyExtensions(self, obj):
-        self.extensions = self.currentExtensions()
+        self.extensions = self.currentExtensions() # pylint: disable=attribute-defined-outside-init
         obj.Proxy.setExtensions(obj, self.extensions)
 
     def getFields(self, obj):
         PathLog.track(obj.Label, self.model.rowCount(), self.model.columnCount())
-        self.blockUpdateData = True
+        self.blockUpdateData = True # pylint: disable=attribute-defined-outside-init
 
         if obj.ExtensionCorners != self.form.extendCorners.isChecked():
             obj.ExtensionCorners = self.form.extendCorners.isChecked()
         self.defaultLength.updateProperty()
 
         self.updateProxyExtensions(obj)
-        self.blockUpdateData = False
+        self.blockUpdateData = False # pylint: disable=attribute-defined-outside-init
 
     def setFields(self, obj):
         PathLog.track(obj.Label)
@@ -232,7 +227,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         if obj.ExtensionCorners != self.form.extendCorners.isChecked():
             self.form.extendCorners.toggle()
         self.defaultLength.updateSpinBox()
-        self.extensions = obj.Proxy.getExtensions(obj)
+        self.extensions = obj.Proxy.getExtensions(obj) # pylint: disable=attribute-defined-outside-init
         self.setExtensions(self.extensions)
 
     def createItemForBaseModel(self, base, sub, edges, extensions):
@@ -273,13 +268,13 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             def edgesMatchShape(e0, e1):
                 return PathGeom.edgesMatch(e0, e1) or PathGeom.edgesMatch(e0, PathGeom.flipEdge(e1))
 
-            self.extensionEdges = extensionEdges
+            self.extensionEdges = extensionEdges # pylint: disable=attribute-defined-outside-init
             for edgeList in Part.sortEdges(list(extensionEdges.keys())):
-                self.edgeList = edgeList
+                self.edgeList = edgeList # pylint: disable=attribute-defined-outside-init
                 if len(edgeList) == 1:
                     label = "Edge%s" % [extensionEdges[keyEdge] for keyEdge in extensionEdges.keys() if edgesMatchShape(keyEdge, edgeList[0])][0]
                 else:
-                    label = "Wire(%s)" % ','.join(sorted([extensionEdges[keyEdge] for e in edgeList for keyEdge in extensionEdges.keys() if edgesMatchShape(e, keyEdge)], key=lambda s: int(s)))
+                    label = "Wire(%s)" % ','.join(sorted([extensionEdges[keyEdge] for e in edgeList for keyEdge in extensionEdges.keys() if edgesMatchShape(e, keyEdge)], key=lambda s: int(s))) # pylint: disable=unnecessary-lambda
                 ext0 = _Extension(self.obj, base, sub, label)
                 createSubItem(label, ext0)
 
@@ -302,12 +297,13 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             if not self.form.extensionTree.isExpanded(model.index()):
                 collapsedModels.append(modelName)
             for featureRow in range(model.rowCount()):
-                feature = model.child(featureRow, 0);
+                feature = model.child(featureRow, 0)
                 if not self.form.extensionTree.isExpanded(feature.index()):
                     collapsedFeatures.append("%s.%s" % (modelName, feature.data(QtCore.Qt.EditRole)))
 
         # remove current extensions and all their visuals
         def removeItemSwitch(item, ext):
+            # pylint: disable=unused-argument
             ext.hide()
             self.switch.removeChild(ext.root)
         self.forAllItemsCall(removeItemSwitch)
@@ -334,7 +330,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             if modelName in collapsedModels:
                 self.form.extensionTree.setExpanded(model.index(), False)
             for featureRow in range(model.rowCount()):
-                feature = model.child(featureRow, 0);
+                feature = model.child(featureRow, 0)
                 featureName =  "%s.%s" % (modelName, feature.data(QtCore.Qt.EditRole))
                 if featureName in collapsedFeatures:
                     self.form.extensionTree.setExpanded(feature.index(), False)
@@ -369,6 +365,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             FreeCADGui.Selection.clearSelection()
 
             def selectItem(item, ext):
+                # pylint: disable=unused-argument
                 for sel in selection:
                     if ext.base == sel.obj and ext.edge == sel.sub:
                         return True
@@ -431,6 +428,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     def showHideExtension(self):
         if self.form.showExtensions.isChecked():
             def enableExtensionEdit(item, ext):
+                # pylint: disable=unused-argument
                 ext.show()
             self.forAllItemsCall(enableExtensionEdit)
         else:
@@ -461,7 +459,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         self.model.itemChanged.connect(self.updateItemEnabled)
 
-        self.selectionModel = self.form.extensionTree.selectionModel()
+        self.selectionModel = self.form.extensionTree.selectionModel() # pylint: disable=attribute-defined-outside-init
         self.selectionModel.selectionChanged.connect(self.selectionChanged)
         self.selectionChanged()
 
@@ -474,7 +472,7 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
 
     def taskPanelBaseLocationPage(self, obj, features):
         if not hasattr(self, 'extensionsPanel'):
-            self.extensionsPanel = TaskPanelExtensionPage(obj, features)
+            self.extensionsPanel = TaskPanelExtensionPage(obj, features) # pylint: disable=attribute-defined-outside-init
         return self.extensionsPanel
 
     def pageRegisterSignalHandlers(self):
