@@ -476,7 +476,7 @@ class _TaskPanelFemMaterial:
                 # PoissonRatio does not have a unit, but it is checked it there is no value at all
                 try:
                     float(self.material['PoissonRatio'])
-                except:
+                except ValueError:
                     FreeCAD.Console.PrintMessage(
                         'PoissonRatio has wrong or no data (reset the value): {}\n'
                         .format(self.material['PoissonRatio'])
