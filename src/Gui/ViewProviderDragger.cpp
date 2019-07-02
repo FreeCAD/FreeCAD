@@ -93,9 +93,8 @@ void ViewProviderDragger::updateData(const App::Property* prop)
         Base::Placement p = static_cast<const App::PropertyPlacement*>(prop)->getValue();
         updateTransform(p, pcTransform);
     }
-    else {
-        ViewProviderDocumentObject::updateData(prop);
-    }
+
+    ViewProviderDocumentObject::updateData(prop);
 }
 
 bool ViewProviderDragger::doubleClicked(void)

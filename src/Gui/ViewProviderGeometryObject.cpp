@@ -191,9 +191,8 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
         pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
         pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
     }
-    else {
-        ViewProviderDragger::updateData(prop);
-    }
+
+    ViewProviderDragger::updateData(prop);
 }
 
 SoPickedPointList ViewProviderGeometryObject::getPickedPoints(const SbVec2s& pos, const View3DInventorViewer& viewer,bool pickAll) const
