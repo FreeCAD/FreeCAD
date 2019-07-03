@@ -30,9 +30,18 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 
 from PathScripts.PathUtils import fmt
+from PathScripts.PathUtils import findParentJob
 from PySide import QtCore
 
+__title__ = "Path Helix Drill Operation"
+__author__ = "Lorenz Hüdepohl"
+__url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of Helix Drill operation"
+__contributors__ = "russ4262 (Russell Johnson)"
+__created__ = "2016"
+__scriptVersion__ = "1a testing"
+__lastModified__ = "2019-07-03 11:45 CST"
+
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -54,6 +63,11 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.StartSide = ['Inside', 'Outside']
 
         obj.addProperty("App::PropertyLength", "StepOver", "Helix Drill", translate("PathHelix", "Radius increment (must be smaller than tool diameter)"))
+
+        # Rotation related properties
+        if not hasattr(obj, 'EnableRotation'):
+            obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
+            obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
     def circularHoleExecute(self, obj, holes):
         '''circularHoleExecute(obj, holes) ... generate helix commands for each hole in holes'''
@@ -191,11 +205,20 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.StartSide = "Inside"
         obj.StepOver = 100
 
+        # Initial setting for EnableRotation is taken from Job SetupSheet
+        # User may override on per-operation basis as needed.
+        parentJob = findParentJob(obj)  # PathUtils.findParentJob(obj)
+        if hasattr(parentJob.SetupSheet, 'SetupEnableRotation'):
+            obj.EnableRotation = parentJob.SetupSheet.SetupEnableRotation
+        else:
+            obj.EnableRotation = 'Off'
+
 def SetupProperties():
     setup = []
     setup.append("Direction")
     setup.append("StartSide")
     setup.append("StepOver")
+    setup.append("EnableRotation")
     return setup
 
 def Create(name, obj = None):
