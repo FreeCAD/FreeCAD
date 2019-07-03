@@ -392,7 +392,7 @@ class ObjectJob:
     @classmethod
     def baseCandidates(cls):
         '''Answer all objects in the current document which could serve as a Base for a job.'''
-        return sorted([obj for obj in FreeCAD.ActiveDocuemnt.Objects if cls.isBaseCandidate(obj)], key=lambda o: o.Label)
+        return sorted([obj for obj in FreeCAD.ActiveDocument.Objects if cls.isBaseCandidate(obj)], key=lambda o: o.Label)
 
     @classmethod
     def isBaseCandidate(cls, obj):

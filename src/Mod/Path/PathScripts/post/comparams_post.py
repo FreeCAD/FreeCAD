@@ -24,7 +24,7 @@
 import FreeCAD
 import Path
 import PathScripts
-PostUtils = PathScripts.PostUtils
+import PathScripts.PostUtils as PostUtils
 
 TOOLTIP = ''' Example Post, using Path.Commands instead of Path.toGCode strings for Path gcode output. '''
 
