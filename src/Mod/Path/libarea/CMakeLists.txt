@@ -176,7 +176,7 @@ message(STATUS "area module (for Path Workbench) will be installed to: " ${CMAKE
 if(WIN32)
     set_target_properties(area-native PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
     INSTALL(TARGETS area-native
-        RUNTIME DESTINATION bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 else(WIN32)
