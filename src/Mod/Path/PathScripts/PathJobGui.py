@@ -95,7 +95,6 @@ def selectionEx():
 class ViewProvider:
 
     def __init__(self, vobj):
-        vobj.Proxy = self
         mode = 2
         vobj.setEditorMode('BoundingBox', mode)
         vobj.setEditorMode('DisplayMode', mode)
@@ -1306,14 +1305,14 @@ def Create(base, template=None):
     FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
     try:
         obj = PathJob.Create('Job', base, template)
-        ViewProvider(obj.ViewObject)
+        obj.ViewObject.Proxy = ViewProvider(obj.ViewObject)
         FreeCAD.ActiveDocument.commitTransaction()
         obj.Document.recompute()
         obj.ViewObject.Proxy.editObject(obj.Stock)
         return obj
     except Exception as exc: # pylint: disable=broad-except
         PathLog.error(exc)
-        traceback.print_exc(exc)
+        traceback.print_exc()
         FreeCAD.ActiveDocument.abortTransaction()
 
 
