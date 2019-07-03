@@ -291,7 +291,7 @@ def fill_femresult_stats(res_obj):
 
 def add_disp_apps(res_obj):
     res_obj.DisplacementLengths = calculate_disp_abs(res_obj.DisplacementVectors)
-    FreeCAD.Console.PrintMessage('Added DisplacementLengths.\n')
+    FreeCAD.Console.PrintLog('Added DisplacementLengths.\n')
     return res_obj
 
 
@@ -308,7 +308,7 @@ def add_von_mises(res_obj):
     for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
         mstress.append(calculate_von_mises((Sxx, Syy, Szz, Sxy, Sxz, Syz)))
     res_obj.StressValues = mstress
-    FreeCAD.Console.PrintMessage('Added StressValues (von Mises).\n')
+    FreeCAD.Console.PrintLog('Added StressValues (von Mises).\n')
     return res_obj
 
 
@@ -335,7 +335,7 @@ def add_principal_stress_std(res_obj):
     res_obj.PrincipalMed = prinstress2
     res_obj.PrincipalMin = prinstress3
     res_obj.MaxShear = shearstress
-    FreeCAD.Console.PrintMessage('Added principal stress and max shear values.\n')
+    FreeCAD.Console.PrintLog('Added principal stress and max shear values.\n')
     return res_obj
 
 
