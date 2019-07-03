@@ -1313,7 +1313,7 @@ def Create(base, template=None):
         return obj
     except Exception as exc: # pylint: disable=broad-except
         PathLog.error(exc)
-        traceback.print_exc(exc)
+        traceback.print_exc()
         FreeCAD.ActiveDocument.abortTransaction()
 
 
