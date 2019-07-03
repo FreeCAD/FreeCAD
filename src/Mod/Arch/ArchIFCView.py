@@ -44,8 +44,7 @@ class IfcContextUI:
         self.baseLayout.addLayout(self.createFormEntry("eastings", "Eastings"))
         self.baseLayout.addLayout(self.createFormEntry("northings", "Northings"))
         self.baseLayout.addLayout(self.createFormEntry("orthogonal_height", "Orthogonal height"))
-        self.baseLayout.addLayout(self.createFormEntry("x_axis_abscissa", "X axis abscissa"))
-        self.baseLayout.addLayout(self.createFormEntry("x_axis_ordinate", "X axis ordinate"))
+        self.baseLayout.addLayout(self.createFormEntry("true_north", "True north (anti-clockwise from +Y)"))
         self.baseLayout.addLayout(self.createFormEntry("scale", "Scale"))
         
     def prefillMapConversionForm(self):

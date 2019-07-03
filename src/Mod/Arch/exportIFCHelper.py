@@ -1,4 +1,4 @@
-import FreeCAD, Draft, json, ifcopenshell
+import FreeCAD, Draft, json, ifcopenshell, math
 
 def getObjectsOfIfcType(objects, ifcType):
     results = []
@@ -79,16 +79,22 @@ class ContextCreator:
                 float(self.project_data["eastings"]),
                 float(self.project_data["northings"]),
                 float(self.project_data["orthogonal_height"]),
-                float(self.project_data["x_axis_abscissa"]),
-                float(self.project_data["x_axis_ordinate"]),
+                self.calculateXAxisAbscissa(),
+                self.calculateXAxisOrdinate(),
                 float(self.project_data["scale"])
                 )
         except:
             return None
 
     def createTrueNorth(self):
-        # TODO: don't hardcode this value
-        return self.file.createIfcDirection((0., 1., 0.))
+        return self.file.createIfcDirection(
+            (self.calculateXAxisAbscissa(), self.calculateXAxisOrdinate(), 0.))
+
+    def calculateXAxisAbscissa(self):
+        return math.cos(math.radians(float(self.project_data["true_north"]) + 90))
+
+    def calculateXAxisOrdinate(self):
+        return math.sin(math.radians(float(self.project_data["true_north"]) + 90))
 
     def createProject(self):
         if not self.project_object:

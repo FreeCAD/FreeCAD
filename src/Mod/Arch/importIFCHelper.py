@@ -1,4 +1,4 @@
-import Arch, ArchIFC
+import Arch, ArchIFC, math
 
 class ProjectImporter:
     def __init__(self, file, objects):
@@ -59,4 +59,10 @@ class ProjectImporter:
         data = {}
         for attributeName, ifcName in mappings.items():
             data[attributeName] = str(getattr(mapConversion, ifcName))
+
+        data["true_north"] = str(self.calculateTrueNorthAngle(
+            mapConversion.XAxisAbscissa, mapConversion.XAxisOrdinate))
         return data
+
+    def calculateTrueNorthAngle(self, x, y):
+        return round(math.degrees(math.atan2(y, x)) - 90, 6)
