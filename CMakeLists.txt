@@ -154,12 +154,6 @@ set(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and 
 # Don't set it without manual adoption of LibDir variable in src/App/FreeCADInit.py
 set(CMAKE_INSTALL_LIBDIR lib CACHE PATH "Output directory for libraries")
 
-if (NOT WIN32)
-    if(NOT IS_ABSOLUTE ${CMAKE_INSTALL_LIBDIR})
-        set(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-    endif(NOT IS_ABSOLUTE ${CMAKE_INSTALL_LIBDIR})
-endif(NOT WIN32)
-
 set(PYCXX_INCLUDE_DIR
     "${CMAKE_SOURCE_DIR}/src" CACHE PATH
     "Path to the directory containing PyCXX's CXX/Config.hxx include file")
