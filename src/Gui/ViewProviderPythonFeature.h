@@ -29,6 +29,7 @@
 #include <Gui/Document.h>
 #include <App/PropertyPythonObject.h>
 #include <App/DynamicProperty.h>
+#include <App/FeaturePython.h>
 
 class SoSensor;
 class SoDragger;
@@ -126,7 +127,6 @@ private:
     ViewProviderDocumentObject* object;
     App::PropertyPythonObject &Proxy;
     bool has__object__;
-    mutable bool pyCalling;
 
 #define FC_PY_VIEW_OBJECT \
     FC_PY_ELEMENT(getIcon) \
@@ -170,9 +170,19 @@ private:
     FC_PY_ELEMENT(getLinkedViewProvider) \
 
 #undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) Py::Object py_##_name;
+#define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_DEFINE(_name)
 
     FC_PY_VIEW_OBJECT
+
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_FLAG(_name)
+
+    enum Flag {
+        FC_PY_VIEW_OBJECT
+        FlagMax,
+    };
+    typedef std::bitset<FlagMax> Flags;
+    mutable Flags _Flags;
 
 public:
     void init(PyObject *pyobj);

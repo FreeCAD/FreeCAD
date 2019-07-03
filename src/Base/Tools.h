@@ -244,6 +244,23 @@ private:
 
 // ----------------------------------------------------------------------------
 
+template<typename T>
+class BitsetLocker
+{
+public:
+    BitsetLocker(T& flags, std::size_t flag, bool value = true) 
+        : flags(flags), flag(flag)
+    { oldValue = flags.test(flag); flags.set(flag,value); }
+    ~BitsetLocker()
+    { flags.set(flag,oldValue); }
+private:
+    T &flags;
+    std::size_t flag;
+    bool oldValue;
+};
+
+// ----------------------------------------------------------------------------
+
 class ConnectionBlocker {
     typedef boost::signals2::connection Connection;
     typedef boost::signals2::shared_connection_block ConnectionBlock;

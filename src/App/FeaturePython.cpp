@@ -39,7 +39,7 @@
 using namespace App;
 
 FeaturePythonImp::FeaturePythonImp(App::DocumentObject* o) 
-    : object(o), has__object__(false), pyCalling(false)
+    : object(o), has__object__(false)
 {
 }
 
@@ -50,10 +50,14 @@ FeaturePythonImp::~FeaturePythonImp()
 void FeaturePythonImp::init(PyObject *pyobj) {
     Base::PyGILStateLocker lock;
     has__object__ = !!PyObject_HasAttrString(pyobj, "__object__");
+
 #undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) FC_PY_GetCallable(pyobj,#_name,py_##_name);
+#define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_INIT(_name)
+
     FC_PY_FEATURE_PYTHON
 }
+
+#define FC_PY_CALL_CHECK(_name) _FC_PY_CALL_CHECK(_name,return(false))
 
 /*!
  Calls the execute() method of the Python feature class. If the Python feature class doesn't have an execute()
@@ -61,11 +65,7 @@ void FeaturePythonImp::init(PyObject *pyobj) {
  */
 bool FeaturePythonImp::execute()
 {
-    if(py_execute.isNone() || pyCalling)
-        return false;
-    Base::FlagToggler<> flag(pyCalling);
-
-    // Run the execute method of the proxy object.
+    FC_PY_CALL_CHECK(execute)
     Base::PyGILStateLocker lock;
     try {
         if (has__object__) {
@@ -96,10 +96,7 @@ bool FeaturePythonImp::execute()
 
 bool FeaturePythonImp::mustExecute() const
 {
-    if(py_mustExecute.isNone() || pyCalling)
-        return false;
-    Base::FlagToggler<> flag(pyCalling);
-    // Run the execute method of the proxy object.
+    FC_PY_CALL_CHECK(mustExecute)
     Base::PyGILStateLocker lock;
     try {
         if (has__object__) {
@@ -206,8 +203,8 @@ void FeaturePythonImp::onChanged(const Property* prop)
 
 void FeaturePythonImp::onDocumentRestored()
 {
-    if(py_onDocumentRestored.isNone())
-        return;
+    _FC_PY_CALL_CHECK(onDocumentRestored,return);
+
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
@@ -229,10 +226,7 @@ void FeaturePythonImp::onDocumentRestored()
 bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname, 
     PyObject **pyObj, Base::Matrix4D *_mat, bool transform, int depth) const
 {
-    if(py_getSubObject.isNone() || pyCalling)
-        return false;
-    Base::FlagToggler<> flag(pyCalling);
-
+    FC_PY_CALL_CHECK(getSubObject);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(6);
@@ -286,9 +280,7 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
 }
 
 bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) const {
-    if(py_getSubObjects.isNone() || pyCalling)
-        return false;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(getSubObjects);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(2);
@@ -318,9 +310,7 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) 
 bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse, 
         Base::Matrix4D *_mat, bool transform, int depth) const
 {
-    if(py_getLinkedObject.isNone() || pyCalling)
-        return false;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(getLinkedObject);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(5);
@@ -370,9 +360,7 @@ PyObject *FeaturePythonImp::getPyObject(void)
 }
 
 int FeaturePythonImp::hasChildElement() const {
-    if(py_hasChildElement.isNone() || pyCalling)
-        return -1;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(hasChildElement,return(-1));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
@@ -389,9 +377,7 @@ int FeaturePythonImp::hasChildElement() const {
 }
 
 int FeaturePythonImp::isElementVisible(const char *element) const {
-    if(py_isElementVisible.isNone() || pyCalling)
-        return -2;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(isElementVisible,return(-2));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(2);
@@ -407,9 +393,7 @@ int FeaturePythonImp::isElementVisible(const char *element) const {
 }
 
 int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
-    if(py_setElementVisible.isNone() || pyCalling)
-        return -2;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(setElementVisible,return(-2));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(3);
@@ -428,10 +412,7 @@ int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
 
 std::string FeaturePythonImp::getViewProviderName()
 {
-    if(py_getViewProviderName.isNone() || pyCalling)
-        return std::string();
-    Base::FlagToggler<> flag(pyCalling);
-    // Run the execute method of the proxy object.
+    _FC_PY_CALL_CHECK(getViewProviderName,return(std::string()));
     Base::PyGILStateLocker lock;
     try {
         Py::TupleN args(Py::Object(object->getPyObject(), true));
@@ -447,9 +428,7 @@ std::string FeaturePythonImp::getViewProviderName()
 }
 
 int FeaturePythonImp::canLinkProperties() const {
-    if(py_canLinkProperties.isNone() || pyCalling)
-        return -1;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(canLinkProperties,return(-1));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
@@ -465,9 +444,7 @@ int FeaturePythonImp::canLinkProperties() const {
 }
 
 int FeaturePythonImp::allowDuplicateLabel() const {
-    if(py_allowDuplicateLabel.isNone() || pyCalling)
-        return -1;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(allowDuplicateLabel,return(-1));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
@@ -483,9 +460,7 @@ int FeaturePythonImp::allowDuplicateLabel() const {
 }
 
 int FeaturePythonImp::canLoadPartial() const {
-    if(py_canLoadPartial.isNone() || pyCalling)
-        return -1;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(canLoadPartial,return(-1));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
@@ -503,9 +478,7 @@ int FeaturePythonImp::canLoadPartial() const {
 bool FeaturePythonImp::redirectSubName(std::ostringstream &ss,
         App::DocumentObject *topParent, App::DocumentObject *child) const 
 {
-    if(py_redirectSubName.isNone() || pyCalling)
-        return false;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(redirectSubName);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(4);

@@ -290,7 +290,7 @@ ViewProviderPythonFeatureObserver::~ViewProviderPythonFeatureObserver()
 
 ViewProviderPythonFeatureImp::ViewProviderPythonFeatureImp(
         ViewProviderDocumentObject* vp, App::PropertyPythonObject &proxy)
-  : object(vp), Proxy(proxy), has__object__(false), pyCalling(false)
+  : object(vp), Proxy(proxy), has__object__(false)
 {
 #if 0
     (void)ViewProviderPythonFeatureObserver::instance();
@@ -304,16 +304,18 @@ ViewProviderPythonFeatureImp::~ViewProviderPythonFeatureImp()
 void ViewProviderPythonFeatureImp::init(PyObject *pyobj) {
     Base::PyGILStateLocker lock;
     has__object__ = !!PyObject_HasAttrString(pyobj, "__object__");
+
 #undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) FC_PY_GetCallable(pyobj,#_name,py_##_name);
+#define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_INIT(_name)
+
     FC_PY_VIEW_OBJECT
 }
 
+#define FC_PY_CALL_CHECK(_name) _FC_PY_CALL_CHECK(_name,return(NotImplemented))
+
 QIcon ViewProviderPythonFeatureImp::getIcon() const
 {
-    if(py_getIcon.isNone() || pyCalling)
-        return QIcon();
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(getIcon,return(QIcon()));
 
     // default icon
     //static QPixmap px = BitmapFactory().pixmap("Tree_Python");
@@ -372,9 +374,7 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
 std::vector<App::DocumentObject*> 
 ViewProviderPythonFeatureImp::claimChildren(std::vector<App::DocumentObject*>&& base) const 
 {
-    if(py_claimChildren.isNone() || pyCalling)
-        return base;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(claimChildren,return(base));
 
     std::vector<App::DocumentObject*> children;
     Base::PyGILStateLocker lock;
@@ -398,9 +398,7 @@ ViewProviderPythonFeatureImp::claimChildren(std::vector<App::DocumentObject*>&& 
 
 bool ViewProviderPythonFeatureImp::useNewSelectionModel() const
 {
-    if(py_useNewSelectionModel.isNone() || pyCalling)
-        return true;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(useNewSelectionModel,return(true));
 
     // Run the useNewSelectionModel method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -418,9 +416,7 @@ bool ViewProviderPythonFeatureImp::useNewSelectionModel() const
 
 std::string ViewProviderPythonFeatureImp::getElement(const SoDetail *det) const
 {
-    if(py_getElement.isNone() || pyCalling)
-        return std::string();
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(getElement,return(std::string()));
 
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -449,9 +445,7 @@ std::string ViewProviderPythonFeatureImp::getElement(const SoDetail *det) const
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
 {
-    if(py_getElementPicked.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(getElementPicked);
 
     Base::PyGILStateLocker lock;
     try {
@@ -474,11 +468,10 @@ ViewProviderPythonFeatureImp::getElementPicked(const SoPickedPoint *pp, std::str
 
     return NotImplemented;
 }
+
 SoDetail* ViewProviderPythonFeatureImp::getDetail(const char* name) const
 {
-    if(py_getDetail.isNone() || pyCalling)
-        return 0;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(getDetail,return(0));
 
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -505,9 +498,7 @@ SoDetail* ViewProviderPythonFeatureImp::getDetail(const char* name) const
 ViewProviderPythonFeatureImp::ValueT ViewProviderPythonFeatureImp::getDetailPath(
         const char* name, SoFullPath *path, bool append, SoDetail *&det) const
 {
-    if(py_getDetailPath.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(getDetailPath);
 
     Base::PyGILStateLocker lock;
     auto length = path->getLength();
@@ -552,9 +543,7 @@ std::vector<Base::Vector3d> ViewProviderPythonFeatureImp::getSelectionShape(cons
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::setEdit(int ModNum)
 {
-    if(py_setEdit.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(setEdit)
 
     Base::PyGILStateLocker lock;
     try {
@@ -603,9 +592,7 @@ ViewProviderPythonFeatureImp::setEdit(int ModNum)
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
 {
-    if(py_unsetEdit.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(unsetEdit)
 
     Base::PyGILStateLocker lock;
     try {
@@ -653,9 +640,7 @@ ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
 
 bool ViewProviderPythonFeatureImp::setEditViewer(View3DInventorViewer *viewer, int ModNum)
 {
-    if(py_setEditViewer.isNone() || pyCalling)
-        return false;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(setEditViewer,return(false))
 
     Base::PyGILStateLocker lock;
     try {
@@ -675,9 +660,7 @@ bool ViewProviderPythonFeatureImp::setEditViewer(View3DInventorViewer *viewer, i
 
 bool ViewProviderPythonFeatureImp::unsetEditViewer(View3DInventorViewer *viewer)
 {
-    if(py_unsetEditViewer.isNone() || pyCalling)
-        return false;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(unsetEditViewer,return(false))
 
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -698,9 +681,7 @@ bool ViewProviderPythonFeatureImp::unsetEditViewer(View3DInventorViewer *viewer)
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::doubleClicked(void)
 {
-    if(py_doubleClicked.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(doubleClicked)
 
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -728,9 +709,7 @@ ViewProviderPythonFeatureImp::doubleClicked(void)
 
 void ViewProviderPythonFeatureImp::setupContextMenu(QMenu* menu)
 {
-    if(py_setupContextMenu.isNone() || pyCalling)
-        return;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(setupContextMenu,return);
 
     // Run the attach method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -761,9 +740,7 @@ void ViewProviderPythonFeatureImp::setupContextMenu(QMenu* menu)
 
 void ViewProviderPythonFeatureImp::attach(App::DocumentObject *pcObject)
 {
-    if(py_attach.isNone() || pyCalling)
-        return;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(attach,return);
 
     // Run the attach method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -863,8 +840,10 @@ void ViewProviderPythonFeatureImp::finishRestoring()
         if (vp.isNone()) {
             object->show();
             Proxy.setValue(Py::Int(1));
-        }else if(!py_finishRestoring.isNone())
+        } else {
+            _FC_PY_CALL_CHECK(finishRestoring,return);
             Base::pyCall(py_finishRestoring.ptr());
+        }
     }catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         e.ReportException();
@@ -873,9 +852,7 @@ void ViewProviderPythonFeatureImp::finishRestoring()
 
 bool ViewProviderPythonFeatureImp::onDelete(const std::vector<std::string> & sub)
 {
-    if(py_onDelete.isNone() || pyCalling)
-        return true;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(onDelete,return(true)); 
 
     Base::PyGILStateLocker lock;
     try {
@@ -910,9 +887,7 @@ bool ViewProviderPythonFeatureImp::onDelete(const std::vector<std::string> & sub
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDelete(App::DocumentObject *obj) const
 {
-    if(py_canDelete.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(canDelete);
 
     Base::PyGILStateLocker lock;
     try {
@@ -929,9 +904,7 @@ ViewProviderPythonFeatureImp::canDelete(App::DocumentObject *obj) const
 
 bool ViewProviderPythonFeatureImp::canAddToSceneGraph() const
 {
-    if(py_canAddToSceneGraph.isNone() || pyCalling)
-        return true;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(canAddToSceneGraph,return(true));
 
     Base::PyGILStateLocker lock;
     try {
@@ -946,9 +919,7 @@ bool ViewProviderPythonFeatureImp::canAddToSceneGraph() const
 
 const char* ViewProviderPythonFeatureImp::getDefaultDisplayMode() const
 {
-    if(py_getDefaultDisplayMode.isNone() || pyCalling)
-        return 0;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(getDefaultDisplayMode,return(0));
 
     // Run the getDefaultDisplayMode method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -971,9 +942,7 @@ const char* ViewProviderPythonFeatureImp::getDefaultDisplayMode() const
 std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) const
 {
     std::vector<std::string> modes;
-    if(py_getDefaultDisplayMode.isNone() || pyCalling)
-        return modes;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(getDisplayModes,return(modes));
 
     // Run the getDisplayModes method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -1005,9 +974,7 @@ std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) con
 
 std::string ViewProviderPythonFeatureImp::setDisplayMode(const char* ModeName)
 {
-    if(py_setDisplayMode.isNone() || pyCalling)
-        return ModeName;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(setDisplayMode,return(ModeName));
 
     // Run the setDisplayMode method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -1028,9 +995,7 @@ std::string ViewProviderPythonFeatureImp::setDisplayMode(const char* ModeName)
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDragObjects() const
 {
-    if(py_canDragObjects.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(canDragObjects);
 
     Base::PyGILStateLocker lock;
     try {
@@ -1048,9 +1013,7 @@ ViewProviderPythonFeatureImp::canDragObjects() const
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDragObject(App::DocumentObject* obj) const
 {
-    if(py_canDragObject.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(canDragObject);
 
     Base::PyGILStateLocker lock;
     try {
@@ -1070,9 +1033,7 @@ ViewProviderPythonFeatureImp::canDragObject(App::DocumentObject* obj) const
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::dragObject(App::DocumentObject* obj)
 {
-    if(py_dragObject.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(dragObject);
 
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -1102,9 +1063,7 @@ ViewProviderPythonFeatureImp::dragObject(App::DocumentObject* obj)
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDropObjects() const
 {
-    if(py_canDropObjects.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(canDropObjects);
 
     Base::PyGILStateLocker lock;
     try {
@@ -1122,9 +1081,7 @@ ViewProviderPythonFeatureImp::canDropObjects() const
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDropObject(App::DocumentObject* obj) const
 {
-    if(py_canDropObject.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(canDropObject);
 
     Base::PyGILStateLocker lock;
     try {
@@ -1144,9 +1101,7 @@ ViewProviderPythonFeatureImp::canDropObject(App::DocumentObject* obj) const
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::dropObject(App::DocumentObject* obj)
 {
-    if(py_dropObject.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(dropObject);
 
     Base::PyGILStateLocker lock;
     try {
@@ -1176,9 +1131,7 @@ ViewProviderPythonFeatureImp::dropObject(App::DocumentObject* obj)
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDragAndDropObject(App::DocumentObject *obj) const
 {
-    if(py_canDragAndDropObject.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(canDragAndDropObject);
 
     Base::PyGILStateLocker lock;
     try {
@@ -1198,9 +1151,7 @@ ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDropObjectEx(App::DocumentObject* obj,
         App::DocumentObject *owner, const char *subname, const std::vector<std::string> &elements) const
 {
-    if(py_canDropObjectEx.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(canDropObjectEx);
 
     Base::PyGILStateLocker lock;
     try {
@@ -1228,9 +1179,7 @@ ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
         const char *subname, const std::vector<std::string> &elements,std::string &ret)
 {
-    if(py_dropObjectEx.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(dropObjectEx);
 
     Base::PyGILStateLocker lock;
     try {
@@ -1257,9 +1206,7 @@ ViewProviderPythonFeatureImp::dropObjectEx(App::DocumentObject* obj, App::Docume
 
 bool ViewProviderPythonFeatureImp::isShow() const
 {
-    if(py_isShow.isNone() || pyCalling)
-        return false;
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(isShow,return(false));
 
     Base::PyGILStateLocker lock;
     try {
@@ -1277,9 +1224,8 @@ bool ViewProviderPythonFeatureImp::isShow() const
 
 ViewProviderPythonFeatureImp::ValueT 
 ViewProviderPythonFeatureImp::canRemoveChildrenFromRoot() const {
-    if(py_canRemoveChildrenFromRoot.isNone() || pyCalling)
-        return NotImplemented;
-    Base::FlagToggler<> flag(pyCalling);
+
+    FC_PY_CALL_CHECK(canRemoveChildrenFromRoot);
 
     Base::PyGILStateLocker lock;
     try {
@@ -1294,9 +1240,8 @@ ViewProviderPythonFeatureImp::canRemoveChildrenFromRoot() const {
 }
 
 bool ViewProviderPythonFeatureImp::getDropPrefix(std::string &prefix) const {
-    if(py_getDropPrefix.isNone() || pyCalling)
-        return false;
-    Base::FlagToggler<> flag(pyCalling);
+
+    _FC_PY_CALL_CHECK(getDropPrefix,return(false));
 
     Base::PyGILStateLocker lock;
     try {
@@ -1317,12 +1262,11 @@ ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::replaceObject(
         App::DocumentObject *oldObj, App::DocumentObject *newObj)
 {
-    if(py_replaceObject.isNone() || pyCalling
-            || !oldObj || !oldObj->getNameInDocument()
+    if(!oldObj || !oldObj->getNameInDocument()
             || !newObj || !newObj->getNameInDocument())
         return NotImplemented;
 
-    Base::FlagToggler<> flag(pyCalling);
+    FC_PY_CALL_CHECK(replaceObject);
 
     Base::PyGILStateLocker lock;
     try {
@@ -1341,10 +1285,7 @@ ViewProviderPythonFeatureImp::replaceObject(
 ViewProviderDocumentObject *
 ViewProviderPythonFeatureImp::getLinkedViewProvider(bool recursive) const
 {
-    if(py_getLinkedViewProvider.isNone() || pyCalling)
-        return 0;
-
-    Base::FlagToggler<> flag(pyCalling);
+    _FC_PY_CALL_CHECK(getLinkedViewProvider,return(0));
 
     Base::PyGILStateLocker lock;
     try {
