@@ -81,7 +81,7 @@ def importFrd(
         mesh = importToolsFem.make_femmesh(m)
         result_mesh_object = ObjectsFem.makeMeshResult(
             FreeCAD.ActiveDocument,
-            'Result_mesh'
+            'ResultMesh'
         )
         result_mesh_object.FemMesh = mesh
         res_mesh_is_compacted = False
@@ -101,17 +101,17 @@ def importFrd(
                 step_time = round(step_time, 2)
                 if eigenmode_number > 0:
                     results_name = (
-                        '{}mode_{}_results'
+                        '{}Mode{}_Results'
                         .format(result_name_prefix, eigenmode_number)
                     )
                 elif number_of_increments > 1:
                     results_name = (
-                        '{}time_{}_results'
+                        '{}Time{}_Results'
                         .format(result_name_prefix, step_time)
                     )
                 else:
                     results_name = (
-                        '{}results'
+                        '{}Results'
                         .format(result_name_prefix)
                     )
 
