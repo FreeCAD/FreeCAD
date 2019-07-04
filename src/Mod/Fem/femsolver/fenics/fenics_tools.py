@@ -33,7 +33,7 @@ try:
     import fenics
 except ImportError:
     FreeCAD.Console.PrintError("No Fenics modules found, please install them.\n")
-raise Exception("No Fenics modules found, please install them.\n")
+    raise Exception("No Fenics modules found, please install them.\n")
 
 
 class XDMFReader(object):
