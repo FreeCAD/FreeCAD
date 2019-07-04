@@ -158,13 +158,7 @@ class _ConstraintBodyHeatSource(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintBodyHeatSource")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeConstraintBodyHeatSource(FreeCAD.ActiveDocument))"
-        )
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _ConstraintElectrostaticPotential(CommandManager):
@@ -182,17 +176,7 @@ class _ConstraintElectrostaticPotential(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintElectrostaticPotential")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeConstraintElectrostaticPotential(FreeCAD.ActiveDocument))"
-        )
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _ConstraintFlowVelocity(CommandManager):
@@ -210,17 +194,7 @@ class _ConstraintFlowVelocity(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintFlowVelocity")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeConstraintFlowVelocity(FreeCAD.ActiveDocument))"
-        )
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _ConstraintInitialFlowVelocity(CommandManager):
@@ -238,17 +212,7 @@ class _ConstraintInitialFlowVelocity(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintInitialFlowVelocity")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeConstraintInitialFlowVelocity(FreeCAD.ActiveDocument))"
-        )
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _ConstraintSelfWeight(CommandManager):
@@ -270,13 +234,7 @@ class _ConstraintSelfWeight(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintSelfWeight")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeConstraintSelfWeight(FreeCAD.ActiveDocument))"
-        )
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _ElementFluid1D(CommandManager):
@@ -298,17 +256,7 @@ class _ElementFluid1D(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemElementFluid1D")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeElementFluid1D(FreeCAD.ActiveDocument))"
-        )
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _ElementGeometry1D(CommandManager):
@@ -330,17 +278,7 @@ class _ElementGeometry1D(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemElementGeometry1D")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeElementGeometry1D(FreeCAD.ActiveDocument))"
-        )
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _ElementGeometry2D(CommandManager):
@@ -362,16 +300,7 @@ class _ElementGeometry2D(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemElementGeometry2D")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeElementGeometry2D(FreeCAD.ActiveDocument))")
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _ElementRotation1D(CommandManager):
@@ -393,17 +322,7 @@ class _ElementRotation1D(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemElementRotation1D")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeElementRotation1D(FreeCAD.ActiveDocument))"
-        )
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _EquationElectrostatic(CommandManager):
@@ -424,15 +343,7 @@ class _EquationElectrostatic(CommandManager):
         self.is_active = 'with_solver_elmer'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemEquationElasticity")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "ObjectsFem.makeEquationElectrostatic("
-            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})"
-            .format(self.selobj.Name)
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _EquationElasticity(CommandManager):
@@ -452,15 +363,7 @@ class _EquationElasticity(CommandManager):
         self.is_active = 'with_solver_elmer'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemEquationElasticity")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "ObjectsFem.makeEquationElasticity("
-            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})"
-            .format(self.selobj.Name)
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _EquationFlow(CommandManager):
@@ -481,15 +384,7 @@ class _EquationFlow(CommandManager):
         self.is_active = 'with_solver_elmer'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemEquationFlow")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "ObjectsFem.makeEquationFlow("
-            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})"
-            .format(self.selobj.Name)
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _EquationFluxsolver(CommandManager):
@@ -510,15 +405,7 @@ class _EquationFluxsolver(CommandManager):
         self.is_active = 'with_solver_elmer'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemEquationFluxsolver")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "ObjectsFem.makeEquationFluxsolver("
-            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})"
-            .format(self.selobj.Name)
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _EquationHeat(CommandManager):
@@ -539,15 +426,7 @@ class _EquationHeat(CommandManager):
         self.is_active = 'with_solver_elmer'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemEquationHeat")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "ObjectsFem.makeEquationHeat("
-            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})"
-            .format(self.selobj.Name)
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _MaterialEditor(CommandManager):
@@ -592,16 +471,7 @@ class _MaterialFluid(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create Fluid Material")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeMaterialFluid(FreeCAD.ActiveDocument, 'FluidMaterial'))"
-        )
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
-        )
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _MaterialMechanicalNonlinear(CommandManager):
@@ -684,16 +554,7 @@ class _MaterialReinforced(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create Reinforced Material")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeMaterialReinforced(FreeCAD.ActiveDocument, 'ReinforcedMaterial'))"
-        )
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
-        )
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _MaterialSolid(CommandManager):
@@ -715,16 +576,7 @@ class _MaterialSolid(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create Solid Material")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeMaterialSolid(FreeCAD.ActiveDocument, 'SolidMaterial'))"
-        )
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
-        )
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _Mesh2Mesh(CommandManager):
@@ -795,18 +647,7 @@ class _MeshBoundaryLayer(CommandManager):
         self.is_active = 'with_gmsh_femmesh'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemMeshBoundaryLayer")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "ObjectsFem.makeMeshBoundaryLayer("
-            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})"
-            .format(self.selobj.Name)
-        )
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_selobj_set_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _MeshClear(CommandManager):
@@ -934,18 +775,7 @@ class _MeshGroup(CommandManager):
         self.is_active = 'with_gmsh_femmesh'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemMeshGroup")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "ObjectsFem.makeMeshGroup("
-            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})"
-            .format(self.selobj.Name)
-        )
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_selobj_set_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _MeshNetgenFromShape(CommandManager):
@@ -1014,18 +844,7 @@ class _MeshRegion(CommandManager):
         self.is_active = 'with_gmsh_femmesh'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemMeshRegion")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "ObjectsFem.makeMeshRegion("
-            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})"
-            .format(self.selobj.Name)
-        )
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
-        )
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_selobj_set_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _ResultShow(CommandManager):
@@ -1133,14 +952,7 @@ class _SolverCalculix(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create CalculiX solver object")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeSolverCalculix(FreeCAD.ActiveDocument))"
-        )
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _SolverControl(CommandManager):
@@ -1184,14 +996,7 @@ class _SolverElmer(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create Elmer solver object")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeSolverElmer(FreeCAD.ActiveDocument))"
-        )
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
 
 
 class _SolverRun(CommandManager):
@@ -1238,12 +1043,7 @@ class _SolverZ88(CommandManager):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create SolverZ88")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverZ88(FreeCAD.ActiveDocument))"
-        )
-        FreeCAD.ActiveDocument.recompute()
+        self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
 
 
 # the string in add command will be the page name on FreeCAD wiki
