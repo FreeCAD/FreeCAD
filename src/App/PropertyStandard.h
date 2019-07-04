@@ -660,7 +660,7 @@ public:
     void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
     const boost::any getPathValue(const App::ObjectIdentifier &path) const;
 
-private:
+protected:
     std::string _cValue;
 };
 
