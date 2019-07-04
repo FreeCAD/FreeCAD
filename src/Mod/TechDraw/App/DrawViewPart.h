@@ -71,6 +71,7 @@ class DrawViewBalloon;
 class CosmeticVertex;
 class CosmeticEdge;
 class CenterLine;
+class GeomFormat;
 }
 
 namespace TechDraw
@@ -107,6 +108,7 @@ public:
     App::PropertyStringList  CosmeticVertexList;
     App::PropertyStringList  CosmeticEdgeList;
     App::PropertyStringList  CenterLineList;
+    App::PropertyStringList  GeomFormatList;
 
     virtual short mustExecute() const;
     virtual void onDocumentRestored() override;
@@ -199,6 +201,13 @@ public:
     void addCosmeticEdgesToGeom(void);
     void addCenterLinesToGeom(void);
 
+    int addGeomFormat(TechDraw::GeomFormat* gf);
+    virtual void writeGFormatProp(void);
+    virtual void removeGeomFormat(int idx);
+    const std::vector<TechDraw::GeomFormat*> & getGeomFormats(void) const { return GFormatTable; }
+    TechDraw::GeomFormat* getGeomFormatByIndex(int idx) const;
+    TechDraw::GeomFormat* getGeomFormatByGeom(int idx) const;
+    void clearGeomFormats(void);
 
 protected:
     TechDraw::GeometryObject *geometryObject;
@@ -230,6 +239,9 @@ protected:
 
     std::vector<TechDraw::CenterLine*> CLineTable;
     void readCLineProp(void);
+
+    std::vector<TechDraw::GeomFormat*> GFormatTable;
+    void readGFormatProp(void);
 
 private:
     bool nowUnsetting;

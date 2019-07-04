@@ -63,6 +63,16 @@
         <UserDocu>clearCosmeticEdges() - remove all CosmeticLines from the View. Returns nothing.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="clearCenterLines">
+      <Documentation>
+        <UserDocu>clearCenterLines() - remove all CenterLines from the View. Returns nothing.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearGeomFormats">
+      <Documentation>
+        <UserDocu>clearGeomFormats() - remove all GeomFormats from the View. Returns nothing.</UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

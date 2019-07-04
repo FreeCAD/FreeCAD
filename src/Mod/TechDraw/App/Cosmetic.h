@@ -123,20 +123,38 @@ public:
                                           TechDraw::DrawViewPart* partFeat,
                                           std::vector<std::string> faceNames,
                                           int vert, double ext,
-                                          double hShift, double vShift,
+                                          double m_hShift, double m_vShift,
                                           double rotate);
     void dump(char* title);
 
-    Base::Vector3d start;
-    Base::Vector3d end;
+    Base::Vector3d m_start;
+    Base::Vector3d m_end;
     std::vector<std::string> m_faces;
-    int mode;          // vert/horiz/aligned
-    double hShift;
-    double vShift;
-    double rotate;
-    double extendBy;
-    LineFormat fmt;
+    int m_mode;          // 0 - vert/ 1 - horiz/ 2 - aligned
+    double m_hShift;
+    double m_vShift;
+    double m_rotate;
+    double m_extendBy;
+    LineFormat m_format;
 };
+
+class TechDrawExport GeomFormat
+{
+public:
+    GeomFormat();
+    GeomFormat(int idx,
+               LineFormat fmt);
+    ~GeomFormat();
+
+    std::string toCSV(void) const;
+    bool fromCSV(std::string& lineSpec);
+    void dump(char* title);
+
+    int m_geomIndex;
+    LineFormat m_format;
+};
+
+
 
 } //end namespace TechDraw
 
