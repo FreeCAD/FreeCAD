@@ -341,6 +341,17 @@ public:
     /* Return true to cause PropertyView to show linked object's property */
     virtual bool canLinkProperties() const {return true;}
 
+    /* Return true to bypass duplicate label checking */
+    virtual bool allowDuplicateLabel() const {return false;}
+
+    /*** Called to let object itself control relabeling
+     *
+     * @param newLabel: input as the new label, which can be modified by object itself
+     *
+     * This function is is called before onBeforeChange()
+     */
+    virtual void onBeforeChangeLabel(std::string &newLabel) {(void)newLabel;}
+
     friend class Document;
     friend class Transaction;
     friend class ObjectExecution;
