@@ -63,6 +63,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.StartSide = ['Inside', 'Outside']
 
         obj.addProperty("App::PropertyLength", "StepOver", "Helix Drill", translate("PathHelix", "Radius increment (must be smaller than tool diameter)"))
+        obj.addProperty("App::PropertyLength", "StartRadius", "Helix Drill", translate("PathHelix", "Starting Radius"))
 
         # Rotation related properties
         if not hasattr(obj, 'EnableRotation'):
@@ -81,7 +82,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         output += "G0 Z" + fmt(zsafe)
 
         for hole in holes:
-            output += self.helix_cut(obj, hole['x'], hole['y'], hole['r'] / 2, 0.0, (float(obj.StepOver.Value)/50.0) * self.radius)
+            output += self.helix_cut(obj, hole['x'], hole['y'], hole['r'] / 2, float(obj.StartRadius.Value), (float(obj.StepOver.Value) / 50.0) * self.radius)
         PathLog.debug(output)
 
     def helix_cut(self, obj, x0, y0, r_out, r_in, dr):
@@ -94,11 +95,12 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         if (obj.StartDepth.Value <= obj.FinalDepth.Value):
             return ""
 
-        out = "(helix_cut <{0}, {1}>, {2})".format(x0, y0,
-                    ", ".join(map(str, (r_out, r_in, dr, obj.StartDepth.Value, obj.FinalDepth.Value, obj.StepDown.Value, obj.SafeHeight.Value,
+        out = "(helix_cut <{0}, {1}>, {2})".format(
+            x0, y0, ", ".join(map(str, (r_out, r_in, dr, obj.StartDepth.Value,
+                                        obj.FinalDepth.Value, obj.StepDown.Value, obj.SafeHeight.Value,
                                         self.radius, self.vertFeed, self.horizFeed, obj.Direction, obj.StartSide))))
 
-        nz = max(int(ceil((obj.StartDepth.Value - obj.FinalDepth.Value)/obj.StepDown.Value)), 2)
+        nz = max(int(ceil((obj.StartDepth.Value - obj.FinalDepth.Value) / obj.StepDown.Value)), 2)
         zi = linspace(obj.StartDepth.Value, obj.FinalDepth.Value, 2 * nz + 1)
 
         def xyz(x=None, y=None, z=None):
@@ -130,23 +132,23 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         def helix_cut_r(r):
             arc_cmd = 'G2' if obj.Direction == 'CW' else 'G3'
             out = ""
-            out += rapid(x=x0+r, y=y0)
+            out += rapid(x=x0 + r, y=y0)
             self.commandlist.append(Path.Command('G0', {'X': x0 + r, 'Y': y0, 'F': self.horizRapid}))
-            out += rapid(z=obj.StartDepth.Value + 2*self.radius)
+            out += rapid(z=obj.StartDepth.Value + 2 * self.radius)
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
             out += feed(z=obj.StartDepth.Value, f=self.vertFeed)
             self.commandlist.append(Path.Command('G1', {'Z': obj.StartDepth.Value, 'F': self.vertFeed}))
             # z = obj.FinalDepth.Value
-            for i in range(1, nz+1):
-                out += arc(x0-r, y0, i=-r, j=0.0, z=zi[2*i-1], f=self.horizFeed)
-                self.commandlist.append(Path.Command(arc_cmd, {'X': x0-r, 'Y': y0, 'Z': zi[2*i-1], 'I': -r, 'J': 0.0, 'F': self.horizFeed}))
-                out += arc(x0+r, y0, i= r, j=0.0, z=zi[2*i],   f=self.horizFeed)
-                self.commandlist.append(Path.Command(arc_cmd, {'X': x0+r, 'Y': y0, 'Z': zi[2*i],   'I':  r, 'J': 0.0, 'F': self.horizFeed}))
-            out += arc(x0-r, y0, i=-r, j=0.0, z=obj.FinalDepth.Value, f=self.horizFeed)
-            self.commandlist.append(Path.Command(arc_cmd, {'X': x0-r, 'Y': y0, 'Z': obj.FinalDepth.Value,   'I': -r, 'J': 0.0, 'F': self.horizFeed}))
-            out += arc(x0+r, y0, i=r,  j=0.0, z=obj.FinalDepth.Value, f=self.horizFeed)
-            self.commandlist.append(Path.Command(arc_cmd, {'X': x0+r, 'Y': y0, 'Z': obj.FinalDepth.Value,   'I':  r, 'J': 0.0, 'F': self.horizFeed}))
-            out += feed(z=obj.StartDepth.Value + 2*self.radius, f=self.vertFeed)
+            for i in range(1, nz + 1):
+                out += arc(x0 - r, y0, i=-r, j=0.0, z=zi[2 * i - 1], f=self.horizFeed)
+                self.commandlist.append(Path.Command(arc_cmd, {'X': x0 - r, 'Y': y0, 'Z': zi[2 * i - 1], 'I': -r, 'J': 0.0, 'F': self.horizFeed}))
+                out += arc(x0 + r, y0, i=r, j=0.0, z=zi[2 * i], f=self.horizFeed)
+                self.commandlist.append(Path.Command(arc_cmd, {'X': x0 + r, 'Y': y0, 'Z': zi[2 * i], 'I': r, 'J': 0.0, 'F': self.horizFeed}))
+            out += arc(x0 - r, y0, i=-r, j=0.0, z=obj.FinalDepth.Value, f=self.horizFeed)
+            self.commandlist.append(Path.Command(arc_cmd, {'X': x0 - r, 'Y': y0, 'Z': obj.FinalDepth.Value, 'I': -r, 'J': 0.0, 'F': self.horizFeed}))
+            out += arc(x0 + r, y0, i=r, j=0.0, z=obj.FinalDepth.Value, f=self.horizFeed)
+            self.commandlist.append(Path.Command(arc_cmd, {'X': x0 + r, 'Y': y0, 'Z': obj.FinalDepth.Value, 'I': r, 'J': 0.0, 'F': self.horizFeed}))
+            out += feed(z=obj.StartDepth.Value + 2 * self.radius, f=self.vertFeed)
             out += rapid(z=obj.SafeHeight.Value)
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
             return out
@@ -157,10 +159,10 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         msg = None
         if r_out < 0.0:
             msg = "r_out < 0"
-        elif r_in > 0 and r_out - r_in < 2*self.radius:
-            msg = "r_out - r_in = {0} is < tool diameter of {1}".format(r_out - r_in, 2*self.radius)
-        elif r_in == 0.0 and not r_out > self.radius/2.:
-            msg = "Cannot drill a hole of diameter {0} with a tool of diameter {1}".format(2 * r_out, 2*self.radius)
+        elif r_in > 0 and r_out - r_in < 2 * self.radius:
+            msg = "r_out - r_in = {0} is < tool diameter of {1}".format(r_out - r_in, 2 * self.radius)
+        elif r_in == 0.0 and not r_out > self.radius / 2.:
+            msg = "Cannot drill a hole of diameter {0} with a tool of diameter {1}".format(2 * r_out, 2 * self.radius)
         elif obj.StartSide not in ["Inside", "Outside"]:
             msg = "Invalid value for parameter 'obj.StartSide'"
 
@@ -174,9 +176,9 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             r_out = r_out - self.radius
             r_in = r_in + self.radius
             if abs((r_out - r_in) / dr) < 1e-5:
-                radii = [(r_out + r_in)/2]
+                radii = [(r_out + r_in) / 2]
             else:
-                nr = max(int(ceil((r_out - r_in)/dr)), 2)
+                nr = max(int(ceil((r_out - r_in) / dr)), 2)
                 radii = linspace(r_out, r_in, nr)
         elif r_out <= 2 * dr:
             out += "(single helix mode)\n"
@@ -185,9 +187,9 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         else:
             out += "(full hole mode)\n"
             r_out = r_out - self.radius
-            r_in = dr/2
+            r_in = dr / 2
 
-            nr = max(1 + int(ceil((r_out - r_in)/dr)), 2)
+            nr = max(1 + int(ceil((r_out - r_in) / dr)), 2)
             radii = linspace(r_out, r_in, nr)
             assert(all(radii > 0))
 
@@ -213,15 +215,18 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         else:
             obj.EnableRotation = 'Off'
 
+
 def SetupProperties():
     setup = []
     setup.append("Direction")
     setup.append("StartSide")
     setup.append("StepOver")
     setup.append("EnableRotation")
+    setup.append("StartRadius")
     return setup
 
-def Create(name, obj = None):
+
+def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Helix operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
