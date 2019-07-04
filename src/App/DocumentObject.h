@@ -185,18 +185,50 @@ public:
         a DAG (directed acyclic graph).
     */
     //@{
+    /// OutList options
+    enum OutListOption {
+        /// Do not include link from expression engine
+        OutListNoExpression = 1,
+        /// Do not hide any link (i.e. include links with LinkScopeHidden)
+        OutListNoHidden = 2,
+        /// Do not include link from PropertyXLink
+        OutListNoXLinked = 4,
+    };
     /// returns a list of objects this object is pointing to by Links
-    std::vector<App::DocumentObject*> getOutList(void) const;
+    const std::vector<App::DocumentObject*> &getOutList() const;
+    std::vector<App::DocumentObject*> getOutList(int option) const;
+    void getOutList(int option, std::vector<App::DocumentObject*> &res) const;
+
     /// returns a list of objects linked by the property
     std::vector<App::DocumentObject*> getOutListOfProperty(App::Property*) const;
     /// returns a list of objects this object is pointing to by Links and all further descended
     std::vector<App::DocumentObject*> getOutListRecursive(void) const;
+    /// clear internal out list cache
+    void clearOutListCache() const;
     /// get all possible paths from this to another object following the OutList
     std::vector<std::list<App::DocumentObject*> > getPathsByOutList(App::DocumentObject* to) const;
+#ifdef USE_OLD_DAG
     /// get all objects link to this object
-    std::vector<App::DocumentObject*> getInList(void) const;
+    std::vector<App::DocumentObject*> getInList(void) const
+#else
+    const std::vector<App::DocumentObject*> &getInList(void) const;
+#endif
     /// get all objects link directly or indirectly to this object
     std::vector<App::DocumentObject*> getInListRecursive(void) const;
+    /** Get a set of all objects linking to this object, including possible external parent objects
+     *
+     * @param inSet [out]: a set containing all objects linking to this object.
+     * @param recursive [in]: whether to obtain recursive in list
+     * @param inList [in, out]: optional pointer to a vector holding the output
+     * objects, with the furthest linking object ordered last.
+     */
+    void getInListEx(std::set<App::DocumentObject*> &inSet, 
+            bool recursive, std::vector<App::DocumentObject*> *inList=0) const;
+    /** Return a set of all objects linking to this object, including possible external parent objects
+     * @param recursive [in]: whether to obtain recursive in list
+     */
+    std::set<App::DocumentObject*> getInListEx(bool recursive) const;
+
     /// get group if object is part of a group, otherwise 0 is returned
     DocumentObjectGroup* getGroup() const;
 
@@ -557,6 +589,9 @@ private:
     // Back pointer to all the fathers in a DAG of the document
     // this is used by the document (via friend) to have a effective DAG handling
     std::vector<App::DocumentObject*> _inList;
+    mutable std::vector<App::DocumentObject *> _outList;
+    mutable std::unordered_map<const char *, App::DocumentObject*, CStringHasher, CStringHasher> _outListMap;
+    mutable bool _outListCached = false;
 };
 
 } //namespace App
