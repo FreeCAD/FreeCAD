@@ -209,6 +209,18 @@ Return tuple(obj,newElementName,oldElementName)
       </Documentation>
       <Parameter Name="InListRecursive" Type="List"/>
     </Attribute>
+    <Attribute Name="InListEx" ReadOnly="true">
+      <Documentation>
+        <UserDocu>A list of all objects which link to this object, including any external parents.</UserDocu>
+      </Documentation>
+      <Parameter Name="InListEx" Type="List"/>
+    </Attribute>
+    <Attribute Name="InListExRecursive" ReadOnly="true">
+      <Documentation>
+        <UserDocu>A list of all objects which link to this object recursively, including any external parents.</UserDocu>
+      </Documentation>
+      <Parameter Name="InListExRecursive" Type="List"/>
+    </Attribute>
     <Attribute Name="FullName" ReadOnly="true">
         <Documentation>
             <UserDocu>Return the document name and internal name of this object</UserDocu>
