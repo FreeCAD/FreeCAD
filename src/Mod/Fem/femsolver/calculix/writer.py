@@ -817,10 +817,14 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             material
                         )
                         section_geo = liquid_section_def(fluidsec_obj, section_type)
+                    '''
+                    # deactivate as it would result in section_def and section_geo not defined
+                    # deactivated in the App and Gui object and thus in the task panel as well
                     elif fluidsec_obj.SectionType == 'Gas':
                         section_type = fluidsec_obj.GasSectionType
                     elif fluidsec_obj.SectionType == 'Open Channel':
                         section_type = fluidsec_obj.ChannelSectionType
+                    '''
                     f.write(section_def)
                     f.write(section_geo)
                 elif 'shellthickness_obj'in ccx_elset:  # shell mesh

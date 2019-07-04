@@ -277,6 +277,7 @@ class _TaskPanelFemElementFluid1D:
             QtCore.SIGNAL("cellChanged(int, int)"),
             self.pump_characteristics_changed
         )
+        # some fluid types deactivated since they are not implemented in ccx writer
         self.parameterWidget.cb_section_type.addItems(
             _FemElementFluid1D._FemElementFluid1D.known_fluid_types
         )
