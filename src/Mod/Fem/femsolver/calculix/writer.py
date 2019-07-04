@@ -760,13 +760,13 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                         height = beamsec_obj.RectHeight.getValueAs('mm')
                         width = beamsec_obj.RectWidth.getValueAs('mm')
                         section_type = ', SECTION=RECT'
-                        setion_geo = str(height) + ', ' + str(width) + '\n'
-                        setion_def = '*BEAM SECTION, {}{}{}\n'.format(
+                        section_geo = str(height) + ', ' + str(width) + '\n'
+                        section_def = '*BEAM SECTION, {}{}{}\n'.format(
                             elsetdef,
                             material,
                             section_type
                         )
-                        setion_nor = '{}, {}, {}\n'.format(
+                        section_nor = '{}, {}, {}\n'.format(
                             normal[0],
                             normal[1],
                             normal[2]
@@ -774,13 +774,13 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                     elif beamsec_obj.SectionType == 'Circular':
                         radius = 0.5 * beamsec_obj.CircDiameter.getValueAs('mm')
                         section_type = ', SECTION=CIRC'
-                        setion_geo = str(radius) + '\n'
-                        setion_def = '*BEAM SECTION, {}{}{}\n'.format(
+                        section_geo = str(radius) + '\n'
+                        section_def = '*BEAM SECTION, {}{}{}\n'.format(
                             elsetdef,
                             material,
                             section_type
                         )
-                        setion_nor = '{}, {}, {}\n'.format(
+                        section_nor = '{}, {}, {}\n'.format(
                             normal[0],
                             normal[1],
                             normal[2]
@@ -789,20 +789,20 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                         radius = 0.5 * beamsec_obj.PipeDiameter.getValueAs('mm')
                         thickness = beamsec_obj.PipeThickness.getValueAs('mm')
                         section_type = ', SECTION=PIPE'
-                        setion_geo = str(radius) + ', ' + str(thickness) + '\n'
-                        setion_def = '*BEAM GENERAL SECTION, {}{}{}\n'.format(
+                        section_geo = str(radius) + ', ' + str(thickness) + '\n'
+                        section_def = '*BEAM GENERAL SECTION, {}{}{}\n'.format(
                             elsetdef,
                             material,
                             section_type
                         )
-                        setion_nor = '{}, {}, {}\n'.format(
+                        section_nor = '{}, {}, {}\n'.format(
                             normal[0],
                             normal[1],
                             normal[2]
                         )
-                    f.write(setion_def)
-                    f.write(setion_geo)
-                    f.write(setion_nor)
+                    f.write(section_def)
+                    f.write(section_geo)
+                    f.write(section_nor)
                 elif 'fluidsection_obj'in ccx_elset:  # fluid mesh
                     fluidsec_obj = ccx_elset['fluidsection_obj']
                     elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
@@ -811,31 +811,31 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                         section_type = fluidsec_obj.LiquidSectionType
                         if (section_type == "PIPE INLET") or (section_type == "PIPE OUTLET"):
                             section_type = "PIPE INOUT"
-                        setion_def = '*FLUID SECTION, {}TYPE={}, {}\n'.format(
+                        section_def = '*FLUID SECTION, {}TYPE={}, {}\n'.format(
                             elsetdef,
                             section_type,
                             material
                         )
-                        setion_geo = liquid_section_def(fluidsec_obj, section_type)
+                        section_geo = liquid_section_def(fluidsec_obj, section_type)
                     elif fluidsec_obj.SectionType == 'Gas':
                         section_type = fluidsec_obj.GasSectionType
                     elif fluidsec_obj.SectionType == 'Open Channel':
                         section_type = fluidsec_obj.ChannelSectionType
-                    f.write(setion_def)
-                    f.write(setion_geo)
+                    f.write(section_def)
+                    f.write(section_geo)
                 elif 'shellthickness_obj'in ccx_elset:  # shell mesh
                     shellth_obj = ccx_elset['shellthickness_obj']
                     elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
                     material = 'MATERIAL=' + ccx_elset['mat_obj_name']
-                    setion_def = '*SHELL SECTION, ' + elsetdef + material + '\n'
-                    setion_geo = str(shellth_obj.Thickness.getValueAs('mm')) + '\n'
-                    f.write(setion_def)
-                    f.write(setion_geo)
+                    section_def = '*SHELL SECTION, ' + elsetdef + material + '\n'
+                    section_geo = str(shellth_obj.Thickness.getValueAs('mm')) + '\n'
+                    f.write(section_def)
+                    f.write(section_geo)
                 else:  # solid mesh
                     elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
                     material = 'MATERIAL=' + ccx_elset['mat_obj_name']
-                    setion_def = '*SOLID SECTION, ' + elsetdef + material + '\n'
-                    f.write(setion_def)
+                    section_def = '*SOLID SECTION, ' + elsetdef + material + '\n'
+                    f.write(section_def)
 
     def write_step_begin(self, f):
         f.write('\n***********************************************************\n')
