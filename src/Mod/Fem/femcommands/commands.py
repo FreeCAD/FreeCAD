@@ -1073,10 +1073,10 @@ class _CommandFemResultsPurge(CommandManager):
         resulttools.purge_results(self.active_analysis)
 
 
-class _CommandFemSolverCalculixCxxtools(CommandManager):
+class _CommandFemSolverCxxtools(CommandManager):
     "The FEM_SolverCalculix ccx tools command definition"
     def __init__(self):
-        super(_CommandFemSolverCalculixCxxtools, self).__init__()
+        super(_CommandFemSolverCxxtools, self).__init__()
         self.resources = {
             'Pixmap': 'fem-solver-standard',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -1115,10 +1115,10 @@ class _CommandFemSolverCalculixCxxtools(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemSolverCalculiX(CommandManager):
+class _CommandFemSolverCalculix(CommandManager):
     "The FEM_SolverCalculix command definition"
     def __init__(self):
-        super(_CommandFemSolverCalculiX, self).__init__()
+        super(_CommandFemSolverCalculix, self).__init__()
         self.resources = {
             'Pixmap': 'fem-solver-standard',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -1377,11 +1377,11 @@ FreeCADGui.addCommand(
 )
 FreeCADGui.addCommand(
     'FEM_SolverCalculixCxxtools',
-    _CommandFemSolverCalculixCxxtools()
+    _CommandFemSolverCxxtools()
 )
 FreeCADGui.addCommand(
     'FEM_SolverCalculiX',
-    _CommandFemSolverCalculiX()
+    _CommandFemSolverCalculix()
 )
 FreeCADGui.addCommand(
     'FEM_SolverControl',
