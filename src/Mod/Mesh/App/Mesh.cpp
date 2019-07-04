@@ -1699,6 +1699,7 @@ void MeshObject::addSegment(const Segment& s)
 {
     addSegment(s.getIndices());
     this->_segments.back().setName(s.getName());
+    this->_segments.back().setColor(s.getColor());
     this->_segments.back().save(s.isSaved());
     this->_segments.back()._modifykernel = s._modifykernel;
 }
