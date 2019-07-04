@@ -80,6 +80,25 @@ PyObject* DrawViewPartPy::clearCosmeticEdges(PyObject *args)
     return Py_None;
 }
 
+PyObject* DrawViewPartPy::clearCenterLines(PyObject *args)
+{
+    (void) args;
+    DrawViewPart* item = getDrawViewPartPtr();
+    item->clearCenterLines();
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* DrawViewPartPy::clearGeomFormats(PyObject *args)
+{
+    (void) args;
+    DrawViewPart* item = getDrawViewPartPtr();
+    item->clearGeomFormats();
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+
 PyObject* DrawViewPartPy::makeCosmeticVertex(PyObject *args)
 {
     PyObject* pPnt1 = nullptr;

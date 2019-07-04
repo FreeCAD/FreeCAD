@@ -364,24 +364,24 @@ void CosmeticEdge::dump(char* title)
 //*********************************************************
 CenterLine::CenterLine(void)
 {
-    start = Base::Vector3d(0.0, 0.0, 0.0);
-    end = Base::Vector3d(0.0, 0.0, 0.0);
-    mode = 0;
-    hShift = 0.0;
-    vShift = 0.0;
-    rotate = 0.0;
-    extendBy = 0.0;
+    m_start = Base::Vector3d(0.0, 0.0, 0.0);
+    m_end = Base::Vector3d(0.0, 0.0, 0.0);
+    m_mode = 0;
+    m_hShift = 0.0;
+    m_vShift = 0.0;
+    m_rotate = 0.0;
+    m_extendBy = 0.0;
 }
 
 CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2)
 {
-    start = p1;
-    end = p2;
-    mode = 0;
-    hShift = 0.0;
-    vShift = 0.0;
-    rotate = 0.0;
-    extendBy = 0.0;
+    m_start = p1;
+    m_end = p2;
+    m_mode = 0;
+    m_hShift = 0.0;
+    m_vShift = 0.0;
+    m_rotate = 0.0;
+    m_extendBy = 0.0;
 }
 
 CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2,
@@ -391,13 +391,13 @@ CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2,
                        double r,
                        double x)
 {
-    start = p1;
-    end = p2;
-    mode = m;
-    hShift = h;
-    vShift = v;
-    rotate = r;
-    extendBy = x;
+    m_start = p1;
+    m_end = p2;
+    m_mode = m;
+    m_hShift = h;
+    m_vShift = v;
+    m_rotate = r;
+    m_extendBy = x;
 }
 
 CenterLine::~CenterLine()
@@ -415,8 +415,8 @@ TechDraw::BaseGeom* CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFeat)
     std::pair<Base::Vector3d, Base::Vector3d> ends = 
                              calcEndPoints(partFeat,
                                           m_faces,
-                                          mode, extendBy,
-                                          hShift,vShift, rotate);
+                                          m_mode, m_extendBy,
+                                          m_hShift,m_vShift, m_rotate);
     TechDraw::BaseGeom* newGeom = nullptr;
     Base::Vector3d p1 = DrawUtil::invertY(ends.first);
     Base::Vector3d p2 = DrawUtil::invertY(ends.second);
@@ -435,17 +435,17 @@ TechDraw::BaseGeom* CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFeat)
 std::string CenterLine::toCSV(void) const
 {
     std::stringstream ss;
-    ss << start.x << "," <<   //0
-          start.y << "," <<   //1
-          start.z << "," <<   //2
-          end.x << "," <<     //3
-          end.y << "," <<     //4
-          end.z << "," <<     //5
-          mode << "," <<      //6
-          hShift << "," <<    //7
-          vShift << "," <<    //8
-          rotate << "," <<    //9
-          extendBy << "," <<  //10
+    ss << m_start.x << "," <<   //0
+          m_start.y << "," <<   //1
+          m_start.z << "," <<   //2
+          m_end.x << "," <<     //3
+          m_end.y << "," <<     //4
+          m_end.z << "," <<     //5
+          m_mode << "," <<      //6
+          m_hShift << "," <<    //7
+          m_vShift << "," <<    //8
+          m_rotate << "," <<    //9
+          m_extendBy << "," <<  //10
           m_faces.size();     //11
     if (!m_faces.empty()) {
         for (auto& f: m_faces) {
@@ -456,7 +456,7 @@ std::string CenterLine::toCSV(void) const
     }
 
     std::string clCSV = ss.str();
-    std::string fmtCSV = fmt.toCSV();
+    std::string fmtCSV = m_format.toCSV();
     return clCSV + ",$$$," + fmtCSV;
 }
 
@@ -483,22 +483,22 @@ bool CenterLine::fromCSV(std::string& lineSpec)
     double x = atof(values[0].c_str());
     double y = atof(values[1].c_str());
     double z = atof(values[2].c_str());
-    start = Base::Vector3d (x,y,z);
+    m_start = Base::Vector3d (x,y,z);
     x = atof(values[3].c_str());
     y = atof(values[4].c_str());
     z = atof(values[5].c_str());
-    end = Base::Vector3d (x,y,z);
-    mode = atoi(values[6].c_str());
-    hShift = atof(values[7].c_str());
-    vShift = atof(values[8].c_str());
-    rotate = atof(values[9].c_str());
-    extendBy = atof(values[10].c_str());
-    int faceCount = atoi(values[11].c_str());
+    m_end = Base::Vector3d (x,y,z);
+    m_mode = atoi(values[6].c_str());
+    m_hShift = atof(values[7].c_str());
+    m_vShift = atof(values[8].c_str());
+    m_rotate = atof(values[9].c_str());
+    m_extendBy = atof(values[10].c_str());
+    int m_faceCount = atoi(values[11].c_str());
     int i = 0;
-    for ( ; i < faceCount; i++ ) {
+    for ( ; i < m_faceCount; i++ ) {
         m_faces.push_back(values[12 + i]);
     }
-    fmt.fromCSV(tokens[1]);
+    m_format.fromCSV(tokens[1]);
     return true;
 }
 
@@ -511,7 +511,7 @@ void CenterLine::dump(char* title)
 std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart* partFeat,
                                                       std::vector<std::string> faceNames, 
                                                       int vert, double ext,
-                                                      double hShift, double vShift,
+                                                      double m_hShift, double m_vShift,
                                                       double rotate)
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;
@@ -524,8 +524,8 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
     faceBox.SetGap(0.0);
 
     double scale = partFeat->getScale();
-    double hss = hShift * scale;
-    double vss = vShift * scale;
+    double hss = m_hShift * scale;
+    double vss = m_vShift * scale;
 
     for (auto& fn: faceNames) {
         if (TechDraw::DrawUtil::getGeomTypeFromName(fn) != "Face") {
@@ -593,5 +593,73 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
     result.first = p1 / scale;
     result.second = p2 / scale;
     return result;
+}
+
+GeomFormat::GeomFormat() :
+    m_geomIndex(-1)
+{
+    m_format.m_style = LineFormat::getDefEdgeStyle();
+    m_format.m_weight = LineFormat::getDefEdgeWidth();
+    m_format.m_color = LineFormat::getDefEdgeColor();
+    m_format.m_visible = true;
+}
+
+GeomFormat::GeomFormat(int idx,
+                       TechDraw::LineFormat fmt) :
+    m_geomIndex(idx)
+{
+    m_format.m_style = fmt.m_style;
+    m_format.m_weight = fmt.m_weight;
+    m_format.m_color = fmt.m_color;
+    m_format.m_visible = fmt.m_visible;
+    //m_format = fmt;  //???
+}
+
+GeomFormat::~GeomFormat()
+{
+}
+
+void GeomFormat::dump(char* title)
+{
+    Base::Console().Message("GF::dump - %s \n",title);
+    Base::Console().Message("GF::dump - %s \n",toCSV().c_str());
+}
+
+std::string GeomFormat::toCSV(void) const
+{
+    std::stringstream ss;
+    ss << m_geomIndex << ",$$$," <<
+          m_format.toCSV();
+    return ss.str();
+}
+
+bool GeomFormat::fromCSV(std::string& lineSpec)
+{
+    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
+    if (tokens.empty()) {
+        Base::Console().Message("GeomFormat::fromCSV - tokenize failed - no tokens\n");
+        return false;
+    }
+
+    if (tokens[0].length() == 0) {
+        Base::Console().Message( "GeomFormat::fromCSV - token0 empty\n");
+        return false;
+    }
+
+    std::vector<std::string> values = DrawUtil::split(tokens[0]);
+    unsigned int maxCells = 1;
+    if (values.size() < maxCells) {
+        Base::Console().Message( "GeomFormat::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
+        return false;
+    }
+    m_geomIndex = atoi(values[0].c_str());
+
+    int lastToken = 1;
+    if (tokens.size() != 2) {
+        Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
+        return false;
+    }
+    m_format.fromCSV(tokens[lastToken]);
+    return true;
 }
 

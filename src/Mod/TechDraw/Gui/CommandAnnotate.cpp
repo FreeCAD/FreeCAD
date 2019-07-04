@@ -59,6 +59,7 @@
 #include "TaskRichAnno.h"
 #include "TaskCosVertex.h"
 #include "TaskCenterLine.h"
+#include "TaskLineDecor.h"
 #include "ViewProviderPage.h"
 #include "QGVPage.h"
 
@@ -796,6 +797,89 @@ bool CmdTechDrawCosmeticEraser::isActive(void)
     return (havePage && haveView);
 }
 
+//===========================================================================
+// TechDraw_DecorateLine
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawDecorateLine);
+
+CmdTechDrawDecorateLine::CmdTechDrawDecorateLine()
+  : Command("TechDraw_DecorateLine")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Change the appearance of a line");
+    sToolTipText    = QT_TR_NOOP("Change the appearance of a line");
+    sWhatsThis      = "TechDraw_DecorateLine";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-linedecor";
+}
+
+void CmdTechDrawDecorateLine::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    TechDraw::DrawViewPart* baseFeat = nullptr;
+    if (!selection.empty()) {
+        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+        if( baseFeat == nullptr ) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("No View in Selection."));
+            return;
+        }
+    } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("You must select line(s) in a View."));
+            return;
+    }
+
+    std::vector<std::string> SubNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+    }
+    std::vector<std::string> edgeNames;
+    for (auto& s: SubNames) {
+        std::string geomType = DrawUtil::getGeomTypeFromName(s);
+        if (geomType == "Edge") {
+            edgeNames.push_back(s);
+        }
+    }
+
+    if ( edgeNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                             QObject::tr("You must select line(s) to edit."));
+        return;
+    } else {
+        Gui::Control().showDialog(new TaskDlgLineDecor(baseFeat,
+                                                       edgeNames));
+    }
+}
+
+bool CmdTechDrawDecorateLine::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
+
 void CreateTechDrawCommandsAnnotate(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -809,6 +893,7 @@ void CreateTechDrawCommandsAnnotate(void)
     rcCmdMgr.addCommand(new CmdTechDrawAnnotation());
     rcCmdMgr.addCommand(new CmdTechDrawFaceCenterLine());
     rcCmdMgr.addCommand(new CmdTechDrawCosmeticEraser());
+    rcCmdMgr.addCommand(new CmdTechDrawDecorateLine());
 }
 
 //===========================================================================
