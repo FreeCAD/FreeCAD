@@ -107,8 +107,8 @@ protected:
     bool prefPrintCenters(void);
 
 
-    void formatGeomFromCosmetic(int sourceIndex, QGIEdge* item);
-    void formatGeomFromCenterLine(int sourceIndex, QGIEdge* item);
+    bool formatGeomFromCosmetic(int sourceIndex, QGIEdge* item);
+    bool formatGeomFromCenterLine(int sourceIndex, QGIEdge* item);
 
 
 private:

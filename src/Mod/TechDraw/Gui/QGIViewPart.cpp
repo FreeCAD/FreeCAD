@@ -440,21 +440,31 @@ void QGIViewPart::drawViewPart()
                 showEdge = true;
             }
         }
+        bool showItem = true;
         if (showEdge) {
             item = new QGIEdge(i);
             item->setWidth(lineWidth);
-                //TODO: implement formats for geom lines.
             if ((*itGeom)->cosmetic == true) {
                 int source = (*itGeom)->source();
                 int sourceIndex = (*itGeom)->sourceIndex();
                 if (source == 1) {  //this is a "CosmeticEdge"
-                    formatGeomFromCosmetic(sourceIndex, item);
+                    showItem = formatGeomFromCosmetic(sourceIndex, item);
                 } else if (source == 2) { //this is a "CenterLine"
-                    formatGeomFromCenterLine(sourceIndex, item);
+                    showItem = formatGeomFromCenterLine(sourceIndex, item);
                 } else {
                     Base::Console().Message("QGIVP::drawVP - edge: %d is confused - source: %d\n",i,source);
                 }
+            } else {
+                //TODO: implement formats for geom lines.
+                TechDraw::GeomFormat* gf = viewPart->getGeomFormatByGeom(i);
+                if (gf != nullptr) {
+                    item->setNormalColor(gf->m_format.m_color.asValue<QColor>());
+                    item->setWidth(gf->m_format.m_weight * lineScaleFactor);
+                    item->setStyle(gf->m_format.m_style);
+                    showItem = gf->m_format.m_visible;
+                }
             }
+
             addToGroup(item);                       //item is at scene(0,0), not group(0,0)
             item->setPos(0.0,0.0);                  //now at group(0,0)
             item->setPath(drawPainterPath(*itGeom));
@@ -468,6 +478,9 @@ void QGIViewPart::drawViewPart()
                 item->setWidth(lineWidthIso);
             }
             item->setPrettyNormal();
+            if (!showItem) {
+                item->hide();
+            }
             //debug a path
 //            QPainterPath edgePath=drawPainterPath(*itGeom);
 //            std::stringstream edgeId;
@@ -548,28 +561,34 @@ void QGIViewPart::drawViewPart()
     }
 }
 
-void QGIViewPart::formatGeomFromCosmetic(int sourceIndex, QGIEdge* item)
+bool QGIViewPart::formatGeomFromCosmetic(int sourceIndex, QGIEdge* item)
 {
 //    Base::Console().Message("QGIVP::formatGeomFromCosmetic(%d)\n",sourceIndex);
+    bool result = true;
     auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     TechDraw::CosmeticEdge* ce = partFeat->getCosmeticEdgeByIndex(sourceIndex);
     if (ce != nullptr) {
         item->setNormalColor(ce->m_format.m_color.asValue<QColor>());
         item->setWidth(ce->m_format.m_weight * lineScaleFactor);
         item->setStyle(ce->m_format.m_style);
+        result = ce->m_format.m_visible;
     }
+    return result;
 }
 
-void QGIViewPart::formatGeomFromCenterLine(int sourceIndex, QGIEdge* item)
+bool QGIViewPart::formatGeomFromCenterLine(int sourceIndex, QGIEdge* item)
 {
 //    Base::Console().Message("QGIVP::formatGeomFromCenterLine(%d)\n",sourceIndex);
+    bool result = true;
     auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     TechDraw::CenterLine* cl = partFeat->getCenterLineByIndex(sourceIndex);
     if (cl != nullptr) {
-        item->setNormalColor(cl->fmt.m_color.asValue<QColor>());
-        item->setWidth(cl->fmt.m_weight * lineScaleFactor);
-        item->setStyle(cl->fmt.m_style);
+        item->setNormalColor(cl->m_format.m_color.asValue<QColor>());
+        item->setWidth(cl->m_format.m_weight * lineScaleFactor);
+        item->setStyle(cl->m_format.m_style);
+        result = cl->m_format.m_visible;
     }
+    return result;
 }
 
 QGIFace* QGIViewPart::drawFace(TechDraw::Face* f, int idx)

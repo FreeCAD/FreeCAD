@@ -100,7 +100,7 @@ class TechDrawExport BaseGeom
         std::string dump();
 
     protected:
-        int m_source;
+        int m_source;         //0 - geom, 1 - cosmetic edge, 2 - centerline
         int m_sourceIndex;
 
 };

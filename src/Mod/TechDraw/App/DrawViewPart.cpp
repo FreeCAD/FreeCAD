@@ -152,11 +152,13 @@ DrawViewPart::DrawViewPart(void) :
     ADD_PROPERTY_TYPE(CosmeticVertexList ,(""),sgroup,App::Prop_None,"CosmeticVertex Save/Restore");
     ADD_PROPERTY_TYPE(CosmeticEdgeList ,(""),sgroup,App::Prop_None,"CosmeticEdge Save/Restore");
     ADD_PROPERTY_TYPE(CenterLineList ,(""),sgroup,App::Prop_None,"CenterLine Save/Restore");
+    ADD_PROPERTY_TYPE(GeomFormatList ,(""),sgroup,App::Prop_None,"Geometry format Save/Restore");
 
     std::vector<std::string> emptyList;
     CosmeticVertexList.setValues(emptyList);
     CosmeticEdgeList.setValues(emptyList);
     CenterLineList.setValues(emptyList);
+    GeomFormatList.setValues(emptyList);
 
     geometryObject = nullptr;
     getRunControl();
@@ -1380,11 +1382,96 @@ void DrawViewPart::addCenterLinesToGeom(void)
     }
 }
 
+//build GFormatTable from GeomFormatList
+void DrawViewPart::readGFormatProp(void)
+{
+    GFormatTable.clear();
+    std::vector<std::string> restoreFormats = GeomFormatList.getValues();
+    if (restoreFormats.empty()) {
+        return;
+    }
+    for (auto& rf: restoreFormats) {
+       if (!rf.empty()) {
+           GeomFormat* gf = new GeomFormat();
+           bool rc = gf->fromCSV(rf);
+           if (rc) {
+               GFormatTable.push_back(gf);
+           } else {
+               delete gf;
+           }
+       }
+    }
+}
+
+void DrawViewPart::writeGFormatProp(void)
+{
+    std::vector<std::string> saveFormats;
+    const std::vector<TechDraw::GeomFormat*> gForms = getGeomFormats();
+    for (auto& gf: gForms) {
+        std::string csv = gf->toCSV();
+        saveFormats.push_back(csv);
+    }
+    GeomFormatList.setValues(saveFormats);
+}
+
+void DrawViewPart::clearGeomFormats(void) 
+{
+    GFormatTable.clear();
+    std::vector<std::string> noFormats;
+    GeomFormatList.setValues(noFormats);
+}
+
+// adds a GeomFormat to GFormatTable and GeomFormatList
+int DrawViewPart::addGeomFormat(GeomFormat* gf)
+{
+    int newIdx = (int) (GFormatTable.size());
+    GFormatTable.push_back(gf);
+    std::string csv = gf->toCSV();
+    std::vector<std::string> formatList = GeomFormatList.getValues();
+    formatList.push_back(csv);
+    GeomFormatList.setValues(formatList);
+    return newIdx;
+}
+
+void DrawViewPart::removeGeomFormat(int idx)
+{
+    if (idx < (int) GFormatTable.size()) {
+        GFormatTable.erase(GFormatTable.begin() + idx);
+        writeGFormatProp();
+        requestPaint();
+    }
+}
+
+TechDraw::GeomFormat* DrawViewPart::getGeomFormatByIndex(int idx) const
+{
+    GeomFormat* result = nullptr;
+    const std::vector<TechDraw::GeomFormat*> fmts = getGeomFormats();
+    if (idx < (int) fmts.size())  {
+        result = fmts.at(idx);
+    }
+    return result;
+}
+
+//find the format corresponding to geometry edge idx
+TechDraw::GeomFormat* DrawViewPart::getGeomFormatByGeom(int idx) const
+{
+    GeomFormat* result = nullptr;
+    const std::vector<TechDraw::GeomFormat*> fmts = getGeomFormats();
+    for (auto& f: fmts) {
+        if (f->m_geomIndex == idx) {
+            result = f;
+            break;
+        }
+    }
+    return result;
+}
+
 void DrawViewPart::onDocumentRestored()
 {
     readCVertexProp();
     readCEdgeProp();
     readCLineProp();
+    readGFormatProp();
 //    requestPaint();
     //if execute has not run yet, there will be no GO, and paint will not do anything.
     execute();

@@ -173,9 +173,9 @@ void TaskCenterLine::setUiEdit()
         ui->lstSubList->addItem(listItem);
     }
 
-    ui->cpLineColor->setColor(m_cl->fmt.m_color.asValue<QColor>());
-    ui->dsbWeight->setValue(m_cl->fmt.m_weight);
-    ui->cboxStyle->setCurrentIndex(m_cl->fmt.m_style);
+    ui->cpLineColor->setColor(m_cl->m_format.m_color.asValue<QColor>());
+    ui->dsbWeight->setValue(m_cl->m_format.m_weight);
+    ui->cboxStyle->setCurrentIndex(m_cl->m_format.m_style);
 
     int precision = Base::UnitsApi::getDecimals();
     ui->dsbRotate->setDecimals(precision);
@@ -183,21 +183,21 @@ void TaskCenterLine::setUiEdit()
     ui->rbVertical->setChecked(false);
     ui->rbHorizontal->setChecked(false);
     ui->rbAligned->setChecked(false);
-    if (m_cl->mode == 0) {
+    if (m_cl->m_mode == 0) {
         ui->rbVertical->setChecked(true);
-    } else if (m_cl->mode == 1) {
+    } else if (m_cl->m_mode == 1) {
         ui->rbHorizontal->setChecked(true);
-    } else if (m_cl->mode ==2) {
+    } else if (m_cl->m_mode ==2) {
         ui->rbAligned->setChecked(true);
     }
-    ui->dsbRotate->setValue(m_cl->rotate);
+    ui->dsbRotate->setValue(m_cl->m_rotate);
     Base::Quantity qVal;
     qVal.setUnit(Base::Unit::Length);
-    qVal.setValue(m_cl->vShift);
+    qVal.setValue(m_cl->m_vShift);
     ui->qsbVertShift->setValue(qVal);
-    qVal.setValue(m_cl->hShift);
+    qVal.setValue(m_cl->m_hShift);
     ui->qsbHorizShift->setValue(qVal);
-    qVal.setValue(m_cl->extendBy);
+    qVal.setValue(m_cl->m_extendBy);
     ui->qsbExtend->setValue(qVal);
 }
 
@@ -221,28 +221,28 @@ void TaskCenterLine::createCenterLine(void)
                          extendBy,
                          hShift, vShift, rotate);
     TechDraw::CenterLine* cl = new TechDraw::CenterLine(ends.first, ends.second);
-    cl->start = ends.first;
-    cl->end = ends.second;
+    cl->m_start = ends.first;
+    cl->m_end = ends.second;
 
     App::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
-    cl->fmt.m_color = ac;
-    cl->fmt.m_weight = ui->dsbWeight->value();
-    cl->fmt.m_style = ui->cboxStyle->currentIndex();
-    cl->fmt.m_visible = true;
+    cl->m_format.m_color = ac;
+    cl->m_format.m_weight = ui->dsbWeight->value();
+    cl->m_format.m_style = ui->cboxStyle->currentIndex();
+    cl->m_format.m_visible = true;
 
     if (ui->rbVertical->isChecked()) {
-        cl->mode = 0;
+        cl->m_mode = 0;
     } else if (ui->rbHorizontal->isChecked()) {
-        cl->mode = 1;
+        cl->m_mode = 1;
     } else if (ui->rbAligned->isChecked()) {
-        cl->mode = 2;
+        cl->m_mode = 2;
     }
     cl->m_faces = m_subNames;
-    cl->rotate = rotate;
-    cl->vShift = vShift;
-    cl->hShift = hShift;
-    cl->extendBy = extendBy;
+    cl->m_rotate = rotate;
+    cl->m_vShift = vShift;
+    cl->m_hShift = hShift;
+    cl->m_extendBy = extendBy;
 
     m_partFeat->addCenterLine(cl);
     
@@ -256,22 +256,22 @@ void TaskCenterLine::updateCenterLine(void)
 {
 //    Base::Console().Message("TCL::updateCenterLine()\n");
     Gui::Command::openCommand("Edit CenterLine");
-    m_cl->fmt.m_color.setValue<QColor>(ui->cpLineColor->color() );
-    m_cl->fmt.m_weight = ui->dsbWeight->value();
-    m_cl->fmt.m_style = ui->cboxStyle->currentIndex();
-    m_cl->fmt.m_visible = true;
+    m_cl->m_format.m_color.setValue<QColor>(ui->cpLineColor->color() );
+    m_cl->m_format.m_weight = ui->dsbWeight->value();
+    m_cl->m_format.m_style = ui->cboxStyle->currentIndex();
+    m_cl->m_format.m_visible = true;
 
     if (ui->rbVertical->isChecked()) {
-        m_cl->mode = 0;
+        m_cl->m_mode = 0;
     } else if (ui->rbHorizontal->isChecked()) {
-        m_cl->mode = 1;
+        m_cl->m_mode = 1;
     } else if (ui->rbAligned->isChecked()) {
-        m_cl->mode = 2;
+        m_cl->m_mode = 2;
     }
-    m_cl->rotate = ui->dsbRotate->value();
-    m_cl->vShift = ui->qsbVertShift->rawValue();
-    m_cl->hShift = ui->qsbHorizShift->rawValue();
-    m_cl->extendBy = ui->qsbExtend->rawValue();
+    m_cl->m_rotate = ui->dsbRotate->value();
+    m_cl->m_vShift = ui->qsbVertShift->rawValue();
+    m_cl->m_hShift = ui->qsbHorizShift->rawValue();
+    m_cl->m_extendBy = ui->qsbExtend->rawValue();
     m_partFeat->replaceCenterLine(m_clIdx, m_cl);
     m_partFeat->requestPaint();         //is requestPaint enough here?
 //    m_partFeat->recomputeFeature();
