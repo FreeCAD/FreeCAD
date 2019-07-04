@@ -222,7 +222,7 @@ def locateLayer(wantedLayer,color=None):
         if wantedLayerName==l.Label:
             return l
     if dxfUseDraftVisGroups:
-        newLayer = Draft.makeVisGroup(name=wantedLayer)
+        newLayer = Draft.makeLayer(name=wantedLayer,linecolor=color)
     else:
         newLayer = doc.addObject("App::DocumentObjectGroup",wantedLayer)
     newLayer.Label = wantedLayerName
@@ -982,7 +982,10 @@ def addObject(shape,name="Shape",layer=None):
         newob = shape
     if layer:
         lay=locateLayer(layer)
-        lay.addObject(newob)
+        if hasattr(lay,"addObject"):
+            lay.addObject(newob)
+        elif hasattr(lay,"Proxy") and hasattr(lay.Proxy,"addObject"):
+            lay.Proxy.addObject(lay,newob)
     formatObject(newob)
     return newob
 
