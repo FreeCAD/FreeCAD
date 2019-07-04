@@ -222,6 +222,7 @@ def SetupProperties():
     setup.append("StartSide")
     setup.append("StepOver")
     setup.append("EnableRotation")
+    setup.append("StartRadius")
     return setup
 
 
