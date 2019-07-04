@@ -254,7 +254,11 @@ def calcBulge(v1,bulge,v2):
     return startpoint.add(endpoint)
 
 def getGroup(ob):
-    "checks if the object is part of a group"
+    "checks if the object is part of a group or layer"
+    if dxfUseDraftVisGroups:
+        for layer in [o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == "Layer"]:
+            if ob in layer.Group:
+                return layer.Label
     for i in FreeCAD.ActiveDocument.Objects:
         if i.isDerivedFrom("App::DocumentObjectGroup"):
             for j in i.Group:
@@ -1928,7 +1932,7 @@ def writePanelCut(ob,dxf,nospline,lwPoly,parent=None):
             #    dxf.append(dxfLibrary.Line(pts,color=getACI(ob),layer="Tags"))
 
 def getStrGroup(ob):
-    "gets a string version of the group name"
+    "gets a string version of the group or layer name"
     l = getGroup(ob)
     if six.PY2:
         if isinstance(l,six.text_type):
@@ -2335,7 +2339,7 @@ def readPreferences():
     dxfImportHatches = p.GetBool("importDxfHatches",False)
     dxfUseStandardSize = p.GetBool("dxfStdSize",False)
     dxfGetColors = p.GetBool("dxfGetOriginalColors",False)
-    dxfUseDraftVisGroups = p.GetBool("dxfUseDraftVisGroups",False)
+    dxfUseDraftVisGroups = p.GetBool("dxfUseDraftVisGroups",True)
     dxfFillMode = p.GetBool("fillmode",True)
     dxfUseLegacyImporter = p.GetBool("dxfUseLegacyImporter",False)
     dxfUseLegacyExporter = p.GetBool("dxfUseLegacyExporter",False)
