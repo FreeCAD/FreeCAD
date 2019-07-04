@@ -239,40 +239,38 @@ const char* DocumentObject::detachFromDocument()
     return name ? name->c_str() : 0;
 }
 
-std::vector<DocumentObject*> DocumentObject::getOutList(void) const
-{
-    std::vector<Property*> List;
-    std::vector<DocumentObject*> ret;
-    getPropertyList(List);
-    for (std::vector<Property*>::const_iterator It = List.begin();It != List.end(); ++It) {
-        if ((*It)->isDerivedFrom(PropertyLinkList::getClassTypeId())) {
-            const std::vector<DocumentObject*> &OutList = static_cast<PropertyLinkList*>(*It)->getValues();
-            for (std::vector<DocumentObject*>::const_iterator It2 = OutList.begin();It2 != OutList.end(); ++It2) {
-                if (*It2)
-                    ret.push_back(*It2);
-            }
-        }
-        else if ((*It)->isDerivedFrom(PropertyLinkSubList::getClassTypeId())) {
-            const std::vector<DocumentObject*> &OutList = static_cast<PropertyLinkSubList*>(*It)->getValues();
-            for (std::vector<DocumentObject*>::const_iterator It2 = OutList.begin();It2 != OutList.end(); ++It2) {
-                if (*It2)
-                    ret.push_back(*It2);
-            }
-        }
-        else if ((*It)->isDerivedFrom(PropertyLink::getClassTypeId())) {
-            if (static_cast<PropertyLink*>(*It)->getValue())
-                ret.push_back(static_cast<PropertyLink*>(*It)->getValue());
-        }
-        else if ((*It)->isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
-            if (static_cast<PropertyLinkSub*>(*It)->getValue())
-                ret.push_back(static_cast<PropertyLinkSub*>(*It)->getValue());
-        }
+const std::vector<DocumentObject*> &DocumentObject::getOutList() const {
+    if(!_outListCached) {
+        _outList.clear();
+        getOutList(0,_outList);
+        _outListCached = true;
     }
+    return _outList;
+}
 
-    // Get document objects that this document object relies on
-    ExpressionEngine.getDocumentObjectDeps(ret);
+std::vector<DocumentObject*> DocumentObject::getOutList(int options) const
+{
+    std::vector<DocumentObject*> res;
+    getOutList(options,res);
+    return res;
+}
 
-    return ret;
+void DocumentObject::getOutList(int options, std::vector<DocumentObject*> &res) const {
+    if(_outListCached && !options) {
+        res.insert(res.end(),_outList.begin(),_outList.end());
+        return;
+    }
+    std::vector<Property*> props;
+    getPropertyList(props);
+    bool noHidden = !!(options & OutListNoHidden);
+    bool noXLinked = !!(options & OutListNoXLinked);
+    for(auto prop : props) {
+        auto link = dynamic_cast<PropertyLinkBase*>(prop);
+        if(link && (!noXLinked || !PropertyXLink::supportXLink(prop)))
+            link->getLinks(res,noHidden);
+    }
+    if(!(options & OutListNoExpression))
+        ExpressionEngine.getLinks(res);
 }
 
 std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Property* prop) const
@@ -281,33 +279,9 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Prop
     if (!prop || prop->getContainer() != this)
         return ret;
 
-    if (prop->isDerivedFrom(PropertyLinkList::getClassTypeId())) {
-        const std::vector<DocumentObject*> &OutList = static_cast<PropertyLinkList*>(prop)->getValues();
-        for (std::vector<DocumentObject*>::const_iterator It2 = OutList.begin();It2 != OutList.end(); ++It2) {
-            if (*It2)
-                ret.push_back(*It2);
-        }
-    }
-    else if (prop->isDerivedFrom(PropertyLinkSubList::getClassTypeId())) {
-        const std::vector<DocumentObject*> &OutList = static_cast<PropertyLinkSubList*>(prop)->getValues();
-        for (std::vector<DocumentObject*>::const_iterator It2 = OutList.begin();It2 != OutList.end(); ++It2) {
-            if (*It2)
-                ret.push_back(*It2);
-        }
-    }
-    else if (prop->isDerivedFrom(PropertyLink::getClassTypeId())) {
-        if (static_cast<PropertyLink*>(prop)->getValue())
-            ret.push_back(static_cast<PropertyLink*>(prop)->getValue());
-    }
-    else if (prop->isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
-        if (static_cast<PropertyLinkSub*>(prop)->getValue())
-            ret.push_back(static_cast<PropertyLinkSub*>(prop)->getValue());
-    }
-    else if (prop == &ExpressionEngine) {
-        // Get document objects that this document object relies on
-        ExpressionEngine.getDocumentObjectDeps(ret);
-    }
-
+    auto link = dynamic_cast<PropertyLinkBase*>(prop);
+    if(link)
+        link->getLinks(ret);
     return ret;
 }
 
@@ -322,13 +296,15 @@ std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
 
 #else // ifndef USE_OLD_DAG
 
-std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
+const std::vector<App::DocumentObject*> &DocumentObject::getInList(void) const
 {
     return _inList;
 }
 
 #endif // if USE_OLD_DAG
 
+
+#if 0
 
 void _getInListRecursive(std::set<DocumentObject*>& objSet,
                          const DocumentObject* obj,
@@ -352,7 +328,8 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
     // number of objects in document is a good estimate in result size
     // int maxDepth = getDocument()->countObjects() +2;
     int maxDepth = GetApplication().checkLinkDepth(0);
-    std::set<App::DocumentObject*> result;
+    std::vector<App::DocumentObject*> result;
+    result.reserve(maxDepth);
 
     // using a rcursie helper to collect all InLists
     _getInListRecursive(result, this, this, maxDepth);
@@ -360,6 +337,95 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
     std::vector<App::DocumentObject*> array;
     array.insert(array.begin(), result.begin(), result.end());
     return array;
+}
+
+#else
+// The original algorithm is highly inefficient in some special case.
+// Considering an object is linked by every other objects. After exculding this
+// object, there is another object linked by every other of the remaining
+// objects, and so on.  The vector 'result' above will be of magnitude n^2.
+// Even if we replace the vector with a set, we still need to visit that amount
+// of objects. And this may not be the worst case. getInListEx() has no such
+// problem.
+
+std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const {
+    std::set<App::DocumentObject*> inSet;
+    std::vector<App::DocumentObject*> res;
+    getInListEx(inSet,true,&res);
+    return res;
+}
+
+#endif
+
+// More efficient algorithm to find the recursive inList of an object,
+// including possible external parents.  One shortcoming of this algorithm is
+// it does not detect cyclic reference, althgouth it won't crash either.
+void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet, 
+        bool recursive, std::vector<App::DocumentObject*> *inList) const
+{
+#ifdef USE_OLD_DAG
+    std::map<DocumentObject*,std::set<App::DocumentObject*> > outLists;
+
+    // Old DAG does not have pre-built InList, and must calculate The InList by
+    // going through all objects' OutLists. So we collect all objects and their
+    // outLists first here.
+    for(auto doc : GetApplication().getDocuments()) {
+        for(auto obj : doc->getObjects()) {
+            if(!obj || !obj->getNameInDocument() || obj==this)
+                continue;
+            const auto &outList = obj->getOutList();
+            outLists[obj].insert(outList.begin(),outList.end());
+        }
+    }
+
+    std::stack<DocumentObject*> pendings;
+    pendings.push(const_cast<DocumentObject*>(this));
+    while(pendings.size()) {
+        auto obj = pendings.top();
+        pendings.pop();
+        for(auto &v : outLists) {
+            if(v.first == obj) continue;
+            auto &outList = v.second;
+            // Check the outList to see if the object is there, and pend the
+            // object for recrusive check if it's not already in the inList
+            if(outList.find(obj)!=outList.end() && 
+               inSet.insert(v.first).second &&
+               recursive)
+            {
+                pendings.push(v.first);
+            }
+        }
+    }
+#else // USE_OLD_DAG
+
+    if(!recursive) {
+        inSet.insert(_inList.begin(),_inList.end());
+        if(inList)
+            *inList = _inList;
+        return;
+    }
+
+    std::stack<DocumentObject*> pendings;
+    pendings.push(const_cast<DocumentObject*>(this));
+    while(pendings.size()) {
+        auto obj = pendings.top();
+        pendings.pop();
+        for(auto o : obj->getInList()) {
+            if(o && o->getNameInDocument() && inSet.insert(o).second) {
+                pendings.push(o);
+                if(inList)
+                    inList->push_back(o);
+            }
+        }
+    }
+
+#endif
+}
+
+std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const {
+    std::set<App::DocumentObject*> ret;
+    getInListEx(ret,recursive);
+    return ret;
 }
 
 void _getOutListRecursive(std::set<DocumentObject*>& objSet,
@@ -420,8 +486,12 @@ bool _isInInListRecursive(const DocumentObject* act,
 
 bool DocumentObject::isInInListRecursive(DocumentObject *linkTo) const
 {
+#if 0
     int maxDepth = getDocument()->countObjects() + 2;
     return _isInInListRecursive(this, linkTo, maxDepth);
+#else
+    return this==linkTo || getInListEx(true).count(linkTo);
+#endif
 }
 
 bool DocumentObject::isInInList(DocumentObject *linkTo) const
@@ -488,6 +558,7 @@ bool DocumentObject::testIfLinkDAGCompatible(DocumentObject *linkTo) const
 
 bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject *> &linksTo) const
 {
+#if 0
     Document* doc = this->getDocument();
     if (!doc)
         throw Base::RuntimeError("DocumentObject::testIfLinkIsDAG: object is not in any document.");
@@ -497,6 +568,14 @@ bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject *>
         return false;
     else
         return true;
+#else
+    auto inLists = getInListEx(true);
+    inLists.emplace(const_cast<DocumentObject*>(this));
+    for(auto obj : linksTo)
+        if(inLists.count(obj))
+            return false;
+    return true;
+#endif
 }
 
 bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSubList &linksTo) const
@@ -618,6 +697,12 @@ void DocumentObject::onChanged(const Property* prop)
         _pDoc->onChangedProperty(this,prop);
 
     signalChanged(*this,*prop);
+}
+
+void DocumentObject::clearOutListCache() const {
+    _outList.clear();
+    _outListMap.clear();
+    _outListCached = false;
 }
 
 PyObject *DocumentObject::getPyObject(void)
