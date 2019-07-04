@@ -30,10 +30,10 @@ from PySide import QtCore
 # Python command definitions
 # for C++ command definitions see src/Mod/Fem/Command.cpp
 
-class _CommandFemAnalysis(CommandManager):
+class _Analysis(CommandManager):
     "The FEM_Analysis command definition"
     def __init__(self):
-        super(_CommandFemAnalysis, self).__init__()
+        super(_Analysis, self).__init__()
         self.resources = {
             'Pixmap': 'fem-analysis',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -63,10 +63,10 @@ class _CommandFemAnalysis(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemClippingPlaneAdd(CommandManager):
+class _ClippingPlaneAdd(CommandManager):
     "The FEM_ClippingPlaneAdd command definition"
     def __init__(self):
-        super(_CommandFemClippingPlaneAdd, self).__init__()
+        super(_ClippingPlaneAdd, self).__init__()
         self.resources = {
             'Pixmap': 'fem-clipping-plane-add',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -115,10 +115,10 @@ class _CommandFemClippingPlaneAdd(CommandManager):
         FreeCADGui.ActiveDocument.ActiveView.getSceneGraph().insertChild(clip_plane, 1)
 
 
-class _CommandFemClippingPlaneRemoveAll(CommandManager):
+class _ClippingPlaneRemoveAll(CommandManager):
     "The FEM_ClippingPlaneemoveAll command definition"
     def __init__(self):
-        super(_CommandFemClippingPlaneRemoveAll, self).__init__()
+        super(_ClippingPlaneRemoveAll, self).__init__()
         self.resources = {
             'Pixmap': 'fem-clipping-plane-remove-all',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -143,10 +143,10 @@ class _CommandFemClippingPlaneRemoveAll(CommandManager):
         FreeCADGui.doCommand(line1 + line2 + line3)
 
 
-class _CommandFemConstraintBodyHeatSource(CommandManager):
+class _ConstraintBodyHeatSource(CommandManager):
     "The FEM_ConstraintBodyHeatSource command definition"
     def __init__(self):
-        super(_CommandFemConstraintBodyHeatSource, self).__init__()
+        super(_ConstraintBodyHeatSource, self).__init__()
         self.resources = {
             'Pixmap': 'fem-constraint-heatflux',  # the heatflux icon is used
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -167,10 +167,10 @@ class _CommandFemConstraintBodyHeatSource(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemConstraintElectrostaticPotential(CommandManager):
+class _ConstraintElectrostaticPotential(CommandManager):
     "The FEM_ConstraintElectrostaticPotential command definition"
     def __init__(self):
-        super(_CommandFemConstraintElectrostaticPotential, self).__init__()
+        super(_ConstraintElectrostaticPotential, self).__init__()
         self.resources = {
             'Pixmap': 'fem-constraint-electrostatic-potential',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -195,10 +195,10 @@ class _CommandFemConstraintElectrostaticPotential(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemConstraintFlowVelocity(CommandManager):
+class _ConstraintFlowVelocity(CommandManager):
     "The FEM_ConstraintFlowVelocity command definition"
     def __init__(self):
-        super(_CommandFemConstraintFlowVelocity, self).__init__()
+        super(_ConstraintFlowVelocity, self).__init__()
         self.resources = {
             'Pixmap': 'fem-constraint-flow-velocity',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -223,10 +223,10 @@ class _CommandFemConstraintFlowVelocity(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemConstraintInitialFlowVelocity(CommandManager):
+class _ConstraintInitialFlowVelocity(CommandManager):
     "The FEM_ConstraintInitialFlowVelocity command definition"
     def __init__(self):
-        super(_CommandFemConstraintInitialFlowVelocity, self).__init__()
+        super(_ConstraintInitialFlowVelocity, self).__init__()
         self.resources = {
             'Pixmap': 'fem-constraint-initial-flow-velocity',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -251,10 +251,10 @@ class _CommandFemConstraintInitialFlowVelocity(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemConstraintSelfWeight(CommandManager):
+class _ConstraintSelfWeight(CommandManager):
     "The FEM_ConstraintSelfWeight command definition"
     def __init__(self):
-        super(_CommandFemConstraintSelfWeight, self).__init__()
+        super(_ConstraintSelfWeight, self).__init__()
         self.resources = {
             'Pixmap': 'fem-constraint-selfweight',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -279,10 +279,10 @@ class _CommandFemConstraintSelfWeight(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemElementFluid1D(CommandManager):
+class _ElementFluid1D(CommandManager):
     "The FEM_ElementFluid1D command definition"
     def __init__(self):
-        super(_CommandFemElementFluid1D, self).__init__()
+        super(_ElementFluid1D, self).__init__()
         self.resources = {
             'Pixmap': 'fem-element-fluid-1d',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -311,10 +311,10 @@ class _CommandFemElementFluid1D(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemElementGeometry1D(CommandManager):
+class _ElementGeometry1D(CommandManager):
     "The Fem_ElementGeometry1D command definition"
     def __init__(self):
-        super(_CommandFemElementGeometry1D, self).__init__()
+        super(_ElementGeometry1D, self).__init__()
         self.resources = {
             'Pixmap': 'fem-element-geometry-1d',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -343,10 +343,10 @@ class _CommandFemElementGeometry1D(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemElementGeometry2D(CommandManager):
+class _ElementGeometry2D(CommandManager):
     "The FEM_ElementGeometry2D command definition"
     def __init__(self):
-        super(_CommandFemElementGeometry2D, self).__init__()
+        super(_ElementGeometry2D, self).__init__()
         self.resources = {
             'Pixmap': 'fem-element-geometry-2d',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -374,10 +374,10 @@ class _CommandFemElementGeometry2D(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemElementRotation1D(CommandManager):
+class _ElementRotation1D(CommandManager):
     "The Fem_ElementRotation1D command definition"
     def __init__(self):
-        super(_CommandFemElementRotation1D, self).__init__()
+        super(_ElementRotation1D, self).__init__()
         self.resources = {
             'Pixmap': 'fem-element-rotation-1d',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -406,10 +406,10 @@ class _CommandFemElementRotation1D(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemEquationElectrostatic(CommandManager):
+class _EquationElectrostatic(CommandManager):
     "The FEM_EquationElectrostatic command definition"
     def __init__(self):
-        super(_CommandFemEquationElectrostatic, self).__init__()
+        super(_EquationElectrostatic, self).__init__()
         self.resources = {
             'Pixmap': 'fem-equation-electrostatic',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -435,10 +435,10 @@ class _CommandFemEquationElectrostatic(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemEquationElasticity(CommandManager):
+class _EquationElasticity(CommandManager):
     "The FEM_EquationElasticity command definition"
     def __init__(self):
-        super(_CommandFemEquationElasticity, self).__init__()
+        super(_EquationElasticity, self).__init__()
         self.resources = {
             'Pixmap': 'fem-equation-elasticity',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -463,10 +463,10 @@ class _CommandFemEquationElasticity(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemEquationFlow(CommandManager):
+class _EquationFlow(CommandManager):
     "The FEM_EquationFlow command definition"
     def __init__(self):
-        super(_CommandFemEquationFlow, self).__init__()
+        super(_EquationFlow, self).__init__()
         self.resources = {
             'Pixmap': 'fem-equation-flow',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -492,10 +492,10 @@ class _CommandFemEquationFlow(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemEquationFluxsolver(CommandManager):
+class _EquationFluxsolver(CommandManager):
     "The FEM_EquationFluxsolver command definition"
     def __init__(self):
-        super(_CommandFemEquationFluxsolver, self).__init__()
+        super(_EquationFluxsolver, self).__init__()
         self.resources = {
             'Pixmap': 'fem-equation-fluxsolver',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -521,10 +521,10 @@ class _CommandFemEquationFluxsolver(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemEquationHeat(CommandManager):
+class _EquationHeat(CommandManager):
     "The FEM_EquationHeat command definition"
     def __init__(self):
-        super(_CommandFemEquationHeat, self).__init__()
+        super(_EquationHeat, self).__init__()
         self.resources = {
             'Pixmap': 'fem-equation-heat',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -550,10 +550,10 @@ class _CommandFemEquationHeat(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMaterialEditor(CommandManager):
+class _MaterialEditor(CommandManager):
     "The FEM_MaterialEditor command definition"
     def __init__(self):
-        super(_CommandFemMaterialEditor, self).__init__()
+        super(_MaterialEditor, self).__init__()
         self.resources = {
             'Pixmap': 'Arch_Material_Group',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -573,10 +573,10 @@ class _CommandFemMaterialEditor(CommandManager):
         FreeCADGui.doCommand("MaterialEditor.openEditor()")
 
 
-class _CommandFemMaterialFluid(CommandManager):
+class _MaterialFluid(CommandManager):
     "The FEM_MaterialFluid command definition"
     def __init__(self):
-        super(_CommandFemMaterialFluid, self).__init__()
+        super(_MaterialFluid, self).__init__()
         self.resources = {
             'Pixmap': 'fem-material-fluid',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -604,10 +604,10 @@ class _CommandFemMaterialFluid(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMaterialMechanicalNonlinear(CommandManager):
+class _MaterialMechanicalNonlinear(CommandManager):
     "The FEM_MaterialMechanicalNonlinear command definition"
     def __init__(self):
-        super(_CommandFemMaterialMechanicalNonlinear, self).__init__()
+        super(_MaterialMechanicalNonlinear, self).__init__()
         self.resources = {
             'Pixmap': 'fem-material-nonlinear',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -665,10 +665,10 @@ class _CommandFemMaterialMechanicalNonlinear(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMaterialReinforced(CommandManager):
+class _MaterialReinforced(CommandManager):
     "The FEM_MaterialReinforced command definition"
     def __init__(self):
-        super(_CommandFemMaterialReinforced, self).__init__()
+        super(_MaterialReinforced, self).__init__()
         self.resources = {
             'Pixmap': 'fem-material-reinforced',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -696,10 +696,10 @@ class _CommandFemMaterialReinforced(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMaterialSolid(CommandManager):
+class _MaterialSolid(CommandManager):
     "The FEM_MaterialSolid command definition"
     def __init__(self):
-        super(_CommandFemMaterialSolid, self).__init__()
+        super(_MaterialSolid, self).__init__()
         self.resources = {
             'Pixmap': 'fem-material',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -727,10 +727,10 @@ class _CommandFemMaterialSolid(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMesh2Mesh(CommandManager):
+class _Mesh2Mesh(CommandManager):
     "The FEM_FemMesh2Mesh command definition"
     def __init__(self):
-        super(_CommandFemMesh2Mesh, self).__init__()
+        super(_Mesh2Mesh, self).__init__()
         self.resources = {
             'Pixmap': 'fem-femmesh-to-mesh',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -776,10 +776,10 @@ class _CommandFemMesh2Mesh(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMeshBoundaryLayer(CommandManager):
+class _MeshBoundaryLayer(CommandManager):
     "The FEM_MeshBoundaryLayer command definition"
     def __init__(self):
-        super(_CommandFemMeshBoundaryLayer, self).__init__()
+        super(_MeshBoundaryLayer, self).__init__()
         self.resources = {
             'Pixmap': 'fem-femmesh-boundary-layer',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -809,10 +809,10 @@ class _CommandFemMeshBoundaryLayer(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMeshClear(CommandManager):
+class _MeshClear(CommandManager):
     "The FEM_MeshClear command definition"
     def __init__(self):
-        super(_CommandFemMeshClear, self).__init__()
+        super(_MeshClear, self).__init__()
         self.resources = {
             'Pixmap': 'fem-femmesh-clear-mesh',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -836,10 +836,10 @@ class _CommandFemMeshClear(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMeshDisplayInfo(CommandManager):
+class _MeshDisplayInfo(CommandManager):
     "The FEM_MeshDisplayInfo command definition"
     def __init__(self):
-        super(_CommandFemMeshDisplayInfo, self).__init__()
+        super(_MeshDisplayInfo, self).__init__()
         self.resources = {
             'Pixmap': 'fem-femmesh-print-info',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -868,10 +868,10 @@ class _CommandFemMeshDisplayInfo(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMeshGmshFromShape(CommandManager):
+class _MeshGmshFromShape(CommandManager):
     "The FEM_MeshGmshFromShape command definition"
     def __init__(self):
-        super(_CommandFemMeshGmshFromShape, self).__init__()
+        super(_MeshGmshFromShape, self).__init__()
         self.resources = {
             'Pixmap': 'fem-femmesh-gmsh-from-shape',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -915,10 +915,10 @@ class _CommandFemMeshGmshFromShape(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMeshGroup(CommandManager):
+class _MeshGroup(CommandManager):
     "The FEM_MeshGroup command definition"
     def __init__(self):
-        super(_CommandFemMeshGroup, self).__init__()
+        super(_MeshGroup, self).__init__()
         self.resources = {
             'Pixmap': 'fem-femmesh-from-shape',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -948,10 +948,10 @@ class _CommandFemMeshGroup(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMeshNetgenFromShape(CommandManager):
+class _MeshNetgenFromShape(CommandManager):
     "The FEM_MeshNetgenFromShape command definition"
     def __init__(self):
-        super(_CommandFemMeshNetgenFromShape, self).__init__()
+        super(_MeshNetgenFromShape, self).__init__()
         self.resources = {
             'Pixmap': 'fem-femmesh-netgen-from-shape',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -995,10 +995,10 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
         # a recompute immediately starts meshing when task panel is opened, this is not intended
 
 
-class _CommandFemMeshRegion(CommandManager):
+class _MeshRegion(CommandManager):
     "The FEM_MeshRegion command definition"
     def __init__(self):
-        super(_CommandFemMeshRegion, self).__init__()
+        super(_MeshRegion, self).__init__()
         self.resources = {
             'Pixmap': 'fem-femmesh-region',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -1028,10 +1028,10 @@ class _CommandFemMeshRegion(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemResultShow(CommandManager):
+class _ResultShow(CommandManager):
     "The FEM_ResultShow command definition"
     def __init__(self):
-        super(_CommandFemResultShow, self).__init__()
+        super(_ResultShow, self).__init__()
         self.resources = {
             'Pixmap': 'fem-post-result-show',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -1050,10 +1050,10 @@ class _CommandFemResultShow(CommandManager):
         self.selobj.ViewObject.Document.setEdit(self.selobj.ViewObject, 0)
 
 
-class _CommandFemResultsPurge(CommandManager):
+class _ResultsPurge(CommandManager):
     "The FEM_ResultsPurge command definition"
     def __init__(self):
-        super(_CommandFemResultsPurge, self).__init__()
+        super(_ResultsPurge, self).__init__()
         self.resources = {
             'Pixmap': 'fem-post-results-purge',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -1073,10 +1073,10 @@ class _CommandFemResultsPurge(CommandManager):
         resulttools.purge_results(self.active_analysis)
 
 
-class _CommandFemSolverCxxtools(CommandManager):
+class _SolverCxxtools(CommandManager):
     "The FEM_SolverCalculix ccx tools command definition"
     def __init__(self):
-        super(_CommandFemSolverCxxtools, self).__init__()
+        super(_SolverCxxtools, self).__init__()
         self.resources = {
             'Pixmap': 'fem-solver-standard',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -1115,10 +1115,10 @@ class _CommandFemSolverCxxtools(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemSolverCalculix(CommandManager):
+class _SolverCalculix(CommandManager):
     "The FEM_SolverCalculix command definition"
     def __init__(self):
-        super(_CommandFemSolverCalculix, self).__init__()
+        super(_SolverCalculix, self).__init__()
         self.resources = {
             'Pixmap': 'fem-solver-standard',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -1143,10 +1143,10 @@ class _CommandFemSolverCalculix(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemSolverControl(CommandManager):
+class _SolverControl(CommandManager):
     "The FEM_SolverControl command definition"
     def __init__(self):
-        super(_CommandFemSolverControl, self).__init__()
+        super(_SolverControl, self).__init__()
         self.resources = {
             'Pixmap': 'fem-solver-control',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -1165,10 +1165,10 @@ class _CommandFemSolverControl(CommandManager):
         FreeCADGui.ActiveDocument.setEdit(self.selobj, 0)
 
 
-class _CommandFemSolverElmer(CommandManager):
+class _SolverElmer(CommandManager):
     "The FEM_SolverElmer command definition"
     def __init__(self):
-        super(_CommandFemSolverElmer, self).__init__()
+        super(_SolverElmer, self).__init__()
         self.resources = {
             'Pixmap': 'fem-solver-elmer',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -1194,10 +1194,10 @@ class _CommandFemSolverElmer(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemSolverRun(CommandManager):
+class _SolverRun(CommandManager):
     "The FEM_SolverRun command definition"
     def __init__(self):
-        super(_CommandFemSolverRun, self).__init__()
+        super(_SolverRun, self).__init__()
         self.resources = {
             'Pixmap': 'fem-solver-run',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -1219,10 +1219,10 @@ class _CommandFemSolverRun(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemSolverZ88(CommandManager):
+class _SolverZ88(CommandManager):
     "The FEM_SolverZ88 command definition"
     def __init__(self):
-        super(_CommandFemSolverZ88, self).__init__()
+        super(_SolverZ88, self).__init__()
         self.resources = {
             'Pixmap': 'fem-solver-standard',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -1249,153 +1249,153 @@ class _CommandFemSolverZ88(CommandManager):
 # the string in add command will be the page name on FreeCAD wiki
 FreeCADGui.addCommand(
     'FEM_Analysis',
-    _CommandFemAnalysis()
+    _Analysis()
 )
 FreeCADGui.addCommand(
     'FEM_ClippingPlaneAdd',
-    _CommandFemClippingPlaneAdd()
+    _ClippingPlaneAdd()
 )
 FreeCADGui.addCommand(
     'FEM_ClippingPlaneRemoveAll',
-    _CommandFemClippingPlaneRemoveAll()
+    _ClippingPlaneRemoveAll()
 )
 FreeCADGui.addCommand(
     'FEM_ConstraintBodyHeatSource',
-    _CommandFemConstraintBodyHeatSource()
+    _ConstraintBodyHeatSource()
 )
 FreeCADGui.addCommand(
     'FEM_ConstraintElectrostaticPotential',
-    _CommandFemConstraintElectrostaticPotential()
+    _ConstraintElectrostaticPotential()
 )
 FreeCADGui.addCommand(
     'FEM_ConstraintFlowVelocity',
-    _CommandFemConstraintFlowVelocity()
+    _ConstraintFlowVelocity()
 )
 FreeCADGui.addCommand(
     'FEM_ConstraintInitialFlowVelocity',
-    _CommandFemConstraintInitialFlowVelocity()
+    _ConstraintInitialFlowVelocity()
 )
 FreeCADGui.addCommand(
     'FEM_ConstraintSelfWeight',
-    _CommandFemConstraintSelfWeight()
+    _ConstraintSelfWeight()
 )
 FreeCADGui.addCommand(
     'FEM_ElementFluid1D',
-    _CommandFemElementFluid1D()
+    _ElementFluid1D()
 )
 FreeCADGui.addCommand(
     'FEM_ElementGeometry1D',
-    _CommandFemElementGeometry1D()
+    _ElementGeometry1D()
 )
 FreeCADGui.addCommand(
     'FEM_ElementGeometry2D',
-    _CommandFemElementGeometry2D()
+    _ElementGeometry2D()
 )
 FreeCADGui.addCommand(
     'FEM_ElementRotation1D',
-    _CommandFemElementRotation1D()
+    _ElementRotation1D()
 )
 FreeCADGui.addCommand(
     'FEM_EquationElectrostatic',
-    _CommandFemEquationElectrostatic()
+    _EquationElectrostatic()
 )
 FreeCADGui.addCommand(
     'FEM_EquationElasticity',
-    _CommandFemEquationElasticity()
+    _EquationElasticity()
 )
 FreeCADGui.addCommand(
     'FEM_EquationFlow',
-    _CommandFemEquationFlow()
+    _EquationFlow()
 )
 FreeCADGui.addCommand(
     'FEM_EquationFluxsolver',
-    _CommandFemEquationFluxsolver()
+    _EquationFluxsolver()
 )
 FreeCADGui.addCommand(
     'FEM_EquationHeat',
-    _CommandFemEquationHeat()
+    _EquationHeat()
 )
 FreeCADGui.addCommand(
     'FEM_MaterialEditor',
-    _CommandFemMaterialEditor()
+    _MaterialEditor()
 )
 FreeCADGui.addCommand(
     'FEM_MaterialFluid',
-    _CommandFemMaterialFluid()
+    _MaterialFluid()
 )
 FreeCADGui.addCommand(
     'FEM_MaterialMechanicalNonlinear',
-    _CommandFemMaterialMechanicalNonlinear()
+    _MaterialMechanicalNonlinear()
 )
 FreeCADGui.addCommand(
     'FEM_MaterialReinforced',
-    _CommandFemMaterialReinforced()
+    _MaterialReinforced()
 )
 FreeCADGui.addCommand(
     'FEM_MaterialSolid',
-    _CommandFemMaterialSolid()
+    _MaterialSolid()
 )
 FreeCADGui.addCommand(
     'FEM_FEMMesh2Mesh',
-    _CommandFemMesh2Mesh()
+    _Mesh2Mesh()
 )
 FreeCADGui.addCommand(
     'FEM_MeshBoundaryLayer',
-    _CommandFemMeshBoundaryLayer()
+    _MeshBoundaryLayer()
 )
 FreeCADGui.addCommand(
     'FEM_MeshClear',
-    _CommandFemMeshClear()
+    _MeshClear()
 )
 FreeCADGui.addCommand(
     'FEM_MeshDisplayInfo',
-    _CommandFemMeshDisplayInfo()
+    _MeshDisplayInfo()
 )
 FreeCADGui.addCommand(
     'FEM_MeshGmshFromShape',
-    _CommandFemMeshGmshFromShape()
+    _MeshGmshFromShape()
 )
 FreeCADGui.addCommand(
     'FEM_MeshGroup',
-    _CommandFemMeshGroup()
+    _MeshGroup()
 )
 FreeCADGui.addCommand(
     'FEM_MeshNetgenFromShape',
-    _CommandFemMeshNetgenFromShape()
+    _MeshNetgenFromShape()
 )
 FreeCADGui.addCommand(
     'FEM_MeshRegion',
-    _CommandFemMeshRegion()
+    _MeshRegion()
 )
 FreeCADGui.addCommand(
     'FEM_ResultShow',
-    _CommandFemResultShow()
+    _ResultShow()
 )
 FreeCADGui.addCommand(
     'FEM_ResultsPurge',
-    _CommandFemResultsPurge()
+    _ResultsPurge()
 )
 FreeCADGui.addCommand(
     'FEM_SolverCalculixCxxtools',
-    _CommandFemSolverCxxtools()
+    _SolverCxxtools()
 )
 FreeCADGui.addCommand(
     'FEM_SolverCalculiX',
-    _CommandFemSolverCalculix()
+    _SolverCalculix()
 )
 FreeCADGui.addCommand(
     'FEM_SolverControl',
-    _CommandFemSolverControl()
+    _SolverControl()
 )
 FreeCADGui.addCommand(
     'FEM_SolverElmer',
-    _CommandFemSolverElmer()
+    _SolverElmer()
 )
 FreeCADGui.addCommand(
     'FEM_SolverRun',
-    _CommandFemSolverRun()
+    _SolverRun()
 )
 FreeCADGui.addCommand(
     'FEM_SolverZ88',
-    _CommandFemSolverZ88()
+    _SolverZ88()
 )
