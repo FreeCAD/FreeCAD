@@ -753,7 +753,7 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
     // objects (think of the claimed children of a Fusion). But I do think we
     // should change that.
     if(transform && mat) {
-        auto pla = dynamic_cast<PropertyPlacement*>(getPropertyByName("Placement"));
+        auto pla = Base::freecad_dynamic_cast<PropertyPlacement>(getPropertyByName("Placement"));
         if(pla)
             *mat *= pla->getValue().toMatrix();
     }

@@ -604,7 +604,7 @@ private:
     // this is used by the document (via friend) to have a effective DAG handling
     std::vector<App::DocumentObject*> _inList;
     mutable std::vector<App::DocumentObject *> _outList;
-    mutable std::map<std::string, App::DocumentObject*> _outListMap;
+    mutable std::unordered_map<const char *, App::DocumentObject*, CStringHasher, CStringHasher> _outListMap;
     mutable bool _outListCached = false;
 };
 
