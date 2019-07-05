@@ -372,6 +372,8 @@ class _ViewProviderArchMaterial:
         vobj.Proxy = self
 
     def getIcon(self):
+        if hasattr(self,"icondata"):
+            return self.icondata
         return ":/icons/Arch_Material.svg"
 
     def attach(self, vobj):
@@ -379,7 +381,34 @@ class _ViewProviderArchMaterial:
         return
 
     def updateData(self, obj, prop):
-        return
+        if prop == "Color":
+            from PySide import QtCore,QtGui
+
+            # custom icon
+            if hasattr(obj,"Color"):
+                c = obj.Color
+                matcolor = QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255))
+                darkcolor = QtGui.QColor(int(c[0]*125),int(c[1]*125),int(c[2]*125))
+                im = QtGui.QImage(48,48,QtGui.QImage.Format_ARGB32)
+                im.fill(QtCore.Qt.transparent)
+                pt = QtGui.QPainter(im)
+                pt.setPen(QtGui.QPen(QtCore.Qt.black, 2, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap))
+                #pt.setBrush(QtGui.QBrush(matcolor, QtCore.Qt.SolidPattern))
+                gradient = QtGui.QLinearGradient(0,0,48,48)
+                gradient.setColorAt(0,matcolor)
+                gradient.setColorAt(1,darkcolor)
+                pt.setBrush(QtGui.QBrush(gradient))
+                pt.drawEllipse(6,6,36,36)
+                pt.setPen(QtGui.QPen(QtCore.Qt.white, 1, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap))
+                pt.setBrush(QtGui.QBrush(QtCore.Qt.white, QtCore.Qt.SolidPattern))
+                pt.drawEllipse(12,12,12,12)
+                pt.end()
+
+                ba = QtCore.QByteArray()
+                b = QtCore.QBuffer(ba)
+                b.open(QtCore.QIODevice.WriteOnly)
+                im.save(b,"XPM")
+                self.icondata = ba.data().decode("latin1")
 
     def onChanged(self, vobj, prop):
         if prop == "Material":
@@ -402,6 +431,16 @@ class _ViewProviderArchMaterial:
         if hasattr(self,"taskd"):
             del self.taskd
         return
+
+    def setTaskValue(self,widgetname,value):
+        if hasattr(self,"taskd"):
+            if hasattr(self.taskd,"form"):
+                if hasattr(self.taskd.form,widgetname):
+                    widget = getattr(self.taskd.form,widgetname)
+                    if hasattr(widget,"setText"):
+                        widget.setText(value)
+                    elif hasattr(widget,"setValue"):
+                        widget.setText(value)
 
     def __getstate__(self):
         return None
@@ -726,6 +765,7 @@ class _ArchMultiMaterialTaskPanel:
         QtCore.QObject.connect(self.form.upButton,QtCore.SIGNAL("pressed()"),self.upLayer)
         QtCore.QObject.connect(self.form.downButton,QtCore.SIGNAL("pressed()"),self.downLayer)
         QtCore.QObject.connect(self.form.delButton,QtCore.SIGNAL("pressed()"),self.delLayer)
+        QtCore.QObject.connect(self.form.invertButton,QtCore.SIGNAL("pressed()"),self.invertLayer)
         self.fillExistingCombo()
         self.fillData()
         
@@ -790,7 +830,13 @@ class _ArchMultiMaterialTaskPanel:
         
     def downLayer(self):
         self.moveLayer(mvt=1)
-        
+
+    def invertLayer(self):
+        items = [self.model.takeRow(row) for row in range(self.model.rowCount()-1,-1,-1)]
+        items.reverse()
+        for item in items:
+            self.model.insertRow(0,item)
+
     def accept(self):
         if self.obj:
             mats = []
