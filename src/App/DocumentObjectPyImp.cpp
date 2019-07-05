@@ -192,12 +192,21 @@ Py::List DocumentObjectPy::getState(void) const
         uptodate = false;
         list.append(Py::String("Recompute"));
     }
+    if (object->testStatus(App::Recompute2)) {
+        list.append(Py::String("Recompute2"));
+    }
     if (object->isRestoring()) {
         uptodate = false;
         list.append(Py::String("Restore"));
     }
     if (object->testStatus(App::Expand)){
         list.append(Py::String("Expanded"));
+    }
+    if (object->testStatus(App::PartialObject)){
+        list.append(Py::String("Partial"));
+    }
+    if (object->testStatus(App::ObjImporting)){
+        list.append(Py::String("Importing"));
     }
     if (uptodate) {
         list.append(Py::String("Up-to-date"));
@@ -361,11 +370,12 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
 
 PyObject*  DocumentObjectPy::recompute(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    PyObject *recursive=Py_False;
+    if (!PyArg_ParseTuple(args, "|O",&recursive))
         return NULL;
 
     try {
-        bool ok = getDocumentObjectPtr()->recomputeFeature();
+        bool ok = getDocumentObjectPtr()->recomputeFeature(PyObject_IsTrue(recursive));
         return Py_BuildValue("O", (ok ? Py_True : Py_False));
     }
     catch (const Base::Exception& e) {
@@ -650,6 +660,16 @@ PyObject*  DocumentObjectPy::getParentGeoFeatureGroup(PyObject *args)
     }
 }
 
+Py::Boolean DocumentObjectPy::getMustExecute() const
+{
+    try {
+        return Py::Boolean(getDocumentObjectPtr()->mustExecute()?true:false);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
 PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
 {
     PyObject* o;
@@ -837,4 +857,12 @@ PyObject *DocumentObjectPy::adjustRelativeLinks(PyObject *args) {
 
 Py::String DocumentObjectPy::getOldLabel() const {
     return Py::String(getDocumentObjectPtr()->getOldLabel());
+}
+
+Py::Boolean DocumentObjectPy::getNoTouch() const {
+    return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::NoTouch));
+}
+
+void DocumentObjectPy::setNoTouch(Py::Boolean value) {
+    getDocumentObjectPtr()->setStatus(ObjectStatus::NoTouch,value.isTrue());
 }

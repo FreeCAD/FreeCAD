@@ -57,7 +57,7 @@
         </Methode>
         <Methode Name="recompute">
             <Documentation>
-                <UserDocu>Recomputes this object</UserDocu>
+                <UserDocu>recompute(recursive=False): Recomputes this object</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getSubObject" Keyword="true">
@@ -250,11 +250,23 @@ or None if the GUI is not up</UserDocu>
 			<Parameter Name="ViewObject" Type="Object"/>
 		</Attribute>
 		<CustomAttributes />
+		<Attribute Name="MustExecute" ReadOnly="true">
+			<Documentation>
+                <UserDocu>Check if the object must be recomputed</UserDocu>
+			</Documentation>
+			<Parameter Name="MustExecute" Type="Boolean"/>
+		</Attribute>
 		<Attribute Name="ID" ReadOnly="true">
 			<Documentation>
                 <UserDocu>The unique identifier (among its document) of this object</UserDocu>
 			</Documentation>
 			<Parameter Name="ID" Type="Int"/>
+		</Attribute>
+		<Attribute Name="Removing" ReadOnly="true">
+			<Documentation>
+                <UserDocu>Indicate if the object is being removed</UserDocu>
+			</Documentation>
+			<Parameter Name="Removing" Type="Boolean"/>
 		</Attribute>
         <Attribute Name="Parents" ReadOnly="true">
             <Documentation>
@@ -267,6 +279,12 @@ or None if the GUI is not up</UserDocu>
                 <UserDocu>Contains the old label before change</UserDocu>
             </Documentation>
 			<Parameter Name="OldLabel" Type="String"/>
+        </Attribute>
+        <Attribute Name="NoTouch">
+            <Documentation>
+                <UserDocu>Enable/disable no touch on any property change</UserDocu>
+            </Documentation>
+			<Parameter Name="NoTouch" Type="Boolean"/>
         </Attribute>
 	</PythonExport>
 </GenerateModel>
