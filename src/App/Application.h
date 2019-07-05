@@ -86,13 +86,35 @@ public:
      * The second name is a UTF8 name of any kind. It's that name normally shown to
      * the user and stored in the App::Document::Name property.
      */
-    App::Document* newDocument(const char * Name=0l, const char * UserName=0l);
+    App::Document* newDocument(const char * Name=0l, const char * UserName=0l, bool createView=true);
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
     /// find a unique document name
     std::string getUniqueDocumentName(const char *Name) const;
     /// Open an existing document from a file
-    App::Document* openDocument(const char * FileName=0l);
+    App::Document* openDocument(const char * FileName=0l, bool createView=true);
+    /** Open multiple documents
+     *
+     * @param filenames: input file names
+     * @param pathes: optional input file path in case it is different from
+     * filenames (mainly used during recovery).
+     * @param labels: optional label assign to document (mainly used during recovery).
+     * @param errs: optional output error message corresponding to each input
+     * file name. If errs is given, this function will catch all
+     * Base::Exception and save the error message inside. Otherwise, it will
+     * throw on exception when opening the input files.
+     * @param createView: whether to signal Gui module to create view on restore.
+     *
+     * @return Return opened document object corresponding to each input file
+     * name, which maybe NULL if failed.
+     *
+     * This function will also open any external referenced files.
+     */
+    std::vector<Document*> openDocuments(const std::vector<std::string> &filenames, 
+            const std::vector<std::string> *pathes=0,
+            const std::vector<std::string> *labels=0,
+            std::vector<std::string> *errs=0,
+            bool createView = true);
     /// Retrieve the active document
     App::Document* getActiveDocument(void) const;
     /// Retrieve a named document
@@ -106,6 +128,14 @@ public:
     void setActiveDocument(const char *Name);
     /// close all documents (without saving)
     void closeAllDocuments(void);
+    /// Add pending document to open together with the current opening document
+    int addPendingDocument(const char *FileName, const char *objName, bool allowPartial);
+    /// Indicate whether the application is opening (restoring) some document
+    bool isRestoring() const;
+    /// Indicate the application is closing all document
+    bool isClosingAll() const;
+    //@}
+    
     /** @name Application-wide trandaction setting */
     //@{
     /** Setup a pending application-wide active transaction
@@ -142,7 +172,7 @@ public:
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
-    boost::signals2::signal<void (const Document&)> signalNewDocument;
+    boost::signals2::signal<void (const Document&, bool)> signalNewDocument;
     /// signal on document getting deleted
     boost::signals2::signal<void (const Document&)> signalDeleteDocument;
     /// signal on already deleted Document
@@ -177,6 +207,10 @@ public:
     boost::signals2::signal<void (bool)> signalCloseTransaction;
     /// signal on show hidden items
     boost::signals2::signal<void (const Document&)> signalShowHidden;
+    /// signal on start opening document(s)
+    boost::signals2::signal<void ()> signalStartOpenDocument;
+    /// signal on finished opening document(s)
+    boost::signals2::signal<void ()> signalFinishOpenDocument;
     //@}
 
 
@@ -202,6 +236,8 @@ public:
     boost::signals2::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     boost::signals2::signal<void (const App::DocumentObject&)> signalActivatedObject;
+    /// signal before recomputed document
+    boost::signals2::signal<void (const App::Document&)> signalBeforeRecomputeDocument;
     /// signal on recomputed document
     boost::signals2::signal<void (const App::Document&)> signalRecomputed;
     /// signal on recomputed document object
@@ -377,6 +413,7 @@ protected:
     void slotRedoDocument(const App::Document&);
     void slotRecomputedObject(const App::DocumentObject&);
     void slotRecomputed(const App::Document&);
+    void slotBeforeRecompute(const App::Document&);
     void slotOpenTransaction(const App::Document&, std::string);
     void slotCommitTransaction(const App::Document&);
     void slotAbortTransaction(const App::Document&);
@@ -384,6 +421,10 @@ protected:
     void slotFinishSaveDocument(const App::Document&, const std::string&);
     void slotChangePropertyEditor(const App::Document&, const App::Property &);
     //@}
+
+    /// open single document only
+    App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
+            const char *label, bool isMainDoc, bool createView, const std::set<std::string> &objNames);
 
     /// Helper class for App::Document to signal on close/abort transaction
     class AppExport TransactionSignaller {
@@ -439,6 +480,7 @@ private:
     static PyObject* sListDocuments     (PyObject *self,PyObject *args);
     static PyObject* sAddDocObserver    (PyObject *self,PyObject *args);
     static PyObject* sRemoveDocObserver (PyObject *self,PyObject *args);
+    static PyObject *sIsRestoring       (PyObject *self,PyObject *args);
 
     static PyObject *sSetLogLevel       (PyObject *self,PyObject *args);
     static PyObject *sGetLogLevel       (PyObject *self,PyObject *args);
@@ -446,9 +488,12 @@ private:
     static PyObject *sCheckLinkDepth    (PyObject *self,PyObject *args);
     static PyObject *sGetLinksTo        (PyObject *self,PyObject *args);
 
+    static PyObject *sGetDependentObjects(PyObject *self,PyObject *args);
+
     static PyObject *sSetActiveTransaction  (PyObject *self,PyObject *args);
     static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args);
     static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
+    static PyObject *sCheckAbort(PyObject *self,PyObject *args);
     static PyMethodDef    Methods[]; 
 
     friend class ApplicationObserver;
@@ -496,6 +541,13 @@ private:
     std::map<std::string,ParameterManager *> mpcPramManager;
     std::map<std::string,std::string> &_mConfig;
     App::Document* _pActiveDoc;
+
+    std::deque<const char *> _pendingDocs;
+    std::deque<const char *> _pendingDocsReopen;
+    std::map<std::string,std::set<std::string> > _pendingDocMap;
+    bool _isRestoring;
+    bool _allowPartial;
+    bool _isClosingAll;
 
     // for estimate max link depth
     int _objCount;

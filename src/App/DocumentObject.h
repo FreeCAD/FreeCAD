@@ -53,7 +53,14 @@ enum ObjectStatus {
     PythonCall = 6,
     Destroy = 7,
     Enforce = 8,
-    Expand = 16
+    Recompute2 = 9, // set when the object is being recomputed in the second pass
+    PartialObject = 10,
+    PendingRecompute = 11, // set by Document, indicating the object is in recomputation queue
+    PendingRemove = 12, // set by Document, indicating the object is in pending for remove after recompute
+    ObjImporting = 13, // Mark the object as importing
+    NoTouch = 14, // no touch on any property change
+    GeoExcluded = 15, // mark as a member but not claimed by GeoFeatureGroup
+    Expand = 16,
 };
 
 /** Return object for feature execution
@@ -114,6 +121,8 @@ public:
     const char *getNameInDocument(void) const;
     /// Return the object ID that is unique within its owner document
     long getID() const {return _Id;}
+    /// returns the name that is safe to be exported to other document
+    std::string getExportName(bool forced=false) const;
     /// Return the object full name of the form DocName#ObjName
     virtual std::string getFullName() const override;
     virtual bool isAttachedToDocument() const;
@@ -154,6 +163,8 @@ public:
     bool testStatus(ObjectStatus pos) const {return StatusBits.test((size_t)pos);}
     void setStatus(ObjectStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
     //@}
+
+    int isExporting() const;
 
     /** Child element handling
      */
@@ -275,8 +286,11 @@ public:
      */
     virtual short mustExecute(void) const;
 
-    /// Recompute only this feature
-    bool recomputeFeature();
+    /** Recompute only this feature
+     *
+     * @param recursive: set to true to recompute any dependent objects as well
+     */
+    bool recomputeFeature(bool recursive=false);
 
     /// get the status Message
     const char *getStatusString(void) const;
@@ -492,6 +506,14 @@ public:
      */
     virtual bool adjustRelativeLinks(const std::set<App::DocumentObject*> &inList,
             std::set<App::DocumentObject*> *visited=0);
+
+    /** allow partial loading of dependent objects
+     *
+     * @return Returns 0 means do not support partial loading. 1 means allow
+     * dependent objects to be partially loaded, i.e. only create, but not
+     * restored. 2 means this object itself can be partially loaded.
+     */
+    virtual int canLoadPartial() const {return 0;}
 
     /** Allow object to redirect a subname path
      *

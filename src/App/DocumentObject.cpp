@@ -123,11 +123,11 @@ DocumentObjectExecReturn *DocumentObject::execute(void)
     return StdReturn;
 }
 
-bool DocumentObject::recomputeFeature()
+bool DocumentObject::recomputeFeature(bool recursive)
 {
     Document* doc = this->getDocument();
     if (doc)
-        doc->recomputeFeature(this);
+        return doc->recomputeFeature(this,recursive);
     return isValid();
 }
 
@@ -225,6 +225,26 @@ const char *DocumentObject::getNameInDocument() const
     //assert(pcNameInDocument);
     if (!pcNameInDocument) return 0;
     return pcNameInDocument->c_str();
+}
+
+int DocumentObject::isExporting() const {
+    if(!getDocument() || !getNameInDocument())
+        return 0;
+    return getDocument()->isExporting(this);
+}
+
+std::string DocumentObject::getExportName(bool forced) const {
+    if(!pcNameInDocument)
+        return std::string();
+
+    if(!forced && !isExporting())
+        return *pcNameInDocument;
+
+    // '@' is an invalid character for an internal name, which ensures the
+    // following returned name will be unique in any document. Saving external
+    // object like that shall only happens in Document::exportObjects(). We
+    // shall strip out this '@' and the following document name during restoring.
+    return *pcNameInDocument + '@' + getDocument()->getName();
 }
 
 bool DocumentObject::isAttachedToDocument() const
@@ -667,6 +687,19 @@ void DocumentObject::onChanged(const Property* prop)
     if(GetApplication().isClosingAll())
         return;
 
+    if(!GetApplication().isRestoring() && 
+       prop && !prop->testStatus(Property::PartialTrigger) &&
+       getDocument() && 
+       getDocument()->testStatus(Document::PartialDoc))
+    {
+        static App::Document *warnedDoc;
+        if(warnedDoc != getDocument()) {
+            warnedDoc = getDocument();
+            FC_WARN("Changes to partial loaded document will not be saved: "
+                    << getFullName() << '.' << prop->getName());
+        }
+    }
+
     // Delay signaling view provider until the document object has handled the
     // change
     // if (_pDoc)
@@ -753,7 +786,7 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
     // objects (think of the claimed children of a Fusion). But I do think we
     // should change that.
     if(transform && mat) {
-        auto pla = dynamic_cast<PropertyPlacement*>(getPropertyByName("Placement"));
+        auto pla = Base::freecad_dynamic_cast<PropertyPlacement>(getPropertyByName("Placement"));
         if(pla)
             *mat *= pla->getValue().toMatrix();
     }

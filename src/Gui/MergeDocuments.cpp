@@ -63,6 +63,9 @@ public:
         return true;
     }
 protected:
+    // See App::MergeDocument::XMLMergeReader for comments, with one additional
+    // benefits, we can save repetitive coding here. 
+#if 0
     void startElement(const XMLCh* const uri, const XMLCh* const localname,
                       const XMLCh* const qname,
                       const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs)
@@ -107,6 +110,7 @@ protected:
         if (LocalName == "Property")
             propertyStack.pop();
     }
+#endif
 
 private:
     std::map<std::string, std::string>& nameMap;
