@@ -152,6 +152,7 @@ bool ViewProviderBody::doubleClicked(void)
     if (activeBody == this->getObject()){
         //active body double-clicked. Deactivate.
         Gui::Command::doCommand(Gui::Command::Gui,
+                "Gui.activateView('Gui::View3DInventor', True)\n"
                 "Gui.getDocument('%s').ActiveView.setActiveObject('%s', None)",
                 this->getObject()->getDocument()->getName(),
                 PDBODYKEY);
@@ -164,6 +165,7 @@ bool ViewProviderBody::doubleClicked(void)
         auto* part = App::Part::getPartOfObject ( getObject() );
         if ( part && part != getActiveView()->getActiveObject<App::Part*> ( PARTKEY ) ) {
             Gui::Command::doCommand(Gui::Command::Gui,
+                    "Gui.activateView('Gui::View3DInventor', True)\n"
                     "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
                     part->getDocument()->getName(),
                     PARTKEY,
@@ -172,6 +174,7 @@ bool ViewProviderBody::doubleClicked(void)
         }
 
         Gui::Command::doCommand(Gui::Command::Gui,
+                "Gui.activateView('Gui::View3DInventor', True)\n"
                 "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
                 this->getObject()->getDocument()->getName(),
                 PDBODYKEY,

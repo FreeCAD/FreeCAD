@@ -94,12 +94,14 @@ bool ViewProviderPart::doubleClicked(void)
     if (activePart == this->getObject()){
         //active part double-clicked. Deactivate.
         Gui::Command::doCommand(Gui::Command::Gui,
+                "Gui.activateView('Gui::View3DInventor', True)\n"
                 "Gui.getDocument('%s').ActiveView.setActiveObject('%s', None)",
                 this->getObject()->getDocument()->getName(),
                 PARTKEY);
     } else {
         //set new active part
         Gui::Command::doCommand(Gui::Command::Gui,
+                "Gui.activateView('Gui::View3DInventor', True)\n"
                 "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
                 this->getObject()->getDocument()->getName(),
                 PARTKEY,

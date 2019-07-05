@@ -80,6 +80,7 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
 
             if (!activeBody && singleBodyDocument && autoActivate) {
                 Gui::Command::doCommand( Gui::Command::Gui,
+                    "Gui.activateView('Gui::View3DInventor', True)\n"
                     "Gui.activeView().setActiveObject('pdbody',App.ActiveDocument.findObjects('PartDesign::Body')[0])");
                 activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
                 return activeBody;
