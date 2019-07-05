@@ -351,7 +351,7 @@ class ObjectOp(PathOp.ObjectOp):
             (self.xRotRad, self.yRotRad, self.zRotRad) = opHeights[0] # pylint: disable=attribute-defined-outside-init
             (self.clrOfset, self.safOfst) = opHeights[1] # pylint: disable=attribute-defined-outside-init
 
-            # Set clearnance and safe heights based upon rotation radii
+            # Set clearance and safe heights based upon rotation radii
             if obj.EnableRotation == 'A(x)':
                 strDep = self.xRotRad
             elif obj.EnableRotation == 'B(y)':

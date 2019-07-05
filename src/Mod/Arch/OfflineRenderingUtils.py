@@ -52,7 +52,7 @@ doc = FreeCAD.open(freecadFile)
 # only the STEP exporter accepts per-face colors. The others would consider the first color in the per-face colors list as
 # the object color, which might be not what we want, so it's best to turn it off here.
 
-colors = OfflineRenderingUtils.getColors(freecadFile,nodiffuse=True) 
+colors = OfflineRenderingUtils.getColors(freecadFile,nodiffuse=True)
 
 # get the camera data from the file (used in some functions below)
 
@@ -290,7 +290,7 @@ def render(outputfile,scene=None,camera=None,zoom=False,width=400,height=300,bac
     objects. The outputfile must be a file path to save a png image."""
 
     # On Linux, the X server must have indirect rendering enabled in order to be able to do offline
-    # PNG rendering. Unfortunatley, this is turned off by default on most recent distros. The easiest
+    # PNG rendering. Unfortunately, this is turned off by default on most recent distros. The easiest
     # way I found is to edit (or create if inexistant) /etc/X11/xorg.conf and add this:
     #
     # Section "ServerFlags"
@@ -511,7 +511,7 @@ def getUnsigned(color):
         # 0->1 float colors, convert to 0->255
         color = (color[0]*255.0,color[1]*255.0,color[2]*255.0)
 
-    # ensure evertything is int otherwise bit ops below dont work
+    # ensure everything is int otherwise bit ops below don't work
     color = (int(color[0]),int(color[1]),int(color[2]))
 
     # https://forum.freecadweb.org/viewtopic.php?t=19074
@@ -574,7 +574,7 @@ def buildGuiDocumentFromColors(document,colors,camera=None):
     # although the zipfile module has a writestr() function that should allow us to write the
     # string above directly to the zip file, I couldn't manage to make it work.. So we rather
     # use a temp file here, which works.
-    
+
     #print(guidoc)
 
     tempxml = tempfile.mkstemp(suffix=".xml")[-1]
@@ -698,7 +698,7 @@ def buildGuiDocumentFromGuiData(document,guidata):
 
 def getViewProviderClass(obj):
 
-    """getViewProviderClass(obj): tries to identify the associated view provider for a 
+    """getViewProviderClass(obj): tries to identify the associated view provider for a
        given python object. Returns a (modulename,classname) tuple if found, or None"""
 
     if not hasattr(obj,"Proxy"):
