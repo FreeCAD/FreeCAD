@@ -208,7 +208,6 @@ class TestMeshCommon(unittest.TestCase):
         self
     ):
         FreeCAD.closeDocument(self.doc_name)
-        pass
 
 
 # ************************************************************************************************
@@ -511,4 +510,3 @@ class TestMeshEleTetra10(unittest.TestCase):
     ):
         # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
-        pass

@@ -118,4 +118,3 @@ class TestFemCommon(unittest.TestCase):
     ):
         # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
-        pass
