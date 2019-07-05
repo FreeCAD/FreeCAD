@@ -804,6 +804,7 @@ class _Wall(ArchComponent.Component):
         if hasattr(obj,"Material"):
             if obj.Material:
                 if hasattr(obj.Material,"Materials"):
+                    # multimaterials
                     varwidth = 0
                     restwidth = width - sum(obj.Material.Thicknesses)
                     if restwidth > 0:
@@ -935,14 +936,15 @@ class _Wall(ArchComponent.Component):
                 offset = 0
                 base = []
                 for l in layers:
-                    l2 = length/2 or 0.5
-                    w1 = -totalwidth/2 + offset
-                    w2 = w1 + l
-                    v1 = Vector(-l2,w1,0)
-                    v2 = Vector(l2,w1,0)
-                    v3 = Vector(l2,w2,0)
-                    v4 = Vector(-l2,w2,0)
-                    base.append(Part.Face(Part.makePolygon([v1,v2,v3,v4,v1])))
+                    if l > 0:
+                        l2 = length/2 or 0.5
+                        w1 = -totalwidth/2 + offset
+                        w2 = w1 + l
+                        v1 = Vector(-l2,w1,0)
+                        v2 = Vector(l2,w1,0)
+                        v3 = Vector(l2,w2,0)
+                        v4 = Vector(-l2,w2,0)
+                        base.append(Part.Face(Part.makePolygon([v1,v2,v3,v4,v1])))
                     offset += l
             else:
                 l2 = length/2 or 0.5

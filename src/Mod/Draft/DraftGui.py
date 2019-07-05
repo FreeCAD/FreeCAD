@@ -262,6 +262,7 @@ def displayExternal(internValue,decimals=None,dim='Length',showUnit=True,unit=No
         uom = "??"
     if not showUnit:
         uom = ""
+    decimals = abs(decimals) # prevent negative values
     fmt = "{0:."+ str(decimals) + "f} "+ uom
     displayExt = fmt.format(float(internValue) / float(conversion))
     displayExt = displayExt.replace(".",QtCore.QLocale().decimalPoint())
