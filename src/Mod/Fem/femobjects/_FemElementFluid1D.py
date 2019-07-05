@@ -34,7 +34,7 @@ class _FemElementFluid1D:
     "The FemElementFluid1D object"
 
     known_fluid_types = ['Liquid']
-    # 'Gas', 'Open Channel' are not impemented in ccx writer
+    # 'Gas', 'Open Channel' are not implemented in ccx writer
     # known_fluid_types = ['Liquid', 'Gas', 'Open Channel']
     known_liquid_types = [
         'PIPE MANNING',
