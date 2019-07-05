@@ -133,7 +133,6 @@ class TestObjectCreate(unittest.TestCase):
         self
     ):
         FreeCAD.closeDocument(self.doc_name)
-        pass
 
 
 # ************************************************************************************************
@@ -1395,4 +1394,3 @@ class TestObjectType(unittest.TestCase):
     ):
         # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
-        pass
