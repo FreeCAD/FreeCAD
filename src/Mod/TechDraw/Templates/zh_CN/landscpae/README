@@ -1,15 +1,14 @@
-============   English Contents ================
+=============== English Contents ================
 Author: LiFeng <felix@95839.com>
-Date:   2nd, July 2019 15:41:50 (GMT+08) 
+Date:   2nd, July 2019 15:41:50 (GMT+08)
 version: 0.001
 
-The files are to bring drawing rules into compliance with the people's republic of China national standard. This verion only supply A serial page size. please use font-family:HYSWLongFangSong
-The file will be used for FreeCAD project TechDraw Mod for PRC users.
+These files are to bring drawing rules into compliance with the People's Republic of China national standard.
+This version only supplies serial page size 'A'. Please use font-family:HYSWLongFangSong
+The file will be used for the FreeCAD project TechDraw Workbench PRC users.
 
 
-
-
-===============  Chinese Contents ===============
+=============== Chinese Contents ================
 作者：李峰 <felix@95839.com>
 日期：2019年7月2日 15:41:50 (GMT+08)
 版本：0.001
