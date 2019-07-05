@@ -312,7 +312,8 @@ class TestObjectType(unittest.TestCase):
         )
         self.assertEqual(
             'Fem::FemSolverObjectElmer',
-            type_of_obj(solverelmer))
+            type_of_obj(solverelmer)
+        )
         self.assertEqual(
             'Fem::FemSolverObjectZ88',
             type_of_obj(ObjectsFem.makeSolverZ88(doc))
