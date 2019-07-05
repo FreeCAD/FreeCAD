@@ -362,13 +362,18 @@ void MeshObject::save(const char* file, MeshCore::MeshIO::Format f,
 
     aWriter.Transform(this->_Mtrx);
     if (aWriter.SaveAny(file, f)) {
-        if (mat && mat->binding == MeshCore::MeshIO::PER_FACE && f == MeshCore::MeshIO::OBJ) {
-            Base::FileInfo fi(file);
-            std::string fn = fi.dirPath() + "/" + mat->library;
-            fi.setFile(fn);
-            Base::ofstream str(fi, std::ios::out | std::ios::binary);
-            aWriter.SaveMTL(str);
-            str.close();
+        if (mat && mat->binding == MeshCore::MeshIO::PER_FACE) {
+            if (f == MeshCore::MeshIO::Undefined)
+                f = MeshCore::MeshOutput::GetFormat(file);
+
+            if (f == MeshCore::MeshIO::OBJ) {
+                Base::FileInfo fi(file);
+                std::string fn = fi.dirPath() + "/" + mat->library;
+                fi.setFile(fn);
+                Base::ofstream str(fi, std::ios::out | std::ios::binary);
+                aWriter.SaveMTL(str);
+                str.close();
+            }
         }
     }
 }
