@@ -289,21 +289,77 @@ PyObject*  DocumentPy::removeObject(PyObject *args)
 
 PyObject*  DocumentPy::copyObject(PyObject *args)
 {
-    // 'keep' is not needed any more but leave it there for backward compatibility
-    PyObject *obj, *rec=Py_False, *keep=Py_False;
-    if (!PyArg_ParseTuple(args, "O!|O!O!",&(DocumentObjectPy::Type),&obj,&PyBool_Type,&rec,&PyBool_Type,&keep))
+    PyObject *obj, *rec=Py_False;
+    if (!PyArg_ParseTuple(args, "O|O",&obj,&rec))
         return NULL;    // NULL triggers exception
 
-    DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(obj);
-    DocumentObject* copy = getDocumentPtr()->copyObject(docObj->getDocumentObjectPtr(),
-        PyObject_IsTrue(rec) ? true : false);
-    if (copy) {
-        return copy->getPyObject();
+    std::vector<App::DocumentObject*> objs;
+    bool single = false;
+    if(PySequence_Check(obj)) {
+        Py::Sequence seq(obj);
+        for(size_t i=0;i<seq.size();++i) {
+            if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
+                return 0;
+            }
+            objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
+        }
+    }else if(!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
+        PyErr_SetString(PyExc_TypeError, 
+            "Expect first argument to be either a document object or sequence of document objects");
+        return 0;
+    }else {
+        objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+        single = true;
     }
-    else {
-        std::string str("Failed to copy the object");
-        throw Py::Exception(Base::BaseExceptionFreeCADError,str);
-    }
+
+    PY_TRY {
+        auto ret = getDocumentPtr()->copyObject(objs,PyObject_IsTrue(rec));
+        if(ret.size()==1 && single)
+            return ret[0]->getPyObject();
+
+        Py::Tuple tuple(ret.size());
+        for(size_t i=0;i<ret.size();++i) 
+            tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
+        return Py::new_reference_to(tuple);
+    }PY_CATCH
+}
+
+PyObject*  DocumentPy::importLinks(PyObject *args)
+{
+    PyObject *obj = Py_None;
+    if (!PyArg_ParseTuple(args, "|O",&obj))
+        return NULL;    // NULL triggers exception
+
+    std::vector<App::DocumentObject*> objs;
+    if(PySequence_Check(obj)) {
+        Py::Sequence seq(obj);
+        for(size_t i=0;i<seq.size();++i) {
+            if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
+                return 0;
+            }
+            objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
+        }
+    }else if(obj == Py_None) {
+    }else if(!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
+        PyErr_SetString(PyExc_TypeError, 
+            "Expect first argument to be either a document object or sequence of document objects");
+        return 0;
+    }else
+        objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+    
+    if(objs.empty())
+        objs = getDocumentPtr()->getObjects();
+
+    PY_TRY {
+        auto ret = getDocumentPtr()->importLinks(objs);
+
+        Py::Tuple tuple(ret.size());
+        for(size_t i=0;i<ret.size();++i) 
+            tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
+        return Py::new_reference_to(tuple);
+    }PY_CATCH
 }
 
 PyObject*  DocumentPy::moveObject(PyObject *args)
@@ -405,16 +461,34 @@ PyObject*  DocumentPy::clearUndos(PyObject * args)
 
 PyObject*  DocumentPy::recompute(PyObject * args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+    PyObject *pyobjs = Py_None;
+    PyObject *force = Py_False;
+    PyObject *checkCycle = Py_False;
+    if (!PyArg_ParseTuple(args, "|OO!O!",&pyobjs,
+                &PyBool_Type,&force,&PyBool_Type,&checkCycle))     // convert args: Python->C 
         return NULL;                    // NULL triggers exception
-    try {
-        int objectCount = getDocumentPtr()->recompute();
+    PY_TRY {
+        std::vector<App::DocumentObject *> objs;
+        if(pyobjs!=Py_None) {
+            if(!PySequence_Check(pyobjs)) {
+                PyErr_SetString(PyExc_TypeError, "expect input of sequence of document objects");
+                return 0;
+            }
+            Py::Sequence seq(pyobjs);
+            for(size_t i=0;i<seq.size();++i) {
+                if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
+                    PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
+                    return 0;
+                }
+                objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
+            }
+        }
+        int options = 0;
+        if(PyObject_IsTrue(checkCycle))
+            options = Document::DepNoCycle;
+        int objectCount = getDocumentPtr()->recompute(objs,PyObject_IsTrue(force),0,options);
         return Py::new_reference_to(Py::Int(objectCount));
-    }
-    catch (const Base::RuntimeError& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.what());
-        return 0;
-    }
+    } PY_CATCH;
 }
 
 PyObject*  DocumentPy::getObject(PyObject *args)
@@ -727,9 +801,68 @@ PyObject* DocumentPy::getLinksTo(PyObject *args)
             ret.setItem(i++,Py::Object(o->getPyObject(),true));
         return Py::new_reference_to(ret);
     }PY_CATCH
+}
+
+Py::List DocumentPy::getInList(void) const
+{
+    Py::List ret;
+    auto lists = PropertyXLink::getDocumentInList(getDocumentPtr());
+    if(lists.size()==1) {
+        for(auto doc : lists.begin()->second)
+            ret.append(Py::Object(doc->getPyObject(), true));
+    }
+    return ret;
+}
+
+Py::List DocumentPy::getOutList(void) const
+{
+    Py::List ret;
+    auto lists = PropertyXLink::getDocumentOutList(getDocumentPtr());
+    if(lists.size()==1) {
+        for(auto doc : lists.begin()->second)
+            ret.append(Py::Object(doc->getPyObject(), true));
+    }
+    return ret;
+}
+
+PyObject *DocumentPy::getDependentDocuments(PyObject *args) {
+    PyObject *sort = Py_True;
+    if (!PyArg_ParseTuple(args, "|O", &sort))
+        return 0;
+    PY_TRY {
+        auto docs = getDocumentPtr()->getDependentDocuments(PyObject_IsTrue(sort));
+        Py::List ret;
+        for(auto doc : docs)
+            ret.append(Py::Object(doc->getPyObject(), true));
+        return Py::new_reference_to(ret);
+    } PY_CATCH;
+}
+
+Py::Boolean DocumentPy::getRestoring(void) const
+{
+    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Restoring));
+}
+
+Py::Boolean DocumentPy::getPartial(void) const
+{
+    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::PartialDoc));
+}
+
+Py::Boolean DocumentPy::getImporting(void) const
+{
+    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Importing));
+}
+
+Py::Boolean DocumentPy::getRecomputing(void) const
+{
+    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Recomputing));
+}
+
 Py::Boolean DocumentPy::getTransacting() const {
     return Py::Boolean(getDocumentPtr()->isPerformingTransaction());
 }
 
+Py::String DocumentPy::getOldLabel() const {
+    return Py::String(getDocumentPtr()->getOldLabel());
 }
 
