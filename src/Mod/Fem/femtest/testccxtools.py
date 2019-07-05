@@ -263,12 +263,10 @@ class TestCcxTools(unittest.TestCase):
             static_expected_values,
             'CCX_Results'
         )
-        '''
         self.assertFalse(
             ret,
             "Invalid results read from .frd file"
         )
-        '''
 
         static_save_fc_file = static_analysis_dir + static_base_name + '.FCStd'
         fcc_print('Save FreeCAD file for static analysis to {}...'.format(static_save_fc_file))
@@ -568,12 +566,10 @@ class TestCcxTools(unittest.TestCase):
             frequency_expected_values,
             'CCX_Mode1_Results'
         )
-        '''
         self.assertFalse(
             ret,
             "Invalid results read from .frd file"
         )
-        '''
 
         frequency_save_fc_file = frequency_analysis_dir + frequency_base_name + '.FCStd'
         fcc_print(
@@ -805,12 +801,10 @@ class TestCcxTools(unittest.TestCase):
             thermomech_expected_values,
             'CCX_Results'
         )
-        '''
         self.assertFalse(
             ret,
             "Invalid results read from .frd file"
         )
-        '''
 
         thermomech_save_fc_file = thermomech_analysis_dir + thermomech_base_name + '.FCStd'
         fcc_print(
@@ -1200,12 +1194,10 @@ class TestCcxTools(unittest.TestCase):
             Flow1D_thermomech_expected_values,
             'CCX_Time1_0_Results'
         )
-        '''
         self.assertFalse(
             ret,
             "Invalid results read from .frd file"
         )
-        '''
 
         Flow1D_thermomech_save_fc_file = join(
             Flow1D_thermomech_analysis_dir,

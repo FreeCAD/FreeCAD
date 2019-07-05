@@ -208,11 +208,11 @@ def compare_stats(
         "U2",
         "U3",
         "Uabs",
-        "Sabs",
-        "MaxPrin",
-        "MidPrin",
-        "MinPrin",
-        "MaxShear",
+        #"Sabs",
+        #"MaxPrin",
+        #"MidPrin",
+        #"MinPrin",
+        #"MaxShear",
         "Peeq",
         "Temp",
         "MFlow",
@@ -235,9 +235,9 @@ def compare_stats(
             )
     else:
         fcc_print("Result object not found. Name: {}".format(res_obj_name))
-        return False
+        return True
 
-    # get stats to compare with
+    # get stats to compare with, the expected ones
     sf = open(stat_file, 'r')
     sf_content = []
     for l in sf.readlines():
@@ -246,13 +246,17 @@ def compare_stats(
                 sf_content.append(l)
     sf.close()
     sf_content = force_unix_line_ends(sf_content)
+    if sf_content == []:
+        return True
 
     # compare stats
-    if sf_content != stats:
-        fcc_print("Expected stats from {}".format(stat_file))
-        fcc_print(sf_content)
+    if stats != sf_content:
         fcc_print("Stats read from {}.frd file".format(fea.base_name))
-        fcc_print(stats)
+        fcc_print("!=")
+        fcc_print("Expected stats from {}".format(stat_file))
+        for i in range(len(stats)):
+            if stats[i] != sf_content[i]:
+                fcc_print("{} != {}".format(stats[i].rstrip(), sf_content[i].rstrip()))
         return True
 
     return False
