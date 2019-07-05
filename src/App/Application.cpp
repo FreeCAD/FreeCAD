@@ -221,8 +221,9 @@ init_freecad_module(void)
 #endif
 
 Application::Application(std::map<std::string,std::string> &mConfig)
-  : _mConfig(mConfig), _pActiveDoc(0), _objCount(-1)
-  , _activeTransactionID(0), _activeTransactionGuard(0), _activeTransactionTmpName(false)
+  : _mConfig(mConfig), _pActiveDoc(0), _isRestoring(false),_allowPartial(false)
+  , _isClosingAll(false), _objCount(-1), _activeTransactionID(0)
+  , _activeTransactionGuard(0), _activeTransactionTmpName(false)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
@@ -355,6 +356,11 @@ Application::~Application()
 /// get called by the document when the name is changing
 void Application::renameDocument(const char *OldName, const char *NewName)
 {
+#if 1
+    (void)OldName;
+    (void)NewName;
+    throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
+#else
     std::map<std::string,Document*>::iterator pos;
     pos = DocMap.find(OldName);
 
@@ -368,9 +374,10 @@ void Application::renameDocument(const char *OldName, const char *NewName)
     else {
         throw Base::RuntimeError("Application::renameDocument(): no document with this name to rename!");
     }
+#endif
 }
 
-Document* Application::newDocument(const char * Name, const char * UserName)
+Document* Application::newDocument(const char * Name, const char * UserName, bool createView)
 {
     // get a valid name anyway!
     if (!Name || Name[0] == '\0')
@@ -415,6 +422,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     _pActiveDoc->signalRedo.connect(boost::bind(&App::Application::slotRedoDocument, this, _1));
     _pActiveDoc->signalRecomputedObject.connect(boost::bind(&App::Application::slotRecomputedObject, this, _1));
     _pActiveDoc->signalRecomputed.connect(boost::bind(&App::Application::slotRecomputed, this, _1));
+    _pActiveDoc->signalBeforeRecompute.connect(boost::bind(&App::Application::slotBeforeRecompute, this, _1));
     _pActiveDoc->signalOpenTransaction.connect(boost::bind(&App::Application::slotOpenTransaction, this, _1, _2));
     _pActiveDoc->signalCommitTransaction.connect(boost::bind(&App::Application::slotCommitTransaction, this, _1));
     _pActiveDoc->signalAbortTransaction.connect(boost::bind(&App::Application::slotAbortTransaction, this, _1));
@@ -430,7 +438,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
         Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),active);
     }
 
-    signalNewDocument(*_pActiveDoc);
+    signalNewDocument(*_pActiveDoc,createView);
 
     // set the UserName after notifying all observers
     _pActiveDoc->Label.setValue(userName);
@@ -466,6 +474,7 @@ bool Application::closeDocument(const char* name)
 
 void Application::closeAllDocuments(void)
 {
+    Base::FlagToggler<bool> flag(_isClosingAll);
     std::map<std::string,Document*>::iterator pos;
     while((pos = DocMap.begin()) != DocMap.end())
         closeDocument(pos->first.c_str());
@@ -524,7 +533,185 @@ std::string Application::getUniqueDocumentName(const char *Name) const
     }
 }
 
-Document* Application::openDocument(const char * FileName)
+int Application::addPendingDocument(const char *FileName, const char *objName, bool allowPartial)
+{
+    if(!_isRestoring)
+        return 0;
+    if(allowPartial && _allowPartial)
+        return -1;
+    assert(FileName && FileName[0]);
+    assert(objName && objName[0]);
+    auto ret =  _pendingDocMap.emplace(FileName,std::set<std::string>());
+    ret.first->second.emplace(objName);
+    if(ret.second) {
+        _pendingDocs.push_back(ret.first->first.c_str());
+        return 1;
+    }
+    return -1;
+}
+
+bool Application::isRestoring() const {
+    return _isRestoring || Document::isAnyRestoring();
+}
+
+bool Application::isClosingAll() const {
+    return _isClosingAll;
+}
+
+struct DocTiming {
+    FC_DURATION_DECLARE(d1);
+    FC_DURATION_DECLARE(d2);
+    DocTiming() {
+        FC_DURATION_INIT(d1);
+        FC_DURATION_INIT(d2);
+    }
+};
+
+class DocOpenGuard {
+public:
+    bool &flag;
+    boost::signals2::signal<void ()> &signal;
+    DocOpenGuard(bool &f, boost::signals2::signal<void ()> &s)
+        :flag(f),signal(s)
+    {
+        flag = true;
+    }
+    ~DocOpenGuard() {
+        if(flag) {
+            flag = false;
+            signal();
+        }
+    }
+};
+
+Document* Application::openDocument(const char * FileName, bool createView) {
+    std::vector<std::string> filenames(1,FileName);
+    auto docs = openDocuments(filenames,0,0,0,createView);
+    if(docs.size())
+        return docs.front();
+    return 0;
+}
+
+std::vector<Document*> Application::openDocuments(
+        const std::vector<std::string> &filenames, 
+        const std::vector<std::string> *pathes, 
+        const std::vector<std::string> *labels, 
+        std::vector<std::string> *errs,
+        bool createView)
+{
+    std::vector<Document*> res(filenames.size(),nullptr);
+    if(filenames.empty())
+        return res;
+
+    if(errs)
+        errs->resize(filenames.size());
+
+    DocOpenGuard guard(_isRestoring,signalFinishOpenDocument);
+    _pendingDocs.clear();
+    _pendingDocsReopen.clear();
+    _pendingDocMap.clear();
+
+    signalStartOpenDocument();
+
+    ParameterGrp::handle hGrp = GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
+    _allowPartial = !hGrp->GetBool("NoPartialLoading",false);
+
+    for(auto &name : filenames)
+        _pendingDocs.push_back(name.c_str());
+
+    std::deque<std::pair<Document *, DocTiming> > newDocs;
+
+    FC_TIME_INIT(t);
+
+    for(std::size_t count=0;;++count) {
+        const char *name = _pendingDocs.front();
+        _pendingDocs.pop_front();
+        bool isMainDoc = count<filenames.size();
+        try {
+            _objCount = -1;
+            std::set<std::string> objNames;
+            if(_allowPartial) {
+                auto it = _pendingDocMap.find(name);
+                if(it!=_pendingDocMap.end())
+                    objNames.swap(it->second);
+            }
+            FC_TIME_INIT(t1);
+            DocTiming timing;
+            const char *path = name;
+            const char *label = 0;
+            if(isMainDoc) {
+                if(pathes && pathes->size()>count)
+                    path = (*pathes)[count].c_str();
+                if(labels && labels->size()>count)
+                    label = (*labels)[count].c_str();
+            }
+            auto doc = openDocumentPrivate(path,name,label,isMainDoc,createView,objNames);
+            FC_DURATION_PLUS(timing.d1,t1);
+            if(doc)
+                newDocs.emplace_front(doc,timing);
+            if(isMainDoc)
+                res[count] = doc;
+            _objCount = -1;
+        }catch(const Base::Exception &e) {
+            if(!errs && isMainDoc) 
+                throw;
+            if(errs && isMainDoc)
+                (*errs)[count] = e.what();
+            else
+                Console().Error("Exception opening file: %s [%s]\n", name, e.what());
+        }catch(const std::exception &e) {
+            if(!errs && isMainDoc) 
+                throw;
+            if(errs && isMainDoc)
+                (*errs)[count] = e.what();
+            else
+                Console().Error("Exception opening file: %s [%s]\n", name, e.what());
+        }catch(...) {
+            if(errs) {
+                if(isMainDoc)
+                    (*errs)[count] = "unknown error";
+            } else {
+                _pendingDocs.clear();
+                _pendingDocsReopen.clear();
+                _pendingDocMap.clear();
+                throw;
+            }
+        }
+        if(_pendingDocs.empty()) {
+            if(_pendingDocsReopen.empty())
+                break;
+            _allowPartial = false;
+            _pendingDocs.swap(_pendingDocsReopen);
+        }
+    }
+    _pendingDocs.clear();
+    _pendingDocsReopen.clear();
+    _pendingDocMap.clear();
+
+    Base::SequencerLauncher seq("Postprocessing...", newDocs.size());
+    for(auto &v : newDocs) {
+        FC_TIME_INIT(t1);
+        v.first->afterRestore(true);
+        FC_DURATION_PLUS(v.second.d2,t1);
+        seq.next();
+    }
+    setActiveDocument(newDocs.back().first);
+
+    for(auto &v : newDocs) {
+        FC_DURATION_LOG(v.second.d1, v.first->getName() << " restore");
+        FC_DURATION_LOG(v.second.d2, v.first->getName() << " postprocess");
+    }
+    FC_TIME_LOG(t,"total");
+
+    _isRestoring = false;
+    signalFinishOpenDocument();
+    return res;
+}
+
+Document* Application::openDocumentPrivate(const char * FileName, 
+        const char *propFileName, const char *label,
+        bool isMainDoc, bool createView, 
+        const std::set<std::string> &objNames)
 {
     FileInfo File(FileName);
 
@@ -539,23 +726,64 @@ Document* Application::openDocument(const char * FileName)
     for (std::map<std::string,Document*>::iterator it = DocMap.begin(); it != DocMap.end(); ++it) {
         // get unique path separators
         std::string fi = FileInfo(it->second->FileName.getValue()).filePath();
-        if (filepath == fi) {
-            std::stringstream str;
-            str << "The project '" << FileName << "' is already open!";
-            throw Base::FileSystemError(str.str().c_str());
+        if (filepath != fi) 
+            continue;
+        if(it->second->testStatus(App::Document::PartialDoc) 
+                || it->second->testStatus(App::Document::PartialRestore)) {
+            // Here means a document is already partially loaded, but the document
+            // is requested again, either partial or not. We must check if the 
+            // document contains the required object
+            
+            if(isMainDoc) {
+                // Main document must be open fully, so close and reopen
+                closeDocument(it->first.c_str());
+                break;
+            }
+
+            if(_allowPartial) {
+                bool reopen = false;
+                for(auto &name : objNames) {
+                    auto obj = it->second->getObject(name.c_str());
+                    if(!obj || obj->testStatus(App::PartialObject)) {
+                        reopen = true;
+                        break;
+                    }
+                }
+                if(!reopen)
+                    return 0;
+            }
+            auto &names = _pendingDocMap[FileName];
+            names.clear();
+            _pendingDocsReopen.push_back(FileName);
+            return 0;
         }
+
+        if(!isMainDoc)
+            return 0;
+        std::stringstream str;
+        str << "The project '" << FileName << "' is already open!";
+        throw Base::FileSystemError(str.str().c_str());
     }
+
+    std::string name;
+    if(propFileName != FileName) {
+        FileInfo fi(propFileName);
+        name = fi.fileNamePure();
+    }else
+        name = File.fileNamePure();
 
     // Use the same name for the internal and user name.
     // The file name is UTF-8 encoded which means that the internal name will be modified
     // to only contain valid ASCII characters but the user name will be kept.
-    Document* newDoc = newDocument(File.fileNamePure().c_str(), File.fileNamePure().c_str());
+    if(!label)
+        label = name.c_str();
+    Document* newDoc = newDocument(name.c_str(),label,isMainDoc && createView);
 
-    newDoc->FileName.setValue(File.filePath());
+    newDoc->FileName.setValue(propFileName==FileName?File.filePath():propFileName);
 
     try {
         // read the document
-        newDoc->restore();
+        newDoc->restore(File.filePath().c_str(),true,objNames);
         return newDoc;
     }
     // if the project file itself is corrupt then
@@ -1233,6 +1461,11 @@ void Application::slotRecomputedObject(const DocumentObject& obj)
 void Application::slotRecomputed(const Document& doc)
 {
     this->signalRecomputed(doc);
+}
+
+void Application::slotBeforeRecompute(const Document& doc)
+{
+    this->signalBeforeRecomputeDocument(doc);
 }
 
 void Application::slotOpenTransaction(const Document& d, string s)

@@ -155,10 +155,35 @@ public:
     /// Get valid paths for this property; used by auto completer
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
-    /// Called at the begining of Document::afterRestore(). See comments there.
+    /** Called at the begining of Document::afterRestore()
+     *
+     * This function is called without dependency sorting, because some
+     * types of link property can only reconstructs the linking information
+     * inside this function.
+     *
+     * One example use case of this function is PropertyLinkSub that uses
+     * afterRestore() to parse and restore subname references, which may
+     * contain sub-object reference from external document, and there will be
+     * special mapping required during object import.
+     *
+     * Another example is PropertyExpressionEngine which only parse the
+     * restored expression in afterRestore(). The reason, in addition to
+     * subname mapping like PropertyLinkSub, is that it can handle document
+     * name adjustment as well. It internally relies on PropertyXLink to store
+     * the external document path for external linking. When the extenal
+     * document is restored, its internal name may change due to name conflict
+     * with existing documents.  PropertyExpressionEngine can now auto adjust
+     * external references without any problem.
+     */
     virtual void afterRestore() {}
 
-    /// Called before calling DocumentObject::onDocumentRestored()
+    /** Called before calling DocumentObject::onDocumentRestored()
+     *
+     * This function is called after finished calling Property::afterRestore()
+     * of all properies of objects. By then, the object dependency information
+     * is assumed ready. So, unlike Property::afterRestore(), this function is
+     * called on objects with dependency order.
+     */
     virtual void onContainerRestored() {}
 
     /** Property status handling
