@@ -945,7 +945,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             }else{
                 boost::dynamic_bitset<> vis;
                 vis.resize(elements.size(),true);
-                std::set<const App::DocumentObject *> hiddenElements;
+                std::unordered_set<const App::DocumentObject *> hiddenElements;
                 for(size_t i=0;i<elements.size();++i) {
                     if(myHiddenElements.find(elements[i])!=myHiddenElements.end()) {
                         hiddenElements.insert(elements[i]);

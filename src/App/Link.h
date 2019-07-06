@@ -296,11 +296,11 @@ protected:
 
 protected:
     std::vector<Property *> props;
-    std::set<const App::DocumentObject*> myHiddenElements;
+    std::unordered_set<const App::DocumentObject*> myHiddenElements;
     mutable std::string mySubElement;
     mutable std::string mySubName;
 
-    std::map<const App::DocumentObject*, 
+    std::unordered_map<const App::DocumentObject*, 
         boost::signals2::scoped_connection> plainGroupConns;
 
     mutable std::unordered_map<std::string,int> myLabelCache; // for label based subname lookup
