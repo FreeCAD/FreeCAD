@@ -74,9 +74,9 @@ class _CommandFloor:
     def GetResources(self):
 
         return {'Pixmap'  : 'Arch_Floor',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Floor","Floor"),
-                'Accel': "F, L",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a floor object including selected objects")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Floor","Level"),
+                'Accel': "L, V",
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a Building Part object that represents a level, including selected objects")}
 
     def IsActive(self):
 
