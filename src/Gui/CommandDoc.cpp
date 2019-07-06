@@ -1424,6 +1424,7 @@ StdCmdEdit::StdCmdEdit()
     sToolTipText  = QT_TR_NOOP("Toggles the selected object's edit mode");
     sWhatsThis    = "Std_Edit";
     sStatusTip    = QT_TR_NOOP("Activates or Deactivates the selected object's edit mode");
+    sAccel        = "Shift+E";
 #if QT_VERSION >= 0x040200
     sPixmap       = "edit-edit";
 #endif
