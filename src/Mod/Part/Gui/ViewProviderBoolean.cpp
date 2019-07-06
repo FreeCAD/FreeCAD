@@ -247,7 +247,9 @@ bool ViewProviderMultiFuse::canDragObjects() const
 
 bool ViewProviderMultiFuse::canDragObject(App::DocumentObject* obj) const
 {
-    return Part::Feature::hasShapeOwner(obj);
+    (void)obj;
+    // return Part::Feature::hasShapeOwner(obj);
+    return true;
 }
 
 void ViewProviderMultiFuse::dragObject(App::DocumentObject* obj)
@@ -270,7 +272,9 @@ bool ViewProviderMultiFuse::canDropObjects() const
 
 bool ViewProviderMultiFuse::canDropObject(App::DocumentObject* obj) const
 {
-    return Part::Feature::hasShapeOwner(obj);
+    (void)obj;
+    // return Part::Feature::hasShapeOwner(obj);
+    return true;
 }
 
 void ViewProviderMultiFuse::dropObject(App::DocumentObject* obj)
@@ -374,7 +378,9 @@ bool ViewProviderMultiCommon::canDragObjects() const
 
 bool ViewProviderMultiCommon::canDragObject(App::DocumentObject* obj) const
 {
-    return Part::Feature::hasShapeOwner(obj);
+    (void)obj;
+    // return Part::Feature::hasShapeOwner(obj);
+    return true;
 }
 
 void ViewProviderMultiCommon::dragObject(App::DocumentObject* obj)
@@ -397,7 +403,9 @@ bool ViewProviderMultiCommon::canDropObjects() const
 
 bool ViewProviderMultiCommon::canDropObject(App::DocumentObject* obj) const
 {
-    return Part::Feature::hasShapeOwner(obj);
+    (void)obj;
+    // return Part::Feature::hasShapeOwner(obj);
+    return true;
 }
 
 void ViewProviderMultiCommon::dropObject(App::DocumentObject* obj)
