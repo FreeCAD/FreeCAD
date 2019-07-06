@@ -1337,7 +1337,7 @@ class DraftToolBar:
         self.isCopy.show()
         self.isSubelementMode.show()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        if p.GetBool("copymode",True):
+        if p.GetBool("copymode",False):
             self.isCopy.setChecked(p.GetBool("copymodeValue",False))
         self.continueCmd.show()
 
