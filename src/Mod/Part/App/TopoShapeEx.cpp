@@ -1777,19 +1777,27 @@ TopoShape &TopoShape::makEShape(const char *maker,
     }
 
     std::vector<TopoShape> _shapes;
-    if(shapes.size()==1) {
-#ifdef EXPAND_COMPOUND
-        expandCompound(shapes.front(),_shapes);
-        if(_shapes.size()==1)
-#endif
-        {
-
-            *this = shapes[0];
-            FC_WARN("Boolean operation with only one shape input");
-            return *this;
+    if(strcmp(maker, TOPOP_FUSE)==0) {
+        for(auto it=shapes.begin();it!=shapes.end();++it) {
+            auto &s = *it;
+            if(s.isNull())
+                HANDLE_NULL_INPUT;
+            if(s.shapeType() == TopAbs_COMPOUND) {
+                if(_shapes.empty()) 
+                    _shapes.insert(_shapes.end(),shapes.begin(),it);
+                expandCompound(s,_shapes);
+            }else if(_shapes.size())
+                _shapes.push_back(s);
         }
     }
     const auto &inputs = _shapes.size()?_shapes:shapes;
+    if(inputs.empty())
+        HANDLE_NULL_INPUT;
+    if(inputs.size()==1) {
+        *this = inputs[0];
+        FC_WARN("Boolean operation with only one shape input");
+        return *this;
+    }
 
 #if OCC_VERSION_HEX <= 0x060800
     if (tol > 0.0)
