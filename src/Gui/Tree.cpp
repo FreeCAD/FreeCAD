@@ -1841,14 +1841,17 @@ void DocumentObjectItem::testStatus()
 
     // if status has changed then continue
     int currentStatus =
-        ((pObject->isError()            ? 1 : 0) << 2) |
-        ((pObject->mustRecompute() == 1 ? 1 : 0) << 1) |
-        (viewObject->isShow()           ? 1 : 0);
+        ((pObject->isErrorInOutListRecursive()  ? 1 : 0) << 3) |
+        ((pObject->isError()                    ? 1 : 0) << 2) |
+        ((pObject->mustRecompute() == 1         ? 1 : 0) << 1) |
+        (viewObject->isShow()                   ? 1 : 0);
     if (previousStatus == currentStatus)
         return;
     previousStatus = currentStatus;
 
-    QPixmap px;
+    QPixmap toprightpx;
+    QPixmap topleftpx;
+
     if (currentStatus & 4) {
         // object is in error state
         static const char * const feature_error_xpm[]={
@@ -1865,7 +1868,7 @@ void DocumentObjectItem::testStatus()
             ".##aaa##.",
             ".##aaa##.",
             "...###..."};
-        px = QPixmap(feature_error_xpm);
+        toprightpx = QPixmap(feature_error_xpm);
     }
     else if (currentStatus & 2) {
         // object must be recomputed
@@ -1883,8 +1886,28 @@ void DocumentObjectItem::testStatus()
             ".#aa####.",
             ".#######.",
             "...###..."};
-        px = QPixmap(feature_recompute_xpm);
+        toprightpx = QPixmap(feature_recompute_xpm);
     }
+
+    if (currentStatus & 8) {
+        // object is in error state
+        static const char * const feature_error_xpm[]={
+            "9 9 3 1",
+            ". c None",
+            "# c #0000ff",
+            "a c #ffffff",
+            "...###...",
+            ".##aaa##.",
+            ".##aaa##.",
+            "###aaa###",
+            "###aaa###",
+            "#########",
+            ".##aaa##.",
+            ".##aaa##.",
+            "...###..."};
+        topleftpx = QPixmap(feature_error_xpm);
+    }
+
 
     QIcon::Mode mode = QIcon::Normal;
     if (currentStatus & 1) { // visible
@@ -1917,15 +1940,19 @@ void DocumentObjectItem::testStatus()
 
     // get the original icon set
     QIcon icon_org = viewObject->getIcon();
-    QIcon icon_mod;
+    QIcon icon_mod = icon_org;
     int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
 
     // if needed show small pixmap inside
-    if (!px.isNull()) {
-        icon_mod.addPixmap(BitmapFactory().merge(icon_org.pixmap(w, w, mode, QIcon::Off),
-            px,BitmapFactoryInst::TopRight), QIcon::Normal, QIcon::Off);
-        icon_mod.addPixmap(BitmapFactory().merge(icon_org.pixmap(w, w, mode, QIcon::On ),
-            px,BitmapFactoryInst::TopRight), QIcon::Normal, QIcon::Off);
+    if (!toprightpx.isNull() || !topleftpx.isNull()) {
+
+        if (!toprightpx.isNull()) {
+            icon_mod = Gui::BitmapFactoryInst::mergePixmap(icon_mod, toprightpx, Gui::BitmapFactoryInst::TopRight);
+        }
+
+        if (!topleftpx.isNull()) {
+            icon_mod = Gui::BitmapFactoryInst::mergePixmap(icon_mod, topleftpx, Gui::BitmapFactoryInst::TopLeft);
+        }
     }
     else {
         icon_mod.addPixmap(icon_org.pixmap(w, w, mode, QIcon::Off), QIcon::Normal, QIcon::Off);
