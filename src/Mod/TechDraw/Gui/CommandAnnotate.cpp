@@ -842,7 +842,7 @@ void CmdTechDrawDecorateLine::activated(int iMsg)
         }
     } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                 QObject::tr("You must select line(s) in a View."));
+                                 QObject::tr("You must select a View and/or line(s)."));
             return;
     }
 
@@ -863,14 +863,8 @@ void CmdTechDrawDecorateLine::activated(int iMsg)
         }
     }
 
-    if ( edgeNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                             QObject::tr("You must select line(s) to edit."));
-        return;
-    } else {
-        Gui::Control().showDialog(new TaskDlgLineDecor(baseFeat,
+    Gui::Control().showDialog(new TaskDlgLineDecor(baseFeat,
                                                        edgeNames));
-    }
 }
 
 bool CmdTechDrawDecorateLine::isActive(void)
