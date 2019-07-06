@@ -372,6 +372,9 @@ class SelectPlane(DraftTool):
                 if hasattr(sel.Object.ViewObject,"AutoWorkingPlane"):
                     if sel.Object.ViewObject.AutoWorkingPlane:
                         plane.weak = True
+                if hasattr(sel.Object.ViewObject,"CutView") and hasattr(sel.Object.ViewObject,"AutoCutView"):
+                    if sel.Object.ViewObject.AutoCutView:
+                        sel.Object.ViewObject.CutView = True
                 if hasattr(sel.Object.ViewObject,"RestoreView"):
                     if sel.Object.ViewObject.RestoreView:
                         if hasattr(sel.Object.ViewObject,"ViewData"):
