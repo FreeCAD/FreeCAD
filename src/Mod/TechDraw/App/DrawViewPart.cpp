@@ -1276,7 +1276,7 @@ int DrawViewPart::addCenterLine(CenterLine* cl)
     return newIdx;
 }
 
-void DrawViewPart::writeCListProp(void)
+void DrawViewPart::writeCLineProp(void)
 {
     std::vector<std::string> saveLines;
     const std::vector<TechDraw::CenterLine*> cLines = getCenterLines();
@@ -1309,7 +1309,7 @@ void DrawViewPart::removeCenterLine(int idx)
 {
     if (idx < (int) CLineTable.size()) {
         CLineTable.erase(CLineTable.begin() + idx);
-        writeCListProp();
+        writeCLineProp();
         recomputeFeature();
     }
 }
@@ -1319,7 +1319,7 @@ void DrawViewPart::replaceCenterLine(int idx, TechDraw::CenterLine* cl)
     std::vector<TechDraw::CenterLine*> lines = getCenterLines();
     if (idx < (int) lines.size())  {
         lines.at(idx) = cl;
-        writeCListProp();
+        writeCLineProp();
         recomputeFeature();
     }
 }

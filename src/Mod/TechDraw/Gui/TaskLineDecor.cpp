@@ -48,8 +48,10 @@
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 
-#include "TaskLineDecor.h"
 #include <Mod/TechDraw/Gui/ui_TaskLineDecor.h>
+#include <Mod/TechDraw/Gui/ui_TaskRestoreLines.h>
+
+#include "TaskLineDecor.h"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -107,31 +109,33 @@ void TaskLineDecor::getDefaults(void)
     m_visible = 1;
 
     //set defaults to format of 1st edge
-    int num = DrawUtil::getIndexFromName(m_edges.front());
-    BaseGeom* bg = m_partFeat->getGeomByIndex(num);
-    if (bg != nullptr) {
-        if (bg->cosmetic) {
-            if (bg->source() == 1) {
-                TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeByIndex(bg->sourceIndex());
-                m_style = ce->m_format.m_style;
-                m_color = ce->m_format.m_color;
-                m_weight = ce->m_format.m_weight;
-                m_visible = ce->m_format.m_visible;
-            } else if (bg->source() == 2) {
-                TechDraw::CenterLine* cl = m_partFeat->getCenterLineByIndex(bg->sourceIndex());
-                m_style = cl->m_format.m_style;
-                m_color = cl->m_format.m_color;
-                m_weight = cl->m_format.m_weight;
-                m_visible = cl->m_format.m_visible;
-            }
-        } else {
-                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatByGeom(num);
-                if (gf != nullptr) {
-                    m_style = gf->m_format.m_style;
-                    m_color = gf->m_format.m_color;
-                    m_weight = gf->m_format.m_weight;
-                    m_visible = gf->m_format.m_visible;
+    if (!m_edges.empty()) {
+        int num = DrawUtil::getIndexFromName(m_edges.front());
+        BaseGeom* bg = m_partFeat->getGeomByIndex(num);
+        if (bg != nullptr) {
+            if (bg->cosmetic) {
+                if (bg->source() == 1) {
+                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeByIndex(bg->sourceIndex());
+                    m_style = ce->m_format.m_style;
+                    m_color = ce->m_format.m_color;
+                    m_weight = ce->m_format.m_weight;
+                    m_visible = ce->m_format.m_visible;
+                } else if (bg->source() == 2) {
+                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineByIndex(bg->sourceIndex());
+                    m_style = cl->m_format.m_style;
+                    m_color = cl->m_format.m_color;
+                    m_weight = cl->m_format.m_weight;
+                    m_visible = cl->m_format.m_visible;
                 }
+            } else {
+                    TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatByGeom(num);
+                    if (gf != nullptr) {
+                        m_style = gf->m_format.m_style;
+                        m_color = gf->m_format.m_color;
+                        m_weight = gf->m_format.m_weight;
+                        m_visible = gf->m_format.m_visible;
+                    }
+            }
         }
     }
 }
@@ -162,7 +166,7 @@ void TaskLineDecor::onVisibleChanged(void)
 
 void TaskLineDecor::applyDecorations(void)
 {
-//    Base::Console().Message("TLD::applyDecorations()\n");
+    Base::Console().Message("TLD::applyDecorations()\n");
     for (auto& e: m_edges) {
         int num = DrawUtil::getIndexFromName(e);
         BaseGeom* bg = m_partFeat->getGeomByIndex(num);
@@ -174,6 +178,7 @@ void TaskLineDecor::applyDecorations(void)
                     ce->m_format.m_color = m_color;
                     ce->m_format.m_weight = m_weight;
                     ce->m_format.m_visible = m_visible;
+                    Base::Console().Message("TLD::applyDecorations()\n");
                 } else if (bg->source() == 2) {
                     TechDraw::CenterLine* cl = m_partFeat->getCenterLineByIndex(bg->sourceIndex());
                     cl->m_format.m_style = m_style;
@@ -201,14 +206,20 @@ void TaskLineDecor::applyDecorations(void)
             }
         }
     }
+    
 }
 
 bool TaskLineDecor::accept()
 {
+    Base::Console().Message("TLD::accept()\n");
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_partFeat->getDocument());
     if (!doc) return false;
 
     applyDecorations();
+    m_partFeat->writeGFormatProp();
+    m_partFeat->writeCEdgeProp();
+    m_partFeat->writeCLineProp();
+
     m_partFeat->requestPaint();
 
     //Gui::Command::updateActive();     //no chain of updates here
@@ -219,6 +230,7 @@ bool TaskLineDecor::accept()
 
 bool TaskLineDecor::reject()
 {
+    Base::Console().Message("TLD::reject()\n");
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_partFeat->getDocument());
     if (!doc) return false;
 
@@ -227,6 +239,170 @@ bool TaskLineDecor::reject()
 }
 
 void TaskLineDecor::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+TaskRestoreLines::TaskRestoreLines(TechDraw::DrawViewPart* partFeat) :
+    ui(new Ui_TaskRestoreLines),
+    m_partFeat(partFeat)
+{
+    ui->setupUi(this);
+
+    connect(ui->pb_All, SIGNAL(clicked( )), this, SLOT(onAllPressed(void)));
+    connect(ui->pb_Geometry, SIGNAL(clicked(  )), this, SLOT(onGeometryPressed(void)));
+    connect(ui->pb_Cosmetic, SIGNAL(clicked(   )), this, SLOT(onCosmeticPressed( void )));
+    connect(ui->pb_Center, SIGNAL(clicked(  )), this, SLOT(onCenterPressed( void )));
+
+    initUi();
+}
+
+TaskRestoreLines::~TaskRestoreLines()
+{
+    delete ui;
+}
+
+void TaskRestoreLines::initUi()
+{
+    ui->l_All->setText(QString::number(countInvisibleLines()));
+    ui->l_Geometry->setText(QString::number(countInvisibleGeoms()));
+    ui->l_Cosmetic->setText(QString::number(countInvisibleCosmetics()));
+    ui->l_Center->setText(QString::number(countInvisibleCenters()));
+}
+
+void TaskRestoreLines::onAllPressed(void)
+{
+    Base::Console().Message("TRL::onAllPressed()\n");
+    onGeometryPressed();
+    onCosmeticPressed();
+    onCenterPressed();
+}
+
+void TaskRestoreLines::onGeometryPressed(void)
+{
+    Base::Console().Message("TRL::onGeometryPressed()\n");
+    restoreInvisibleGeoms();
+    ui->l_Geometry->setText(QString::number(0));
+    ui->l_All->setText(QString::number(countInvisibleLines()));
+    m_partFeat->writeGFormatProp();
+}
+
+void TaskRestoreLines::onCosmeticPressed(void)
+{
+    Base::Console().Message("TRL::onCosmeticPressed()\n");
+    restoreInvisibleCosmetics();
+    ui->l_Cosmetic->setText(QString::number(0));
+    ui->l_All->setText(QString::number(countInvisibleLines()));
+    m_partFeat->writeCEdgeProp();
+}
+
+void TaskRestoreLines::onCenterPressed(void)
+{
+    Base::Console().Message("TRL::onCenterPressed()\n");
+    restoreInvisibleCenters();
+    ui->l_Center->setText(QString::number(0));
+    ui->l_All->setText(QString::number(countInvisibleLines()));
+    m_partFeat->writeCLineProp();
+}
+
+int TaskRestoreLines::countInvisibleLines(void)
+{
+    int result = 0;
+    result += countInvisibleGeoms();
+    result += countInvisibleCosmetics();
+    result += countInvisibleCenters();
+    return result;
+}
+
+int TaskRestoreLines::countInvisibleGeoms(void)
+{
+    int iGeoms = 0;
+    const std::vector<TechDraw::GeomFormat*> geoms = m_partFeat->getGeomFormats();
+    for (auto& g : geoms) {
+        if (!g->m_format.m_visible) {
+            iGeoms++;
+        }
+    }
+    return iGeoms;
+}
+
+int TaskRestoreLines::countInvisibleCosmetics(void)
+{
+    int iCosmos = 0;
+    const std::vector<TechDraw::CosmeticEdge*> cosmos = m_partFeat->getCosmeticEdges();
+    for (auto& c : cosmos) {
+        if (!c->m_format.m_visible) { 
+            iCosmos++;
+        }
+    }
+    return iCosmos++;
+}
+
+int TaskRestoreLines::countInvisibleCenters(void)
+{
+    int iCenter = 0;
+    const std::vector<TechDraw::CenterLine*> centers = m_partFeat->getCenterLines();
+    for (auto& c : centers) {
+        if (!c->m_format.m_visible) { 
+            iCenter++;
+        }
+    }
+    return iCenter++;
+}
+
+void TaskRestoreLines::restoreInvisibleLines(void)
+{
+    restoreInvisibleGeoms();
+    restoreInvisibleCosmetics();
+    restoreInvisibleCenters();
+}
+
+void TaskRestoreLines::restoreInvisibleGeoms(void)
+{
+    const std::vector<TechDraw::GeomFormat*> geoms = m_partFeat->getGeomFormats();
+    for (auto& g : geoms) {
+        if (!g->m_format.m_visible) {
+            g->m_format.m_visible = true;
+        }
+    }
+}
+
+void TaskRestoreLines::restoreInvisibleCosmetics(void)
+{
+    const std::vector<TechDraw::CosmeticEdge*> cosmos = m_partFeat->getCosmeticEdges();
+    for (auto& c : cosmos) {
+        if (!c->m_format.m_visible) { 
+            c->m_format.m_visible = true;
+        }
+    }
+}
+
+void TaskRestoreLines::restoreInvisibleCenters(void)
+{
+    const std::vector<TechDraw::CenterLine*> centers = m_partFeat->getCenterLines();
+    for (auto& c : centers) {
+        if (!c->m_format.m_visible) { 
+            c->m_format.m_visible = true;
+        }
+    }
+}
+
+
+bool TaskRestoreLines::accept()
+{
+    Base::Console().Message("TRL::accept()\n");
+    return true;
+}
+
+bool TaskRestoreLines::reject()
+{
+    Base::Console().Message("TRL::reject()\n");
+    return false;
+}
+
+void TaskRestoreLines::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -243,6 +419,15 @@ TaskDlgLineDecor::TaskDlgLineDecor(TechDraw::DrawViewPart* partFeat,
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+    if (edgeNames.empty()) {
+        taskbox->hideGroupBox();
+    }
+    
+    restore = new TaskRestoreLines(partFeat);
+    restoreBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-linedecor"),
+                                         tr("Restore Invisible Lines"), true, 0);
+    restoreBox->groupLayout()->addWidget(restore);
+    Content.push_back(restoreBox);
 }
 
 TaskDlgLineDecor::~TaskDlgLineDecor()
@@ -262,12 +447,14 @@ void TaskDlgLineDecor::clicked(int i)
 
 bool TaskDlgLineDecor::accept()
 {
+    Base::Console().Message("TDLD::accept()\n");
     widget->accept();
     return true;
 }
 
 bool TaskDlgLineDecor::reject()
 {
+    Base::Console().Message("TDLD::reject()\n");
     widget->reject();
     return true;
 }
