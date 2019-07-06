@@ -1130,6 +1130,8 @@ class DraftToolBar:
         self.taskUi(translate("draft","Offset"))
         self.radiusUi()
         self.isCopy.show()
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        self.isCopy.setChecked(p.GetBool("OffsetCopyMode",False))
         self.occOffset.show()
         self.labelRadius.setText(translate("draft","Distance"))
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
@@ -1392,6 +1394,10 @@ class DraftToolBar:
     def setCopymode(self,val=0):
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         p.SetBool("copymodeValue",bool(val))
+        # special value for offset command
+        if self.sourceCmd:
+            if self.sourceCmd.featureName == "Offset":
+                p.SetBool("OffsetCopyMode",bool(val))
 
     def relocate(self):
         "relocates the right-aligned buttons depending on the toolbar size"

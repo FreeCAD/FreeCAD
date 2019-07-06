@@ -244,6 +244,7 @@ class DraftTool:
         FreeCAD.activeDraftCommand = self
         self.view = Draft.get3DView()
         self.ui = FreeCADGui.draftToolBar
+        self.featureName = name
         self.ui.sourceCmd = self
         self.ui.setTitle(name)
         self.ui.show()
@@ -255,7 +256,6 @@ class DraftTool:
         self.obj = None
         self.extendedCopy = False
         self.ui.setTitle(name)
-        self.featureName = name
         self.planetrack = None
         if Draft.getParam("showPlaneTracker",False):
             self.planetrack = PlaneTracker()
