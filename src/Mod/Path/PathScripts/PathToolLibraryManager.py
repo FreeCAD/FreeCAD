@@ -49,33 +49,34 @@ class FreeCADTooltableHandler(xml.sax.ContentHandler):
     # http://www.tutorialspoint.com/python/python_xml_processing.htm
 
     def __init__(self):
+        xml.sax.ContentHandler.__init__(self)
         self.tooltable = None
         self.tool = None
         self.number = None
 
     # Call when an element is found
-    def startElement(self, tag, attributes):
-        if tag == "Tooltable":
+    def startElement(self, name, attrs):
+        if name == "Tooltable":
             self.tooltable = Path.Tooltable()
-        elif tag == "Toolslot":
-            self.number = int(attributes["number"])
-        elif tag == "Tool":
+        elif name == "Toolslot":
+            self.number = int(attrs["number"])
+        elif name == "Tool":
             self.tool = Path.Tool()
-            self.tool.Name = str(attributes["name"])
-            self.tool.ToolType = str(attributes["type"])
-            self.tool.Material = str(attributes["mat"])
+            self.tool.Name = str(attrs["name"])
+            self.tool.ToolType = str(attrs["type"])
+            self.tool.Material = str(attrs["mat"])
             # for some reason without the following line I get an error
-            #print attributes["diameter"]
-            self.tool.Diameter = float(attributes["diameter"])
-            self.tool.LengthOffset = float(attributes["length"])
-            self.tool.FlatRadius = float(attributes["flat"])
-            self.tool.CornerRadius = float(attributes["corner"])
-            self.tool.CuttingEdgeAngle = float(attributes["angle"])
-            self.tool.CuttingEdgeHeight = float(attributes["height"])
+            #print attrs["diameter"]
+            self.tool.Diameter = float(attrs["diameter"])
+            self.tool.LengthOffset = float(attrs["length"])
+            self.tool.FlatRadius = float(attrs["flat"])
+            self.tool.CornerRadius = float(attrs["corner"])
+            self.tool.CuttingEdgeAngle = float(attrs["angle"])
+            self.tool.CuttingEdgeHeight = float(attrs["height"])
 
     # Call when an elements ends
-    def endElement(self, tag):
-        if tag == "Toolslot":
+    def endElement(self, name):
+        if name == "Toolslot":
             if self.tooltable and self.tool and self.number:
                 self.tooltable.setTool(self.number, self.tool)
                 self.number = None
@@ -85,18 +86,19 @@ class FreeCADTooltableHandler(xml.sax.ContentHandler):
 class HeeksTooltableHandler(xml.sax.ContentHandler):
 
     def __init__(self):
+        xml.sax.ContentHandler.__init__(self)
         self.tooltable = Path.Tooltable()
         self.tool = None
         self.number = None
 
     # Call when an element is found
-    def startElement(self, tag, attributes):
-        if tag == "Tool":
+    def startElement(self, name, attrs):
+        if name == "Tool":
             self.tool = Path.Tool()
-            self.number = int(attributes["tool_number"])
-            self.tool.Name = str(attributes["title"])
-        elif tag == "params":
-            t = str(attributes["type"])
+            self.number = int(attrs["tool_number"])
+            self.tool.Name = str(attrs["title"])
+        elif name == "params":
+            t = str(attrs["type"])
             if t == "drill":
                 self.tool.ToolType = "Drill"
             elif t == "center_drill_bit":
@@ -111,25 +113,25 @@ class HeeksTooltableHandler(xml.sax.ContentHandler):
                 self.tool.ToolType = "Chamfer"
             elif t == "engraving_bit":
                 self.tool.ToolType = "Engraver"
-            m = str(attributes["material"])
+            m = str(attrs["material"])
             if m == "0":
                 self.tool.Material = "HighSpeedSteel"
             elif m == "1":
                 self.tool.Material = "Carbide"
             # for some reason without the following line I get an error
-            #print attributes["diameter"]
-            self.tool.Diameter = float(attributes["diameter"])
-            self.tool.LengthOffset = float(attributes["tool_length_offset"])
-            self.tool.FlatRadius = float(attributes["flat_radius"])
-            self.tool.CornerRadius = float(attributes["corner_radius"])
+            #print attrs["diameter"]
+            self.tool.Diameter = float(attrs["diameter"])
+            self.tool.LengthOffset = float(attrs["tool_length_offset"])
+            self.tool.FlatRadius = float(attrs["flat_radius"])
+            self.tool.CornerRadius = float(attrs["corner_radius"])
             self.tool.CuttingEdgeAngle = float(
-                attributes["cutting_edge_angle"])
+                attrs["cutting_edge_angle"])
             self.tool.CuttingEdgeHeight = float(
-                attributes["cutting_edge_height"])
+                attrs["cutting_edge_height"])
 
     # Call when an elements ends
-    def endElement(self, tag):
-        if tag == "Tool":
+    def endElement(self, name):
+        if name == "Tool":
             if self.tooltable and self.tool and self.number:
                 self.tooltable.setTool(self.number, self.tool)
                 self.number = None
@@ -286,7 +288,7 @@ class ToolLibraryManager():
             if listname == "<Main>":
                 self.saveMainLibrary(tt)
             return True
-        except Exception as e:
+        except Exception as e: # pylint: disable=broad-except
             print("could not parse file", e)
 
 
@@ -309,7 +311,7 @@ class ToolLibraryManager():
                     fp,fname = openFileWithExtension(filename[0], '.tbl')
                     for key in tt.Tools:
                         t = tt.Tools[key]
-                        fp.write("T{} P{} Y{} Z{} A{} B{} C{} U{} V{} W{} D{} I{} J{} Q{} ;{}\n".format(key,key,0,t.LengthOffset,0,0,0,0,0,0,t.Diameter,0,0,0,t.Name))
+                        fp.write("T{0} P{0} Y{1} Z{2} A{3} B{4} C{5} U{6} V{7} W{8} D{9} I{10} J{11} Q{12} ;{13}\n".format(key,0,t.LengthOffset,0,0,0,0,0,0,t.Diameter,0,0,0,t.Name))
                 else:
                     fp,fname = openFileWithExtension(filename[0], '.json')
                     json.dump(self.templateAttrs(tt), fp, sort_keys=True, indent=2)
@@ -317,7 +319,7 @@ class ToolLibraryManager():
                 fp.close()
                 print("Written ", PathUtil.toUnicode(fname))
 
-            except Exception as e:
+            except Exception as e: # pylint: disable=broad-except
                 print("Could not write file:", e)
 
     def addnew(self, listname, tool, position = None):
@@ -605,6 +607,9 @@ class EditorPanel():
         self.setFields()
 
 class CommandToolLibraryEdit():
+    def __init__(self):
+        pass
+
     def edit(self, job=None, cb=None):
         editor = EditorPanel(job, cb)
         editor.setupUi()

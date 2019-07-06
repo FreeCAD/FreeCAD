@@ -71,10 +71,8 @@ class _TaskPanel(object):
         analysis = femutils.findAnalysisOfMember(obj)
         self._mesh = femutils.get_single_member(analysis, "Fem::FemMeshObject")
         self._part = None
-        if hasattr(self._mesh, "Part"):  # Geometry of Gmesh mesh obj
-            self._part = self._mesh.Part
-        elif hasattr(self._mesh, "Shape"):  # Geometry of Netgen mesh obj
-            self._part = self._mesh.Shape
+        if self._mesh is not None:
+            self._part = femutils.get_part_to_mesh(self._mesh)
         self._partVisible = None
         self._meshVisible = None
 

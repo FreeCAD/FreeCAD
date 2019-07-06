@@ -100,6 +100,22 @@ def getInfo(filename):
             hsize = str(int(size)) + "b"
         return hsize
 
+    def getFreeDesktopThumbnail(filename):
+        "if we have gnome libs available, try to find a system-generated thumbnail"
+        try:
+            import gnome.ui
+            import gnomevfs
+        except:
+            return None
+
+        path = os.path.abspath(filename)
+        uri = gnomevfs.get_uri_from_local_path(path)
+        thumb = gnome.ui.thumbnail_path_for_uri(uri, "normal")
+        if os.path.exists(thumb):
+            return thumb
+        return None
+
+
     if os.path.exists(filename):
 
         if os.path.isdir(filename):
@@ -150,6 +166,17 @@ def getInfo(filename):
                         thumb.write(imagedata)
                         thumb.close()
                         iconbank[filename] = image
+
+        # use image itself as icon if it's an image file
+        if os.path.splitext(filename)[1].lower() in [".jpg",".jpeg",".png",".svg"]:
+            image = filename
+            iconbank[filename] = image
+
+        # use freedesktop thumbnail if available
+        fdthumb = getFreeDesktopThumbnail(filename)
+        if fdthumb:
+            image = fdthumb
+            iconbank[filename] = fdthumb
 
         # retrieve default mime icon if needed
         if not image:
@@ -356,7 +383,8 @@ def handle():
         SECTION_CUSTOM += "</ul>"
     HTML = HTML.replace("SECTION_CUSTOM",SECTION_CUSTOM)
 
-	# build IMAGE_SRC paths
+    # build IMAGE_SRC paths
+
     HTML = HTML.replace("IMAGE_SRC_USERHUB",'file:///'+os.path.join(resources_dir, 'images/userhub.png'))
     HTML = HTML.replace("IMAGE_SRC_POWERHUB",'file:///'+os.path.join(resources_dir, 'images/poweruserhub.png'))
     HTML = HTML.replace("IMAGE_SRC_DEVHUB",'file:///'+os.path.join(resources_dir, 'images/developerhub.png'))

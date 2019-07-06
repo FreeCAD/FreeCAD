@@ -149,12 +149,12 @@ class ToolEditorImage(object):
 class ToolEditorEndmill(ToolEditorImage):
     '''Tool parameter editor for endmills.'''
     def __init__(self, editor):
-        super(self.__class__, self).__init__(editor, 'endmill.svg', 'da', 'S')
+        super(ToolEditorEndmill, self).__init__(editor, 'endmill.svg', 'da', 'S')
 
 class ToolEditorDrill(ToolEditorImage):
     '''Tool parameter editor for drills.'''
     def __init__(self, editor):
-        super(self.__class__, self).__init__(editor, 'drill.svg', 'dS', '')
+        super(ToolEditorDrill, self).__init__(editor, 'drill.svg', 'dS', '')
 
     def quantityCuttingEdgeAngle(self, propertyToDisplay):
         if propertyToDisplay:
@@ -164,7 +164,7 @@ class ToolEditorDrill(ToolEditorImage):
 class ToolEditorEngrave(ToolEditorImage):
     '''Tool parameter editor for v-bits.'''
     def __init__(self, editor):
-        super(self.__class__, self).__init__(editor, 'v-bit.svg', '', 'HS')
+        super(ToolEditorEngrave, self).__init__(editor, 'v-bit.svg', '', 'HS')
 
     def quantityCuttingEdgeHeight(self, propertyToDisplay):
         PathLog.track()

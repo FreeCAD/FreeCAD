@@ -1524,8 +1524,9 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     }
 
     // write all data to file
-    std::ofstream anABAQUS_Output;
-    anABAQUS_Output.open(Filename.c_str());
+    // take also care of special characters in path https://forum.freecadweb.org/viewtopic.php?f=10&t=37436
+    Base::FileInfo fi(Filename);
+    Base::ofstream anABAQUS_Output(fi);
     anABAQUS_Output.precision(13);  // https://forum.freecadweb.org/viewtopic.php?f=18&t=22759#p176669
 
     // add some text and make sure one of the known elemParam values is used

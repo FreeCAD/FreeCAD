@@ -39,7 +39,7 @@ from PySide import QtCore
 from PySide import QtGui
 import sys
 
-False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns 'FemGui'
+False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 if sys.version_info.major >= 3:
     unicode = str
@@ -476,7 +476,7 @@ class _TaskPanelFemMaterial:
                 # PoissonRatio does not have a unit, but it is checked it there is no value at all
                 try:
                     float(self.material['PoissonRatio'])
-                except:
+                except ValueError:
                     FreeCAD.Console.PrintMessage(
                         'PoissonRatio has wrong or no data (reset the value): {}\n'
                         .format(self.material['PoissonRatio'])

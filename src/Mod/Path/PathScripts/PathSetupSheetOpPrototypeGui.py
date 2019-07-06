@@ -53,23 +53,23 @@ class _PropertyEditor(object):
     def widget(self, parent):
         '''widget(parent) ... called by the delegate to get a new editor widget.
         Must be implemented by subclasses and return the widget.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
     def setEditorData(self, widget):
         '''setEditorData(widget) ... called by the delegate to initialize the editor.
         The widget is the object returned by widget().
         Must be implemented by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
     def setModelData(self, widget):
         '''setModelData(widget) ... called by the delegate to store new values.
         Must be implemented by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
 class _PropertyEnumEditor(_PropertyEditor):
     '''Editor for enumeration values - uses a combo box.'''
 
     def widget(self, parent):
         PathLog.track(self.prop.name, self.prop.getEnumValues())
-        return QtGui.QComboBox(parent);
+        return QtGui.QComboBox(parent)
 
     def setEditorData(self, widget):
         widget.clear()

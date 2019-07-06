@@ -49,11 +49,9 @@ def setup_cantileverbase(doc=None, solver='ccxtools'):
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, 'Analysis')
 
-    solver
+    # solver
     # TODO How to pass multiple solver for one analysis in one doc
-    if solver is None:
-        pass  # no solver is added
-    elif solver is 'calculix':
+    if solver == 'calculix':
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, 'SolverCalculiX')
         )[0]
@@ -62,7 +60,7 @@ def setup_cantileverbase(doc=None, solver='ccxtools'):
         solver_object.ThermoMechSteadyState = False
         solver_object.MatrixSolverType = 'default'
         solver_object.IterationsControlParameterTimeUse = False
-    elif solver is 'ccxtools':
+    elif solver == 'ccxtools':
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, 'CalculiXccxTools')
         )[0]
@@ -72,9 +70,9 @@ def setup_cantileverbase(doc=None, solver='ccxtools'):
         solver_object.MatrixSolverType = 'default'
         solver_object.IterationsControlParameterTimeUse = False
         solver_object.WorkingDir = u''
-    elif solver is 'elmer':
+    elif solver == 'elmer':
         analysis.addObject(ObjectsFem.makeSolverElmer(doc, 'SolverElmer'))
-    elif solver is 'z88':
+    elif solver == 'z88':
         analysis.addObject(ObjectsFem.makeSolverZ88(doc, 'SolverZ88'))
 
     # material

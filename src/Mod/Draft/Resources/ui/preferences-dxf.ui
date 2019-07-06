@@ -386,7 +386,10 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
            <string>If this is checked, DXF layers will be imported as Draft VisGroups</string>
           </property>
           <property name="text">
-           <string>Use VisGroups</string>
+           <string>Use Layers</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>dxfUseDraftVisGroups</cstring>

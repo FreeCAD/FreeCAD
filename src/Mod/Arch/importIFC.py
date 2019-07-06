@@ -1536,7 +1536,7 @@ def export(exportList,filename,colors=None):
     # clean objects list of unwanted types
     objectslist = [obj for obj in objectslist if obj not in annotations]
     objectslist = Arch.pruneIncluded(objectslist,strict=True)
-    objectslist = [obj for obj in objectslist if Draft.getType(obj) not in ["Material","MaterialContainer","WorkingPlaneProxy"]]
+    objectslist = [obj for obj in objectslist if Draft.getType(obj) not in ["Dimension","Material","MaterialContainer","WorkingPlaneProxy"]]
     if FULL_PARAMETRIC:
         objectslist = Arch.getAllChildren(objectslist)
 

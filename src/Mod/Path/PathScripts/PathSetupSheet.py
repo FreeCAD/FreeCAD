@@ -48,6 +48,8 @@ def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
 
 class Template:
+    # pylint: disable=no-init
+
     HorizRapid = 'HorizRapid'
     VertRapid = 'VertRapid'
     SafeHeightOffset = 'SafeHeightOffset'
@@ -259,9 +261,9 @@ class SetupSheet:
                 propName = OpPropertyName(opName, prop)
                 if hasattr(self.obj, propName):
                     setattr(obj, prop, getattr(self.obj, propName))
-        except Exception:
+        except Exception: # pylint: disable=broad-except
             PathLog.info("SetupSheet has no support for {}".format(opName))
-            #traceback.print_exc(exc)
+            #traceback.print_exc()
 
 def Create(name = 'SetupSheet'):
     obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)
@@ -283,7 +285,7 @@ class _RegisteredOp(object):
         return ptt
 
 def RegisterOperation(name, objFactory, setupProperties):
-    global _RegisteredOps
+    global _RegisteredOps # pylint: disable=global-statement
     _RegisteredOps[name] = _RegisteredOp(objFactory, setupProperties)
 
 def OpNamePrefix(name):

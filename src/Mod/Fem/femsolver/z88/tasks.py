@@ -102,7 +102,7 @@ class Solve(run.Solve):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
         self.signalAbort.add(self._process.terminate)
-        output = self._observeSolver(self._process)
+        # output = self._observeSolver(self._process)
         self._process.communicate()
         self.signalAbort.remove(self._process.terminate)
 
@@ -114,12 +114,12 @@ class Solve(run.Solve):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
         self.signalAbort.add(self._process.terminate)
-        output = self._observeSolver(self._process)
+        # output = self._observeSolver(self._process)
         self._process.communicate()
         self.signalAbort.remove(self._process.terminate)
         # if not self.aborted:
         #     self._updateOutput(output)
-        del output   # get flake8 quiet
+        # del output   # get flake8 quiet
 
 
 class Results(run.Results):

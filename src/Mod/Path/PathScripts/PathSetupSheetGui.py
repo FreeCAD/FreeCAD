@@ -60,6 +60,8 @@ class ViewProvider:
         vobj.Proxy = self
         self.icon = name
         # mode = 2
+        self.obj = None
+        self.vobj = None
 
     def attach(self, vobj):
         PathLog.track()
@@ -73,12 +75,15 @@ class ViewProvider:
         return None
 
     def __setstate__(self, state):
+        # pylint: disable=unused-argument
         return None
 
     def getDisplayMode(self, mode):
+        # pylint: disable=unused-argument
         return 'Default'
 
     def setEdit(self, vobj, mode=0):
+        # pylint: disable=unused-argument
         PathLog.track()
         taskPanel = TaskPanel(vobj)
         FreeCADGui.Control.closeDialog()
@@ -87,6 +92,7 @@ class ViewProvider:
         return True
 
     def unsetEdit(self, vobj, mode):
+        # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
         return
 
@@ -105,6 +111,7 @@ class Delegate(QtGui.QStyledItemDelegate):
     #    #PathLog.track(index.column(), type(option))
 
     def createEditor(self, parent, option, index):
+        # pylint: disable=unused-argument
         if index.data(self.EditorRole) is None:
             editor = PathSetupSheetOpPrototypeGui.Editor(index.data(self.PropertyRole))
             index.model().setData(index, editor, self.EditorRole)
@@ -115,12 +122,14 @@ class Delegate(QtGui.QStyledItemDelegate):
         index.data(self.EditorRole).setEditorData(widget)
 
     def setModelData(self, widget, model, index):
+        # pylint: disable=unused-argument
         PathLog.track(index.row(), index.column())
         editor = index.data(self.EditorRole)
         editor.setModelData(widget)
         index.model().setData(index, editor.prop.displayString(), QtCore.Qt.DisplayRole)
 
     def updateEditorGeometry(self, widget, option, index):
+        # pylint: disable=unused-argument
         widget.setGeometry(option.rect)
 
 class OpTaskPanel:
@@ -143,7 +152,12 @@ class OpTaskPanel:
         self.props = sorted(op.properties())
         self.prototype = op.prototype(name)
 
+        # initialized later
+        self.delegate = None
+        self.model = None
+
     def updateData(self, topLeft, bottomRight):
+        # pylint: disable=unused-argument
         if 0 == topLeft.column():
             isset = self.model.item(topLeft.row(), 0).checkState() == QtCore.Qt.Checked
             self.model.item(topLeft.row(), 1).setEnabled(isset)
@@ -217,7 +231,7 @@ class OpsDefaultEditor:
     def __init__(self, obj, form):
         self.form = form
         self.obj = obj
-        self.ops = sorted([OpTaskPanel(self.obj, name, op) for name, op in PathUtil.keyValueIter(PathSetupSheet._RegisteredOps)], key = lambda op: op.name)
+        self.ops = sorted([OpTaskPanel(self.obj, name, op) for name, op in PathUtil.keyValueIter(PathSetupSheet._RegisteredOps)], key = lambda op: op.name) # pylint: disable=protected-access
         if form:
             parent = form.tabOpDefaults
             for op in self.ops:
@@ -275,6 +289,12 @@ class GlobalEditor(object):
     def __init__(self, obj, form):
         self.form = form
         self.obj = obj
+
+        # initialized later
+        self.clearanceHeightOffs = None
+        self.safeHeightOffs = None
+        self.rapidHorizontal = None
+        self.rapidVertical = None
 
     def reject(self):
         pass

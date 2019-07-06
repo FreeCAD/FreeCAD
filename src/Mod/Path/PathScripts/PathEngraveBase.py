@@ -57,7 +57,6 @@ class ObjectOp(PathOp.ObjectOp):
                 zValues.append(z)
                 z -= obj.StepDown.Value
         zValues.append(obj.FinalDepth.Value)
-        self.zValues = zValues
         return zValues
 
     def buildpathocc(self, obj, wires, zValues, rel=False):

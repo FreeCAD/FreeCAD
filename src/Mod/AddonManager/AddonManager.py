@@ -471,7 +471,7 @@ class CommandAddonManager:
             else:
                 self.dialog.description.setText(translate("AddonsInstaller", "Unable to remove this addon"))
 
-        elif self.tabWidget.currentIndex() == 1:
+        elif self.dialog.tabWidget.currentIndex() == 1:
             # Tab "Macros".
             macro = self.macros[self.dialog.listMacros.currentRow()]
             if remove_macro(macro):

@@ -31,7 +31,14 @@ import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore
 
-__doc__ = "Class and implementation of the Pocket operation."
+__title__ = "Path 3D Pocket Operation"
+__author__ = "Yorik van Havre <yorik@uncreated.net>"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Class and implementation of the 3D Pocket operation."
+__contributors__ = "russ4262 (Russell Johnson)"
+__created__ = "2014"
+__scriptVersion__ = "1b testing"
+__lastModified__ = "2019-07-01 20:13 CST"
 
 LOGLEVEL = False
 
@@ -54,7 +61,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... setup receiver'''
-        pass
+        if not hasattr(obj, 'HandleMultipleFeatures'):
+            obj.addProperty('App::PropertyEnumeration', 'HandleMultipleFeatures', 'Pocket', QtCore.QT_TRANSLATE_NOOP('PathPocket', 'Choose how to process multiple Base Geometry features.'))
+        obj.HandleMultipleFeatures = ['Collectively', 'Individually']
+
+    def opOnDocumentRestored(self, obj):
+        '''opOnDocumentRestored(obj) ... adds the properties if they doesn't exist.'''
+        self.initPocketOp(obj)
 
     def pocketInvertExtraOffset(self):
         return False
@@ -68,17 +81,36 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             PathLog.debug("base items exist.  Processing...")
             for base in obj.Base:
                 PathLog.debug("Base item: {}".format(base))
+
+                # Check if all subs are faces
+                allFaceSubs = True
+                Faces = []
                 for sub in base[1]:
                     if "Face" in sub:
-                        shape = Part.makeCompound([getattr(base[0].Shape, sub)])
+                        Faces.append(getattr(base[0].Shape, sub))
                     else:
-                        edges = [getattr(base[0].Shape, sub) for sub in base[1]]
-                        shape = Part.makeFace(edges, 'Part::FaceMakerSimple')
+                        allFaceSubs = False
+                        break
 
+                if allFaceSubs is True and obj.HandleMultipleFeatures == 'Collectively':
+                    shape = Part.makeCompound(Faces)
                     env = PathUtils.getEnvelope(base[0].Shape, subshape=shape, depthparams=self.depthparams)
                     obj.removalshape = env.cut(base[0].Shape)
                     obj.removalshape.tessellate(0.1)
                     removalshapes.append((obj.removalshape, False))
+                else:
+                    for sub in base[1]:
+                        if "Face" in sub:
+                            shape = Part.makeCompound([getattr(base[0].Shape, sub)])
+                        else:
+                            edges = [getattr(base[0].Shape, sub) for sub in base[1]]
+                            shape = Part.makeFace(edges, 'Part::FaceMakerSimple')
+
+                        env = PathUtils.getEnvelope(base[0].Shape, subshape=shape, depthparams=self.depthparams)
+                        obj.removalshape = env.cut(base[0].Shape)
+                        obj.removalshape.tessellate(0.1)
+                        removalshapes.append((obj.removalshape, False))
+
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
             for base in self.model:
@@ -92,11 +124,14 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         '''areaOpSetDefaultValues(obj, job) ... set default values'''
         obj.StepOver = 100
         obj.ZigZagAngle = 45
+        obj.HandleMultipleFeatures = 'Collectively'
+
 
 def SetupProperties():
-    return PathPocketBase.SetupProperties()
+    return PathPocketBase.SetupProperties() + ["HandleMultipleFeatures"]
 
-def Create(name, obj = None):
+
+def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Pocket operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)

@@ -200,10 +200,14 @@ class CheckWBWorker(QtCore.QThread):
                         repo = git.Repo(clonedir)
                         repo.head.reset('--hard')
                     gitrepo = git.Git(clonedir)
-                    gitrepo.fetch()
-                    if "git pull" in gitrepo.status():
-                        self.mark.emit(repo[0])
-                        upds.append(repo[0])
+                    try:
+                        gitrepo.fetch()
+                    except:
+                        print("AddonManager: Unable to fetch git updates for repo",repo[0])
+                    else:
+                        if "git pull" in gitrepo.status():
+                            self.mark.emit(repo[0])
+                            upds.append(repo[0])
         self.enable.emit(len(upds))
         self.stop = True
 
@@ -273,7 +277,7 @@ class FillMacroListWorker(QtCore.QThread):
         self.progressbar_show.emit(True)
         u = urlopen("https://www.freecadweb.org/wiki/Macros_recipes")
         if not u:
-           return 
+           return
         p = u.read()
         u.close()
         if sys.version_info.major >= 3 and isinstance(p, bytes):
@@ -316,6 +320,8 @@ class ShowWorker(QtCore.QThread):
             desc = ""
             # get the README if possible
             u = urlopen(url+"/blob/master/README.md")
+            if not u:
+                u = urlopen(url+"/blob/master/Readme.md")
             if u:
                 p = u.read()
                 if sys.version_info.major >= 3 and isinstance(p, bytes):
@@ -379,16 +385,16 @@ class ShowWorker(QtCore.QThread):
             message = desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
 
         if self.repos[self.idx][0] in OBSOLETE:
-            message = " <strong style=\"background: #FF0000;\">"+translate("AddonsInstaller","This add-on is marked as obsolete")+"</strong><br/><br/>"+translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced add-on in this list provides the same functionality.")+"<br/><br/>" + message
+            message = " <strong style=\"background: #FF0000;\">"+translate("AddonsInstaller","This addon is marked as obsolete")+"</strong><br/><br/>"+translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/><br/>" + message
 
         self.info_label.emit( message )
         self.progressbar_show.emit(False)
-        l = self.loadImages( message, self.repos[self.idx][1] )
+        l = self.loadImages( message, self.repos[self.idx][1], self.repos[self.idx][0])
         if l:
             self.info_label.emit( l )
         self.stop = True
 
-    def loadImages(self,message,url):
+    def loadImages(self,message,url,wbName):
         
         "checks if the given page contains images and downloads them"
 
@@ -412,6 +418,9 @@ class ShowWorker(QtCore.QThread):
                 name = path.split("/")[-1]
                 if name and path.startswith("http"):
                     storename = os.path.join(store,name)
+                    if len(storename) >= 260:
+                        remainChars = 259 - (len(store) + len(wbName) + 1)
+                        storename = os.path.join(store,wbName+name[-remainChars:])
                     if not os.path.exists(storename):
                         try:
                             u = urlopen(path)
@@ -419,12 +428,11 @@ class ShowWorker(QtCore.QThread):
                             u.close()
                         except:
                             print("AddonManager: Debug: Error retrieving image from",path)
-                            return None
                         else:
                             f = open(storename,"wb")
                             f.write(imagedata)
                             f.close()
-    
+
                             # resize the image to 300x300px if needed
                             from PySide import QtCore,QtGui
                             img = QtGui.QImage(storename)
@@ -432,7 +440,8 @@ class ShowWorker(QtCore.QThread):
                                 pix = QtGui.QPixmap()
                                 pix = pix.fromImage(img.scaled(300,300,QtCore.Qt.KeepAspectRatio,QtCore.Qt.FastTransformation))
                                 pix.save(storename, "jpeg",100)
-                    message = message.replace(origpath,"file:///"+storename.replace("\\","/"))
+                    message = message.replace("src=\""+origpath,"src=\"file:///"+storename.replace("\\","/"))
+            #print(message)
             return message
         return None
 
@@ -687,4 +696,3 @@ class InstallWorker(QtCore.QThread):
         if bakdir:
             shutil.rmtree(bakdir)
         return translate("AddonsInstaller", "Successfully installed") + " " + zipurl
-

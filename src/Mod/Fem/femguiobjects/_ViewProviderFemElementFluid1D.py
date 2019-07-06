@@ -40,7 +40,7 @@ from PySide import QtCore
 from PySide import QtGui
 from . import FemSelectionWidgets
 
-False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns 'FemGui'
+False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 
 class _ViewProviderFemElementFluid1D:
@@ -277,6 +277,7 @@ class _TaskPanelFemElementFluid1D:
             QtCore.SIGNAL("cellChanged(int, int)"),
             self.pump_characteristics_changed
         )
+        # some fluid types deactivated since they are not implemented in ccx writer
         self.parameterWidget.cb_section_type.addItems(
             _FemElementFluid1D._FemElementFluid1D.known_fluid_types
         )

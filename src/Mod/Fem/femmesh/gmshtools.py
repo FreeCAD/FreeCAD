@@ -738,7 +738,7 @@ class GmshTools():
             )
             output, error = p.communicate()
             if sys.version_info.major >= 3:
-                output = output.decode('utf-8')
+                # output = output.decode('utf-8')
                 error = error.decode('utf-8')
             # stdout is still cut at some point
             # but the warnings are in stderr and thus printed :-)
@@ -754,10 +754,44 @@ class GmshTools():
         if not self.error:
             fem_mesh = Fem.read(self.temp_file_mesh)
             self.mesh_obj.FemMesh = fem_mesh
-            FreeCAD.Console.PrintError('  The Part should have a pretty new FEM mesh!\n')
+            FreeCAD.Console.PrintMessage('  The Part should have a pretty new FEM mesh!\n')
         else:
             FreeCAD.Console.PrintError('No mesh was created.\n')
         del self.temp_file_geometry
         del self.temp_file_mesh
 
 ##  @}
+
+
+'''
+# simple example how to use the class GmshTools
+
+import Part, ObjectsFem
+
+doc = App.ActiveDocument
+box_obj = doc.addObject('Part::Box', 'Box')
+doc.recompute()
+
+femmesh_obj = ObjectsFem.makeMeshGmsh(doc, box_obj.Name + '_Mesh')
+femmesh_obj.Part = box_obj
+doc.recompute()
+box_obj.ViewObject.Visibility = False
+
+from femmesh import gmshtools
+gmsh_mesh = gmshtools.GmshTools(femmesh_obj)
+error = gmsh_mesh.create_mesh()
+print(error)
+doc.recompute()
+
+'''
+
+'''
+TODO
+class GmshTools should be splittet in two classes
+one class should only collect the mesh parameter from mesh object and his childs
+a second class only uses the collected parameter,
+writes the input file runs gmsh reads back the unv and returns a FemMesh
+gmsh binary will be collected in the second class
+with this we could mesh without document objects
+create a shape and run meshinging class, get the FemMesh :-)
+'''

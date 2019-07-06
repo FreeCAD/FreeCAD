@@ -707,8 +707,15 @@ void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Display components"));
     act->setCheckable(true);
-    act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE);
+    act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
+                    highlightMode == "Component");
     func->toggle(act, boost::bind(&ViewProviderMesh::setHighlightedComponents, this, _1));
+
+    QAction* seg = menu->addAction(QObject::tr("Display segments"));
+    seg->setCheckable(true);
+    seg->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
+                    highlightMode == "Segment");
+    func->toggle(seg, boost::bind(&ViewProviderMesh::setHighlightedSegments, this, _1));
 }
 
 bool ViewProviderMesh::setEdit(int ModNum)
@@ -2006,9 +2013,11 @@ void ViewProviderMesh::unhighlightSelection()
 void ViewProviderMesh::setHighlightedComponents(bool on)
 {
     if (on) {
+        highlightMode = "Component";
         highlightComponents();
     }
     else {
+        highlightMode.clear();
         unhighlightSelection();
     }
 }
@@ -2034,6 +2043,34 @@ void ViewProviderMesh::highlightComponents()
         }
     }
     pcShapeMaterial->diffuseColor.finishEditing();
+}
+
+void ViewProviderMesh::setHighlightedSegments(bool on)
+{
+    if (on) {
+        highlightMode = "Segment";
+        highlightSegments();
+    }
+    else {
+        highlightMode.clear();
+        unhighlightSelection();
+    }
+}
+
+void ViewProviderMesh::highlightSegments()
+{
+    std::vector<App::Color> colors;
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    unsigned long numSegm = rMesh.countSegments();
+    colors.resize(numSegm, this->ShapeColor.getValue());
+
+    for (unsigned long i=0; i<numSegm; i++) {
+        App::Color col;
+        if (col.fromHexString(rMesh.getSegment(i).getColor()))
+            colors[i] = col;
+    }
+
+    highlightSegments(colors);
 }
 
 void ViewProviderMesh::highlightSegments(const std::vector<App::Color>& colors)

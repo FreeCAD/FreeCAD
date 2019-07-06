@@ -37,7 +37,7 @@ from femobjects import _FemElementGeometry1D
 from PySide import QtCore
 from . import FemSelectionWidgets
 
-False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns 'FemGui'
+False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 
 class _ViewProviderFemElementGeometry1D:

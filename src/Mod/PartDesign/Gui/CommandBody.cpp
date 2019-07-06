@@ -218,7 +218,8 @@ void CmdPartDesignBody::activated(int iMsg)
         }
     }
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
-    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
+    doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
+                                 "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
             PDBODYKEY, bodyName.c_str());
 
     // Make the "Create sketch" prompt appear in the task panel

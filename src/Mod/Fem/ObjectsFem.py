@@ -428,7 +428,7 @@ def makeMeshBoundaryLayer(
 
 def makeMeshGmsh(
     doc,
-    name="FEMMeshGmsh"
+    name="MeshGmsh"
 ):
     '''makeMeshGmsh(document, [name]):
     makes a Gmsh FEM mesh object'''
@@ -445,7 +445,7 @@ def makeMeshGroup(
     doc,
     base_mesh,
     use_label=False,
-    name="FEMMeshGroup"
+    name="MeshGroup"
 ):
     '''makeMeshGroup(document, base_mesh, [use_label], [name]):
     creates a FEM mesh region object to define properties for a region of a FEM mesh'''
@@ -467,7 +467,7 @@ def makeMeshGroup(
 
 def makeMeshNetgen(
     doc,
-    name="FEMMeshNetgen"
+    name="MeshNetgen"
 ):
     '''makeMeshNetgen(document, [name]):
     makes a Fem MeshShapeNetgenObject object'''
@@ -479,7 +479,7 @@ def makeMeshRegion(
     doc,
     base_mesh,
     element_length=0.0,
-    name="FEMMeshRegion"
+    name="MeshRegion"
 ):
     '''makeMeshRegion(document, base_mesh, [element_length], [name]):
     creates a FEM mesh region object to define properties for a region of a FEM mesh'''
@@ -501,7 +501,7 @@ def makeMeshRegion(
 
 def makeMeshResult(
     doc,
-    name="FEMMeshResult"
+    name="MeshResult"
 ):
     '''makeMeshResult(document, name): makes a Fem MeshResult object'''
     obj = doc.addObject("Fem::FemMeshObjectPython", name)
@@ -532,7 +532,7 @@ def makeResultMechanical(
 def makePostVtkFilterClipRegion(
     doc,
     base_vtk_result,
-    name="FEMVtkFilterClipRegion"
+    name="VtkFilterClipRegion"
 ):
     '''makePostVtkFilterClipRegion(document, base_vtk_result, [name]):
     creates an FEM post processing region clip filter object (vtk based)'''
@@ -547,7 +547,7 @@ def makePostVtkFilterClipRegion(
 def makePostVtkFilterClipScalar(
     doc,
     base_vtk_result,
-    name="FEMVtkFilterClipScalar"
+    name="VtkFilterClipScalar"
 ):
     '''makePostVtkFilterClipScalar(document, base_vtk_result, [name]):
     creates an FEM post processing scalar clip filter object (vtk based)'''
@@ -562,7 +562,7 @@ def makePostVtkFilterClipScalar(
 def makePostVtkFilterCutFunction(
     doc,
     base_vtk_result,
-    name="FEMVtkFilterCutFunction"
+    name="VtkFilterCutFunction"
 ):
     '''makePostVtkFilterCutFunction(document, base_vtk_result, [name]):
     creates an FEM post processing cut function filter object (vtk based)'''
@@ -577,7 +577,7 @@ def makePostVtkFilterCutFunction(
 def makePostVtkFilterWarp(
     doc,
     base_vtk_result,
-    name="FEMVtkFilterWarp"
+    name="VtkFilterWarp"
 ):
     '''makePostVtkFilterWarp(document, base_vtk_result, [name]):
     creates an FEM post processing warp filter object (vtk based)'''
@@ -591,7 +591,7 @@ def makePostVtkFilterWarp(
 
 def makePostVtkResult(
     doc, base_result,
-    name="FEMVtkResult"
+    name="VtkResult"
 ):
     '''makePostVtkResult(document, base_result [name]):
     creates an FEM post processing result object (vtk based) to hold FEM results'''

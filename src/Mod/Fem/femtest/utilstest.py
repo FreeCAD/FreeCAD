@@ -196,11 +196,13 @@ def compare_files(
 
 def compare_stats(
     fea,
-    stat_file=None,
-    loc_stat_types=None,
-    res_obj_name=None
+    stat_file,
+    res_obj_name,
+    loc_stat_types=None
 ):
     import femresult.resulttools as resulttools
+
+    # get the stat types which should be compared
     stat_types = [
         "U1",
         "U2",
@@ -218,35 +220,45 @@ def compare_stats(
     ]
     if not loc_stat_types:
         loc_stat_types = stat_types
-    if stat_file:
-        sf = open(stat_file, 'r')
-        sf_content = []
-        for l in sf.readlines():
-            for st in loc_stat_types:
-                if l.startswith(st):
-                    sf_content.append(l)
-        sf.close()
-        sf_content = force_unix_line_ends(sf_content)
-    stats = []
-    for s in loc_stat_types:
-        if res_obj_name:
-            statval = resulttools.get_stats(
-                FreeCAD.ActiveDocument.getObject(res_obj_name),
-                s
+
+    # get stats from result obj which should be compared
+    obj = FreeCAD.ActiveDocument.getObject(res_obj_name)
+    # fcc_print(obj)
+    if obj:
+        # fcc_print(obj.Name)
+        stats = []
+        for s in loc_stat_types:
+            statval = resulttools.get_stats(obj, s)
+            stats.append(
+                "{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n"
+                .format(s, statval[0], statval[1], statval[2])
             )
-        else:
-            print('No result object name given')
-            return False
-        stats.append(
-            "{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n"
-            .format(s, statval[0], statval[1], statval[2])
-        )
-    if sf_content != stats:
-        fcc_print("Expected stats from {}".format(stat_file))
-        fcc_print(sf_content)
-        fcc_print("Stats read from {}.frd file".format(fea.base_name))
-        fcc_print(stats)
+    else:
+        fcc_print("Result object not found. Name: {}".format(res_obj_name))
         return True
+
+    # get stats to compare with, the expected ones
+    sf = open(stat_file, 'r')
+    sf_content = []
+    for l in sf.readlines():
+        for st in loc_stat_types:
+            if l.startswith(st):
+                sf_content.append(l)
+    sf.close()
+    sf_content = force_unix_line_ends(sf_content)
+    if sf_content == []:
+        return True
+
+    # compare stats
+    if stats != sf_content:
+        fcc_print("Stats read from {}.frd file".format(fea.base_name))
+        fcc_print("!=")
+        fcc_print("Expected stats from {}".format(stat_file))
+        for i in range(len(stats)):
+            if stats[i] != sf_content[i]:
+                fcc_print("{} != {}".format(stats[i].rstrip(), sf_content[i].rstrip()))
+        return True
+
     return False
 
 

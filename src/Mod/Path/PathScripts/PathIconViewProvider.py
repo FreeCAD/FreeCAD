@@ -45,6 +45,10 @@ class ViewProvider(object):
     def __init__(self, vobj, icon):
         self.icon = icon
         self.attach(vobj)
+
+        self.editModule = None
+        self.editCallback = None
+
         vobj.Proxy = self
 
     def attach(self, vobj):
@@ -78,14 +82,17 @@ class ViewProvider(object):
             callback(self.obj, self.vobj, edit)
 
     def setEdit(self, vobj=None, mode=0):
+        # pylint: disable=unused-argument
         if 0 == mode:
             self._onEditCallback(True)
         return True
 
     def unsetEdit(self, arg1, arg2):
+        # pylint: disable=unused-argument
         self._onEditCallback(False)
 
     def setupContextMenu(self, vobj, menu):
+        # pylint: disable=unused-argument
         PathLog.track()
         from PySide import QtCore, QtGui
         edit = QtCore.QCoreApplication.translate('Path', 'Edit', None)
@@ -100,7 +107,7 @@ def Attach(vobj, name):
     If no view provider was registered for the given name a default IconViewProvider is created.'''
 
     PathLog.track(vobj.Object.Label, name)
-    global _factory
+    global _factory # pylint: disable=global-statement
     for key,value in PathUtil.keyValueIter(_factory):
         if key == name:
             return value(vobj, name)
@@ -112,6 +119,6 @@ def RegisterViewProvider(name, provider):
     an instance of provider is used instead.'''
 
     PathLog.track(name)
-    global _factory
+    global _factory # pylint: disable=global-statement
     _factory[name] = provider
 

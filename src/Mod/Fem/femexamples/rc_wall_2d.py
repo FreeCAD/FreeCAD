@@ -68,11 +68,9 @@ def setup_rcwall2d(doc=None, solver='ccxtools'):
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, 'Analysis')
 
-    solver
+    # solver
     # TODO How to pass multiple solver for one analysis in one doc
-    if solver is None:
-        pass  # no solver is added
-    elif solver is 'calculix':
+    if solver == 'calculix':
         solver = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, 'SolverCalculiX')
         )[0]
@@ -81,7 +79,7 @@ def setup_rcwall2d(doc=None, solver='ccxtools'):
         solver.ThermoMechSteadyState = False
         solver.MatrixSolverType = 'default'
         solver.IterationsControlParameterTimeUse = False
-    elif solver is 'ccxtools':
+    elif solver == 'ccxtools':
         solver = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, 'CalculiXccxTools')
         )[0]

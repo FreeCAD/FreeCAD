@@ -477,7 +477,7 @@ def write_z88_mesh_to_file(
         vec = femnodes_mesh[node]
         f.write(
             "{0} {1} {2:.6f} {3:.6f} {4:.6f}\n"
-            .format(node, node_dof, vec.x, vec.y, vec.z, node)
+            .format(node, node_dof, vec.x, vec.y, vec.z)
         )
     # elements
     for element in femelement_table:
@@ -494,37 +494,37 @@ def write_z88_mesh_to_file(
         ):
             # seg2 FreeCAD --> stab4 Z88
             # N1, N2
-            f.write("{0} {1}\n".format(element, z88_element_type, element))
+            f.write("{0} {1}\n".format(element, z88_element_type))
             f.write("{0} {1}\n".format(
                     n[0], n[1]))
         elif z88_element_type == 3 or z88_element_type == 14 or z88_element_type == 24:
             # tria6 FreeCAD --> schale24 Z88
             # N1, N2, N3, N4, N5, N6
-            f.write("{0} {1}\n".format(element, z88_element_type, element))
+            f.write("{0} {1}\n".format(element, z88_element_type))
             f.write("{0} {1} {2} {3} {4} {5}\n".format(
                     n[0], n[1], n[2], n[3], n[4], n[5]))
         elif z88_element_type == 7 or z88_element_type == 20 or z88_element_type == 23:
             # quad8 FreeCAD --> schale23 Z88
             # N1, N2, N3, N4, N5, N6, N7, N8
-            f.write("{0} {1}\n".format(element, z88_element_type, element))
+            f.write("{0} {1}\n".format(element, z88_element_type))
             f.write("{0} {1} {2} {3} {4} {5} {6} {7}\n".format(
                     n[0], n[1], n[2], n[3], n[4], n[5], n[6], n[7]))
         elif z88_element_type == 17:
             # tetra4 FreeCAD --> volume17 Z88
             # N4, N2, N3, N1
-            f.write("{0} {1}\n".format(element, z88_element_type, element))
+            f.write("{0} {1}\n".format(element, z88_element_type))
             f.write("{0} {1} {2} {3}\n".format(
                     n[3], n[1], n[2], n[0]))
         elif z88_element_type == 16:
             # tetra10 FreeCAD --> volume16 Z88
             # N1, N2, N4, N3, N5, N9, N8, N6, N10, N7, FC to Z88 is different as Z88 to FC
-            f.write("{0} {1}\n".format(element, z88_element_type, element))
+            f.write("{0} {1}\n".format(element, z88_element_type))
             f.write("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}\n".format(
                     n[0], n[1], n[3], n[2], n[4], n[8], n[7], n[5], n[9], n[6]))
         elif z88_element_type == 1:
             # hexa8 FreeCAD --> volume1 Z88
             # N1, N2, N3, N4, N5, N6, N7, N8
-            f.write("{0} {1}\n".format(element, z88_element_type, element))
+            f.write("{0} {1}\n".format(element, z88_element_type))
             f.write("{0} {1} {2} {3} {4} {5} {6} {7}\n".format(
                     n[0], n[1], n[2], n[3], n[4], n[5], n[6], n[7]))
         elif z88_element_type == 10:
@@ -534,7 +534,7 @@ def write_z88_mesh_to_file(
             # or turn by 90 degree and they match !
             # N1, N2, N3, N4, N5, N6, N7, N8, N9, N10
             # N11, N12, N13, N14, N15, N16, N17, N18, N19, N20
-            f.write("{0} {1}\n".format(element, z88_element_type, element))
+            f.write("{0} {1}\n".format(element, z88_element_type))
             f.write(
                 "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} "
                 "{10} {11} {12} {13} {14} {15} {16} {17} {18} {19}\n"

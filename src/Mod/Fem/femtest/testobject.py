@@ -37,14 +37,15 @@ class TestObjectCreate(unittest.TestCase):
     def setUp(
         self
     ):
-        # init, is executed before every test
-        self.doc_name = "TestObjectCreate"
-        try:
-            FreeCAD.setActiveDocument(self.doc_name)
-        except:
+        # setUp is executed before every test
+        # setting up a document to hold the tests
+        self.doc_name = self.__class__.__name__
+        if FreeCAD.ActiveDocument:
+            if FreeCAD.ActiveDocument.Name != self.doc_name:
+                FreeCAD.newDocument(self.doc_name)
+        else:
             FreeCAD.newDocument(self.doc_name)
-        finally:
-            FreeCAD.setActiveDocument(self.doc_name)
+        FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
 
     # ********************************************************************************************
@@ -132,7 +133,6 @@ class TestObjectCreate(unittest.TestCase):
         self
     ):
         FreeCAD.closeDocument(self.doc_name)
-        pass
 
 
 # ************************************************************************************************
@@ -143,13 +143,15 @@ class TestObjectType(unittest.TestCase):
     def setUp(
         self
     ):
-        self.doc_name = "TestObjectType"
-        try:
-            FreeCAD.setActiveDocument(self.doc_name)
-        except:
+        # setUp is executed before every test
+        # setting up a document to hold the tests
+        self.doc_name = self.__class__.__name__
+        if FreeCAD.ActiveDocument:
+            if FreeCAD.ActiveDocument.Name != self.doc_name:
+                FreeCAD.newDocument(self.doc_name)
+        else:
             FreeCAD.newDocument(self.doc_name)
-        finally:
-            FreeCAD.setActiveDocument(self.doc_name)
+        FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
 
     # ********************************************************************************************
@@ -310,7 +312,8 @@ class TestObjectType(unittest.TestCase):
         )
         self.assertEqual(
             'Fem::FemSolverObjectElmer',
-            type_of_obj(solverelmer))
+            type_of_obj(solverelmer)
+        )
         self.assertEqual(
             'Fem::FemSolverObjectZ88',
             type_of_obj(ObjectsFem.makeSolverZ88(doc))
@@ -1392,4 +1395,3 @@ class TestObjectType(unittest.TestCase):
     ):
         # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
-        pass

@@ -41,15 +41,18 @@ class TestCcxTools(unittest.TestCase):
     def setUp(
         self
     ):
-        # init, is executed before every test
-        self.doc_name = "TestCcxTools"
-        try:
-            FreeCAD.setActiveDocument(self.doc_name)
-        except:
+        # setUp is executed before every test
+        # setting up a document to hold the tests
+        self.doc_name = self.__class__.__name__
+        if FreeCAD.ActiveDocument:
+            if FreeCAD.ActiveDocument.Name != self.doc_name:
+                FreeCAD.newDocument(self.doc_name)
+        else:
             FreeCAD.newDocument(self.doc_name)
-        finally:
-            FreeCAD.setActiveDocument(self.doc_name)
+        FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
+
+        # more inits
         self.mesh_name = 'Mesh'
         self.temp_dir = testtools.get_fem_test_tmp_dir()
         self.test_file_dir = join(
@@ -256,8 +259,9 @@ class TestCcxTools(unittest.TestCase):
         fcc_print('Reading stats from result object for static analysis...')
         static_expected_values = join(self.test_file_dir, "cube_static_expected_values")
         ret = testtools.compare_stats(
-            fea, static_expected_values,
-            'CalculiX_static_results'
+            fea,
+            static_expected_values,
+            'CCX_Results'
         )
         self.assertFalse(
             ret,
@@ -560,7 +564,7 @@ class TestCcxTools(unittest.TestCase):
         ret = testtools.compare_stats(
             fea,
             frequency_expected_values,
-            'CalculiX_frequency_mode_1_results'
+            'CCX_Mode1_Results'
         )
         self.assertFalse(
             ret,
@@ -795,7 +799,7 @@ class TestCcxTools(unittest.TestCase):
         ret = testtools.compare_stats(
             fea,
             thermomech_expected_values,
-            'CalculiX_thermomech_results'
+            'CCX_Results'
         )
         self.assertFalse(
             ret,
@@ -1185,25 +1189,11 @@ class TestCcxTools(unittest.TestCase):
             self.test_file_dir,
             "Flow1D_thermomech_expected_values"
         )
-        stat_types = [
-            "U1",
-            "U2",
-            "U3",
-            "Uabs",
-            "Sabs",
-            "MaxPrin",
-            "MidPrin",
-            "MinPrin",
-            "MaxShear",
-            "Peeq",
-            "Temp",
-            "MFlow",
-            "NPress"
-        ]
         ret = testtools.compare_stats(
-            fea, Flow1D_thermomech_expected_values,
-            stat_types,
-            'CalculiX_thermomech_time_1_0_results')
+            fea,
+            Flow1D_thermomech_expected_values,
+            'CCX_Time1_0_Results'
+        )
         self.assertFalse(
             ret,
             "Invalid results read from .frd file"
@@ -1227,7 +1217,6 @@ class TestCcxTools(unittest.TestCase):
     ):
         # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
-        pass
 
 
 # ************************************************************************************************

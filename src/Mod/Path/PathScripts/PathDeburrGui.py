@@ -55,8 +55,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpDeburrEdit.ui")
 
     def initPage(self, obj):
-        self.opImagePath = "{}Mod/Path/Images/Ops/{}".format(FreeCAD.getHomePath(), 'chamfer.svg')
-        self.opImage = QtGui.QPixmap(self.opImagePath)
+        self.opImagePath = "{}Mod/Path/Images/Ops/{}".format(FreeCAD.getHomePath(), 'chamfer.svg') # pylint: disable=attribute-defined-outside-init
+        self.opImage = QtGui.QPixmap(self.opImagePath) # pylint: disable=attribute-defined-outside-init
         self.form.opImage.setPixmap(self.opImage)
         iconMiter = QtGui.QIcon(':/icons/edge-join-miter-not.svg')
         iconMiter.addFile(':/icons/edge-join-miter.svg', state=QtGui.QIcon.On)

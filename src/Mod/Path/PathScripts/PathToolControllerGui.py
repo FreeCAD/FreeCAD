@@ -41,6 +41,7 @@ class ViewProvider:
 
     def __init__(self, vobj):
         vobj.Proxy = self
+        self.vobj = vobj
 
     def attach(self, vobj):
         mode = 2
@@ -65,6 +66,7 @@ class ViewProvider:
         return ":/icons/Path-ToolController.svg"
 
     def onChanged(self, vobj, prop):
+        # pylint: disable=unused-argument
         mode = 2
         vobj.setEditorMode('LineWidth', mode)
         vobj.setEditorMode('MarkerColor', mode)
@@ -74,11 +76,13 @@ class ViewProvider:
         vobj.setEditorMode('Selectable', mode)
 
     def onDelete(self, vobj, args=None):
+        # pylint: disable=unused-argument
         PathUtil.clearExpressionEngine(vobj.Object)
         return True
 
     def updateData(self, vobj, prop):
         # this is executed when a property of the APP OBJECT changes
+        # pylint: disable=unused-argument
         pass
 
     def setEdit(self, vobj=None, mode=0):
@@ -97,9 +101,11 @@ class ViewProvider:
 
     def unsetEdit(self, vobj, mode):
         # this is executed when the user cancels or terminates edit mode
+        # pylint: disable=unused-argument
         return False
 
     def setupContextMenu(self, vobj, menu):
+        # pylint: disable=unused-argument
         PathLog.track()
         for action in menu.actions():
             menu.removeAction(action)
@@ -115,7 +121,9 @@ def Create(name = 'Default Tool', tool=None, toolNumber=1):
     return obj
 
 
-class CommandPathToolController:
+class CommandPathToolController(object):
+    # pylint: disable=no-init
+
     def GetResources(self):
         return {'Pixmap': 'Path-LengthOffset',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller to the Job"),
@@ -125,14 +133,14 @@ class CommandPathToolController:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):
         PathLog.track()
         Create()
 
-class ToolControllerEditor:
+class ToolControllerEditor(object):
 
     def __init__(self, obj, asDialog):
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DlgToolControllerEdit.ui")
@@ -177,7 +185,7 @@ class ToolControllerEditor:
             self.editor.updateTool()
             tc.Tool = self.editor.tool
 
-        except Exception as e:
+        except Exception as e: # pylint: disable=broad-except
             PathLog.error(translate("PathToolController", "Error updating TC: %s") % e)
 
 
@@ -235,10 +243,12 @@ class TaskPanel:
         self.toolrep.Shape = t
 
     def edit(self, item, column):
+        # pylint: disable=unused-argument
         if not self.updating:
             self.resetObject()
 
     def resetObject(self, remove=None):
+        # pylint: disable=unused-argument
         "transfers the values from the widget to the object"
         FreeCAD.ActiveDocument.recompute()
 
