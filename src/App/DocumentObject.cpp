@@ -172,6 +172,20 @@ short DocumentObject::mustExecute(void) const
     return 0;
 }
 
+bool DocumentObject::isErrorInOutListRecursive(void) const
+{
+    bool error = false;
+
+    for (auto obj : this->getOutListRecursive()) {
+        if(obj->isError()) {
+            error = true;
+            break;
+        }
+    }
+
+    return error;
+}
+
 const char* DocumentObject::getStatusString(void) const
 {
     if (isError()) {
@@ -704,10 +718,10 @@ void App::DocumentObject::_addBackLink(DocumentObject* newObj)
 #ifndef USE_OLD_DAG
     //we need to add all links, even if they are available multiple times. The reason for this is the
     //removal: If a link loses this object it removes the backlink. If we would have added it only once
-    //this removal would clear the object from the inlist, even though there may be other link properties 
+    //this removal would clear the object from the inlist, even though there may be other link properties
     //from this object that link to us.
     _inList.push_back(newObj);
 #else
     (void)newObj;
-#endif //USE_OLD_DAG    
+#endif //USE_OLD_DAG
 }
