@@ -24,6 +24,7 @@
 #ifndef APP_GROUPEXTENSION_H
 #define APP_GROUPEXTENSION_H
 
+#include <boost/signals2.hpp>
 #include "FeaturePython.h"
 #include "DocumentObject.h"
 #include "PropertyLinks.h"
@@ -116,8 +117,6 @@ public:
 
     virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
 
-    virtual void onExtendedUnsetupObject() override;
-
     virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
 
     std::vector<DocumentObject*> getAllChildren() const;
@@ -132,6 +131,10 @@ private:
     //this version if has object stores the already searched objects to prevent infinite recursion
     //in case of a cyclic group graph
     bool recursiveHasObject(const DocumentObject* obj, const GroupExtension* group, std::vector<const GroupExtension*> history) const;
+
+    // for tracking children visibility
+    void slotChildChanged(const App::DocumentObject&, const App::Property&);
+    std::unordered_map<const App::DocumentObject*, boost::signals2::scoped_connection> _Conns;
 };
 
 

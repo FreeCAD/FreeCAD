@@ -132,7 +132,6 @@ std::vector< DocumentObject* > GroupExtension::removeObjects(std::vector< Docume
        if(res != end) {
            end = res;
            removed.push_back(obj);
-            obj->Visibility.setStatus(App::Property::Output,true);
        }
     }
     
@@ -320,7 +319,6 @@ void GroupExtension::extensionOnChanged(const Property* p) {
     if((this->getExtensionTypeId() == GroupExtension::getExtensionClassTypeId())
         && p == &Group && !Group.testStatus(Property::User3)) 
     {
-
         if(!getExtendedObject()->isRestoring() &&
            !getExtendedObject()->getDocument()->isPerformingTransaction()) {
             
@@ -347,14 +345,24 @@ void GroupExtension::extensionOnChanged(const Property* p) {
                 throw Base::RuntimeError("Object can only be in a single Group");
             }
         }
+    }
 
+    if(p == &Group) {
+        _Conns.clear();
         for(auto obj : Group.getValue()) {
-            if(obj && obj->getNameInDocument())
-                obj->Visibility.setStatus(Property::Output,false);
+            if(obj && obj->getNameInDocument()) {
+                _Conns[obj] = obj->signalChanged.connect(boost::bind(
+                            &GroupExtension::slotChildChanged,this,_1,_2));
+            }
         }
     }
 
     App::Extension::extensionOnChanged(p);
+}
+
+void GroupExtension::slotChildChanged(const DocumentObject &obj, const Property &prop) {
+    if(&prop == &obj.Visibility)
+        _GroupTouched.touch();
 }
 
 bool GroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
@@ -391,15 +399,6 @@ bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int) 
             ret.push_back(std::string(obj->getNameInDocument())+'.');
     }
     return true;
-}
-
-void GroupExtension::onExtendedUnsetupObject() {
-    for(auto obj : Group.getValues()) {
-        if(obj && obj->getNameInDocument() 
-                && !GeoFeatureGroupExtension::getGroupOfObject(obj))
-            obj->Visibility.setStatus(App::Property::Output,true);
-    }
-    DocumentObjectExtension::onExtendedUnsetupObject();
 }
 
 App::DocumentObjectExecReturn *GroupExtension::extensionExecute(void) {
