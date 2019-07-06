@@ -166,7 +166,7 @@ def cutout_legacy(shape_base, shape_tool, tolerance = 0.0):
     if len(shapes_base) > 1:
         result = []
         for sh in shapes_base:
-            result.append(cutout(sh, shape_tool))
+            result.append(cutout_legacy(sh, shape_tool))
         return Part.Compound(result)
 
     shape_base = shapes_base[0]
