@@ -191,9 +191,10 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::removeObjects(std::vector
 void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
 
     //objects are only allowed in a single GeoFeatureGroup
-    if((strcmp(p->getName(), "Group")==0)) {
+    if(p == &Group && !Group.testStatus(Property::User3)) {
     
-        if(!getExtendedObject()->getDocument()->isPerformingTransaction()) {
+        if(!getExtendedObject()->isRestoring() &&
+           !getExtendedObject()->getDocument()->isPerformingTransaction()) {
                 
             bool error = false;
             auto corrected = Group.getValues();
@@ -215,6 +216,7 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
 
             //if an error was found we need to correct the values and inform the user
             if(error) {
+                Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, &Group);
                 Group.setValues(corrected);
                 throw Base::RuntimeError("Object can only be in a single GeoFeatureGroup");
             }
@@ -252,35 +254,14 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLin
         return std::vector< DocumentObject* >();
 
     std::vector< App::DocumentObject* > result;
+    auto link = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
+    if(link && link->getScope()==scope)
+        link->getLinks(result);
 
-    if(prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()) && 
-        static_cast<App::PropertyLink*>(prop)->getScope() == scope) {
-
-        result.push_back(static_cast<App::PropertyLink*>(prop)->getValue());
-    }
-
-    if(prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId()) &&
-            static_cast<App::PropertyLinkList*>(prop)->getScope() == scope) {
-
-        auto vec = static_cast<App::PropertyLinkList*>(prop)->getValues();
-        result.insert(result.end(), vec.begin(), vec.end());
-    }
-
-    if(prop->getTypeId().isDerivedFrom(App::PropertyLinkSub::getClassTypeId()) &&
-            static_cast<App::PropertyLinkSub*>(prop)->getScope() == scope) {
-
-        result.push_back(static_cast<App::PropertyLinkSub*>(prop)->getValue());
-    }
-
-    if(prop->getTypeId().isDerivedFrom(App::PropertyLinkSubList::getClassTypeId()) &&
-            static_cast<App::PropertyLinkSubList*>(prop)->getScope() == scope) {
-
-        auto vec = static_cast<App::PropertyLinkSubList*>(prop)->getValues();
-        result.insert(result.end(), vec.begin(), vec.end());
-    }
-
+    //getLinks() guarantees no nullptrs
+    //
     //it is important to remove all nullptrs
-    result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
+    // result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
     return result;
 }
 
