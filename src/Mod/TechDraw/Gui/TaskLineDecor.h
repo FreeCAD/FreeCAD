@@ -29,6 +29,7 @@
 #include <Gui/FileDialog.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskLineDecor.h>
+#include <Mod/TechDraw/Gui/ui_TaskRestoreLines.h>   //????
 
 class Ui_TaskLineDecor;
 
@@ -76,6 +77,42 @@ private:
     bool m_visible;
 };
 
+class TaskRestoreLines : public QWidget
+{
+    Q_OBJECT
+
+public:
+    TaskRestoreLines(TechDraw::DrawViewPart* partFeat);
+    ~TaskRestoreLines();
+
+public:
+    virtual bool accept();
+    virtual bool reject();
+
+protected Q_SLOTS:
+    void onAllPressed(void);
+    void onGeometryPressed(void);
+    void onCosmeticPressed(void);
+    void onCenterPressed(void);
+
+protected:
+    void changeEvent(QEvent *e);
+    void initUi(void);
+    int countInvisibleLines(void);
+    int countInvisibleGeoms(void);
+    int countInvisibleCosmetics(void);
+    int countInvisibleCenters(void);
+    void restoreInvisibleLines(void);
+    void restoreInvisibleGeoms(void);
+    void restoreInvisibleCosmetics(void);
+    void restoreInvisibleCenters(void);
+
+private:
+    Ui_TaskRestoreLines* ui;
+    TechDraw::DrawViewPart* m_partFeat;
+};
+
+
 class TaskDlgLineDecor : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
@@ -103,7 +140,9 @@ protected:
 
 private:
     TaskLineDecor * widget;
+    TaskRestoreLines* restore;
     Gui::TaskView::TaskBox* taskbox;
+    Gui::TaskView::TaskBox* restoreBox;
 };
 
 } //namespace TechDrawGui

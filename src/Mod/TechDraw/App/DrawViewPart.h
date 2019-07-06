@@ -188,7 +188,7 @@ public:
     void clearCosmeticEdges(void);
 
     virtual int addCenterLine(TechDraw::CenterLine*);
-    virtual void writeCListProp(void);
+    virtual void writeCLineProp(void);
     virtual void removeCenterLine(TechDraw::CenterLine* cl);
     virtual void removeCenterLine(int idx);
     const std::vector<TechDraw::CenterLine*> & getCenterLines(void) const { return CLineTable; }
