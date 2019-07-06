@@ -299,11 +299,7 @@ public:
 
     /** @name Helper methods for the Undo/Redo and Update handling */
     //@{
-    /** Open a new Undo transaction on the active document
-     *
-     * @param sName: transaction name
-     * @param exclusive: set true to disable any new transaction in any recusive invoking commands
-     */
+    /// Open a new Undo transaction on the active document
     static void openCommand(const char* sName=0);
     /// Commit the Undo transaction on the active document
     static void commitCommand(void);
