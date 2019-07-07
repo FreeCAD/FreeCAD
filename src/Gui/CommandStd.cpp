@@ -146,7 +146,7 @@ StdCmdRecentFiles::StdCmdRecentFiles()
     sToolTipText  = QT_TR_NOOP("Recent file list");
     sWhatsThis    = "Std_RecentFiles";
     sStatusTip    = QT_TR_NOOP("Recent file list");
-    eType         = 0;
+    eType         = NoTransaction;
 }
 
 /**
