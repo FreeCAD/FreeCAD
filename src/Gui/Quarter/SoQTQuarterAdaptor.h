@@ -117,9 +117,8 @@ private:
     SoCallbackList m_interactionStartCallback;
     SoCallbackList m_interactionEndCallback;
 
-    // Keep track of the frames-per-second counter.
-    std::vector<float> frames;
-    float totaldraw;
+    double frametime;
+    double drawtime;
     double starttime;
     int framecount;
 

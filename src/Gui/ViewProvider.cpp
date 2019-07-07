@@ -57,6 +57,7 @@
 #include "View3DInventorViewer.h"
 #include "SoFCDB.h"
 #include "ViewProviderExtension.h"
+#include "SoFCUnifiedSelection.h"
 #include "ViewParams.h"
 
 #include <boost/bind.hpp>
@@ -84,7 +85,7 @@ ViewProvider::ViewProvider()
 {
     setStatus(UpdateData, true);
 
-    pcRoot = new SoSeparator();
+    pcRoot = new SoFCSeparator;
     pcRoot->ref();
     pcModeSwitch = new SoSwitch();
     pcModeSwitch->ref();
@@ -94,6 +95,8 @@ ViewProvider::ViewProvider()
     pcRoot->addChild(pcModeSwitch);
     sPixmap = "px";
     pcModeSwitch->whichChild = _iActualMode;
+
+    setRenderCacheMode(ViewParams::instance()->getRenderCache());
 }
 
 ViewProvider::~ViewProvider()
@@ -972,6 +975,11 @@ void ViewProvider::beforeDelete() {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector)
         ext->extensionBeforeDelete();
+}
+
+void ViewProvider::setRenderCacheMode(int mode) {
+    pcRoot->renderCaching =
+        mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF);
 }
 
 Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transform, MDIView *view) const {

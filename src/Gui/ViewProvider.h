@@ -496,6 +496,8 @@ public:
     int getDefaultMode() const;
     //@}
     
+    virtual void setRenderCacheMode(int);
+
 protected:
     /** Helper method to check that the node is valid, i.e. it must not cause
      * and infinite recursion.
