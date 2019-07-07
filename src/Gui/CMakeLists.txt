@@ -1022,6 +1022,7 @@ SET(Inventor_CPP_SRCS
     SoFCOffscreenRenderer.cpp
     SoFCSelection.cpp
     SoFCUnifiedSelection.cpp
+    SoFCSelectionContext.cpp
     SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
@@ -1047,6 +1048,7 @@ SET(Inventor_SRCS
     SoFCOffscreenRenderer.h
     SoFCSelection.h
     SoFCUnifiedSelection.h
+    SoFCSelectionContext.h
     SoFCSelectionAction.h
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
