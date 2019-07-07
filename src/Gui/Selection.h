@@ -229,9 +229,29 @@ class GuiExport SelectionObserver
 {
 
 public:
-    /// Constructor
+    /** Constructor
+     * 
+     * @param attach: whether to attach this observer on construction
+     * @param resolve: sub-object resolving mode.
+     *                 0 no resolve,
+     *                 1 resolve sub-object with old style element name
+     *                 2 resolve sub-object with new style element name
+     */
     SelectionObserver(bool attach = true, int resolve = 1);
+    /** Constructor
+     * 
+     * @param vp: filtering view object.
+     * @param attach: whether to attach this observer on construction
+     * @param resolve: sub-object resolving mode.
+     *                 0 no resolve, 
+     *                 1 resolve sub-object with old style element name
+     *                 2 resolve sub-object with new style element name
+     *
+     * Constructs an selection observer that receives only selection event of
+     * objects within the same document as the input view object.
+     */
     SelectionObserver(const Gui::ViewProviderDocumentObject *vp, bool attach=true, int resolve=1);
+
     virtual ~SelectionObserver();
     bool blockConnection(bool block);
     bool isConnectionBlocked() const;
@@ -473,7 +493,10 @@ public:
      * of the active are returned. If nothing for this Document is selected an
      * empty vector is returned. If document name is "*", then all document is
      * considered. 
-     * @param resolve: whether to resolve the subname reference of the selection
+     * @param resolve: sub-object resolving mode
+     *                 0 no resolve, 
+     *                 1 resolve sub-object with old style element name
+     *                 2 resolve sub-object with new style element name
      * @param single: if set to true, then it will return an empty vector if
      * there is more than one selections.
      *
@@ -487,13 +510,17 @@ public:
      * empty vector is returned. If document name is "*", then all document is
      * considered. 
      * @param typeId: specify the type of object to be returned.
-     * @param resolve: whether to resolve the subname reference of the selection
+     * @param resolve: sub-object resolving mode.
+     *                 0 no resolve, 
+     *                 1 resolve sub-object with old style element name
+     *                 2 resolve sub-object with new style element name
      * @param single: if set to true, then it will return an empty vector if
      * there is more than one selections.
      *
      * @return The returned vector reflects the sequence of selection.
      */
-    std::vector<Gui::SelectionObject> getSelectionEx(const char* pDocName=0,Base::Type typeId=App::DocumentObject::getClassTypeId(),int resolve=1, bool single=false) const;
+    std::vector<Gui::SelectionObject> getSelectionEx(const char* pDocName=0,
+            Base::Type typeId=App::DocumentObject::getClassTypeId(),int resolve=1, bool single=false) const;
 
     /**
      * @brief getAsPropertyLinkSubList fills PropertyLinkSubList with current selection.
@@ -504,9 +531,36 @@ public:
 
     /** Returns a vector of all selection objects of all documents. */
     std::vector<SelObj> getCompleteSelection(int resolve=1) const;
+
+    /// Check if there is any selection
     bool hasSelection() const;
+
+    /** Check if there is any selection within a given document
+     *
+     * @param doc: specify the document to check for selection. If NULL, then
+     *             check the current active document.
+     * @param resolve: whether to resolve the selected sub-object
+     *
+     * If \c resolve is true, then the selection is first resolved before
+     * matching its owner document. So in case the selected sub-object is
+     * linked from an extenal document, it may not match the input \c doc.
+     * If \c resolve is false, then the match is only done with the top
+     * level parent object.
+     */
     bool hasSelection(const char* doc, bool resolve=true) const;
+
+    /** Check if there is any sub-element selection
+     *
+     * @param doc: optional document to check for selection
+     * @param resolve: whether to resolve selected sub-object
+     *
+     * Example sub selections are face, edge or vertex. If \c resolve is false,
+     * then sub-object (i.e. a group child object) selection is also counted
+     * even if it selects the whole sub-object.
+     */
     bool hasSubSelection(const char *doc=0) const;
+
+    /// Check if there is any pre-selection
     bool hasPreselection() const;
 
     /// Size of selected entities for all documents
@@ -514,18 +568,77 @@ public:
         return static_cast<unsigned int>(_SelList.size());
     }
 
+    /** @name Selection stack functions
+     *
+     * Selection stack is for storing selection history so that the user can go
+     * back and forward to previous selections.
+     */
+    //@{
+    /// Return the current selection stack size
     int selStackBackSize() const {return _SelStackBack.size();}
-    int selStackForwardSize() const {return _SelStackForward.size();}
-    std::vector<Gui::SelectionObject> selStackGet(const char* pDocName=0,int resolve=1,int index=0) const;
-    void selStackGoBack(int count=1);
-    void selStackGoForward(int count=1);
-    void selStackPush(bool clearForward=true, bool overwrite=false);
 
+    /// Return the current forward selection stack size
+    int selStackForwardSize() const {return _SelStackForward.size();}
+
+    /** Obtain selected objects from stack
+     * 
+     * @param pDocName: optional filtering document, NULL for current active
+     *                  document
+     * @param resolve: sub-object resolving mode.
+     *                 0 no resolve, 
+     *                 1 resolve sub-object with old style element name
+     *                 2 resolve sub-object with new style element name
+     * @param index: optional position in the stack
+     */
+    std::vector<Gui::SelectionObject> selStackGet(const char* pDocName=0,int resolve=1,int index=0) const;
+
+    /** Go back selection histroy
+     *
+     * @param count: optional number of steps to go back
+     *
+     * This function pops the selection stack, and populate the current
+     * selection with the content of the last poped entry
+     */
+    void selStackGoBack(int count=1);
+
+    /** Go forward selection histroy 
+     *
+     * @param count: optional number of steps to go back
+     *
+     * This function pops the selection stack, and populate the current
+     * selection with the content of the last poped entry
+     */
+    void selStackGoForward(int count=1);
+
+    /** Save the current selection on to the stack
+     *
+     * @param clearForward: whether to clear forward selection stack
+     * @param overwrite: whether to overwrite the current top entry of the
+     *                   stack instead of pushing a new entry.
+     */
+    void selStackPush(bool clearForward=true, bool overwrite=false);
+    //@}
+
+    /** @name Picked list functions
+     *
+     * Picked list stores all selected geometry elements that intersects the
+     * 3D pick point. The list population is done by SoFCUnifiedSelection through
+     * addSelection() with the pickedList argument.
+     */
+    //@{
+    /// Check whether picked list is enabled
     bool needPickedList() const;
+    /// Turn on or off picked list
     void enablePickedList(bool);
+    /// Check if there is any selection inside picked list
     bool hasPickedList() const;
+    /// Return select objects inside picked list
     std::vector<SelectionSingleton::SelObj> getPickedList(const char* pDocName) const;
-    std::vector<Gui::SelectionObject> getPickedListEx(const char* pDocName=0,Base::Type typeId=App::DocumentObject::getClassTypeId()) const;
+    /// Return selected object inside picked list grouped by top level parents
+    std::vector<Gui::SelectionObject> getPickedListEx(
+            const char* pDocName=0, Base::Type typeId=App::DocumentObject::getClassTypeId()) const;
+    //@}
+
     static SelectionSingleton& instance(void);
     static void destruct (void);
     friend class SelectionFilter;
@@ -648,6 +761,8 @@ inline SelectionSingleton& Selection(void)
     return SelectionSingleton::instance();
 }
 
+/** Helper class to disable logging selection action to MacroManager
+ */
 class GuiExport SelectionLogDisabler {
 public:
     SelectionLogDisabler(bool silent=false) :silent(silent) {

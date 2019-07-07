@@ -32,6 +32,25 @@
 
 #include <Base/Type.h>
 
+/** @defgroup CommandMacros Helper macros for running commands through Python interpreter */
+//@{
+
+/** Runs a command for accessing document attribute or method
+ * @param _type: type of document, Gui or App
+ * @param _doc: pointer to a document
+ * @param _cmd: command string, streamable
+ *
+ * Example: 
+ * @code{.cpp}
+ *      _FCMD_DOC_CMD(Gui,doc,"getObject('" << objName << "')");
+ * @endcode
+ *
+ * Translates to command (assuming doc's name is 'DocName', and
+ * and objName constains value 'ObjName'):
+ * @code{.py}
+ *       Gui.getDocument('DocName').getObject('ObjName')
+ * @endcode
+ */
 #define _FCMD_DOC_CMD(_type,_doc,_cmd) do{\
     auto __doc = _doc;\
     if(__doc && __doc->getName()) {\
@@ -41,17 +60,53 @@
     }\
 }while(0)
 
+/** Runs a command for accessing App.Document attribute or method
+ *
+ * @param _doc: pointer to a document
+ * @param _cmd: command string, streamable
+ * @sa _FCMD_DOC_CMD()
+ */
 #define FCMD_DOC_CMD(_doc,_cmd) _FCMD_DOC_CMD(App,_doc,_cmd)
 
+/** Runs a command for accessing an object's document attribute or method
+ * @param _type: type of the document, Gui or App
+ * @param _obj: pointer to a DocumentObject
+ * @param _cmd: command string, streamable
+ */
 #define _FCMD_OBJ_DOC_CMD(_type,_obj,_cmd) do{\
     auto __obj = _obj;\
     if(__obj)\
         _FCMD_DOC_CMD(_type,__obj->getDocument(),_cmd);\
 }while(0)
 
+/** Runs a command for accessing an object's App::Document attribute or method
+ * @param _obj: pointer to a DocumentObject
+ * @param _cmd: command string, streamable
+ */
 #define FCMD_OBJ_DOC_CMD(_obj,_cmd) _FCMD_OBJ_DOC_CMD(App,_obj,_cmd)
+
+/** Runs a command for accessing an object's Gui::Document attribute or method
+ * @param _obj: pointer to a DocumentObject
+ * @param _cmd: command string, streamable
+ */
 #define FCMD_VOBJ_DOC_CMD(_obj,_cmd) _FCMD_OBJ_DOC_CMD(Gui,_obj,_cmd)
 
+/** Runs a command for accessing a document/view object's attribute or method
+ * @param _type: type of the object, Gui or App
+ * @param _obj: pointer to a DocumentObject
+ * @param _cmd: command string, streamable
+ *
+ * Example: 
+ * @code{.cpp}
+ *      _FCMD_OBJ_CMD(Gui,obj,"Visibility = " << (visible?"True":"False"));
+ * @endcode
+ *
+ * Translates to command (assuming obj's document name is 'DocName', obj's name
+ * is 'ObjName', and visible is true):
+ * @code{.py}
+ *       Gui.getDocument('DocName').getObject('ObjName').Visibility = True
+ * @endcode
+ */
 #define _FCMD_OBJ_CMD(_type,_cmd_type,_obj,_cmd) do{\
     auto __obj = _obj;\
     if(__obj && __obj->getNameInDocument()) {\
@@ -62,9 +117,35 @@
     }\
 }while(0)
 
+/** Runs a command for accessing an document object's attribute or method
+ * @param _obj: pointer to a DocumentObject
+ * @param _cmd: command string, streamable
+ * @sa _FCMD_OBJ_CMD()
+ */
 #define FCMD_OBJ_CMD(_obj,_cmd) _FCMD_OBJ_CMD(App,Doc,_obj,_cmd)
+
+/** Runs a command for accessing an view object's attribute or method
+ * @param _obj: pointer to a DocumentObject
+ * @param _cmd: command string, streamable
+ * @sa _FCMD_OBJ_CMD()
+ */
 #define FCMD_VOBJ_CMD(_obj,_cmd) _FCMD_OBJ_CMD(Gui,Gui,_obj,_cmd)
 
+/** Runs a command for accessing a document object's attribute or method
+ * @param _cmd: command string, supporting printf like formatter
+ * @param _obj: pointer to a DocumentObject
+ *
+ * Example: 
+ * @code{.cpp}
+ *      FCMD_OBJ_CMD2("Visibility = %s", obj, visible?"True":"False");
+ * @endcode
+ *
+ * Translates to command (assuming obj's document name is 'DocName', obj's name
+ * is 'ObjName', and visible is true):
+ * @code{.py}
+ *       App.getDocument('DocName').getObject('ObjName').Visibility = True
+ * @endcode
+ */
 #define FCMD_OBJ_CMD2(_cmd,_obj,...) do{\
     auto __obj = _obj;\
     if(__obj && __obj->getNameInDocument()) {\
@@ -73,6 +154,11 @@
     }\
 }while(0)
 
+/** Runs a command for accessing a view object's attribute or method
+ * @param _cmd: command string, supporting printf like formatter
+ * @param _obj: pointer to a DocumentObject
+ * @sa FCMD_OBJ_CMD2()
+ */
 #define FCMD_VOBJ_CMD2(_cmd,_obj,...) do{\
     auto __obj = _obj;\
     if(__obj && __obj->getNameInDocument()) {\
@@ -81,6 +167,14 @@
     }\
 }while(0)
 
+/** Runs a command to start editing a give object
+ * @param _obj: pointer to a DocumentObject
+ *
+ * Unlike other FCMD macros, this macro editing the object using the current
+ * active document, instead of the object's owner document. This allows
+ * in-place editing an object, which may be brought in through linking to an
+ * external group.
+ */
 #define FCMD_SET_EDIT(_obj) do{\
     auto __obj = _obj;\
     if(__obj && __obj->getNameInDocument()) {\
@@ -91,8 +185,13 @@
 }while(0)
 
 
+/// Hides an object
 #define FCMD_OBJ_HIDE(_obj) FCMD_OBJ_CMD(_obj,"Visibility = False")
+
+/// Shows an object
 #define FCMD_OBJ_SHOW(_obj) FCMD_OBJ_CMD(_obj,"Visibility = True")
+
+//@}
 
 class QWidget;
 class QByteArray;
@@ -255,8 +354,14 @@ public:
     };
     /// Return the current command trigger source
     TriggerSource triggerSource() const {return _trigger;}
-    /// get called by the QAction
-    void invoke (int, TriggerSource trigger=TriggerNone); 
+    /** Called to invoke the command
+     *
+     * @param index: in case of group command, this is the index of the child
+     *               command.  For checkable command, this indicates the
+     *               checkable state.
+     * @param trigger: indicate the command triggering source, see TriggerSource.
+     */
+    void invoke (int index, TriggerSource trigger=TriggerNone); 
     /// adds this command to arbitrary widgets
     void addTo(QWidget *);
     void addToGroup(ActionGroup *, bool checkable);
@@ -334,25 +439,89 @@ public:
     };
     /// Blocks all command objects
     static void blockCommand(bool);
+    /// Print to Python console the current Python calling source file and line number
     static void printPyCaller();
+    /// Print to Python console the current calling source file and line number
     static void printCaller(const char *file, int line);
-    /// Run a App level Action 
+
+    /** Convenience macro to run a command with printf like formatter
+     *
+     * @sa Command::_doCommand()
+     */
 #define doCommand(_type,_cmd,...) _doCommand(__FILE__,__LINE__,_type,_cmd,##__VA_ARGS__)
+
+    /** Run a command with printf like formatter
+     *
+     * @param file: the calling file path (for debugging purpose)
+     * @param line: the calling line number (for debugging purpose)
+     * @param eType: command type, See DoCmd_Type
+     * @param sCmd: command string that supports printf like formatter
+     *
+     * You can use the convenience macro doCommand() to automate \c file and \c
+     * line arguments. You may also want to use various helper @ref CommandMacros.
+     */
     static void _doCommand(const char *file, int line, DoCmd_Type eType,const char* sCmd,...);
+
+    /** Convenience macro to run a command
+     *
+     * @sa Command::_runCommand()
+     */
 #define runCommand(_type,_cmd) _runCommand(__FILE__,__LINE__,_type,_cmd)
+
+    /** Run a command
+     * 
+     * @param file: the calling file path (for debugging purpose)
+     * @param line: the calling line number (for debugging purpose)
+     * @param eType: command type, See DoCmd_Type
+     * @param sCmd: command string
+     *
+     * @sa _doCommand()
+     */
     static void _runCommand(const char *file, int line, DoCmd_Type eType,const char* sCmd);
+
+    /** Run a command
+     * 
+     * @param file: the calling file path (for debugging purpose)
+     * @param line: the calling line number (for debugging purpose)
+     * @param eType: command type, See DoCmd_Type
+     * @param sCmd: command string
+     *
+     * @sa _doCommand()
+     */
     static void _runCommand(const char *file, int line, DoCmd_Type eType,const QByteArray& sCmd);
+
     /// import an external (or own) module only once 
     static void addModule(DoCmd_Type eType,const char* sModuleName);
-    /// assures the switch to a certain workbench, if already in the workbench, does nothing.
-#define assureWorkbench(_name) _assureWorkbench(__FILE__,__LINE__,_name)
-    static std::string _assureWorkbench(const char *file, int line, const char * sName);
 
+    /** Convenience macro to assure the switch to a certain workbench
+     *
+     * @sa _assureWorkbench()
+     */
+#define assureWorkbench(_name) _assureWorkbench(__FILE__,__LINE__,_name)
+
+    /** Assures the switch to a certain workbench
+     *
+     * @param file: the calling file path (for debugging purpose)
+     * @param line: the calling line number (for debugging purpose)
+     * @param sName: workbench name
+     *
+     * @return Return the current active workbench name before switching.
+     *
+     * If already in the workbench, does nothing.
+     */
+    static std::string _assureWorkbench(const char *file, int line, const char * sName);
+    //@}
+    
+    /** @name Methods for copying visiual properties */
+    //@{
+    /// Convenience macro to copy visual properties
 #define copyVisual(...) _copyVisual(__FILE__,__LINE__,## __VA_ARGS__)
     static void _copyVisual(const char *file, int line, const char* to, const char* attr, const char* from);
     static void _copyVisual(const char *file, int line, const char* to, const char* attr_to, const char* from, const char* attr_from);
     static void _copyVisual(const char *file, int line, const App::DocumentObject *to, const char *attr, const App::DocumentObject *from);
     static void _copyVisual(const char *file, int line, const App::DocumentObject *to, const char *attr_to, const App::DocumentObject *from, const char *attr_from);
+    //@}
+
     /// Get Python tuple from object and sub-elements 
     static std::string getPythonTuple(const std::string& name, const std::vector<std::string>& subnames);
     /// translate a string to a python string literal (needed e.g. in file names for windows...)
@@ -360,7 +529,6 @@ public:
     const std::string strToPython(const std::string &Str){
         return strToPython(Str.c_str());
     }
-    //@}
 
     /** @name Helper methods to generate help pages */
     //@{
@@ -398,7 +566,7 @@ public:
     void adjustCameraPosition();
     //@}
 
-    /// helper class to disable python console log
+    /// Helper class to disable python console log
     class LogDisabler {
     public:
         LogDisabler() {
@@ -430,12 +598,14 @@ protected:
     const char* sName;
     const char* sHelpUrl;
     int         eType;
+    /// Indicate if the command shall log to MacroManager
     bool        bCanLog;
     //@}
 private:
     static int _busy;
     bool bEnabled;
     static bool _blockCmd;
+    /// For storing the current command trigger source
     TriggerSource _trigger = TriggerNone;
 };
 
