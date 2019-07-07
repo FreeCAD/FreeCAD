@@ -54,6 +54,7 @@ class SbBox2s;
 class SoVectorizeAction;
 class QImage;
 class SoGroup;
+class SoPickStyle;
 class NaviCube;
 
 namespace Quarter = SIM::Coin3D::Quarter;
@@ -65,7 +66,6 @@ class SoFCBackgroundGradient;
 class NavigationStyle;
 class SoFCUnifiedSelection;
 class Document;
-class SoFCUnifiedSelection;
 class GLGraphicsItem;
 class SoShapeScale;
 class ViewerEventFilter;
@@ -73,7 +73,7 @@ class ViewerEventFilter;
 /** GUI view into a 3D scene provided by View3DInventor
  *
  */
-class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, public Gui::SelectionSingleton::ObserverType
+class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, public SelectionObserver
 {
     typedef Quarter::SoQTQuarterAdaptor inherited;
     
@@ -133,8 +133,9 @@ public:
     void init();
 
     /// Observer message from the Selection
-    virtual void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                          Gui::SelectionSingleton::MessageType Reason);
+    virtual void onSelectionChanged(const SelectionChanges &Reason);
+    void checkGroupOnTop(const SelectionChanges &Reason);
+    void clearGroupOnTop();
 
     SoDirectionalLight* getBacklight(void) const;
     void setBacklight(SbBool on);
@@ -352,6 +353,7 @@ public:
     NaviCube* getNavigationCube() const;
     void setEnabledVBO(bool b);
     bool isEnabledVBO() const;
+    void setRenderCache(int);
 
     NavigationStyle* navigationStyle() const;
 
@@ -415,6 +417,13 @@ private:
     SoDirectionalLight* backlight;
 
     SoSeparator * pcViewProviderRoot;
+
+    SoGroup * pcGroupOnTop;
+    SoGroup * pcGroupOnTopSel;
+    SoGroup * pcGroupOnTopPreSel;
+    std::map<std::string,SoNode*> objectsOnTop;
+    std::map<std::string,SoNode*> objectsOnTopPreSel;
+
     SoEventCallback* pEventCallback;
     NavigationStyle* navigation;
     SoFCUnifiedSelection* selectionRoot;
