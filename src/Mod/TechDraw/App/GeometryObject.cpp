@@ -473,11 +473,13 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
     }  //end TopExp
 }
 
-int GeometryObject::addCosmeticVertex(Base::Vector3d pos)
+int GeometryObject::addCosmeticVertex(Base::Vector3d pos, int link)
 {
     TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
+    v->cosmetic = true;
+    v->cosmeticLink = link;
+    int idx = vertexGeom.size();
     vertexGeom.push_back(v);
-    int idx = vertexGeom.size() - 1;
     return idx;
 }
 

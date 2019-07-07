@@ -23,6 +23,9 @@
 #ifndef TECHDRAW_COSMETIC_H
 #define TECHDRAW_COSMETIC_H
 
+#include <App/FeaturePython.h>
+
+#include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 #include <App/Material.h>
 
@@ -53,20 +56,32 @@ public:
     static int getDefEdgeStyle();
 
     void dump(char* title);
-    std::string toCSV() const;
-    bool fromCSV(std::string& lineSpec);
+    std::string toString() const;
+/*    bool fromCSV(std::string& lineSpec);*/
 };
 
-class TechDrawExport CosmeticVertex: public TechDraw::Vertex
+class TechDrawExport CosmeticVertex: public Base::Persistence, public TechDraw::Vertex
 {
+    TYPESYSTEM_HEADER();
+
 public:
     CosmeticVertex();
+    CosmeticVertex(const CosmeticVertex* cv);
     CosmeticVertex(Base::Vector3d loc);
     virtual ~CosmeticVertex() = default;
 
-    std::string toCSV(void) const;
-    bool fromCSV(std::string& lineSpec);
+    std::string toString(void) const;
+/*    bool fromCSV(std::string& lineSpec);*/
     void dump(char* title);
+
+    // Persistence implementer ---------------------
+    virtual unsigned int getMemSize(void) const;
+    virtual void Save(Base::Writer &/*writer*/) const;
+    virtual void Restore(Base::XMLReader &/*reader*/);
+
+    virtual PyObject *getPyObject(void);
+    CosmeticVertex* copy(void) const;
+    CosmeticVertex* clone(void) const;
 
     int            linkGeom;             //connection to corresponding "real" Vertex
     App::Color     color;
@@ -78,22 +93,32 @@ protected:
 
 };
 
-class TechDrawExport CosmeticEdge
+class TechDrawExport CosmeticEdge : public Base::Persistence
 {
+    TYPESYSTEM_HEADER();
 public:
     CosmeticEdge();
+    CosmeticEdge(CosmeticEdge* ce);
     CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2);
     CosmeticEdge(TopoDS_Edge e);
     CosmeticEdge(TechDraw::BaseGeom* g);
     virtual ~CosmeticEdge();
 
-    void init(void);
+    void initialize(void);
     TechDraw::BaseGeom* scaledGeometry(double scale);
 
-    virtual std::string toCSV(void) const;
-    virtual bool fromCSV(std::string& lineSpec);
-    void replaceGeometry(TechDraw::BaseGeom* newGeom);
+    virtual std::string toString(void) const;
+/*    virtual bool fromCSV(std::string& lineSpec);*/
     void dump(char* title);
+
+    // Persistence implementer ---------------------
+    virtual unsigned int getMemSize(void) const;
+    virtual void Save(Base::Writer &/*writer*/) const;
+    virtual void Restore(Base::XMLReader &/*reader*/);
+
+    virtual PyObject *getPyObject(void);
+    CosmeticEdge* copy(void) const;
+    CosmeticEdge* clone(void) const;
 
     TechDraw::BaseGeom* m_geometry;
     LineFormat m_format;
@@ -102,10 +127,14 @@ protected:
 
 };
 
-class TechDrawExport CenterLine
+class TechDrawExport CenterLine: public Base::Persistence
 {
+    TYPESYSTEM_HEADER();
+
 public:
     CenterLine();
+    CenterLine(CenterLine* cl);
+    //set m_faces after using next 2 ctors
     CenterLine(Base::Vector3d p1, Base::Vector3d p2);
     CenterLine(Base::Vector3d p1, Base::Vector3d p2,
                int m, 
@@ -113,11 +142,20 @@ public:
                double v,
                double r,
                double x);
-    ~CenterLine();
+    virtual ~CenterLine();
 
-    std::string toCSV(void) const;
-    bool fromCSV(std::string& lineSpec);
-    CosmeticEdge* toCosmeticEdge(TechDraw::DrawViewPart* partFeat); //??
+    // Persistence implementer ---------------------
+    virtual unsigned int getMemSize(void) const;
+    virtual void Save(Base::Writer &/*writer*/) const;
+    virtual void Restore(Base::XMLReader &/*reader*/);
+
+    virtual PyObject *getPyObject(void);
+    CenterLine* copy(void) const;
+    CenterLine* clone(void) const;
+
+    std::string toString(void) const;
+/*    bool fromCSV(std::string& lineSpec);*/
+/*    CosmeticEdge* toCosmeticEdge(TechDraw::DrawViewPart* partFeat); //??*/
     TechDraw::BaseGeom* scaledGeometry(TechDraw::DrawViewPart* partFeat);
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints(
                                           TechDraw::DrawViewPart* partFeat,
@@ -136,25 +174,41 @@ public:
     double m_rotate;
     double m_extendBy;
     LineFormat m_format;
+
+protected:
+
 };
 
-class TechDrawExport GeomFormat
+class TechDrawExport GeomFormat: public Base::Persistence
 {
+    TYPESYSTEM_HEADER();
+
 public:
     GeomFormat();
+    GeomFormat(TechDraw::GeomFormat* gf);
     GeomFormat(int idx,
                LineFormat fmt);
     ~GeomFormat();
 
-    std::string toCSV(void) const;
-    bool fromCSV(std::string& lineSpec);
-    void dump(char* title);
+    // Persistence implementer ---------------------
+    virtual unsigned int getMemSize(void) const;
+    virtual void Save(Base::Writer &/*writer*/) const;
+    virtual void Restore(Base::XMLReader &/*reader*/);
+
+    virtual PyObject *getPyObject(void);
+    GeomFormat* copy(void) const;
+    GeomFormat* clone(void) const;
+
+    std::string toString(void) const;
+/*    bool fromCSV(std::string& lineSpec);*/
+    void dump(char* title) const;
 
     int m_geomIndex;
     LineFormat m_format;
+
+protected:
+
 };
-
-
 
 } //end namespace TechDraw
 

@@ -137,6 +137,7 @@ public:
     arcPoints getArcPoints(void) {return m_arcPoints; }
     anglePoints getAnglePoints(void) {return m_anglePoints; }
     bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);
+    bool references(std::string geomName) const;
 
 protected:
     void onChanged(const App::Property* prop);
