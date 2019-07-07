@@ -37,6 +37,10 @@
 
 #include <Base/BoundBox.h>
 
+#include "PropertyGeomFormatList.h"
+#include "PropertyCenterLineList.h"
+#include "PropertyCosmeticEdgeList.h"
+#include "PropertyCosmeticVertexList.h"
 #include "DrawView.h"
 
 class gp_Pnt;
@@ -105,10 +109,10 @@ public:
     App::PropertyBool   IsoHidden;
     App::PropertyInteger  IsoCount;
 
-    App::PropertyStringList  CosmeticVertexList;
-    App::PropertyStringList  CosmeticEdgeList;
-    App::PropertyStringList  CenterLineList;
-    App::PropertyStringList  GeomFormatList;
+    TechDraw::PropertyCosmeticVertexList CosmeticVertexes;
+    TechDraw::PropertyCosmeticEdgeList CosmeticEdges;
+    TechDraw::PropertyCenterLineList  CenterLines;
+    TechDraw::PropertyGeomFormatList  GeomFormats;
 
     virtual short mustExecute() const;
     virtual void onDocumentRestored() override;
@@ -122,8 +126,6 @@ public:
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches(void) const;
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
     std::vector<TechDraw::DrawViewBalloon*> getBalloons() const;
-
-    //TODO: are there use-cases for Python access to TechDraw???
 
     const std::vector<TechDraw::Vertex *> & getVertexGeometry() const;
     const std::vector<TechDraw::BaseGeom  *> & getEdgeGeometry() const;
@@ -165,46 +167,41 @@ public:
     bool isIso(void) const;
 
     virtual int addCosmeticVertex(Base::Vector3d pos);
-    virtual void writeCVertProp(void);
+    virtual int addCosmeticVertex(CosmeticVertex* cv);
     virtual void removeCosmeticVertex(TechDraw::CosmeticVertex* cv);
     virtual void removeCosmeticVertex(int idx);
-    const std::vector<TechDraw::CosmeticVertex*> & getCosmeticVertex(void) const { return CVertexTable; }
+    void replaceCosmeticVertex(int idx, TechDraw::CosmeticVertex* cv);
+    void replaceCosmeticVertexByGeom(int geomIndex, TechDraw::CosmeticVertex* cl);
     TechDraw::CosmeticVertex* getCosmeticVertexByIndex(int idx) const;
     TechDraw::CosmeticVertex* getCosmeticVertexByGeom(int idx) const;
-    void clearCosmeticVertices(void);
+    void clearCosmeticVertexes(void); 
+    void addCosmeticVertexesToGeom(void);
 
     virtual int addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
     virtual int addCosmeticEdge(TopoDS_Edge e);
     virtual int addCosmeticEdge(TechDraw::CosmeticEdge*);
-    virtual void writeCEdgeProp(void);
     virtual void removeCosmeticEdge(TechDraw::CosmeticEdge* ce);
     virtual void removeCosmeticEdge(int idx);
-    const std::vector<TechDraw::CosmeticEdge*> & getCosmeticEdges(void) const { return CEdgeTable; }
     TechDraw::CosmeticEdge* getCosmeticEdgeByIndex(int idx) const;
     TechDraw::CosmeticEdge* getCosmeticEdgeByGeom(int idx) const;
     int getCosmeticEdgeIndex(TechDraw::CosmeticEdge* ce) const;
     void replaceCosmeticEdge(int idx, TechDraw::CosmeticEdge* ce);
     void replaceCosmeticEdgeByGeom(int geomIndex, TechDraw::CosmeticEdge* ce);
     void clearCosmeticEdges(void);
+    void addCosmeticEdgesToGeom(void);
 
     virtual int addCenterLine(TechDraw::CenterLine*);
-    virtual void writeCLineProp(void);
     virtual void removeCenterLine(TechDraw::CenterLine* cl);
     virtual void removeCenterLine(int idx);
-    const std::vector<TechDraw::CenterLine*> & getCenterLines(void) const { return CLineTable; }
     TechDraw::CenterLine* getCenterLineByIndex(int idx) const;
     TechDraw::CenterLine* getCenterLineByGeom(int idx) const;
     void replaceCenterLine(int idx, TechDraw::CenterLine* cl);
     void replaceCenterLineByGeom(int geomIndex, TechDraw::CenterLine* cl);
     void clearCenterLines(void);
-
-    void addCosmeticEdgesToGeom(void);
     void addCenterLinesToGeom(void);
 
     int addGeomFormat(TechDraw::GeomFormat* gf);
-    virtual void writeGFormatProp(void);
     virtual void removeGeomFormat(int idx);
-    const std::vector<TechDraw::GeomFormat*> & getGeomFormats(void) const { return GFormatTable; }
     TechDraw::GeomFormat* getGeomFormatByIndex(int idx) const;
     TechDraw::GeomFormat* getGeomFormatByGeom(int idx) const;
     void clearGeomFormats(void);
@@ -230,22 +227,8 @@ protected:
     bool m_sectionEdges;
     bool m_handleFaces;
 
-    //Cosmetics
-    std::vector<TechDraw::CosmeticVertex*> CVertexTable;
-    void readCVertexProp(void);
-
-    std::vector<TechDraw::CosmeticEdge*> CEdgeTable;
-    void readCEdgeProp(void);
-
-    std::vector<TechDraw::CenterLine*> CLineTable;
-    void readCLineProp(void);
-
-    std::vector<TechDraw::GeomFormat*> GFormatTable;
-    void readGFormatProp(void);
-
 private:
     bool nowUnsetting;
-/*    bool m_restoreComplete;*/
 
 };
 

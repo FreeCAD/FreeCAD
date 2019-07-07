@@ -39,10 +39,18 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
+#include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <Base/Vector3D.h>
+#include <Base/Writer.h>
 
 #include <App/Application.h>
 #include <App/Material.h>
+
+#include <Mod/TechDraw/App/GeomFormatPy.h>
+#include <Mod/TechDraw/App/CenterLinePy.h>
+#include <Mod/TechDraw/App/CosmeticEdgePy.h>
+#include <Mod/TechDraw/App/CosmeticVertexPy.h>
 
 #include "DrawUtil.h"
 #include "GeometryObject.h"
@@ -75,10 +83,10 @@ LineFormat::LineFormat(int style,
 void LineFormat::dump(char* title)
 {
     Base::Console().Message("LF::dump - %s \n",title);
-    Base::Console().Message("LF::dump - %s \n",toCSV().c_str());
+    Base::Console().Message("LF::dump - %s \n",toString().c_str());
 }
 
-std::string LineFormat::toCSV(void) const
+std::string LineFormat::toString(void) const
 {
     std::stringstream ss;
     ss << m_style << "," <<
@@ -88,24 +96,24 @@ std::string LineFormat::toCSV(void) const
     return ss.str();
 }
 
-bool LineFormat::fromCSV(std::string& lineSpec)
-{
-    unsigned int maxCells = 4;
-    if (lineSpec.length() == 0) {
-        Base::Console().Message( "LineFormat::fromCSV - lineSpec empty\n");
-        return false;
-    }
-    std::vector<std::string> values = DrawUtil::split(lineSpec);
-    if (values.size() < maxCells) {
-        Base::Console().Message( "LineFormat::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
-        return false;
-    }
-    m_style = atoi(values[0].c_str());
-    m_weight= atof(values[1].c_str());
-    m_color.fromHexString(values[2]);
-    m_visible = atoi(values[3].c_str());
-    return true;
-}
+//bool LineFormat::fromCSV(std::string& lineSpec)
+//{
+//    unsigned int maxCells = 4;
+//    if (lineSpec.length() == 0) {
+//        Base::Console().Message( "LineFormat::fromCSV - lineSpec empty\n");
+//        return false;
+//    }
+//    std::vector<std::string> values = DrawUtil::split(lineSpec);
+//    if (values.size() < maxCells) {
+//        Base::Console().Message( "LineFormat::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
+//        return false;
+//    }
+//    m_style = atoi(values[0].c_str());
+//    m_weight= atof(values[1].c_str());
+//    m_color.fromHexString(values[2]);
+//    m_visible = atoi(values[3].c_str());
+//    return true;
+//}
 
 //static preference getters.
 double LineFormat::getDefEdgeWidth()
@@ -139,6 +147,8 @@ int LineFormat::getDefEdgeStyle()
 
 //****************************************************************************************
 
+TYPESYSTEM_SOURCE(TechDraw::CosmeticVertex, Base::Persistence)
+
 CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
 {
     point(Base::Vector3d(0.0, 0.0, 0.0));
@@ -152,6 +162,15 @@ CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
     size  = 3.0;
     style = 1;
     visible = true;
+}
+
+CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::Vertex(cv)
+{
+    linkGeom = cv->linkGeom;
+    color = cv->color;
+    size  = cv->size;
+    style = cv->style;
+    visible = cv->visible;
 }
 
 CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
@@ -169,7 +188,7 @@ CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
     visible = true;
 }
 
-std::string CosmeticVertex::toCSV(void) const
+std::string CosmeticVertex::toString(void) const
 {
     std::stringstream ss;
     ss << point().x << "," <<
@@ -184,74 +203,144 @@ std::string CosmeticVertex::toCSV(void) const
     return ss.str();
 }
 
-bool CosmeticVertex::fromCSV(std::string& lineSpec)
+//bool CosmeticVertex::fromCSV(std::string& lineSpec)
+//{
+//    unsigned int maxCells = 8;
+//    if (lineSpec.length() == 0) {
+//        Base::Console().Message( "CosmeticVertex::fromCSV - lineSpec empty\n");
+//        return false;
+//    }
+//    std::vector<std::string> values = DrawUtil::split(lineSpec);
+//    if (values.size() < maxCells) {
+//        Base::Console().Message( "CosmeticVertex::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
+//        return false;
+//    }
+//    double x = atof(values[0].c_str());
+//    double y = atof(values[1].c_str());
+//    double z = atof(values[2].c_str());
+//    point(Base::Vector3d (x,y,z));
+//    linkGeom = atoi(values[3].c_str());
+//    color.fromHexString(values[4]);
+//    size = atof(values[5].c_str());
+//    style = atoi(values[6].c_str());
+//    visible = atoi(values[7].c_str());
+//    return true;
+//}
+
+// Persistence implementers
+unsigned int CosmeticVertex::getMemSize (void) const
 {
-    unsigned int maxCells = 8;
-    if (lineSpec.length() == 0) {
-        Base::Console().Message( "CosmeticVertex::fromCSV - lineSpec empty\n");
-        return false;
-    }
-    std::vector<std::string> values = DrawUtil::split(lineSpec);
-    if (values.size() < maxCells) {
-        Base::Console().Message( "CosmeticVertex::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
-        return false;
-    }
-    double x = atof(values[0].c_str());
-    double y = atof(values[1].c_str());
-    double z = atof(values[2].c_str());
-    point(Base::Vector3d (x,y,z));
-    linkGeom = atoi(values[3].c_str());
-    color.fromHexString(values[4]);
-    size = atof(values[5].c_str());
-    style = atoi(values[6].c_str());
-    visible = atoi(values[7].c_str());
-    return true;
+    return 1;
+}
+
+void CosmeticVertex::Save(Base::Writer &writer) const
+{
+    TechDraw::Vertex::Save(writer);
+    writer.Stream() << writer.ind() << "<LinkGeom value=\"" <<  linkGeom << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Color value=\"" <<  color.asHexString() << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Size value=\"" <<  size << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Style value=\"" <<  style << "\"/>" << endl;
+    const char v = visible?'1':'0';
+    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+}
+
+void CosmeticVertex::Restore(Base::XMLReader &reader)
+{
+    TechDraw::Vertex::Restore(reader);
+    reader.readElement("LinkGeom");
+    linkGeom = reader.getAttributeAsInteger("value");
+    reader.readElement("Color");
+    std::string temp = reader.getAttribute("value");
+    color.fromHexString(temp);
+    reader.readElement("Size");
+    size = reader.getAttributeAsFloat("value");
+    reader.readElement("Style");
+    style = reader.getAttributeAsInteger("value");
+    reader.readElement("Visible");
+    visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+}
+
+CosmeticVertex* CosmeticVertex::copy(void) const
+{
+//    Base::Console().Message("CV::copy()\n");
+    CosmeticVertex* newCV = new CosmeticVertex(this);
+    return newCV;
+}
+
+CosmeticVertex* CosmeticVertex::clone(void) const
+{
+//    Base::Console().Message("CV::clone()\n");
+    CosmeticVertex* cpy = this->copy();
+    return cpy;
+}
+
+PyObject* CosmeticVertex::getPyObject(void)
+{
+    return new CosmeticVertexPy(new CosmeticVertex(this->copy()));
 }
 
 void CosmeticVertex::dump(char* title)
 {
     Base::Console().Message("CV::dump - %s \n",title);
-    Base::Console().Message("CV::dump - %s \n",toCSV().c_str());
+    Base::Console().Message("CV::dump - %s \n",toString().c_str());
 }
 
 //******************************************
 
+TYPESYSTEM_SOURCE(TechDraw::CosmeticEdge,Base::Persistence)
+
 //note this ctor has no occEdge or first/last point for geometry!
 CosmeticEdge::CosmeticEdge()
 {
+//    Base::Console().Message("CE::CE()\n");
     m_geometry = new TechDraw::BaseGeom();
-    init();
+    initialize();
+}
+
+CosmeticEdge::CosmeticEdge(CosmeticEdge* ce)
+{
+//    Base::Console().Message("CE::CE(ce)\n");
+    //if ce gets deleted later, this CE will have an invalid pointer to geometry!
+    //need to make our own copy of the geometry
+    TechDraw::BaseGeom* newGeom = ce->m_geometry->copy();
+    m_geometry = newGeom;
+    m_format   = ce->m_format;
 }
 
 CosmeticEdge::CosmeticEdge(Base::Vector3d pt1, Base::Vector3d pt2)
 {
+//    Base::Console().Message("CE::CE(p1,p2)\n");
     Base::Vector3d p1 = DrawUtil::invertY(pt1);
     Base::Vector3d p2 = DrawUtil::invertY(pt2);
     gp_Pnt gp1(p1.x,p1.y,p1.z);
     gp_Pnt gp2(p2.x,p2.y,p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
     m_geometry = TechDraw::BaseGeom::baseFactory(e);
-    init();
+    initialize();
 }
 
 CosmeticEdge::CosmeticEdge(TopoDS_Edge e)
 {
+//    Base::Console().Message("CE::CE(TopoDS_Edge)\n");
     m_geometry = TechDraw::BaseGeom::baseFactory(e);
-    init();
+    initialize();
 }
 
 CosmeticEdge::CosmeticEdge(TechDraw::BaseGeom* g)
 {
+//    Base::Console().Message("CE::CE(bg)\n");
     m_geometry = g;
-    init();
+    initialize();
 }
 
 CosmeticEdge::~CosmeticEdge(void)
 {
-    delete m_geometry;
+    if (m_geometry != nullptr) {
+        delete m_geometry;
+    }
 }
 
-void CosmeticEdge::init(void)
+void CosmeticEdge::initialize(void)
 {
     m_geometry->classOfEdge = ecHARD;
     m_geometry->visible = true;
@@ -271,97 +360,180 @@ TechDraw::BaseGeom* CosmeticEdge::scaledGeometry(double scale)
     return newGeom;
 }
 
-std::string CosmeticEdge::toCSV(void) const
+std::string CosmeticEdge::toString(void) const
 {
     std::stringstream ss;
     if (m_geometry != nullptr) {
         ss << m_geometry->geomType << 
             ",$$$," <<
-            m_geometry->toCSV() <<
+            m_geometry->toString() <<
             ",$$$," <<
-            m_format.toCSV();
+            m_format.toString();
     }
     return ss.str();
 }
 
-bool CosmeticEdge::fromCSV(std::string& lineSpec)
-{
-    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
-    if (tokens.empty()) {
-        Base::Console().Message("CosmeticEdge::fromCSV - tokenize failed - no tokens\n");
-        return false;
-    }
+//bool CosmeticEdge::fromCSV(std::string& lineSpec)
+//{
+//    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
+//    if (tokens.empty()) {
+//        Base::Console().Message("CosmeticEdge::fromCSV - tokenize failed - no tokens\n");
+//        return false;
+//    }
 
-    if (tokens[0].length() == 0) {
-        Base::Console().Message( "CosmeticEdge::fromCSV - token0 empty\n");
-        return false;
-    }
-    
-    std::vector<std::string> values = DrawUtil::split(tokens[0]);
-    unsigned int maxCells = 1;
-    if (values.size() < maxCells) {
-        Base::Console().Message( "CosmeticEdge::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
-        return false;
-    }
-    int geomType = atoi(values[0].c_str());
+//    if (tokens[0].length() == 0) {
+//        Base::Console().Message( "CosmeticEdge::fromCSV - token0 empty\n");
+//        return false;
+//    }
+//    
+//    std::vector<std::string> values = DrawUtil::split(tokens[0]);
+//    unsigned int maxCells = 1;
+//    if (values.size() < maxCells) {
+//        Base::Console().Message( "CosmeticEdge::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
+//        return false;
+//    }
+//    int geomType = atoi(values[0].c_str());
 
-    int lastToken = 0;
-    if (geomType == TechDraw::GeomType::GENERIC) {
-        if (tokens.size() != 4) {
-            Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
-            return false;
-        }
-        TechDraw::Generic* tempGeom = new TechDraw::Generic();
-        tempGeom->fromCSV(tokens[1] + ",$$$," + tokens[2]);
-        lastToken = 3;
-        m_geometry = tempGeom;
-        m_geometry->occEdge = GeometryUtils::edgeFromGeneric(tempGeom);
-    } else if (geomType == TechDraw::GeomType::CIRCLE) {
-        if (tokens.size() != 4) {
-            Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
-            return false;
-        }
-        TechDraw::Circle* tempGeom = new TechDraw::Circle();
-        tempGeom->fromCSV(tokens[1] + ",$$$," + tokens[2]);
-        lastToken = 3;
-        m_geometry = tempGeom;
-        m_geometry->occEdge = GeometryUtils::edgeFromCircle(tempGeom);
-    } else if (geomType == TechDraw::GeomType::ARCOFCIRCLE) {
-        if (tokens.size() != 5) {
-            Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
-            return false;
-        }
-        TechDraw::AOC* tempGeom = new TechDraw::AOC();
-        tempGeom->fromCSV(tokens[1] + ",$$$," + tokens[2] + ",$$$," + tokens[3]);
-        lastToken = 4;
-        m_geometry = tempGeom;
-        m_geometry->occEdge = GeometryUtils::edgeFromCircleArc(tempGeom);
-    } else {
-        Base::Console().Message("Cosmetic::fromCSV - unimplemented geomType: %d\n", geomType);
-        return false;
-    }
+//    int lastToken = 0;
+//    if (geomType == TechDraw::GeomType::GENERIC) {
+//        if (tokens.size() != 4) {
+//            Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
+//            return false;
+//        }
+//        TechDraw::Generic* tempGeom = new TechDraw::Generic();
+//        tempGeom->fromCSV(tokens[1] + ",$$$," + tokens[2]);
+//        lastToken = 3;
+//        m_geometry = tempGeom;
+//        m_geometry->occEdge = GeometryUtils::edgeFromGeneric(tempGeom);
+//    } else if (geomType == TechDraw::GeomType::CIRCLE) {
+//        if (tokens.size() != 4) {
+//            Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
+//            return false;
+//        }
+//        TechDraw::Circle* tempGeom = new TechDraw::Circle();
+//        tempGeom->fromCSV(tokens[1] + ",$$$," + tokens[2]);
+//        lastToken = 3;
+//        m_geometry = tempGeom;
+//        m_geometry->occEdge = GeometryUtils::edgeFromCircle(tempGeom);
+//    } else if (geomType == TechDraw::GeomType::ARCOFCIRCLE) {
+//        if (tokens.size() != 5) {
+//            Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
+//            return false;
+//        }
+//        TechDraw::AOC* tempGeom = new TechDraw::AOC();
+//        tempGeom->fromCSV(tokens[1] + ",$$$," + tokens[2] + ",$$$," + tokens[3]);
+//        lastToken = 4;
+//        m_geometry = tempGeom;
+//        m_geometry->occEdge = GeometryUtils::edgeFromCircleArc(tempGeom);
+//    } else {
+//        Base::Console().Message("Cosmetic::fromCSV - unimplemented geomType: %d\n", geomType);
+//        return false;
+//    }
 
-    m_format.fromCSV(tokens[lastToken]);
+//    m_format.fromCSV(tokens[lastToken]);
 
-    m_geometry->classOfEdge = ecHARD;
-    m_geometry->visible = true;
-    m_geometry->cosmetic = true;
-    return true;
-}
-
-void CosmeticEdge::replaceGeometry(TechDraw::BaseGeom* g)
-{
-    delete m_geometry;
-    m_geometry = g;
-}
+//    m_geometry->classOfEdge = ecHARD;
+//    m_geometry->visible = true;
+//    m_geometry->cosmetic = true;
+//    return true;
+//}
 
 void CosmeticEdge::dump(char* title)
 {
     Base::Console().Message("CE::dump - %s \n",title);
-    Base::Console().Message("CE::dump - %s \n",toCSV().c_str());
+    Base::Console().Message("CE::dump - %s \n",toString().c_str());
+}
+
+// Persistence implementers
+unsigned int CosmeticEdge::getMemSize (void) const
+{
+    return 1;
+}
+
+void CosmeticEdge::Save(Base::Writer &writer) const
+{
+    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << endl;
+    const char v = m_format.m_visible?'1':'0';
+    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+
+    writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->geomType <<"\"/>" << endl;
+    if (m_geometry->geomType == TechDraw::GeomType::GENERIC) {
+        Generic* gen = static_cast<Generic*>(m_geometry);
+        gen->Save(writer);
+    } else if (m_geometry->geomType == TechDraw::GeomType::CIRCLE) {
+        TechDraw::Circle* circ = static_cast<TechDraw::Circle*>(m_geometry);
+        circ->Save(writer);
+    } else if (m_geometry->geomType == TechDraw::GeomType::ARCOFCIRCLE) {
+        TechDraw::AOC* aoc = static_cast<TechDraw::AOC*>(m_geometry);
+        aoc->Save(writer);
+    } else {
+        Base::Console().Message("CE::Save - unimplemented geomType: %d\n", m_geometry->geomType);
+    }
+}
+
+void CosmeticEdge::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Style");
+    m_format.m_style = reader.getAttributeAsInteger("value");
+    reader.readElement("Weight");
+    m_format.m_weight = reader.getAttributeAsFloat("value");
+    reader.readElement("Color");
+    std::string temp = reader.getAttribute("value");
+    m_format.m_color.fromHexString(temp);
+    reader.readElement("Visible");
+    m_format.m_visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    reader.readElement("GeometryType");
+    TechDraw::GeomType gType = (TechDraw::GeomType)reader.getAttributeAsInteger("value");
+
+    if (gType == TechDraw::GeomType::GENERIC) {
+        TechDraw::Generic* gen = new TechDraw::Generic();
+        gen->Restore(reader);
+        gen->occEdge = GeometryUtils::edgeFromGeneric(gen);
+        m_geometry = (TechDraw::BaseGeom*) gen;
+        
+    } else if (gType == TechDraw::GeomType::CIRCLE) {
+        TechDraw::Circle* circ = new TechDraw::Circle();
+        circ->Restore(reader);
+        circ->occEdge = GeometryUtils::edgeFromCircle(circ);
+        m_geometry = (TechDraw::BaseGeom*) circ;
+    } else if (gType == TechDraw::GeomType::ARCOFCIRCLE) {
+        TechDraw::AOC* aoc = new TechDraw::AOC();
+        aoc->Restore(reader);
+        aoc->occEdge = GeometryUtils::edgeFromCircleArc(aoc);
+        m_geometry = (TechDraw::BaseGeom*) aoc;
+    } else {
+        Base::Console().Message("CE::Restore - unimplemented geomType: %d\n", gType);
+    }
+}
+
+CosmeticEdge* CosmeticEdge::copy(void) const
+{
+//    Base::Console().Message("CE::copy()\n");
+    CosmeticEdge* newCE = new CosmeticEdge();
+    TechDraw::BaseGeom* newGeom = m_geometry->copy();
+    newCE->m_geometry = newGeom;
+    newCE->m_format = m_format;
+    return newCE;
+}
+
+CosmeticEdge* CosmeticEdge::clone(void) const
+{
+//    Base::Console().Message("CE::clone()\n");
+    CosmeticEdge* cpy = this->copy();
+    return cpy;
+}
+
+PyObject* CosmeticEdge::getPyObject(void)
+{
+    return new CosmeticEdgePy(new CosmeticEdge(this->copy()));
 }
 
 //*********************************************************
+
+TYPESYSTEM_SOURCE(TechDraw::CenterLine,Base::Persistence)
+
 CenterLine::CenterLine(void)
 {
     m_start = Base::Vector3d(0.0, 0.0, 0.0);
@@ -371,6 +543,19 @@ CenterLine::CenterLine(void)
     m_vShift = 0.0;
     m_rotate = 0.0;
     m_extendBy = 0.0;
+}
+
+CenterLine::CenterLine(CenterLine* cl)
+{
+    m_start = cl->m_start;
+    m_end = cl->m_end; 
+    m_mode = cl->m_mode;
+    m_hShift = cl->m_hShift;
+    m_vShift = cl->m_vShift;
+    m_rotate = cl->m_rotate;
+    m_extendBy = cl->m_extendBy;
+    m_faces = cl->m_faces;
+    m_format = cl->m_format;
 }
 
 CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2)
@@ -398,6 +583,7 @@ CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2,
     m_vShift = v;
     m_rotate = r;
     m_extendBy = x;
+    //m_faces = ??
 }
 
 CenterLine::~CenterLine()
@@ -432,21 +618,21 @@ TechDraw::BaseGeom* CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFeat)
     return newGeom;
 }
 
-std::string CenterLine::toCSV(void) const
+std::string CenterLine::toString(void) const
 {
     std::stringstream ss;
-    ss << m_start.x << "," <<   //0
-          m_start.y << "," <<   //1
-          m_start.z << "," <<   //2
-          m_end.x << "," <<     //3
-          m_end.y << "," <<     //4
-          m_end.z << "," <<     //5
-          m_mode << "," <<      //6
-          m_hShift << "," <<    //7
-          m_vShift << "," <<    //8
-          m_rotate << "," <<    //9
-          m_extendBy << "," <<  //10
-          m_faces.size();     //11
+    ss << m_start.x << "," <<
+          m_start.y << "," <<
+          m_start.z << "," <<
+          m_end.x << "," <<
+          m_end.y << "," <<
+          m_end.z << "," <<
+          m_mode << "," <<
+          m_hShift << "," <<
+          m_vShift << "," <<
+          m_rotate << "," <<
+          m_extendBy << "," <<
+          m_faces.size();
     if (!m_faces.empty()) {
         for (auto& f: m_faces) {
             if (!f.empty()) {
@@ -456,56 +642,56 @@ std::string CenterLine::toCSV(void) const
     }
 
     std::string clCSV = ss.str();
-    std::string fmtCSV = m_format.toCSV();
+    std::string fmtCSV = m_format.toString();
     return clCSV + ",$$$," + fmtCSV;
 }
 
-bool CenterLine::fromCSV(std::string& lineSpec)
-{
-    if (lineSpec.length() == 0) {
-        Base::Console().Message( "CenterLine::fromCSV - lineSpec empty\n");
-        return false;
-    }
-    
-    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
-    if (tokens.size() != 2) {
-        Base::Console().Message("CenterLine::fromCSV - tokenize failed - size: %d\n",tokens.size());
-    }
+//bool CenterLine::fromCSV(std::string& lineSpec)
+//{
+//    if (lineSpec.length() == 0) {
+//        Base::Console().Message( "CenterLine::fromCSV - lineSpec empty\n");
+//        return false;
+//    }
+//    
+//    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
+//    if (tokens.size() != 2) {
+//        Base::Console().Message("CenterLine::fromCSV - tokenize failed - size: %d\n",tokens.size());
+//    }
 
-    if (tokens[0].length() == 0) {
-        Base::Console().Message( "CenterLine::fromCSV - token0 empty\n");
-        return false;
-    }
+//    if (tokens[0].length() == 0) {
+//        Base::Console().Message( "CenterLine::fromCSV - token0 empty\n");
+//        return false;
+//    }
 
-    std::vector<std::string> values = DrawUtil::split(tokens[0]);
+//    std::vector<std::string> values = DrawUtil::split(tokens[0]);
 
-// variable length record, can't determine maxCells in advance.
-    double x = atof(values[0].c_str());
-    double y = atof(values[1].c_str());
-    double z = atof(values[2].c_str());
-    m_start = Base::Vector3d (x,y,z);
-    x = atof(values[3].c_str());
-    y = atof(values[4].c_str());
-    z = atof(values[5].c_str());
-    m_end = Base::Vector3d (x,y,z);
-    m_mode = atoi(values[6].c_str());
-    m_hShift = atof(values[7].c_str());
-    m_vShift = atof(values[8].c_str());
-    m_rotate = atof(values[9].c_str());
-    m_extendBy = atof(values[10].c_str());
-    int m_faceCount = atoi(values[11].c_str());
-    int i = 0;
-    for ( ; i < m_faceCount; i++ ) {
-        m_faces.push_back(values[12 + i]);
-    }
-    m_format.fromCSV(tokens[1]);
-    return true;
-}
+//// variable length record, can't determine maxCells in advance.
+//    double x = atof(values[0].c_str());
+//    double y = atof(values[1].c_str());
+//    double z = atof(values[2].c_str());
+//    m_start = Base::Vector3d (x,y,z);
+//    x = atof(values[3].c_str());
+//    y = atof(values[4].c_str());
+//    z = atof(values[5].c_str());
+//    m_end = Base::Vector3d (x,y,z);
+//    m_mode = atoi(values[6].c_str());
+//    m_hShift = atof(values[7].c_str());
+//    m_vShift = atof(values[8].c_str());
+//    m_rotate = atof(values[9].c_str());
+//    m_extendBy = atof(values[10].c_str());
+//    int m_faceCount = atoi(values[11].c_str());
+//    int i = 0;
+//    for ( ; i < m_faceCount; i++ ) {
+//        m_faces.push_back(values[12 + i]);
+//    }
+//    m_format.fromCSV(tokens[1]);
+//    return true;
+//}
 
 void CenterLine::dump(char* title)
 {
     Base::Console().Message("CL::dump - %s \n",title);
-    Base::Console().Message("CL::dump - %s \n",toCSV().c_str());
+    Base::Console().Message("CL::dump - %s \n",toString().c_str());
 }
 
 std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart* partFeat,
@@ -545,14 +731,10 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
     faceBox.Get(Xmin,Ymin,Zmin,Xmax,Ymax,Zmax);
 
     double Xspan = fabs(Xmax - Xmin);
-//    Xspan = (Xspan / 2.0) + (ext * scale);    //this should be right? edges in GO are scaled!
-//    Xspan = (Xspan / 2.0) + ext;
     Xspan = (Xspan / 2.0);
     double Xmid = Xmin + fabs(Xmax - Xmin) / 2.0;
 
     double Yspan = fabs(Ymax - Ymin);
-//    Yspan = (Yspan / 2.0) + (ext * scale);
-//    Yspan = (Yspan / 2.0) + ext;
     Yspan = (Yspan / 2.0);
     double Ymid = Ymin + fabs(Ymax - Ymin) / 2.0;
 
@@ -595,6 +777,135 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
     return result;
 }
 
+// Persistence implementers
+unsigned int CenterLine::getMemSize (void) const
+{
+    return 1;
+}
+
+void CenterLine::Save(Base::Writer &writer) const
+{
+    writer.Stream() << writer.ind() << "<Start "
+                << "X=\"" <<  m_start.x <<
+                "\" Y=\"" <<  m_start.y <<
+                "\" Z=\"" <<  m_start.z <<
+                 "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<End "
+                << "X=\"" <<  m_end.x <<
+                "\" Y=\"" <<  m_end.y <<
+                "\" Z=\"" <<  m_end.z <<
+                 "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Mode value=\"" << m_mode <<"\"/>" << endl;
+    writer.Stream() << writer.ind() << "<HShift value=\"" << m_hShift <<"\"/>" << endl;
+    writer.Stream() << writer.ind() << "<VShift value=\"" << m_vShift <<"\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Rotate value=\"" << m_rotate <<"\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Extend value=\"" << m_extendBy <<"\"/>" << endl;
+    writer.Stream()
+         << writer.ind()
+             << "<Faces "
+                << "FaceCount=\"" <<  m_faces.size() <<
+             "\">" << endl;
+
+    writer.incInd();
+    for (auto& f: m_faces) {
+        writer.Stream()
+            << writer.ind()
+            << "<Face value=\"" << f <<"\"/>" << endl;
+    }
+    writer.decInd();
+
+    writer.Stream() << writer.ind() << "</Faces>" << endl ;
+
+    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << endl;
+    const char v = m_format.m_visible?'1':'0';
+    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+}
+
+void CenterLine::Restore(Base::XMLReader &reader)
+{
+    // read my Element
+    reader.readElement("Start");
+    // get the value of my Attribute
+    m_start.x = reader.getAttributeAsFloat("X");
+    m_start.y = reader.getAttributeAsFloat("Y");
+    m_start.z = reader.getAttributeAsFloat("Z");
+
+    reader.readElement("End");
+    m_end.x = reader.getAttributeAsFloat("X");
+    m_end.y = reader.getAttributeAsFloat("Y");
+    m_end.z = reader.getAttributeAsFloat("Z");
+
+    reader.readElement("Mode");
+    m_mode = reader.getAttributeAsInteger("value");
+
+    reader.readElement("HShift");
+    m_hShift = reader.getAttributeAsFloat("value");
+    reader.readElement("VShift");
+    m_vShift = reader.getAttributeAsFloat("value");
+    reader.readElement("Rotate");
+    m_rotate = reader.getAttributeAsFloat("value");
+    reader.readElement("Extend");
+    m_extendBy = reader.getAttributeAsFloat("value");
+
+    reader.readElement("Faces");
+    int count = reader.getAttributeAsInteger("FaceCount");
+
+    int i = 0;
+    for ( ; i < count; i++) {
+        reader.readElement("Face");
+        std::string f = reader.getAttribute("value");
+        m_faces.push_back(f);
+    }
+    reader.readEndElement("Faces");
+
+    reader.readElement("Style");
+    m_format.m_style = reader.getAttributeAsInteger("value");
+    reader.readElement("Weight");
+    m_format.m_weight = reader.getAttributeAsFloat("value");
+    reader.readElement("Color");
+    std::string temp = reader.getAttribute("value");
+    m_format.m_color.fromHexString(temp);
+    reader.readElement("Visible");
+    m_format.m_visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+}
+
+CenterLine* CenterLine::copy(void) const
+{
+    CenterLine* newCL = new CenterLine();
+    newCL->m_start = m_start;
+    newCL->m_end = m_end; 
+    newCL->m_mode = m_mode;
+    newCL->m_hShift = m_hShift;
+    newCL->m_vShift = m_vShift;
+    newCL->m_rotate = m_rotate;
+    newCL->m_extendBy = m_extendBy;
+    newCL->m_faces = m_faces;
+
+    newCL->m_format.m_style = m_format.m_style;
+    newCL->m_format.m_weight = m_format.m_weight;
+    newCL->m_format.m_color = m_format.m_color;
+    newCL->m_format.m_visible = m_format.m_visible;
+    return newCL;
+}
+
+CenterLine* CenterLine::clone(void) const
+{
+    CenterLine* cpy = this->copy();
+    return cpy;
+}
+
+PyObject* CenterLine::getPyObject(void)
+{
+    return new CenterLinePy(new CenterLine(this->copy()));
+}
+
+
+//------------------------------------------------------------------------------
+
+TYPESYSTEM_SOURCE(TechDraw::GeomFormat,Base::Persistence)
+
 GeomFormat::GeomFormat() :
     m_geomIndex(-1)
 {
@@ -602,6 +913,15 @@ GeomFormat::GeomFormat() :
     m_format.m_weight = LineFormat::getDefEdgeWidth();
     m_format.m_color = LineFormat::getDefEdgeColor();
     m_format.m_visible = true;
+}
+
+GeomFormat::GeomFormat(GeomFormat* gf) 
+{
+    m_geomIndex  = gf->m_geomIndex;
+    m_format.m_style = gf->m_format.m_style;
+    m_format.m_weight = gf->m_format.m_weight;
+    m_format.m_color = gf->m_format.m_color;
+    m_format.m_visible = gf->m_format.m_visible;
 }
 
 GeomFormat::GeomFormat(int idx,
@@ -612,54 +932,111 @@ GeomFormat::GeomFormat(int idx,
     m_format.m_weight = fmt.m_weight;
     m_format.m_color = fmt.m_color;
     m_format.m_visible = fmt.m_visible;
-    //m_format = fmt;  //???
+
 }
 
 GeomFormat::~GeomFormat()
 {
 }
 
-void GeomFormat::dump(char* title)
+void GeomFormat::dump(char* title) const
 {
     Base::Console().Message("GF::dump - %s \n",title);
-    Base::Console().Message("GF::dump - %s \n",toCSV().c_str());
+    Base::Console().Message("GF::dump - %s \n",toString().c_str());
 }
 
-std::string GeomFormat::toCSV(void) const
+std::string GeomFormat::toString(void) const
 {
     std::stringstream ss;
     ss << m_geomIndex << ",$$$," <<
-          m_format.toCSV();
+          m_format.toString();
     return ss.str();
 }
 
-bool GeomFormat::fromCSV(std::string& lineSpec)
+//bool GeomFormat::fromCSV(std::string& lineSpec)
+//{
+//    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
+//    if (tokens.empty()) {
+//        Base::Console().Message("GeomFormat::fromCSV - tokenize failed - no tokens\n");
+//        return false;
+//    }
+
+//    if (tokens[0].length() == 0) {
+//        Base::Console().Message( "GeomFormat::fromCSV - token0 empty\n");
+//        return false;
+//    }
+
+//    std::vector<std::string> values = DrawUtil::split(tokens[0]);
+//    unsigned int maxCells = 1;
+//    if (values.size() < maxCells) {
+//        Base::Console().Message( "GeomFormat::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
+//        return false;
+//    }
+//    m_geomIndex = atoi(values[0].c_str());
+
+//    int lastToken = 1;
+//    if (tokens.size() != 2) {
+//        Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
+//        return false;
+//    }
+//    m_format.fromCSV(tokens[lastToken]);
+//    return true;
+//}
+
+// Persistence implementer
+unsigned int GeomFormat::getMemSize (void) const
 {
-    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
-    if (tokens.empty()) {
-        Base::Console().Message("GeomFormat::fromCSV - tokenize failed - no tokens\n");
-        return false;
-    }
-
-    if (tokens[0].length() == 0) {
-        Base::Console().Message( "GeomFormat::fromCSV - token0 empty\n");
-        return false;
-    }
-
-    std::vector<std::string> values = DrawUtil::split(tokens[0]);
-    unsigned int maxCells = 1;
-    if (values.size() < maxCells) {
-        Base::Console().Message( "GeomFormat::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
-        return false;
-    }
-    m_geomIndex = atoi(values[0].c_str());
-
-    int lastToken = 1;
-    if (tokens.size() != 2) {
-        Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
-        return false;
-    }
-    m_format.fromCSV(tokens[lastToken]);
-    return true;
+    return 1;
 }
+
+void GeomFormat::Save(Base::Writer &writer) const
+{
+    const char v = m_format.m_visible?'1':'0';
+    writer.Stream() << writer.ind() << "<GeomIndex value=\"" <<  m_geomIndex << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+}
+
+void GeomFormat::Restore(Base::XMLReader &reader)
+{
+    // read my Element
+    reader.readElement("GeomIndex");
+    // get the value of my Attribute
+    m_geomIndex = reader.getAttributeAsInteger("value");
+
+    reader.readElement("Style");
+    m_format.m_style = reader.getAttributeAsInteger("value");
+    reader.readElement("Weight");
+    m_format.m_weight = reader.getAttributeAsFloat("value");
+    reader.readElement("Color");
+    std::string temp = reader.getAttribute("value");
+    m_format.m_color.fromHexString(temp);
+    reader.readElement("Visible");
+    m_format.m_visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+}
+
+GeomFormat* GeomFormat::copy(void) const
+{
+    GeomFormat* newFmt = new GeomFormat();
+    newFmt->m_geomIndex = m_geomIndex;
+    newFmt->m_format.m_style = m_format.m_style;
+    newFmt->m_format.m_weight = m_format.m_weight;
+    newFmt->m_format.m_color = m_format.m_color;
+    newFmt->m_format.m_visible = m_format.m_visible;
+    return newFmt;
+}
+
+GeomFormat* GeomFormat::clone(void) const
+{
+    GeomFormat* cpy = this->copy();
+    return cpy;
+}
+
+PyObject* GeomFormat::getPyObject(void)
+{
+    return new GeomFormatPy(new GeomFormat(this->copy()));
+}
+
 
