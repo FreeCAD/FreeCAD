@@ -773,7 +773,8 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
     }
 
     try {
-        Instance->activateWorkbench(psKey);
+        bool ok = Instance->activateWorkbench(psKey);
+        return Py::new_reference_to(Py::Boolean(ok));
     }
     catch (const Base::Exception& e) {
         std::stringstream err;
@@ -799,9 +800,6 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
         PyErr_SetString(Base::BaseExceptionFreeCADError, err.str().c_str());
         return 0;
     }
-
-    Py_INCREF(Py_None);
-    return Py_None;
 }
 
 PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
