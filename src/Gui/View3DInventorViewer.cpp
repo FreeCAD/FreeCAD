@@ -75,6 +75,8 @@
 # include <Inventor/SoOffscreenRenderer.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoTransparencyType.h>
 # include <QEventLoop>
 # include <QKeyEvent>
 # include <QWheelEvent>
@@ -84,6 +86,8 @@
 # include <QBitmap>
 # include <QMimeData>
 #endif
+
+#include <Inventor/SoEventManager.h>
 
 #if !defined(FC_OS_MACOSX)
 # include <GL/gl.h>
@@ -100,6 +104,7 @@
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <App/GeoFeatureGroupExtension.h>
 
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObject.h"
@@ -141,6 +146,10 @@
 #include "SoTouchEvents.h"
 #include "WinNativeGestureRecognizers.h"
 #include "Document.h"
+
+#include "ViewProviderLink.h"
+
+FC_LOG_LEVEL_INIT("3DViewer",true,true);
 
 //#define FC_LOGGING_CB
 
@@ -344,7 +353,8 @@ public:
 // *************************************************************************
 
 View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QtGLWidget* sharewidget)
-    : Quarter::SoQTQuarterAdaptor(parent, sharewidget), editViewProvider(0), navigation(0),
+    : Quarter::SoQTQuarterAdaptor(parent, sharewidget), SelectionObserver(false,0),
+      editViewProvider(0), navigation(0),
       renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(false), redirected(false),
       allowredir(false), overrideMode("As Is"), _viewerPy(0)
 {
@@ -352,7 +362,8 @@ View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QtGLWidget* sh
 }
 
 View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* parent, const QtGLWidget* sharewidget)
-    : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), editViewProvider(0), navigation(0),
+    : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), SelectionObserver(false,0),
+      editViewProvider(0), navigation(0),
       renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(false), redirected(false),
       allowredir(false), overrideMode("As Is"), _viewerPy(0)
 {
@@ -361,11 +372,18 @@ View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* pa
 
 void View3DInventorViewer::init()
 {
+    static bool _cacheModeInited;
+    if(!_cacheModeInited) {
+        _cacheModeInited = true;
+        pcViewProviderRoot = 0;
+        setRenderCache(-1);
+    }
+
     shading = true;
     fpsEnabled = false;
     vboEnabled = false;
 
-    Gui::Selection().Attach(this);
+    attachSelection();
 
     // Coin should not clear the pixel-buffer, so the background image
     // is not removed.
@@ -471,6 +489,32 @@ void View3DInventorViewer::init()
     pcViewProviderRoot->addChild(cb);
 #endif
 
+    pcGroupOnTop = new SoSeparator;
+    pcGroupOnTop->ref();
+    pcViewProviderRoot->addChild(pcGroupOnTop);
+
+    auto pcGroupOnTopPickStyle = new SoPickStyle;
+    pcGroupOnTopPickStyle->style = SoPickStyle::UNPICKABLE;
+    // pcGroupOnTopPickStyle->style = SoPickStyle::SHAPE_ON_TOP;
+    pcGroupOnTopPickStyle->setOverride(true);
+    pcGroupOnTop->addChild(pcGroupOnTopPickStyle);
+
+    coin_setenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE", "1", TRUE);
+    auto pcOnTopMaterial = new SoMaterial;
+    pcOnTopMaterial->transparency = 0.5;
+    pcOnTopMaterial->diffuseColor.setIgnored(true);
+    pcOnTopMaterial->setOverride(true);
+    pcGroupOnTop->addChild(pcOnTopMaterial);
+
+    pcGroupOnTopSel = new SoFCSelectionRoot;
+    pcGroupOnTopSel->setName("GroupOnTopSel");
+    pcGroupOnTopSel->ref();
+    pcGroupOnTop->addChild(pcGroupOnTopSel);
+    pcGroupOnTopPreSel = new SoFCSelectionRoot;
+    pcGroupOnTopPreSel->setName("GroupOnTopPreSel");
+    pcGroupOnTopPreSel->ref();
+    pcGroupOnTop->addChild(pcGroupOnTopPreSel);
+
     // Set our own render action which show a bounding box if
     // the SoFCSelection::BOX style is set
     //
@@ -573,13 +617,23 @@ View3DInventorViewer::~View3DInventorViewer()
     this->backlight->unref();
     this->backlight = 0;
 
+    this->pcGroupOnTop->unref();
+    this->pcGroupOnTopPreSel->unref();
+    this->pcGroupOnTopSel->unref();
+
+    this->pcEditingRoot->unref();
+    this->pcEditingTransform->unref();
+
+    if(this->pcClipPlane)
+        this->pcClipPlane->unref();
+
     delete this->navigation;
 
     // Note: When closing the application the main window doesn't exist any more.
     if (getMainWindow())
         getMainWindow()->setPaneText(2, QLatin1String(""));
 
-    Gui::Selection().Detach(this);
+    detachSelection();
 
     removeEventFilter(viewerEventFilter);
     delete viewerEventFilter;
@@ -615,6 +669,15 @@ void View3DInventorViewer::setDocument(Gui::Document* pcDocument)
     // write the document the viewer belongs to the selection node
     guiDocument = pcDocument;
     selectionRoot->pcDocument = pcDocument;
+
+    if(pcDocument) {
+        const auto &sels = Selection().getSelection(pcDocument->getDocument()->getName(),0);
+        for(auto &sel : sels) {
+            SelectionChanges Chng(SelectionChanges::ShowSelection,
+                    sel.DocName,sel.FeatName,sel.SubName);
+            onSelectionChanged(Chng);
+        }
+    }
 }
 
 Document* View3DInventorViewer::getDocument() {
@@ -631,21 +694,232 @@ void View3DInventorViewer::initialize()
     this->axiscrossSize = 10;
 }
 
-/// @cond DOXERR
-void View3DInventorViewer::OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
-                                    Gui::SelectionSingleton::MessageType Reason)
-{
-    Q_UNUSED(rCaller);
-    if (Reason.Type == SelectionChanges::AddSelection ||
-        Reason.Type == SelectionChanges::RmvSelection ||
-        Reason.Type == SelectionChanges::SetSelection ||
-        Reason.Type == SelectionChanges::ClrSelection) {
-        SoFCSelectionAction cAct(Reason);
-        cAct.apply(pcViewProviderRoot);
+void View3DInventorViewer::clearGroupOnTop() {
+    if(objectsOnTop.size() || objectsOnTopPreSel.size()) {
+        objectsOnTop.clear();
+        objectsOnTopPreSel.clear();
+        SoSelectionElementAction action(SoSelectionElementAction::None,true);
+        action.apply(pcGroupOnTopPreSel);
+        action.apply(pcGroupOnTopSel);
+        coinRemoveAllChildren(pcGroupOnTopSel);
+        coinRemoveAllChildren(pcGroupOnTopPreSel);
+        FC_LOG("clear annoation");
     }
-    else if (Reason.Type == SelectionChanges::RmvPreselect ||
-        Reason.Type == SelectionChanges::SetPreselect) {
-        SoFCHighlightAction cAct(Reason);
+}
+
+void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
+    if(Reason.Type == SelectionChanges::SetSelection || Reason.Type == SelectionChanges::ClrSelection) {
+        clearGroupOnTop();
+        if(Reason.Type == SelectionChanges::ClrSelection)
+            return;
+    }
+    if(Reason.Type == SelectionChanges::RmvPreselect ||
+       Reason.Type == SelectionChanges::RmvPreselectSignal) 
+    {
+        SoSelectionElementAction action(SoSelectionElementAction::None,true);
+        action.apply(pcGroupOnTopPreSel);
+        coinRemoveAllChildren(pcGroupOnTopPreSel);
+        objectsOnTopPreSel.clear();
+        return;
+    }
+    if(!getDocument() || !Reason.pDocName || !Reason.pDocName[0] || !Reason.pObjectName)
+        return;
+    auto obj = getDocument()->getDocument()->getObject(Reason.pObjectName);
+    if(!obj || !obj->getNameInDocument())
+        return;
+    std::string key(obj->getNameInDocument());
+    key += '.';
+    auto subname = Reason.pSubName;
+    if(subname)
+        key += subname;
+    if(Reason.Type == SelectionChanges::RmvSelection) {
+        auto &objs = objectsOnTop;
+        auto pcGroup = pcGroupOnTopSel;
+        auto it = objs.find(key.c_str());
+        if(it == objs.end())
+            return;
+        int index = pcGroup->findChild(it->second);
+        if(index >= 0) {
+            auto node = static_cast<SoFCPathAnnotation*>(it->second);
+            SoSelectionElementAction action(node->getDetail()?
+                    SoSelectionElementAction::Remove:SoSelectionElementAction::None,true);
+            auto path = node->getPath();
+            SoTempPath tmpPath(2+path?path->getLength():0);
+            tmpPath.ref();
+            tmpPath.append(pcGroup);
+            tmpPath.append(node);
+            tmpPath.append(node->getPath());
+            action.setElement(node->getDetail());
+            action.apply(&tmpPath);
+            tmpPath.unrefNoDelete();
+            pcGroup->removeChild(index);
+            FC_LOG("remove annoation " << Reason.Type << " " << key);
+        }else
+            FC_LOG("remove annoation object " << Reason.Type << " " << key);
+        objs.erase(it);
+        return;
+    }
+
+    auto &objs = Reason.Type==SelectionChanges::SetPreselect?objectsOnTopPreSel:objectsOnTop;
+    auto pcGroup = Reason.Type==SelectionChanges::SetPreselect?pcGroupOnTopPreSel:pcGroupOnTopSel;
+
+    if(objs.find(key.c_str())!=objs.end())
+        return;
+    auto vp = dynamic_cast<ViewProviderDocumentObject*>(
+            Application::Instance->getViewProvider(obj));
+    if(!vp || !vp->isSelectable() || !vp->isShow())
+        return;
+    auto svp = vp;
+    if(subname && *subname) {
+        auto sobj = obj->getSubObject(subname);
+        if(!sobj || !sobj->getNameInDocument())
+            return;
+        if(sobj!=obj) {
+            svp = dynamic_cast<ViewProviderDocumentObject*>(
+                    Application::Instance->getViewProvider(sobj));
+            if(!svp || !svp->isSelectable())
+                return;
+        }
+    }
+    int onTop;
+    // onTop==2 means on top only if whole object is selected,
+    // onTop==3 means on top only if some sub-element is selected
+    // onTop==1 means either
+    onTop = Gui::Selection().needPickedList() 
+            || vp->OnTopWhenSelected.getValue() 
+            || svp->OnTopWhenSelected.getValue();
+    if(Reason.Type == SelectionChanges::SetPreselect) {
+        SoHighlightElementAction action;
+        action.setHighlighted(true);
+        action.setColor(selectionRoot->colorHighlight.getValue());
+        action.apply(pcGroupOnTopPreSel);
+        if(!onTop)
+            onTop = 2;
+    }else {
+        if(!onTop)
+            return;
+        SoSelectionElementAction action(SoSelectionElementAction::All);
+        action.setColor(selectionRoot->colorSelection.getValue());
+        action.apply(pcGroupOnTopSel);
+    }
+    if(onTop==2 || onTop==3) {
+        if(subname && *subname) {
+            size_t len = strlen(subname);
+            if(subname[len-1]=='.') {
+                // ending with '.' means whole object selection
+                if(onTop == 3)
+                    return;
+            }else if(onTop==2)
+                return;
+        }else if(onTop==3)
+            return;
+    }
+
+    std::vector<ViewProvider*> groups;
+    auto grpVp = vp;
+    for(auto childVp=vp;;childVp=grpVp) {
+        auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(childVp->getObject());
+        if(!grp || !grp->getNameInDocument()) break;
+        grpVp = dynamic_cast<ViewProviderDocumentObject*>(
+                Application::Instance->getViewProvider(grp));
+        if(!grpVp) break;
+        auto childRoot = grpVp->getChildRoot();
+        auto modeSwitch = grpVp->getModeSwitch();
+        auto idx = modeSwitch->whichChild.getValue();
+        if(idx<0 || idx>=modeSwitch->getNumChildren() ||
+           modeSwitch->getChild(idx)!=childRoot)
+        {
+            FC_LOG("skip " << obj->getFullName() << '.' << (subname?subname:"") 
+                    << ", hidden inside geo group");
+            return;
+        }
+        if(childRoot->findChild(childVp->getRoot())<0) {
+            FC_WARN("cannot find '" << childVp->getObject()->getFullName() 
+                    << "' in geo group '" << grp->getNameInDocument() << "'");
+            break;
+        }
+        groups.push_back(grpVp);
+    }
+
+    SoTempPath path(10);
+    path.ref();
+
+    for(auto it=groups.rbegin();it!=groups.rend();++it) {
+        auto grpVp = *it;
+        path.append(grpVp->getRoot());
+        path.append(grpVp->getModeSwitch());
+        path.append(grpVp->getChildRoot());
+    }
+
+    SoDetail *det = 0;
+    if(vp->getDetailPath(subname, &path,true,det) && path.getLength()) {
+        auto node = new SoFCPathAnnotation;
+        node->setPath(&path);
+        pcGroup->addChild(node);
+        if(det) {
+            SoSelectionElementAction action(SoSelectionElementAction::Append,true);
+            action.setElement(det);
+            SoTempPath tmpPath(path.getLength()+2);
+            tmpPath.ref();
+            tmpPath.append(pcGroup);
+            tmpPath.append(node);
+            tmpPath.append(&path);
+            action.apply(&tmpPath);
+            tmpPath.unrefNoDelete();
+            node->setDetail(det);
+            det = 0;
+        }
+        FC_LOG("add annoation " << Reason.Type << " " << key);
+        objs[key.c_str()] = node;
+    }
+    delete det;
+    path.unrefNoDelete();
+}
+
+/// @cond DOXERR
+void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
+{
+    if(!getDocument())
+        return;
+
+    SelectionChanges Reason(_Reason);
+
+    if(Reason.pDocName && *Reason.pDocName && 
+       strcmp(getDocument()->getDocument()->getName(),Reason.pDocName)!=0)
+        return;
+
+    switch(Reason.Type) {
+    case SelectionChanges::ShowSelection:
+    case SelectionChanges::HideSelection:
+        if(Reason.Type == SelectionChanges::ShowSelection)
+            Reason.Type = SelectionChanges::AddSelection;
+        else
+            Reason.Type = SelectionChanges::RmvSelection;
+        // fall through
+    case SelectionChanges::SetPreselect:
+        if(Reason.SubType!=2) // 2 means it is triggered from tree view
+            break;
+    case SelectionChanges::RmvPreselect:
+    case SelectionChanges::RmvPreselectSignal:
+    case SelectionChanges::SetSelection:
+    case SelectionChanges::AddSelection:     
+    case SelectionChanges::RmvSelection:
+    case SelectionChanges::ClrSelection:
+        checkGroupOnTop(Reason);
+        break;
+    case SelectionChanges::SetPreselectSignal:
+        break;
+    default:
+        return;
+    }
+
+    if(Reason.Type == SelectionChanges::RmvPreselect || 
+       Reason.Type == SelectionChanges::RmvPreselectSignal) 
+    {
+        SoFCHighlightAction cAct(SelectionChanges::RmvPreselect);
+        cAct.apply(pcViewProviderRoot);
+    } else {
+        SoFCSelectionAction cAct(Reason);
         cAct.apply(pcViewProviderRoot);
     }
 }
@@ -672,7 +946,8 @@ void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
     SoSeparator* root = pcProvider->getRoot();
 
     if (root) {
-        pcViewProviderRoot->addChild(root);
+        if(pcProvider->canAddToSceneGraph())
+            pcViewProviderRoot->addChild(root);
         _ViewProviderMap[root] = pcProvider;
     }
 
@@ -695,8 +970,10 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
 
     SoSeparator* root = pcProvider->getRoot();
 
-    if (root && (pcViewProviderRoot->findChild(root) != -1)) {
-        pcViewProviderRoot->removeChild(root);
+    if (root) {
+        int index = pcViewProviderRoot->findChild(root);
+        if(index>=0)
+            pcViewProviderRoot->removeChild(index);
         _ViewProviderMap.erase(root);
     }
 
@@ -731,9 +1008,10 @@ SbBool View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* p, int Mo
 void View3DInventorViewer::resetEditingViewProvider()
 {
     if (this->editViewProvider) {
+
         // In case the event action still has grabbed a node when leaving edit mode
         // force to release it now
-        SoEventManager* mgr = this->getSoEventManager();
+        SoEventManager* mgr = getSoEventManager();
         SoHandleEventAction* heaction = mgr->getHandleEventAction();
         if (heaction && heaction->getGrabber())
             heaction->releaseGrabber();
@@ -868,6 +1146,26 @@ void View3DInventorViewer::setEnabledVBO(bool on)
 bool View3DInventorViewer::isEnabledVBO() const
 {
     return vboEnabled;
+}
+
+void View3DInventorViewer::setRenderCache(int mode)
+{
+    if(mode<0) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View");
+        int setting = hGrp->GetInt("RenderCache",0);
+        if(mode==-2) {
+            if(pcViewProviderRoot && setting!=1)
+                pcViewProviderRoot->renderCaching = SoSeparator::ON;
+            mode = 2;
+        }else{
+            if(pcViewProviderRoot)
+                pcViewProviderRoot->renderCaching = SoSeparator::AUTO;
+            mode = setting;
+        }
+    }
+    SoFCSeparator::setCacheMode(
+            mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF));
 }
 
 void View3DInventorViewer::setEnabledNaviCube(bool on)
@@ -2433,54 +2731,51 @@ void View3DInventorViewer::viewAll(float factor)
 
 void View3DInventorViewer::viewSelection()
 {
-#if 0
-    // Search for all SoFCSelection nodes
-    SoSearchAction searchAction;
-    searchAction.setType(SoFCSelection::getClassTypeId());
-    searchAction.setInterest(SoSearchAction::ALL);
-    searchAction.apply(pcViewProviderRoot);
-
-    SoPathList& paths = searchAction.getPaths();
-    int countPaths = paths.getLength();
-
-    SoGroup* root = new SoGroup();
-    root->ref();
-
-    for (int i=0; i<countPaths; i++) {
-        SoPath* path = paths[i];
-        SoNode* node = path->getTail();
-
-        if (!node || node->getTypeId() != SoFCSelection::getClassTypeId())
-            continue; // should not happen
-
-        SoFCSelection* select = static_cast<SoFCSelection*>(node);
-
-        // Check only document and object name but not sub-element name
-        if (Selection().isSelected(select->documentName.getValue().getString(),
-                                   select->objectName.getValue().getString())) {
-            root->addChild(select);
-        }
+    Base::BoundBox3d bbox;
+    for(auto &sel : Selection().getSelection(0,0)) {
+        auto vp = Application::Instance->getViewProvider(sel.pObject);
+        if(!vp)
+            continue;
+        bbox.Add(vp->getBoundingBox(sel.SubName,true));
     }
-
-#else
-    SoGroup* root = new SoGroup();
-    root->ref();
-
-    std::vector<App::DocumentObject*> selection = Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::iterator it = selection.begin(); it != selection.end(); ++it) {
-        ViewProvider* vp = Application::Instance->getViewProvider(*it);
-        if (vp) {
-            root->addChild(vp->getRoot());
-        }
-    }
-
-#endif
 
     SoCamera* cam = this->getSoRenderManager()->getCamera();
-    if (cam)
-        cam->viewAll(root, this->getSoRenderManager()->getViewportRegion());
-
-    root->unref();
+    if (cam && bbox.IsValid()) {
+        SbBox3f box(bbox.MinX,bbox.MinY,bbox.MinZ,bbox.MaxX,bbox.MaxY,bbox.MaxZ);
+#if (COIN_MAJOR_VERSION >= 4)
+        float aspectratio = getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
+        switch (cam->viewportMapping.getValue()) {
+            case SoCamera::CROP_VIEWPORT_FILL_FRAME:
+            case SoCamera::CROP_VIEWPORT_LINE_FRAME:
+            case SoCamera::CROP_VIEWPORT_NO_FRAME:
+                aspectratio = 1.0f;
+                break;
+            default:
+                break;
+        }
+        cam->viewBoundingBox(box,aspectratio,1.0);
+#else
+        SoTempPath path(2);
+        path.ref();
+        auto pcGroup = new SoGroup;
+        pcGroup->ref();
+        auto pcTransform = new SoTransform;
+        pcGroup->addChild(pcTransform);
+        pcTransform->translation = box.getCenter();
+        auto *pcCube = new SoCube;
+        pcGroup->addChild(pcCube);
+        float sizeX,sizeY,sizeZ;
+        box.getSize(sizeX,sizeY,sizeZ);
+        pcCube->width = sizeX;
+        pcCube->height = sizeY;
+        pcCube->depth = sizeZ;
+        path.append(pcGroup);
+        path.append(pcCube);
+        cam->viewAll(&path,getSoRenderManager()->getViewportRegion());
+        path.unrefNoDelete();
+        pcGroup->unref();
+#endif
+    }
 }
 
 /*!
@@ -2958,16 +3253,16 @@ void View3DInventorViewer::removeEventCallback(SoType eventtype, SoEventCallback
 
 ViewProvider* View3DInventorViewer::getViewProviderByPath(SoPath* path) const
 {
-    // FIXME Use the viewprovider map introduced for the selection
-    for (std::set<ViewProvider*>::const_iterator it = _ViewProviderSet.begin(); it != _ViewProviderSet.end(); ++it) {
-        for (int i = 0; i<path->getLength(); i++) {
-            SoNode* node = path->getNode(i);
-            if ((*it)->getRoot() == node) {
-                return (*it);
+    for (int i = 0; i < path->getLength(); i++) {
+        SoNode* node = path->getNode(i);
+
+        if (node->isOfType(SoSeparator::getClassTypeId())) {
+            auto it = _ViewProviderMap.find(static_cast<SoSeparator*>(node));
+            if (it != _ViewProviderMap.end()) {
+                return it->second;
             }
         }
     }
-
     return 0;
 }
 
@@ -3096,3 +3391,4 @@ void View3DInventorViewer::dragLeaveEvent(QDragLeaveEvent *e)
 {
     inherited::dragLeaveEvent(e);
 }
+
