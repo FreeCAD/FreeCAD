@@ -142,7 +142,7 @@ StdCmdCloseActiveWindow::StdCmdCloseActiveWindow()
     // collide with this shortcut. Thus the shortcut of QMdiSubWindow will be
     // reset in MainWindow::addWindow() (#0002631)
     sAccel        = keySequenceToAccel(QKeySequence::Close);
-    eType         = 0;
+    eType         = NoTransaction;
 }
 
 void StdCmdCloseActiveWindow::activated(int iMsg)
