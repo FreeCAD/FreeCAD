@@ -554,7 +554,7 @@ public:
      * @param doc: optional document to check for selection
      * @param subElement: whether to count sub-element only selection
      *
-     * Example sub selections are face, edge or vertex. If \c resolve is false,
+     * Example sub selections are face, edge or vertex. If \c subElement is false,
      * then sub-object (i.e. a group child object) selection is also counted
      * even if it selects the whole sub-object.
      */
